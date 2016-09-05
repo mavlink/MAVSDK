@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include <dronelink/dronelink.h>
+#include "dronelink.h"
 
 #define UNUSED(x) (void)(x)
 
