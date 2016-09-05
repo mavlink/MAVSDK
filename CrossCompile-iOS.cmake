@@ -64,8 +64,9 @@ SET(CMAKE_C_LINK_FLAGS ${ARCHS})
 SET(CMAKE_CXX_LINK_FLAGS ${ARCHS})
 # SET(CMAKE_C_FLAGS ${ARCHS}) # C_FLAGS wont stick, use ADD_DEFINITIONS instead
 # SET(CMAKE_CXX_FLAGS ${ARCHS})
+
 ADD_DEFINITIONS(${ARCHS})
-ADD_DEFINITIONS("--sysroot=${SDKROOT}")
+ADD_DEFINITIONS("--sysroot=${SDKROOT} -stdlib=libc++ -fembed-bitcode -Wno-missing-braces")
 
 # ios headers
 INCLUDE_DIRECTORIES(SYSTEM "${SDKROOT}/usr/include")
