@@ -225,7 +225,7 @@ Result DeviceImpl::send_command_with_ack(const mavlink_message_t &message)
     }
 
     // Wait until we have received a result.
-    for (unsigned i = 0; i < 100; ++i) {
+    for (unsigned i = 0; i < 1000; ++i) {
         if (_command_state == CommandState::RECEIVED) {
             break;
         }
