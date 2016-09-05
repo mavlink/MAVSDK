@@ -28,4 +28,27 @@ include_directories(
     libs/include
 )
 
-add_subdirectory(tests)
+add_subdirectory(integration_tests)
+
+enable_testing()
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+add_executable(unit_tests
+    src/mavlink_channels_test.cpp
+    src/unittests_main.cpp
+)
+
+target_link_libraries(unit_tests
+    dronelink
+    ${GTEST_BOTH_LIBRARIES}
+    pthread
+    atomic
+)
+
+add_test(tests
+    unit_tests
+)
+
+# `make test` does not show output, but `make check` does
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
