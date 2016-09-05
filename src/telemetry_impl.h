@@ -28,9 +28,11 @@ private:
     // Use atomic to make this threadsafe
     std::atomic<float> _absolute_altitude;
     std::atomic<float> _relative_altitude;
-    std::atomic<Telemetry::Coordinates> _coordinates;
+    // TODO: make struct thread-safe
+    Telemetry::Coordinates _coordinates;
     std::atomic_bool _in_air;
-    std::atomic<Telemetry::Quaternion> _attitude_quaternion;
+    // TODO: make struct thread-safe
+    Telemetry::Quaternion _attitude_quaternion;
 };
 
 } // namespace dronelink
