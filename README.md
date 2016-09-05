@@ -38,6 +38,7 @@ sudo cp googlemock/gtest/libgtest_main.a /usr/local/lib
 ### Building
 
 ```
+git submodule update --init --recursive
 mkdir build
 cd build
 ```
