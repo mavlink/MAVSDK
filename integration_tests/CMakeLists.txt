@@ -4,6 +4,13 @@ set(_libs
     atomic
 )
 
+if (IOS)
+    set(_libs
+        ${_libs}
+        libstdc++
+    )
+endif()
+
 add_executable(simple_connect
     simple_connect_main.cpp
 )

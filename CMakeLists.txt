@@ -4,6 +4,10 @@ project(dronelink)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Weffc++ -Werror")
 
+if (IOS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -fembed-bitcode")
+endif()
+
 add_library(dronelink STATIC
     src/connection.cpp
     src/device.cpp
@@ -30,25 +34,27 @@ include_directories(
 
 add_subdirectory(integration_tests)
 
-enable_testing()
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+if(NOT IOS)
+    enable_testing()
+    find_package(GTest REQUIRED)
+    include_directories(${GTEST_INCLUDE_DIRS})
 
-add_executable(unit_tests
-    src/mavlink_channels_test.cpp
-    src/unittests_main.cpp
-)
+    add_executable(unit_tests
+        src/mavlink_channels_test.cpp
+        src/unittests_main.cpp
+    )
 
-target_link_libraries(unit_tests
-    dronelink
-    ${GTEST_BOTH_LIBRARIES}
-    pthread
-    atomic
-)
+    target_link_libraries(unit_tests
+        dronelink
+        ${GTEST_BOTH_LIBRARIES}
+        pthread
+        atomic
+    )
 
-add_test(tests
-    unit_tests
-)
+    add_test(tests
+        unit_tests
+    )
 
-# `make test` does not show output, but `make check` does
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
+    # `make test` does not show output, but `make check` does
+    add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
+endif()
