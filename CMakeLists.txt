@@ -6,6 +6,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Weffc++ -Werro
 
 if (IOS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -fembed-bitcode")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-braces")
 endif()
 
 add_library(dronelink STATIC
@@ -32,9 +33,9 @@ include_directories(
     libs/include
 )
 
-add_subdirectory(integration_tests)
-
 if(NOT IOS)
+    add_subdirectory(integration_tests)
+
     enable_testing()
     find_package(GTest REQUIRED)
     include_directories(${GTEST_INCLUDE_DIRS})
