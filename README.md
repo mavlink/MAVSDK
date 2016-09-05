@@ -46,13 +46,21 @@ cd build
 For releasing:
 ```
 cmake -DCMAKE_BUILD_TYPE=Release ..
-make
 ```
 
 For debugging:
 ```
 cmake -DCMAKE_BUILD_TYPE=Debug ..
+```
+
+```
 make
+```
+
+### Building for iOS
+
+```
+cmake -DCMAKE_TOOLCHAIN_FILE=../CrossCompile-iOS.cmake -DCMAKE_BUILD_TYPE=Release ..
 ```
 
 ### Unit-tests
