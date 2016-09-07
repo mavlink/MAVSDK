@@ -228,6 +228,7 @@ Result DeviceImpl::send_command_with_ack(uint16_t command, const DeviceImpl::Com
     }
 
     if (_command_state != CommandState::RECEIVED) {
+        _command_state = CommandState::NONE;
         return Result::TIMEOUT;
     }
 
