@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <cassert>
 
 namespace dronelink {
 
@@ -106,10 +107,16 @@ Result UdpConnection::send_message(const mavlink_message_t &message)
     inet_pton(AF_INET, _ip.c_str(), &dest_addr.sin_addr.s_addr);
     dest_addr.sin_port = htons(14556);
 
-    int send_len = sendto(_socket_fd, &message, sizeof(message), 0,
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
+
+    // TODO: remove this assert again
+    assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
+
+    int send_len = sendto(_socket_fd, buffer, buffer_len, 0,
                           (const sockaddr *)&dest_addr, sizeof(dest_addr));
 
-    if (send_len != sizeof(message)) {
+    if (send_len != buffer_len) {
         Debug() << "send failure: " << strerror(errno);
         return Result::CONNECTION_ERROR;
     }
@@ -148,7 +155,6 @@ void UdpConnection::receive(UdpConnection *parent)
                 continue;
             }
         }
-
 
         if (parent->_mavlink_receiver->parse_datagram(buffer, recv_len)) {
             parent->receive_message(parent->_mavlink_receiver->get_message());
