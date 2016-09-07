@@ -14,10 +14,11 @@ int main(int argc, char *argv[])
     dronelink::Result ret = dl.add_udp_connection();
     if (ret != dronelink::Result::SUCCESS) {
         std::cout << "failed to add connection: " << result_str(ret) << std::endl;
+        return -1;
     }
 
     // Wait for device to connect via heartbeat.
-    usleep(1000000);
+    usleep(1500000);
 
     std::vector<uint64_t> uuids = dl.device_uuids();
 

@@ -11,9 +11,9 @@ int main(int argc, char *argv[])
 
     dronelink::DroneLink dl;
 
-    dronelink::Result ret = dl.add_udp_connection("127.0.0.1", 14540);
+    dronelink::Result ret = dl.add_udp_connection();
 
-    usleep(1000000);
+    usleep(1500000);
 
     std::vector<uint64_t> uuids = dl.device_uuids();
 
