@@ -12,19 +12,14 @@ Telemetry::~Telemetry()
 {
 }
 
-float Telemetry::absolute_altitude_m() const
+Telemetry::Position Telemetry::position() const
 {
-    return _impl->get_absolute_altitude_m();
+    return _impl->get_position();
 }
 
-float Telemetry::relative_altitude_m() const
+Telemetry::Position Telemetry::home_position() const
 {
-    return _impl->get_relative_altitude_m();
-}
-
-Telemetry::Coordinates Telemetry::coordinates() const
-{
-    return _impl->get_coordinates();
+    return _impl->get_home_position();
 }
 
 bool Telemetry::in_air() const
@@ -42,5 +37,19 @@ Telemetry::EulerAngle Telemetry::attitude_euler_angle() const
     return _impl->get_attitude_euler_angle();
 }
 
+Telemetry::GroundSpeedNED Telemetry::ground_speed_ned() const
+{
+    return _impl->get_ground_speed_ned();
+}
+
+Telemetry::GPSInfo Telemetry::gps_info() const
+{
+    return _impl->get_gps_info();
+}
+
+Telemetry::Battery Telemetry::battery() const
+{
+    return _impl->get_battery();
+}
 
 } // namespace dronelink

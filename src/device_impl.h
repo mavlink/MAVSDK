@@ -38,6 +38,9 @@ private:
     void process_global_position_int(const mavlink_message_t &message);
     void process_extended_sys_state(const mavlink_message_t &message);
     void process_attitude_quaternion(const mavlink_message_t &message);
+    void process_gps_raw_int(const mavlink_message_t &message);
+    void process_home_position(const mavlink_message_t &message);
+    void process_sys_status(const mavlink_message_t &message);
 
     Result send_command(const mavlink_message_t &message);
     Result send_command_with_ack(const mavlink_message_t &message);

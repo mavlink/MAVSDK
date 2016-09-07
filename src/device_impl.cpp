@@ -51,6 +51,18 @@ void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
             process_attitude_quaternion(message);
         break;
 
+        case MAVLINK_MSG_ID_GPS_RAW_INT:
+            process_gps_raw_int(message);
+        break;
+
+        case MAVLINK_MSG_ID_HOME_POSITION:
+            process_home_position(message);
+        break;
+
+        case MAVLINK_MSG_ID_SYS_STATUS:
+            process_sys_status(message);
+        break;
+
         default:
         break;
     }
@@ -96,11 +108,14 @@ void DeviceImpl::process_global_position_int(const mavlink_message_t &message)
 {
     mavlink_global_position_int_t global_position_int;
     mavlink_msg_global_position_int_decode(&message, &global_position_int);
-    _telemetry_impl.set_absolute_altitude_m(float(global_position_int.alt) * 1e-3f);
-    _telemetry_impl.set_relative_altitude_m(float(global_position_int.relative_alt) * 1e-3f);
-    _telemetry_impl.set_coordinates(
-        Telemetry::Coordinates({global_position_int.lat * 1e-7,
-                                global_position_int.lon * 1e-7}));
+    _telemetry_impl.set_position(
+        Telemetry::Position({global_position_int.lat * 1e-7,
+                                global_position_int.lon * 1e-7,
+                                global_position_int.alt * 1e-3f,
+                                global_position_int.relative_alt * 1e-3f}));
+    _telemetry_impl.set_ground_speed_ned({global_position_int.vx * 1e-2f,
+                                          global_position_int.vy * 1e-2f,
+                                          global_position_int.vz * 1e-2f});
 }
 
 void DeviceImpl::process_extended_sys_state(const mavlink_message_t &message)
@@ -128,6 +143,34 @@ void DeviceImpl::process_attitude_quaternion(const mavlink_message_t &message)
     );
 
     _telemetry_impl.set_attitude_quaternion(quaternion);
+}
+
+void DeviceImpl::process_gps_raw_int(const mavlink_message_t &message)
+{
+    mavlink_gps_raw_int_t gps_raw_int;
+    mavlink_msg_gps_raw_int_decode(&message, &gps_raw_int);
+    _telemetry_impl.set_gps_info({gps_raw_int.satellites_visible,
+                                  gps_raw_int.fix_type});
+}
+
+void DeviceImpl::process_home_position(const mavlink_message_t &message)
+{
+    mavlink_home_position_t home_position;
+    mavlink_msg_home_position_decode(&message, &home_position);
+    _telemetry_impl.set_home_position(
+        Telemetry::Position({home_position.latitude * 1e-7,
+                             home_position.longitude * 1e-7,
+                             home_position.altitude * 1e-3f,
+                             0.0f})); // the relative altitude of home is 0 by definition.
+}
+
+void DeviceImpl::process_sys_status(const mavlink_message_t &message)
+{
+    mavlink_sys_status_t sys_status;
+    mavlink_msg_sys_status_decode(&message, &sys_status);
+    _telemetry_impl.set_battery(
+        Telemetry::Battery({sys_status.voltage_battery * 1e-3f,
+                            sys_status.battery_remaining * 1e-2f}));
 }
 
 void DeviceImpl::try_to_initialize_autopilot_capabilites()
