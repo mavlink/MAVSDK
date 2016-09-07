@@ -4,6 +4,8 @@ project(dronelink)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Weffc++ -Werror")
 
+set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
+
 add_library(dronelink STATIC
     src/connection.cpp
     src/device.cpp
