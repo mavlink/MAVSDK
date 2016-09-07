@@ -18,30 +18,15 @@ const Telemetry &Device::telemetry() const
     return _impl->get_telemetry();
 }
 
+const Control &Device::control() const
+{
+    return _impl->get_control();
+}
+
 Device::~Device()
 {
     // The implementation instance needs to be deleted separately.
     _impl = nullptr;
-}
-
-Result Device::arm()
-{
-    return _impl->arm();
-}
-
-Result Device::disarm()
-{
-    return _impl->disarm();
-}
-
-Result Device::takeoff()
-{
-    return _impl->takeoff();
-}
-
-Result Device::land()
-{
-    return _impl->land();
 }
 
 } // namespace dronelink

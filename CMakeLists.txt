@@ -14,6 +14,8 @@ add_library(dronelink STATIC
     src/info_impl.cpp
     src/telemetry.cpp
     src/telemetry_impl.cpp
+    src/control.cpp
+    src/control_impl.cpp
     src/dronelink.cpp
     src/dronelink_impl.cpp
     src/error_handling.cpp

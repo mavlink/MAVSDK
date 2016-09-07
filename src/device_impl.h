@@ -6,6 +6,8 @@
 #include "info_impl.h"
 #include "telemetry.h"
 #include "telemetry_impl.h"
+#include "control.h"
+#include "control_impl.h"
 
 #include <atomic>
 
@@ -20,13 +22,16 @@ public:
     ~DeviceImpl();
     void process_mavlink_message(const mavlink_message_t &message);
 
-    Result arm();
-    Result disarm();
-    Result takeoff();
-    Result land();
-
     const Info &get_info() const { return _info; }
     const Telemetry &get_telemetry() const { return _telemetry; }
+    const Control &get_control() const { return _control; }
+
+    struct CommandParams {
+        float v[7];
+    };
+
+    Result send_command(uint16_t command, const DeviceImpl::CommandParams &params);
+    Result send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params);
 
     // Non-copyable
     DeviceImpl(const DeviceImpl &) = delete;
@@ -42,8 +47,6 @@ private:
     void process_home_position(const mavlink_message_t &message);
     void process_sys_status(const mavlink_message_t &message);
 
-    Result send_command(const mavlink_message_t &message);
-    Result send_command_with_ack(const mavlink_message_t &message);
     void try_to_initialize_autopilot_capabilites();
 
     uint8_t _system_id;
@@ -54,6 +57,9 @@ private:
 
     Telemetry _telemetry;
     TelemetryImpl _telemetry_impl;
+
+    Control _control;
+    ControlImpl _control_impl;
 
     DroneLinkImpl *_parent;
 

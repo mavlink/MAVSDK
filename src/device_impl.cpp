@@ -12,6 +12,8 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _info_impl(),
     _telemetry(&_telemetry_impl),
     _telemetry_impl(),
+    _control(&_control_impl),
+    _control_impl(this),
     _parent(parent),
     _command_result(MAV_RESULT_FAILED),
     _command_state(CommandState::NONE)
@@ -176,74 +178,25 @@ void DeviceImpl::process_sys_status(const mavlink_message_t &message)
 void DeviceImpl::try_to_initialize_autopilot_capabilites()
 {
     if (!_info.is_complete()) {
-        mavlink_message_t message = {};
-        mavlink_msg_command_long_pack(0, MAV_COMP_ID_SYSTEM_CONTROL,
-                                     &message,
-                                     _system_id, _component_id,
-                                     MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-                                     0,
-                                     1.0f, NAN, NAN, NAN, NAN, NAN, NAN);
-        send_command(message);
+        send_command(MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES, {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
     }
 }
 
-Result DeviceImpl::arm()
-{
-    mavlink_message_t message = {};
-    mavlink_msg_command_long_pack(0, MAV_COMP_ID_SYSTEM_CONTROL,
-                                  &message,
-                                  _system_id, _component_id,
-                                  MAV_CMD_COMPONENT_ARM_DISARM,
-                                  0,
-                                  1.0f, NAN, NAN, NAN, NAN, NAN, NAN);
-
-    return send_command_with_ack(message);
-}
-
-Result DeviceImpl::disarm()
-{
-    mavlink_message_t message = {};
-    mavlink_msg_command_long_pack(0, MAV_COMP_ID_SYSTEM_CONTROL,
-                                  &message,
-                                  _system_id, _component_id,
-                                  MAV_CMD_COMPONENT_ARM_DISARM,
-                                  0,
-                                  0.0f, NAN, NAN, NAN, NAN, NAN, NAN);
-
-    return send_command_with_ack(message);
-}
-
-Result DeviceImpl::takeoff()
-{
-    mavlink_message_t message = {};
-    mavlink_msg_command_long_pack(0, MAV_COMP_ID_SYSTEM_CONTROL,
-                                  &message,
-                                  _system_id, _component_id,
-                                  MAV_CMD_NAV_TAKEOFF,
-                                  0,
-                                  NAN, NAN, NAN, NAN, NAN, NAN, NAN);
-
-    return send_command_with_ack(message);
-}
-
-Result DeviceImpl::land()
-{
-    mavlink_message_t message = {};
-    mavlink_msg_command_long_pack(0, MAV_COMP_ID_SYSTEM_CONTROL,
-                                  &message,
-                                  _system_id, _component_id,
-                                  MAV_CMD_NAV_LAND,
-                                  0,
-                                  NAN, NAN, NAN, NAN, NAN, NAN, NAN);
-
-    return send_command_with_ack(message);
-}
-
-Result DeviceImpl::send_command(const mavlink_message_t &message)
+Result DeviceImpl::send_command(uint16_t command, const DeviceImpl::CommandParams &params)
 {
     if (_system_id == 0 && _component_id == 0) {
         return Result::DEVICE_NOT_CONNECTED;
     }
+
+    mavlink_message_t message = {};
+
+    mavlink_msg_command_long_pack(0, MAV_COMP_ID_SYSTEM_CONTROL,
+                                  &message,
+                                  _system_id, _component_id,
+                                  command,
+                                  0,
+                                  params.v[0], params.v[1], params.v[2], params.v[3],
+                                  params.v[4], params.v[5], params.v[6]);
 
     Result ret = _parent->send_message(message);
     if (ret != Result::SUCCESS) {
@@ -253,16 +206,15 @@ Result DeviceImpl::send_command(const mavlink_message_t &message)
     return Result::SUCCESS;
 }
 
-Result DeviceImpl::send_command_with_ack(const mavlink_message_t &message)
+Result DeviceImpl::send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params)
 {
-
     if (_command_state == CommandState::WAITING) {
         return Result::DEVICE_BUSY;
     }
 
     _command_state = CommandState::WAITING;
 
-    Result ret = _parent->send_message(message);
+    Result ret = send_command(command, params);
     if (ret != Result::SUCCESS) {
         return ret;
     }

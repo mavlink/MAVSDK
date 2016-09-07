@@ -2,7 +2,7 @@
 
 #include "info.h"
 #include "telemetry.h"
-#include "error_handling.h"
+#include "control.h"
 
 namespace dronelink {
 
@@ -14,14 +14,9 @@ public:
     explicit Device(DeviceImpl *impl);
     ~Device();
 
-    Result arm();
-    Result disarm();
-    Result takeoff();
-    Result land();
-
     const Info &info() const;
     const Telemetry &telemetry() const;
-
+    const Control &control() const;
 
 private:
     // Underlying implementation, set at instantiation

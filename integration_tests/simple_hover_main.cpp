@@ -35,21 +35,21 @@ int main(int argc, char *argv[])
 
     uint64_t uuid = uuids.at(0);
 
-    ret = dl.device(uuid).arm();
+    ret = dl.device(uuid).control().arm();
     if (ret != dronelink::Result::SUCCESS) {
         std::cout << "failed to arm: " << result_str(ret) << std::endl;
     }
 
     usleep(500000);
 
-    ret = dl.device(uuid).takeoff();
+    ret = dl.device(uuid).control().takeoff();
     if (ret != dronelink::Result::SUCCESS) {
         std::cout << "failed to takeoff: " << result_str(ret) << std::endl;
     }
 
     usleep(5000000);
 
-    ret = dl.device(uuid).land();
+    ret = dl.device(uuid).control().land();
     if (ret != dronelink::Result::SUCCESS) {
         std::cout << "failed to land: " << result_str(ret) << std::endl;
     }
