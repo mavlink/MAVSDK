@@ -4,6 +4,7 @@
 namespace dronelink {
 
 Info::Info(InfoImpl *impl) :
+    PluginBase(),
     _impl(impl)
 {
 }
@@ -21,11 +22,5 @@ unsigned Info::get_version() const
 {
     return _impl->get_version();
 }
-
-uint64_t Info::get_uuid() const
-{
-    return _impl->get_uuid();
-}
-
 
 } // namespace dronelink

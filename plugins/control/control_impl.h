@@ -1,27 +1,25 @@
 #pragma once
 
+#include "plugin_impl_base.h"
 #include "error_handling.h"
 
 namespace dronelink {
 
-class DeviceImpl;
-
-class ControlImpl
+class ControlImpl : public PluginImplBase
 {
 public:
-    explicit ControlImpl(DeviceImpl *parent);
+    ControlImpl();
     ~ControlImpl();
+
+    void init() override;
+    void deinit() override;
 
     Result arm() const;
     Result disarm() const;
     Result takeoff() const;
     Result land() const;
 
-    // Non-copyable
-    ControlImpl(const ControlImpl &) = delete;
-    const ControlImpl &operator=(const ControlImpl &) = delete;
 private:
-    DeviceImpl *_parent;
 };
 
 } // namespace dronelink

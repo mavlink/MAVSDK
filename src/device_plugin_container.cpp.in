@@ -1,0 +1,47 @@
+#include "device_plugin_container.h"
+#include "plugin_impl_base.h"
+#include "device_impl.h"
+
+${IMPL_INCLUDES_STRING}
+
+namespace dronelink {
+
+DevicePluginContainer::DevicePluginContainer(DeviceImpl *impl) :
+    _impl(impl),
+${PLUGIN_CTOR_STRING},
+    _plugin_impl_list()
+{
+${PLUGIN_LIST_APPEND_STRING}
+
+    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); ++it) {
+        (**it).set_parent(_impl);
+    }
+
+    init_plugins();
+}
+
+DevicePluginContainer::~DevicePluginContainer()
+{
+    deinit_plugins();
+
+${PLUGIN_DTOR_STRING}
+
+    _impl = nullptr;
+}
+
+void DevicePluginContainer::init_plugins()
+{
+    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); ++it) {
+        (**it).init();
+    }
+}
+
+void DevicePluginContainer::deinit_plugins()
+{
+    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); ++it) {
+        (**it).deinit();
+    }
+}
+
+
+} // namespace dronelink

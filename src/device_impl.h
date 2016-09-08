@@ -2,13 +2,6 @@
 
 #include "error_handling.h"
 #include "mavlink_include.h"
-#include "info.h"
-#include "info_impl.h"
-#include "telemetry.h"
-#include "telemetry_impl.h"
-#include "control.h"
-#include "control_impl.h"
-
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -25,10 +18,6 @@ public:
     ~DeviceImpl();
     void process_mavlink_message(const mavlink_message_t &message);
 
-    const Info &get_info() const { return _info; }
-    const Telemetry &get_telemetry() const { return _telemetry; }
-    const Control &get_control() const { return _control; }
-
     struct CommandParams {
         float v[7];
     };
@@ -44,6 +33,10 @@ public:
     Result send_command(uint16_t command, const DeviceImpl::CommandParams &params);
     Result send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params);
 
+    void request_autopilot_version();
+
+    uint64_t get_uuid() const;
+
     // Non-copyable
     DeviceImpl(const DeviceImpl &) = delete;
     const DeviceImpl &operator=(const DeviceImpl &) = delete;
@@ -51,8 +44,8 @@ public:
 private:
     void process_heartbeat(const mavlink_message_t &message);
     void process_command_ack(const mavlink_message_t &message);
+    void process_autopilot_version(const mavlink_message_t &message);
 
-    void try_to_initialize_autopilot_capabilites();
 
     struct HandlerTableEntry {
         uint8_t msg_id;
@@ -64,15 +57,7 @@ private:
 
     uint8_t _system_id;
     uint8_t _component_id;
-
-    Info _info;
-    InfoImpl _info_impl;
-
-    Telemetry _telemetry;
-    TelemetryImpl _telemetry_impl;
-
-    Control _control;
-    ControlImpl _control_impl;
+    uint64_t _uuid;
 
     DroneLinkImpl *_parent;
 

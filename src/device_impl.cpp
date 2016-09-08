@@ -1,6 +1,7 @@
 #include "global_include.h"
 #include "device_impl.h"
 #include "dronelink_impl.h"
+#include <functional>
 #include <unistd.h>
 
 namespace dronelink {
@@ -9,24 +10,26 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _handler_table(),
     _system_id(0),
     _component_id(0),
-    _info(&_info_impl),
-    _info_impl(this),
-    _telemetry(&_telemetry_impl),
-    _telemetry_impl(this),
-    _control(&_control_impl),
-    _control_impl(this),
+    _uuid(0),
     _parent(parent),
     _command_result(MAV_RESULT_FAILED),
     _command_state(CommandState::NONE)
 {
-    _telemetry_impl.init();
-    _info_impl.init();
+    using namespace std::placeholders; // for `_1`
+
+    register_mavlink_message_handler(MAVLINK_MSG_ID_HEARTBEAT,
+        std::bind(&DeviceImpl::process_heartbeat, this, _1), this);
+
+    register_mavlink_message_handler(MAVLINK_MSG_ID_COMMAND_ACK,
+        std::bind(&DeviceImpl::process_command_ack, this, _1), this);
+
+    register_mavlink_message_handler(MAVLINK_MSG_ID_AUTOPILOT_VERSION,
+        std::bind(&DeviceImpl::process_autopilot_version, this, _1), this);
 }
 
 DeviceImpl::~DeviceImpl()
 {
-    _telemetry_impl.deinit();
-    _info_impl.deinit();
+    unregister_all_mavlink_message_handlers(this);
 }
 
 void DeviceImpl::register_mavlink_message_handler(uint8_t msg_id,
@@ -36,6 +39,7 @@ void DeviceImpl::register_mavlink_message_handler(uint8_t msg_id,
     HandlerTableEntry entry = {msg_id, callback, cookie};
     _handler_table.push_back(entry);
 }
+
 void DeviceImpl::unregister_all_mavlink_message_handlers(const void *cookie)
 {
     for (auto it = _handler_table.begin(); it != _handler_table.end(); /* no ++it */) {
@@ -55,20 +59,6 @@ void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
             it->callback(message);
         }
     }
-
-    // TODO: also register these handlers
-    switch(message.msgid) {
-        case MAVLINK_MSG_ID_HEARTBEAT:
-            process_heartbeat(message);
-        break;
-
-        case MAVLINK_MSG_ID_COMMAND_ACK:
-            process_command_ack(message);
-        break;
-
-        default:
-        break;
-    }
 }
 
 void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
@@ -80,8 +70,9 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
         _system_id = message.sysid;
         _component_id = message.compid;
     }
-
-    try_to_initialize_autopilot_capabilites();
+    if (_uuid == 0) {
+        request_autopilot_version();
+    }
 }
 
 void DeviceImpl::process_command_ack(const mavlink_message_t &message)
@@ -96,12 +87,23 @@ void DeviceImpl::process_command_ack(const mavlink_message_t &message)
     }
 }
 
-
-void DeviceImpl::try_to_initialize_autopilot_capabilites()
+void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
 {
-    if (!_info.is_complete()) {
-        send_command(MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES, {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
-    }
+    mavlink_autopilot_version_t autopilot_version;
+    mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
+
+    _uuid = autopilot_version.uid;
+}
+
+void DeviceImpl::request_autopilot_version()
+{
+    send_command(MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
+                 {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
+}
+
+uint64_t DeviceImpl::get_uuid() const
+{
+    return _uuid;
 }
 
 Result DeviceImpl::send_command(uint16_t command, const DeviceImpl::CommandParams &params)

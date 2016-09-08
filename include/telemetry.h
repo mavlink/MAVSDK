@@ -1,10 +1,12 @@
 #pragma once
 
+#include "plugin_base.h"
+
 namespace dronelink {
 
 class TelemetryImpl;
 
-class Telemetry
+class Telemetry : public PluginBase
 {
 public:
     explicit Telemetry(TelemetryImpl *impl);
@@ -57,13 +59,13 @@ public:
 
     Battery battery() const;
 
-private:
-    // Underlying implementation, set at instantiation
-    TelemetryImpl *_impl;
-
     // Non-copyable
     Telemetry(const Telemetry &) = delete;
     const Telemetry &operator=(const Telemetry &) = delete;
+
+private:
+    // Underlying implementation, set at instantiation
+    TelemetryImpl *_impl;
 };
 
 } // namespace dronelink

@@ -7,8 +7,7 @@
 
 namespace dronelink {
 
-TelemetryImpl::TelemetryImpl(DeviceImpl *parent) :
-    _parent(parent),
+TelemetryImpl::TelemetryImpl() :
     _position_mutex(),
     _position({NAN, NAN, NAN, NAN}),
     _home_position_mutex(),

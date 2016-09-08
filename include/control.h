@@ -1,15 +1,16 @@
 #pragma once
 
+#include "plugin_base.h"
 #include "error_handling.h"
 
 namespace dronelink {
 
 class ControlImpl;
 
-class Control
+class Control : public PluginBase
 {
 public:
-    Control(ControlImpl *impl);
+    explicit Control(ControlImpl *impl);
     ~Control();
 
     Result arm() const;
@@ -17,13 +18,13 @@ public:
     Result takeoff() const;
     Result land() const;
 
-private:
-    // Underlying implementation, set at instantiation
-    ControlImpl *_impl;
-
     // Non-copyable
     Control(const Control &) = delete;
     const Control &operator=(const Control &) = delete;
+
+private:
+    // Underlying implementation, set at instantiation
+    ControlImpl *_impl;
 };
 
 } // namespace dronelink

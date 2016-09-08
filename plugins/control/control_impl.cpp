@@ -5,13 +5,21 @@
 
 namespace dronelink {
 
-ControlImpl::ControlImpl(DeviceImpl *parent) :
-    _parent(parent)
+ControlImpl::ControlImpl()
+{
+}
+
+ControlImpl::~ControlImpl()
 {
 
 }
 
-ControlImpl::~ControlImpl()
+void ControlImpl::init()
+{
+
+}
+
+void ControlImpl::deinit()
 {
 
 }

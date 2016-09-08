@@ -1,0 +1,35 @@
+#pragma once
+
+#include <vector>
+${INCLUDES_STRING}
+
+namespace dronelink {
+
+class DeviceImpl;
+class PluginImplBase;
+${FORWARD_DECLARATION_STRING}
+
+class DevicePluginContainer
+{
+public:
+    explicit DevicePluginContainer(DeviceImpl *impl);
+    virtual ~DevicePluginContainer();
+
+${PLUGIN_GETTER_STRING}
+
+    // Non-copyable
+    DevicePluginContainer(const DevicePluginContainer &) = delete;
+    const DevicePluginContainer &operator=(const DevicePluginContainer &) = delete;
+
+protected:
+    virtual void init_plugins();
+    virtual void deinit_plugins();
+
+    DeviceImpl *_impl;
+
+${PLUGIN_MEMBER_STRING}
+
+    std::vector<PluginImplBase *> _plugin_impl_list;
+};
+
+} // namespace dronelink

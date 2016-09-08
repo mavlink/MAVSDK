@@ -1,6 +1,7 @@
 #pragma once
 
 #include "telemetry.h"
+#include "plugin_impl_base.h"
 #include "mavlink_include.h"
 #include <atomic>
 #include <mutex>
@@ -9,13 +10,13 @@ namespace dronelink {
 
 class DeviceImpl;
 
-class TelemetryImpl {
+class TelemetryImpl : public PluginImplBase {
 public:
-    explicit TelemetryImpl(DeviceImpl *parent);
+    TelemetryImpl();
     ~TelemetryImpl();
 
-    void init();
-    void deinit();
+    void init() override;
+    void deinit() override;
 
     Telemetry::Position get_position() const;
     Telemetry::Position get_home_position() const;
@@ -25,10 +26,6 @@ public:
     Telemetry::GroundSpeedNED get_ground_speed_ned() const;
     Telemetry::GPSInfo get_gps_info() const;
     Telemetry::Battery get_battery() const;
-
-    // Non-copyable
-    TelemetryImpl(const TelemetryImpl &) = delete;
-    const TelemetryImpl &operator=(const TelemetryImpl &) = delete;
 
 private:
     void set_position(Telemetry::Position position);
@@ -46,7 +43,6 @@ private:
     void process_extended_sys_state(const mavlink_message_t &message);
     void process_sys_status(const mavlink_message_t &message);
 
-    DeviceImpl *_parent;
     // Make all fields thread-safe using mutexs
     // The mutexs are mutable so that the lock can get aqcuired in
     // methods marked const.
