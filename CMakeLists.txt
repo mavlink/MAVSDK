@@ -43,6 +43,10 @@ include_directories(
 if(NOT IOS)
     add_subdirectory(integration_tests)
 
+    if (DEFINED EXTERNAL_DIR)
+        add_subdirectory(${EXTERNAL_DIR}/integration_tests)
+    endif()
+
     enable_testing()
     find_package(GTest REQUIRED)
     include_directories(${GTEST_INCLUDE_DIRS})

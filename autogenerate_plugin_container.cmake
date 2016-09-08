@@ -20,13 +20,13 @@
 # example_impl.h and example_impl.cpp contain the implementation of the
 # actual plugin.
 
-if (DEFINED EXTERNAL_PLUGIN_DIR)
-    message("External plugin folder: ${EXTERNAL_PLUGIN_DIR}")
+if (DEFINED EXTERNAL_DIR)
+    message("External plugin folder: ${EXTERNAL_DIR}")
 endif()
 
 # This defines the plugins directory.
 file(GLOB plugins plugins/*)
-file(GLOB external_plugins ${EXTERNAL_PLUGIN_DIR}/*)
+file(GLOB external_plugins ${EXTERNAL_DIR}/plugins/*)
 
 # Look for plugins in plugin directory
 foreach(plugin ${plugins})
