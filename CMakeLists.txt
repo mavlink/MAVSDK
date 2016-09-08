@@ -71,14 +71,10 @@ foreach(class_name ${plugin_class_names})
     set(PLUGIN_MEMBER_STRING
         "${PLUGIN_MEMBER_STRING}    ${class_name} ${member_name};\n")
 
-    if (NOT ${first})
-        set(PLUGIN_CTOR_STRING "${PLUGIN_CTOR_STRING},\n")
-    endif()
-
     set(PLUGIN_CTOR_STRING
         "${PLUGIN_CTOR_STRING}    ${impl_member_name}(new ${impl_class_name}()),\n")
     set(PLUGIN_CTOR_STRING
-        "${PLUGIN_CTOR_STRING}    ${member_name}(${impl_member_name})")
+        "${PLUGIN_CTOR_STRING}    ${member_name}(${impl_member_name}),\n")
 
     if (NOT ${first})
         set(PLUGIN_DTOR_STRING "${PLUGIN_DTOR_STRING}\n")

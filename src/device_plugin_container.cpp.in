@@ -8,7 +8,7 @@ namespace dronelink {
 
 DevicePluginContainer::DevicePluginContainer(DeviceImpl *impl) :
     _impl(impl),
-${PLUGIN_CTOR_STRING},
+${PLUGIN_CTOR_STRING}
     _plugin_impl_list()
 {
 ${PLUGIN_LIST_APPEND_STRING}
