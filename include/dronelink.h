@@ -2,7 +2,6 @@
 
 #include "error_handling.h"
 #include "device.h"
-#include "info.h"
 
 #include <string>
 #include <vector>
