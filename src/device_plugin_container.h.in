@@ -15,7 +15,7 @@ public:
     explicit DevicePluginContainer(DeviceImpl *impl);
     virtual ~DevicePluginContainer();
 
-${PLUGIN_GETTER_STRING}
+${PLUGIN_GET_STRING}
 
     // Non-copyable
     DevicePluginContainer(const DevicePluginContainer &) = delete;

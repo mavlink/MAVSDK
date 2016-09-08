@@ -61,7 +61,7 @@ set(PLUGIN_DTOR_STRING "")
 set(PLUGIN_MEMBER_STRING "")
 
 # Contains the getter methods which allow to access a plugin with device().example().
-set(PLUGIN_GETTER_STRING "")
+set(PLUGIN_GET_STRING "")
 
 # Creates a list of the plugin implementations to call init()/deinit() on them.
 set(PLUGIN_LIST_APPEND_STRING "")
@@ -71,7 +71,7 @@ foreach(class_name ${plugin_class_names})
 
     string(TOLOWER ${class_name} class_name_lowercase)
 
-    set(getter_name ${class_name_lowercase})
+    set(get_name ${class_name_lowercase})
     set(member_name "_${class_name_lowercase}")
     set(impl_class_name "${class_name}Impl")
     set(impl_member_name "_${class_name_lowercase}_impl")
@@ -79,8 +79,8 @@ foreach(class_name ${plugin_class_names})
     set(FORWARD_DECLARATION_STRING
         "${FORWARD_DECLARATION_STRING}class ${impl_class_name};\n")
 
-    set(PLUGIN_GETTER_STRING
-        "${PLUGIN_GETTER_STRING}    const ${class_name} &${getter_name}() { return ${member_name}; }\n")
+    set(PLUGIN_GET_STRING
+        "${PLUGIN_GET_STRING}    const ${class_name} &${get_name}() { return ${member_name}; }\n")
 
     set(PLUGIN_MEMBER_STRING
         "${PLUGIN_MEMBER_STRING}    ${impl_class_name} *${impl_member_name};\n")
