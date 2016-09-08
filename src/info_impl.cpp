@@ -1,8 +1,11 @@
 #include "info_impl.h"
+#include "device_impl.h"
+#include <functional>
 
 namespace dronelink {
 
-InfoImpl::InfoImpl() :
+InfoImpl::InfoImpl(DeviceImpl *parent) :
+    _parent(parent),
     _version(0),
     _uuid(0)
 {
@@ -10,6 +13,30 @@ InfoImpl::InfoImpl() :
 
 InfoImpl::~InfoImpl()
 {
+}
+
+void InfoImpl::init()
+{
+    using namespace std::placeholders; // for `_1`
+
+    _parent->register_mavlink_message_handler(MAVLINK_MSG_ID_AUTOPILOT_VERSION,
+        std::bind(&InfoImpl::process_autopilot_version, this, _1), (void *)this);
+}
+
+void InfoImpl::deinit()
+{
+    _parent->unregister_all_mavlink_message_handlers(this);
+}
+
+void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
+{
+    mavlink_autopilot_version_t autopilot_version;
+
+    mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
+
+    // TODO: remove hardcoded version
+    set_version(1);
+    set_uuid(autopilot_version.uid);
 }
 
 bool InfoImpl::is_complete() const

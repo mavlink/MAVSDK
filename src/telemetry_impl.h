@@ -1,37 +1,52 @@
+#pragma once
+
 #include "telemetry.h"
+#include "mavlink_include.h"
 #include <atomic>
 #include <mutex>
 
 namespace dronelink {
 
+class DeviceImpl;
+
 class TelemetryImpl {
 public:
-    TelemetryImpl();
+    explicit TelemetryImpl(DeviceImpl *parent);
     ~TelemetryImpl();
 
+    void init();
+    void deinit();
+
     Telemetry::Position get_position() const;
-    void set_position(Telemetry::Position position);
-
     Telemetry::Position get_home_position() const;
-    void set_home_position(Telemetry::Position home_position);
-
     bool in_air() const;
-    void set_in_air(bool in_air);
-
     Telemetry::EulerAngle get_attitude_euler_angle() const;
     Telemetry::Quaternion get_attitude_quaternion() const;
-    void set_attitude_quaternion(Telemetry::Quaternion quaternion);
-
     Telemetry::GroundSpeedNED get_ground_speed_ned() const;
-    void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
-
     Telemetry::GPSInfo get_gps_info() const;
-    void set_gps_info(Telemetry::GPSInfo gps_info);
-
     Telemetry::Battery get_battery() const;
-    void set_battery(Telemetry::Battery battery);
+
+    // Non-copyable
+    TelemetryImpl(const TelemetryImpl &) = delete;
+    const TelemetryImpl &operator=(const TelemetryImpl &) = delete;
 
 private:
+    void set_position(Telemetry::Position position);
+    void set_home_position(Telemetry::Position home_position);
+    void set_in_air(bool in_air);
+    void set_attitude_quaternion(Telemetry::Quaternion quaternion);
+    void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
+    void set_gps_info(Telemetry::GPSInfo gps_info);
+    void set_battery(Telemetry::Battery battery);
+
+    void process_global_position_int(const mavlink_message_t &message);
+    void process_home_position(const mavlink_message_t &message);
+    void process_attitude_quaternion(const mavlink_message_t &message);
+    void process_gps_raw_int(const mavlink_message_t &message);
+    void process_extended_sys_state(const mavlink_message_t &message);
+    void process_sys_status(const mavlink_message_t &message);
+
+    DeviceImpl *_parent;
     // Make all fields thread-safe using mutexs
     // The mutexs are mutable so that the lock can get aqcuired in
     // methods marked const.

@@ -30,6 +30,7 @@ add_library(dronelink STATIC
 include_directories(
     include
     libs/include
+    src
 )
 
 if(NOT IOS)

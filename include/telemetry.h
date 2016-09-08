@@ -2,13 +2,12 @@
 
 namespace dronelink {
 
-
 class TelemetryImpl;
 
 class Telemetry
 {
 public:
-    Telemetry(TelemetryImpl *impl);
+    explicit Telemetry(TelemetryImpl *impl);
     ~Telemetry();
 
     struct Position {

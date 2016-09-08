@@ -9,7 +9,10 @@
 #include "control.h"
 #include "control_impl.h"
 
+#include <cstdint>
+#include <functional>
 #include <atomic>
+#include <vector>
 
 namespace dronelink {
 
@@ -30,24 +33,34 @@ public:
         float v[7];
     };
 
+    typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
+
+    void register_mavlink_message_handler(uint8_t msg_id, mavlink_message_handler_t callback,
+                                          const void *cookie);
+
+
+    void unregister_all_mavlink_message_handlers(const void *cookie);
+
     Result send_command(uint16_t command, const DeviceImpl::CommandParams &params);
     Result send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params);
 
     // Non-copyable
     DeviceImpl(const DeviceImpl &) = delete;
     const DeviceImpl &operator=(const DeviceImpl &) = delete;
+
 private:
     void process_heartbeat(const mavlink_message_t &message);
-    void process_autopilot_version(const mavlink_message_t &message);
     void process_command_ack(const mavlink_message_t &message);
-    void process_global_position_int(const mavlink_message_t &message);
-    void process_extended_sys_state(const mavlink_message_t &message);
-    void process_attitude_quaternion(const mavlink_message_t &message);
-    void process_gps_raw_int(const mavlink_message_t &message);
-    void process_home_position(const mavlink_message_t &message);
-    void process_sys_status(const mavlink_message_t &message);
 
     void try_to_initialize_autopilot_capabilites();
+
+    struct HandlerTableEntry {
+        uint8_t msg_id;
+        mavlink_message_handler_t callback;
+        const void *cookie; // This is the identification to unregister.
+    };
+
+    std::vector<HandlerTableEntry> _handler_table;
 
     uint8_t _system_id;
     uint8_t _component_id;
