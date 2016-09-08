@@ -13,6 +13,7 @@ include_directories(
     libs/include
     src
     ${plugins}
+    ${external_plugins}
 )
 
 add_library(dronelink STATIC

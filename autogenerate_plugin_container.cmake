@@ -14,18 +14,38 @@
 # ├── example_impl.cpp
 # └── example_impl.h
 #
+# An example plugin can be found in example_plugin/
+#
 # example.h and example.cpp define the publicly visible interface and
 # example_impl.h and example_impl.cpp contain the implementation of the
 # actual plugin.
 
+if (DEFINED EXTERNAL_PLUGIN_DIR)
+    message("External plugin folder: ${EXTERNAL_PLUGIN_DIR}")
+endif()
 
 # This defines the plugins directory.
 file(GLOB plugins plugins/*)
+file(GLOB external_plugins ${EXTERNAL_PLUGIN_DIR}/*)
 
 # Look for plugins in plugin directory
 foreach(plugin ${plugins})
 	if(IS_DIRECTORY ${plugin})
         message("Found plugin ${plugin}")
+		add_subdirectory(${plugin})
+        foreach(source_file ${source_files})
+            list(APPEND plugin_source_files "${plugin}/${source_file}")
+        endforeach()
+        list(APPEND plugin_class_names "${class_name}")
+        list(APPEND plugin_header_files "${header_files}")
+        list(APPEND plugin_impl_header_files "${impl_header_files}")
+	endif()
+endforeach()
+
+# Look for plugins in external plugin directory
+foreach(plugin ${external_plugins})
+	if(IS_DIRECTORY ${plugin})
+        message("Found external plugin ${plugin}")
 		add_subdirectory(${plugin})
         foreach(source_file ${source_files})
             list(APPEND plugin_source_files "${plugin}/${source_file}")
