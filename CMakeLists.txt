@@ -27,7 +27,6 @@ add_library(dronelink STATIC
     src/serial_connection.cpp
     src/tcp_connection.cpp
     src/udp_connection.cpp
-    src/math_conversions.cpp
     src/plugin_impl_base.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/src/device_plugin_container.cpp
     ${plugin_source_files}

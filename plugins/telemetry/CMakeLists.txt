@@ -6,6 +6,7 @@ set(class_name
 set(source_files
     telemetry.cpp
     telemetry_impl.cpp
+    math_conversions.cpp
     PARENT_SCOPE
 )
 
