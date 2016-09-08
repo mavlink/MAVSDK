@@ -57,6 +57,41 @@ cmake -DCMAKE_BUILD_TYPE=Debug ..
 make
 ```
 
+### Build with external directory for plugins/integration_tests
+
+The external directory needs to contain the folders `integration_tests` and `plugins`,
+and should be organized like the `external_example`.
+
+```
+external_example
+├── integration_tests
+│   ├── CMakeLists.txt
+│   └── hello_world_main.cpp
+└── plugins
+    └── example
+        ├── CMakeLists.txt
+        ├── example.cpp
+        ├── example.h
+        ├── example_impl.cpp
+        └── example_impl.h
+```
+
+To include the external folder in the build, add the folder name to the cmake command
+(the path is relative to the root repository path):
+
+```
+cmake -DCMAKE_BUILD_TYPE=Debug -DEXTERNAL_DIR:STRING=external_example ..
+```
+
+```
+make
+```
+
+To run the external hello world integration test, do:
+```
+./external_example/integration_tests/hello_world
+```
+
 ### Building for iOS
 
 ```
