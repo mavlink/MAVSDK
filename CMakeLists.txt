@@ -44,7 +44,7 @@ if(NOT IOS)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR)
-        add_subdirectory(${EXTERNAL_DIR}/integration_tests)
+        add_subdirectory(${EXTERNAL_DIR}/integration_tests ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
     endif()
 
     enable_testing()
