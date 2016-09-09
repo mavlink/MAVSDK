@@ -2,24 +2,33 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(dronelink)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Weffc++ -Werror")
-
+# Add DEBUG define for Debug target
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
+# We want C++11 and lots of warnings.
+add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
+
+# Clang needs this warning disabled.
 if (APPLE OR IOS)
     add_definitions("-Wno-missing-braces")
 endif()
 
+# Autogenerate the device_plugin_container.{h|cpp} to include all plugins.
 include(autogenerate_plugin_container.cmake)
 
+# Header files in include denote public facing header files, the rest is in
+# src or the respective plugin directories.
 include_directories(
     include
     libs/include
     src
     ${plugins}
     ${external_plugins}
+    ${CMAKE_CURRENT_BINARY_DIR}/include
+    ${CMAKE_CURRENT_BINARY_DIR}/src
 )
 
+# We build one static library.
 add_library(dronelink STATIC
     src/connection.cpp
     src/device.cpp
@@ -37,18 +46,11 @@ add_library(dronelink STATIC
     ${plugin_source_files}
 )
 
-include_directories(
-    include
-    libs/include
-    src
-    ${CMAKE_CURRENT_BINARY_DIR}/include
-    ${CMAKE_CURRENT_BINARY_DIR}/src
-)
-
+# We support install in order to use the header and static library files in
+# other applications.
 install(TARGETS dronelink
     DESTINATION "lib"
 )
-
 install(FILES
     include/dronelink.h
     include/error_handling.h
@@ -59,11 +61,13 @@ install(FILES
     DESTINATION "include/dronelink"
 )
 
+# We currently don't worry about the unit tests and integration tests on iOS.
 if(NOT IOS)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR)
-        add_subdirectory(${EXTERNAL_DIR}/integration_tests ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
+        add_subdirectory(${EXTERNAL_DIR}/integration_tests
+            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
     endif()
 
     enable_testing()
