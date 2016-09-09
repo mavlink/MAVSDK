@@ -6,6 +6,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Weffc++ -Werro
 
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
+if (APPLE OR IOS)
+    add_definitions("-Wno-missing-braces")
+endif()
+
 include(autogenerate_plugin_container.cmake)
 
 include_directories(
