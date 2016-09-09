@@ -19,13 +19,6 @@ DroneLink::~DroneLink()
     _impl = nullptr;
 }
 
-Result DroneLink::add_serial_connection(const std::string &path, int baudrate)
-{
-    UNUSED(path);
-    UNUSED(baudrate);
-    return Result::NOT_IMPLEMENTED;
-}
-
 Result DroneLink::add_udp_connection()
 {
     const std::string empty_ip;
@@ -60,14 +53,6 @@ Result DroneLink::add_udp_connection(const std::string &ip, int port_number)
 
     _impl->add_connection(new_connection);
     return Result::SUCCESS;
-}
-
-
-Result DroneLink::add_tcp_connection(const std::string &ip, int port_number)
-{
-    UNUSED(ip);
-    UNUSED(port_number);
-    return Result::NOT_IMPLEMENTED;
 }
 
 const std::vector<uint64_t> &DroneLink::device_uuids() const
