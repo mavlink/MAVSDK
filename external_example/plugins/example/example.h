@@ -1,12 +1,10 @@
 #pragma once
 
-#include "plugin_base.h"
-
 namespace dronelink {
 
 class ExampleImpl;
 
-class Example : public PluginBase
+class Example
 {
 public:
     explicit Example(ExampleImpl *impl);

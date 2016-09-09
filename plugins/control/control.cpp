@@ -4,7 +4,6 @@
 namespace dronelink {
 
 Control::Control(ControlImpl *impl) :
-    PluginBase(),
     _impl(impl)
 {
 }

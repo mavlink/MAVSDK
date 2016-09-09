@@ -4,7 +4,6 @@
 namespace dronelink {
 
 Telemetry::Telemetry(TelemetryImpl *impl) :
-    PluginBase(),
     _impl(impl)
 {
 }

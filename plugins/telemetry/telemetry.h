@@ -1,12 +1,10 @@
 #pragma once
 
-#include "plugin_base.h"
-
 namespace dronelink {
 
 class TelemetryImpl;
 
-class Telemetry : public PluginBase
+class Telemetry
 {
 public:
     explicit Telemetry(TelemetryImpl *impl);

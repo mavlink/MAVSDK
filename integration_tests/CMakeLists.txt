@@ -1,7 +1,6 @@
 set(_libs
     dronelink
     pthread
-    atomic
 )
 
 if (IOS)

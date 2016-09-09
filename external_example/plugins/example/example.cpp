@@ -4,7 +4,6 @@
 namespace dronelink {
 
 Example::Example(ExampleImpl *impl) :
-    PluginBase(),
     _impl(impl)
 {
 }

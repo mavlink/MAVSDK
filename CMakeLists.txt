@@ -41,7 +41,22 @@ include_directories(
     include
     libs/include
     src
+    ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/src
+)
+
+install(TARGETS dronelink
+    DESTINATION "lib"
+)
+
+install(FILES
+    include/dronelink.h
+    include/error_handling.h
+    include/device.h
+    src/plugin_base.h
+    ${CMAKE_CURRENT_BINARY_DIR}/include/device_plugin_container.h
+    ${plugin_header_paths}
+    DESTINATION "include/dronelink"
 )
 
 if(NOT IOS)
@@ -64,7 +79,6 @@ if(NOT IOS)
         dronelink
         ${GTEST_BOTH_LIBRARIES}
         pthread
-        atomic
     )
 
     add_test(tests

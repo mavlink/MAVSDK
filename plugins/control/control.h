@@ -1,13 +1,12 @@
 #pragma once
 
-#include "plugin_base.h"
 #include "error_handling.h"
 
 namespace dronelink {
 
 class ControlImpl;
 
-class Control : public PluginBase
+class Control
 {
 public:
     explicit Control(ControlImpl *impl);

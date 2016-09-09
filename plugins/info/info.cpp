@@ -4,7 +4,6 @@
 namespace dronelink {
 
 Info::Info(InfoImpl *impl) :
-    PluginBase(),
     _impl(impl)
 {
 }

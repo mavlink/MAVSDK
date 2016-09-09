@@ -1,13 +1,12 @@
 #pragma once
 
-#include "plugin_base.h"
 #include <stdint.h>
 
 namespace dronelink {
 
 class InfoImpl;
 
-class Info : public PluginBase
+class Info
 {
 public:
     explicit Info(InfoImpl *impl);
