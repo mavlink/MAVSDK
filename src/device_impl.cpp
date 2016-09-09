@@ -13,7 +13,8 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _uuid(0),
     _parent(parent),
     _command_result(MAV_RESULT_FAILED),
-    _command_state(CommandState::NONE)
+    _command_state(CommandState::NONE),
+    _result_callback(nullptr)
 {
     using namespace std::placeholders; // for `_1`
 
@@ -84,6 +85,13 @@ void DeviceImpl::process_command_ack(const mavlink_message_t &message)
     if (_command_state == CommandState::WAITING) {
         _command_result = (MAV_RESULT)command_ack.result;
         _command_state = CommandState::RECEIVED;
+
+        if (_command_result == MAV_RESULT_ACCEPTED) {
+            report_result(_result_callback, Result::SUCCESS);
+        } else {
+            report_result(_result_callback, Result::COMMAND_DENIED);
+        }
+        _result_callback = nullptr;
     }
 }
 
@@ -164,6 +172,39 @@ Result DeviceImpl::send_command_with_ack(uint16_t command, const DeviceImpl::Com
     }
 
     return Result::SUCCESS;
+}
+
+void DeviceImpl::send_command_with_ack_async(uint16_t command,
+                                             const DeviceImpl::CommandParams &params,
+                                             result_callback_t callback)
+{
+    if (_command_state == CommandState::WAITING) {
+        report_result(callback, Result::DEVICE_BUSY);
+    }
+
+    Result ret = send_command(command, params);
+    if (ret != Result::SUCCESS) {
+        report_result(callback, ret);
+        // Reset
+        _command_state = CommandState::NONE;
+        return;
+    }
+
+    _command_state = CommandState::WAITING;
+    _result_callback = callback;
+}
+
+
+void DeviceImpl::report_result(result_callback_t callback, Result result)
+{
+    // Never use a nullptr as a callback!
+    if (callback != nullptr) {
+        return;
+    } else {
+        Debug() << "Callback is NULL";
+    }
+
+    callback(result);
 }
 
 } // namespace dronelink

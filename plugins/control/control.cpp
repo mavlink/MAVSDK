@@ -32,5 +32,25 @@ Result Control::land() const
     return _impl->land();
 }
 
+void Control::arm_async(result_callback_t callback)
+{
+    return _impl->arm_async(callback);
+}
+
+void Control::disarm_async(result_callback_t callback)
+{
+    return _impl->disarm_async(callback);
+}
+
+void Control::takeoff_async(result_callback_t callback)
+{
+    return _impl->takeoff_async(callback);
+}
+
+void Control::land_async(result_callback_t callback)
+{
+    return _impl->land_async(callback);
+}
+
 
 } // namespace dronelink

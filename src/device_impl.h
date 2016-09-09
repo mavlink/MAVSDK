@@ -32,6 +32,8 @@ public:
 
     Result send_command(uint16_t command, const DeviceImpl::CommandParams &params);
     Result send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params);
+    void send_command_with_ack_async(uint16_t command, const DeviceImpl::CommandParams &params,
+                                     result_callback_t callback);
 
     void request_autopilot_version();
 
@@ -46,6 +48,7 @@ private:
     void process_command_ack(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
 
+    static void report_result(result_callback_t callback, Result result);
 
     struct HandlerTableEntry {
         uint8_t msg_id;
@@ -69,6 +72,7 @@ private:
 
     std::atomic<MAV_RESULT> _command_result;
     std::atomic<CommandState> _command_state;
+    result_callback_t _result_callback;
 };
 
 } // namespace dronelink

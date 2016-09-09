@@ -33,3 +33,11 @@ add_executable(simple_hover
 target_link_libraries(simple_hover
     ${_libs}
 )
+
+add_executable(async_hover
+    async_hover_main.cpp
+)
+
+target_link_libraries(async_hover
+    ${_libs}
+)

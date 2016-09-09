@@ -19,6 +19,11 @@ public:
     Result takeoff() const;
     Result land() const;
 
+    void arm_async(result_callback_t callback);
+    void disarm_async(result_callback_t callback);
+    void takeoff_async(result_callback_t callback);
+    void land_async(result_callback_t callback);
+
 private:
 };
 

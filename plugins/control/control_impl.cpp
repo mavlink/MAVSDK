@@ -45,8 +45,35 @@ Result ControlImpl::takeoff() const
 Result ControlImpl::land() const
 {
     return _parent->send_command_with_ack(MAV_CMD_NAV_LAND,
-
                                           {NAN, NAN, NAN, NAN, NAN, NAN, NAN});
+}
+
+void ControlImpl::arm_async(result_callback_t callback)
+{
+    _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
+                                         {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+                                         callback);
+}
+
+void ControlImpl::disarm_async(result_callback_t callback)
+{
+    _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
+                                         {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+                                         callback);
+}
+
+void ControlImpl::takeoff_async(result_callback_t callback)
+{
+    _parent->send_command_with_ack_async(MAV_CMD_NAV_TAKEOFF,
+                                         {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
+                                         callback);
+}
+
+void ControlImpl::land_async(result_callback_t callback)
+{
+    _parent->send_command_with_ack_async(MAV_CMD_NAV_LAND,
+                                         {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
+                                         callback);
 }
 
 } // namespace dronelink
