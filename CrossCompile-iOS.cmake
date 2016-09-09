@@ -1,6 +1,10 @@
 # To cross compile for iPhone:
 # build$ cmake .. -DCMAKE_TOOLCHAIN_FILE=../contrib/cmake/CrossCompile-iOS.cmake
 
+if (NOT APPLE)
+    message(FATAL_ERROR "\nNeed to build on a Mac for iOS\n")
+endif()
+
 SET(CMAKE_SYSTEM_NAME Generic)
 if (NOT "$ENV{IOS_SDK_VERSION}" STREQUAL "")
 	SET(CMAKE_SYSTEM_VERSION $ENV{IOS_SDK_VERSION})
