@@ -21,6 +21,7 @@ DroneLinkImpl::~DroneLinkImpl()
             delete _connections.at(i);
             _connections.at(i) = nullptr;
         }
+        _connections.clear();
     }
 
     {
@@ -33,6 +34,8 @@ DroneLinkImpl::~DroneLinkImpl()
         for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
             delete it->second;
         }
+        _devices.clear();
+        _device_impls.clear();
     }
 }
 
@@ -45,8 +48,6 @@ void DroneLinkImpl::receive_message(const mavlink_message_t &message)
 
 Result DroneLinkImpl::send_message(const mavlink_message_t &message)
 {
-    // TODO: only send it over the correct connections, instead of over all of them.
-
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {

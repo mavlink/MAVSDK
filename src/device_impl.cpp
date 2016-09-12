@@ -1,13 +1,14 @@
 #include "global_include.h"
 #include "device_impl.h"
 #include "dronelink_impl.h"
-#include <functional>
 #include <unistd.h>
 
 namespace dronelink {
 
 DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
-    _handler_table(),
+    _mavlink_handler_table(),
+    _timeout_handler_map_mutex(),
+    _timeout_handler_map(),
     _target_system_id(0),
     _target_component_id(0),
     _target_uuid(0),
@@ -47,25 +48,60 @@ void DeviceImpl::register_mavlink_message_handler(uint8_t msg_id,
                                                   mavlink_message_handler_t callback,
                                                   const void *cookie)
 {
-    HandlerTableEntry entry = {msg_id, callback, cookie};
-    _handler_table.push_back(entry);
+    MavlinkHandlerTableEntry entry = {msg_id, callback, cookie};
+    _mavlink_handler_table.push_back(entry);
 }
 
 void DeviceImpl::unregister_all_mavlink_message_handlers(const void *cookie)
 {
-    for (auto it = _handler_table.begin(); it != _handler_table.end(); /* no ++it */) {
+    for (auto it = _mavlink_handler_table.begin();
+         it != _mavlink_handler_table.end();
+         /* no ++it */) {
 
         if (it->cookie == cookie) {
-            it = _handler_table.erase(it);
+            it = _mavlink_handler_table.erase(it);
         } else {
             ++it;
         }
     }
 }
 
+void DeviceImpl::register_timeout_handler(double duration_s,
+                                          timeout_handler_t callback,
+                                          const void *cookie)
+{
+    std::lock_guard<std::mutex> lock(_timeout_handler_map_mutex);
+
+    dl_time_t future_time = steady_time_in_future(duration_s);
+
+    TimeoutHandlerMapEntry entry = {future_time, callback};
+    _timeout_handler_map.insert({cookie, entry});
+}
+
+void DeviceImpl::update_timeout_handler(double duration_s, const void *cookie)
+{
+    std::lock_guard<std::mutex> lock(_timeout_handler_map_mutex);
+
+    auto it = _timeout_handler_map.find(cookie);
+    if (it != _timeout_handler_map.end()) {
+        dl_time_t future_time = steady_time_in_future(duration_s);
+        it->second.time = future_time;
+    }
+}
+
+void DeviceImpl::unregister_timeout_handler(const void *cookie)
+{
+    std::lock_guard<std::mutex> lock(_timeout_handler_map_mutex);
+
+    auto it = _timeout_handler_map.find(cookie);
+    if (it != _timeout_handler_map.end()) {
+        _timeout_handler_map.erase(cookie);
+    }
+}
+
 void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
 {
-    for (auto it = _handler_table.begin(); it != _handler_table.end(); ++it) {
+    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end(); ++it) {
         if (it->msg_id == message.msgid) {
             it->callback(message);
         }
@@ -129,7 +165,8 @@ void DeviceImpl::device_thread(DeviceImpl *parent)
 {
     while (!parent->_should_exit) {
         send_heartbeat(parent);
-        usleep(1000000);
+        check_timeouts(parent);
+        usleep(10000);
     }
 }
 
@@ -139,6 +176,37 @@ void DeviceImpl::send_heartbeat(DeviceImpl *parent)
     mavlink_msg_heartbeat_pack(_own_system_id, _own_component_id, &message,
                                MAV_TYPE_GCS, 0, 0, 0, 0);
     parent->send_message(message);
+}
+
+void DeviceImpl::check_timeouts(DeviceImpl *parent)
+{
+    timeout_handler_t callback = nullptr;
+
+    {
+        std::lock_guard<std::mutex> lock(parent->_timeout_handler_map_mutex);
+
+        for (auto it = parent->_timeout_handler_map.begin();
+            it != parent->_timeout_handler_map.end(); /* no ++it */) {
+
+            // If time is passed, call timeout callback.
+            if (it->second.time < steady_time()) {
+
+                callback = it->second.callback;
+                //Self-destruct before calling to avoid locking issues.
+                parent->_timeout_handler_map.erase(it++);
+                break;
+
+            } else {
+                ++it;
+            }
+        }
+    }
+
+    // Now that the lock is out of scope and therefore unlocked, we're safe
+    // to call the callback if set which might in turn register new timeout callbacks.
+    if (callback != nullptr) {
+        callback();
+    }
 }
 
 
@@ -198,6 +266,10 @@ Result DeviceImpl::send_command_with_ack(uint16_t command, const DeviceImpl::Com
         return Result::DEVICE_BUSY;
     }
 
+    // No callback here, so let's make sure it's reset
+    _result_callback_data.callback = nullptr;
+    _result_callback_data.user = nullptr;
+
     _command_state = CommandState::WAITING;
 
     Result ret = send_command(command, params);
@@ -251,9 +323,9 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
 
 void DeviceImpl::report_result(ResultCallbackData callback_data, Result result)
 {
-    // Never use a nullptr as a callback!
+    // Never use a nullptr as a callback, this is not an error
+    // because in sync mode we don't have a callback set.
     if (callback_data.callback == nullptr) {
-        Debug() << "Callback is NULL";
         return;
     }
 

@@ -1,12 +1,15 @@
 #pragma once
 
 #include "error_handling.h"
+#include "global_include.h"
 #include "mavlink_include.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
 #include <vector>
+#include <map>
 #include <thread>
+#include <mutex>
 
 namespace dronelink {
 
@@ -30,11 +33,19 @@ public:
 
     typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
 
+    typedef std::function<void()> timeout_handler_t;
+
     void register_mavlink_message_handler(uint8_t msg_id, mavlink_message_handler_t callback,
                                           const void *cookie);
 
-
     void unregister_all_mavlink_message_handlers(const void *cookie);
+
+    void register_timeout_handler(double duration_s, timeout_handler_t callback,
+                                  const void *cookie);
+
+    void update_timeout_handler(double duration_s, const void *cookie);
+
+    void unregister_timeout_handler(const void *cookie);
 
     Result send_message(const mavlink_message_t &message);
 
@@ -67,17 +78,26 @@ private:
 
     static void device_thread(DeviceImpl *parent);
     static void send_heartbeat(DeviceImpl *parent);
+    static void check_timeouts(DeviceImpl *parent);
 
     static void report_result(ResultCallbackData callback_data, Result result);
 
 
-    struct HandlerTableEntry {
+    struct MavlinkHandlerTableEntry {
         uint8_t msg_id;
         mavlink_message_handler_t callback;
         const void *cookie; // This is the identification to unregister.
     };
 
-    std::vector<HandlerTableEntry> _handler_table;
+    std::vector<MavlinkHandlerTableEntry> _mavlink_handler_table;
+
+    struct TimeoutHandlerMapEntry {
+        dl_time_t time;
+        timeout_handler_t callback;
+    };
+
+    std::mutex _timeout_handler_map_mutex;
+    std::map<const void *, TimeoutHandlerMapEntry> _timeout_handler_map;
 
     uint8_t _target_system_id;
     uint8_t _target_component_id;

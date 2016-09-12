@@ -30,6 +30,7 @@ include_directories(
 
 # We build one static library.
 add_library(dronelink STATIC
+    src/global_include.cpp
     src/connection.cpp
     src/device.cpp
     src/device_impl.cpp
@@ -75,6 +76,7 @@ if(NOT IOS)
     include_directories(${GTEST_INCLUDE_DIRS})
 
     add_executable(unit_tests
+        src/global_include_test.cpp
         src/mavlink_channels_test.cpp
         src/unittests_main.cpp
     )
