@@ -25,7 +25,7 @@ public:
     const std::vector<uint64_t> &get_device_uuids() const;
     Device &get_device(uint64_t uuid);
 
-    static constexpr int DEFAULT_UDP_RECEIVE_PORT = 14550;
+    static constexpr int DEFAULT_UDP_RECEIVE_PORT = 14540;
 
 private:
     void create_device_if_not_existing(uint8_t system_id);

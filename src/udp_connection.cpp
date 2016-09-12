@@ -105,7 +105,8 @@ Result UdpConnection::send_message(const mavlink_message_t &message)
     memset((char *)&dest_addr, 0, sizeof(dest_addr));
     dest_addr.sin_family = AF_INET;
     inet_pton(AF_INET, _ip.c_str(), &dest_addr.sin_addr.s_addr);
-    dest_addr.sin_port = htons(14556);
+    // TODO: remove this magic number
+    dest_addr.sin_port = htons(14557);
 
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
