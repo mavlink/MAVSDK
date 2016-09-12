@@ -6,6 +6,7 @@
 #include <functional>
 #include <atomic>
 #include <vector>
+#include <thread>
 
 namespace dronelink {
 
@@ -62,7 +63,13 @@ private:
     void process_command_ack(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
 
+    void check_device_thread();
+
+    static void device_thread(DeviceImpl *parent);
+    static void send_heartbeat(DeviceImpl *parent);
+
     static void report_result(ResultCallbackData callback_data, Result result);
+
 
     struct HandlerTableEntry {
         uint8_t msg_id;
@@ -89,6 +96,9 @@ private:
     std::atomic<CommandState> _command_state;
 
     ResultCallbackData _result_callback_data;
+
+    std::thread *_device_thread;
+    std::atomic_bool _should_exit;
 
     static constexpr uint8_t _own_system_id = 0;
     static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;

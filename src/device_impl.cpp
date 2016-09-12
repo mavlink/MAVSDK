@@ -15,7 +15,9 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _parent(parent),
     _command_result(MAV_RESULT_FAILED),
     _command_state(CommandState::NONE),
-    _result_callback_data({nullptr, nullptr})
+    _result_callback_data({nullptr, nullptr}),
+    _device_thread(nullptr),
+    _should_exit(false)
 {
     using namespace std::placeholders; // for `_1`
 
@@ -31,7 +33,14 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
 
 DeviceImpl::~DeviceImpl()
 {
+    _should_exit = true;
     unregister_all_mavlink_message_handlers(this);
+
+    if (_device_thread != nullptr) {
+        _device_thread->join();
+        delete _device_thread;
+        _device_thread = nullptr;
+    }
 }
 
 void DeviceImpl::register_mavlink_message_handler(uint8_t msg_id,
@@ -75,6 +84,8 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     if (_target_uuid == 0) {
         request_autopilot_version();
     }
+
+    check_device_thread();
 }
 
 void DeviceImpl::process_command_ack(const mavlink_message_t &message)
@@ -106,6 +117,30 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
     _target_supports_mission_int =
         autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT;
 }
+
+void DeviceImpl::check_device_thread()
+{
+    if (_device_thread == nullptr) {
+        _device_thread = new std::thread(device_thread, this);
+    }
+}
+
+void DeviceImpl::device_thread(DeviceImpl *parent)
+{
+    while (!parent->_should_exit) {
+        send_heartbeat(parent);
+        usleep(1000000);
+    }
+}
+
+void DeviceImpl::send_heartbeat(DeviceImpl *parent)
+{
+    mavlink_message_t message;
+    mavlink_msg_heartbeat_pack(_own_system_id, _own_component_id, &message,
+                               MAV_TYPE_GCS, 0, 0, 0, 0);
+    parent->send_message(message);
+}
+
 
 Result DeviceImpl::send_message(const mavlink_message_t &message)
 {
@@ -139,7 +174,7 @@ Result DeviceImpl::send_command(uint16_t command, const DeviceImpl::CommandParam
         return Result::DEVICE_NOT_CONNECTED;
     }
 
-    mavlink_message_t message = {};
+    mavlink_message_t message;
 
     mavlink_msg_command_long_pack(_own_system_id, _own_component_id,
                                   &message,
