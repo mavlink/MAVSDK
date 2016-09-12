@@ -5,7 +5,7 @@
 #define UNUSED(x) (void)(x)
 
 
-void receive_result(dronelink::Result result);
+void receive_result(dronelink::Result result, void *user);
 
 
 int main(int argc, char *argv[])
@@ -54,7 +54,8 @@ int main(int argc, char *argv[])
 }
 
 
-void receive_result(dronelink::Result result)
+void receive_result(dronelink::Result result, void *user)
 {
+    UNUSED(user);
     std::cout << "got result: " << result_str(result) << std::endl;
 }

@@ -72,7 +72,7 @@ const std::vector<uint64_t> &DroneLinkImpl::get_device_uuids() const
     static std::vector<uint64_t> uuids;
 
     for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
-        uint64_t uuid = it->second->get_uuid();
+        uint64_t uuid = it->second->get_target_uuid();
         if (uuid != 0) {
             uuids.push_back(uuid);
         }
@@ -88,7 +88,7 @@ Device &DroneLinkImpl::get_device(uint64_t uuid)
         std::lock_guard<std::mutex> lock(_devices_mutex);
         // TODO: make a cache map for this.
         for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
-            if (it->second->get_uuid() == uuid) {
+            if (it->second->get_target_uuid() == uuid) {
                 return *(_devices.at(it->first));
             }
         }

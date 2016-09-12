@@ -8,13 +8,14 @@ namespace dronelink {
 
 DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _handler_table(),
-    _system_id(0),
-    _component_id(0),
-    _uuid(0),
+    _target_system_id(0),
+    _target_component_id(0),
+    _target_uuid(0),
+    _target_supports_mission_int(false),
     _parent(parent),
     _command_result(MAV_RESULT_FAILED),
     _command_state(CommandState::NONE),
-    _result_callback(nullptr)
+    _result_callback_data({nullptr, nullptr})
 {
     using namespace std::placeholders; // for `_1`
 
@@ -67,11 +68,11 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    if (_system_id == 0) {
-        _system_id = message.sysid;
-        _component_id = message.compid;
+    if (_target_system_id == 0) {
+        _target_system_id = message.sysid;
+        _target_component_id = message.compid;
     }
-    if (_uuid == 0) {
+    if (_target_uuid == 0) {
         request_autopilot_version();
     }
 }
@@ -87,11 +88,12 @@ void DeviceImpl::process_command_ack(const mavlink_message_t &message)
         _command_state = CommandState::RECEIVED;
 
         if (_command_result == MAV_RESULT_ACCEPTED) {
-            report_result(_result_callback, Result::SUCCESS);
+            report_result(_result_callback_data, Result::SUCCESS);
         } else {
-            report_result(_result_callback, Result::COMMAND_DENIED);
+            report_result(_result_callback_data, Result::COMMAND_DENIED);
         }
-        _result_callback = nullptr;
+        _result_callback_data.callback = nullptr;
+        _result_callback_data.user = nullptr;
     }
 }
 
@@ -100,7 +102,14 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
     mavlink_autopilot_version_t autopilot_version;
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
-    _uuid = autopilot_version.uid;
+    _target_uuid = autopilot_version.uid;
+    _target_supports_mission_int =
+        autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT;
+}
+
+Result DeviceImpl::send_message(const mavlink_message_t &message)
+{
+    return _parent->send_message(message);
 }
 
 void DeviceImpl::request_autopilot_version()
@@ -109,22 +118,32 @@ void DeviceImpl::request_autopilot_version()
                  {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
 }
 
-uint64_t DeviceImpl::get_uuid() const
+uint64_t DeviceImpl::get_target_uuid() const
 {
-    return _uuid;
+    return _target_uuid;
+}
+
+uint8_t DeviceImpl::get_target_system_id() const
+{
+    return _target_system_id;
+}
+
+uint8_t DeviceImpl::get_target_component_id() const
+{
+    return _target_component_id;
 }
 
 Result DeviceImpl::send_command(uint16_t command, const DeviceImpl::CommandParams &params)
 {
-    if (_system_id == 0 && _component_id == 0) {
+    if (_target_system_id == 0 && _target_component_id == 0) {
         return Result::DEVICE_NOT_CONNECTED;
     }
 
     mavlink_message_t message = {};
 
-    mavlink_msg_command_long_pack(0, MAV_COMP_ID_SYSTEM_CONTROL,
+    mavlink_msg_command_long_pack(_own_system_id, _own_component_id,
                                   &message,
-                                  _system_id, _component_id,
+                                  _target_system_id, _target_component_id,
                                   command,
                                   0,
                                   params.v[0], params.v[1], params.v[2], params.v[3],
@@ -176,35 +195,34 @@ Result DeviceImpl::send_command_with_ack(uint16_t command, const DeviceImpl::Com
 
 void DeviceImpl::send_command_with_ack_async(uint16_t command,
                                              const DeviceImpl::CommandParams &params,
-                                             result_callback_t callback)
+                                             ResultCallbackData callback_data)
 {
     if (_command_state == CommandState::WAITING) {
-        report_result(callback, Result::DEVICE_BUSY);
+        report_result(callback_data, Result::DEVICE_BUSY);
     }
 
     Result ret = send_command(command, params);
     if (ret != Result::SUCCESS) {
-        report_result(callback, ret);
+        report_result(callback_data, ret);
         // Reset
         _command_state = CommandState::NONE;
         return;
     }
 
     _command_state = CommandState::WAITING;
-    _result_callback = callback;
+    _result_callback_data = callback_data;
 }
 
 
-void DeviceImpl::report_result(result_callback_t callback, Result result)
+void DeviceImpl::report_result(ResultCallbackData callback_data, Result result)
 {
     // Never use a nullptr as a callback!
-    if (callback != nullptr) {
-        return;
-    } else {
+    if (callback_data.callback == nullptr) {
         Debug() << "Callback is NULL";
+        return;
     }
 
-    callback(result);
+    callback_data.callback(result, callback_data.user);
 }
 
 } // namespace dronelink

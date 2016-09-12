@@ -17,6 +17,6 @@ enum class Result : unsigned
 
 const char *result_str(Result res);
 
-typedef void (*result_callback_t)(Result result);
+typedef void (*result_callback_t)(Result result, void *user);
 
 } // namespace dronelink
