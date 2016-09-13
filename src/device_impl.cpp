@@ -250,9 +250,10 @@ Result DeviceImpl::send_command(uint16_t command, const DeviceImpl::CommandParam
         return Result::DEVICE_NOT_CONNECTED;
     }
 
-    if (_command_state == CommandState::WAITING) {
-        return Result::DEVICE_BUSY;
-    }
+    // We don't need no ack, just send it.
+    //if (_command_state == CommandState::WAITING) {
+    //    return Result::DEVICE_BUSY;
+    //}
 
     mavlink_message_t message;
 
