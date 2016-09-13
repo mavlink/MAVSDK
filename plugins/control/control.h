@@ -16,11 +16,13 @@ public:
     Result disarm() const;
     Result takeoff() const;
     Result land() const;
+    Result return_to_land() const;
 
     void arm_async(result_callback_t callback);
     void disarm_async(result_callback_t callback);
     void takeoff_async(result_callback_t callback);
     void land_async(result_callback_t callback);
+    void return_to_land_async(result_callback_t callback);
 
     // Non-copyable
     Control(const Control &) = delete;

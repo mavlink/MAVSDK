@@ -32,6 +32,11 @@ Result Control::land() const
     return _impl->land();
 }
 
+Result Control::return_to_land() const
+{
+    return _impl->return_to_land();
+}
+
 void Control::arm_async(result_callback_t callback)
 {
     return _impl->arm_async(callback);
@@ -50,6 +55,11 @@ void Control::takeoff_async(result_callback_t callback)
 void Control::land_async(result_callback_t callback)
 {
     return _impl->land_async(callback);
+}
+
+void Control::return_to_land_async(result_callback_t callback)
+{
+    return _impl->return_to_land_async(callback);
 }
 
 
