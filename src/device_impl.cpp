@@ -18,7 +18,8 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _command_state(CommandState::NONE),
     _result_callback_data({nullptr, nullptr}),
     _device_thread(nullptr),
-    _should_exit(false)
+    _should_exit(false),
+    _timeout_s(DEFAULT_TIMEOUT_S)
 {
     using namespace std::placeholders; // for `_1`
 
@@ -66,25 +67,24 @@ void DeviceImpl::unregister_all_mavlink_message_handlers(const void *cookie)
     }
 }
 
-void DeviceImpl::register_timeout_handler(double duration_s,
-                                          timeout_handler_t callback,
+void DeviceImpl::register_timeout_handler(timeout_handler_t callback,
                                           const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_timeout_handler_map_mutex);
 
-    dl_time_t future_time = steady_time_in_future(duration_s);
+    dl_time_t future_time = steady_time_in_future(_timeout_s);
 
     TimeoutHandlerMapEntry entry = {future_time, callback};
     _timeout_handler_map.insert({cookie, entry});
 }
 
-void DeviceImpl::update_timeout_handler(double duration_s, const void *cookie)
+void DeviceImpl::update_timeout_handler(const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_timeout_handler_map_mutex);
 
     auto it = _timeout_handler_map.find(cookie);
     if (it != _timeout_handler_map.end()) {
-        dl_time_t future_time = steady_time_in_future(duration_s);
+        dl_time_t future_time = steady_time_in_future(_timeout_s);
         it->second.time = future_time;
     }
 }
@@ -282,12 +282,16 @@ Result DeviceImpl::send_command_with_ack(uint16_t command, const DeviceImpl::Com
         return ret;
     }
 
+    const unsigned timeout_us = unsigned(_timeout_s * 1e6);
+    const unsigned wait_time_us = 1000;
+    const unsigned iterations = timeout_us/wait_time_us;
+
     // Wait until we have received a result.
-    for (unsigned i = 0; i < 1000; ++i) {
+    for (unsigned i = 0; i < iterations; ++i) {
         if (_command_state == CommandState::RECEIVED) {
             break;
         }
-        usleep(1000);
+        usleep(wait_time_us);
     }
 
     if (_command_state != CommandState::RECEIVED) {

@@ -40,10 +40,9 @@ public:
 
     void unregister_all_mavlink_message_handlers(const void *cookie);
 
-    void register_timeout_handler(double duration_s, timeout_handler_t callback,
-                                  const void *cookie);
+    void register_timeout_handler(timeout_handler_t callback, const void *cookie);
 
-    void update_timeout_handler(double duration_s, const void *cookie);
+    void update_timeout_handler(const void *cookie);
 
     void unregister_timeout_handler(const void *cookie);
 
@@ -53,6 +52,9 @@ public:
     Result send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params);
     void send_command_with_ack_async(uint16_t command, const DeviceImpl::CommandParams &params,
                                      ResultCallbackData callback_data);
+
+    double get_timeout() { return _timeout_s; }
+    void set_timeout(double timeout_s) { _timeout_s = timeout_s; }
 
     void request_autopilot_version();
 
@@ -122,6 +124,9 @@ private:
 
     static constexpr uint8_t _own_system_id = 0;
     static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
+
+    double _timeout_s;
+    static constexpr double DEFAULT_TIMEOUT_S = 0.5;
 };
 
 } // namespace dronelink
