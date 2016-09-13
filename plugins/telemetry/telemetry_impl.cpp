@@ -109,7 +109,7 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t &message)
     mavlink_msg_extended_sys_state_decode(&message, &extended_sys_state);
     if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR) {
         set_in_air(true);
-    } else if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR) {
+    } else if (extended_sys_state.landed_state == MAV_LANDED_STATE_ON_GROUND) {
         set_in_air(false);
     }
     // If landed_state is undefined, we use what we have received last.
