@@ -22,6 +22,11 @@ Result Control::disarm() const
     return _impl->disarm();
 }
 
+Result Control::kill() const
+{
+    return _impl->kill();
+}
+
 Result Control::takeoff() const
 {
     return _impl->takeoff();
@@ -45,6 +50,11 @@ void Control::arm_async(result_callback_t callback)
 void Control::disarm_async(result_callback_t callback)
 {
     return _impl->disarm_async(callback);
+}
+
+void Control::kill_async(result_callback_t callback)
+{
+    return _impl->kill_async(callback);
 }
 
 void Control::takeoff_async(result_callback_t callback)
