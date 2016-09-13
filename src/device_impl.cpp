@@ -164,10 +164,17 @@ void DeviceImpl::check_device_thread()
 
 void DeviceImpl::device_thread(DeviceImpl *parent)
 {
+    const unsigned heartbeat_interval_us = 1000000;
+    const unsigned timeout_interval_us = 10000;
+    const unsigned heartbeat_multiplier = heartbeat_interval_us / timeout_interval_us;
+    unsigned counter = 0;
+
     while (!parent->_should_exit) {
-        send_heartbeat(parent);
+        if (counter++ % heartbeat_multiplier == 0) {
+            send_heartbeat(parent);
+        }
         check_timeouts(parent);
-        usleep(10000);
+        usleep(timeout_interval_us);
     }
 }
 
