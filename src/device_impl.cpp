@@ -132,6 +132,7 @@ void DeviceImpl::process_command_ack(const mavlink_message_t &message)
     // Ignore it if we're not waiting for an ack result.
     if (_command_state == CommandState::WAITING) {
         _command_result = (MAV_RESULT)command_ack.result;
+        // Update state after result to avoid a race over _command_result
         _command_state = CommandState::RECEIVED;
 
         if (_command_result == MAV_RESULT_ACCEPTED) {
@@ -240,6 +241,10 @@ Result DeviceImpl::send_command(uint16_t command, const DeviceImpl::CommandParam
 {
     if (_target_system_id == 0 && _target_component_id == 0) {
         return Result::DEVICE_NOT_CONNECTED;
+    }
+
+    if (_command_state == CommandState::WAITING) {
+        return Result::DEVICE_BUSY;
     }
 
     mavlink_message_t message;
