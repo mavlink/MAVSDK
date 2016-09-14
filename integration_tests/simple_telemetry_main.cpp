@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     dronelink::DroneLink dl;
 
-    dronelink::Result ret = dl.add_udp_connection();
+    dronelink::DroneLink::ConnectionResult ret = dl.add_udp_connection();
 
     usleep(1500000);
 
@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
 
     uint64_t uuid = uuids.at(0);
 
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to add connection: " << result_str(ret) << std::endl;
+    if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
+        std::cout << "failed to add connection" << std::endl;
     }
 
     dronelink::Device &device = dl.device(uuid);

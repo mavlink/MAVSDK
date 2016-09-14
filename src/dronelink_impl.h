@@ -19,7 +19,7 @@ public:
     ~DroneLinkImpl();
 
     void receive_message(const mavlink_message_t &message);
-    Result send_message(const mavlink_message_t &message);
+    bool send_message(const mavlink_message_t &message);
     void add_connection(Connection *connection);
 
     const std::vector<uint64_t> &get_device_uuids() const;

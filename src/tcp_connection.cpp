@@ -15,20 +15,21 @@ bool TcpConnection::is_ok() const
     return true;
 }
 
-Result TcpConnection::start()
+DroneLink::ConnectionResult TcpConnection::start()
 {
-    return Result::SUCCESS;
+    return DroneLink::ConnectionResult::SUCCESS;
 }
 
-Result TcpConnection::stop()
+DroneLink::ConnectionResult TcpConnection::stop()
 {
-    return Result::SUCCESS;
+    return DroneLink::ConnectionResult::SUCCESS;
 }
 
-Result TcpConnection::send_message(const mavlink_message_t &message)
+bool TcpConnection::send_message(const mavlink_message_t &message)
 {
     UNUSED(message);
-    return Result::NOT_IMPLEMENTED;
+    Debug() << "Not implemented";
+    return false;
 }
 
 

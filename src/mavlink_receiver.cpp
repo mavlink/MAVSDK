@@ -21,10 +21,4 @@ bool MavlinkReceiver::parse_datagram(const char *datagram, unsigned datagram_len
     return false;
 }
 
-Result MavlinkReceiver::send_message(const mavlink_message_t &message)
-{
-    UNUSED(message);
-    return Result::CONNECTION_ERROR;
-}
-
 } // namespace dronelink

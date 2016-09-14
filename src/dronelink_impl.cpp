@@ -46,19 +46,18 @@ void DroneLinkImpl::receive_message(const mavlink_message_t &message)
     _device_impls.at(message.sysid)->process_mavlink_message(message);
 }
 
-Result DroneLinkImpl::send_message(const mavlink_message_t &message)
+bool DroneLinkImpl::send_message(const mavlink_message_t &message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
-        Result ret = (**it).send_message(message);
-        if (ret != Result::SUCCESS) {
+        if (!(**it).send_message(message)) {
             Debug() << "send fail";
-            return ret;
+            return false;
         }
     }
 
-    return Result::SUCCESS;
+    return true;
 }
 
 void DroneLinkImpl::add_connection(Connection *new_connection)

@@ -13,14 +13,14 @@ int main(int argc, char *argv[])
     dl = new dronelink::DroneLink();
     std::cout << "started" << std::endl;
 
-    dronelink::Result ret = dl->add_udp_connection("127.0.0.1", 14540);
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to add connection: " << result_str(ret) << std::endl;
+    dronelink::DroneLink::ConnectionResult ret = dl->add_udp_connection("127.0.0.1", 14540);
+    if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
+        std::cout << "failed to add connection" << std::endl;
     }
 
     ret = dl->add_udp_connection("127.0.0.1", 14550);
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to add connection: " << result_str(ret) << std::endl;
+    if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
+        std::cout << "failed to add connection" << std::endl;
     }
 
     usleep(2000000);
@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
     dl = new dronelink::DroneLink();
 
     ret = dl->add_udp_connection("127.0.0.1", 14540);
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to add connection: " << result_str(ret) << std::endl;
+    if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
+        std::cout << "failed to add connection" << std::endl;
     }
     std::cout << "created and started yet again" << std::endl;
     usleep(1000000);

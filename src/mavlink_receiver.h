@@ -1,7 +1,6 @@
 #pragma once
 
 #include "mavlink_include.h"
-#include "error_handling.h"
 #include <cstdint>
 
 namespace dronelink {
@@ -24,8 +23,6 @@ public:
     }
 
     bool parse_datagram(const char *datagram, unsigned datagram_len);
-
-    Result send_message(const mavlink_message_t &message);
 
 private:
     uint8_t _channel;

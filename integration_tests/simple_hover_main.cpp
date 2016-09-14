@@ -11,9 +11,9 @@ int main(int argc, char *argv[])
 
     dronelink::DroneLink dl;
 
-    dronelink::Result ret = dl.add_udp_connection();
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to add connection: " << result_str(ret) << std::endl;
+    dronelink::DroneLink::ConnectionResult ret = dl.add_udp_connection();
+    if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
+        std::cout << "failed to add connection." << std::endl;
         return -1;
     }
 
@@ -36,30 +36,30 @@ int main(int argc, char *argv[])
 
     uint64_t uuid = uuids.at(0);
 
-    ret = dl.device(uuid).action().arm();
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to arm: " << result_str(ret) << std::endl;
+    dronelink::Action::Result action_ret = dl.device(uuid).action().arm();
+    if (action_ret != dronelink::Action::Result::SUCCESS) {
+        std::cout << "failed to arm" <<  std::endl;
     }
 
     usleep(500000);
 
-    ret = dl.device(uuid).action().takeoff();
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to takeoff: " << result_str(ret) << std::endl;
+    action_ret = dl.device(uuid).action().takeoff();
+    if (action_ret != dronelink::Action::Result::SUCCESS) {
+        std::cout << "failed to takeoff" << std::endl;
     }
 
     usleep(5000000);
 
-    ret = dl.device(uuid).action().land();
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to land: " << result_str(ret) << std::endl;
+    action_ret = dl.device(uuid).action().land();
+    if (action_ret != dronelink::Action::Result::SUCCESS) {
+        std::cout << "failed to land" << std::endl;
     }
 
     // TODO: we need a check for is_landed() before calling disarm.
     //usleep(1000000);
-    //ret = dl.device(1).disarm();
-    //if (ret != dronelink::Result::SUCCESS) {
-    //    std::cout << "failed to disarm: " << result_str(ret) << std::endl;
+    //action_ret = dl.device(1).disarm();
+    //if (action_ret != dronelink::ConnectionResult::SUCCESS) {
+    //    std::cout << "failed to disarm" << std::endl;
     //}
 
     return 0;

@@ -15,18 +15,18 @@ public:
     explicit UdpConnection(DroneLinkImpl *parent, const std::string &ip, int port_number);
     ~UdpConnection();
     bool is_ok() const;
-    Result start();
-    Result stop();
+    DroneLink::ConnectionResult start();
+    DroneLink::ConnectionResult stop();
 
-    Result send_message(const mavlink_message_t &message);
+    bool send_message(const mavlink_message_t &message);
 
     // Non-copyable
     UdpConnection(const UdpConnection &) = delete;
     const UdpConnection &operator=(const UdpConnection &) = delete;
 
 private:
-    Result setup_port();
-    Result start_recv_thread();
+    DroneLink::ConnectionResult setup_port();
+    void start_recv_thread();
 
     static void receive(UdpConnection *parent);
 

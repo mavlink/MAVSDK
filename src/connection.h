@@ -2,7 +2,6 @@
 
 #include "dronelink.h"
 #include "mavlink_receiver.h"
-#include "error_handling.h"
 #include <memory>
 
 namespace dronelink {
@@ -15,11 +14,11 @@ public:
     Connection(DroneLinkImpl *parent);
     virtual ~Connection();
 
-    virtual Result start() = 0;
-    virtual Result stop() = 0;
+    virtual DroneLink::ConnectionResult start() = 0;
+    virtual DroneLink::ConnectionResult stop() = 0;
     virtual bool is_ok() const = 0;
 
-    virtual Result send_message(const mavlink_message_t &message) = 0;
+    virtual bool send_message(const mavlink_message_t &message) = 0;
 
     // Non-copyable
     Connection(const Connection &) = delete;

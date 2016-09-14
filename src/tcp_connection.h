@@ -11,10 +11,10 @@ class TcpConnection : public Connection
 public:
     explicit TcpConnection(DroneLinkImpl *parent, const std::string &ip, int port_number);
     bool is_ok() const;
-    Result start();
-    Result stop();
+    DroneLink::ConnectionResult start();
+    DroneLink::ConnectionResult stop();
 
-    Result send_message(const mavlink_message_t &message);
+    bool send_message(const mavlink_message_t &message);
 
 private:
 };

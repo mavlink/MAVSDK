@@ -15,20 +15,21 @@ bool SerialConnection::is_ok() const
     return true;
 }
 
-Result SerialConnection::start()
+DroneLink::ConnectionResult SerialConnection::start()
 {
-    return Result::SUCCESS;
+    return DroneLink::ConnectionResult::SUCCESS;
 }
 
-Result SerialConnection::stop()
+DroneLink::ConnectionResult SerialConnection::stop()
 {
-    return Result::SUCCESS;
+    return DroneLink::ConnectionResult::SUCCESS;
 }
 
-Result SerialConnection::send_message(const mavlink_message_t &message)
+bool SerialConnection::send_message(const mavlink_message_t &message)
 {
     UNUSED(message);
-    return Result::NOT_IMPLEMENTED;
+    Debug() << "Not implemented";
+    return false;
 }
 
 

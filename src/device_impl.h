@@ -1,6 +1,5 @@
 #pragma once
 
-#include "error_handling.h"
 #include "global_include.h"
 #include "mavlink_include.h"
 #include <cstdint>
@@ -26,6 +25,17 @@ public:
         float v[7];
     };
 
+    enum class CommandResult {
+        SUCCESS = 0,
+        NO_DEVICE,
+        CONNECTION_ERROR,
+        BUSY,
+        COMMAND_DENIED,
+        TIMEOUT
+    };
+
+    typedef void (*result_callback_t)(CommandResult result, void *user);
+
     struct ResultCallbackData {
         result_callback_t callback;
         void *user;
@@ -46,10 +56,10 @@ public:
 
     void unregister_timeout_handler(const void *cookie);
 
-    Result send_message(const mavlink_message_t &message);
+    bool send_message(const mavlink_message_t &message);
 
-    Result send_command(uint16_t command, const DeviceImpl::CommandParams &params);
-    Result send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params);
+    CommandResult send_command(uint16_t command, const DeviceImpl::CommandParams &params);
+    CommandResult send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params);
     void send_command_with_ack_async(uint16_t command, const DeviceImpl::CommandParams &params,
                                      ResultCallbackData callback_data);
 
@@ -82,7 +92,7 @@ private:
     static void send_heartbeat(DeviceImpl *parent);
     static void check_timeouts(DeviceImpl *parent);
 
-    static void report_result(ResultCallbackData callback_data, Result result);
+    static void report_result(ResultCallbackData callback_data, CommandResult result);
 
 
     struct MavlinkHandlerTableEntry {

@@ -1,11 +1,12 @@
 #include <iostream>
 #include <unistd.h>
 #include "dronelink.h"
+#include "action.h"
 
 #define UNUSED(x) (void)(x)
 
 
-void receive_result(dronelink::Result result, void *user);
+void receive_result(dronelink::Action::Result result, void *user);
 
 
 int main(int argc, char *argv[])
@@ -15,9 +16,9 @@ int main(int argc, char *argv[])
 
     dronelink::DroneLink dl;
 
-    dronelink::Result ret = dl.add_udp_connection();
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to add connection: " << result_str(ret) << std::endl;
+    dronelink::DroneLink::ConnectionResult ret = dl.add_udp_connection();
+    if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
+        std::cout << "failed to add connection" << std::endl;
         return -1;
     }
 
@@ -54,8 +55,8 @@ int main(int argc, char *argv[])
 }
 
 
-void receive_result(dronelink::Result result, void *user)
+void receive_result(dronelink::Action::Result result, void *user)
 {
     UNUSED(user);
-    std::cout << "got result: " << result_str(result) << std::endl;
+    std::cout << "got result: " << unsigned(result) << std::endl;
 }

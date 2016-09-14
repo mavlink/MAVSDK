@@ -136,9 +136,9 @@ void DeviceImpl::process_command_ack(const mavlink_message_t &message)
         _command_state = CommandState::RECEIVED;
 
         if (_command_result == MAV_RESULT_ACCEPTED) {
-            report_result(_result_callback_data, Result::SUCCESS);
+            report_result(_result_callback_data, CommandResult::SUCCESS);
         } else {
-            report_result(_result_callback_data, Result::COMMAND_DENIED);
+            report_result(_result_callback_data, CommandResult::COMMAND_DENIED);
         }
         _result_callback_data.callback = nullptr;
         _result_callback_data.user = nullptr;
@@ -218,7 +218,7 @@ void DeviceImpl::check_timeouts(DeviceImpl *parent)
 }
 
 
-Result DeviceImpl::send_message(const mavlink_message_t &message)
+bool DeviceImpl::send_message(const mavlink_message_t &message)
 {
     return _parent->send_message(message);
 }
@@ -244,10 +244,11 @@ uint8_t DeviceImpl::get_target_component_id() const
     return _target_component_id;
 }
 
-Result DeviceImpl::send_command(uint16_t command, const DeviceImpl::CommandParams &params)
+DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
+                                                          const DeviceImpl::CommandParams &params)
 {
     if (_target_system_id == 0 && _target_component_id == 0) {
-        return Result::DEVICE_NOT_CONNECTED;
+        return CommandResult::NO_DEVICE;
     }
 
     // We don't need no ack, just send it.
@@ -265,18 +266,18 @@ Result DeviceImpl::send_command(uint16_t command, const DeviceImpl::CommandParam
                                   params.v[0], params.v[1], params.v[2], params.v[3],
                                   params.v[4], params.v[5], params.v[6]);
 
-    Result ret = _parent->send_message(message);
-    if (ret != Result::SUCCESS) {
-        return ret;
+    if (!_parent->send_message(message)) {
+        return CommandResult::CONNECTION_ERROR;
     }
 
-    return Result::SUCCESS;
+    return CommandResult::SUCCESS;
 }
 
-Result DeviceImpl::send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params)
+DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(uint16_t command,
+                                                const DeviceImpl::CommandParams &params)
 {
     if (_command_state == CommandState::WAITING) {
-        return Result::DEVICE_BUSY;
+        return CommandResult::BUSY;
     }
 
     // No callback here, so let's make sure it's reset
@@ -285,8 +286,8 @@ Result DeviceImpl::send_command_with_ack(uint16_t command, const DeviceImpl::Com
 
     _command_state = CommandState::WAITING;
 
-    Result ret = send_command(command, params);
-    if (ret != Result::SUCCESS) {
+    CommandResult ret = send_command(command, params);
+    if (ret != CommandResult::SUCCESS) {
         return ret;
     }
 
@@ -304,17 +305,17 @@ Result DeviceImpl::send_command_with_ack(uint16_t command, const DeviceImpl::Com
 
     if (_command_state != CommandState::RECEIVED) {
         _command_state = CommandState::NONE;
-        return Result::TIMEOUT;
+        return CommandResult::TIMEOUT;
     }
 
     // Reset
     _command_state = CommandState::NONE;
 
     if (_command_result != MAV_RESULT_ACCEPTED) {
-        return Result::COMMAND_DENIED;
+        return CommandResult::COMMAND_DENIED;
     }
 
-    return Result::SUCCESS;
+    return CommandResult::SUCCESS;
 }
 
 void DeviceImpl::send_command_with_ack_async(uint16_t command,
@@ -322,11 +323,11 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
                                              ResultCallbackData callback_data)
 {
     if (_command_state == CommandState::WAITING) {
-        report_result(callback_data, Result::DEVICE_BUSY);
+        report_result(callback_data, CommandResult::BUSY);
     }
 
-    Result ret = send_command(command, params);
-    if (ret != Result::SUCCESS) {
+    CommandResult ret = send_command(command, params);
+    if (ret != CommandResult::SUCCESS) {
         report_result(callback_data, ret);
         // Reset
         _command_state = CommandState::NONE;
@@ -338,7 +339,7 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
 }
 
 
-void DeviceImpl::report_result(ResultCallbackData callback_data, Result result)
+void DeviceImpl::report_result(ResultCallbackData callback_data, CommandResult result)
 {
     // Never use a nullptr as a callback, this is not an error
     // because in sync mode we don't have a callback set.

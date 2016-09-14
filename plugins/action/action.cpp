@@ -12,32 +12,32 @@ Action::~Action()
 {
 }
 
-Result Action::arm() const
+Action::Result Action::arm() const
 {
     return _impl->arm();
 }
 
-Result Action::disarm() const
+Action::Result Action::disarm() const
 {
     return _impl->disarm();
 }
 
-Result Action::kill() const
+Action::Result Action::kill() const
 {
     return _impl->kill();
 }
 
-Result Action::takeoff() const
+Action::Result Action::takeoff() const
 {
     return _impl->takeoff();
 }
 
-Result Action::land() const
+Action::Result Action::land() const
 {
     return _impl->land();
 }
 
-Result Action::return_to_land() const
+Action::Result Action::return_to_land() const
 {
     return _impl->return_to_land();
 }

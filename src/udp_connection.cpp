@@ -31,32 +31,29 @@ bool UdpConnection::is_ok() const
     return true;
 }
 
-Result UdpConnection::start()
+DroneLink::ConnectionResult UdpConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return Result::CONNECTION_ERROR; // TODO: add better error
+        return DroneLink::ConnectionResult::CONNECTIONS_EXHAUSTED;
     }
 
-    Result ret = setup_port();
-    if (ret != Result::SUCCESS) {
+    DroneLink::ConnectionResult ret = setup_port();
+    if (ret != DroneLink::ConnectionResult::SUCCESS) {
         return ret;
     }
 
-    ret = start_recv_thread();
-    if (ret != Result::SUCCESS) {
-        return ret;
-    }
+    start_recv_thread();
 
-    return Result::SUCCESS;
+    return DroneLink::ConnectionResult::SUCCESS;
 }
 
-Result UdpConnection::setup_port()
+DroneLink::ConnectionResult UdpConnection::setup_port()
 {
     _socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
 
     if (_socket_fd < 0) {
         Debug() << "socket error" << strerror(errno);
-        return Result::CONNECTION_ERROR;
+        return DroneLink::ConnectionResult::SOCKET_ERROR;
     }
 
     struct sockaddr_in addr;
@@ -67,20 +64,18 @@ Result UdpConnection::setup_port()
 
     if (bind(_socket_fd, (sockaddr *)&addr, sizeof(addr)) != 0 ) {
         Debug() << "bind error: " << strerror(errno);
-        return Result::CONNECTION_ERROR;
+        return DroneLink::ConnectionResult::BIND_ERROR;
     }
 
-    return Result::SUCCESS;
+    return DroneLink::ConnectionResult::SUCCESS;
 }
 
-Result UdpConnection::start_recv_thread()
+void UdpConnection::start_recv_thread()
 {
     _recv_thread = new std::thread(receive, this);
-
-    return Result::SUCCESS;
 }
 
-Result UdpConnection::stop()
+DroneLink::ConnectionResult UdpConnection::stop()
 {
     stop_mavlink_receiver();
 
@@ -92,13 +87,14 @@ Result UdpConnection::stop()
 
     close(_socket_fd);
 
-    return Result::SUCCESS;
+    return DroneLink::ConnectionResult::SUCCESS;
 }
 
-Result UdpConnection::send_message(const mavlink_message_t &message)
+bool UdpConnection::send_message(const mavlink_message_t &message)
 {
     if (_ip.empty()) {
-        return Result::DESTINATION_IP_UNKNOWN;
+        Debug() << "Destination IP unknown";
+        return false;
     }
 
     struct sockaddr_in dest_addr;
@@ -118,11 +114,11 @@ Result UdpConnection::send_message(const mavlink_message_t &message)
                           (const sockaddr *)&dest_addr, sizeof(dest_addr));
 
     if (send_len != buffer_len) {
-        Debug() << "send failure: " << strerror(errno);
-        return Result::CONNECTION_ERROR;
+        Debug() << "sendto failure: " << strerror(errno);
+        return false;
     }
 
-    return Result::SUCCESS;
+    return true;
 }
 
 void UdpConnection::receive(UdpConnection *parent)

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "error_handling.h"
-
 namespace dronelink {
 
 class ActionImpl;
@@ -11,6 +9,18 @@ class Action
 public:
     explicit Action(ActionImpl *impl);
     ~Action();
+
+    enum class Result {
+        SUCCESS = 0,
+        NO_DEVICE,
+        CONNECTION_ERROR,
+        BUSY,
+        COMMAND_DENIED,
+        TIMEOUT,
+        UNKNOWN
+    };
+
+    typedef void (*result_callback_t)(Result result, void *user);
 
     Result arm() const;
     Result disarm() const;
