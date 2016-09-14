@@ -20,7 +20,15 @@ TelemetryImpl::TelemetryImpl() :
     _gps_info_mutex(),
     _gps_info({0, 0}),
     _battery_mutex(),
-    _battery({NAN, NAN})
+    _battery({NAN, NAN}),
+    _position_subscription({nullptr, nullptr}),
+    _home_position_subscription({nullptr, nullptr}),
+    _in_air_subscription({nullptr, nullptr}),
+    _attitude_quaternion_subscription({nullptr, nullptr}),
+    _attitude_euler_angle_subscription({nullptr, nullptr}),
+    _ground_speed_ned_subscription({nullptr, nullptr}),
+    _gps_info_subscription({nullptr, nullptr}),
+    _battery_subscription({nullptr, nullptr})
 {
 }
 
@@ -67,6 +75,15 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t &message
     set_ground_speed_ned({global_position_int.vx * 1e-2f,
                           global_position_int.vy * 1e-2f,
                           global_position_int.vz * 1e-2f});
+
+    if (_position_subscription.callback != nullptr) {
+        _position_subscription.callback(get_position(), _position_subscription.user);
+    }
+
+    if (_ground_speed_ned_subscription.callback != nullptr) {
+        _ground_speed_ned_subscription.callback(get_ground_speed_ned(),
+                                                _ground_speed_ned_subscription.user);
+    }
 }
 
 void TelemetryImpl::process_home_position(const mavlink_message_t &message)
@@ -78,6 +95,10 @@ void TelemetryImpl::process_home_position(const mavlink_message_t &message)
                                            home_position.altitude * 1e-3f,
      // the relative altitude of home is 0 by definition.
                                            0.0f}));
+
+    if (_home_position_subscription.callback != nullptr) {
+        _home_position_subscription.callback(get_home_position(), _position_subscription.user);
+    }
 }
 
 void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t &message)
@@ -93,6 +114,16 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t &message
     );
 
     set_attitude_quaternion(quaternion);
+
+    if (_attitude_quaternion_subscription.callback != nullptr) {
+        _attitude_quaternion_subscription.callback(get_attitude_quaternion(),
+                                                   _attitude_quaternion_subscription.user);
+    }
+
+    if (_attitude_euler_angle_subscription.callback != nullptr) {
+        _attitude_euler_angle_subscription.callback(get_attitude_euler_angle(),
+                                                   _attitude_euler_angle_subscription.user);
+    }
 }
 
 void TelemetryImpl::process_gps_raw_int(const mavlink_message_t &message)
@@ -101,6 +132,10 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t &message)
     mavlink_msg_gps_raw_int_decode(&message, &gps_raw_int);
     set_gps_info({gps_raw_int.satellites_visible,
                   gps_raw_int.fix_type});
+
+    if (_gps_info_subscription.callback != nullptr) {
+        _gps_info_subscription.callback(get_gps_info(), _gps_info_subscription.user);
+    }
 }
 
 void TelemetryImpl::process_extended_sys_state(const mavlink_message_t &message)
@@ -113,6 +148,10 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t &message)
         set_in_air(false);
     }
     // If landed_state is undefined, we use what we have received last.
+
+    if (_in_air_subscription.callback != nullptr) {
+        _in_air_subscription.callback(in_air(), _in_air_subscription.user);
+    }
 }
 
 void TelemetryImpl::process_sys_status(const mavlink_message_t &message)
@@ -121,6 +160,10 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t &message)
     mavlink_msg_sys_status_decode(&message, &sys_status);
     set_battery(Telemetry::Battery({sys_status.voltage_battery * 1e-3f,
                                     sys_status.battery_remaining * 1e-2f}));
+
+    if (_battery_subscription.callback != nullptr) {
+        _battery_subscription.callback(get_battery(), _battery_subscription.user);
+    }
 }
 
 
@@ -211,5 +254,92 @@ void TelemetryImpl::set_battery(Telemetry::Battery battery)
     _battery = battery;
 }
 
+void TelemetryImpl::position_async(double rate_hz, Telemetry::PositionCallbackData callback_data)
+{
+    if (rate_hz > 0) {
+        // TODO: do something about rate
+        _position_subscription = callback_data;
+    } else {
+        _position_subscription = {nullptr, nullptr};
+    }
+}
+
+void TelemetryImpl::home_position_async(double rate_hz,
+                                        Telemetry::PositionCallbackData callback_data)
+{
+    if (rate_hz > 0) {
+        // TODO: do something about rate
+        _home_position_subscription = callback_data;
+    } else {
+        _home_position_subscription = {nullptr, nullptr};
+    }
+}
+
+void TelemetryImpl::in_air_async(double rate_hz, Telemetry::InAirCallbackData callback_data)
+{
+    if (rate_hz > 0) {
+        // TODO: do something about rate
+        _in_air_subscription = callback_data;
+    } else {
+        _in_air_subscription = {nullptr, nullptr};
+    }
+}
+
+void TelemetryImpl::attitude_quaternion_async(double rate_hz,
+                                              Telemetry::AttitudeQuaternionCallbackData
+                                                  callback_data)
+{
+    if (rate_hz > 0) {
+        // TODO: do something about rate
+        _attitude_quaternion_subscription = callback_data;
+    } else {
+        _attitude_quaternion_subscription = {nullptr, nullptr};
+    }
+}
+
+void TelemetryImpl::attitude_euler_angle_async(double rate_hz,
+                                               Telemetry::AttitudeEulerAngleCallbackData
+                                                   callback_data)
+{
+    if (rate_hz > 0) {
+        // TODO: do something about rate
+        _attitude_euler_angle_subscription = callback_data;
+    } else {
+        _attitude_euler_angle_subscription = {nullptr, nullptr};
+    }
+}
+
+void TelemetryImpl::ground_speed_ned_async(double rate_hz,
+                                           Telemetry::GroundSpeedNEDCallbackData callback_data)
+{
+    if (rate_hz > 0) {
+        // TODO: do something about rate
+        _ground_speed_ned_subscription = callback_data;
+    } else {
+        _ground_speed_ned_subscription = {nullptr, nullptr};
+    }
+}
+
+void TelemetryImpl::gps_info_async(double rate_hz,
+                                   Telemetry::GPSInfoCallbackData callback_data)
+{
+    if (rate_hz > 0) {
+        // TODO: do something about rate
+        _gps_info_subscription = callback_data;
+    } else {
+        _gps_info_subscription = {nullptr, nullptr};
+    }
+}
+
+void TelemetryImpl::battery_async(double rate_hz,
+                                  Telemetry::BatteryCallbackData callback_data)
+{
+    if (rate_hz > 0) {
+        // TODO: do something about rate
+        _battery_subscription = callback_data;
+    } else {
+        _battery_subscription = {nullptr, nullptr};
+    }
+}
 
 } // namespace dronelink
