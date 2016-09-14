@@ -34,12 +34,12 @@ public:
     Result land() const;
     Result return_to_land() const;
 
-    void arm_async(CallbackData);
-    void disarm_async(CallbackData);
-    void kill_async(CallbackData);
-    void takeoff_async(CallbackData);
-    void land_async(CallbackData);
-    void return_to_land_async(CallbackData);
+    void arm_async(CallbackData callback_data);
+    void disarm_async(CallbackData callback_data);
+    void kill_async(CallbackData callback_data);
+    void takeoff_async(CallbackData callback_data);
+    void land_async(CallbackData callback_data);
+    void return_to_land_async(CallbackData callback_data);
 
     // Non-copyable
     Action(const Action &) = delete;
