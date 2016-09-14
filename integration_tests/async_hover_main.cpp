@@ -6,6 +6,8 @@
 #define UNUSED(x) (void)(x)
 
 
+#define MAGIC_NUMBER 42
+
 void receive_result(dronelink::Action::Result result, void *user);
 
 
@@ -41,15 +43,17 @@ int main(int argc, char *argv[])
 
     uint64_t uuid = uuids.at(0);
 
-    dl.device(uuid).action().arm_async(&receive_result);
+    unsigned magic = MAGIC_NUMBER;
+
+    dl.device(uuid).action().arm_async({&receive_result, &magic});
 
     usleep(500000);
 
-    dl.device(uuid).action().takeoff_async(&receive_result);
+    dl.device(uuid).action().takeoff_async({&receive_result, nullptr});
 
     usleep(5000000);
 
-    dl.device(uuid).action().land_async(&receive_result);
+    dl.device(uuid).action().land_async({&receive_result, nullptr});
 
     return 0;
 }
@@ -57,6 +61,14 @@ int main(int argc, char *argv[])
 
 void receive_result(dronelink::Action::Result result, void *user)
 {
-    UNUSED(user);
     std::cout << "got result: " << unsigned(result) << std::endl;
+    if (user != nullptr) {
+        unsigned *magic = reinterpret_cast<unsigned *>(user);
+        std::cout << "still have user: " << *magic << std::endl;
+
+        if (*magic != MAGIC_NUMBER) {
+            std::cerr << "Error: our number got lost!" << std::endl;
+            exit(1);
+        }
+    }
 }

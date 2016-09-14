@@ -22,6 +22,11 @@ public:
 
     typedef void (*result_callback_t)(Result result, void *user);
 
+    struct CallbackData {
+        result_callback_t callback;
+        void *user;
+    };
+
     Result arm() const;
     Result disarm() const;
     Result kill() const;
@@ -29,12 +34,12 @@ public:
     Result land() const;
     Result return_to_land() const;
 
-    void arm_async(result_callback_t callback);
-    void disarm_async(result_callback_t callback);
-    void kill_async(result_callback_t callback);
-    void takeoff_async(result_callback_t callback);
-    void land_async(result_callback_t callback);
-    void return_to_land_async(result_callback_t callback);
+    void arm_async(CallbackData);
+    void disarm_async(CallbackData);
+    void kill_async(CallbackData);
+    void takeoff_async(CallbackData);
+    void land_async(CallbackData);
+    void return_to_land_async(CallbackData);
 
     // Non-copyable
     Action(const Action &) = delete;
