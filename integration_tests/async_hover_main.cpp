@@ -40,15 +40,15 @@ int main(int argc, char *argv[])
 
     uint64_t uuid = uuids.at(0);
 
-    dl.device(uuid).control().arm_async(&receive_result);
+    dl.device(uuid).action().arm_async(&receive_result);
 
     usleep(500000);
 
-    dl.device(uuid).control().takeoff_async(&receive_result);
+    dl.device(uuid).action().takeoff_async(&receive_result);
 
     usleep(5000000);
 
-    dl.device(uuid).control().land_async(&receive_result);
+    dl.device(uuid).action().land_async(&receive_result);
 
     return 0;
 }

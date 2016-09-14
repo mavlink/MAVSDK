@@ -1,36 +1,36 @@
 #include "global_include.h"
-#include "control_impl.h"
+#include "action_impl.h"
 #include "dronelink_impl.h"
 #include "telemetry.h"
 #include <unistd.h>
 
 namespace dronelink {
 
-ControlImpl::ControlImpl() :
+ActionImpl::ActionImpl() :
     _in_air_state_known(false),
     _in_air(false)
 {
 }
 
-ControlImpl::~ControlImpl()
+ActionImpl::~ActionImpl()
 {
 
 }
 
-void ControlImpl::init()
+void ActionImpl::init()
 {
     using namespace std::placeholders; // for `_1`
 
     _parent->register_mavlink_message_handler(MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
-        std::bind(&ControlImpl::process_extended_sys_state, this, _1), (void *)this);
+        std::bind(&ActionImpl::process_extended_sys_state, this, _1), (void *)this);
 }
 
-void ControlImpl::deinit()
+void ActionImpl::deinit()
 {
     _parent->unregister_all_mavlink_message_handlers((void *)this);
 }
 
-Result ControlImpl::arm() const
+Result ActionImpl::arm() const
 {
     if (!is_arm_allowed()) {
         return Result::COMMAND_DENIED;
@@ -40,7 +40,7 @@ Result ControlImpl::arm() const
                                           {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
 }
 
-Result ControlImpl::disarm() const
+Result ActionImpl::disarm() const
 {
     if (!is_disarm_allowed()) {
         return Result::COMMAND_DENIED;
@@ -50,25 +50,25 @@ Result ControlImpl::disarm() const
                                           {0.0f, NAN, NAN, NAN, NAN, NAN, NAN});
 }
 
-Result ControlImpl::kill() const
+Result ActionImpl::kill() const
 {
     return _parent->send_command_with_ack(MAV_CMD_COMPONENT_ARM_DISARM,
                                           {0.0f, NAN, NAN, NAN, NAN, NAN, NAN});
 }
 
-Result ControlImpl::takeoff() const
+Result ActionImpl::takeoff() const
 {
     return _parent->send_command_with_ack(MAV_CMD_NAV_TAKEOFF,
                                           {NAN, NAN, NAN, NAN, NAN, NAN, NAN});
 }
 
-Result ControlImpl::land() const
+Result ActionImpl::land() const
 {
     return _parent->send_command_with_ack(MAV_CMD_NAV_LAND,
                                           {NAN, NAN, NAN, NAN, NAN, NAN, NAN});
 }
 
-Result ControlImpl::return_to_land() const
+Result ActionImpl::return_to_land() const
 {
     uint8_t mode = MAV_MODE_AUTO_ARMED | VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED;
     uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
@@ -81,7 +81,7 @@ Result ControlImpl::return_to_land() const
                                            NAN, NAN, NAN, NAN});
 }
 
-void ControlImpl::arm_async(result_callback_t callback)
+void ActionImpl::arm_async(result_callback_t callback)
 {
     if (!is_arm_allowed()) {
         report_result(callback, Result::COMMAND_DENIED);
@@ -93,7 +93,7 @@ void ControlImpl::arm_async(result_callback_t callback)
                                          {callback, nullptr});
 }
 
-void ControlImpl::disarm_async(result_callback_t callback)
+void ActionImpl::disarm_async(result_callback_t callback)
 {
     if (!is_disarm_allowed()) {
         report_result(callback, Result::COMMAND_DENIED);
@@ -105,28 +105,28 @@ void ControlImpl::disarm_async(result_callback_t callback)
                                          {callback, nullptr});
 }
 
-void ControlImpl::kill_async(result_callback_t callback)
+void ActionImpl::kill_async(result_callback_t callback)
 {
     _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
                                          {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
                                          {callback, nullptr});
 }
 
-void ControlImpl::takeoff_async(result_callback_t callback)
+void ActionImpl::takeoff_async(result_callback_t callback)
 {
     _parent->send_command_with_ack_async(MAV_CMD_NAV_TAKEOFF,
                                          {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
                                          {callback, nullptr});
 }
 
-void ControlImpl::land_async(result_callback_t callback)
+void ActionImpl::land_async(result_callback_t callback)
 {
     _parent->send_command_with_ack_async(MAV_CMD_NAV_LAND,
                                          {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
                                          {callback, nullptr});
 }
 
-void ControlImpl::return_to_land_async(result_callback_t callback)
+void ActionImpl::return_to_land_async(result_callback_t callback)
 {
 
     uint8_t mode = MAV_MODE_AUTO_ARMED | VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED;
@@ -141,7 +141,7 @@ void ControlImpl::return_to_land_async(result_callback_t callback)
                                          {callback, nullptr});
 }
 
-bool ControlImpl::is_arm_allowed() const
+bool ActionImpl::is_arm_allowed() const
 {
     if (!_in_air_state_known) {
         return false;
@@ -154,7 +154,7 @@ bool ControlImpl::is_arm_allowed() const
     return true;
 }
 
-bool ControlImpl::is_disarm_allowed() const
+bool ActionImpl::is_disarm_allowed() const
 {
     if (!_in_air_state_known) {
         Debug() << "in air state unknown";
@@ -169,7 +169,7 @@ bool ControlImpl::is_disarm_allowed() const
     return true;
 }
 
-void ControlImpl::process_extended_sys_state(const mavlink_message_t &message)
+void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
 {
     mavlink_extended_sys_state_t extended_sys_state;
     mavlink_msg_extended_sys_state_decode(&message, &extended_sys_state);
@@ -181,7 +181,7 @@ void ControlImpl::process_extended_sys_state(const mavlink_message_t &message)
     _in_air_state_known = true;
 }
 
-void ControlImpl::report_result(result_callback_t callback, Result result)
+void ActionImpl::report_result(result_callback_t callback, Result result)
 {
     if (callback == nullptr) {
         return;

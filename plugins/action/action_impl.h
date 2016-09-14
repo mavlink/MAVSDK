@@ -7,11 +7,11 @@
 
 namespace dronelink {
 
-class ControlImpl : public PluginImplBase
+class ActionImpl : public PluginImplBase
 {
 public:
-    ControlImpl();
-    ~ControlImpl();
+    ActionImpl();
+    ~ActionImpl();
 
     void init() override;
     void deinit() override;

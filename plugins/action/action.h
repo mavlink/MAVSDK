@@ -4,13 +4,13 @@
 
 namespace dronelink {
 
-class ControlImpl;
+class ActionImpl;
 
-class Control
+class Action
 {
 public:
-    explicit Control(ControlImpl *impl);
-    ~Control();
+    explicit Action(ActionImpl *impl);
+    ~Action();
 
     Result arm() const;
     Result disarm() const;
@@ -27,12 +27,12 @@ public:
     void return_to_land_async(result_callback_t callback);
 
     // Non-copyable
-    Control(const Control &) = delete;
-    const Control &operator=(const Control &) = delete;
+    Action(const Action &) = delete;
+    const Action &operator=(const Action &) = delete;
 
 private:
     // Underlying implementation, set at instantiation
-    ControlImpl *_impl;
+    ActionImpl *_impl;
 };
 
 } // namespace dronelink

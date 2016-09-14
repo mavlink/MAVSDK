@@ -1,21 +1,21 @@
 set(class_name
-    Control
+    Action
     PARENT_SCOPE
 )
 
 set(source_files
-    control.cpp
-    control_impl.cpp
+    action.cpp
+    action_impl.cpp
     PARENT_SCOPE
 )
 
 set(header_files
-    control.h
+    action.h
     PARENT_SCOPE
 )
 
 set(impl_header_files
-    control_impl.h
+    action_impl.h
     PARENT_SCOPE
 )
 
