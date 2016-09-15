@@ -87,20 +87,25 @@ Action::Result ActionImpl::return_to_land() const
                                         NAN, NAN, NAN, NAN}));
 }
 
-void ActionImpl::arm_async(Action::CallbackData callback_data)
+//void Action::arm_async_new(new_result_callback_t callback)
+//{
+//    _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
+//                                         {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+//                                         {&command_result_callback, (void *)&callback_data});
+//}
+
+void ActionImpl::arm_async(Action::CallbackData &callback_data)
 {
-    // TODO: support void *user
     if (!is_arm_allowed()) {
         report_result(callback_data, Action::Result::COMMAND_DENIED);
         return;
     }
-
     _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
                                          {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
                                          {&command_result_callback, (void *)&callback_data});
 }
 
-void ActionImpl::disarm_async(Action::CallbackData callback_data)
+void ActionImpl::disarm_async(Action::CallbackData &callback_data)
 {
     // TODO: support void *user
     if (!is_disarm_allowed()) {
@@ -113,7 +118,7 @@ void ActionImpl::disarm_async(Action::CallbackData callback_data)
                                          {&command_result_callback, (void *)&callback_data});
 }
 
-void ActionImpl::kill_async(Action::CallbackData callback_data)
+void ActionImpl::kill_async(Action::CallbackData &callback_data)
 {
     // TODO: support void *user
     _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
@@ -121,7 +126,7 @@ void ActionImpl::kill_async(Action::CallbackData callback_data)
                                          {&command_result_callback, (void *)&callback_data});
 }
 
-void ActionImpl::takeoff_async(Action::CallbackData callback_data)
+void ActionImpl::takeoff_async(Action::CallbackData &callback_data)
 {
     // TODO: support void *user
     _parent->send_command_with_ack_async(MAV_CMD_NAV_TAKEOFF,
@@ -129,7 +134,7 @@ void ActionImpl::takeoff_async(Action::CallbackData callback_data)
                                          {&command_result_callback, (void *)&callback_data});
 }
 
-void ActionImpl::land_async(Action::CallbackData callback_data)
+void ActionImpl::land_async(Action::CallbackData &callback_data)
 {
     // TODO: support void *user
     _parent->send_command_with_ack_async(MAV_CMD_NAV_LAND,
@@ -137,7 +142,7 @@ void ActionImpl::land_async(Action::CallbackData callback_data)
                                          {&command_result_callback, (void *)&callback_data});
 }
 
-void ActionImpl::return_to_land_async(Action::CallbackData callback_data)
+void ActionImpl::return_to_land_async(Action::CallbackData &callback_data)
 {
 
     uint8_t mode = MAV_MODE_AUTO_ARMED | VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED;

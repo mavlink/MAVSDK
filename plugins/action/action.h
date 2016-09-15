@@ -1,5 +1,7 @@
 #pragma once
 
+//#include <functional>
+
 namespace dronelink {
 
 class ActionImpl;
@@ -22,6 +24,8 @@ public:
 
     typedef void (*result_callback_t)(Result result, void *user);
 
+    static const char *result_str(Result);
+
     struct CallbackData {
         result_callback_t callback;
         void *user;
@@ -34,12 +38,15 @@ public:
     Result land() const;
     Result return_to_land() const;
 
-    void arm_async(CallbackData callback_data);
-    void disarm_async(CallbackData callback_data);
-    void kill_async(CallbackData callback_data);
-    void takeoff_async(CallbackData callback_data);
-    void land_async(CallbackData callback_data);
-    void return_to_land_async(CallbackData callback_data);
+    //typedef std::function<void(Result)> new_result_callback_t;
+    //void arm_async_new(new_result_callback_t);
+    
+    void arm_async(CallbackData &callback_data);
+    void disarm_async(CallbackData &callback_data);
+    void kill_async(CallbackData &callback_data);
+    void takeoff_async(CallbackData &callback_data);
+    void land_async(CallbackData &callback_data);
+    void return_to_land_async(CallbackData &callback_data);
 
     // Non-copyable
     Action(const Action &) = delete;

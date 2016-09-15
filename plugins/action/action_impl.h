@@ -24,12 +24,14 @@ public:
     Action::Result land() const;
     Action::Result return_to_land() const;
 
-    void arm_async(Action::CallbackData callback);
-    void disarm_async(Action::CallbackData callback);
-    void kill_async(Action::CallbackData callback);
-    void takeoff_async(Action::CallbackData callback);
-    void land_async(Action::CallbackData callback);
-    void return_to_land_async(Action::CallbackData callback);
+    //void arm_async_new(new_result_callback_t);
+
+    void arm_async(Action::CallbackData &callback);
+    void disarm_async(Action::CallbackData &callback);
+    void kill_async(Action::CallbackData &callback);
+    void takeoff_async(Action::CallbackData &callback);
+    void land_async(Action::CallbackData &callback);
+    void return_to_land_async(Action::CallbackData &callback);
 
 private:
     bool is_arm_allowed() const;
