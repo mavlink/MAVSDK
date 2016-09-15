@@ -61,8 +61,7 @@ install(FILES
     DESTINATION "include/dronelink"
 )
 
-# We currently don't worry about the unit tests and integration tests on iOS.
-if(NOT IOS)
+if(NOT IOS AND NOT APPLE)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR)

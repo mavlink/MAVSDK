@@ -94,8 +94,16 @@ To run the external hello world integration test, do:
 
 ### Building for iOS
 
+For arm64, armv7 and armv7s:
+
 ```
-cmake -DCMAKE_TOOLCHAIN_FILE=../CrossCompile-iOS.cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../iOS.cmake -DIOS_PLATFORM=OS
+```
+
+For the iOS simulator on i386 or x86_64:
+
+```
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../iOS.cmake -DIOS_PLATFORM=SIMULATOR
 ```
 
 ### Unit-tests
