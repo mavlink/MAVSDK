@@ -63,6 +63,8 @@ public:
     void send_command_with_ack_async(uint16_t command, const DeviceImpl::CommandParams &params,
                                      ResultCallbackData callback_data);
 
+    CommandResult set_msg_rate(uint16_t message_id, double rate_hz);
+
     double get_timeout() { return _timeout_s; }
     void set_timeout(double timeout_s) { _timeout_s = timeout_s; }
 

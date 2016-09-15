@@ -51,14 +51,14 @@ int main(int argc, char *argv[])
 
     unsigned magic = MAGIC_NUMBER;
 
-    device.telemetry().position_async(1.0, {&print_position, &magic});
-    device.telemetry().home_position_async(1.0, {&print_home_position, nullptr});
-    device.telemetry().in_air_async(1.0, {&print_in_air, nullptr});
-    device.telemetry().attitude_quaternion_async(1.0, {&print_quaternion, nullptr});
-    device.telemetry().attitude_euler_angle_async(1.0, {&print_euler_angle, nullptr});
-    device.telemetry().ground_speed_ned_async(1.0, {&print_ground_speed_ned, nullptr});
-    device.telemetry().gps_info_async(1.0, {&print_gps_info, nullptr});
-    device.telemetry().battery_async(1.0, {&print_battery, nullptr});
+    device.telemetry().position_async(10.0, {&print_position, &magic});
+    device.telemetry().home_position_async(10.0, {&print_home_position, nullptr});
+    device.telemetry().in_air_async(10.0, {&print_in_air, nullptr});
+    device.telemetry().attitude_quaternion_async(10.0, {&print_quaternion, nullptr});
+    device.telemetry().attitude_euler_angle_async(10.0, {&print_euler_angle, nullptr});
+    device.telemetry().ground_speed_ned_async(10.0, {&print_ground_speed_ned, nullptr});
+    device.telemetry().gps_info_async(10.0, {&print_gps_info, nullptr});
+    device.telemetry().battery_async(10.0, {&print_battery, nullptr});
 
     usleep(10000000);
 

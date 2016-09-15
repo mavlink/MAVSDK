@@ -257,7 +257,8 @@ void TelemetryImpl::set_battery(Telemetry::Battery battery)
 void TelemetryImpl::position_async(double rate_hz, Telemetry::PositionCallbackData callback_data)
 {
     if (rate_hz > 0) {
-        // TODO: do something about rate
+        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, rate_hz);
+
         _position_subscription = callback_data;
     } else {
         _position_subscription = {nullptr, nullptr};
@@ -268,7 +269,8 @@ void TelemetryImpl::home_position_async(double rate_hz,
                                         Telemetry::PositionCallbackData callback_data)
 {
     if (rate_hz > 0) {
-        // TODO: do something about rate
+        _parent->set_msg_rate(MAVLINK_MSG_ID_HOME_POSITION, rate_hz);
+
         _home_position_subscription = callback_data;
     } else {
         _home_position_subscription = {nullptr, nullptr};
@@ -278,7 +280,8 @@ void TelemetryImpl::home_position_async(double rate_hz,
 void TelemetryImpl::in_air_async(double rate_hz, Telemetry::InAirCallbackData callback_data)
 {
     if (rate_hz > 0) {
-        // TODO: do something about rate
+        _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz);
+
         _in_air_subscription = callback_data;
     } else {
         _in_air_subscription = {nullptr, nullptr};
@@ -290,7 +293,8 @@ void TelemetryImpl::attitude_quaternion_async(double rate_hz,
                                                   callback_data)
 {
     if (rate_hz > 0) {
-        // TODO: do something about rate
+        _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz);
+
         _attitude_quaternion_subscription = callback_data;
     } else {
         _attitude_quaternion_subscription = {nullptr, nullptr};
@@ -302,7 +306,8 @@ void TelemetryImpl::attitude_euler_angle_async(double rate_hz,
                                                    callback_data)
 {
     if (rate_hz > 0) {
-        // TODO: do something about rate
+        _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz);
+
         _attitude_euler_angle_subscription = callback_data;
     } else {
         _attitude_euler_angle_subscription = {nullptr, nullptr};
@@ -313,7 +318,8 @@ void TelemetryImpl::ground_speed_ned_async(double rate_hz,
                                            Telemetry::GroundSpeedNEDCallbackData callback_data)
 {
     if (rate_hz > 0) {
-        // TODO: do something about rate
+        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, rate_hz);
+
         _ground_speed_ned_subscription = callback_data;
     } else {
         _ground_speed_ned_subscription = {nullptr, nullptr};
@@ -324,7 +330,8 @@ void TelemetryImpl::gps_info_async(double rate_hz,
                                    Telemetry::GPSInfoCallbackData callback_data)
 {
     if (rate_hz > 0) {
-        // TODO: do something about rate
+        _parent->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz);
+
         _gps_info_subscription = callback_data;
     } else {
         _gps_info_subscription = {nullptr, nullptr};
@@ -335,7 +342,8 @@ void TelemetryImpl::battery_async(double rate_hz,
                                   Telemetry::BatteryCallbackData callback_data)
 {
     if (rate_hz > 0) {
-        // TODO: do something about rate
+        _parent->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz);
+
         _battery_subscription = callback_data;
     } else {
         _battery_subscription = {nullptr, nullptr};

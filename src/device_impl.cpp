@@ -273,8 +273,8 @@ DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
     return CommandResult::SUCCESS;
 }
 
-DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(uint16_t command,
-                                                const DeviceImpl::CommandParams &params)
+DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
+    uint16_t command, const DeviceImpl::CommandParams &params)
 {
     if (_command_state == CommandState::WAITING) {
         return CommandResult::BUSY;
@@ -336,6 +336,13 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
 
     _command_state = CommandState::WAITING;
     _result_callback_data = callback_data;
+}
+
+DeviceImpl::CommandResult DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz)
+{
+    float interval_us = 1e6f/rate_hz;
+    return send_command_with_ack(MAV_CMD_SET_MESSAGE_INTERVAL, {float(message_id), interval_us,
+                                                                NAN, NAN, NAN, NAN, NAN});
 }
 
 
