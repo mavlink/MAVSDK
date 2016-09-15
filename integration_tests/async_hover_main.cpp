@@ -44,16 +44,18 @@ int main(int argc, char *argv[])
     uint64_t uuid = uuids.at(0);
 
     unsigned magic = MAGIC_NUMBER;
-
-    dl.device(uuid).action().arm_async({&receive_result, &magic});
+    dronelink::Action::CallbackData arm_receive = {&receive_result, &magic};
+    dl.device(uuid).action().arm_async(arm_receive);
 
     usleep(500000);
 
-    dl.device(uuid).action().takeoff_async({&receive_result, nullptr});
+    dronelink::Action::CallbackData takeoff_receive = {&receive_result, &magic};
+    dl.device(uuid).action().takeoff_async(takeoff_receive);
 
     usleep(5000000);
 
-    dl.device(uuid).action().land_async({&receive_result, nullptr});
+    dronelink::Action::CallbackData land_receive = {&receive_result, &magic};
+    dl.device(uuid).action().land_async(land_receive);
 
     return 0;
 }
