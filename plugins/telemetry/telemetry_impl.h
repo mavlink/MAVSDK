@@ -27,17 +27,17 @@ public:
     Telemetry::GPSInfo get_gps_info() const;
     Telemetry::Battery get_battery() const;
 
-    void position_async(double rate_hz, Telemetry::PositionCallbackData callback_data);
-    void home_position_async(double rate_hz, Telemetry::PositionCallbackData callback_data);
-    void in_air_async(double rate_hz, Telemetry::InAirCallbackData callback_data);
+    void position_async(double rate_hz, Telemetry::PositionCallbackData &callback_data);
+    void home_position_async(double rate_hz, Telemetry::PositionCallbackData &callback_data);
+    void in_air_async(double rate_hz, Telemetry::InAirCallbackData &callback_data);
     void attitude_quaternion_async(double rate_hz,
-                                   Telemetry::AttitudeQuaternionCallbackData callback_data);
+                                   Telemetry::AttitudeQuaternionCallbackData &callback_data);
     void attitude_euler_angle_async(double rate_hz,
-                                    Telemetry::AttitudeEulerAngleCallbackData callback_data);
+                                    Telemetry::AttitudeEulerAngleCallbackData &callback_data);
     void ground_speed_ned_async(double rate_hz,
-                                Telemetry::GroundSpeedNEDCallbackData callback_data);
-    void gps_info_async(double rate_hz, Telemetry::GPSInfoCallbackData callback_data);
-    void battery_async(double rate_hz, Telemetry::BatteryCallbackData callback_data);
+                                Telemetry::GroundSpeedNEDCallbackData &callback_data);
+    void gps_info_async(double rate_hz, Telemetry::GPSInfoCallbackData &callback_data);
+    void battery_async(double rate_hz, Telemetry::BatteryCallbackData &callback_data);
 
 private:
     void set_position(Telemetry::Position position);

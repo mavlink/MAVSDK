@@ -62,50 +62,50 @@ public:
          position_callback_t callback;
          void *user;
     };
-    void position_async(double rate_hz, PositionCallbackData callback_data);
-    void home_position_async(double rate_hz, PositionCallbackData callback_data);
+    void position_async(double rate_hz, PositionCallbackData &callback_data);
+    void home_position_async(double rate_hz, PositionCallbackData &callback_data);
 
     typedef void (*in_air_callback_t)(bool in_air, void *user);
     struct InAirCallbackData {
          in_air_callback_t callback;
          void *user;
     };
-    void in_air_async(double rate_hz, InAirCallbackData callback_data);
+    void in_air_async(double rate_hz, InAirCallbackData &callback_data);
 
     typedef void (*attitude_quaternion_callback_t)(Quaternion quaternion, void *user);
     struct AttitudeQuaternionCallbackData {
          attitude_quaternion_callback_t callback;
          void *user;
     };
-    void attitude_quaternion_async(double rate_hz, AttitudeQuaternionCallbackData callback_data);
+    void attitude_quaternion_async(double rate_hz, AttitudeQuaternionCallbackData &callback_data);
 
     typedef void (*attitude_euler_angle_callback_t)(EulerAngle euler_angle, void *user);
     struct AttitudeEulerAngleCallbackData {
          attitude_euler_angle_callback_t callback;
          void *user;
     };
-    void attitude_euler_angle_async(double rate_hz, AttitudeEulerAngleCallbackData callback_data);
+    void attitude_euler_angle_async(double rate_hz, AttitudeEulerAngleCallbackData &callback_data);
 
     typedef void (*ground_speed_ned_callback_t)(GroundSpeedNED ground_speed_ned, void *user);
     struct GroundSpeedNEDCallbackData {
          ground_speed_ned_callback_t callback;
          void *user;
     };
-    void ground_speed_ned_async(double rate_hz, GroundSpeedNEDCallbackData callback_data);
+    void ground_speed_ned_async(double rate_hz, GroundSpeedNEDCallbackData &callback_data);
 
     typedef void (*gps_info_callback_t)(GPSInfo gps_info, void *user);
     struct GPSInfoCallbackData {
          gps_info_callback_t callback;
          void *user;
     };
-    void gps_info_async(double rate_hz, GPSInfoCallbackData callback_data);
+    void gps_info_async(double rate_hz, GPSInfoCallbackData &callback_data);
 
     typedef void (*battery_callback_t)(Battery battery, void *user);
     struct BatteryCallbackData {
          battery_callback_t callback;
          void *user;
     };
-    void battery_async(double rate_hz, BatteryCallbackData callback_data);
+    void battery_async(double rate_hz, BatteryCallbackData &callback_data);
 
     // Non-copyable
     Telemetry(const Telemetry &) = delete;

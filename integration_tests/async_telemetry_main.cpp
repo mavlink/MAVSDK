@@ -51,14 +51,40 @@ int main(int argc, char *argv[])
 
     unsigned magic = MAGIC_NUMBER;
 
-    device.telemetry().position_async(10.0, {&print_position, &magic});
-    device.telemetry().home_position_async(10.0, {&print_home_position, nullptr});
-    device.telemetry().in_air_async(10.0, {&print_in_air, nullptr});
-    device.telemetry().attitude_quaternion_async(10.0, {&print_quaternion, nullptr});
-    device.telemetry().attitude_euler_angle_async(10.0, {&print_euler_angle, nullptr});
-    device.telemetry().ground_speed_ned_async(10.0, {&print_ground_speed_ned, nullptr});
-    device.telemetry().gps_info_async(10.0, {&print_gps_info, nullptr});
-    device.telemetry().battery_async(10.0, {&print_battery, nullptr});
+    dronelink::Telemetry::PositionCallbackData position_callback_data =
+        {&print_position, &magic};
+    device.telemetry().position_async(10.0, position_callback_data);
+
+    dronelink::Telemetry::PositionCallbackData home_position_callback_data =
+        {&print_home_position, nullptr};
+    device.telemetry().home_position_async(10.0, home_position_callback_data);
+
+    dronelink::Telemetry::InAirCallbackData in_air_callback_data =
+        {&print_in_air, nullptr};
+    device.telemetry().in_air_async(10.0, in_air_callback_data);
+
+    dronelink::Telemetry::AttitudeQuaternionCallbackData attitude_quaternion_callback_data =
+        {&print_quaternion, nullptr};
+    device.telemetry().attitude_quaternion_async(10.0, attitude_quaternion_callback_data);
+
+    dronelink::Telemetry::AttitudeEulerAngleCallbackData attitude_euler_angle_callback_data =
+        {&print_euler_angle, nullptr};
+    device.telemetry().attitude_euler_angle_async(10.0, attitude_euler_angle_callback_data);
+
+    dronelink::Telemetry::GroundSpeedNEDCallbackData ground_speed_ned_callback_data =
+        {&print_ground_speed_ned, nullptr};
+    device.telemetry().ground_speed_ned_async(10.0, ground_speed_ned_callback_data);
+
+
+    dronelink::Telemetry::GPSInfoCallbackData gps_info_callback_data =
+        {&print_gps_info, nullptr};
+    device.telemetry().gps_info_async(10.0, gps_info_callback_data);
+
+
+    dronelink::Telemetry::BatteryCallbackData battery_callback_data =
+        {&print_battery, nullptr};
+    device.telemetry().battery_async(10.0, battery_callback_data);
+
 
     usleep(10000000);
 
