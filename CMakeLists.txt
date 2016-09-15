@@ -53,7 +53,6 @@ install(TARGETS dronelink
 )
 install(FILES
     include/dronelink.h
-    include/error_handling.h
     include/device.h
     src/plugin_base.h
     ${CMAKE_CURRENT_BINARY_DIR}/include/device_plugin_container.h
