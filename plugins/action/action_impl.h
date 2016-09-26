@@ -24,14 +24,13 @@ public:
     Action::Result land() const;
     Action::Result return_to_land() const;
 
-    //void arm_async_new(new_result_callback_t);
+    void arm_async(const Action::result_callback_t &callback);
+    void disarm_async(const Action::result_callback_t &callback);
+    void kill_async(const Action::result_callback_t &callback);
+    void takeoff_async(const Action::result_callback_t &callback);
+    void land_async(const Action::result_callback_t &callback);
+    void return_to_land_async(const Action::result_callback_t &callback);
 
-    void arm_async(Action::CallbackData &callback);
-    void disarm_async(Action::CallbackData &callback);
-    void kill_async(Action::CallbackData &callback);
-    void takeoff_async(Action::CallbackData &callback);
-    void land_async(Action::CallbackData &callback);
-    void return_to_land_async(Action::CallbackData &callback);
 
 private:
     bool is_arm_allowed() const;
@@ -39,12 +38,10 @@ private:
 
     void process_extended_sys_state(const mavlink_message_t &message);
 
-    static void report_result(Action::CallbackData callback_data, Action::Result result);
-
     static Action::Result action_result_from_command_result(DeviceImpl::CommandResult result);
 
     static void command_result_callback(DeviceImpl::CommandResult command_result,
-                                        void *user);
+                                        const Action::result_callback_t &callback);
 
     bool _in_air_state_known;
     bool _in_air;

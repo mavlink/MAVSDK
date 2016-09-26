@@ -5,6 +5,9 @@
 
 namespace dronelink {
 
+using namespace std::placeholders; // for `_1`
+
+
 DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _mavlink_handler_table(),
     _timeout_handler_map_mutex(),
@@ -16,13 +19,11 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _parent(parent),
     _command_result(MAV_RESULT_FAILED),
     _command_state(CommandState::NONE),
-    _result_callback_data({nullptr, nullptr}),
+    _command_result_callback(nullptr),
     _device_thread(nullptr),
     _should_exit(false),
     _timeout_s(DEFAULT_TIMEOUT_S)
 {
-    using namespace std::placeholders; // for `_1`
-
     register_mavlink_message_handler(MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&DeviceImpl::process_heartbeat, this, _1), this);
 
@@ -136,12 +137,15 @@ void DeviceImpl::process_command_ack(const mavlink_message_t &message)
         _command_state = CommandState::RECEIVED;
 
         if (_command_result == MAV_RESULT_ACCEPTED) {
-            report_result(_result_callback_data, CommandResult::SUCCESS);
+            if (_command_result_callback != nullptr) {
+                report_result(_command_result_callback, CommandResult::SUCCESS);
+            }
         } else {
-            report_result(_result_callback_data, CommandResult::COMMAND_DENIED);
+            if (_command_result_callback != nullptr) {
+                report_result(_command_result_callback, CommandResult::SUCCESS);
+            }
         }
-        _result_callback_data.callback = nullptr;
-        _result_callback_data.user = nullptr;
+        _command_result_callback = nullptr;
     }
 }
 
@@ -280,9 +284,7 @@ DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
         return CommandResult::BUSY;
     }
 
-    // No callback here, so let's make sure it's reset
-    _result_callback_data.callback = nullptr;
-    _result_callback_data.user = nullptr;
+    _command_result_callback = nullptr;
 
     _command_state = CommandState::WAITING;
 
@@ -319,23 +321,27 @@ DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
 }
 
 void DeviceImpl::send_command_with_ack_async(uint16_t command,
-                                             const DeviceImpl::CommandParams &params,
-                                             ResultCallbackData callback_data)
+                                                 const DeviceImpl::CommandParams &params,
+                                                 command_result_callback_t callback)
 {
     if (_command_state == CommandState::WAITING) {
-        report_result(callback_data, CommandResult::BUSY);
+        report_result(callback, CommandResult::BUSY);
     }
 
     CommandResult ret = send_command(command, params);
     if (ret != CommandResult::SUCCESS) {
-        report_result(callback_data, ret);
+        report_result(callback, ret);
         // Reset
         _command_state = CommandState::NONE;
         return;
     }
 
+    if (callback == nullptr) {
+        Debug() << "Callback is null";
+    }
+
     _command_state = CommandState::WAITING;
-    _result_callback_data = callback_data;
+    _command_result_callback = callback;
 }
 
 DeviceImpl::CommandResult DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz)
@@ -345,16 +351,13 @@ DeviceImpl::CommandResult DeviceImpl::set_msg_rate(uint16_t message_id, double r
                                                                 NAN, NAN, NAN, NAN, NAN});
 }
 
-
-void DeviceImpl::report_result(ResultCallbackData callback_data, CommandResult result)
+void DeviceImpl::report_result(const command_result_callback_t &callback, CommandResult result)
 {
-    // Never use a nullptr as a callback, this is not an error
-    // because in sync mode we don't have a callback set.
-    if (callback_data.callback == nullptr) {
+    if (!callback) {
         return;
     }
 
-    callback_data.callback(result, callback_data.user);
+    callback(result);
 }
 
 } // namespace dronelink

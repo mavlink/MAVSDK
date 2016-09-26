@@ -87,62 +87,62 @@ Action::Result ActionImpl::return_to_land() const
                                         NAN, NAN, NAN, NAN}));
 }
 
-//void Action::arm_async_new(new_result_callback_t callback)
-//{
-//    _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
-//                                         {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-//                                         {&command_result_callback, (void *)&callback_data});
-//}
-
-void ActionImpl::arm_async(Action::CallbackData &callback_data)
+void ActionImpl::arm_async(const Action::result_callback_t &callback)
 {
     if (!is_arm_allowed()) {
-        report_result(callback_data, Action::Result::COMMAND_DENIED);
+        callback(Action::Result::COMMAND_DENIED);
         return;
     }
+
     _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
                                          {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-                                         {&command_result_callback, (void *)&callback_data});
+                                         std::bind(&ActionImpl::command_result_callback,
+                                                   std::placeholders::_1,
+                                                   callback));
 }
 
-void ActionImpl::disarm_async(Action::CallbackData &callback_data)
+void ActionImpl::disarm_async(const Action::result_callback_t &callback)
 {
-    // TODO: support void *user
     if (!is_disarm_allowed()) {
-        report_result(callback_data, Action::Result::COMMAND_DENIED);
+        callback(Action::Result::COMMAND_DENIED);
         return;
     }
 
     _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
                                          {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-                                         {&command_result_callback, (void *)&callback_data});
+                                         std::bind(&ActionImpl::command_result_callback,
+                                                   std::placeholders::_1,
+                                                   callback));
 }
 
-void ActionImpl::kill_async(Action::CallbackData &callback_data)
+void ActionImpl::kill_async(const Action::result_callback_t &callback)
 {
-    // TODO: support void *user
     _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
                                          {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-                                         {&command_result_callback, (void *)&callback_data});
+                                         std::bind(&ActionImpl::command_result_callback,
+                                                   std::placeholders::_1,
+                                                   callback));
 }
 
-void ActionImpl::takeoff_async(Action::CallbackData &callback_data)
+void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
 {
-    // TODO: support void *user
     _parent->send_command_with_ack_async(MAV_CMD_NAV_TAKEOFF,
-                                         {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
-                                         {&command_result_callback, (void *)&callback_data});
+                                        {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
+                                        std::bind(&ActionImpl::command_result_callback,
+                                                  std::placeholders::_1,
+                                                  callback));
 }
 
-void ActionImpl::land_async(Action::CallbackData &callback_data)
+void ActionImpl::land_async(const Action::result_callback_t &callback)
 {
-    // TODO: support void *user
     _parent->send_command_with_ack_async(MAV_CMD_NAV_LAND,
                                          {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
-                                         {&command_result_callback, (void *)&callback_data});
+                                         std::bind(&ActionImpl::command_result_callback,
+                                                   std::placeholders::_1,
+                                                   callback));
 }
 
-void ActionImpl::return_to_land_async(Action::CallbackData &callback_data)
+void ActionImpl::return_to_land_async(const Action::result_callback_t &callback)
 {
 
     uint8_t mode = MAV_MODE_AUTO_ARMED | VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED;
@@ -154,7 +154,9 @@ void ActionImpl::return_to_land_async(Action::CallbackData &callback_data)
                                           float(custom_mode),
                                           float(custom_sub_mode),
                                           NAN, NAN, NAN, NAN},
-                                         {&command_result_callback, (void *)&callback_data});
+                                         std::bind(&ActionImpl::command_result_callback,
+                                                   std::placeholders::_1,
+                                                   callback));
 }
 
 bool ActionImpl::is_arm_allowed() const
@@ -197,15 +199,6 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
     _in_air_state_known = true;
 }
 
-void ActionImpl::report_result(Action::CallbackData callback_data, Action::Result result)
-{
-    if (callback_data.callback == nullptr) {
-        return;
-    }
-
-    callback_data.callback(result, callback_data.user);
-}
-
 Action::Result
 ActionImpl::action_result_from_command_result(DeviceImpl::CommandResult result)
 {
@@ -228,13 +221,12 @@ ActionImpl::action_result_from_command_result(DeviceImpl::CommandResult result)
 }
 
 void ActionImpl::command_result_callback(DeviceImpl::CommandResult command_result,
-                                         void *user)
+                                         const Action::result_callback_t &callback)
 {
     Action::Result action_result = action_result_from_command_result(command_result);
 
-    Action::CallbackData *callback_data = reinterpret_cast<Action::CallbackData *>(user);
-
-    callback_data->callback(action_result, callback_data->user);
+    callback(action_result);
 }
+
 
 } // namespace dronelink

@@ -14,6 +14,8 @@ namespace dronelink {
 
 class DroneLinkImpl;
 
+
+
 class DeviceImpl
 {
 public:
@@ -34,13 +36,6 @@ public:
         TIMEOUT
     };
 
-    typedef void (*result_callback_t)(CommandResult result, void *user);
-
-    struct ResultCallbackData {
-        result_callback_t callback;
-        void *user;
-    };
-
     typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
 
     typedef std::function<void()> timeout_handler_t;
@@ -58,10 +53,14 @@ public:
 
     bool send_message(const mavlink_message_t &message);
 
-    CommandResult send_command(uint16_t command, const DeviceImpl::CommandParams &params);
-    CommandResult send_command_with_ack(uint16_t command, const DeviceImpl::CommandParams &params);
-    void send_command_with_ack_async(uint16_t command, const DeviceImpl::CommandParams &params,
-                                     ResultCallbackData callback_data);
+    CommandResult send_command(uint16_t command, const CommandParams &params);
+    CommandResult send_command_with_ack(uint16_t command, const CommandParams &params);
+
+    typedef std::function<void(CommandResult)> command_result_callback_t;
+
+    void send_command_with_ack_async(uint16_t command, const CommandParams &params,
+                                     command_result_callback_t callback);
+
 
     CommandResult set_msg_rate(uint16_t message_id, double rate_hz);
 
@@ -94,7 +93,7 @@ private:
     static void send_heartbeat(DeviceImpl *parent);
     static void check_timeouts(DeviceImpl *parent);
 
-    static void report_result(ResultCallbackData callback_data, CommandResult result);
+    static void report_result(const command_result_callback_t &callback, CommandResult result);
 
 
     struct MavlinkHandlerTableEntry {
@@ -129,7 +128,7 @@ private:
     std::atomic<MAV_RESULT> _command_result;
     std::atomic<CommandState> _command_state;
 
-    ResultCallbackData _result_callback_data;
+    command_result_callback_t _command_result_callback;
 
     std::thread *_device_thread;
     std::atomic_bool _should_exit;
@@ -140,5 +139,6 @@ private:
     double _timeout_s;
     static constexpr double DEFAULT_TIMEOUT_S = 0.5;
 };
+
 
 } // namespace dronelink

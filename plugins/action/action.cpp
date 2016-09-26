@@ -42,37 +42,32 @@ Action::Result Action::return_to_land() const
     return _impl->return_to_land();
 }
 
-//void Action::arm_async_new(new_result_callback_t callback)
-//{
-//    _impl->arm_async_new(callback);
-//}
-
-void Action::arm_async(CallbackData &callback)
+void Action::arm_async(result_callback_t callback)
 {
     _impl->arm_async(callback);
 }
 
-void Action::disarm_async(CallbackData &callback)
+void Action::disarm_async(result_callback_t callback)
 {
     _impl->disarm_async(callback);
 }
 
-void Action::kill_async(CallbackData &callback)
+void Action::kill_async(result_callback_t callback)
 {
     _impl->kill_async(callback);
 }
 
-void Action::takeoff_async(CallbackData &callback)
+void Action::takeoff_async(result_callback_t callback)
 {
     _impl->takeoff_async(callback);
 }
 
-void Action::land_async(CallbackData &callback)
+void Action::land_async(result_callback_t callback)
 {
     _impl->land_async(callback);
 }
 
-void Action::return_to_land_async(CallbackData &callback)
+void Action::return_to_land_async(result_callback_t callback)
 {
     _impl->return_to_land_async(callback);
 }

@@ -6,9 +6,10 @@
 #define UNUSED(x) (void)(x)
 
 
-#define MAGIC_NUMBER 42
+using namespace std::placeholders; // for `_1`
 
-void receive_result(dronelink::Action::Result result, void *user);
+
+void receive_result(dronelink::Action::Result result);
 
 
 int main(int argc, char *argv[])
@@ -43,34 +44,22 @@ int main(int argc, char *argv[])
 
     uint64_t uuid = uuids.at(0);
 
-    unsigned magic = MAGIC_NUMBER;
-    dronelink::Action::CallbackData arm_receive = {&receive_result, &magic};
-    dl.device(uuid).action().arm_async(arm_receive);
+    //unsigned magic = MAGIC_NUMBER;
 
-    usleep(500000);
+    dl.device(uuid).action().arm_async(std::bind(&receive_result, _1));
+    usleep(2000000);
 
-    dronelink::Action::CallbackData takeoff_receive = {&receive_result, &magic};
-    dl.device(uuid).action().takeoff_async(takeoff_receive);
-
+    dl.device(uuid).action().takeoff_async(std::bind(&receive_result, _1));
     usleep(5000000);
 
-    dronelink::Action::CallbackData land_receive = {&receive_result, &magic};
-    dl.device(uuid).action().land_async(land_receive);
+    dl.device(uuid).action().land_async(std::bind(&receive_result, _1));
+    usleep(1000000);
 
     return 0;
 }
 
 
-void receive_result(dronelink::Action::Result result, void *user)
+void receive_result(dronelink::Action::Result result)
 {
     std::cout << "got result: " << unsigned(result) << std::endl;
-    if (user != nullptr) {
-        unsigned *magic = reinterpret_cast<unsigned *>(user);
-        std::cout << "still have user: " << *magic << std::endl;
-
-        if (*magic != MAGIC_NUMBER) {
-            std::cerr << "Error: our number got lost!" << std::endl;
-            exit(1);
-        }
-    }
 }
