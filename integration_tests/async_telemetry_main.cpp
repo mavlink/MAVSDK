@@ -5,16 +5,16 @@
 
 #define UNUSED(x) (void)(x)
 
-#define MAGIC_NUMBER 42
+using namespace std::placeholders; // for `_1`
 
-void print_position(dronelink::Telemetry::Position position, void *user);
-void print_home_position(dronelink::Telemetry::Position home_position, void *user);
-void print_in_air(bool in_air, void *user);
-void print_quaternion(dronelink::Telemetry::Quaternion quaternion, void *user);
-void print_euler_angle(dronelink::Telemetry::EulerAngle euler_angle, void *user);
-void print_ground_speed_ned(dronelink::Telemetry::GroundSpeedNED ground_speed_ned, void *user);
-void print_gps_info(dronelink::Telemetry::GPSInfo gps_info, void *user);
-void print_battery(dronelink::Telemetry::Battery battery, void *user);
+void print_position(dronelink::Telemetry::Position position);
+void print_home_position(dronelink::Telemetry::Position home_position);
+void print_in_air(bool in_air);
+void print_quaternion(dronelink::Telemetry::Quaternion quaternion);
+void print_euler_angle(dronelink::Telemetry::EulerAngle euler_angle);
+void print_ground_speed_ned(dronelink::Telemetry::GroundSpeedNED ground_speed_ned);
+void print_gps_info(dronelink::Telemetry::GPSInfo gps_info);
+void print_battery(dronelink::Telemetry::Battery battery);
 
 int main(int argc, char *argv[])
 {
@@ -49,41 +49,21 @@ int main(int argc, char *argv[])
 
     dronelink::Device &device = dl.device(uuid);
 
-    unsigned magic = MAGIC_NUMBER;
+    device.telemetry().position_async(10.0, std::bind(&print_position, _1));
 
-    dronelink::Telemetry::PositionCallbackData position_callback_data =
-        {&print_position, &magic};
-    device.telemetry().position_async(10.0, position_callback_data);
+    device.telemetry().home_position_async(10.0, std::bind(&print_home_position, _1));
 
-    dronelink::Telemetry::PositionCallbackData home_position_callback_data =
-        {&print_home_position, nullptr};
-    device.telemetry().home_position_async(10.0, home_position_callback_data);
+    device.telemetry().in_air_async(10.0, std::bind(&print_in_air, _1));
 
-    dronelink::Telemetry::InAirCallbackData in_air_callback_data =
-        {&print_in_air, nullptr};
-    device.telemetry().in_air_async(10.0, in_air_callback_data);
+    device.telemetry().attitude_quaternion_async(10.0, std::bind(&print_quaternion, _1));
 
-    dronelink::Telemetry::AttitudeQuaternionCallbackData attitude_quaternion_callback_data =
-        {&print_quaternion, nullptr};
-    device.telemetry().attitude_quaternion_async(10.0, attitude_quaternion_callback_data);
+    device.telemetry().attitude_euler_angle_async(10.0, std::bind(&print_euler_angle, _1));
 
-    dronelink::Telemetry::AttitudeEulerAngleCallbackData attitude_euler_angle_callback_data =
-        {&print_euler_angle, nullptr};
-    device.telemetry().attitude_euler_angle_async(10.0, attitude_euler_angle_callback_data);
+    device.telemetry().ground_speed_ned_async(10.0, std::bind(&print_ground_speed_ned, _1));
 
-    dronelink::Telemetry::GroundSpeedNEDCallbackData ground_speed_ned_callback_data =
-        {&print_ground_speed_ned, nullptr};
-    device.telemetry().ground_speed_ned_async(10.0, ground_speed_ned_callback_data);
+    device.telemetry().gps_info_async(10.0, std::bind(&print_gps_info, _1));
 
-
-    dronelink::Telemetry::GPSInfoCallbackData gps_info_callback_data =
-        {&print_gps_info, nullptr};
-    device.telemetry().gps_info_async(10.0, gps_info_callback_data);
-
-
-    dronelink::Telemetry::BatteryCallbackData battery_callback_data =
-        {&print_battery, nullptr};
-    device.telemetry().battery_async(10.0, battery_callback_data);
+    device.telemetry().battery_async(10.0, std::bind(&print_battery, _1));
 
 
     usleep(10000000);
@@ -91,70 +71,56 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void print_position(dronelink::Telemetry::Position position, void *user)
+void print_position(dronelink::Telemetry::Position position)
 {
     std::cout << "Got position, lat: " << position.latitude_deg << " deg, "
               << "lon: " << position.longitude_deg << " deg, "
               << "relative alt: " << position.relative_altitude_m << " m" << std::endl;
 
-    unsigned *magic = reinterpret_cast<unsigned *>(user);
-
-    if (*magic != MAGIC_NUMBER) {
-        std::cerr << "Error: we lost the magic number" << std::endl;
-        exit(1);
-    }
-
 }
 
-void print_home_position(dronelink::Telemetry::Position home_position, void *user)
+void print_home_position(dronelink::Telemetry::Position home_position)
 {
-    UNUSED(user);
     std::cout << "Got home position, lat: " << home_position.latitude_deg << " deg, "
               << "lon: " << home_position.longitude_deg << " deg, "
               << "relative alt: " << home_position.relative_altitude_m << " m" << std::endl;
 }
 
-void print_in_air(bool in_air, void *user)
+void print_in_air(bool in_air)
 {
-    UNUSED(user);
     std::cout << (in_air ? "in-air" : "on-ground") << std::endl;
 }
 
-void print_quaternion(dronelink::Telemetry::Quaternion quaternion, void *user)
+void print_quaternion(dronelink::Telemetry::Quaternion quaternion)
 {
-    UNUSED(user);
     std::cout << "Quaternion: [ " << quaternion.vec[0] << ", "
                                   << quaternion.vec[1] << ", "
                                   << quaternion.vec[2] << ", "
                                   << quaternion.vec[3] << " ]" << std::endl;
 }
 
-void print_euler_angle(dronelink::Telemetry::EulerAngle euler_angle, void *user)
+void print_euler_angle(dronelink::Telemetry::EulerAngle euler_angle)
 {
-    UNUSED(user);
     std::cout << "Euler angle: [ " << euler_angle.roll_deg << ", "
                                    << euler_angle.pitch_deg << ", "
                                    << euler_angle.yaw_deg << " ] deg" << std::endl;
 }
 
-void print_ground_speed_ned(dronelink::Telemetry::GroundSpeedNED ground_speed_ned, void *user)
+void print_ground_speed_ned(dronelink::Telemetry::GroundSpeedNED ground_speed_ned)
 {
-    UNUSED(user);
     std::cout << "Ground speed NED: [ " << ground_speed_ned.velocity_north_m_s << ", "
                                         << ground_speed_ned.velocity_east_m_s << ", "
                                         << ground_speed_ned.velocity_down_m_s << " ]" << std::endl;
 }
 
-void print_gps_info(dronelink::Telemetry::GPSInfo gps_info, void *user)
+void print_gps_info(dronelink::Telemetry::GPSInfo gps_info)
 {
-    UNUSED(user);
     std::cout << "GPS, num satellites: " << gps_info.num_satellites << ", "
               << "fix type: " << gps_info.fix_type << std::endl;
 }
 
-void print_battery(dronelink::Telemetry::Battery battery, void *user)
+void print_battery(dronelink::Telemetry::Battery battery)
 {
-    UNUSED(user);
     std::cout << "Battery: " << battery.voltage_v << " v,"
         << "remaining: " << int(battery.remaining*1e2f) << " %" << std::endl;
 }

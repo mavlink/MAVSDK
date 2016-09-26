@@ -52,47 +52,47 @@ Telemetry::Battery Telemetry::battery() const
     return _impl->get_battery();
 }
 
-void Telemetry::position_async(double rate_hz, Telemetry::PositionCallbackData &callback_data)
+void Telemetry::position_async(double rate_hz, position_callback_t callback)
 {
-    return _impl->position_async(rate_hz, callback_data);
+    return _impl->position_async(rate_hz, callback);
 }
 
-void Telemetry::home_position_async(double rate_hz, Telemetry::PositionCallbackData &callback_data)
+void Telemetry::home_position_async(double rate_hz, position_callback_t callback)
 {
-    return _impl->home_position_async(rate_hz, callback_data);
+    return _impl->home_position_async(rate_hz, callback);
 }
 
-void Telemetry::in_air_async(double rate_hz, Telemetry::InAirCallbackData &callback_data)
+void Telemetry::in_air_async(double rate_hz, in_air_callback_t callback)
 {
-    return _impl->in_air_async(rate_hz, callback_data);
+    return _impl->in_air_async(rate_hz,  callback);
 }
 
 void Telemetry::attitude_quaternion_async(double rate_hz,
-                                          Telemetry::AttitudeQuaternionCallbackData &callback_data)
+                                          attitude_quaternion_callback_t callback)
 {
-    return _impl->attitude_quaternion_async(rate_hz, callback_data);
+    return _impl->attitude_quaternion_async(rate_hz, callback);
 }
 
 void Telemetry::attitude_euler_angle_async(double rate_hz,
-                                           Telemetry::AttitudeEulerAngleCallbackData &callback_data)
+                                           attitude_euler_angle_callback_t callback)
 {
-    return _impl->attitude_euler_angle_async(rate_hz, callback_data);
+    return _impl->attitude_euler_angle_async(rate_hz, callback);
 }
 
 void Telemetry::ground_speed_ned_async(double rate_hz,
-                                       Telemetry::GroundSpeedNEDCallbackData &callback_data)
+                                       ground_speed_ned_callback_t callback)
 {
-    return _impl->ground_speed_ned_async(rate_hz, callback_data);
+    return _impl->ground_speed_ned_async(rate_hz, callback);
 }
 
-void Telemetry::gps_info_async(double rate_hz, Telemetry::GPSInfoCallbackData &callback_data)
+void Telemetry::gps_info_async(double rate_hz, gps_info_callback_t callback)
 {
-    return _impl->gps_info_async(rate_hz, callback_data);
+    return _impl->gps_info_async(rate_hz, callback);
 }
 
-void Telemetry::battery_async(double rate_hz, Telemetry::BatteryCallbackData &callback_data)
+void Telemetry::battery_async(double rate_hz, battery_callback_t callback)
 {
-    return _impl->battery_async(rate_hz, callback_data);
+    return _impl->battery_async(rate_hz, callback);
 }
 
 

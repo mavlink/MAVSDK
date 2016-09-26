@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 namespace dronelink {
 
 class TelemetryImpl;
@@ -57,55 +59,27 @@ public:
 
     Battery battery() const;
 
-    typedef void (*position_callback_t)(Position position, void *user);
-    struct PositionCallbackData {
-         position_callback_t callback;
-         void *user;
-    };
-    void position_async(double rate_hz, PositionCallbackData &callback_data);
-    void home_position_async(double rate_hz, PositionCallbackData &callback_data);
+    typedef std::function<void(Position position)> position_callback_t;
+    void position_async(double rate_hz, position_callback_t callback);
+    void home_position_async(double rate_hz, position_callback_t callback);
 
-    typedef void (*in_air_callback_t)(bool in_air, void *user);
-    struct InAirCallbackData {
-         in_air_callback_t callback;
-         void *user;
-    };
-    void in_air_async(double rate_hz, InAirCallbackData &callback_data);
+    typedef std::function<void(bool in_air)> in_air_callback_t;
+    void in_air_async(double rate_hz, in_air_callback_t callback);
 
-    typedef void (*attitude_quaternion_callback_t)(Quaternion quaternion, void *user);
-    struct AttitudeQuaternionCallbackData {
-         attitude_quaternion_callback_t callback;
-         void *user;
-    };
-    void attitude_quaternion_async(double rate_hz, AttitudeQuaternionCallbackData &callback_data);
+    typedef std::function<void(Quaternion quaternion)> attitude_quaternion_callback_t;
+    void attitude_quaternion_async(double rate_hz, attitude_quaternion_callback_t callback);
 
-    typedef void (*attitude_euler_angle_callback_t)(EulerAngle euler_angle, void *user);
-    struct AttitudeEulerAngleCallbackData {
-         attitude_euler_angle_callback_t callback;
-         void *user;
-    };
-    void attitude_euler_angle_async(double rate_hz, AttitudeEulerAngleCallbackData &callback_data);
+    typedef std::function<void(EulerAngle euler_angle)> attitude_euler_angle_callback_t;
+    void attitude_euler_angle_async(double rate_hz, attitude_euler_angle_callback_t callback);
 
-    typedef void (*ground_speed_ned_callback_t)(GroundSpeedNED ground_speed_ned, void *user);
-    struct GroundSpeedNEDCallbackData {
-         ground_speed_ned_callback_t callback;
-         void *user;
-    };
-    void ground_speed_ned_async(double rate_hz, GroundSpeedNEDCallbackData &callback_data);
+    typedef std::function<void(GroundSpeedNED ground_speed_ned)> ground_speed_ned_callback_t;
+    void ground_speed_ned_async(double rate_hz, ground_speed_ned_callback_t callback);
 
-    typedef void (*gps_info_callback_t)(GPSInfo gps_info, void *user);
-    struct GPSInfoCallbackData {
-         gps_info_callback_t callback;
-         void *user;
-    };
-    void gps_info_async(double rate_hz, GPSInfoCallbackData &callback_data);
+    typedef std::function<void(GPSInfo gps_info)> gps_info_callback_t;
+    void gps_info_async(double rate_hz, gps_info_callback_t callback);
 
-    typedef void (*battery_callback_t)(Battery battery, void *user);
-    struct BatteryCallbackData {
-         battery_callback_t callback;
-         void *user;
-    };
-    void battery_async(double rate_hz, BatteryCallbackData &callback_data);
+    typedef std::function<void(Battery battery)> battery_callback_t;
+    void battery_async(double rate_hz, battery_callback_t callback);
 
     // Non-copyable
     Telemetry(const Telemetry &) = delete;
