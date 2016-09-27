@@ -88,6 +88,7 @@ const char *Action::result_str(Result result)
         case Result::TIMEOUT:
             return "Timeout";
         case Result::UNKNOWN:
+        default:
             return "Unknown";
     }
 }
