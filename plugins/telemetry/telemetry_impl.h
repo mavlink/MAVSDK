@@ -10,7 +10,8 @@ namespace dronelink {
 
 class DeviceImpl;
 
-class TelemetryImpl : public PluginImplBase {
+class TelemetryImpl : public PluginImplBase
+{
 public:
     TelemetryImpl();
     ~TelemetryImpl();

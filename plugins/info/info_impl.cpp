@@ -19,10 +19,12 @@ void InfoImpl::init()
 {
     using namespace std::placeholders; // for `_1`
 
-    _parent->register_mavlink_message_handler(MAVLINK_MSG_ID_HEARTBEAT,
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&InfoImpl::process_heartbeat, this, _1), (void *)this);
 
-    _parent->register_mavlink_message_handler(MAVLINK_MSG_ID_AUTOPILOT_VERSION,
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&InfoImpl::process_autopilot_version, this, _1), (void *)this);
 
 }

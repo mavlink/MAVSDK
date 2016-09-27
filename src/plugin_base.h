@@ -2,7 +2,8 @@
 
 namespace dronelink {
 
-class PluginBase {
+class PluginBase
+{
 public:
     PluginBase() {}
     virtual ~PluginBase() = default;

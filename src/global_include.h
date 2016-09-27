@@ -15,12 +15,14 @@ public:
     Debug() : _s() {}
 
     template <typename T>
-    Debug &operator << (const T &x) {
+    Debug &operator << (const T &x)
+    {
         _s << x;
         return *this;
     }
 
-    ~Debug() {
+    ~Debug()
+    {
         std::cout << _s.str() << std::endl;
     }
 
@@ -30,7 +32,8 @@ private:
 #else
 public:
     template <typename T>
-    Debug &operator << (const T &x) {
+    Debug &operator << (const T &x)
+    {
         UNUSED(x);
         return *this;
     }

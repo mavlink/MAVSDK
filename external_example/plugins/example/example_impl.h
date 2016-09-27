@@ -6,7 +6,8 @@
 
 namespace dronelink {
 
-class ExampleImpl : public PluginImplBase {
+class ExampleImpl : public PluginImplBase
+{
 public:
     ExampleImpl();
     ~ExampleImpl();

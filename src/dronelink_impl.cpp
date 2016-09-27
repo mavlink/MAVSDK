@@ -96,7 +96,7 @@ Device &DroneLinkImpl::get_device(uint64_t uuid)
 
     // TODO: this is an error condition that we ought to handle properly.
     if (system_id == 0) {
-        Debug() <<"device with UUID: " << uuid << " not found";
+        Debug() << "device with UUID: " << uuid << " not found";
     }
 
     create_device_if_not_existing(system_id);

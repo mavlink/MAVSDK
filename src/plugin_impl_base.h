@@ -4,7 +4,8 @@ namespace dronelink {
 
 class DeviceImpl;
 
-class PluginImplBase {
+class PluginImplBase
+{
 public:
     PluginImplBase();
     virtual ~PluginImplBase() = default;

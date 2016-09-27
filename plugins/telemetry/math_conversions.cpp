@@ -5,12 +5,12 @@ namespace dronelink {
 
 float to_deg_from_rad(float rad)
 {
-    return rad*180.0f/M_PI;
+    return rad * 180.0f / M_PI;
 }
 
 float to_rad_from_deg(float deg)
 {
-    return deg/180.0f*M_PI;
+    return deg / 180.0f * M_PI;
 }
 
 Telemetry::EulerAngle to_euler_angle_from_quaternion(Telemetry::Quaternion quaternion)
@@ -37,12 +37,15 @@ Telemetry::Quaternion to_quaternion_from_euler_angle(Telemetry::EulerAngle euler
     const double cos_psi_2 = cos(double(euler_angle.yaw_deg) / 2.0);
     const double sin_psi_2 = sin(double(euler_angle.yaw_deg) / 2.0);
 
+    // Need to disable astyle for this block.
+    // *INDENT-OFF*
     Telemetry::Quaternion quaternion({
         (float(cos_phi_2 * cos_theta_2 * cos_psi_2 + sin_phi_2 * sin_theta_2 * sin_psi_2)),
         (float(sin_phi_2 * cos_theta_2 * cos_psi_2 - cos_phi_2 * sin_theta_2 * sin_psi_2)),
         (float(cos_phi_2 * sin_theta_2 * cos_psi_2 + sin_phi_2 * cos_theta_2 * sin_psi_2)),
         (float(cos_phi_2 * cos_theta_2 * sin_psi_2 - sin_phi_2 * sin_theta_2 * cos_psi_2))
     });
+    // *INDENT-ON*
 
     return quaternion;
 }

@@ -9,7 +9,8 @@ namespace dronelink {
 
 class DroneLinkImpl;
 
-class DroneLink {
+class DroneLink
+{
 public:
     DroneLink();
     ~DroneLink();

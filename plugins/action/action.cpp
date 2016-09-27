@@ -72,7 +72,8 @@ void Action::return_to_land_async(result_callback_t callback)
     _impl->return_to_land_async(callback);
 }
 
-const char *Action::result_str(Result result) {
+const char *Action::result_str(Result result)
+{
     switch (result) {
         case Result::SUCCESS:
             return "Success";

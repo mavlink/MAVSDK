@@ -7,7 +7,8 @@
 
 namespace dronelink {
 
-class InfoImpl : public PluginImplBase {
+class InfoImpl : public PluginImplBase
+{
 public:
     InfoImpl();
     ~InfoImpl();

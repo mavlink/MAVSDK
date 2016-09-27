@@ -21,7 +21,8 @@ void ActionImpl::init()
 {
     using namespace std::placeholders; // for `_1`
 
-    _parent->register_mavlink_message_handler(MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
         std::bind(&ActionImpl::process_extended_sys_state, this, _1), (void *)this);
 }
 
@@ -37,8 +38,9 @@ Action::Result ActionImpl::arm() const
     }
 
     return action_result_from_command_result(
-        _parent->send_command_with_ack(MAV_CMD_COMPONENT_ARM_DISARM,
-                                       {1.0f, NAN, NAN, NAN, NAN, NAN, NAN}));
+               _parent->send_command_with_ack(
+                   MAV_CMD_COMPONENT_ARM_DISARM,
+                   DeviceImpl::CommandParams {1.0f, NAN, NAN, NAN, NAN, NAN, NAN}));
 }
 
 Action::Result ActionImpl::disarm() const
@@ -48,29 +50,33 @@ Action::Result ActionImpl::disarm() const
     }
 
     return action_result_from_command_result(
-        _parent->send_command_with_ack(MAV_CMD_COMPONENT_ARM_DISARM,
-                                       {0.0f, NAN, NAN, NAN, NAN, NAN, NAN}));
+               _parent->send_command_with_ack(
+                   MAV_CMD_COMPONENT_ARM_DISARM,
+                   DeviceImpl::CommandParams {0.0f, NAN, NAN, NAN, NAN, NAN, NAN}));
 }
 
 Action::Result ActionImpl::kill() const
 {
     return action_result_from_command_result(
-        _parent->send_command_with_ack(MAV_CMD_COMPONENT_ARM_DISARM,
-                                       {0.0f, NAN, NAN, NAN, NAN, NAN, NAN}));
+               _parent->send_command_with_ack(
+                   MAV_CMD_COMPONENT_ARM_DISARM,
+                   DeviceImpl::CommandParams {0.0f, NAN, NAN, NAN, NAN, NAN, NAN}));
 }
 
 Action::Result ActionImpl::takeoff() const
 {
     return action_result_from_command_result(
-        _parent->send_command_with_ack(MAV_CMD_NAV_TAKEOFF,
-                                       {NAN, NAN, NAN, NAN, NAN, NAN, NAN}));
+               _parent->send_command_with_ack(
+                   MAV_CMD_NAV_TAKEOFF,
+                   DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN, NAN}));
 }
 
 Action::Result ActionImpl::land() const
 {
     return action_result_from_command_result(
-        _parent->send_command_with_ack(MAV_CMD_NAV_LAND,
-                                       {NAN, NAN, NAN, NAN, NAN, NAN, NAN}));
+               _parent->send_command_with_ack(
+                   MAV_CMD_NAV_LAND,
+                   DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN, NAN}));
 }
 
 Action::Result ActionImpl::return_to_land() const
@@ -80,11 +86,12 @@ Action::Result ActionImpl::return_to_land() const
     uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
     return action_result_from_command_result(
-        _parent->send_command_with_ack(MAV_CMD_DO_SET_MODE,
-                                       {float(mode),
-                                        float(custom_mode),
-                                        float(custom_sub_mode),
-                                        NAN, NAN, NAN, NAN}));
+               _parent->send_command_with_ack(
+                   MAV_CMD_DO_SET_MODE,
+                   DeviceImpl::CommandParams {float(mode),
+                                              float(custom_mode),
+                                              float(custom_sub_mode),
+                                              NAN, NAN, NAN, NAN}));
 }
 
 void ActionImpl::arm_async(const Action::result_callback_t &callback)
@@ -94,11 +101,12 @@ void ActionImpl::arm_async(const Action::result_callback_t &callback)
         return;
     }
 
-    _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
-                                         {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-                                         std::bind(&ActionImpl::command_result_callback,
-                                                   std::placeholders::_1,
-                                                   callback));
+    _parent->send_command_with_ack_async(
+        MAV_CMD_COMPONENT_ARM_DISARM,
+        DeviceImpl::CommandParams {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+        std::bind(&ActionImpl::command_result_callback,
+                  std::placeholders::_1,
+                  callback));
 }
 
 void ActionImpl::disarm_async(const Action::result_callback_t &callback)
@@ -108,38 +116,42 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
         return;
     }
 
-    _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
-                                         {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-                                         std::bind(&ActionImpl::command_result_callback,
-                                                   std::placeholders::_1,
-                                                   callback));
+    _parent->send_command_with_ack_async(
+        MAV_CMD_COMPONENT_ARM_DISARM,
+        DeviceImpl::CommandParams {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+        std::bind(&ActionImpl::command_result_callback,
+                  std::placeholders::_1,
+                  callback));
 }
 
 void ActionImpl::kill_async(const Action::result_callback_t &callback)
 {
-    _parent->send_command_with_ack_async(MAV_CMD_COMPONENT_ARM_DISARM,
-                                         {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-                                         std::bind(&ActionImpl::command_result_callback,
-                                                   std::placeholders::_1,
-                                                   callback));
+    _parent->send_command_with_ack_async(
+        MAV_CMD_COMPONENT_ARM_DISARM,
+        DeviceImpl::CommandParams {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+        std::bind(&ActionImpl::command_result_callback,
+                  std::placeholders::_1,
+                  callback));
 }
 
 void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
 {
-    _parent->send_command_with_ack_async(MAV_CMD_NAV_TAKEOFF,
-                                        {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
-                                        std::bind(&ActionImpl::command_result_callback,
-                                                  std::placeholders::_1,
-                                                  callback));
+    _parent->send_command_with_ack_async(
+        MAV_CMD_NAV_TAKEOFF,
+        DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
+        std::bind(&ActionImpl::command_result_callback,
+                  std::placeholders::_1,
+                  callback));
 }
 
 void ActionImpl::land_async(const Action::result_callback_t &callback)
 {
-    _parent->send_command_with_ack_async(MAV_CMD_NAV_LAND,
-                                         {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
-                                         std::bind(&ActionImpl::command_result_callback,
-                                                   std::placeholders::_1,
-                                                   callback));
+    _parent->send_command_with_ack_async(
+        MAV_CMD_NAV_LAND,
+        DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
+        std::bind(&ActionImpl::command_result_callback,
+                  std::placeholders::_1,
+                  callback));
 }
 
 void ActionImpl::return_to_land_async(const Action::result_callback_t &callback)
@@ -149,14 +161,15 @@ void ActionImpl::return_to_land_async(const Action::result_callback_t &callback)
     uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
-    _parent->send_command_with_ack_async(MAV_CMD_DO_SET_MODE,
-                                         {float(mode),
-                                          float(custom_mode),
-                                          float(custom_sub_mode),
-                                          NAN, NAN, NAN, NAN},
-                                         std::bind(&ActionImpl::command_result_callback,
-                                                   std::placeholders::_1,
-                                                   callback));
+    _parent->send_command_with_ack_async(
+        MAV_CMD_DO_SET_MODE,
+        DeviceImpl::CommandParams {float(mode),
+                                   float(custom_mode),
+                                   float(custom_sub_mode),
+                                   NAN, NAN, NAN, NAN},
+        std::bind(&ActionImpl::command_result_callback,
+                  std::placeholders::_1,
+                  callback));
 }
 
 bool ActionImpl::is_arm_allowed() const
@@ -208,11 +221,11 @@ ActionImpl::action_result_from_command_result(DeviceImpl::CommandResult result)
         case DeviceImpl::CommandResult::NO_DEVICE:
             return Action::Result::NO_DEVICE;
         case DeviceImpl::CommandResult::CONNECTION_ERROR:
-             return Action::Result::CONNECTION_ERROR;
+            return Action::Result::CONNECTION_ERROR;
         case DeviceImpl::CommandResult::BUSY:
-             return Action::Result::BUSY;
+            return Action::Result::BUSY;
         case DeviceImpl::CommandResult::COMMAND_DENIED:
-             return Action::Result::COMMAND_DENIED;
+            return Action::Result::COMMAND_DENIED;
         case DeviceImpl::CommandResult::TIMEOUT:
             return Action::Result::TIMEOUT;
         default:

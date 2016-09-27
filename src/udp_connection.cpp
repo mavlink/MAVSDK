@@ -62,7 +62,7 @@ DroneLink::ConnectionResult UdpConnection::setup_port()
     addr.sin_port = htons(_port_number);
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    if (bind(_socket_fd, (sockaddr *)&addr, sizeof(addr)) != 0 ) {
+    if (bind(_socket_fd, (sockaddr *)&addr, sizeof(addr)) != 0) {
         Debug() << "bind error: " << strerror(errno);
         return DroneLink::ConnectionResult::BIND_ERROR;
     }

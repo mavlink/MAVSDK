@@ -94,23 +94,23 @@ void print_in_air(bool in_air)
 void print_quaternion(dronelink::Telemetry::Quaternion quaternion)
 {
     std::cout << "Quaternion: [ " << quaternion.vec[0] << ", "
-                                  << quaternion.vec[1] << ", "
-                                  << quaternion.vec[2] << ", "
-                                  << quaternion.vec[3] << " ]" << std::endl;
+              << quaternion.vec[1] << ", "
+              << quaternion.vec[2] << ", "
+              << quaternion.vec[3] << " ]" << std::endl;
 }
 
 void print_euler_angle(dronelink::Telemetry::EulerAngle euler_angle)
 {
     std::cout << "Euler angle: [ " << euler_angle.roll_deg << ", "
-                                   << euler_angle.pitch_deg << ", "
-                                   << euler_angle.yaw_deg << " ] deg" << std::endl;
+              << euler_angle.pitch_deg << ", "
+              << euler_angle.yaw_deg << " ] deg" << std::endl;
 }
 
 void print_ground_speed_ned(dronelink::Telemetry::GroundSpeedNED ground_speed_ned)
 {
     std::cout << "Ground speed NED: [ " << ground_speed_ned.velocity_north_m_s << ", "
-                                        << ground_speed_ned.velocity_east_m_s << ", "
-                                        << ground_speed_ned.velocity_down_m_s << " ]" << std::endl;
+              << ground_speed_ned.velocity_east_m_s << ", "
+              << ground_speed_ned.velocity_down_m_s << " ]" << std::endl;
 }
 
 void print_gps_info(dronelink::Telemetry::GPSInfo gps_info)
@@ -122,5 +122,5 @@ void print_gps_info(dronelink::Telemetry::GPSInfo gps_info)
 void print_battery(dronelink::Telemetry::Battery battery)
 {
     std::cout << "Battery: " << battery.voltage_v << " v,"
-        << "remaining: " << int(battery.remaining*1e2f) << " %" << std::endl;
+              << "remaining: " << int(battery.remaining * 1e2f) << " %" << std::endl;
 }

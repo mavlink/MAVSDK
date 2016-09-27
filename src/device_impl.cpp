@@ -24,13 +24,16 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _should_exit(false),
     _timeout_s(DEFAULT_TIMEOUT_S)
 {
-    register_mavlink_message_handler(MAVLINK_MSG_ID_HEARTBEAT,
+    register_mavlink_message_handler(
+        MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&DeviceImpl::process_heartbeat, this, _1), this);
 
-    register_mavlink_message_handler(MAVLINK_MSG_ID_COMMAND_ACK,
+    register_mavlink_message_handler(
+        MAVLINK_MSG_ID_COMMAND_ACK,
         std::bind(&DeviceImpl::process_command_ack, this, _1), this);
 
-    register_mavlink_message_handler(MAVLINK_MSG_ID_AUTOPILOT_VERSION,
+    register_mavlink_message_handler(
+        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&DeviceImpl::process_autopilot_version, this, _1), this);
 }
 
@@ -198,7 +201,7 @@ void DeviceImpl::check_timeouts(DeviceImpl *parent)
         std::lock_guard<std::mutex> lock(parent->_timeout_handler_map_mutex);
 
         for (auto it = parent->_timeout_handler_map.begin();
-            it != parent->_timeout_handler_map.end(); /* no ++it */) {
+             it != parent->_timeout_handler_map.end(); /* no ++it */) {
 
             // If time is passed, call timeout callback.
             if (it->second.time < steady_time()) {
@@ -230,7 +233,7 @@ bool DeviceImpl::send_message(const mavlink_message_t &message)
 void DeviceImpl::request_autopilot_version()
 {
     send_command(MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-                 {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
+    {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
 }
 
 uint64_t DeviceImpl::get_target_uuid() const
@@ -249,7 +252,7 @@ uint8_t DeviceImpl::get_target_component_id() const
 }
 
 DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
-                                                          const DeviceImpl::CommandParams &params)
+                                                   const DeviceImpl::CommandParams &params)
 {
     if (_target_system_id == 0 && _target_component_id == 0) {
         return CommandResult::NO_DEVICE;
@@ -295,7 +298,7 @@ DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
 
     const unsigned timeout_us = unsigned(_timeout_s * 1e6);
     const unsigned wait_time_us = 1000;
-    const unsigned iterations = timeout_us/wait_time_us;
+    const unsigned iterations = timeout_us / wait_time_us;
 
     // Wait until we have received a result.
     for (unsigned i = 0; i < iterations; ++i) {
@@ -321,8 +324,8 @@ DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
 }
 
 void DeviceImpl::send_command_with_ack_async(uint16_t command,
-                                                 const DeviceImpl::CommandParams &params,
-                                                 command_result_callback_t callback)
+                                             const DeviceImpl::CommandParams &params,
+                                             command_result_callback_t callback)
 {
     if (_command_state == CommandState::WAITING) {
         report_result(callback, CommandResult::BUSY);
@@ -346,9 +349,10 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
 
 DeviceImpl::CommandResult DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz)
 {
-    float interval_us = 1e6f/rate_hz;
+    float interval_us = 1e6f / rate_hz;
     return send_command_with_ack(MAV_CMD_SET_MESSAGE_INTERVAL, {float(message_id), interval_us,
-                                                                NAN, NAN, NAN, NAN, NAN});
+                                                                NAN, NAN, NAN, NAN, NAN
+                                                               });
 }
 
 void DeviceImpl::report_result(const command_result_callback_t &callback, CommandResult result)

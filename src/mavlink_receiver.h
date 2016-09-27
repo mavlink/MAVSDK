@@ -10,15 +10,18 @@ class MavlinkReceiver
 public:
     explicit MavlinkReceiver(uint8_t channel);
 
-    uint8_t get_channel() {
+    uint8_t get_channel()
+    {
         return _channel;
     }
 
-    mavlink_message_t &get_message() {
+    mavlink_message_t &get_message()
+    {
         return _message;
     }
 
-    mavlink_status_t &get_status() {
+    mavlink_status_t &get_status()
+    {
         return _status;
     }
 

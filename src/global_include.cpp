@@ -17,13 +17,13 @@ double elapsed_s(dl_time_t &since)
     auto now = steady_clock::now();
 
     return ((now - since).count()) * steady_clock::period::num /
-        static_cast<double>(steady_clock::period::den);
+           static_cast<double>(steady_clock::period::den);
 }
 
 dl_time_t steady_time_in_future(double duration_s)
 {
     auto now = std::chrono::steady_clock::now();
-    return now + std::chrono::nanoseconds((long int)(duration_s*1e9));
+    return now + std::chrono::nanoseconds((long int)(duration_s * 1e9));
 }
 
 

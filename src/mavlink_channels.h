@@ -8,7 +8,8 @@ namespace dronelink {
 class MavlinkChannels
 {
 public:
-    static MavlinkChannels &Instance() {
+    static MavlinkChannels &Instance()
+    {
         // This should be thread-safe in C++11.
         static MavlinkChannels instance;
 
@@ -16,10 +17,10 @@ public:
     }
 
     // delete copy and move constructors and assign operators
-    MavlinkChannels(MavlinkChannels const&) = delete;             // Copy construct
-    MavlinkChannels(MavlinkChannels&&) = delete;                  // Move construct
-    MavlinkChannels& operator=(MavlinkChannels const&) = delete;  // Copy assign
-    MavlinkChannels& operator=(MavlinkChannels &&) = delete;      // Move assign
+    MavlinkChannels(MavlinkChannels const &) = delete;            // Copy construct
+    MavlinkChannels(MavlinkChannels &&) = delete;                 // Move construct
+    MavlinkChannels &operator=(MavlinkChannels const &) = delete; // Copy assign
+    MavlinkChannels &operator=(MavlinkChannels &&) = delete;      // Move assign
 
     MavlinkChannels();
     ~MavlinkChannels();
