@@ -36,6 +36,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Keep track of errors for the exit value
 ERROR_FOUND=false
 
+cd $1 > /dev/null
+
 # Go through all .h and .cpp files listed by git
 git ls-tree -r HEAD --name-only | grep -E "\.h$|\.cpp$" | while read LINE;
 do
@@ -51,6 +53,8 @@ do
         ERROR_FOUND=true
     fi
 done
+
+cd - > /dev/null
 
 if $ERROR_FOUND ; then
     exit 1
