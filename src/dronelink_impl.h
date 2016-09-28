@@ -25,6 +25,12 @@ public:
     const std::vector<uint64_t> &get_device_uuids() const;
     Device &get_device(uint64_t uuid);
 
+    void register_on_discover(DroneLink::event_callback_t callback);
+    void register_on_timeout(DroneLink::event_callback_t callback);
+
+    void notify_on_discover(uint64_t uuid);
+    void notify_on_timeout(uint64_t uuid);
+
     static constexpr int DEFAULT_UDP_RECEIVE_PORT = 14540;
 
 private:
@@ -36,6 +42,9 @@ private:
     std::mutex _devices_mutex;
     std::map<uint8_t, Device *> _devices;
     std::map<uint8_t, DeviceImpl *> _device_impls;
+
+    DroneLink::event_callback_t _on_discover_callback;
+    DroneLink::event_callback_t _on_timeout_callback;
 };
 
 } // namespace dronelink

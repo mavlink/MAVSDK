@@ -22,7 +22,10 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _command_result_callback(nullptr),
     _device_thread(nullptr),
     _should_exit(false),
-    _timeout_s(DEFAULT_TIMEOUT_S)
+    _timeout_s(DEFAULT_TIMEOUT_S),
+    _last_heartbeat_received_time(),
+    _heartbeat_timeout_s(DEFAULT_HEARTBEAT_TIMEOUT_S),
+    _heartbeat_timed_out(false)
 {
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
@@ -126,6 +129,9 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     }
 
     check_device_thread();
+
+    _last_heartbeat_received_time = steady_time();
+    _heartbeat_timed_out = false;
 }
 
 void DeviceImpl::process_command_ack(const mavlink_message_t &message)
@@ -157,9 +163,17 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
     mavlink_autopilot_version_t autopilot_version;
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
-    _target_uuid = autopilot_version.uid;
-    _target_supports_mission_int =
-        autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT;
+    if (_target_uuid == 0) {
+        _target_uuid = autopilot_version.uid;
+        _target_supports_mission_int =
+            autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT;
+
+        _parent->notify_on_discover(_target_uuid);
+
+    } else if (_target_uuid != autopilot_version.uid) {
+        // TODO: raise a flag to invalidate device
+        Debug() << "Error: UUID changed";
+    }
 }
 
 void DeviceImpl::check_device_thread()
@@ -169,46 +183,47 @@ void DeviceImpl::check_device_thread()
     }
 }
 
-void DeviceImpl::device_thread(DeviceImpl *parent)
+void DeviceImpl::device_thread(DeviceImpl *self)
 {
     const unsigned heartbeat_interval_us = 1000000;
     const unsigned timeout_interval_us = 10000;
     const unsigned heartbeat_multiplier = heartbeat_interval_us / timeout_interval_us;
     unsigned counter = 0;
 
-    while (!parent->_should_exit) {
+    while (!self->_should_exit) {
         if (counter++ % heartbeat_multiplier == 0) {
-            send_heartbeat(parent);
+            send_heartbeat(self);
         }
-        check_timeouts(parent);
+        check_timeouts(self);
+        check_heartbeat_timeout(self);
         usleep(timeout_interval_us);
     }
 }
 
-void DeviceImpl::send_heartbeat(DeviceImpl *parent)
+void DeviceImpl::send_heartbeat(DeviceImpl *self)
 {
     mavlink_message_t message;
     mavlink_msg_heartbeat_pack(_own_system_id, _own_component_id, &message,
                                MAV_TYPE_GCS, 0, 0, 0, 0);
-    parent->send_message(message);
+    self->send_message(message);
 }
 
-void DeviceImpl::check_timeouts(DeviceImpl *parent)
+void DeviceImpl::check_timeouts(DeviceImpl *self)
 {
     timeout_handler_t callback = nullptr;
 
     {
-        std::lock_guard<std::mutex> lock(parent->_timeout_handler_map_mutex);
+        std::lock_guard<std::mutex> lock(self->_timeout_handler_map_mutex);
 
-        for (auto it = parent->_timeout_handler_map.begin();
-             it != parent->_timeout_handler_map.end(); /* no ++it */) {
+        for (auto it = self->_timeout_handler_map.begin();
+             it != self->_timeout_handler_map.end(); /* no ++it */) {
 
             // If time is passed, call timeout callback.
             if (it->second.time < steady_time()) {
 
                 callback = it->second.callback;
                 //Self-destruct before calling to avoid locking issues.
-                parent->_timeout_handler_map.erase(it++);
+                self->_timeout_handler_map.erase(it++);
                 break;
 
             } else {
@@ -224,6 +239,15 @@ void DeviceImpl::check_timeouts(DeviceImpl *parent)
     }
 }
 
+void DeviceImpl::check_heartbeat_timeout(DeviceImpl *self)
+{
+    if (elapsed_s(self->_last_heartbeat_received_time) > self->_heartbeat_timeout_s) {
+        if (!self->_heartbeat_timed_out) {
+            self->_parent->notify_on_timeout(self->_target_uuid);
+            self->_heartbeat_timed_out = true;
+        }
+    }
+}
 
 bool DeviceImpl::send_message(const mavlink_message_t &message)
 {

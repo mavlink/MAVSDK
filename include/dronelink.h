@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 namespace dronelink {
 
@@ -36,6 +37,10 @@ public:
 
     const std::vector<uint64_t> &device_uuids() const;
     Device &device(uint64_t uuid) const;
+
+    typedef std::function<void(uint64_t uuid)> event_callback_t;
+    void register_on_discover(event_callback_t callback);
+    void register_on_timeout(event_callback_t callback);
 
 private:
     DroneLinkImpl *_impl;

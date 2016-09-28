@@ -9,7 +9,9 @@ DroneLinkImpl::DroneLinkImpl() :
     _connections(),
     _devices_mutex(),
     _devices(),
-    _device_impls()
+    _device_impls(),
+    _on_discover_callback(nullptr),
+    _on_timeout_callback(nullptr)
 {}
 
 DroneLinkImpl::~DroneLinkImpl()
@@ -68,7 +70,7 @@ void DroneLinkImpl::add_connection(Connection *new_connection)
 
 const std::vector<uint64_t> &DroneLinkImpl::get_device_uuids() const
 {
-    // This needs to survice the scope.
+    // This needs to survive the scope.
     static std::vector<uint64_t> uuids;
 
     for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
@@ -119,6 +121,30 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id)
 
     Device *new_device = new Device(new_device_impl);
     _devices.insert(std::pair<uint8_t, Device *>(system_id, new_device));
+}
+
+void DroneLinkImpl::notify_on_discover(uint64_t uuid)
+{
+    if (_on_discover_callback != nullptr) {
+        _on_discover_callback(uuid);
+    }
+}
+
+void DroneLinkImpl::notify_on_timeout(uint64_t uuid)
+{
+    if (_on_timeout_callback != nullptr) {
+        _on_timeout_callback(uuid);
+    }
+}
+
+void DroneLinkImpl::register_on_discover(DroneLink::event_callback_t callback)
+{
+    _on_discover_callback = callback;
+}
+
+void DroneLinkImpl::register_on_timeout(DroneLink::event_callback_t callback)
+{
+    _on_timeout_callback = callback;
 }
 
 } // namespace dronelink

@@ -89,9 +89,10 @@ private:
 
     void check_device_thread();
 
-    static void device_thread(DeviceImpl *parent);
-    static void send_heartbeat(DeviceImpl *parent);
-    static void check_timeouts(DeviceImpl *parent);
+    static void device_thread(DeviceImpl *self);
+    static void send_heartbeat(DeviceImpl *self);
+    static void check_timeouts(DeviceImpl *self);
+    static void check_heartbeat_timeout(DeviceImpl *self);
 
     static void report_result(const command_result_callback_t &callback, CommandResult result);
 
@@ -138,6 +139,11 @@ private:
 
     double _timeout_s;
     static constexpr double DEFAULT_TIMEOUT_S = 0.5;
+
+    dl_time_t _last_heartbeat_received_time;
+    double _heartbeat_timeout_s;
+    static constexpr double DEFAULT_HEARTBEAT_TIMEOUT_S = 3.0;
+    bool _heartbeat_timed_out;
 };
 
 

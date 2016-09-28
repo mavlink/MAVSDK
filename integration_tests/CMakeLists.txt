@@ -20,6 +20,15 @@ target_link_libraries(simple_connect
 )
 
 
+add_executable(async_connect
+    async_connect_main.cpp
+)
+
+target_link_libraries(async_connect
+    ${_libs}
+)
+
+
 add_executable(simple_telemetry
     simple_telemetry_main.cpp
 )

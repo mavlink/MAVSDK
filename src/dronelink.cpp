@@ -65,5 +65,14 @@ Device &DroneLink::device(uint64_t uuid) const
     return _impl->get_device(uuid);
 }
 
+void DroneLink::register_on_discover(event_callback_t callback)
+{
+    _impl->register_on_discover(callback);
+}
+void DroneLink::register_on_timeout(event_callback_t callback)
+{
+    _impl->register_on_timeout(callback);
+}
+
 
 } // namespace dronelink
