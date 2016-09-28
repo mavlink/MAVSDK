@@ -374,9 +374,9 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
 DeviceImpl::CommandResult DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz)
 {
     float interval_us = 1e6f / rate_hz;
-    return send_command_with_ack(MAV_CMD_SET_MESSAGE_INTERVAL, {float(message_id), interval_us,
-                                                                NAN, NAN, NAN, NAN, NAN
-                                                               });
+    return send_command_with_ack(
+               MAV_CMD_SET_MESSAGE_INTERVAL,
+               CommandParams {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
 }
 
 void DeviceImpl::report_result(const command_result_callback_t &callback, CommandResult result)
