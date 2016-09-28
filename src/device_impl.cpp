@@ -257,7 +257,7 @@ bool DeviceImpl::send_message(const mavlink_message_t &message)
 void DeviceImpl::request_autopilot_version()
 {
     send_command(MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-    {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
+                 CommandParams {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
 }
 
 uint64_t DeviceImpl::get_target_uuid() const
