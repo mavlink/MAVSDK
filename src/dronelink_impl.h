@@ -34,7 +34,7 @@ public:
     static constexpr int DEFAULT_UDP_RECEIVE_PORT = 14540;
 
 private:
-    void create_device_if_not_existing(uint8_t system_id);
+    void create_device_if_not_existing(uint8_t system_id, uint8_t component_id);
 
     std::mutex _connections_mutex;
     std::vector<Connection *> _connections;

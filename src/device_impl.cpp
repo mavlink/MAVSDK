@@ -2,18 +2,21 @@
 #include "device_impl.h"
 #include "dronelink_impl.h"
 #include <unistd.h>
+#include <functional>
 
 namespace dronelink {
 
 using namespace std::placeholders; // for `_1`
 
 
-DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
+DeviceImpl::DeviceImpl(DroneLinkImpl *parent,
+                       uint8_t target_system_id,
+                       uint8_t target_component_id) :
     _mavlink_handler_table(),
     _timeout_handler_map_mutex(),
     _timeout_handler_map(),
-    _target_system_id(0),
-    _target_component_id(0),
+    _target_system_id(target_system_id),
+    _target_component_id(target_component_id),
     _target_uuid(0),
     _target_supports_mission_int(false),
     _parent(parent),
@@ -25,7 +28,8 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent) :
     _timeout_s(DEFAULT_TIMEOUT_S),
     _last_heartbeat_received_time(),
     _heartbeat_timeout_s(DEFAULT_HEARTBEAT_TIMEOUT_S),
-    _heartbeat_timed_out(false)
+    _heartbeat_timed_out(false),
+    _params(this)
 {
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
@@ -120,10 +124,6 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    if (_target_system_id == 0) {
-        _target_system_id = message.sysid;
-        _target_component_id = message.compid;
-    }
     if (_target_uuid == 0) {
         request_autopilot_version();
     }
@@ -183,6 +183,15 @@ void DeviceImpl::check_device_thread()
     }
 }
 
+// TODO: completely remove, just for testing
+//void DeviceImpl::get_sys_autostart(bool success, MavlinkParameters::ParamValue value)
+//{
+//    Debug() << "SYS_AUTOSTART: " << (success ? "success" : "failure");
+//    if (success) {
+//        Debug() << "value: " << value.get_int();
+//    }
+//}
+
 void DeviceImpl::device_thread(DeviceImpl *self)
 {
     const unsigned heartbeat_interval_us = 1000000;
@@ -190,12 +199,18 @@ void DeviceImpl::device_thread(DeviceImpl *self)
     const unsigned heartbeat_multiplier = heartbeat_interval_us / timeout_interval_us;
     unsigned counter = 0;
 
+    //self->_params.get_param_async(std::string ("SYS_AUTOSTART"),
+    //                              std::bind(&DeviceImpl::get_sys_autostart,
+    //                                        std::placeholders::_1,
+    //                                        std::placeholders::_2));
+
     while (!self->_should_exit) {
         if (counter++ % heartbeat_multiplier == 0) {
             send_heartbeat(self);
         }
         check_timeouts(self);
         check_heartbeat_timeout(self);
+        self->_params.do_work();
         usleep(timeout_interval_us);
     }
 }
@@ -273,6 +288,20 @@ uint8_t DeviceImpl::get_target_system_id() const
 uint8_t DeviceImpl::get_target_component_id() const
 {
     return _target_component_id;
+}
+
+void DeviceImpl::set_param_float_async(const std::string &name, float value, success_t callback)
+{
+    MavlinkParameters::ParamValue param_value;
+    param_value.set_float(value);
+    _params.set_param_async(name, param_value, callback);
+}
+
+void DeviceImpl::set_param_int_async(const std::string &name, int32_t value, success_t callback)
+{
+    MavlinkParameters::ParamValue param_value;
+    param_value.set_int(value);
+    _params.set_param_async(name, param_value, callback);
 }
 
 DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
@@ -387,5 +416,6 @@ void DeviceImpl::report_result(const command_result_callback_t &callback, Comman
 
     callback(result);
 }
+
 
 } // namespace dronelink

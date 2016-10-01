@@ -43,7 +43,7 @@ DroneLinkImpl::~DroneLinkImpl()
 
 void DroneLinkImpl::receive_message(const mavlink_message_t &message)
 {
-    create_device_if_not_existing(message.sysid);
+    create_device_if_not_existing(message.sysid, message.compid);
 
     _device_impls.at(message.sysid)->process_mavlink_message(message);
 }
@@ -85,7 +85,6 @@ const std::vector<uint64_t> &DroneLinkImpl::get_device_uuids() const
 
 Device &DroneLinkImpl::get_device(uint64_t uuid)
 {
-    uint8_t system_id = 0;
     {
         std::lock_guard<std::mutex> lock(_devices_mutex);
         // TODO: make a cache map for this.
@@ -96,17 +95,19 @@ Device &DroneLinkImpl::get_device(uint64_t uuid)
         }
     }
 
+    // We have not found a device with this UUID.
     // TODO: this is an error condition that we ought to handle properly.
-    if (system_id == 0) {
-        Debug() << "device with UUID: " << uuid << " not found";
-    }
+    Debug() << "device with UUID: " << uuid << " not found";
 
-    create_device_if_not_existing(system_id);
+    // Create a dummy
+    uint8_t system_id = 0;
+    uint8_t component_id = 0;
+    create_device_if_not_existing(system_id, component_id);
 
     return *_devices[system_id];
 }
 
-void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id)
+void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t component_id)
 {
     std::lock_guard<std::mutex> lock(_devices_mutex);
 
@@ -116,7 +117,7 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id)
     }
 
     // Create both lists in parallel
-    DeviceImpl *new_device_impl = new DeviceImpl(this);
+    DeviceImpl *new_device_impl = new DeviceImpl(this, system_id, component_id);
     _device_impls.insert(std::pair<uint8_t, DeviceImpl *>(system_id, new_device_impl));
 
     Device *new_device = new Device(new_device_impl);

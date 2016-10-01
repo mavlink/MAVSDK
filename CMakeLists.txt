@@ -34,6 +34,7 @@ add_library(dronelink STATIC
     src/connection.cpp
     src/device.cpp
     src/device_impl.cpp
+    src/mavlink_parameters.cpp
     src/dronelink.cpp
     src/dronelink_impl.cpp
     src/mavlink_channels.cpp

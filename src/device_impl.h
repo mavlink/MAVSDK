@@ -2,6 +2,7 @@
 
 #include "global_include.h"
 #include "mavlink_include.h"
+#include "mavlink_parameters.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -19,7 +20,9 @@ class DroneLinkImpl;
 class DeviceImpl
 {
 public:
-    explicit DeviceImpl(DroneLinkImpl *parent);
+    explicit DeviceImpl(DroneLinkImpl *parent,
+                        uint8_t target_system_id,
+                        uint8_t target_component_id);
     ~DeviceImpl();
     void process_mavlink_message(const mavlink_message_t &message);
 
@@ -74,6 +77,10 @@ public:
     uint8_t get_target_component_id() const;
     bool target_supports_mission_int() const { return _target_supports_mission_int; }
 
+    typedef std::function <void(bool success)> success_t;
+    void set_param_float_async(const std::string &name, float value, success_t callback);
+    void set_param_int_async(const std::string &name, int32_t value, success_t callback);
+
     static uint8_t get_own_system_id() { return _own_system_id; }
     static uint8_t get_own_component_id() { return _own_component_id; }
 
@@ -88,6 +95,9 @@ private:
     void process_autopilot_version(const mavlink_message_t &message);
 
     void check_device_thread();
+
+    // TODO: completely remove, just for testing
+    //static void get_sys_autostart(bool success, MavlinkParameters::ParamValue value);
 
     static void device_thread(DeviceImpl *self);
     static void send_heartbeat(DeviceImpl *self);
@@ -144,6 +154,8 @@ private:
     double _heartbeat_timeout_s;
     static constexpr double DEFAULT_HEARTBEAT_TIMEOUT_S = 3.0;
     bool _heartbeat_timed_out;
+
+    MavlinkParameters _params;
 };
 
 
