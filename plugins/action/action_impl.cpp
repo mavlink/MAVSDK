@@ -81,7 +81,12 @@ Action::Result ActionImpl::land() const
 
 Action::Result ActionImpl::return_to_land() const
 {
-    uint8_t mode = MAV_MODE_AUTO_ARMED | VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED;
+    // Note: the safety flag is not needed in future versions of the PX4 Firmware
+    //       but want to be rather safe than sorry.
+    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+
+    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED |
+                   flag_safety_armed;
     uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
@@ -156,8 +161,12 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
 
 void ActionImpl::return_to_land_async(const Action::result_callback_t &callback)
 {
+    // Note: the safety flag is not needed in future versions of the PX4 Firmware
+    //       but want to be rather safe than sorry.
+    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
 
-    uint8_t mode = MAV_MODE_AUTO_ARMED | VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED;
+    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED |
+                   flag_safety_armed;
     uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
