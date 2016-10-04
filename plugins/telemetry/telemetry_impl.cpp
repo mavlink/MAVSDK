@@ -13,6 +13,7 @@ TelemetryImpl::TelemetryImpl() :
     _home_position_mutex(),
     _home_position(Telemetry::Position {NAN, NAN, NAN, NAN}),
     _in_air(false),
+    _armed(false),
     _attitude_quaternion_mutex(),
     _attitude_quaternion(Telemetry::Quaternion {NAN, NAN, NAN, NAN}),
     _ground_speed_ned_mutex(),
@@ -24,6 +25,7 @@ TelemetryImpl::TelemetryImpl() :
     _position_subscription(nullptr),
     _home_position_subscription(nullptr),
     _in_air_subscription(nullptr),
+    _armed_subscription(nullptr),
     _attitude_quaternion_subscription(nullptr),
     _attitude_euler_angle_subscription(nullptr),
     _ground_speed_ned_subscription(nullptr),
@@ -63,6 +65,10 @@ void TelemetryImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_SYS_STATUS,
         std::bind(&TelemetryImpl::process_sys_status, this, _1), (void *)this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_HEARTBEAT,
+        std::bind(&TelemetryImpl::process_heartbeat, this, _1), (void *)this);
 }
 
 void TelemetryImpl::deinit()
@@ -175,6 +181,17 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t &message)
     }
 }
 
+void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
+{
+    mavlink_heartbeat_t heartbeat;
+    mavlink_msg_heartbeat_decode(&message, &heartbeat);
+
+    set_armed((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED));
+
+    if (_armed_subscription) {
+        _armed_subscription(armed());
+    }
+}
 
 Telemetry::Position TelemetryImpl::get_position() const
 {
@@ -204,9 +221,19 @@ bool TelemetryImpl::in_air() const
     return _in_air;
 }
 
+bool TelemetryImpl::armed() const
+{
+    return _armed;
+}
+
 void TelemetryImpl::set_in_air(bool in_air)
 {
     _in_air = in_air;
+}
+
+void TelemetryImpl::set_armed(bool armed)
+{
+    _armed = armed;
 }
 
 Telemetry::Quaternion TelemetryImpl::get_attitude_quaternion() const
@@ -297,6 +324,11 @@ void TelemetryImpl::in_air_async(double rate_hz, Telemetry::in_air_callback_t &c
     } else {
         _in_air_subscription = nullptr;
     }
+}
+
+void TelemetryImpl::armed_async(Telemetry::armed_callback_t &callback)
+{
+    _armed_subscription = callback;
 }
 
 void TelemetryImpl::attitude_quaternion_async(double rate_hz,

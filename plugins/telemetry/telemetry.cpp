@@ -27,6 +27,11 @@ bool Telemetry::in_air() const
     return _impl->in_air();
 }
 
+bool Telemetry::armed() const
+{
+    return _impl->armed();
+}
+
 Telemetry::Quaternion Telemetry::attitude_quaternion() const
 {
     return _impl->get_attitude_quaternion();
@@ -65,6 +70,11 @@ void Telemetry::home_position_async(double rate_hz, position_callback_t callback
 void Telemetry::in_air_async(double rate_hz, in_air_callback_t callback)
 {
     return _impl->in_air_async(rate_hz,  callback);
+}
+
+void Telemetry::armed_async(armed_callback_t callback)
+{
+    return _impl->armed_async(callback);
 }
 
 void Telemetry::attitude_quaternion_async(double rate_hz,

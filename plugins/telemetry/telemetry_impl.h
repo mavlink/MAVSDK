@@ -22,6 +22,7 @@ public:
     Telemetry::Position get_position() const;
     Telemetry::Position get_home_position() const;
     bool in_air() const;
+    bool armed() const;
     Telemetry::EulerAngle get_attitude_euler_angle() const;
     Telemetry::Quaternion get_attitude_quaternion() const;
     Telemetry::GroundSpeedNED get_ground_speed_ned() const;
@@ -31,6 +32,7 @@ public:
     void position_async(double rate_hz, Telemetry::position_callback_t &callback);
     void home_position_async(double rate_hz, Telemetry::position_callback_t &callback);
     void in_air_async(double rate_hz, Telemetry::in_air_callback_t &callback);
+    void armed_async(Telemetry::armed_callback_t &callback);
     void attitude_quaternion_async(double rate_hz,
                                    Telemetry::attitude_quaternion_callback_t &callback);
     void attitude_euler_angle_async(double rate_hz,
@@ -43,6 +45,7 @@ private:
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
+    void set_armed(bool armed);
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
     void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
     void set_gps_info(Telemetry::GPSInfo gps_info);
@@ -54,6 +57,7 @@ private:
     void process_gps_raw_int(const mavlink_message_t &message);
     void process_extended_sys_state(const mavlink_message_t &message);
     void process_sys_status(const mavlink_message_t &message);
+    void process_heartbeat(const mavlink_message_t &message);
 
     // Make all fields thread-safe using mutexs
     // The mutexs are mutable so that the lock can get aqcuired in
@@ -66,6 +70,7 @@ private:
 
     // If possible, just use atomic instead of a mutex.
     std::atomic_bool _in_air;
+    std::atomic_bool _armed;
 
     mutable std::mutex _attitude_quaternion_mutex;
     Telemetry::Quaternion _attitude_quaternion;
@@ -82,6 +87,7 @@ private:
     Telemetry::position_callback_t _position_subscription;
     Telemetry::position_callback_t _home_position_subscription;
     Telemetry::in_air_callback_t _in_air_subscription;
+    Telemetry::armed_callback_t _armed_subscription;
     Telemetry::attitude_quaternion_callback_t _attitude_quaternion_subscription;
     Telemetry::attitude_euler_angle_callback_t _attitude_euler_angle_subscription;
     Telemetry::ground_speed_ned_callback_t _ground_speed_ned_subscription;

@@ -10,6 +10,7 @@ using namespace std::placeholders; // for `_1`
 void print_position(dronelink::Telemetry::Position position);
 void print_home_position(dronelink::Telemetry::Position home_position);
 void print_in_air(bool in_air);
+void print_armed(bool armed);
 void print_quaternion(dronelink::Telemetry::Quaternion quaternion);
 void print_euler_angle(dronelink::Telemetry::EulerAngle euler_angle);
 void print_ground_speed_ned(dronelink::Telemetry::GroundSpeedNED ground_speed_ned);
@@ -55,6 +56,8 @@ int main(int argc, char *argv[])
 
     device.telemetry().in_air_async(10.0, std::bind(&print_in_air, _1));
 
+    device.telemetry().armed_async(std::bind(&print_armed, _1));
+
     device.telemetry().attitude_quaternion_async(10.0, std::bind(&print_quaternion, _1));
 
     device.telemetry().attitude_euler_angle_async(10.0, std::bind(&print_euler_angle, _1));
@@ -89,6 +92,11 @@ void print_home_position(dronelink::Telemetry::Position home_position)
 void print_in_air(bool in_air)
 {
     std::cout << (in_air ? "in-air" : "on-ground") << std::endl;
+}
+
+void print_armed(bool armed)
+{
+    std::cout << (armed ? "armed" : "disarmed") << std::endl;
 }
 
 void print_quaternion(dronelink::Telemetry::Quaternion quaternion)

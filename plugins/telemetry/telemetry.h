@@ -50,6 +50,8 @@ public:
 
     bool in_air() const;
 
+    bool armed() const;
+
     Quaternion attitude_quaternion() const;
     EulerAngle attitude_euler_angle() const;
 
@@ -65,6 +67,10 @@ public:
 
     typedef std::function<void(bool in_air)> in_air_callback_t;
     void in_air_async(double rate_hz, in_air_callback_t callback);
+
+    typedef std::function<void(bool armed)> armed_callback_t;
+    // Note: this function is limited to 1Hz.
+    void armed_async(armed_callback_t callback);
 
     typedef std::function<void(Quaternion quaternion)> attitude_quaternion_callback_t;
     void attitude_quaternion_async(double rate_hz, attitude_quaternion_callback_t callback);
