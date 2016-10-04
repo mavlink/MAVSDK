@@ -75,7 +75,10 @@ public:
     uint64_t get_target_uuid() const;
     uint8_t get_target_system_id() const;
     uint8_t get_target_component_id() const;
+
     bool target_supports_mission_int() const { return _target_supports_mission_int; }
+
+    bool is_armed() const { return _armed; }
 
     typedef std::function <void(bool success)> success_t;
     void set_param_float_async(const std::string &name, float value, success_t callback);
@@ -127,6 +130,7 @@ private:
     uint8_t _target_component_id;
     uint64_t _target_uuid;
     bool _target_supports_mission_int;
+    bool _armed;
 
     DroneLinkImpl *_parent;
 

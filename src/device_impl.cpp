@@ -19,6 +19,7 @@ DeviceImpl::DeviceImpl(DroneLinkImpl *parent,
     _target_component_id(target_component_id),
     _target_uuid(0),
     _target_supports_mission_int(false),
+    _armed(false),
     _parent(parent),
     _command_result(MAV_RESULT_FAILED),
     _command_state(CommandState::NONE),
@@ -127,6 +128,8 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     if (_target_uuid == 0) {
         request_autopilot_version();
     }
+
+    _armed = (heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED);
 
     check_device_thread();
 
