@@ -12,7 +12,7 @@ namespace dronelink {
 class UdpConnection : public Connection
 {
 public:
-    explicit UdpConnection(DroneLinkImpl *parent, const std::string &ip, int port_number);
+    explicit UdpConnection(DroneLinkImpl *parent, int local_port_number, int remote_port_number);
     ~UdpConnection();
     bool is_ok() const;
     DroneLink::ConnectionResult start();
@@ -30,8 +30,11 @@ private:
 
     static void receive(UdpConnection *parent);
 
-    std::string _ip;
-    int _port_number;
+    static constexpr int DEFAULT_UDP_LOCAL_PORT = 14540;
+
+    int _local_port_number;
+    std::string _remote_ip;
+    int _remote_port_number;
     std::mutex _mutex;
     int _socket_fd;
     std::thread *_recv_thread;

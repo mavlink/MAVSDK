@@ -31,8 +31,6 @@ public:
     void notify_on_discover(uint64_t uuid);
     void notify_on_timeout(uint64_t uuid);
 
-    static constexpr int DEFAULT_UDP_RECEIVE_PORT = 14540;
-
 private:
     void create_device_if_not_existing(uint8_t system_id, uint8_t component_id);
 

@@ -9,15 +9,21 @@
 
 namespace dronelink {
 
-UdpConnection::UdpConnection(DroneLinkImpl *parent, const std::string &ip, int port_number) :
+UdpConnection::UdpConnection(DroneLinkImpl *parent,
+                             int local_port_number,
+                             int remote_port_number) :
     Connection(parent),
-    _ip(ip),
-    _port_number(port_number),
+    _local_port_number(local_port_number),
+    _remote_ip(),
+    _remote_port_number(remote_port_number),
     _mutex(),
     _socket_fd(-1),
     _recv_thread(),
     _should_exit(false)
 {
+    if (_local_port_number == 0) {
+        _local_port_number = DEFAULT_UDP_LOCAL_PORT;
+    }
 }
 
 UdpConnection::~UdpConnection()
@@ -59,7 +65,7 @@ DroneLink::ConnectionResult UdpConnection::setup_port()
     struct sockaddr_in addr;
     memset((char *)&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(_port_number);
+    addr.sin_port = htons(_local_port_number);
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     if (bind(_socket_fd, (sockaddr *)&addr, sizeof(addr)) != 0) {
@@ -92,17 +98,22 @@ DroneLink::ConnectionResult UdpConnection::stop()
 
 bool UdpConnection::send_message(const mavlink_message_t &message)
 {
-    if (_ip.empty()) {
-        Debug() << "Destination IP unknown";
+    if (_remote_ip.empty()) {
+        Debug() << "Remote IP unknown";
+        return false;
+    }
+
+    if (_remote_port_number == 0) {
+        Debug() << "Remote port unknown";
         return false;
     }
 
     struct sockaddr_in dest_addr;
     memset((char *)&dest_addr, 0, sizeof(dest_addr));
     dest_addr.sin_family = AF_INET;
-    inet_pton(AF_INET, _ip.c_str(), &dest_addr.sin_addr.s_addr);
-    // TODO: remove this magic number
-    dest_addr.sin_port = htons(14557);
+    inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
+
+    dest_addr.sin_port = htons(_remote_port_number);
 
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
@@ -138,17 +149,37 @@ void UdpConnection::receive(UdpConnection *parent)
             continue;
         }
 
-        // TODO make _ip threadsafe.
+        int new_remote_port_number = ntohs(src_addr.sin_port);
+        std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
 
-        if (parent->_ip.empty()) {
-            // Set IP if we don't know it yet.
-            Debug() << "partner IP: " << inet_ntoa(src_addr.sin_addr);
-            parent->_ip = inet_ntoa(src_addr.sin_addr);
+        // TODO make calls to remote threadsafe.
+
+        if (parent->_remote_ip.empty()) {
+
+            if (parent->_remote_port_number == 0 ||
+                parent->_remote_port_number == new_remote_port_number) {
+                // Set IP if we don't know it yet.
+                parent->_remote_ip = new_remote_ip;
+                parent->_remote_port_number = new_remote_port_number;
+
+                Debug() << "Partner IP: " << parent->_remote_ip
+                        << ":" << parent->_remote_port_number;
+
+            } else {
+
+                Debug() << "Ignoring message from remote port " << new_remote_port_number
+                        << " instead of " << parent->_remote_port_number;
+                continue;
+            }
+
+        } else if (parent->_remote_ip.compare(new_remote_ip) != 0) {
+            Debug() << "Ignoring message from IP: " << new_remote_ip;
+            continue;
+
         } else {
-            // Otherwise, only accept packets from the set IP.
-            if (strcmp(parent->_ip.c_str(), inet_ntoa(src_addr.sin_addr)) != 0) {
-
-                Debug() << "Ignoring message from: " << inet_ntoa(src_addr.sin_addr);
+            if (parent->_remote_port_number != new_remote_port_number) {
+                Debug() << "Ignoring message from remote port " << new_remote_port_number
+                        << " instead of " << parent->_remote_port_number;
                 continue;
             }
         }

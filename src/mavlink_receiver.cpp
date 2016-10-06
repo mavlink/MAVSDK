@@ -13,8 +13,7 @@ MavlinkReceiver::MavlinkReceiver(uint8_t channel) :
 bool MavlinkReceiver::parse_datagram(const char *datagram, unsigned datagram_len)
 {
     for (unsigned i = 0; i < datagram_len; ++i) {
-
-        if (mavlink_parse_char(_channel, datagram[i], &_message, &_status)) {
+        if (mavlink_parse_char(_channel, datagram[i], &_message, &_status) == 1) {
             return true;
         }
     }

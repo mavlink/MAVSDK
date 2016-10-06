@@ -13,12 +13,12 @@ int main(int argc, char *argv[])
     dl = new dronelink::DroneLink();
     std::cout << "started" << std::endl;
 
-    dronelink::DroneLink::ConnectionResult ret = dl->add_udp_connection("127.0.0.1", 14540);
+    dronelink::DroneLink::ConnectionResult ret = dl->add_udp_connection(14540, 0);
     if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
         std::cout << "failed to add connection" << std::endl;
     }
 
-    ret = dl->add_udp_connection("127.0.0.1", 14550);
+    ret = dl->add_udp_connection(14550, 0);
     if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
         std::cout << "failed to add connection" << std::endl;
     }
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
     dl = new dronelink::DroneLink();
 
-    ret = dl->add_udp_connection("127.0.0.1", 14540);
+    ret = dl->add_udp_connection(14540, 0);
     if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
         std::cout << "failed to add connection" << std::endl;
     }
