@@ -308,7 +308,8 @@ void DeviceImpl::set_param_int_async(const std::string &name, int32_t value, suc
 }
 
 DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
-                                                   const DeviceImpl::CommandParams &params)
+                                                   const DeviceImpl::CommandParams &params,
+                                                   uint8_t component_id)
 {
     if (_target_system_id == 0 && _target_component_id == 0) {
         return CommandResult::NO_DEVICE;
@@ -319,11 +320,13 @@ DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
     //    return Result::DEVICE_BUSY;
     //}
 
+    const uint8_t component_id_to_use = component_id != 0 ? component_id : _target_component_id;
+
     mavlink_message_t message;
 
     mavlink_msg_command_long_pack(_own_system_id, _own_component_id,
                                   &message,
-                                  _target_system_id, _target_component_id,
+                                  _target_system_id, component_id_to_use,
                                   command,
                                   0,
                                   params.v[0], params.v[1], params.v[2], params.v[3],
@@ -337,7 +340,7 @@ DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
 }
 
 DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
-    uint16_t command, const DeviceImpl::CommandParams &params)
+    uint16_t command, const DeviceImpl::CommandParams &params, uint8_t component_id)
 {
     if (_command_state == CommandState::WAITING) {
         return CommandResult::BUSY;
@@ -347,7 +350,7 @@ DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
 
     _command_state = CommandState::WAITING;
 
-    CommandResult ret = send_command(command, params);
+    CommandResult ret = send_command(command, params, component_id);
     if (ret != CommandResult::SUCCESS) {
         return ret;
     }
@@ -381,13 +384,14 @@ DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
 
 void DeviceImpl::send_command_with_ack_async(uint16_t command,
                                              const DeviceImpl::CommandParams &params,
-                                             command_result_callback_t callback)
+                                             command_result_callback_t callback,
+                                             uint8_t component_id)
 {
     if (_command_state == CommandState::WAITING) {
         report_result(callback, CommandResult::BUSY);
     }
 
-    CommandResult ret = send_command(command, params);
+    CommandResult ret = send_command(command, params, component_id);
     if (ret != CommandResult::SUCCESS) {
         report_result(callback, ret);
         // Reset

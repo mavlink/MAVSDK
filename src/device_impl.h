@@ -56,13 +56,16 @@ public:
 
     bool send_message(const mavlink_message_t &message);
 
-    CommandResult send_command(uint16_t command, const CommandParams &params);
-    CommandResult send_command_with_ack(uint16_t command, const CommandParams &params);
+    CommandResult send_command(uint16_t command, const CommandParams &params,
+                               uint8_t component_id = 0);
+    CommandResult send_command_with_ack(uint16_t command, const CommandParams &params,
+                                        uint8_t component_id = 0);
 
     typedef std::function<void(CommandResult)> command_result_callback_t;
 
     void send_command_with_ack_async(uint16_t command, const CommandParams &params,
-                                     command_result_callback_t callback);
+                                     command_result_callback_t callback,
+                                     uint8_t component_id = 0);
 
 
     CommandResult set_msg_rate(uint16_t message_id, double rate_hz);
