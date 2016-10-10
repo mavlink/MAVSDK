@@ -1,10 +1,8 @@
 #include <iostream>
 #include <unistd.h>
+#include <gtest/gtest.h>
 #include "dronelink.h"
 
-#define UNUSED(x) (void)(x)
-
-using namespace std::placeholders; // for _1
 
 bool _discovered_device = false;
 bool _timeouted_device = false;
@@ -12,10 +10,9 @@ bool _timeouted_device = false;
 void on_discover(uint64_t uuid);
 void on_timeout(uint64_t uuid);
 
-int main(int argc, char *argv[])
+int test_async_connect()
 {
-    UNUSED(argc);
-    UNUSED(argv);
+    using namespace std::placeholders; // for _1
 
     dronelink::DroneLink dl;
 
@@ -51,4 +48,9 @@ void on_timeout(uint64_t uuid)
 {
     std::cout << "Lost device with UUID: " << uuid << std::endl;
     _timeouted_device = true;
+}
+
+TEST(Connect, Async)
+{
+    ASSERT_EQ(test_async_connect(), 0);
 }

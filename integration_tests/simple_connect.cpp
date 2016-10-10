@@ -1,14 +1,10 @@
 #include <iostream>
 #include <unistd.h>
+#include <gtest/gtest.h>
 #include "dronelink.h"
 
-#define UNUSED(x) (void)(x)
-
-int main(int argc, char *argv[])
+int test_simple_connect()
 {
-    UNUSED(argc);
-    UNUSED(argv);
-
     dronelink::DroneLink *dl;
     dl = new dronelink::DroneLink();
     std::cout << "started" << std::endl;
@@ -24,6 +20,20 @@ int main(int argc, char *argv[])
     }
 
     usleep(2000000);
+
+    std::vector<uint64_t> uuids = dl->device_uuids();
+
+    for (auto it = uuids.begin(); it != uuids.end(); ++it) {
+        std::cout << "found device with UUID: " << *it << std::endl;
+    }
+
+    if (uuids.size() > 1) {
+        std::cout << "found more than one device, not sure which one to use." << std::endl;
+        return -1;
+    } else if (uuids.size() == 0) {
+        std::cout << "no device found." << std::endl;
+        return -1;
+    }
 
     std::cout << "deleting it" << std::endl;
     delete dl;
@@ -42,3 +52,9 @@ int main(int argc, char *argv[])
     std::cout << "exiting" << std::endl;
     return 0;
 }
+
+TEST(Connect, Simple)
+{
+    ASSERT_EQ(test_simple_connect(), 0);
+}
+

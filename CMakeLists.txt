@@ -75,22 +75,42 @@ if(NOT IOS AND NOT APPLE)
     find_package(GTest REQUIRED)
     include_directories(${GTEST_INCLUDE_DIRS})
 
-    add_executable(unit_tests
+    add_executable(unit_tests_runner
         src/global_include_test.cpp
         src/mavlink_channels_test.cpp
         src/unittests_main.cpp
     )
 
-    target_link_libraries(unit_tests
+    target_link_libraries(unit_tests_runner
         dronelink
         ${GTEST_BOTH_LIBRARIES}
         pthread
     )
 
-    add_test(tests
-        unit_tests
+    add_test(unit_tests
+        unit_tests_runner
     )
 
     # `make test` does not show output, but `make check` does
     add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
+
+    foreach(test ${integration_tests_src})
+        message("Test: ${test}")
+    endforeach()
+
+    # This includes all GTests that run integration tests
+    add_executable(integration_tests_runner
+        ${integration_tests_src}
+    )
+
+    target_link_libraries(integration_tests_runner
+        dronelink
+        ${GTEST_BOTH_LIBRARIES}
+        pthread
+    )
+
+    add_test(integration_tests
+        integration_tests_runner
+    )
+
 endif()

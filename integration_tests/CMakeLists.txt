@@ -1,65 +1,37 @@
-set(_libs
-    dronelink
-    pthread
-)
+#set(_libs
+#    dronelink
+#    pthread
+#)
+#if (IOS)
+#    set(_libs
+#        ${_libs}
+#        libstdc++
+#    )
+#endif()
 
-if (IOS)
-    set(_libs
-        ${_libs}
-        libstdc++
-    )
-endif()
-
-
-add_executable(simple_connect
-    simple_connect_main.cpp
-)
-
-target_link_libraries(simple_connect
-    ${_libs}
-)
-
-
-add_executable(async_connect
-    async_connect_main.cpp
-)
-
-target_link_libraries(async_connect
-    ${_libs}
+list(APPEND integration_tests
+    simple_connect
+    async_connect
+    simple_telemetry
+    async_telemetry
+    simple_hover
+    async_hover
 )
 
 
-add_executable(simple_telemetry
-    simple_telemetry_main.cpp
-)
+foreach(name ${integration_tests})
+    # This can be used to produce individual executables
+    #add_executable(${name}
+    #    ${name}_main.cpp
+    #    ${name}.cpp
+    #)
+    #
+    #target_link_libraries(${name}
+    #    ${_libs}
+    #)
 
-target_link_libraries(simple_telemetry
-    ${_libs}
-)
+    list(APPEND integration_tests_src ${CMAKE_CURRENT_SOURCE_DIR}/${name}.cpp)
+endforeach()
 
-
-add_executable(async_telemetry
-    async_telemetry_main.cpp
-)
-
-target_link_libraries(async_telemetry
-    ${_libs}
-)
-
-
-add_executable(simple_hover
-    simple_hover_main.cpp
-)
-
-target_link_libraries(simple_hover
-    ${_libs}
-)
-
-
-add_executable(async_hover
-    async_hover_main.cpp
-)
-
-target_link_libraries(async_hover
-    ${_libs}
-)
+# These are consumed in ../CMakeLists.txt
+set(integration_tests_src ${integration_tests_src} PARENT_SCOPE)

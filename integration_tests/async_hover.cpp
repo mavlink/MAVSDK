@@ -1,21 +1,14 @@
 #include <iostream>
 #include <unistd.h>
+#include <gtest/gtest.h>
 #include "dronelink.h"
-#include "action.h"
-
-#define UNUSED(x) (void)(x)
-
-
-using namespace std::placeholders; // for `_1`
 
 
 void receive_result(dronelink::Action::Result result);
 
-
-int main(int argc, char *argv[])
+int test_async_hover()
 {
-    UNUSED(argc);
-    UNUSED(argv);
+    using namespace std::placeholders; // for `_1`
 
     dronelink::DroneLink dl;
 
@@ -62,4 +55,9 @@ int main(int argc, char *argv[])
 void receive_result(dronelink::Action::Result result)
 {
     std::cout << "got result: " << unsigned(result) << std::endl;
+}
+
+TEST(Hover, Async)
+{
+    ASSERT_EQ(test_async_hover(), 0);
 }

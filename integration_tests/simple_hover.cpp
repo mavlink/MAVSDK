@@ -1,14 +1,10 @@
 #include <iostream>
 #include <unistd.h>
+#include <gtest/gtest.h>
 #include "dronelink.h"
 
-#define UNUSED(x) (void)(x)
-
-int main(int argc, char *argv[])
+int test_simple_hover()
 {
-    UNUSED(argc);
-    UNUSED(argv);
-
     dronelink::DroneLink dl;
 
     dronelink::DroneLink::ConnectionResult ret = dl.add_udp_connection();
@@ -64,3 +60,9 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+TEST(Hover, Simple)
+{
+    ASSERT_EQ(test_simple_hover(), 0);
+}
+

@@ -1,9 +1,7 @@
 #include <iostream>
 #include <unistd.h>
+#include <gtest/gtest.h>
 #include "dronelink.h"
-#include "telemetry.h"
-
-#define UNUSED(x) (void)(x)
 
 using namespace std::placeholders; // for `_1`
 
@@ -17,11 +15,8 @@ void print_ground_speed_ned(dronelink::Telemetry::GroundSpeedNED ground_speed_ne
 void print_gps_info(dronelink::Telemetry::GPSInfo gps_info);
 void print_battery(dronelink::Telemetry::Battery battery);
 
-int main(int argc, char *argv[])
+int test_async_telemetry()
 {
-    UNUSED(argc);
-    UNUSED(argv);
-
     dronelink::DroneLink dl;
 
     dronelink::DroneLink::ConnectionResult ret = dl.add_udp_connection();
@@ -131,4 +126,9 @@ void print_battery(dronelink::Telemetry::Battery battery)
 {
     std::cout << "Battery: " << battery.voltage_v << " v,"
               << "remaining: " << int(battery.remaining * 1e2f) << " %" << std::endl;
+}
+
+TEST(Telemetry, Async)
+{
+    ASSERT_EQ(test_async_telemetry(), 0);
 }
