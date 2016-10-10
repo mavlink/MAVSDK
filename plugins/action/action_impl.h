@@ -49,6 +49,8 @@ private:
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 
     // FIXME: these chould potentially change anytime
+    // derived from:
+    // https://github.com/PX4/Firmware/blob/master/src/modules/commander/px4_custom_mode.h
     static constexpr uint8_t PX4_CUSTOM_MAIN_MODE_AUTO = 4;
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_RTL = 5;
 };
