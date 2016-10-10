@@ -108,34 +108,29 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../iOS.cmake -DIOS_PL
 
 ### Unit-tests
 
-To run tests without output:
-```
-make test
-```
+To run the unit tests:
 
-And with output:
 ```
-make check
+make unit_tests_runner
+./unit_tests_runner
 ```
 
 ### Integration-tests
 
-Start PX4 e.g. in SITL using `make posix gazebo` and run the integration tests using the commands
-below:
+Start PX4 e.g. in SITL using `make posix gazebo` and run the integration tests use:
 
 ```
-make simple_connect
-integration_tests/simple_connect
+make integration_tests_runner
+./integration_tests_runner
 ```
 
+To run a single integration test:
 ```
-make simple_telemetry
-integration_tests/simple_telemetry
+./integration_tests_runner --gtest_filter="Telemetry.Simple"
 ```
-
+or all telemetry tests:
 ```
-make simple_hover
-integration_tests/simple_hover
+./integration_tests_runner --gtest_filter="Telemetry*"
 ```
 
 ### Code style
