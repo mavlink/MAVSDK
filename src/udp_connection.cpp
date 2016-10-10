@@ -18,7 +18,7 @@ UdpConnection::UdpConnection(DroneLinkImpl *parent,
     _remote_port_number(remote_port_number),
     _mutex(),
     _socket_fd(-1),
-    _recv_thread(),
+    _recv_thread(nullptr),
     _should_exit(false)
 {
     if (_local_port_number == 0) {
@@ -88,8 +88,11 @@ DroneLink::ConnectionResult UdpConnection::stop()
     _should_exit = true;
     shutdown(_socket_fd, SHUT_RDWR);
 
-    _recv_thread->join();
-    delete _recv_thread;
+    if (_recv_thread) {
+        _recv_thread->join();
+        delete _recv_thread;
+        _recv_thread = nullptr;
+    }
 
     close(_socket_fd);
 
