@@ -16,6 +16,7 @@ list(APPEND integration_tests
     async_telemetry
     simple_hover
     async_hover
+    takeoff_and_kill
 )
 
 
