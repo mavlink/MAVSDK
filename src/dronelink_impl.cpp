@@ -70,8 +70,9 @@ void DroneLinkImpl::add_connection(Connection *new_connection)
 
 const std::vector<uint64_t> &DroneLinkImpl::get_device_uuids() const
 {
-    // This needs to survive the scope.
-    static std::vector<uint64_t> uuids;
+    // This needs to survive the scope but we need to clean it up.
+    static std::vector<uint64_t> uuids = {};
+    uuids.clear();
 
     for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
         uint64_t uuid = it->second->get_target_uuid();
