@@ -30,10 +30,13 @@ int test_async_connect()
         usleep(1000000);
     }
 
+    //FIXME: commented out because we don't want to stop the simulator.
+#if 0
     while (!_timeouted_device) {
         std::cout << "waiting for device to disappear..." << std::endl;
         usleep(1000000);
     }
+#endif
 
     return 0;
 }
