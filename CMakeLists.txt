@@ -94,10 +94,6 @@ if(NOT IOS AND NOT APPLE)
     # `make test` does not show output, but `make check` does
     add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
-    foreach(test ${integration_tests_src})
-        message("Test: ${test}")
-    endforeach()
-
     # This includes all GTests that run integration tests
     add_executable(integration_tests_runner
         ${integration_tests_src}
