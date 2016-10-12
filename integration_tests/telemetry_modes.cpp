@@ -5,7 +5,7 @@
 
 using namespace dronelink;
 
-void print_mode(dronelink::Telemetry::FlightMode flight_mode);
+void print_mode(Telemetry::FlightMode flight_mode);
 static Telemetry::FlightMode _flight_mode = Telemetry::FlightMode::UNKNOWN;
 
 TEST(Telemetry, FlightModes)
