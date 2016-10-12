@@ -45,6 +45,17 @@ public:
         float remaining;
     };
 
+    enum class FlightMode {
+        READY,
+        TAKEOFF,
+        HOLD,
+        MISSION,
+        RETURN_TO_LAND,
+        LAND,
+        POSITION_CONTROL,
+        UNKNOWN
+    };
+
     Position position() const;
     Position home_position() const;
 
@@ -60,6 +71,8 @@ public:
     GPSInfo gps_info() const;
 
     Battery battery() const;
+
+    FlightMode flight_mode() const;
 
     typedef std::function<void(Position position)> position_callback_t;
     void position_async(double rate_hz, position_callback_t callback);
@@ -86,6 +99,10 @@ public:
 
     typedef std::function<void(Battery battery)> battery_callback_t;
     void battery_async(double rate_hz, battery_callback_t callback);
+
+    typedef std::function<void(FlightMode flight_mode)> flight_mode_callback_t;
+    // Note: this function is limited to 1Hz.
+    void flight_mode_async(flight_mode_callback_t callback);
 
     // Non-copyable
     Telemetry(const Telemetry &) = delete;

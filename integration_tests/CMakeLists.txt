@@ -14,6 +14,7 @@ list(APPEND integration_tests
     async_connect
     simple_telemetry
     async_telemetry
+    telemetry_modes
     simple_hover
     async_hover
     takeoff_and_kill

@@ -2,6 +2,7 @@
 #include "device_impl.h"
 #include "math_conversions.h"
 #include "global_include.h"
+#include "px4_custom_mode.h"
 #include <cmath>
 #include <functional>
 
@@ -22,6 +23,8 @@ TelemetryImpl::TelemetryImpl() :
     _gps_info(Telemetry::GPSInfo {0, 0}),
     _battery_mutex(),
     _battery(Telemetry::Battery {NAN, NAN}),
+    _flight_mode_mutex(),
+    _flight_mode(Telemetry::FlightMode::UNKNOWN),
     _position_subscription(nullptr),
     _home_position_subscription(nullptr),
     _in_air_subscription(nullptr),
@@ -30,7 +33,8 @@ TelemetryImpl::TelemetryImpl() :
     _attitude_euler_angle_subscription(nullptr),
     _ground_speed_ned_subscription(nullptr),
     _gps_info_subscription(nullptr),
-    _battery_subscription(nullptr)
+    _battery_subscription(nullptr),
+    _flight_mode_subscription(nullptr)
 {
 }
 
@@ -191,6 +195,46 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
     if (_armed_subscription) {
         _armed_subscription(armed());
     }
+
+    if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
+
+        Telemetry::FlightMode flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
+        set_flight_mode(flight_mode);
+
+        if (_flight_mode_subscription) {
+            _flight_mode_subscription(get_flight_mode());
+        }
+    }
+}
+
+Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
+{
+    px4::px4_custom_mode px4_custom_mode;
+    px4_custom_mode.data = custom_mode;
+
+    switch (px4_custom_mode.main_mode) {
+        case px4::PX4_CUSTOM_MAIN_MODE_POSCTL:
+            return Telemetry::FlightMode::POSITION_CONTROL;
+        case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
+            switch (px4_custom_mode.sub_mode) {
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:
+                    return Telemetry::FlightMode::READY;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF:
+                    return Telemetry::FlightMode::TAKEOFF;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER:
+                    return Telemetry::FlightMode::HOLD;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION:
+                    return Telemetry::FlightMode::MISSION;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL:
+                    return Telemetry::FlightMode::RETURN_TO_LAND;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND:
+                    return Telemetry::FlightMode::LAND;
+                default:
+                    return Telemetry::FlightMode::UNKNOWN;
+            }
+        default:
+            return Telemetry::FlightMode::UNKNOWN;
+    }
 }
 
 Telemetry::Position TelemetryImpl::get_position() const
@@ -246,7 +290,6 @@ Telemetry::EulerAngle TelemetryImpl::get_attitude_euler_angle() const
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
     Telemetry::EulerAngle euler = to_euler_angle_from_quaternion(_attitude_quaternion);
-    //Debug() << euler.roll_deg << "\t" << euler.pitch_deg << "\t" << euler.yaw_deg;
 
     return euler;
 }
@@ -291,6 +334,18 @@ void TelemetryImpl::set_battery(Telemetry::Battery battery)
 {
     std::lock_guard<std::mutex> lock(_battery_mutex);
     _battery = battery;
+}
+
+Telemetry::FlightMode TelemetryImpl::get_flight_mode() const
+{
+    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
+    return _flight_mode;
+}
+
+void TelemetryImpl::set_flight_mode(Telemetry::FlightMode flight_mode)
+{
+    std::lock_guard<std::mutex> lock(_flight_mode_mutex);
+    _flight_mode = flight_mode;
 }
 
 void TelemetryImpl::position_async(double rate_hz, Telemetry::position_callback_t &callback)
@@ -390,6 +445,11 @@ void TelemetryImpl::battery_async(double rate_hz,
     } else {
         _battery_subscription = nullptr;
     }
+}
+
+void TelemetryImpl::flight_mode_async(Telemetry::flight_mode_callback_t &callback)
+{
+    _flight_mode_subscription = callback;
 }
 
 } // namespace dronelink
