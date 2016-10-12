@@ -2,6 +2,7 @@
 #include "action_impl.h"
 #include "dronelink_impl.h"
 #include "telemetry.h"
+#include "px4_custom_mode.h"
 #include <unistd.h>
 
 namespace dronelink {
@@ -87,8 +88,8 @@ Action::Result ActionImpl::return_to_land() const
 
     uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED |
                    flag_safety_armed;
-    uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_RTL;
+    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
     return action_result_from_command_result(
                _parent->send_command_with_ack(
@@ -167,8 +168,8 @@ void ActionImpl::return_to_land_async(const Action::result_callback_t &callback)
 
     uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED |
                    flag_safety_armed;
-    uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_RTL;
+    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
     _parent->send_command_with_ack_async(
         MAV_CMD_DO_SET_MODE,
