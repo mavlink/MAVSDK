@@ -307,6 +307,36 @@ void DeviceImpl::set_param_int_async(const std::string &name, int32_t value, suc
     _params.set_param_async(name, param_value, callback);
 }
 
+void DeviceImpl::get_param_float_async(const std::string &name,
+                                       get_param_float_callback_t callback)
+{
+    _params.get_param_async(name, std::bind(&DeviceImpl::receive_float_param, _1, _2,
+                                            callback));
+}
+
+void DeviceImpl::get_param_int_async(const std::string &name,
+                                     get_param_int_callback_t callback)
+{
+    _params.get_param_async(name, std::bind(&DeviceImpl::receive_int_param, _1, _2,
+                                            callback));
+}
+
+void DeviceImpl::receive_float_param(bool success, MavlinkParameters::ParamValue value,
+                                     get_param_float_callback_t callback)
+{
+    if (callback) {
+        callback(success, value.get_float());
+    }
+}
+
+void DeviceImpl::receive_int_param(bool success, MavlinkParameters::ParamValue value,
+                                   get_param_int_callback_t callback)
+{
+    if (callback) {
+        callback(success, value.get_int());
+    }
+}
+
 DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
                                                    const DeviceImpl::CommandParams &params,
                                                    uint8_t component_id)

@@ -56,6 +56,16 @@ public:
         UNKNOWN
     };
 
+    struct Health {
+        bool gyrometer_calibration_ok;
+        bool accelerometer_calibration_ok;
+        bool magnetometer_calibration_ok;
+        bool level_calibration_ok;
+        bool local_position_ok;
+        bool global_position_ok;
+        bool home_position_ok;
+    };
+
     Position position() const;
     Position home_position() const;
 
@@ -73,6 +83,8 @@ public:
     Battery battery() const;
 
     FlightMode flight_mode() const;
+
+    Health health() const;
 
     typedef std::function<void(Position position)> position_callback_t;
     void position_async(double rate_hz, position_callback_t callback);
@@ -103,6 +115,10 @@ public:
     typedef std::function<void(FlightMode flight_mode)> flight_mode_callback_t;
     // Note: this function is limited to 1Hz.
     void flight_mode_async(flight_mode_callback_t callback);
+
+    typedef std::function<void(Health health)> health_callback_t;
+    // Note: this function is limited to 1Hz.
+    void health_async(health_callback_t callback);
 
     // Non-copyable
     Telemetry(const Telemetry &) = delete;

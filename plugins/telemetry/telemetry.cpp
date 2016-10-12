@@ -62,6 +62,11 @@ Telemetry::FlightMode Telemetry::flight_mode() const
     return _impl->get_flight_mode();
 }
 
+Telemetry::Health Telemetry::health() const
+{
+    return _impl->get_health();
+}
+
 void Telemetry::position_async(double rate_hz, position_callback_t callback)
 {
     return _impl->position_async(rate_hz, callback);
@@ -115,5 +120,9 @@ void Telemetry::flight_mode_async(flight_mode_callback_t callback)
     return _impl->flight_mode_async(callback);
 }
 
+void Telemetry::health_async(health_callback_t callback)
+{
+    return _impl->health_async(callback);
+}
 
 } // namespace dronelink

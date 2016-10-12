@@ -25,6 +25,8 @@ TelemetryImpl::TelemetryImpl() :
     _battery(Telemetry::Battery {NAN, NAN}),
     _flight_mode_mutex(),
     _flight_mode(Telemetry::FlightMode::UNKNOWN),
+    _health_mutex(),
+    _health(Telemetry::Health {false, false, false, false, false, false, false}),
     _position_subscription(nullptr),
     _home_position_subscription(nullptr),
     _in_air_subscription(nullptr),
@@ -34,7 +36,8 @@ TelemetryImpl::TelemetryImpl() :
     _ground_speed_ned_subscription(nullptr),
     _gps_info_subscription(nullptr),
     _battery_subscription(nullptr),
-    _flight_mode_subscription(nullptr)
+    _flight_mode_subscription(nullptr),
+    _health_subscription(nullptr)
 {
 }
 
@@ -73,6 +76,33 @@ void TelemetryImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&TelemetryImpl::process_heartbeat, this, _1), (void *)this);
+
+    // FIXME: The calibration check should eventually be better than this.
+    //        For now, we just do the same as QGC does.
+
+    _parent->get_param_int_async(std::string("CAL_GYRO0_ID"),
+                                 std::bind(&TelemetryImpl::receive_param_cal_gyro,
+                                           this,
+                                           std::placeholders::_1,
+                                           std::placeholders::_2));
+
+    _parent->get_param_int_async(std::string("CAL_ACC0_ID"),
+                                 std::bind(&TelemetryImpl::receive_param_cal_accel,
+                                           this,
+                                           std::placeholders::_1,
+                                           std::placeholders::_2));
+
+    _parent->get_param_int_async(std::string("CAL_MAG0_ID"),
+                                 std::bind(&TelemetryImpl::receive_param_cal_mag,
+                                           this,
+                                           std::placeholders::_1,
+                                           std::placeholders::_2));
+
+    _parent->get_param_float_async(std::string("SENS_BOARD_X_OFF"),
+                                   std::bind(&TelemetryImpl::receive_param_cal_level,
+                                             this,
+                                             std::placeholders::_1,
+                                             std::placeholders::_2));
 }
 
 void TelemetryImpl::deinit()
@@ -114,6 +144,8 @@ void TelemetryImpl::process_home_position(const mavlink_message_t &message)
                                            0.0f
                                           }));
 
+    set_health_home_position(true);
+
     if (_home_position_subscription) {
         _home_position_subscription(get_home_position());
     }
@@ -151,6 +183,15 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t &message)
                   gps_raw_int.fix_type
                  });
 
+    // TODO: This is just an interim hack, we will have to look at
+    //       estimator flags in order to decide if the position
+    //       estimate is good enough.
+    const bool gps_ok = ((gps_raw_int.fix_type >= 3) && (gps_raw_int.satellites_visible >= 8));
+
+    set_health_global_position(gps_ok);
+    // Local is not different from global for now until things like flow are in place.
+    set_health_local_position(gps_ok);
+
     if (_gps_info_subscription) {
         _gps_info_subscription(get_gps_info());
     }
@@ -160,6 +201,7 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t &message)
 {
     mavlink_extended_sys_state_t extended_sys_state;
     mavlink_msg_extended_sys_state_decode(&message, &extended_sys_state);
+
     if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR) {
         set_in_air(true);
     } else if (extended_sys_state.landed_state == MAV_LANDED_STATE_ON_GROUND) {
@@ -170,6 +212,7 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t &message)
     if (_in_air_subscription) {
         _in_air_subscription(in_air());
     }
+
 }
 
 void TelemetryImpl::process_sys_status(const mavlink_message_t &message)
@@ -205,6 +248,10 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
             _flight_mode_subscription(get_flight_mode());
         }
     }
+
+    if (_health_subscription) {
+        _health_subscription(get_health());
+    }
 }
 
 Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
@@ -237,6 +284,50 @@ Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t cu
     }
 }
 
+void TelemetryImpl::receive_param_cal_gyro(bool success, int value)
+{
+    if (!success) {
+        Debug() << "Error: Param for gyro cal failed.";
+        return;
+    }
+
+    bool ok = (value != 0);
+    set_health_gyrometer_calibration(ok);
+}
+
+void TelemetryImpl::receive_param_cal_accel(bool success, int value)
+{
+    if (!success) {
+        Debug() << "Error: Param for accel cal failed.";
+        return;
+    }
+
+    bool ok = (value != 0);
+    set_health_accelerometer_calibration(ok);
+}
+
+void TelemetryImpl::receive_param_cal_mag(bool success, int value)
+{
+    if (!success) {
+        Debug() << "Error: Param for mag cal failed.";
+        return;
+    }
+
+    bool ok = (value != 0);
+    set_health_magnetometer_calibration(ok);
+}
+
+void TelemetryImpl::receive_param_cal_level(bool success, float value)
+{
+    if (!success) {
+        Debug() << "Error: Param for level cal failed.";
+        return;
+    }
+
+    bool ok = (value != 0);
+    set_health_level_calibration(ok);
+}
+
 Telemetry::Position TelemetryImpl::get_position() const
 {
     std::lock_guard<std::mutex> lock(_position_mutex);
@@ -248,6 +339,7 @@ void TelemetryImpl::set_position(Telemetry::Position position)
     std::lock_guard<std::mutex> lock(_position_mutex);
     _position = position;
 }
+
 Telemetry::Position TelemetryImpl::get_home_position() const
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
@@ -346,6 +438,54 @@ void TelemetryImpl::set_flight_mode(Telemetry::FlightMode flight_mode)
 {
     std::lock_guard<std::mutex> lock(_flight_mode_mutex);
     _flight_mode = flight_mode;
+}
+
+Telemetry::Health TelemetryImpl::get_health() const
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    return _health;
+}
+
+void TelemetryImpl::set_health_local_position(bool ok)
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    _health.local_position_ok = ok;
+}
+
+void TelemetryImpl::set_health_global_position(bool ok)
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    _health.global_position_ok = ok;
+}
+
+void TelemetryImpl::set_health_home_position(bool ok)
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    _health.home_position_ok = ok;
+}
+
+void TelemetryImpl::set_health_gyrometer_calibration(bool ok)
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    _health.gyrometer_calibration_ok = ok;
+}
+
+void TelemetryImpl::set_health_accelerometer_calibration(bool ok)
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    _health.accelerometer_calibration_ok = ok;
+}
+
+void TelemetryImpl::set_health_magnetometer_calibration(bool ok)
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    _health.magnetometer_calibration_ok = ok;
+}
+
+void TelemetryImpl::set_health_level_calibration(bool ok)
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    _health.level_calibration_ok = ok;
 }
 
 void TelemetryImpl::position_async(double rate_hz, Telemetry::position_callback_t &callback)
@@ -450,6 +590,11 @@ void TelemetryImpl::battery_async(double rate_hz,
 void TelemetryImpl::flight_mode_async(Telemetry::flight_mode_callback_t &callback)
 {
     _flight_mode_subscription = callback;
+}
+
+void TelemetryImpl::health_async(Telemetry::health_callback_t &callback)
+{
+    _health_subscription = callback;
 }
 
 } // namespace dronelink

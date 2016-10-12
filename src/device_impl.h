@@ -87,6 +87,12 @@ public:
     void set_param_float_async(const std::string &name, float value, success_t callback);
     void set_param_int_async(const std::string &name, int32_t value, success_t callback);
 
+    typedef std::function <void(bool success, float value)> get_param_float_callback_t;
+    typedef std::function <void(bool success, int32_t value)> get_param_int_callback_t;
+
+    void get_param_float_async(const std::string &name, get_param_float_callback_t callback);
+    void get_param_int_async(const std::string &name, get_param_int_callback_t callback);
+
     static uint8_t get_own_system_id() { return _own_system_id; }
     static uint8_t get_own_component_id() { return _own_component_id; }
 
@@ -111,6 +117,11 @@ private:
     static void check_heartbeat_timeout(DeviceImpl *self);
 
     static void report_result(const command_result_callback_t &callback, CommandResult result);
+
+    static void receive_float_param(bool success, MavlinkParameters::ParamValue value,
+                                    get_param_float_callback_t callback);
+    static void receive_int_param(bool success, MavlinkParameters::ParamValue value,
+                                  get_param_int_callback_t callback);
 
 
     struct MavlinkHandlerTableEntry {
