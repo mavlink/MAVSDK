@@ -37,25 +37,42 @@ sudo cp googlemock/gtest/libgtest_main.a /usr/local/lib
 
 ### Building
 
+Make sure the submodules are updated first.
 ```
 git submodule update --init --recursive
-mkdir build
-cd build
 ```
 
-For releasing:
-```
-cmake -DCMAKE_BUILD_TYPE=Release ..
-```
+#### Desktop
 
-For debugging:
-```
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-```
+Build for the desktop to test and debug:
 
 ```
-make
+make default
 ```
+
+#### Android
+
+To build for Android devices or simulators, you first need to install the Android ndk and point the environment variable `ANDROID_TOOLCHAIN_CMAKE` to `build/cmake/android.toolchain.cmake`, e.g. adding the line below to the .bashrc:
+
+```
+export ANDROID_TOOLCHAIN_CMAKE=$HOME/Android/android-ndk-r13/build/cmake/android.toolchain.cmake
+```
+
+
+#### iOS
+
+To build for real iOS devices on macOS:
+
+```
+make ios install
+```
+
+Build for the iOS simulator on macOS:
+
+```
+make ios_simulator install
+```
+
 
 ### Build with external directory for plugins/integration_tests
 
@@ -76,34 +93,15 @@ external_example
         └── example_impl.h
 ```
 
-To include the external folder in the build, add the folder name to the cmake command
-(the path is relative to the root repository path):
+To include the external folder in the build, add the folder name to the make command:
 
 ```
-cmake -DCMAKE_BUILD_TYPE=Debug -DEXTERNAL_DIR:STRING=external_example ..
-```
-
-```
-make
+make EXTERNAL_DIR=external_example android
 ```
 
 To run the external hello world integration test, do:
 ```
-./external_example/integration_tests/hello_world
-```
-
-### Building for iOS
-
-For arm64, armv7 and armv7s:
-
-```
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../iOS.cmake -DIOS_PLATFORM=OS
-```
-
-For the iOS simulator on i386 or x86_64:
-
-```
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../iOS.cmake -DIOS_PLATFORM=SIMULATOR
+make && build/default/integration_tests_runner --gtest_filter="HelloWorld*"
 ```
 
 ### Unit-tests
@@ -111,8 +109,7 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../iOS.cmake -DIOS_PL
 To run the unit tests:
 
 ```
-make unit_tests_runner
-./unit_tests_runner
+make run_unit_tests
 ```
 
 ### Integration-tests
@@ -120,17 +117,16 @@ make unit_tests_runner
 Start PX4 e.g. in SITL using `make posix gazebo` and run the integration tests use:
 
 ```
-make integration_tests_runner
-./integration_tests_runner
+make run_integration_tests
 ```
 
 To run a single integration test:
 ```
-./integration_tests_runner --gtest_filter="Telemetry.Simple"
+make && build/default/integration_tests_runner --gtest_filter="Telemetry.Simple"
 ```
 or all telemetry tests:
 ```
-./integration_tests_runner --gtest_filter="Telemetry*"
+make && build/default/integration_tests_runner --gtest_filter="Telemetry*"
 ```
 
 ### Code style

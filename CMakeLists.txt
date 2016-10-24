@@ -9,7 +9,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
 
 # Clang needs this warning disabled.
-if (APPLE OR IOS)
+if (APPLE OR IOS OR ANDROID)
     add_definitions("-Wno-missing-braces")
 endif()
 
@@ -47,10 +47,15 @@ add_library(dronelink STATIC
     ${plugin_source_files}
 )
 
+if(ANDROID)
+    set(ARCH ${ANDROID_ABI})
+endif()
+
+
 # We support install in order to use the header and static library files in
 # other applications.
 install(TARGETS dronelink
-    DESTINATION "lib"
+    DESTINATION "lib/${ARCH}"
 )
 install(FILES
     include/dronelink.h
@@ -64,13 +69,13 @@ install(FILES
 if(NOT IOS)
     add_subdirectory(integration_tests)
 
-    if (DEFINED EXTERNAL_DIR)
+    if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
         add_subdirectory(${EXTERNAL_DIR}/integration_tests
             ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
     endif()
 endif()
 
-if(NOT IOS AND NOT APPLE)
+if(NOT IOS AND NOT APPLE AND NOT ANDROID)
     enable_testing()
     find_package(GTest REQUIRED)
     include_directories(${GTEST_INCLUDE_DIRS})
