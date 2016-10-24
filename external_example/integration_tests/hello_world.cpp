@@ -1,19 +1,17 @@
 #include <iostream>
 #include <unistd.h>
+#include <gtest/gtest.h>
 #include "dronelink.h"
 
-#define UNUSED(x) (void)(x)
+using namespace dronelink;
 
-int main(int argc, char *argv[])
+int test_hello_world()
 {
-    UNUSED(argc);
-    UNUSED(argv);
+    DroneLink dl;
 
-    dronelink::DroneLink dl;
-
-    dronelink::Result ret = dl.add_udp_connection();
-    if (ret != dronelink::Result::SUCCESS) {
-        std::cout << "failed to add connection: " << result_str(ret) << std::endl;
+    DroneLink::ConnectionResult ret = dl.add_udp_connection();
+    if (ret != DroneLink::ConnectionResult::SUCCESS) {
+        std::cout << "failed to add connection: " << int(ret) << std::endl;
         return -1;
     }
 
@@ -39,4 +37,9 @@ int main(int argc, char *argv[])
     dl.device(uuid).example().say_hello();
 
     return 0;
+}
+
+TEST(HelloWorld, SayHello)
+{
+    ASSERT_EQ(test_hello_world(), 0);
 }
