@@ -30,6 +30,7 @@ public:
     Telemetry::Battery get_battery() const;
     Telemetry::FlightMode get_flight_mode() const;
     Telemetry::Health get_health() const;
+    Telemetry::RCStatus get_rc_status() const;
 
     void position_async(double rate_hz, Telemetry::position_callback_t &callback);
     void home_position_async(double rate_hz, Telemetry::position_callback_t &callback);
@@ -44,6 +45,7 @@ public:
     void battery_async(double rate_hz, Telemetry::battery_callback_t &callback);
     void flight_mode_async(Telemetry::flight_mode_callback_t &callback);
     void health_async(Telemetry::health_callback_t &callback);
+    void rc_status_async(double rate_hz, Telemetry::rc_status_callback_t &callback);
 
 private:
     void set_position(Telemetry::Position position);
@@ -62,6 +64,7 @@ private:
     void set_health_accelerometer_calibration(bool ok);
     void set_health_magnetometer_calibration(bool ok);
     void set_health_level_calibration(bool ok);
+    void set_rc_status(bool available, float signal_strenght_percent);
 
     void process_global_position_int(const mavlink_message_t &message);
     void process_home_position(const mavlink_message_t &message);
@@ -70,11 +73,14 @@ private:
     void process_extended_sys_state(const mavlink_message_t &message);
     void process_sys_status(const mavlink_message_t &message);
     void process_heartbeat(const mavlink_message_t &message);
+    void process_rc_channels(const mavlink_message_t &message);
 
     void receive_param_cal_gyro(bool success, int value);
     void receive_param_cal_accel(bool success, int value);
     void receive_param_cal_mag(bool success, int value);
     void receive_param_cal_level(bool success, float value);
+
+    void receive_rc_channels_timeout();
 
     static Telemetry::FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
@@ -109,6 +115,9 @@ private:
     mutable std::mutex _health_mutex;
     Telemetry::Health _health;
 
+    mutable std::mutex _rc_status_mutex;
+    Telemetry::RCStatus _rc_status;
+
     Telemetry::position_callback_t _position_subscription;
     Telemetry::position_callback_t _home_position_subscription;
     Telemetry::in_air_callback_t _in_air_subscription;
@@ -120,6 +129,7 @@ private:
     Telemetry::battery_callback_t _battery_subscription;
     Telemetry::flight_mode_callback_t _flight_mode_subscription;
     Telemetry::health_callback_t _health_subscription;
+    Telemetry::rc_status_callback_t _rc_status_subscription;
 };
 
 } // namespace dronelink

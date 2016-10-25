@@ -66,6 +66,12 @@ public:
         bool home_position_ok;
     };
 
+    struct RCStatus {
+        bool available_once;
+        bool lost;
+        float signal_strenght_percent;
+    };
+
     Position position() const;
     Position home_position() const;
 
@@ -85,6 +91,8 @@ public:
     FlightMode flight_mode() const;
 
     Health health() const;
+
+    RCStatus rc_status() const;
 
     typedef std::function<void(Position position)> position_callback_t;
     void position_async(double rate_hz, position_callback_t callback);
@@ -119,6 +127,9 @@ public:
     typedef std::function<void(Health health)> health_callback_t;
     // Note: this function is limited to 1Hz.
     void health_async(health_callback_t callback);
+
+    typedef std::function<void(RCStatus rc_status)> rc_status_callback_t;
+    void rc_status_async(double rate_hz, rc_status_callback_t callback);
 
     // Non-copyable
     Telemetry(const Telemetry &) = delete;

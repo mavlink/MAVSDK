@@ -27,6 +27,8 @@ TelemetryImpl::TelemetryImpl() :
     _flight_mode(Telemetry::FlightMode::UNKNOWN),
     _health_mutex(),
     _health(Telemetry::Health {false, false, false, false, false, false, false}),
+    _rc_status_mutex(),
+    _rc_status(Telemetry::RCStatus {false, false, 0.0f}),
     _position_subscription(nullptr),
     _home_position_subscription(nullptr),
     _in_air_subscription(nullptr),
@@ -37,7 +39,8 @@ TelemetryImpl::TelemetryImpl() :
     _gps_info_subscription(nullptr),
     _battery_subscription(nullptr),
     _flight_mode_subscription(nullptr),
-    _health_subscription(nullptr)
+    _health_subscription(nullptr),
+    _rc_status_subscription(nullptr)
 {
 }
 
@@ -76,6 +79,14 @@ void TelemetryImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&TelemetryImpl::process_heartbeat, this, _1), (void *)this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_RC_CHANNELS,
+        std::bind(&TelemetryImpl::process_rc_channels, this, _1), (void *)this);
+
+    // TODO: we need to be able to use a custom timeout time.
+    _parent->register_timeout_handler(
+        std::bind(&TelemetryImpl::receive_rc_channels_timeout, this), (const void *)this);
 
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
@@ -254,6 +265,17 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
     }
 }
 
+void TelemetryImpl::process_rc_channels(const mavlink_message_t &message)
+{
+    mavlink_rc_channels_t rc_channels;
+    mavlink_msg_rc_channels_decode(&message, &rc_channels);
+
+    bool rc_ok = (rc_channels.chancount > 0);
+    set_rc_status(rc_ok, rc_channels.rssi);
+
+    _parent->update_timeout_handler(this);
+}
+
 Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
 {
     px4::px4_custom_mode px4_custom_mode;
@@ -326,6 +348,12 @@ void TelemetryImpl::receive_param_cal_level(bool success, float value)
 
     bool ok = (value != 0);
     set_health_level_calibration(ok);
+}
+
+void TelemetryImpl::receive_rc_channels_timeout()
+{
+    const bool rc_ok = false;
+    set_rc_status(rc_ok, 0.0f);
 }
 
 Telemetry::Position TelemetryImpl::get_position() const
@@ -446,6 +474,12 @@ Telemetry::Health TelemetryImpl::get_health() const
     return _health;
 }
 
+Telemetry::RCStatus TelemetryImpl::get_rc_status() const
+{
+    std::lock_guard<std::mutex> lock(_rc_status_mutex);
+    return _rc_status;
+}
+
 void TelemetryImpl::set_health_local_position(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
@@ -486,6 +520,21 @@ void TelemetryImpl::set_health_level_calibration(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
     _health.level_calibration_ok = ok;
+}
+
+void TelemetryImpl::set_rc_status(bool available, float signal_strenght_percent)
+{
+    std::lock_guard<std::mutex> lock(_rc_status_mutex);
+
+    if (available) {
+        _rc_status.available_once = true;
+        _rc_status.signal_strenght_percent = signal_strenght_percent;
+    } else {
+        _rc_status.signal_strenght_percent = 0.0f;
+    }
+
+    _rc_status.lost = !available;
+
 }
 
 void TelemetryImpl::position_async(double rate_hz, Telemetry::position_callback_t &callback)
@@ -595,6 +644,17 @@ void TelemetryImpl::flight_mode_async(Telemetry::flight_mode_callback_t &callbac
 void TelemetryImpl::health_async(Telemetry::health_callback_t &callback)
 {
     _health_subscription = callback;
+}
+
+void TelemetryImpl::rc_status_async(double rate_hz, Telemetry::rc_status_callback_t &callback)
+{
+    if (rate_hz > 0) {
+        _parent->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz);
+
+        _rc_status_subscription = callback;
+    } else {
+        _rc_status_subscription = nullptr;
+    }
 }
 
 } // namespace dronelink
