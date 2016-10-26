@@ -133,8 +133,8 @@ clean:
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
-    $(error ANDROID_TOOLCHAIN_CMAKE is undefined, please point the \
-        environment variable to build/cmake/android.toolchain.cmake from android-ndk.)
+	$(error ANDROID_TOOLCHAIN_CMAKE is undefined, please point the \
+	    environment variable to build/cmake/android.toolchain.cmake from android-ndk.)
 endif
 
 .PHONY:
