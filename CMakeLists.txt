@@ -13,6 +13,10 @@ if (APPLE OR IOS OR ANDROID)
     add_definitions("-Wno-missing-braces")
 endif()
 
+if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.9)
+    add_definitions("-Wno-missing-field-initializers")
+endif()
+
 # Autogenerate the device_plugin_container.{h|cpp} to include all plugins.
 include(autogenerate_plugin_container.cmake)
 
