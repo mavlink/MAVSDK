@@ -2,9 +2,14 @@
 
 #define UNUSED(x) (void)(x)
 
-#include <iostream>
 #include <sstream>
 #include <chrono>
+
+#if ANDROID
+#include <android/log.h>
+#else
+#include <iostream>
+#endif
 
 namespace dronelink {
 
@@ -23,7 +28,11 @@ public:
 
     ~Debug()
     {
+#if ANDROID
+        __android_log_print(ANDROID_LOG_DEBUG, "DroneLink", "%s", _s.str().c_str());
+#else
         std::cout << _s.str() << std::endl;
+#endif
     }
 
 private:
