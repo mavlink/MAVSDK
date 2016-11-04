@@ -222,7 +222,7 @@ void DeviceImpl::send_heartbeat(DeviceImpl *self)
 {
     mavlink_message_t message;
     mavlink_msg_heartbeat_pack(_own_system_id, _own_component_id, &message,
-                               MAV_TYPE_GCS, 0, 0, 0, 0);
+                               MAV_TYPE_GCS, MAV_AUTOPILOT_GENERIC, 0, 0, 0);
     self->send_message(message);
 }
 
