@@ -189,6 +189,7 @@ void ActionImpl::return_to_land_async(const Action::result_callback_t &callback)
 bool ActionImpl::is_arm_allowed() const
 {
     if (!_in_air_state_known) {
+        Debug() << "landed state not known, arming not allowed";
         return false;
     }
 
