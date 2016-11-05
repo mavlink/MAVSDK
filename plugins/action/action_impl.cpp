@@ -22,9 +22,13 @@ void ActionImpl::init()
 {
     using namespace std::placeholders; // for `_1`
 
+    // We need the system state.
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
         std::bind(&ActionImpl::process_extended_sys_state, this, _1), (void *)this);
+
+    // And we neet to make sure the system state is actually sent.
+    _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, 1.0);
 }
 
 void ActionImpl::deinit()
