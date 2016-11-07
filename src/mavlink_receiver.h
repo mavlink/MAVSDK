@@ -15,9 +15,9 @@ public:
         return _channel;
     }
 
-    mavlink_message_t &get_message()
+    mavlink_message_t &get_last_message()
     {
-        return _message;
+        return _last_message;
     }
 
     mavlink_status_t &get_status()
@@ -25,12 +25,16 @@ public:
         return _status;
     }
 
-    bool parse_datagram(const char *datagram, unsigned datagram_len);
+    void set_new_datagram(char *datagram, unsigned datagram_len);
+
+    bool parse_message();
 
 private:
     uint8_t _channel;
-    mavlink_message_t _message;
-    mavlink_status_t _status;
+    mavlink_message_t _last_message = {};
+    mavlink_status_t _status = {};
+    char *_datagram = nullptr;
+    unsigned _datagram_len = 0;
 };
 
 } // namespace dronelink

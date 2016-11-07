@@ -187,8 +187,11 @@ void UdpConnection::receive(UdpConnection *parent)
             }
         }
 
-        if (parent->_mavlink_receiver->parse_datagram(buffer, recv_len)) {
-            parent->receive_message(parent->_mavlink_receiver->get_message());
+        parent->_mavlink_receiver->set_new_datagram(buffer, recv_len);
+
+        // Parse all mavlink messages in one datagram. Once exhausted, we'll exit while.
+        while (parent->_mavlink_receiver->parse_message()) {
+            parent->receive_message(parent->_mavlink_receiver->get_last_message());
         }
     }
 }
