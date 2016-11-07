@@ -145,15 +145,15 @@ void OffboardImpl::report_offboard_result(const Offboard::result_callback_t &cal
 
 void OffboardImpl::set_velocity(Offboard::VelocityNEDYaw velocity_ned_yaw)
 {
-    const static uint16_t IGNORE_X =    (1 << 0);
-    const static uint16_t IGNORE_Y =    (1 << 1);
-    const static uint16_t IGNORE_Z =    (1 << 2);
+    const static uint16_t IGNORE_X = (1 << 0);
+    const static uint16_t IGNORE_Y = (1 << 1);
+    const static uint16_t IGNORE_Z = (1 << 2);
     //const static uint16_t IGNORE_VX =   (1 << 3);
     //const static uint16_t IGNORE_VY =   (1 << 4);
     //const static uint16_t IGNORE_VZ =   (1 << 5);
-    const static uint16_t IGNORE_AX =   (1 << 6);
-    const static uint16_t IGNORE_AY =   (1 << 7);
-    const static uint16_t IGNORE_AZ =   (1 << 8);
+    const static uint16_t IGNORE_AX = (1 << 6);
+    const static uint16_t IGNORE_AY = (1 << 7);
+    const static uint16_t IGNORE_AZ = (1 << 8);
     //const static uint16_t IS_FORCE =    (1 << 9);
     //const static uint16_t IGNORE_YAW =      (1 << 10);
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
@@ -172,16 +172,16 @@ void OffboardImpl::set_velocity(Offboard::VelocityNEDYaw velocity_ned_yaw)
 
     mavlink_message_t message;
     mavlink_msg_set_position_target_local_ned_pack(_parent->get_own_system_id(),
-                                   _parent->get_own_component_id(),
-                                   &message,
-                                   elapsed_s() * 1e3f,
-                                   _parent->get_target_system_id(),
-                                   _parent->get_target_component_id(),
-                                   MAV_FRAME_LOCAL_NED,
-                                   IGNORE_X | IGNORE_Y | IGNORE_Z |
-                                   IGNORE_AX | IGNORE_AY | IGNORE_AZ |
-                                   IGNORE_YAW_RATE,
-                                   x, y, z, vx, vy, vz, afx, afy, afz, yaw, yaw_rate);
+                                                   _parent->get_own_component_id(),
+                                                   &message,
+                                                   elapsed_s() * 1e3f,
+                                                   _parent->get_target_system_id(),
+                                                   _parent->get_target_component_id(),
+                                                   MAV_FRAME_LOCAL_NED,
+                                                   IGNORE_X | IGNORE_Y | IGNORE_Z |
+                                                   IGNORE_AX | IGNORE_AY | IGNORE_AZ |
+                                                   IGNORE_YAW_RATE,
+                                                   x, y, z, vx, vy, vz, afx, afy, afz, yaw, yaw_rate);
     _parent->send_message(message);
 }
 
