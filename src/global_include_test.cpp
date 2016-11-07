@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <chrono>
 #include <ctime>
+#include <cmath>
 
 using namespace dronelink;
 
@@ -46,3 +47,17 @@ TEST(GlobalInclude, ElapsedIncreasing)
     ASSERT_GT(now, before);
 }
 
+TEST(GlobalInclude, RadDeg)
+{
+    ASSERT_DOUBLE_EQ(0.0, to_rad_from_deg(0.0));
+    ASSERT_DOUBLE_EQ(M_PI / 2.0, to_rad_from_deg(90.0));
+    ASSERT_DOUBLE_EQ(M_PI, to_rad_from_deg(180.0));
+    ASSERT_DOUBLE_EQ(-M_PI, to_rad_from_deg(-180.0));
+    ASSERT_DOUBLE_EQ(2.0 * M_PI, to_rad_from_deg(360.0));
+
+    ASSERT_DOUBLE_EQ(0.0, to_deg_from_rad(0.0));
+    ASSERT_DOUBLE_EQ(90.0, to_deg_from_rad(M_PI / 2.0));
+    ASSERT_DOUBLE_EQ(180, to_deg_from_rad(M_PI));
+    ASSERT_DOUBLE_EQ(-180, to_deg_from_rad(-M_PI));
+    ASSERT_DOUBLE_EQ(360.0, to_deg_from_rad(2.0 * M_PI));
+}

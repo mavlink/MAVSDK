@@ -1,4 +1,5 @@
 #include "global_include.h"
+#include <cmath>
 
 namespace dronelink {
 
@@ -36,5 +37,15 @@ dl_time_t steady_time_in_future(double duration_s)
     return now + std::chrono::nanoseconds((long int)(duration_s * 1e9));
 }
 
+
+double to_rad_from_deg(double deg)
+{
+    return deg / 180.0 * M_PI;
+}
+
+double to_deg_from_rad(double rad)
+{
+    return rad / M_PI * 180.0;
+}
 
 } // namespace dronelink
