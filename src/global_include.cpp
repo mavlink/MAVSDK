@@ -10,7 +10,17 @@ dl_time_t steady_time()
     return steady_clock::now();
 }
 
-double elapsed_s(dl_time_t &since)
+double elapsed_s()
+{
+    using std::chrono::steady_clock;
+
+    auto now = steady_clock::now().time_since_epoch();
+
+    return (now.count()) * steady_clock::period::num /
+           static_cast<double>(steady_clock::period::den);
+}
+
+double elapsed_since_s(dl_time_t &since)
 {
     using std::chrono::steady_clock;
 

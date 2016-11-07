@@ -54,7 +54,8 @@ typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
 dl_time_t steady_time();
 dl_time_t steady_time_in_future(double duration_s);
 
-double elapsed_s(dl_time_t &since);
+double elapsed_s();
+double elapsed_since_s(dl_time_t &since);
 
 
 } // namespace dronelink

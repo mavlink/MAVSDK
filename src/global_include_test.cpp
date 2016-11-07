@@ -17,11 +17,11 @@ TEST(GlobalInclude, SteadyTimeIncreasing)
     ASSERT_GT(time_now, time_before);
 }
 
-TEST(GlobalInclude, ElapsedAboutRight)
+TEST(GlobalInclude, ElapsedSinceAboutRight)
 {
     dl_time_t time_before = steady_time();
     usleep(100000);
-    double seconds_elapsed = elapsed_s(time_before);
+    double seconds_elapsed = elapsed_since_s(time_before);
 
     ASSERT_GT(seconds_elapsed, 0.09);
     ASSERT_LT(seconds_elapsed, 0.11);
@@ -38,4 +38,11 @@ TEST(GlobalInclude, SteadyTimeInFuture)
     ASSERT_GT(now, in_future);
 }
 
+TEST(GlobalInclude, ElapsedIncreasing)
+{
+    double before = elapsed_s();
+    usleep(10000);
+    double now = elapsed_s();
+    ASSERT_GT(now, before);
+}
 

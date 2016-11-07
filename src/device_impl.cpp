@@ -259,7 +259,7 @@ void DeviceImpl::check_timeouts(DeviceImpl *self)
 
 void DeviceImpl::check_heartbeat_timeout(DeviceImpl *self)
 {
-    if (elapsed_s(self->_last_heartbeat_received_time) > self->_heartbeat_timeout_s) {
+    if (elapsed_since_s(self->_last_heartbeat_received_time) > self->_heartbeat_timeout_s) {
         if (!self->_heartbeat_timed_out) {
             self->_parent->notify_on_timeout(self->_target_uuid);
             self->_heartbeat_timed_out = true;
