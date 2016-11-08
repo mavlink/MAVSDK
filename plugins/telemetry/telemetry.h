@@ -82,6 +82,9 @@ public:
     Quaternion attitude_quaternion() const;
     EulerAngle attitude_euler_angle() const;
 
+    Quaternion camera_attitude_quaternion() const;
+    EulerAngle camera_attitude_euler_angle() const;
+
     GroundSpeedNED ground_speed_ned() const;
 
     GPSInfo gps_info() const;
@@ -110,6 +113,11 @@ public:
 
     typedef std::function<void(EulerAngle euler_angle)> attitude_euler_angle_callback_t;
     void attitude_euler_angle_async(double rate_hz, attitude_euler_angle_callback_t callback);
+
+    void camera_attitude_quaternion_async(double rate_hz, attitude_quaternion_callback_t callback);
+
+    void camera_attitude_euler_angle_async(double rate_hz,
+                                           attitude_euler_angle_callback_t callback);
 
     typedef std::function<void(GroundSpeedNED ground_speed_ned)> ground_speed_ned_callback_t;
     void ground_speed_ned_async(double rate_hz, ground_speed_ned_callback_t callback);

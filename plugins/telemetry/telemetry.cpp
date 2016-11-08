@@ -42,6 +42,16 @@ Telemetry::EulerAngle Telemetry::attitude_euler_angle() const
     return _impl->get_attitude_euler_angle();
 }
 
+Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
+{
+    return _impl->get_camera_attitude_quaternion();
+}
+
+Telemetry::EulerAngle Telemetry::camera_attitude_euler_angle() const
+{
+    return _impl->get_camera_attitude_euler_angle();
+}
+
 Telemetry::GroundSpeedNED Telemetry::ground_speed_ned() const
 {
     return _impl->get_ground_speed_ned();
@@ -102,6 +112,18 @@ void Telemetry::attitude_euler_angle_async(double rate_hz,
                                            attitude_euler_angle_callback_t callback)
 {
     return _impl->attitude_euler_angle_async(rate_hz, callback);
+}
+
+void Telemetry::camera_attitude_quaternion_async(double rate_hz,
+                                                 attitude_quaternion_callback_t callback)
+{
+    return _impl->camera_attitude_quaternion_async(rate_hz, callback);
+}
+
+void Telemetry::camera_attitude_euler_angle_async(double rate_hz,
+                                                  attitude_euler_angle_callback_t callback)
+{
+    return _impl->camera_attitude_euler_angle_async(rate_hz, callback);
 }
 
 void Telemetry::ground_speed_ned_async(double rate_hz,

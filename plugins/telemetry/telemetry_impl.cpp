@@ -17,6 +17,8 @@ TelemetryImpl::TelemetryImpl() :
     _armed(false),
     _attitude_quaternion_mutex(),
     _attitude_quaternion(Telemetry::Quaternion {NAN, NAN, NAN, NAN}),
+    _camera_attitude_euler_angle_mutex(),
+    _camera_attitude_euler_angle(Telemetry::EulerAngle {NAN, NAN, NAN}),
     _ground_speed_ned_mutex(),
     _ground_speed_ned(Telemetry::GroundSpeedNED {NAN, NAN, NAN}),
     _gps_info_mutex(),
@@ -35,6 +37,8 @@ TelemetryImpl::TelemetryImpl() :
     _armed_subscription(nullptr),
     _attitude_quaternion_subscription(nullptr),
     _attitude_euler_angle_subscription(nullptr),
+    _camera_attitude_quaternion_subscription(nullptr),
+    _camera_attitude_euler_angle_subscription(nullptr),
     _ground_speed_ned_subscription(nullptr),
     _gps_info_subscription(nullptr),
     _battery_subscription(nullptr),
@@ -63,6 +67,10 @@ void TelemetryImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
         std::bind(&TelemetryImpl::process_attitude_quaternion, this, _1), (void *)this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_MOUNT_STATUS,
+        std::bind(&TelemetryImpl::process_mount_status, this, _1), (void *)this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GPS_RAW_INT,
@@ -183,6 +191,28 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t &message
 
     if (_attitude_euler_angle_subscription) {
         _attitude_euler_angle_subscription(get_attitude_euler_angle());
+    }
+}
+
+void TelemetryImpl::process_mount_status(const mavlink_message_t &message)
+{
+    mavlink_mount_status_t mount_status;
+    mavlink_msg_mount_status_decode(&message, &mount_status);
+
+    Telemetry::EulerAngle euler_angle({
+        mount_status.roll,
+        mount_status.pitch,
+        mount_status.yaw
+    });
+
+    set_camera_attitude_euler_angle(euler_angle);
+
+    if (_camera_attitude_quaternion_subscription) {
+        _camera_attitude_quaternion_subscription(get_camera_attitude_quaternion());
+    }
+
+    if (_camera_attitude_euler_angle_subscription) {
+        _camera_attitude_euler_angle_subscription(get_camera_attitude_euler_angle());
     }
 }
 
@@ -420,6 +450,28 @@ void TelemetryImpl::set_attitude_quaternion(Telemetry::Quaternion quaternion)
     _attitude_quaternion = quaternion;
 }
 
+Telemetry::Quaternion TelemetryImpl::get_camera_attitude_quaternion() const
+{
+    std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
+    Telemetry::Quaternion quaternion
+        = to_quaternion_from_euler_angle(_camera_attitude_euler_angle);
+
+    return quaternion;
+}
+
+Telemetry::EulerAngle TelemetryImpl::get_camera_attitude_euler_angle() const
+{
+    std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
+
+    return _camera_attitude_euler_angle;
+}
+
+void TelemetryImpl::set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle)
+{
+    std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
+    _camera_attitude_euler_angle = euler_angle;
+}
+
 Telemetry::GroundSpeedNED TelemetryImpl::get_ground_speed_ned() const
 {
     std::lock_guard<std::mutex> lock(_ground_speed_ned_mutex);
@@ -597,6 +649,32 @@ void TelemetryImpl::attitude_euler_angle_async(double rate_hz,
         _attitude_euler_angle_subscription = callback;
     } else {
         _attitude_euler_angle_subscription = nullptr;
+    }
+}
+
+void TelemetryImpl::camera_attitude_quaternion_async(double rate_hz,
+                                                     Telemetry::attitude_quaternion_callback_t
+                                                     &callback)
+{
+    if (rate_hz > 0) {
+        _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_STATUS, rate_hz);
+
+        _camera_attitude_quaternion_subscription = callback;
+    } else {
+        _camera_attitude_quaternion_subscription = nullptr;
+    }
+}
+
+void TelemetryImpl::camera_attitude_euler_angle_async(double rate_hz,
+                                                      Telemetry::attitude_euler_angle_callback_t
+                                                      &callback)
+{
+    if (rate_hz > 0) {
+        _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_STATUS, rate_hz);
+
+        _camera_attitude_euler_angle_subscription = callback;
+    } else {
+        _camera_attitude_euler_angle_subscription = nullptr;
     }
 }
 

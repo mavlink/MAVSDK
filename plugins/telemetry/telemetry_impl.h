@@ -25,6 +25,8 @@ public:
     bool armed() const;
     Telemetry::EulerAngle get_attitude_euler_angle() const;
     Telemetry::Quaternion get_attitude_quaternion() const;
+    Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
+    Telemetry::Quaternion get_camera_attitude_quaternion() const;
     Telemetry::GroundSpeedNED get_ground_speed_ned() const;
     Telemetry::GPSInfo get_gps_info() const;
     Telemetry::Battery get_battery() const;
@@ -40,6 +42,10 @@ public:
                                    Telemetry::attitude_quaternion_callback_t &callback);
     void attitude_euler_angle_async(double rate_hz,
                                     Telemetry::attitude_euler_angle_callback_t &callback);
+    void camera_attitude_quaternion_async(double rate_hz,
+                                          Telemetry::attitude_quaternion_callback_t &callback);
+    void camera_attitude_euler_angle_async(double rate_hz,
+                                           Telemetry::attitude_euler_angle_callback_t &callback);
     void ground_speed_ned_async(double rate_hz, Telemetry::ground_speed_ned_callback_t &callback);
     void gps_info_async(double rate_hz, Telemetry::gps_info_callback_t &callback);
     void battery_async(double rate_hz, Telemetry::battery_callback_t &callback);
@@ -53,6 +59,7 @@ private:
     void set_in_air(bool in_air);
     void set_armed(bool armed);
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
+    void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
     void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
     void set_gps_info(Telemetry::GPSInfo gps_info);
     void set_battery(Telemetry::Battery battery);
@@ -69,6 +76,7 @@ private:
     void process_global_position_int(const mavlink_message_t &message);
     void process_home_position(const mavlink_message_t &message);
     void process_attitude_quaternion(const mavlink_message_t &message);
+    void process_mount_status(const mavlink_message_t &message);
     void process_gps_raw_int(const mavlink_message_t &message);
     void process_extended_sys_state(const mavlink_message_t &message);
     void process_sys_status(const mavlink_message_t &message);
@@ -100,6 +108,9 @@ private:
     mutable std::mutex _attitude_quaternion_mutex;
     Telemetry::Quaternion _attitude_quaternion;
 
+    mutable std::mutex _camera_attitude_euler_angle_mutex;
+    Telemetry::EulerAngle _camera_attitude_euler_angle;
+
     mutable std::mutex _ground_speed_ned_mutex;
     Telemetry::GroundSpeedNED _ground_speed_ned;
 
@@ -124,6 +135,8 @@ private:
     Telemetry::armed_callback_t _armed_subscription;
     Telemetry::attitude_quaternion_callback_t _attitude_quaternion_subscription;
     Telemetry::attitude_euler_angle_callback_t _attitude_euler_angle_subscription;
+    Telemetry::attitude_quaternion_callback_t _camera_attitude_quaternion_subscription;
+    Telemetry::attitude_euler_angle_callback_t _camera_attitude_euler_angle_subscription;
     Telemetry::ground_speed_ned_callback_t _ground_speed_ned_subscription;
     Telemetry::gps_info_callback_t _gps_info_subscription;
     Telemetry::battery_callback_t _battery_subscription;
