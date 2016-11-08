@@ -57,7 +57,7 @@ DeviceImpl::~DeviceImpl()
     }
 }
 
-void DeviceImpl::register_mavlink_message_handler(uint8_t msg_id,
+void DeviceImpl::register_mavlink_message_handler(uint16_t msg_id,
                                                   mavlink_message_handler_t callback,
                                                   const void *cookie)
 {

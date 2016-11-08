@@ -43,7 +43,7 @@ public:
 
     typedef std::function<void()> timeout_handler_t;
 
-    void register_mavlink_message_handler(uint8_t msg_id, mavlink_message_handler_t callback,
+    void register_mavlink_message_handler(uint16_t msg_id, mavlink_message_handler_t callback,
                                           const void *cookie);
 
     void unregister_all_mavlink_message_handlers(const void *cookie);
@@ -125,7 +125,7 @@ private:
 
 
     struct MavlinkHandlerTableEntry {
-        uint8_t msg_id;
+        uint16_t msg_id;
         mavlink_message_handler_t callback;
         const void *cookie; // This is the identification to unregister.
     };
