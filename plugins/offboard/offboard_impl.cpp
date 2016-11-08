@@ -181,7 +181,8 @@ void OffboardImpl::set_velocity(Offboard::VelocityNEDYaw velocity_ned_yaw)
                                                    IGNORE_X | IGNORE_Y | IGNORE_Z |
                                                    IGNORE_AX | IGNORE_AY | IGNORE_AZ |
                                                    IGNORE_YAW_RATE,
-                                                   x, y, z, vx, vy, vz, afx, afy, afz, yaw, yaw_rate);
+                                                   x, y, z, vx, vy, vz, afx, afy, afz,
+                                                   yaw, yaw_rate);
     _parent->send_message(message);
 }
 
