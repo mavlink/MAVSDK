@@ -70,6 +70,9 @@ public:
 
     CommandResult set_msg_rate(uint16_t message_id, double rate_hz);
 
+    void set_msg_rate_async(uint16_t message_id, double rate_hz,
+                            command_result_callback_t callback);
+
     double get_timeout() { return _timeout_s; }
     void set_timeout(double timeout_s) { _timeout_s = timeout_s; }
 

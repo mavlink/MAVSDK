@@ -72,6 +72,38 @@ public:
         float signal_strenght_percent;
     };
 
+    enum class Result {
+        SUCCESS = 0,
+        NO_DEVICE,
+        CONNECTION_ERROR,
+        BUSY,
+        COMMAND_DENIED,
+        TIMEOUT,
+        UNKNOWN
+    };
+
+    typedef std::function<void(Result)> result_callback_t;
+
+    Result set_rate_position(double rate_hz);
+    Result set_rate_home_position(double rate_hz);
+    Result set_rate_in_air(double rate_hz);
+    Result set_rate_attitude(double rate_hz);
+    Result set_rate_camera_attitude(double rate_hz);
+    Result set_rate_ground_speed_ned(double rate_hz);
+    Result set_rate_gps_info(double rate_hz);
+    Result set_rate_battery(double rate_hz);
+    Result set_rate_rc_status(double rate_hz);
+
+    void set_rate_position_async(double rate_hz, result_callback_t callback);
+    void set_rate_home_position_async(double rate_hz, result_callback_t callback);
+    void set_rate_in_air_async(double rate_hz, result_callback_t callback);
+    void set_rate_attitude_async(double rate_hz, result_callback_t callback);
+    void set_rate_camera_attitude_async(double rate_hz, result_callback_t callback);
+    void set_rate_ground_speed_ned_async(double rate_hz, result_callback_t callback);
+    void set_rate_gps_info_async(double rate_hz, result_callback_t callback);
+    void set_rate_battery_async(double rate_hz, result_callback_t callback);
+    void set_rate_rc_status_async(double rate_hz, result_callback_t callback);
+
     Position position() const;
     Position home_position() const;
 
@@ -98,35 +130,34 @@ public:
     RCStatus rc_status() const;
 
     typedef std::function<void(Position position)> position_callback_t;
-    void position_async(double rate_hz, position_callback_t callback);
-    void home_position_async(double rate_hz, position_callback_t callback);
+    void position_async(position_callback_t callback);
+    void home_position_async(position_callback_t callback);
 
     typedef std::function<void(bool in_air)> in_air_callback_t;
-    void in_air_async(double rate_hz, in_air_callback_t callback);
+    void in_air_async(in_air_callback_t callback);
 
     typedef std::function<void(bool armed)> armed_callback_t;
     // Note: this function is limited to 1Hz.
     void armed_async(armed_callback_t callback);
 
     typedef std::function<void(Quaternion quaternion)> attitude_quaternion_callback_t;
-    void attitude_quaternion_async(double rate_hz, attitude_quaternion_callback_t callback);
+    void attitude_quaternion_async(attitude_quaternion_callback_t callback);
 
     typedef std::function<void(EulerAngle euler_angle)> attitude_euler_angle_callback_t;
-    void attitude_euler_angle_async(double rate_hz, attitude_euler_angle_callback_t callback);
+    void attitude_euler_angle_async(attitude_euler_angle_callback_t callback);
 
-    void camera_attitude_quaternion_async(double rate_hz, attitude_quaternion_callback_t callback);
+    void camera_attitude_quaternion_async(attitude_quaternion_callback_t callback);
 
-    void camera_attitude_euler_angle_async(double rate_hz,
-                                           attitude_euler_angle_callback_t callback);
+    void camera_attitude_euler_angle_async(attitude_euler_angle_callback_t callback);
 
     typedef std::function<void(GroundSpeedNED ground_speed_ned)> ground_speed_ned_callback_t;
-    void ground_speed_ned_async(double rate_hz, ground_speed_ned_callback_t callback);
+    void ground_speed_ned_async(ground_speed_ned_callback_t callback);
 
     typedef std::function<void(GPSInfo gps_info)> gps_info_callback_t;
-    void gps_info_async(double rate_hz, gps_info_callback_t callback);
+    void gps_info_async(gps_info_callback_t callback);
 
     typedef std::function<void(Battery battery)> battery_callback_t;
-    void battery_async(double rate_hz, battery_callback_t callback);
+    void battery_async(battery_callback_t callback);
 
     typedef std::function<void(FlightMode flight_mode)> flight_mode_callback_t;
     // Note: this function is limited to 1Hz.
@@ -137,7 +168,7 @@ public:
     void health_async(health_callback_t callback);
 
     typedef std::function<void(RCStatus rc_status)> rc_status_callback_t;
-    void rc_status_async(double rate_hz, rc_status_callback_t callback);
+    void rc_status_async(rc_status_callback_t callback);
 
     // Non-copyable
     Telemetry(const Telemetry &) = delete;

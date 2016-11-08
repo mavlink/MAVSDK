@@ -3,11 +3,13 @@
 #include <gtest/gtest.h>
 #include "dronelink.h"
 
-int test_simple_telemetry()
-{
-    dronelink::DroneLink dl;
+using namespace dronelink;
 
-    dronelink::DroneLink::ConnectionResult ret = dl.add_udp_connection();
+void test_simple_telemetry()
+{
+    DroneLink dl;
+
+    DroneLink::ConnectionResult ret = dl.add_udp_connection();
 
     usleep(1500000);
 
@@ -17,26 +19,36 @@ int test_simple_telemetry()
         std::cout << "found device with UUID: " << *it << std::endl;
     }
 
-    if (uuids.size() > 1) {
-        std::cout << "found more than one device, not sure which one to use." << std::endl;
-        return -1;
-    } else if (uuids.size() == 0) {
-        std::cout << "no device found." << std::endl;
-        return -1;
-    }
+    ASSERT_EQ(uuids.size(), 1);
 
     uint64_t uuid = uuids.at(0);
 
-    if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
+    if (ret != DroneLink::ConnectionResult::SUCCESS) {
         std::cout << "failed to add connection" << std::endl;
     }
 
-    dronelink::Device &device = dl.device(uuid);
+    Device &device = dl.device(uuid);
+
+
+    Telemetry::Result result = device.telemetry().set_rate_position(10.0);
+    ASSERT_EQ(result, Telemetry::Result::SUCCESS);
+    result = device.telemetry().set_rate_home_position(10.0);
+    ASSERT_EQ(result, Telemetry::Result::SUCCESS);
+    result = device.telemetry().set_rate_in_air(10.0);
+    ASSERT_EQ(result, Telemetry::Result::SUCCESS);
+    result = device.telemetry().set_rate_attitude(10.0);
+    ASSERT_EQ(result, Telemetry::Result::SUCCESS);
+    result = device.telemetry().set_rate_ground_speed_ned(10.0);
+    ASSERT_EQ(result, Telemetry::Result::SUCCESS);
+    result = device.telemetry().set_rate_gps_info(10.0);
+    ASSERT_EQ(result, Telemetry::Result::SUCCESS);
+    result = device.telemetry().set_rate_battery(10.0);
+    ASSERT_EQ(result, Telemetry::Result::SUCCESS);
 
     // Print 3s of telemetry.
-    for (unsigned i = 0; i < 100; ++i) {
+    for (unsigned i = 0; i < 500; ++i) {
 
-        const dronelink::Telemetry::Position &position = device.telemetry().position();
+        const Telemetry::Position &position = device.telemetry().position();
         std::cout << "Position: " << std::endl
                   << "Absolute altitude: " << position.absolute_altitude_m << " m" << std::endl
                   << "Relative altitude: " << position.relative_altitude_m << " m" << std::endl
@@ -45,7 +57,7 @@ int test_simple_telemetry()
                   << ", longitude: "
                   << position.longitude_deg << " deg" << std::endl;
 
-        const dronelink::Telemetry::Position &home_position = device.telemetry().home_position();
+        const Telemetry::Position &home_position = device.telemetry().home_position();
         std::cout << "Home position: " << std::endl
                   << "Absolute altitude: " << home_position.absolute_altitude_m
                   << " m" << std::endl
@@ -59,41 +71,39 @@ int test_simple_telemetry()
         std::cout << (device.telemetry().in_air() ? "In-air" : "On-ground")
                   << std::endl;
 
-        const dronelink::Telemetry::Quaternion &quaternion
+        const Telemetry::Quaternion &quaternion
             = device.telemetry().attitude_quaternion();
         std::cout << "Quaternion: (" << quaternion.vec[0] << ", "
                   << quaternion.vec[1] << ","
                   << quaternion.vec[2] << ","
                   << quaternion.vec[3] << ")" << std::endl;
 
-        const dronelink::Telemetry::EulerAngle &euler_angle
+        const Telemetry::EulerAngle &euler_angle
             = device.telemetry().attitude_euler_angle();
         std::cout << "Euler: (" << euler_angle.roll_deg << " deg, "
                   << euler_angle.pitch_deg << " deg,"
                   << euler_angle.yaw_deg << " deg)" << std::endl;
 
-        const dronelink::Telemetry::GroundSpeedNED &ground_speed_ned
+        const Telemetry::GroundSpeedNED &ground_speed_ned
             = device.telemetry().ground_speed_ned();
         std::cout << "Speed: (" << ground_speed_ned.velocity_north_m_s << " m/s, "
                   << ground_speed_ned.velocity_east_m_s << " m/s,"
                   << ground_speed_ned.velocity_down_m_s << " m/s)" << std::endl;
 
-        const dronelink::Telemetry::GPSInfo &gps_info = device.telemetry().gps_info();
+        const Telemetry::GPSInfo &gps_info = device.telemetry().gps_info();
         std::cout << "GPS sats: " << gps_info.num_satellites
                   << ", fix type: " << gps_info.fix_type << std::endl;
 
-        const dronelink::Telemetry::Battery &battery = device.telemetry().battery();
+        const Telemetry::Battery &battery = device.telemetry().battery();
         std::cout << "Battery voltage: " << battery.voltage_v << " v, "
                   << "remaining: " << battery.remaining * 100.0f << " \%" << std::endl;
 
 
         usleep(30000);
     }
-
-    return 0;
 }
 
 TEST(Telemetry, Simple)
 {
-    ASSERT_EQ(test_simple_telemetry(), 0);
+    test_simple_telemetry();
 }

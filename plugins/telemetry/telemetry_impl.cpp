@@ -44,7 +44,9 @@ TelemetryImpl::TelemetryImpl() :
     _battery_subscription(nullptr),
     _flight_mode_subscription(nullptr),
     _health_subscription(nullptr),
-    _rc_status_subscription(nullptr)
+    _rc_status_subscription(nullptr),
+    _ground_speed_ned_rate_hz(0.0),
+    _position_rate_hz(0.0)
 {
 }
 
@@ -129,6 +131,173 @@ void TelemetryImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers((void *)this);
 }
 
+Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)
+{
+    _position_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
+
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_home_position(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_HOME_POSITION, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_in_air(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_attitude(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_camera_attitude(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_STATUS, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_ground_speed_ned(double rate_hz)
+{
+    _ground_speed_ned_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
+
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_gps_info(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz));
+}
+
+void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _position_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
+
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
+        max_rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+
+}
+
+void TelemetryImpl::set_rate_home_position_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_HOME_POSITION,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_in_air_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_attitude_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_camera_attitude_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_MOUNT_STATUS,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_ground_speed_ned_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _ground_speed_ned_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
+
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
+        max_rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_GPS_RAW_INT,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_SYS_STATUS,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_RC_CHANNELS,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+Telemetry::Result TelemetryImpl::telemetry_result_from_command_result(DeviceImpl::CommandResult command_result)
+{
+    switch (command_result) {
+        case DeviceImpl::CommandResult::SUCCESS:
+            return Telemetry::Result::SUCCESS;
+        case DeviceImpl::CommandResult::NO_DEVICE:
+            return Telemetry::Result::NO_DEVICE;
+        case DeviceImpl::CommandResult::CONNECTION_ERROR:
+            return Telemetry::Result::CONNECTION_ERROR;
+        case DeviceImpl::CommandResult::BUSY:
+            return Telemetry::Result::BUSY;
+        case DeviceImpl::CommandResult::COMMAND_DENIED:
+            return Telemetry::Result::COMMAND_DENIED;
+        case DeviceImpl::CommandResult::TIMEOUT:
+            return Telemetry::Result::TIMEOUT;
+        default:
+            return Telemetry::Result::UNKNOWN;
+    }
+}
+
+void TelemetryImpl::command_result_callback(DeviceImpl::CommandResult command_result,
+                                            const Telemetry::result_callback_t &callback)
+{
+    Telemetry::Result action_result = telemetry_result_from_command_result(command_result);
+
+    callback(action_result);
+}
+
 void TelemetryImpl::process_global_position_int(const mavlink_message_t &message)
 {
     mavlink_global_position_int_t global_position_int;
@@ -180,8 +349,7 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t &message
         attitude_quaternion.q2,
         attitude_quaternion.q3,
         attitude_quaternion.q4
-    }
-                                    );
+    });
 
     set_attitude_quaternion(quaternion);
 
@@ -589,37 +757,19 @@ void TelemetryImpl::set_rc_status(bool available, float signal_strenght_percent)
 
 }
 
-void TelemetryImpl::position_async(double rate_hz, Telemetry::position_callback_t &callback)
+void TelemetryImpl::position_async(Telemetry::position_callback_t &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, rate_hz);
-
-        _position_subscription = callback;
-    } else {
-        _position_subscription = nullptr;
-    }
+    _position_subscription = callback;
 }
 
-void TelemetryImpl::home_position_async(double rate_hz, Telemetry::position_callback_t &callback)
+void TelemetryImpl::home_position_async(Telemetry::position_callback_t &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_HOME_POSITION, rate_hz);
-
-        _home_position_subscription = callback;
-    } else {
-        _home_position_subscription = nullptr;
-    }
+    _home_position_subscription = callback;
 }
 
-void TelemetryImpl::in_air_async(double rate_hz, Telemetry::in_air_callback_t &callback)
+void TelemetryImpl::in_air_async(Telemetry::in_air_callback_t &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz);
-
-        _in_air_subscription = callback;
-    } else {
-        _in_air_subscription = nullptr;
-    }
+    _in_air_subscription = callback;
 }
 
 void TelemetryImpl::armed_async(Telemetry::armed_callback_t &callback)
@@ -627,91 +777,42 @@ void TelemetryImpl::armed_async(Telemetry::armed_callback_t &callback)
     _armed_subscription = callback;
 }
 
-void TelemetryImpl::attitude_quaternion_async(double rate_hz,
-                                              Telemetry::attitude_quaternion_callback_t &callback)
+void TelemetryImpl::attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz);
-
-        _attitude_quaternion_subscription = callback;
-    } else {
-        _attitude_quaternion_subscription = nullptr;
-    }
+    _attitude_quaternion_subscription = callback;
 }
 
-void TelemetryImpl::attitude_euler_angle_async(double rate_hz,
-                                               Telemetry::attitude_euler_angle_callback_t
+void TelemetryImpl::attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t
                                                &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz);
-
-        _attitude_euler_angle_subscription = callback;
-    } else {
-        _attitude_euler_angle_subscription = nullptr;
-    }
+    _attitude_euler_angle_subscription = callback;
 }
 
-void TelemetryImpl::camera_attitude_quaternion_async(double rate_hz,
-                                                     Telemetry::attitude_quaternion_callback_t
+void TelemetryImpl::camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t
                                                      &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_STATUS, rate_hz);
-
-        _camera_attitude_quaternion_subscription = callback;
-    } else {
-        _camera_attitude_quaternion_subscription = nullptr;
-    }
+    _camera_attitude_quaternion_subscription = callback;
 }
 
-void TelemetryImpl::camera_attitude_euler_angle_async(double rate_hz,
-                                                      Telemetry::attitude_euler_angle_callback_t
+void TelemetryImpl::camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t
                                                       &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_STATUS, rate_hz);
-
-        _camera_attitude_euler_angle_subscription = callback;
-    } else {
-        _camera_attitude_euler_angle_subscription = nullptr;
-    }
+    _camera_attitude_euler_angle_subscription = callback;
 }
 
-void TelemetryImpl::ground_speed_ned_async(double rate_hz,
-                                           Telemetry::ground_speed_ned_callback_t &callback)
+void TelemetryImpl::ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, rate_hz);
-
-        _ground_speed_ned_subscription = callback;
-    } else {
-        _ground_speed_ned_subscription = nullptr;
-    }
+    _ground_speed_ned_subscription = callback;
 }
 
-void TelemetryImpl::gps_info_async(double rate_hz,
-                                   Telemetry::gps_info_callback_t &callback)
+void TelemetryImpl::gps_info_async(Telemetry::gps_info_callback_t &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz);
-
-        _gps_info_subscription = callback;
-    } else {
-        _gps_info_subscription = nullptr;
-    }
+    _gps_info_subscription = callback;
 }
 
-void TelemetryImpl::battery_async(double rate_hz,
-                                  Telemetry::battery_callback_t &callback)
+void TelemetryImpl::battery_async(Telemetry::battery_callback_t &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz);
-
-        _battery_subscription = callback;
-    } else {
-        _battery_subscription = nullptr;
-    }
+    _battery_subscription = callback;
 }
 
 void TelemetryImpl::flight_mode_async(Telemetry::flight_mode_callback_t &callback)
@@ -724,15 +825,9 @@ void TelemetryImpl::health_async(Telemetry::health_callback_t &callback)
     _health_subscription = callback;
 }
 
-void TelemetryImpl::rc_status_async(double rate_hz, Telemetry::rc_status_callback_t &callback)
+void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t &callback)
 {
-    if (rate_hz > 0) {
-        _parent->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz);
-
-        _rc_status_subscription = callback;
-    } else {
-        _rc_status_subscription = nullptr;
-    }
+    _rc_status_subscription = callback;
 }
 
 } // namespace dronelink

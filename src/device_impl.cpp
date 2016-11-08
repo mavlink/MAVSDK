@@ -154,7 +154,7 @@ void DeviceImpl::process_command_ack(const mavlink_message_t &message)
             }
         } else {
             if (_command_result_callback != nullptr) {
-                report_result(_command_result_callback, CommandResult::SUCCESS);
+                report_result(_command_result_callback, CommandResult::COMMAND_DENIED);
             }
         }
         _command_result_callback = nullptr;
@@ -439,10 +439,30 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
 
 DeviceImpl::CommandResult DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz)
 {
-    float interval_us = 1e6f / rate_hz;
+    // If left at -1 it will stop the message stream.
+    float interval_us = -1.0f;
+    if (rate_hz > 0) {
+        interval_us = 1e6f / rate_hz;
+    }
+
     return send_command_with_ack(
                MAV_CMD_SET_MESSAGE_INTERVAL,
                CommandParams {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
+}
+
+void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
+                                    command_result_callback_t callback)
+{
+    // If left at -1 it will stop the message stream.
+    float interval_us = -1.0f;
+    if (rate_hz > 0) {
+        interval_us = 1e6f / rate_hz;
+    }
+
+    send_command_with_ack_async(
+        MAV_CMD_SET_MESSAGE_INTERVAL,
+        CommandParams {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+        callback);
 }
 
 void DeviceImpl::report_result(const command_result_callback_t &callback, CommandResult result)

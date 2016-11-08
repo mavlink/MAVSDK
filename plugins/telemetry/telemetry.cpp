@@ -12,6 +12,95 @@ Telemetry::~Telemetry()
 {
 }
 
+Telemetry::Result Telemetry::set_rate_position(double rate_hz)
+{
+    return _impl->set_rate_position(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_home_position(double rate_hz)
+{
+    return _impl->set_rate_home_position(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_in_air(double rate_hz)
+{
+    return _impl->set_rate_in_air(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_attitude(double rate_hz)
+{
+    return _impl->set_rate_attitude(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_camera_attitude(double rate_hz)
+{
+    return _impl->set_rate_camera_attitude(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_ground_speed_ned(double rate_hz)
+{
+    return _impl->set_rate_ground_speed_ned(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_gps_info(double rate_hz)
+{
+    return _impl->set_rate_gps_info(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_battery(double rate_hz)
+{
+    return _impl->set_rate_battery(rate_hz);
+}
+
+Telemetry::Result Telemetry::set_rate_rc_status(double rate_hz)
+{
+    return _impl->set_rate_rc_status(rate_hz);
+}
+
+void Telemetry::set_rate_position_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_position_async(rate_hz, callback);
+}
+void Telemetry::set_rate_home_position_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_home_position_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_in_air_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_in_air_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_attitude_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_attitude_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_camera_attitude_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_camera_attitude_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_ground_speed_ned_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_ground_speed_ned_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_gps_info_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_gps_info_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_battery_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_battery_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_rc_status_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_rc_status_async(rate_hz, callback);
+}
+
 Telemetry::Position Telemetry::position() const
 {
     return _impl->get_position();
@@ -82,19 +171,19 @@ Telemetry::RCStatus Telemetry::rc_status() const
     return _impl->get_rc_status();
 }
 
-void Telemetry::position_async(double rate_hz, position_callback_t callback)
+void Telemetry::position_async(position_callback_t callback)
 {
-    return _impl->position_async(rate_hz, callback);
+    return _impl->position_async(callback);
 }
 
-void Telemetry::home_position_async(double rate_hz, position_callback_t callback)
+void Telemetry::home_position_async(position_callback_t callback)
 {
-    return _impl->home_position_async(rate_hz, callback);
+    return _impl->home_position_async(callback);
 }
 
-void Telemetry::in_air_async(double rate_hz, in_air_callback_t callback)
+void Telemetry::in_air_async(in_air_callback_t callback)
 {
-    return _impl->in_air_async(rate_hz,  callback);
+    return _impl->in_air_async( callback);
 }
 
 void Telemetry::armed_async(armed_callback_t callback)
@@ -102,44 +191,39 @@ void Telemetry::armed_async(armed_callback_t callback)
     return _impl->armed_async(callback);
 }
 
-void Telemetry::attitude_quaternion_async(double rate_hz,
-                                          attitude_quaternion_callback_t callback)
+void Telemetry::attitude_quaternion_async(attitude_quaternion_callback_t callback)
 {
-    return _impl->attitude_quaternion_async(rate_hz, callback);
+    return _impl->attitude_quaternion_async(callback);
 }
 
-void Telemetry::attitude_euler_angle_async(double rate_hz,
-                                           attitude_euler_angle_callback_t callback)
+void Telemetry::attitude_euler_angle_async(attitude_euler_angle_callback_t callback)
 {
-    return _impl->attitude_euler_angle_async(rate_hz, callback);
+    return _impl->attitude_euler_angle_async(callback);
 }
 
-void Telemetry::camera_attitude_quaternion_async(double rate_hz,
-                                                 attitude_quaternion_callback_t callback)
+void Telemetry::camera_attitude_quaternion_async(attitude_quaternion_callback_t callback)
 {
-    return _impl->camera_attitude_quaternion_async(rate_hz, callback);
+    return _impl->camera_attitude_quaternion_async(callback);
 }
 
-void Telemetry::camera_attitude_euler_angle_async(double rate_hz,
-                                                  attitude_euler_angle_callback_t callback)
+void Telemetry::camera_attitude_euler_angle_async(attitude_euler_angle_callback_t callback)
 {
-    return _impl->camera_attitude_euler_angle_async(rate_hz, callback);
+    return _impl->camera_attitude_euler_angle_async(callback);
 }
 
-void Telemetry::ground_speed_ned_async(double rate_hz,
-                                       ground_speed_ned_callback_t callback)
+void Telemetry::ground_speed_ned_async(ground_speed_ned_callback_t callback)
 {
-    return _impl->ground_speed_ned_async(rate_hz, callback);
+    return _impl->ground_speed_ned_async(callback);
 }
 
-void Telemetry::gps_info_async(double rate_hz, gps_info_callback_t callback)
+void Telemetry::gps_info_async(gps_info_callback_t callback)
 {
-    return _impl->gps_info_async(rate_hz, callback);
+    return _impl->gps_info_async(callback);
 }
 
-void Telemetry::battery_async(double rate_hz, battery_callback_t callback)
+void Telemetry::battery_async(battery_callback_t callback)
 {
-    return _impl->battery_async(rate_hz, callback);
+    return _impl->battery_async(callback);
 }
 
 void Telemetry::flight_mode_async(flight_mode_callback_t callback)
@@ -152,9 +236,9 @@ void Telemetry::health_async(health_callback_t callback)
     return _impl->health_async(callback);
 }
 
-void Telemetry::rc_status_async(double rate_hz, rc_status_callback_t callback)
+void Telemetry::rc_status_async(rc_status_callback_t callback)
 {
-    return _impl->rc_status_async(rate_hz, callback);
+    return _impl->rc_status_async(callback);
 }
 
 } // namespace dronelink
