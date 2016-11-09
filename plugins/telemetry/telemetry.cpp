@@ -183,7 +183,7 @@ void Telemetry::home_position_async(position_callback_t callback)
 
 void Telemetry::in_air_async(in_air_callback_t callback)
 {
-    return _impl->in_air_async( callback);
+    return _impl->in_air_async(callback);
 }
 
 void Telemetry::armed_async(armed_callback_t callback)
