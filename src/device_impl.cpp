@@ -125,7 +125,9 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    if (_target_uuid == 0) {
+    /* If we don't know the UUID yet, or we had a timeout, we want to check that the
+     * UUID is still the same. */
+    if (_target_uuid == 0 || _heartbeat_timed_out) {
         request_autopilot_version();
     }
 
@@ -134,7 +136,6 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     check_device_thread();
 
     _last_heartbeat_received_time = steady_time();
-    _heartbeat_timed_out = false;
 }
 
 void DeviceImpl::process_command_ack(const mavlink_message_t &message)
@@ -166,15 +167,25 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
     mavlink_autopilot_version_t autopilot_version;
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
+    _target_supports_mission_int =
+        autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT;
+
     if (_target_uuid == 0) {
         _target_uuid = autopilot_version.uid;
-        _target_supports_mission_int =
-            autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT;
-
         _parent->notify_on_discover(_target_uuid);
 
-    } else if (_target_uuid != autopilot_version.uid) {
-        // TODO: raise a flag to invalidate device
+    } else if (_target_uuid == autopilot_version.uid) {
+        if (_heartbeat_timed_out) {
+            // It looks like the vehicle has reconnected, let's accept it again.
+            _parent->notify_on_discover(_target_uuid);
+            _heartbeat_timed_out = false;
+        } else {
+            // This means we just got a autopilot version message but we don't need it
+            // or didn't request it.
+        }
+
+    } else {
+        // TODO: this is bad, we should raise a flag to invalidate device.
         Debug() << "Error: UUID changed";
     }
 }
