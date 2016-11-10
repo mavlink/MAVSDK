@@ -31,8 +31,8 @@ cmake ..
 make -j4
 cd ..
 sudo cp -r googletest/include/gtest /usr/local/include
-sudo cp googlemock/gtest/libgtest.a /usr/local/lib
-sudo cp googlemock/gtest/libgtest_main.a /usr/local/lib
+sudo cp build/googlemock/gtest/libgtest.a /usr/local/lib
+sudo cp build/googlemock/gtest/libgtest_main.a /usr/local/lib
 ```
 
 ### Building
