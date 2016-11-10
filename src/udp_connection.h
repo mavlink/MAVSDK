@@ -30,7 +30,7 @@ private:
 
     static void receive(UdpConnection *parent);
 
-    static constexpr int DEFAULT_UDP_LOCAL_PORT = 14540;
+    static constexpr int DEFAULT_UDP_LOCAL_PORT = 14550;
 
     int _local_port_number;
     std::string _remote_ip;
