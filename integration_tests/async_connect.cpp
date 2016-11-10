@@ -38,6 +38,12 @@ int test_async_connect()
     }
 #endif
 
+#if DROP_DEBUG == 1
+    while (true) {
+        usleep(1000000);
+    }
+#endif
+
     return 0;
 }
 

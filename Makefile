@@ -30,6 +30,10 @@ $(eval $(ARGS):;@:)
 # Default is "Debug", also possible is "Release"
 BUILD_TYPE ?= "Debug"
 
+# Default is no DROPDEBUG
+DROP_DEBUG ?= 0
+
+
 CURRENT_DIR := $(shell pwd)
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -44,6 +48,7 @@ define cmake-build
         -DEXTERNAL_DIR:STRING=$(EXTERNAL_DIR) \
         -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
         -DCMAKE_INSTALL_PREFIX=$(CURRENT_DIR)/install \
+		-DDROP_DEBUG=$(DROP_DEBUG) \
         -G$(CMAKE_GENERATOR)) \
 	|| (rm -rf $(BUILD_DIR)) \
 fi
