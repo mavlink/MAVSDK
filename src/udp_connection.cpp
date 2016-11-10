@@ -152,6 +152,11 @@ void UdpConnection::receive(UdpConnection *parent)
             continue;
         }
 
+        if (recv_len < 0) {
+            Debug() << "recvfrom error: " << strerror(errno);
+            continue;
+        }
+
         int new_remote_port_number = ntohs(src_addr.sin_port);
         std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
 
