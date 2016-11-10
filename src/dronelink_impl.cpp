@@ -128,7 +128,6 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t com
 void DroneLinkImpl::notify_on_discover(uint64_t uuid)
 {
     if (_on_discover_callback != nullptr) {
-        Debug() << "Notify on discover!";
         _on_discover_callback(uuid);
     }
 }
@@ -136,7 +135,6 @@ void DroneLinkImpl::notify_on_discover(uint64_t uuid)
 void DroneLinkImpl::notify_on_timeout(uint64_t uuid)
 {
     if (_on_timeout_callback != nullptr) {
-        Debug() << "Notify on timeout!";
         _on_timeout_callback(uuid);
     }
 }
