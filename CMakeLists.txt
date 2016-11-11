@@ -8,10 +8,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 # We want C++11 and lots of warnings.
 add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
 
-if (DEFINED DROP_DEBUG)
-    add_definitions(-DDROP_DEBUG=${DROP_DEBUG})
-endif()
-
 # Clang needs this warning disabled.
 if (APPLE OR IOS OR ANDROID)
     add_definitions("-Wno-missing-braces")
@@ -122,4 +118,17 @@ if(NOT IOS AND NOT APPLE AND NOT ANDROID)
         integration_tests_runner
     )
 
+endif()
+
+if (DROP_DEBUG EQUAL 1)
+    add_definitions(-DDROP_DEBUG=${DROP_DEBUG})
+
+    add_executable(drop_debug
+        debug_helpers/drop_debug_main.cpp
+    )
+
+    target_link_libraries(drop_debug
+        dronelink
+        pthread
+    )
 endif()

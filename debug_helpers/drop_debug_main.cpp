@@ -1,8 +1,12 @@
 #include <iostream>
 #include <unistd.h>
-#include <gtest/gtest.h>
 #include "dronelink.h"
 
+#if DROP_DEBUG != 1
+#error DROB_DEBUG needs to be set for this test to work
+#endif
+
+#define UNUSED(x) (void)(x)
 
 bool _discovered_device = false;
 bool _timeouted_device = false;
@@ -10,9 +14,10 @@ bool _timeouted_device = false;
 void on_discover(uint64_t uuid);
 void on_timeout(uint64_t uuid);
 
-int test_async_connect()
+int main(int argc, const char* argv[])
 {
-    using namespace std::placeholders; // for _1
+    UNUSED(argc);
+    UNUSED(argv);
 
     dronelink::DroneLink dl;
 
@@ -22,21 +27,15 @@ int test_async_connect()
         return -1;
     }
 
-    dl.register_on_discover(std::bind(&on_discover, _1));
-    dl.register_on_timeout(std::bind(&on_timeout, _1));
+    dl.register_on_discover(std::bind(&on_discover, std::placeholders::_1));
+    dl.register_on_timeout(std::bind(&on_timeout, std::placeholders::_1));
 
-    while (!_discovered_device) {
-        std::cout << "waiting for device to appear..." << std::endl;
+    while (true) {
+        if (!_discovered_device) {
+            std::cout << "waiting for device to appear..." << std::endl;
+        }
         usleep(1000000);
     }
-
-    //FIXME: commented out because we don't want to stop the simulator.
-#if 0
-    while (!_timeouted_device) {
-        std::cout << "waiting for device to disappear..." << std::endl;
-        usleep(1000000);
-    }
-#endif
 
     return 0;
 }
@@ -53,7 +52,3 @@ void on_timeout(uint64_t uuid)
     _timeouted_device = true;
 }
 
-TEST(Connect, Async)
-{
-    ASSERT_EQ(test_async_connect(), 0);
-}
