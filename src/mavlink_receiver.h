@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mavlink_include.h"
+#include "global_include.h"
 #include <cstdint>
 
 namespace dronelink {
@@ -31,7 +32,8 @@ public:
 
 #if DROP_DEBUG == 1
     void debug_drop_rate();
-    void print_line(int index, int count, int count_total);
+    void print_line(const char *index, unsigned count, unsigned count_total,
+                    unsigned overall_bytes, unsigned overall_bytes_total);
 #endif
 
 private:
@@ -43,6 +45,19 @@ private:
 
 #if DROP_DEBUG == 1
     unsigned _bytes_received = 0;
+    //unsigned _bytes_received_1 = 0;
+    unsigned _bytes_received_2 = 0;
+    unsigned _bytes_received_5 = 0;
+
+    unsigned _bytes_overall = 0;
+    //unsigned _bytes_overall_1 = 0;
+    unsigned _bytes_overall_2 = 0;
+    unsigned _bytes_overall_5 = 0;
+
+    bool _first = true;
+    dl_time_t _last_time;
+
+    double _time_elapsed = 0.0;
 #endif
 };
 
