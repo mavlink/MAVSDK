@@ -13,7 +13,7 @@ if (APPLE OR IOS OR ANDROID)
     add_definitions("-Wno-missing-braces")
 endif()
 
-if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.9)
+if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
     add_definitions("-Wno-missing-field-initializers")
 endif()
 
