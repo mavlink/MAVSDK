@@ -15,15 +15,15 @@ float to_rad_from_deg(float deg)
 
 Telemetry::EulerAngle to_euler_angle_from_quaternion(Telemetry::Quaternion quaternion)
 {
-    auto &v = quaternion.vec;
+    auto &q = quaternion;
 
     Telemetry::EulerAngle euler_angle({
         to_deg_from_rad(
-            atan2f(2.0f * (v[0] * v[1] + v[2] * v[3]), 1.0f - 2.0f * (v[1] * v[1] + v[2] * v[2]))),
+            atan2f(2.0f * (q.w * q.x + q.y * q.z), 1.0f - 2.0f * (q.x * q.x + q.y * q.y))),
         to_deg_from_rad(
-            asinf(2.0f * (v[0] * v[2] - v[3] * v[1]))),
+            asinf(2.0f * (q.w * q.y - q.z * q.x))),
         to_deg_from_rad(
-            atan2f(2.0f * (v[0] * v[3] + v[1] * v[2]), 1.0f - 2.0f * (v[2] * v[2] + v[3] * v[3])))
+            atan2f(2.0f * (q.w * q.z + q.x * q.y), 1.0f - 2.0f * (q.y * q.y + q.z * q.z)))
     });
     return euler_angle;
 }

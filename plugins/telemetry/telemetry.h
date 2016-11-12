@@ -20,7 +20,10 @@ public:
     };
 
     struct Quaternion {
-        float vec[4];
+        float w;
+        float x;
+        float y;
+        float z;
     };
 
     struct EulerAngle {
