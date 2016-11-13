@@ -137,7 +137,8 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
 
 void UdpConnection::receive(UdpConnection *parent)
 {
-    char buffer[1024];
+    // Enough for MTU 1500 bytes.
+    char buffer[2048];
 
     while (!parent->_should_exit) {
 
