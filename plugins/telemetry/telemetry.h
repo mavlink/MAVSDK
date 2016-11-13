@@ -45,7 +45,7 @@ public:
 
     struct Battery {
         float voltage_v;
-        float remaining;
+        float remaining_percent;
     };
 
     enum class FlightMode {
