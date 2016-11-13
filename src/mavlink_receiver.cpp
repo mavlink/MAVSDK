@@ -32,9 +32,9 @@ bool MavlinkReceiver::parse_message()
         if (mavlink_parse_char(_channel, _datagram[i], &_last_message, &_status) == 1) {
 
             // Move the pointer to the datagram forward by the amount parsed.
-            _datagram += i;
+            _datagram += (i + 1);
             // And decrease the length, so we don't overshoot in the next round.
-            _datagram_len -= i;
+            _datagram_len -= (i + 1);
 
 #if DROP_DEBUG == 1
             debug_drop_rate();
