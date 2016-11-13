@@ -23,6 +23,7 @@ public:
     void add_connection(Connection *connection);
 
     const std::vector<uint64_t> &get_device_uuids() const;
+    Device &get_device();
     Device &get_device(uint64_t uuid);
 
     void register_on_discover(DroneLink::event_callback_t callback);
@@ -33,6 +34,7 @@ public:
 
 private:
     void create_device_if_not_existing(uint8_t system_id, uint8_t component_id);
+    void remove_empty_devices();
 
     std::mutex _connections_mutex;
     std::vector<Connection *> _connections;

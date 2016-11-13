@@ -34,6 +34,7 @@ public:
     ConnectionResult add_udp_connection(int local_port_number, int _remote_port_number);
 
     const std::vector<uint64_t> &device_uuids() const;
+    Device &device() const;
     Device &device(uint64_t uuid) const;
 
     typedef std::function<void(uint64_t uuid)> event_callback_t;

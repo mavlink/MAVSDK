@@ -44,6 +44,11 @@ const std::vector<uint64_t> &DroneLink::device_uuids() const
     return _impl->get_device_uuids();
 }
 
+Device &DroneLink::device() const
+{
+    return _impl->get_device();
+}
+
 Device &DroneLink::device(uint64_t uuid) const
 {
     return _impl->get_device(uuid);

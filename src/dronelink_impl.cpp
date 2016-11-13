@@ -43,7 +43,15 @@ DroneLinkImpl::~DroneLinkImpl()
 
 void DroneLinkImpl::receive_message(const mavlink_message_t &message)
 {
+    // Reject messages with sysid 0. Somehow these appear sometimes
+    // in SITL.
+    if (message.sysid == 0) {
+        return;
+    }
+
     create_device_if_not_existing(message.sysid, message.compid);
+    remove_empty_devices();
+
 
     _device_impls.at(message.sysid)->process_mavlink_message(message);
 }
@@ -84,6 +92,38 @@ const std::vector<uint64_t> &DroneLinkImpl::get_device_uuids() const
     return uuids;
 }
 
+Device &DroneLinkImpl::get_device()
+{
+    {
+        std::lock_guard<std::mutex> lock(_devices_mutex);
+        // In get_device withoiut uuid, we expect to have only
+        // one device conneted.
+        if (_device_impls.size() == 1) {
+            return *(_devices.at(_device_impls.begin()->first));
+        }
+
+        if (_device_impls.size() > 1) {
+            Debug() << "Error: more than one device found:";
+
+            int i = 0;
+            for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
+                Debug() << "strange: " << i << ": " << int(it->first) << ", " << it->second;
+                ++i;
+            }
+
+        } else {
+            Debug() << "Error: no device found.";
+        }
+    }
+
+    // In both failure cases, return a dummy.
+    uint8_t system_id = 0;
+    uint8_t component_id = 0;
+    create_device_if_not_existing(system_id, component_id);
+
+    return *_devices[system_id];
+}
+
 Device &DroneLinkImpl::get_device(uint64_t uuid)
 {
     {
@@ -114,6 +154,7 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t com
 
     // existing already.
     if (_devices.find(system_id) != _devices.end()) {
+        //Debug() << "ID: " << int(system_id) << " exists already.";
         return;
     }
 
@@ -123,6 +164,20 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t com
 
     Device *new_device = new Device(new_device_impl);
     _devices.insert(std::pair<uint8_t, Device *>(system_id, new_device));
+
+}
+
+void DroneLinkImpl::remove_empty_devices()
+{
+    std::lock_guard<std::mutex> lock(_devices_mutex);
+
+    // Remove entries with system and component ID 0.
+    if (_devices.find(0) != _devices.end()) {
+        _devices.erase(0);
+    }
+    if (_device_impls.find(0) != _device_impls.end()) {
+        _device_impls.erase(0);
+    }
 }
 
 void DroneLinkImpl::notify_on_discover(uint64_t uuid)
