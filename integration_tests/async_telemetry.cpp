@@ -145,10 +145,11 @@ void print_armed(bool armed)
 
 void print_quaternion(Telemetry::Quaternion quaternion)
 {
-    std::cout << "Quaternion: [ " << quaternion.vec[0] << ", "
-              << quaternion.vec[1] << ", "
-              << quaternion.vec[2] << ", "
-              << quaternion.vec[3] << " ]" << std::endl;
+    std::cout << "Quaternion: [ "
+              << quaternion.w << ", "
+              << quaternion.x << ", "
+              << quaternion.y << ", "
+              << quaternion.z << " ]" << std::endl;
 
     _received_quaternion = true;
 }

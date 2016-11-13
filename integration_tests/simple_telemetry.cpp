@@ -73,10 +73,11 @@ void test_simple_telemetry()
 
         const Telemetry::Quaternion &quaternion
             = device.telemetry().attitude_quaternion();
-        std::cout << "Quaternion: (" << quaternion.vec[0] << ", "
-                  << quaternion.vec[1] << ","
-                  << quaternion.vec[2] << ","
-                  << quaternion.vec[3] << ")" << std::endl;
+        std::cout << "Quaternion: ("
+                  << quaternion.w << ", "
+                  << quaternion.x << ","
+                  << quaternion.y << ","
+                  << quaternion.z << ")" << std::endl;
 
         const Telemetry::EulerAngle &euler_angle
             = device.telemetry().attitude_euler_angle();
