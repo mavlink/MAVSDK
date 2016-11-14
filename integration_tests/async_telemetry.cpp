@@ -184,7 +184,7 @@ void print_gps_info(Telemetry::GPSInfo gps_info)
 void print_battery(Telemetry::Battery battery)
 {
     std::cout << "Battery: " << battery.voltage_v << " v,"
-              << "remaining: " << int(battery.remaining * 1e2f) << " %" << std::endl;
+              << "remaining: " << int(battery.remaining_percent * 1e2f) << " %" << std::endl;
 
     _received_battery = true;
 }

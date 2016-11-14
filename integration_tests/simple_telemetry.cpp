@@ -97,7 +97,7 @@ void test_simple_telemetry()
 
         const Telemetry::Battery &battery = device.telemetry().battery();
         std::cout << "Battery voltage: " << battery.voltage_v << " v, "
-                  << "remaining: " << battery.remaining * 100.0f << " \%" << std::endl;
+                  << "remaining: " << battery.remaining_percent * 100.0f << " \%" << std::endl;
 
 
         usleep(30000);
