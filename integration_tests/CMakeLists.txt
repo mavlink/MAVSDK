@@ -20,6 +20,7 @@ list(APPEND integration_tests
     async_hover
     takeoff_and_kill
     offboard_velocity
+    logging
 )
 
 
