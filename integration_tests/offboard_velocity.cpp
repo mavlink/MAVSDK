@@ -59,10 +59,30 @@ int test_offboard_velocity()
         return 1;
     }
 
-    for (unsigned i = 0; i < 1000; ++i) {
+    for (unsigned i = 0; i < 750; ++i) {
         float vx = 5.0f * sinf(i * 0.01f);
-        std::cout << "vx: " << vx << std::endl;
+        //std::cout << "vx: " << vx << std::endl;
         dl.device(uuid).offboard().set_velocity({vx, 0.0f, 0.0f, 90.0f});
+        usleep(10000);
+    }
+
+    for (unsigned i = 0; i < 100; ++i) {
+        dl.device(uuid).offboard().set_velocity({0.0f, 0.0f, 0.0f, 270.0f});
+        usleep(10000);
+    }
+
+    for (unsigned i = 0; i < 100; ++i) {
+        dl.device(uuid).offboard().set_velocity({0.0f, 0.0f, -2.0f, 180.0f});
+        usleep(10000);
+    }
+
+    dl.device(uuid).offboard().set_velocity({0.0f, 0.0f, 0.0f, 90.0f});
+    for (unsigned i = 0; i < 100; ++i) {
+        usleep(10000);
+    }
+
+    for (unsigned i = 0; i < 100; ++i) {
+        dl.device(uuid).offboard().set_velocity({0.0f, 0.0f, -1.0f, 0.0f});
         usleep(10000);
     }
 
