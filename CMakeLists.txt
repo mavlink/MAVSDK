@@ -79,7 +79,7 @@ if(NOT IOS)
     endif()
 endif()
 
-if(NOT IOS AND NOT APPLE AND NOT ANDROID)
+if(NOT IOS AND NOT ANDROID)
     enable_testing()
     find_package(GTest REQUIRED)
     include_directories(${GTEST_INCLUDE_DIRS})
