@@ -56,7 +56,9 @@ void MavlinkReceiver::debug_drop_rate()
 {
     if (_last_message.msgid == MAVLINK_MSG_ID_SYS_STATUS) {
 
-        _bytes_received -= (_last_message.len + MAVLINK_NUM_NON_PAYLOAD_BYTES);
+        const unsigned msg_len = (_last_message.len + MAVLINK_NUM_NON_PAYLOAD_BYTES);
+
+        _bytes_received -= msg_len;
 
         mavlink_sys_status_t sys_status;
         mavlink_msg_sys_status_decode(&_last_message, &sys_status);
@@ -70,21 +72,21 @@ void MavlinkReceiver::debug_drop_rate()
             if (_bytes_received <= sys_status.errors_comm &&
                 sys_status.errors_count2 <= sys_status.errors_comm) {
 
-                _bytes_overall += _bytes_received;
-                //_bytes_overall_1 += _bytes_received_1;
-                _bytes_overall_2 += _bytes_received_2;
-                _bytes_overall_5 += _bytes_received_5;
+                _bytes_sent_overall += sys_status.errors_comm;
+                //_bytes_at_gimbal_overall += sys_status.errors_count1;
+                _bytes_at_camera_overall += sys_status.errors_count2;
+                _bytes_at_sdk_overall += _bytes_received;
 
                 _time_elapsed += elapsed_since_s(_last_time);
 
                 print_line("FMU   ", sys_status.errors_comm, sys_status.errors_comm,
-                           _bytes_overall, _bytes_overall);
+                           _bytes_sent_overall, _bytes_sent_overall);
                 //print_line("Gimbal", sys_status.errors_count1, sys_status.errors_comm,
-                //           _bytes_overall_1, _bytes_overall);
+                //           _bytes_at_gimbal_overall, _bytes_sent_overall);
                 print_line("Camera", sys_status.errors_count2, sys_status.errors_comm,
-                           _bytes_overall_2, _bytes_overall);
+                           _bytes_at_camera_overall, _bytes_sent_overall);
                 print_line("SDK   ", _bytes_received, sys_status.errors_comm,
-                           _bytes_overall_5, _bytes_overall);
+                           _bytes_at_sdk_overall, _bytes_sent_overall);
 
             } else {
                 Debug() << "Missed SYS_STATUS";
@@ -95,15 +97,13 @@ void MavlinkReceiver::debug_drop_rate()
         _last_time = steady_time();
 
         // Reset afterwards:
-        _bytes_received = 0;
+        _bytes_received = msg_len;
     }
 }
 
 void MavlinkReceiver::print_line(const char *index, unsigned count, unsigned count_total,
                                  unsigned overall_bytes, unsigned overall_bytes_total)
 {
-    const float loss_percent = 100.0 * (1.0f - (float(count) / float(count_total)));
-
     Debug() << "count "
             << index
             << ": "
@@ -111,12 +111,12 @@ void MavlinkReceiver::print_line(const char *index, unsigned count, unsigned cou
             << count
             << ", loss: "
             << std::setw(6)
-            << count_total - count
-            << " - "
+            << count_total -  count
+            << ",  "
             << std::setw(6)
             << std::setprecision(2)
             << std::fixed
-            << loss_percent
+            << 100.0 * float(count) / float(count_total)
             << " %, overall: "
             << std::setw(6)
             << std::setprecision(2)
@@ -126,7 +126,7 @@ void MavlinkReceiver::print_line(const char *index, unsigned count, unsigned cou
             << std::setw(6)
             << std::setprecision(2)
             << std::fixed
-            << (double(_bytes_overall) / _time_elapsed / 1024.0)
+            << (double(overall_bytes) / _time_elapsed / 1024.0)
             << " KiB/s";
 }
 #endif

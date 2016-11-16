@@ -45,14 +45,11 @@ private:
 
 #if DROP_DEBUG == 1
     unsigned _bytes_received = 0;
-    //unsigned _bytes_received_1 = 0;
-    unsigned _bytes_received_2 = 0;
-    unsigned _bytes_received_5 = 0;
 
-    unsigned _bytes_overall = 0;
-    //unsigned _bytes_overall_1 = 0;
-    unsigned _bytes_overall_2 = 0;
-    unsigned _bytes_overall_5 = 0;
+    unsigned _bytes_sent_overall = 0;
+    //unsigned _bytes_at_gimbal_overall = 0;
+    unsigned _bytes_at_camera_overall = 0;
+    unsigned _bytes_at_sdk_overall = 0;
 
     bool _first = true;
     dl_time_t _last_time;
