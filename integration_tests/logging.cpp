@@ -15,7 +15,17 @@ void test_logging()
     usleep(2000000);
 
     Logging::Result log_ret = dl.device().logging().start_logging();
+
+    if (log_ret == Logging::Result::COMMAND_DENIED) {
+        usleep(10000);
+        dl.device().logging().stop_logging();
+        //ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
+        usleep(10000);
+        log_ret = dl.device().logging().start_logging();
+    }
+
     ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
+
 
     while (true) {
         usleep(1000000);
