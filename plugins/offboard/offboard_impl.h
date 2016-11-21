@@ -22,7 +22,8 @@ public:
     void start_async(Offboard::result_callback_t callback);
     void stop_async(Offboard::result_callback_t callback);
 
-    void set_velocity(Offboard::VelocityNEDYaw velocity_ned_yaw);
+    void set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw);
+    void set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
 
 private:
     void process_heartbeat(const mavlink_message_t &message);

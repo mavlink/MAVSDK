@@ -27,10 +27,17 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     struct VelocityNEDYaw {
-        float velocity_north_m_s;
-        float velocity_east_m_s;
-        float velocity_down_m_s;
+        float north_m_s;
+        float east_m_s;
+        float down_m_s;
         float yaw_deg;
+    };
+
+    struct VelocityBodyYawspeed {
+        float forward_m_s;
+        float right_m_s;
+        float down_m_s;
+        float yawspeed_deg_s;
     };
 
     Offboard::Result start() const;
@@ -39,7 +46,8 @@ public:
     void start_async(result_callback_t callback);
     void stop_async(result_callback_t callback);
 
-    void set_velocity(Offboard::VelocityNEDYaw velocity_ned_yaw);
+    void set_velocity_ned(VelocityNEDYaw velocity_ned_yaw);
+    void set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed);
 
     // Non-copyable
     Offboard(const Offboard &) = delete;

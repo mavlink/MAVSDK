@@ -143,19 +143,19 @@ void OffboardImpl::report_offboard_result(const Offboard::result_callback_t &cal
     callback(result);
 }
 
-void OffboardImpl::set_velocity(Offboard::VelocityNEDYaw velocity_ned_yaw)
+void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
 {
     const static uint16_t IGNORE_X = (1 << 0);
     const static uint16_t IGNORE_Y = (1 << 1);
     const static uint16_t IGNORE_Z = (1 << 2);
-    //const static uint16_t IGNORE_VX =   (1 << 3);
-    //const static uint16_t IGNORE_VY =   (1 << 4);
-    //const static uint16_t IGNORE_VZ =   (1 << 5);
+    //const static uint16_t IGNORE_VX = (1 << 3);
+    //const static uint16_t IGNORE_VY = (1 << 4);
+    //const static uint16_t IGNORE_VZ = (1 << 5);
     const static uint16_t IGNORE_AX = (1 << 6);
     const static uint16_t IGNORE_AY = (1 << 7);
     const static uint16_t IGNORE_AZ = (1 << 8);
-    //const static uint16_t IS_FORCE =    (1 << 9);
-    //const static uint16_t IGNORE_YAW =      (1 << 10);
+    //const static uint16_t IS_FORCE = (1 << 9);
+    //const static uint16_t IGNORE_YAW = (1 << 10);
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
     const float yaw = to_rad_from_deg(velocity_ned_yaw.yaw_deg);
@@ -163,9 +163,9 @@ void OffboardImpl::set_velocity(Offboard::VelocityNEDYaw velocity_ned_yaw)
     const float x = 0.0f;
     const float y = 0.0f;
     const float z = 0.0f;
-    const float vx = velocity_ned_yaw.velocity_north_m_s;
-    const float vy = velocity_ned_yaw.velocity_east_m_s;
-    const float vz = velocity_ned_yaw.velocity_down_m_s;
+    const float vx = velocity_ned_yaw.north_m_s;
+    const float vy = velocity_ned_yaw.east_m_s;
+    const float vz = velocity_ned_yaw.down_m_s;
     const float afx = 0.0f;
     const float afy = 0.0f;
     const float afz = 0.0f;
@@ -181,6 +181,49 @@ void OffboardImpl::set_velocity(Offboard::VelocityNEDYaw velocity_ned_yaw)
                                                    IGNORE_X | IGNORE_Y | IGNORE_Z |
                                                    IGNORE_AX | IGNORE_AY | IGNORE_AZ |
                                                    IGNORE_YAW_RATE,
+                                                   x, y, z, vx, vy, vz, afx, afy, afz,
+                                                   yaw, yaw_rate);
+    _parent->send_message(message);
+}
+
+void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed)
+{
+    const static uint16_t IGNORE_X = (1 << 0);
+    const static uint16_t IGNORE_Y = (1 << 1);
+    const static uint16_t IGNORE_Z = (1 << 2);
+    //const static uint16_t IGNORE_VX = (1 << 3);
+    //const static uint16_t IGNORE_VY = (1 << 4);
+    //const static uint16_t IGNORE_VZ = (1 << 5);
+    const static uint16_t IGNORE_AX = (1 << 6);
+    const static uint16_t IGNORE_AY = (1 << 7);
+    const static uint16_t IGNORE_AZ = (1 << 8);
+    //const static uint16_t IS_FORCE = (1 << 9);
+    const static uint16_t IGNORE_YAW = (1 << 10);
+    //const static uint16_t IGNORE_YAW_RATE = (1 << 11);
+
+    const float yaw = 0.0f;
+    const float yaw_rate = to_rad_from_deg(velocity_body_yawspeed.yawspeed_deg_s);
+    const float x = 0.0f;
+    const float y = 0.0f;
+    const float z = 0.0f;
+    const float vx = velocity_body_yawspeed.forward_m_s;
+    const float vy = velocity_body_yawspeed.right_m_s;
+    const float vz = velocity_body_yawspeed.down_m_s;
+    const float afx = 0.0f;
+    const float afy = 0.0f;
+    const float afz = 0.0f;
+
+    mavlink_message_t message;
+    mavlink_msg_set_position_target_local_ned_pack(_parent->get_own_system_id(),
+                                                   _parent->get_own_component_id(),
+                                                   &message,
+                                                   elapsed_s() * 1e3f,
+                                                   _parent->get_target_system_id(),
+                                                   _parent->get_target_component_id(),
+                                                   MAV_FRAME_BODY_NED,
+                                                   IGNORE_X | IGNORE_Y | IGNORE_Z |
+                                                   IGNORE_AX | IGNORE_AY | IGNORE_AZ |
+                                                   IGNORE_YAW,
                                                    x, y, z, vx, vy, vz, afx, afy, afz,
                                                    yaw, yaw_rate);
     _parent->send_message(message);

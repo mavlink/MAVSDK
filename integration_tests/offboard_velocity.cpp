@@ -6,103 +6,159 @@
 
 using namespace dronelink;
 
-int test_offboard_velocity()
+
+TEST(Offboard, VelocityNED)
 {
     DroneLink dl;
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    if (ret != DroneLink::ConnectionResult::SUCCESS) {
-        std::cout << "failed to add connection." << std::endl;
-        return -1;
-    }
+    ASSERT_EQ(DroneLink::ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
     usleep(1500000);
 
-    std::vector<uint64_t> uuids = dl.device_uuids();
+    Action::Result action_ret = dl.device().action().arm();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    for (auto it = uuids.begin(); it != uuids.end(); ++it) {
-        std::cout << "found device with UUID: " << *it << std::endl;
-    }
-
-    if (uuids.size() > 1) {
-        std::cout << "found more than one device, not sure which one to use." << std::endl;
-        return -1;
-    } else if (uuids.size() == 0) {
-        std::cout << "no device found." << std::endl;
-        return -1;
-    }
-
-    uint64_t uuid = uuids.at(0);
-
-    Action::Result action_ret = dl.device(uuid).action().arm();
-    if (action_ret != Action::Result::SUCCESS) {
-        std::cout << "failed to arm" <<  std::endl;
-    }
-
-    usleep(500000);
-
-    action_ret = dl.device(uuid).action().takeoff();
-    if (action_ret != Action::Result::SUCCESS) {
-        std::cout << "failed to takeoff" << std::endl;
-    }
+    action_ret = dl.device().action().takeoff();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     usleep(5000000);
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    dl.device(uuid).offboard().set_velocity({0.0f, 0.0f, 0.0f, 0.0f});
+    dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
 
-    Offboard::Result offboard_result = dl.device(uuid).offboard().start();
+    Offboard::Result offboard_result = dl.device().offboard().start();
 
-    if (offboard_result != Offboard::Result::SUCCESS) {
-        std::cout << "failed to start offboard" << std::endl;
-        return 1;
-    }
+    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
-    for (unsigned i = 0; i < 750; ++i) {
-        float vx = 5.0f * sinf(i * 0.01f);
-        //std::cout << "vx: " << vx << std::endl;
-        dl.device(uuid).offboard().set_velocity({vx, 0.0f, 0.0f, 90.0f});
-        usleep(10000);
-    }
-
+    // Let yaw settle.
     for (unsigned i = 0; i < 100; ++i) {
-        dl.device(uuid).offboard().set_velocity({0.0f, 0.0f, 0.0f, 270.0f});
+        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
         usleep(10000);
     }
 
-    for (unsigned i = 0; i < 100; ++i) {
-        dl.device(uuid).offboard().set_velocity({0.0f, 0.0f, -2.0f, 180.0f});
+    {
+        const float step_size = 0.01f;
+        const float one_cycle = 2.0 * M_PI;
+        const unsigned steps = one_cycle / step_size;
+
+        for (unsigned i = 0; i < steps; ++i) {
+            float vx = 5.0f * sinf(i * step_size);
+            //std::cout << "vx: " << vx << std::endl;
+            dl.device().offboard().set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
+            usleep(10000);
+        }
+    }
+
+    for (unsigned i = 0; i < 400; ++i) {
+        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
         usleep(10000);
     }
 
-    dl.device(uuid).offboard().set_velocity({0.0f, 0.0f, 0.0f, 90.0f});
-    for (unsigned i = 0; i < 100; ++i) {
+    for (unsigned i = 0; i < 400; ++i) {
+        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
         usleep(10000);
     }
 
-    for (unsigned i = 0; i < 100; ++i) {
-        dl.device(uuid).offboard().set_velocity({0.0f, 0.0f, -1.0f, 0.0f});
+    for (unsigned i = 0; i < 400; ++i) {
+        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
         usleep(10000);
     }
 
-    offboard_result = dl.device(uuid).offboard().stop();
-
-    if (offboard_result != Offboard::Result::SUCCESS) {
-        std::cout << "failed to stop offboard" << std::endl;
-        return 1;
+    for (unsigned i = 0; i < 400; ++i) {
+        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
+        usleep(10000);
     }
 
-    action_ret = dl.device(uuid).action().land();
-    if (action_ret != Action::Result::SUCCESS) {
-        std::cout << "failed to land" << std::endl;
-    }
+    offboard_result = dl.device().offboard().stop();
+    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
-    return 0;
+    action_ret = dl.device().action().land();
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+
+    usleep(10000000);
+
+    action_ret = dl.device().action().disarm();
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }
 
-TEST(Offboard, Velocity)
+
+TEST(Offboard, VelocityBody)
 {
-    ASSERT_EQ(test_offboard_velocity(), 0);
-}
+    DroneLink dl;
 
+    DroneLink::ConnectionResult ret = dl.add_udp_connection();
+    ASSERT_EQ(DroneLink::ConnectionResult::SUCCESS, ret);
+
+    // Wait for device to connect via heartbeat.
+    usleep(1500000);
+
+    Action::Result action_ret = dl.device().action().arm();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+
+    action_ret = dl.device().action().takeoff();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+
+    usleep(5000000);
+
+    // Send it once before starting offboard, otherwise it will be rejected.
+    dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+
+    Offboard::Result offboard_result = dl.device().offboard().start();
+
+    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+
+    // Turn around yaw and climb
+    for (unsigned i = 0; i < 200; ++i) {
+        dl.device().offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
+        usleep(10000);
+    }
+
+    // Turn back
+    for (unsigned i = 0; i < 200; ++i) {
+        dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
+        usleep(10000);
+    }
+
+    // Wait for a bit
+    for (unsigned i = 0; i < 200; ++i) {
+        dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+        usleep(10000);
+    }
+
+    // Fly a circle
+    for (unsigned i = 0; i < 500; ++i) {
+        dl.device().offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
+        usleep(10000);
+    }
+
+    // Wait for a bit
+    for (unsigned i = 0; i < 500; ++i) {
+        dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+        usleep(10000);
+    }
+
+    // Fly a circle sideways
+    for (unsigned i = 0; i < 500; ++i) {
+        dl.device().offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
+        usleep(10000);
+    }
+
+    // Wait for a bit
+    for (unsigned i = 0; i < 500; ++i) {
+        dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+        usleep(10000);
+    }
+
+    offboard_result = dl.device().offboard().stop();
+    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
+
+    action_ret = dl.device().action().land();
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+
+    usleep(10000000);
+
+    action_ret = dl.device().action().disarm();
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+}
