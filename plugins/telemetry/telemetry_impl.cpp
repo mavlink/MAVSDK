@@ -746,15 +746,15 @@ void TelemetryImpl::set_health_level_calibration(bool ok)
     _health.level_calibration_ok = ok;
 }
 
-void TelemetryImpl::set_rc_status(bool available, float signal_strenght_percent)
+void TelemetryImpl::set_rc_status(bool available, float signal_strength_percent)
 {
     std::lock_guard<std::mutex> lock(_rc_status_mutex);
 
     if (available) {
         _rc_status.available_once = true;
-        _rc_status.signal_strenght_percent = signal_strenght_percent;
+        _rc_status.signal_strength_percent = signal_strength_percent;
     } else {
-        _rc_status.signal_strenght_percent = 0.0f;
+        _rc_status.signal_strength_percent = 0.0f;
     }
 
     _rc_status.lost = !available;

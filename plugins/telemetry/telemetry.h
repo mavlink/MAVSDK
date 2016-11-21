@@ -72,7 +72,7 @@ public:
     struct RCStatus {
         bool available_once;
         bool lost;
-        float signal_strenght_percent;
+        float signal_strength_percent;
     };
 
     enum class Result {
