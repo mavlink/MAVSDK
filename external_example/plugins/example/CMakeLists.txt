@@ -9,6 +9,11 @@ set(source_files
     PARENT_SCOPE
 )
 
+set(unittest_source_files
+    example_impl_test.cpp
+    PARENT_SCOPE
+)
+
 set(header_files
     example.h
     PARENT_SCOPE

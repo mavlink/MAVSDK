@@ -88,6 +88,7 @@ if(NOT IOS AND NOT ANDROID)
         src/global_include_test.cpp
         src/mavlink_channels_test.cpp
         src/unittests_main.cpp
+        ${plugin_unittest_source_files}
     )
 
     target_link_libraries(unit_tests_runner

@@ -97,7 +97,7 @@ external_example
 To include the external folder in the build, add the folder name to the make command:
 
 ```
-make EXTERNAL_DIR=external_example android
+make EXTERNAL_DIR=external_example
 ```
 
 To run the external hello world integration test, do:
