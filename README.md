@@ -24,6 +24,7 @@ Mac:
 ```
 cd wherever
 git clone git@github.com:google/googletest.git
+git checkout release-1.8.0
 cd googletest/
 mkdir build
 cd build
