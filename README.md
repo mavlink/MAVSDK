@@ -102,7 +102,7 @@ make EXTERNAL_DIR=external_example
 
 To run the external hello world integration test, do:
 ```
-make && build/default/integration_tests_runner --gtest_filter="HelloWorld*"
+build/default/integration_tests_runner --gtest_filter="HelloWorld*"
 ```
 
 ### Unit-tests
@@ -123,11 +123,11 @@ make run_integration_tests
 
 To run a single integration test:
 ```
-make && build/default/integration_tests_runner --gtest_filter="Telemetry.Simple"
+build/default/integration_tests_runner --gtest_filter="Telemetry.Simple"
 ```
 or all telemetry tests:
 ```
-make && build/default/integration_tests_runner --gtest_filter="Telemetry*"
+build/default/integration_tests_runner --gtest_filter="Telemetry*"
 ```
 
 ### Code style
