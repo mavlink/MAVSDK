@@ -484,8 +484,8 @@ Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t cu
     px4_custom_mode.data = custom_mode;
 
     switch (px4_custom_mode.main_mode) {
-        case px4::PX4_CUSTOM_MAIN_MODE_POSCTL:
-            return Telemetry::FlightMode::POSITION_CONTROL;
+        case px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD:
+            return Telemetry::FlightMode::OFFBOARD;
         case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
             switch (px4_custom_mode.sub_mode) {
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:

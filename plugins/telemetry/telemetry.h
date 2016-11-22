@@ -55,7 +55,7 @@ public:
         MISSION,
         RETURN_TO_LAND,
         LAND,
-        POSITION_CONTROL,
+        OFFBOARD,
         UNKNOWN
     };
 
