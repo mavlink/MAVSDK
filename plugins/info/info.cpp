@@ -17,7 +17,7 @@ bool Info::is_complete() const
     return _impl->is_complete();
 }
 
-unsigned Info::get_version() const
+Info::Version Info::get_version() const
 {
     return _impl->get_version();
 }

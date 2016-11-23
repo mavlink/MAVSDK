@@ -4,8 +4,8 @@
 #include "dronelink.h"
 
 
-bool _discovered_device = false;
-bool _timeouted_device = false;
+static bool _discovered_device = false;
+static bool _timeouted_device = false;
 
 void on_discover(uint64_t uuid);
 void on_timeout(uint64_t uuid);

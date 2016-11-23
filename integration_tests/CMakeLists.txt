@@ -21,6 +21,7 @@ list(APPEND integration_tests
     takeoff_and_kill
     offboard_velocity
     logging
+    info
 )
 
 

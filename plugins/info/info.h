@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace dronelink {
 
 class InfoImpl;
@@ -10,8 +12,24 @@ public:
     explicit Info(InfoImpl *impl);
     ~Info();
 
+    // 16 chars + terminating 0
+    static const unsigned GIT_HASH_STR_LEN = 17;
+
+    struct Version {
+        int flight_sw_major;
+        int flight_sw_minor;
+        int flight_sw_patch;
+        char flight_sw_git_hash[GIT_HASH_STR_LEN];
+        int os_sw_major;
+        int os_sw_minor;
+        int os_sw_patch;
+        char os_sw_git_hash[GIT_HASH_STR_LEN];
+        uint16_t vendor_id;
+        uint16_t product_id;
+    };
+
     bool is_complete() const;
-    unsigned get_version() const;
+    Version get_version() const;
 
     // Non-copyable
     Info(const Info &) = delete;
