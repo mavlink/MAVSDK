@@ -52,6 +52,8 @@ TEST(Action, TakeoffAndKill)
     usleep(1500000);
     ASSERT_TRUE(_discovered_device);
 
+    dl.device(_uuid).action().set_takeoff_altitude(0.5f);
+
     dl.device(_uuid).action().arm_async(std::bind(&receive_arm_result, _1));
     usleep(1000000);
     ASSERT_TRUE(_received_arm_result);

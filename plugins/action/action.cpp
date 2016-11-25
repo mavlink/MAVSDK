@@ -72,6 +72,16 @@ void Action::return_to_land_async(result_callback_t callback)
     _impl->return_to_land_async(callback);
 }
 
+void Action::set_takeoff_altitude(float relative_altitude_m)
+{
+    _impl->set_takeoff_altitude(relative_altitude_m);
+}
+
+float Action::get_takeoff_altitude_m() const
+{
+    return _impl->get_takeoff_altitude_m();
+}
+
 const char *Action::result_str(Result result)
 {
     switch (result) {

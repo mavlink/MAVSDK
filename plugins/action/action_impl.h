@@ -31,6 +31,8 @@ public:
     void land_async(const Action::result_callback_t &callback);
     void return_to_land_async(const Action::result_callback_t &callback);
 
+    void set_takeoff_altitude(float relative_altitude_m);
+    float get_takeoff_altitude_m() const;
 
 private:
     bool is_arm_allowed() const;
@@ -45,6 +47,8 @@ private:
 
     bool _in_air_state_known;
     bool _in_air;
+
+    float _relative_takeoff_altitude_m = 2.5f;
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 };

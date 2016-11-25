@@ -40,6 +40,9 @@ public:
     void land_async(result_callback_t callback);
     void return_to_land_async(result_callback_t callback);
 
+    void set_takeoff_altitude(float relative_altitude_m);
+    float get_takeoff_altitude_m() const;
+
     // Non-copyable
     Action(const Action &) = delete;
     const Action &operator=(const Action &) = delete;

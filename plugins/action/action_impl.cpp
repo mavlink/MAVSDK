@@ -73,7 +73,8 @@ Action::Result ActionImpl::takeoff() const
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_NAV_TAKEOFF,
-                   DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN, NAN}));
+                   DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN,
+                                              _relative_takeoff_altitude_m}));
 }
 
 Action::Result ActionImpl::land() const
@@ -148,7 +149,8 @@ void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
 {
     _parent->send_command_with_ack_async(
         MAV_CMD_NAV_TAKEOFF,
-        DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
+        DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN,
+                                   _relative_takeoff_altitude_m},
         std::bind(&ActionImpl::command_result_callback,
                   std::placeholders::_1,
                   callback));
@@ -225,6 +227,17 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
         _in_air = false;
     }
     _in_air_state_known = true;
+}
+
+
+void ActionImpl::set_takeoff_altitude(float relative_altitude_m)
+{
+    _relative_takeoff_altitude_m = relative_altitude_m;
+}
+
+float ActionImpl::get_takeoff_altitude_m() const
+{
+    return _relative_takeoff_altitude_m;
 }
 
 Action::Result
