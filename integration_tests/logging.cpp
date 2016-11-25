@@ -1,12 +1,15 @@
 #include <iostream>
 #include <unistd.h>
-#include <gtest/gtest.h>
 #include "dronelink.h"
+#include <gtest/gtest.h>
+#include "integration_test_helper.h"
 
 using namespace dronelink;
 
 void test_logging()
 {
+    usleep(5000000);
+
     DroneLink dl;
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
@@ -37,6 +40,8 @@ void test_logging()
 
 TEST(Logging, StartStop)
 {
+    sitl::start();
     test_logging();
+    sitl::stop();
 }
 
