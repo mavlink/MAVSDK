@@ -44,6 +44,7 @@ TelemetryImpl::TelemetryImpl() :
     _battery_subscription(nullptr),
     _flight_mode_subscription(nullptr),
     _health_subscription(nullptr),
+    _health_all_ok_subscription(nullptr),
     _rc_status_subscription(nullptr),
     _ground_speed_ned_rate_hz(0.0),
     _position_rate_hz(0.0)
@@ -465,6 +466,9 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
     if (_health_subscription) {
         _health_subscription(get_health());
     }
+    if (_health_all_ok_subscription) {
+        _health_all_ok_subscription(get_health_all_ok());
+    }
 }
 
 void TelemetryImpl::process_rc_channels(const mavlink_message_t &message)
@@ -698,6 +702,22 @@ Telemetry::Health TelemetryImpl::get_health() const
     return _health;
 }
 
+bool TelemetryImpl::get_health_all_ok() const
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    if (_health.gyrometer_calibration_ok &&
+        _health.accelerometer_calibration_ok &&
+        _health.magnetometer_calibration_ok &&
+        _health.level_calibration_ok &&
+        _health.local_position_ok &&
+        _health.global_position_ok &&
+        _health.home_position_ok) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 Telemetry::RCStatus TelemetryImpl::get_rc_status() const
 {
     std::lock_guard<std::mutex> lock(_rc_status_mutex);
@@ -827,6 +847,11 @@ void TelemetryImpl::flight_mode_async(Telemetry::flight_mode_callback_t &callbac
 void TelemetryImpl::health_async(Telemetry::health_callback_t &callback)
 {
     _health_subscription = callback;
+}
+
+void TelemetryImpl::health_all_ok_async(Telemetry::health_all_ok_callback_t &callback)
+{
+    _health_all_ok_subscription = callback;
 }
 
 void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t &callback)

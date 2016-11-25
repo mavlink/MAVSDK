@@ -166,6 +166,11 @@ Telemetry::Health Telemetry::health() const
     return _impl->get_health();
 }
 
+bool Telemetry::health_all_ok() const
+{
+    return _impl->get_health_all_ok();
+}
+
 Telemetry::RCStatus Telemetry::rc_status() const
 {
     return _impl->get_rc_status();
@@ -234,6 +239,11 @@ void Telemetry::flight_mode_async(flight_mode_callback_t callback)
 void Telemetry::health_async(health_callback_t callback)
 {
     return _impl->health_async(callback);
+}
+
+void Telemetry::health_all_ok_async(health_all_ok_callback_t callback)
+{
+    return _impl->health_all_ok_async(callback);
 }
 
 void Telemetry::rc_status_async(rc_status_callback_t callback)

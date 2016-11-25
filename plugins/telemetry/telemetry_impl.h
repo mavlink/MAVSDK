@@ -53,6 +53,7 @@ public:
     Telemetry::Battery get_battery() const;
     Telemetry::FlightMode get_flight_mode() const;
     Telemetry::Health get_health() const;
+    bool get_health_all_ok() const;
     Telemetry::RCStatus get_rc_status() const;
 
     void position_async(Telemetry::position_callback_t &callback);
@@ -68,6 +69,7 @@ public:
     void battery_async(Telemetry::battery_callback_t &callback);
     void flight_mode_async(Telemetry::flight_mode_callback_t &callback);
     void health_async(Telemetry::health_callback_t &callback);
+    void health_all_ok_async(Telemetry::health_all_ok_callback_t &callback);
     void rc_status_async(Telemetry::rc_status_callback_t &callback);
 
 private:
@@ -166,6 +168,7 @@ private:
     Telemetry::battery_callback_t _battery_subscription;
     Telemetry::flight_mode_callback_t _flight_mode_subscription;
     Telemetry::health_callback_t _health_subscription;
+    Telemetry::health_all_ok_callback_t _health_all_ok_subscription;
     Telemetry::rc_status_callback_t _rc_status_subscription;
 
     // The ground speed and position are coupled to the same message, therefore, we just use

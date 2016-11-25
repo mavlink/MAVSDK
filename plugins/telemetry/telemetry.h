@@ -130,6 +130,8 @@ public:
 
     Health health() const;
 
+    bool health_all_ok() const;
+
     RCStatus rc_status() const;
 
     typedef std::function<void(Position position)> position_callback_t;
@@ -169,6 +171,10 @@ public:
     typedef std::function<void(Health health)> health_callback_t;
     // Note: this function is limited to 1Hz.
     void health_async(health_callback_t callback);
+
+    typedef std::function<void(bool health_all_ok)> health_all_ok_callback_t;
+    // Note: this function is limited to 1Hz.
+    void health_all_ok_async(health_all_ok_callback_t callback);
 
     typedef std::function<void(RCStatus rc_status)> rc_status_callback_t;
     void rc_status_async(rc_status_callback_t callback);
