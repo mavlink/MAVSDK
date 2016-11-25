@@ -84,14 +84,15 @@ and should be organized like the `external_example`.
 external_example
 ├── integration_tests
 │   ├── CMakeLists.txt
-│   └── hello_world_main.cpp
+│   └── hello_world.cpp
 └── plugins
     └── example
         ├── CMakeLists.txt
         ├── example.cpp
         ├── example.h
         ├── example_impl.cpp
-        └── example_impl.h
+        ├── example_impl.h
+        └── example_impl_test.cpp
 ```
 
 To include the external folder in the build, add the folder name to the make command:
