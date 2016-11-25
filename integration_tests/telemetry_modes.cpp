@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include <gtest/gtest.h>
+#include "integration_test_helper.h"
 #include "dronelink.h"
 
 using namespace dronelink;
@@ -8,34 +8,30 @@ using namespace dronelink;
 void print_mode(Telemetry::FlightMode flight_mode);
 static Telemetry::FlightMode _flight_mode = Telemetry::FlightMode::UNKNOWN;
 
-TEST(Telemetry, FlightModes)
+TEST_F(SitlTest, TelemetryFlightModes)
 {
     DroneLink dl;
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
     ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
+    sleep(2);
 
-    usleep(1500000);
-
-    std::vector<uint64_t> uuids = dl.device_uuids();
-
-    ASSERT_EQ(uuids.size(), 1);
-
-    uint64_t uuid = uuids.at(0);
-
-    Device &device = dl.device(uuid);
-
+    Device &device = dl.device();
     device.telemetry().flight_mode_async(std::bind(&print_mode, std::placeholders::_1));
 
+    while (!device.telemetry().health_all_ok()) {
+        std::cout << "waiting for device to be ready" << std::endl;
+        sleep(1);
+    }
+
     device.action().arm();
-    usleep(2000000);
+    sleep(2);
     device.action().takeoff();
-    usleep(2000000);
+    sleep(2);
     ASSERT_EQ(_flight_mode, Telemetry::FlightMode::TAKEOFF);
     device.action().land();
-    usleep(2000000);
+    sleep(2);
     ASSERT_EQ(_flight_mode, Telemetry::FlightMode::LAND);
-
 }
 
 void print_mode(Telemetry::FlightMode flight_mode)

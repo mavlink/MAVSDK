@@ -5,10 +5,8 @@
 
 using namespace dronelink;
 
-TEST(Connect, TwoConnections)
+TEST_F(SitlTest, TwoConnections)
 {
-    sitl::start();
-
     dronelink::DroneLink *dl;
     dl = new dronelink::DroneLink();
     std::cout << "started" << std::endl;
@@ -48,6 +46,4 @@ TEST(Connect, TwoConnections)
 
     delete dl;
     std::cout << "exiting" << std::endl;
-
-    sitl::stop();
 }

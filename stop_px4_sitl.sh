@@ -1,12 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
-echo "Stop PX4..."
+# This script shuts the Gazebo PX4 software in the loop (SITL) simulation down again.
 
-# Running HEADLESS, so no viewer to clean up
-#killall gzviewer
+if [[ $AUTOSTART_SITL != 1 ]]; then
+    exit 0
+fi
 
-killall gzserver
-
-killall px4
-
-echo "done"
+# Silently shutdown all leftover stuff.
+killall -q gzviewer
+killall -q gzserver
+killall -q px4

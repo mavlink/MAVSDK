@@ -1,21 +1,18 @@
 #include <iostream>
 #include <unistd.h>
 #include "dronelink.h"
-#include <gtest/gtest.h>
 #include "integration_test_helper.h"
 
 using namespace dronelink;
 
-void test_logging()
+TEST_F(SitlTest, Logging)
 {
-    usleep(5000000);
-
     DroneLink dl;
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
     ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
 
-    usleep(2000000);
+    sleep(2);
 
     Logging::Result log_ret = dl.device().logging().start_logging();
 
@@ -30,18 +27,10 @@ void test_logging()
     ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
 
 
-    while (true) {
-        usleep(1000000);
+    for (unsigned i = 0; i < 10; ++i) {
+        sleep(1);
     }
 
     log_ret = dl.device().logging().stop_logging();
     ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
 }
-
-TEST(Logging, StartStop)
-{
-    sitl::start();
-    test_logging();
-    sitl::stop();
-}
-

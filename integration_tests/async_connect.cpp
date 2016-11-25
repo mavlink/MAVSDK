@@ -13,7 +13,7 @@ static uint64_t _uuid = 0;
 void on_discover(uint64_t uuid);
 void on_timeout(uint64_t uuid);
 
-TEST(Connect, Async)
+TEST_F(SitlTest, AsyncConnect)
 {
     DroneLink dl;
 
@@ -22,8 +22,6 @@ TEST(Connect, Async)
     dl.register_on_discover(std::bind(&on_discover, _1));
     dl.register_on_timeout(std::bind(&on_timeout, _1));
 
-    sitl::start();
-
     while (!_discovered_device) {
         std::cout << "waiting for device to appear..." << std::endl;
         sleep(1);
@@ -31,7 +29,9 @@ TEST(Connect, Async)
 
     // Let params stabilize before shutting it down.
     sleep(3);
-    sitl::stop();
+
+    // Call gtest to shut down SITL.
+    TearDown();
 
     while (!_timeouted_device) {
         std::cout << "waiting for device to disappear..." << std::endl;

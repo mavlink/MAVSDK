@@ -114,21 +114,75 @@ To run the unit tests:
 make run_unit_tests
 ```
 
-### Integration-tests
+### Integration tests
 
-Start PX4 e.g. in SITL using `make posix gazebo` and run the integration tests use:
+There are three ways to run the integration tests:
+
+1. automatically with SITL autostart.
+2. manually without SITL autostart.
+3. on a real vehicle.
+
+#### 1. Autostart PX4 SITL
+
+Make sure that the PX4 Gazebo simulation is built and works:
+
+```
+cd wherever/Firmware/
+make posix gazebo
+```
+
+Then press Ctrl+C to stop the simulation and run the integration tests:
+
+```
+cd wherever/DroneLink/
+AUTOSTART_SITL=1 make run_integration_tests
+```
+
+To prevent the 3D viewer (gzclient) from being started, use:
+
+```
+AUTOSTART_SITL=1 HEADLESS=1 make run_integration_tests
+```
+
+#### 2. Run PX4 SITL manually
+
+Build and run the PX4 simulation manually:
+
+```
+cd wherever/Firmware/
+make posix gazebo
+```
 
 ```
 make run_integration_tests
 ```
 
+#### 3. On a real vehicle
+
+Make sure you are connected to a vehicle and check the connection using e.g.
+
+```
+make
+build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
+```
+
+Note that some of the tests might not be suited for real vehicles, especially the takeoff and kill test.
+
+### Gtest tricks
+
+To list all possible tests:
+```
+build/default/integration_tests_runner --gtest_list_tests
+```
+
 To run a single integration test:
 ```
-build/default/integration_tests_runner --gtest_filter="Telemetry.Simple"
+build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
 ```
-or all telemetry tests:
+
+To run all telemetry tests:
 ```
-build/default/integration_tests_runner --gtest_filter="Telemetry*"
+build/default/integration_tests_runner --gtest_filter="SitlTest.Telemetry*"
 ```
 
 ### Code style

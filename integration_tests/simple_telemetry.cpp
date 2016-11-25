@@ -1,34 +1,24 @@
 #include <iostream>
 #include <unistd.h>
-#include <gtest/gtest.h>
+#include "integration_test_helper.h"
 #include "dronelink.h"
 
 using namespace dronelink;
 
-void test_simple_telemetry()
+TEST_F(SitlTest, SimpleTelemetry)
 {
     DroneLink dl;
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
+    ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
 
-    usleep(1500000);
+    sleep(2);
+    Device &device = dl.device();
 
-    std::vector<uint64_t> uuids = dl.device_uuids();
-
-    for (auto it = uuids.begin(); it != uuids.end(); ++it) {
-        std::cout << "found device with UUID: " << *it << std::endl;
+    while (!device.telemetry().health_all_ok()) {
+        std::cout << "waiting for device to be ready" << std::endl;
+        sleep(1);
     }
-
-    ASSERT_EQ(uuids.size(), 1);
-
-    uint64_t uuid = uuids.at(0);
-
-    if (ret != DroneLink::ConnectionResult::SUCCESS) {
-        std::cout << "failed to add connection" << std::endl;
-    }
-
-    Device &device = dl.device(uuid);
-
 
     Telemetry::Result result = device.telemetry().set_rate_position(10.0);
     ASSERT_EQ(result, Telemetry::Result::SUCCESS);
@@ -46,7 +36,7 @@ void test_simple_telemetry()
     ASSERT_EQ(result, Telemetry::Result::SUCCESS);
 
     // Print 3s of telemetry.
-    for (unsigned i = 0; i < 500; ++i) {
+    for (unsigned i = 0; i < 50; ++i) {
 
         const Telemetry::Position &position = device.telemetry().position();
         std::cout << "Position: " << std::endl
@@ -102,9 +92,4 @@ void test_simple_telemetry()
 
         usleep(30000);
     }
-}
-
-TEST(Telemetry, Simple)
-{
-    test_simple_telemetry();
 }

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include <gtest/gtest.h>
+#include "integration_test_helper.h"
 #include "dronelink.h"
 
 using namespace dronelink;
@@ -8,7 +8,7 @@ using namespace dronelink;
 static void on_discover(uint64_t uuid);
 static bool _discovered_device = false;
 
-TEST(Info, Simple)
+TEST_F(SitlTest, Info)
 {
     DroneLink dl;
 
@@ -22,7 +22,7 @@ TEST(Info, Simple)
         usleep(1000000);
     }
 
-    for (unsigned i = 0; i < 10; ++i) {
+    for (unsigned i = 0; i < 3; ++i) {
         Info::Version version = dl.device().info().get_version();
 
         std::cout << "Flight version: "
@@ -35,6 +35,12 @@ TEST(Info, Simple)
                   << version.os_sw_minor << "."
                   << version.os_sw_patch << " ("
                   << std::string(version.os_sw_git_hash) << ")" << std::endl;
+
+        EXPECT_NE(version.flight_sw_major, 0);
+
+        // FIXME: This is currently 0.
+        //EXPECT_NE(version.os_sw_major, 0);
+
         usleep(1000000);
     }
 }

@@ -1,63 +1,72 @@
 #include <iostream>
 #include <unistd.h>
-#include <gtest/gtest.h>
+#include "integration_test_helper.h"
 #include "dronelink.h"
 
+using namespace dronelink;
+using namespace std::placeholders; // for `_1`
 
-void receive_result(dronelink::Action::Result result);
+void receive_result(Action::Result result);
+void receive_health_all_ok(bool all_ok);
+void receive_in_air(bool in_air);
 
-int test_async_hover()
+static bool _all_ok = false;
+static bool _in_air = false;
+
+TEST_F(SitlTest, ActionAsyncHover)
 {
-    using namespace std::placeholders; // for `_1`
+    DroneLink dl;
 
-    dronelink::DroneLink dl;
-
-    dronelink::DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
-        std::cout << "failed to add connection" << std::endl;
-        return -1;
-    }
+    DroneLink::ConnectionResult ret = dl.add_udp_connection();
+    ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
-    usleep(1500000);
+    sleep(2);
 
-    std::vector<uint64_t> uuids = dl.device_uuids();
+    // TODO: this test is pretty dumb, should be improved with more checks.
+    Device &device = dl.device();
 
-    for (auto it = uuids.begin(); it != uuids.end(); ++it) {
-        std::cout << "found device with UUID: " << *it << std::endl;
+    device.telemetry().health_all_ok_async(std::bind(&receive_health_all_ok, _1));
+    device.telemetry().in_air_async(std::bind(&receive_in_air, _1));
+
+    while (!_all_ok) {
+        std::cout << "Waiting to be ready..." << std::endl;
+        sleep(1);
     }
 
-    if (uuids.size() > 1) {
-        std::cout << "found more than one device, not sure which one to use." << std::endl;
-        return -1;
-    } else if (uuids.size() == 0) {
-        std::cout << "no device found." << std::endl;
-        return -1;
+    device.action().arm_async(std::bind(&receive_result, _1));
+    sleep(2);
+
+    device.action().takeoff_async(std::bind(&receive_result, _1));
+    sleep(5);
+
+    device.action().land_async(std::bind(&receive_result, _1));
+
+    while (_in_air) {
+        std::cout << "Waiting to be landed..." << std::endl;
+        sleep(1);
     }
 
-    uint64_t uuid = uuids.at(0);
-
-    //unsigned magic = MAGIC_NUMBER;
-
-    dl.device(uuid).action().arm_async(std::bind(&receive_result, _1));
-    usleep(2000000);
-
-    dl.device(uuid).action().takeoff_async(std::bind(&receive_result, _1));
-    usleep(5000000);
-
-    dl.device(uuid).action().land_async(std::bind(&receive_result, _1));
-    usleep(1000000);
-
-    return 0;
+    device.action().disarm_async(std::bind(&receive_result, _1));
+    sleep(2);
 }
 
 
-void receive_result(dronelink::Action::Result result)
+void receive_result(Action::Result result)
 {
     std::cout << "got result: " << unsigned(result) << std::endl;
+    EXPECT_EQ(result, Action::Result::SUCCESS);
 }
 
-TEST(Hover, Async)
+void receive_health_all_ok(bool all_ok)
 {
-    ASSERT_EQ(test_async_hover(), 0);
+    if (all_ok && !_all_ok) {
+        std::cout << "we're ready, let's go" << std::endl;
+        _all_ok = true;
+    }
+}
+
+void receive_in_air(bool in_air)
+{
+    _in_air = in_air;
 }

@@ -1,13 +1,13 @@
 #include <iostream>
 #include <cmath>
 #include <unistd.h>
-#include <gtest/gtest.h>
+#include "integration_test_helper.h"
 #include "dronelink.h"
 
 using namespace dronelink;
 
 
-TEST(Offboard, VelocityNED)
+TEST_F(SitlTest, OffboardVelocityNED)
 {
     DroneLink dl;
 
@@ -15,26 +15,32 @@ TEST(Offboard, VelocityNED)
     ASSERT_EQ(DroneLink::ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
-    usleep(1500000);
+    sleep(2);
+    Device &device = dl.device();
 
-    Action::Result action_ret = dl.device().action().arm();
+    while (!device.telemetry().health_all_ok()) {
+        std::cout << "waiting for device to be ready" << std::endl;
+        sleep(1);
+    }
+
+    Action::Result action_ret = device.action().arm();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    action_ret = dl.device().action().takeoff();
+    action_ret = device.action().takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     usleep(5000000);
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
+    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
 
-    Offboard::Result offboard_result = dl.device().offboard().start();
+    Offboard::Result offboard_result = device.offboard().start();
 
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
     // Let yaw settle.
     for (unsigned i = 0; i < 100; ++i) {
-        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+        device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
         usleep(10000);
     }
 
@@ -46,45 +52,45 @@ TEST(Offboard, VelocityNED)
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
             //std::cout << "vx: " << vx << std::endl;
-            dl.device().offboard().set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
+            device.offboard().set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
             usleep(10000);
         }
     }
 
     for (unsigned i = 0; i < 400; ++i) {
-        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
+        device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
         usleep(10000);
     }
 
     for (unsigned i = 0; i < 400; ++i) {
-        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
+        device.offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
         usleep(10000);
     }
 
     for (unsigned i = 0; i < 400; ++i) {
-        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+        device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
         usleep(10000);
     }
 
     for (unsigned i = 0; i < 400; ++i) {
-        dl.device().offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
+        device.offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
         usleep(10000);
     }
 
-    offboard_result = dl.device().offboard().stop();
+    offboard_result = device.offboard().stop();
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
-    action_ret = dl.device().action().land();
+    action_ret = device.action().land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
     usleep(10000000);
 
-    action_ret = dl.device().action().disarm();
+    action_ret = device.action().disarm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }
 
 
-TEST(Offboard, VelocityBody)
+TEST_F(SitlTest, OffboardVelocityBody)
 {
     DroneLink dl;
 
@@ -92,73 +98,79 @@ TEST(Offboard, VelocityBody)
     ASSERT_EQ(DroneLink::ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
-    usleep(1500000);
+    sleep(2);
+    Device &device = dl.device();
 
-    Action::Result action_ret = dl.device().action().arm();
+    while (!device.telemetry().health_all_ok()) {
+        std::cout << "waiting for device to be ready" << std::endl;
+        sleep(1);
+    }
+
+    Action::Result action_ret = device.action().arm();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    action_ret = dl.device().action().takeoff();
+    action_ret = device.action().takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     usleep(5000000);
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
 
-    Offboard::Result offboard_result = dl.device().offboard().start();
+    Offboard::Result offboard_result = device.offboard().start();
 
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
     // Turn around yaw and climb
     for (unsigned i = 0; i < 200; ++i) {
-        dl.device().offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
+        device.offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
         usleep(10000);
     }
 
     // Turn back
     for (unsigned i = 0; i < 200; ++i) {
-        dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
+        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
         usleep(10000);
     }
 
     // Wait for a bit
     for (unsigned i = 0; i < 200; ++i) {
-        dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
         usleep(10000);
     }
 
     // Fly a circle
     for (unsigned i = 0; i < 500; ++i) {
-        dl.device().offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
+        device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
         usleep(10000);
     }
 
     // Wait for a bit
     for (unsigned i = 0; i < 500; ++i) {
-        dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
         usleep(10000);
     }
 
     // Fly a circle sideways
     for (unsigned i = 0; i < 500; ++i) {
-        dl.device().offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
+        device.offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
         usleep(10000);
     }
 
     // Wait for a bit
     for (unsigned i = 0; i < 500; ++i) {
-        dl.device().offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
         usleep(10000);
     }
 
-    offboard_result = dl.device().offboard().stop();
+    offboard_result = device.offboard().stop();
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
-    action_ret = dl.device().action().land();
+    action_ret = device.action().land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
     usleep(10000000);
 
-    action_ret = dl.device().action().disarm();
+    action_ret = device.action().disarm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }

@@ -1,31 +1,24 @@
 #include <iostream>
 #include <unistd.h>
-#include <gtest/gtest.h>
+#include "integration_test_helper.h"
 #include "dronelink.h"
 
 using namespace dronelink;
 
 void print_health(Telemetry::Health health);
 
-TEST(Telemetry, Health)
+TEST_F(SitlTest, TelemetryHealth)
 {
     DroneLink dl;
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
     ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
+    sleep(2);
 
-    usleep(1500000);
-
-    std::vector<uint64_t> uuids = dl.device_uuids();
-
-    ASSERT_EQ(uuids.size(), 1);
-
-    uint64_t uuid = uuids.at(0);
-
-    Device &device = dl.device(uuid);
+    Device &device = dl.device();
 
     device.telemetry().health_async(std::bind(&print_health, std::placeholders::_1));
-    usleep(5000000);
+    sleep(3);
 }
 
 void print_health(Telemetry::Health health)

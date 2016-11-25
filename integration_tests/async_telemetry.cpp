@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include <gtest/gtest.h>
+#include "integration_test_helper.h"
 #include "dronelink.h"
 
 using namespace std::placeholders; // for `_1`
@@ -30,13 +30,13 @@ bool _received_gps_info = false;
 bool _received_battery = false;
 
 
-void test_async_telemetry()
+TEST_F(SitlTest, AsyncTelemetry)
 {
     DroneLink dl;
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
 
-    usleep(1500000);
+    sleep(2);
 
     std::vector<uint64_t> uuids = dl.device_uuids();
 
@@ -187,9 +187,4 @@ void print_battery(Telemetry::Battery battery)
               << "remaining: " << int(battery.remaining_percent * 1e2f) << " %" << std::endl;
 
     _received_battery = true;
-}
-
-TEST(Telemetry, Async)
-{
-    test_async_telemetry();
 }

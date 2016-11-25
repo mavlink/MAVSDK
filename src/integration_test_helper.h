@@ -3,20 +3,19 @@
 #include <iostream>
 #include <gtest/gtest.h>
 
-namespace sitl {
-
-static void start()
+class SitlTest : public testing::Test
 {
-    system("./start_px4_sitl.sh");
-    // We need to wait a bit until it's up and running.
-    sleep(2);
-}
-
-static void stop()
-{
-    // Don't rush this either.
-    sleep(2);
-    system("./stop_px4_sitl.sh");
-}
-
-} // namespace sitl
+protected:
+    virtual void SetUp()
+    {
+        system("./start_px4_sitl.sh");
+        // We need to wait a bit until it's up and running.
+        sleep(3);
+    }
+    virtual void TearDown()
+    {
+        // Don't rush this either.
+        sleep(1);
+        system("./stop_px4_sitl.sh");
+    }
+};

@@ -90,7 +90,7 @@ private:
     void set_health_accelerometer_calibration(bool ok);
     void set_health_magnetometer_calibration(bool ok);
     void set_health_level_calibration(bool ok);
-    void set_rc_status(bool available, float signal_strenght_percent);
+    void set_rc_status(bool available, float signal_strength_percent);
 
     void process_global_position_int(const mavlink_message_t &message);
     void process_home_position(const mavlink_message_t &message);
