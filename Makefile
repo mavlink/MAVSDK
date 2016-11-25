@@ -135,6 +135,7 @@ run_integration_tests: default
 
 clean:
 	@rm -rf build/
+	@rm -rf logs/
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
