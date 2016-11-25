@@ -52,9 +52,6 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
 
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
-    Debug() << "got os_sw_version: " << autopilot_version.os_sw_version;
-    Debug() << "got custom_version: " << autopilot_version.os_custom_version;
-
     Info::Version version = {};
 
     version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
