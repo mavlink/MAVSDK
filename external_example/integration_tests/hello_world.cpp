@@ -1,45 +1,28 @@
 #include <iostream>
 #include <unistd.h>
-#include <gtest/gtest.h>
 #include "dronelink.h"
+#include "integration_test_helper.h"
 
 using namespace dronelink;
 
-int test_hello_world()
+TEST(HelloWorld, SayHello)
 {
+    sitl::start();
+
     DroneLink dl;
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    if (ret != DroneLink::ConnectionResult::SUCCESS) {
-        std::cout << "failed to add connection: " << int(ret) << std::endl;
-        return -1;
-    }
+    ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
-    usleep(1500000);
+    sleep(2);
 
+    // One vehicle should have connected.
     std::vector<uint64_t> uuids = dl.device_uuids();
+    EXPECT_EQ(uuids.size(), 1);
 
-    for (auto it = uuids.begin(); it != uuids.end(); ++it) {
-        std::cout << "found device with UUID: " << *it << std::endl;
-    }
+    // Appearantly it can say hello.
+    dl.device().example().say_hello();
 
-    if (uuids.size() > 1) {
-        std::cout << "found more than one device, not sure which one to use." << std::endl;
-        return -1;
-    } else if (uuids.size() == 0) {
-        std::cout << "no device found." << std::endl;
-        return -1;
-    }
-
-    uint64_t uuid = uuids.at(0);
-
-    dl.device(uuid).example().say_hello();
-
-    return 0;
-}
-
-TEST(HelloWorld, SayHello)
-{
-    ASSERT_EQ(test_hello_world(), 0);
+    sitl::stop();
 }
