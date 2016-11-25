@@ -137,5 +137,5 @@ All cpp and h files should be formatted according to the astyle settings defined
 To automatically fix the formatting, run this command:
 
 ```
-./fix_style.sh .
+make fix-style
 ```
