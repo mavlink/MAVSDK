@@ -72,8 +72,8 @@ void TelemetryImpl::init()
         std::bind(&TelemetryImpl::process_attitude_quaternion, this, _1), (void *)this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_MOUNT_STATUS,
-        std::bind(&TelemetryImpl::process_mount_status, this, _1), (void *)this);
+        MAVLINK_MSG_ID_MOUNT_ORIENTATION,
+        std::bind(&TelemetryImpl::process_mount_orientation, this, _1), (void *)this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GPS_RAW_INT,
@@ -162,7 +162,7 @@ Telemetry::Result TelemetryImpl::set_rate_attitude(double rate_hz)
 Telemetry::Result TelemetryImpl::set_rate_camera_attitude(double rate_hz)
 {
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_STATUS, rate_hz));
+               _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_ORIENTATION, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_ground_speed_ned(double rate_hz)
@@ -233,7 +233,7 @@ void TelemetryImpl::set_rate_camera_attitude_async(double rate_hz,
                                                    Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
-        MAVLINK_MSG_ID_MOUNT_STATUS,
+        MAVLINK_MSG_ID_MOUNT_ORIENTATION,
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
@@ -367,15 +367,15 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t &message
     }
 }
 
-void TelemetryImpl::process_mount_status(const mavlink_message_t &message)
+void TelemetryImpl::process_mount_orientation(const mavlink_message_t &message)
 {
-    mavlink_mount_status_t mount_status;
-    mavlink_msg_mount_status_decode(&message, &mount_status);
+    mavlink_mount_orientation_t mount_orientation;
+    mavlink_msg_mount_orientation_decode(&message, &mount_orientation);
 
     Telemetry::EulerAngle euler_angle({
-        mount_status.roll,
-        mount_status.pitch,
-        mount_status.yaw
+        mount_orientation.roll,
+        mount_orientation.pitch,
+        mount_orientation.yaw
     });
 
     set_camera_attitude_euler_angle(euler_angle);
