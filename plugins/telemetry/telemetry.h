@@ -85,6 +85,8 @@ public:
         UNKNOWN
     };
 
+    static const char *result_str(Result);
+
     typedef std::function<void(Result)> result_callback_t;
 
     Result set_rate_position(double rate_hz);
