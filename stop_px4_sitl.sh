@@ -7,6 +7,13 @@ if [[ $AUTOSTART_SITL != 1 ]]; then
 fi
 
 # Silently shutdown all leftover stuff.
-killall -q gzviewer
-killall -q gzserver
-killall -q px4
+
+if [[ "$unamestr" == 'Linux' ]]; then
+    killall -q gzviewer
+    killall -q gzserver
+    killall -q px4
+else
+    killall gzviewer &
+    killall gzserver &
+    killall px4 &
+fi

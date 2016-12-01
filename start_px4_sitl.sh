@@ -36,7 +36,11 @@ mkdir -p $log_dir
 export NO_PXH=1
 
 # The logs are saved with a timestamp.
-timestamp=`date --iso-8601=seconds`
+if [[ "$unamestr" == 'Linux' ]]; then
+    timestamp=`date --iso-8601=seconds`
+else
+    timestamp=`date +%Y-%m-%dT%H:%M:%S%z`
+fi
 
 # Before changing dir, save where we start from.
 pushd .
@@ -50,7 +54,9 @@ $px4_firmware_dir/Tools/sitl_run.sh \
     posix-configs/SITL/init/lpe \
     none gazebo iris \
     $px4_firmware_dir \
-    $px4_firmware_dir/build_posix_sitl_default 2>1 > $log_dir/px4_sitl-$timestamp.log
+    $px4_firmware_dir/build_posix_sitl_default 2>1 > $log_dir/px4_sitl-$timestamp.log &
 
 # Go back to dir where we started
 popd
+
+echo "done"
