@@ -7,6 +7,8 @@
 
 namespace dronelink {
 
+using namespace std::placeholders; // for `_1`
+
 ActionImpl::ActionImpl() :
     _in_air_state_known(false),
     _in_air(false)
@@ -20,7 +22,6 @@ ActionImpl::~ActionImpl()
 
 void ActionImpl::init()
 {
-    using namespace std::placeholders; // for `_1`
 
     // We need the system state.
     _parent->register_mavlink_message_handler(
@@ -70,6 +71,10 @@ Action::Result ActionImpl::kill() const
 
 Action::Result ActionImpl::takeoff() const
 {
+    if (!is_takeoff_allowed()) {
+        return Action::Result::COMMAND_DENIED;
+    }
+
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_NAV_TAKEOFF,
@@ -112,11 +117,24 @@ void ActionImpl::arm_async(const Action::result_callback_t &callback)
         return;
     }
 
+    loiter_before_arm_async(callback);
+
+}
+
+void ActionImpl::arm_async_continued(DeviceImpl::CommandResult previous_result,
+                                     const Action::result_callback_t &callback)
+{
+    Debug() << "arm continued: got result: " << int(previous_result);
+
+    if (previous_result != DeviceImpl::CommandResult::SUCCESS) {
+        command_result_callback(previous_result, callback);
+    }
+
     _parent->send_command_with_ack_async(
         MAV_CMD_COMPONENT_ARM_DISARM,
         DeviceImpl::CommandParams {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
-                  std::placeholders::_1,
+                  _1,
                   callback));
 }
 
@@ -131,7 +149,7 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
         MAV_CMD_COMPONENT_ARM_DISARM,
         DeviceImpl::CommandParams {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
-                  std::placeholders::_1,
+                  _1,
                   callback));
 }
 
@@ -141,18 +159,39 @@ void ActionImpl::kill_async(const Action::result_callback_t &callback)
         MAV_CMD_COMPONENT_ARM_DISARM,
         DeviceImpl::CommandParams {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
-                  std::placeholders::_1,
+                  _1,
                   callback));
 }
 
 void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
 {
+    if (!is_takeoff_allowed()) {
+        if (callback) {
+            callback(Action::Result::COMMAND_DENIED);
+        }
+        return;
+    }
+
+    loiter_before_takeoff_async(callback);
+}
+
+
+void ActionImpl::takeoff_async_continued(DeviceImpl::CommandResult previous_result,
+                                         const Action::result_callback_t &callback)
+{
+
+    Debug() << "takeoff continued: got result: " << int(previous_result);
+
+    if (previous_result != DeviceImpl::CommandResult::SUCCESS) {
+        command_result_callback(previous_result, callback);
+    }
+
     _parent->send_command_with_ack_async(
         MAV_CMD_NAV_TAKEOFF,
         DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN,
                                    _relative_takeoff_altitude_m},
         std::bind(&ActionImpl::command_result_callback,
-                  std::placeholders::_1,
+                  _1,
                   callback));
 }
 
@@ -162,7 +201,7 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
         MAV_CMD_NAV_LAND,
         DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
-                  std::placeholders::_1,
+                  _1,
                   callback));
 }
 
@@ -184,7 +223,7 @@ void ActionImpl::return_to_land_async(const Action::result_callback_t &callback)
                                    float(custom_sub_mode),
                                    NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
-                  std::placeholders::_1,
+                  _1,
                   callback));
 }
 
@@ -196,6 +235,21 @@ bool ActionImpl::is_arm_allowed() const
     }
 
     if (_in_air) {
+        return false;
+    }
+
+    return true;
+}
+
+bool ActionImpl::is_takeoff_allowed() const
+{
+    if (!_in_air_state_known) {
+        Debug() << "landed state not known, takeoff not allowed";
+        return false;
+    }
+
+    if (_in_air) {
+        Debug() << "already in air, takeoff not allowed";
         return false;
     }
 
@@ -227,6 +281,40 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
         _in_air = false;
     }
     _in_air_state_known = true;
+}
+
+void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &callback)
+{
+    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+
+    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
+    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
+
+    _parent->send_command_with_ack_async(
+        MAV_CMD_DO_SET_MODE,
+        DeviceImpl::CommandParams {float(mode),
+                                   float(custom_mode),
+                                   float(custom_sub_mode),
+                                   NAN, NAN, NAN, NAN},
+        std::bind(&ActionImpl::takeoff_async_continued, this, _1, callback));
+}
+
+void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callback)
+{
+    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+
+    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
+    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
+
+    _parent->send_command_with_ack_async(
+        MAV_CMD_DO_SET_MODE,
+        DeviceImpl::CommandParams {float(mode),
+                                   float(custom_mode),
+                                   float(custom_sub_mode),
+                                   NAN, NAN, NAN, NAN},
+        std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
 }
 
 

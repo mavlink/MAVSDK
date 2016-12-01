@@ -35,8 +35,17 @@ public:
     float get_takeoff_altitude_m() const;
 
 private:
+    void loiter_before_takeoff_async(const Action::result_callback_t &callback);
+    void loiter_before_arm_async(const Action::result_callback_t &callback);
+
+    void takeoff_async_continued(DeviceImpl::CommandResult previous_result,
+                                 const Action::result_callback_t &callback);
+    void arm_async_continued(DeviceImpl::CommandResult previous_result,
+                             const Action::result_callback_t &callback);
+
     bool is_arm_allowed() const;
     bool is_disarm_allowed() const;
+    bool is_takeoff_allowed() const;
 
     void process_extended_sys_state(const mavlink_message_t &message);
 
