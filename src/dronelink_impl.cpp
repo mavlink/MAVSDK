@@ -49,6 +49,12 @@ void DroneLinkImpl::receive_message(const mavlink_message_t &message)
         return;
     }
 
+    // FIXME/TODO: reject anything which is not sysid 1
+    // somewhere there is a bug which produces.
+    if (message.sysid != 1) {
+        return;
+    }
+
     create_device_if_not_existing(message.sysid, message.compid);
     remove_empty_devices();
 
