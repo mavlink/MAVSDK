@@ -21,7 +21,7 @@ TEST(HelloWorld, SayHello)
     std::vector<uint64_t> uuids = dl.device_uuids();
     EXPECT_EQ(uuids.size(), 1);
 
-    // Appearantly it can say hello.
+    // Apparently it can say hello.
     dl.device().example().say_hello();
 
     sitl::stop();
