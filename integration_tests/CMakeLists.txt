@@ -12,8 +12,8 @@
 list(APPEND integration_tests
     simple_connect
     async_connect
-    simple_telemetry
-    async_telemetry
+    telemetry_simple
+    telemetry_async
     telemetry_modes
     telemetry_health
     simple_hover

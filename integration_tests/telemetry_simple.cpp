@@ -5,7 +5,7 @@
 
 using namespace dronelink;
 
-TEST_F(SitlTest, SimpleTelemetry)
+TEST_F(SitlTest, TelemetrySimple)
 {
     DroneLink dl;
 

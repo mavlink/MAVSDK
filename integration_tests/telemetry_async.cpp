@@ -30,7 +30,7 @@ bool _received_gps_info = false;
 bool _received_battery = false;
 
 
-TEST_F(SitlTest, AsyncTelemetry)
+TEST_F(SitlTest, TelemetryAsync)
 {
     DroneLink dl;
 
