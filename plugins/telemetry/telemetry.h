@@ -53,7 +53,7 @@ public:
         TAKEOFF,
         HOLD,
         MISSION,
-        RETURN_TO_LAND,
+        RETURN_TO_LAUNCH,
         LAND,
         OFFBOARD,
         UNKNOWN

@@ -501,7 +501,7 @@ Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t cu
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION:
                     return Telemetry::FlightMode::MISSION;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL:
-                    return Telemetry::FlightMode::RETURN_TO_LAND;
+                    return Telemetry::FlightMode::RETURN_TO_LAUNCH;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND:
                     return Telemetry::FlightMode::LAND;
                 default:
