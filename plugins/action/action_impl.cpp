@@ -93,7 +93,7 @@ Action::Result ActionImpl::land() const
                    DeviceImpl::CommandParams {NAN, NAN, NAN, NAN, NAN, NAN, NAN}));
 }
 
-Action::Result ActionImpl::return_to_land() const
+Action::Result ActionImpl::return_to_launch() const
 {
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
@@ -215,7 +215,7 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
                   callback));
 }
 
-void ActionImpl::return_to_land_async(const Action::result_callback_t &callback)
+void ActionImpl::return_to_launch_async(const Action::result_callback_t &callback)
 {
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.

@@ -37,9 +37,9 @@ Action::Result Action::land() const
     return _impl->land();
 }
 
-Action::Result Action::return_to_land() const
+Action::Result Action::return_to_launch() const
 {
-    return _impl->return_to_land();
+    return _impl->return_to_launch();
 }
 
 void Action::arm_async(result_callback_t callback)
@@ -67,9 +67,9 @@ void Action::land_async(result_callback_t callback)
     _impl->land_async(callback);
 }
 
-void Action::return_to_land_async(result_callback_t callback)
+void Action::return_to_launch_async(result_callback_t callback)
 {
-    _impl->return_to_land_async(callback);
+    _impl->return_to_launch_async(callback);
 }
 
 void Action::set_takeoff_altitude(float relative_altitude_m)

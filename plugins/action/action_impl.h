@@ -22,14 +22,14 @@ public:
     Action::Result kill() const;
     Action::Result takeoff() const;
     Action::Result land() const;
-    Action::Result return_to_land() const;
+    Action::Result return_to_launch() const;
 
     void arm_async(const Action::result_callback_t &callback);
     void disarm_async(const Action::result_callback_t &callback);
     void kill_async(const Action::result_callback_t &callback);
     void takeoff_async(const Action::result_callback_t &callback);
     void land_async(const Action::result_callback_t &callback);
-    void return_to_land_async(const Action::result_callback_t &callback);
+    void return_to_launch_async(const Action::result_callback_t &callback);
 
     void set_takeoff_altitude(float relative_altitude_m);
     float get_takeoff_altitude_m() const;
