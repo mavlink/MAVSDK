@@ -21,13 +21,12 @@ DroneLink::~DroneLink()
 
 DroneLink::ConnectionResult DroneLink::add_udp_connection()
 {
-    return add_udp_connection(0, 0);
+    return add_udp_connection(0);
 }
 
-DroneLink::ConnectionResult DroneLink::add_udp_connection(int local_port_number,
-                                                          int remote_port_number)
+DroneLink::ConnectionResult DroneLink::add_udp_connection(int local_port_number)
 {
-    Connection *new_connection = new UdpConnection(_impl, local_port_number, remote_port_number);
+    Connection *new_connection = new UdpConnection(_impl, local_port_number);
     DroneLink::ConnectionResult ret = new_connection->start();
 
     if (ret != DroneLink::ConnectionResult::SUCCESS) {

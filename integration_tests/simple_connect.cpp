@@ -11,9 +11,9 @@ TEST_F(SitlTest, TwoConnections)
     dl = new dronelink::DroneLink();
     std::cout << "started" << std::endl;
 
-    ASSERT_EQ(dl->add_udp_connection(14540, 0), DroneLink::ConnectionResult::SUCCESS);
+    ASSERT_EQ(dl->add_udp_connection(14540), DroneLink::ConnectionResult::SUCCESS);
 
-    ASSERT_EQ(dl->add_udp_connection(14550, 0), DroneLink::ConnectionResult::SUCCESS);
+    ASSERT_EQ(dl->add_udp_connection(14550), DroneLink::ConnectionResult::SUCCESS);
 
     sleep(5);
 
@@ -33,7 +33,7 @@ TEST_F(SitlTest, TwoConnections)
 
     dl = new dronelink::DroneLink();
 
-    ASSERT_EQ(dl->add_udp_connection(14540, 0), DroneLink::ConnectionResult::SUCCESS);
+    ASSERT_EQ(dl->add_udp_connection(14540), DroneLink::ConnectionResult::SUCCESS);
 
     sleep(3);
     uuids = dl->device_uuids();

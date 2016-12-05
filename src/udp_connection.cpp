@@ -10,15 +10,9 @@
 namespace dronelink {
 
 UdpConnection::UdpConnection(DroneLinkImpl *parent,
-                             int local_port_number,
-                             int remote_port_number) :
+                             int local_port_number) :
     Connection(parent),
     _local_port_number(local_port_number),
-    _remote_ip(),
-    _remote_port_number(remote_port_number),
-    _mutex(),
-    _socket_fd(-1),
-    _recv_thread(nullptr),
     _should_exit(false)
 {
     if (_local_port_number == 0) {
