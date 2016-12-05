@@ -30,6 +30,8 @@ public:
         CONNECTIONS_EXHAUSTED
     };
 
+    static const char *connection_result_str(ConnectionResult);
+
     ConnectionResult add_udp_connection();
     ConnectionResult add_udp_connection(int local_port_number);
 

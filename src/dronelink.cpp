@@ -57,10 +57,40 @@ void DroneLink::register_on_discover(event_callback_t callback)
 {
     _impl->register_on_discover(callback);
 }
+
 void DroneLink::register_on_timeout(event_callback_t callback)
 {
     _impl->register_on_timeout(callback);
 }
 
+const char *DroneLink::connection_result_str(ConnectionResult result)
+{
+    switch (result) {
+        case ConnectionResult::SUCCESS:
+            return "Success";
+        case ConnectionResult::TIMEOUT:
+            return "Timeout";
+        case ConnectionResult::SOCKET_ERROR:
+            return "Socket error";
+        case ConnectionResult::BIND_ERROR:
+            return "Bind error";
+        case ConnectionResult::CONNECTION_ERROR:
+            return "Connection error";
+        case ConnectionResult::NOT_IMPLEMENTED:
+            return "Not implemented";
+        case ConnectionResult::DEVICE_NOT_CONNECTED:
+            return "Device not connected";
+        case ConnectionResult::DEVICE_BUSY:
+            return "Device busy";
+        case ConnectionResult::COMMAND_DENIED:
+            return "Command denied";
+        case ConnectionResult::DESTINATION_IP_UNKNOWN:
+            return "Destination IP unknown";
+        case ConnectionResult::CONNECTIONS_EXHAUSTED:
+            return "Connections exhausted";
+        default:
+            return "Unknown";
+    }
+}
 
 } // namespace dronelink
