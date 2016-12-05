@@ -39,8 +39,9 @@ void ActionImpl::deinit()
 
 Action::Result ActionImpl::arm() const
 {
-    if (!is_arm_allowed()) {
-        return Action::Result::COMMAND_DENIED;
+    Action::Result ret = arming_allowed();
+    if (ret != Action::Result::SUCCESS) {
+        return ret;
     }
 
     return action_result_from_command_result(
@@ -51,8 +52,9 @@ Action::Result ActionImpl::arm() const
 
 Action::Result ActionImpl::disarm() const
 {
-    if (!is_disarm_allowed()) {
-        return Action::Result::COMMAND_DENIED;
+    Action::Result ret = disarming_allowed();
+    if (ret != Action::Result::SUCCESS) {
+        return ret;
     }
 
     return action_result_from_command_result(
@@ -71,8 +73,9 @@ Action::Result ActionImpl::kill() const
 
 Action::Result ActionImpl::takeoff() const
 {
-    if (!is_takeoff_allowed()) {
-        return Action::Result::COMMAND_DENIED;
+    Action::Result ret = taking_off_allowed();
+    if (ret != Action::Result::SUCCESS) {
+        return ret;
     }
 
     return action_result_from_command_result(
@@ -112,8 +115,11 @@ Action::Result ActionImpl::return_to_land() const
 
 void ActionImpl::arm_async(const Action::result_callback_t &callback)
 {
-    if (!is_arm_allowed()) {
-        callback(Action::Result::COMMAND_DENIED);
+    Action::Result ret = arming_allowed();
+    if (ret != Action::Result::SUCCESS) {
+        if (callback) {
+            callback(ret);
+        }
         return;
     }
 
@@ -140,8 +146,11 @@ void ActionImpl::arm_async_continued(DeviceImpl::CommandResult previous_result,
 
 void ActionImpl::disarm_async(const Action::result_callback_t &callback)
 {
-    if (!is_disarm_allowed()) {
-        callback(Action::Result::COMMAND_DENIED);
+    Action::Result ret = disarming_allowed();
+    if (ret != Action::Result::SUCCESS) {
+        if (callback) {
+            callback(ret);
+        }
         return;
     }
 
@@ -165,9 +174,10 @@ void ActionImpl::kill_async(const Action::result_callback_t &callback)
 
 void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
 {
-    if (!is_takeoff_allowed()) {
+    Action::Result ret = taking_off_allowed();
+    if (ret != Action::Result::SUCCESS) {
         if (callback) {
-            callback(Action::Result::COMMAND_DENIED);
+            callback(ret);
         }
         return;
     }
@@ -227,48 +237,43 @@ void ActionImpl::return_to_land_async(const Action::result_callback_t &callback)
                   callback));
 }
 
-bool ActionImpl::is_arm_allowed() const
+Action::Result ActionImpl::arming_allowed() const
 {
     if (!_in_air_state_known) {
-        Debug() << "landed state not known, arming not allowed";
-        return false;
+        return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
     }
 
     if (_in_air) {
-        return false;
+        return Action::Result::COMMAND_DENIED_NOT_LANDED;
     }
 
-    return true;
+    return Action::Result::SUCCESS;
 }
 
-bool ActionImpl::is_takeoff_allowed() const
+Action::Result ActionImpl::taking_off_allowed() const
 {
     if (!_in_air_state_known) {
-        Debug() << "landed state not known, takeoff not allowed";
-        return false;
+        return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
     }
 
     if (_in_air) {
-        Debug() << "already in air, takeoff not allowed";
-        return false;
+        return Action::Result::COMMAND_DENIED_NOT_LANDED;
     }
 
-    return true;
+    return Action::Result::SUCCESS;
 }
 
-bool ActionImpl::is_disarm_allowed() const
+Action::Result ActionImpl::disarming_allowed() const
 {
     if (!_in_air_state_known) {
-        Debug() << "in air state unknown";
-        return false;
+        return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
     }
 
     if (_in_air) {
-        Debug() << "still in air";
-        return false;
+        return Action::Result::COMMAND_DENIED_NOT_LANDED;
     }
 
-    return true;
+    return Action::Result::SUCCESS;
 }
 
 void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)

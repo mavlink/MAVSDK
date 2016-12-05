@@ -18,6 +18,8 @@ public:
         CONNECTION_ERROR,
         BUSY,
         COMMAND_DENIED,
+        COMMAND_DENIED_LANDED_STATE_UNKNOWN,
+        COMMAND_DENIED_NOT_LANDED,
         TIMEOUT,
         UNKNOWN
     };

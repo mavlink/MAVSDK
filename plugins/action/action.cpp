@@ -95,6 +95,10 @@ const char *Action::result_str(Result result)
             return "Busy";
         case Result::COMMAND_DENIED:
             return "Command denied";
+        case Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN:
+            return "Command denied, landed state is unknown";
+        case Result::COMMAND_DENIED_NOT_LANDED:
+            return "Command denied, not landed";
         case Result::TIMEOUT:
             return "Timeout";
         case Result::UNKNOWN:
