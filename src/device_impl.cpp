@@ -149,16 +149,20 @@ void DeviceImpl::process_command_ack(const mavlink_message_t &message)
         // Update state after result to avoid a race over _command_result
         _command_state = CommandState::RECEIVED;
 
+        // We need to make a copy in case a new command is sent in the callback
+        // that we're going to call.
+        command_result_callback_t temp_callback = _command_result_callback;
+        _command_result_callback = nullptr;
+
         if (_command_result == MAV_RESULT_ACCEPTED) {
-            if (_command_result_callback != nullptr) {
-                report_result(_command_result_callback, CommandResult::SUCCESS);
+            if (temp_callback != nullptr) {
+                report_result(temp_callback, CommandResult::SUCCESS);
             }
         } else {
-            if (_command_result_callback != nullptr) {
-                report_result(_command_result_callback, CommandResult::COMMAND_DENIED);
+            if (temp_callback != nullptr) {
+                report_result(temp_callback, CommandResult::COMMAND_DENIED);
             }
         }
-        _command_result_callback = nullptr;
     }
 }
 
