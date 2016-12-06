@@ -132,6 +132,7 @@ void ActionImpl::arm_async_continued(DeviceImpl::CommandResult previous_result,
 {
     if (previous_result != DeviceImpl::CommandResult::SUCCESS) {
         command_result_callback(previous_result, callback);
+        return;
     }
 
     _parent->send_command_with_ack_async(
@@ -189,6 +190,7 @@ void ActionImpl::takeoff_async_continued(DeviceImpl::CommandResult previous_resu
 {
     if (previous_result != DeviceImpl::CommandResult::SUCCESS) {
         command_result_callback(previous_result, callback);
+        return;
     }
 
     _parent->send_command_with_ack_async(
