@@ -130,8 +130,6 @@ void ActionImpl::arm_async(const Action::result_callback_t &callback)
 void ActionImpl::arm_async_continued(DeviceImpl::CommandResult previous_result,
                                      const Action::result_callback_t &callback)
 {
-    Debug() << "arm continued: got result: " << int(previous_result);
-
     if (previous_result != DeviceImpl::CommandResult::SUCCESS) {
         command_result_callback(previous_result, callback);
     }
@@ -189,9 +187,6 @@ void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
 void ActionImpl::takeoff_async_continued(DeviceImpl::CommandResult previous_result,
                                          const Action::result_callback_t &callback)
 {
-
-    Debug() << "takeoff continued: got result: " << int(previous_result);
-
     if (previous_result != DeviceImpl::CommandResult::SUCCESS) {
         command_result_callback(previous_result, callback);
     }
