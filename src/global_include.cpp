@@ -1,5 +1,6 @@
 #include "global_include.h"
 #include <cmath>
+#include <cfloat>
 
 namespace dronelink {
 
@@ -46,6 +47,16 @@ double to_rad_from_deg(double deg)
 double to_deg_from_rad(double rad)
 {
     return rad / M_PI * 180.0;
+}
+
+bool are_equal(float one, float two)
+{
+    return fabsf(one - two) < FLT_MIN;
+}
+
+bool are_equal(double one, double two)
+{
+    return fabs(one - two) < DBL_MIN;
 }
 
 } // namespace dronelink

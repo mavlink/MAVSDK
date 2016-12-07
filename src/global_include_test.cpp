@@ -61,3 +61,13 @@ TEST(GlobalInclude, RadDeg)
     ASSERT_DOUBLE_EQ(-180, to_deg_from_rad(-M_PI));
     ASSERT_DOUBLE_EQ(360.0, to_deg_from_rad(2.0 * M_PI));
 }
+
+TEST(GlobalInclude, FloatComparisons)
+{
+    EXPECT_TRUE(are_equal(0.0, 0.0));
+    EXPECT_TRUE(are_equal(0.0f, 0.0f));
+    EXPECT_FALSE(are_equal(0.0001, 0.0002));
+    EXPECT_FALSE(are_equal(0.0001f, 0.0002f));
+    EXPECT_FALSE(are_equal(1e20, 1e-20));
+    EXPECT_FALSE(are_equal(1e20f, 1e-20f));
+}
