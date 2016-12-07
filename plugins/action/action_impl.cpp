@@ -44,6 +44,25 @@ Action::Result ActionImpl::arm() const
         return ret;
     }
 
+    // Go to LOITER mode first.
+    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+
+    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
+    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
+
+    ret = action_result_from_command_result(
+              _parent->send_command_with_ack(
+                  MAV_CMD_DO_SET_MODE,
+                  DeviceImpl::CommandParams {float(mode),
+                                             float(custom_mode),
+                                             float(custom_sub_mode),
+                                             NAN, NAN, NAN, NAN}));
+
+    if (ret != Action::Result::SUCCESS) {
+        return ret;
+    }
+
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_COMPONENT_ARM_DISARM,
@@ -77,6 +96,21 @@ Action::Result ActionImpl::takeoff() const
     if (ret != Action::Result::SUCCESS) {
         return ret;
     }
+
+    // Go to LOITER mode first.
+    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+
+    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
+    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
+
+    ret = action_result_from_command_result(
+              _parent->send_command_with_ack(
+                  MAV_CMD_DO_SET_MODE,
+                  DeviceImpl::CommandParams {float(mode),
+                                             float(custom_mode),
+                                             float(custom_sub_mode),
+                                             NAN, NAN, NAN, NAN}));
 
     return action_result_from_command_result(
                _parent->send_command_with_ack(
