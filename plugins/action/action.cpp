@@ -82,6 +82,16 @@ float Action::get_takeoff_altitude_m() const
     return _impl->get_takeoff_altitude_m();
 }
 
+void Action::set_max_speed(float speed_m_s)
+{
+    _impl->set_max_speed(speed_m_s);
+}
+
+float Action::get_max_speed_m_s() const
+{
+    return _impl->get_max_speed_m_s();
+}
+
 const char *Action::result_str(Result result)
 {
     switch (result) {

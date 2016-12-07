@@ -34,6 +34,9 @@ public:
     void set_takeoff_altitude(float relative_altitude_m);
     float get_takeoff_altitude_m() const;
 
+    void set_max_speed(float speed_m_s);
+    float get_max_speed_m_s() const;
+
 private:
     void loiter_before_takeoff_async(const Action::result_callback_t &callback);
     void loiter_before_arm_async(const Action::result_callback_t &callback);
@@ -49,6 +52,8 @@ private:
 
     void process_extended_sys_state(const mavlink_message_t &message);
 
+    void receive_max_speed_result(bool success, float new_speed_m_s);
+
     static Action::Result action_result_from_command_result(DeviceImpl::CommandResult result);
 
     static void command_result_callback(DeviceImpl::CommandResult command_result,
@@ -58,6 +63,8 @@ private:
     bool _in_air;
 
     float _relative_takeoff_altitude_m = 2.5f;
+
+    float _max_speed_m_s = NAN;
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 };

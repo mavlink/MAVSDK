@@ -330,6 +330,29 @@ float ActionImpl::get_takeoff_altitude_m() const
     return _relative_takeoff_altitude_m;
 }
 
+void ActionImpl::set_max_speed(float speed_m_s)
+{
+    // TODO: add retries
+    //const int retries = 3;
+    _parent->set_param_float_async("MPC_XY_CRUISE", speed_m_s,
+                                   std::bind(&ActionImpl::receive_max_speed_result, this, _1,
+                                             speed_m_s));
+}
+
+void ActionImpl::receive_max_speed_result(bool success, float new_speed_m_s)
+{
+    if (!success) {
+        Debug() << "setting max speed param failed";
+        return;
+    }
+    _max_speed_m_s = new_speed_m_s;
+}
+
+float ActionImpl::get_max_speed_m_s() const
+{
+    return _max_speed_m_s;
+}
+
 Action::Result
 ActionImpl::action_result_from_command_result(DeviceImpl::CommandResult result)
 {

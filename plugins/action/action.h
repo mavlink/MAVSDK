@@ -45,6 +45,10 @@ public:
     void set_takeoff_altitude(float relative_altitude_m);
     float get_takeoff_altitude_m() const;
 
+
+    void set_max_speed(float speed_m_s);
+    float get_max_speed_m_s() const;
+
     // Non-copyable
     Action(const Action &) = delete;
     const Action &operator=(const Action &) = delete;
