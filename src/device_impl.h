@@ -169,7 +169,7 @@ private:
     static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
 
     double _timeout_s;
-    static constexpr double DEFAULT_TIMEOUT_S = 0.5;
+    static constexpr double DEFAULT_TIMEOUT_S = 1.0;
 
     dl_time_t _last_heartbeat_received_time;
     double _heartbeat_timeout_s;
