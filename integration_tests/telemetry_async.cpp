@@ -36,7 +36,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
 
-    sleep(2);
+    sleep(3);
 
     std::vector<uint64_t> uuids = dl.device_uuids();
 
@@ -90,7 +90,6 @@ TEST_F(SitlTest, TelemetryAsync)
     device.telemetry().gps_info_async(std::bind(&print_gps_info, _1));
 
     device.telemetry().battery_async(std::bind(&print_battery, _1));
-
 
     usleep(10000000);
 
