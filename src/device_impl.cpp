@@ -365,7 +365,8 @@ DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
     //    return Result::DEVICE_BUSY;
     //}
 
-    const uint8_t component_id_to_use = component_id != 0 ? component_id : _target_component_id;
+    const uint8_t component_id_to_use =
+        ((component_id != 0) ? component_id : _target_component_id);
 
     mavlink_message_t message;
 
