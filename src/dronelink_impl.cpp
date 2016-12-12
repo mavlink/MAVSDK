@@ -49,7 +49,9 @@ void DroneLinkImpl::receive_message(const mavlink_message_t &message)
         return;
     }
 
-    // FIXME/TODO: reject anything which is not sysid 1
+    //Debug() << "receive from: " << int(message.sysid) << ", " << int(message.compid);
+
+    // FIXME: reject anything which is not sysid 1
     // somewhere there is a bug which produces.
     if (message.sysid != 1) {
         return;
