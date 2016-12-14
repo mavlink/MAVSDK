@@ -413,7 +413,9 @@ void ActionImpl::command_result_callback(DeviceImpl::CommandResult command_resul
 {
     Action::Result action_result = action_result_from_command_result(command_result);
 
-    callback(action_result);
+    if (callback) {
+        callback(action_result);
+    }
 }
 
 
