@@ -51,16 +51,21 @@ add_library(dronelink STATIC
     ${plugin_source_files}
 )
 
-if(ANDROID)
-    set(ARCH ${ANDROID_ABI})
-endif()
-
-
 # We support install in order to use the header and static library files in
 # other applications.
+if(ANDROID)
+    set(lib_path "lib/android/${ANDROID_ABI}")
+elseif(IOS)
+    set(lib_path "lib/ios")
+else()
+    set(lib_path "lib")
+endif()
+
 install(TARGETS dronelink
-    DESTINATION "lib/android/${ARCH}"
+    DESTINATION ${lib_path}
 )
+
+
 install(FILES
     include/dronelink.h
     include/device.h
