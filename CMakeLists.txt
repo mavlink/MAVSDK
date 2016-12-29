@@ -59,7 +59,7 @@ endif()
 # We support install in order to use the header and static library files in
 # other applications.
 install(TARGETS dronelink
-    DESTINATION "lib/${ARCH}"
+    DESTINATION "lib/android/${ARCH}"
 )
 install(FILES
     include/dronelink.h
