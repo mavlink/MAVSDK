@@ -13,6 +13,7 @@ public:
     InfoImpl();
     ~InfoImpl();
 
+    uint64_t get_uuid() const;
     bool is_complete() const;
     Info::Version get_version() const;
 

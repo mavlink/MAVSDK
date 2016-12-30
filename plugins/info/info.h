@@ -28,6 +28,8 @@ public:
         uint16_t product_id;
     };
 
+    uint64_t uuid() const;
+
     bool is_complete() const;
     Version get_version() const;
 

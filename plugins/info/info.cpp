@@ -12,6 +12,11 @@ Info::~Info()
 {
 }
 
+uint64_t Info::uuid() const
+{
+    return _impl->get_uuid();
+}
+
 bool Info::is_complete() const
 {
     return _impl->is_complete();
