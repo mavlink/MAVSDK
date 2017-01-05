@@ -22,7 +22,6 @@ ActionImpl::~ActionImpl()
 
 void ActionImpl::init()
 {
-
     // We need the system state.
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
@@ -356,7 +355,18 @@ void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callba
 
 void ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
-    _relative_takeoff_altitude_m = relative_altitude_m;
+    _parent->set_param_float_async("MIS_TAKEOFF_ALT", relative_altitude_m,
+                                   std::bind(&ActionImpl::receive_takeoff_alt_param, this, _1, relative_altitude_m));
+
+}
+
+void ActionImpl::receive_takeoff_alt_param(bool success, float new_relative_altitude_m)
+{
+    if (success) {
+        // TODO: This should not be buffered like this, the param system
+        //       needs some refactoring.
+        _relative_takeoff_altitude_m = new_relative_altitude_m;
+    }
 }
 
 float ActionImpl::get_takeoff_altitude_m() const

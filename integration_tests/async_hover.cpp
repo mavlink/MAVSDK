@@ -37,6 +37,8 @@ TEST_F(SitlTest, ActionAsyncHover)
     device.action().arm_async(std::bind(&receive_result, _1));
     sleep(2);
 
+    device.action().set_takeoff_altitude(5.0f);
+
     device.action().takeoff_async(std::bind(&receive_result, _1));
     sleep(5);
 

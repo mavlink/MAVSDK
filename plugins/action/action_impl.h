@@ -54,6 +54,8 @@ private:
 
     void receive_max_speed_result(bool success, float new_speed_m_s);
 
+    void receive_takeoff_alt_param(bool success, float new_relative_altitude_m);
+
     static Action::Result action_result_from_command_result(DeviceImpl::CommandResult result);
 
     static void command_result_callback(DeviceImpl::CommandResult command_result,
