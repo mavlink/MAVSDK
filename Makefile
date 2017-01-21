@@ -37,6 +37,9 @@ DROP_DEBUG ?= 0
 CURRENT_DIR := $(shell pwd)
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
+# Set default cmake here but replace with special version for Android build.
+CMAKE_BIN = cmake
+
 # Function to create build_* directory and call make there.
 define cmake-build
 +@$(eval BUILD_DIR = build/$@)
@@ -44,7 +47,7 @@ define cmake-build
 +@if [ ! -e $(BUILD_DIR)/CMakeCache.txt ]; then \
 	mkdir -p $(BUILD_DIR) \
 	&& (cd $(BUILD_DIR) \
-        && cmake $(ROOT_DIR) $(1) \
+        && $(CMAKE_BIN) $(ROOT_DIR) $(1) \
         -DEXTERNAL_DIR:STRING=$(EXTERNAL_DIR) \
         -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
         -DCMAKE_INSTALL_PREFIX=$(CURRENT_DIR)/install \
@@ -142,6 +145,13 @@ android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
 	$(error ANDROID_TOOLCHAIN_CMAKE is undefined, please point the \
 	    environment variable to build/cmake/android.toolchain.cmake from android-ndk.)
+endif
+ifndef ANDROID_CMAKE_BIN
+	$(error ANDROID_CMAKE_BIN is undefined, please point the \
+	    environment variable to cmake/3.6.3155560/bin/cmake from android-sdk.)
+else
+	# We need cmake from the Android SDK (currently at 3.6 because 3.7 fails the test).
+	$(eval CMAKE_BIN = $(ANDROID_CMAKE_BIN))
 endif
 
 .PHONY:
