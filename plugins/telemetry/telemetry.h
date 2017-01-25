@@ -87,7 +87,7 @@ public:
         UNKNOWN
     };
 
-    static const char *result_str(Result);
+    static const char *result_str(Result result);
 
     typedef std::function<void(Result)> result_callback_t;
 
