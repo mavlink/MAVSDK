@@ -59,6 +59,8 @@ public:
         UNKNOWN
     };
 
+    static const char *flight_mode_str(FlightMode flight_mode);
+
     struct Health {
         bool gyrometer_calibration_ok;
         bool accelerometer_calibration_ok;

@@ -236,6 +236,28 @@ void Telemetry::flight_mode_async(flight_mode_callback_t callback)
     return _impl->flight_mode_async(callback);
 }
 
+const char *Telemetry::flight_mode_str(FlightMode flight_mode)
+{
+    switch (flight_mode) {
+        case FlightMode::READY:
+            return "Ready";
+        case FlightMode::TAKEOFF:
+            return "Takeoff";
+        case FlightMode::HOLD:
+            return "Hold";
+        case FlightMode::MISSION:
+            return "Mission";
+        case FlightMode::RETURN_TO_LAUNCH:
+            return "Return to launch";
+        case FlightMode::LAND:
+            return "Land";
+        case FlightMode::OFFBOARD:
+            return "Offboard";
+        case FlightMode::UNKNOWN:
+            return "Unknown";
+    }
+}
+
 void Telemetry::health_async(health_callback_t callback)
 {
     return _impl->health_async(callback);
