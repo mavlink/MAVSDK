@@ -356,7 +356,8 @@ void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callba
 void ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
     _parent->set_param_float_async("MIS_TAKEOFF_ALT", relative_altitude_m,
-                                   std::bind(&ActionImpl::receive_takeoff_alt_param, this, _1, relative_altitude_m));
+                                   std::bind(&ActionImpl::receive_takeoff_alt_param,
+                                             this, _1, relative_altitude_m));
 
 }
 
