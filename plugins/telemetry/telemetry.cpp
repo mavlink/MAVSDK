@@ -254,8 +254,10 @@ const char *Telemetry::flight_mode_str(FlightMode flight_mode)
         case FlightMode::OFFBOARD:
             return "Offboard";
         case FlightMode::UNKNOWN:
+        default:
             return "Unknown";
     }
+
 }
 
 void Telemetry::health_async(health_callback_t callback)
