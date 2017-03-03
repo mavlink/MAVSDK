@@ -89,7 +89,7 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
 
     _result_callback = callback;
 
-    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), this);
+    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), 1.0, this);
 }
 
 void OffboardImpl::stop_async(Offboard::result_callback_t callback)
@@ -113,7 +113,7 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
 
     _result_callback = callback;
 
-    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), this);
+    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), 1.0, this);
 }
 
 void OffboardImpl::receive_command_result(DeviceImpl::CommandResult result,

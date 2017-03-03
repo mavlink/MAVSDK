@@ -48,9 +48,11 @@ public:
 
     void unregister_all_mavlink_message_handlers(const void *cookie);
 
-    void register_timeout_handler(timeout_handler_t callback, const void *cookie);
+    void register_timeout_handler(timeout_handler_t callback,
+                                  double duration_s,
+                                  const void *cookie);
 
-    void update_timeout_handler(const void *cookie);
+    void refresh_timeout_handler(const void *cookie);
 
     void unregister_timeout_handler(const void *cookie);
 
@@ -72,9 +74,6 @@ public:
 
     void set_msg_rate_async(uint16_t message_id, double rate_hz,
                             command_result_callback_t callback);
-
-    double get_timeout() { return _timeout_s; }
-    void set_timeout(double timeout_s) { _timeout_s = timeout_s; }
 
     void request_autopilot_version();
 
@@ -137,6 +136,7 @@ private:
 
     struct TimeoutHandlerMapEntry {
         dl_time_t time;
+        double duration_s;
         timeout_handler_t callback;
     };
 
@@ -168,7 +168,6 @@ private:
     static constexpr uint8_t _own_system_id = 0;
     static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
 
-    double _timeout_s;
     static constexpr double DEFAULT_TIMEOUT_S = 1.0;
 
     dl_time_t _last_heartbeat_received_time;

@@ -12,9 +12,6 @@ public:
     explicit Device(DeviceImpl *impl);
     ~Device();
 
-    void set_timeout(double timeout_s);
-    double get_timeout() const;
-
 private:
 
     // Non-copyable

@@ -105,6 +105,7 @@ void MavlinkParameters::do_work()
 
         // We want to get notified if a timeout happens
         _parent->register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
+                                          3.0,
                                           this);
 
     } else if (_get_param_queue.size() > 0) {
@@ -139,6 +140,7 @@ void MavlinkParameters::do_work()
 
         // We want to get notified if a timeout happens
         _parent->register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
+                                          3.0,
                                           this);
     }
 }
