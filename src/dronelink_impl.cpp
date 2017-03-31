@@ -43,23 +43,10 @@ DroneLinkImpl::~DroneLinkImpl()
 
 void DroneLinkImpl::receive_message(const mavlink_message_t &message)
 {
-    // Reject messages with sysid 0. Somehow these appear sometimes
-    // in SITL.
-    if (message.sysid == 0) {
-        return;
-    }
-
     //Debug() << "receive from: " << int(message.sysid) << ", " << int(message.compid);
-
-    // FIXME: reject anything which is not sysid 1
-    // somewhere there is a bug which produces.
-    if (message.sysid != 1) {
-        return;
-    }
 
     create_device_if_not_existing(message.sysid, message.compid);
     remove_empty_devices();
-
 
     _device_impls.at(message.sysid)->process_mavlink_message(message);
 }
