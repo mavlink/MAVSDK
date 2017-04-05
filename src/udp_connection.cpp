@@ -79,16 +79,17 @@ DroneLink::ConnectionResult UdpConnection::stop()
 {
     _should_exit = true;
 
-    // This interrupts a recv/recvfrom call.
+    // This should interrupt a recv/recvfrom call.
     shutdown(_socket_fd, SHUT_RDWR);
+
+    // But on Mac, closing is also needed to stop blocking recv/recvfrom.
+    close(_socket_fd);
 
     if (_recv_thread) {
         _recv_thread->join();
         delete _recv_thread;
         _recv_thread = nullptr;
     }
-
-    close(_socket_fd);
 
     // We need to stop this after stopping the receive thread, otherwise
     // it can happen that we interfere with the parsing of a message.
@@ -152,7 +153,9 @@ void UdpConnection::receive(UdpConnection *parent)
         }
 
         if (recv_len < 0) {
-            Debug() << "recvfrom error: " << strerror(errno);
+            // This happens on desctruction when close(_socket_fd) is called,
+            // therefore be quiet.
+            //Debug() << "recvfrom error: " << strerror(errno);
             continue;
         }
 
