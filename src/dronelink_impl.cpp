@@ -17,17 +17,8 @@ DroneLinkImpl::DroneLinkImpl() :
 DroneLinkImpl::~DroneLinkImpl()
 {
     {
-        std::lock_guard<std::mutex> lock(_connections_mutex);
-
-        for (unsigned i = 0; i < _connections.size(); ++i) {
-            delete _connections.at(i);
-            _connections.at(i) = nullptr;
-        }
-        _connections.clear();
-    }
-
-    {
         std::lock_guard<std::mutex> lock(_devices_mutex);
+        _should_exit = true;
 
         for (auto it = _devices.begin(); it != _devices.end(); ++it) {
             delete it->second;
@@ -39,16 +30,47 @@ DroneLinkImpl::~DroneLinkImpl()
         _devices.clear();
         _device_impls.clear();
     }
+
+    std::vector<Connection *> tmp_connections;
+    {
+        std::lock_guard<std::mutex> lock(_connections_mutex);
+
+        // We need to copy the connections to a temporary vector. This way they won't
+        // get used anymore while they are cleaned up.
+        tmp_connections = _connections;
+        _connections.clear();
+    }
+
+    for (auto connection : tmp_connections) {
+        delete connection;
+    }
+
 }
 
 void DroneLinkImpl::receive_message(const mavlink_message_t &message)
 {
-    //Debug() << "receive from: " << int(message.sysid) << ", " << int(message.compid);
+    // Don't ever create a device with sysid 0.
+    if (message.sysid == 0) {
+        return;
+    }
 
     create_device_if_not_existing(message.sysid, message.compid);
-    remove_empty_devices();
 
-    _device_impls.at(message.sysid)->process_mavlink_message(message);
+    remove_empty_devices();
+    {
+        std::lock_guard<std::mutex> lock(_devices_mutex);
+
+        if (_should_exit) {
+            // Don't try to call at() if devices have already been destroyed
+            // in descructor.
+            return;
+        }
+
+        if (message.sysid != 1) {
+            Debug() << "sysid: " << int(message.sysid);
+        }
+        _device_impls.at(message.sysid)->process_mavlink_message(message);
+    }
 }
 
 bool DroneLinkImpl::send_message(const mavlink_message_t &message)
@@ -147,6 +169,11 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t com
 {
     std::lock_guard<std::mutex> lock(_devices_mutex);
 
+    if (_should_exit) {
+        // When the device_impl got destroyed in the destructor, we have to give up.
+        return;
+    }
+
     // existing already.
     if (_devices.find(system_id) != _devices.end()) {
         //Debug() << "ID: " << int(system_id) << " exists already.";
@@ -159,7 +186,6 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t com
 
     Device *new_device = new Device(new_device_impl);
     _devices.insert(std::pair<uint8_t, Device *>(system_id, new_device));
-
 }
 
 void DroneLinkImpl::remove_empty_devices()

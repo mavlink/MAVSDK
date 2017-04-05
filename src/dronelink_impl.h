@@ -45,6 +45,8 @@ private:
 
     DroneLink::event_callback_t _on_discover_callback;
     DroneLink::event_callback_t _on_timeout_callback;
+
+    std::atomic<bool> _should_exit = {false};
 };
 
 } // namespace dronelink

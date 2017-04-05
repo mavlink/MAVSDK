@@ -77,9 +77,9 @@ void UdpConnection::start_recv_thread()
 
 DroneLink::ConnectionResult UdpConnection::stop()
 {
-    stop_mavlink_receiver();
-
     _should_exit = true;
+
+    // This interrupts a recv/recvfrom call.
     shutdown(_socket_fd, SHUT_RDWR);
 
     if (_recv_thread) {
@@ -89,6 +89,10 @@ DroneLink::ConnectionResult UdpConnection::stop()
     }
 
     close(_socket_fd);
+
+    // We need to stop this after stopping the receive thread, otherwise
+    // it can happen that we interfere with the parsing of a message.
+    stop_mavlink_receiver();
 
     return DroneLink::ConnectionResult::SUCCESS;
 }

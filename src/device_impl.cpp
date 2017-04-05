@@ -60,12 +60,16 @@ void DeviceImpl::register_mavlink_message_handler(uint16_t msg_id,
                                                   mavlink_message_handler_t callback,
                                                   const void *cookie)
 {
+    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
+
     MavlinkHandlerTableEntry entry = {msg_id, callback, cookie};
     _mavlink_handler_table.push_back(entry);
 }
 
 void DeviceImpl::unregister_all_mavlink_message_handlers(const void *cookie)
 {
+    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
+
     for (auto it = _mavlink_handler_table.begin();
          it != _mavlink_handler_table.end();
          /* no ++it */) {
@@ -76,6 +80,7 @@ void DeviceImpl::unregister_all_mavlink_message_handlers(const void *cookie)
             ++it;
         }
     }
+    _mavlink_handler_table.clear();
 }
 
 void DeviceImpl::register_timeout_handler(timeout_handler_t callback,
@@ -113,6 +118,8 @@ void DeviceImpl::unregister_timeout_handler(const void *cookie)
 
 void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
 {
+    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
+
     for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end(); ++it) {
         if (it->msg_id == message.msgid) {
             it->callback(message);

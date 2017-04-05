@@ -132,6 +132,7 @@ private:
         const void *cookie; // This is the identification to unregister.
     };
 
+    std::mutex _mavlink_handler_table_mutex {};
     std::vector<MavlinkHandlerTableEntry> _mavlink_handler_table;
 
     struct TimeoutHandlerMapEntry {
