@@ -63,5 +63,8 @@ double to_deg_from_rad(double rad);
 bool are_equal(float one, float two);
 bool are_equal(double one, double two);
 
+#define MIN(x_, y_) ((x_) > (y_)) ? (y_) : (x_)
+#define MAX(x_, y_) ((x_) > (y_)) ? (x_) : (y_)
+
 
 } // namespace dronelink
