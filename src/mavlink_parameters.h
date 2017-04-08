@@ -124,7 +124,9 @@ private:
         GET_PARAM_BUSY
     } _request_state;
 
-    static constexpr size_t PARAM_ID_LEN = 16;
+    // Params can be up to 16 chars and without 0-termination.
+    // Therefore we add a 0 here for storing.
+    static constexpr size_t PARAM_ID_LEN = 16 + 1;
 
     struct SetParamWork {
         SetParamWork() :

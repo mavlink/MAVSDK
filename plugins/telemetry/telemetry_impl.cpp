@@ -348,12 +348,12 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t &message
     mavlink_attitude_quaternion_t attitude_quaternion;
     mavlink_msg_attitude_quaternion_decode(&message, &attitude_quaternion);
 
-    Telemetry::Quaternion quaternion({
+    Telemetry::Quaternion quaternion {
         attitude_quaternion.q1,
         attitude_quaternion.q2,
         attitude_quaternion.q3,
         attitude_quaternion.q4
-    });
+    };
 
     set_attitude_quaternion(quaternion);
 
@@ -371,11 +371,11 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t &message)
     mavlink_mount_orientation_t mount_orientation;
     mavlink_msg_mount_orientation_decode(&message, &mount_orientation);
 
-    Telemetry::EulerAngle euler_angle({
+    Telemetry::EulerAngle euler_angle {
         mount_orientation.roll,
         mount_orientation.pitch,
         mount_orientation.yaw
-    });
+    };
 
     set_camera_attitude_euler_angle(euler_angle);
 
@@ -446,7 +446,7 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    set_armed((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED));
+    set_armed(((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false));
 
     if (_armed_subscription) {
         _armed_subscription(armed());

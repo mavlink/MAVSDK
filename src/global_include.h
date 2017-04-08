@@ -59,6 +59,8 @@ public:
 #endif
 };
 
+void usleep(int64_t usec);
+
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
 
 dl_time_t steady_time();

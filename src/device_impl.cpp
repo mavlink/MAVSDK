@@ -1,7 +1,6 @@
 #include "global_include.h"
 #include "device_impl.h"
 #include "dronelink_impl.h"
-#include <unistd.h>
 #include <functional>
 
 namespace dronelink {
@@ -138,7 +137,7 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
         request_autopilot_version();
     }
 
-    _armed = (heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED);
+    _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
 
     check_device_thread();
 
@@ -179,7 +178,7 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
     _target_supports_mission_int =
-        autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT;
+        ((autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT) ? true : false);
 
     if (_target_uuid == 0) {
         _target_uuid = autopilot_version.uid;
@@ -409,7 +408,7 @@ DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
     }
 
     const unsigned wait_time_us = 1000;
-    const unsigned iterations = DEFAULT_TIMEOUT_S * 1e6 / wait_time_us;
+    const unsigned iterations = (unsigned)(DEFAULT_TIMEOUT_S * 1e6 / wait_time_us);
 
     // Wait until we have received a result.
     for (unsigned i = 0; i < iterations; ++i) {
@@ -464,7 +463,7 @@ DeviceImpl::CommandResult DeviceImpl::set_msg_rate(uint16_t message_id, double r
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
     if (rate_hz > 0) {
-        interval_us = 1e6f / rate_hz;
+        interval_us = 1e6f / (float)rate_hz;
     }
 
     return send_command_with_ack(
@@ -478,7 +477,7 @@ void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
     if (rate_hz > 0) {
-        interval_us = 1e6f / rate_hz;
+        interval_us = 1e6f / (float)rate_hz;
     }
 
     send_command_with_ack_async(
