@@ -6,7 +6,12 @@ project(dronelink)
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
 # We want C++11 and lots of warnings.
-add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
+if(CMAKE_COMPILER_IS_GNUCXX)
+    add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
+else()
+    add_definitions("-std=c++11 -WX")
+endif()
+
 
 # Clang needs this warning disabled.
 if (APPLE OR IOS OR ANDROID)
