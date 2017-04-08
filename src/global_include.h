@@ -6,9 +6,19 @@
 #include <chrono>
 
 #if ANDROID
-#include <android/log.h>
+  #include <android/log.h>
 #else
-#include <iostream>
+  #include <iostream>
+#endif
+
+#ifdef _MSC_VER
+  #ifndef _USE_MATH_DEFINES
+    #define _USE_MATH_DEFINES
+  #endif
+  // cmath doesn't contain M_PI
+  #include <math.h>
+#else
+  #include <cmath>
 #endif
 
 namespace dronelink {

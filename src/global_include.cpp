@@ -1,5 +1,4 @@
 #include "global_include.h"
-#include <cmath>
 #include <cfloat>
 #include <cstdint>
 

@@ -3,7 +3,6 @@
 #include "dronelink_impl.h"
 #include "telemetry.h"
 #include "px4_custom_mode.h"
-#include <unistd.h>
 
 namespace dronelink {
 
