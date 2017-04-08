@@ -87,7 +87,7 @@ public:
             return _float_value;
         }
 
-        float get_int() const
+        int32_t get_int() const
         {
             return _int_value;
         }
