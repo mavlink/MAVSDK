@@ -57,25 +57,20 @@ void DroneLinkImpl::receive_message(const mavlink_message_t &message)
     create_device_if_not_existing(message.sysid, message.compid);
 
     remove_empty_devices();
+    {
+        std::lock_guard<std::mutex> lock(_devices_mutex);
 
-    if (_should_exit) {
-        // Don't try to call at() if devices have already been destroyed
-        // in descructor.
-        return;
+        if (_should_exit) {
+            // Don't try to call at() if devices have already been destroyed
+            // in descructor.
+            return;
+        }
+
+        if (message.sysid != 1) {
+            Debug() << "sysid: " << int(message.sysid);
+        }
+        _device_impls.at(message.sysid)->process_mavlink_message(message);
     }
-
-    _devices_mutex.lock();
-
-    if (message.sysid != 1) {
-        Debug() << "sysid: " << int(message.sysid);
-    }
-    auto &device_impl = _device_impls.at(message.sysid);
-
-    // We need to release the lock, otherwise we can't send
-    // messages inside process_mavlink_message.
-    _devices_mutex.unlock();
-
-    device_impl->process_mavlink_message(message);
 }
 
 bool DroneLinkImpl::send_message(const mavlink_message_t &message)
