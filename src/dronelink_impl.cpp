@@ -17,7 +17,7 @@ DroneLinkImpl::DroneLinkImpl() :
 DroneLinkImpl::~DroneLinkImpl()
 {
     {
-        std::lock_guard<std::mutex> lock(_devices_mutex);
+        std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
         _should_exit = true;
 
         for (auto it = _devices.begin(); it != _devices.end(); ++it) {
@@ -58,7 +58,7 @@ void DroneLinkImpl::receive_message(const mavlink_message_t &message)
 
     remove_empty_devices();
     {
-        std::lock_guard<std::mutex> lock(_devices_mutex);
+        std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
         if (_should_exit) {
             // Don't try to call at() if devices have already been destroyed
@@ -112,7 +112,7 @@ const std::vector<uint64_t> &DroneLinkImpl::get_device_uuids() const
 Device &DroneLinkImpl::get_device()
 {
     {
-        std::lock_guard<std::mutex> lock(_devices_mutex);
+        std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
         // In get_device withoiut uuid, we expect to have only
         // one device conneted.
         if (_device_impls.size() == 1) {
@@ -144,7 +144,7 @@ Device &DroneLinkImpl::get_device()
 Device &DroneLinkImpl::get_device(uint64_t uuid)
 {
     {
-        std::lock_guard<std::mutex> lock(_devices_mutex);
+        std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
         // TODO: make a cache map for this.
         for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
             if (it->second->get_target_uuid() == uuid) {
@@ -167,7 +167,7 @@ Device &DroneLinkImpl::get_device(uint64_t uuid)
 
 void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t component_id)
 {
-    std::lock_guard<std::mutex> lock(_devices_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
     if (_should_exit) {
         // When the device_impl got destroyed in the destructor, we have to give up.
@@ -190,7 +190,7 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t com
 
 void DroneLinkImpl::remove_empty_devices()
 {
-    std::lock_guard<std::mutex> lock(_devices_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
     // Remove entries with system and component ID 0.
     if (_devices.find(0) != _devices.end()) {

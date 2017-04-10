@@ -39,7 +39,7 @@ private:
     std::mutex _connections_mutex;
     std::vector<Connection *> _connections;
 
-    std::mutex _devices_mutex;
+    std::recursive_mutex _devices_mutex;
     std::map<uint8_t, Device *> _devices;
     std::map<uint8_t, DeviceImpl *> _device_impls;
 
