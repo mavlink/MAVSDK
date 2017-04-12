@@ -1,6 +1,7 @@
 #include "global_include.h"
 #include <cmath>
 #include <cfloat>
+#include <cstdint>
 
 namespace dronelink {
 
@@ -35,7 +36,7 @@ double elapsed_since_s(const dl_time_t &since)
 dl_time_t steady_time_in_future(double duration_s)
 {
     auto now = std::chrono::steady_clock::now();
-    return now + std::chrono::nanoseconds((long int)(duration_s * 1e9));
+    return now + std::chrono::milliseconds(int64_t(duration_s * 1e3));
 }
 
 
