@@ -22,7 +22,7 @@ double elapsed_s()
            static_cast<double>(steady_clock::period::den);
 }
 
-double elapsed_since_s(dl_time_t &since)
+double elapsed_since_s(const dl_time_t &since)
 {
     using std::chrono::steady_clock;
 
