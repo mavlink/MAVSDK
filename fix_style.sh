@@ -7,10 +7,12 @@
 # Check for the latest astyle version
 ASTYLE_VER_REQUIRED_1="Artistic Style Version 2.05.1"
 ASTYLE_VER_REQUIRED_2="Artistic Style Version 2.06"
+ASTYLE_VER_REQUIRED_3="Artistic Style Version 3.0"
 
 ASTYLE_VER=`astyle --version`
 if [ "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_1" -a \
-     "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_2" ];
+     "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_2" -a \
+     "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_3" ];
 then
     echo "Error: you're using ${ASTYLE_VER}"
     echo "but should be using ${ASTYLE_VER_REQUIRED} instead"
