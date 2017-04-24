@@ -6,19 +6,19 @@
 #include <chrono>
 
 #if ANDROID
-  #include <android/log.h>
+#include <android/log.h>
 #else
-  #include <iostream>
+#include <iostream>
 #endif
 
 #ifdef WINDOWS
-  #ifndef _USE_MATH_DEFINES
-    #define _USE_MATH_DEFINES
-  #endif
-  // cmath doesn't contain M_PI
-  #include <math.h>
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#endif
+// cmath doesn't contain M_PI
+#include <math.h>
 #else
-  #include <cmath>
+#include <cmath>
 #endif
 
 #ifndef WINDOWS
