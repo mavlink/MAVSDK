@@ -6,10 +6,12 @@ project(dronelink)
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
 # We want C++11 and lots of warnings.
-if(CMAKE_COMPILER_IS_GNUCXX)
+if(NOT MSVC)
+    # Clang and GCC
     add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
-else()
-    add_definitions("-std=c++11 -WX")
+elseif()
+    # MSBuild
+    add_definitions("-std=c++11 -WX -DWINDOWS")
 endif()
 
 
