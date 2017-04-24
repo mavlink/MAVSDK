@@ -66,7 +66,9 @@ foreach(plugin ${external_plugins})
         set(header_files "")
         set(impl_header_files "")
 
-        add_subdirectory(${plugin} ${plugin})
+        # On Windows we need to replace C: to C
+        string(REPLACE ":" "" plugin_safe ${plugin})
+        add_subdirectory(${plugin} ${CMAKE_CURRENT_BINARY_DIR}/${plugin_safe})
         foreach(source_file ${source_files})
             list(APPEND plugin_source_files "${plugin}/${source_file}")
         endforeach()
