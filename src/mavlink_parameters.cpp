@@ -82,7 +82,7 @@ void MavlinkParameters::do_work()
         _request_state = RequestState::SET_PARAM_BUSY;
 
         char param_id[PARAM_ID_LEN] = {};
-        strncpy_s(param_id, work.param_name.c_str(), sizeof(param_id));
+        STRNCPY(param_id, work.param_name.c_str(), sizeof(param_id));
 
         mavlink_message_t message = {};
         mavlink_msg_param_set_pack(_parent->get_own_system_id(),
@@ -117,7 +117,7 @@ void MavlinkParameters::do_work()
         _request_state = RequestState::GET_PARAM_BUSY;
 
         char param_id[PARAM_ID_LEN] = {};
-        strncpy_s(param_id, work.param_name.c_str(), sizeof(param_id));
+        STRNCPY(param_id, work.param_name.c_str(), sizeof(param_id));
 
         mavlink_message_t message = {};
         mavlink_msg_param_request_read_pack(_parent->get_own_system_id(),

@@ -59,21 +59,23 @@ bool are_equal(double one, double two)
     return fabs(one - two) < DBL_MIN;
 }
 
+#ifdef WINDOWS
 #include <windows.h>
 // For Windows, taken from
 // http://stackoverflow.com/questions/5801813/c-usleep-is-obsolete-workarounds-for-windows-mingw#answer-17283549
-void usleep(int64_t usec) 
-{ 
-    HANDLE timer; 
-    LARGE_INTEGER ft; 
+void usleep(int64_t usec)
+{
+    HANDLE timer;
+    LARGE_INTEGER ft;
 
     ft.QuadPart = -(10*usec); // Convert to 100 nanosecond interval, negative value indicates relative time
 
-    timer = CreateWaitableTimer(NULL, TRUE, NULL); 
-    SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0); 
-    WaitForSingleObject(timer, INFINITE); 
-    CloseHandle(timer); 
+    timer = CreateWaitableTimer(NULL, TRUE, NULL);
+    SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
+    WaitForSingleObject(timer, INFINITE);
+    CloseHandle(timer);
 }
+#endif
 
 
 } // namespace dronelink

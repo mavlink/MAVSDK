@@ -11,7 +11,7 @@
   #include <iostream>
 #endif
 
-#ifdef _MSC_VER
+#ifdef WINDOWS
   #ifndef _USE_MATH_DEFINES
     #define _USE_MATH_DEFINES
   #endif
@@ -19,6 +19,19 @@
   #include <math.h>
 #else
   #include <cmath>
+#endif
+
+#ifndef WINDOWS
+#include <unistd.h> // for usleep
+#endif
+
+#define MIN(x_, y_) ((x_) > (y_)) ? (y_) : (x_)
+#define MAX(x_, y_) ((x_) > (y_)) ? (x_) : (y_)
+
+#ifdef WINDOWS
+#define STRNCPY strncpy_s
+#else
+#define STRNCPY strncpy
 #endif
 
 namespace dronelink {
@@ -59,7 +72,9 @@ public:
 #endif
 };
 
+#ifdef WINDOWS
 void usleep(int64_t usec);
+#endif
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
 
@@ -74,9 +89,5 @@ double to_deg_from_rad(double rad);
 
 bool are_equal(float one, float two);
 bool are_equal(double one, double two);
-
-#define MIN(x_, y_) ((x_) > (y_)) ? (y_) : (x_)
-#define MAX(x_, y_) ((x_) > (y_)) ? (x_) : (y_)
-
 
 } // namespace dronelink
