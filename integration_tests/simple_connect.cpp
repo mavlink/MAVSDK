@@ -1,6 +1,6 @@
 #include <iostream>
-#include <unistd.h>
 #include "integration_test_helper.h"
+#include "global_include.h"
 #include "dronelink.h"
 
 using namespace dronelink;

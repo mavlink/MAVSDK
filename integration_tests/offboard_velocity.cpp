@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cmath>
-#include <unistd.h>
 #include "integration_test_helper.h"
 #include "dronelink.h"
 
@@ -46,8 +45,8 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
     {
         const float step_size = 0.01f;
-        const float one_cycle = 2.0 * M_PI;
-        const unsigned steps = one_cycle / step_size;
+        const float one_cycle = 2.0f * (float)M_PI;
+        const unsigned steps = (unsigned)(one_cycle / step_size);
 
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);

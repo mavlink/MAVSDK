@@ -1,5 +1,4 @@
 #include <iostream>
-#include <unistd.h>
 #include "integration_test_helper.h"
 #include "dronelink.h"
 

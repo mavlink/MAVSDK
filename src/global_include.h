@@ -74,6 +74,8 @@ public:
 
 #ifdef WINDOWS
 void usleep(int64_t usec);
+
+void sleep(int64_t sec);
 #endif
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;

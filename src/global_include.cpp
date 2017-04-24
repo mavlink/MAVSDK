@@ -75,6 +75,11 @@ void usleep(int64_t usec)
     WaitForSingleObject(timer, INFINITE);
     CloseHandle(timer);
 }
+
+void sleep(int64_t sec)
+{
+    usleep(sec * 1000000);
+}
 #endif
 
 
