@@ -3,16 +3,18 @@ cmake_minimum_required(VERSION 2.8.12)
 project(dronelink)
 
 # Add DEBUG define for Debug target
-set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
 
 # We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
     add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
+    set(threads "pthread")
+    set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 else()
     # MSBuild
     add_definitions("-std=c++11 -WX -W2 -DWINDOWS")
+    set(threads "")
 endif()
 
 
@@ -107,7 +109,7 @@ if(NOT IOS AND NOT ANDROID)
     target_link_libraries(unit_tests_runner
         dronelink
         ${GTEST_BOTH_LIBRARIES}
-        pthread
+        ${threads}
     )
 
     add_test(unit_tests
@@ -125,7 +127,7 @@ if(NOT IOS AND NOT ANDROID)
     target_link_libraries(integration_tests_runner
         dronelink
         ${GTEST_BOTH_LIBRARIES}
-        pthread
+        ${threads}
     )
 
     add_test(integration_tests
@@ -151,6 +153,6 @@ if (DROP_DEBUG EQUAL 1)
 
     target_link_libraries(drop_debug
         dronelink
-        pthread
+        ${threads}
     )
 endif()
