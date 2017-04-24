@@ -59,6 +59,9 @@ bool are_equal(double one, double two)
     return fabs(one - two) < DBL_MIN;
 }
 
+} // namespace dronelink
+
+
 #ifdef WINDOWS
 #include <windows.h>
 // For Windows, taken from
@@ -83,6 +86,3 @@ void sleep(int64_t sec)
     usleep(sec * 1000000);
 }
 #endif
-
-
-} // namespace dronelink
