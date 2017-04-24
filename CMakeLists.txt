@@ -88,7 +88,7 @@ if(NOT IOS)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
         add_subdirectory(${EXTERNAL_DIR}/integration_tests
-            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
+            ${EXTERNAL_DIR}/integration_tests)
     endif()
 endif()
 
