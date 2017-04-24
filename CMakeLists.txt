@@ -5,13 +5,14 @@ project(dronelink)
 # Add DEBUG define for Debug target
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
+
 # We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
     add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
-elseif()
+else()
     # MSBuild
-    add_definitions("-std=c++11 -WX -DWINDOWS")
+    add_definitions("-std=c++11 -WX -W2 -DWINDOWS")
 endif()
 
 
