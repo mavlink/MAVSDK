@@ -6,9 +6,19 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#else
+#include <winsock2.h>
+#include <Ws2tcpip.h> // For InetPton
+#undef SOCKET_ERROR // conflicts with ConnectionResult::SOCKET_ERROR
 #endif
 
 #include <cassert>
+
+#ifndef WINDOWS
+#define GET_ERROR(_x) strerror(_x)
+#else
+#define GET_ERROR(_x) WSAGetLastError()
+#endif
 
 namespace dronelink {
 
@@ -52,11 +62,20 @@ DroneLink::ConnectionResult UdpConnection::start()
 
 DroneLink::ConnectionResult UdpConnection::setup_port()
 {
-#ifndef WINDOWS
+
+#ifdef WINDOWS
+    WSADATA wsa;
+    if (WSAStartup(MAKEWORD(2,2), &wsa) != 0)
+    {
+        Debug() << "Error: Winsock failed, error: %d", WSAGetLastError();
+	return DroneLink::ConnectionResult::SOCKET_ERROR;
+    }
+#endif
+
     _socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
 
     if (_socket_fd < 0) {
-        Debug() << "socket error" << strerror(errno);
+        Debug() << "socket error" << GET_ERROR(errno);
         return DroneLink::ConnectionResult::SOCKET_ERROR;
     }
 
@@ -67,14 +86,11 @@ DroneLink::ConnectionResult UdpConnection::setup_port()
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     if (bind(_socket_fd, (sockaddr *)&addr, sizeof(addr)) != 0) {
-        Debug() << "bind error: " << strerror(errno);
+        Debug() << "bind error: " << GET_ERROR(errno);
         return DroneLink::ConnectionResult::BIND_ERROR;
     }
 
     return DroneLink::ConnectionResult::SUCCESS;
-#else
-    return DroneLink::ConnectionResult::NOT_IMPLEMENTED;
-#endif
 }
 
 void UdpConnection::start_recv_thread()
@@ -92,6 +108,12 @@ DroneLink::ConnectionResult UdpConnection::stop()
 
     // But on Mac, closing is also needed to stop blocking recv/recvfrom.
     close(_socket_fd);
+#else
+    shutdown(_socket_fd, SD_BOTH);
+
+    closesocket(_socket_fd);
+
+    WSACleanup();
 #endif
 
     if (_recv_thread) {
@@ -119,10 +141,10 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
         return false;
     }
 
-#ifndef WINDOWS
     struct sockaddr_in dest_addr;
     memset((char *)&dest_addr, 0, sizeof(dest_addr));
     dest_addr.sin_family = AF_INET;
+
     inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
 
     dest_addr.sin_port = htons(_remote_port_number);
@@ -133,18 +155,15 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, buffer, buffer_len, 0,
+    int send_len = sendto(_socket_fd, (const char *)buffer, buffer_len, 0,
                           (const sockaddr *)&dest_addr, sizeof(dest_addr));
 
     if (send_len != buffer_len) {
-        Debug() << "sendto failure: " << strerror(errno);
+        Debug() << "sendto failure: " << GET_ERROR(errno);
         return false;
     }
 
     return true;
-#else
-    return false;
-#endif
 }
 
 void UdpConnection::receive(UdpConnection *parent)
@@ -154,7 +173,6 @@ void UdpConnection::receive(UdpConnection *parent)
 
     while (!parent->_should_exit) {
 
-#ifndef WINDOWS
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
         int recv_len = recvfrom(parent->_socket_fd, buffer, sizeof(buffer), 0,
@@ -169,7 +187,7 @@ void UdpConnection::receive(UdpConnection *parent)
         if (recv_len < 0) {
             // This happens on desctruction when close(_socket_fd) is called,
             // therefore be quiet.
-            //Debug() << "recvfrom error: " << strerror(errno);
+            //Debug() << "recvfrom error: " << GET_ERROR(errno);
             continue;
         }
 
@@ -214,9 +232,6 @@ void UdpConnection::receive(UdpConnection *parent)
         while (parent->_mavlink_receiver->parse_message()) {
             parent->receive_message(parent->_mavlink_receiver->get_last_message());
         }
-#else
-	sleep(1);
-#endif
     }
 }
 
