@@ -96,8 +96,10 @@ if(NOT IOS AND NOT ANDROID)
     add_subdirectory(libs/gtest)
     include_directories(libs/gtest/googletest/include)
 
-    # gtest has these warnings
-    add_definitions("-Wno-sign-compare")
+    if(NOT MSVC)
+        # gtest has these warnings
+        add_definitions("-Wno-sign-compare")
+    endif()
 
     add_executable(unit_tests_runner
         src/global_include_test.cpp
