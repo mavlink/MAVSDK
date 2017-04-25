@@ -1,9 +1,13 @@
 #include "udp_connection.h"
 #include "global_include.h"
+
+#ifndef WINDOWS
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#endif
+
 #include <cassert>
 
 namespace dronelink {
@@ -48,6 +52,7 @@ DroneLink::ConnectionResult UdpConnection::start()
 
 DroneLink::ConnectionResult UdpConnection::setup_port()
 {
+#ifndef WINDOWS
     _socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
 
     if (_socket_fd < 0) {
@@ -67,6 +72,9 @@ DroneLink::ConnectionResult UdpConnection::setup_port()
     }
 
     return DroneLink::ConnectionResult::SUCCESS;
+#else
+    return DroneLink::ConnectionResult::NOT_IMPLEMENTED;
+#endif
 }
 
 void UdpConnection::start_recv_thread()
@@ -78,11 +86,13 @@ DroneLink::ConnectionResult UdpConnection::stop()
 {
     _should_exit = true;
 
+#ifndef WINDOWS
     // This should interrupt a recv/recvfrom call.
     shutdown(_socket_fd, SHUT_RDWR);
 
     // But on Mac, closing is also needed to stop blocking recv/recvfrom.
     close(_socket_fd);
+#endif
 
     if (_recv_thread) {
         _recv_thread->join();
@@ -109,6 +119,7 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
         return false;
     }
 
+#ifndef WINDOWS
     struct sockaddr_in dest_addr;
     memset((char *)&dest_addr, 0, sizeof(dest_addr));
     dest_addr.sin_family = AF_INET;
@@ -131,6 +142,9 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     }
 
     return true;
+#else
+    return false;
+#endif
 }
 
 void UdpConnection::receive(UdpConnection *parent)
@@ -140,6 +154,7 @@ void UdpConnection::receive(UdpConnection *parent)
 
     while (!parent->_should_exit) {
 
+#ifndef WINDOWS
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
         int recv_len = recvfrom(parent->_socket_fd, buffer, sizeof(buffer), 0,
@@ -199,6 +214,9 @@ void UdpConnection::receive(UdpConnection *parent)
         while (parent->_mavlink_receiver->parse_message()) {
             parent->receive_message(parent->_mavlink_receiver->get_last_message());
         }
+#else
+	sleep(1);
+#endif
     }
 }
 
