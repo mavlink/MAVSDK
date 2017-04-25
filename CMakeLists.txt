@@ -3,20 +3,18 @@ cmake_minimum_required(VERSION 2.8.12)
 project(dronelink)
 
 # Add DEBUG define for Debug target
-
+set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
 # We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
     add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
     set(threads "pthread")
-    set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 else()
     # MSBuild
     add_definitions("-std=c++11 -WX -W2 -DWINDOWS")
     set(threads "")
 endif()
-
 
 # Clang needs this warning disabled.
 if (APPLE OR IOS OR ANDROID)
@@ -85,19 +83,18 @@ install(FILES
     DESTINATION "include/dronelink"
 )
 
-if(NOT IOS)
+if(NOT IOS AND NOT ANDROID)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
         add_subdirectory(${EXTERNAL_DIR}/integration_tests
-		${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
+            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
     endif()
-endif()
 
-if(NOT IOS AND NOT ANDROID AND NOT MSVC)
     enable_testing()
-    find_package(GTest REQUIRED)
-    include_directories(${GTEST_INCLUDE_DIRS})
+
+    add_subdirectory(libs/gtest)
+    include_directories(libs/gtest/googletest/include)
 
     add_executable(unit_tests_runner
         src/global_include_test.cpp
@@ -108,7 +105,8 @@ if(NOT IOS AND NOT ANDROID AND NOT MSVC)
 
     target_link_libraries(unit_tests_runner
         dronelink
-        ${GTEST_BOTH_LIBRARIES}
+        gtest
+        gtest_main
         ${threads}
     )
 
@@ -126,7 +124,8 @@ if(NOT IOS AND NOT ANDROID AND NOT MSVC)
 
     target_link_libraries(integration_tests_runner
         dronelink
-        ${GTEST_BOTH_LIBRARIES}
+        gtest
+        gtest_main
         ${threads}
     )
 
