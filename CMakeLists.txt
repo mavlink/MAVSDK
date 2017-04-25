@@ -40,6 +40,10 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/core
 )
 
+if (ANDROID)
+    include_directories(curl-android-ios/prebuilt-with-ssl/android/include)
+endif()
+
 # We build one static library.
 add_library(dronelink STATIC
     core/global_include.cpp
@@ -56,6 +60,7 @@ add_library(dronelink STATIC
     core/tcp_connection.cpp
     core/udp_connection.cpp
     core/plugin_impl_base.cpp
+    src/http_helper.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/core/device_plugin_container.cpp
     ${plugin_source_files}
 )
@@ -79,7 +84,6 @@ endif()
 install(TARGETS dronelink
     DESTINATION ${lib_path}
 )
-
 
 install(FILES
     include/dronelink.h
@@ -139,6 +143,8 @@ if(NOT IOS AND NOT ANDROID)
         gtest
         gtest_main
         ${platform_libs}
+        pthread
+        curl
     )
 
     add_test(integration_tests

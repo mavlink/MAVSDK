@@ -36,6 +36,7 @@ DROP_DEBUG ?= 0
 
 CURRENT_DIR := $(shell pwd)
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+CURL_BUILD_DIR := $(ROOT_DIR)/curl-android-ios
 
 # Set default cmake here but replace with special version for Android build.
 CMAKE_BIN = cmake
@@ -79,40 +80,46 @@ ios_simulator:
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
 		-DIOS_PLATFORM:STRING=SIMULATOR)
 
-android_x86: android_env_check
+android_x86: android_curl
 	$(call cmake-build, \
     -DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=x86)
 
-android_x86_64: android_env_check
+android_x86_64: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=x86_64)
 
-android_mips: android_env_check
+android_mips: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=mips)
 
-android_mips64: android_env_check
+android_mips64: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=mips64)
 
-android_armeabi: android_env_check
+android_armeabi: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=armeabi)
 
-android_armeabi-v7a: android_env_check
+android_armeabi-v7a: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=armeabi-v7a)
 
-android_arm64-v8a: android_env_check
+android_arm64-v8a: android_curl
 	$(call cmake-build, \
         -DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=arm64-v8a)
+
+android_curl: android_env_check
+	+@if [ ! -e $(CURL_BUILD_DIR)/prebuilt-with-ssl/android ]; then \
+		$(CURL_BUILD_DIR)/curl-compile-scripts/build_Android.sh; \
+	fi
+
 
 android: \
     android_x86 \
@@ -142,11 +149,15 @@ clean:
 	@rm -rf build/
 	@rm -rf logs/
 	@rm -rf install/
+#	@rm -rf $(CURL_BUILD_DIR)/prebuilt-with-ssl/android
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
 	$(error ANDROID_TOOLCHAIN_CMAKE is undefined, please point the \
 	    environment variable to build/cmake/android.toolchain.cmake from android-ndk.)
+endif
+ifndef NDK_ROOT
+	$(error NDK_ROOT is undefined, please point the environment variable to android-ndk root.)
 endif
 ifndef ANDROID_CMAKE_BIN
 	$(error ANDROID_CMAKE_BIN is undefined, please point the \
