@@ -65,10 +65,9 @@ DroneLink::ConnectionResult UdpConnection::setup_port()
 
 #ifdef WINDOWS
     WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2,2), &wsa) != 0)
-    {
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         Debug() << "Error: Winsock failed, error: %d", WSAGetLastError();
-	return DroneLink::ConnectionResult::SOCKET_ERROR;
+        return DroneLink::ConnectionResult::SOCKET_ERROR;
     }
 #endif
 
