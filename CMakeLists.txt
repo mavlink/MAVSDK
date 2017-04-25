@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 # We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
-    add_definitions("-std=c++11 -Wall -Wextra -Weffc++ -Werror")
+    add_definitions("-std=c++11 -Wall -Wextra -Werror")
     set(threads "pthread")
 else()
     # MSBuild
@@ -95,6 +95,9 @@ if(NOT IOS AND NOT ANDROID)
 
     add_subdirectory(libs/gtest)
     include_directories(libs/gtest/googletest/include)
+
+    # gtest has these warnings
+    add_definitions("-Wno-sign-compare")
 
     add_executable(unit_tests_runner
         src/global_include_test.cpp
