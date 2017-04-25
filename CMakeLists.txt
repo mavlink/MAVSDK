@@ -9,11 +9,11 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 if(NOT MSVC)
     # Clang and GCC
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
-    set(threads "pthread")
+    set(platform_libs "pthread")
 else()
     # MSBuild
     add_definitions("-std=c++11 -WX -W2 -DWINDOWS")
-    set(threads "")
+    set(platform_libs "Ws2_32.lib")
 endif()
 
 # Clang needs this warning disabled.
@@ -110,7 +110,7 @@ if(NOT IOS AND NOT ANDROID)
         dronelink
         gtest
         gtest_main
-        ${threads}
+        ${platform_libs}
     )
 
     add_test(unit_tests
@@ -129,7 +129,7 @@ if(NOT IOS AND NOT ANDROID)
         dronelink
         gtest
         gtest_main
-        ${threads}
+        ${platform_libs}
     )
 
     add_test(integration_tests
@@ -155,6 +155,6 @@ if (DROP_DEBUG EQUAL 1)
 
     target_link_libraries(drop_debug
         dronelink
-        ${threads}
+        ${platform_libs}
     )
 endif()
