@@ -74,6 +74,14 @@ Build for the iOS simulator on macOS:
 make ios_simulator install
 ```
 
+#### Windows
+
+To build in Windows, open the VS2015 x64 Native Tools Command Prompt, go to the directory and do:
+```
+mkdir build && cd build
+cmake ..
+cmake --build .
+```
 
 ### Build with external directory for plugins/integration_tests
 
