@@ -19,6 +19,9 @@ public:
         int flight_sw_major;
         int flight_sw_minor;
         int flight_sw_patch;
+        int flight_sw_vendor_major;
+        int flight_sw_vendor_minor;
+        int flight_sw_vendor_patch;
         char flight_sw_git_hash[GIT_HASH_STR_LEN];
         int os_sw_major;
         int os_sw_minor;

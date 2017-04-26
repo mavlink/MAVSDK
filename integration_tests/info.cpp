@@ -30,6 +30,10 @@ TEST_F(SitlTest, Info)
                   << version.flight_sw_minor << "."
                   << version.flight_sw_patch << " ("
                   << std::string(version.flight_sw_git_hash) << ")" << std::endl;
+        std::cout << "Flight vendor version: "
+                  << version.flight_sw_vendor_major << "."
+                  << version.flight_sw_vendor_minor << "."
+                  << version.flight_sw_vendor_patch << std::endl;
         std::cout << "OS version: "
                   << version.os_sw_major << "."
                   << version.os_sw_minor << "."
