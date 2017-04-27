@@ -119,11 +119,16 @@ void TelemetryImpl::init()
                                            std::placeholders::_1,
                                            std::placeholders::_2));
 
+#ifdef LEVEL_CALIBRATION
     _parent->get_param_float_async(std::string("SENS_BOARD_X_OFF"),
                                    std::bind(&TelemetryImpl::receive_param_cal_level,
                                              this,
                                              std::placeholders::_1,
                                              std::placeholders::_2));
+#else
+    // If not available, just hardcode it to true.
+    set_health_level_calibration(true);
+#endif
 }
 
 void TelemetryImpl::deinit()
@@ -544,6 +549,7 @@ void TelemetryImpl::receive_param_cal_mag(bool success, int value)
     set_health_magnetometer_calibration(ok);
 }
 
+#ifdef LEVEL_CALIBRATION
 void TelemetryImpl::receive_param_cal_level(bool success, float value)
 {
     if (!success) {
@@ -554,6 +560,7 @@ void TelemetryImpl::receive_param_cal_level(bool success, float value)
     bool ok = (value != 0);
     set_health_level_calibration(ok);
 }
+#endif
 
 void TelemetryImpl::receive_rc_channels_timeout()
 {

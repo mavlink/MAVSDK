@@ -7,6 +7,10 @@
 #include <atomic>
 #include <mutex>
 
+// Since not all vehicles support/require level calibration, this
+// is disabled for now.
+//#define LEVEL_CALIBRATION
+
 namespace dronelink {
 
 class DeviceImpl;
@@ -105,7 +109,9 @@ private:
     void receive_param_cal_gyro(bool success, int value);
     void receive_param_cal_accel(bool success, int value);
     void receive_param_cal_mag(bool success, int value);
+#ifdef LEVEL_CALIBRATION
     void receive_param_cal_level(bool success, float value);
+#endif
 
     void receive_rc_channels_timeout();
 
