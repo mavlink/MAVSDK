@@ -43,10 +43,10 @@ Offboard::Result OffboardImpl::start() const
     return offboard_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_DO_SET_MODE,
-                   DeviceImpl::CommandParams {float(mode),
-                                              float(custom_mode),
-                                              float(custom_sub_mode),
-                                              NAN, NAN, NAN, NAN}));
+                   MavlinkCommands::Params {float(mode),
+                                            float(custom_mode),
+                                            float(custom_sub_mode),
+                                            NAN, NAN, NAN, NAN}));
 }
 
 Offboard::Result OffboardImpl::stop() const
@@ -62,10 +62,10 @@ Offboard::Result OffboardImpl::stop() const
     return offboard_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_DO_SET_MODE,
-                   DeviceImpl::CommandParams {float(mode),
-                                              float(custom_mode),
-                                              float(custom_sub_mode),
-                                              NAN, NAN, NAN, NAN}));
+                   MavlinkCommands::Params {float(mode),
+                                            float(custom_mode),
+                                            float(custom_sub_mode),
+                                            NAN, NAN, NAN, NAN}));
 }
 
 void OffboardImpl::start_async(Offboard::result_callback_t callback)
@@ -80,10 +80,10 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
 
     _parent->send_command_with_ack_async(
         MAV_CMD_DO_SET_MODE,
-        DeviceImpl::CommandParams {float(mode),
-                                   float(custom_mode),
-                                   float(custom_sub_mode),
-                                   NAN, NAN, NAN, NAN},
+        MavlinkCommands::Params {float(mode),
+                                 float(custom_mode),
+                                 float(custom_sub_mode),
+                                 NAN, NAN, NAN, NAN},
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
@@ -104,10 +104,10 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
 
     _parent->send_command_with_ack_async(
         MAV_CMD_DO_SET_MODE,
-        DeviceImpl::CommandParams {float(mode),
-                                   float(custom_mode),
-                                   float(custom_sub_mode),
-                                   NAN, NAN, NAN, NAN},
+        MavlinkCommands::Params {float(mode),
+                                 float(custom_mode),
+                                 float(custom_sub_mode),
+                                 NAN, NAN, NAN, NAN},
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
@@ -116,7 +116,7 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
     _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), 1.0, this);
 }
 
-void OffboardImpl::receive_command_result(DeviceImpl::CommandResult result,
+void OffboardImpl::receive_command_result(MavlinkCommands::Result result,
                                           const Offboard::result_callback_t &callback)
 {
     // We got a command back, so we can get rid of the timeout handler.
@@ -248,20 +248,20 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t &message)
 }
 
 Offboard::Result
-OffboardImpl::offboard_result_from_command_result(DeviceImpl::CommandResult result)
+OffboardImpl::offboard_result_from_command_result(MavlinkCommands::Result result)
 {
     switch (result) {
-        case DeviceImpl::CommandResult::SUCCESS:
+        case MavlinkCommands::Result::SUCCESS:
             return Offboard::Result::SUCCESS;
-        case DeviceImpl::CommandResult::NO_DEVICE:
+        case MavlinkCommands::Result::NO_DEVICE:
             return Offboard::Result::NO_DEVICE;
-        case DeviceImpl::CommandResult::CONNECTION_ERROR:
+        case MavlinkCommands::Result::CONNECTION_ERROR:
             return Offboard::Result::CONNECTION_ERROR;
-        case DeviceImpl::CommandResult::BUSY:
+        case MavlinkCommands::Result::BUSY:
             return Offboard::Result::BUSY;
-        case DeviceImpl::CommandResult::COMMAND_DENIED:
+        case MavlinkCommands::Result::COMMAND_DENIED:
             return Offboard::Result::COMMAND_DENIED;
-        case DeviceImpl::CommandResult::TIMEOUT:
+        case MavlinkCommands::Result::TIMEOUT:
             return Offboard::Result::TIMEOUT;
         default:
             return Offboard::Result::UNKNOWN;

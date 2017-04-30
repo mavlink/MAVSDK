@@ -3,6 +3,7 @@
 #include "global_include.h"
 #include "mavlink_include.h"
 #include "mavlink_parameters.h"
+#include "mavlink_commands.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -16,7 +17,6 @@ namespace dronelink {
 class DroneLinkImpl;
 
 
-
 class DeviceImpl
 {
 public:
@@ -24,20 +24,8 @@ public:
                         uint8_t target_system_id,
                         uint8_t target_component_id);
     ~DeviceImpl();
+
     void process_mavlink_message(const mavlink_message_t &message);
-
-    struct CommandParams {
-        float v[7];
-    };
-
-    enum class CommandResult {
-        SUCCESS = 0,
-        NO_DEVICE,
-        CONNECTION_ERROR,
-        BUSY,
-        COMMAND_DENIED,
-        TIMEOUT
-    };
 
     typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
 
@@ -58,19 +46,18 @@ public:
 
     bool send_message(const mavlink_message_t &message);
 
-    CommandResult send_command(uint16_t command, const CommandParams &params,
-                               uint8_t component_id = 0);
-    CommandResult send_command_with_ack(uint16_t command, const CommandParams &params,
-                                        uint8_t component_id = 0);
+    MavlinkCommands::Result send_command_with_ack(uint16_t command,
+                                                  const MavlinkCommands::Params &params,
+                                                  uint8_t component_id = 0);
 
-    typedef std::function<void(CommandResult)> command_result_callback_t;
-
-    void send_command_with_ack_async(uint16_t command, const CommandParams &params,
+    typedef std::function<void(MavlinkCommands::Result)> command_result_callback_t;
+    void send_command_with_ack_async(uint16_t command, const MavlinkCommands::Params &params,
                                      command_result_callback_t callback,
                                      uint8_t component_id = 0);
+    void retransmit_command_with_ack_async();
 
 
-    CommandResult set_msg_rate(uint16_t message_id, double rate_hz);
+    MavlinkCommands::Result set_msg_rate(uint16_t message_id, double rate_hz);
 
     void set_msg_rate_async(uint16_t message_id, double rate_hz,
                             command_result_callback_t callback);
@@ -105,26 +92,17 @@ public:
 private:
 
     void process_heartbeat(const mavlink_message_t &message);
-    void process_command_ack(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
-
-    void check_device_thread();
-
-    // TODO: completely remove, just for testing
-    //static void get_sys_autostart(bool success, MavlinkParameters::ParamValue value);
 
     static void device_thread(DeviceImpl *self);
     static void send_heartbeat(DeviceImpl *self);
     static void check_timeouts(DeviceImpl *self);
     static void check_heartbeat_timeout(DeviceImpl *self);
 
-    static void report_result(const command_result_callback_t &callback, CommandResult result);
-
     static void receive_float_param(bool success, MavlinkParameters::ParamValue value,
                                     get_param_float_callback_t callback);
     static void receive_int_param(bool success, MavlinkParameters::ParamValue value,
                                   get_param_int_callback_t callback);
-
 
     struct MavlinkHandlerTableEntry {
         uint16_t msg_id;
@@ -133,7 +111,7 @@ private:
     };
 
     std::mutex _mavlink_handler_table_mutex {};
-    std::vector<MavlinkHandlerTableEntry> _mavlink_handler_table;
+    std::vector<MavlinkHandlerTableEntry> _mavlink_handler_table {};
 
     struct TimeoutHandlerMapEntry {
         dl_time_t time;
@@ -141,42 +119,35 @@ private:
         timeout_handler_t callback;
     };
 
-    std::mutex _timeout_handler_map_mutex;
-    std::map<const void *, TimeoutHandlerMapEntry> _timeout_handler_map;
+    std::mutex _timeout_handler_map_mutex {};
+    std::map<const void *, TimeoutHandlerMapEntry> _timeout_handler_map {};
 
     uint8_t _target_system_id;
     uint8_t _target_component_id;
-    uint64_t _target_uuid;
-    bool _target_supports_mission_int;
-    bool _armed;
+    uint64_t _target_uuid {0};
+    bool _target_supports_mission_int {false};
+    bool _armed {false};
 
     DroneLinkImpl *_parent;
 
-    enum class CommandState : unsigned {
-        NONE = 0,
-        WAITING,
-        RECEIVED
-    };
+    command_result_callback_t _command_result_callback {nullptr};
 
-    std::atomic<MAV_RESULT> _command_result;
-    std::atomic<CommandState> _command_state;
-
-    command_result_callback_t _command_result_callback;
-
-    std::thread *_device_thread;
-    std::atomic_bool _should_exit;
+    std::thread *_device_thread {nullptr};
+    std::atomic_bool _should_exit {false};
 
     static constexpr uint8_t _own_system_id = 0;
     static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
 
-    static constexpr double DEFAULT_TIMEOUT_S = 1.0;
+    static constexpr double DEFAULT_TIMEOUT_S {1.0};
 
-    dl_time_t _last_heartbeat_received_time;
-    double _heartbeat_timeout_s;
-    static constexpr double DEFAULT_HEARTBEAT_TIMEOUT_S = 3.0;
-    bool _heartbeat_timed_out;
+    dl_time_t _last_heartbeat_received_time {};
+    static constexpr double DEFAULT_HEARTBEAT_TIMEOUT_S {3.0};
+    double _heartbeat_timeout_s {DEFAULT_HEARTBEAT_TIMEOUT_S};
+    bool _heartbeat_timed_out {false};
 
     MavlinkParameters _params;
+
+    MavlinkCommands _commands;
 };
 
 

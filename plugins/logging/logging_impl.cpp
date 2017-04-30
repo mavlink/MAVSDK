@@ -38,8 +38,8 @@ Logging::Result LoggingImpl::start_logging() const
     return logging_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_LOGGING_START,
-                   DeviceImpl::CommandParams {0.0f, // Format: ULog
-                                              0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}));
+                   MavlinkCommands::Params {0.0f, // Format: ULog
+                                            0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}));
 }
 
 Logging::Result LoggingImpl::stop_logging() const
@@ -47,15 +47,15 @@ Logging::Result LoggingImpl::stop_logging() const
     return logging_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_LOGGING_STOP,
-                   DeviceImpl::CommandParams {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}));
+                   MavlinkCommands::Params {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}));
 }
 
 void LoggingImpl::start_logging_async(const Logging::result_callback_t &callback)
 {
     _parent->send_command_with_ack_async(
         MAV_CMD_LOGGING_START,
-        DeviceImpl::CommandParams {0.0f, // Format: ULog
-                                   0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+        MavlinkCommands::Params {0.0f, // Format: ULog
+                                 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
         std::bind(&LoggingImpl::command_result_callback,
                   std::placeholders::_1,
                   callback));
@@ -65,7 +65,7 @@ void LoggingImpl::stop_logging_async(const Logging::result_callback_t &callback)
 {
     _parent->send_command_with_ack_async(
         MAV_CMD_LOGGING_STOP,
-        DeviceImpl::CommandParams {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+        MavlinkCommands::Params {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
         std::bind(&LoggingImpl::command_result_callback,
                   std::placeholders::_1,
                   callback));
@@ -93,27 +93,27 @@ void LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
 }
 
 Logging::Result
-LoggingImpl::logging_result_from_command_result(DeviceImpl::CommandResult result)
+LoggingImpl::logging_result_from_command_result(MavlinkCommands::Result result)
 {
     switch (result) {
-        case DeviceImpl::CommandResult::SUCCESS:
+        case MavlinkCommands::Result::SUCCESS:
             return Logging::Result::SUCCESS;
-        case DeviceImpl::CommandResult::NO_DEVICE:
+        case MavlinkCommands::Result::NO_DEVICE:
             return Logging::Result::NO_DEVICE;
-        case DeviceImpl::CommandResult::CONNECTION_ERROR:
+        case MavlinkCommands::Result::CONNECTION_ERROR:
             return Logging::Result::CONNECTION_ERROR;
-        case DeviceImpl::CommandResult::BUSY:
+        case MavlinkCommands::Result::BUSY:
             return Logging::Result::BUSY;
-        case DeviceImpl::CommandResult::COMMAND_DENIED:
+        case MavlinkCommands::Result::COMMAND_DENIED:
             return Logging::Result::COMMAND_DENIED;
-        case DeviceImpl::CommandResult::TIMEOUT:
+        case MavlinkCommands::Result::TIMEOUT:
             return Logging::Result::TIMEOUT;
         default:
             return Logging::Result::UNKNOWN;
     }
 }
 
-void LoggingImpl::command_result_callback(DeviceImpl::CommandResult command_result,
+void LoggingImpl::command_result_callback(MavlinkCommands::Result command_result,
                                           const Logging::result_callback_t &callback)
 {
     Logging::Result action_result = logging_result_from_command_result(command_result);

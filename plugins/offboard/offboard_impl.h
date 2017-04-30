@@ -27,14 +27,14 @@ public:
 
 private:
     void process_heartbeat(const mavlink_message_t &message);
-    void receive_command_result(DeviceImpl::CommandResult result,
+    void receive_command_result(MavlinkCommands::Result result,
                                 const Offboard::result_callback_t &callback);
 
     static void report_offboard_result(const Offboard::result_callback_t &callback,
                                        Offboard::Result result);
 
     static Offboard::Result offboard_result_from_command_result(
-        DeviceImpl::CommandResult result);
+        MavlinkCommands::Result result);
 
 
     void timeout_happened();

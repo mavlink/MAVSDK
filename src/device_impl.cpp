@@ -1,6 +1,7 @@
 #include "global_include.h"
 #include "device_impl.h"
 #include "dronelink_impl.h"
+#include "mavlink_include.h"
 #include <functional>
 
 namespace dronelink {
@@ -11,32 +12,17 @@ using namespace std::placeholders; // for `_1`
 DeviceImpl::DeviceImpl(DroneLinkImpl *parent,
                        uint8_t target_system_id,
                        uint8_t target_component_id) :
-    _mavlink_handler_table(),
-    _timeout_handler_map_mutex(),
-    _timeout_handler_map(),
     _target_system_id(target_system_id),
     _target_component_id(target_component_id),
-    _target_uuid(0),
-    _target_supports_mission_int(false),
-    _armed(false),
     _parent(parent),
-    _command_result(MAV_RESULT_FAILED),
-    _command_state(CommandState::NONE),
-    _command_result_callback(nullptr),
-    _device_thread(nullptr),
-    _should_exit(false),
-    _last_heartbeat_received_time(),
-    _heartbeat_timeout_s(DEFAULT_HEARTBEAT_TIMEOUT_S),
-    _heartbeat_timed_out(false),
-    _params(this)
+    _params(this),
+    _commands(this)
 {
+    _device_thread = new std::thread(device_thread, this);
+
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&DeviceImpl::process_heartbeat, this, _1), this);
-
-    register_mavlink_message_handler(
-        MAVLINK_MSG_ID_COMMAND_ACK,
-        std::bind(&DeviceImpl::process_command_ack, this, _1), this);
 
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
@@ -139,37 +125,7 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
 
     _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
 
-    check_device_thread();
-
     _last_heartbeat_received_time = steady_time();
-}
-
-void DeviceImpl::process_command_ack(const mavlink_message_t &message)
-{
-    mavlink_command_ack_t command_ack;
-    mavlink_msg_command_ack_decode(&message, &command_ack);
-
-    // Ignore it if we're not waiting for an ack result.
-    if (_command_state == CommandState::WAITING) {
-        _command_result = (MAV_RESULT)command_ack.result;
-        // Update state after result to avoid a race over _command_result
-        _command_state = CommandState::RECEIVED;
-
-        // We need to make a copy in case a new command is sent in the callback
-        // that we're going to call.
-        command_result_callback_t temp_callback = _command_result_callback;
-        _command_result_callback = nullptr;
-
-        if (_command_result == MAV_RESULT_ACCEPTED) {
-            if (temp_callback != nullptr) {
-                report_result(temp_callback, CommandResult::SUCCESS);
-            }
-        } else {
-            if (temp_callback != nullptr) {
-                report_result(temp_callback, CommandResult::COMMAND_DENIED);
-            }
-        }
-    }
 }
 
 void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
@@ -200,33 +156,12 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
     }
 }
 
-void DeviceImpl::check_device_thread()
-{
-    if (_device_thread == nullptr) {
-        _device_thread = new std::thread(device_thread, this);
-    }
-}
-
-// TODO: completely remove, just for testing
-//void DeviceImpl::get_sys_autostart(bool success, MavlinkParameters::ParamValue value)
-//{
-//    Debug() << "SYS_AUTOSTART: " << (success ? "success" : "failure");
-//    if (success) {
-//        Debug() << "value: " << value.get_int();
-//    }
-//}
-
 void DeviceImpl::device_thread(DeviceImpl *self)
 {
     const unsigned heartbeat_interval_us = 1000000;
     const unsigned timeout_interval_us = 10000;
     const unsigned heartbeat_multiplier = heartbeat_interval_us / timeout_interval_us;
     unsigned counter = 0;
-
-    //self->_params.get_param_async(std::string ("SYS_AUTOSTART"),
-    //                              std::bind(&DeviceImpl::get_sys_autostart,
-    //                                        std::placeholders::_1,
-    //                                        std::placeholders::_2));
 
     while (!self->_should_exit) {
         if (counter++ % heartbeat_multiplier == 0) {
@@ -235,6 +170,7 @@ void DeviceImpl::device_thread(DeviceImpl *self)
         check_timeouts(self);
         check_heartbeat_timeout(self);
         self->_params.do_work();
+        self->_commands.do_work();
         usleep(timeout_interval_us);
     }
 }
@@ -295,8 +231,10 @@ bool DeviceImpl::send_message(const mavlink_message_t &message)
 
 void DeviceImpl::request_autopilot_version()
 {
-    send_command(MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-                 CommandParams {1.0f, NAN, NAN, NAN, NAN, NAN, NAN});
+    send_command_with_ack_async(
+        MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
+        MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+        nullptr);
 }
 
 uint64_t DeviceImpl::get_target_uuid() const
@@ -358,107 +296,40 @@ void DeviceImpl::receive_int_param(bool success, MavlinkParameters::ParamValue v
     }
 }
 
-DeviceImpl::CommandResult DeviceImpl::send_command(uint16_t command,
-                                                   const DeviceImpl::CommandParams &params,
-                                                   uint8_t component_id)
+MavlinkCommands::Result DeviceImpl::send_command_with_ack(
+    uint16_t command, const MavlinkCommands::Params &params, uint8_t component_id)
 {
     if (_target_system_id == 0 && _target_component_id == 0) {
-        return CommandResult::NO_DEVICE;
+        return MavlinkCommands::Result::NO_DEVICE;
     }
-
-    // We don't need no ack, just send it.
-    //if (_command_state == CommandState::WAITING) {
-    //    return Result::DEVICE_BUSY;
-    //}
 
     const uint8_t component_id_to_use =
         ((component_id != 0) ? component_id : _target_component_id);
 
-    mavlink_message_t message;
+    return _commands.send_command(command, params, _target_system_id, component_id_to_use);
 
-    mavlink_msg_command_long_pack(_own_system_id, _own_component_id,
-                                  &message,
-                                  _target_system_id, component_id_to_use,
-                                  command,
-                                  0,
-                                  params.v[0], params.v[1], params.v[2], params.v[3],
-                                  params.v[4], params.v[5], params.v[6]);
-
-    if (!_parent->send_message(message)) {
-        return CommandResult::CONNECTION_ERROR;
-    }
-
-    return CommandResult::SUCCESS;
-}
-
-DeviceImpl::CommandResult DeviceImpl::send_command_with_ack(
-    uint16_t command, const DeviceImpl::CommandParams &params, uint8_t component_id)
-{
-    if (_command_state == CommandState::WAITING) {
-        return CommandResult::BUSY;
-    }
-
-    _command_result_callback = nullptr;
-
-    _command_state = CommandState::WAITING;
-
-    CommandResult ret = send_command(command, params, component_id);
-    if (ret != CommandResult::SUCCESS) {
-        return ret;
-    }
-
-    const unsigned wait_time_us = 1000;
-    const unsigned iterations = (unsigned)(DEFAULT_TIMEOUT_S * 1e6 / wait_time_us);
-
-    // Wait until we have received a result.
-    for (unsigned i = 0; i < iterations; ++i) {
-        if (_command_state == CommandState::RECEIVED) {
-            break;
-        }
-        usleep(wait_time_us);
-    }
-
-    if (_command_state != CommandState::RECEIVED) {
-        _command_state = CommandState::NONE;
-        return CommandResult::TIMEOUT;
-    }
-
-    // Reset
-    _command_state = CommandState::NONE;
-
-    if (_command_result != MAV_RESULT_ACCEPTED) {
-        return CommandResult::COMMAND_DENIED;
-    }
-
-    return CommandResult::SUCCESS;
 }
 
 void DeviceImpl::send_command_with_ack_async(uint16_t command,
-                                             const DeviceImpl::CommandParams &params,
+                                             const MavlinkCommands::Params &params,
                                              command_result_callback_t callback,
                                              uint8_t component_id)
 {
-    if (_command_state == CommandState::WAITING) {
-        report_result(callback, CommandResult::BUSY);
-    }
-
-    CommandResult ret = send_command(command, params, component_id);
-    if (ret != CommandResult::SUCCESS) {
-        report_result(callback, ret);
-        // Reset
-        _command_state = CommandState::NONE;
+    if (_target_system_id == 0 && _target_component_id == 0) {
+        if (callback) {
+            callback(MavlinkCommands::Result::NO_DEVICE);
+        }
         return;
     }
 
-    if (callback == nullptr) {
-        Debug() << "Callback is null";
-    }
+    const uint8_t component_id_to_use =
+        ((component_id != 0) ? component_id : _target_component_id);
 
-    _command_state = CommandState::WAITING;
-    _command_result_callback = callback;
+    _commands.queue_command_async(command, params, _target_system_id, component_id_to_use,
+                                  callback);
 }
 
-DeviceImpl::CommandResult DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz)
+MavlinkCommands::Result DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
@@ -468,7 +339,7 @@ DeviceImpl::CommandResult DeviceImpl::set_msg_rate(uint16_t message_id, double r
 
     return send_command_with_ack(
                MAV_CMD_SET_MESSAGE_INTERVAL,
-               CommandParams {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
+               MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
 }
 
 void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
@@ -482,17 +353,8 @@ void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
 
     send_command_with_ack_async(
         MAV_CMD_SET_MESSAGE_INTERVAL,
-        CommandParams {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+        MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
         callback);
-}
-
-void DeviceImpl::report_result(const command_result_callback_t &callback, CommandResult result)
-{
-    if (!callback) {
-        return;
-    }
-
-    callback(result);
 }
 
 

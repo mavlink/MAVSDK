@@ -23,6 +23,8 @@ void MavlinkParameters::set_param_async(const std::string &name,
                                         const ParamValue &value,
                                         set_param_callback_t callback)
 {
+    //Debug() << "setting param " << name << " to " << value.get_int();
+
     if (name.size() > PARAM_ID_LEN) {
         Debug() << "Error: param name too long";
         if (callback) {
@@ -63,7 +65,7 @@ void MavlinkParameters::get_param_async(const std::string &name, get_param_callb
 //void MavlinkParameters::save_async()
 //{
 //    _parent->send_command(MAV_CMD_PREFLIGHT_STORAGE,
-//                          DeviceImpl::CommandParams {1.0f, 1.0f, 0.0f, NAN, NAN, NAN, NAN});
+//                          MavlinkCommands::Params {1.0f, 1.0f, 0.0f, NAN, NAN, NAN, NAN});
 //}
 
 void MavlinkParameters::do_work()
@@ -212,7 +214,7 @@ void MavlinkParameters::receive_timeout()
             if (work.callback) {
                 ParamValue empty_value;
                 // Notify about timeout
-                Debug() << "Error: timeout";
+                Debug() << "Error: get param busy timeout";
                 work.callback(false, empty_value);
             }
             _request_state = RequestState::NONE;
@@ -228,7 +230,7 @@ void MavlinkParameters::receive_timeout()
 
             if (work.callback) {
                 // Notify about timeout
-                Debug() << "Error: timeout";
+                Debug() << "Error: set param busy timeout";
                 work.callback(false);
             }
             _request_state = RequestState::NONE;
