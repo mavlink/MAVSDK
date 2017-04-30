@@ -1,6 +1,7 @@
 #include "global_include.h"
 #include <cfloat>
 #include <cstdint>
+#include <limits>
 
 namespace dronelink {
 
@@ -51,12 +52,12 @@ double to_deg_from_rad(double rad)
 
 bool are_equal(float one, float two)
 {
-    return fabsf(one - two) < FLT_MIN;
+    return (fabs(one - two) < std::numeric_limits<float>::epsilon());
 }
 
 bool are_equal(double one, double two)
 {
-    return fabs(one - two) < DBL_MIN;
+    return (fabs(one - two) < std::numeric_limits<double>::epsilon());
 }
 
 } // namespace dronelink
