@@ -87,21 +87,21 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             break;
 
         case MAV_RESULT_TEMPORARILY_REJECTED:
-            Debug() << "command temporarily rejected.";
+            Debug() << "command temporarily rejected (" << work.mavlink_command << ").";
             // The timeout will trigger and re-transmit the message.
             work.state = Work::State::TEMPORARILY_REJECTED;
             break;
 
         case MAV_RESULT_DENIED:
-            Debug() << "command denied.";
+            Debug() << "command denied (" << work.mavlink_command << ").";
         // no break
 
         case MAV_RESULT_UNSUPPORTED:
-            Debug() << "command unsupported.";
+            Debug() << "command unsupported (" << work.mavlink_command << ").";
         // no break
 
         case MAV_RESULT_FAILED:
-            Debug() << "command failed.";
+            Debug() << "command failed (" << work.mavlink_command << ").";
             work.state = Work::State::FAILED;
             if (work.callback) {
                 work.callback(Result::COMMAND_DENIED);
@@ -109,7 +109,7 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             break;
 
         case MAV_RESULT_IN_PROGRESS:
-            Debug() << "progress: " << (int)command_ack.progress << " %";
+            Debug() << "progress: " << (int)command_ack.progress << " % (" << work.mavlink_command << ").";
             // If we get a progress update, we can raise the timeout
             // to something higher because we know the initial command
             // has arrived. A possible timeout for this case is the initial
@@ -138,9 +138,11 @@ void MavlinkCommands::receive_timeout()
 
         if (work.retries_to_do > 0) {
 
+            Debug() << "sending again, retries to do: " << work.retries_to_do << "  (" << work.mavlink_command
+                    << ").";
             // We're not sure the command arrived, let's retransmit.
             if (!_parent->send_message(work.mavlink_message)) {
-                Debug() << "connection send error in retransmit";
+                Debug() << "connection send error in retransmit (" << work.mavlink_command << ").";
                 if (work.callback) {
                     work.callback(Result::CONNECTION_ERROR);
                 }
@@ -154,7 +156,7 @@ void MavlinkCommands::receive_timeout()
 
         } else  {
             // We have tried retransmitting, giving up now.
-            Debug() << "Retrying failed (command: " << work.mavlink_command << ")";
+            Debug() << "Retrying failed (" << work.mavlink_command << ")";
 
             if (work.callback) {
                 if (work.state == Work::State::WAITING) {
@@ -179,8 +181,9 @@ void MavlinkCommands::do_work()
 
     switch (work.state) {
         case Work::State::NONE:
+            Debug() << "sending it the first time (" << work.mavlink_command << ")";
             if (!_parent->send_message(work.mavlink_message)) {
-                Debug() << "connection send error";
+                Debug() << "connection send error (" << work.mavlink_command << ")";
                 if (work.callback) {
                     work.callback(Result::CONNECTION_ERROR);
                 }
