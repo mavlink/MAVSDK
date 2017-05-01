@@ -109,7 +109,8 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             break;
 
         case MAV_RESULT_IN_PROGRESS:
-            Debug() << "progress: " << (int)command_ack.progress << " % (" << work.mavlink_command << ").";
+            Debug() << "progress: " << (int)command_ack.progress
+                    << " % (" << work.mavlink_command << ").";
             // If we get a progress update, we can raise the timeout
             // to something higher because we know the initial command
             // has arrived. A possible timeout for this case is the initial
@@ -138,8 +139,8 @@ void MavlinkCommands::receive_timeout()
 
         if (work.retries_to_do > 0) {
 
-            Debug() << "sending again, retries to do: " << work.retries_to_do << "  (" << work.mavlink_command
-                    << ").";
+            Debug() << "sending again, retries to do: " << work.retries_to_do
+                    << "  (" << work.mavlink_command << ").";
             // We're not sure the command arrived, let's retransmit.
             if (!_parent->send_message(work.mavlink_message)) {
                 Debug() << "connection send error in retransmit (" << work.mavlink_command << ").";
