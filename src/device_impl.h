@@ -135,15 +135,15 @@ private:
     std::thread *_device_thread {nullptr};
     std::atomic_bool _should_exit {false};
 
+    // TODO: should our own system ID have some value?
     static constexpr uint8_t _own_system_id = 0;
     static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
 
-    static constexpr double DEFAULT_TIMEOUT_S {1.0};
-
     dl_time_t _last_heartbeat_received_time {};
-    static constexpr double DEFAULT_HEARTBEAT_TIMEOUT_S {3.0};
-    double _heartbeat_timeout_s {DEFAULT_HEARTBEAT_TIMEOUT_S};
-    bool _heartbeat_timed_out {false};
+
+    static constexpr double HEARTBEAT_TIMEOUT_S = 3.0;
+
+    std::atomic<bool> _heartbeats_arriving {false};
 
     MavlinkParameters _params;
 

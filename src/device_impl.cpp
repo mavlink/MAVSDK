@@ -1,5 +1,5 @@
-#include "global_include.h"
 #include "device_impl.h"
+#include "global_include.h"
 #include "dronelink_impl.h"
 #include "mavlink_include.h"
 #include <functional>
@@ -119,12 +119,13 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
 
     /* If we don't know the UUID yet, or we had a timeout, we want to check that the
      * UUID is still the same. */
-    if (_target_uuid == 0 || _heartbeat_timed_out) {
+    if (_target_uuid == 0 || !_heartbeats_arriving) {
         request_autopilot_version();
     }
 
     _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
 
+    _heartbeats_arriving = true;
     _last_heartbeat_received_time = steady_time();
 }
 
@@ -141,10 +142,9 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
         _parent->notify_on_discover(_target_uuid);
 
     } else if (_target_uuid == autopilot_version.uid) {
-        if (_heartbeat_timed_out) {
+        if (!_heartbeats_arriving) {
             // It looks like the vehicle has reconnected, let's accept it again.
             _parent->notify_on_discover(_target_uuid);
-            _heartbeat_timed_out = false;
         } else {
             // This means we just got a autopilot version message but we don't need it
             // or didn't request it.
@@ -169,8 +169,10 @@ void DeviceImpl::device_thread(DeviceImpl *self)
         }
         check_timeouts(self);
         check_heartbeat_timeout(self);
-        self->_params.do_work();
-        self->_commands.do_work();
+        if (self->_heartbeats_arriving) {
+            self->_params.do_work();
+            self->_commands.do_work();
+        }
         usleep(timeout_interval_us);
     }
 }
@@ -216,10 +218,10 @@ void DeviceImpl::check_timeouts(DeviceImpl *self)
 
 void DeviceImpl::check_heartbeat_timeout(DeviceImpl *self)
 {
-    if (elapsed_since_s(self->_last_heartbeat_received_time) > self->_heartbeat_timeout_s) {
-        if (!self->_heartbeat_timed_out) {
+    if (elapsed_since_s(self->_last_heartbeat_received_time) > DeviceImpl::HEARTBEAT_TIMEOUT_S) {
+        if (self->_heartbeats_arriving) {
             self->_parent->notify_on_timeout(self->_target_uuid);
-            self->_heartbeat_timed_out = true;
+            self->_heartbeats_arriving = true;
         }
     }
 }
@@ -307,7 +309,6 @@ MavlinkCommands::Result DeviceImpl::send_command_with_ack(
         ((component_id != 0) ? component_id : _target_component_id);
 
     return _commands.send_command(command, params, _target_system_id, component_id_to_use);
-
 }
 
 void DeviceImpl::send_command_with_ack_async(uint16_t command,
