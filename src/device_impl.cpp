@@ -158,22 +158,25 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
 
 void DeviceImpl::device_thread(DeviceImpl *self)
 {
-    const unsigned heartbeat_interval_us = 1000000;
-    const unsigned timeout_interval_us = 10000;
-    const unsigned heartbeat_multiplier = heartbeat_interval_us / timeout_interval_us;
-    unsigned counter = 0;
+    dl_time_t last_time {};
 
     while (!self->_should_exit) {
-        if (counter++ % heartbeat_multiplier == 0) {
+
+        if (elapsed_since_s(last_time) >= DeviceImpl::_HEARTBEAT_SEND_INTERVAL_S) {
             send_heartbeat(self);
+            last_time = steady_time();
         }
         check_timeouts(self);
         check_heartbeat_timeout(self);
+        self->_params.do_work();
+        self->_commands.do_work();
         if (self->_heartbeats_arriving) {
-            self->_params.do_work();
-            self->_commands.do_work();
+            // Work fairly fast if we're connected.
+            usleep(10000);
+        } else {
+            // Be less aggressive when unconnected.
+            usleep(500000);
         }
-        usleep(timeout_interval_us);
     }
 }
 
@@ -218,7 +221,7 @@ void DeviceImpl::check_timeouts(DeviceImpl *self)
 
 void DeviceImpl::check_heartbeat_timeout(DeviceImpl *self)
 {
-    if (elapsed_since_s(self->_last_heartbeat_received_time) > DeviceImpl::HEARTBEAT_TIMEOUT_S) {
+    if (elapsed_since_s(self->_last_heartbeat_received_time) > DeviceImpl::_HEARTBEAT_TIMEOUT_S) {
         if (self->_heartbeats_arriving) {
             self->_parent->notify_on_timeout(self->_target_uuid);
             self->_heartbeats_arriving = true;

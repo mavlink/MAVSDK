@@ -141,9 +141,11 @@ private:
 
     dl_time_t _last_heartbeat_received_time {};
 
-    static constexpr double HEARTBEAT_TIMEOUT_S = 3.0;
+    static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
 
     std::atomic<bool> _heartbeats_arriving {false};
+
+    static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
     MavlinkParameters _params;
 
