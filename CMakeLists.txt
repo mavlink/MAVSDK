@@ -102,6 +102,11 @@ if(NOT IOS AND NOT ANDROID)
             ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
     endif()
 
+    if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
+        add_subdirectory(${EXTERNAL_DIR}/unit_tests
+            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/unit_tests)
+    endif()
+
     enable_testing()
 
     add_subdirectory(libs/gtest)
@@ -112,11 +117,14 @@ if(NOT IOS AND NOT ANDROID)
         add_definitions("-Wno-sign-compare")
     endif()
 
+    set(CMAKE_CXX_FLAGS_DEBUG "-DTESTING")
+
     add_executable(unit_tests_runner
         core/global_include_test.cpp
         core/mavlink_channels_test.cpp
         core/unittests_main.cpp
         ${plugin_unittest_source_files}
+        ${unit_tests_src}
     )
 
     target_link_libraries(unit_tests_runner
@@ -124,6 +132,9 @@ if(NOT IOS AND NOT ANDROID)
         gtest
         gtest_main
         ${platform_libs}
+        gmock
+        pthread
+        curl
     )
 
     add_test(unit_tests

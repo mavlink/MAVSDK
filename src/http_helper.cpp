@@ -20,39 +20,55 @@ HttpHelper::~HttpHelper()
 {
 }
 
-std::string HttpHelper::download(const std::string url)
+bool HttpHelper::download(const std::string &url, std::string &content)
 {
     std::string readBuffer;
 
     if (nullptr != curl) {
+        CURLcode res;
+
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, &readBuffer);
-        curl_easy_perform(curl.get());
-        return readBuffer;
+        res = curl_easy_perform(curl.get());
+        content = readBuffer;
+
+        if (res == CURLcode::CURLE_OK) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
-        return "";
+        return false;
     }
 }
 
-bool HttpHelper::downloadAndSave(const std::string url, const std::string path)
+bool HttpHelper::downloadAndSave(const std::string &url, const std::string &path)
 {
     FILE *fp;
 
     if (nullptr != curl) {
+        CURLcode res;
+
         fp = fopen(path.c_str(), "wb");
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, fp);
-        curl_easy_perform(curl.get());
+        res = curl_easy_perform(curl.get());
         fclose(fp);
-        return true;
+
+        if (res == CURLcode::CURLE_OK) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     return false;
 }
 
-bool HttpHelper::uploadFile(const std::string url, const std::string path)
+bool HttpHelper::uploadFile(const std::string &url, const std::string &path)
 {
     CURLcode res;
 
@@ -81,7 +97,12 @@ bool HttpHelper::uploadFile(const std::string url, const std::string path)
         }
 
         curl_formfree(post);
-        return true;
+
+        if (res == CURLcode::CURLE_OK) {
+            return true;
+        } else {
+            return false;
+        }
     } else {
         return false;
     }
