@@ -37,7 +37,7 @@ MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
         _promise_state = PromiseState::BUSY;
         queue_command_async(command, params, target_system_id, target_component_id,
                             std::bind(&MavlinkCommands::_promise_receive_command_result,
-                                      this, std::placeholders_1, std::placeholders_2));
+                                      this, std::placeholders::_1, std::placeholders::_2));
     }
     while (true) {
         {
