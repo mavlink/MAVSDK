@@ -6,6 +6,10 @@
 #include <string>
 #include <functional>
 
+#ifdef NO_PROMISES
+#include <mutex>
+#endif
+
 namespace dronelink {
 
 class DeviceImpl;
@@ -73,6 +77,17 @@ private:
 
     DeviceImpl *_parent;
     LockedQueue<Work> _work_queue {};
+
+#ifdef NO_PROMISES
+    std::mutex _promise_mutex {};
+    enum class PromiseState {
+        IDLE,
+        BUSY,
+        DONE
+    } _promise_state {PromiseState::IDLE};
+    Result _promise_last_result {};
+    void _promise_receive_command_result(Result result, float progress);
+#endif
 };
 
 } // namespace dronelink
