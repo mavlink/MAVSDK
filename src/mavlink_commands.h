@@ -22,10 +22,11 @@ public:
         CONNECTION_ERROR,
         BUSY,
         COMMAND_DENIED,
-        TIMEOUT
+        TIMEOUT,
+        IN_PROGRESS
     };
 
-    typedef std::function<void(Result)> command_result_callback_t;
+    typedef std::function<void(Result, float)> command_result_callback_t;
 
     struct Params {
         float v[7];

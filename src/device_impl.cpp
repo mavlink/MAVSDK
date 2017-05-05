@@ -321,7 +321,7 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
 {
     if (_target_system_id == 0 && _target_component_id == 0) {
         if (callback) {
-            callback(MavlinkCommands::Result::NO_DEVICE);
+            callback(MavlinkCommands::Result::NO_DEVICE, NAN);
         }
         return;
     }

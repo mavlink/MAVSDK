@@ -24,20 +24,36 @@ MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
                                                       uint8_t target_system_id,
                                                       uint8_t target_component_id)
 {
+    struct PromiseResult {
+        Result result;
+        float progress;
+    };
+
     // We wrap the async call with a promise and future.
-    std::shared_ptr<std::promise<Result>> prom =
-                                           std::make_shared<std::promise<Result>>();
+    std::shared_ptr<std::promise<PromiseResult>> prom =
+                                                  std::make_shared<std::promise<PromiseResult>>();
 
     queue_command_async(command, params, target_system_id, target_component_id,
-    [prom](Result result) {
-        prom->set_value(result);
+    [prom](Result result, float progress) {
+        PromiseResult promise_result {};
+        promise_result.result = result;
+        promise_result.progress = progress;
+        prom->set_value(promise_result);
     }
                        );
 
-    std::future<Result> res = prom->get_future();
-    // Block now to wait for result.
-    res.wait();
-    return res.get();
+    std::future<PromiseResult> res = prom->get_future();
+    while (true) {
+        // Block now to wait for result.
+        res.wait();
+
+        if (res.get().result == Result::IN_PROGRESS) {
+            Debug() << "In progress: " << res.get().progress;
+            continue;
+        }
+        break;
+    }
+    return res.get().result;
 }
 
 void MavlinkCommands::queue_command_async(uint16_t command,
@@ -82,7 +98,7 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
         case MAV_RESULT_ACCEPTED:
             work.state = Work::State::DONE;
             if (work.callback) {
-                work.callback(Result::SUCCESS);
+                work.callback(Result::SUCCESS, 1.0f);
             }
             break;
 
@@ -104,13 +120,16 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             Debug() << "command failed (" << work.mavlink_command << ").";
             work.state = Work::State::FAILED;
             if (work.callback) {
-                work.callback(Result::COMMAND_DENIED);
+                work.callback(Result::COMMAND_DENIED, NAN);
             }
             break;
 
         case MAV_RESULT_IN_PROGRESS:
             Debug() << "progress: " << (int)command_ack.progress
                     << " % (" << work.mavlink_command << ").";
+            if (work.callback) {
+                work.callback(Result::IN_PROGRESS, command_ack.progress / 100.0f);
+            }
             // If we get a progress update, we can raise the timeout
             // to something higher because we know the initial command
             // has arrived. A possible timeout for this case is the initial
@@ -145,7 +164,7 @@ void MavlinkCommands::receive_timeout()
             if (!_parent->send_message(work.mavlink_message)) {
                 Debug() << "connection send error in retransmit (" << work.mavlink_command << ").";
                 if (work.callback) {
-                    work.callback(Result::CONNECTION_ERROR);
+                    work.callback(Result::CONNECTION_ERROR, NAN);
                 }
                 work.state = Work::State::FAILED;
             } else {
@@ -161,9 +180,9 @@ void MavlinkCommands::receive_timeout()
 
             if (work.callback) {
                 if (work.state == Work::State::WAITING) {
-                    work.callback(Result::TIMEOUT);
+                    work.callback(Result::TIMEOUT, NAN);
                 } else if (work.state == Work::State::TEMPORARILY_REJECTED) {
-                    work.callback(Result::COMMAND_DENIED);
+                    work.callback(Result::COMMAND_DENIED, NAN);
                 }
             }
             work.state = Work::State::FAILED;
@@ -186,7 +205,7 @@ void MavlinkCommands::do_work()
             if (!_parent->send_message(work.mavlink_message)) {
                 Debug() << "connection send error (" << work.mavlink_command << ")";
                 if (work.callback) {
-                    work.callback(Result::CONNECTION_ERROR);
+                    work.callback(Result::CONNECTION_ERROR, NAN);
                 }
                 work.state = Work::State::FAILED;
                 break;

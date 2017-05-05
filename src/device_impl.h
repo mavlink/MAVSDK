@@ -50,7 +50,7 @@ public:
                                                   const MavlinkCommands::Params &params,
                                                   uint8_t component_id = 0);
 
-    typedef std::function<void(MavlinkCommands::Result)> command_result_callback_t;
+    typedef std::function<void(MavlinkCommands::Result, float)> command_result_callback_t;
     void send_command_with_ack_async(uint16_t command, const MavlinkCommands::Params &params,
                                      command_result_callback_t callback,
                                      uint8_t component_id = 0);
