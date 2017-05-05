@@ -68,11 +68,36 @@ bool HttpHelper::downloadAndSave(const std::string &url, const std::string &path
     return false;
 }
 
-bool HttpHelper::uploadFile(const std::string &url, const std::string &path)
+
+static int curl_ul_progress_update(void *p, double /*dltotal*/, double /*dlnow*/, double ultotal,
+                                   double ulnow)
+{
+    struct dl_up_progress *myp = (struct dl_up_progress *)p;
+
+    if (ultotal == 0 || ulnow == 0 || myp->progress_callback == nullptr) {
+        return 0;
+    }
+
+    int percentage = 100 / ultotal * ulnow;
+
+    if ((percentage > myp->progress_in_percentage) && (percentage % 5 == 0)) {
+        myp->progress_in_percentage = percentage;
+        return myp->progress_callback(percentage);
+    }
+
+    return 0;
+}
+
+
+bool HttpHelper::uploadFile(const std::string &url, const std::string &path, const
+                            progress_callback_t &progress_callback)
 {
     CURLcode res;
 
     if (nullptr != curl) {
+        struct dl_up_progress prog;
+        prog.progress_callback = progress_callback;
+
         curl_httppost *post = NULL;
         curl_httppost *last = NULL;
 
@@ -84,9 +109,13 @@ bool HttpHelper::uploadFile(const std::string &url, const std::string &path)
                      CURLFORM_FILE, path.c_str(),
                      CURLFORM_END);
 
+        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, curl_ul_progress_update);
+        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &prog);
+        curl_easy_setopt(curl.get(), CURLOPT_VERBOSE, 1L);
         curl_easy_setopt(curl.get(), CURLOPT_HTTPHEADER, chunk);
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl.get(), CURLOPT_HTTPPOST, post);
+        curl_easy_setopt(curl.get(), CURLOPT_NOPROGRESS, 0L);
 
         res = curl_easy_perform(curl.get());
 
@@ -108,6 +137,53 @@ bool HttpHelper::uploadFile(const std::string &url, const std::string &path)
     }
 }
 
+static int curl_dl_progress_update(void *p, double dltotal, double dlnow, double /*ultotal*/,
+                                   double /*ulnow*/)
+{
+    struct dl_up_progress *myp = (struct dl_up_progress *)p;
 
+    if (dltotal == 0 || dlnow == 0 || myp->progress_callback == nullptr) {
+        return 0;
+    }
+
+    int percentage = 100 / dltotal * dlnow;
+
+    if ((percentage > myp->progress_in_percentage) && (percentage % 5 == 0)) {
+        myp->progress_in_percentage = percentage;
+        return myp->progress_callback(percentage);
+    }
+
+    return 0;
+}
+
+bool HttpHelper::downloadAndSaveWithProgress(const std::string &url, const std::string &path, const
+                                             progress_callback_t &progress_callback)
+{
+    FILE *fp;
+
+    if (nullptr != curl) {
+        CURLcode res;
+        struct dl_up_progress prog;
+        prog.progress_callback = progress_callback;
+
+        fp = fopen(path.c_str(), "wb");
+        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, curl_dl_progress_update);
+        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &prog);
+        curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, NULL);
+        curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, fp);
+        curl_easy_setopt(curl.get(), CURLOPT_NOPROGRESS, 0L);
+        res = curl_easy_perform(curl.get());
+        fclose(fp);
+
+        if (res == CURLcode::CURLE_OK) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    return false;
+}
 
 }
