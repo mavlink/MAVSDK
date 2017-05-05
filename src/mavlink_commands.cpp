@@ -74,13 +74,14 @@ MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
         // Block now to wait for result.
         res.wait();
 
-        if (res.get().result == Result::IN_PROGRESS) {
-            Debug() << "In progress: " << res.get().progress;
+        PromiseResult promise_result = res.get();
+
+        if (promise_result.result == Result::IN_PROGRESS) {
+            Debug() << "In progress: " << promise_result.progress;
             continue;
         }
-        break;
+        return promise_result.result;
     }
-    return res.get().result;
 #endif
 }
 
