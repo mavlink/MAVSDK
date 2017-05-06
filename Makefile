@@ -40,6 +40,8 @@ ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 # Set default cmake here but replace with special version for Android build.
 CMAKE_BIN = cmake
 
+INSTALL_PREFIX ?= $(CURRENT_DIR)/install
+
 # Function to create build_* directory and call make there.
 define cmake-build
 +@$(eval BUILD_DIR = build/$@)
@@ -50,7 +52,7 @@ define cmake-build
         && $(CMAKE_BIN) $(ROOT_DIR) $(1) \
         -DEXTERNAL_DIR:STRING=$(EXTERNAL_DIR) \
         -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
-        -DCMAKE_INSTALL_PREFIX=$(CURRENT_DIR)/install \
+        -DCMAKE_INSTALL_PREFIX=$(INSTALL_PREFIX) \
 		-DDROP_DEBUG=$(DROP_DEBUG) \
         -G$(CMAKE_GENERATOR)) \
 	|| (rm -rf $(BUILD_DIR)) \
