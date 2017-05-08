@@ -49,6 +49,8 @@ public:
 
     void do_work();
 
+    static const int DEFAULT_COMPONENT_ID_AUTOPILOT = 1;
+
     // Non-copyable
     MavlinkCommands(const MavlinkCommands &) = delete;
     const MavlinkCommands &operator=(const MavlinkCommands &) = delete;
