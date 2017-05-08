@@ -46,7 +46,8 @@ Offboard::Result OffboardImpl::start() const
                    MavlinkCommands::Params {float(mode),
                                             float(custom_mode),
                                             float(custom_sub_mode),
-                                            NAN, NAN, NAN, NAN}));
+                                            NAN, NAN, NAN, NAN},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 Offboard::Result OffboardImpl::stop() const
@@ -65,7 +66,8 @@ Offboard::Result OffboardImpl::stop() const
                    MavlinkCommands::Params {float(mode),
                                             float(custom_mode),
                                             float(custom_sub_mode),
-                                            NAN, NAN, NAN, NAN}));
+                                            NAN, NAN, NAN, NAN},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 void OffboardImpl::start_async(Offboard::result_callback_t callback)
@@ -85,7 +87,8 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
                                  float(custom_sub_mode),
                                  NAN, NAN, NAN, NAN},
         std::bind(&OffboardImpl::receive_command_result, this,
-                  std::placeholders::_1, callback));
+                  std::placeholders::_1, callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 
     _result_callback = callback;
 
@@ -109,7 +112,8 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
                                  float(custom_sub_mode),
                                  NAN, NAN, NAN, NAN},
         std::bind(&OffboardImpl::receive_command_result, this,
-                  std::placeholders::_1, callback));
+                  std::placeholders::_1, callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 
     _result_callback = callback;
 
