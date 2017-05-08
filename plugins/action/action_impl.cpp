@@ -58,7 +58,8 @@ Action::Result ActionImpl::arm() const
                   MavlinkCommands::Params {float(mode),
                                            float(custom_mode),
                                            float(custom_sub_mode),
-                                           NAN, NAN, NAN, NAN}));
+                                           NAN, NAN, NAN, NAN},
+                  MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 
     if (ret != Action::Result::SUCCESS) {
         return ret;
@@ -67,7 +68,8 @@ Action::Result ActionImpl::arm() const
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_COMPONENT_ARM_DISARM,
-                   MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN}));
+                   MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 Action::Result ActionImpl::disarm() const
@@ -80,7 +82,8 @@ Action::Result ActionImpl::disarm() const
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_COMPONENT_ARM_DISARM,
-                   MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN}));
+                   MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 Action::Result ActionImpl::kill() const
@@ -88,7 +91,8 @@ Action::Result ActionImpl::kill() const
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_COMPONENT_ARM_DISARM,
-                   MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN}));
+                   MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 Action::Result ActionImpl::takeoff() const
@@ -111,13 +115,15 @@ Action::Result ActionImpl::takeoff() const
                   MavlinkCommands::Params {float(mode),
                                            float(custom_mode),
                                            float(custom_sub_mode),
-                                           NAN, NAN, NAN, NAN}));
+                                           NAN, NAN, NAN, NAN},
+                  MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_NAV_TAKEOFF,
                    MavlinkCommands::Params {NAN, NAN, NAN, NAN, NAN, NAN,
-                                            _relative_takeoff_altitude_m}));
+                                            _relative_takeoff_altitude_m},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 Action::Result ActionImpl::land() const
@@ -125,7 +131,8 @@ Action::Result ActionImpl::land() const
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_NAV_LAND,
-                   MavlinkCommands::Params {NAN, NAN, NAN, NAN, NAN, NAN, NAN}));
+                   MavlinkCommands::Params {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 Action::Result ActionImpl::return_to_launch() const
@@ -145,7 +152,8 @@ Action::Result ActionImpl::return_to_launch() const
                    MavlinkCommands::Params {float(mode),
                                             float(custom_mode),
                                             float(custom_sub_mode),
-                                            NAN, NAN, NAN, NAN}));
+                                            NAN, NAN, NAN, NAN},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 void ActionImpl::arm_async(const Action::result_callback_t &callback)
@@ -175,7 +183,8 @@ void ActionImpl::arm_async_continued(MavlinkCommands::Result previous_result,
         MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
                   _1,
-                  callback));
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void ActionImpl::disarm_async(const Action::result_callback_t &callback)
@@ -193,7 +202,8 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
         MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
                   _1,
-                  callback));
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void ActionImpl::kill_async(const Action::result_callback_t &callback)
@@ -203,7 +213,8 @@ void ActionImpl::kill_async(const Action::result_callback_t &callback)
         MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
                   _1,
-                  callback));
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
@@ -234,7 +245,8 @@ void ActionImpl::takeoff_async_continued(MavlinkCommands::Result previous_result
                                  _relative_takeoff_altitude_m},
         std::bind(&ActionImpl::command_result_callback,
                   _1,
-                  callback));
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void ActionImpl::land_async(const Action::result_callback_t &callback)
@@ -244,7 +256,8 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
         MavlinkCommands::Params {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
                   _1,
-                  callback));
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void ActionImpl::return_to_launch_async(const Action::result_callback_t &callback)
@@ -266,7 +279,8 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t &callbac
                                  NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
                   _1,
-                  callback));
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 Action::Result ActionImpl::arming_allowed() const
@@ -334,7 +348,9 @@ void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &ca
                                  float(custom_mode),
                                  float(custom_sub_mode),
                                  NAN, NAN, NAN, NAN},
-        std::bind(&ActionImpl::takeoff_async_continued, this, _1, callback));
+        std::bind(&ActionImpl::takeoff_async_continued, this, _1,
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callback)
@@ -351,7 +367,9 @@ void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callba
                                  float(custom_mode),
                                  float(custom_sub_mode),
                                  NAN, NAN, NAN, NAN},
-        std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
+        std::bind(&ActionImpl::arm_async_continued, this, _1,
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 
