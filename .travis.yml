@@ -1,0 +1,21 @@
+language: c
+
+dist: xenial
+
+sudo: required
+
+services:
+- docker
+
+env:
+- DOCKER_REPO=879326759580.dkr.ecr.eu-central-1.amazonaws.com/dronelink
+
+before_script:
+- pip install --user awscli
+- "$(aws ecr get-login --region eu-central-1)"
+- docker pull $DOCKER_REPO
+
+script:
+- docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw $DOCKER_REPO make
+- docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw $DOCKER_REPO make run_unit_tests
+- docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw $DOCKER_REPO make fix_style
