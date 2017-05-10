@@ -1,7 +1,5 @@
 language: cpp
 
-dist: xenial
-
 sudo: required
 
 services:
