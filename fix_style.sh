@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script runs astyle and complains about lines that are too long
-# over all files ending in .h or .cpp listed by git in the given
+# over all files ending in .h, .c, .cpp listed by git in the given
 # directory.
 
 # Check for the latest astyle version
@@ -33,33 +33,80 @@ then
     exit 1
 fi
 
+# Ignore files listed in style-ignore.txt
+style_ignore="style-ignore.txt"
+
 # Find the directory of this script because the file astylerc should be
 # next to it.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Keep track of errors for the exit value
-ERROR_FOUND=false
+error_found=false
+
+# Use colordiff if available
+if command -v colordiff >/dev/null 2>&1; then
+	diff_cmd=colordiff
+else
+	diff_cmd=diff
+fi
 
 cd $1 > /dev/null
 
-# Go through all .h and .cpp files listed by git
-git ls-tree -r HEAD --name-only | grep -E "\.h$|\.cpp$" | while read LINE;
-do
+# Go through all .h, c., and .cpp files listed by git
+# TODO: add -r argument to include all files
+files=`git ls-files | grep -E "\.h$|\.c$|\.cpp$"`
+
+while IFS= read file; do
+
+	# We want to check if the file is in the list to ignore.
+	# We do this in a brute force way by looping through every
+	# line the ignore file and compare it against the filename.
+	if [[ -f $SCRIPT_DIR/$style_ignore ]]; then
+		need_to_ignore=false
+		while IFS= read ignore; do
+			if [[ `echo $1/$file | grep "$ignore"` ]]; then
+				need_to_ignore=true
+			fi
+		done < "$SCRIPT_DIR/$style_ignore"
+	fi
+
+	if [ "$need_to_ignore" = true ]; then
+		# Don't do the astyle and file length checks,
+		# go to next file.
+		continue
+	fi
+
     # Run astyle with given astylerc
-    astyle --options=$SCRIPT_DIR/astylerc $LINE
+    astyle_result=`astyle --options=astylerc $file | grep "Formatted"`
 
-    # Check for lines too long
-    GREP_RESULT=`grep  -n '.\{100\}' $LINE`
+	if [[ $astyle_result ]]; then
+		echo "Formatted $file:"
+		$diff_cmd $file $file.orig
+		rm $file.orig
+		error_found=true
+	fi
 
-    if [[ $GREP_RESULT ]]; then
-        echo "Line too long $LINE"
-        echo "$GREP_RESULT"
-        ERROR_FOUND=true
-    fi
-done
+	# TODO: this is disabled for now
+	## Go line by line
+	#count=0
+	#while IFS= read -r line; do
+	#	# Check for lines too long
+	#	len=${#line}
+	#	if [ $len -gt 100 ]; then
+	#		echo "Line $count too long"
+	#		error_found=true
+	#	fi
+	#	(( count++ ))
+	#done < "$file"
+
+# We need to use this clunky way because otherwise
+# we lose the value of error_found.
+# See http://mywiki.wooledge.org/BashFAQ/024
+done < <(echo "$files")
 
 cd - > /dev/null
 
-if $ERROR_FOUND ; then
+if [ "$error_found" = true ]; then
     exit 1
 fi
+
