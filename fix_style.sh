@@ -77,7 +77,7 @@ while IFS= read file; do
 	fi
 
     # Run astyle with given astylerc
-    astyle_result=`astyle --options=astylerc $file | grep "Formatted"`
+    astyle_result=`astyle --options=$SCRIPT_DIR/astylerc $file | grep "Formatted"`
 
 	if [[ $astyle_result ]]; then
 		echo "Formatted $file:"
