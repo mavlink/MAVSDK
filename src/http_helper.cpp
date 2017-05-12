@@ -43,32 +43,6 @@ bool HttpHelper::download(const std::string &url, std::string &content)
     }
 }
 
-bool HttpHelper::downloadAndSave(const std::string &url, const std::string &path)
-{
-    FILE *fp;
-
-    if (nullptr != curl) {
-        CURLcode res;
-
-        fp = fopen(path.c_str(), "wb");
-        curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, NULL);
-        curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, fp);
-        res = curl_easy_perform(curl.get());
-        fclose(fp);
-
-        if (res == CURLcode::CURLE_OK) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    return false;
-}
-
-
 static int curl_ul_progress_update(void *p, double /*dltotal*/, double /*dlnow*/, double ultotal,
                                    double ulnow)
 {
@@ -109,6 +83,7 @@ bool HttpHelper::uploadFile(const std::string &url, const std::string &path, con
                      CURLFORM_FILE, path.c_str(),
                      CURLFORM_END);
 
+        curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, curl_ul_progress_update);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &prog);
         curl_easy_setopt(curl.get(), CURLOPT_VERBOSE, 1L);
@@ -167,6 +142,7 @@ bool HttpHelper::downloadAndSaveWithProgress(const std::string &url, const std::
         prog.progress_callback = progress_callback;
 
         fp = fopen(path.c_str(), "wb");
+        curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, curl_dl_progress_update);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &prog);
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
