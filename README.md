@@ -2,7 +2,7 @@
 
 ## Description
 
-Messaging library for PX4 using mavlink.
+Messaging library/SDK for [PX4 flight stack](http://github.com/PX4/Firmware) using [Mavlink](http://mavlink.org).
 
 ## License
 
@@ -13,28 +13,6 @@ BSD 3-clause, see [LICENSE.md](LICENSE.md).
 See [AUTHORS.md](AUTHORS.md).
 
 ## Usage
-
-### gtest
-
-Ubuntu:
-[Ubuntu instructions](https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/)
-
-Mac:
-
-```
-cd wherever
-git clone git@github.com:google/googletest.git
-git checkout release-1.8.0
-cd googletest/
-mkdir build
-cd build
-cmake ..
-make -j4
-cd ..
-sudo cp -r googletest/include/gtest /usr/local/include
-sudo cp build/googlemock/gtest/libgtest.a /usr/local/lib
-sudo cp build/googlemock/gtest/libgtest_main.a /usr/local/lib
-```
 
 ### Building
 
@@ -53,10 +31,26 @@ make default
 
 #### Android
 
-To build for Android devices or simulators, you first need to install the Android ndk and point the environment variable `ANDROID_TOOLCHAIN_CMAKE` to `build/cmake/android.toolchain.cmake`, e.g. adding the line below to the .bashrc:
+To build for Android devices or simulators, you first need to install:
+- [Android NDK](https://developer.android.com/ndk/downloads/index.html)
+- [Android SDK](https://developer.android.com/studio/index.html)
+
+
+Also, you need to set these two environment variables:
+
+- `ANDROID_TOOLCHAIN_CMAKE` to `<your-android-ndk>/build/cmake/android.toolchain.cmake`
+- `ANDROID_CMAKE_BIN` to `<your-android-sdk>/cmake/<version>/bin/cmake`
+
+E.g. you can add the lines below to your .bashrc (or .profile):
 
 ```
 export ANDROID_TOOLCHAIN_CMAKE=$HOME/Android/android-ndk-r13/build/cmake/android.toolchain.cmake
+export ANDROID_CMAKE_BIN=$HOME/Android/Sdk/cmake/3.6.3155560/bin/cmake
+```
+
+Then you build for all the architectures:
+```
+make android install
 ```
 
 
@@ -85,8 +79,14 @@ cmake --build .
 
 ### Build with external directory for plugins/integration_tests
 
-The external directory needs to contain the folders `integration_tests` and `plugins`,
-and should be organized like the `external_example`.
+The SDK is split into a [core](src/) and [plugins](plugins/). The plugins are included at compile time.
+The cmake script [autogenerate_plugin_container.cmake](autogenerate_plugin_container.cmake) takes care of including the plugin folders and integrations tests.
+
+The architecture goal is that the plugins do not depend on each other but only to the core source. This means you can swap out plugins as needed, however, it will lead to some duplicate functionality acroos the plugin modules.
+
+You can add modules by copying the [external_example](external_example/) and adapting it:
+
+The external directory needs to contain the folders `integration_tests` and `plugins`.
 
 ```
 external_example
@@ -132,7 +132,7 @@ There are three ways to run the integration tests:
 
 #### 1. Autostart PX4 SITL
 
-Make sure that the PX4 Gazebo simulation is built and works:
+Make sure that the [PX4 Gazebo simulation](https://dev.px4.io/en/simulation/gazebo.html) is built and works:
 
 ```
 cd wherever/Firmware/
@@ -146,7 +146,7 @@ cd wherever/DroneLink/
 AUTOSTART_SITL=1 make run_integration_tests
 ```
 
-To prevent the 3D viewer (gzclient) from being started, use:
+To run the tests without 3D viewer (gzclient), use:
 
 ```
 AUTOSTART_SITL=1 HEADLESS=1 make run_integration_tests
@@ -170,8 +170,7 @@ make run_integration_tests
 Make sure you are connected to a vehicle and check the connection using e.g.
 
 ```
-make
-build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
+make && build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
 ```
 
 Note that some of the tests might not be suited for real vehicles, especially the takeoff and kill test.
@@ -180,17 +179,17 @@ Note that some of the tests might not be suited for real vehicles, especially th
 
 To list all possible tests:
 ```
-build/default/integration_tests_runner --gtest_list_tests
+make &&build/default/integration_tests_runner --gtest_list_tests
 ```
 
 To run a single integration test:
 ```
-build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
+make &&build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
 ```
 
 To run all telemetry tests:
 ```
-build/default/integration_tests_runner --gtest_filter="SitlTest.Telemetry*"
+make &&build/default/integration_tests_runner --gtest_filter="SitlTest.Telemetry*"
 ```
 
 ### Code style
@@ -199,5 +198,24 @@ All cpp and h files should be formatted according to the astyle settings defined
 To automatically fix the formatting, run this command:
 
 ```
-make fix-style
+make fix_style
+```
+
+### Building in Docker
+
+If you want to develop in docker, you can use the [Dockerfile](Dockerfile) based on Ubuntu 16.04.
+
+Build the image:
+```
+docker build . -t dronelink
+```
+
+To compile in it:
+```
+docker run -it -v $HOME/<wherever>/DroneLink:/home/docker1000/src/DroneLink:rw dronelink make
+```
+
+Or run the code style check:
+```
+docker run -it -v $HOME/<wherever>/DroneLink:/home/docker1000/src/DroneLink:rw dronelink make fix_style
 ```
