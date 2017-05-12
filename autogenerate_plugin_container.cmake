@@ -152,4 +152,4 @@ endforeach()
 
 # Do the string replacements.
 configure_file(include/device_plugin_container.h.in include/device_plugin_container.h)
-configure_file(src/device_plugin_container.cpp.in src/device_plugin_container.cpp)
+configure_file(core/device_plugin_container.cpp.in core/device_plugin_container.cpp)

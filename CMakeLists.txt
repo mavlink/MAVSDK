@@ -29,34 +29,34 @@ endif()
 include(autogenerate_plugin_container.cmake)
 
 # Header files in include denote public facing header files, the rest is in
-# src or the respective plugin directories.
+# core or the respective plugin directories.
 include_directories(
     include
     libs/include
-    src
+    core
     ${plugins}
     ${external_plugins}
     ${CMAKE_CURRENT_BINARY_DIR}/include
-    ${CMAKE_CURRENT_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}/core
 )
 
 # We build one static library.
 add_library(dronelink STATIC
-    src/global_include.cpp
-    src/connection.cpp
-    src/device.cpp
-    src/device_impl.cpp
-    src/mavlink_parameters.cpp
-    src/mavlink_commands.cpp
-    src/dronelink.cpp
-    src/dronelink_impl.cpp
-    src/mavlink_channels.cpp
-    src/mavlink_receiver.cpp
-    src/serial_connection.cpp
-    src/tcp_connection.cpp
-    src/udp_connection.cpp
-    src/plugin_impl_base.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/src/device_plugin_container.cpp
+    core/global_include.cpp
+    core/connection.cpp
+    core/device.cpp
+    core/device_impl.cpp
+    core/mavlink_parameters.cpp
+    core/mavlink_commands.cpp
+    core/dronelink.cpp
+    core/dronelink_impl.cpp
+    core/mavlink_channels.cpp
+    core/mavlink_receiver.cpp
+    core/serial_connection.cpp
+    core/tcp_connection.cpp
+    core/udp_connection.cpp
+    core/plugin_impl_base.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/core/device_plugin_container.cpp
     ${plugin_source_files}
 )
 
@@ -84,7 +84,7 @@ install(TARGETS dronelink
 install(FILES
     include/dronelink.h
     include/device.h
-    src/plugin_base.h
+    core/plugin_base.h
     ${CMAKE_CURRENT_BINARY_DIR}/include/device_plugin_container.h
     ${plugin_header_paths}
     DESTINATION "include/dronelink"
@@ -109,9 +109,9 @@ if(NOT IOS AND NOT ANDROID)
     endif()
 
     add_executable(unit_tests_runner
-        src/global_include_test.cpp
-        src/mavlink_channels_test.cpp
-        src/unittests_main.cpp
+        core/global_include_test.cpp
+        core/mavlink_channels_test.cpp
+        core/unittests_main.cpp
         ${plugin_unittest_source_files}
     )
 
