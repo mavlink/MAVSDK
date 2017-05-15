@@ -179,17 +179,17 @@ Note that some of the tests might not be suited for real vehicles, especially th
 
 To list all possible tests:
 ```
-make &&build/default/integration_tests_runner --gtest_list_tests
+make && build/default/integration_tests_runner --gtest_list_tests
 ```
 
 To run a single integration test:
 ```
-make &&build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
+make && build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
 ```
 
 To run all telemetry tests:
 ```
-make &&build/default/integration_tests_runner --gtest_filter="SitlTest.Telemetry*"
+make && build/default/integration_tests_runner --gtest_filter="SitlTest.Telemetry*"
 ```
 
 ### Code style
