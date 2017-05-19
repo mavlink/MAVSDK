@@ -60,7 +60,8 @@ add_library(dronelink STATIC
     core/tcp_connection.cpp
     core/udp_connection.cpp
     core/plugin_impl_base.cpp
-    src/http_helper.cpp
+    core/http_helper.cpp
+    core/download_manager.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/core/device_plugin_container.cpp
     ${plugin_source_files}
 )
