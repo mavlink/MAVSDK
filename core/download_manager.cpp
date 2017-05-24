@@ -88,7 +88,7 @@ void DownloadManager::do_item(const std::shared_ptr<WorkItem> &item)
 bool DownloadManager::do_download(const std::shared_ptr<DownloadItem> &item)
 {
     CurlWrapper curl_wrapper;
-    bool success = curl_wrapper.downloadAndSaveWithProgress(item->get_url(), item->get_local_path(),
+    bool success = curl_wrapper.download_file_to_path(item->get_url(), item->get_local_path(),
                                                       item->get_progress_callback());
     return success;
 }
@@ -96,8 +96,8 @@ bool DownloadManager::do_download(const std::shared_ptr<DownloadItem> &item)
 bool DownloadManager::do_upload(const std::shared_ptr<UploadItem> &item)
 {
     CurlWrapper curl_wrapper;
-    bool success = curl_wrapper.uploadFile(item->get_target_url(), item->get_local_path(),
-                                     item->get_progress_callback());
+    bool success = curl_wrapper.upload_file(item->get_target_url(), item->get_local_path(),
+                                            item->get_progress_callback());
     if (success == false) {
         auto callback = item->get_progress_callback();
         callback(100);
@@ -109,7 +109,7 @@ bool DownloadManager::do_upload(const std::shared_ptr<UploadItem> &item)
 bool DownloadManager::download_content_sync(const std::string &url, std::string &content)
 {
     CurlWrapper curl_wrapper;
-    bool success = curl_wrapper.download(url, content);
+    bool success = curl_wrapper.download_text(url, content);
     return success;
 }
 

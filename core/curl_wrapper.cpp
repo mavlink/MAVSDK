@@ -20,7 +20,7 @@ CurlWrapper::~CurlWrapper()
 {
 }
 
-bool CurlWrapper::download(const std::string &url, std::string &content)
+bool CurlWrapper::download_text(const std::string &url, std::string &content)
 {
     std::string readBuffer;
 
@@ -43,7 +43,7 @@ bool CurlWrapper::download(const std::string &url, std::string &content)
     }
 }
 
-static int curl_ul_progress_update(void *p, double /*dltotal*/, double /*dlnow*/, double ultotal,
+static int upload_progress_update(void *p, double /*dltotal*/, double /*dlnow*/, double ultotal,
                                    double ulnow)
 {
     struct dl_up_progress *myp = (struct dl_up_progress *)p;
@@ -63,8 +63,8 @@ static int curl_ul_progress_update(void *p, double /*dltotal*/, double /*dlnow*/
 }
 
 
-bool CurlWrapper::uploadFile(const std::string &url, const std::string &path, const
-                            progress_callback_t &progress_callback)
+bool CurlWrapper::upload_file(const std::string &url, const std::string &path, const
+                              progress_callback_t &progress_callback)
 {
     CURLcode res;
 
@@ -84,7 +84,7 @@ bool CurlWrapper::uploadFile(const std::string &url, const std::string &path, co
                      CURLFORM_END);
 
         curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
-        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, curl_ul_progress_update);
+        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, upload_progress_update);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &prog);
         curl_easy_setopt(curl.get(), CURLOPT_VERBOSE, 1L);
         curl_easy_setopt(curl.get(), CURLOPT_HTTPHEADER, chunk);
@@ -112,7 +112,7 @@ bool CurlWrapper::uploadFile(const std::string &url, const std::string &path, co
     }
 }
 
-static int curl_dl_progress_update(void *p, double dltotal, double dlnow, double /*ultotal*/,
+static int download_progress_update(void *p, double dltotal, double dlnow, double /*ultotal*/,
                                    double /*ulnow*/)
 {
     struct dl_up_progress *myp = (struct dl_up_progress *)p;
@@ -131,8 +131,8 @@ static int curl_dl_progress_update(void *p, double dltotal, double dlnow, double
     return 0;
 }
 
-bool CurlWrapper::downloadAndSaveWithProgress(const std::string &url, const std::string &path, const
-                                             progress_callback_t &progress_callback)
+bool CurlWrapper::download_file_to_path(const std::string &url, const std::string &path, const
+                                        progress_callback_t &progress_callback)
 {
     FILE *fp;
 
@@ -143,7 +143,7 @@ bool CurlWrapper::downloadAndSaveWithProgress(const std::string &url, const std:
 
         fp = fopen(path.c_str(), "wb");
         curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
-        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, curl_dl_progress_update);
+        curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, download_progress_update);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &prog);
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, NULL);
