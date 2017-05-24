@@ -5,11 +5,6 @@
 
 namespace dronelink {
 
-static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
-{
-    ((std::string *)userp)->append((char *)contents, size * nmemb);
-    return size * nmemb;
-}
 
 CurlWrapper::CurlWrapper() :
     curl(std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup))
@@ -18,6 +13,14 @@ CurlWrapper::CurlWrapper() :
 
 CurlWrapper::~CurlWrapper()
 {
+}
+
+// converts curl output to string
+// taken from https://stackoverflow.com/questions/9786150/save-curl-content-result-into-a-string-in-c
+static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    ((std::string *)userp)->append((char *)contents, size * nmemb);
+    return size * nmemb;
 }
 
 bool CurlWrapper::download_text(const std::string &url, std::string &content)
@@ -29,7 +32,7 @@ bool CurlWrapper::download_text(const std::string &url, std::string &content)
 
         curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, write_callback);
         curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, &readBuffer);
         res = curl_easy_perform(curl.get());
         content = readBuffer;
