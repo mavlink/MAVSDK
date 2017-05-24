@@ -1,5 +1,5 @@
 #include <download_manager.h>
-#include <http_helper.h>
+#include <curl_wrapper.h>
 
 
 namespace dronelink {
@@ -87,16 +87,16 @@ void DownloadManager::do_item(const std::shared_ptr<WorkItem> &item)
 
 bool DownloadManager::do_download(const std::shared_ptr<DownloadItem> &item)
 {
-    HttpHelper helper;
-    bool success = helper.downloadAndSaveWithProgress(item->get_url(), item->get_local_path(),
+    CurlWrapper curl_wrapper;
+    bool success = curl_wrapper.downloadAndSaveWithProgress(item->get_url(), item->get_local_path(),
                                                       item->get_progress_callback());
     return success;
 }
 
 bool DownloadManager::do_upload(const std::shared_ptr<UploadItem> &item)
 {
-    HttpHelper helper;
-    bool success = helper.uploadFile(item->get_target_url(), item->get_local_path(),
+    CurlWrapper curl_wrapper;
+    bool success = curl_wrapper.uploadFile(item->get_target_url(), item->get_local_path(),
                                      item->get_progress_callback());
     if (success == false) {
         auto callback = item->get_progress_callback();
@@ -108,8 +108,8 @@ bool DownloadManager::do_upload(const std::shared_ptr<UploadItem> &item)
 
 bool DownloadManager::download_content_sync(const std::string &url, std::string &content)
 {
-    HttpHelper helper;
-    bool success = helper.download(url, content);
+    CurlWrapper curl_wrapper;
+    bool success = curl_wrapper.download(url, content);
     return success;
 }
 

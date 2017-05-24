@@ -5,7 +5,6 @@
 #include <atomic>
 #include <memory>
 #include <string>
-#include "update.h"
 
 namespace dronelink {
 

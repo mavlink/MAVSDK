@@ -18,7 +18,7 @@ struct dl_up_progress {
     progress_callback_t progress_callback;
 };
 
-class IHttpHelper
+class ICurlWrapper
 {
 public:
     virtual bool download(const std::string &url, std::string &content) = 0;
@@ -27,16 +27,16 @@ public:
     virtual bool uploadFile(const std::string &url, const std::string &path, const
                             progress_callback_t &progress_callback) = 0;
 
-    virtual ~IHttpHelper() {}
+    virtual ~ICurlWrapper() {}
 };
 
-class HttpHelper : public IHttpHelper
+class CurlWrapper : public ICurlWrapper
 {
 public:
-    HttpHelper();
-    ~HttpHelper();
+    CurlWrapper();
+    ~CurlWrapper();
 
-    // IHttpHelper
+    // ICurlWrapper
     bool download(const std::string &url, std::string &content) override;
     bool downloadAndSaveWithProgress(const std::string &url, const std::string &path,
                                      const progress_callback_t &progress_callback) override;
@@ -48,7 +48,7 @@ private:
 };
 
 #ifdef TESTING
-class HttpHelperMock : public IHttpHelper
+class CurlWrapperMock : public ICurlWrapper
 {
 public:
     MOCK_METHOD2(download, bool(const std::string &url, std::string &content));
