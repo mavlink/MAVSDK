@@ -86,6 +86,8 @@ bool CurlWrapper::upload_file(const std::string &url, const std::string &path, c
         curl_httppost *last = NULL;
 
         struct curl_slist *chunk = NULL;
+
+        // avoid sending 'Expect: 100-Continue' header, required by some server implementations
         chunk = curl_slist_append(chunk, "Expect:");
 
         curl_formadd(&post, &last,
