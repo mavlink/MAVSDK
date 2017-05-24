@@ -64,7 +64,7 @@ static int upload_progress_update(void *p, double dltotal, double dlnow, double 
 
     int percentage = 100 / ultotal * ulnow;
 
-    if ((percentage > myp->progress_in_percentage) && (percentage % 5 == 0)) {
+    if (percentage > myp->progress_in_percentage) {
         myp->progress_in_percentage = percentage;
         return myp->progress_callback(percentage);
     }
