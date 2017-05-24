@@ -156,6 +156,7 @@ bool CurlWrapper::download_file_to_path(const std::string &url, const std::strin
         if (res == CURLcode::CURLE_OK) {
             return true;
         } else {
+            remove(path.c_str());
             return false;
         }
     }

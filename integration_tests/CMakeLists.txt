@@ -22,6 +22,7 @@ list(APPEND integration_tests
     offboard_velocity
     logging
     info
+    curl
 )
 
 
