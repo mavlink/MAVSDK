@@ -1,3 +1,4 @@
+#include "global_include.h"
 #include "curl_wrapper.h"
 #include <sstream>
 #include <iostream>
@@ -40,16 +41,21 @@ bool CurlWrapper::download_text(const std::string &url, std::string &content)
         if (res == CURLcode::CURLE_OK) {
             return true;
         } else {
+            Debug() << "Error while downloading text, curl error code: " << curl_easy_strerror(res);
             return false;
         }
     } else {
+        Debug() << "Error: cannot start uploading because of curl initialization error. ";
         return false;
     }
 }
 
-static int upload_progress_update(void *p, double /*dltotal*/, double /*dlnow*/, double ultotal,
+static int upload_progress_update(void *p, double dltotal, double dlnow, double ultotal,
                                   double ulnow)
 {
+    UNUSED(dltotal);
+    UNUSED(dlnow);
+
     struct dl_up_progress *myp = (struct dl_up_progress *)p;
 
     if (ultotal == 0 || ulnow == 0 || myp->progress_callback == nullptr) {
@@ -99,26 +105,26 @@ bool CurlWrapper::upload_file(const std::string &url, const std::string &path, c
         res = curl_easy_perform(curl.get());
 
         curl_slist_free_all(chunk);
-
-        if (res) {
-            return false;
-        }
-
         curl_formfree(post);
 
         if (res == CURLcode::CURLE_OK) {
             return true;
         } else {
+            Debug() << "Error while uploading file, curl error code: " << curl_easy_strerror(res);
             return false;
         }
     } else {
+        Debug() << "Error: cannot start uploading because of curl initialization error.";
         return false;
     }
 }
 
-static int download_progress_update(void *p, double dltotal, double dlnow, double /*ultotal*/,
-                                    double /*ulnow*/)
+static int download_progress_update(void *p, double dltotal, double dlnow, double ultotal,
+                                    double ulnow)
 {
+    UNUSED(ultotal);
+    UNUSED(ulnow);
+
     struct dl_up_progress *myp = (struct dl_up_progress *)p;
 
     if (dltotal == 0 || dlnow == 0 || myp->progress_callback == nullptr) {
@@ -127,7 +133,7 @@ static int download_progress_update(void *p, double dltotal, double dlnow, doubl
 
     int percentage = 100 / dltotal * dlnow;
 
-    if ((percentage > myp->progress_in_percentage) && (percentage % 5 == 0)) {
+    if ((percentage > myp->progress_in_percentage) && (percentage % 1 == 0)) {
         myp->progress_in_percentage = percentage;
         return myp->progress_callback(percentage);
     }
@@ -160,11 +166,13 @@ bool CurlWrapper::download_file_to_path(const std::string &url, const std::strin
             return true;
         } else {
             remove(path.c_str());
+            Debug() << "Error while downloading file, curl error code: " << curl_easy_strerror(res);
             return false;
         }
+    } else {
+        Debug() << "Error: cannot start downloading file because of curl initialization error. ";
+        return false;
     }
-
-    return false;
 }
 
-}
+} // namespace dronelink
