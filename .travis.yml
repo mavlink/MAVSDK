@@ -12,6 +12,7 @@ before_script:
 - pip install --user awscli
 - "$(aws ecr get-login --region eu-central-1)"
 - docker pull $DOCKER_REPO
+- sudo apt-get install libcurl4-openssl-dev
 
 script:
 - docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw $DOCKER_REPO make
