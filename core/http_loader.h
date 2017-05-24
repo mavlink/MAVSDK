@@ -1,6 +1,6 @@
 #pragma once
 
-#include "queue.h"
+#include "save_queue.h"
 #include <thread>
 #include <atomic>
 #include <memory>
@@ -92,7 +92,7 @@ private:
     private:
         std::string _url;
         std::string _local_path;
-        progress_callback_t _progress_callback;
+        progress_callback_t _progress_callback {};
     };
 
 
@@ -126,7 +126,7 @@ private:
     private:
         std::string _target_url;
         std::string _local_path;
-        progress_callback_t _progress_callback;
+        progress_callback_t _progress_callback {};
     };
 
     static void work_thread(HttpLoader *self);
