@@ -15,11 +15,12 @@ protected:
 
     virtual void SetUp()
     {
+        clean();
         _file_url_existing_http =
             "http://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronelink_test_file";
         _file_url_existing_https =
             "https://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronelink_test_file";
-        _file_url_not_existing = "https://notexisting.file";
+        _file_url_not_existing = "https://notexisting.file/does-really-not-exist";
         _local_path = "testfile.txt";
     }
 
@@ -42,8 +43,6 @@ protected:
 
 TEST_F(CurlTest, Curl_DownloadText_HTTP_Success)
 {
-    clean();
-
     std::string content;
 
     CurlWrapper curl_wrapper;
@@ -55,8 +54,6 @@ TEST_F(CurlTest, Curl_DownloadText_HTTP_Success)
 
 TEST_F(CurlTest, Curl_DownloadText_HTTPS_Success)
 {
-    clean();
-
     std::string content;
 
     CurlWrapper curl_wrapper;
@@ -68,8 +65,6 @@ TEST_F(CurlTest, Curl_DownloadText_HTTPS_Success)
 
 TEST_F(CurlTest, Curl_DownloadText_FileNotFound)
 {
-    clean();
-
     std::string content = "content gets cleared if download fails";
 
     CurlWrapper curl_wrapper;
@@ -81,8 +76,6 @@ TEST_F(CurlTest, Curl_DownloadText_FileNotFound)
 
 TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_Success)
 {
-    clean();
-
     CurlWrapper curl_wrapper;
 
     bool success = curl_wrapper.download_file_to_path(_file_url_existing_https, _local_path, nullptr);
@@ -94,8 +87,6 @@ TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_Success)
 
 TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_FileNotFound)
 {
-    clean();
-
     CurlWrapper curl_wrapper;
 
     bool success = curl_wrapper.download_file_to_path(_file_url_not_existing, _local_path, nullptr);
@@ -107,8 +98,6 @@ TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_FileNotFound)
 
 TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
 {
-    clean();
-
     int last_progress;
     auto progress = [&last_progress](int progress) -> int { last_progress = progress; return 0; };
 
@@ -124,8 +113,6 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
 
 TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_FileNotFound)
 {
-    clean();
-
     int last_progress = -1;
     auto progress = [&last_progress](int progress) -> int { last_progress = progress; return 0; };
 
