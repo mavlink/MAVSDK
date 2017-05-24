@@ -27,6 +27,7 @@ bool CurlWrapper::download_text(const std::string &url, std::string &content)
     if (nullptr != curl) {
         CURLcode res;
 
+        curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, &readBuffer);
