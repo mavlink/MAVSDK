@@ -10,11 +10,11 @@ namespace dronelink {
 
 typedef std::function<int(int progress)> progress_callback_t;
 
-class DownloadManager
+class HttpLoader
 {
 public:
-    explicit DownloadManager();
-    ~DownloadManager();
+    explicit HttpLoader();
+    ~HttpLoader();
 
     void start();
     void stop();
@@ -29,8 +29,8 @@ public:
                       const progress_callback_t &progress_callback = nullptr);
 
     // Non-copyable
-    DownloadManager(const DownloadManager &) = delete;
-    const DownloadManager &operator=(const DownloadManager &) = delete;
+    HttpLoader(const HttpLoader &) = delete;
+    const HttpLoader &operator=(const HttpLoader &) = delete;
 
 private:
 
@@ -129,7 +129,7 @@ private:
         progress_callback_t _progress_callback;
     };
 
-    static void work_thread(DownloadManager *self);
+    static void work_thread(HttpLoader *self);
     static void do_item(const std::shared_ptr<WorkItem> &item);
     static bool do_download(const std::shared_ptr<DownloadItem> &item);
     static bool do_upload(const std::shared_ptr<UploadItem> &item);

@@ -1,26 +1,25 @@
-#include <download_manager.h>
-#include <curl_wrapper.h>
-
+#include "http_loader.h"
+#include "curl_wrapper.h"
 
 namespace dronelink {
 
-DownloadManager::DownloadManager()
+HttpLoader::HttpLoader()
 {
     start();
 }
 
-DownloadManager::~DownloadManager()
+HttpLoader::~HttpLoader()
 {
     stop();
 }
 
-void DownloadManager::start()
+void HttpLoader::start()
 {
     _should_exit = false;
     _work_thread = new std::thread(work_thread, this);
 }
 
-void DownloadManager::stop()
+void HttpLoader::stop()
 {
     _should_exit = true;
     _work_queue.stop();
@@ -31,35 +30,35 @@ void DownloadManager::stop()
     }
 }
 
-bool DownloadManager::download_sync(const std::string &url, const std::string &local_path)
+bool HttpLoader::download_sync(const std::string &url, const std::string &local_path)
 {
     auto work_item = std::make_shared<DownloadItem>(url, local_path, nullptr);
     bool success = do_download(work_item);
     return success;
 }
 
-void DownloadManager::download_async(const std::string &url, const std::string &local_path,
-                                     const progress_callback_t &progress_callback)
+void HttpLoader::download_async(const std::string &url, const std::string &local_path,
+                                const progress_callback_t &progress_callback)
 {
     auto work_item = std::make_shared<DownloadItem>(url, local_path, progress_callback);
     _work_queue.enqueue(work_item);
 }
 
-bool DownloadManager::upload_sync(const std::string &target_url, const std::string &local_path)
+bool HttpLoader::upload_sync(const std::string &target_url, const std::string &local_path)
 {
     auto work_item = std::make_shared<UploadItem>(target_url, local_path, nullptr);
     bool success = do_upload(work_item);
     return success;
 }
 
-void DownloadManager::upload_async(const std::string &target_url, const std::string &local_path,
-                                   const progress_callback_t &progress_callback)
+void HttpLoader::upload_async(const std::string &target_url, const std::string &local_path,
+                              const progress_callback_t &progress_callback)
 {
     auto work_item = std::make_shared<UploadItem>(target_url, local_path, progress_callback);
     _work_queue.enqueue(work_item);
 }
 
-void DownloadManager::work_thread(DownloadManager *self)
+void HttpLoader::work_thread(HttpLoader *self)
 {
     while (!self->_should_exit) {
         auto item = self->_work_queue.dequeue();
@@ -70,7 +69,7 @@ void DownloadManager::work_thread(DownloadManager *self)
     }
 }
 
-void DownloadManager::do_item(const std::shared_ptr<WorkItem> &item)
+void HttpLoader::do_item(const std::shared_ptr<WorkItem> &item)
 {
     auto download_item = std::dynamic_pointer_cast<DownloadItem>(item);
     if (nullptr != download_item) {
@@ -85,7 +84,7 @@ void DownloadManager::do_item(const std::shared_ptr<WorkItem> &item)
     }
 }
 
-bool DownloadManager::do_download(const std::shared_ptr<DownloadItem> &item)
+bool HttpLoader::do_download(const std::shared_ptr<DownloadItem> &item)
 {
     CurlWrapper curl_wrapper;
     bool success = curl_wrapper.download_file_to_path(item->get_url(), item->get_local_path(),
@@ -93,20 +92,22 @@ bool DownloadManager::do_download(const std::shared_ptr<DownloadItem> &item)
     return success;
 }
 
-bool DownloadManager::do_upload(const std::shared_ptr<UploadItem> &item)
+bool HttpLoader::do_upload(const std::shared_ptr<UploadItem> &item)
 {
     CurlWrapper curl_wrapper;
     bool success = curl_wrapper.upload_file(item->get_target_url(), item->get_local_path(),
                                             item->get_progress_callback());
     if (success == false) {
         auto callback = item->get_progress_callback();
-        callback(100);
+        if (nullptr != callback) {
+            callback(100);
+        }
     }
 
     return success;
 }
 
-bool DownloadManager::download_text_sync(const std::string &url, std::string &content)
+bool HttpLoader::download_text_sync(const std::string &url, std::string &content)
 {
     CurlWrapper curl_wrapper;
     bool success = curl_wrapper.download_text(url, content);
