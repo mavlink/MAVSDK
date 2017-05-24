@@ -1,7 +1,7 @@
 #include "dronelink.h"
 #include "curl_wrapper.h"
 #include <fstream>
-#include <iostream> 
+#include <iostream>
 
 using namespace dronelink;
 
@@ -15,8 +15,10 @@ protected:
 
     virtual void SetUp()
     {
-        _file_url_existing_http = "http://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronelink_test_file";
-        _file_url_existing_https = "https://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronelink_test_file";
+        _file_url_existing_http =
+            "http://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronelink_test_file";
+        _file_url_existing_https =
+            "https://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronelink_test_file";
         _file_url_not_existing = "https://notexisting.file";
         _local_path = "testfile.txt";
     }
@@ -31,7 +33,7 @@ protected:
         remove(_local_path.c_str());
     }
 
-    bool check_file_exists(const std::string& file_path)
+    bool check_file_exists(const std::string &file_path)
     {
         std::ifstream infile(file_path.c_str());
         return infile.good();

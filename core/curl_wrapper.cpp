@@ -45,7 +45,7 @@ bool CurlWrapper::download_text(const std::string &url, std::string &content)
 }
 
 static int upload_progress_update(void *p, double /*dltotal*/, double /*dlnow*/, double ultotal,
-                                   double ulnow)
+                                  double ulnow)
 {
     struct dl_up_progress *myp = (struct dl_up_progress *)p;
 
@@ -114,7 +114,7 @@ bool CurlWrapper::upload_file(const std::string &url, const std::string &path, c
 }
 
 static int download_progress_update(void *p, double dltotal, double dlnow, double /*ultotal*/,
-                                   double /*ulnow*/)
+                                    double /*ulnow*/)
 {
     struct dl_up_progress *myp = (struct dl_up_progress *)p;
 
