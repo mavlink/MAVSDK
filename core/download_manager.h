@@ -20,7 +20,7 @@ public:
     void stop();
 
     bool download_sync(const std::string &url, const std::string &local_path);
-    bool download_content_sync(const std::string &url, std::string &content);
+    bool download_text_sync(const std::string &url, std::string &content);
     void download_async(const std::string &url, const std::string &local_path,
                         const progress_callback_t &progress_callback = nullptr);
 
@@ -44,10 +44,10 @@ private:
         WorkItem operator=(WorkItem &) = delete;
     };
 
-    class DownloadContentItem : public WorkItem
+    class DownloadTextItem : public WorkItem
     {
     public:
-        DownloadContentItem(const std::string &url) :
+        DownloadTextItem(const std::string &url) :
             _url(url) { }
 
         std::string get_url() const
@@ -55,8 +55,8 @@ private:
             return _url;
         }
 
-        DownloadContentItem(DownloadContentItem &) = delete;
-        DownloadContentItem operator=(DownloadContentItem &) = delete;
+        DownloadTextItem(DownloadTextItem &) = delete;
+        DownloadTextItem operator=(DownloadTextItem &) = delete;
 
     private:
         std::string _url;

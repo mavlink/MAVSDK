@@ -106,7 +106,7 @@ bool DownloadManager::do_upload(const std::shared_ptr<UploadItem> &item)
     return success;
 }
 
-bool DownloadManager::download_content_sync(const std::string &url, std::string &content)
+bool DownloadManager::download_text_sync(const std::string &url, std::string &content)
 {
     CurlWrapper curl_wrapper;
     bool success = curl_wrapper.download_text(url, content);
