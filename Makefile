@@ -149,7 +149,7 @@ clean:
 	@rm -rf build/
 	@rm -rf logs/
 	@rm -rf install/
-#	@rm -rf $(CURL_BUILD_DIR)/prebuilt-with-ssl/android
+	@rm -rf $(CURL_BUILD_DIR)/prebuilt-with-ssl/android
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
