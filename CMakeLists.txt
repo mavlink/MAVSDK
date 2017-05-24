@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 # We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
-    add_definitions("-std=c++11 -Wall -Wextra -Werror -frtti")
+    add_definitions("-std=c++11 -Wall -Wextra -Werror")
     set(platform_libs "pthread")
 else()
     # MSBuild
@@ -19,6 +19,10 @@ endif()
 # Clang needs this warning disabled.
 if (APPLE OR IOS OR ANDROID)
     add_definitions("-Wno-missing-braces")
+endif()
+
+if (ANDROID)
+    add_definitions("-frtti")
 endif()
 
 if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
