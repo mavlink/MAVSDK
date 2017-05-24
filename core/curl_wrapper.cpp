@@ -133,7 +133,7 @@ static int download_progress_update(void *p, double dltotal, double dlnow, doubl
 
     int percentage = 100 / dltotal * dlnow;
 
-    if ((percentage > myp->progress_in_percentage) && (percentage % 1 == 0)) {
+    if (percentage > myp->progress_in_percentage) {
         myp->progress_in_percentage = percentage;
         return myp->progress_callback(percentage);
     }
