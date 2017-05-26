@@ -111,6 +111,7 @@ if(NOT IOS AND NOT ANDROID)
 
     add_subdirectory(libs/gtest)
     include_directories(libs/gtest/googletest/include)
+    include_directories(libs/gtest/googlemock/include)
 
     if(NOT MSVC)
         # gtest has these warnings
