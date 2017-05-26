@@ -109,13 +109,6 @@ bool HttpLoader::do_upload(const std::shared_ptr<UploadItem> &item,
 {
     bool success = curl_wrapper->upload_file(item->get_target_url(), item->get_local_path(),
                                              item->get_progress_callback());
-    if (success == false) {
-        auto callback = item->get_progress_callback();
-        if (nullptr != callback) {
-            callback(100);
-        }
-    }
-
     return success;
 }
 

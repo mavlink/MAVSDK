@@ -58,15 +58,19 @@ static int upload_progress_update(void *p, double dltotal, double dlnow, double 
 
     struct dl_up_progress *myp = (struct dl_up_progress *)p;
 
-    if (ultotal == 0 || ulnow == 0 || myp->progress_callback == nullptr) {
+    if (myp->progress_callback == nullptr) {
         return 0;
+    }
+
+    if (ultotal == 0 || ulnow == 0) {
+        return myp->progress_callback(0, Status::Idle, CURLcode::CURLE_OK);
     }
 
     int percentage = 100 / ultotal * ulnow;
 
     if (percentage > myp->progress_in_percentage) {
         myp->progress_in_percentage = percentage;
-        return myp->progress_callback(percentage);
+        return myp->progress_callback(percentage, Status::Uploading, CURLcode::CURLE_OK);
     }
 
     return 0;
@@ -110,8 +114,14 @@ bool CurlWrapper::upload_file(const std::string &url, const std::string &path, c
         curl_formfree(post);
 
         if (res == CURLcode::CURLE_OK) {
+            if (nullptr != progress_callback) {
+                progress_callback(100, Status::Finished, CURLcode::CURLE_OK);
+            }
             return true;
         } else {
+            if (nullptr != progress_callback) {
+                progress_callback(0, Status::Error, res);
+            }
             Debug() << "Error while uploading file, curl error code: " << curl_easy_strerror(res);
             return false;
         }
@@ -129,15 +139,19 @@ static int download_progress_update(void *p, double dltotal, double dlnow, doubl
 
     struct dl_up_progress *myp = (struct dl_up_progress *)p;
 
-    if (dltotal == 0 || dlnow == 0 || myp->progress_callback == nullptr) {
+    if (myp->progress_callback == nullptr) {
         return 0;
+    }
+
+    if (dltotal == 0 || dlnow == 0) {
+        return myp->progress_callback(0, Status::Idle, CURLcode::CURLE_OK);
     }
 
     int percentage = 100 / dltotal * dlnow;
 
     if (percentage > myp->progress_in_percentage) {
         myp->progress_in_percentage = percentage;
-        return myp->progress_callback(percentage);
+        return myp->progress_callback(percentage, Status::Downloading, CURLcode::CURLE_OK);
     }
 
     return 0;
@@ -165,8 +179,14 @@ bool CurlWrapper::download_file_to_path(const std::string &url, const std::strin
         fclose(fp);
 
         if (res == CURLcode::CURLE_OK) {
+            if (nullptr != progress_callback) {
+                progress_callback(100, Status::Finished, res);
+            }
             return true;
         } else {
+            if (nullptr != progress_callback) {
+                progress_callback(0, Status::Error, res);
+            }
             remove(path.c_str());
             Debug() << "Error while downloading file, curl error code: " << curl_easy_strerror(res);
             return false;

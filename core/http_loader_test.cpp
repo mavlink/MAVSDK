@@ -1,5 +1,6 @@
 #include "dronelink.h"
 #include "http_loader.h"
+#include "curl_include.h"
 #include "curl_wrapper.h"
 #include <fstream>
 #include <iostream>
@@ -57,13 +58,14 @@ protected:
                                       const progress_callback_t & progress_callback) {
                 for (size_t i = 0; i <= 100; i++) {
                     if (progress_callback != nullptr) { 
-                        progress_callback(i);
+                        progress_callback(i, Status::Downloading, CURLcode::CURLE_OK);
                     }
                 }
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
                 write_file(path, "downloaded file content\n");
+                progress_callback(100, Status::Finished, CURLcode::CURLE_OK);
                 return true;
             }));
     }
@@ -72,8 +74,9 @@ protected:
     {
         EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
             .WillOnce(Invoke([&](const std::string &/*url*/, const std::string &/*path*/,
-                                      const progress_callback_t & /*progress_callback*/) {
+                                      const progress_callback_t & progress_callback) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                progress_callback(0, Status::Error, CURLcode::CURLE_COULDNT_RESOLVE_HOST);
                 return false;
             }));
     }
@@ -85,13 +88,15 @@ protected:
                                       const progress_callback_t & progress_callback) {
                 for (size_t i = 0; i <= 100; i++) {
                     if (progress_callback != nullptr) { 
-                        progress_callback(i);
+                        progress_callback(i, Status::Downloading, CURLcode::CURLE_OK);
                     }
                 }
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
                 write_file(path, "downloaded file content\n");
+                
+                progress_callback(100, Status::Finished, CURLcode::CURLE_OK);
                 return true;
             }));
     }
@@ -106,9 +111,22 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     expect_one_simulated_download_to_fail(curl_wrapper_mock, _file_url_2, _file_local_path_2);
     expect_one_simulated_download_to_succeed(curl_wrapper_mock, _file_url_3, _file_local_path_3);
 
-    std::vector<int> callback_results;
+    std::vector<int> callback_results_progress;
+    int callback_finished_counter = 0;
+    int callback_error_counter = 0;
 
-    progress_callback_t progress = [&callback_results](int progress) -> int { callback_results.push_back(progress); return 0; };
+    progress_callback_t progress = [&callback_results_progress, &callback_finished_counter, &callback_error_counter] (int progress, Status status, CURLcode curl_code) -> int 
+    { 
+        if (status == Status::Downloading) { 
+            callback_results_progress.push_back(progress); 
+        } else if (status == Status::Error && curl_code == CURLcode::CURLE_COULDNT_RESOLVE_HOST) {
+            callback_error_counter++;
+        } else if (status == Status::Finished && curl_code == CURLcode::CURLE_OK) {
+            callback_finished_counter++;
+        }
+        return 0; 
+    };
+
     http_loader->download_async(_file_url_1, _file_local_path_1, progress);
     http_loader->download_async(_file_url_2, _file_local_path_2, progress);
     http_loader->download_async(_file_url_3, _file_local_path_3, progress);
@@ -118,11 +136,12 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     EXPECT_EQ(check_file_exists(_file_local_path_1), true);
     EXPECT_EQ(check_file_exists(_file_local_path_2), false);
     EXPECT_EQ(check_file_exists(_file_local_path_3), true);
-
-    EXPECT_EQ(callback_results.size(), 2*101);
-    
-    int callback_results_sum = std::accumulate(callback_results.begin(), callback_results.end(), 0);
-    EXPECT_EQ(callback_results_sum, 2*5050 + 0*(-1));
+   
+    int callback_results_sum = std::accumulate(callback_results_progress.begin(), callback_results_progress.end(), 0);
+    EXPECT_EQ(callback_results_sum, 2*5050);
+    EXPECT_EQ(callback_results_progress.size(), 2*101);
+    EXPECT_EQ(callback_finished_counter, 2);
+    EXPECT_EQ(callback_error_counter, 1);
 
     clean();
 }
@@ -134,9 +153,22 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
 
     expect_all_simulated_downloads_to_succeed(curl_wrapper_mock);
 
-    std::vector<int> callback_results;
+    std::vector<int> callback_results_progress;
+    int callback_finished_counter = 0;
+    int callback_error_counter = 0;
 
-    progress_callback_t progress = [&callback_results](int progress) -> int { callback_results.push_back(progress); return 0; };
+    progress_callback_t progress = [&callback_results_progress, &callback_finished_counter, &callback_error_counter] (int progress, Status status, CURLcode curl_code) -> int 
+    { 
+        if (status == Status::Downloading) { 
+            callback_results_progress.push_back(progress); 
+        } else if (status == Status::Error && curl_code == CURLcode::CURLE_COULDNT_RESOLVE_HOST) {
+            callback_error_counter++;
+        } else if (status == Status::Finished && curl_code == CURLcode::CURLE_OK) {
+            callback_finished_counter++;
+        }
+        return 0; 
+    };
+    
     http_loader->download_async(_file_url_1, _file_local_path_1, progress);
     http_loader->download_async(_file_url_2, _file_local_path_2, progress);
     http_loader->download_async(_file_url_3, _file_local_path_3, progress);
@@ -146,11 +178,12 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
     EXPECT_EQ(check_file_exists(_file_local_path_1), true);
     EXPECT_EQ(check_file_exists(_file_local_path_2), true);
     EXPECT_EQ(check_file_exists(_file_local_path_3), true);
-
-    EXPECT_EQ(callback_results.size(), 3*101);
     
-    int callback_results_sum = std::accumulate(callback_results.begin(), callback_results.end(), 0);
-    EXPECT_EQ(callback_results_sum, 3*5050 + 0*(-1));
+    int callback_results_sum = std::accumulate(callback_results_progress.begin(), callback_results_progress.end(), 0);
+    EXPECT_EQ(callback_results_sum, 3*5050);
+    EXPECT_EQ(callback_results_progress.size(), 3*101);
+    EXPECT_EQ(callback_finished_counter, 3);
+    EXPECT_EQ(callback_error_counter, 0);
 
     clean();
 }

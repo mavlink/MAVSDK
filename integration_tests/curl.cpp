@@ -99,28 +99,52 @@ TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_FileNotFound)
 TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
 {
     int last_progress;
-    auto progress = [&last_progress](int progress) -> int { last_progress = progress; return 0; };
+    Status last_status;
+    CURLcode last_curl_code; 
+
+    auto progress = [&last_progress, &last_status, &last_curl_code] 
+        (int progress, Status status, CURLcode curl_code) -> int 
+        { 
+            last_progress = progress; 
+            last_status = status;
+            last_curl_code = curl_code;
+            return 0; 
+        };
 
     CurlWrapper curl_wrapper;
 
     bool success = curl_wrapper.download_file_to_path(_file_url_existing_https, _local_path, progress);
     EXPECT_EQ(success, true);
     EXPECT_EQ(last_progress, 100);
+    EXPECT_EQ(last_status, Status::Finished);
+    EXPECT_EQ(last_curl_code, CURLcode::CURLE_OK);
 
     bool file_exists = check_file_exists(_local_path);
     EXPECT_EQ(file_exists, true);
 }
 
-TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_FileNotFound)
+TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_COULDNT_RESOLVE_HOST)
 {
-    int last_progress = -1;
-    auto progress = [&last_progress](int progress) -> int { last_progress = progress; return 0; };
+    int last_progress;
+    Status last_status;
+    CURLcode last_curl_code; 
+
+    auto progress = [&last_progress, &last_status, &last_curl_code] 
+        (int progress, Status status, CURLcode curl_code) -> int 
+        { 
+            last_progress = progress; 
+            last_status = status;
+            last_curl_code = curl_code;
+            return 0; 
+        };
 
     CurlWrapper curl_wrapper;
 
     bool success = curl_wrapper.download_file_to_path(_file_url_not_existing, _local_path, progress);
     EXPECT_EQ(success, false);
-    EXPECT_EQ(last_progress, -1);
+    EXPECT_EQ(last_progress, 0);
+    EXPECT_EQ(last_status, Status::Error);
+    EXPECT_EQ(last_curl_code, CURLcode::CURLE_COULDNT_RESOLVE_HOST);
 
     bool file_exists = check_file_exists(_local_path);
     EXPECT_EQ(file_exists, false);

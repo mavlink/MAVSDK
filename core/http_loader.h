@@ -5,10 +5,9 @@
 #include <atomic>
 #include <memory>
 #include <string>
+#include <curl_wrapper.h>
 
 namespace dronelink {
-
-typedef std::function<int(int progress)> progress_callback_t;
 
 class ICurlWrapper;
 
