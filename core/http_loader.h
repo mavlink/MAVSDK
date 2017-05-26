@@ -10,9 +10,15 @@ namespace dronelink {
 
 typedef std::function<int(int progress)> progress_callback_t;
 
+class ICurlWrapper;
+
 class HttpLoader
 {
 public:
+#ifdef TESTING
+    HttpLoader(const std::shared_ptr<ICurlWrapper> &curl_wrapper);
+#endif
+
     explicit HttpLoader();
     ~HttpLoader();
 
@@ -130,9 +136,14 @@ private:
     };
 
     static void work_thread(HttpLoader *self);
-    static void do_item(const std::shared_ptr<WorkItem> &item);
-    static bool do_download(const std::shared_ptr<DownloadItem> &item);
-    static bool do_upload(const std::shared_ptr<UploadItem> &item);
+    static void do_item(const std::shared_ptr<WorkItem> &item,
+                        const std::shared_ptr<ICurlWrapper> &curl_wrapper);
+    static bool do_download(const std::shared_ptr<DownloadItem> &item,
+                            const std::shared_ptr<ICurlWrapper> &curl_wrapper);
+    static bool do_upload(const std::shared_ptr<UploadItem> &item,
+                          const std::shared_ptr<ICurlWrapper> &curl_wrapper);
+
+    std::shared_ptr<ICurlWrapper> _curl_wrapper;
 
     SafeQueue <std::shared_ptr<WorkItem>> _work_queue {};
     std::thread *_work_thread = nullptr;

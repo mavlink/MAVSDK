@@ -123,6 +123,7 @@ if(NOT IOS AND NOT ANDROID)
         core/global_include_test.cpp
         core/mavlink_channels_test.cpp
         core/unittests_main.cpp
+        core/http_loader_test.cpp
         ${plugin_unittest_source_files}
         ${unit_tests_src}
     )

@@ -3,8 +3,18 @@
 
 namespace dronelink {
 
+
+#ifdef TESTING
+HttpLoader::HttpLoader(const std::shared_ptr<ICurlWrapper> &curl_wrapper)
+    : _curl_wrapper(curl_wrapper)
+{
+    start();
+}
+#endif
+
 HttpLoader::HttpLoader()
 {
+    _curl_wrapper = std::make_shared<CurlWrapper>();
     start();
 }
 
@@ -33,7 +43,7 @@ void HttpLoader::stop()
 bool HttpLoader::download_sync(const std::string &url, const std::string &local_path)
 {
     auto work_item = std::make_shared<DownloadItem>(url, local_path, nullptr);
-    bool success = do_download(work_item);
+    bool success = do_download(work_item, _curl_wrapper);
     return success;
 }
 
@@ -47,7 +57,7 @@ void HttpLoader::download_async(const std::string &url, const std::string &local
 bool HttpLoader::upload_sync(const std::string &target_url, const std::string &local_path)
 {
     auto work_item = std::make_shared<UploadItem>(target_url, local_path, nullptr);
-    bool success = do_upload(work_item);
+    bool success = do_upload(work_item, _curl_wrapper);
     return success;
 }
 
@@ -62,41 +72,43 @@ void HttpLoader::work_thread(HttpLoader *self)
 {
     while (!self->_should_exit) {
         auto item = self->_work_queue.dequeue();
-        if (item == nullptr) {
+        auto curl_wrapper = self->_curl_wrapper;
+        if (item == nullptr || curl_wrapper == nullptr) {
             continue;
         }
-        do_item(item);
+        do_item(item, curl_wrapper);
     }
 }
 
-void HttpLoader::do_item(const std::shared_ptr<WorkItem> &item)
+void HttpLoader::do_item(const std::shared_ptr<WorkItem> &item,
+                         const std::shared_ptr<ICurlWrapper> &curl_wrapper)
 {
     auto download_item = std::dynamic_pointer_cast<DownloadItem>(item);
     if (nullptr != download_item) {
-        do_download(download_item);
+        do_download(download_item, curl_wrapper);
         return;
     }
 
     auto upload_item = std::dynamic_pointer_cast<UploadItem>(item);
     if (nullptr != upload_item) {
-        do_upload(upload_item);
+        do_upload(upload_item, curl_wrapper);
         return;
     }
 }
 
-bool HttpLoader::do_download(const std::shared_ptr<DownloadItem> &item)
+bool HttpLoader::do_download(const std::shared_ptr<DownloadItem> &item,
+                             const std::shared_ptr<ICurlWrapper> &curl_wrapper)
 {
-    CurlWrapper curl_wrapper;
-    bool success = curl_wrapper.download_file_to_path(item->get_url(), item->get_local_path(),
-                                                      item->get_progress_callback());
+    bool success = curl_wrapper->download_file_to_path(item->get_url(), item->get_local_path(),
+                                                       item->get_progress_callback());
     return success;
 }
 
-bool HttpLoader::do_upload(const std::shared_ptr<UploadItem> &item)
+bool HttpLoader::do_upload(const std::shared_ptr<UploadItem> &item,
+                           const std::shared_ptr<ICurlWrapper> &curl_wrapper)
 {
-    CurlWrapper curl_wrapper;
-    bool success = curl_wrapper.upload_file(item->get_target_url(), item->get_local_path(),
-                                            item->get_progress_callback());
+    bool success = curl_wrapper->upload_file(item->get_target_url(), item->get_local_path(),
+                                             item->get_progress_callback());
     if (success == false) {
         auto callback = item->get_progress_callback();
         if (nullptr != callback) {
