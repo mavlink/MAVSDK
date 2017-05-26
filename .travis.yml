@@ -14,6 +14,7 @@ matrix:
       env: BUILD_TARGET=docker_build
 
 before_script:
+- set -e
 - if [[ "${BUILD_TARGET}" = "trusty_build" ]]; then
     sudo wget -O /usr/bin/astyle https://github.com/PX4/astyle/releases/download/2.05.1/astyle-linux;
     sudo chmod +x /usr/bin/astyle;
