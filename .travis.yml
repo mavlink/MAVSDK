@@ -11,20 +11,18 @@ matrix:
       sudo: required
       services:
         - docker
-      env: 
-        - BUILD_TARGET=docker_build
-        - DOCKER_REPO=879326759580.dkr.ecr.eu-central-1.amazonaws.com/dronelink
+      env: BUILD_TARGET=docker_build
 
 before_script:
 - if [[ "${BUILD_TARGET}" = "trusty_build" ]]; then
-    sudo wget -O /usr/bin/astyle https://github.com/PX4/astyle/releases/download/2.06/astyle-linux;
+    sudo wget -O /usr/bin/astyle https://github.com/PX4/astyle/releases/download/2.05.1/astyle-linux;
     sudo chmod +x /usr/bin/astyle;
     sudo apt-get install libcurl4-openssl-dev;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     pip install --user awscli; 
-    "$(aws ecr get-login --region eu-central-1)";
-    docker pull $DOCKER_REPO; 
+    $(aws ecr get-login --region eu-central-1);
+    docker pull 879326759580.dkr.ecr.eu-central-1.amazonaws.com/dronelink;
   fi
 
 script:
@@ -34,7 +32,8 @@ script:
     make fix_style;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
-    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw $DOCKER_REPO make
-    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw $DOCKER_REPO make run_unit_tests
-    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw $DOCKER_REPO make fix_style
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw 879326759580.dkr.ecr.eu-central-1.amazonaws.com/dronelink astyle --version
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw 879326759580.dkr.ecr.eu-central-1.amazonaws.com/dronelink make;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw 879326759580.dkr.ecr.eu-central-1.amazonaws.com/dronelink make run_unit_tests;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw 879326759580.dkr.ecr.eu-central-1.amazonaws.com/dronelink make fix_style;
   fi
