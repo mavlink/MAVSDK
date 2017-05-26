@@ -17,7 +17,7 @@ matrix:
 
 before_script:
 - if [[ "${BUILD_TARGET}" = "trusty_build" ]]; then
-    sudo apt-get install libcurl4-openssl-dev;
+    sudo apt-get install astyle libcurl4-openssl-dev;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     pip install --user awscli; 
