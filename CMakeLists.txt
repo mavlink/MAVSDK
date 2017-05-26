@@ -107,11 +107,6 @@ if(NOT IOS AND NOT ANDROID)
             ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
     endif()
 
-    if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
-        add_subdirectory(${EXTERNAL_DIR}/unit_tests
-            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/unit_tests)
-    endif()
-
     enable_testing()
 
     add_subdirectory(libs/gtest)
