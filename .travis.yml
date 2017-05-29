@@ -5,7 +5,7 @@ matrix:
   include:
     - os: linux
       dist: trusty
-      sudo: true
+      sudo: false
       env: BUILD_TARGET=trusty_build
     - os: linux
       sudo: required
@@ -13,12 +13,16 @@ matrix:
         - docker
       env: BUILD_TARGET=docker_build
 
+addons:
+  apt:
+    packages:
+      - libcurl4-openssl-dev
+
 before_script:
 - set -e
 - if [[ "${BUILD_TARGET}" = "trusty_build" ]]; then
     sudo wget -O /usr/bin/astyle https://github.com/PX4/astyle/releases/download/2.05.1/astyle-linux;
     sudo chmod +x /usr/bin/astyle;
-    sudo apt-get install libcurl4-openssl-dev;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     pip install --user awscli; 
