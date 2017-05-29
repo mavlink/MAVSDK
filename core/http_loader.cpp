@@ -114,8 +114,7 @@ bool HttpLoader::do_upload(const std::shared_ptr<UploadItem> &item,
 
 bool HttpLoader::download_text_sync(const std::string &url, std::string &content)
 {
-    CurlWrapper curl_wrapper;
-    bool success = curl_wrapper.download_text(url, content);
+    bool success = _curl_wrapper->download_text(url, content);
     return success;
 }
 
