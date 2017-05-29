@@ -1,8 +1,7 @@
 #pragma once
 #include "curl_include.h"
 
-namespace dronelink 
-{
+namespace dronelink {
 
 enum class Status {
     Idle = 0,
