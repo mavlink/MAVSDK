@@ -16,13 +16,14 @@ matrix:
 addons:
   apt:
     packages:
-      - libcurl4-openssl-dev
+    - libcurl4-openssl-dev
 
 before_script:
 - set -e
 - if [[ "${BUILD_TARGET}" = "trusty_build" ]]; then
-    sudo wget -O /usr/bin/astyle https://github.com/PX4/astyle/releases/download/2.05.1/astyle-linux;
-    sudo chmod +x /usr/bin/astyle;
+    mkdir -p ~/bin;
+    wget -O ~/bin/astyle https://github.com/PX4/astyle/releases/download/2.05.1/astyle-linux;
+    chmod +x ~/bin/astyle;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     pip install --user awscli; 
