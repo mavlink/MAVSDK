@@ -1,7 +1,6 @@
 #include "dronelink.h"
 #include "http_loader.h"
 #include "curl_include.h"
-#include "curl_wrapper.h"
 #include <fstream>
 #include <iostream>
 #include <chrono>
