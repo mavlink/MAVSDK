@@ -106,6 +106,9 @@ void MavlinkCommands::queue_command_async(uint16_t command,
                                           uint8_t target_component_id,
                                           command_result_callback_t callback)
 {
+    // Debug() << "Command " << (int)command << " to send to " << (int)target_system_id << ", "
+    //         << (int)target_component_id;
+
     Work new_work {};
     mavlink_msg_command_long_pack(_parent->get_own_system_id(),
                                   _parent->get_own_component_id(),
@@ -174,6 +177,7 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             if (work.callback) {
                 work.callback(Result::IN_PROGRESS, command_ack.progress / 100.0f);
             }
+            work.state = Work::State::IN_PROGRESS;
             // If we get a progress update, we can raise the timeout
             // to something higher because we know the initial command
             // has arrived. A possible timeout for this case is the initial
