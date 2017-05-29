@@ -244,7 +244,8 @@ void DeviceImpl::request_autopilot_version()
     send_command_with_ack_async(
         MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
         MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-        nullptr);
+        nullptr,
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 uint64_t DeviceImpl::get_target_uuid() const
