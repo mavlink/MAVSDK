@@ -131,6 +131,11 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
 
 void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
 {
+    // Ignore if they don't come from the autopilot component
+    if (message.compid != MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
+        return;
+    }
+
     mavlink_autopilot_version_t autopilot_version;
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
