@@ -38,7 +38,6 @@ script:
     make fix_style;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
-    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} astyle --version
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make run_unit_tests;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make fix_style;
