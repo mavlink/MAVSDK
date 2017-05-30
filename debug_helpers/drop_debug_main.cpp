@@ -34,7 +34,7 @@ int main(int argc, const char *argv[])
         if (!_discovered_device) {
             std::cout << "waiting for device to appear..." << std::endl;
         }
-        usleep(1000000);
+        std::this_thread::sleep_for(std::chrono::microseconds(1000000));
     }
 
     return 0;

@@ -14,12 +14,12 @@ TEST_F(SitlTest, OffboardVelocityNED)
     ASSERT_EQ(DroneLink::ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
     Device &device = dl.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     Action::Result action_ret = device.action().arm();
@@ -28,7 +28,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     action_ret = device.action().takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    usleep(5000000);
+    std::this_thread::sleep_for(std::chrono::microseconds(5000000));
 
     // Send it once before starting offboard, otherwise it will be rejected.
     device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
@@ -40,7 +40,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     // Let yaw settle.
     for (unsigned i = 0; i < 100; ++i) {
         device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     {
@@ -52,28 +52,28 @@ TEST_F(SitlTest, OffboardVelocityNED)
             float vx = 5.0f * sinf(i * step_size);
             //std::cout << "vx: " << vx << std::endl;
             device.offboard().set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
-            usleep(10000);
+            std::this_thread::sleep_for(std::chrono::microseconds(10000));
         }
     }
 
     for (unsigned i = 0; i < 400; ++i) {
         device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     for (unsigned i = 0; i < 400; ++i) {
         device.offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     for (unsigned i = 0; i < 400; ++i) {
         device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     for (unsigned i = 0; i < 400; ++i) {
         device.offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     offboard_result = device.offboard().stop();
@@ -82,7 +82,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     action_ret = device.action().land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
-    usleep(10000000);
+    std::this_thread::sleep_for(std::chrono::microseconds(10000000));
 
     action_ret = device.action().disarm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
@@ -97,12 +97,12 @@ TEST_F(SitlTest, OffboardVelocityBody)
     ASSERT_EQ(DroneLink::ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
     Device &device = dl.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     Action::Result action_ret = device.action().arm();
@@ -111,7 +111,7 @@ TEST_F(SitlTest, OffboardVelocityBody)
     action_ret = device.action().takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    usleep(5000000);
+    std::this_thread::sleep_for(std::chrono::microseconds(5000000));
 
     // Send it once before starting offboard, otherwise it will be rejected.
     device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
@@ -123,43 +123,43 @@ TEST_F(SitlTest, OffboardVelocityBody)
     // Turn around yaw and climb
     for (unsigned i = 0; i < 200; ++i) {
         device.offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     // Turn back
     for (unsigned i = 0; i < 200; ++i) {
         device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     // Wait for a bit
     for (unsigned i = 0; i < 200; ++i) {
         device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     // Fly a circle
     for (unsigned i = 0; i < 500; ++i) {
         device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     // Wait for a bit
     for (unsigned i = 0; i < 500; ++i) {
         device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     // Fly a circle sideways
     for (unsigned i = 0; i < 500; ++i) {
         device.offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     // Wait for a bit
     for (unsigned i = 0; i < 500; ++i) {
         device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 
     offboard_result = device.offboard().stop();
@@ -168,7 +168,7 @@ TEST_F(SitlTest, OffboardVelocityBody)
     action_ret = device.action().land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
-    usleep(10000000);
+    std::this_thread::sleep_for(std::chrono::microseconds(10000000));
 
     action_ret = device.action().disarm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);

@@ -12,29 +12,29 @@ TEST_F(SitlTest, ActionSimpleHover)
     ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dl.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     Action::Result action_ret = device.action().arm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
-    sleep(1);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     action_ret = device.action().takeoff();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
-    sleep(5);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     action_ret = device.action().land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
     while (device.telemetry().in_air()) {
         std::cout << "waiting for device to be landed" << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     action_ret = device.action().disarm();

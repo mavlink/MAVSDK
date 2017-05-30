@@ -62,28 +62,3 @@ bool are_equal(double one, double two)
 
 } // namespace dronelink
 
-
-#ifdef WINDOWS
-#include <windows.h>
-// For Windows, taken from
-// http://stackoverflow.com/questions/5801813/
-//     r-usleep-is-obsolete-workarounds-for-windows-mingw#answer-17283549
-void usleep(int64_t usec)
-{
-    HANDLE timer;
-    LARGE_INTEGER ft;
-
-    // Convert to 100 nanosecond interval, negative value indicates relative time
-    ft.QuadPart = -(10 * usec);
-
-    timer = CreateWaitableTimer(NULL, TRUE, NULL);
-    SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
-    WaitForSingleObject(timer, INFINITE);
-    CloseHandle(timer);
-}
-
-void sleep(int64_t sec)
-{
-    usleep(sec * 1000000);
-}
-#endif

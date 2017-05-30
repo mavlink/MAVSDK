@@ -18,7 +18,7 @@ TEST_F(SitlTest, Info)
 
     while (!_discovered_device) {
         std::cout << "waiting for device to appear..." << std::endl;
-        usleep(1000000);
+        std::this_thread::sleep_for(std::chrono::microseconds(1000000));
     }
 
     for (unsigned i = 0; i < 3; ++i) {
@@ -44,7 +44,7 @@ TEST_F(SitlTest, Info)
         // FIXME: This is currently 0.
         //EXPECT_NE(version.os_sw_major, 0);
 
-        usleep(1000000);
+        std::this_thread::sleep_for(std::chrono::microseconds(1000000));
     }
 }
 

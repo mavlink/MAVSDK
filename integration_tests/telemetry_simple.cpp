@@ -11,12 +11,12 @@ TEST_F(SitlTest, TelemetrySimple)
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
     ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
 
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
     Device &device = dl.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     Telemetry::Result result = device.telemetry().set_rate_position(10.0);
@@ -89,6 +89,6 @@ TEST_F(SitlTest, TelemetrySimple)
                   << "remaining: " << battery.remaining_percent * 100.0f << " %" << std::endl;
 
 
-        usleep(30000);
+        std::this_thread::sleep_for(std::chrono::microseconds(30000));
     }
 }

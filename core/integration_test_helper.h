@@ -11,12 +11,12 @@ protected:
     {
         system("./start_px4_sitl.sh");
         // We need to wait a bit until it's up and running.
-        sleep(3);
+        std::this_thread::sleep_for(std::chrono::seconds(3));
     }
     virtual void TearDown()
     {
         // Don't rush this either.
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         system("./stop_px4_sitl.sh");
     }
 };

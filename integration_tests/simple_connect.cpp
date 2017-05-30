@@ -15,7 +15,7 @@ TEST_F(SitlTest, TwoConnections)
 
     ASSERT_EQ(dl->add_udp_connection(14550), DroneLink::ConnectionResult::SUCCESS);
 
-    sleep(5);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     std::vector<uint64_t> uuids = dl->device_uuids();
 
@@ -29,20 +29,20 @@ TEST_F(SitlTest, TwoConnections)
     std::cout << "deleting it" << std::endl;
     delete dl;
 
-    sleep(1);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     dl = new dronelink::DroneLink();
 
     ASSERT_EQ(dl->add_udp_connection(14540), DroneLink::ConnectionResult::SUCCESS);
 
-    sleep(3);
+    std::this_thread::sleep_for(std::chrono::seconds(3));
     uuids = dl->device_uuids();
 
     ASSERT_EQ(uuids.size(), 1);
     EXPECT_EQ(uuid, uuids[0]);
 
     std::cout << "created and started yet again" << std::endl;
-    sleep(1);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     delete dl;
     std::cout << "exiting" << std::endl;

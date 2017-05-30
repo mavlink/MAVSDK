@@ -177,10 +177,10 @@ void DeviceImpl::device_thread(DeviceImpl *self)
         self->_commands.do_work();
         if (self->_heartbeats_arriving) {
             // Work fairly fast if we're connected.
-            usleep(10000);
+            std::this_thread::sleep_for(std::chrono::microseconds(10000));
         } else {
             // Be less aggressive when unconnected.
-            usleep(500000);
+            std::this_thread::sleep_for(std::chrono::microseconds(500000));
         }
     }
 }

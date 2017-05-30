@@ -4,6 +4,7 @@
 
 #include <sstream>
 #include <chrono>
+#include <thread>
 
 #if ANDROID
 #include <android/log.h>
@@ -21,10 +22,6 @@
 #include <cmath>
 #endif
 
-#ifndef WINDOWS
-#include <unistd.h> // for usleep
-#endif
-
 #define MIN(x_, y_) ((x_) > (y_)) ? (y_) : (x_)
 #define MAX(x_, y_) ((x_) > (y_)) ? (x_) : (y_)
 
@@ -34,11 +31,6 @@
 #define STRNCPY strncpy
 #endif
 
-
-#ifdef WINDOWS
-void usleep(int64_t usec);
-void sleep(int64_t sec);
-#endif
 
 namespace dronelink {
 

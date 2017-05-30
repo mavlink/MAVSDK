@@ -35,7 +35,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
 
-    sleep(3);
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
     std::vector<uint64_t> uuids = dl.device_uuids();
 
@@ -52,25 +52,25 @@ TEST_F(SitlTest, TelemetryAsync)
     Device &device = dl.device(uuid);
 
     device.telemetry().set_rate_position_async(10.0, std::bind(&receive_result, _1));
-    usleep(100000);
+    std::this_thread::sleep_for(std::chrono::microseconds(100000));
 
     device.telemetry().set_rate_home_position_async(10.0, std::bind(&receive_result, _1));
-    usleep(100000);
+    std::this_thread::sleep_for(std::chrono::microseconds(100000));
 
     device.telemetry().set_rate_in_air_async(10.0, std::bind(&receive_result, _1));
-    usleep(100000);
+    std::this_thread::sleep_for(std::chrono::microseconds(100000));
 
     device.telemetry().set_rate_attitude_async(10.0, std::bind(&receive_result, _1));
-    usleep(100000);
+    std::this_thread::sleep_for(std::chrono::microseconds(100000));
 
     device.telemetry().set_rate_ground_speed_ned_async(10.0, std::bind(&receive_result, _1));
-    usleep(100000);
+    std::this_thread::sleep_for(std::chrono::microseconds(100000));
 
     device.telemetry().set_rate_gps_info_async(10.0, std::bind(&receive_result, _1));
-    usleep(100000);
+    std::this_thread::sleep_for(std::chrono::microseconds(100000));
 
     device.telemetry().set_rate_battery_async(10.0, std::bind(&receive_result, _1));
-    usleep(100000);
+    std::this_thread::sleep_for(std::chrono::microseconds(100000));
 
     device.telemetry().position_async(std::bind(&print_position, _1));
 
@@ -90,7 +90,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     device.telemetry().battery_async(std::bind(&print_battery, _1));
 
-    usleep(10000000);
+    std::this_thread::sleep_for(std::chrono::microseconds(10000000));
 
     ASSERT_FALSE(_set_rate_error);
     ASSERT_TRUE(_received_position);

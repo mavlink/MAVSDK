@@ -15,7 +15,7 @@ TEST(HelloWorld, SayHello)
     ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // One vehicle should have connected.
     std::vector<uint64_t> uuids = dl.device_uuids();

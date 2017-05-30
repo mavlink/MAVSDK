@@ -49,22 +49,22 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
     ASSERT_EQ(dl.add_udp_connection(), DroneLink::ConnectionResult::SUCCESS);
 
     dl.register_on_discover(std::bind(&on_discover, _1));
-    sleep(5);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
     ASSERT_TRUE(_discovered_device);
 
     while (!dl.device(_uuid).telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     dl.device(_uuid).action().set_takeoff_altitude(0.5f);
 
     dl.device(_uuid).action().arm_async(std::bind(&receive_arm_result, _1));
-    sleep(1);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_received_arm_result);
 
     dl.device(_uuid).action().takeoff_async(std::bind(&receive_takeoff_result, _1));
-    sleep(1);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_received_takeoff_result);
 
     bool reached_alt = false;
@@ -74,19 +74,19 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
             reached_alt = true;
             break;
         }
-        usleep(1000);
+        std::this_thread::sleep_for(std::chrono::microseconds(1000));
     }
     ASSERT_TRUE(reached_alt);
 
     // Kill it and hope it doesn't come down upside down, ready to fly again :)
     dl.device(_uuid).action().kill_async(std::bind(&receive_kill_result, _1));
-    usleep(1000000);
+    std::this_thread::sleep_for(std::chrono::microseconds(1000000));
     ASSERT_TRUE(_received_kill_result);
 
     // It should be below 0.5m after having been killed
     ASSERT_FALSE(dl.device(_uuid).telemetry().armed());
 
     // The land detector takes some time.
-    usleep(2000000);
+    std::this_thread::sleep_for(std::chrono::microseconds(2000000));
     ASSERT_FALSE(dl.device(_uuid).telemetry().in_air());
 }

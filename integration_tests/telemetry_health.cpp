@@ -12,12 +12,12 @@ TEST_F(SitlTest, TelemetryHealth)
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
     ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dl.device();
 
     device.telemetry().health_async(std::bind(&print_health, std::placeholders::_1));
-    sleep(3);
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
 void print_health(Telemetry::Health health)

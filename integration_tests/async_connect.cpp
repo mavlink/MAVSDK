@@ -24,18 +24,18 @@ TEST_F(SitlTest, AsyncConnect)
 
     while (!_discovered_device) {
         std::cout << "waiting for device to appear..." << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     // Let params stabilize before shutting it down.
-    sleep(3);
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
     // Call gtest to shut down SITL.
     TearDown();
 
     while (!_timeouted_device) {
         std::cout << "waiting for device to disappear..." << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
 

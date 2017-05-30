@@ -21,7 +21,7 @@ TEST_F(SitlTest, ActionAsyncHover)
     ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // TODO: this test is pretty dumb, should be improved with more checks.
     Device &device = dl.device();
@@ -31,26 +31,26 @@ TEST_F(SitlTest, ActionAsyncHover)
 
     while (!_all_ok) {
         std::cout << "Waiting to be ready..." << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     device.action().arm_async(std::bind(&receive_result, _1));
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     device.action().set_takeoff_altitude(5.0f);
 
     device.action().takeoff_async(std::bind(&receive_result, _1));
-    sleep(5);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     device.action().land_async(std::bind(&receive_result, _1));
 
     while (_in_air) {
         std::cout << "Waiting to be landed..." << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     device.action().disarm_async(std::bind(&receive_result, _1));
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 

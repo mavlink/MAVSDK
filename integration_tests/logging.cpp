@@ -11,15 +11,15 @@ TEST_F(SitlTest, Logging)
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
     ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
 
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Logging::Result log_ret = dl.device().logging().start_logging();
 
     if (log_ret == Logging::Result::COMMAND_DENIED) {
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
         dl.device().logging().stop_logging();
         //ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
         log_ret = dl.device().logging().start_logging();
     }
 
@@ -27,7 +27,7 @@ TEST_F(SitlTest, Logging)
 
 
     for (unsigned i = 0; i < 10; ++i) {
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     log_ret = dl.device().logging().stop_logging();

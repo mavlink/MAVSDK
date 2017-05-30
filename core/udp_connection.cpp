@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <unistd.h> // for close()
 #else
 #include <winsock2.h>
 #include <Ws2tcpip.h> // For InetPton
