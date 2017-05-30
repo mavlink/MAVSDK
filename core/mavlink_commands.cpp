@@ -157,11 +157,11 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
 
         case MAV_RESULT_DENIED:
             Debug() << "command denied (" << work.mavlink_command << ").";
-            [[fallthrough]]; // no break
+            // FALLTHRU
 
         case MAV_RESULT_UNSUPPORTED:
             Debug() << "command unsupported (" << work.mavlink_command << ").";
-            [[fallthrough]]; // no break
+            // FALLTHRU
 
         case MAV_RESULT_FAILED:
             Debug() << "command failed (" << work.mavlink_command << ").";
