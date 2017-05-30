@@ -42,11 +42,11 @@ matrix:
     - os: linux
       dist: trusty
       sudo: false
+      compiler: clang
       env:
         - BUILD_TARGET=clang_build
         - CC=clang-3.8
         - CXX=clang++-3.8
-      compiler: clang
       addons:
         apt:
           sources:
