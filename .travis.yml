@@ -7,6 +7,17 @@ matrix:
       dist: trusty
       sudo: false
       env: BUILD_TARGET=trusty_build
+      compiler: gcc
+    - os: linux
+      dist: trusty
+      sudo: false
+      env: BUILD_TARGET=trusty_build
+      compiler: gcc-5
+    - os: linux
+      dist: trusty
+      sudo: false
+      env: BUILD_TARGET=trusty_build
+      compiler: clang
     - os: linux
       sudo: required
       services:
@@ -26,7 +37,7 @@ before_script:
     chmod +x ~/bin/astyle;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
-    pip install --user awscli; 
+    pip install --user awscli;
     $(aws ecr get-login --region eu-central-1);
     docker pull ${DOCKER_REPO};
   fi
