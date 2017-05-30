@@ -17,8 +17,8 @@ else()
 endif()
 
 # Clang needs this warning disabled.
-if (APPLE OR IOS OR ANDROID)
-    add_definitions("-Wno-missing-braces")
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_definitions("-stdlib=libc++ -Wno-missing-braces")
 endif()
 
 if (ANDROID)

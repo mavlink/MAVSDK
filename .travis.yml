@@ -42,6 +42,11 @@ matrix:
       sudo: false
       env: BUILD_TARGET=trusty_build
       compiler: clang
+      addons:
+        apt:
+          packages:
+            - libc++1
+            - libc++-dev
     - os: linux
       sudo: required
       services:
