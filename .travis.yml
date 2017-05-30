@@ -40,20 +40,6 @@ matrix:
             - gcc-6
             - g++-6
     - os: linux
-      dist: trusty
-      sudo: false
-      compiler: clang
-      env:
-        - BUILD_TARGET=clang_build
-      addons:
-        apt:
-          sources:
-            - llvm-toolchain-trusty-3.8
-          packages:
-            - libc++1
-            - libc++-dev
-            - clang-3.8
-    - os: linux
       sudo: required
       services:
         - docker
@@ -61,7 +47,7 @@ matrix:
     - os: osx
       osx_image: xcode8
       env:
-        - BUILD_TARGET=clang_build
+        - BUILD_TARGET=osx_build
 
 addons:
   apt:
@@ -80,10 +66,6 @@ install:
     $(aws ecr get-login --region eu-central-1);
     docker pull ${DOCKER_REPO};
   fi
-- if [[ "${BUILD_TARGET}" = "clang_build" && "${TRAVIS_OS_NAME}" = "linux" ]]; then
-    export CC=clang-3.8;
-    export CXX=clang++-3.8;
-  fi
 
 script:
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
@@ -91,12 +73,12 @@ script:
     make run_unit_tests;
     make fix_style;
   fi
-- if [[ "${BUILD_TARGET}" = "clang_build" ]]; then
-    make;
-    make run_unit_tests;
-  fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make run_unit_tests;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make fix_style;
+  fi
+- if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
+    make;
+    make run_unit_tests;
   fi
