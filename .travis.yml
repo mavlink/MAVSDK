@@ -14,8 +14,9 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-      - BUILD_TARGET=gcc_build
-      - GCC_VERSION=5
+        - BUILD_TARGET=gcc_build
+        - CC=gcc-5
+        - CXX=g++-5
       addons:
         apt:
           sources:
@@ -28,8 +29,9 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-      - BUILD_TARGET=gcc_build
-      - GCC_VERSION=6
+        - BUILD_TARGET=gcc_build
+        - CC=gcc-6
+        - CXX=g++-6
       addons:
         apt:
           sources:
@@ -40,7 +42,10 @@ matrix:
     - os: linux
       dist: trusty
       sudo: false
-      env: BUILD_TARGET=clang_build
+      env:
+        - BUILD_TARGET=clang_build
+        - CC=clang-3.8
+        - CXX=clang++-3.8
       compiler: clang
       addons:
         apt:
@@ -57,7 +62,8 @@ matrix:
       env: BUILD_TARGET=docker_build
     - os: osx
       osx_image: xcode8
-      env: BUILD_TARGET=clang_build
+      env:
+        - BUILD_TARGET=clang_build
 
 addons:
   apt:
@@ -75,12 +81,6 @@ install:
     pip install --user awscli;
     $(aws ecr get-login --region eu-central-1);
     docker pull ${DOCKER_REPO};
-  fi
-- if [[ $GCC_VERSION -eq 5 ]]; then
-    export CXX=g++-5 CC=gcc-5;
-  fi
-- if [[ $GCC_VERSION -eq 6 ]]; then
-    export CXX=g++-6 CC=gcc-6;
   fi
 
 script:
