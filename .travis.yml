@@ -6,13 +6,37 @@ matrix:
     - os: linux
       dist: trusty
       sudo: false
-      env: BUILD_TARGET=trusty_build
       compiler: gcc
+      env:
+      - BUILD_TARGET=trusty_build
     - os: linux
       dist: trusty
       sudo: false
-      env: BUILD_TARGET=trusty_build
-      compiler: gcc-5
+      compiler: gcc
+      env:
+      - BUILD_TARGET=trusty_build
+      - GCC_VERSION=5
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+            - gcc-5
+    - os: linux
+      dist: trusty
+      sudo: false
+      compiler: gcc
+      env:
+      - BUILD_TARGET=trusty_build
+      - GCC_VERSION=6
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+            - gcc-6
     - os: linux
       dist: trusty
       sudo: false
@@ -29,7 +53,7 @@ addons:
     packages:
     - libcurl4-openssl-dev
 
-before_script:
+install:
 - set -e
 - if [[ "${BUILD_TARGET}" = "trusty_build" ]]; then
     mkdir -p ~/bin;
@@ -40,6 +64,12 @@ before_script:
     pip install --user awscli;
     $(aws ecr get-login --region eu-central-1);
     docker pull ${DOCKER_REPO};
+  fi
+- if [[ $GCC_VERSION -eq 5 ]]; then
+    export CXX=g++-5 CC=gcc-5;
+  fi
+- if [[ $GCC_VERSION -eq 6 ]]; then
+    export CXX=g++-6 CC=gcc-6;
   fi
 
 script:
