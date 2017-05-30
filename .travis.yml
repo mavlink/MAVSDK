@@ -8,13 +8,13 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-      - BUILD_TARGET=trusty_build
+      - BUILD_TARGET=gcc_build
     - os: linux
       dist: trusty
       sudo: false
       compiler: gcc
       env:
-      - BUILD_TARGET=trusty_build
+      - BUILD_TARGET=gcc_build
       - GCC_VERSION=5
       addons:
         apt:
@@ -28,7 +28,7 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-      - BUILD_TARGET=trusty_build
+      - BUILD_TARGET=gcc_build
       - GCC_VERSION=6
       addons:
         apt:
@@ -40,16 +40,16 @@ matrix:
     - os: linux
       dist: trusty
       sudo: false
-      env: BUILD_TARGET=trusty_build
+      env: BUILD_TARGET=clang_build
       compiler: clang
       addons:
         apt:
           sources:
-            - llvm-toolchain-precise-3.6
+            - llvm-toolchain-trusty-3.8
           packages:
             - libc++1
             - libc++-dev
-            - clang-3.6
+            - clang-3.8
     - os: linux
       sudo: required
       services:
@@ -57,7 +57,7 @@ matrix:
       env: BUILD_TARGET=docker_build
     - os: osx
       osx_image: xcode8
-      env: BUILD_TARGET=mac_build
+      env: BUILD_TARGET=clang_build
 
 addons:
   apt:
@@ -66,7 +66,7 @@ addons:
 
 install:
 - set -e
-- if [[ "${BUILD_TARGET}" = "trusty_build" ]]; then
+- if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
     mkdir -p ~/bin;
     wget -O ~/bin/astyle https://github.com/PX4/astyle/releases/download/2.05.1/astyle-linux;
     chmod +x ~/bin/astyle;
@@ -84,17 +84,17 @@ install:
   fi
 
 script:
-- if [[ "${BUILD_TARGET}" = "trusty_build" ]]; then
+- if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
     make;
     make run_unit_tests;
     make fix_style;
+  fi
+- if [[ "${BUILD_TARGET}" = "clang_build" ]]; then
+    make;
+    make run_unit_tests;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make run_unit_tests;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make fix_style;
-  fi
-- if [[ "${BUILD_TARGET}" = "mac_build" ]]; then
-    make;
-    make run_unit_tests;
   fi
