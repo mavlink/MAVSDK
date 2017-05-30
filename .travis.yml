@@ -55,6 +55,9 @@ matrix:
       services:
         - docker
       env: BUILD_TARGET=docker_build
+    - os: osx
+      osx_image: xcode8
+      env: BUILD_TARGET=mac_build
 
 addons:
   apt:
@@ -90,4 +93,8 @@ script:
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make run_unit_tests;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make fix_style;
+  fi
+- if [[ "${BUILD_TARGET}" = "mac_build" ]]; then
+    make;
+    make run_unit_tests;
   fi
