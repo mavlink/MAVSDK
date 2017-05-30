@@ -89,6 +89,6 @@ TEST_F(SitlTest, TelemetrySimple)
                   << "remaining: " << battery.remaining_percent * 100.0f << " %" << std::endl;
 
 
-        std::this_thread::sleep_for(std::chrono::microseconds(30000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(30));
     }
 }

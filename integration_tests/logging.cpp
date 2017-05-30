@@ -16,10 +16,10 @@ TEST_F(SitlTest, Logging)
     Logging::Result log_ret = dl.device().logging().start_logging();
 
     if (log_ret == Logging::Result::COMMAND_DENIED) {
-        std::this_thread::sleep_for(std::chrono::microseconds(10000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         dl.device().logging().stop_logging();
         //ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
-        std::this_thread::sleep_for(std::chrono::microseconds(10000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         log_ret = dl.device().logging().start_logging();
     }
 

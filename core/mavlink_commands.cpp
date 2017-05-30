@@ -48,7 +48,7 @@ MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
             }
         }
         // Check at 100 Hz.
-        std::this_thread::sleep_for(std::chrono::microseconds(10000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 #else
     struct PromiseResult {

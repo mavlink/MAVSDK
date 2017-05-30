@@ -74,19 +74,19 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
             reached_alt = true;
             break;
         }
-        std::this_thread::sleep_for(std::chrono::microseconds(1000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     ASSERT_TRUE(reached_alt);
 
     // Kill it and hope it doesn't come down upside down, ready to fly again :)
     dl.device(_uuid).action().kill_async(std::bind(&receive_kill_result, _1));
-    std::this_thread::sleep_for(std::chrono::microseconds(1000000));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_received_kill_result);
 
     // It should be below 0.5m after having been killed
     ASSERT_FALSE(dl.device(_uuid).telemetry().armed());
 
     // The land detector takes some time.
-    std::this_thread::sleep_for(std::chrono::microseconds(2000000));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
     ASSERT_FALSE(dl.device(_uuid).telemetry().in_air());
 }
