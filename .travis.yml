@@ -81,8 +81,8 @@ install:
     docker pull ${DOCKER_REPO};
   fi
 - if [[ "${BUILD_TARGET}" = "clang_build" && "${TRAVIS_OS_NAME}" = "linux" ]]; then
-    export CC=clang-3.8
-    export CXX=clang++-3.8
+    export CC=clang-3.8;
+    export CXX=clang++-3.8;
   fi
 
 script:
