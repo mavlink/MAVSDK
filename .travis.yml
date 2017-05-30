@@ -21,8 +21,8 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-5
             - gcc-5
+            - g++-5
     - os: linux
       dist: trusty
       sudo: false
@@ -35,8 +35,8 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-6
             - gcc-6
+            - g++-6
     - os: linux
       dist: trusty
       sudo: false
@@ -44,9 +44,12 @@ matrix:
       compiler: clang
       addons:
         apt:
+          sources:
+            - llvm-toolchain-precise-3.6
           packages:
             - libc++1
             - libc++-dev
+            - clang-3.6
     - os: linux
       sudo: required
       services:
