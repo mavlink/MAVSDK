@@ -7,3 +7,4 @@
 [submodule "curl-android-ios"]
 	path = curl-android-ios
 	url = git@github.com:gcesarmza/curl-android-ios.git
+	ignore = dirty
