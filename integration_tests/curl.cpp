@@ -2,6 +2,8 @@
 #include "curl_wrapper.h"
 #include <fstream>
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 using namespace dronelink;
 
@@ -36,6 +38,7 @@ protected:
 
     bool check_file_exists(const std::string &file_path)
     {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         std::ifstream infile(file_path.c_str());
         return infile.good();
     }
