@@ -61,9 +61,10 @@ protected:
                 }
             }
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-
             write_file(path, "downloaded file content\n");
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+
             progress_callback(100, Status::Finished, CURLcode::CURLE_OK);
             return true;
         }));
@@ -75,7 +76,7 @@ protected:
         EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
         .WillOnce(Invoke([&](const std::string &/*url*/, const std::string &/*path*/,
         const progress_callback_t &progress_callback) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
             progress_callback(0, Status::Error, CURLcode::CURLE_COULDNT_RESOLVE_HOST);
             return false;
         }));
@@ -93,9 +94,9 @@ protected:
                 }
             }
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-
             write_file(path, "downloaded file content\n");
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
             progress_callback(100, Status::Finished, CURLcode::CURLE_OK);
             return true;
@@ -136,7 +137,7 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     http_loader->download_async(_file_url_2, _file_local_path_2, progress);
     http_loader->download_async(_file_url_3, _file_local_path_3, progress);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
     EXPECT_EQ(check_file_exists(_file_local_path_1), true);
     EXPECT_EQ(check_file_exists(_file_local_path_2), false);
@@ -183,7 +184,7 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
     http_loader->download_async(_file_url_2, _file_local_path_2, progress);
     http_loader->download_async(_file_url_3, _file_local_path_3, progress);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
     EXPECT_EQ(check_file_exists(_file_local_path_1), true);
     EXPECT_EQ(check_file_exists(_file_local_path_2), true);
