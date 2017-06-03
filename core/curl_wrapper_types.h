@@ -1,5 +1,6 @@
 #pragma once
 #include "curl_include.h"
+#include <functional>
 
 namespace dronelink {
 
