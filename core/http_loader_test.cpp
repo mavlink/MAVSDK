@@ -117,7 +117,8 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     int callback_finished_counter = 0;
     int callback_error_counter = 0;
 
-    progress_callback_t progress = [&callback_results_progress, &callback_finished_counter,
+    progress_callback_t progress = [&callback_results_progress,
+                                    &callback_finished_counter,
                                     &callback_error_counter]
     (int progress, Status status, CURLcode curl_code) -> int {
         if (status == Status::Downloading)
@@ -164,7 +165,8 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
     int callback_finished_counter = 0;
     int callback_error_counter = 0;
 
-    progress_callback_t progress = [&callback_results_progress, &callback_finished_counter,
+    progress_callback_t progress = [&callback_results_progress,
+                                    &callback_finished_counter,
                                     &callback_error_counter]
     (int progress, Status status, CURLcode curl_code) -> int {
         if (status == Status::Downloading)
