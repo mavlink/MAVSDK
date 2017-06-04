@@ -118,7 +118,7 @@ if(NOT IOS AND NOT ANDROID)
         add_definitions("-Wno-sign-compare")
     endif()
 
-    set(CMAKE_CXX_FLAGS_DEBUG "-DTESTING")
+    set(CMAKE_CXX_FLAGS_DEBUG "-DTESTING -DDEBUG")
 
     add_executable(unit_tests_runner
         core/global_include_test.cpp
