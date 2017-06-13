@@ -1,5 +1,6 @@
 #pragma once
 
+#include "global_include.h"
 #include "mavlink_include.h"
 #include "locked_queue.h"
 #include <cstdint>
@@ -54,6 +55,7 @@ public:
                     break;
                 default:
                     // This would be worrying
+                    Debug() << "Error: unknown mavlink param type";
                     break;
             }
         }
