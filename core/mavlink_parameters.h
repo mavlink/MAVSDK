@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <string>
 #include <functional>
+#include <cstring> // for memcpy
 
 namespace dronelink {
 
@@ -47,8 +48,11 @@ public:
         void set_from_mavlink_param_value(mavlink_param_value_t mavlink_value)
         {
             switch (mavlink_value.param_type) {
-                case MAV_PARAM_TYPE_INT32:
-                    set_int(*(reinterpret_cast<const int *>(&mavlink_value.param_value)));
+                case MAV_PARAM_TYPE_INT32: {
+                        int32_t temp_int;
+                        memcpy(&temp_int, &mavlink_value.param_value, sizeof(int32_t));
+                        set_int(temp_int);
+                    }
                     break;
                 case MAV_PARAM_TYPE_REAL32:
                     set_float(mavlink_value.param_value);
