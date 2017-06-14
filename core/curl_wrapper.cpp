@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <stdio.h>
+#include <fstream>
 
 namespace dronelink {
 
@@ -76,6 +77,16 @@ static int upload_progress_update(void *p, double dltotal, double dlnow, double 
     return 0;
 }
 
+size_t get_file_size(const std::string &path)
+{
+    std::streampos begin, end;
+    std::ifstream myfile(path.c_str(), std::ios::binary);
+    begin = myfile.tellg();
+    myfile.seekg(0, std::ios::end);
+    end = myfile.tellg();
+    myfile.close();
+    return ((end - begin) > 0) ? (end - begin) : 0;
+}
 
 bool CurlWrapper::upload_file(const std::string &url, const std::string &path, const
                               progress_callback_t &progress_callback)
@@ -93,6 +104,13 @@ bool CurlWrapper::upload_file(const std::string &url, const std::string &path, c
 
         // avoid sending 'Expect: 100-Continue' header, required by some server implementations
         chunk = curl_slist_append(chunk, "Expect:");
+
+        // disable chunked upload
+        chunk = curl_slist_append(chunk, "Content-Encoding: ");
+
+        // to allow efficient file upload, we need to add the file size to the header
+        std::string filesize_header = "File-Size: " + std::to_string(get_file_size(path));
+        chunk = curl_slist_append(chunk, filesize_header.c_str());
 
         curl_formadd(&post, &last,
                      CURLFORM_COPYNAME, "file",
