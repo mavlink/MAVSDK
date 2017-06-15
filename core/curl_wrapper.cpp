@@ -8,8 +8,7 @@
 namespace dronelink {
 
 
-CurlWrapper::CurlWrapper() :
-    curl(std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup))
+CurlWrapper::CurlWrapper()
 {
 }
 
@@ -27,6 +26,7 @@ static size_t write_callback(void *contents, size_t size, size_t nmemb, void *us
 
 bool CurlWrapper::download_text(const std::string &url, std::string &content)
 {
+    auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     std::string readBuffer;
 
     if (nullptr != curl) {
@@ -88,9 +88,10 @@ size_t get_file_size(const std::string &path)
     return ((end - begin) > 0) ? (end - begin) : 0;
 }
 
-bool CurlWrapper::upload_file(const std::string &url, const std::string &path, const
-                              progress_callback_t &progress_callback)
+bool CurlWrapper::upload_file(const std::string &url, const std::string &path,
+                              const progress_callback_t &progress_callback)
 {
+    auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     CURLcode res;
 
     if (nullptr != curl) {
@@ -178,6 +179,7 @@ static int download_progress_update(void *p, double dltotal, double dlnow, doubl
 bool CurlWrapper::download_file_to_path(const std::string &url, const std::string &path, const
                                         progress_callback_t &progress_callback)
 {
+    auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     FILE *fp;
 
     if (nullptr != curl) {
