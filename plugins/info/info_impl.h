@@ -3,7 +3,7 @@
 #include "info.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
-#include <cstdint>
+#include <mutex>
 
 namespace dronelink {
 
@@ -25,7 +25,8 @@ private:
     void process_heartbeat(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
 
-    unsigned _version;
+    mutable std::mutex _version_mutex;
+    unsigned _version = 0;
 };
 
 } // namespace dronelink

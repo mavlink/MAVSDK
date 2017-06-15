@@ -7,6 +7,7 @@ namespace dronelink {
 
 InfoImpl::InfoImpl() :
     PluginImplBase(),
+    _version_mutex(),
     _version(0)
 {
 }
@@ -26,7 +27,6 @@ void InfoImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&InfoImpl::process_autopilot_version, this, _1), (void *)this);
-
 }
 
 void InfoImpl::deinit()
@@ -61,8 +61,12 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
 
 bool InfoImpl::is_complete() const
 {
-    if (_version == 0) {
-        return false;
+    {
+        std::lock_guard<std::mutex> lock(_version_mutex);
+
+        if (_version == 0) {
+            return false;
+        }
     }
 
     return true;
@@ -70,11 +74,13 @@ bool InfoImpl::is_complete() const
 
 unsigned InfoImpl::get_version() const
 {
+    std::lock_guard<std::mutex> lock(_version_mutex);
     return _version;
 }
 
 void InfoImpl::set_version(unsigned version)
 {
+    std::lock_guard<std::mutex> lock(_version_mutex);
     _version = version;
 }
 
