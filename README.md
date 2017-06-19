@@ -13,7 +13,7 @@ It is a C++11 library aiming to be:
 
 ## Interfacing
 
-DroneLink currently takes care of the mavlink messaging using a UDP network connection to the drone. Connecting via TCP, or serial is planned for but not implemeted yet.
+DroneLink currently takes care of the mavlink messaging using a UDP network connection to the drone. Connecting via TCP, or serial is planned but not implemeted yet.
 
 The library provides both synchronous (blocking) API calls, as well as asynchronous API calls using callbacks.
 
@@ -60,19 +60,21 @@ To build for Android devices or simulators, you first need to install:
 - [Android SDK](https://developer.android.com/studio/index.html)
 
 
-Also, you need to set these two environment variables:
+Also, you need to set these three environment variables:
 
+- `NDK_ROOT` to `<your-android-ndk>`
 - `ANDROID_TOOLCHAIN_CMAKE` to `<your-android-ndk>/build/cmake/android.toolchain.cmake`
 - `ANDROID_CMAKE_BIN` to `<your-android-sdk>/cmake/<version>/bin/cmake`
 
-E.g. you can add the lines below to your .bashrc (or .profile):
+E.g. you can add the lines below to your .bashrc, (or .zshrc for zshell users, or .profile):
 
 ```
+export NDK_ROOT=$HOME/Android/android-ndk-r13
 export ANDROID_TOOLCHAIN_CMAKE=$HOME/Android/android-ndk-r13/build/cmake/android.toolchain.cmake
 export ANDROID_CMAKE_BIN=$HOME/Android/Sdk/cmake/3.6.3155560/bin/cmake
 ```
 
-Then you build for all the architectures:
+Then you build for all Android architectures:
 ```
 make android install
 ```
@@ -94,7 +96,7 @@ make ios_simulator install
 
 #### Windows
 
-To build in Windows, open the VS2015 x64 Native Tools Command Prompt, go to the directory and do:
+To build in Windows, open the VS2015 x64 Native Tools Command Prompt, go to the source directory and do:
 ```
 mkdir build && cd build
 cmake ..
