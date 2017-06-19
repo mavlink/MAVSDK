@@ -22,6 +22,9 @@ list(APPEND integration_tests
     offboard_velocity
     logging
     info
+    mission_change_speed
+	mission_survey
+	waypoints
     curl
 )
 
