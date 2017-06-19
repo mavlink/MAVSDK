@@ -72,6 +72,20 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
     version.os_sw_minor = (autopilot_version.os_sw_version >> (8 * 2)) & 0xFF;
     version.os_sw_patch = (autopilot_version.os_sw_version >> (8 * 1)) & 0xFF;
 
+    // Debug() << "flight version: "
+    //     << version.flight_sw_major
+    //     << "."
+    //     << version.flight_sw_minor
+    //     << "."
+    //     << version.flight_sw_patch;
+
+    // Debug() << "os version: "
+    //     << version.os_sw_major
+    //     << "."
+    //     << version.os_sw_minor
+    //     << "."
+    //     << version.os_sw_patch;
+
     translate_binary_to_str(autopilot_version.os_custom_version,
                             sizeof(autopilot_version.os_custom_version),
                             version.os_sw_git_hash,
@@ -102,7 +116,8 @@ bool InfoImpl::is_complete() const
     {
         std::lock_guard<std::mutex> lock(_version_mutex);
 
-        if (_version.flight_sw_major == 0 || _version.os_sw_major == 0) {
+        // TODO: check OS version, it's currently just 0 for SITL
+        if (_version.flight_sw_major == 0/* || _version.os_sw_major == 0*/) {
             return false;
         }
     }
