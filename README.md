@@ -82,7 +82,7 @@ cmake --build .
 The SDK is split into a [core](core/) and [plugins](plugins/). The plugins are included at compile time.
 The cmake script [autogenerate_plugin_container.cmake](autogenerate_plugin_container.cmake) takes care of including the plugin folders and integrations tests.
 
-The architecture goal is that the plugins do not depend on each other but only to the core source. This means you can swap out plugins as needed, however, it will lead to some duplicate functionality acroos the plugin modules.
+The architecture goal is that the plugins do not depend on each other but only to the core source. This means you can swap out plugins as needed, however, it will lead to some duplicate functionality across the plugin modules.
 
 You can add modules by copying the [external_example](external_example/) and adapting it:
 
