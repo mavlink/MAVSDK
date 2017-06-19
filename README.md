@@ -27,6 +27,19 @@ The library provides both synchronous (blocking) API calls, as well as asynchron
 - [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
 - [offboard](plugins/offboard/offboard.h): for velocity or position control
 
+## Example
+
+Check out the [example](example/). It sets up a UDP connection, waits for a device appearing, and commands it to takeoff and land again, while receiving some telemetry.
+
+To build and try it, start PX4 in SITL and do on the same machine:
+
+```
+cd example/
+mkdir build && cd build
+cmake ..
+make && ./takeoff_and_land
+```
+
 ## License
 
 The DroneLink SDK is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).

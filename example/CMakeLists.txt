@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 2.8.12)
+
+project(takeoff_and_land)
+
+add_definitions("-std=c++11 -Wall -Wextra -Werror")
+
+# Add DEBUG define for Debug target
+set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
+
+include_directories(
+    ../install/include
+)
+
+add_executable(takeoff_and_land
+    takeoff_and_land.cpp
+)
+
+target_link_libraries(takeoff_and_land
+    ${CMAKE_SOURCE_DIR}/../install/lib/libdronelink.a
+)
