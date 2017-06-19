@@ -17,6 +17,16 @@ DroneLink currently takes care of the mavlink messaging using a UDP network conn
 
 The library provides both synchronous (blocking) API calls, as well as asynchronous API calls using callbacks.
 
+## API overview
+
+- [dronelink](include/dronelink.h): set up connection, discover devices
+
+- [info](plugins/info/info.h): general info about a device
+- [telemetry](plugins/telemetry/telemetry.h): to receive telemetry data
+- [action](plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
+- [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
+- [offboard](plugins/offboard/offboard.h): for velocity or position control
+
 ## License
 
 The DroneLink SDK is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
