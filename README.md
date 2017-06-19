@@ -2,11 +2,24 @@
 
 ## Description
 
-Messaging library/SDK for [PX4 flight stack](http://github.com/PX4/Firmware) using [Mavlink](http://mavlink.org).
+DroneLink is a SDK for the [PX4 flight stack](http://github.com/PX4/Firmware) using [Mavlink](http://mavlink.org).
+
+It is a C++11 library aiming to be:
+
+- Easy to use with a simple API.
+- Fast and lightweight.
+- Cross-platform (Linux, Mac, Windows, iOS, Android).
+- Extensible (using compile-time plugins).
+
+## Interfacing
+
+DroneLink currently takes care of the mavlink messaging using a UDP network connection to the drone. Connecting via TCP, or serial is planned for but not implemeted yet.
+
+The library provides both synchronous (blocking) API calls, as well as asynchronous API calls using callbacks.
 
 ## License
 
-BSD 3-clause, see [LICENSE.md](LICENSE.md).
+The DroneLink SDK is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
 
 ## Authors
 
@@ -17,6 +30,7 @@ See [AUTHORS.md](AUTHORS.md).
 ### Building
 
 Make sure the submodules are updated first.
+
 ```
 git submodule update --init --recursive
 ```
@@ -77,7 +91,7 @@ cmake ..
 cmake --build .
 ```
 
-### Build with external directory for plugins/integration_tests
+### Build with external directory for plugins and custom integration_tests
 
 The SDK is split into a [core](core/) and [plugins](plugins/). The plugins are included at compile time.
 The cmake script [autogenerate_plugin_container.cmake](autogenerate_plugin_container.cmake) takes care of including the plugin folders and integrations tests.
@@ -170,7 +184,7 @@ make run_integration_tests
 Make sure you are connected to a vehicle and check the connection using e.g.
 
 ```
-make && build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
+make && build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetryAsync"
 ```
 
 Note that some of the tests might not be suited for real vehicles, especially the takeoff and kill test.
@@ -184,7 +198,7 @@ make && build/default/integration_tests_runner --gtest_list_tests
 
 To run a single integration test:
 ```
-make && build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetrySimple"
+make && build/default/integration_tests_runner --gtest_filter="SitlTest.TelemetryAsync"
 ```
 
 To run all telemetry tests:
