@@ -27,6 +27,20 @@ The library provides both synchronous (blocking) API calls, as well as asynchron
 - [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
 - [offboard](plugins/offboard/offboard.h): for velocity or position control
 
+## Install artefacts
+
+The build artefacts (headers and static library file) can be installed locally into the folder `./install/` using:
+
+```
+make default install
+```
+
+Or, to install the files system-wide, using:
+
+```
+INSTALL_PREFIX=/usr/local make default install
+```
+
 ## Example
 
 Check out the [example](example/). It sets up a UDP connection, waits for a device appearing, and commands it to takeoff and land again, while receiving some telemetry.
