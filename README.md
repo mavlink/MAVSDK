@@ -31,7 +31,15 @@ The library provides both synchronous (blocking) API calls, as well as asynchron
 
 Check out the [example](example/). It sets up a UDP connection, waits for a device appearing, and commands it to takeoff and land again, while receiving some telemetry.
 
-To build and try it, start PX4 in SITL and do on the same machine:
+To build and try it, start PX4 in SITL and build and run the example as follows:
+
+Build and install the DroneLink library first:
+
+```
+make default install
+```
+
+Then build the example:
 
 ```
 cd example/
