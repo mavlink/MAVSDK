@@ -8,6 +8,7 @@ add_definitions("-std=c++11 -Wall -Wextra -Werror")
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
 include_directories(
+    # Not needed if installed system-wide
     ../install/include
 )
 
@@ -17,4 +18,6 @@ add_executable(takeoff_and_land
 
 target_link_libraries(takeoff_and_land
     ${CMAKE_SOURCE_DIR}/../install/lib/libdronelink.a
+    # If installed system-wide:
+    # dronelink
 )
