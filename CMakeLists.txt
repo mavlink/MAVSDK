@@ -109,7 +109,7 @@ if(NOT IOS AND NOT ANDROID)
 
     enable_testing()
 
-    add_subdirectory(libs/gtest)
+    add_subdirectory(libs/gtest EXCLUDE_FROM_ALL)
     include_directories(libs/gtest/googletest/include)
     include_directories(libs/gtest/googlemock/include)
 
