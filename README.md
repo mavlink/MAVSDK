@@ -41,6 +41,8 @@ Or, to install the files system-wide, using:
 INSTALL_PREFIX=/usr/local make default install
 ```
 
+Note that when using the library `libdronelink.a`, you need to link to a thread library such as pthread on a POSIX system. (pthread is not included in the static library because it is included in glibc.)
+
 ## Example
 
 Check out the [example](example/). It sets up a UDP connection, waits for a device appearing, and commands it to takeoff and land again, while receiving some telemetry.
@@ -61,6 +63,8 @@ mkdir build && cd build
 cmake ..
 make && ./takeoff_and_land
 ```
+
+Note that the example needs to be linked to a thread library (see [CMakeLists.txt](example/CMakeLists.txt))
 
 ## License
 
