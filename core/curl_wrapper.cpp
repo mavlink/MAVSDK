@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <fstream>
+#include <string>
 
 namespace dronelink {
 
@@ -88,6 +89,14 @@ size_t get_file_size(const std::string &path)
     return ((end - begin) > 0) ? (end - begin) : 0;
 }
 
+template <typename T>
+std::string to_string(T value)
+{
+    std::ostringstream os;
+    os << value;
+    return os.str();
+}
+
 bool CurlWrapper::upload_file(const std::string &url, const std::string &path,
                               const progress_callback_t &progress_callback)
 {
@@ -110,7 +119,7 @@ bool CurlWrapper::upload_file(const std::string &url, const std::string &path,
         chunk = curl_slist_append(chunk, "Content-Encoding: ");
 
         // to allow efficient file upload, we need to add the file size to the header
-        std::string filesize_header = "File-Size: " + std::to_string(get_file_size(path));
+        std::string filesize_header = "File-Size: " + to_string(get_file_size(path));
         chunk = curl_slist_append(chunk, filesize_header.c_str());
 
         curl_formadd(&post, &last,
