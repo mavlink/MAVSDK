@@ -176,7 +176,7 @@ make EXTERNAL_DIR=external_example
 
 To run the external hello world integration test, do:
 ```
-build/default/integration_tests_runner --gtest_filter="HelloWorld*"
+build/default/integration_tests_runner --gtest_filter="ExternalExampleHello"
 ```
 
 ### Unit-tests
