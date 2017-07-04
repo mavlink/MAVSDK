@@ -5,10 +5,8 @@
 
 using namespace dronelink;
 
-TEST(HelloWorld, SayHello)
+TEST_F(SitlTest, ExternalExampleHello)
 {
-    sitl::start();
-
     DroneLink dl;
 
     DroneLink::ConnectionResult ret = dl.add_udp_connection();
@@ -23,6 +21,4 @@ TEST(HelloWorld, SayHello)
 
     // Apparently it can say hello.
     dl.device().example().say_hello();
-
-    sitl::stop();
 }
