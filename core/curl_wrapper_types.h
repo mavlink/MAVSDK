@@ -15,7 +15,7 @@ enum class Status {
 typedef std::function<int(int progress, Status status, CURLcode curl_code)> progress_callback_t;
 
 struct dl_up_progress {
-    int progress_in_percentage = 0.0;
+    int progress_in_percentage = 0;
     progress_callback_t progress_callback;
 };
 

@@ -68,7 +68,7 @@ static int upload_progress_update(void *p, double dltotal, double dlnow, double 
         return myp->progress_callback(0, Status::Idle, CURLcode::CURLE_OK);
     }
 
-    int percentage = 100 / ultotal * ulnow;
+    int percentage = (int)(100 / ultotal * ulnow);
 
     if (percentage > myp->progress_in_percentage) {
         myp->progress_in_percentage = percentage;
@@ -175,7 +175,7 @@ static int download_progress_update(void *p, double dltotal, double dlnow, doubl
         return myp->progress_callback(0, Status::Idle, CURLcode::CURLE_OK);
     }
 
-    int percentage = 100 / dltotal * dlnow;
+    int percentage = (int)(100 / dltotal * dlnow);
 
     if (percentage > myp->progress_in_percentage) {
         myp->progress_in_percentage = percentage;
