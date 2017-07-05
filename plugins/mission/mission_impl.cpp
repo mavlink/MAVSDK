@@ -255,7 +255,7 @@ void MissionImpl::assemble_mavlink_messages()
             // The speed has changed, we need to add a speed command.
 
             // Current is the 0th waypoint
-            u_int8_t current = ((_mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+            uint8_t current = ((_mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
             uint8_t autocontinue = 1;
 
@@ -293,7 +293,7 @@ void MissionImpl::assemble_mavlink_messages()
             // The gimbal has changed, we need to add a gimbal command.
 
             // Current is the 0th waypoint
-            u_int8_t current = ((_mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+            uint8_t current = ((_mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
             uint8_t autocontinue = 1;
 
@@ -329,7 +329,7 @@ void MissionImpl::assemble_mavlink_messages()
             // There is a camera action that we need to send.
 
             // Current is the 0th waypoint
-            u_int8_t current = ((_mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+            uint8_t current = ((_mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
             uint8_t autocontinue = 1;
 
