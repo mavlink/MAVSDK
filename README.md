@@ -148,9 +148,11 @@ make ios_simulator install
 To build in Windows, open the VS2015 x64 Native Tools Command Prompt, go to the source directory and do:
 ```
 mkdir build && cd build
-cmake ..
+cmake -DWIN_CURL_INCLUDE_DIR:STRING=C:\\curl-7.54.1\\include ..
 cmake --build .
 ```
+
+Note that you need to download the curl source and provide the directory of the header files.
 
 ### Build with external directory for plugins and custom integration_tests
 
