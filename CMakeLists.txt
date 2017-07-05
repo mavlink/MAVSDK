@@ -5,6 +5,7 @@ project(dronecore)
 # Add DEBUG define for Debug target
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
+
 # We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
@@ -14,6 +15,11 @@ else()
     # MSBuild
     add_definitions("-std=c++11 -WX -W2 -DWINDOWS")
     set(platform_libs "Ws2_32.lib")
+    # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
+    if(NOT WIN_CURL_INCLUDE_DIR)
+        message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl\"")
+    endif()
+    include_directories(${WIN_CURL_INCLUDE_DIR})
 endif()
 
 # Clang needs this warning disabled.
