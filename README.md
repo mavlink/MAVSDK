@@ -11,6 +11,15 @@ It is a C++11 library aiming to be:
 - Cross-platform (Linux, Mac, Windows, iOS, Android).
 - Extensible (using compile-time plugins).
 
+## Roadmap
+
+The next steps will be:
+
+- Add Camera settings and actions interface.
+- Publish Android wrappers in Java using JNI.
+- Publish iOS wrappers in Objective-C using Objective-C++.
+- Improve Offboard control.
+
 ## Interfacing
 
 DroneLink currently takes care of the mavlink messaging using a UDP network connection to the drone. Connecting via TCP, or serial is planned but not implemeted yet.
