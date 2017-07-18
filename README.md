@@ -18,7 +18,8 @@ The next steps will be:
 - Add Camera settings and actions interface.
 - Publish Android wrappers in Java using JNI.
 - Publish iOS wrappers in Objective-C using Objective-C++.
-- Improve Offboard control.
+- Publish REST wrapper.
+- Add features as needed.
 
 ## Interfacing
 
