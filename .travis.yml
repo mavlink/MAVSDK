@@ -56,11 +56,6 @@ addons:
 
 install:
 - set -e
-- if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
-    mkdir -p ~/bin;
-    wget -O ~/bin/astyle https://github.com/PX4/astyle/releases/download/2.05.1/astyle-linux;
-    chmod +x ~/bin/astyle;
-  fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     pip install --user awscli;
     $(aws ecr get-login --region eu-central-1);
@@ -71,7 +66,6 @@ script:
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
     make;
     make run_unit_tests;
-    make fix_style;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make;
