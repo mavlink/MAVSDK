@@ -21,8 +21,7 @@ class DeviceImpl
 {
 public:
     explicit DeviceImpl(DroneLinkImpl *parent,
-                        uint8_t target_system_id,
-                        uint8_t target_component_id);
+                        uint8_t target_system_id);
     ~DeviceImpl();
 
     void process_mavlink_message(const mavlink_message_t &message);
@@ -123,7 +122,9 @@ private:
     std::map<const void *, TimeoutHandlerMapEntry> _timeout_handler_map {};
 
     uint8_t _target_system_id;
-    uint8_t _target_component_id;
+
+    // The component ID is hardcoded for now.
+    uint8_t _target_component_id = MAV_COMP_ID_AUTOPILOT1;
     uint64_t _target_uuid {0};
     bool _target_supports_mission_int {false};
     bool _armed {false};

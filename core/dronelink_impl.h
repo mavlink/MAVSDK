@@ -33,7 +33,7 @@ public:
     void notify_on_timeout(uint64_t uuid);
 
 private:
-    void create_device_if_not_existing(uint8_t system_id, uint8_t component_id);
+    void create_device_if_not_existing(uint8_t system_id);
     void remove_empty_devices();
 
     std::mutex _connections_mutex;

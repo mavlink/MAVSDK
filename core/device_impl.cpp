@@ -10,10 +10,8 @@ using namespace std::placeholders; // for `_1`
 
 
 DeviceImpl::DeviceImpl(DroneLinkImpl *parent,
-                       uint8_t target_system_id,
-                       uint8_t target_component_id) :
+                       uint8_t target_system_id) :
     _target_system_id(target_system_id),
-    _target_component_id(target_component_id),
     _parent(parent),
     _params(this),
     _commands(this)
