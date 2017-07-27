@@ -49,14 +49,15 @@ DroneLinkImpl::~DroneLinkImpl()
 
 void DroneLinkImpl::receive_message(const mavlink_message_t &message)
 {
+    create_device_if_not_existing(message.sysid);
+
     // Don't ever create a device with sysid 0.
     if (message.sysid == 0) {
         return;
     }
 
-    create_device_if_not_existing(message.sysid, message.compid);
-
     remove_empty_devices();
+
     {
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
@@ -69,7 +70,10 @@ void DroneLinkImpl::receive_message(const mavlink_message_t &message)
         if (message.sysid != 1) {
             Debug() << "sysid: " << int(message.sysid);
         }
-        _device_impls.at(message.sysid)->process_mavlink_message(message);
+
+        if (_device_impls.find(message.sysid) != _device_impls.end()) {
+            _device_impls.at(message.sysid)->process_mavlink_message(message);
+        }
     }
 }
 
@@ -135,8 +139,7 @@ Device &DroneLinkImpl::get_device()
 
     // In both failure cases, return a dummy.
     uint8_t system_id = 0;
-    uint8_t component_id = 0;
-    create_device_if_not_existing(system_id, component_id);
+    create_device_if_not_existing(system_id);
 
     return *_devices[system_id];
 }
@@ -159,13 +162,12 @@ Device &DroneLinkImpl::get_device(uint64_t uuid)
 
     // Create a dummy
     uint8_t system_id = 0;
-    uint8_t component_id = 0;
-    create_device_if_not_existing(system_id, component_id);
+    create_device_if_not_existing(system_id);
 
     return *_devices[system_id];
 }
 
-void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t component_id)
+void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id)
 {
     std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
@@ -181,7 +183,7 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id, uint8_t com
     }
 
     // Create both lists in parallel
-    DeviceImpl *new_device_impl = new DeviceImpl(this, system_id, component_id);
+    DeviceImpl *new_device_impl = new DeviceImpl(this, system_id);
     _device_impls.insert(std::pair<uint8_t, DeviceImpl *>(system_id, new_device_impl));
 
     Device *new_device = new Device(new_device_impl);
