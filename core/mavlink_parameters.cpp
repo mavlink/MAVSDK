@@ -12,6 +12,14 @@ MavlinkParameters::MavlinkParameters(DeviceImpl *parent) :
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_VALUE,
         std::bind(&MavlinkParameters::process_param_value, this, std::placeholders::_1), this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_PARAM_EXT_VALUE,
+        std::bind(&MavlinkParameters::process_param_ext_value, this, std::placeholders::_1), this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_PARAM_EXT_ACK,
+        std::bind(&MavlinkParameters::process_param_ext_ack, this, std::placeholders::_1), this);
 }
 
 MavlinkParameters::~MavlinkParameters()
@@ -21,9 +29,10 @@ MavlinkParameters::~MavlinkParameters()
 
 void MavlinkParameters::set_param_async(const std::string &name,
                                         const ParamValue &value,
-                                        set_param_callback_t callback)
+                                        set_param_callback_t callback,
+                                        bool extended)
 {
-    //Debug() << "setting param " << name << " to " << value.get_int();
+    // Debug() << "setting param " << name << " to " << value.get_int();
 
     if (name.size() > PARAM_ID_LEN) {
         Debug() << "Error: param name too long";
@@ -37,14 +46,19 @@ void MavlinkParameters::set_param_async(const std::string &name,
     new_work.callback = callback;
     new_work.param_name = name;
     new_work.param_value = value;
+    new_work.extended = extended;
 
     _set_param_queue.push_back(new_work);
 
 }
 
 
-void MavlinkParameters::get_param_async(const std::string &name, get_param_callback_t callback)
+void MavlinkParameters::get_param_async(const std::string &name,
+                                        get_param_callback_t callback,
+                                        bool extended)
 {
+    // Debug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
+
     if (name.size() > PARAM_ID_LEN) {
         Debug() << "Error: param name too long";
         if (callback) {
@@ -57,9 +71,9 @@ void MavlinkParameters::get_param_async(const std::string &name, get_param_callb
     GetParamWork new_work;
     new_work.callback = callback;
     new_work.param_name = name;
+    new_work.extended = extended;
 
     _get_param_queue.push_back(new_work);
-
 }
 
 //void MavlinkParameters::save_async()
@@ -87,14 +101,32 @@ void MavlinkParameters::do_work()
         STRNCPY(param_id, work.param_name.c_str(), sizeof(param_id));
 
         mavlink_message_t message = {};
-        mavlink_msg_param_set_pack(_parent->get_own_system_id(),
-                                   _parent->get_own_component_id(),
-                                   &message,
-                                   _parent->get_target_system_id(),
-                                   _parent->get_target_component_id(),
-                                   param_id,
-                                   work.param_value.get_float_casted_value(),
-                                   work.param_value.get_mav_param_type());
+        if (work.extended) {
+
+            char param_value_buf[128] = {};
+            const float temp_to_copy = work.param_value.get_float_casted_value();
+            memcpy(&param_value_buf[0], &temp_to_copy, sizeof(float));
+
+            // FIXME: extended currently always go to the camera component
+            mavlink_msg_param_ext_set_pack(_parent->get_own_system_id(),
+                                           _parent->get_own_component_id(),
+                                           &message,
+                                           _parent->get_target_system_id(),
+                                           MAV_COMP_ID_CAMERA,
+                                           param_id,
+                                           param_value_buf,
+                                           work.param_value.get_mav_param_type());
+        } else {
+            mavlink_message_t message = {};
+            mavlink_msg_param_set_pack(_parent->get_own_system_id(),
+                                       _parent->get_own_component_id(),
+                                       &message,
+                                       _parent->get_target_system_id(),
+                                       _parent->get_target_component_id(),
+                                       param_id,
+                                       work.param_value.get_float_casted_value(),
+                                       work.param_value.get_mav_param_type());
+        }
 
         if (!_parent->send_message(message)) {
             Debug() << "Error: Send message failed";
@@ -105,9 +137,11 @@ void MavlinkParameters::do_work()
             return;
         }
 
+        // _last_request_time = steady_time();
+
         // We want to get notified if a timeout happens
         _parent->register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
-                                          3.0,
+                                          0.5,
                                           this);
 
     } else if (_get_param_queue.size() > 0) {
@@ -121,14 +155,34 @@ void MavlinkParameters::do_work()
         char param_id[PARAM_ID_LEN] = {};
         STRNCPY(param_id, work.param_name.c_str(), sizeof(param_id));
 
+        // Debug() << "now getting: " << work.param_name;
+
         mavlink_message_t message = {};
-        mavlink_msg_param_request_read_pack(_parent->get_own_system_id(),
-                                            _parent->get_own_component_id(),
-                                            &message,
-                                            _parent->get_target_system_id(),
-                                            _parent->get_target_component_id(),
-                                            param_id,
-                                            -1);
+        if (work.extended) {
+            mavlink_msg_param_ext_request_read_pack(_parent->get_own_system_id(),
+                                                    _parent->get_own_component_id(),
+                                                    &message,
+                                                    _parent->get_target_system_id(),
+                                                    MAV_COMP_ID_CAMERA,
+                                                    param_id,
+                                                    -1);
+
+        } else {
+            //Debug() << "request read: "
+            //    << (int)_parent->get_own_system_id() << ":"
+            //    << (int)_parent->get_own_component_id() <<
+            //    " to "
+            //    << (int)_parent->get_target_system_id() << ":"
+            //    << (int)_parent->get_target_component_id();
+
+            mavlink_msg_param_request_read_pack(_parent->get_own_system_id(),
+                                                _parent->get_own_component_id(),
+                                                &message,
+                                                _parent->get_target_system_id(),
+                                                _parent->get_target_component_id(),
+                                                param_id,
+                                                -1);
+        }
 
         if (!_parent->send_message(message)) {
             Debug() << "Error: Send message failed";
@@ -140,15 +194,19 @@ void MavlinkParameters::do_work()
             return;
         }
 
+        // _last_request_time = steady_time();
+
         // We want to get notified if a timeout happens
         _parent->register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
-                                          3.0,
+                                          0.5,
                                           this);
     }
 }
 
 void MavlinkParameters::process_param_value(const mavlink_message_t &message)
 {
+    // Debug() << "getting param value";
+
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
 
@@ -171,6 +229,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
                 }
                 _request_state = RequestState::NONE;
                 _parent->unregister_timeout_handler(this);
+                // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _get_param_queue.pop_front();
             }
         }
@@ -192,8 +251,117 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
 
                 _request_state = RequestState::NONE;
                 _parent->unregister_timeout_handler(this);
+                // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
             }
+        }
+    }
+}
+
+void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message)
+{
+    // Debug() << "getting param ext value";
+    mavlink_param_ext_value_t param_ext_value;
+    mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
+
+    if (_request_state == RequestState::NONE) {
+        return;
+    }
+
+    if (_request_state == RequestState::GET_PARAM_BUSY) {
+
+        // This means we should have a queue entry to use
+        if (_get_param_queue.size() > 0) {
+            GetParamWork &work = _get_param_queue.front();
+
+            if (strncmp(work.param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) == 0) {
+
+                if (work.callback) {
+                    ParamValue value;
+                    value.set_from_mavlink_param_ext_value(param_ext_value);
+                    work.callback(true, value);
+                }
+                _request_state = RequestState::NONE;
+                _parent->unregister_timeout_handler(this);
+                // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
+                _get_param_queue.pop_front();
+            }
+        }
+    }
+
+#if 0
+    else if (_request_state == RequestState::SET_PARAM_BUSY) {
+
+        // This means we should have a queue entry to use
+        if (_set_param_queue.size() > 0) {
+            SetParamWork &work = _set_param_queue.front();
+
+            // Now it still needs to match the param name
+            if (strncmp(work.param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) == 0) {
+
+                // We are done, inform caller and go back to idle
+                if (work.callback) {
+                    work.callback(true);
+                }
+
+                _request_state = RequestState::NONE;
+                _parent->unregister_timeout_handler(this);
+                // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
+                _set_param_queue.pop_front();
+            }
+        }
+    }
+#endif
+}
+
+void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
+{
+    // Debug() << "getting param ext ack";
+
+    mavlink_param_ext_ack_t param_ext_ack;
+    mavlink_msg_param_ext_ack_decode(&message, &param_ext_ack);
+
+    if (_request_state != RequestState::SET_PARAM_BUSY) {
+        return;
+    }
+
+    // This means we should have a queue entry to use
+    if (_set_param_queue.size() > 0) {
+        SetParamWork &work = _set_param_queue.front();
+
+        // Now it still needs to match the param name
+        if (strncmp(work.param_name.c_str(), param_ext_ack.param_id, PARAM_ID_LEN) == 0) {
+
+            if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
+                // We are done, inform caller and go back to idle
+                if (work.callback) {
+                    work.callback(true);
+                }
+
+                _request_state = RequestState::NONE;
+                _parent->unregister_timeout_handler(this);
+                // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
+                _set_param_queue.pop_front();
+
+            } else if (param_ext_ack.param_result == PARAM_ACK_IN_PROGRESS) {
+
+                // Reset timeout and wait again.
+                _parent->refresh_timeout_handler(this);
+
+            } else {
+
+                // We are done but unsuccessful
+                // TODO: we need better error feedback
+                if (work.callback) {
+                    work.callback(false);
+                }
+
+                _request_state = RequestState::NONE;
+                _parent->unregister_timeout_handler(this);
+                // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
+                _set_param_queue.pop_front();
+            }
+
         }
     }
 }
@@ -214,7 +382,8 @@ void MavlinkParameters::receive_timeout()
             if (work.callback) {
                 ParamValue empty_value;
                 // Notify about timeout
-                Debug() << "Error: get param busy timeout";
+                Debug() << "Error: get param busy timeout: " << work.param_name;
+                // Debug() << "Got it after: " << elapsed_since_s(_last_request_time);
                 work.callback(false, empty_value);
             }
             _request_state = RequestState::NONE;
@@ -230,7 +399,7 @@ void MavlinkParameters::receive_timeout()
 
             if (work.callback) {
                 // Notify about timeout
-                Debug() << "Error: set param busy timeout";
+                Debug() << "Error: set param busy timeout: " << work.param_name;
                 work.callback(false);
             }
             _request_state = RequestState::NONE;

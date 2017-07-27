@@ -21,12 +21,6 @@ public:
     class ParamValue
     {
     public:
-        ParamValue() :
-            _float_value(NAN),
-            _int_value(0),
-            _type(Type::UNKNOWN)
-        {}
-
         enum class Type {
             UNKNOWN,
             FLOAT,
@@ -39,7 +33,7 @@ public:
             _type = Type::FLOAT;
         }
 
-        void set_int(int value)
+        void set_int(int32_t value)
         {
             _int_value = value;
             _type = Type::INT;
@@ -48,6 +42,8 @@ public:
         void set_from_mavlink_param_value(mavlink_param_value_t mavlink_value)
         {
             switch (mavlink_value.param_type) {
+                case MAV_PARAM_TYPE_UINT32:
+                // FALLTHROUGH
                 case MAV_PARAM_TYPE_INT32: {
                         int32_t temp_int;
                         memcpy(&temp_int, &mavlink_value.param_value, sizeof(int32_t));
@@ -60,6 +56,30 @@ public:
                 default:
                     // This would be worrying
                     Debug() << "Error: unknown mavlink param type";
+                    break;
+            }
+        }
+
+        void set_from_mavlink_param_ext_value(mavlink_param_ext_value_t mavlink_ext_value)
+        {
+            switch (mavlink_ext_value.param_type) {
+                // FIXME: the camera params are UINT32 but we treat them as INT32.
+                case MAV_PARAM_TYPE_UINT32:
+                // FALLTHROUGH
+                case MAV_PARAM_TYPE_INT32: {
+                        int32_t temp_int;
+                        memcpy(&temp_int, &mavlink_ext_value.param_value[0], sizeof(int32_t));
+                        set_int(temp_int);
+                    }
+                    break;
+                case MAV_PARAM_TYPE_REAL32:
+                    float temp_float;
+                    memcpy(&temp_float, &mavlink_ext_value.param_value[0], sizeof(float));
+                    set_float(temp_float);
+                    break;
+                default:
+                    // This would be worrying
+                    Debug() << "Error: unknown mavlink ext param type";
                     break;
             }
         }
@@ -99,17 +119,18 @@ public:
         }
 
     private:
-        float _float_value;
-        int32_t _int_value;
-        Type _type;
+        float _float_value = NAN;
+        int32_t _int_value = 0;
+        uint32_t _uint_value = 0;
+        Type _type = Type::UNKNOWN;
     };
 
     typedef std::function <void(bool success)> set_param_callback_t;
     void set_param_async(const std::string &name, const ParamValue &value,
-                         set_param_callback_t callback);
+                         set_param_callback_t callback, bool extended = false);
 
     typedef std::function <void(bool success, ParamValue value)> get_param_callback_t;
-    void get_param_async(const std::string &name, get_param_callback_t callback);
+    void get_param_async(const std::string &name, get_param_callback_t callback, bool extended = false);
 
     //void save_async();
     void do_work();
@@ -119,6 +140,8 @@ public:
     const MavlinkParameters &operator=(const MavlinkParameters &) = delete;
 private:
     void process_param_value(const mavlink_message_t &message);
+    void process_param_ext_value(const mavlink_message_t &message);
+    void process_param_ext_ack(const mavlink_message_t &message);
     void receive_timeout();
 
     DeviceImpl *_parent;
@@ -135,29 +158,24 @@ private:
     static constexpr size_t PARAM_ID_LEN = 16 + 1;
 
     struct SetParamWork {
-        SetParamWork() :
-            callback(nullptr),
-            param_name(),
-            param_value()
-        {}
-
-        set_param_callback_t callback;
-        std::string param_name;
-        ParamValue param_value;
+        set_param_callback_t callback = nullptr;
+        std::string param_name {};
+        ParamValue param_value {};
+        bool extended = false;
+        int retries_done = 0;
     };
 
     LockedQueue<SetParamWork> _set_param_queue;
 
     struct GetParamWork {
-        GetParamWork() :
-            callback(nullptr),
-            param_name()
-        {}
-
-        get_param_callback_t callback;
-        std::string param_name;
+        get_param_callback_t callback = nullptr;
+        std::string param_name {};
+        bool extended = false;
+        int retries_done = 0;
     };
     LockedQueue<GetParamWork> _get_param_queue;
+
+    // dl_time_t _last_request_time = {};
 };
 
 } // namespace dronelink

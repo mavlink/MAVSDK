@@ -74,12 +74,16 @@ public:
     typedef std::function <void(bool success)> success_t;
     void set_param_float_async(const std::string &name, float value, success_t callback);
     void set_param_int_async(const std::string &name, int32_t value, success_t callback);
+    void set_param_ext_float_async(const std::string &name, float value, success_t callback);
+    void set_param_ext_int_async(const std::string &name, int32_t value, success_t callback);
 
     typedef std::function <void(bool success, float value)> get_param_float_callback_t;
     typedef std::function <void(bool success, int32_t value)> get_param_int_callback_t;
 
     void get_param_float_async(const std::string &name, get_param_float_callback_t callback);
     void get_param_int_async(const std::string &name, get_param_int_callback_t callback);
+    void get_param_ext_float_async(const std::string &name, get_param_float_callback_t callback);
+    void get_param_ext_int_async(const std::string &name, get_param_int_callback_t callback);
 
     static uint8_t get_own_system_id() { return _own_system_id; }
     static uint8_t get_own_component_id() { return _own_component_id; }
