@@ -53,8 +53,6 @@ public:
     void send_command_with_ack_async(uint16_t command, const MavlinkCommands::Params &params,
                                      command_result_callback_t callback,
                                      uint8_t component_id = 0);
-    void retransmit_command_with_ack_async();
-
 
     MavlinkCommands::Result set_msg_rate(uint16_t message_id, double rate_hz);
 
