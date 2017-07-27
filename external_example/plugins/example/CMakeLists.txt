@@ -24,3 +24,5 @@ set(impl_header_files
     PARENT_SCOPE
 )
 
+# To include an additional library, use:
+# set(additional_libs "some_library" PARENT_SCOPE)

@@ -29,8 +29,12 @@ if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
     add_definitions("-Wno-missing-field-initializers")
 endif()
 
+# Set this in a module to add a library.
+set (additional_libs "")
+
 # Autogenerate the device_plugin_container.{h|cpp} to include all plugins.
 include(autogenerate_plugin_container.cmake)
+
 
 # Header files in include denote public facing header files, the rest is in
 # core or the respective plugin directories.
@@ -137,6 +141,7 @@ if(NOT IOS AND NOT ANDROID)
         gmock
         pthread
         curl
+        ${additional_libs}
     )
 
     add_test(unit_tests
@@ -158,6 +163,7 @@ if(NOT IOS AND NOT ANDROID)
         ${platform_libs}
         pthread
         curl
+        ${additional_libs}
     )
 
     add_test(integration_tests

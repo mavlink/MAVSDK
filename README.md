@@ -178,6 +178,11 @@ external_example
         └── example_impl_test.cpp
 ```
 
+To add an additional library, the library name can be added to the variable `additional_libs` as follows:
+```
+set(additional_libs "library_name" PARENT_SCOPE)
+```
+
 To include the external folder in the build, add the folder name to the make command:
 
 ```
