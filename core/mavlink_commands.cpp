@@ -249,7 +249,7 @@ void MavlinkCommands::do_work()
 
     switch (work.state) {
         case Work::State::NONE:
-            Debug() << "sending it the first time (" << work.mavlink_command << ")";
+            // Debug() << "sending it the first time (" << work.mavlink_command << ")";
             if (!_parent->send_message(work.mavlink_message)) {
                 Debug() << "connection send error (" << work.mavlink_command << ")";
                 if (work.callback) {
