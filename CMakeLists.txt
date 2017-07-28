@@ -46,6 +46,7 @@ include_directories(
     ${external_plugins}
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/core
+    ${additional_libs}
 )
 
 if (ANDROID)
