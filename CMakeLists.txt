@@ -35,7 +35,6 @@ set (additional_libs "")
 # Autogenerate the device_plugin_container.{h|cpp} to include all plugins.
 include(autogenerate_plugin_container.cmake)
 
-
 # Header files in include denote public facing header files, the rest is in
 # core or the respective plugin directories.
 include_directories(
@@ -46,7 +45,7 @@ include_directories(
     ${external_plugins}
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/core
-    ${additional_libs}
+    ${EXTERNAL_DIR}/${additional_libs}
 )
 
 if (ANDROID)
