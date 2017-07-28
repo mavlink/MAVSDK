@@ -29,7 +29,8 @@ if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
     add_definitions("-Wno-missing-field-initializers")
 endif()
 
-# Set this in a module to add a library.
+# Set these in a module to add a library.
+set (additional_includes "")
 set (additional_libs "")
 
 # Autogenerate the device_plugin_container.{h|cpp} to include all plugins.
@@ -45,7 +46,7 @@ include_directories(
     ${external_plugins}
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/core
-    ${EXTERNAL_DIR}/${additional_libs}
+    ${EXTERNAL_DIR}/${additional_includes}
 )
 
 if (ANDROID)
