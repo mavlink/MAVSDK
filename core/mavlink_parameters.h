@@ -121,7 +121,6 @@ public:
     private:
         float _float_value = NAN;
         int32_t _int_value = 0;
-        uint32_t _uint_value = 0;
         Type _type = Type::UNKNOWN;
     };
 
