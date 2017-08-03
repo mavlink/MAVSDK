@@ -335,7 +335,8 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
                 // We are done, inform caller and go back to idle
                 if (work.callback) {
-                    work.callback(true);
+                    // FIXME: this crashes in Android wrapper
+                    //work.callback(true);
                 }
 
                 _request_state = RequestState::NONE;
@@ -353,7 +354,8 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
                 // We are done but unsuccessful
                 // TODO: we need better error feedback
                 if (work.callback) {
-                    work.callback(false);
+                    // FIXME: this crashes in Android wrapper
+                    //work.callback(false);
                 }
 
                 _request_state = RequestState::NONE;
