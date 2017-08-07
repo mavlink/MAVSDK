@@ -163,7 +163,7 @@ ifndef ANDROID_CMAKE_BIN
 	$(error ANDROID_CMAKE_BIN is undefined, please point the \
 	    environment variable to cmake/3.6.3155560/bin/cmake from android-sdk.)
 else
-	# We need cmake from the Android SDK (currently at 3.6 because 3.7 fails the test).
+	@# We need cmake from the Android SDK (currently at 3.6 because 3.7 fails the test).
 	$(eval CMAKE_BIN = $(ANDROID_CMAKE_BIN))
 endif
 
