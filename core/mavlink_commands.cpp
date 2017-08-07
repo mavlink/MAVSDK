@@ -149,12 +149,6 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             }
             break;
 
-        case MAV_RESULT_TEMPORARILY_REJECTED:
-            Debug() << "command temporarily rejected (" << work.mavlink_command << ").";
-            // The timeout will trigger and re-transmit the message.
-            work.state = Work::State::TEMPORARILY_REJECTED;
-            break;
-
         case MAV_RESULT_DENIED:
             Debug() << "command denied (" << work.mavlink_command << ").";
         // FALLTHRU
@@ -163,6 +157,9 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             Debug() << "command unsupported (" << work.mavlink_command << ").";
         // FALLTHRU
 
+        case MAV_RESULT_TEMPORARILY_REJECTED:
+            Debug() << "command temporarily rejected (" << work.mavlink_command << ").";
+        // FALLTHRU
         case MAV_RESULT_FAILED:
             Debug() << "command failed (" << work.mavlink_command << ").";
             work.state = Work::State::FAILED;
@@ -200,9 +197,7 @@ void MavlinkCommands::receive_timeout()
 
     Work &work = _work_queue.front();
 
-    if (work.state == Work::State::WAITING ||
-        work.state == Work::State::TEMPORARILY_REJECTED) {
-
+    if (work.state == Work::State::WAITING) {
 
         if (work.retries_to_do > 0) {
 
@@ -229,8 +224,6 @@ void MavlinkCommands::receive_timeout()
             if (work.callback) {
                 if (work.state == Work::State::WAITING) {
                     work.callback(Result::TIMEOUT, NAN);
-                } else if (work.state == Work::State::TEMPORARILY_REJECTED) {
-                    work.callback(Result::COMMAND_DENIED, NAN);
                 }
             }
             work.state = Work::State::FAILED;
@@ -266,10 +259,6 @@ void MavlinkCommands::do_work()
             break;
         case Work::State::WAITING:
         case Work::State::IN_PROGRESS:
-        case Work::State::TEMPORARILY_REJECTED:
-            // Nothing to do yet, timeout will be triggered
-            // anyway for a retransmission.
-            break;
         case Work::State::DONE:
         case Work::State::FAILED:
             _parent->unregister_timeout_handler((void *)this);

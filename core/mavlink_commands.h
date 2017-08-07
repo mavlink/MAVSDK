@@ -61,7 +61,6 @@ private:
         enum class State {
             NONE,
             WAITING,
-            TEMPORARILY_REJECTED,
             IN_PROGRESS,
             DONE,
             FAILED
