@@ -56,16 +56,16 @@ public:
     const MavlinkCommands &operator=(const MavlinkCommands &) = delete;
 
 private:
+    enum class State {
+        NONE,
+        WAITING,
+        IN_PROGRESS,
+        DONE,
+        FAILED
+    } _state = State::NONE;
+    std::mutex _state_mutex {};
 
     struct Work {
-        enum class State {
-            NONE,
-            WAITING,
-            IN_PROGRESS,
-            DONE,
-            FAILED
-        } state = State::NONE;
-
         int retries_to_do = 3;
         double timeout_s = 0.5;
         uint16_t mavlink_command = 0;
