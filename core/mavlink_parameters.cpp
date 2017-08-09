@@ -4,10 +4,7 @@
 namespace dronelink {
 
 MavlinkParameters::MavlinkParameters(DeviceImpl *parent) :
-    _parent(parent),
-    _request_state(RequestState::NONE),
-    _set_param_queue(),
-    _get_param_queue()
+    _parent(parent)
 {
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_VALUE,
@@ -84,18 +81,19 @@ void MavlinkParameters::get_param_async(const std::string &name,
 
 void MavlinkParameters::do_work()
 {
-    if (_request_state != RequestState::NONE) {
+    std::lock_guard<std::mutex> lock(_state_mutex);
+
+    if (_state != State::NONE) {
         // If we're still busy, let's wait
         return;
     }
-
 
     if (_set_param_queue.size() > 0) {
         // There params to set which we always do first
         SetParamWork &work = _set_param_queue.front();
 
         // We need to wait for this param to get sent back as confirmation.
-        _request_state = RequestState::SET_PARAM_BUSY;
+        _state = State::SET_PARAM_BUSY;
 
         char param_id[PARAM_ID_LEN] = {};
         STRNCPY(param_id, work.param_name.c_str(), sizeof(param_id));
@@ -133,7 +131,7 @@ void MavlinkParameters::do_work()
             if (work.callback) {
                 work.callback(false);
             }
-            _request_state = RequestState::NONE;
+            _state = State::NONE;
             return;
         }
 
@@ -150,7 +148,7 @@ void MavlinkParameters::do_work()
 
         // The busy flag gets reset when the param comes in
         // or after a timeout.
-        _request_state = RequestState::GET_PARAM_BUSY;
+        _state = State::GET_PARAM_BUSY;
 
         char param_id[PARAM_ID_LEN] = {};
         STRNCPY(param_id, work.param_name.c_str(), sizeof(param_id));
@@ -190,7 +188,7 @@ void MavlinkParameters::do_work()
                 ParamValue empty_param;
                 work.callback(false, empty_param);
             }
-            _request_state = RequestState::NONE;
+            _state = State::NONE;
             return;
         }
 
@@ -210,11 +208,13 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
 
-    if (_request_state == RequestState::NONE) {
+    std::lock_guard<std::mutex> lock(_state_mutex);
+
+    if (_state == State::NONE) {
         return;
     }
 
-    if (_request_state == RequestState::GET_PARAM_BUSY) {
+    if (_state == State::GET_PARAM_BUSY) {
 
         // This means we should have a queue entry to use
         if (_get_param_queue.size() > 0) {
@@ -227,7 +227,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
                     value.set_from_mavlink_param_value(param_value);
                     work.callback(true, value);
                 }
-                _request_state = RequestState::NONE;
+                _state = State::NONE;
                 _parent->unregister_timeout_handler(this);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _get_param_queue.pop_front();
@@ -235,7 +235,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
         }
     }
 
-    else if (_request_state == RequestState::SET_PARAM_BUSY) {
+    else if (_state == State::SET_PARAM_BUSY) {
 
         // This means we should have a queue entry to use
         if (_set_param_queue.size() > 0) {
@@ -249,7 +249,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
                     work.callback(true);
                 }
 
-                _request_state = RequestState::NONE;
+                _state = State::NONE;
                 _parent->unregister_timeout_handler(this);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
@@ -264,11 +264,13 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
     mavlink_param_ext_value_t param_ext_value;
     mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
 
-    if (_request_state == RequestState::NONE) {
+    std::lock_guard<std::mutex> lock(_state_mutex);
+
+    if (_state == State::NONE) {
         return;
     }
 
-    if (_request_state == RequestState::GET_PARAM_BUSY) {
+    if (_state == State::GET_PARAM_BUSY) {
 
         // This means we should have a queue entry to use
         if (_get_param_queue.size() > 0) {
@@ -281,7 +283,7 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
                     value.set_from_mavlink_param_ext_value(param_ext_value);
                     work.callback(true, value);
                 }
-                _request_state = RequestState::NONE;
+                _state = State::NONE;
                 _parent->unregister_timeout_handler(this);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _get_param_queue.pop_front();
@@ -290,7 +292,7 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
     }
 
 #if 0
-    else if (_request_state == RequestState::SET_PARAM_BUSY) {
+    else if (_state == State::SET_PARAM_BUSY) {
 
         // This means we should have a queue entry to use
         if (_set_param_queue.size() > 0) {
@@ -304,7 +306,7 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
                     work.callback(true);
                 }
 
-                _request_state = RequestState::NONE;
+                _state = State::NONE;
                 _parent->unregister_timeout_handler(this);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
@@ -321,7 +323,9 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
     mavlink_param_ext_ack_t param_ext_ack;
     mavlink_msg_param_ext_ack_decode(&message, &param_ext_ack);
 
-    if (_request_state != RequestState::SET_PARAM_BUSY) {
+    std::lock_guard<std::mutex> lock(_state_mutex);
+
+    if (_state != State::SET_PARAM_BUSY) {
         return;
     }
 
@@ -338,7 +342,7 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
                     work.callback(true);
                 }
 
-                _request_state = RequestState::NONE;
+                _state = State::NONE;
                 _parent->unregister_timeout_handler(this);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
@@ -356,7 +360,7 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
                     work.callback(false);
                 }
 
-                _request_state = RequestState::NONE;
+                _state = State::NONE;
                 _parent->unregister_timeout_handler(this);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
@@ -368,12 +372,14 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 
 void MavlinkParameters::receive_timeout()
 {
-    if (_request_state == RequestState::NONE) {
+    std::lock_guard<std::mutex> lock(_state_mutex);
+
+    if (_state == State::NONE) {
         // Strange, a timeout even though we're not doing anything
         return;
     }
 
-    if (_request_state == RequestState::GET_PARAM_BUSY) {
+    if (_state == State::GET_PARAM_BUSY) {
 
         // This means work has been going on that we should try again
         if (_get_param_queue.size() > 0) {
@@ -386,12 +392,12 @@ void MavlinkParameters::receive_timeout()
                 // Debug() << "Got it after: " << elapsed_since_s(_last_request_time);
                 work.callback(false, empty_value);
             }
-            _request_state = RequestState::NONE;
+            _state = State::NONE;
             _get_param_queue.pop_front();
         }
     }
 
-    else if (_request_state == RequestState::SET_PARAM_BUSY) {
+    else if (_state == State::SET_PARAM_BUSY) {
 
         // This means work has been going on that we should try again
         if (_set_param_queue.size() > 0) {
@@ -402,7 +408,7 @@ void MavlinkParameters::receive_timeout()
                 Debug() << "Error: set param busy timeout: " << work.param_name;
                 work.callback(false);
             }
-            _request_state = RequestState::NONE;
+            _state = State::NONE;
             _set_param_queue.pop_front();
         }
     }

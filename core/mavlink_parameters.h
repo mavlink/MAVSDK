@@ -145,12 +145,12 @@ private:
 
     DeviceImpl *_parent;
 
-    // TODO: lock this
-    enum class RequestState {
+    enum class State {
         NONE,
         SET_PARAM_BUSY,
         GET_PARAM_BUSY
-    } _request_state;
+    } _state = State::NONE;
+    std::mutex _state_mutex {};
 
     // Params can be up to 16 chars and without 0-termination.
     // Therefore we add a 0 here for storing.
@@ -164,7 +164,7 @@ private:
         int retries_done = 0;
     };
 
-    LockedQueue<SetParamWork> _set_param_queue;
+    LockedQueue<SetParamWork> _set_param_queue {};
 
     struct GetParamWork {
         get_param_callback_t callback = nullptr;
@@ -172,7 +172,7 @@ private:
         bool extended = false;
         int retries_done = 0;
     };
-    LockedQueue<GetParamWork> _get_param_queue;
+    LockedQueue<GetParamWork> _get_param_queue {};
 
     // dl_time_t _last_request_time = {};
 };
