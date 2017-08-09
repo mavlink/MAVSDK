@@ -5,10 +5,7 @@
 #include <cstdint>
 #include <string>
 #include <functional>
-
-#ifdef NO_PROMISES
 #include <mutex>
-#endif
 
 namespace dronelink {
 
