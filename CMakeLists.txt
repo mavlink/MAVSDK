@@ -116,6 +116,21 @@ install(FILES
 )
 
 if(NOT IOS AND NOT ANDROID)
+    find_package(SWIG REQUIRED)
+    include(${SWIG_USE_FILE})
+    add_definitions(-DSWIG_TYPE_TABLE=dronelink)
+    set_source_files_properties(swig/dronelink.i PROPERTIES CPLUSPLUS ON)
+    execute_process(COMMAND python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())" OUTPUT_VARIABLE PYTHON_INCLUDE_DIR ERROR_QUIET)
+    include_directories(
+            ${PYTHON_INCLUDE_DIR}
+    )
+
+    set(SWIG_MODULE_dronelink_EXTRA_DEPS ${swigged_sources})
+    swig_add_module(dronelink python swig/dronelink.i)
+    swig_link_libraries(dronelink ${PYTHON_LIBRARIES} dronelink)
+endif()
+
+if(NOT IOS AND NOT ANDROID)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
