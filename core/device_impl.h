@@ -142,7 +142,8 @@ private:
     static constexpr uint8_t _own_system_id = 0;
     static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
 
-    dl_time_t _last_heartbeat_received_time {};
+    static std::mutex _last_heartbeat_reiceved_time_mutex;
+    static dl_time_t _last_heartbeat_received_time;
 
     static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
 

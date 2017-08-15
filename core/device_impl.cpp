@@ -7,7 +7,8 @@
 namespace dronelink {
 
 using namespace std::placeholders; // for `_1`
-
+std::mutex DeviceImpl::_last_heartbeat_reiceved_time_mutex;
+dl_time_t DeviceImpl::_last_heartbeat_received_time;
 
 DeviceImpl::DeviceImpl(DroneLinkImpl *parent,
                        uint8_t target_system_id) :
@@ -124,6 +125,8 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
 
     _heartbeats_arriving = true;
+
+    std::lock_guard<std::mutex> lock(_last_heartbeat_reiceved_time_mutex);
     _last_heartbeat_received_time = steady_time();
 }
 
@@ -224,6 +227,7 @@ void DeviceImpl::check_timeouts(DeviceImpl *self)
 
 void DeviceImpl::check_heartbeat_timeout(DeviceImpl *self)
 {
+    std::lock_guard<std::mutex> lock(_last_heartbeat_reiceved_time_mutex);
     if (elapsed_since_s(self->_last_heartbeat_received_time) > DeviceImpl::_HEARTBEAT_TIMEOUT_S) {
         if (self->_heartbeats_arriving) {
             self->_parent->notify_on_timeout(self->_target_uuid);
