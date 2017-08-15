@@ -20,8 +20,8 @@ add_executable(takeoff_and_land
 )
 
 target_link_libraries(takeoff_and_land
-    ${CMAKE_SOURCE_DIR}/../install/lib/libdronelink.a
+    ${CMAKE_SOURCE_DIR}/../install/lib/libdronecore.a
     # If installed system-wide:
-    # dronelink
+    # dronecore
     ${CMAKE_THREAD_LIBS_INIT}
 )

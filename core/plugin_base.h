@@ -1,6 +1,6 @@
 #pragma once
 
-namespace dronelink {
+namespace dronecore {
 
 class PluginBase
 {
@@ -13,4 +13,4 @@ public:
     const PluginBase &operator=(const PluginBase &) = delete;
 };
 
-} // namespace dronelink
+} // namespace dronecore

@@ -6,7 +6,7 @@
 #include <cmath>
 #include <functional>
 
-namespace dronelink {
+namespace dronecore {
 
 TelemetryImpl::TelemetryImpl() :
     _position_mutex(),
@@ -865,4 +865,4 @@ void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t &callback)
     _rc_status_subscription = callback;
 }
 
-} // namespace dronelink
+} // namespace dronecore

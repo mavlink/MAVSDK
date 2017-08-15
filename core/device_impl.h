@@ -12,15 +12,15 @@
 #include <thread>
 #include <mutex>
 
-namespace dronelink {
+namespace dronecore {
 
-class DroneLinkImpl;
+class DroneCoreImpl;
 
 
 class DeviceImpl
 {
 public:
-    explicit DeviceImpl(DroneLinkImpl *parent,
+    explicit DeviceImpl(DroneCoreImpl *parent,
                         uint8_t target_system_id);
     ~DeviceImpl();
 
@@ -133,7 +133,7 @@ private:
     bool _target_supports_mission_int {false};
     bool _armed {false};
 
-    DroneLinkImpl *_parent;
+    DroneCoreImpl *_parent;
 
     command_result_callback_t _command_result_callback {nullptr};
 
@@ -159,4 +159,4 @@ private:
 };
 
 
-} // namespace dronelink
+} // namespace dronecore

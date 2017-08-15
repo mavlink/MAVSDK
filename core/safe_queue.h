@@ -5,7 +5,7 @@
 #include <condition_variable>
 #include <cstdio>
 
-namespace dronelink {
+namespace dronecore {
 
 /*
  * Thread-safe queue taken from:
@@ -61,4 +61,4 @@ private:
     bool _should_exit = false;
 };
 
-} // namespace dronelink
+} // namespace dronecore

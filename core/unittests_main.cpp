@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-using namespace dronelink;
+using namespace dronecore;
 
 
 int main(int argc, char *argv[])

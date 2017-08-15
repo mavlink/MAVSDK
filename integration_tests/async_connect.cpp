@@ -1,9 +1,9 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronelink.h"
+#include "dronecore.h"
 
-using namespace dronelink;
+using namespace dronecore;
 using namespace std::placeholders; // for _1
 
 static bool _discovered_device = false;
@@ -15,12 +15,12 @@ void on_timeout(uint64_t uuid);
 
 TEST_F(SitlTest, AsyncConnect)
 {
-    DroneLink dl;
+    DroneCore dc;
 
-    ASSERT_EQ(dl.add_udp_connection(), DroneLink::ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc.add_udp_connection(), DroneCore::ConnectionResult::SUCCESS);
 
-    dl.register_on_discover(std::bind(&on_discover, _1));
-    dl.register_on_timeout(std::bind(&on_timeout, _1));
+    dc.register_on_discover(std::bind(&on_discover, _1));
+    dc.register_on_timeout(std::bind(&on_timeout, _1));
 
     while (!_discovered_device) {
         std::cout << "waiting for device to appear..." << std::endl;

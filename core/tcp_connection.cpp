@@ -1,9 +1,9 @@
 #include "tcp_connection.h"
 #include "global_include.h"
 
-namespace dronelink {
+namespace dronecore {
 
-TcpConnection::TcpConnection(DroneLinkImpl *parent, const std::string &ip, int port_number) :
+TcpConnection::TcpConnection(DroneCoreImpl *parent, const std::string &ip, int port_number) :
     Connection(parent)
 {
     UNUSED(ip);
@@ -15,14 +15,14 @@ bool TcpConnection::is_ok() const
     return true;
 }
 
-DroneLink::ConnectionResult TcpConnection::start()
+DroneCore::ConnectionResult TcpConnection::start()
 {
-    return DroneLink::ConnectionResult::SUCCESS;
+    return DroneCore::ConnectionResult::SUCCESS;
 }
 
-DroneLink::ConnectionResult TcpConnection::stop()
+DroneCore::ConnectionResult TcpConnection::stop()
 {
-    return DroneLink::ConnectionResult::SUCCESS;
+    return DroneCore::ConnectionResult::SUCCESS;
 }
 
 bool TcpConnection::send_message(const mavlink_message_t &message)
@@ -33,4 +33,4 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

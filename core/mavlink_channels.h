@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <mutex>
 
-namespace dronelink {
+namespace dronecore {
 
 class MavlinkChannels
 {
@@ -50,4 +50,4 @@ private:
     std::mutex _channels_used_mutex;
 };
 
-} // namespace dronelink
+} // namespace dronecore

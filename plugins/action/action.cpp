@@ -1,7 +1,7 @@
 #include "action.h"
 #include "action_impl.h"
 
-namespace dronelink {
+namespace dronecore {
 
 Action::Action(ActionImpl *impl) :
     _impl(impl)
@@ -118,4 +118,4 @@ const char *Action::result_str(Result result)
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

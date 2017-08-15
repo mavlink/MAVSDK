@@ -2,7 +2,7 @@
 
 #include <functional>
 
-namespace dronelink {
+namespace dronecore {
 
 class OffboardImpl;
 
@@ -58,4 +58,4 @@ private:
     OffboardImpl *_impl;
 };
 
-} // namespace dronelink
+} // namespace dronecore

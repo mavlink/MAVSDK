@@ -4,7 +4,7 @@
 #include "global_include.h"
 #include <cstdint>
 
-namespace dronelink {
+namespace dronecore {
 
 class MavlinkReceiver
 {
@@ -58,4 +58,4 @@ private:
 #endif
 };
 
-} // namespace dronelink
+} // namespace dronecore

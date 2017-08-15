@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace dronelink {
+namespace dronecore {
 
 class InfoImpl;
 
@@ -45,4 +45,4 @@ private:
     InfoImpl *_impl;
 };
 
-} // namespace dronelink
+} // namespace dronecore

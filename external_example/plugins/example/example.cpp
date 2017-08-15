@@ -1,7 +1,7 @@
 #include "example.h"
 #include "example_impl.h"
 
-namespace dronelink {
+namespace dronecore {
 
 Example::Example(ExampleImpl *impl) :
     _impl(impl)
@@ -17,4 +17,4 @@ void Example::say_hello() const
     _impl->say_hello();
 }
 
-} // namespace dronelink
+} // namespace dronecore

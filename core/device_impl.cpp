@@ -1,16 +1,16 @@
 #include "device_impl.h"
 #include "global_include.h"
-#include "dronelink_impl.h"
+#include "dronecore_impl.h"
 #include "mavlink_include.h"
 #include <functional>
 
-namespace dronelink {
+namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 std::mutex DeviceImpl::_last_heartbeat_reiceved_time_mutex;
 dl_time_t DeviceImpl::_last_heartbeat_received_time;
 
-DeviceImpl::DeviceImpl(DroneLinkImpl *parent,
+DeviceImpl::DeviceImpl(DroneCoreImpl *parent,
                        uint8_t target_system_id) :
     _target_system_id(target_system_id),
     _parent(parent),
@@ -407,4 +407,4 @@ void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

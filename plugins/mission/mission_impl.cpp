@@ -4,7 +4,7 @@
 #include "global_include.h"
 #include <cmath>
 
-namespace dronelink {
+namespace dronecore {
 
 MissionImpl::MissionImpl() :
     PluginImplBase(),
@@ -625,4 +625,4 @@ void MissionImpl::subscribe_progress(Mission::progress_callback_t callback)
     _progress_callback = callback;
 }
 
-} // namespace dronelink
+} // namespace dronecore

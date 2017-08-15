@@ -1,7 +1,7 @@
 #include "http_loader.h"
 #include "curl_wrapper.h"
 
-namespace dronelink {
+namespace dronecore {
 
 
 #ifdef TESTING
@@ -119,6 +119,6 @@ bool HttpLoader::download_text_sync(const std::string &url, std::string &content
 }
 
 
-} // namespace dronelink
+} // namespace dronecore
 
 

@@ -7,7 +7,7 @@
 #include <functional>
 #include <mutex>
 
-namespace dronelink {
+namespace dronecore {
 
 class DeviceImpl;
 
@@ -88,4 +88,4 @@ private:
 #endif
 };
 
-} // namespace dronelink
+} // namespace dronecore

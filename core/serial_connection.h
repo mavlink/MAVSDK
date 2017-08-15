@@ -1,22 +1,22 @@
 #pragma once
 
-#include "dronelink.h"
-#include "dronelink_impl.h"
+#include "dronecore.h"
+#include "dronecore_impl.h"
 #include "connection.h"
 
-namespace dronelink {
+namespace dronecore {
 
 class SerialConnection : public Connection
 {
 public:
-    explicit SerialConnection(DroneLinkImpl *parent, const std::string &path, int baudrate);
+    explicit SerialConnection(DroneCoreImpl *parent, const std::string &path, int baudrate);
     bool is_ok() const;
-    DroneLink::ConnectionResult start();
-    DroneLink::ConnectionResult stop();
+    DroneCore::ConnectionResult start();
+    DroneCore::ConnectionResult stop();
 
     bool send_message(const mavlink_message_t &message);
 
 private:
 };
 
-} // namespace dronelink
+} // namespace dronecore

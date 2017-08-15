@@ -2,7 +2,7 @@
 #include "curl_include.h"
 #include <functional>
 
-namespace dronelink {
+namespace dronecore {
 
 enum class Status {
     Idle = 0,
@@ -19,4 +19,4 @@ struct dl_up_progress {
     progress_callback_t progress_callback;
 };
 
-} // namespace dronelink
+} // namespace dronecore

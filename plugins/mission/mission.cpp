@@ -2,7 +2,7 @@
 #include "mission_impl.h"
 #include <vector>
 
-namespace dronelink {
+namespace dronecore {
 
 Mission::Mission(MissionImpl *impl) :
     _impl(impl)

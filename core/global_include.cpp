@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <limits>
 
-namespace dronelink {
+namespace dronecore {
 
 
 dl_time_t steady_time()
@@ -60,5 +60,5 @@ bool are_equal(double one, double two)
     return (fabs(one - two) < std::numeric_limits<double>::epsilon());
 }
 
-} // namespace dronelink
+} // namespace dronecore
 

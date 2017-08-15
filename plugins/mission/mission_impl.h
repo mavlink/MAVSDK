@@ -7,7 +7,7 @@
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 
-namespace dronelink {
+namespace dronecore {
 
 class MissionImpl : public PluginImplBase
 {
@@ -92,4 +92,4 @@ private:
 
 //static std::function<void(MavlinkCommands::Result)> empty_callback;
 
-} // namespace dronelink
+} // namespace dronecore

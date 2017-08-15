@@ -1,10 +1,10 @@
 #include "global_include.h"
 #include "action_impl.h"
-#include "dronelink_impl.h"
+#include "dronecore_impl.h"
 #include "telemetry.h"
 #include "px4_custom_mode.h"
 
-namespace dronelink {
+namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
@@ -450,4 +450,4 @@ void ActionImpl::command_result_callback(MavlinkCommands::Result command_result,
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

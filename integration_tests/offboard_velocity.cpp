@@ -1,21 +1,21 @@
 #include <iostream>
 #include <cmath>
 #include "integration_test_helper.h"
-#include "dronelink.h"
+#include "dronecore.h"
 
-using namespace dronelink;
+using namespace dronecore;
 
 
 TEST_F(SitlTest, OffboardVelocityNED)
 {
-    DroneLink dl;
+    DroneCore dc;
 
-    DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    ASSERT_EQ(DroneLink::ConnectionResult::SUCCESS, ret);
+    DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(DroneCore::ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    Device &device = dl.device();
+    Device &device = dc.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
@@ -91,14 +91,14 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
 TEST_F(SitlTest, OffboardVelocityBody)
 {
-    DroneLink dl;
+    DroneCore dc;
 
-    DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    ASSERT_EQ(DroneLink::ConnectionResult::SUCCESS, ret);
+    DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(DroneCore::ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    Device &device = dl.device();
+    Device &device = dc.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;

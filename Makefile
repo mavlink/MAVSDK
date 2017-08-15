@@ -1,4 +1,4 @@
-# Makefile to build DroneLink
+# Makefile to build DroneCore
 #
 # The targets are mostly for convenience around cmake.
 #

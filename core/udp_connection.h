@@ -1,22 +1,22 @@
 #pragma once
 
-#include "dronelink.h"
+#include "dronecore.h"
 #include "connection.h"
 #include <string>
 #include <mutex>
 #include <thread>
 #include <atomic>
 
-namespace dronelink {
+namespace dronecore {
 
 class UdpConnection : public Connection
 {
 public:
-    explicit UdpConnection(DroneLinkImpl *parent, int local_port_number);
+    explicit UdpConnection(DroneCoreImpl *parent, int local_port_number);
     ~UdpConnection();
     bool is_ok() const;
-    DroneLink::ConnectionResult start();
-    DroneLink::ConnectionResult stop();
+    DroneCore::ConnectionResult start();
+    DroneCore::ConnectionResult stop();
 
     bool send_message(const mavlink_message_t &message);
 
@@ -25,7 +25,7 @@ public:
     const UdpConnection &operator=(const UdpConnection &) = delete;
 
 private:
-    DroneLink::ConnectionResult setup_port();
+    DroneCore::ConnectionResult setup_port();
     void start_recv_thread();
 
     static void receive(UdpConnection *parent);
@@ -42,4 +42,4 @@ private:
     std::atomic_bool _should_exit;
 };
 
-} // namespace dronelink
+} // namespace dronecore

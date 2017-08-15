@@ -32,7 +32,7 @@
 #endif
 
 
-namespace dronelink {
+namespace dronecore {
 
 class Debug
 {
@@ -50,7 +50,7 @@ public:
     ~Debug()
     {
 #if ANDROID
-        __android_log_print(ANDROID_LOG_DEBUG, "DroneLink", "%s", _s.str().c_str());
+        __android_log_print(ANDROID_LOG_DEBUG, "DroneCore", "%s", _s.str().c_str());
 #else
         std::cout << _s.str() << std::endl;
 #endif
@@ -84,4 +84,4 @@ double to_deg_from_rad(double rad);
 bool are_equal(float one, float two);
 bool are_equal(double one, double two);
 
-} // namespace dronelink
+} // namespace dronecore

@@ -3,9 +3,9 @@
 #include <memory>
 #include <atomic>
 #include "integration_test_helper.h"
-#include "dronelink.h"
+#include "dronecore.h"
 
-using namespace dronelink;
+using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 
 enum class MissionState : unsigned {
@@ -53,15 +53,15 @@ static std::shared_ptr<MissionItem> add_waypoint(double latitude_deg,
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
 {
-    DroneLink dl;
+    DroneCore dc;
 
-    DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
+    DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
     sleep(2);
 
-    Device &device = dl.device();
+    Device &device = dc.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;

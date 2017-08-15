@@ -5,7 +5,7 @@
 #include <memory>
 #include <functional>
 
-namespace dronelink {
+namespace dronecore {
 
 class MissionImpl;
 
@@ -55,4 +55,4 @@ private:
     MissionImpl *_impl;
 };
 
-} // namespace dronelink
+} // namespace dronecore

@@ -4,7 +4,7 @@
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 
-namespace dronelink {
+namespace dronecore {
 
 class ExampleImpl : public PluginImplBase
 {
@@ -21,4 +21,4 @@ private:
     void process_heartbeat(const mavlink_message_t &message);
 };
 
-} // namespace dronelink
+} // namespace dronecore

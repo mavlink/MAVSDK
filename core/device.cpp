@@ -1,7 +1,7 @@
 #include "device.h"
 #include "device_impl.h"
 
-namespace dronelink {
+namespace dronecore {
 
 Device::Device(DeviceImpl *impl) :
     DevicePluginContainer(impl)
@@ -12,4 +12,4 @@ Device::~Device()
 {
 }
 
-} // namespace dronelink
+} // namespace dronecore

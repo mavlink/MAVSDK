@@ -1,9 +1,9 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronelink.h"
+#include "dronecore.h"
 
 using namespace std::placeholders; // for `_1`
-using namespace dronelink;
+using namespace dronecore;
 
 
 void receive_result(Telemetry::Result result);
@@ -31,13 +31,13 @@ bool _received_battery = false;
 
 TEST_F(SitlTest, TelemetryAsync)
 {
-    DroneLink dl;
+    DroneCore dc;
 
-    DroneLink::ConnectionResult ret = dl.add_udp_connection();
+    DroneCore::ConnectionResult ret = dc.add_udp_connection();
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    std::vector<uint64_t> uuids = dl.device_uuids();
+    std::vector<uint64_t> uuids = dc.device_uuids();
 
     for (auto it = uuids.begin(); it != uuids.end(); ++it) {
         std::cout << "found device with UUID: " << *it << std::endl;
@@ -47,9 +47,9 @@ TEST_F(SitlTest, TelemetryAsync)
 
     uint64_t uuid = uuids.at(0);
 
-    ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
 
-    Device &device = dl.device(uuid);
+    Device &device = dc.device(uuid);
 
     device.telemetry().set_rate_position_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

@@ -1,7 +1,7 @@
 #include "info.h"
 #include "info_impl.h"
 
-namespace dronelink {
+namespace dronecore {
 
 Info::Info(InfoImpl *impl) :
     _impl(impl)
@@ -27,4 +27,4 @@ Info::Version Info::get_version() const
     return _impl->get_version();
 }
 
-} // namespace dronelink
+} // namespace dronecore

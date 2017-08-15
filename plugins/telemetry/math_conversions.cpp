@@ -2,7 +2,7 @@
 #include "math_conversions.h"
 #include <cmath>
 
-namespace dronelink {
+namespace dronecore {
 
 float to_deg_from_rad(float rad)
 {
@@ -52,4 +52,4 @@ Telemetry::Quaternion to_quaternion_from_euler_angle(Telemetry::EulerAngle euler
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

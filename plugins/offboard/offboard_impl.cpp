@@ -1,9 +1,9 @@
 #include "global_include.h"
 #include "offboard_impl.h"
-#include "dronelink_impl.h"
+#include "dronecore_impl.h"
 #include "px4_custom_mode.h"
 
-namespace dronelink {
+namespace dronecore {
 
 OffboardImpl::OffboardImpl() :
     _offboard_mode_active(false),
@@ -273,4 +273,4 @@ OffboardImpl::offboard_result_from_command_result(MavlinkCommands::Result result
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

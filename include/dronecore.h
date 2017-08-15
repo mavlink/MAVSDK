@@ -6,15 +6,15 @@
 #include <vector>
 #include <functional>
 
-namespace dronelink {
+namespace dronecore {
 
-class DroneLinkImpl;
+class DroneCoreImpl;
 
-class DroneLink
+class DroneCore
 {
 public:
-    DroneLink();
-    ~DroneLink();
+    DroneCore();
+    ~DroneCore();
 
     enum class ConnectionResult {
         SUCCESS = 0,
@@ -44,11 +44,11 @@ public:
     void register_on_timeout(event_callback_t callback);
 
 private:
-    DroneLinkImpl *_impl;
+    DroneCoreImpl *_impl;
 
     // Non-copyable
-    DroneLink(const DroneLink &) = delete;
-    const DroneLink &operator=(const DroneLink &) = delete;
+    DroneCore(const DroneCore &) = delete;
+    const DroneCore &operator=(const DroneCore &) = delete;
 };
 
-} // namespace dronelink
+} // namespace dronecore

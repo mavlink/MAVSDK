@@ -1,7 +1,7 @@
 #include "offboard.h"
 #include "offboard_impl.h"
 
-namespace dronelink {
+namespace dronecore {
 
 Offboard::Offboard(OffboardImpl *impl) :
     _impl(impl)
@@ -63,4 +63,4 @@ const char *Offboard::result_str(Result result)
     }
 }
 
-} // namespace dronelink
+} // namespace dronecore

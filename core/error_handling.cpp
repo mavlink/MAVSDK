@@ -1,6 +1,6 @@
 #include "error_handling.h"
 
-namespace dronelink {
+namespace dronecore {
 
 const char *result_str(Result res)
 {
@@ -28,4 +28,4 @@ const char *result_str(Result res)
     }
 }
 
-} // namespace dronelink
+} // namespace dronecore

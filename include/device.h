@@ -2,7 +2,7 @@
 
 #include "device_plugin_container.h"
 
-namespace dronelink {
+namespace dronecore {
 
 class DeviceImpl;
 
@@ -19,4 +19,4 @@ private:
     const Device &operator=(const Device &) = delete;
 };
 
-} // namespace dronelink
+} // namespace dronecore

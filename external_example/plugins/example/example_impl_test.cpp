@@ -1,13 +1,13 @@
 #include "example_impl.h"
-#include "dronelink.h"
+#include "dronecore.h"
 #include "global_include.h"
 #include <gtest/gtest.h>
 
-namespace dronelink {
+namespace dronecore {
 
 TEST(ExampleImpl, NoTest)
 {
     ASSERT_TRUE(true);
 }
 
-} // namespace dronelink
+} // namespace dronecore
