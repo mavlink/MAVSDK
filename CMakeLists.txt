@@ -119,8 +119,14 @@ if(NOT IOS AND NOT ANDROID)
     find_package(SWIG REQUIRED)
     include(${SWIG_USE_FILE})
     add_definitions(-DSWIG_TYPE_TABLE=dronelink)
-    set_source_files_properties(swig/dronelink.i PROPERTIES CPLUSPLUS ON)
-    execute_process(COMMAND python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())" OUTPUT_VARIABLE PYTHON_INCLUDE_DIR ERROR_QUIET)
+    set_source_files_properties(swig/dronelink.i
+        PROPERTIES CPLUSPLUS ON)
+    execute_process(
+        COMMAND python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
+        OUTPUT_VARIABLE PYTHON_INCLUDE_DIR ERROR_QUIET)
+    execute_process(
+        COMMAND python -c "import site; site.getusersitepackages(); print(site.USER_SITE)"
+        OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
     include_directories(
             ${PYTHON_INCLUDE_DIR}
     )
@@ -131,6 +137,9 @@ if(NOT IOS AND NOT ANDROID)
         LANGUAGE python
         SOURCES swig/dronelink.i)
     swig_link_libraries(dronelink python dronelink)
+
+    install(TARGETS _dronelink DESTINATION ${PYTHON_SITE_PACKAGES})
+    install(FILES ${CMAKE_BINARY_DIR}/dronelink.py DESTINATION ${PYTHON_SITE_PACKAGES})
 endif()
 
 if(NOT IOS AND NOT ANDROID)
