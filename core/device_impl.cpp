@@ -231,6 +231,10 @@ void DeviceImpl::check_heartbeat_timeout(DeviceImpl *self)
     if (elapsed_since_s(self->_last_heartbeat_received_time) > DeviceImpl::_HEARTBEAT_TIMEOUT_S) {
         if (self->_heartbeats_arriving) {
             self->_parent->notify_on_timeout(self->_target_uuid);
+            self->_heartbeats_arriving = false;
+        }
+    } else {
+        if (!self->_heartbeats_arriving) {
             self->_heartbeats_arriving = true;
         }
     }
