@@ -1,11 +1,11 @@
 #include "connection.h"
-#include "dronelink_impl.h"
+#include "dronecore_impl.h"
 #include "mavlink_channels.h"
 #include "global_include.h"
 
-namespace dronelink {
+namespace dronecore {
 
-Connection::Connection(DroneLinkImpl *parent) :
+Connection::Connection(DroneCoreImpl *parent) :
     _parent(parent),
     _mavlink_receiver()
 
@@ -46,4 +46,4 @@ void Connection::receive_message(const mavlink_message_t &message)
     _parent->receive_message(message);
 }
 
-} // namespace dronelink
+} // namespace dronecore

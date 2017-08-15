@@ -1,5 +1,5 @@
 #set(_libs
-#    dronelink
+#    dronecore
 #    pthread
 #)
 #if (IOS)

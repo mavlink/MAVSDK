@@ -11,7 +11,7 @@
 // is disabled for now.
 //#define LEVEL_CALIBRATION
 
-namespace dronelink {
+namespace dronecore {
 
 class DeviceImpl;
 
@@ -183,4 +183,4 @@ private:
     double _position_rate_hz;
 };
 
-} // namespace dronelink
+} // namespace dronecore

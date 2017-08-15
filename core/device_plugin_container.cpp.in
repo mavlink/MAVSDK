@@ -4,7 +4,7 @@
 
 ${IMPL_INCLUDES_STRING}
 
-namespace dronelink {
+namespace dronecore {
 
 DevicePluginContainer::DevicePluginContainer(DeviceImpl *impl) :
     _impl(impl),
@@ -44,4 +44,4 @@ void DevicePluginContainer::deinit_plugins()
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

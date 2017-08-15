@@ -1,10 +1,10 @@
-#include "dronelink_impl.h"
+#include "dronecore_impl.h"
 #include "global_include.h"
 #include <mutex>
 
-namespace dronelink {
+namespace dronecore {
 
-DroneLinkImpl::DroneLinkImpl() :
+DroneCoreImpl::DroneCoreImpl() :
     _connections_mutex(),
     _connections(),
     _devices_mutex(),
@@ -14,7 +14,7 @@ DroneLinkImpl::DroneLinkImpl() :
     _on_timeout_callback(nullptr)
 {}
 
-DroneLinkImpl::~DroneLinkImpl()
+DroneCoreImpl::~DroneCoreImpl()
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
@@ -47,7 +47,7 @@ DroneLinkImpl::~DroneLinkImpl()
 
 }
 
-void DroneLinkImpl::receive_message(const mavlink_message_t &message)
+void DroneCoreImpl::receive_message(const mavlink_message_t &message)
 {
     // Don't ever create a device with sysid 0.
     if (message.sysid == 0) {
@@ -87,7 +87,7 @@ void DroneLinkImpl::receive_message(const mavlink_message_t &message)
     }
 }
 
-bool DroneLinkImpl::send_message(const mavlink_message_t &message)
+bool DroneCoreImpl::send_message(const mavlink_message_t &message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
@@ -101,13 +101,13 @@ bool DroneLinkImpl::send_message(const mavlink_message_t &message)
     return true;
 }
 
-void DroneLinkImpl::add_connection(Connection *new_connection)
+void DroneCoreImpl::add_connection(Connection *new_connection)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
     _connections.push_back(new_connection);
 }
 
-const std::vector<uint64_t> &DroneLinkImpl::get_device_uuids() const
+const std::vector<uint64_t> &DroneCoreImpl::get_device_uuids() const
 {
     // This needs to survive the scope but we need to clean it up.
     static std::vector<uint64_t> uuids = {};
@@ -123,7 +123,7 @@ const std::vector<uint64_t> &DroneLinkImpl::get_device_uuids() const
     return uuids;
 }
 
-Device &DroneLinkImpl::get_device()
+Device &DroneCoreImpl::get_device()
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
@@ -152,7 +152,7 @@ Device &DroneLinkImpl::get_device()
     }
 }
 
-Device &DroneLinkImpl::get_device(uint64_t uuid)
+Device &DroneCoreImpl::get_device(uint64_t uuid)
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
@@ -175,7 +175,7 @@ Device &DroneLinkImpl::get_device(uint64_t uuid)
     return *_devices[system_id];
 }
 
-void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id)
+void DroneCoreImpl::create_device_if_not_existing(uint8_t system_id)
 {
     std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
@@ -198,28 +198,28 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id)
     _devices.insert(std::pair<uint8_t, Device *>(system_id, new_device));
 }
 
-void DroneLinkImpl::notify_on_discover(uint64_t uuid)
+void DroneCoreImpl::notify_on_discover(uint64_t uuid)
 {
     if (_on_discover_callback != nullptr) {
         _on_discover_callback(uuid);
     }
 }
 
-void DroneLinkImpl::notify_on_timeout(uint64_t uuid)
+void DroneCoreImpl::notify_on_timeout(uint64_t uuid)
 {
     if (_on_timeout_callback != nullptr) {
         _on_timeout_callback(uuid);
     }
 }
 
-void DroneLinkImpl::register_on_discover(DroneLink::event_callback_t callback)
+void DroneCoreImpl::register_on_discover(DroneCore::event_callback_t callback)
 {
     _on_discover_callback = callback;
 }
 
-void DroneLinkImpl::register_on_timeout(DroneLink::event_callback_t callback)
+void DroneCoreImpl::register_on_timeout(DroneCore::event_callback_t callback)
 {
     _on_timeout_callback = callback;
 }
 
-} // namespace dronelink
+} // namespace dronecore

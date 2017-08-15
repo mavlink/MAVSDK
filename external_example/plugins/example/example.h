@@ -1,6 +1,6 @@
 #pragma once
 
-namespace dronelink {
+namespace dronecore {
 
 class ExampleImpl;
 
@@ -21,4 +21,4 @@ private:
     ExampleImpl *_impl;
 };
 
-} // namespace dronelink
+} // namespace dronecore

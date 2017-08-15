@@ -5,7 +5,7 @@
 #include "plugin_impl_base.h"
 #include <mutex>
 
-namespace dronelink {
+namespace dronecore {
 
 class InfoImpl : public PluginImplBase
 {
@@ -33,4 +33,4 @@ private:
                                         char *str, unsigned str_len);
 };
 
-} // namespace dronelink
+} // namespace dronecore

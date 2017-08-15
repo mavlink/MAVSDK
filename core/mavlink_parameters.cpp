@@ -1,7 +1,7 @@
 #include "mavlink_parameters.h"
 #include "device_impl.h"
 
-namespace dronelink {
+namespace dronecore {
 
 MavlinkParameters::MavlinkParameters(DeviceImpl *parent) :
     _parent(parent)
@@ -414,4 +414,4 @@ void MavlinkParameters::receive_timeout()
     }
 }
 
-} // namespace dronelink
+} // namespace dronecore

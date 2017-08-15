@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dronelink.h"
+#include "dronecore.h"
 #include "connection.h"
 #include "device.h"
 #include "device_impl.h"
@@ -10,13 +10,13 @@
 #include <mutex>
 
 
-namespace dronelink {
+namespace dronecore {
 
-class DroneLinkImpl
+class DroneCoreImpl
 {
 public:
-    DroneLinkImpl();
-    ~DroneLinkImpl();
+    DroneCoreImpl();
+    ~DroneCoreImpl();
 
     void receive_message(const mavlink_message_t &message);
     bool send_message(const mavlink_message_t &message);
@@ -26,8 +26,8 @@ public:
     Device &get_device();
     Device &get_device(uint64_t uuid);
 
-    void register_on_discover(DroneLink::event_callback_t callback);
-    void register_on_timeout(DroneLink::event_callback_t callback);
+    void register_on_discover(DroneCore::event_callback_t callback);
+    void register_on_timeout(DroneCore::event_callback_t callback);
 
     void notify_on_discover(uint64_t uuid);
     void notify_on_timeout(uint64_t uuid);
@@ -42,10 +42,10 @@ private:
     std::map<uint8_t, Device *> _devices;
     std::map<uint8_t, DeviceImpl *> _device_impls;
 
-    DroneLink::event_callback_t _on_discover_callback;
-    DroneLink::event_callback_t _on_timeout_callback;
+    DroneCore::event_callback_t _on_discover_callback;
+    DroneCore::event_callback_t _on_timeout_callback;
 
     std::atomic<bool> _should_exit = {false};
 };
 
-} // namespace dronelink
+} // namespace dronecore

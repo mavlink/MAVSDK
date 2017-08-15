@@ -3,7 +3,7 @@
 #include "global_include.h"
 #include <functional>
 
-namespace dronelink {
+namespace dronecore {
 
 ExampleImpl::ExampleImpl() :
     PluginImplBase()
@@ -44,4 +44,4 @@ void ExampleImpl::process_heartbeat(const mavlink_message_t &message)
 
 
 
-} // namespace dronelink
+} // namespace dronecore

@@ -5,7 +5,7 @@
 #include <iomanip>
 #endif
 
-namespace dronelink {
+namespace dronecore {
 
 MavlinkReceiver::MavlinkReceiver(uint8_t channel) :
     _channel(channel)
@@ -131,4 +131,4 @@ void MavlinkReceiver::print_line(const char *index, unsigned count, unsigned cou
 }
 #endif
 
-} // namespace dronelink
+} // namespace dronecore

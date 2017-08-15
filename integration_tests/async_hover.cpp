@@ -1,9 +1,9 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronelink.h"
+#include "dronecore.h"
 
-using namespace dronelink;
+using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 
 void receive_result(Action::Result result);
@@ -15,16 +15,16 @@ static bool _in_air = false;
 
 TEST_F(SitlTest, ActionAsyncHover)
 {
-    DroneLink dl;
+    DroneCore dc;
 
-    DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
+    DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // TODO: this test is pretty dumb, should be improved with more checks.
-    Device &device = dl.device();
+    Device &device = dc.device();
 
     device.telemetry().health_all_ok_async(std::bind(&receive_health_all_ok, _1));
     device.telemetry().in_air_async(std::bind(&receive_in_air, _1));

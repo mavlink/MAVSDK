@@ -1,6 +1,6 @@
 #include "mavlink_channels.h"
 
-namespace dronelink {
+namespace dronecore {
 
 MavlinkChannels::MavlinkChannels() :
     _channels_used{},
@@ -37,4 +37,4 @@ void MavlinkChannels::checkin_used_channel(uint8_t used_channel)
     _channels_used[used_channel] = false;
 }
 
-} // namespace dronelink
+} // namespace dronecore

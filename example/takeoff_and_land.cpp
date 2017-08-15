@@ -1,32 +1,32 @@
 //
-// Simple example to demonstrate how to use DroneLink.
+// Simple example to demonstrate how to use DroneCore.
 //
 // Author: Julian Oes <julian@oes.ch>
 
-#include <dronelink/dronelink.h>
+#include <dronecore/dronecore.h>
 #include <iostream>
 #include <thread>
 #include <chrono>
 #include <cstdint>
 
-using namespace dronelink;
+using namespace dronecore;
 
 int main(int /*argc*/, char ** /*argv*/)
 {
-    DroneLink dl;
+    DroneCore dc;
 
     bool discovered_device = false;
 
-    DroneLink::ConnectionResult connection_result = dl.add_udp_connection();
+    DroneCore::ConnectionResult connection_result = dc.add_udp_connection();
 
-    if (connection_result != DroneLink::ConnectionResult::SUCCESS) {
-        std::cout << "Connection failed: " << DroneLink::connection_result_str(
+    if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
+        std::cout << "Connection failed: " << DroneCore::connection_result_str(
                       connection_result) << std::endl;
         return 1;
     }
 
     std::cout << "Waiting to discover device..." << std::endl;
-    dl.register_on_discover([&discovered_device](uint64_t uuid) {
+    dc.register_on_discover([&discovered_device](uint64_t uuid) {
         std::cout << "Discovered device with UUID: " << uuid << std::endl;
         discovered_device = true;
     });
@@ -41,11 +41,11 @@ int main(int /*argc*/, char ** /*argv*/)
 
     // We don't need to specifiy the UUID if it's only one device anyway.
     // If there were multiple, we could specify it with:
-    // dl.device(uint64_t uuid);
-    Device &device = dl.device();
+    // dc.device(uint64_t uuid);
+    Device &device = dc.device();
 
     // We want to listen to the altitude of the drone at 1 Hz.
-    const Telemetry::Result set_rate_result = dl.device().telemetry().set_rate_position(1.0);
+    const Telemetry::Result set_rate_result = dc.device().telemetry().set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::SUCCESS) {
         std::cout << "Setting rate failed:" << Telemetry::result_str(set_rate_result) << std::endl;
         return 1;

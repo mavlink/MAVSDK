@@ -6,7 +6,7 @@
 #include "action.h"
 #include <cstdint>
 
-namespace dronelink {
+namespace dronecore {
 
 class ActionImpl : public PluginImplBase
 {
@@ -71,4 +71,4 @@ private:
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 };
 
-} // namespace dronelink
+} // namespace dronecore

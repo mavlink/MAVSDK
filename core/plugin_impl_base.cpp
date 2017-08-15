@@ -3,7 +3,7 @@
 #include "plugin_impl_base.h"
 
 
-namespace dronelink {
+namespace dronecore {
 
 PluginImplBase::PluginImplBase() :
     _parent()
@@ -15,4 +15,4 @@ void PluginImplBase::set_parent(DeviceImpl *parent)
     _parent = parent;
 }
 
-} // namespace dronelink
+} // namespace dronecore

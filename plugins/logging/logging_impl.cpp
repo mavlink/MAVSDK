@@ -1,10 +1,10 @@
 #include "global_include.h"
 #include "logging_impl.h"
-#include "dronelink_impl.h"
+#include "dronecore_impl.h"
 #include "telemetry.h"
 #include "px4_custom_mode.h"
 
-namespace dronelink {
+namespace dronecore {
 
 LoggingImpl::LoggingImpl()
 {
@@ -122,4 +122,4 @@ void LoggingImpl::command_result_callback(MavlinkCommands::Result command_result
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

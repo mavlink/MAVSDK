@@ -1,8 +1,8 @@
-# DroneLink
+# DroneCore
 
 ## Description
 
-DroneLink is a SDK for the [PX4 flight stack](http://github.com/PX4/Firmware) using [Mavlink](http://mavlink.org).
+DroneCore is a SDK for the [PX4 flight stack](http://github.com/PX4/Firmware) using [Mavlink](http://mavlink.org).
 
 It is a C++11 library aiming to be:
 
@@ -23,13 +23,13 @@ The next steps will be:
 
 ## Interfacing
 
-DroneLink currently takes care of the mavlink messaging using a UDP network connection to the drone. Connecting via TCP, or serial is planned but not implemeted yet.
+DroneCore currently takes care of the mavlink messaging using a UDP network connection to the drone. Connecting via TCP, or serial is planned but not implemeted yet.
 
 The library provides both synchronous (blocking) API calls, as well as asynchronous API calls using callbacks.
 
 ## API overview
 
-- [dronelink](include/dronelink.h): set up connection, discover devices
+- [dronecore](include/dronecore.h): set up connection, discover devices
 
 - [info](plugins/info/info.h): general info about a device
 - [telemetry](plugins/telemetry/telemetry.h): to receive telemetry data
@@ -51,7 +51,7 @@ Or, to install the files system-wide, using:
 INSTALL_PREFIX=/usr/local make default install
 ```
 
-Note that when using the library `libdronelink.a`, you need to link to a thread library such as pthread on a POSIX system. (pthread is not included in the static library because it is included in glibc.)
+Note that when using the library `libdronecore.a`, you need to link to a thread library such as pthread on a POSIX system. (pthread is not included in the static library because it is included in glibc.)
 
 ## Example
 
@@ -59,7 +59,7 @@ Check out the [example](example/). It sets up a UDP connection, waits for a devi
 
 To build and try it, start PX4 in SITL and build and run the example as follows:
 
-Build and install the DroneLink library first:
+Build and install the DroneCore library first:
 
 ```
 make default install
@@ -78,7 +78,7 @@ Note that the example needs to be linked to a thread library (see [CMakeLists.tx
 
 ## License
 
-The DroneLink SDK is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
+The DroneCore SDK is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
 
 ## Authors
 
@@ -227,7 +227,7 @@ make posix gazebo
 Then press Ctrl+C to stop the simulation and run the integration tests:
 
 ```
-cd wherever/DroneLink/
+cd wherever/DroneCore/
 AUTOSTART_SITL=1 make run_integration_tests
 ```
 
@@ -292,15 +292,15 @@ If you want to develop in docker, you can use the [Dockerfile](Dockerfile) based
 
 Build the image:
 ```
-docker build . -t dronelink
+docker build . -t dronecore
 ```
 
 To compile in it:
 ```
-docker run -it -v $HOME/<wherever>/DroneLink:/home/docker1000/src/DroneLink:rw dronelink make
+docker run -it -v $HOME/<wherever>/DroneCore:/home/docker1000/src/DroneCore:rw dronecore make
 ```
 
 Or run the code style check:
 ```
-docker run -it -v $HOME/<wherever>/DroneLink:/home/docker1000/src/DroneLink:rw dronelink make fix_style
+docker run -it -v $HOME/<wherever>/DroneCore:/home/docker1000/src/DroneCore:rw dronecore make fix_style
 ```

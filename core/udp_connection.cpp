@@ -21,9 +21,9 @@
 #define GET_ERROR(_x) WSAGetLastError()
 #endif
 
-namespace dronelink {
+namespace dronecore {
 
-UdpConnection::UdpConnection(DroneLinkImpl *parent,
+UdpConnection::UdpConnection(DroneCoreImpl *parent,
                              int local_port_number) :
     Connection(parent),
     _local_port_number(local_port_number),
@@ -45,30 +45,30 @@ bool UdpConnection::is_ok() const
     return true;
 }
 
-DroneLink::ConnectionResult UdpConnection::start()
+DroneCore::ConnectionResult UdpConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return DroneLink::ConnectionResult::CONNECTIONS_EXHAUSTED;
+        return DroneCore::ConnectionResult::CONNECTIONS_EXHAUSTED;
     }
 
-    DroneLink::ConnectionResult ret = setup_port();
-    if (ret != DroneLink::ConnectionResult::SUCCESS) {
+    DroneCore::ConnectionResult ret = setup_port();
+    if (ret != DroneCore::ConnectionResult::SUCCESS) {
         return ret;
     }
 
     start_recv_thread();
 
-    return DroneLink::ConnectionResult::SUCCESS;
+    return DroneCore::ConnectionResult::SUCCESS;
 }
 
-DroneLink::ConnectionResult UdpConnection::setup_port()
+DroneCore::ConnectionResult UdpConnection::setup_port()
 {
 
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         Debug() << "Error: Winsock failed, error: %d", WSAGetLastError();
-        return DroneLink::ConnectionResult::SOCKET_ERROR;
+        return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 #endif
 
@@ -76,7 +76,7 @@ DroneLink::ConnectionResult UdpConnection::setup_port()
 
     if (_socket_fd < 0) {
         Debug() << "socket error" << GET_ERROR(errno);
-        return DroneLink::ConnectionResult::SOCKET_ERROR;
+        return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 
     struct sockaddr_in addr;
@@ -87,10 +87,10 @@ DroneLink::ConnectionResult UdpConnection::setup_port()
 
     if (bind(_socket_fd, (sockaddr *)&addr, sizeof(addr)) != 0) {
         Debug() << "bind error: " << GET_ERROR(errno);
-        return DroneLink::ConnectionResult::BIND_ERROR;
+        return DroneCore::ConnectionResult::BIND_ERROR;
     }
 
-    return DroneLink::ConnectionResult::SUCCESS;
+    return DroneCore::ConnectionResult::SUCCESS;
 }
 
 void UdpConnection::start_recv_thread()
@@ -98,7 +98,7 @@ void UdpConnection::start_recv_thread()
     _recv_thread = new std::thread(receive, this);
 }
 
-DroneLink::ConnectionResult UdpConnection::stop()
+DroneCore::ConnectionResult UdpConnection::stop()
 {
     _should_exit = true;
 
@@ -126,7 +126,7 @@ DroneLink::ConnectionResult UdpConnection::stop()
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
-    return DroneLink::ConnectionResult::SUCCESS;
+    return DroneCore::ConnectionResult::SUCCESS;
 }
 
 bool UdpConnection::send_message(const mavlink_message_t &message)
@@ -236,4 +236,4 @@ void UdpConnection::receive(UdpConnection *parent)
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

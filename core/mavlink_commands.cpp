@@ -3,7 +3,7 @@
 #include <future>
 #include <memory>
 
-namespace dronelink {
+namespace dronecore {
 
 // TODO: Currently the mavlink command handling is made in a way to only
 //       process one command at any time. Therefore, the work state is global
@@ -309,4 +309,4 @@ void MavlinkCommands::do_work()
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

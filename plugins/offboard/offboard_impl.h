@@ -5,7 +5,7 @@
 #include "device_impl.h"
 #include "offboard.h"
 
-namespace dronelink {
+namespace dronecore {
 
 class OffboardImpl : public PluginImplBase
 {
@@ -43,4 +43,4 @@ private:
     Offboard::result_callback_t _result_callback;
 };
 
-} // namespace dronelink
+} // namespace dronecore

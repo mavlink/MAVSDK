@@ -1,9 +1,9 @@
 #include "serial_connection.h"
 #include "global_include.h"
 
-namespace dronelink {
+namespace dronecore {
 
-SerialConnection::SerialConnection(DroneLinkImpl *parent, const std::string &path, int baudrate) :
+SerialConnection::SerialConnection(DroneCoreImpl *parent, const std::string &path, int baudrate) :
     Connection(parent)
 {
     UNUSED(path);
@@ -15,14 +15,14 @@ bool SerialConnection::is_ok() const
     return true;
 }
 
-DroneLink::ConnectionResult SerialConnection::start()
+DroneCore::ConnectionResult SerialConnection::start()
 {
-    return DroneLink::ConnectionResult::SUCCESS;
+    return DroneCore::ConnectionResult::SUCCESS;
 }
 
-DroneLink::ConnectionResult SerialConnection::stop()
+DroneCore::ConnectionResult SerialConnection::stop()
 {
-    return DroneLink::ConnectionResult::SUCCESS;
+    return DroneCore::ConnectionResult::SUCCESS;
 }
 
 bool SerialConnection::send_message(const mavlink_message_t &message)
@@ -33,4 +33,4 @@ bool SerialConnection::send_message(const mavlink_message_t &message)
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

@@ -4,9 +4,9 @@
 #include <atomic>
 #include <cmath>
 #include "integration_test_helper.h"
-#include "dronelink.h"
+#include "dronecore.h"
 
-using namespace dronelink;
+using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 
 static void receive_send_mission_result(Mission::Result result);
@@ -29,15 +29,15 @@ const static float speeds[4] = {10.0f, 3.0f, 8.0f, 5.0f};
 
 TEST_F(SitlTest, MissionChangeSpeed)
 {
-    DroneLink dl;
+    DroneCore dc;
 
-    DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
+    DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
     sleep(2);
 
-    Device &device = dl.device();
+    Device &device = dc.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;

@@ -1,4 +1,4 @@
-#include "dronelink.h"
+#include "dronecore.h"
 #include "http_loader.h"
 #include "curl_include.h"
 #include <fstream>
@@ -7,7 +7,7 @@
 #include <vector>
 #include <numeric>
 
-using namespace dronelink;
+using namespace dronecore;
 
 class HttpLoaderTest : public testing::Test
 {

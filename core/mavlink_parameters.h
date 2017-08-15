@@ -8,7 +8,7 @@
 #include <functional>
 #include <cstring> // for memcpy
 
-namespace dronelink {
+namespace dronecore {
 
 class DeviceImpl;
 
@@ -177,4 +177,4 @@ private:
     // dl_time_t _last_request_time = {};
 };
 
-} // namespace dronelink
+} // namespace dronecore

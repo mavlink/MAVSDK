@@ -4,7 +4,7 @@
 #include <queue>
 #include <mutex>
 
-namespace dronelink {
+namespace dronecore {
 
 template <class T>
 class LockedQueue
@@ -49,4 +49,4 @@ private:
     std::mutex _mutex;
 };
 
-} // namespace dronelink
+} // namespace dronecore

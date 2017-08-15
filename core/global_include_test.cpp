@@ -4,7 +4,7 @@
 #include <ctime>
 #include <cmath>
 
-using namespace dronelink;
+using namespace dronecore;
 
 TEST(GlobalInclude, SteadyTimeIncreasing)
 {

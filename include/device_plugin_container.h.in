@@ -3,7 +3,7 @@
 #include <vector>
 ${INCLUDES_STRING}
 
-namespace dronelink {
+namespace dronecore {
 
 class DeviceImpl;
 class PluginImplBase;
@@ -32,4 +32,4 @@ ${PLUGIN_MEMBER_STRING}
     std::vector<PluginImplBase *> _plugin_impl_list;
 };
 
-} // namespace dronelink
+} // namespace dronecore

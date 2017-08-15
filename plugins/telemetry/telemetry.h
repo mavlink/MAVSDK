@@ -2,7 +2,7 @@
 
 #include <functional>
 
-namespace dronelink {
+namespace dronecore {
 
 class TelemetryImpl;
 
@@ -192,4 +192,4 @@ private:
     TelemetryImpl *_impl;
 };
 
-} // namespace dronelink
+} // namespace dronecore

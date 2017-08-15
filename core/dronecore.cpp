@@ -1,69 +1,69 @@
-#include "dronelink.h"
-#include "dronelink_impl.h"
+#include "dronecore.h"
+#include "dronecore_impl.h"
 #include "global_include.h"
 #include "connection.h"
 #include "udp_connection.h"
 
 
-namespace dronelink {
+namespace dronecore {
 
-DroneLink::DroneLink() :
+DroneCore::DroneCore() :
     _impl(nullptr)
 {
-    _impl = new DroneLinkImpl();
+    _impl = new DroneCoreImpl();
 }
 
-DroneLink::~DroneLink()
+DroneCore::~DroneCore()
 {
     delete _impl;
     _impl = nullptr;
 }
 
-DroneLink::ConnectionResult DroneLink::add_udp_connection()
+DroneCore::ConnectionResult DroneCore::add_udp_connection()
 {
     return add_udp_connection(0);
 }
 
-DroneLink::ConnectionResult DroneLink::add_udp_connection(int local_port_number)
+DroneCore::ConnectionResult DroneCore::add_udp_connection(int local_port_number)
 {
     Connection *new_connection = new UdpConnection(_impl, local_port_number);
-    DroneLink::ConnectionResult ret = new_connection->start();
+    DroneCore::ConnectionResult ret = new_connection->start();
 
-    if (ret != DroneLink::ConnectionResult::SUCCESS) {
+    if (ret != DroneCore::ConnectionResult::SUCCESS) {
         delete new_connection;
         return ret;
     }
 
     _impl->add_connection(new_connection);
-    return DroneLink::ConnectionResult::SUCCESS;
+    return DroneCore::ConnectionResult::SUCCESS;
 }
 
-const std::vector<uint64_t> &DroneLink::device_uuids() const
+const std::vector<uint64_t> &DroneCore::device_uuids() const
 {
     return _impl->get_device_uuids();
 }
 
-Device &DroneLink::device() const
+Device &DroneCore::device() const
 {
     return _impl->get_device();
 }
 
-Device &DroneLink::device(uint64_t uuid) const
+Device &DroneCore::device(uint64_t uuid) const
 {
     return _impl->get_device(uuid);
 }
 
-void DroneLink::register_on_discover(event_callback_t callback)
+void DroneCore::register_on_discover(event_callback_t callback)
 {
     _impl->register_on_discover(callback);
 }
 
-void DroneLink::register_on_timeout(event_callback_t callback)
+void DroneCore::register_on_timeout(event_callback_t callback)
 {
     _impl->register_on_timeout(callback);
 }
 
-const char *DroneLink::connection_result_str(ConnectionResult result)
+const char *DroneCore::connection_result_str(ConnectionResult result)
 {
     switch (result) {
         case ConnectionResult::SUCCESS:
@@ -93,4 +93,4 @@ const char *DroneLink::connection_result_str(ConnectionResult result)
     }
 }
 
-} // namespace dronelink
+} // namespace dronecore

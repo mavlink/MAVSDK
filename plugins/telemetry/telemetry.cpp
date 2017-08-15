@@ -1,7 +1,7 @@
 #include "telemetry.h"
 #include "telemetry_impl.h"
 
-namespace dronelink {
+namespace dronecore {
 
 Telemetry::Telemetry(TelemetryImpl *impl) :
     _impl(impl)
@@ -296,4 +296,4 @@ const char *Telemetry::result_str(Result result)
     }
 }
 
-} // namespace dronelink
+} // namespace dronecore

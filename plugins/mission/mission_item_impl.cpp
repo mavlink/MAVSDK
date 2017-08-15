@@ -2,7 +2,7 @@
 #include "global_include.h"
 #include <cmath>
 
-namespace dronelink {
+namespace dronecore {
 
 MissionItemImpl::MissionItemImpl()
 {
@@ -126,4 +126,4 @@ bool MissionItemImpl::is_position_finite() const
            && std::isfinite(_relative_altitude_m);
 }
 
-} // namespace dronelink
+} // namespace dronecore

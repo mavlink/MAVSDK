@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 
-project(dronelink)
+project(dronecore)
 
 # Add DEBUG define for Debug target
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
@@ -54,15 +54,15 @@ if (ANDROID)
 endif()
 
 # We build one static library.
-add_library(dronelink STATIC
+add_library(dronecore STATIC
     core/global_include.cpp
     core/connection.cpp
     core/device.cpp
     core/device_impl.cpp
     core/mavlink_parameters.cpp
     core/mavlink_commands.cpp
-    core/dronelink.cpp
-    core/dronelink_impl.cpp
+    core/dronecore.cpp
+    core/dronecore_impl.cpp
     core/mavlink_channels.cpp
     core/mavlink_receiver.cpp
     core/serial_connection.cpp
@@ -91,17 +91,17 @@ else()
     set(lib_path "lib")
 endif()
 
-install(TARGETS dronelink
+install(TARGETS dronecore
     DESTINATION ${lib_path}
 )
 
 install(FILES
-    include/dronelink.h
+    include/dronecore.h
     include/device.h
     core/plugin_base.h
     ${CMAKE_CURRENT_BINARY_DIR}/include/device_plugin_container.h
     ${plugin_header_paths}
-    DESTINATION "include/dronelink"
+    DESTINATION "include/dronecore"
 )
 
 if(NOT IOS AND NOT ANDROID)
@@ -135,7 +135,7 @@ if(NOT IOS AND NOT ANDROID)
     )
 
     target_link_libraries(unit_tests_runner
-        dronelink
+        dronecore
         gtest
         gtest_main
         ${platform_libs}
@@ -158,7 +158,7 @@ if(NOT IOS AND NOT ANDROID)
     )
 
     target_link_libraries(integration_tests_runner
-        dronelink
+        dronecore
         gtest
         gtest_main
         ${platform_libs}
@@ -194,7 +194,7 @@ if (DROP_DEBUG EQUAL 1)
     )
 
     target_link_libraries(drop_debug
-        dronelink
+        dronecore
         ${platform_libs}
     )
 endif()

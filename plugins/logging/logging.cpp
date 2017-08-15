@@ -1,7 +1,7 @@
 #include "logging.h"
 #include "logging_impl.h"
 
-namespace dronelink {
+namespace dronecore {
 
 Logging::Logging(LoggingImpl *impl) :
     _impl(impl)
@@ -54,4 +54,4 @@ const char *Logging::result_str(Result result)
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

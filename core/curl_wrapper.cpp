@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 
-namespace dronelink {
+namespace dronecore {
 
 
 CurlWrapper::CurlWrapper()
@@ -226,4 +226,4 @@ bool CurlWrapper::download_file_to_path(const std::string &url, const std::strin
     }
 }
 
-} // namespace dronelink
+} // namespace dronecore

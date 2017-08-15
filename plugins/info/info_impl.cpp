@@ -3,7 +3,7 @@
 #include "global_include.h"
 #include <functional>
 
-namespace dronelink {
+namespace dronecore {
 
 InfoImpl::InfoImpl() :
     PluginImplBase(),
@@ -138,4 +138,4 @@ void InfoImpl::set_version(Info::Version version)
 }
 
 
-} // namespace dronelink
+} // namespace dronecore

@@ -1,26 +1,26 @@
 #include <iostream>
-#include "dronelink.h"
+#include "dronecore.h"
 #include "integration_test_helper.h"
 
-using namespace dronelink;
+using namespace dronecore;
 
 TEST_F(SitlTest, Logging)
 {
-    DroneLink dl;
+    DroneCore dc;
 
-    DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
+    DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    Logging::Result log_ret = dl.device().logging().start_logging();
+    Logging::Result log_ret = dc.device().logging().start_logging();
 
     if (log_ret == Logging::Result::COMMAND_DENIED) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        dl.device().logging().stop_logging();
+        dc.device().logging().stop_logging();
         //ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        log_ret = dl.device().logging().start_logging();
+        log_ret = dc.device().logging().start_logging();
     }
 
     ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
@@ -30,6 +30,6 @@ TEST_F(SitlTest, Logging)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    log_ret = dl.device().logging().stop_logging();
+    log_ret = dc.device().logging().stop_logging();
     ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
 }

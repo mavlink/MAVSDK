@@ -1,5 +1,5 @@
 #
-# Development environment for DroneLink
+# Development environment for DroneCore
 #
 # Author: Julian Oes <julian@oes.ch>
 #
@@ -23,4 +23,4 @@ RUN apt-get update \
 
 CMD ["/bin/bash"]
 
-WORKDIR "/home/docker1000/src/DroneLink"
+WORKDIR "/home/docker1000/src/DroneCore"

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include "dronelink.h"
+#include "dronecore.h"
 
 #if DROP_DEBUG != 1
 #error DROB_DEBUG needs to be set for this test to work
@@ -19,16 +19,16 @@ int main(int argc, const char *argv[])
     UNUSED(argc);
     UNUSED(argv);
 
-    dronelink::DroneLink dl;
+    dronecore::DroneCore dc;
 
-    dronelink::DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    if (ret != dronelink::DroneLink::ConnectionResult::SUCCESS) {
+    dronecore::DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    if (ret != dronecore::DroneCore::ConnectionResult::SUCCESS) {
         std::cout << "failed to add connection" << std::endl;
         return -1;
     }
 
-    dl.register_on_discover(std::bind(&on_discover, std::placeholders::_1));
-    dl.register_on_timeout(std::bind(&on_timeout, std::placeholders::_1));
+    dc.register_on_discover(std::bind(&on_discover, std::placeholders::_1));
+    dc.register_on_timeout(std::bind(&on_timeout, std::placeholders::_1));
 
     while (true) {
         if (!_discovered_device) {

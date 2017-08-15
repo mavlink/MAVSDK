@@ -1,6 +1,6 @@
 #pragma once
 
-namespace dronelink {
+namespace dronecore {
 
 class DeviceImpl;
 
@@ -22,4 +22,4 @@ protected:
     DeviceImpl *_parent;
 };
 
-} // namespace dronelink
+} // namespace dronecore

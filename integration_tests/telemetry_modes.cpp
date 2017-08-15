@@ -1,21 +1,21 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronelink.h"
+#include "dronecore.h"
 
-using namespace dronelink;
+using namespace dronecore;
 
 void print_mode(Telemetry::FlightMode flight_mode);
 static Telemetry::FlightMode _flight_mode = Telemetry::FlightMode::UNKNOWN;
 
 TEST_F(SitlTest, TelemetryFlightModes)
 {
-    DroneLink dl;
+    DroneCore dc;
 
-    DroneLink::ConnectionResult ret = dl.add_udp_connection();
-    ASSERT_EQ(ret, DroneLink::ConnectionResult::SUCCESS);
+    DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    Device &device = dl.device();
+    Device &device = dc.device();
     device.telemetry().flight_mode_async(std::bind(&print_mode, std::placeholders::_1));
 
     while (!device.telemetry().health_all_ok()) {
