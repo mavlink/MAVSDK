@@ -126,11 +126,11 @@ if(NOT IOS AND NOT ANDROID)
     )
 
     set(SWIG_MODULE_dronelink_EXTRA_DEPS ${swigged_sources})
-    swig_add_library(dronelink_python
+    swig_add_library(dronelink
         STATIC
         LANGUAGE python
         SOURCES swig/dronelink.i)
-    swig_link_libraries(dronelink_python python dronelink)
+    swig_link_libraries(dronelink python dronelink)
 endif()
 
 if(NOT IOS AND NOT ANDROID)
