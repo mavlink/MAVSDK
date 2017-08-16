@@ -336,28 +336,31 @@ void MissionImpl::assemble_mavlink_messages()
             uint16_t cmd = 0;
             float param1 = NAN;
             float param2 = NAN;
+            float param3 = NAN;
             switch (mission_item_impl.get_camera_action()) {
                 case MissionItem::CameraAction::TAKE_PHOTO:
                     cmd = MAV_CMD_IMAGE_START_CAPTURE;
-                    param1 = 0.0f; // no interval for one picture
-                    param2 = 1.0f; // take only one picture
+                    param1 = 0.0f; // all camera IDs
+                    param2 = 0.0f; // no duration, take only one picture
+                    param3 = 1.0f; // only take one picture
                     break;
                 case MissionItem::CameraAction::START_PHOTO_INTERVAL:
                     cmd = MAV_CMD_IMAGE_START_CAPTURE;
-                    param1 = mission_item_impl.get_camera_photo_interval_s();
-                    param2 = 0; // unlimited photos
+                    param1 = 0.0f; // all camera IDs
+                    param2 = mission_item_impl.get_camera_photo_interval_s();
+                    param3 = 0.0f; // unlimited photos
                     break;
                 case MissionItem::CameraAction::STOP_PHOTO_INTERVAL:
                     cmd = MAV_CMD_IMAGE_STOP_CAPTURE;
+                    param1 = 0.0f; // all camera IDs
                     break;
                 case MissionItem::CameraAction::START_VIDEO:
                     cmd = MAV_CMD_VIDEO_START_CAPTURE;
-                    param1 = 0; // camera ID 0
+                    param1 = 0.0f; // all camera IDs
                     break;
                 case MissionItem::CameraAction::STOP_VIDEO:
                     cmd = MAV_CMD_VIDEO_STOP_CAPTURE;
-                    // TODO: add this in once the specs are updated
-                    //param1 = 0; // camera ID 0
+                    param1 = 0.0f; // all camera IDs
                     break;
                 default:
                     Debug() << "Error: camera action not supported";
@@ -377,7 +380,7 @@ void MissionImpl::assemble_mavlink_messages()
                                               autocontinue,
                                               param1,
                                               param2,
-                                              NAN,
+                                              param3,
                                               NAN,
                                               0,
                                               0,
