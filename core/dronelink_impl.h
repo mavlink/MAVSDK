@@ -34,7 +34,6 @@ public:
 
 private:
     void create_device_if_not_existing(uint8_t system_id);
-    void remove_empty_devices();
 
     std::mutex _connections_mutex;
     std::vector<Connection *> _connections;
