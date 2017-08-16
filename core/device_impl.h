@@ -65,6 +65,8 @@ public:
     uint8_t get_target_system_id() const;
     uint8_t get_target_component_id() const;
 
+    void set_target_system_id(uint8_t system_id);
+
     bool target_supports_mission_int() const { return _target_supports_mission_int; }
 
     bool is_armed() const { return _armed; }
@@ -123,7 +125,7 @@ private:
     std::mutex _timeout_handler_map_mutex {};
     std::map<const void *, TimeoutHandlerMapEntry> _timeout_handler_map {};
 
-    uint8_t _target_system_id;
+    std::atomic<uint8_t> _target_system_id;
 
     // The component ID is hardcoded for now.
     uint8_t _target_component_id = MAV_COMP_ID_AUTOPILOT1;

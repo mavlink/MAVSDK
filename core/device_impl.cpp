@@ -269,6 +269,11 @@ uint8_t DeviceImpl::get_target_component_id() const
     return _target_component_id;
 }
 
+void DeviceImpl::set_target_system_id(uint8_t system_id)
+{
+    _target_system_id = system_id;
+}
+
 void DeviceImpl::set_param_float_async(const std::string &name, float value, success_t callback)
 {
     MavlinkParameters::ParamValue param_value;

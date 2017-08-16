@@ -49,31 +49,41 @@ DroneLinkImpl::~DroneLinkImpl()
 
 void DroneLinkImpl::receive_message(const mavlink_message_t &message)
 {
-    create_device_if_not_existing(message.sysid);
-
     // Don't ever create a device with sysid 0.
     if (message.sysid == 0) {
         return;
     }
 
-    remove_empty_devices();
+    std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
-    {
-        std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
+    // Change system id of null device
+    if (_devices.find(0) != _devices.end()) {
+        auto null_device = _devices[0];
+        _devices.erase(0);
+        _devices.insert(std::pair<uint8_t, Device *>(message.sysid, null_device));
+    }
 
-        if (_should_exit) {
-            // Don't try to call at() if devices have already been destroyed
-            // in descructor.
-            return;
-        }
+    if (_device_impls.find(0) != _device_impls.end()) {
+        auto null_device_impl = _device_impls[0];
+        _device_impls.erase(0);
+        null_device_impl->set_target_system_id(message.sysid);
+        _device_impls.insert(std::pair<uint8_t, DeviceImpl *>(message.sysid, null_device_impl));
+    }
 
-        if (message.sysid != 1) {
-            Debug() << "sysid: " << int(message.sysid);
-        }
+    create_device_if_not_existing(message.sysid);
 
-        if (_device_impls.find(message.sysid) != _device_impls.end()) {
-            _device_impls.at(message.sysid)->process_mavlink_message(message);
-        }
+    if (_should_exit) {
+        // Don't try to call at() if devices have already been destroyed
+        // in descructor.
+        return;
+    }
+
+    if (message.sysid != 1) {
+        Debug() << "sysid: " << int(message.sysid);
+    }
+
+    if (_device_impls.find(message.sysid) != _device_impls.end()) {
+        _device_impls.at(message.sysid)->process_mavlink_message(message);
     }
 }
 
@@ -132,16 +142,14 @@ Device &DroneLinkImpl::get_device()
                 ++i;
             }
 
+            return *_devices.begin()->second;
         } else {
             Debug() << "Error: no device found.";
+            uint8_t system_id = 0;
+            create_device_if_not_existing(system_id);
+            return *_devices[system_id];
         }
     }
-
-    // In both failure cases, return a dummy.
-    uint8_t system_id = 0;
-    create_device_if_not_existing(system_id);
-
-    return *_devices[system_id];
 }
 
 Device &DroneLinkImpl::get_device(uint64_t uuid)
@@ -188,19 +196,6 @@ void DroneLinkImpl::create_device_if_not_existing(uint8_t system_id)
 
     Device *new_device = new Device(new_device_impl);
     _devices.insert(std::pair<uint8_t, Device *>(system_id, new_device));
-}
-
-void DroneLinkImpl::remove_empty_devices()
-{
-    std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
-
-    // Remove entries with system and component ID 0.
-    if (_devices.find(0) != _devices.end()) {
-        _devices.erase(0);
-    }
-    if (_device_impls.find(0) != _device_impls.end()) {
-        _device_impls.erase(0);
-    }
 }
 
 void DroneLinkImpl::notify_on_discover(uint64_t uuid)
