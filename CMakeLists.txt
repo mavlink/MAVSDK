@@ -142,7 +142,7 @@ if(NOT IOS AND NOT ANDROID)
     install(FILES ${CMAKE_BINARY_DIR}/dronelink.py DESTINATION ${PYTHON_SITE_PACKAGES})
 endif()
 
-if(NOT IOS AND NOT ANDROID)
+if(INTEGRATION_TESTS)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
@@ -219,7 +219,6 @@ if(NOT IOS AND NOT ANDROID)
             ${CMAKE_SOURCE_DIR}/stop_px4_sitl.sh
             ${CMAKE_CURRENT_BINARY_DIR}
     )
-
 endif()
 
 if (DROP_DEBUG EQUAL 1)
