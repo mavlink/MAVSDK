@@ -245,7 +245,8 @@ void MissionImpl::assemble_mavlink_messages()
                                               MAV_MISSION_TYPE_MISSION);
 
             _mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair <int, int> {_mavlink_mission_item_messages.size(), item_i});
+                std::pair <int, int>
+            {static_cast<int>(_mavlink_mission_item_messages.size()), item_i});
             _mavlink_mission_item_messages.push_back(message);
         }
 
@@ -280,7 +281,8 @@ void MissionImpl::assemble_mavlink_messages()
                                               MAV_MISSION_TYPE_MISSION);
 
             _mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair <int, int> {_mavlink_mission_item_messages.size(), item_i});
+                std::pair <int, int>
+            {static_cast<int>(_mavlink_mission_item_messages.size()), item_i});
             _mavlink_mission_item_messages.push_back(message_speed);
 
             last_speed_m_s = mission_item_impl.get_speed_m_s();
@@ -318,7 +320,8 @@ void MissionImpl::assemble_mavlink_messages()
                                               MAV_MISSION_TYPE_MISSION);
 
             _mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair <int, int> {_mavlink_mission_item_messages.size(), item_i});
+                std::pair <int, int>
+            {static_cast<int>(_mavlink_mission_item_messages.size()), item_i});
             _mavlink_mission_item_messages.push_back(message_gimbal);
 
             last_gimbal_yaw_deg = mission_item_impl.get_gimbal_yaw_deg();
@@ -388,7 +391,8 @@ void MissionImpl::assemble_mavlink_messages()
                                               MAV_MISSION_TYPE_MISSION);
 
             _mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair <int, int> {_mavlink_mission_item_messages.size(), item_i});
+                std::pair <int, int>
+            {static_cast<int>(_mavlink_mission_item_messages.size()), item_i});
             _mavlink_mission_item_messages.push_back(message_camera);
 
             last_gimbal_yaw_deg = mission_item_impl.get_gimbal_yaw_deg();
