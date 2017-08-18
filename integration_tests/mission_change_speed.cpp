@@ -35,13 +35,13 @@ TEST_F(SitlTest, MissionChangeSpeed)
     ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     std::cout << "Device ready, let's start" << std::endl;
@@ -55,7 +55,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     device.mission().send_mission_async(mission_items,
                                         std::bind(&receive_send_mission_result, _1));
-    sleep(1);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_sent_ok);
 
     Action::Result result = device.action().arm();
@@ -64,7 +64,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     device.mission().subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
 
     device.mission().start_mission_async(std::bind(&receive_start_mission_result, _1));
-    sleep(1);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_started_ok);
 
     int last_item = -1;
@@ -75,7 +75,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
             // because we're still taking off.
             if (_current_item >= 2) {
                 // Time to accelerate
-                sleep(6);
+                std::this_thread::sleep_for(std::chrono::seconds(6));
                 const float speed_correct = speeds[_current_item - 1];
                 const float speed_actual = current_speed(device);
                 Debug() << "speed check, should be: " << speed_correct << " m/s, "
@@ -85,7 +85,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
             }
             last_item = _current_item;
         }
-        usleep(100000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     Debug() << "mission done";
 
@@ -94,12 +94,12 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     while (!device.mission().mission_finished()) {
         std::cout << "waiting until mission is done" << std::endl;
-        usleep(1000000);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     while (device.telemetry().in_air()) {
         std::cout << "waiting until landed" << std::endl;
-        usleep(1000000);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     result = device.action().disarm();

@@ -52,13 +52,13 @@ TEST_F(SitlTest, MissionSurvey)
     ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     std::cout << "Device ready, let's start" << std::endl;
@@ -155,7 +155,7 @@ TEST_F(SitlTest, MissionSurvey)
                 // TODO: There can be a race here if PX4 still listens to the armed flag in
                 // the message DO_SET_MODE. Once it ignores it as in the spec, this is not
                 // needed anymore.
-                sleep(2);
+                std::this_thread::sleep_for(std::chrono::seconds(2));
                 device.mission().start_mission_async(
                     std::bind(&receive_start_mission_result, _1));
                 _mission_state = MissionState::STARTING;
@@ -193,7 +193,7 @@ TEST_F(SitlTest, MissionSurvey)
 
         }
 
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     EXPECT_EQ(_mission_state, MissionState::DONE);
