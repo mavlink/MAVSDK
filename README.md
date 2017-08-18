@@ -145,10 +145,18 @@ make ios_simulator install
 
 #### Windows
 
+First download the curl source, extract and build it:
+```
+cd C:\curl-7.54.1\winbuild
+nmake /f Makefile.vc mode=static VC=15 MACHINE=x64 DEBUG=no
+```
+
+
 To build in Windows, open the VS2015 x64 Native Tools Command Prompt, go to the source directory and do:
 ```
 mkdir build && cd build
-cmake -DWIN_CURL_INCLUDE_DIR:STRING=C:\\curl-7.54.1\\include ..
+cmake -DWIN_CURL_INCLUDE_DIR:STRING=C:\\curl-7.54.1\\include -DWIN_CURL_LIB:STRING="C:\curl-7.54.1\builds\libcurl-vc15-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 14 2015 Win64" ..
+
 cmake --build .
 ```
 

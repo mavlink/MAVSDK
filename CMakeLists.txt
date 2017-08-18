@@ -11,15 +11,20 @@ if(NOT MSVC)
     # Clang and GCC
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
     set(platform_libs "pthread")
+    set(curl_lib "curl")
 else()
     # MSBuild
-    add_definitions("-std=c++11 -WX -W2 -DWINDOWS")
+    add_definitions("-std=c++11 -WX -W2 -DWINDOWS -DCURL_STATICLIB")
     set(platform_libs "Ws2_32.lib")
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)
-        message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl\"")
+        message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl_include\"")
+    endif()
+    if(NOT WIN_CURL_LIB)
+        message(FATAL_ERROR "Please provide argument -DWIN_CURL_LIBSTRING=\"path_to_curl_lib\"")
     endif()
     include_directories(${WIN_CURL_INCLUDE_DIR})
+    set(curl_lib ${WIN_CURL_LIB})
 endif()
 
 # Clang needs this warning disabled.
@@ -145,9 +150,8 @@ if(NOT IOS AND NOT ANDROID)
         gtest
         gtest_main
         ${platform_libs}
+        ${curl_lib}
         gmock
-        pthread
-        curl
         ${additional_libs}
     )
 
@@ -168,8 +172,7 @@ if(NOT IOS AND NOT ANDROID)
         gtest
         gtest_main
         ${platform_libs}
-        pthread
-        curl
+        ${curl_lib}
         ${additional_libs}
     )
 
