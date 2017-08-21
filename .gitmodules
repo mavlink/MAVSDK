@@ -6,5 +6,5 @@
 	url = https://github.com/google/googletest
 [submodule "curl-android-ios"]
 	path = curl-android-ios
-	url = git@github.com:gcesarmza/curl-android-ios.git
+	url = https://github.com/gcesarmza/curl-android-ios.git
 	ignore = dirty
