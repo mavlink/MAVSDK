@@ -118,8 +118,8 @@ install(FILES
 if(NOT IOS AND NOT ANDROID)
     find_package(SWIG REQUIRED)
     include(${SWIG_USE_FILE})
-    add_definitions(-DSWIG_TYPE_TABLE=dronelink)
-    set_source_files_properties(swig/dronelink.i
+    add_definitions(-DSWIG_TYPE_TABLE=dronecore)
+    set_source_files_properties(swig/dronecore.i
         PROPERTIES CPLUSPLUS ON)
     execute_process(
         COMMAND python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
@@ -131,15 +131,15 @@ if(NOT IOS AND NOT ANDROID)
             ${PYTHON_INCLUDE_DIR}
     )
 
-    set(SWIG_MODULE_dronelink_EXTRA_DEPS ${swigged_sources})
-    swig_add_library(dronelink
+    set(SWIG_MODULE_dronecore_EXTRA_DEPS ${swigged_sources})
+    swig_add_library(dronecore
         STATIC
         LANGUAGE python
-        SOURCES swig/dronelink.i)
-    swig_link_libraries(dronelink python dronelink)
+        SOURCES swig/dronecore.i)
+    swig_link_libraries(dronecore python dronecore)
 
-    install(TARGETS _dronelink DESTINATION ${PYTHON_SITE_PACKAGES})
-    install(FILES ${CMAKE_BINARY_DIR}/dronelink.py DESTINATION ${PYTHON_SITE_PACKAGES})
+    install(TARGETS _dronecore DESTINATION ${PYTHON_SITE_PACKAGES})
+    install(FILES ${CMAKE_BINARY_DIR}/dronecore.py DESTINATION ${PYTHON_SITE_PACKAGES})
 endif()
 
 if(INTEGRATION_TESTS)
