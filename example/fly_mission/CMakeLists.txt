@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 
-project(takeoff_and_land)
+project(fly_mission)
 
 add_definitions("-std=c++11 -Wall -Wextra -Werror")
 
@@ -12,15 +12,15 @@ find_package(Threads REQUIRED)
 
 include_directories(
     # Not needed if installed system-wide
-    ../install/include
+    ${CMAKE_SOURCE_DIR}/../../install/include
 )
 
-add_executable(takeoff_and_land
-    takeoff_and_land.cpp
+add_executable(fly_mission
+    fly_mission_dronecore.cpp
 )
 
-target_link_libraries(takeoff_and_land
-    ${CMAKE_SOURCE_DIR}/../install/lib/libdronecore.a
+target_link_libraries(fly_mission
+    ${CMAKE_SOURCE_DIR}/../../install/lib/libdronecore.a
     # If installed system-wide:
     # dronecore
     ${CMAKE_THREAD_LIBS_INIT}

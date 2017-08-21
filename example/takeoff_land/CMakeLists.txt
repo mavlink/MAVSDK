@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 2.8.12)
+
+project(takeoff_and_land)
+
+add_definitions("-std=c++11 -Wall -Wextra -Werror")
+
+# Add DEBUG define for Debug target
+set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
+
+# This finds thread libs on Linux, Mac, and Windows.
+find_package(Threads REQUIRED)
+message(${CMAKE_SOURCE_DIR})
+
+include_directories(
+    # Not needed if installed system-wide
+    ${CMAKE_SOURCE_DIR}/../../install/include
+)
+
+add_executable(takeoff_and_land
+    takeoff_and_land.cpp
+)
+
+target_link_libraries(takeoff_and_land
+    ${CMAKE_SOURCE_DIR}/../../install/lib/libdronecore.a
+    # If installed system-wide:
+    # dronecore
+    ${CMAKE_THREAD_LIBS_INIT}
+)
