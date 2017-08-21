@@ -16,3 +16,6 @@ The limit is in theory 255 vehicles for system IDs ranging from 1 to 255.
 
 The architecture has stubs for serial, TCP, and UDP connections. However, only UDP connections are implemented right now.
 
+### Why is libCURL a dependency?
+
+libCURL will be required to download the camera definition file which is referenced in [CAMERA_INFORMATION](http://mavlink.org/messages/common#CAMERA_INFORMATION). It might also come in handy whenever any other REST resources are required.
