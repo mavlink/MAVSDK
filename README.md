@@ -30,6 +30,8 @@ The library provides both synchronous (blocking) API calls, as well as asynchron
 ## API overview
 
 - [dronecore](include/dronecore.h): set up connection, discover devices
+- [device](include/device.h): a device providing access to modules below using ...
+- [device_plugin_container.h.in](include/device_plugin_container.h.in) which is auto-generated on build.
 
 - [info](plugins/info/info.h): general info about a device
 - [telemetry](plugins/telemetry/telemetry.h): to receive telemetry data
