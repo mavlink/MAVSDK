@@ -79,12 +79,12 @@ docs: install
 	- (cd install && doxygen ../.doxygen)
 	- python generate_markdown_from_doxygen_xml.py
 
-ios:
+ios: ios_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
 		-DIOS_PLATFORM:STRING=OS)
 
-ios_simulator:
+ios_simulator: ios_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
 		-DIOS_PLATFORM:STRING=SIMULATOR)
@@ -127,6 +127,11 @@ android_arm64-v8a: android_curl
 android_curl: android_env_check
 	+@if [ ! -e $(CURL_BUILD_DIR)/prebuilt-with-ssl/android ]; then \
 		$(CURL_BUILD_DIR)/curl-compile-scripts/build_Android.sh; \
+	fi
+
+ios_curl:
+	+@if [ ! -e $(CURL_BUILD_DIR)/prebuilt-with-ssl/ios ]; then \
+		$(CURL_BUILD_DIR)/curl-compile-scripts/build_iOS.sh; \
 	fi
 
 
