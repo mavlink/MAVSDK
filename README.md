@@ -1,5 +1,7 @@
 # DroneCore
 
+[![Build Status](https://travis-ci.org/dronecore/DroneCore.svg?branch=master)](https://travis-ci.org/dronecore/DroneCore)
+
 ## Description
 
 DroneCore is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [Mavlink](http://mavlink.org).
