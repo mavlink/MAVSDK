@@ -142,6 +142,17 @@ if(NOT IOS AND NOT ANDROID)
     install(FILES ${CMAKE_BINARY_DIR}/dronecore.py DESTINATION ${PYTHON_SITE_PACKAGES})
 endif()
 
+if(ANDROID)
+    find_package(SWIG REQUIRED)
+    find_package(Java REQUIRED COMPONENTS Runtime Development)
+    include(${SWIG_USE_FILE})
+    add_definitions(-DSWIG_TYPE_TABLE=dronecore -fPIC)
+    set_source_files_properties(swig/dronecore.i
+        PROPERTIES CPLUSPLUS ON)
+    swig_add_module(dronecore_java java swig/dronecore.i )
+    swig_link_libraries(dronecore_java -L${NDK_ROOT}/sysroot/usr/lib -llog dronecore)
+endif()
+
 if(INTEGRATION_TESTS)
     add_subdirectory(integration_tests)
 

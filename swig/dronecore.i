@@ -5,7 +5,7 @@
     #define SWIG_FILE_WITH_INIT
     #include "../include/dronecore.h"
     #include "../core/plugin_base.h"
-    #include "../build/default/include/device_plugin_container.h"
+    #include "../build/android_x86/include/device_plugin_container.h"
     #include "../include/device.h"
     #include "../plugins/action/action.h"
     #include "../plugins/info/info.h"
@@ -19,7 +19,7 @@
 %include <typemaps.i>
 %include "../include/dronecore.h";
 %include "../core/plugin_base.h"
-%include "../build/default/include/device_plugin_container.h";
+%include "../build/android_x86/include/device_plugin_container.h";
 %include "../include/device.h"
 %include "../plugins/action/action.h"
 %include "../plugins/info/info.h"
