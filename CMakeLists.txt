@@ -136,7 +136,7 @@ if(NOT IOS AND NOT ANDROID)
         STATIC
         LANGUAGE python
         SOURCES swig/dronecore.i)
-    swig_link_libraries(dronecore python dronecore)
+    swig_link_libraries(dronecore ${PYTHON_LIBS} dronecore)
 
     install(TARGETS _dronecore DESTINATION ${PYTHON_SITE_PACKAGES})
     install(FILES ${CMAKE_BINARY_DIR}/dronecore.py DESTINATION ${PYTHON_SITE_PACKAGES})
