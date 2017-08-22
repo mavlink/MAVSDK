@@ -16,6 +16,7 @@ RUN apt-get update \
 		colordiff \
 		astyle \
 		git \
+        python-dev \
 		libcurl4-openssl-dev \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \

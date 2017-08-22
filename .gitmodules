@@ -8,3 +8,6 @@
 	path = curl-android-ios
 	url = https://github.com/gcesarmza/curl-android-ios.git
 	ignore = dirty
+[submodule "libs/pybind11"]
+	path = libs/pybind11
+	url = https://github.com/pybind/pybind11.git
