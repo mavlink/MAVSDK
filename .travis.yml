@@ -59,7 +59,7 @@ install:
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     pip install --user awscli;
     $(aws ecr get-login --region eu-central-1);
-    docker pull ${DOCKER_REPO};
+    docker pull dronecore/dronecore;
   fi
 
 script:
@@ -68,9 +68,9 @@ script:
     make run_unit_tests;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
-    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make;
-    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make run_unit_tests;
-    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw ${DOCKER_REPO} make fix_style;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw dronecore/dronecore make;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw dronecore/dronecore make run_unit_tests;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneLink:rw dronecore/dronecore make fix_style;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     make;
