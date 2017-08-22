@@ -42,7 +42,7 @@ Instructions how to build the library and how to write an example can be found i
 
 ## FAQ
 
-Find a FAQ in [docs/FAQ.md](docs/FAQ.md).
+Find a FAQ in [docs/faq.md](docs/faq.md).
 
 ## License
 
