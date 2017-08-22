@@ -118,7 +118,7 @@ install(FILES
 if(NOT IOS AND NOT ANDROID)
     find_package(SWIG REQUIRED)
     include(${SWIG_USE_FILE})
-    add_definitions(-DSWIG_TYPE_TABLE=dronecore)
+    add_definitions(-DSWIG_TYPE_TABLE=dronecore -fPIC)
     set_source_files_properties(swig/dronecore.i
         PROPERTIES CPLUSPLUS ON)
     execute_process(
