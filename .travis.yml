@@ -57,8 +57,6 @@ addons:
 install:
 - set -e
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
-    pip install --user awscli;
-    $(aws ecr get-login --region eu-central-1);
     docker pull dronecore/dronecore;
   fi
 
