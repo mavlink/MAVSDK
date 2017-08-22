@@ -71,6 +71,10 @@ if (ANDROID)
     include_directories(curl-android-ios/prebuilt-with-ssl/android/include)
 endif()
 
+if (IOS)
+    include_directories(curl-android-ios/prebuilt-with-ssl/ios/include)
+endif()
+
 # We build one static library.
 add_library(dronecore STATIC
     core/global_include.cpp
