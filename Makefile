@@ -85,36 +85,43 @@ ios_simulator:
 		-DIOS_PLATFORM:STRING=SIMULATOR)
 
 android_x86: android_curl
+	sed 's/<ARCH>/android_x86/' swig/dronecore.i.in > swig/dronecore.i
 	$(call cmake-build, \
     -DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=x86)
 
 android_x86_64: android_curl
+	sed 's/<ARCH>/android_x86_64/' swig/dronecore.i.in > swig/dronecore.i
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=x86_64)
 
 android_mips: android_curl
+	sed 's/<ARCH>/android_mips/' swig/dronecore.i.in > swig/dronecore.i
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=mips)
 
 android_mips64: android_curl
+	sed 's/<ARCH>/android_mips64/' swig/dronecore.i.in > swig/dronecore.i
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=mips64)
 
 android_armeabi: android_curl
+	sed 's/<ARCH>/android_armeabi/' swig/dronecore.i.in > swig/dronecore.i
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=armeabi)
 
 android_armeabi-v7a: android_curl
+	sed 's/<ARCH>/android_armeabi-v7a/' swig/dronecore.i.in > swig/dronecore.i
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=armeabi-v7a)
 
 android_arm64-v8a: android_curl
+	sed 's/<ARCH>/android_arm64-v8a/' swig/dronecore.i.in > swig/dronecore.i
 	$(call cmake-build, \
         -DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_ABI=arm64-v8a)
