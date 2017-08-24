@@ -217,6 +217,7 @@ if (PYTHON)
 
     set(PYBIND11_CPP_STANDARD -std=c++11)
     add_subdirectory(libs/pybind11)
+    add_definitions(-DPYBIND11)
     add_library(pydronecore MODULE
         core/global_include.cpp
         core/connection.cpp

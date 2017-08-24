@@ -4,8 +4,10 @@
 #include "connection.h"
 #include "udp_connection.h"
 
+#ifdef PYBIND11
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
+#endif
 
 namespace dronecore {
 
@@ -95,7 +97,7 @@ const char *DroneCore::connection_result_str(ConnectionResult result)
     }
 }
 
-#ifdef PYBIND11_PLUGIN
+#ifdef PYBIND11
 
 namespace py = pybind11;
 
