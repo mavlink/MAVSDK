@@ -67,6 +67,7 @@ script:
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make python;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make run_unit_tests;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make fix_style;
   fi
