@@ -3,6 +3,7 @@
 #include "global_include.h"
 #include "connection.h"
 #include "udp_connection.h"
+#include "tcp_connection.h"
 
 
 namespace dronecore {
@@ -27,6 +28,25 @@ DroneCore::ConnectionResult DroneCore::add_udp_connection()
 DroneCore::ConnectionResult DroneCore::add_udp_connection(int local_port_number)
 {
     Connection *new_connection = new UdpConnection(_impl, local_port_number);
+    DroneCore::ConnectionResult ret = new_connection->start();
+
+    if (ret != DroneCore::ConnectionResult::SUCCESS) {
+        delete new_connection;
+        return ret;
+    }
+
+    _impl->add_connection(new_connection);
+    return DroneCore::ConnectionResult::SUCCESS;
+}
+
+DroneCore::ConnectionResult DroneCore::add_tcp_connection()
+{
+    return add_tcp_connection("127.0.0.1",0);
+}
+
+DroneCore::ConnectionResult DroneCore::add_tcp_connection(std::string ipAddress,int local_port_number)
+{
+    Connection *new_connection = new TcpConnection(_impl,ipAddress, local_port_number);
     DroneCore::ConnectionResult ret = new_connection->start();
 
     if (ret != DroneCore::ConnectionResult::SUCCESS) {
@@ -74,6 +94,8 @@ const char *DroneCore::connection_result_str(ConnectionResult result)
             return "Socket error";
         case ConnectionResult::BIND_ERROR:
             return "Bind error";
+        case ConnectionResult::SOCKET_CONNECTION_ERROR:
+            return "Socket connection error";
         case ConnectionResult::CONNECTION_ERROR:
             return "Connection error";
         case ConnectionResult::NOT_IMPLEMENTED:
