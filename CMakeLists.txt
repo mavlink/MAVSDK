@@ -217,31 +217,14 @@ if (PYTHON)
 
     set(PYBIND11_CPP_STANDARD -std=c++11)
     add_subdirectory(libs/pybind11)
-    add_definitions(-DPYBIND11)
     add_library(pydronecore MODULE
-        core/global_include.cpp
-        core/connection.cpp
-        core/device.cpp
-        core/device_impl.cpp
-        core/mavlink_parameters.cpp
-        core/mavlink_commands.cpp
-        core/dronecore.cpp
-        core/dronecore_impl.cpp
-        core/mavlink_channels.cpp
-        core/mavlink_receiver.cpp
-        core/serial_connection.cpp
-        core/tcp_connection.cpp
-        core/udp_connection.cpp
-        core/plugin_impl_base.cpp
-        core/curl_wrapper.cpp
-        core/http_loader.cpp
-        ${CMAKE_CURRENT_BINARY_DIR}/core/device_plugin_container.cpp
-        ${plugin_source_files}
+        core/pydronecore.cpp
     )
 
     set_target_properties(pydronecore PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}")
     set_target_properties(pydronecore PROPERTIES SUFFIX "${PYTHON_MODULE_EXTENSION}")
     target_link_libraries(pydronecore
+        dronecore
         curl
         ${PYTHON_LIBRARIES}
     )
