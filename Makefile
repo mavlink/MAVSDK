@@ -70,6 +70,10 @@ all: default
 default:
 	$(call cmake-build)
 
+python:
+	$(call cmake-build, \
+		-DPYTHON:BOOL=true)
+
 ios:
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
