@@ -36,7 +36,9 @@ public:
     ConnectionResult add_udp_connection();
     ConnectionResult add_udp_connection(int local_port_number);
     ConnectionResult add_tcp_connection();
-    ConnectionResult add_tcp_connection(std::string ipAddress,int local_port_number);
+    ConnectionResult add_tcp_connection(std::string ipAddress, int local_port_number);
+    ConnectionResult add_serial_connection();
+    ConnectionResult add_serial_connection(std::string dev_path, int baudrate);
 
     const std::vector<uint64_t> &device_uuids() const;
     Device &device() const;

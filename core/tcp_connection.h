@@ -3,8 +3,8 @@
 #include "dronecore.h"
 #include "dronecore_impl.h"
 #include "connection.h"
-#include<sys/types.h>
-#include<netdb.h>
+#include <sys/types.h>
+#include <netdb.h>
 
 namespace dronecore {
 
@@ -26,14 +26,16 @@ public:
 private:
     DroneCore::ConnectionResult setup_port();
     void start_recv_thread();
-    void resolve_address(const std::string& ipAddr, int port, sockaddr_in* addr);
+    int resolve_address(const std::string &ip_address, int port, sockaddr_in *addr);
     static void receive(TcpConnection *parent);
 
-    static constexpr int DEFAULT_TCP_LOCAL_PORT = 5760;
+    static constexpr int DEFAULT_TCP_REMOTE_PORT = 5760;
+    static constexpr auto DEFAULT_TCP_REMOTE_IP = "127.0.0.1";
+    std::string _local_ip = "127.0.0.1";
     int _local_port_number = 14580; //unused port
     std::string _remote_ip = {};
     int _remote_port_number;
-    
+
     std::mutex _mutex = {};
     int _socket_fd = -1;
     std::thread *_recv_thread = nullptr;

@@ -4,6 +4,7 @@
 #include "connection.h"
 #include "udp_connection.h"
 #include "tcp_connection.h"
+#include "serial_connection.h"
 
 
 namespace dronecore {
@@ -41,12 +42,13 @@ DroneCore::ConnectionResult DroneCore::add_udp_connection(int local_port_number)
 
 DroneCore::ConnectionResult DroneCore::add_tcp_connection()
 {
-    return add_tcp_connection("127.0.0.1",0);
+    return add_tcp_connection("", 0);
 }
 
-DroneCore::ConnectionResult DroneCore::add_tcp_connection(std::string ipAddress,int local_port_number)
+DroneCore::ConnectionResult DroneCore::add_tcp_connection(std::string remote_ip,
+                                                          int remote_port)
 {
-    Connection *new_connection = new TcpConnection(_impl,ipAddress, local_port_number);
+    Connection *new_connection = new TcpConnection(_impl, remote_ip, remote_port);
     DroneCore::ConnectionResult ret = new_connection->start();
 
     if (ret != DroneCore::ConnectionResult::SUCCESS) {
@@ -58,6 +60,25 @@ DroneCore::ConnectionResult DroneCore::add_tcp_connection(std::string ipAddress,
     return DroneCore::ConnectionResult::SUCCESS;
 }
 
+DroneCore::ConnectionResult DroneCore::add_serial_connection()
+{
+    return add_serial_connection("",0);
+}
+
+DroneCore::ConnectionResult DroneCore::add_serial_connection(std::string dev_path,
+                                                          int baudrate)
+{
+    Connection *new_connection = new SerialConnection(_impl, dev_path, baudrate);
+    DroneCore::ConnectionResult ret = new_connection->start();
+
+    if (ret != DroneCore::ConnectionResult::SUCCESS) {
+        delete new_connection;
+        return ret;
+    }
+
+    _impl->add_connection(new_connection);
+    return DroneCore::ConnectionResult::SUCCESS;
+}
 const std::vector<uint64_t> &DroneCore::device_uuids() const
 {
     return _impl->get_device_uuids();

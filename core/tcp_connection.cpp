@@ -23,14 +23,18 @@
 
 namespace dronecore {
 
-TcpConnection::TcpConnection(DroneCoreImpl *parent, const std::string &ip, int port_number) :
+/* change to remote_ip and remote_port */
+TcpConnection::TcpConnection(DroneCoreImpl *parent, const std::string &remote_ip, int remote_port) :
     Connection(parent),
-    _remote_ip(ip),
-    _remote_port_number(port_number),
+    _remote_ip(remote_ip),
+    _remote_port_number(remote_port),
     _should_exit(false)
 {
     if (_local_port_number == 0) {
-        _local_port_number = DEFAULT_TCP_LOCAL_PORT;
+        _local_port_number = DEFAULT_TCP_REMOTE_PORT;
+    }
+    if (_remote_ip == "") {
+        _remote_ip = DEFAULT_TCP_REMOTE_IP; 
     }
 }
 
@@ -80,15 +84,11 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 
-    sockaddr_in local_addr; 
-    sockaddr_in remote_addr;
-    memset(&local_addr, 0, sizeof(sockaddr_in));
-    memset(&remote_addr, 0, sizeof(sockaddr_in)); 
-     
-    std::string local_ip="127.0.0.1";
-    resolve_address(local_ip, _local_port_number, &local_addr);
-    resolve_address(_remote_ip,_remote_port_number, &remote_addr);
-    std::cout << _remote_ip<<::std::endl;
+    sockaddr_in local_addr {};
+    sockaddr_in remote_addr {};
+
+    resolve_address(_local_ip, _local_port_number, &local_addr);
+    resolve_address(_remote_ip, _remote_port_number, &remote_addr);
 
     if (bind(_socket_fd, (sockaddr *)&local_addr, sizeof(sockaddr_in)) < 0) {
         Debug() << "bind error: " << GET_ERROR(errno);
@@ -102,40 +102,44 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
     return DroneCore::ConnectionResult::SUCCESS;
 }
 
-void TcpConnection::resolve_address(const std::string& ipAddress, int port, sockaddr_in* addr)
+int TcpConnection::resolve_address(const std::string &ip_address, int port, sockaddr_in *addr)
 {
-        struct addrinfo hints;
-		bool ip_found = false;
-		struct addrinfo *result = NULL;
+    struct addrinfo hints;
+    bool ip_found = false;
+    struct addrinfo *result = NULL;
+    int err = 0;
 
-		std::string portName = std::to_string(port);
-		memset(&hints, 0, sizeof(hints));
-		hints.ai_family = AF_UNSPEC;
-		hints.ai_socktype = SOCK_STREAM;
-		hints.ai_protocol = IPPROTO_TCP;
+    std::string port_name = std::to_string(port);
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
 
-        int rc = getaddrinfo(ipAddress.c_str(),portName.c_str(), &hints, &result);
-		if (rc != 0) {
-			throw std::runtime_error("TcpClientPort getaddrinfo failed with error:\n");
-		}
-		addr->sin_family = AF_INET;
-		addr->sin_port = htons(port);
-		for (struct addrinfo *ptr = result; ptr != NULL; ptr = ptr->ai_next)
-		{
-			if (ptr->ai_family == AF_INET && ptr->ai_socktype == SOCK_STREAM && ptr->ai_protocol == IPPROTO_TCP)
-			{
-				// found it!
-				sockaddr_in* temp_ptr = reinterpret_cast<sockaddr_in*>(ptr->ai_addr);
-				addr->sin_family = temp_ptr->sin_family;
-				addr->sin_addr.s_addr = temp_ptr->sin_addr.s_addr;
-				addr->sin_port = temp_ptr->sin_port;
-				ip_found = true;
-				break;
-			}
-		}
-		freeaddrinfo(result);
-		if (!ip_found)
-			throw std::runtime_error("TcpClientPort could not resolve ip address for:\n");
+    int rc = getaddrinfo(ip_address.c_str(), port_name.c_str(), &hints, &result);
+    if (rc != 0) {
+       err = 1 ;
+       return err;
+    }
+    addr->sin_family = AF_INET;
+    addr->sin_port = htons(port);
+    for (struct addrinfo *ptr = result; ptr != NULL; ptr = ptr->ai_next) {
+        if (ptr->ai_family == AF_INET && ptr->ai_socktype == SOCK_STREAM
+            && ptr->ai_protocol == IPPROTO_TCP) {
+            // found it!
+            sockaddr_in *temp_ptr = reinterpret_cast<sockaddr_in *>(ptr->ai_addr);
+            addr->sin_family = temp_ptr->sin_family;
+            addr->sin_addr.s_addr = temp_ptr->sin_addr.s_addr;
+            addr->sin_port = temp_ptr->sin_port;
+            ip_found = true;
+            break;
+        }
+    }
+    freeaddrinfo(result);
+    if (!ip_found) {
+       err = 1 ;
+       return err;
+    }
+    return err;
 }
 
 void TcpConnection::start_recv_thread()
@@ -145,7 +149,7 @@ void TcpConnection::start_recv_thread()
 
 DroneCore::ConnectionResult TcpConnection::stop()
 {
-       _should_exit = true;
+    _should_exit = true;
 
 #ifndef WINDOWS
     // This should interrupt a recv/recvfrom call.
@@ -186,7 +190,7 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
         return false;
     }
 
-    struct sockaddr_in dest_addr; 
+    struct sockaddr_in dest_addr;
     memset((char *)&dest_addr, 0, sizeof(dest_addr));
     dest_addr.sin_family = AF_INET;
 
