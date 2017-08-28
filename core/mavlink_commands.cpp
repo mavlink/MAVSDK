@@ -187,9 +187,11 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
         case MAV_RESULT_IN_PROGRESS:
             Debug() << "progress: " << (int)command_ack.progress
                     << " % (" << work.mavlink_command << ").";
-            if (work.callback) {
-                work.callback(Result::IN_PROGRESS, command_ack.progress / 100.0f);
-            }
+            // FIXME: We can only call callbacks with promises once, so let's not do it
+            //        on IN_PROGRESS.
+            //if (work.callback) {
+            //    work.callback(Result::IN_PROGRESS, command_ack.progress / 100.0f);
+            //}
             _state = State::IN_PROGRESS;
             // If we get a progress update, we can raise the timeout
             // to something higher because we know the initial command
