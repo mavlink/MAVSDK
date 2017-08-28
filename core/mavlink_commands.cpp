@@ -185,8 +185,10 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             break;
 
         case MAV_RESULT_IN_PROGRESS:
-            Debug() << "progress: " << (int)command_ack.progress
-                    << " % (" << work.mavlink_command << ").";
+            if ((int)command_ack.progress != 255) {
+                Debug() << "progress: " << (int)command_ack.progress
+                        << " % (" << work.mavlink_command << ").";
+            }
             // FIXME: We can only call callbacks with promises once, so let's not do it
             //        on IN_PROGRESS.
             //if (work.callback) {
