@@ -9,7 +9,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 # We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
-    add_definitions("-std=c++11 -Wall -Wextra -Werror")
+    # -fPIC for Pybind
+    add_definitions("-std=c++11 -Wall -Wextra -Werror -fPIC")
     set(platform_libs "pthread")
     set(curl_lib "curl")
 else()
