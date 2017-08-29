@@ -70,6 +70,10 @@ all: default
 default:
 	$(call cmake-build)
 
+integraion_tests:
+	$(call cmake-build, \
+		-DINTEGRATION_TESTS=true)
+
 ios:
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \

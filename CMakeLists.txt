@@ -116,6 +116,33 @@ install(FILES
 )
 
 if(NOT IOS AND NOT ANDROID)
+    find_package(SWIG REQUIRED)
+    include(${SWIG_USE_FILE})
+    add_definitions(-DSWIG_TYPE_TABLE=dronecore -fPIC)
+    set_source_files_properties(swig/dronecore.i
+        PROPERTIES CPLUSPLUS ON)
+    execute_process(
+        COMMAND python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
+        OUTPUT_VARIABLE PYTHON_INCLUDE_DIR ERROR_QUIET)
+    execute_process(
+        COMMAND python -c "import site; site.getusersitepackages(); print(site.USER_SITE)"
+        OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+    include_directories(
+            ${PYTHON_INCLUDE_DIR}
+    )
+
+    set(SWIG_MODULE_dronecore_EXTRA_DEPS ${swigged_sources})
+    swig_add_library(dronecore
+        STATIC
+        LANGUAGE python
+        SOURCES swig/dronecore.i)
+    swig_link_libraries(dronecore ${PYTHON_LIBS} dronecore)
+
+    install(TARGETS _dronecore DESTINATION ${PYTHON_SITE_PACKAGES})
+    install(FILES ${CMAKE_BINARY_DIR}/dronecore.py DESTINATION ${PYTHON_SITE_PACKAGES})
+endif()
+
+if(INTEGRATION_TESTS)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
@@ -192,7 +219,6 @@ if(NOT IOS AND NOT ANDROID)
             ${CMAKE_SOURCE_DIR}/stop_px4_sitl.sh
             ${CMAKE_CURRENT_BINARY_DIR}
     )
-
 endif()
 
 if (DROP_DEBUG EQUAL 1)
