@@ -150,6 +150,7 @@ Device &DroneCoreImpl::get_device()
                 ++i;
             }
 
+            // Just return first device instead of failing.
             return *_devices.begin()->second;
         } else {
             Debug() << "Error: no device found.";
