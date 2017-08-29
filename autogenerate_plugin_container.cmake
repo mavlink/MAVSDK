@@ -130,7 +130,17 @@ foreach(class_name ${plugin_class_names})
         "${FORWARD_DECLARATION_STRING}class ${impl_class_name};\n")
 
     set(PLUGIN_GET_STRING
-        "${PLUGIN_GET_STRING}    ${class_name} &${get_name}() { return ${member_name}; }\n")
+        "${PLUGIN_GET_STRING}    /**\n")
+    set(PLUGIN_GET_STRING
+        "${PLUGIN_GET_STRING}     * Getter for ${class_name} plugin.\n")
+    set(PLUGIN_GET_STRING
+        "${PLUGIN_GET_STRING}     *\n")
+    set(PLUGIN_GET_STRING
+        "${PLUGIN_GET_STRING}     * @return a reference to the ${get_name} plugin instance\n")
+    set(PLUGIN_GET_STRING
+        "${PLUGIN_GET_STRING}     */\n")
+    set(PLUGIN_GET_STRING
+        "${PLUGIN_GET_STRING}    ${class_name} &${get_name}() { return ${member_name}; }\n\n")
 
     set(PLUGIN_MEMBER_STRING
         "${PLUGIN_MEMBER_STRING}    ${impl_class_name} *${impl_member_name};\n")
