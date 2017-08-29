@@ -9,6 +9,10 @@ matrix:
       compiler: gcc
       env:
       - BUILD_TARGET=gcc_build
+      addons:
+        apt:
+          packages:
+            - doxygen
     - os: linux
       dist: trusty
       sudo: false
@@ -24,6 +28,7 @@ matrix:
           packages:
             - gcc-5
             - g++-5
+            - doxygen
     - os: linux
       dist: trusty
       sudo: false
@@ -39,6 +44,7 @@ matrix:
           packages:
             - gcc-6
             - g++-6
+            - doxygen
     - os: linux
       sudo: required
       services:
@@ -53,7 +59,6 @@ addons:
   apt:
     packages:
     - libcurl4-openssl-dev
-    - doxygen
 
 install:
 - set -e
