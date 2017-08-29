@@ -70,6 +70,11 @@ all: default
 default:
 	$(call cmake-build)
 
+html:
+	- mkdir build
+	- mkdir build/docs
+	- doxygen .doxygen
+
 ios:
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
@@ -168,6 +173,6 @@ else
 endif
 
 .PHONY:
-	clean fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
+	clean html fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
 
 # vim:ft=make:
