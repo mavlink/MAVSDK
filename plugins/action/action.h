@@ -6,7 +6,7 @@ namespace dronecore {
 
 class ActionImpl;
 
-/* The Action class enables simple actions for a drone
+/** The Action class enables simple actions for a drone
  * such as arming, taking off, and landing.
  */
 class Action
@@ -16,6 +16,7 @@ public:
      * Constructor for Action called internally.
      */
     explicit Action(ActionImpl *impl);
+
     /**
      * Destructor for Action called internally.
      */
