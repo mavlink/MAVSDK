@@ -231,6 +231,10 @@ if (PYTHON)
     )
 
     install(FILES "${CMAKE_BINARY_DIR}/${PYTHON_MODULE_PREFIX}pydronecore${PYTHON_MODULE_EXTENSION}" DESTINATION ${PYTHON_SITE_PACKAGES})
+    # TODO: figure out how to launch sitl and run this script on top
+    #if (PYTHON_TEST)
+        #execute_process(COMMAND python ${CMAKE_SOURCE_DIR}/python/python_pybind_test.py)
+    #endif()
 endif()
 
 if (DROP_DEBUG EQUAL 1)
