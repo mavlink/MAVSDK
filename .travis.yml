@@ -53,6 +53,7 @@ addons:
   apt:
     packages:
     - libcurl4-openssl-dev
+    - doxygen
 
 install:
 - set -e
@@ -63,6 +64,7 @@ install:
 script:
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
     make;
+    make html;
     make run_unit_tests;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
