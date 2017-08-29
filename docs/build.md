@@ -247,7 +247,7 @@ Note that when using the library `libdronecore.a`, you need to link to a thread 
 
 ### Build Example
 
-Check out the [example](../example/). It sets up a UDP connection, waits for a device appearing, and commands it to takeoff and land again, while receiving some telemetry.
+Check out the [example](https://github.com/dronecore/DroneCore/tree/master/example/takeoff_land). It sets up a UDP connection, waits for a device appearing, and commands it to takeoff and land again, while receiving some telemetry.
 
 To build and try it, start PX4 in SITL and build and run the example as follows:
 
@@ -266,5 +266,5 @@ cmake ..
 make && ./takeoff_and_land
 ```
 
-Note that the example needs to be linked to a thread library (see [CMakeLists.txt](example/CMakeLists.txt))
+Note that the example needs to be linked to a thread library (see [CMakeLists.txt](https://github.com/dronecore/DroneCore/blob/master/example/takeoff_land/CMakeLists.txt))
 
