@@ -438,6 +438,7 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t &message)
     mavlink_sys_status_t sys_status;
     mavlink_msg_sys_status_decode(&message, &sys_status);
     set_battery(Telemetry::Battery({sys_status.voltage_battery * 1e-3f,
+                                    // FIXME: it is strange calling it percent when the range goes from 0 to 1.
                                     sys_status.battery_remaining * 1e-2f
                                    }));
 
