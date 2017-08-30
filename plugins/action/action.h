@@ -201,7 +201,7 @@ public:
     const Action &operator=(const Action &) = delete;
 
 private:
-    // Underlying implementation, set at instantiation
+    /** @private Underlying implementation, set at instantiation */
     ActionImpl *_impl;
 };
 

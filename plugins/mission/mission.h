@@ -142,7 +142,7 @@ public:
     const Mission &operator=(const Mission &) = delete;
 
 private:
-    // Underlying implementation, set at instantiation
+    /** @private Underlying implementation, set at instantiation */
     MissionImpl *_impl;
 };
 

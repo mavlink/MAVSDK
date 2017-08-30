@@ -121,7 +121,7 @@ public:
     const Offboard &operator=(const Offboard &) = delete;
 
 private:
-    // Underlying implementation, set at instantiation
+    /** @private Underlying implementation, set at instantiation */
     OffboardImpl *_impl;
 };
 

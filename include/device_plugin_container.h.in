@@ -20,15 +20,17 @@ class DevicePluginContainer
 {
 public:
     /**
-     * Constructor of DevicePluginContainer called internally.
+     * @private Constructor of DevicePluginContainer called internally.
      *
      * A device inheriting from DevicePluginContainer is created internally and can be accessed
      * using `DroneCore::device()`.
+     *
+     * @param impl device implementation internal
      */
     explicit DevicePluginContainer(DeviceImpl *impl);
 
     /**
-     * Destructor of DevicePluginContainer called internally.
+     * @private Destructor of DevicePluginContainer called internally.
      *
      * The destructor of a DevicePluginContainer does not need to be called by any consumer of the
      * API. Instead the device will be cleaned up when DroneCore is destroyed.
@@ -42,13 +44,18 @@ ${PLUGIN_GET_STRING}
     const DevicePluginContainer &operator=(const DevicePluginContainer &) = delete;
 
 protected:
+    /** @private. */
     virtual void init_plugins();
+
+    /** @private. */
     virtual void deinit_plugins();
 
+    /** @private. */
     DeviceImpl *_impl;
 
 ${PLUGIN_MEMBER_STRING}
 
+    /** @private. */
     std::vector<PluginImplBase *> _plugin_impl_list;
 };
 

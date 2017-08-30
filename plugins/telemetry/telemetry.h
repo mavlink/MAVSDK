@@ -610,7 +610,7 @@ public:
     const Telemetry &operator=(const Telemetry &) = delete;
 
 private:
-    // Underlying implementation, set at instantiation
+    /** @private Underlying implementation, set at instantiation */
     TelemetryImpl *_impl;
 };
 
