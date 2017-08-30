@@ -110,7 +110,6 @@ install(TARGETS dronecore
 install(FILES
     include/dronecore.h
     include/device.h
-    core/plugin_base.h
     ${CMAKE_CURRENT_BINARY_DIR}/include/device_plugin_container.h
     ${plugin_header_paths}
     DESTINATION "include/dronecore"
