@@ -34,7 +34,7 @@ TcpConnection::TcpConnection(DroneCoreImpl *parent, const std::string &remote_ip
         _local_port_number = DEFAULT_TCP_REMOTE_PORT;
     }
     if (_remote_ip == "") {
-        _remote_ip = DEFAULT_TCP_REMOTE_IP; 
+        _remote_ip = DEFAULT_TCP_REMOTE_IP;
     }
 }
 
@@ -117,8 +117,8 @@ int TcpConnection::resolve_address(const std::string &ip_address, int port, sock
 
     int rc = getaddrinfo(ip_address.c_str(), port_name.c_str(), &hints, &result);
     if (rc != 0) {
-       err = 1 ;
-       return err;
+        err = 1;
+        return err;
     }
     addr->sin_family = AF_INET;
     addr->sin_port = htons(port);
@@ -136,8 +136,8 @@ int TcpConnection::resolve_address(const std::string &ip_address, int port, sock
     }
     freeaddrinfo(result);
     if (!ip_found) {
-       err = 1 ;
-       return err;
+        err = 1;
+        return err;
     }
     return err;
 }

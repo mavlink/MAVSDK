@@ -62,11 +62,11 @@ DroneCore::ConnectionResult DroneCore::add_tcp_connection(std::string remote_ip,
 
 DroneCore::ConnectionResult DroneCore::add_serial_connection()
 {
-    return add_serial_connection("",0);
+    return add_serial_connection("", 0);
 }
 
 DroneCore::ConnectionResult DroneCore::add_serial_connection(std::string dev_path,
-                                                          int baudrate)
+                                                             int baudrate)
 {
     Connection *new_connection = new SerialConnection(_impl, dev_path, baudrate);
     DroneCore::ConnectionResult ret = new_connection->start();
