@@ -42,7 +42,7 @@ public:
      *
      * @param result result enum
      */
-    static const char *result_str(Result);
+    static const char *result_str(Result result);
 
     /**
      * Callback type for offboard requests.
@@ -91,21 +91,21 @@ public:
      *
      * Attention: this is work in progress, use with caution!
      *
-     * @param result callback to receive request result
+     * @param callback callback to receive request result
      */
     void start_async(result_callback_t callback);
 
     /**
      * Stops offboard control (asynchronous).
      *
-     * @param result callback to receive request result
+     * @param callback callback to receive request result
      */
     void stop_async(result_callback_t callback);
 
     /**
      * Sets the velocity in NED coordinates and yaw.
      *
-     * @param velocity_and_yaw velocity and yaw struct
+     * @param velocity_ned_yaw velocity and yaw struct
      */
     void set_velocity_ned(VelocityNEDYaw velocity_ned_yaw);
 
