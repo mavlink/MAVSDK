@@ -70,10 +70,13 @@ all: default
 default:
 	$(call cmake-build)
 
-html:
-	- mkdir build
-	- mkdir build/docs
-	- doxygen .doxygen
+# install basically just runs default install
+install: default
+    ARGS=install
+
+html: install
+	- mkdir install/docs
+	- (cd install && doxygen ../.doxygen)
 
 ios:
 	$(call cmake-build, \
@@ -173,6 +176,6 @@ else
 endif
 
 .PHONY:
-	clean html fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
+	clean install html fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
 
 # vim:ft=make:
