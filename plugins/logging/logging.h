@@ -38,11 +38,11 @@ public:
     };
 
     /**
-     * Returns human-readable English string for Logging::Result.
+     * Returns human-readable English string for `Logging::Result`.
      *
      * @param result result enum
      */
-    static const char *result_str(Result);
+    static const char *result_str(Result result);
 
     /**
      * Callback type for logging requests.
