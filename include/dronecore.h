@@ -86,7 +86,7 @@ public:
     const std::vector<uint64_t> &device_uuids() const;
 
     /**
-     * Return the only discovered device.
+     * Return the first discovered device.
      *
      * This returns the first discovered device or a null device if no device has yet been found.
      *
