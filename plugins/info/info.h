@@ -58,7 +58,7 @@ public:
     uint64_t uuid() const;
 
     /**
-     * Returns if the information is complete.
+     * Tests if this Version object is fully populated from hardware.
      *
      * @return true if all information needed could be received from device
      */
