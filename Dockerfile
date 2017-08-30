@@ -17,6 +17,7 @@ RUN apt-get update \
 		astyle \
 		git \
 		libcurl4-openssl-dev \
+		doxygen \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
