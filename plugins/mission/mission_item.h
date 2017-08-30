@@ -36,7 +36,7 @@ public:
     /**
      * Sets the relative altitude of a mission item.
      *
-     * @param relative_altitude_m altitude relative to takeoff position in meters
+     * @param altitude_m altitude relative to takeoff position in meters
      */
     void set_relative_altitude(float altitude_m);
 
@@ -51,7 +51,7 @@ public:
     /**
      * Sets the speed to use after a mission item.
      *
-     * @speed_m_s speed to use after this mission item in meters/second
+     * @param speed_m_s speed to use after this mission item in meters/second
      */
     void set_speed(float speed_m_s);
 
