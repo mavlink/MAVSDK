@@ -6,7 +6,7 @@ class MissionItemImpl;
 class MissionImpl;
 
 /**
- * A mission consists of a vector of MissionItems.
+ * A mission consists of a vector of `MissionItem`s.
  *
  * Each MissionItem can contain a position and/or actions.
  * Mission items are not connected to a device and don't communicate to a device, they are just
@@ -16,7 +16,7 @@ class MissionItem
 {
 public:
     /**
-     * Constructor to make a new MissionItem.
+     * Constructor to make a new `MissionItem`.
      */
     MissionItem();
 
@@ -137,7 +137,7 @@ public:
     CameraAction get_camera_action() const;
 
     /**
-     * Gets the camera photo interval which was set for this mission item.
+     * Gets the camera photo interval that was set for this mission item.
      *
      * This only has an effect if used together with the camera action `START_PHOTO_INTERVAL`.
      *
