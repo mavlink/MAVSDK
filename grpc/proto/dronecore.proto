@@ -1,0 +1,16 @@
+
+syntax = "proto3";
+
+package dronecorerpc;
+
+// Interface exported by the server.
+service DroneCoreRPC {
+  rpc Arm(Empty) returns (Bool) {}
+  rpc TakeOff(Empty) returns (Bool) {}
+  rpc Land(Empty) returns (Bool) {}
+}
+
+message Empty {}
+message Bool {
+ bool return = 1;
+}
