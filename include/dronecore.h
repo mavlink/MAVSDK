@@ -13,27 +13,22 @@ class DroneCoreImpl;
 /**
  * DroneCore is an API and library for the PX4 flight stack using Mavlink.
  *
- * It is written in C++ and aiming to be:
- *
- * - Easy to use with a simple API.
- * - Fast and lightweight.
- * - Cross-platform (Linux, Mac, Windows, iOS, Android).
- * - Extensible (using compile-time plugins).
- *
+ * DroneCore is the main class of the DroneCore library.
+ * It manages connections and allows vehicles to be discovered and addressed.
  */
 class DroneCore
 {
 public:
 
     /**
-     * Constructor for the main DroneCore class
+     * Constructor
      *
      * In order to use DroneCore, an instance of this class needs to be created first.
      */
     DroneCore();
 
     /**
-     * Destructor of the main DroneCore class
+     * Destructor
      *
      * In order to disconnect everything and release all resources, a DroneCore instance should be
      * destroyed.
@@ -60,14 +55,14 @@ public:
     };
 
     /**
-     * Translates the ConnectionResult enum to a human-readable English string.
+     * Translates the DroneCore::ConnectionResult enum to a human-readable English string.
      */
     static const char *connection_result_str(ConnectionResult);
 
     /**
      * Adds a UDP connection with the default arguments.
      *
-     * This will listen on UDP port 14540 on localhost.
+     * This will listen on UDP port 14540.
      *
      * @return the result of adding the connection.
      */
@@ -84,8 +79,7 @@ public:
     /**
      * Return vector of device UUIDs.
      *
-     * This returns a vector of the UUIS of all devices that have been discovered so far and can be
-     * accessed.
+     * This returns a vector of the UUIDs of all devices that have been discovered so far.
      *
      * @return a reference to the vector containing the UUIDs
      */
@@ -94,16 +88,14 @@ public:
     /**
      * Return the only discovered device.
      *
-     * This returns the only discovered device or a null device if no device has been discovered
-     * yet. If there is more than one device discovered, it will just return the device which was
-     * discovered first.
+     * This returns the first discovered device or a null device if no device has yet been found.
      *
      * @return a reference to a device
      */
     Device &device() const;
 
     /**
-     * Return a device given a UUID.
+     * Return the device with the specified UUID.
      *
      * This returns a device for a given UUID if such a device has been discovered and a null
      * device otherwise.
@@ -130,8 +122,8 @@ public:
     /**
      * Register callback for device timeout.
      *
-     * This sets a callback that will be notified if  device has timed out which means that no
-     * more messages have been received in 3 seconds.
+     * This sets a callback that will be notified if no heartbeat of the device has been received
+     * in 3 seconds.
      *
      * Note that only one callback can be registered at a time. If this function is called several
      * times, previous callbacks will be overwritten.
