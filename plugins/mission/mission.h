@@ -51,8 +51,8 @@ public:
     /**
      * Sends a vector of mission items to the device (asynchronous).
      *
-     * The mission items are uploaded to a drone and can then be started and executed even if a
-     * connection is lost.
+     * The mission items are uploaded to a drone. Once uploaded the mission can be started and
+     * executed even if a connection is lost.
      *
      * @param mission_items reference to vector of mission items.
      * @param callback callback to receive result of this request
@@ -63,7 +63,8 @@ public:
     /**
      * Starts the mission (asynchronous).
      *
-     * This needs the mission to be sent beforehand using send_mission_async.
+     * Note that the mission must be uplaoded to the vehicle using `send_mission_async()` before
+     * this method is called.
      *
      * @param callback callback to receive result of this request
      */
@@ -72,8 +73,10 @@ public:
     /**
      * Pauses the mission (asynchronous).
      *
-     * When a mission is paused a drone should just hover at the spot and a fixedwing vehicle
-     * should loiter around the spot where it paused.
+     * Pausing the mission puts the vehicle into HOLD mode
+     * (See https://docs.px4.io/en/flight_modes/hold.html).
+     * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+     * around the location where it paused.
      *
      * @param callback callback to receive result of this request
      */
@@ -84,6 +87,9 @@ public:
      *
      * By setting the current index to 0, the mission is restarted from the beginning. If it is set
      * to a specific index of a mission item, the mission will be set to this item.
+     *
+     * Note that this is not necessarily true for general missions using mavlink if loop counters
+     * are used.
      *
      * @param current index for mission index to go to next (0 based)
      * @param callback callback to receive result of this request.
