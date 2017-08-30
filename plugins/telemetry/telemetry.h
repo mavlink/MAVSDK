@@ -7,7 +7,8 @@ namespace dronecore {
 class TelemetryImpl;
 
 /**
- * The Telemetry class allows to get all kinds of telemetry infos from a device.
+ * The Telemetry class allows users to get vehicle telemetry and state information
+ * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
  */
 class Telemetry
 {
@@ -26,8 +27,8 @@ public:
      * Position type.
      */
     struct Position {
-        double latitude_deg; /**< latitude from -90 to +90 in degrees */
-        double longitude_deg; /**< longitude from -180 to 180 in degrees */
+        double latitude_deg; /**< latitude in degrees (range: -90 to +90) */
+        double longitude_deg; /**< longitude degrees (range: -180 to 180) */
         float absolute_altitude_m; /**< altitude AMSL (above mean sea level in meters */
         float relative_altitude_m; /**< altitude relative to takeoff altitude in meters */
     };
@@ -39,6 +40,8 @@ public:
      * The Hamilton quaternion product definition is used.
      * A zero-rotation quaternion is represented by (1,0,0,0).
      * The quaternion could also be written as w + xi + yj + zk.
+     *
+     * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
     struct Quaternion {
         float w; /**< quaternion entry 0 also denoted as a */
@@ -52,6 +55,8 @@ public:
      *
      * All rotations and axis systems follow the right-hand rule.
      * The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+     *
+     * For more info see https://en.wikipedia.org/wiki/Euler_angles
      */
     struct EulerAngle {
         float roll_deg; /**< roll angle in degrees, positive is banking to the right */
@@ -84,11 +89,14 @@ public:
      */
     struct Battery {
         float voltage_v; /**< Voltage in volts */
-        float remaining_percent; /**< Estimated battery percentage remaining from 0.0 to 1.0 */
+        float remaining_percent; /**< Estimated battery percentage remaining (range: 0.0 to 1.0) */
     };
 
     /**
      * Flight modes
+     *
+     * For more information about flight modes, check out
+     * https://docs.px4.io/en/config/flight_mode.html.
      */
     enum class FlightMode {
         READY,
@@ -114,22 +122,24 @@ public:
         bool accelerometer_calibration_ok; /**< true if the accelerometer is calibrated */
         bool magnetometer_calibration_ok; /**< true if the magnetometer is calibrated */
         bool level_calibration_ok; /**< true if the vehicle has a valid level calibration */
-        bool local_position_ok; /**< true if the local position estimate is good enough */
-        bool global_position_ok; /**< true if the global position estimate is good enough */
+        bool local_position_ok; /**< true if the local position estimate is good enough to fly in
+                                     a position control mode */
+        bool global_position_ok; /**< true if the global position estimate is good enough to fly
+                                      in a position controlled mode */
         bool home_position_ok; /**< true if the home position has been initialized properly */
     };
 
     /**
-     * Remove control status type
+     * Remote control status type
      */
     struct RCStatus {
         bool available_once; /**< true if an RC signal has been available once */
         bool lost; /**< true if the RC signal is lost */
-        float signal_strength_percent; /**< signal strength in percent from 0 to 100 */
+        float signal_strength_percent; /**< signal strength in percent (range: 0 to 100) */
     };
 
     /**
-     * Results for telemetry requests
+     * Results enum for telemetry requests
      */
     enum class Result {
         SUCCESS = 0,
@@ -142,7 +152,7 @@ public:
     };
 
     /**
-     * Returns human-readable English string for Telemetry::Result.
+     * Returns human-readable English string for `Telemetry::Result`.
      *
      * @param result result enum
      */
