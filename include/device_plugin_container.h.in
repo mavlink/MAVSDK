@@ -22,7 +22,7 @@ public:
     /**
      * Constructor of DevicePluginContainer called internally.
      *
-     * A device inheriting from DevicePluginContainer is created internall and can be accessed
+     * A device inheriting from DevicePluginContainer is created internally and can be accessed
      * using `DroneCore::device()`.
      */
     explicit DevicePluginContainer(DeviceImpl *impl);
