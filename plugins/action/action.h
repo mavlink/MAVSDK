@@ -39,7 +39,7 @@ public:
     };
 
     /**
-     * Returns a human-readable English string for an Action::Result.
+     * Returns a human-readable English string for an `Action::Result`.
      */
     static const char *result_str(Result);
 
@@ -56,7 +56,7 @@ public:
     /**
      * Disarms the drone (synchronous).
      *
-     * This will disarm a drone if it considers itself landed. If flying in-air, the drone should
+     * This will disarm a drone if it considers itself landed. If flying, the drone should
      * reject the disarm command. Disarming means that all motors will stop.
      *
      * @return result of request
@@ -66,7 +66,7 @@ public:
     /**
      * Kills the drone (synchronous).
      *
-     * This will disarm a drone no matter if still landed or still in-air.
+     * This will disarm a drone irrespective of whether it is landed or flying.
      * Note that the drone will fall out of the sky if you use this command while flying.
      *
      * @return result of request
@@ -74,10 +74,12 @@ public:
     Result kill() const;
 
     /**
-     * Commands the drone to take off and hover at a set takeoff altitude (synchronous).
+     * Commands the drone to take off and hover (synchronous).
      *
      * This switches the drone into position control mode and commands it to take off and hover at
-     * set takeoff altitude.
+     * the takeoff altitude set using `set_takeoff_altitude()`.
+     *
+     * Note that the vehicle needs to be armed before it can take off.
      *
      * @return result of request
      */
@@ -86,15 +88,12 @@ public:
     /**
      * Commands the drone to land at the current position (synchronous).
      *
-     * This switches the drone into position control mode and commands it to take off and hover at
-     * set takeoff altitude.
-     *
      * @return result of request
      */
     Result land() const;
 
     /**
-     * Commands the drone to return to the launch (takeoff) position and land there (synchronous).
+     * Commands the drone to return to the launch (takeoff) position and land there (asynchronous).
      *
      * This switches the drone into RTL mode which generally means it will rise up to a certain
      * altitude to clear any obstacles before heading back to the launch (takeoff) position and
@@ -105,7 +104,7 @@ public:
     Result return_to_launch() const;
 
     /**
-     * Callback type for async action calls.
+     * Callback type for async `Action` calls.
      */
     typedef std::function<void(Result)> result_callback_t;
 
@@ -122,7 +121,7 @@ public:
     /**
      * Disarms the drone (asynchronous).
      *
-     * This will disarm a drone if it considers itself landed. If flying in-air, the drone should
+     * This will disarm a drone if it considers itself landed. If flying, the drone should
      * reject the disarm command. Disarming means that all motors will stop.
      *
      * @param callback function to call with result of request
@@ -132,7 +131,7 @@ public:
     /**
      * Kills the drone (asynchronous).
      *
-     * This will disarm a drone no matter if still landed or still in-air.
+     * This will disarm a drone irrespective of whether it is landed or flying.
      * Note that the drone will fall out of the sky if you use this command while flying.
      *
      * @param callback function to call with result of request
@@ -140,10 +139,12 @@ public:
     void kill_async(result_callback_t callback);
 
     /**
-     * Commands the drone to take off and hover at a set takeoff altitude (asynchronous).
+     * Commands the drone to take off and hover (asynchronous).
      *
      * This switches the drone into position control mode and commands it to take off and hover at
-     * set takeoff altitude.
+     * the takeoff altitude set set using `set_takeoff_altitude()`.
+     *
+     * Note that the vehicle needs to be armed before it can take off.
      *
      * @param callback function to call with result of request
      */
@@ -151,9 +152,6 @@ public:
 
     /**
      * Commands the drone to land at the current position (asynchronous).
-     *
-     * This switches the drone into position control mode and commands it to take off and hover at
-     * set takeoff altitude.
      *
      * @param callback function to call with result of request
      */
@@ -178,21 +176,21 @@ public:
     void set_takeoff_altitude(float relative_altitude_m);
 
     /**
-     * Gets the takeoff altitude above ground.
+     * Gets the takeoff altitude.
      *
      * @return takeoff altitude relative to takeoff location in meters
      */
     float get_takeoff_altitude_m() const;
 
     /**
-     * Sets maximum speed that drone is set to fly at.
+     * Sets vehicle maximum speed.
      *
      * @param speed_m_s maximum speed in meters/second
      */
     void set_max_speed(float speed_m_s);
 
     /**
-     * Gets maximum speed that drone is set to fly at.
+     * Gets the vehicle maximum speed.
      *
      * @return maximum speed in meters/second
      */
