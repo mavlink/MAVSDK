@@ -90,7 +90,7 @@ public:
     const Logging &operator=(const Logging &) = delete;
 
 private:
-    // Underlying implementation, set at instantiation
+    /** @private Underlying implementation, set at instantiation */
     LoggingImpl *_impl;
 };
 

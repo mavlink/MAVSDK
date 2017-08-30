@@ -76,7 +76,7 @@ public:
     const Info &operator=(const Info &) = delete;
 
 private:
-    // Underlying implementation, set at instantiation
+    /** @private Underlying implementation, set at instantiation */
     InfoImpl *_impl;
 };
 

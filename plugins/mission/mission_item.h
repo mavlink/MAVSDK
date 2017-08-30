@@ -145,7 +145,10 @@ public:
      */
     double get_camera_photo_interval_s() const;
 
-    // We need to make MissionImpl a friend so it can access _impl.
+    /**
+     * @private
+     * We need to make MissionImpl a friend so it can access _impl.
+     */
     friend MissionImpl;
 
     // Non-copyable
@@ -153,7 +156,7 @@ public:
     const MissionItem &operator=(const MissionItem &) = delete;
 
 private:
-    // Underlying implementation, set at instantiation
+    /** @private Underlying implementation, set at instantiation */
     MissionItemImpl *_impl;
 };
 
