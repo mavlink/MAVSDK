@@ -91,14 +91,14 @@ public:
      *
      * Attention: this is work in progress, use with caution!
      *
-     * @param result to receive request result
+     * @param result callback to receive request result
      */
     void start_async(result_callback_t callback);
 
     /**
      * Stops offboard control (asynchronous).
      *
-     * @param result to receive request result
+     * @param result callback to receive request result
      */
     void stop_async(result_callback_t callback);
 
