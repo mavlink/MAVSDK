@@ -7,7 +7,10 @@ namespace dronecore {
 class OffboardImpl;
 
 /**
- * The Offboard class allows do offboard velocity control of a drone.
+ * The Offboard class allows to control a drone by velocity commands.
+ *
+ * The module is called offboard because the velocity commands can be sent from external sources
+ * as opposed to onboard control right inside the autopilot "board".
  *
  * Attention: this is work in progress, use with caution!
  */
