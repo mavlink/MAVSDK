@@ -69,14 +69,14 @@ install:
 script:
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
     make;
-    make html;
+    make docs;
     make run_unit_tests;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make run_unit_tests;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make fix_style;
-    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make html;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make docs;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     make;
