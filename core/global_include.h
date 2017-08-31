@@ -36,7 +36,10 @@ namespace dronecore {
 
 class Debug
 {
-#ifdef DEBUG
+// TODO: This needs to be split into Debug(), Info(), Warn(), Err().
+//       For now, we just print all Debug() even in Release mode.
+//#ifdef DEBUG
+#if 1
 public:
     Debug() : _s() {}
 
