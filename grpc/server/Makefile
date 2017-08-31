@@ -15,10 +15,7 @@ PROTOS_PATH = ../proto
 
 vpath %.proto $(PROTOS_PATH)
 
-all: system-check dronecore_client dronecore_server
-
-dronecore_client: dronecore.pb.o dronecore.grpc.pb.o dronecore_client.o 
-	$(CXX) $^ $(LDFLAGS) -o $@
+all: system-check dronecore_server
 
 dronecore_server: dronecore.pb.o dronecore.grpc.pb.o dronecore_server.o 
 	$(CXX) $^ $(LDFLAGS) -o $@
@@ -30,7 +27,7 @@ dronecore_server: dronecore.pb.o dronecore.grpc.pb.o dronecore_server.o
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 clean:
-	rm -f *.o *.pb.cc *.pb.h dronecore_client dronecore_server
+	rm -f *.o *.pb.cc *.pb.h dronecore_server
 
 
 # The following is to test your system and ensure a smoother experience.
