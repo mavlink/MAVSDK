@@ -74,7 +74,7 @@ default:
 install: default
     ARGS=install
 
-html: install
+docs: install
 	- mkdir install/docs
 	- (cd install && doxygen ../.doxygen)
 
@@ -176,6 +176,6 @@ else
 endif
 
 .PHONY:
-	clean install html fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
+	clean install docs fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
 
 # vim:ft=make:
