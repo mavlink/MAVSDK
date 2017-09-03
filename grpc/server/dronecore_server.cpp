@@ -48,43 +48,37 @@ enum class MissionState : unsigned {
 class DroneCoreRPCImpl final : public DroneCoreRPC::Service
 {
 
-    Status Arm(ServerContext *context, const Empty *request, Bool *response) override
+    Status Arm(ServerContext *context, const Empty *request,
+               dronecorerpc::ActionResult *response) override
     {
         Device &device = dc.device();
-        const Action::Result arm_result = device.action().arm();
-        if (arm_result != Action::Result::SUCCESS) {
-            std::cout << "Arming failed:" << Action::result_str(arm_result) << std::endl;
-            response->set_ret(false);
-        }
-        response->set_ret(true);
+        const Action::Result action_result = device.action().arm();
+        response->set_result(static_cast<dronecorerpc::ActionResult::Result>(action_result));
+        response->set_result_str(Action::result_str(action_result));
         return Status::OK;
     }
 
-    Status TakeOff(ServerContext *context, const Empty *request, Bool *response)override
+    Status TakeOff(ServerContext *context, const Empty *request,
+                   dronecorerpc::ActionResult *response) override
     {
         Device &device = dc.device();
-        const Action::Result takeoff_result = device.action().takeoff();
-        if (takeoff_result != Action::Result::SUCCESS) {
-            std::cout << "Takeoff failed:" << Action::result_str(takeoff_result) << std::endl;
-            response->set_ret(false);
-        }
-        response->set_ret(true);
+        const Action::Result action_result = device.action().takeoff();
+        response->set_result(static_cast<dronecorerpc::ActionResult::Result>(action_result));
+        response->set_result_str(Action::result_str(action_result));
         return Status::OK;
     }
 
-    Status Land(ServerContext *context, const Empty *request, Bool *response)override
+    Status Land(ServerContext *context, const Empty *request,
+                dronecorerpc::ActionResult *response) override
     {
         Device &device = dc.device();
-        const Action::Result land_result = device.action().land();
-        if (land_result != Action::Result::SUCCESS) {
-            std::cout << "Land failed:" << Action::result_str(land_result) << std::endl;
-            response->set_ret(false);
-        }
-        response->set_ret(true);
+        const Action::Result action_result = device.action().land();
+        response->set_result(static_cast<dronecorerpc::ActionResult::Result>(action_result));
+        response->set_result_str(Action::result_str(action_result));
         return Status::OK;
     }
 
-    Status AddWaypoint(ServerContext *context, const Waypoint *waypoint, Bool *response)override
+    Status AddWaypoint(ServerContext *context, const Waypoint *waypoint, Bool *response) override
     {
         std::shared_ptr<MissionItem> new_item(new MissionItem());
         new_item->set_position(waypoint->latitude(), waypoint->longitude());

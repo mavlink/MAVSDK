@@ -5,17 +5,35 @@ package dronecorerpc;
 
 // Interface exported by the server.
 service DroneCoreRPC {
-    rpc Arm(Empty) returns(Bool) {}
-    rpc TakeOff(Empty) returns(Bool) {}
-    rpc Land(Empty) returns(Bool) {}
+    rpc Arm(Empty) returns(ActionResult) {}
+    rpc TakeOff(Empty) returns(ActionResult) {}
+    rpc Land(Empty) returns(ActionResult) {}
     rpc AddWaypoint(Waypoint) returns(Bool) {}
     rpc FlyMission(Empty) returns(Bool) {}
+}
+
+message ActionResult {
+
+    enum Result {
+        SUCCESS = 0;
+        NO_DEVICE = 1;
+        CONNECTION_ERROR = 2;
+        BUSY = 3;
+        COMMAND_DENIED = 4;
+        COMMAND_DENIED_LANDED_STATE_UNKNOWN = 5;
+        COMMAND_DENIED_NOT_LANDED = 6;
+        TIMEOUT = 7;
+        UNKNOWN = 8;
+    }
+    Result result = 1;
+    string result_str = 2;
 }
 
 message Empty {}
 message Bool {
     bool ret = 1;
 }
+
 message Waypoint {
     double latitude = 1;
     double longitude = 2;
