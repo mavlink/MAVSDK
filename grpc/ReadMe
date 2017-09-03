@@ -13,7 +13,7 @@ Steps to run:
  $ make default install
 
 - Goto server folder and generate CPP files using above mentioned command
-- Run make command to generate dronecore_server application 
+- Run make command to generate dronecore_server application
 - Run PX4 sitl
 - Run dronecore_server application, which connects to vehicle and listens to localhost:50051
 - In another terminal, goto python_client folder and generate python files using above mentioned command
@@ -22,3 +22,13 @@ Steps to run:
 
 Things to Remember:
 - unset http_proxy if anything is set
+
+## Prerequisites
+
+###Install grpc
+
+sudo apt install grpc # ?
+
+###Install grpcio_tools
+
+sudo pip install grpcio_tools
