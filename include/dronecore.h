@@ -21,6 +21,7 @@ public:
         TIMEOUT,
         SOCKET_ERROR,
         BIND_ERROR,
+        SOCKET_CONNECTION_ERROR,
         CONNECTION_ERROR,
         NOT_IMPLEMENTED,
         DEVICE_NOT_CONNECTED,
@@ -34,6 +35,10 @@ public:
 
     ConnectionResult add_udp_connection();
     ConnectionResult add_udp_connection(int local_port_number);
+    ConnectionResult add_tcp_connection();
+    ConnectionResult add_tcp_connection(std::string ipAddress, int local_port_number);
+    ConnectionResult add_serial_connection();
+    ConnectionResult add_serial_connection(std::string dev_path, int baudrate);
 
     const std::vector<uint64_t> &device_uuids() const;
     Device &device() const;
