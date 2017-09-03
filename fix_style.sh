@@ -71,7 +71,7 @@ cd $1 > /dev/null
 
 # Go through all .h, c., and .cpp files listed by git
 # TODO: add -r argument to include all files
-files=`git ls-files | grep -E "\.h$|\.c$|\.cpp$"`
+files=`git ls-files | grep -E "\.h$|\.c$|\.cpp$|\.proto"`
 
 while IFS= read file; do
 
