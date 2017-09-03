@@ -1,0 +1,28 @@
+
+syntax = "proto3";
+
+package dronecorerpc;
+
+// Interface exported by the server.
+service DroneCoreRPC {
+  rpc Arm(Empty) returns (Bool) {}
+  rpc TakeOff(Empty) returns (Bool) {}
+  rpc Land(Empty) returns (Bool) {}
+  rpc AddWaypoint(Waypoint) returns (Bool) {}
+  rpc FlyMission(Empty) returns (Bool) {}
+}
+
+message Empty {}
+message Bool {
+ bool ret = 1;
+}
+message Waypoint {
+ double latitude = 1;
+ double longitude = 2;
+ double altitude = 3;
+ float speed = 4;
+ bool is_fly_through = 5;
+ float pitch = 6;
+ float yaw = 7;
+ int32 camera_action = 8;
+}
