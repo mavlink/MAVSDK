@@ -22,3 +22,13 @@ Steps to run:
 
 Things to Remember:
 - unset http_proxy if anything is set
+
+## Prerequisites
+
+###Install grpc
+
+sudo apt install grpc # ?
+
+###Install grpcio_tools
+
+sudo pip install grpcio_tools
