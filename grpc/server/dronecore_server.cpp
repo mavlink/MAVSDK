@@ -45,227 +45,237 @@ enum class MissionState : unsigned {
     ERROR
 };
 
-class DroneCoreRPCImpl final : public DroneCoreRPC::Service {
+class DroneCoreRPCImpl final : public DroneCoreRPC::Service
+{
 
-  Status Arm(ServerContext* context, const Empty* request, Bool* response) override  {
-  Device &device = dc.device();
-  const Action::Result arm_result = device.action().arm();
-  if (arm_result != Action::Result::SUCCESS) {
-    std::cout << "Arming failed:" << Action::result_str(arm_result) << std::endl;
-    response->set_ret(false);
-  }
-  response->set_ret(true);
-  return Status::OK;
-  }
-
-  Status TakeOff(ServerContext* context, const Empty* request, Bool* response)override {
-    Device &device = dc.device();
-    const Action::Result takeoff_result = device.action().takeoff();
-    if (takeoff_result != Action::Result::SUCCESS) {
-        std::cout << "Takeoff failed:" << Action::result_str(takeoff_result) << std::endl;
-        response->set_ret(false);
-    }
-  response->set_ret(true);
-  return Status::OK;
-  }
-
-  Status Land(ServerContext* context, const Empty* request, Bool* response)override {
-    Device &device = dc.device();
-    const Action::Result land_result = device.action().land();
-    if (land_result != Action::Result::SUCCESS) {
-      std::cout << "Land failed:" << Action::result_str(land_result) << std::endl;
-      response->set_ret(false);
-    }
-    response->set_ret(true);
-    return Status::OK;
-  }
-
-  Status AddWaypoint(ServerContext* context, const Waypoint* waypoint, Bool* response)override {
-    std::shared_ptr<MissionItem> new_item(new MissionItem());
-    new_item->set_position(waypoint->latitude(), waypoint->longitude());
-    new_item->set_relative_altitude(waypoint->altitude());
-    new_item->set_speed(waypoint->speed());
-    new_item->set_fly_through(waypoint->is_fly_through());
-    new_item->set_gimbal_pitch_and_yaw(waypoint->pitch(), waypoint->yaw());
-    new_item->set_camera_action(static_cast<dronecore::MissionItem::CameraAction>(waypoint->camera_action()));
-    mission_items.push_back(new_item);
-    response->set_ret(true);
-    return Status::OK;
-  }
-
-  Status FlyMission(ServerContext* context, const Empty* request, Bool* response) override {
-  Device &device = dc.device();
-  finished = false;
-  _mission_state = MissionState::INIT;
-  while (!finished) {
-    switch (_mission_state) {
-      case MissionState::INIT:
-        device.mission().send_mission_async(
-        mission_items,
-        std::bind(&receive_send_mission_result, _1));
-        _mission_state = MissionState::UPLOADING;
-        break;
-      case MissionState::UPLOADING:
-        break;
-      case MissionState::UPLOADING_DONE:
-        std::cout << "arming!" << std::endl;
-        if (!device.telemetry().armed()) {
-          device.action().arm_async(std::bind(&receive_arm_result, _1));
-          _mission_state = MissionState::ARMING;
+    Status Arm(ServerContext *context, const Empty *request, Bool *response) override
+    {
+        Device &device = dc.device();
+        const Action::Result arm_result = device.action().arm();
+        if (arm_result != Action::Result::SUCCESS) {
+            std::cout << "Arming failed:" << Action::result_str(arm_result) << std::endl;
+            response->set_ret(false);
         }
-        break;
-      case MissionState::ARMING:
-        break;
-      case MissionState::ARMING_DONE:
-        // TODO: There can be a race here if PX4 still listens to the armed flag in
-        // the message DO_SET_MODE. Once it ignores it as in the spec, this is not
-        // needed anymore.
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-        device.mission().start_mission_async(
-        std::bind(&receive_start_mission_result, _1));
-        _mission_state = MissionState::STARTING;
-        break;
-      case MissionState::STARTING:
-        break;
-      case MissionState::STARTING_DONE:
-        _mission_state = MissionState::MISSION;
-        device.mission().subscribe_progress(
-        std::bind(&receive_mission_progress, _1, _2));
-        break;
-      case MissionState::MISSION_DONE:
-        device.action().return_to_launch_async(
-        std::bind(&receive_return_to_launch_result, _1));
-        _mission_state = MissionState::RETURN;
-        break;
-      case MissionState::RETURN:
-        if (!device.telemetry().in_air()) {
-          _mission_state = MissionState::RETURN_DONE;
-        }
-        break;
-      case MissionState::RETURN_DONE:
-        device.action().disarm_async(std::bind(&receive_disarm_result, _1));
-        break;
-      case MissionState::DONE:
-        finished = true;
-        break;
-      case MissionState::ERROR:
-        finished = true;
-        break;
-
+        response->set_ret(true);
+        return Status::OK;
     }
-  }
-  if(_mission_state == MissionState::DONE)
-    response->set_ret(true);
-  else
-    response->set_ret(false);
-  return Status::OK;
-}
+
+    Status TakeOff(ServerContext *context, const Empty *request, Bool *response)override
+    {
+        Device &device = dc.device();
+        const Action::Result takeoff_result = device.action().takeoff();
+        if (takeoff_result != Action::Result::SUCCESS) {
+            std::cout << "Takeoff failed:" << Action::result_str(takeoff_result) << std::endl;
+            response->set_ret(false);
+        }
+        response->set_ret(true);
+        return Status::OK;
+    }
+
+    Status Land(ServerContext *context, const Empty *request, Bool *response)override
+    {
+        Device &device = dc.device();
+        const Action::Result land_result = device.action().land();
+        if (land_result != Action::Result::SUCCESS) {
+            std::cout << "Land failed:" << Action::result_str(land_result) << std::endl;
+            response->set_ret(false);
+        }
+        response->set_ret(true);
+        return Status::OK;
+    }
+
+    Status AddWaypoint(ServerContext *context, const Waypoint *waypoint, Bool *response)override
+    {
+        std::shared_ptr<MissionItem> new_item(new MissionItem());
+        new_item->set_position(waypoint->latitude(), waypoint->longitude());
+        new_item->set_relative_altitude(waypoint->altitude());
+        new_item->set_speed(waypoint->speed());
+        new_item->set_fly_through(waypoint->is_fly_through());
+        new_item->set_gimbal_pitch_and_yaw(waypoint->pitch(), waypoint->yaw());
+        new_item->set_camera_action(static_cast<dronecore::MissionItem::CameraAction>
+                                    (waypoint->camera_action()));
+        mission_items.push_back(new_item);
+        response->set_ret(true);
+        return Status::OK;
+    }
+
+    Status FlyMission(ServerContext *context, const Empty *request, Bool *response) override
+    {
+        Device &device = dc.device();
+        finished = false;
+        _mission_state = MissionState::INIT;
+        while (!finished) {
+            switch (_mission_state) {
+                case MissionState::INIT:
+                    device.mission().send_mission_async(
+                        mission_items,
+                        std::bind(&receive_send_mission_result, _1));
+                    _mission_state = MissionState::UPLOADING;
+                    break;
+                case MissionState::UPLOADING:
+                    break;
+                case MissionState::UPLOADING_DONE:
+                    std::cout << "arming!" << std::endl;
+                    if (!device.telemetry().armed()) {
+                        device.action().arm_async(std::bind(&receive_arm_result, _1));
+                        _mission_state = MissionState::ARMING;
+                    }
+                    break;
+                case MissionState::ARMING:
+                    break;
+                case MissionState::ARMING_DONE:
+                    // TODO: There can be a race here if PX4 still listens to the armed flag in
+                    // the message DO_SET_MODE. Once it ignores it as in the spec, this is not
+                    // needed anymore.
+                    std::this_thread::sleep_for(std::chrono::seconds(2));
+                    device.mission().start_mission_async(
+                        std::bind(&receive_start_mission_result, _1));
+                    _mission_state = MissionState::STARTING;
+                    break;
+                case MissionState::STARTING:
+                    break;
+                case MissionState::STARTING_DONE:
+                    _mission_state = MissionState::MISSION;
+                    device.mission().subscribe_progress(
+                        std::bind(&receive_mission_progress, _1, _2));
+                    break;
+                case MissionState::MISSION_DONE:
+                    device.action().return_to_launch_async(
+                        std::bind(&receive_return_to_launch_result, _1));
+                    _mission_state = MissionState::RETURN;
+                    break;
+                case MissionState::RETURN:
+                    if (!device.telemetry().in_air()) {
+                        _mission_state = MissionState::RETURN_DONE;
+                    }
+                    break;
+                case MissionState::RETURN_DONE:
+                    device.action().disarm_async(std::bind(&receive_disarm_result, _1));
+                    break;
+                case MissionState::DONE:
+                    finished = true;
+                    break;
+                case MissionState::ERROR:
+                    finished = true;
+                    break;
+
+            }
+        }
+        if (_mission_state == MissionState::DONE) {
+            response->set_ret(true);
+        } else {
+            response->set_ret(false);
+        }
+        return Status::OK;
+    }
 
 public:
-	DroneCore dc;
-	std::vector<std::shared_ptr<MissionItem>> mission_items;
-	static MissionState _mission_state;
-	bool finished;
+    DroneCore dc;
+    std::vector<std::shared_ptr<MissionItem>> mission_items;
+    static MissionState _mission_state;
+    bool finished;
 
-static void receive_send_mission_result(Mission::Result result)
-{
+    static void receive_send_mission_result(Mission::Result result)
+    {
 
-    if (result == Mission::Result::SUCCESS) {
-        _mission_state = MissionState::UPLOADING_DONE;
-    } else {
-        std::cerr << "Error: mission send result: " << unsigned(result) << std::endl;
-        _mission_state = MissionState::ERROR;
-    }
-}
-
-static void receive_start_mission_result(Mission::Result result)
-{
-
-    if (result == Mission::Result::SUCCESS) {
-        _mission_state = MissionState::STARTING_DONE;
-    } else {
-        std::cerr << "Error: mission start result: " << unsigned(result) << std::endl;
-        _mission_state = MissionState::ERROR;
-    }
-}
-
-static void receive_mission_progress(int current, int total)
-{
-    std::cout << "Mission status update: " << current << " / " << total << std::endl;
-
-    if (current > 0 && current == total) {
-        _mission_state = MissionState::MISSION_DONE;
-    }
-}
-
-static void receive_arm_result(Action::Result result)
-{
-
-    if (result == Action::Result::SUCCESS) {
-        _mission_state = MissionState::ARMING_DONE;
-    } else {
-        std::cerr << "Error: arming result: " << unsigned(result) << std::endl;
-        _mission_state = MissionState::ERROR;
-    }
-}
-
-static void receive_return_to_launch_result(Action::Result result)
-{
-
-    if (result == Action::Result::SUCCESS) {
-    } else {
-        std::cerr << "Error: return to land result: " << unsigned(result) << std::endl;
-        _mission_state = MissionState::ERROR;
-    }
-}
-
-
-static void receive_disarm_result(Action::Result result)
-{
-
-    if (result == Action::Result::SUCCESS) {
-    } else {
-        std::cerr << "Error: disarming result: " << unsigned(result) << std::endl;
+        if (result == Mission::Result::SUCCESS) {
+            _mission_state = MissionState::UPLOADING_DONE;
+        } else {
+            std::cerr << "Error: mission send result: " << unsigned(result) << std::endl;
+            _mission_state = MissionState::ERROR;
+        }
     }
 
-    _mission_state = MissionState::DONE;
-}
+    static void receive_start_mission_result(Mission::Result result)
+    {
+
+        if (result == Mission::Result::SUCCESS) {
+            _mission_state = MissionState::STARTING_DONE;
+        } else {
+            std::cerr << "Error: mission start result: " << unsigned(result) << std::endl;
+            _mission_state = MissionState::ERROR;
+        }
+    }
+
+    static void receive_mission_progress(int current, int total)
+    {
+        std::cout << "Mission status update: " << current << " / " << total << std::endl;
+
+        if (current > 0 && current == total) {
+            _mission_state = MissionState::MISSION_DONE;
+        }
+    }
+
+    static void receive_arm_result(Action::Result result)
+    {
+
+        if (result == Action::Result::SUCCESS) {
+            _mission_state = MissionState::ARMING_DONE;
+        } else {
+            std::cerr << "Error: arming result: " << unsigned(result) << std::endl;
+            _mission_state = MissionState::ERROR;
+        }
+    }
+
+    static void receive_return_to_launch_result(Action::Result result)
+    {
+
+        if (result == Action::Result::SUCCESS) {
+        } else {
+            std::cerr << "Error: return to land result: " << unsigned(result) << std::endl;
+            _mission_state = MissionState::ERROR;
+        }
+    }
+
+
+    static void receive_disarm_result(Action::Result result)
+    {
+
+        if (result == Action::Result::SUCCESS) {
+        } else {
+            std::cerr << "Error: disarming result: " << unsigned(result) << std::endl;
+        }
+
+        _mission_state = MissionState::DONE;
+    }
 };
 
 MissionState DroneCoreRPCImpl::_mission_state;
 
-void RunServer() {
-  std::string server_address("0.0.0.0:50051");
-  DroneCoreRPCImpl service;
+void RunServer()
+{
+    std::string server_address("0.0.0.0:50051");
+    DroneCoreRPCImpl service;
 
-  bool discovered_device = false;
-  DroneCore::ConnectionResult connection_result = service.dc.add_udp_connection();
-  if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
-      std::cout << "Connection failed: " << DroneCore::connection_result_str(
-                    connection_result) << std::endl;
-  return;
-  }
-  std::cout << "Waiting to discover device..." << std::endl;
-  service.dc.register_on_discover([&discovered_device](uint64_t uuid) {
-      std::cout << "Discovered device with UUID: " << uuid << std::endl;
-      discovered_device = true;
-  });
-  // We usually receive heartbeats at 1Hz, therefore we should find a device after around 2 seconds.
-  std::this_thread::sleep_for(std::chrono::seconds(2));
-  if (!discovered_device) {
-      std::cout << "No device found, exiting." << std::endl;
-  return;
-  }
+    bool discovered_device = false;
+    DroneCore::ConnectionResult connection_result = service.dc.add_udp_connection();
+    if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
+        std::cout << "Connection failed: " << DroneCore::connection_result_str(
+                      connection_result) << std::endl;
+        return;
+    }
+    std::cout << "Waiting to discover device..." << std::endl;
+    service.dc.register_on_discover([&discovered_device](uint64_t uuid) {
+        std::cout << "Discovered device with UUID: " << uuid << std::endl;
+        discovered_device = true;
+    });
+    // We usually receive heartbeats at 1Hz, therefore we should find a device after around 2 seconds.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    if (!discovered_device) {
+        std::cout << "No device found, exiting." << std::endl;
+        return;
+    }
 
-  ServerBuilder builder;
-  builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-  builder.RegisterService(&service);
-  std::unique_ptr<Server> server(builder.BuildAndStart());
-  std::cout << "Server listening on " << server_address << std::endl;
-  server->Wait();
+    ServerBuilder builder;
+    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+    builder.RegisterService(&service);
+    std::unique_ptr<Server> server(builder.BuildAndStart());
+    std::cout << "Server listening on " << server_address << std::endl;
+    server->Wait();
 }
 
-int main(int argc, char** argv) {
-  RunServer();
-  return 0;
+int main(int argc, char **argv)
+{
+    RunServer();
+    return 0;
 }
