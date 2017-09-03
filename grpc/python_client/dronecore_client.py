@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import grpc
 import time
 import dronecore_pb2
