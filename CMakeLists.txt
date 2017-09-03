@@ -9,7 +9,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 # We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
-    add_definitions("-std=c++11 -Wall -Wextra -Werror")
+    # -fPIC for Pybind
+    add_definitions("-std=c++11 -Wall -Wextra -Werror -fPIC")
     set(platform_libs "pthread")
     set(curl_lib "curl")
 else()
@@ -115,7 +116,7 @@ install(FILES
     DESTINATION "include/dronecore"
 )
 
-if(NOT IOS AND NOT ANDROID)
+if(NOT IOS AND NOT ANDROID AND NOT PYTHON)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
@@ -192,7 +193,48 @@ if(NOT IOS AND NOT ANDROID)
             ${CMAKE_SOURCE_DIR}/stop_px4_sitl.sh
             ${CMAKE_CURRENT_BINARY_DIR}
     )
+endif()
 
+if (PYTHON)
+    find_package(PythonLibs REQUIRED)
+    message("Python include directory: ${PYTHON_INCLUDE_DIRS}")
+    message("Python library: ${PYTHON_LIBRARIES}")
+    include_directories(
+        libs/pybind11/include
+        ${PYTHON_INCLUDE_DIRS}
+    )
+    execute_process(COMMAND
+        python -c "import site; site.getusersitepackages(); print(site.USER_SITE)"
+        OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+    message("Python site-packages: ${PYTHON_SITE_PACKAGES}")
+    # make sure PYTHON_MODULE_PREFIX always has a value
+    if (NOT PYTHON_MODULE_PREFIX)
+        execute_process(COMMAND
+            python -c "from distutils import sysconfig; print(sysconfig.get_config_var('SO'))"
+            OUTPUT_VARIABLE PYTHON_MODULE_EXTENSION OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+
+        message("Python module extension: ${PYTHON_MODULE_EXTENSION}")
+    endif()
+
+    set(PYBIND11_CPP_STANDARD -std=c++11)
+    add_subdirectory(libs/pybind11)
+    add_library(pydronecore MODULE
+        core/pydronecore.cpp
+    )
+
+    set_target_properties(pydronecore PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}")
+    set_target_properties(pydronecore PROPERTIES SUFFIX "${PYTHON_MODULE_EXTENSION}")
+    target_link_libraries(pydronecore
+        dronecore
+        curl
+        ${PYTHON_LIBRARIES}
+    )
+
+    install(FILES "${CMAKE_BINARY_DIR}/${PYTHON_MODULE_PREFIX}pydronecore${PYTHON_MODULE_EXTENSION}" DESTINATION ${PYTHON_SITE_PACKAGES})
+    # TODO: figure out how to launch sitl and run this script on top
+    #if (PYTHON_TEST)
+        #execute_process(COMMAND python ${CMAKE_SOURCE_DIR}/python/python_pybind_test.py)
+    #endif()
 endif()
 
 if (DROP_DEBUG EQUAL 1)

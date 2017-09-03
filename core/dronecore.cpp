@@ -4,7 +4,6 @@
 #include "connection.h"
 #include "udp_connection.h"
 
-
 namespace dronecore {
 
 DroneCore::DroneCore() :
@@ -94,3 +93,4 @@ const char *DroneCore::connection_result_str(ConnectionResult result)
 }
 
 } // namespace dronecore
+

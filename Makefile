@@ -70,6 +70,15 @@ all: default
 default:
 	$(call cmake-build)
 
+python:
+	$(call cmake-build, \
+		-DPYTHON:BOOL=true)
+
+python_test:
+	$(call cmake-build, \
+		-DPYTHON_TEST:BOOL=true \
+		-DPYTHON:BOOL=true)
+
 ios:
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
@@ -167,7 +176,6 @@ else
 	$(eval CMAKE_BIN = $(ANDROID_CMAKE_BIN))
 endif
 
-.PHONY:
-	clean fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
+.PHONY: python clean fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
 
 # vim:ft=make:
