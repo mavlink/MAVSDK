@@ -32,6 +32,14 @@ cd -
 
 ### Python client
 
+```
+cd grpc/python_client/
+python -m grpc_tools.protoc -I../proto --python_out=. --grpc_python_out=. ../proto/dronecore.proto
+cd -
+```
+
+## Test
+
 To test Python client, start PX4 SITL, and run Python test script:
 
 ```
