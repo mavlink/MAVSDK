@@ -6,142 +6,142 @@ class MissionItemImpl;
 class MissionImpl;
 
 /**
- * A mission consists of a vector of `MissionItem`s.
+ * @brief A mission is a vector of `MissionItem`s.
  *
  * Each MissionItem can contain a position and/or actions.
- * Mission items are not connected to a device and don't communicate to a device, they are just
- * building blocks to assemble a mission which can be sent to (or received from) a device.
+ * Mission items are just building blocks to assemble a mission,
+ * which can be sent to (or received from) a device. They cannot be used independently.
  */
 class MissionItem
 {
 public:
     /**
-     * Constructor to make a new `MissionItem`.
+     * @brief Constructor (internal use only).
      */
     MissionItem();
 
     /**
-     * Destructor for a MissionItem.
+     * @brief Destructor (internal use only).
      */
     ~MissionItem();
 
     /**
-     * Sets the position of a mission item.
+     * @brief Set the position of a mission item.
      *
-     * @param latitude_deg latitude of the waypoint in degrees
-     * @param longitude_deg longitude of the waypoint in degrees
+     * @param latitude_deg Latitude of the waypoint in degrees.
+     * @param longitude_deg Longitude of the waypoint in degrees.
      */
     void set_position(double latitude_deg, double longitude_deg);
 
     /**
-     * Sets the relative altitude of a mission item.
+     * @brief Set the relative altitude of a mission item.
      *
-     * @param altitude_m altitude relative to takeoff position in meters
+     * @param altitude_m Altitude relative to takeoff position in metres.
      */
     void set_relative_altitude(float altitude_m);
 
     /**
-     * Sets the fly-through property of a mission item.
+     * @brief Set the fly-through property of a mission item.
      *
-     * @param fly_through if true the drone will fly through the waypoint without stopping
-     *                    if false the drone will come to a stop at the waypoint before continuing
+     * @param fly_through If `true` the drone will fly through the waypoint without stopping.
+     *                    If `false` the drone will come to a stop at the waypoint before continuing.
      */
     void set_fly_through(bool fly_through);
 
     /**
-     * Sets the speed to use after a mission item.
+     * @brief Set the speed to use after a mission item.
      *
-     * @param speed_m_s speed to use after this mission item in meters/second
+     * @param speed_m_s Speed to use after this mission item in metres/second.
      */
     void set_speed(float speed_m_s);
 
     /**
-     * Sets the pitch and yaw angle of a gimbal at that mission item.
+     * @brief Set the pitch and yaw angle of a gimbal at that mission item.
      *
-     * @param pitch_deg the new pitch angle of the gimbal in degrees (0: horizontal, positive up,
-     *                  -90: vertical downward facing)
-     * @param yaw_deg the new yaw angle of the gimbal in degrees (0: forward, positive clock-wise,
-     *                90: to the right
+     * @param pitch_deg The new pitch angle of the gimbal in degrees (0: horizontal, positive up,
+     *                  -90: vertical downward facing).
+     * @param yaw_deg The new yaw angle of the gimbal in degrees (0: forward, positive clock-wise,
+     *                90: to the right).
      */
     void set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg);
 
     /**
-     * Possible camera actions at a mission item.
+     * @brief Possible camera actions at a mission item.
      */
     enum class CameraAction {
-        TAKE_PHOTO,
-        START_PHOTO_INTERVAL,
-        STOP_PHOTO_INTERVAL,
-        START_VIDEO,
-        STOP_VIDEO,
-        NONE
+        TAKE_PHOTO, /**< @brief Take single photo. */
+        START_PHOTO_INTERVAL, /**< @brief Start capturing photos at regular intervals - see set_camera_photo_interval(). */
+        STOP_PHOTO_INTERVAL, /**< @brief Stop capturing photos at regular intervals. */
+        START_VIDEO, /**< @brief Start capturing video. */
+        STOP_VIDEO, /**< @brief Stop capturing video. */
+        NONE /**< @brief No action. */
     };
 
     /**
-     * Sets the camera action for a mission item.
+     * @brief Set the camera action for a mission item.
      *
-     * @param action the camera action
+     * @param action The camera action.
      */
     void set_camera_action(CameraAction action);
 
     /**
-     * Set the camera photo interval.
+     * @brief Set the camera photo interval.
      *
-     * This only has an effect if used together with the camera action `START_PHOTO_INTERVAL`.
+     * This only has an effect if used together with CameraAction::START_PHOTO_INTERVAL.
      *
-     * @param interval_s interval between photo captures in seconds
+     * @param interval_s Interval between photo captures in seconds.
      */
     void set_camera_photo_interval(double interval_s);
 
     /**
-     * Gets the latitude of a mission item.
+     * @brief Get the latitude of a mission item.
      *
-     * @return latitude in degrees
+     * @return Latitude in degrees.
      */
     double get_latitude_deg() const;
 
     /**
-     * Gets the longitude of a mission item.
+     * @brief Get the longitude of a mission item.
      *
-     * @return longitude in degrees
+     * @return Longitude in degrees.
      */
     double get_longitude_deg() const;
 
     /**
-     * Gets the relative altitude of a mission item.
+     * @brief Get the relative altitude of a mission item.
      *
-     * @return the altitude relative to the takeoff position in meters
+     * @return The altitude relative to the takeoff position in metres.
      */
     float get_relative_altitude_m() const;
 
     /**
-     * Gets the fly-through property of a mission item.
+     * @brief Get the fly-through property of a mission item.
      *
-     * @return true if the drone will fly through the waypoint without stopping
-     *         false if the drone will come to a stop at the waypoint before continuing
+     * @return true if the drone will fly through the waypoint without stopping.
+     *         false if the drone will come to a stop at the waypoint before continuing.
      */
     bool get_fly_through() const;
 
     /**
-     * Gets the speed to be used after this mission items.
+     * @brief Get the speed to be used after this mission item.
      *
-     * @return speed in meters/second
+     * @return Speed in metres/second.
      */
     float get_speed_m_s() const;
 
     /**
-     * Gets the camera action set for this mission item.
+     * @brief Get the camera action set for this mission item.
      *
-     * @return camera action enum
+     * @return Camera action enum value.
      */
     CameraAction get_camera_action() const;
 
     /**
-     * Gets the camera photo interval that was set for this mission item.
+     * @brief Get the camera photo interval that was set for this mission item.
      *
-     * This only has an effect if used together with the camera action `START_PHOTO_INTERVAL`.
+     * This only has an effect if used together with CameraAction::START_PHOTO_INTERVAL.
      *
-     * @return camera photo interval in seconds
+     * @return Camera photo interval in seconds.
      */
     double get_camera_photo_interval_s() const;
 
@@ -152,7 +152,13 @@ public:
     friend MissionImpl;
 
     // Non-copyable
+    /**
+     * @brief Copy constructor (object is not copyable).
+     */
     MissionItem(const MissionItem &) = delete;
+    /**
+    * @brief Equality operator (object is not copyable).
+    */
     const MissionItem &operator=(const MissionItem &) = delete;
 
 private:

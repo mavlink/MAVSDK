@@ -7,34 +7,34 @@ namespace dronecore {
 class TelemetryImpl;
 
 /**
- * The Telemetry class allows users to get vehicle telemetry and state information
+ * @brief This class allows users to get vehicle telemetry and state information
  * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
  */
 class Telemetry
 {
 public:
     /**
-     * Constructor for Telemetry called internally.
+     * @brief Constructor (internal use only).
      */
     explicit Telemetry(TelemetryImpl *impl);
 
     /**
-     * Destructor for Telemetry called internally.
+     * @brief Destructor (internal use only).
      */
     ~Telemetry();
 
     /**
-     * Position type.
+     * @brief Position type.
      */
     struct Position {
-        double latitude_deg; /**< latitude in degrees (range: -90 to +90) */
-        double longitude_deg; /**< longitude degrees (range: -180 to 180) */
-        float absolute_altitude_m; /**< altitude AMSL (above mean sea level in meters */
-        float relative_altitude_m; /**< altitude relative to takeoff altitude in meters */
+        double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90) */
+        double longitude_deg; /**< @brief Longitude in degrees (range: -180 to 180) */
+        float absolute_altitude_m; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        float relative_altitude_m; /**< @brief Altitude relative to takeoff altitude in metres */
     };
 
     /**
-     * Quaternion type
+     * @brief Quaternion type.
      *
      * All rotations and axis systems follow the right-hand rule.
      * The Hamilton quaternion product definition is used.
@@ -44,14 +44,14 @@ public:
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
     struct Quaternion {
-        float w; /**< quaternion entry 0 also denoted as a */
-        float x; /**< quaternion entry 1 also denoted as b */
-        float y; /**< quaternion entry 2 also denoted as c */
-        float z; /**< quaternion entry 3 also denoted as d */
+        float w; /**< @brief Quaternion entry 0 also denoted as a. */
+        float x; /**< @brief Quaternion entry 1 also denoted as b. */
+        float y; /**< @brief Quaternion entry 2 also denoted as c. */
+        float z; /**< @brief Quaternion entry 3 also denoted as d. */
     };
 
     /**
-     * Euler angle type
+     * @brief Euler angle type.
      *
      * All rotations and axis systems follow the right-hand rule.
      * The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
@@ -59,554 +59,560 @@ public:
      * For more info see https://en.wikipedia.org/wiki/Euler_angles
      */
     struct EulerAngle {
-        float roll_deg; /**< roll angle in degrees, positive is banking to the right */
-        float pitch_deg; /**< pitch angle in degrees, positive is pitching nose up. */
-        float yaw_deg; /**< yaw angle in degrees, positive is clock-wise seen from above. */
+        float roll_deg; /**< @brief Roll angle in degrees, positive is banking to the right. */
+        float pitch_deg; /**< @brief Pitch angle in degrees, positive is pitching nose up. */
+        float yaw_deg; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above. */
     };
 
     /**
-     * Ground speed type
+     * @brief Ground speed type.
      *
-     * The ground speed is represented in the NED (North East Down) frame and in meters/second.
+     * The ground speed is represented in the NED (North East Down) frame and in metres/second.
      */
     struct GroundSpeedNED {
-        float velocity_north_m_s; /**< velocity in North direction in meters/second. */
-        float velocity_east_m_s; /**< velocity in East direction in meters/second. */
-        float velocity_down_m_s; /**< velocity in Down direction in meters/second. */
+        float velocity_north_m_s; /**< @brief Velocity in North direction in metres/second. */
+        float velocity_east_m_s; /**< @brief Velocity in East direction in metres/second. */
+        float velocity_down_m_s; /**< @brief Velocity in Down direction in metres/second. */
     };
 
     /**
-     * GPS information type
+     * @brief GPS information type.
      */
     struct GPSInfo {
-        int num_satellites; /**< Number of visible satellites used for solution */
-        int fix_type; /**< Fix type (0: no GPS, 1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS fix,
-                                     5: RTK float, 6: RTK fixed) */
+        int num_satellites; /**< @brief Number of visible satellites used for solution. */
+        int fix_type; /**< @brief Fix type (0: no GPS, 1: no fix, 2: 2D fix, 3: 3D fix, 4: DGPS fix,
+                                     5: RTK float, 6: RTK fixed). */
     };
 
     /**
-     * Battery type
+     * @brief Battery type.
      */
     struct Battery {
-        float voltage_v; /**< Voltage in volts */
-        float remaining_percent; /**< Estimated battery percentage remaining (range: 0.0 to 1.0) */
+        float voltage_v; /**< @brief Voltage in volts. */
+        float remaining_percent; /**< @brief Estimated battery percentage remaining (range: 0.0 to 1.0). */
     };
 
     /**
-     * Flight modes
+     * @brief Flight modes.
      *
      * For more information about flight modes, check out
      * https://docs.px4.io/en/config/flight_mode.html.
      */
     enum class FlightMode {
-        READY,
-        TAKEOFF,
-        HOLD,
-        MISSION,
-        RETURN_TO_LAUNCH,
-        LAND,
-        OFFBOARD,
-        UNKNOWN
+        READY, /**< @brief Armed and ready to take off. */
+        TAKEOFF, /**< @brief Taking off. */
+        HOLD, /**< @brief Hold mode (hovering in place (or circling for fixed-wing vehicles). */
+        MISSION, /**< @brief Mission mode. */
+        RETURN_TO_LAUNCH, /**< @brief Returning to launch position (then landing). */
+        LAND, /**< @brief Landing. */
+        OFFBOARD, /**< @brief Offboard mode. */
+        UNKNOWN /**< @brief Mode not known. */
     };
 
     /**
-     * Returns a human readable English string for a flight mode.
+     * @brief Get a human readable English string for a flight mode.
      */
     static const char *flight_mode_str(FlightMode flight_mode);
 
     /**
-     * Various health flags
+     * @brief Various health flags.
      */
     struct Health {
-        bool gyrometer_calibration_ok; /**< true if the gyrometer is calibrated */
-        bool accelerometer_calibration_ok; /**< true if the accelerometer is calibrated */
-        bool magnetometer_calibration_ok; /**< true if the magnetometer is calibrated */
-        bool level_calibration_ok; /**< true if the vehicle has a valid level calibration */
-        bool local_position_ok; /**< true if the local position estimate is good enough to fly in
-                                     a position control mode */
-        bool global_position_ok; /**< true if the global position estimate is good enough to fly
-                                      in a position controlled mode */
-        bool home_position_ok; /**< true if the home position has been initialized properly */
+        bool gyrometer_calibration_ok; /**< @brief true if the gyrometer is calibrated. */
+        bool accelerometer_calibration_ok; /**< @brief true if the accelerometer is calibrated. */
+        bool magnetometer_calibration_ok; /**< @brief true if the magnetometer is calibrated. */
+        bool level_calibration_ok; /**< @brief true if the vehicle has a valid level calibration. */
+        bool local_position_ok; /**< @brief true if the local position estimate is good enough to fly in
+                                     a position control mode. */
+        bool global_position_ok; /**< @brief true if the global position estimate is good enough to fly
+                                      in a position controlled mode. */
+        bool home_position_ok; /**< @brief true if the home position has been initialized properly. */
     };
 
     /**
-     * Remote control status type
+     * @brief Remote control status type.
      */
     struct RCStatus {
-        bool available_once; /**< true if an RC signal has been available once */
-        bool lost; /**< true if the RC signal is lost */
-        float signal_strength_percent; /**< signal strength in percent (range: 0 to 100) */
+        bool available_once; /**< @brief true if an RC signal has been available once. */
+        bool lost; /**< @brief true if the RC signal is lost. */
+        float signal_strength_percent; /**< @brief Signal strength as a percentage (range: 0 to 100). */
     };
 
     /**
-     * Results enum for telemetry requests
+     * @brief Results enum for telemetry requests.
      */
     enum class Result {
-        SUCCESS = 0,
-        NO_DEVICE,
-        CONNECTION_ERROR,
-        BUSY,
-        COMMAND_DENIED,
-        TIMEOUT,
-        UNKNOWN
+        SUCCESS = 0, /**< @brief %Request succeeded. */
+        NO_DEVICE, /**< @brief No device connected. */
+        CONNECTION_ERROR, /**< @brief %Connection error. */
+        BUSY, /**< @brief Device busy. */
+        COMMAND_DENIED, /**< @brief Command denied. */
+        TIMEOUT, /**< @brief %Request timeout. */
+        UNKNOWN /**< @brief Unknown error. */
     };
 
     /**
-     * Returns human-readable English string for `Telemetry::Result`.
+     * @brief Get human-readable English string for Telemetry::Result.
      *
-     * @param result result enum
+     * @param result The enum value for which string is needed.
      */
     static const char *result_str(Result result);
 
     /**
-     * Callback type for telemetry requests.
+     * @brief Callback type for telemetry requests.
      */
     typedef std::function<void(Result)> result_callback_t;
 
     /**
-     * Set rate of position updates (synchronous).
+     * @brief Set rate of position updates (synchronous).
      *
-     * @param rate_hz rate in Hz
-     * @return result of request
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
      */
     Result set_rate_position(double rate_hz);
 
     /**
-     * Set rate of home position updates (synchronous).
+     * @brief Set rate of home position updates (synchronous).
      *
-     * @param rate_hz rate in Hz
-     * @return result of request
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
      */
     Result set_rate_home_position(double rate_hz);
 
     /**
-     * Set rate of in-air status updates (synchronous).
+     * @brief Set rate of in-air status updates (synchronous).
      *
-     * @param rate_hz rate in Hz
-     * @return result of request
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
      */
     Result set_rate_in_air(double rate_hz);
 
     /**
-     * Set rate of attitude updates (synchronous).
+     * @brief Set rate of attitude updates (synchronous).
      *
-     * @param rate_hz rate in Hz
-     * @return result of request
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
      */
     Result set_rate_attitude(double rate_hz);
 
     /**
-     * Set rate of camera attitude updates (synchronous).
+     * @brief Set rate of camera attitude updates (synchronous).
      *
-     * @param rate_hz rate in Hz
-     * @return result of request
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
      */
     Result set_rate_camera_attitude(double rate_hz);
 
     /**
-     * Set rate of ground speed (NED) updates (synchronous).
+     * @brief Set rate of ground speed (NED) updates (synchronous).
      *
-     * @param rate_hz rate in Hz
-     * @return result of request
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
      */
     Result set_rate_ground_speed_ned(double rate_hz);
 
     /**
-     * Set rate of GPS information updates (synchronous).
+     * @brief Set rate of GPS information updates (synchronous).
      *
-     * @param rate_hz rate in Hz
-     * @return result of request
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
      */
     Result set_rate_gps_info(double rate_hz);
 
     /**
-     * Set rate of battery status updates (synchronous).
+     * @brief Set rate of battery status updates (synchronous).
      *
-     * @param rate_hz rate in Hz
-     * @return result of request
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
      */
     Result set_rate_battery(double rate_hz);
 
     /**
-     * Set rate of RC status updates (synchronous).
+     * @brief Set rate of RC status updates (synchronous).
      *
-     * @param rate_hz rate in Hz
-     * @return result of request
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
      */
     Result set_rate_rc_status(double rate_hz);
 
     /**
-     * Set rate of position updates (asynchronous).
+     * @brief Set rate of position updates (asynchronous).
      *
-     * @param rate_hz rate in Hz
-     * @param callback callback to receive request result
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
      */
     void set_rate_position_async(double rate_hz, result_callback_t callback);
 
     /**
-     * Set rate of home position updates (asynchronous).
+     * @brief Set rate of home position updates (asynchronous).
      *
-     * @param rate_hz rate in Hz
-     * @param callback callback to receive request result
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
      */
     void set_rate_home_position_async(double rate_hz, result_callback_t callback);
 
     /**
-     * Set rate of in-air status updates (asynchronous).
+     * @brief Set rate of in-air status updates (asynchronous).
      *
-     * @param rate_hz rate in Hz
-     * @param callback callback to receive request result
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
      */
     void set_rate_in_air_async(double rate_hz, result_callback_t callback);
 
     /**
-     * Set rate of attitude updates (asynchronous).
+     * @brief Set rate of attitude updates (asynchronous).
      *
-     * @param rate_hz rate in Hz
-     * @param callback callback to receive request result
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
      */
     void set_rate_attitude_async(double rate_hz, result_callback_t callback);
 
     /**
-     * Set rate of camera attitude updates (asynchronous).
+     * @brief Set rate of camera attitude updates (asynchronous).
      *
-     * @param rate_hz rate in Hz
-     * @param callback callback to receive request result
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
      */
     void set_rate_camera_attitude_async(double rate_hz, result_callback_t callback);
 
     /**
-     * Set rate of ground speed (NED) updates (asynchronous).
+     * @brief Set rate of ground speed (NED) updates (asynchronous).
      *
-     * @param rate_hz rate in Hz
-     * @param callback callback to receive request result
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
      */
     void set_rate_ground_speed_ned_async(double rate_hz, result_callback_t callback);
 
     /**
-     * Set rate of GPS information updates (asynchronous).
+     * @brief Set rate of GPS information updates (asynchronous).
      *
-     * @param rate_hz rate in Hz
-     * @param callback callback to receive request result
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
      */
     void set_rate_gps_info_async(double rate_hz, result_callback_t callback);
 
     /**
-     * Set rate of battery status updates (asynchronous).
+     * @brief Set rate of battery status updates (asynchronous).
      *
-     * @param rate_hz rate in Hz
-     * @param callback callback to receive request result
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
      */
     void set_rate_battery_async(double rate_hz, result_callback_t callback);
 
     /**
-     * Set rate of RC status updates (asynchronous).
+     * @brief Set rate of RC status updates (asynchronous).
      *
-     * @param rate_hz rate in Hz
-     * @param callback callback to receive request result
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
      */
     void set_rate_rc_status_async(double rate_hz, result_callback_t callback);
 
     /**
-     * Returns the current position (synchronous).
+     * @brief Get the current position (synchronous).
      *
-     * @return position
+     * @return Position.
      */
     Position position() const;
 
     /**
-     * Returns the home position (synchronous).
+     * @brief Get the home position (synchronous).
      *
-     * @return home position
+     * @return Home position.
      */
     Position home_position() const;
 
     /**
-     * Returns the in-air status (synchronous).
+     * @brief Get the in-air status (synchronous).
      *
-     * @return true if in-air (flying) and not on-ground (landed)
+     * @return true if in-air (flying) and not on-ground (landed).
      */
     bool in_air() const;
 
     /**
-     * Returns the arming status (synchronous).
+     * @brief Get the arming status (synchronous).
      *
-     * @return true if armed (propellers spinning)
+     * @return true if armed (propellers spinning).
      */
     bool armed() const;
 
     /**
-     * Returns the current attitude in quaternions (synchronous).
+     * @brief Get the current attitude in quaternions (synchronous).
      *
-     * @return attitude as quaternion
+     * @return Attitude as quaternion.
      */
     Quaternion attitude_quaternion() const;
 
     /**
-     * Returns the current attitude in Euler angles (synchronous).
+     * @brief Get the current attitude in Euler angles (synchronous).
      *
-     * @return attitude as Euler angle
+     * @return Attitude as Euler angle.
      */
     EulerAngle attitude_euler_angle() const;
 
     /**
-     * Returns the camera's attitude in quaternions (synchronous).
+     * @brief Get the camera's attitude in quaternions (synchronous).
      *
-     * @return camera's attitude as quaternion
+     * @return Camera's attitude as quaternion.
      */
     Quaternion camera_attitude_quaternion() const;
 
     /**
-     * Returns the camera's attitude in Euler angles (synchronous).
+     * @brief Get the camera's attitude in Euler angles (synchronous).
      *
-     * @return camera's attitude as Euler angle
+     * @return Camera's attitude as Euler angle.
      */
     EulerAngle camera_attitude_euler_angle() const;
 
     /**
-     * Returns the current ground speed (NED) (synchronous).
+     * @brief Get the current ground speed (NED) (synchronous).
      *
-     * @return ground speed in NED
+     * @return Ground speed in NED.
      */
     GroundSpeedNED ground_speed_ned() const;
 
     /**
-     * Returns the current GPS information (synchronous).
+     * @brief Get the current GPS information (synchronous).
      *
-     * @return GPS information
+     * @return GPS information.
      */
     GPSInfo gps_info() const;
 
     /**
-     * Returns the current battery status (synchronous).
+     * @brief Get the current battery status (synchronous).
      */
     Battery battery() const;
 
     /**
-     * Returns the current flight mode (synchronous).
+     * @brief Get the current flight mode (synchronous).
      *
-     * @return flight mode
+     * @return Flight mode.
      */
     FlightMode flight_mode() const;
 
     /**
-     * Returns the current health status (synchronous).
+     * @brief Get the current health status (synchronous).
      *
-     * @return the health status
+     * @return Health status.
      */
     Health health() const;
 
     /**
-     * Returns true if the overall health is ok (synchronous).
+     * @brief Returns true if the overall health is ok (synchronous).
      *
      * @return true if all individual health flags are true.
      */
     bool health_all_ok() const;
 
     /**
-     * Returns the RC status (synchronous).
+     * @brief Get the RC status (synchronous).
      *
-     * @return the RC status
+     * @return RC status.
      */
     RCStatus rc_status() const;
 
     /**
-     * Callback type for position updates.
+     * @brief Callback type for position updates.
      */
     typedef std::function<void(Position)> position_callback_t;
 
     /**
-     * Subscribes to position updates (asynchronous).
+     * @brief Subscribe to position updates (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void position_async(position_callback_t callback);
 
     /**
-     * Subscribes to home position updates (asynchronous).
+     * @brief Subscribe to home position updates (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void home_position_async(position_callback_t callback);
 
     /**
-     * Callback type for in-air updates.
+     * @brief Callback type for in-air updates.
      *
-     * @param in_air true if in-air (flying) and not on-ground (landed)
+     * @param in_air true if in-air (flying) and not on-ground (landed).
      */
     typedef std::function<void(bool in_air)> in_air_callback_t;
 
     /**
-     * Subscribes to in-air updates (asynchronous).
+     * @brief Subscribe to in-air updates (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void in_air_async(in_air_callback_t callback);
 
     /**
-     * Callback type for armed updates (asynchronous).
+     * @brief Callback type for armed updates (asynchronous).
      *
-     * @param armed true if armed (motors spinning)
+     * @param armed true if armed (motors spinning).
      */
     typedef std::function<void(bool armed)> armed_callback_t;
 
     /**
-     * Subscribes to armed updates (asynchronous).
+     * @brief Subscribe to armed updates (asynchronous).
      *
      * Note that armed updates are limited to 1Hz.
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void armed_async(armed_callback_t callback);
 
     /**
-     * Callback type for attitude updates in quaternion.
+     * @brief Callback type for attitude updates in quaternion.
      *
-     * @param quaternion attitude quaternion
+     * @param quaternion Attitude quaternion.
      */
     typedef std::function<void(Quaternion quaternion)> attitude_quaternion_callback_t;
 
     /**
-     * Subscribes to attitude updates in quaternion (asynchronous).
+     * @brief Subscribe to attitude updates in quaternion (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void attitude_quaternion_async(attitude_quaternion_callback_t callback);
 
     /**
-     * Callback type for attitude updates in Euler angles.
+     * @brief Callback type for attitude updates in Euler angles.
      *
-     * @param euler_angle attitude Euler angle
+     * @param euler_angle Attitude Euler angle.
      */
     typedef std::function<void(EulerAngle euler_angle)> attitude_euler_angle_callback_t;
 
     /**
-     * Subscribes to attitude updates in Euler angles (asynchronous).
+     * @brief Subscribe to attitude updates in Euler angles (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void attitude_euler_angle_async(attitude_euler_angle_callback_t callback);
 
     /**
-     * Subscribes to camera attitude updates in quaternion (asynchronous).
+     * @brief Subscribe to camera attitude updates in quaternion (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void camera_attitude_quaternion_async(attitude_quaternion_callback_t callback);
 
     /**
-     * Subscribes to camera attitude updates in Euler angles (asynchronous).
+     * @brief Subscribe to camera attitude updates in Euler angles (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void camera_attitude_euler_angle_async(attitude_euler_angle_callback_t callback);
 
     /**
-     * Callback type for ground speed (NED) updates.
+     * @brief Callback type for ground speed (NED) updates.
      *
-     * @param ground_speed_ned ground speed (NED)
+     * @param ground_speed_ned Ground speed (NED).
      */
     typedef std::function<void(GroundSpeedNED ground_speed_ned)> ground_speed_ned_callback_t;
 
     /**
-     * Subscribes to ground speed (NED) updates (asynchronous).
+     * @brief Subscribe to ground speed (NED) updates (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void ground_speed_ned_async(ground_speed_ned_callback_t callback);
 
     /**
-     * Callback type for GPS information updates.
+     * @brief Callback type for GPS information updates.
      *
-     * @param gps_info GPS information
+     * @param gps_info GPS information.
      */
     typedef std::function<void(GPSInfo gps_info)> gps_info_callback_t;
 
     /**
-     * Subscribes to GPS information updates (asynchronous).
+     * @brief Subscribe to GPS information updates (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void gps_info_async(gps_info_callback_t callback);
 
     /**
-     * Callback type for battery status updates.
+     * @brief Callback type for battery status updates.
      *
-     * @param battery battery status
+     * @param battery Battery status.
      */
     typedef std::function<void(Battery battery)> battery_callback_t;
 
     /**
-     * Subscribes to battery status updates (asynchronous).
+     * @brief Subscribe to battery status updates (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void battery_async(battery_callback_t callback);
 
     /**
-     * Callback type for flight mode updates.
+     * @brief Callback type for flight mode updates.
      *
-     * @param flight_mode flight mode
+     * @param flight_mode Flight mode.
      */
     typedef std::function<void(FlightMode flight_mode)> flight_mode_callback_t;
 
     /**
-     * Subscribes to battery status updates (asynchronous).
+     * @brief Subscribe to battery status updates (asynchronous).
      *
      * Note that flight mode updates are limited to 1Hz.
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void flight_mode_async(flight_mode_callback_t callback);
 
     /**
-     * Callback type for health status updates.
+     * @brief Callback type for health status updates.
      *
-     * @param health health flags
+     * @param health health flags.
      */
     typedef std::function<void(Health health)> health_callback_t;
 
     /**
-     * Subscribes to health status updates (asynchronous).
+     * @brief Subscribe to health status updates (asynchronous).
      *
      * Note that health status updates are limited to 1Hz.
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void health_async(health_callback_t callback);
 
     /**
-     * Callback type for health status updates.
+     * @brief Callback type for health status updates.
      *
-     * @param flight_mode flight mode
+     * @param health_all_ok
      */
     typedef std::function<void(bool health_all_ok)> health_all_ok_callback_t;
 
     /**
-     * Subscribes to overall health status updates (asynchronous).
+     * @brief Subscribe to overall health status updates (asynchronous).
      *
      * Note that overall health status updates are limited to 1Hz.
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void health_all_ok_async(health_all_ok_callback_t callback);
 
     /**
-     * Callback type for RC status updates.
+     * @brief Callback type for RC status updates.
      *
-     * @param rc_status RC status
+     * @param rc_status RC status.
      */
     typedef std::function<void(RCStatus rc_status)> rc_status_callback_t;
 
     /**
-     * Subscribes to RC status updates (asynchronous).
+     * @brief Subscribe to RC status updates (asynchronous).
      *
-     * @param callback function to call with updates
+     * @param callback Function to call with updates.
      */
     void rc_status_async(rc_status_callback_t callback);
 
     // Non-copyable
+    /**
+     * @brief Copy constructor (object is not copyable).
+     */
     Telemetry(const Telemetry &) = delete;
+    /**
+     * @brief Equality operator (object is not copyable).
+     */
     const Telemetry &operator=(const Telemetry &) = delete;
 
 private:

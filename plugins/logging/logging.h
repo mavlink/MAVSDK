@@ -7,86 +7,93 @@ namespace dronecore {
 class LoggingImpl;
 
 /**
- * The Logging class allows log data using logger and log streaming from the vehicle.
+ * @brief The Logging class allows log data using logger and log streaming from the vehicle.
  *
- * Note that this feature is not implemented yet.
+ * **This feature is not yet implemented**.
  */
 class Logging
 {
 public:
     /**
-     * Constructor for Logging called internally.
+     * @brief Constructor (internal use only).
      */
     explicit Logging(LoggingImpl *impl);
 
     /**
-     * Destructor for Logging called internally.
+     * @brief Destructor (internal use only).
      */
     ~Logging();
 
     /**
-     * Results for logging requests.
+     * @brief Results for logging requests.
      */
     enum class Result {
-        SUCCESS = 0,
-        NO_DEVICE,
-        CONNECTION_ERROR,
-        BUSY,
-        COMMAND_DENIED,
-        TIMEOUT,
-        UNKNOWN
+        SUCCESS = 0, /**< @brief %Request succeeded. */
+        NO_DEVICE, /**< @brief No device connected. */
+        CONNECTION_ERROR, /**< @brief %Connection error. */
+        BUSY, /**< @brief %Device busy. */
+        COMMAND_DENIED, /**< @brief Command denied. */
+        TIMEOUT, /**< @brief Timeout. */
+        UNKNOWN /**< @brief Unknown error. */
     };
 
     /**
-     * Returns human-readable English string for `Logging::Result`.
+     * @brief Returns human-readable English string for Logging::Result.
      *
-     * @param result result enum
+     * @param result Enum for which string is required.
+     * @return result Human-readable string.
      */
     static const char *result_str(Result result);
 
     /**
-     * Callback type for logging requests.
+     * @brief Callback type for logging requests.
      */
     typedef std::function<void(Result)> result_callback_t;
 
     /**
-     * Start logging (synchronous).
+     * @brief Start logging (synchronous).
      *
-     * Note this is not implemented yet.
+     * **This feature is not yet implemented**.
      *
-     * @return result of request
+     * @return Result of request.
      */
     Result start_logging() const;
 
     /**
-     * Stop logging (synchronous).
+     * @brief Stop logging (synchronous).
      *
-     * Note this is not implemented yet.
+     * **This feature is not yet implemented**.
      *
-     * @return result of request
+     * @return Result of request.
      */
     Result stop_logging() const;
 
     /**
-     * Start logging (asynchronous).
+     * @brief Start logging (asynchronous).
      *
-     * Note this is not implemented yet.
+     * **This feature is not yet implemented**.
      *
-     * @param callback to get result of request
+     * @param callback Callback to get result of request.
      */
     void start_logging_async(result_callback_t callback);
 
     /**
-     * Stop logging (asynchronous).
+     * @brief Stop logging (asynchronous).
      *
-     * Note this is not implemented yet.
+     * **This feature is not yet implemented**.
      *
-     * @param callback to get result of request
+     * @param callback Callback to get result of request.
      */
     void stop_logging_async(result_callback_t callback);
 
     // Non-copyable
+    /**
+     * @brief Copy constructor (object is not copyable).
+     */
     Logging(const Logging &) = delete;
+    /**
+    * @brief Equality operator (object is not copyable).
+    */
     const Logging &operator=(const Logging &) = delete;
 
 private:

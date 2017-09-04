@@ -10,7 +10,7 @@ class PluginImplBase;
 ${FORWARD_DECLARATION_STRING}
 
 /**
- * The DevicePluginContainer contains all plugins for a device.
+ * @brief The DevicePluginContainer contains all plugins for a device.
  *
  * The content of the DevicePluginContainer is auto-generated at compile time.
  * Plugins such as Action or Telemetry are included so that they can be accessed

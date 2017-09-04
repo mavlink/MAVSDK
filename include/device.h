@@ -7,30 +7,30 @@ namespace dronecore {
 class DeviceImpl;
 
 /**
- * A Device represents a vehicle such as a drone or robot.
+ * @brief A Device represents a vehicle such as a drone or robot.
  *
  * A device can consist of multiple components such as an autopilot with a gimbal and camera.
- * The device class allows to access plugins such as dronecore::Action or dronecore::Telemetry
+ * The device class can access plugins like dronecore::Action or dronecore::Telemetry
  * because it is based on DevicePluginContainer.
+ *
+ * Device objects are not created or destroyed directly by API consumers. They are accessed using, for example, DroneCore::device() and cleaned up when DroneCore is destroyed.
  */
 class Device : public DevicePluginContainer
 {
 public:
     /**
-     * Constructor (called internall).
+     * @brief Constructor (internal use only).
      *
-     * This constructor does not need to be called by any consumer of the API. Instead the device
-     * can be accessed using e.g. `DroneCore::device()`.
+     * This constructor does not need to be called by any consumer of the API.
      *
-     * @param impl the underlying device implementation
+     * @param impl The underlying device implementation.
      */
     explicit Device(DeviceImpl *impl);
 
     /**
-     * Destructor (called internally).
+     * @brief Destructor (internal use only).
      *
-     * The destructor of Device does not need to be called by any consumer of the API. Instead
-     * the device will be cleaned up when DroneCore is destroyed.
+     * The destructor of Device does not need to be called by any consumer of the API.
      */
     ~Device();
 
