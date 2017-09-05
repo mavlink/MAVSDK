@@ -1,10 +1,8 @@
-#!/usr/bin/env python
-
 """
 This script converts Doxygen XML output into gitbook-compatible markdown. There are no arguments.
 
 - The directories that are parsed for source/outputs is DOXYGEN_XML_DIR (set DOXYGEN_ROOT_DIR for path from this file execution)
-- The list of files to parse are in the set: FILES_TO_PROCESS
+- All files in DOXYGEN_XML_DIR will be parsed, but only xml files for public c++ classes and struct are handled (implementation classes ignored.
 
 How it works:
 - There are Python objects for each C++ type - e.g. cppClass, cppTypdef etc. (cppClass covers both class and struct)
@@ -32,7 +30,7 @@ DOXYGEN_ROOT_DIR= './install/docs'
 DOXYGEN_XML_DIR = DOXYGEN_ROOT_DIR + '/xml'
 DOXYGEN_OUTPUT_DIR = DOXYGEN_ROOT_DIR + '/markdown'
 
-
+"""
 FILES_TO_PROCESS = {
     'classdronecore_1_1_action.xml', 
     'classdronecore_1_1_drone_core.xml',
@@ -57,7 +55,7 @@ FILES_TO_PROCESS = {
     'classdronecore_1_1_device_plugin_container.xml',
     'classdronecore_1_1_plugin_base.xml'
     }
-
+"""
 
 
 
@@ -964,47 +962,51 @@ if not os.path.exists(DOXYGEN_OUTPUT_DIR):
 
 
 
+for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
+    for name in files:
+        current_filename = os.path.join(root, name)
 
-for name in FILES_TO_PROCESS:
-    current_filename=DOXYGEN_XML_DIR+'/'+name
-
-    if name[-4:]!='.xml':
-       print(" %s - skipping (not XML)" % current_filename)
-       continue 
-    if name[-7:]=='_8h.xml':
-       print(" %s - skipping (header file)" % current_filename)
-       continue 
-    if name[-9:]=='_8cpp.xml':
-       print(" %s - skipping (cpp source file)" % current_filename)
-       continue
-    if name[:5]=='class':
-        print("  Generating: %s (class xml)" % current_filename)
-        currentClass=cppClass()
-        currentClass.import_doxygen_class_file(name,current_filename)
-        #exit()
-        markdown_string=currentClass.markdown()
-        #print(markdown_string)
-        outputfile_name=DOXYGEN_OUTPUT_DIR+'/'+name[:-4]+'.md'
+        if name[-4:]!='.xml':
+            print(" %s - skipping (not XML)" % current_filename)
+            continue 
+        if name[-7:]=='_8h.xml':
+            print(" %s - skipping (header file)" % current_filename)
+            continue 
+        if name[-9:]=='_8cpp.xml':
+            print(" %s - skipping (cpp source file)" % current_filename)
+            continue
+        if name[16:]=='md_docs_markdown':
+            print(" %s - skipping (md xml file)" % current_filename)
+            continue
+        if name[-8:]=='_8md.xml':
+            print(" %s - skipping (md xml file)" % current_filename)
+            continue
+        if name[:5]=='class':
+            print("  Generating: %s (class xml)" % current_filename)
+            currentClass=cppClass()
+            currentClass.import_doxygen_class_file(name,current_filename)
+            markdown_string=currentClass.markdown()
+            outputfile_name=DOXYGEN_OUTPUT_DIR+'/'+name[:-4]+'.md'
            
-        #print('OUTPUTFILENAME: %s' % outputfile_name)
-        with open(outputfile_name, 'w') as the_file:
-            the_file.write(markdown_string)
-        continue
+            #print('OUTPUTFILENAME: %s' % outputfile_name)
+            with open(outputfile_name, 'w') as the_file:
+                the_file.write(markdown_string)
+            continue
         
-    if name[:6]=='struct':
-        print("  Generating: %s (struct xml)" % current_filename)
-        currentClass=cppClass()
-        currentClass.import_doxygen_class_file(name,current_filename)
-        #exit()
-        markdown_string=currentClass.markdown()
-        #print(markdown_string)
-        outputfile_name=DOXYGEN_OUTPUT_DIR+'/'+name[:-4]+'.md'
+        if name[:6]=='struct':
+            print("  Generating: %s (struct xml)" % current_filename)
+            currentClass=cppClass()
+            currentClass.import_doxygen_class_file(name,current_filename)
+            markdown_string=currentClass.markdown()
+            #print(markdown_string)
+            outputfile_name=DOXYGEN_OUTPUT_DIR+'/'+name[:-4]+'.md'
            
-        #print('OUTPUTFILENAME: %s' % outputfile_name)
-        with open(outputfile_name, 'w') as the_file:
-            the_file.write(markdown_string)
-        continue
+            #print('OUTPUTFILENAME: %s' % outputfile_name)
+            with open(outputfile_name, 'w') as the_file:
+                the_file.write(markdown_string)
+            continue
         
         print(" %s - FILE NOT HANDLED" % current_filename)
+           
 
 
