@@ -77,7 +77,7 @@ install: default
 docs: install
 	- mkdir install/docs
 	- (cd install && doxygen ../.doxygen)
-	- (cd . && python generate_markdown_from_doxygen_xml.py)
+	- python generate_markdown_from_doxygen_xml.py
 
 ios:
 	$(call cmake-build, \
