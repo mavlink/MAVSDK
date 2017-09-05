@@ -825,30 +825,27 @@ class cppClass:
 
         ## Data Fields/Public attributes
         if len(self.public_attributes)>0:
-            outputstring+='\n\n'
-            outputstring+='\n## Data Fields\n'
+            outputstring+='\n\n## Data Fields\n'
             for the_item in self.public_attributes:
                 outputstring+=the_item.markdown_overview()
                 
                 
         if len(self.public_static_attributes)>0:
-            outputstring+='\n\n'
-            outputstring+='\n## Static Public Attributes\n'
+            outputstring+='\n\n## Static Public Attributes\n'
             for the_item in self.public_static_attributes:
                 outputstring+=the_item.markdown_overview()
                
                 
         # Static Public Functions
         if len(self.public_static_functions)>0:
-            outputstring+='\n## Static Public Member Functions\n\n'
+            outputstring+='\n\n## Static Public Member Functions\n\n'
             outputstring+='\n\nType | Name | Description'
             outputstring+='\n---: | --- | ---'
             for the_item in self.public_static_functions:
                 outputstring+='\n%s' % the_item.markdown_overview().strip()
                 
         if len(self.protected_functions)>0 or len(self.protected_constructor_destructors)>0:
-            outputstring+='\n\n'
-            outputstring+='\n## Protected Member Functions\n'
+            outputstring+='\n\n## Protected Member Functions\n'
             outputstring+='\n\nType | Name | Description'
             outputstring+='\n---: | --- | ---'
             for the_item in self.protected_constructor_destructors:
@@ -858,8 +855,7 @@ class cppClass:
                 
         # Protected Attributes
         if len(self.protected_attribs)>0:
-            outputstring+='\n\n'
-            outputstring+='\n## Protected Attributes\n'
+            outputstring+='\n\n## Protected Attributes\n'
             for the_item in self.protected_attribs:
                 outputstring+='[%s %s](#%s)\n\n' % (the_item.type, the_item.name,the_item.id)
 
@@ -894,7 +890,7 @@ class cppClass:
                     outputstring+=the_function.markdown()
 
         if len(self.public_typedef)>0:
-            outputstring+='\n## Member Typdef Documentation\n\n'
+            outputstring+='\n\n## Member Typdef Documentation\n\n'
             for the_type in self.public_typedef:
                 outputstring+=the_type.markdown()
 
@@ -905,7 +901,7 @@ class cppClass:
 
         ## Member Function Documentation
         if len(self.public_functions)>0 or len(self.public_static_functions)>0:
-            outputstring+='\n## Member Function Documentation\n\n'
+            outputstring+='\n\n## Member Function Documentation\n\n'
             if len(self.public_functions)>0:
                 #print(self.public_functions)
                 for the_function in self.public_functions:
@@ -918,19 +914,19 @@ class cppClass:
         
         ## Protected Member Functions
         if len(self.protected_functions)>0:
-            outputstring+='\n## Protected Member Functions\n'
+            outputstring+='\n\n## Protected Member Functions\n'
             for the_function in self.protected_functions:
                 outputstring+=the_function.markdown()
                 
         ## Member Data Documentation 
         if len(self.protected_attribs)>0:
-            outputstring+='\n## Member Data Documentation\n\n'
+            outputstring+='\n\n## Member Data Documentation\n\n'
             for the_item in self.protected_attribs:
                 outputstring+=the_item.markdown()
                 
         ## Field Documentation
         if len(self.public_static_attributes)>0 or len(self.public_attributes)>0:
-            outputstring+='\n## Field Documentation\n\n'
+            outputstring+='\n\n## Field Documentation\n\n'
             if len(self.public_static_attributes)>0:
                 for the_item in self.public_static_attributes:
                     outputstring+=the_item.markdown()
