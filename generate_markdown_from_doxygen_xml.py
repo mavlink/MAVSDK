@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 This script converts Doxygen XML output into gitbook-compatible markdown. There are no arguments.
 
