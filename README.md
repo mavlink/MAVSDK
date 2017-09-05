@@ -1,4 +1,4 @@
-<img src="./assets/site/dronecore_logo_full.png" align="right" title="DroneCore Logo" width="400px"/>
+<img src="https://raw.githubusercontent.com/dronecore/docs/master/assets/site/dronecore_logo_full.png" align="right" title="DroneCore Logo" width="400px"/>
 
 # DroneCore
 
