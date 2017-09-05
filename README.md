@@ -1,6 +1,4 @@
-<img src="https://raw.githubusercontent.com/dronecore/docs/master/assets/site/dronecore_logo_full.png" align="right" title="DroneCore Logo" width="400px"/>
-
-# DroneCore
+![DroneCore](https://raw.githubusercontent.com/dronecore/docs/master/assets/site/dronecore_logo_full.png)
 
 [![Build Status](https://travis-ci.org/dronecore/DroneCore.svg?branch=master)](https://travis-ci.org/dronecore/DroneCore)
 
