@@ -33,10 +33,17 @@ BUILD_TYPE ?= "Debug"
 # Default is no DROPDEBUG
 DROP_DEBUG ?= 0
 
-
 CURRENT_DIR := $(shell pwd)
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 CURL_BUILD_DIR := $(ROOT_DIR)/curl-android-ios
+
+# gRPC build parameteres
+PROTOC = protoc
+GRPC_CPP_PLUGIN = grpc_cpp_plugin
+GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
+PROTOS_PATH = $(ROOT_DIR)/grpc/proto
+vpath %.proto $(PROTOS_PATH)
+GRPC_SERVER_DIR = $(ROOT_DIR)/grpc/server
 
 # Set default cmake here but replace with special version for Android build.
 CMAKE_BIN = cmake
@@ -46,7 +53,7 @@ INSTALL_PREFIX ?= $(CURRENT_DIR)/install
 # Function to create build_* directory and call make there.
 define cmake-build
 +@$(eval BUILD_DIR = build/$@)
-
++@$(eval GRPC_SERVER_BUILD_DIR = grpc/server/build)
 +@if [ ! -e $(BUILD_DIR)/CMakeCache.txt ]; then \
 	mkdir -p $(BUILD_DIR) \
 	&& (cd $(BUILD_DIR) \
@@ -61,6 +68,24 @@ fi
 
 +@(echo "Build dir: $(BUILD_DIR)" \
 	&& (cd $(BUILD_DIR) && $(MAKE) $(MAKE_ARGS) $(ARGS)) \
+  )
+
+
++@($(PROTOC) -I $(PROTOS_PATH) --grpc_out=$(GRPC_SERVER_DIR) --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $(ROOT_DIR)/grpc/proto/dronecore.proto)
++@($(PROTOC) -I $(PROTOS_PATH) --cpp_out=$(GRPC_SERVER_DIR) $(ROOT_DIR)/grpc/proto/dronecore.proto)
+
+
++@if [ ! -e $(GRPC_SERVER_BUILD_DIR)/CMAKECache.txt ]; then \
+	mkdir -p $(GRPC_SERVER_BUILD_DIR) \
+	&& (cd $(GRPC_SERVER_BUILD_DIR) \
+	&& $(CMAKE_BIN) $(ROOT_DIR)/grpc/server \
+	-G$(CMAKE_GENERATOR)) \
+	|| (rm -rf $(GRPC_SERVER_BUILD_DIR)) \
+fi
+
++@(echo "gRPC Server build dir: $(ROOT_DIR)/$(GRPC_SERVER_BUILD_DIR)" \
+	&& (cd "$(ROOT_DIR)/$(GRPC_SERVER_BUILD_DIR)" \
+	&& $(MAKE)) \
   )
 endef
 
