@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 
+set(CMAKE_INSTALL_PREFIX "../install" CACHE PATH "default cache path")
 project(dronecore)
 
 # Add DEBUG define for Debug target
@@ -65,6 +66,10 @@ if (ANDROID)
     include_directories(curl-android-ios/prebuilt-with-ssl/android/include)
 endif()
 
+if(NOT IOS AND NOT MSVC)
+    set(serial_source "core/serial_connection.cpp")
+endif()
+
 # We build one static library.
 add_library(dronecore STATIC
     core/global_include.cpp
@@ -77,7 +82,7 @@ add_library(dronecore STATIC
     core/dronecore_impl.cpp
     core/mavlink_channels.cpp
     core/mavlink_receiver.cpp
-    core/serial_connection.cpp
+    ${serial_source}
     core/tcp_connection.cpp
     core/udp_connection.cpp
     core/plugin_impl_base.cpp

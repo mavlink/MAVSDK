@@ -45,6 +45,7 @@ public:
         TIMEOUT, /**< @brief %Connection timed out. */
         SOCKET_ERROR, /**< @brief Socket error. */
         BIND_ERROR, /**< @brief Bind error. */
+        SOCKET_CONNECTION_ERROR,
         CONNECTION_ERROR, /**< @brief %Connection error. */
         NOT_IMPLEMENTED, /**< @brief %Connection type not implemented. */
         DEVICE_NOT_CONNECTED, /**< @brief No device is connected. */
@@ -75,6 +76,40 @@ public:
      * @return The result of adding the connection.
      */
     ConnectionResult add_udp_connection(int local_port_number);
+
+    /**
+     * @brief Adds a TCP connection with the default arguments.
+     *
+     * This will connect to local TCP port 5760.
+     *
+     * @return The result of adding the connection.
+     */
+    ConnectionResult add_tcp_connection();
+
+    /**
+     * @brief Adds a TCP connection with a specific ip and specific port number.
+     *
+     * @param remote_port The TCP port to connect to.
+     * @return The result of adding the connection.
+     */
+    ConnectionResult add_tcp_connection(std::string remote_ip, int remote_port);
+
+    /**
+     * @brief Adds a Serial connection with the default arguments.
+     *
+     * This will connect to serial port ttyS1(COM0).
+     *
+     * @return The result of adding the connection.
+     */
+    ConnectionResult add_serial_connection();
+
+    /**
+     * @brief Adds a Serial connection with a specific COM port(uart dev node) and baudrate as specified.
+     *
+     * @param baudrate Baudrate of the serial port.
+     * @return The result of adding the connection.
+     */
+    ConnectionResult add_serial_connection(std::string dev_path, int baudrate);
 
     /**
      * @brief Get vector of device UUIDs.
