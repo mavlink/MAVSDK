@@ -962,24 +962,35 @@ if not os.path.exists(DOXYGEN_OUTPUT_DIR):
 
 
 
+skipped_files=[] # Files we have CHOSEN not to parse
+not_handled_files=[] # Files we don't handle, but maybe we should (catches new file types)
 for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
     for name in files:
         current_filename = os.path.join(root, name)
 
         if name[-4:]!='.xml':
-            print(" %s - skipping (not XML)" % current_filename)
+            skip_string=" %s - (not XML)" % current_filename
+            skipped_files.append(skip_string)
             continue 
         if name[-7:]=='_8h.xml':
-            print(" %s - skipping (header file)" % current_filename)
+            skip_string=" %s - (header file)" % current_filename
+            skipped_files.append(skip_string)
             continue 
         if name[-9:]=='_8cpp.xml':
-            print(" %s - skipping (cpp source file)" % current_filename)
+            skip_string=" %s - (cpp file)" % current_filename
+            skipped_files.append(skip_string)
             continue
-        if name[16:]=='md_docs_markdown':
-            print(" %s - skipping (md xml file)" % current_filename)
+        if name[:4]=='dir_':
+            skip_string=" %s - (directory listing)" % current_filename
+            skipped_files.append(skip_string)
             continue
-        if name[-8:]=='_8md.xml':
-            print(" %s - skipping (md xml file)" % current_filename)
+        if name=='index.xml':
+            skip_string=" %s - (index page)" % current_filename
+            skipped_files.append(skip_string)
+            continue
+        if name=='namespacedronecore.xml':
+            skip_string=" %s - (index page)" % current_filename
+            skipped_files.append(skip_string)
             continue
         if name[:5]=='class':
             print("  Generating: %s (class xml)" % current_filename)
@@ -1006,7 +1017,15 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
                 the_file.write(markdown_string)
             continue
         
-        print(" %s - FILE NOT HANDLED" % current_filename)
+        #File is not handled. 
+        not_handled_files.append(current_filename)
            
 
-
+if skipped_files:
+    print("Skipped files:")
+    for item in skipped_files:
+        print('  %s' % item)
+if not_handled_files:
+    print("Unhandled files - review and add to skipped list if not needed:")
+    for item in not_handled_files:
+        print('  %s' % item)
