@@ -26,7 +26,7 @@ DroneCore currently takes care of the mavlink messaging using a UDP network conn
 
 The library provides both synchronous (blocking) API calls, as well as asynchronous API calls using callbacks.
 
-## API overview
+## API Overview
 
 - [dronecore](include/dronecore.h): set up connection, discover devices
 - [device](include/device.h): a device providing access to modules below using ...
@@ -38,13 +38,20 @@ The library provides both synchronous (blocking) API calls, as well as asynchron
 - [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
 - [offboard](plugins/offboard/offboard.h): for velocity or position control
 
-## Build instructions, usage
+See also: [Guide > API Overview](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/#api-overview).
 
-Instructions how to build the library and how to write an example can be found in [docs/build.md](docs/build.md).
+## Guide Docs (Build instructions etc.)
 
-## FAQ
+Instructions for how to use the library can be found in the [DroneCore Guide](https://dronecore.gitbooks.io/dronecore-guide/content/en/ ). 
 
-Find a FAQ in [docs/faq.md](docs/faq.md).
+Quick Links:
+
+- [QuickStart](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/).
+- [Building the Library](https://dronecore.gitbooks.io/dronecore-guide/content/en/contributing/build.html)
+- [Examples](https://dronecore.gitbooks.io/dronecore-guide/content/en/examples/).
+- [API Reference](https://dronecore.gitbooks.io/dronecore-guide/content/en/api_reference/).
+- [FAQ](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/faq.html).
+
 
 ## License
 
