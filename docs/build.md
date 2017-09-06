@@ -74,6 +74,12 @@ cmake -DWIN_CURL_INCLUDE_DIR:STRING=C:\\curl-7.54.1\\include -DWIN_CURL_LIB:STRI
 cmake --build .
 ```
 
+To install the binaries and header files in the default location:
+```
+cmake --build . --target install
+```
+
+
 Note that you need to download the curl source and provide the directory of the header files.
 
 ### Build with external directory for plugins and custom integration_tests
@@ -251,6 +257,7 @@ Check out the [example](https://github.com/dronecore/DroneCore/tree/master/examp
 
 To build and try it, start PX4 in SITL and build and run the example as follows:
 
+For Linux :
 Build and install the DroneCore library first:
 
 ```
@@ -265,6 +272,19 @@ mkdir build && cd build
 cmake ..
 make && ./takeoff_and_land
 ```
+
+For Windows :
+Build and install the library using :
+```
+cmake --build . --target install
+```
+
+Build the example using :
+```
+cmake --build .
+```
+
+Debug Binary for example is stored under Debug folder.
 
 Note that the example needs to be linked to a thread library (see [CMakeLists.txt](https://github.com/dronecore/DroneCore/blob/master/example/takeoff_land/CMakeLists.txt))
 
