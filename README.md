@@ -28,17 +28,20 @@ The library provides both synchronous (blocking) API calls, as well as asynchron
 
 ## API Overview
 
+API consumers use the `DroneCore` class to discover and manage vehicles (`Device` objects), which in turn provide access to all other drone information and control objects (e.g. `Telemetry`, `Mission` etc.).
+
+The links below take you to the respective header files:
+
 - [dronecore](include/dronecore.h): set up connection, discover devices
 - [device](include/device.h): a device providing access to modules below using ...
 - [device_plugin_container.h.in](include/device_plugin_container.h.in) which is auto-generated on build.
-
 - [info](plugins/info/info.h): general info about a device
 - [telemetry](plugins/telemetry/telemetry.h): to receive telemetry data
 - [action](plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
 - [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
 - [offboard](plugins/offboard/offboard.h): for velocity or position control
 
-See also: [Guide > API Overview](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/#api-overview).
+For more information see the [API Overview](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/#api-overview) in the DroneCore Guide.
 
 ## Guide Docs (Build instructions etc.)
 
@@ -46,11 +49,11 @@ Instructions for how to use the library can be found in the [DroneCore Guide](ht
 
 Quick Links:
 
-- [QuickStart](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/).
+- [QuickStart](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/)
 - [Building the Library](https://dronecore.gitbooks.io/dronecore-guide/content/en/contributing/build.html)
-- [Examples](https://dronecore.gitbooks.io/dronecore-guide/content/en/examples/).
-- [API Reference](https://dronecore.gitbooks.io/dronecore-guide/content/en/api_reference/).
-- [FAQ](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/faq.html).
+- [Examples](https://dronecore.gitbooks.io/dronecore-guide/content/en/examples/)
+- [API Reference](https://dronecore.gitbooks.io/dronecore-guide/content/en/api_reference/)
+- [FAQ](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/faq.html)
 
 
 ## License
