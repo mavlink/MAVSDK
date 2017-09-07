@@ -1,3 +1,4 @@
+#if !defined(WINDOWS) && !defined(APPLE)
 #pragma once
 
 #include "dronecore.h"
@@ -37,3 +38,4 @@ private:
 };
 
 } // namespace dronecore
+#endif
