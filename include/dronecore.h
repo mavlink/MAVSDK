@@ -61,7 +61,7 @@ public:
     static const char *connection_result_str(ConnectionResult);
 
     /**
-     * @brief Adds a UDP connection with the default arguments.
+     * @brief Adds a UDP connection to the default port.
      *
      * This will listen on UDP port 14540.
      *
@@ -70,7 +70,7 @@ public:
     ConnectionResult add_udp_connection();
 
     /**
-     * @brief Adds a UDP connection with a specific port number.
+     * @brief Adds a UDP connection to the specified port number.
      *
      * @param local_port_number The local UDP port to listen to.
      * @return The result of adding the connection.
@@ -78,7 +78,7 @@ public:
     ConnectionResult add_udp_connection(int local_port_number);
 
     /**
-     * @brief Adds a TCP connection with the default arguments.
+     * @brief Adds a TCP connection to the default IP address/port.
      *
      * This will connect to local TCP port 5760.
      *
@@ -87,7 +87,7 @@ public:
     ConnectionResult add_tcp_connection();
 
     /**
-     * @brief Adds a TCP connection with a specific ip and specific port number.
+     * @brief Adds a TCP connection with a specific IP address and port number.
      *
      * @param remote_port The TCP port to connect to.
      * @return The result of adding the connection.
@@ -95,16 +95,16 @@ public:
     ConnectionResult add_tcp_connection(std::string remote_ip, int remote_port);
 
     /**
-     * @brief Adds a Serial connection with the default arguments.
+     * @brief Adds a serial connection with the default arguments.
      *
-     * This will connect to serial port ttyS1(COM0).
+     * This will connect to serial port ttyS1 (COM0).
      *
      * @return The result of adding the connection.
      */
     ConnectionResult add_serial_connection();
 
     /**
-     * @brief Adds a Serial connection with a specific COM port(uart dev node) and baudrate as specified.
+     * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as specified.
      *
      * @param baudrate Baudrate of the serial port.
      * @return The result of adding the connection.
