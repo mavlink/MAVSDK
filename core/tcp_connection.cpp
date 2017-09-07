@@ -80,9 +80,9 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
     }
 
     sockaddr_in remote_addr {};
-	remote_addr.sin_family = AF_INET;
-	remote_addr.sin_port = htons(_remote_port_number);
-	remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());
+    remote_addr.sin_family = AF_INET;
+    remote_addr.sin_port = htons(_remote_port_number);
+    remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());
 
     if (connect(_socket_fd, (sockaddr *)&remote_addr, sizeof(struct sockaddr_in)) < 0) {
         Debug() << "connect error: " << GET_ERROR(errno);

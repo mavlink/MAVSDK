@@ -122,8 +122,8 @@ const char *DroneCore::connection_result_str(ConnectionResult result)
             return "Socket error";
         case ConnectionResult::BIND_ERROR:
             return "Bind error";
-		case ConnectionResult::SOCKET_CONNECTION_ERROR:
-			return "Socket connection error";
+        case ConnectionResult::SOCKET_CONNECTION_ERROR:
+            return "Socket connection error";
         case ConnectionResult::CONNECTION_ERROR:
             return "Connection error";
         case ConnectionResult::NOT_IMPLEMENTED:
