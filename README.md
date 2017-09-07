@@ -41,19 +41,19 @@ The links below take you to the respective header files:
 - [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
 - [offboard](plugins/offboard/offboard.h): for velocity or position control
 
-For more information see the [API Overview](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/#api-overview) in the DroneCore Guide.
+For more information see the [API Overview](https://docs.dronecore.io/en/getting_started/#api-overview) in the DroneCore Guide.
 
 ## Guide Docs (Build instructions etc.)
 
-Instructions for how to use the library can be found in the [DroneCore Guide](https://dronecore.gitbooks.io/dronecore-guide/content/en/ ). 
+Instructions for how to use the library can be found in the [DroneCore Guide](https://docs.dronecore.io/en/). 
 
 Quick Links:
 
-- [QuickStart](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/)
-- [Building the Library](https://dronecore.gitbooks.io/dronecore-guide/content/en/contributing/build.html)
-- [Examples](https://dronecore.gitbooks.io/dronecore-guide/content/en/examples/)
-- [API Reference](https://dronecore.gitbooks.io/dronecore-guide/content/en/api_reference/)
-- [FAQ](https://dronecore.gitbooks.io/dronecore-guide/content/en/getting_started/faq.html)
+- [QuickStart](https://docs.dronecore.io/en/getting_started/)
+- [Building the Library](https://docs.dronecore.io/en/contributing/build.html)
+- [Examples](https://docs.dronecore.io/en/examples/)
+- [API Reference](https://docs.dronecore.io/en/api_reference/)
+- [FAQ](https://docs.dronecore.io/en/getting_started/faq.html)
 
 
 ## License
