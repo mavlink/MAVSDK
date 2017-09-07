@@ -1,3 +1,4 @@
+#if !defined(WINDOWS) && !defined(APPLE)
 #include "serial_connection.h"
 #include "global_include.h"
 
@@ -170,3 +171,4 @@ void SerialConnection::receive(SerialConnection *parent)
     }
 }
 } // namespace dronecore
+#endif
