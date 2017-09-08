@@ -589,7 +589,10 @@ class cppFunction:
             functionstring+='\n\n**Parameters**\n'
             params_string=''
             for param in self.params:
-                params_string+='\n* %s **%s** - %s' % (markdown_any_tag(param.type).strip(),param.declname,markdown_any_tag(param.description).strip())
+                declname_string=markdown_any_tag(param.declname).strip()
+                if declname_string: #render declname string in bold, if it exists.
+                    declname_string=' **%s**' % declname_string
+                params_string+='\n* %s%s - %s' % (markdown_any_tag(param.type).strip(),declname_string,markdown_any_tag(param.description).strip())
 
             functionstring+=params_string
         
@@ -927,7 +930,7 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
     for name in files:
         current_filename = os.path.join(root, name)
 
-        if name.endswith('.xml'):
+        if not name.endswith('.xml'):
             skip_string=" %s - (not XML)" % current_filename
             skipped_files.append(skip_string)
             continue 
