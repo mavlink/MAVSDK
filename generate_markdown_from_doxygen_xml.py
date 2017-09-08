@@ -575,10 +575,7 @@ class cppFunction:
     def markdown(self):
         functionstring=''
         functionstring+='\n\n### %s() {#%s}\n' % (self.name,self.id)
-        static_text=''
-        if markdown_any_tag(self.static).strip()=='yes':
-            static_text='static '
-        functionstring+='```cpp\n%s%s%s\n```\n' % (static_text, markdown_any_tag(self.definition).strip(),markdown_any_tag(self.argsstring).strip())
+        functionstring+='```cpp\n%s%s\n```\n' % (markdown_any_tag(self.definition).strip(),markdown_any_tag(self.argsstring).strip())
 
         # Description
         functionstring+='\n\n%s' % markdown_any_tag(self.briefdescription).strip()
