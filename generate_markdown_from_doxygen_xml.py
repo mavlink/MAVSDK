@@ -1,8 +1,10 @@
+#!/usr/bin/env python
+
 """
 This script converts Doxygen XML output into gitbook-compatible markdown. There are no arguments.
 
 - The directories that are parsed for source/outputs is DOXYGEN_XML_DIR (set DOXYGEN_ROOT_DIR for path from this file execution)
-- All files in DOXYGEN_XML_DIR will be parsed, but only xml files for public c++ classes and struct are handled (implementation classes ignored.
+- All files in DOXYGEN_XML_DIR will be parsed, but only xml files for public c++ classes and struct are handled (implementation classes ignored).
 
 How it works:
 - There are Python objects for each C++ type - e.g. cppClass, cppTypdef etc. (cppClass covers both class and struct)
@@ -11,7 +13,7 @@ How it works:
 - Each object (mostly) has a markdown_overview() and markdown() method that renders the markdown from the respective objects
 - markdown_any_tag() - 
   - Some objects/values will be empty and others will store tagged information that is only partially parsed from XML (in theory this allows us 
-  to change the output rendering, because we store it in generic format. The markdown_any_tag() method can be used to get 
+  to change the output rendering, because we store it in generic format). The markdown_any_tag() method can be used to get 
   markdown text or an empty string from any stored attribute. 
   - This can be safely called on any "data" type attributed
   - This will report an error on console if an unsupported tag is detected. The tag will render in output anyway, but may contain odd tags.
@@ -29,34 +31,6 @@ import xml.etree.ElementTree as ET
 DOXYGEN_ROOT_DIR= './install/docs'
 DOXYGEN_XML_DIR = DOXYGEN_ROOT_DIR + '/xml'
 DOXYGEN_OUTPUT_DIR = DOXYGEN_ROOT_DIR + '/markdown'
-
-"""
-FILES_TO_PROCESS = {
-    'classdronecore_1_1_action.xml', 
-    'classdronecore_1_1_drone_core.xml',
-    'classdronecore_1_1_device.xml',
-    'classdronecore_1_1_info.xml',
-    'classdronecore_1_1_logging.xml',
-    'classdronecore_1_1_mission.xml',
-    'classdronecore_1_1_mission_item.xml',
-    'classdronecore_1_1_offboard.xml',
-    'classdronecore_1_1_telemetry.xml',
-    'structdronecore_1_1_telemetry_1_1_battery.xml',
-    'structdronecore_1_1_telemetry_1_1_euler_angle.xml',
-    'structdronecore_1_1_telemetry_1_1_g_p_s_info.xml',
-    'structdronecore_1_1_telemetry_1_1_ground_speed_n_e_d.xml',
-    'structdronecore_1_1_telemetry_1_1_health.xml',
-    'structdronecore_1_1_telemetry_1_1_position.xml',
-    'structdronecore_1_1_telemetry_1_1_quaternion.xml',
-    'structdronecore_1_1_telemetry_1_1_r_c_status.xml',
-    'structdronecore_1_1_info_1_1_version.xml',
-    'structdronecore_1_1_offboard_1_1_velocity_body_yawspeed.xml',
-    'structdronecore_1_1_offboard_1_1_velocity_n_e_d_yaw.xml',
-    'classdronecore_1_1_device_plugin_container.xml',
-    'classdronecore_1_1_plugin_base.xml'
-    }
-"""
-
 
 
 def cleanup_markdown_string(aString):
@@ -83,9 +57,6 @@ def cleanup_markdown_string(aString):
     
     return output_string
 
-    
-
-
 
 def markdown_any_tag(aTag, html=False,para=True,consume=False):
     """
@@ -93,7 +64,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
     aTag - the ElementTree tag or a string (returns string immediately)
     html - render the tag as HTML (False by default). Setting propagates to sub tags
     para - Turn off para tags - useful when a para is in a list.
-    consume - return empty string. Removes everything below a particular point. A good way of hiding sub elements of a tree we know have been parsed - e.g. the simplesect in the detaileddescription contains return values, that we have pre-processed. 
+    consume - return empty string. Removes everything below a particular point. A good way of hiding sub elements of a tree we know have been parsed - e.g. the simplesect tag in the detaileddescription tag contains return values, that we have pre-processed. 
     """
     if consume:
         return '' #
@@ -197,7 +168,6 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
         elif kind_ref=='compound':
             link_url='%s.md' % ref_id
         else:
-           print(ref_tag.attrib)
            print('ERROR: Unsupported ref kind_ref: %s' % kind_ref)
            #exit()
         lead_text='[%s](%s)' % (link_text,link_url)
@@ -282,11 +252,6 @@ class cppAttribute:
         
         
     def markdown(self):
-        """
-        static_string=''
-        if self.static=='yes':
-            static_string='static '
-        """
         output_string=''
         output_string+='\n\n### %s {#%s}\n' % (self.name,self.id)
         output_string+='\n```cpp\n%s%s\n```\n' % (markdown_any_tag(self.definition).strip(),markdown_any_tag(self.initializer).strip())
@@ -295,25 +260,19 @@ class cppAttribute:
         output_string+='\n\n%s' % markdown_any_tag(self.detaileddescription).strip()
 
         if args.debug:
-	    output_string+='\n\n<!-- [%s %s](#%s) -->' % (self.type, self.name,self.id)
-	    output_string+='\n<!-- kind: %s -->' % markdown_any_tag(self.kind).strip()
-	    output_string+='\n<!-- prot: %s -->' % markdown_any_tag(self.prot).strip()
-	    output_string+='\n<!-- static: %s -->' % markdown_any_tag(self.static).strip()
-	    output_string+='\n<!-- mutable: %s -->' % markdown_any_tag(self.mutable).strip()
-	    output_string+='\n<!-- definition: %s -->' % markdown_any_tag(self.definition).strip()
-	    output_string+='\n<!-- detaileddescription: %s -->' % markdown_any_tag(self.detaileddescription).strip()
-	    output_string+='\n<!-- briefdescription: %s -->\n' % markdown_any_tag(self.briefdescription).strip()
-	    output_string+='\n<!-- argsstring: %s -->\n' % markdown_any_tag(self.argsstring).strip()
+            output_string+='\n\n<!-- [%s %s](#%s) -->' % (self.type, self.name,self.id)
+            output_string+='\n<!-- kind: %s -->' % markdown_any_tag(self.kind).strip()
+            output_string+='\n<!-- prot: %s -->' % markdown_any_tag(self.prot).strip()
+            output_string+='\n<!-- static: %s -->' % markdown_any_tag(self.static).strip()
+            output_string+='\n<!-- mutable: %s -->' % markdown_any_tag(self.mutable).strip()
+            output_string+='\n<!-- definition: %s -->' % markdown_any_tag(self.definition).strip()
+            output_string+='\n<!-- detaileddescription: %s -->' % markdown_any_tag(self.detaileddescription).strip()
+            output_string+='\n<!-- briefdescription: %s -->\n' % markdown_any_tag(self.briefdescription).strip()
+            output_string+='\n<!-- argsstring: %s -->\n' % markdown_any_tag(self.argsstring).strip()
 
         return output_string
                 
-        ## xxxxDoFieldToo
-                
-                
-                
-                
 
-        
         
 
 class cppInnerClass: #Data structures
@@ -968,31 +927,31 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
     for name in files:
         current_filename = os.path.join(root, name)
 
-        if name[-4:]!='.xml':
+        if name.endswith('.xml'):
             skip_string=" %s - (not XML)" % current_filename
             skipped_files.append(skip_string)
             continue 
-        if name[-7:]=='_8h.xml':
+        if name.endswith('_8h.xml'):
             skip_string=" %s - (header file)" % current_filename
             skipped_files.append(skip_string)
             continue 
-        if name[-9:]=='_8cpp.xml':
+        if name.endswith('_8cpp.xml'):
             skip_string=" %s - (cpp file)" % current_filename
             skipped_files.append(skip_string)
             continue
-        if name[:4]=='dir_':
+        if name.startswith('dir_'):
             skip_string=" %s - (directory listing)" % current_filename
             skipped_files.append(skip_string)
             continue
-        if name=='index.xml':
+        if name is 'index.xml':
             skip_string=" %s - (index page)" % current_filename
             skipped_files.append(skip_string)
             continue
-        if name=='namespacedronecore.xml':
+        if name is 'namespacedronecore.xml':
             skip_string=" %s - (index page)" % current_filename
             skipped_files.append(skip_string)
             continue
-        if name[:5]=='class':
+        if name.startswith('class'):
             print("  Generating: %s (class xml)" % current_filename)
             currentClass=cppClass()
             currentClass.import_doxygen_class_file(name,current_filename)
@@ -1004,7 +963,7 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
                 the_file.write(markdown_string)
             continue
         
-        if name[:6]=='struct':
+        if name.startswith('struct'):
             print("  Generating: %s (struct xml)" % current_filename)
             currentClass=cppClass()
             currentClass.import_doxygen_class_file(name,current_filename)
