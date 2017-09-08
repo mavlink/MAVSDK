@@ -26,25 +26,35 @@ DroneCore currently takes care of the mavlink messaging using a UDP network conn
 
 The library provides both synchronous (blocking) API calls, as well as asynchronous API calls using callbacks.
 
-## API overview
+## API Overview
+
+API consumers use the `DroneCore` class to discover and manage vehicles (`Device` objects), which in turn provide access to all other drone information and control objects (e.g. `Telemetry`, `Mission` etc.).
+
+The links below take you to the respective header files:
 
 - [dronecore](include/dronecore.h): set up connection, discover devices
 - [device](include/device.h): a device providing access to modules below using ...
 - [device_plugin_container.h.in](include/device_plugin_container.h.in) which is auto-generated on build.
-
 - [info](plugins/info/info.h): general info about a device
 - [telemetry](plugins/telemetry/telemetry.h): to receive telemetry data
 - [action](plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
 - [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
 - [offboard](plugins/offboard/offboard.h): for velocity or position control
 
-## Build instructions, usage
+For more information see the [API Overview](https://docs.dronecore.io/en/getting_started/#api-overview) in the DroneCore Guide.
 
-Instructions how to build the library and how to write an example can be found in [docs/build.md](docs/build.md).
+## Guide Docs (Build instructions etc.)
 
-## FAQ
+Instructions for how to use the library can be found in the [DroneCore Guide](https://docs.dronecore.io/en/). 
 
-Find a FAQ in [docs/faq.md](docs/faq.md).
+Quick Links:
+
+- [QuickStart](https://docs.dronecore.io/en/getting_started/)
+- [Building the Library](https://docs.dronecore.io/en/contributing/build.html)
+- [Examples](https://docs.dronecore.io/en/examples/)
+- [API Reference](https://docs.dronecore.io/en/api_reference/)
+- [FAQ](https://docs.dronecore.io/en/getting_started/faq.html)
+
 
 ## License
 
