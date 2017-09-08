@@ -24,7 +24,7 @@ TEST(GlobalInclude, ElapsedSinceAboutRight)
     double seconds_elapsed = elapsed_since_s(time_before);
 
     ASSERT_GT(seconds_elapsed, 0.09);
-    ASSERT_LT(seconds_elapsed, 0.11);
+    ASSERT_LT(seconds_elapsed, 0.12); // we need some slack for macOS CI on travis.
 }
 
 TEST(GlobalInclude, SteadyTimeInFuture)
