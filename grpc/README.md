@@ -46,7 +46,7 @@ To use the Python
 ```
 touch build/default/grpc/python_client/__init__.py
 export PYTHONPATH="$PYTHONPATH:`pwd`/build/default/grpc/python_client"
-./grpc/python_client/dronecore_client.py
+./grpc/python_client/sync_client.py
 ```
 
 ## Notes
