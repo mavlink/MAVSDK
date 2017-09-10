@@ -48,6 +48,7 @@ enum class MissionState : unsigned {
 class DroneCoreRPCImpl final : public DroneCoreRPC::Service
 {
 
+public:
     Status Arm(ServerContext *context, const Empty *request,
                dronecorerpc::ActionResult *response) override
     {
@@ -78,18 +79,23 @@ class DroneCoreRPCImpl final : public DroneCoreRPC::Service
         return Status::OK;
     }
 
-    Status AddMissionItem(ServerContext *context, const dronecorerpc::MissionItem *mission_item,
-                          Bool *response) override
+    Status AddMission(ServerContext *context, const dronecorerpc::Mission *mission,
+                      Bool *response) override
     {
-        auto new_item = std::make_shared<MissionItem>();
-        new_item->set_position(mission_item->latitude(), mission_item->longitude());
-        new_item->set_relative_altitude(mission_item->altitude());
-        new_item->set_speed(mission_item->speed());
-        new_item->set_fly_through(mission_item->is_fly_through());
-        new_item->set_gimbal_pitch_and_yaw(mission_item->pitch(), mission_item->yaw());
-        new_item->set_camera_action(static_cast<dronecore::MissionItem::CameraAction>
-                                    (mission_item->camera_action()));
-        mission_items.push_back(new_item);
+
+        for (auto &mission_item : mission->mission_items()) {
+            std::cout << "item" << std::endl;
+            auto new_item = std::make_shared<MissionItem>();
+            new_item->set_position(mission_item.latitude(), mission_item.longitude());
+            new_item->set_relative_altitude(mission_item.altitude());
+            new_item->set_speed(mission_item.speed());
+            new_item->set_fly_through(mission_item.is_fly_through());
+            new_item->set_gimbal_pitch_and_yaw(mission_item.pitch(), mission_item.yaw());
+            new_item->set_camera_action(static_cast<dronecore::MissionItem::CameraAction>
+                                        (mission_item.camera_action()));
+            _mission_items.push_back(new_item);
+        }
+
         response->set_ret(true);
         return Status::OK;
     }
@@ -97,13 +103,13 @@ class DroneCoreRPCImpl final : public DroneCoreRPC::Service
     Status FlyMission(ServerContext *context, const Empty *request, Bool *response) override
     {
         Device &device = dc.device();
-        finished = false;
+        _finished = false;
         _mission_state = MissionState::INIT;
-        while (!finished) {
+        while (!_finished) {
             switch (_mission_state) {
                 case MissionState::INIT:
                     device.mission().send_mission_async(
-                        mission_items,
+                        _mission_items,
                         std::bind(&receive_send_mission_result, _1));
                     _mission_state = MissionState::UPLOADING;
                     break;
@@ -148,10 +154,10 @@ class DroneCoreRPCImpl final : public DroneCoreRPC::Service
                     device.action().disarm_async(std::bind(&receive_disarm_result, _1));
                     break;
                 case MissionState::DONE:
-                    finished = true;
+                    _finished = true;
                     break;
                 case MissionState::ERROR:
-                    finished = true;
+                    _finished = true;
                     break;
 
                 case MissionState::MISSION:
@@ -176,11 +182,12 @@ class DroneCoreRPCImpl final : public DroneCoreRPC::Service
         return Status::OK;
     }
 
-public:
     DroneCore dc;
-    std::vector<std::shared_ptr<MissionItem>> mission_items;
+
+private:
+    std::vector<std::shared_ptr<MissionItem>> _mission_items;
     static MissionState _mission_state;
-    bool finished;
+    bool _finished;
 
     static void receive_send_mission_result(Mission::Result result)
     {
