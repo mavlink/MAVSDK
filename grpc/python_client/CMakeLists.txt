@@ -8,7 +8,8 @@ if(${PYTHONINTERP_FOUND})
     set(proto_dir ${CMAKE_SOURCE_DIR}/grpc/proto)
 
     add_custom_command(TARGET pydronecore
-        COMMAND ${PYTHON_EXECUTABLE} -m grpc_tools.protoc
+        COMMAND ${PYTHON_EXECUTABLE}
+            -m grpc_tools.protoc
             -I ${proto_dir}
             --python_out=.
             --grpc_python_out=.
