@@ -8,7 +8,7 @@ service DroneCoreRPC {
     rpc Arm(Empty) returns(ActionResult) {}
     rpc TakeOff(Empty) returns(ActionResult) {}
     rpc Land(Empty) returns(ActionResult) {}
-    rpc AddMissionItem(MissionItem) returns(Bool) {}
+    rpc AddMission(Mission) returns(Bool) {}
     rpc FlyMission(Empty) returns(Bool) {}
 }
 
@@ -43,4 +43,8 @@ message MissionItem {
     float pitch = 6;
     float yaw = 7;
     int32 camera_action = 8;
+}
+
+message Mission {
+    repeated MissionItem mission_items = 1;
 }
