@@ -210,6 +210,9 @@ if(NOT IOS AND NOT ANDROID)
             ${CMAKE_CURRENT_BINARY_DIR}
     )
 
+    add_subdirectory(grpc/server)
+    add_subdirectory(grpc/python_client)
+
 endif()
 
 if (DROP_DEBUG EQUAL 1)
