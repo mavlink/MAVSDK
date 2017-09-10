@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+
+from __future__ import print_function
 import grpc
 from threading import Thread
 import time
@@ -13,7 +15,7 @@ thread_status = True
 def wait_func(future_status):
     global thread_status
     ret = future_status.result()
-    print ret.ret
+    print(ret.ret)
     thread_status = False
 
 
@@ -42,7 +44,7 @@ def run():
     t = Thread(target=wait_func, args=(future_status,))
     t.start()
     while(thread_status):
-        print "Waiting for thread to exit"
+        print("Waiting for thread to exit")
         time.sleep(5)
 
 
