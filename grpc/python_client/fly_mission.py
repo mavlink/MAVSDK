@@ -23,22 +23,22 @@ def run():
     global thread_status
     channel = grpc.insecure_channel('0.0.0.0:50051')
     stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
-    stub.AddWaypoint(dc.Waypoint(latitude=47.398170327054473,
-                                 longitude=8.5456490218639658,
-                                 altitude=10,
-                                 speed=2,
-                                 is_fly_through=True,
-                                 pitch=0,
-                                 yaw=-60,
-                                 camera_action=5))
-    stub.AddWaypoint(dc.Waypoint(latitude=47.398241338125118,
-                                 longitude=8.5455360114574432,
-                                 altitude=10,
-                                 speed=2,
-                                 is_fly_through=True,
-                                 pitch=0,
-                                 yaw=-60,
-                                 camera_action=0))
+    stub.AddMissionItem(dc.MissionItem(latitude=47.398170327054473,
+                                       longitude=8.5456490218639658,
+                                       altitude=10,
+                                       speed=2,
+                                       is_fly_through=True,
+                                       pitch=0,
+                                       yaw=-60,
+                                       camera_action=5))
+    stub.AddMissionItem(dc.MissionItem(latitude=47.398241338125118,
+                                       longitude=8.5455360114574432,
+                                       altitude=10,
+                                       speed=2,
+                                       is_fly_through=True,
+                                       pitch=0,
+                                       yaw=-60,
+                                       camera_action=0))
     time.sleep(2)
     future_status = stub.FlyMission.future(dc.Empty())
     t = Thread(target=wait_func, args=(future_status,))

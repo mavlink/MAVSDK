@@ -22,7 +22,6 @@ using grpc::Status;
 using dronecorerpc::Bool;
 using dronecorerpc::Empty;
 using dronecorerpc::DroneCoreRPC;
-using dronecorerpc::Waypoint;
 
 using namespace dronecore;
 using namespace std::placeholders;
@@ -79,16 +78,17 @@ class DroneCoreRPCImpl final : public DroneCoreRPC::Service
         return Status::OK;
     }
 
-    Status AddWaypoint(ServerContext *context, const Waypoint *waypoint, Bool *response) override
+    Status AddMissionItem(ServerContext *context, const dronecorerpc::MissionItem *mission_item,
+                          Bool *response) override
     {
-        std::shared_ptr<MissionItem> new_item(new MissionItem());
-        new_item->set_position(waypoint->latitude(), waypoint->longitude());
-        new_item->set_relative_altitude(waypoint->altitude());
-        new_item->set_speed(waypoint->speed());
-        new_item->set_fly_through(waypoint->is_fly_through());
-        new_item->set_gimbal_pitch_and_yaw(waypoint->pitch(), waypoint->yaw());
+        auto new_item = std::make_shared<MissionItem>();
+        new_item->set_position(mission_item->latitude(), mission_item->longitude());
+        new_item->set_relative_altitude(mission_item->altitude());
+        new_item->set_speed(mission_item->speed());
+        new_item->set_fly_through(mission_item->is_fly_through());
+        new_item->set_gimbal_pitch_and_yaw(mission_item->pitch(), mission_item->yaw());
         new_item->set_camera_action(static_cast<dronecore::MissionItem::CameraAction>
-                                    (waypoint->camera_action()));
+                                    (mission_item->camera_action()));
         mission_items.push_back(new_item);
         response->set_ret(true);
         return Status::OK;
