@@ -66,7 +66,6 @@ public:
 
         std::vector<std::shared_ptr<MissionItem>> mission_items;
         for (auto &mission_item : mission->mission_items()) {
-            std::cout << "item" << std::endl;
             auto new_item = std::make_shared<MissionItem>();
             new_item->set_position(mission_item.latitude(), mission_item.longitude());
             new_item->set_relative_altitude(mission_item.altitude());
