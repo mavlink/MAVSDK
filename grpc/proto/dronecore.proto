@@ -8,7 +8,7 @@ service DroneCoreRPC {
     rpc Arm(Empty) returns(ActionResult) {}
     rpc TakeOff(Empty) returns(ActionResult) {}
     rpc Land(Empty) returns(ActionResult) {}
-    rpc AddWaypoint(Waypoint) returns(Bool) {}
+    rpc AddMissionItem(MissionItem) returns(Bool) {}
     rpc FlyMission(Empty) returns(Bool) {}
 }
 
@@ -34,7 +34,7 @@ message Bool {
     bool ret = 1;
 }
 
-message Waypoint {
+message MissionItem {
     double latitude = 1;
     double longitude = 2;
     double altitude = 3;
