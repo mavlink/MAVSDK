@@ -14,5 +14,6 @@ if(${PYTHONINTERP_FOUND})
             --python_out=.
             --grpc_python_out=.
             ${proto_dir}/dronecore.proto
+        DEPENDS ${proto_dir}/dronecore.proto
     )
 endif()
