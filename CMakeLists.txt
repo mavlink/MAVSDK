@@ -248,6 +248,10 @@ if(NOT IOS AND NOT ANDROID)
     set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
     set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
     set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage")
+
+    add_subdirectory(grpc/server)
+    add_subdirectory(grpc/python_client)
+
 endif()
 
 if (DROP_DEBUG EQUAL 1)
