@@ -13,6 +13,5 @@ if(${PYTHONINTERP_FOUND})
             --python_out=.
             --grpc_python_out=.
             ${proto_dir}/dronecore.proto
-        COMMAND echo FOOO
     )
 endif()
