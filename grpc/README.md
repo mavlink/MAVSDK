@@ -16,37 +16,40 @@ sudo pip install grpcio_tools
 
 ### DroneCore
 
-```
-make default install
-```
-
-### Server
+All that is required to build server and Python client is:
 
 ```
-cd grpc/server/
-protoc -I ../proto --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` ../proto/dronecore.proto
-protoc -I ../proto --cpp_out=. ../proto/dronecore.proto
-make
-cd -
-```
-
-### Python client
-
-```
-cd grpc/python_client/
-python -m grpc_tools.protoc -I../proto --python_out=. --grpc_python_out=. ../proto/dronecore.proto
-cd -
+make default
 ```
 
 ## Test
 
-To test Python client, start PX4 SITL, and run Python test script:
+To test start PX4 SITL first.
 
 ```
+cd wherever/Firmware
+make posix jmavsim
+```
+
+### Server
+
+Then start the server:
+
+```
+build/default/grpc/server/dronecore_server
+```
+
+### Python client
+
+To use the Python
+
+```
+touch build/default/grpc/python_client/__init__.py
+export PYTHONPATH="$PYTHONPATH:`pwd`/build/default/grpc/python_client"
 ./grpc/python_client/dronecore_client.py
 ```
 
 ## Notes
 
-- `unset http_proxy` if set
+- `unset http_proxy` if set before starting server
 

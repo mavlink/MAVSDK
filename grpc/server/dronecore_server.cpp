@@ -1,4 +1,3 @@
-#include <dronecore/dronecore.h>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -9,6 +8,8 @@
 #include <grpc++/server_builder.h>
 #include <grpc++/server_context.h>
 #include <grpc++/security/server_credentials.h>
+
+#include "dronecore.h"
 #include "dronecore.grpc.pb.h"
 
 using grpc::Server;
