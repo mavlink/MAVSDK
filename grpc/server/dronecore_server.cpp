@@ -154,6 +154,18 @@ class DroneCoreRPCImpl final : public DroneCoreRPC::Service
                     finished = true;
                     break;
 
+                case MissionState::MISSION:
+                // FALLTHROUGH
+                case MissionState::MISSION_PAUSING:
+                // FALLTHROUGH
+                case MissionState::PAUSE:
+                // FALLTHROUGH
+                case MissionState::MISSION_RESUMING:
+                // FALLTHROUGH
+                default:
+                    // not handled
+                    break;
+
             }
         }
         if (_mission_state == MissionState::DONE) {
