@@ -15,14 +15,16 @@ add_definitions(
 set(proto_dir ${CMAKE_SOURCE_DIR}/grpc/proto)
 
 add_custom_command(OUTPUT dronecore.grpc.pb.cc
-    COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} -I ${proto_dir}
+    COMMAND ${PROTOBUF_PROTOC_EXECUTABLE}
+        -I ${proto_dir}
         --grpc_out=.
         --plugin=protoc-gen-grpc=`which grpc_cpp_plugin`
         ${proto_dir}/dronecore.proto;
 )
 
 add_custom_command(OUTPUT dronecore.pb.cc
-    COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} -I ${proto_dir}
+    COMMAND ${PROTOBUF_PROTOC_EXECUTABLE}
+        -I ${proto_dir}
         --cpp_out=. ${proto_dir}/dronecore.proto
 )
 
