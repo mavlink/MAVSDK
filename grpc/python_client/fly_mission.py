@@ -15,7 +15,7 @@ thread_status = True
 def wait_func(future_status):
     global thread_status
     ret = future_status.result()
-    print(ret.ret)
+    print(ret.result_str)
     thread_status = False
 
 
@@ -42,13 +42,16 @@ def run():
                                         yaw=-60,
                                         camera_action=0))
 
-    stub.AddMission(dc.Mission(mission_items=mission_items))
+    stub.SendMission(dc.Mission(mission_items=mission_items))
+    time.sleep(1)
 
+    stub.Arm(dc.Empty())
+    time.sleep(1)
 
-    time.sleep(2)
-    future_status = stub.FlyMission.future(dc.Empty())
+    future_status = stub.StartMission.future(dc.Empty())
     t = Thread(target=wait_func, args=(future_status,))
     t.start()
+
     while(thread_status):
         print("Waiting for thread to exit")
         time.sleep(5)

@@ -8,9 +8,11 @@ service DroneCoreRPC {
     rpc Arm(Empty) returns(ActionResult) {}
     rpc TakeOff(Empty) returns(ActionResult) {}
     rpc Land(Empty) returns(ActionResult) {}
-    rpc AddMission(Mission) returns(Bool) {}
-    rpc FlyMission(Empty) returns(Bool) {}
+    rpc SendMission(Mission) returns(MissionResult) {}
+    rpc StartMission(Empty) returns(MissionResult) {}
 }
+
+message Empty {}
 
 message ActionResult {
 
@@ -29,9 +31,19 @@ message ActionResult {
     string result_str = 2;
 }
 
-message Empty {}
-message Bool {
-    bool ret = 1;
+message MissionResult {
+
+    enum Result {
+        SUCCESS = 0;
+        ERROR = 1;
+        TOO_MANY_MISSION_ITEMS = 2;
+        BUSY = 3;
+        TIMEOUT = 4;
+        INVALID_ARGUMENT = 5;
+        UNKNOWN = 6;
+    }
+    Result result = 1;
+    string result_str = 2;
 }
 
 message MissionItem {
