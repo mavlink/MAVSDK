@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 2.8.12)
 
 #project(grpcdronecore)
 
-include(FindPkgConfig REQUIRED)
-pkg_check_modules(GRPC grpc++)
-
 include(FindProtobuf REQUIRED)
 
 add_definitions(

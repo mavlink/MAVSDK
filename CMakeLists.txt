@@ -210,8 +210,13 @@ if(NOT IOS AND NOT ANDROID)
             ${CMAKE_CURRENT_BINARY_DIR}
     )
 
-    add_subdirectory(grpc/server)
-    add_subdirectory(grpc/python_client)
+    include(grpc/FindGRPC.cmake)
+    if(GRPC_LIBRARIES)
+        add_subdirectory(grpc/server)
+        add_subdirectory(grpc/python_client)
+    else()
+        message(STATUS "gRPC not found, skipping gRPC build")
+    endif()
 
 endif()
 
