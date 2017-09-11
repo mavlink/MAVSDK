@@ -71,8 +71,8 @@ default:
 	$(call cmake-build)
 
 # install basically just runs default install
+install: ARGS += install
 install: default
-    ARGS=install
 
 docs: install
 	- mkdir install/docs
