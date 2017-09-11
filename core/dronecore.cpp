@@ -3,6 +3,10 @@
 #include "global_include.h"
 #include "connection.h"
 #include "udp_connection.h"
+#include "tcp_connection.h"
+#ifndef WINDOWS
+#include "serial_connection.h"
+#endif
 
 
 namespace dronecore {
@@ -37,6 +41,50 @@ DroneCore::ConnectionResult DroneCore::add_udp_connection(int local_port_number)
     _impl->add_connection(new_connection);
     return DroneCore::ConnectionResult::SUCCESS;
 }
+
+DroneCore::ConnectionResult DroneCore::add_tcp_connection()
+{
+    return add_tcp_connection("", 0);
+}
+
+DroneCore::ConnectionResult DroneCore::add_tcp_connection(std::string remote_ip,
+                                                          int remote_port)
+{
+    Connection *new_connection = new TcpConnection(_impl, remote_ip, remote_port);
+    DroneCore::ConnectionResult ret = new_connection->start();
+
+    if (ret != DroneCore::ConnectionResult::SUCCESS) {
+        delete new_connection;
+        return ret;
+    }
+
+    _impl->add_connection(new_connection);
+    return DroneCore::ConnectionResult::SUCCESS;
+}
+
+#ifndef WINDOWS
+DroneCore::ConnectionResult DroneCore::add_serial_connection()
+{
+    return add_serial_connection("", 0);
+}
+#endif
+
+#ifndef WINDOWS
+DroneCore::ConnectionResult DroneCore::add_serial_connection(std::string dev_path,
+                                                             int baudrate)
+{
+    Connection *new_connection = new SerialConnection(_impl, dev_path, baudrate);
+    DroneCore::ConnectionResult ret = new_connection->start();
+
+    if (ret != DroneCore::ConnectionResult::SUCCESS) {
+        delete new_connection;
+        return ret;
+    }
+
+    _impl->add_connection(new_connection);
+    return DroneCore::ConnectionResult::SUCCESS;
+}
+#endif
 
 const std::vector<uint64_t> &DroneCore::device_uuids() const
 {
@@ -74,6 +122,8 @@ const char *DroneCore::connection_result_str(ConnectionResult result)
             return "Socket error";
         case ConnectionResult::BIND_ERROR:
             return "Bind error";
+        case ConnectionResult::SOCKET_CONNECTION_ERROR:
+            return "Socket connection error";
         case ConnectionResult::CONNECTION_ERROR:
             return "Connection error";
         case ConnectionResult::NOT_IMPLEMENTED:

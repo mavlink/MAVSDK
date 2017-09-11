@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 
+set(CMAKE_INSTALL_PREFIX "../install" CACHE PATH "default cache path")
 project(dronecore)
 
 # Add DEBUG define for Debug target
