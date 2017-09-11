@@ -79,7 +79,7 @@ public:
     /**
      * @brief Get vector of device UUIDs.
      *
-     * This returns a vector of the UUIDs of all devices that have been discovered so far.
+     * This returns a vector of the UUIDs of all devices that have been discovered.
      *
      * @return A reference to the vector containing the UUIDs.
      */
