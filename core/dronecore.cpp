@@ -62,17 +62,19 @@ DroneCore::ConnectionResult DroneCore::add_tcp_connection(std::string remote_ip,
     return DroneCore::ConnectionResult::SUCCESS;
 }
 
-#ifndef WINDOWS
 DroneCore::ConnectionResult DroneCore::add_serial_connection()
 {
+#if !defined(WINDOWS) && !defined(APPLE)
     return add_serial_connection("", 0);
-}
+#else
+    return ConnectionResult::NOT_IMPLEMENTED;
 #endif
+}
 
-#ifndef WINDOWS
 DroneCore::ConnectionResult DroneCore::add_serial_connection(std::string dev_path,
                                                              int baudrate)
 {
+#if !defined(WINDOWS) && !defined(APPLE)
     Connection *new_connection = new SerialConnection(_impl, dev_path, baudrate);
     DroneCore::ConnectionResult ret = new_connection->start();
 
@@ -83,8 +85,12 @@ DroneCore::ConnectionResult DroneCore::add_serial_connection(std::string dev_pat
 
     _impl->add_connection(new_connection);
     return DroneCore::ConnectionResult::SUCCESS;
-}
+#else
+    UNUSED(dev_path);
+    UNUSED(baudrate);
+    return DroneCore::ConnectionResult::NOT_IMPLEMENTED;
 #endif
+}
 
 const std::vector<uint64_t> &DroneCore::device_uuids() const
 {

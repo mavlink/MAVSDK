@@ -1,5 +1,5 @@
-#if !defined(WINDOWS) && !defined(APPLE)
 #pragma once
+#if !defined(WINDOWS) && !defined(APPLE)
 
 #include "dronecore.h"
 #include "dronecore_impl.h"
