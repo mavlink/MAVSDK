@@ -29,6 +29,11 @@ else()
     set(curl_lib ${WIN_CURL_LIB})
 endif()
 
+# We need a define if on APPLE
+if(APPLE)
+    add_definitions("-DAPPLE")
+endif()
+
 # Clang needs this warning disabled.
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_definitions("-stdlib=libc++ -Wno-missing-braces")
