@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
-include(FindPythonInterp)
+include(FindPythonInterp REQUIRED)
+include(FindProtobuf REQUIRED)
 
 add_custom_target(pydronecore ALL)
 

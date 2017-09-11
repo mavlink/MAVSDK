@@ -249,8 +249,13 @@ if(NOT IOS AND NOT ANDROID)
     set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
     set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage")
 
-    add_subdirectory(grpc/server)
-    add_subdirectory(grpc/python_client)
+    include(grpc/FindGRPC.cmake)
+    if(GRPC_LIBRARIES)
+        add_subdirectory(grpc/server)
+        add_subdirectory(grpc/python_client)
+    else()
+        message(STATUS "gRPC not found, skipping gRPC build")
+    endif()
 
 endif()
 
