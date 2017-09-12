@@ -1,11 +1,41 @@
-# Script taken from https://github.com/wastl/cmarmotta/blob/master/cmake/FindGRPC.cmake
-# License: Apache 2.0
+# Script initially taken from https://github.com/wastl/cmarmotta/blob/master/cmake/FindGRPC.cmake
+# It was license as Apache 2.0.
 
-find_program(GRPC_CPP_PLUGIN grpc_cpp_plugin) # Get full path to plugin
+# If gRPC is installed to e.g. /opt/grpc, you need to specifiy this via environment variable:
+# `export GRPC_DIR=/opt/grpc`
+#
+if (DEFINED ENV{GRPC_DIR})
+    message(STATUS "GRPC_DIR manually set, using gRPC from $ENV{GRPC_DIR}")
 
-find_library(GRPC_LIBRARY NAMES grpc)
-find_library(GRPCPP_LIBRARY NAMES grpc++)
-find_library(GPR_LIBRARY NAMES gpr)
+    find_program(GRPC_CPP_PLUGIN grpc_cpp_plugin
+        HINTS $ENV{GRPC_DIR}/bin
+        NO_DEFAULT_PATH
+    )
+
+    find_library(GRPC_LIBRARY NAMES grpc
+        HINTS $ENV{GRPC_DIR}/lib
+        NO_DEFAULT_PATH
+    )
+    find_library(GRPCPP_LIBRARY NAMES grpc++
+        HINTS $ENV{GRPC_DIR}/lib
+        NO_DEFAULT_PATH
+    )
+    find_library(GPR_LIBRARY NAMES gpr
+        HINTS $ENV{GRPC_DIR}/lib
+        NO_DEFAULT_PATH
+    )
+
+    set(GRPC_INCLUDE_DIRS $ENV{GRPC_DIR}/include)
+else()
+    message(STATUS "GRPC_DIR not set, checking automatically for gRPC")
+    find_program(GRPC_CPP_PLUGIN grpc_cpp_plugin)
+    find_library(GRPC_LIBRARY NAMES grpc)
+    find_library(GRPCPP_LIBRARY NAMES grpc++)
+    find_library(GPR_LIBRARY NAMES gpr)
+    # No special headers in that case.
+    set(GRPC_INCLUDE_DIRS "")
+endif()
+
 set(GRPC_LIBRARIES ${GRPCPP_LIBRARY} ${GRPC_LIBRARY} ${GPR_LIBRARY})
 if(GRPC_LIBRARIES)
     message(STATUS "Found GRPC: ${GRPC_LIBRARIES}; plugin - ${GRPC_CPP_PLUGIN}")
