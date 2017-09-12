@@ -4,7 +4,47 @@
 
 ### Install grpc
 
-Follow the instructions on https://github.com/grpc/grpc/blob/v1.6.x/INSTALL.md.
+Instructions can be found on https://github.com/grpc/grpc/blob/v1.6.x/INSTALL.md.
+
+We suggest the following steps:
+
+1. Create folders for custom grpc and protobuf install that we do not want to interfere with the rest of the system:
+
+    ```
+    sudo mkdir /opt/grpc
+    sudo chown $USER:$USER /opt/grpc
+    sudo mkdir /opt/protobuf
+    sudo chown $USER:$USER /opt/protobuf
+    ```
+
+2. Build and install grpc:
+
+    ```
+    git clone -b v1.6.x https://github.com/grpc/grpc
+    cd grpc
+    git submodule update --init
+    make HAS_SYSTEM_PROTOBUF=false -j8
+    make prefix=/opt/grpc install
+    cd ..
+    ```
+
+3. Build and install protobuf:
+
+    ```
+    cd grpc/third_party/protobuf
+    make clean
+    ./configure --prefix=/opt/protobuf
+    make -j8
+    make install
+    cd ../../../
+    ```
+
+4. To use these installed libraries, set these environment variables before building:
+    ```
+    export GRPC_DIR=/opt/grpc
+    export PROTOBUF_DIR=/opt/protobuf
+    ```
+
 
 ### Install grpcio_tools for Python
 

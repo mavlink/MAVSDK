@@ -249,14 +249,29 @@ if(NOT IOS AND NOT ANDROID)
     set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
     set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage")
 
+    # We try to find gRPC. If we find it we try to include it in the build.
     include(grpc/FindGRPC.cmake)
     if(GRPC_LIBRARIES)
+
+        # If protobuf is installed to e.g. /opt/protobuf, you need to specifiy this via environment variable:
+        # `export PROTOBUF_DIR=/opt/protobuf`
+        #
+        if (DEFINED ENV{PROTOBUF_DIR})
+            message(STATUS "PROTOBUF_DIR manually set, using protobuf from $ENV{PROTOBUF_DIR}")
+            set(Protobuf_INCLUDE_DIRS "$ENV{PROTOBUF_DIR}/include")
+            set(Protobuf_PROTOC_EXECUTABLE "$ENV{PROTOBUF_DIR}/bin/protoc")
+            set(Protobuf_PROTOC_LIBRARY_DIR "$ENV{PROTOBUF_DIR}/lib")
+            set(Protobuf_PROTOC_LIBRARIES "$ENV{PROTOBUF_DIR}/lib/libprotobuf.so")
+        else()
+            message(STATUS "PROTOBUF_DIR not set, checking automatically for Protobuf")
+            include(FindProtobuf REQUIRED)
+        endif()
+
         add_subdirectory(grpc/server)
         add_subdirectory(grpc/python_client)
     else()
         message(STATUS "gRPC not found, skipping gRPC build")
     endif()
-
 endif()
 
 if (DROP_DEBUG EQUAL 1)
