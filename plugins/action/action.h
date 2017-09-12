@@ -51,6 +51,9 @@ public:
 
     /**
      * @brief Returns a human-readable English string for an Action::Result.
+     *
+     * @param Result The enum value for which a human readable string is required.
+     * @return Human readable string for the Action::Result.
      */
     static const char *result_str(Result);
 
@@ -59,8 +62,7 @@ public:
      *
      * **Note** Arming a drone normally causes motors to spin at idle.
      * Before arming take all safety precautions and stand clear of the drone!
-
-     * @param Result The Action::Result value for which a human readable string is required.
+     *
      * @return Result of request.
      */
     Result arm() const;
