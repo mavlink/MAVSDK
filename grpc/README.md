@@ -23,6 +23,7 @@ We suggest the following steps:
     git clone -b v1.6.x https://github.com/grpc/grpc
     cd grpc
     git submodule update --init
+    git apply wherever/DroneCode/grpc/0001-Makefile-fix-wrong-SHARED-version-suffix.patch
     make HAS_SYSTEM_PROTOBUF=false -j8
     make prefix=/opt/grpc install
     cd ..
@@ -92,4 +93,12 @@ export PYTHONPATH="$PYTHONPATH:`pwd`/build/default/grpc/python_client"
 ## Notes
 
 - `unset http_proxy` if set before starting server
+
+
+If you run into linking errors on dronecore_server start like:
+```
+error while loading shared libraries: libgrpc++.so.1: cannot open shared object file: No such file or directory
+```
+
+Make sure to apply the patch 0001-Makefile-fix-wrong-SHARED-version-suffix.patch before building gRPC.
 
