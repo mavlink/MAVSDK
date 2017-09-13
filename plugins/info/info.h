@@ -7,7 +7,7 @@ namespace dronecore {
 class InfoImpl;
 
 /**
- * @brief The Info class provides basic info about the hardware and/or software of a device.
+ * @brief The Info class provides basic infomation about the hardware and/or software of a device.
  */
 class Info
 {

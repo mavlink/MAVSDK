@@ -112,7 +112,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             if aTag.tag=='computeroutput':
                 ignore_current_tag=True
             child_text += markdown_any_tag(child,html=html,para=para)
-        elif child.tag=='computeroutput' or child.tag=='para' or child.tag=='listitem' or child.tag=='ulink' or child.tag=='bold':
+        elif child.tag=='computeroutput' or child.tag=='para' or child.tag=='listitem' or child.tag=='ulink' or child.tag=='bold' or child.tag=='emphasis':
             child_text += markdown_any_tag(child,html=html,para=para) #.strip()
         elif child.tag=='itemizedlist':
             child_text += markdown_any_tag(child,html=True,para=para)
@@ -137,6 +137,14 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
                 tag_text='<b>'+lead_text+child_text+'</b>'+tail_text
             else:
                 tag_text='**'+lead_text+child_text+'**'+tail_text
+    if aTag.tag=='emphasis':
+        if ignore_current_tag: #This tag is ignored, meaning that we don't add any special markup for it.
+            tag_text=lead_text+child_text+tail_text
+        else:
+            if html:
+                tag_text='<i>'+lead_text+child_text+'</i>'+tail_text
+            else:
+                tag_text='*'+lead_text+child_text+'*'+tail_text
     elif aTag.tag=='para':
         if para:
             if html:
