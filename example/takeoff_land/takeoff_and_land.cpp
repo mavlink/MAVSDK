@@ -51,13 +51,23 @@ int main(int /*argc*/, char ** /*argv*/)
         return 1;
     }
 
+
+    // Set up callback to monitor altitude while the vehicle is in flight
     device.telemetry().position_async([](Telemetry::Position position) {
         std::cout << "\033[34m" // set to blue
                   << "Altitude: " << position.relative_altitude_m << " m"
                   << "\033[0m" // set to default color again
                   << std::endl;
     });
+    
 
+    // Check if vehicle is ready to arm
+    if (device.telemetry().health_all_ok()!=true) {
+        std::cout << "\033[31m" << "Vehicle not ready to arm" << "\033[0m" << std::endl;
+        return 1;
+        }
+
+    // Arm vehicle
     std::cout << "Arming..." << std::endl;
     const Action::Result arm_result = device.action().arm();
 
@@ -66,6 +76,7 @@ int main(int /*argc*/, char ** /*argv*/)
         return 1;
     }
 
+    // Take off
     std::cout << "Taking off..." << std::endl;
     const Action::Result takeoff_result = device.action().takeoff();
     if (takeoff_result != Action::Result::SUCCESS) {
