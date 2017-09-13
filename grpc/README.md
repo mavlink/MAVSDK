@@ -101,3 +101,5 @@ error while loading shared libraries: libgrpc++.so.1: cannot open shared object 
 ```
 
 Make sure to apply the patch 0001-Makefile-fix-wrong-SHARED-version-suffix.patch before building gRPC.
+
+If the gRPC build fails because of warnings, you need to remove all `-Werror` flags in the gRPC `Makefile`.
