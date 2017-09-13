@@ -9,6 +9,13 @@ class ActionImpl;
 /**
  * @brief The Action class enables simple actions for a drone
  * such as arming, taking off, and landing.
+ * 
+ * Synchronous and asynchronous variants of the action methods are supplied. 
+ * 
+ * The action methods send their associated MAVLink commands to the vehicle and complete 
+ * (return synchronously or callback asynchronously) with an Action::Result value
+ * indicating whether the vehicle has accepted or rejected the command, or that there has been some error. 
+ * If the command is accepted, the vehicle will then start to perform the associated action.
  */
 class Action
 {
@@ -29,24 +36,15 @@ public:
      * @brief Possible results returned for commanded actions.
      */
     enum class Result {
-        /** @brief %Action succeeded. */
-        SUCCESS = 0,
-        /** @brief No device is connected. */
-        NO_DEVICE,
-        /** @brief %Connection error. */
-        CONNECTION_ERROR,
-        /** @brief Vehicle busy error. */
-        BUSY,
-        /** @brief Command refused. */
-        COMMAND_DENIED,
-        /** @brief Command refused because landed state is unknown. */
-        COMMAND_DENIED_LANDED_STATE_UNKNOWN,
-        /** @brief Command refused because vehicle not landed. */
-        COMMAND_DENIED_NOT_LANDED,
-        /** @brief Timeout waiting for %Action to complete. */
-        TIMEOUT,
-        /** @brief Unspecified error. */
-        UNKNOWN
+        SUCCESS = 0, /**< @brief Success. The action command was accepted by the vehicle. */
+        NO_DEVICE, /**< @brief No device is connected error. */
+        CONNECTION_ERROR, /**< @brief %Connection error. */
+        BUSY, /**< @brief Vehicle busy error. */
+        COMMAND_DENIED, /**< @brief Command refused by vehicle. */
+        COMMAND_DENIED_LANDED_STATE_UNKNOWN, /**< @brief Command refused because landed state is unknown. */
+        COMMAND_DENIED_NOT_LANDED, /**< @brief Command refused because vehicle not landed. */
+        TIMEOUT, /**< @brief Timeout waiting for command acknowledgement from vehicle. */
+        UNKNOWN /**< @brief Unspecified error. */
     };
 
     /**
@@ -58,8 +56,8 @@ public:
     static const char *result_str(Result);
 
     /**
-     * @brief Arm the drone (synchronous).
-     *
+     * @brief Send command to *arm* the drone (synchronous).
+     * 
      * **Note** Arming a drone normally causes motors to spin at idle.
      * Before arming take all safety precautions and stand clear of the drone!
      *
@@ -68,7 +66,7 @@ public:
     Result arm() const;
 
     /**
-     * @brief Disarm the drone (synchronous).
+     * @brief Send command to *disarm* the drone (synchronous).
      *
      * This will disarm a drone that considers itself landed. If flying, the drone should
      * reject the disarm command. Disarming means that all motors will stop.
@@ -78,20 +76,20 @@ public:
     Result disarm() const;
 
     /**
-     * @brief Kill the drone (synchronous).
+     * @brief Send command to *kill* the drone (synchronous).
      *
      * This will disarm a drone irrespective of whether it is landed or flying.
-     * Note that the drone will fall out of the sky if you use this command while flying.
+     * Note that the drone will fall out of the sky if this command is used while flying.
      *
      * @return Result of request.
      */
     Result kill() const;
 
     /**
-     * @brief Take off and hover (synchronous).
+     * @brief Send command to *take off and hover* (synchronous).
      *
      * This switches the drone into position control mode and commands it to take off and hover at
-     * the takeoff altitude set using `set_takeoff_altitude()`.
+     * the takeoff altitude (set using set_takeoff_altitude()).
      *
      * Note that the vehicle must be armed before it can take off.
      *
@@ -100,16 +98,19 @@ public:
     Result takeoff() const;
 
     /**
-     * @brief Land at the current position (synchronous).
+     * @brief Send command to *land* at the current position (synchronous).
+     *
+     * This switches the drone to 
+     * [Land mode](https://docs.px4.io/en/flight_modes/land.html).
      *
      * @return Result of request.
      */
     Result land() const;
 
     /**
-     * @brief Return to the launch (takeoff) position and land (asynchronous).
+     * @brief Send command to *return to the launch* (takeoff) position and *land* (asynchronous).
      *
-     * This switches the drone into RTL mode which generally means it will rise up to a certain
+     * This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which generally means it will rise up to a certain
      * altitude to clear any obstacles before heading back to the launch (takeoff) position and
      * land there.
      *
@@ -118,12 +119,12 @@ public:
     Result return_to_launch() const;
 
     /**
-     * @brief Callback type for async Action calls.
+     * @brief Callback type for asynchronous Action calls.
      */
     typedef std::function<void(Result)> result_callback_t;
 
     /**
-     * @brief Arm the drone (asynchronous).
+     * @brief Send command to *arm* the drone (asynchronous).
      *
      * Note that arming a drone normally means that the motors will spin at idle.
      * Therefore, before arming take all safety precautions and stand clear of the drone.
@@ -133,7 +134,7 @@ public:
     void arm_async(result_callback_t callback);
 
     /**
-     * @brief Disarm the drone (asynchronous).
+     * @brief Send command to *disarm* the drone (asynchronous).
      *
      * This will disarm a drone that considers itself landed. If flying, the drone should
      * reject the disarm command. Disarming means that all motors will stop.
@@ -143,7 +144,7 @@ public:
     void disarm_async(result_callback_t callback);
 
     /**
-     * @brief Kill the drone (asynchronous).
+     * @brief Send command to *kill* the drone (asynchronous).
      *
      * This will disarm a drone irrespective of whether it is landed or flying.
      * Note that the drone will fall out of the sky if you use this command while flying.
@@ -153,7 +154,7 @@ public:
     void kill_async(result_callback_t callback);
 
     /**
-     * @brief Take off and hover (asynchronous).
+     * @brief Send command to *take off and hover* (asynchronous).
      *
      * This switches the drone into position control mode and commands it to take off and hover at
      * the takeoff altitude set using set_takeoff_altitude().
@@ -165,16 +166,19 @@ public:
     void takeoff_async(result_callback_t callback);
 
     /**
-     * @brief Land at the current position (asynchronous).
+     * @brief Send command to *land* at the current position (asynchronous).
+     *
+     * This switches the drone to 
+     * [Land mode](https://docs.px4.io/en/flight_modes/land.html).
      *
      * @param callback Function to call with result of request.
      */
     void land_async(result_callback_t callback);
 
     /**
-     * @brief Return to the launch (takeoff) position and land (asynchronous).
+     * @brief Send command to *return to the launch* (takeoff) position and *land*  (asynchronous).
      *
-     * This switches the drone into RTL mode which generally means it will rise up to a certain
+     * This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which generally means it will rise up to a certain
      * altitude to clear any obstacles before heading back to the launch (takeoff) position and
      * land there.
      *
@@ -185,14 +189,14 @@ public:
     /**
      * @brief Set takeoff altitude above ground.
      *
-     * @param relative_altitude_m Takeoff altitude relative to takeoff location in meters
+     * @param relative_altitude_m Takeoff altitude relative to takeoff location, in meters.
      */
     void set_takeoff_altitude(float relative_altitude_m);
 
     /**
      * @brief Get the takeoff altitude.
      *
-     * @return takeoff Altitude relative to takeoff location in meters.
+     * @return takeoff Takeoff altitude relative to ground/takeoff location, in meters.
      */
     float get_takeoff_altitude_m() const;
 
