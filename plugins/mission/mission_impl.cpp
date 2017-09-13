@@ -310,9 +310,9 @@ void MissionImpl::assemble_mavlink_messages()
                                               MAV_CMD_DO_MOUNT_CONTROL,
                                               current,
                                               autocontinue,
-                                              0.0f, // roll
-                                              mission_item_impl.get_gimbal_pitch_deg(),
-                                              mission_item_impl.get_gimbal_yaw_deg(),
+                                              mission_item_impl.get_gimbal_pitch_deg(), // pitch
+                                              0.0f, // roll (yes it is a weird order)
+                                              mission_item_impl.get_gimbal_yaw_deg(), // yaw
                                               NAN,
                                               0,
                                               0,
