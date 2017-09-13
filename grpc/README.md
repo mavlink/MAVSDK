@@ -23,7 +23,7 @@ We suggest the following steps:
     git clone -b v1.6.x https://github.com/grpc/grpc
     cd grpc
     git submodule update --init
-    git apply wherever/DroneCode/grpc/0001-Makefile-fix-wrong-SHARED-version-suffix.patch
+    git apply <wherever>/DroneCore/grpc/0001-Makefile-fix-wrong-SHARED-version-suffix.patch
     make HAS_SYSTEM_PROTOBUF=false -j8
     make prefix=/opt/grpc install
     cd ..
