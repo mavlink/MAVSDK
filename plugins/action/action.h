@@ -9,12 +9,12 @@ class ActionImpl;
 /**
  * @brief The Action class enables simple actions for a drone
  * such as arming, taking off, and landing.
- * 
- * Synchronous and asynchronous variants of the action methods are supplied. 
- * 
- * The action methods send their associated MAVLink commands to the vehicle and complete 
+ *
+ * Synchronous and asynchronous variants of the action methods are supplied.
+ *
+ * The action methods send their associated MAVLink commands to the vehicle and complete
  * (return synchronously or callback asynchronously) with an Action::Result value
- * indicating whether the vehicle has accepted or rejected the command, or that there has been some error. 
+ * indicating whether the vehicle has accepted or rejected the command, or that there has been some error.
  * If the command is accepted, the vehicle will then start to perform the associated action.
  */
 class Action
@@ -57,7 +57,7 @@ public:
 
     /**
      * @brief Send command to *arm* the drone (synchronous).
-     * 
+     *
      * **Note** Arming a drone normally causes motors to spin at idle.
      * Before arming take all safety precautions and stand clear of the drone!
      *
@@ -100,7 +100,7 @@ public:
     /**
      * @brief Send command to *land* at the current position (synchronous).
      *
-     * This switches the drone to 
+     * This switches the drone to
      * [Land mode](https://docs.px4.io/en/flight_modes/land.html).
      *
      * @return Result of request.
@@ -168,7 +168,7 @@ public:
     /**
      * @brief Send command to *land* at the current position (asynchronous).
      *
-     * This switches the drone to 
+     * This switches the drone to
      * [Land mode](https://docs.px4.io/en/flight_modes/land.html).
      *
      * @param callback Function to call with result of request.
