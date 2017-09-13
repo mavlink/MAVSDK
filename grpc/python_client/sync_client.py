@@ -12,26 +12,27 @@ def run():
     stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
 
     arm_result = stub.Arm(dc.Empty())
-    if arm_result.result == dc.ActionResult.SUCCESS:
-        print("arming ok")
-    else:
-        print("arming failed: " + arm_result.result_str)
+    print(arm_result)
+    #if arm_result.result == dc.ActionResult.SUCCESS:
+    #    print("arming ok")
+    #else:
+    #    print("arming failed: " + arm_result.result_str)
 
-    time.sleep(2)
+    #time.sleep(2)
 
-    takeoff_result = stub.TakeOff(dc.Empty())
-    if takeoff_result.result == dc.ActionResult.SUCCESS:
-        print("takeoff ok")
-    else:
-        print("takeoff failed: " + takeoff_result.result_str)
+    #takeoff_result = stub.TakeOff(dc.Empty())
+    #if takeoff_result.result == dc.ActionResult.SUCCESS:
+    #    print("takeoff ok")
+    #else:
+    #    print("takeoff failed: " + takeoff_result.result_str)
 
-    time.sleep(5)
+    #time.sleep(5)
 
-    land_result = stub.Land(dc.Empty())
-    if land_result.result == dc.ActionResult.SUCCESS:
-        print("landing ok")
-    else:
-        print("landing failed: " + land_result.result_str)
+    #land_result = stub.Land(dc.Empty())
+    #if land_result.result == dc.ActionResult.SUCCESS:
+    #    print("landing ok")
+    #else:
+    #    print("landing failed: " + land_result.result_str)
 
 
 if __name__ == '__main__':

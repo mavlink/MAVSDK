@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8.12)
 
 #project(grpcdronecore)
 
-
 add_definitions(
     -std=c++11
     -Wno-unused-parameter
@@ -48,4 +47,6 @@ include_directories(
     ${GRPC_INCLUDE_DIRS}
     ${CMAKE_BINARY_DIR}/grpc/server
 )
+
+add_definitions(-Wno-expansion-to-defined)
 
