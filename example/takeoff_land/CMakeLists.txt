@@ -14,7 +14,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
 # This finds thread libs on Linux, Mac, and Windows.
 find_package(Threads REQUIRED)
-message(${CMAKE_SOURCE_DIR})
 
 include_directories(
     # Not needed if installed system-wide
