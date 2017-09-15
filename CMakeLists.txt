@@ -94,6 +94,7 @@ add_library(dronecore STATIC
     core/plugin_impl_base.cpp
     core/curl_wrapper.cpp
     core/http_loader.cpp
+    core/timeout_handler.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/core/device_plugin_container.cpp
     ${plugin_source_files}
 )
@@ -152,6 +153,7 @@ if(NOT IOS AND NOT ANDROID)
         core/mavlink_channels_test.cpp
         core/unittests_main.cpp
         core/http_loader_test.cpp
+        core/timeout_handler_test.cpp
         ${plugin_unittest_source_files}
         ${unit_tests_src}
     )
