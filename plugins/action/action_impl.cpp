@@ -407,7 +407,7 @@ void ActionImpl::set_max_speed(float speed_m_s)
 void ActionImpl::receive_max_speed_result(bool success, float new_speed_m_s)
 {
     if (!success) {
-        Debug() << "setting max speed param failed";
+        LogErr() << "setting max speed param failed";
         return;
     }
     _max_speed_m_s = new_speed_m_s;

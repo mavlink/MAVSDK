@@ -50,7 +50,7 @@ void MissionItemImpl::set_camera_photo_interval(double interval_s)
     if (interval_s > 0.0) {
         _camera_photo_interval_s = interval_s;
     } else {
-        Debug() << "Invalid interval argument";
+        LogWarn() << "Invalid interval argument";
     }
 }
 

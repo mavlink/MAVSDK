@@ -81,12 +81,12 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
     if (mission_request_int.target_system != _parent->get_own_system_id() &&
         mission_request_int.target_component != _parent->get_own_component_id()) {
 
-        Debug() << "Ignore mission request int that is not for us";
+        LogWarn() << "Ignore mission request int that is not for us";
         return;
     }
 
     if (_activity != Activity::SET_MISSION) {
-        Debug() << "Ignoring mission request int, not active";
+        LogWarn() << "Ignoring mission request int, not active";
         return;
     }
 
@@ -100,7 +100,7 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
 void MissionImpl::process_mission_ack(const mavlink_message_t &message)
 {
     if (_activity != Activity::SET_MISSION) {
-        Debug() << "Error: not sure how to process Mission ack.";
+        LogWarn() << "Error: not sure how to process Mission ack.";
         return;
     }
 
@@ -110,7 +110,7 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     if (mission_ack.target_system != _parent->get_own_system_id() &&
         mission_ack.target_component != _parent->get_own_component_id()) {
 
-        Debug() << "Ignore mission ack that is not for us";
+        LogWarn() << "Ignore mission ack that is not for us";
         return;
     }
 
@@ -125,13 +125,13 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
         _last_reached_mavlink_mission_item = -1;
 
         report_mission_result(_result_callback, Mission::Result::SUCCESS);
-        Debug() << "Sucess, done";
+        LogInfo() << "Sucess, done";
         _activity = Activity::NONE;
     } else if (mission_ack.type == MAV_MISSION_NO_SPACE) {
-        Debug() << "Error: too many waypoints: " << int(mission_ack.type);
+        LogErr() << "Error: too many waypoints: " << int(mission_ack.type);
         report_mission_result(_result_callback, Mission::Result::TOO_MANY_MISSION_ITEMS);
     } else {
-        Debug() << "Error: unknown mission ack: " << int(mission_ack.type);
+        LogErr() << "Error: unknown mission ack: " << int(mission_ack.type);
         report_mission_result(_result_callback, Mission::Result::ERROR);
     }
 
@@ -177,7 +177,7 @@ void MissionImpl::send_mission_async(const std::vector<std::shared_ptr<MissionIt
     }
 
     if (!_parent->target_supports_mission_int()) {
-        Debug() << "Mission int messages not supported";
+        LogWarn() << "Mission int messages not supported";
         report_mission_result(callback, Mission::Result::ERROR);
         return;
     }
@@ -367,7 +367,7 @@ void MissionImpl::assemble_mavlink_messages()
                     param1 = 0.0f; // all camera IDs
                     break;
                 default:
-                    Debug() << "Error: camera action not supported";
+                    LogErr() << "Error: camera action not supported";
                     break;
             }
 
@@ -406,7 +406,7 @@ void MissionImpl::assemble_mavlink_messages()
 
 void MissionImpl::timeout_happened()
 {
-    Debug() << "timeout happened";
+    LogErr() << "timeout happened";
     _activity = Activity::NONE;
 
     _last_set_current_mavlink_mission_item = -1;
@@ -523,9 +523,9 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
 
 void MissionImpl::send_mission_item(uint16_t seq)
 {
-    Debug() << "Send mission item " << int(seq);
+    LogDebug() << "Send mission item " << int(seq);
     if (seq >= _mavlink_mission_item_messages.size()) {
-        Debug() << "Mission item requested out of bounds.";
+        LogErr() << "Mission item requested out of bounds.";
         return;
     }
 
@@ -547,7 +547,7 @@ void MissionImpl::report_mission_result(const Mission::result_callback_t &callba
                                         Mission::Result result)
 {
     if (callback == nullptr) {
-        Debug() << "Callback is not set";
+        LogWarn() << "Callback is not set";
         return;
     }
 
