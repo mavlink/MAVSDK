@@ -118,6 +118,11 @@ public:
             return _int_value;
         }
 
+        bool is_float() const
+        {
+            return (_type == Type::FLOAT);
+        }
+
     private:
         float _float_value = NAN;
         int32_t _int_value = 0;
