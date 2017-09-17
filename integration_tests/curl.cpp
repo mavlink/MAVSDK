@@ -4,6 +4,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <gtest/gtest.h>
 
 using namespace dronecore;
 
