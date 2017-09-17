@@ -48,6 +48,10 @@ if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
     add_definitions("-Wno-missing-field-initializers")
 endif()
 
+# Add definition for __FILENAME__ so we don't need to use __FILE__ because it also
+# contains the path.
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
+
 # Set these in a module to add a library.
 set (additional_includes "")
 set (additional_libs "")

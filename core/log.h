@@ -8,45 +8,162 @@
 #include <iostream>
 #endif
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_GRAY    "\x1b[37m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
+// Remove path and extract only filename.
+#define __FILENAME__ (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
+
+// For release builds, don't show debug printfs, and just discard it into the NullStream.
+class NullStream
+{
+public:
+    template<typename TPrintable>
+    NullStream &operator<<(TPrintable const &)
+    {
+        /* no-op */
+        static NullStream nothing;
+        return nothing;
+    }
+};
+
+#if DEBUG
+#define LogDebug() LogDebugDetailed(__FILENAME__, __LINE__)
+#else
+#define LogDebug() NullStream()
+#endif
+
+
+#define LogInfo() LogInfoDetailed(__FILENAME__, __LINE__)
+#define LogWarn() LogWarnDetailed(__FILENAME__, __LINE__)
+#define LogErr() LogErrDetailed(__FILENAME__, __LINE__)
+
+
 namespace dronecore {
 
-class Debug
+class LogDetailed
 {
-// TODO: This needs to be split into Debug(), Info(), Warn(), Err().
-//       For now, we just print all Debug() even in Release mode.
-//#ifdef DEBUG
-#if 1
 public:
-    Debug() : _s() {}
+    LogDetailed(const char *filename, int filenumber) : _s(),
+        _filename(filename),
+        _filenumber(filenumber)
+    {}
 
     template <typename T>
-    Debug &operator << (const T &x)
+    LogDetailed &operator << (const T &x)
     {
         _s << x;
         return *this;
     }
 
-    ~Debug()
+    virtual ~LogDetailed()
     {
 #if ANDROID
-        __android_log_print(ANDROID_LOG_DEBUG, "DroneCore", "%s", _s.str().c_str());
+        switch (_log_level) {
+            case LogLevel::Debug:
+                __android_log_print(ANDROID_LOG_DEBUG, "DroneCore", "%s", _s.str().c_str());
+                break;
+            case LogLevel::Info:
+                __android_log_print(ANDROID_LOG_INFO, "DroneCore", "%s", _s.str().c_str());
+                break;
+            case LogLevel::Warn:
+                __android_log_print(ANDROID_LOG_WARN, "DroneCore", "%s", _s.str().c_str());
+                break;
+            case LogLevel::Err:
+                __android_log_print(ANDROID_LOG_ERROR, "DroneCore", "%s", _s.str().c_str());
+                break;
+        }
 #else
-        std::cout << _s.str() << std::endl;
+        switch (_log_level) {
+            case LogLevel::Debug:
+                std::cout << "[Debug  ] ";
+                break;
+            case LogLevel::Info:
+                std::cout << "[Info   ] ";
+                break;
+            case LogLevel::Warn:
+                std::cout << ANSI_COLOR_YELLOW;
+                std::cout << "[Warning] ";
+                break;
+            case LogLevel::Err:
+                std::cout << ANSI_COLOR_RED;
+                std::cout << "[Error  ] ";
+                break;
+        }
+
+        std::cout << _s.str();
+        std::cout << " (" << _filename << ":" << _filenumber << ")";
+
+        switch (_log_level) {
+            case LogLevel::Info:
+                break;
+            case LogLevel::Debug:
+            // FALLTHROUGH
+            case LogLevel::Warn:
+            // FALLTHROUGH
+            case LogLevel::Err:
+                std::cout << ANSI_COLOR_RESET;
+                break;
+        }
+
+        std::cout << std::endl;
 #endif
     }
+
+protected:
+    enum LogLevel {
+        Debug,
+        Info,
+        Warn,
+        Err
+    } _log_level;
 
 private:
     std::stringstream _s;
+    const char *_filename;
+    int _filenumber;
+};
 
-#else
+class LogDebugDetailed : public LogDetailed
+{
 public:
-    template <typename T>
-    Debug &operator << (const T &x)
+    LogDebugDetailed(const char *filename, int filenumber) :
+        LogDetailed(filename, filenumber)
     {
-        UNUSED(x);
-        return *this;
+        _log_level = LogLevel::Debug;
     }
-#endif
+};
+
+class LogInfoDetailed : public LogDetailed
+{
+public:
+    LogInfoDetailed(const char *filename, int filenumber) :
+        LogDetailed(filename, filenumber)
+    {
+        _log_level = LogLevel::Info;
+    }
+};
+
+class LogWarnDetailed : public LogDetailed
+{
+public:
+    LogWarnDetailed(const char *filename, int filenumber) :
+        LogDetailed(filename, filenumber)
+    {
+        _log_level = LogLevel::Warn;
+    }
+};
+
+class LogErrDetailed : public LogDetailed
+{
+public:
+    LogErrDetailed(const char *filename, int filenumber) :
+        LogDetailed(filename, filenumber)
+    {
+        _log_level = LogLevel::Err;
+    }
 };
 
 } // namespace dronecore
