@@ -106,8 +106,8 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
     CURLcode last_curl_code;
 
     auto progress = [&last_progress, &last_status, &last_curl_code]
-    (int progress, Status status, CURLcode curl_code) -> int {
-        last_progress = progress;
+    (int got_progress, Status status, CURLcode curl_code) -> int {
+        last_progress = got_progress;
         last_status = status;
         last_curl_code = curl_code;
         return 0;
@@ -132,8 +132,8 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_COULDNT_RESOLVE_HOST)
     CURLcode last_curl_code;
 
     auto progress = [&last_progress, &last_status, &last_curl_code]
-    (int progress, Status status, CURLcode curl_code) -> int {
-        last_progress = progress;
+    (int got_progress, Status status, CURLcode curl_code) -> int {
+        last_progress = got_progress;
         last_status = status;
         last_curl_code = curl_code;
         return 0;
