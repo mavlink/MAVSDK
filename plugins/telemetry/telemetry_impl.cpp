@@ -603,14 +603,14 @@ bool TelemetryImpl::armed() const
     return _armed;
 }
 
-void TelemetryImpl::set_in_air(bool in_air)
+void TelemetryImpl::set_in_air(bool in_air_new)
 {
-    _in_air = in_air;
+    _in_air = in_air_new;
 }
 
-void TelemetryImpl::set_armed(bool armed)
+void TelemetryImpl::set_armed(bool armed_new)
 {
-    _armed = armed;
+    _armed = armed_new;
 }
 
 Telemetry::Quaternion TelemetryImpl::get_attitude_quaternion() const
