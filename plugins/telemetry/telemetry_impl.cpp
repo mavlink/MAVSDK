@@ -96,7 +96,7 @@ void TelemetryImpl::init()
         std::bind(&TelemetryImpl::process_rc_channels, this, _1), (void *)this);
 
     _parent->register_timeout_handler(
-        std::bind(&TelemetryImpl::receive_rc_channels_timeout, this), 1.0, (const void *)this);
+        std::bind(&TelemetryImpl::receive_rc_channels_timeout, this), 1.0, &_timeout_cookie);
 
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
@@ -484,7 +484,7 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t &message)
     bool rc_ok = (rc_channels.chancount > 0);
     set_rc_status(rc_ok, rc_channels.rssi);
 
-    _parent->refresh_timeout_handler(this);
+    _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
 Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
