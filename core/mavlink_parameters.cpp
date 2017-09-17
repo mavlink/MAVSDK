@@ -119,7 +119,6 @@ void MavlinkParameters::do_work()
                                            param_value_buf,
                                            work.param_value.get_mav_param_type());
         } else {
-            mavlink_message_t message = {};
             mavlink_msg_param_set_pack(_parent->get_own_system_id(),
                                        _parent->get_own_component_id(),
                                        &message,
