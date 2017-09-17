@@ -45,4 +45,8 @@ build_script:
   - cmake -DWIN_CURL_INCLUDE_DIR:STRING=C:\\curl-7.55.1\\include -DWIN_CURL_LIB:STRING="C:\curl-7.55.1\builds\libcurl-vc14-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 14 2015 Win64" ..
   - cmake --build . --target install
 
-test: off
+test: on
+
+test_script:
+  - cd C:\dronecore
+  - build\Debug\unit_tests_runner.exe
