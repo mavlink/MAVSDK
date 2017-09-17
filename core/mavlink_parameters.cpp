@@ -29,7 +29,11 @@ void MavlinkParameters::set_param_async(const std::string &name,
                                         set_param_callback_t callback,
                                         bool extended)
 {
-    // Debug() << "setting param " << name << " to " << value.get_int();
+    // if (value.is_float()) {
+    //     Debug() << "setting param " << name << " to " << value.get_float();
+    // } else {
+    //     Debug() << "setting param " << name << " to " << value.get_int();
+    // }
 
     if (name.size() > PARAM_ID_LEN) {
         Debug() << "Error: param name too long";
