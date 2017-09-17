@@ -1,5 +1,6 @@
 #include "udp_connection.h"
 #include "global_include.h"
+#include "log.h"
 
 #ifndef WINDOWS
 #include <netinet/in.h>

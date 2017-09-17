@@ -1,5 +1,6 @@
 #include "mission_item_impl.h"
 #include "global_include.h"
+#include "log.h"
 #include <cmath>
 
 namespace dronecore {
