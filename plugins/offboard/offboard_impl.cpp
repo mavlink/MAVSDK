@@ -92,7 +92,8 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
 
     _result_callback = callback;
 
-    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), 1.0, this);
+    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), 1.0,
+                                      &_timeout_cookie);
 }
 
 void OffboardImpl::stop_async(Offboard::result_callback_t callback)
@@ -117,14 +118,15 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
 
     _result_callback = callback;
 
-    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), 1.0, this);
+    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), 1.0,
+                                      &_timeout_cookie);
 }
 
 void OffboardImpl::receive_command_result(MavlinkCommands::Result result,
                                           const Offboard::result_callback_t &callback)
 {
     // We got a command back, so we can get rid of the timeout handler.
-    _parent->unregister_timeout_handler(this);
+    _parent->unregister_timeout_handler(_timeout_cookie);
 
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
 

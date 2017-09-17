@@ -174,6 +174,8 @@ private:
     };
     LockedQueue<GetParamWork> _get_param_queue {};
 
+    void *_timeout_cookie = nullptr;
+
     // dl_time_t _last_request_time = {};
 };
 

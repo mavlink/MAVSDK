@@ -181,6 +181,8 @@ private:
     // the faster between the two.
     double _ground_speed_ned_rate_hz;
     double _position_rate_hz;
+
+    void *_timeout_cookie = nullptr;
 };
 
 } // namespace dronecore

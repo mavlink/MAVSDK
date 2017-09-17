@@ -140,7 +140,7 @@ void MavlinkParameters::do_work()
         // We want to get notified if a timeout happens
         _parent->register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
                                           0.5,
-                                          this);
+                                          &_timeout_cookie);
 
     } else if (_get_param_queue.size() > 0) {
 
@@ -197,7 +197,7 @@ void MavlinkParameters::do_work()
         // We want to get notified if a timeout happens
         _parent->register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
                                           0.5,
-                                          this);
+                                          &_timeout_cookie);
     }
 }
 
@@ -228,7 +228,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
                     work.callback(true, value);
                 }
                 _state = State::NONE;
-                _parent->unregister_timeout_handler(this);
+                _parent->unregister_timeout_handler(_timeout_cookie);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _get_param_queue.pop_front();
             }
@@ -250,7 +250,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
                 }
 
                 _state = State::NONE;
-                _parent->unregister_timeout_handler(this);
+                _parent->unregister_timeout_handler(_timeout_cookie);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
             }
@@ -284,7 +284,7 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
                     work.callback(true, value);
                 }
                 _state = State::NONE;
-                _parent->unregister_timeout_handler(this);
+                _parent->unregister_timeout_handler(_timeout_cookie);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _get_param_queue.pop_front();
             }
@@ -307,7 +307,7 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
                 }
 
                 _state = State::NONE;
-                _parent->unregister_timeout_handler(this);
+                _parent->unregister_timeout_handler(_timeout_cookie);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
             }
@@ -343,14 +343,14 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
                 }
 
                 _state = State::NONE;
-                _parent->unregister_timeout_handler(this);
+                _parent->unregister_timeout_handler(_timeout_cookie);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
 
             } else if (param_ext_ack.param_result == PARAM_ACK_IN_PROGRESS) {
 
                 // Reset timeout and wait again.
-                _parent->refresh_timeout_handler(this);
+                _parent->refresh_timeout_handler(_timeout_cookie);
 
             } else {
 
@@ -361,7 +361,7 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
                 }
 
                 _state = State::NONE;
-                _parent->unregister_timeout_handler(this);
+                _parent->unregister_timeout_handler(_timeout_cookie);
                 // Debug() << "time taken: " << elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
             }

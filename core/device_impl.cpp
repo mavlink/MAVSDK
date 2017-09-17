@@ -67,37 +67,21 @@ void DeviceImpl::unregister_all_mavlink_message_handlers(const void *cookie)
     _mavlink_handler_table.clear();
 }
 
-void DeviceImpl::register_timeout_handler(timeout_handler_t callback,
+void DeviceImpl::register_timeout_handler(std::function<void()> callback,
                                           double duration_s,
-                                          const void *cookie)
+                                          void **cookie)
 {
-    std::lock_guard<std::mutex> lock(_timeout_handler_map_mutex);
-
-    dl_time_t future_time = steady_time_in_future(duration_s);
-
-    TimeoutHandlerMapEntry entry = {future_time, duration_s, callback};
-    _timeout_handler_map.insert({cookie, entry});
+    _timeout_handler.add(callback, duration_s, cookie);
 }
 
 void DeviceImpl::refresh_timeout_handler(const void *cookie)
 {
-    std::lock_guard<std::mutex> lock(_timeout_handler_map_mutex);
-
-    auto it = _timeout_handler_map.find(cookie);
-    if (it != _timeout_handler_map.end()) {
-        dl_time_t future_time = steady_time_in_future(it->second.duration_s);
-        it->second.time = future_time;
-    }
+    _timeout_handler.refresh(cookie);
 }
 
 void DeviceImpl::unregister_timeout_handler(const void *cookie)
 {
-    std::lock_guard<std::mutex> lock(_timeout_handler_map_mutex);
-
-    auto it = _timeout_handler_map.find(cookie);
-    if (it != _timeout_handler_map.end()) {
-        _timeout_handler_map.erase(cookie);
-    }
+    _timeout_handler.remove(cookie);
 }
 
 void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
@@ -196,33 +180,7 @@ void DeviceImpl::send_heartbeat(DeviceImpl *self)
 
 void DeviceImpl::check_timeouts(DeviceImpl *self)
 {
-    timeout_handler_t callback = nullptr;
-
-    {
-        std::lock_guard<std::mutex> lock(self->_timeout_handler_map_mutex);
-
-        for (auto it = self->_timeout_handler_map.begin();
-             it != self->_timeout_handler_map.end(); /* no ++it */) {
-
-            // If time is passed, call timeout callback.
-            if (it->second.time < steady_time()) {
-
-                callback = it->second.callback;
-                //Self-destruct before calling to avoid locking issues.
-                self->_timeout_handler_map.erase(it++);
-                break;
-
-            } else {
-                ++it;
-            }
-        }
-    }
-
-    // Now that the lock is out of scope and therefore unlocked, we're safe
-    // to call the callback if set which might in turn register new timeout callbacks.
-    if (callback != nullptr) {
-        callback();
-    }
+    self->_timeout_handler.run_once();
 }
 
 void DeviceImpl::check_heartbeat_timeout(DeviceImpl *self)

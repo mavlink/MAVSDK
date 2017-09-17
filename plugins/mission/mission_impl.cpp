@@ -70,7 +70,7 @@ void MissionImpl::process_mission_request(const mavlink_message_t &unused)
     _parent->send_message(message);
 
     // Reset the timeout because we're still communicating.
-    _parent->refresh_timeout_handler(this);
+    _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
 void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
@@ -94,7 +94,7 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
 
 
     // Reset the timeout because we're still communicating.
-    _parent->refresh_timeout_handler(this);
+    _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
 void MissionImpl::process_mission_ack(const mavlink_message_t &message)
@@ -115,7 +115,7 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     }
 
     // We got some response, so it wasn't a timeout and we can remove it.
-    _parent->unregister_timeout_handler(this);
+    _parent->unregister_timeout_handler(_timeout_cookie);
 
     if (mission_ack.type == MAV_MISSION_ACCEPTED) {
 
@@ -151,7 +151,7 @@ void MissionImpl::process_mission_current(const mavlink_message_t &message)
         _last_current_mavlink_mission_item == mission_current.seq) {
         report_mission_result(_result_callback, Mission::Result::SUCCESS);
         _last_current_mavlink_mission_item = -1;
-        _parent->unregister_timeout_handler(this);
+        _parent->unregister_timeout_handler(_timeout_cookie);
         _activity = Activity::NONE;
     }
 }
@@ -203,7 +203,8 @@ void MissionImpl::send_mission_async(const std::vector<std::shared_ptr<MissionIt
 
     _result_callback = callback;
 
-    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 5.0, this);
+    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 5.0,
+                                      &_timeout_cookie);
 }
 
 void MissionImpl::assemble_mavlink_messages()
@@ -441,7 +442,8 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
 
     _result_callback = callback;
 
-    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 1.0, this);
+    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 1.0,
+                                      &_timeout_cookie);
 }
 
 void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback)
@@ -473,7 +475,8 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
 
     _result_callback = callback;
 
-    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 1.0, this);
+    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 1.0,
+                                      &_timeout_cookie);
 }
 
 void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t &callback)
@@ -514,7 +517,8 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
 
     _activity = Activity::SET_CURRENT;
     _result_callback = callback;
-    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 1.0, this);
+    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 1.0,
+                                      &_timeout_cookie);
 }
 
 void MissionImpl::send_mission_item(uint16_t seq)
@@ -567,7 +571,7 @@ void MissionImpl::receive_command_result(MavlinkCommands::Result result,
     }
 
     // We got a command back, so we can get rid of the timeout handler.
-    _parent->unregister_timeout_handler(this);
+    _parent->unregister_timeout_handler(_timeout_cookie);
 
     if (result == MavlinkCommands::Result::SUCCESS) {
         report_mission_result(callback, Mission::Result::SUCCESS);

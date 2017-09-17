@@ -36,11 +36,12 @@ private:
     static Offboard::Result offboard_result_from_command_result(
         MavlinkCommands::Result result);
 
-
     void timeout_happened();
 
     bool _offboard_mode_active;
     Offboard::result_callback_t _result_callback;
+
+    void *_timeout_cookie = nullptr;
 };
 
 } // namespace dronecore
