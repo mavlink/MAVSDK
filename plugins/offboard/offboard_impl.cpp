@@ -142,7 +142,7 @@ void OffboardImpl::report_offboard_result(const Offboard::result_callback_t &cal
                                           Offboard::Result result)
 {
     if (callback == nullptr) {
-        Debug() << "Callback is not set";
+        LogWarn() << "Callback is not set";
         return;
     }
 

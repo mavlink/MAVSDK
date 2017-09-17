@@ -520,7 +520,7 @@ Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t cu
 void TelemetryImpl::receive_param_cal_gyro(bool success, int value)
 {
     if (!success) {
-        Debug() << "Error: Param for gyro cal failed.";
+        LogErr() << "Error: Param for gyro cal failed.";
         return;
     }
 
@@ -531,7 +531,7 @@ void TelemetryImpl::receive_param_cal_gyro(bool success, int value)
 void TelemetryImpl::receive_param_cal_accel(bool success, int value)
 {
     if (!success) {
-        Debug() << "Error: Param for accel cal failed.";
+        LogErr() << "Error: Param for accel cal failed.";
         return;
     }
 
@@ -542,7 +542,7 @@ void TelemetryImpl::receive_param_cal_accel(bool success, int value)
 void TelemetryImpl::receive_param_cal_mag(bool success, int value)
 {
     if (!success) {
-        Debug() << "Error: Param for mag cal failed.";
+        LogErr() << "Error: Param for mag cal failed.";
         return;
     }
 
@@ -554,7 +554,7 @@ void TelemetryImpl::receive_param_cal_mag(bool success, int value)
 void TelemetryImpl::receive_param_cal_level(bool success, float value)
 {
     if (!success) {
-        Debug() << "Error: Param for level cal failed.";
+        LogErr() << "Error: Param for level cal failed.";
         return;
     }
 
