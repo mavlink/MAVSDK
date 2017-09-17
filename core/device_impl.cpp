@@ -142,7 +142,7 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
 
     } else {
         // TODO: this is bad, we should raise a flag to invalidate device.
-        Debug() << "Error: UUID changed";
+        LogErr() << "Error: UUID changed";
     }
 }
 

@@ -68,7 +68,7 @@ DroneCore::ConnectionResult UdpConnection::setup_port()
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        Debug() << "Error: Winsock failed, error: %d", WSAGetLastError();
+        LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 #endif
@@ -76,7 +76,7 @@ DroneCore::ConnectionResult UdpConnection::setup_port()
     _socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
 
     if (_socket_fd < 0) {
-        Debug() << "socket error" << GET_ERROR(errno);
+        LogErr() << "socket error" << GET_ERROR(errno);
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 
@@ -87,7 +87,7 @@ DroneCore::ConnectionResult UdpConnection::setup_port()
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     if (bind(_socket_fd, (sockaddr *)&addr, sizeof(addr)) != 0) {
-        Debug() << "bind error: " << GET_ERROR(errno);
+        LogErr() << "bind error: " << GET_ERROR(errno);
         return DroneCore::ConnectionResult::BIND_ERROR;
     }
 
@@ -133,12 +133,12 @@ DroneCore::ConnectionResult UdpConnection::stop()
 bool UdpConnection::send_message(const mavlink_message_t &message)
 {
     if (_remote_ip.empty()) {
-        Debug() << "Remote IP unknown";
+        LogErr() << "Remote IP unknown";
         return false;
     }
 
     if (_remote_port_number == 0) {
-        Debug() << "Remote port unknown";
+        LogErr() << "Remote port unknown";
         return false;
     }
 
@@ -160,7 +160,7 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
                           (const sockaddr *)&dest_addr, sizeof(dest_addr));
 
     if (send_len != buffer_len) {
-        Debug() << "sendto failure: " << GET_ERROR(errno);
+        LogErr() << "sendto failure: " << GET_ERROR(errno);
         return false;
     }
 
@@ -188,7 +188,7 @@ void UdpConnection::receive(UdpConnection *parent)
         if (recv_len < 0) {
             // This happens on desctruction when close(_socket_fd) is called,
             // therefore be quiet.
-            //Debug() << "recvfrom error: " << GET_ERROR(errno);
+            //LogErr() << "recvfrom error: " << GET_ERROR(errno);
             continue;
         }
 
@@ -205,24 +205,24 @@ void UdpConnection::receive(UdpConnection *parent)
                 parent->_remote_ip = new_remote_ip;
                 parent->_remote_port_number = new_remote_port_number;
 
-                Debug() << "Partner IP: " << parent->_remote_ip
-                        << ":" << parent->_remote_port_number;
+                LogInfo() << "Partner IP: " << parent->_remote_ip
+                          << ":" << parent->_remote_port_number;
 
             } else {
 
-                Debug() << "Ignoring message from remote port " << new_remote_port_number
-                        << " instead of " << parent->_remote_port_number;
+                LogWarn() << "Ignoring message from remote port " << new_remote_port_number
+                          << " instead of " << parent->_remote_port_number;
                 continue;
             }
 
         } else if (parent->_remote_ip.compare(new_remote_ip) != 0) {
-            Debug() << "Ignoring message from IP: " << new_remote_ip;
+            LogWarn() << "Ignoring message from IP: " << new_remote_ip;
             continue;
 
         } else {
             if (parent->_remote_port_number != new_remote_port_number) {
-                Debug() << "Ignoring message from remote port " << new_remote_port_number
-                        << " instead of " << parent->_remote_port_number;
+                LogWarn() << "Ignoring message from remote port " << new_remote_port_number
+                          << " instead of " << parent->_remote_port_number;
                 continue;
             }
         }

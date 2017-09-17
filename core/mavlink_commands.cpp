@@ -89,7 +89,7 @@ MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
         PromiseResult promise_result = res.get();
 
         if (promise_result.result == Result::IN_PROGRESS) {
-            Debug() << "In progress: " << promise_result.progress;
+            LogInfo() << "In progress: " << promise_result.progress;
             continue;
         }
         return promise_result.result;
@@ -106,7 +106,7 @@ void MavlinkCommands::_promise_receive_command_result(Result result, float progr
             _promise_state = PromiseState::DONE;
             _promise_last_result = result;
         } else {
-            Debug() << "In progress: " << progress;
+            LogInfo() << "In progress: " << progress;
         }
     }
 }
@@ -118,7 +118,7 @@ void MavlinkCommands::queue_command_async(uint16_t command,
                                           uint8_t target_component_id,
                                           command_result_callback_t callback)
 {
-    // Debug() << "Command " << (int)command << " to send to " << (int)target_system_id << ", "
+    // LogDebug() << "Command " << (int)command << " to send to " << (int)target_system_id << ", "
     //         << (int)target_component_id;
 
     Work new_work {};
@@ -148,11 +148,11 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
 
-    // Debug() << "We got an ack: " << command_ack.command;
+    // LogDebug() << "We got an ack: " << command_ack.command;
 
     if (work.mavlink_command != command_ack.command) {
         // If the command does not match with our current command, ignore it.
-        Debug() << "Command ack not matching our current command: " << work.mavlink_command;
+        LogWarn() << "Command ack not matching our current command: " << work.mavlink_command;
         return;
     }
 
@@ -166,18 +166,18 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             break;
 
         case MAV_RESULT_DENIED:
-            Debug() << "command denied (" << work.mavlink_command << ").";
+            LogWarn() << "command denied (" << work.mavlink_command << ").";
         // FALLTHRU
 
         case MAV_RESULT_UNSUPPORTED:
-            Debug() << "command unsupported (" << work.mavlink_command << ").";
+            LogWarn() << "command unsupported (" << work.mavlink_command << ").";
         // FALLTHRU
 
         case MAV_RESULT_TEMPORARILY_REJECTED:
-            Debug() << "command temporarily rejected (" << work.mavlink_command << ").";
+            LogWarn() << "command temporarily rejected (" << work.mavlink_command << ").";
         // FALLTHRU
         case MAV_RESULT_FAILED:
-            Debug() << "command failed (" << work.mavlink_command << ").";
+            LogWarn() << "command failed (" << work.mavlink_command << ").";
             _state = State::FAILED;
             if (work.callback) {
                 work.callback(Result::COMMAND_DENIED, NAN);
@@ -186,8 +186,8 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
 
         case MAV_RESULT_IN_PROGRESS:
             if ((int)command_ack.progress != 255) {
-                Debug() << "progress: " << (int)command_ack.progress
-                        << " % (" << work.mavlink_command << ").";
+                LogInfo() << "progress: " << (int)command_ack.progress
+                          << " % (" << work.mavlink_command << ").";
             }
             // FIXME: We can only call callbacks with promises once, so let's not do it
             //        on IN_PROGRESS.
@@ -223,11 +223,11 @@ void MavlinkCommands::receive_timeout()
 
         if (work.retries_to_do > 0) {
 
-            Debug() << "sending again, retries to do: " << work.retries_to_do
-                    << "  (" << work.mavlink_command << ").";
+            LogInfo() << "sending again, retries to do: " << work.retries_to_do
+                      << "  (" << work.mavlink_command << ").";
             // We're not sure the command arrived, let's retransmit.
             if (!_parent->send_message(work.mavlink_message)) {
-                Debug() << "connection send error in retransmit (" << work.mavlink_command << ").";
+                LogErr() << "connection send error in retransmit (" << work.mavlink_command << ").";
                 if (work.callback) {
                     work.callback(Result::CONNECTION_ERROR, NAN);
                 }
@@ -241,7 +241,7 @@ void MavlinkCommands::receive_timeout()
 
         } else  {
             // We have tried retransmitting, giving up now.
-            Debug() << "Retrying failed (" << work.mavlink_command << ")";
+            LogErr() << "Retrying failed (" << work.mavlink_command << ")";
 
             if (work.callback) {
                 if (_state == State::WAITING) {
@@ -286,9 +286,9 @@ void MavlinkCommands::do_work()
     // If the work state is none, we can start the next command.
     switch (_state) {
         case State::NONE:
-            // Debug() << "sending it the first time (" << work.mavlink_command << ")";
+            // LogDebug() << "sending it the first time (" << work.mavlink_command << ")";
             if (!_parent->send_message(work.mavlink_message)) {
-                Debug() << "connection send error (" << work.mavlink_command << ")";
+                LogErr() << "connection send error (" << work.mavlink_command << ")";
                 if (work.callback) {
                     work.callback(Result::CONNECTION_ERROR, NAN);
                 }
@@ -303,7 +303,7 @@ void MavlinkCommands::do_work()
             break;
         case State::WAITING:
         case State::IN_PROGRESS:
-            // Debug() << "wait until we can deal with this";
+            // LogWarn() << "wait until we can deal with this";
             break;
         case State::DONE:
         // FALLTHROUGH
