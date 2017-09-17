@@ -78,8 +78,8 @@ TEST_F(SitlTest, MissionChangeSpeed)
                 std::this_thread::sleep_for(std::chrono::seconds(6));
                 const float speed_correct = speeds[_current_item - 1];
                 const float speed_actual = current_speed(device);
-                Debug() << "speed check, should be: " << speed_correct << " m/s, "
-                        << "actually: " << speed_actual << " m/s";
+                LogWarn() << "speed check, should be: " << speed_correct << " m/s, "
+                          << "actually: " << speed_actual << " m/s";
                 EXPECT_GT(speed_actual, speed_correct - 1.0f);
                 EXPECT_LT(speed_actual, speed_correct + 1.0f);
             }
@@ -87,7 +87,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
-    Debug() << "mission done";
+    LogInfo() << "mission done";
 
     result = device.action().return_to_launch();
     ASSERT_EQ(result, Action::Result::SUCCESS);

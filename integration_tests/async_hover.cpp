@@ -56,14 +56,14 @@ TEST_F(SitlTest, ActionAsyncHover)
 
 void receive_result(Action::Result result)
 {
-    std::cout << "got result: " << unsigned(result) << std::endl;
+    LogDebug() << "got result: " << unsigned(result);
     EXPECT_EQ(result, Action::Result::SUCCESS);
 }
 
 void receive_health_all_ok(bool all_ok)
 {
     if (all_ok && !_all_ok) {
-        std::cout << "we're ready, let's go" << std::endl;
+        LogDebug() << "we're ready, let's go";
         _all_ok = true;
     }
 }
