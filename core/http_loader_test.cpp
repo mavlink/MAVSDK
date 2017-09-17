@@ -86,7 +86,7 @@ protected:
                                                   const std::string &url, const std::string &path)
     {
         EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
-        .WillOnce(Invoke([&](const std::string &/*url*/, const std::string & path,
+        .WillOnce(Invoke([&](const std::string &/*url*/, const std::string & got_path,
         const progress_callback_t &progress_callback) {
             for (size_t i = 0; i <= 100; i++) {
                 if (progress_callback != nullptr) {
@@ -94,7 +94,7 @@ protected:
                 }
             }
 
-            write_file(path, "downloaded file content\n");
+            write_file(got_path, "downloaded file content\n");
 
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
 
@@ -120,10 +120,10 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     progress_callback_t progress = [&callback_results_progress,
                                     &callback_finished_counter,
                                     &callback_error_counter]
-    (int progress, Status status, CURLcode curl_code) -> int {
+    (int got_progress, Status status, CURLcode curl_code) -> int {
         if (status == Status::Downloading)
         {
-            callback_results_progress.push_back(progress);
+            callback_results_progress.push_back(got_progress);
         } else if (status == Status::Error && curl_code == CURLcode::CURLE_COULDNT_RESOLVE_HOST)
         {
             callback_error_counter++;
@@ -168,10 +168,10 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
     progress_callback_t progress = [&callback_results_progress,
                                     &callback_finished_counter,
                                     &callback_error_counter]
-    (int progress, Status status, CURLcode curl_code) -> int {
+    (int got_progress, Status status, CURLcode curl_code) -> int {
         if (status == Status::Downloading)
         {
-            callback_results_progress.push_back(progress);
+            callback_results_progress.push_back(got_progress);
         } else if (status == Status::Error && curl_code == CURLcode::CURLE_COULDNT_RESOLVE_HOST)
         {
             callback_error_counter++;
