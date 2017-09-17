@@ -1,4 +1,5 @@
 #include "global_include.h"
+#include "log.h"
 #include "curl_wrapper.h"
 #include <sstream>
 #include <iostream>

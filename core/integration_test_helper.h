@@ -1,8 +1,8 @@
 #pragma once
 
-#include <iostream>
 #include <gtest/gtest.h>
 #include "global_include.h"
+#include "log.h"
 
 class SitlTest : public testing::Test
 {
