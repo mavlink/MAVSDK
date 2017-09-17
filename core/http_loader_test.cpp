@@ -6,6 +6,7 @@
 #include <chrono>
 #include <vector>
 #include <numeric>
+#include <gtest/gtest.h>
 
 using namespace dronecore;
 
