@@ -44,11 +44,11 @@ bool CurlWrapper::download_text(const std::string &url, std::string &content)
         if (res == CURLcode::CURLE_OK) {
             return true;
         } else {
-            Debug() << "Error while downloading text, curl error code: " << curl_easy_strerror(res);
+            LogErr() << "Error while downloading text, curl error code: " << curl_easy_strerror(res);
             return false;
         }
     } else {
-        Debug() << "Error: cannot start uploading because of curl initialization error. ";
+        LogErr() << "Error: cannot start uploading because of curl initialization error. ";
         return false;
     }
 }
@@ -151,11 +151,11 @@ bool CurlWrapper::upload_file(const std::string &url, const std::string &path,
             if (nullptr != progress_callback) {
                 progress_callback(0, Status::Error, res);
             }
-            Debug() << "Error while uploading file, curl error code: " << curl_easy_strerror(res);
+            LogErr() << "Error while uploading file, curl error code: " << curl_easy_strerror(res);
             return false;
         }
     } else {
-        Debug() << "Error: cannot start uploading because of curl initialization error.";
+        LogErr() << "Error: cannot start uploading because of curl initialization error.";
         return false;
     }
 }
@@ -218,11 +218,11 @@ bool CurlWrapper::download_file_to_path(const std::string &url, const std::strin
                 progress_callback(0, Status::Error, res);
             }
             remove(path.c_str());
-            Debug() << "Error while downloading file, curl error code: " << curl_easy_strerror(res);
+            LogErr() << "Error while downloading file, curl error code: " << curl_easy_strerror(res);
             return false;
         }
     } else {
-        Debug() << "Error: cannot start downloading file because of curl initialization error. ";
+        LogErr() << "Error: cannot start downloading file because of curl initialization error. ";
         return false;
     }
 }

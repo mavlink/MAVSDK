@@ -71,7 +71,7 @@ DroneCore::ConnectionResult SerialConnection::setup_port()
         return DroneCore::ConnectionResult::CONNECTION_ERROR;
     }
     if (ioctl(_fd, TCGETS2, &tc) == -1) {
-        Debug() << "Could not get termios2 " << GET_ERROR(errno);
+        LogErr() << "Could not get termios2 " << GET_ERROR(errno);
         close(_fd);
         return DroneCore::ConnectionResult::CONNECTION_ERROR;
     }
@@ -88,13 +88,13 @@ DroneCore::ConnectionResult SerialConnection::setup_port()
     tc.c_ospeed = _baudrate;
 
     if (ioctl(_fd, TCSETS2, &tc) == -1) {
-        Debug() << "Could not set terminal attributes " << GET_ERROR(errno);
+        LogErr() << "Could not set terminal attributes " << GET_ERROR(errno);
         close(_fd);
         return DroneCore::ConnectionResult::CONNECTION_ERROR;
     }
 
     if (ioctl(_fd, TCFLSH, TCIOFLUSH) == -1) {
-        Debug() << "Could not flush terminal " << GET_ERROR(errno);
+        LogErr() << "Could not flush terminal " << GET_ERROR(errno);
         close(_fd);
         return DroneCore::ConnectionResult::CONNECTION_ERROR;
     }
@@ -128,12 +128,12 @@ DroneCore::ConnectionResult SerialConnection::stop()
 bool SerialConnection::send_message(const mavlink_message_t &message)
 {
     if (_serial_node.empty()) {
-        Debug() << "Dev Path unknown";
+        LogErr() << "Dev Path unknown";
         return false;
     }
 
     if (_baudrate == 0) {
-        Debug() << "Baudrate unknown";
+        LogErr() << "Baudrate unknown";
         return false;
     }
 
@@ -143,7 +143,7 @@ bool SerialConnection::send_message(const mavlink_message_t &message)
     int send_len =  write(_fd, buffer, buffer_len);
 
     if (send_len != buffer_len) {
-        Debug() << "write failure: " << GET_ERROR(errno);
+        LogErr() << "write failure: " << GET_ERROR(errno);
         return false;
     }
 
@@ -158,7 +158,7 @@ void SerialConnection::receive(SerialConnection *parent)
     while (!parent->_should_exit) {
         int recv_len = read(parent->_fd, buffer, sizeof(buffer));
         if (recv_len < -1) {
-            Debug() << "read failure: " << GET_ERROR(errno);
+            LogErr() << "read failure: " << GET_ERROR(errno);
         }
         if (recv_len > (int)sizeof(buffer) || recv_len == 0) {
             continue;

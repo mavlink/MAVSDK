@@ -56,7 +56,7 @@ public:
                     break;
                 default:
                     // This would be worrying
-                    Debug() << "Error: unknown mavlink param type";
+                    LogErr() << "Error: unknown mavlink param type";
                     break;
             }
         }
@@ -80,7 +80,7 @@ public:
                     break;
                 default:
                     // This would be worrying
-                    Debug() << "Error: unknown mavlink ext param type";
+                    LogErr() << "Error: unknown mavlink ext param type";
                     break;
             }
         }

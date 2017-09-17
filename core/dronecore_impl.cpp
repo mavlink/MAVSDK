@@ -87,7 +87,7 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     }
 
     if (message.sysid != 1) {
-        Debug() << "sysid: " << int(message.sysid);
+        LogDebug() << "sysid: " << int(message.sysid);
     }
 
     if (_device_impls.find(message.sysid) != _device_impls.end()) {
@@ -101,7 +101,7 @@ bool DroneCoreImpl::send_message(const mavlink_message_t &message)
 
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
         if (!(**it).send_message(message)) {
-            Debug() << "send fail";
+            LogErr() << "send fail";
             return false;
         }
     }
@@ -142,18 +142,18 @@ Device &DroneCoreImpl::get_device()
         }
 
         if (_device_impls.size() > 1) {
-            Debug() << "Error: more than one device found:";
+            LogErr() << "Error: more than one device found:";
 
             int i = 0;
             for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
-                Debug() << "strange: " << i << ": " << int(it->first) << ", " << it->second;
+                LogWarn() << "strange: " << i << ": " << int(it->first) << ", " << it->second;
                 ++i;
             }
 
             // Just return first device instead of failing.
             return *_devices.begin()->second;
         } else {
-            Debug() << "Error: no device found.";
+            LogErr() << "Error: no device found.";
             uint8_t system_id = 0;
             create_device_if_not_existing(system_id);
             return *_devices[system_id];
@@ -175,7 +175,7 @@ Device &DroneCoreImpl::get_device(uint64_t uuid)
 
     // We have not found a device with this UUID.
     // TODO: this is an error condition that we ought to handle properly.
-    Debug() << "device with UUID: " << uuid << " not found";
+    LogErr() << "device with UUID: " << uuid << " not found";
 
     // Create a dummy
     uint8_t system_id = 0;
@@ -195,7 +195,7 @@ void DroneCoreImpl::create_device_if_not_existing(uint8_t system_id)
 
     // existing already.
     if (_devices.find(system_id) != _devices.end()) {
-        //Debug() << "ID: " << int(system_id) << " exists already.";
+        //LogDebug() << "ID: " << int(system_id) << " exists already.";
         return;
     }
 

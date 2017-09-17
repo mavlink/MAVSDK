@@ -67,7 +67,7 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        Debug() << "Error: Winsock failed, error: %d", WSAGetLastError();
+        LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 #endif
@@ -75,7 +75,7 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
     _socket_fd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (_socket_fd < 0) {
-        Debug() << "socket error" << GET_ERROR(errno);
+        LogErr() << "socket error" << GET_ERROR(errno);
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 
@@ -85,7 +85,7 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
     remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());
 
     if (connect(_socket_fd, (sockaddr *)&remote_addr, sizeof(struct sockaddr_in)) < 0) {
-        Debug() << "connect error: " << GET_ERROR(errno);
+        LogErr() << "connect error: " << GET_ERROR(errno);
         return DroneCore::ConnectionResult::SOCKET_CONNECTION_ERROR;
     }
 
@@ -131,12 +131,12 @@ DroneCore::ConnectionResult TcpConnection::stop()
 bool TcpConnection::send_message(const mavlink_message_t &message)
 {
     if (_remote_ip.empty()) {
-        Debug() << "Remote IP unknown";
+        LogErr() << "Remote IP unknown";
         return false;
     }
 
     if (_remote_port_number == 0) {
-        Debug() << "Remote port unknown";
+        LogErr() << "Remote port unknown";
         return false;
     }
 
@@ -158,7 +158,7 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
                           (const sockaddr *)&dest_addr, sizeof(dest_addr));
 
     if (send_len != buffer_len) {
-        Debug() << "sendto failure: " << GET_ERROR(errno);
+        LogErr() << "sendto failure: " << GET_ERROR(errno);
         return false;
     }
     return true;
@@ -182,7 +182,7 @@ void TcpConnection::receive(TcpConnection *parent)
         if (recv_len < 0) {
             // This happens on desctruction when close(_socket_fd) is called,
             // therefore be quiet.
-            //Debug() << "recvfrom error: " << GET_ERROR(errno);
+            //LogErr() << "recvfrom error: " << GET_ERROR(errno);
             continue;
         }
 
