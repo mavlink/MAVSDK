@@ -1,6 +1,7 @@
 ![DroneCore](https://raw.githubusercontent.com/dronecore/docs/master/assets/site/dronecore_logo_full.png)
 
-[![Build Status](https://travis-ci.org/dronecore/DroneCore.svg?branch=master)](https://travis-ci.org/dronecore/DroneCore)
+[![travis-ci build status](https://travis-ci.org/dronecore/DroneCore.svg?branch=master)](https://travis-ci.org/dronecore/DroneCore)
+[![appveyor build status](https://ci.appveyor.com/api/projects/status/1ntjvooywpxmoir8/branch/master?svg=true)](https://ci.appveyor.com/project/julianoes/dronecore/branch/master)
 
 ## Description
 
@@ -45,7 +46,7 @@ For more information see the [API Overview](https://docs.dronecore.io/en/getting
 
 ## Guide Docs (Build instructions etc.)
 
-Instructions for how to use the library can be found in the [DroneCore Guide](https://docs.dronecore.io/en/). 
+Instructions for how to use the library can be found in the [DroneCore Guide](https://docs.dronecore.io/en/).
 
 Quick Links:
 
