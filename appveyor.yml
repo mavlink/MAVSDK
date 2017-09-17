@@ -28,7 +28,7 @@ clone_folder: C:\dronecore
 # scripts to run before build
 before_build:
   - cd C:\dronecore
-  - git submodule update --init --recursive
+  - git submodule update --init --recursive --depth 1
   - cd C:\
   - appveyor DownloadFile https://curl.haxx.se/download/curl-7.55.1.zip
   - 7z x -y curl-7.55.1.zip
