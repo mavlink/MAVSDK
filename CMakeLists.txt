@@ -11,7 +11,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 if(NOT MSVC)
     # Clang and GCC
     # We are not using exceptions to make it easier to write wrappers.
-    add_definitions("-std=c++11 -Wall -Wextra -Werror -fno-exceptions")
+    add_definitions("-std=c++11 -Wall -Wextra -Werror -fno-exceptions -Wshadow")
     set(platform_libs "pthread")
     set(curl_lib "curl")
 else()
