@@ -200,10 +200,10 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             // has arrived. A possible timeout for this case is the initial
             // timeout * the possible retries because this should match the
             // case where there is no progress update and we keep trying.
-            _parent->unregister_timeout_handler((void *)this);
+            _parent->unregister_timeout_handler(_timeout_cookie);
             _parent->register_timeout_handler(
                 std::bind(&MavlinkCommands::receive_timeout, this),
-                work.retries_to_do * work.timeout_s, (void *)this);
+                work.retries_to_do * work.timeout_s, &_timeout_cookie);
             break;
     }
 }
@@ -236,7 +236,7 @@ void MavlinkCommands::receive_timeout()
                 --work.retries_to_do;
                 _parent->register_timeout_handler(
                     std::bind(&MavlinkCommands::receive_timeout, this),
-                    work.timeout_s, (void *)this);
+                    work.timeout_s, &_timeout_cookie);
             }
 
         } else  {
@@ -268,7 +268,7 @@ void MavlinkCommands::do_work()
         case State::DONE:
         // FALLTHROUGH
         case State::FAILED:
-            _parent->unregister_timeout_handler((void *)this);
+            _parent->unregister_timeout_handler(_timeout_cookie);
             _work_queue.pop_front();
             _state = State::NONE;
             break;
@@ -298,7 +298,7 @@ void MavlinkCommands::do_work()
                 _state = State::WAITING;
                 _parent->register_timeout_handler(
                     std::bind(&MavlinkCommands::receive_timeout, this),
-                    work.timeout_s, (void *)this);
+                    work.timeout_s, &_timeout_cookie);
             }
             break;
         case State::WAITING:

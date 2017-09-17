@@ -88,6 +88,8 @@ private:
     static constexpr uint8_t PX4_CUSTOM_MAIN_MODE_AUTO = 4;
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_LOITER = 3;
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_MISSION = 4;
+
+    void *_timeout_cookie = nullptr;
 };
 
 //static std::function<void(MavlinkCommands::Result)> empty_callback;

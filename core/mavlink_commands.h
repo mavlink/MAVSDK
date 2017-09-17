@@ -76,6 +76,8 @@ private:
     DeviceImpl *_parent;
     LockedQueue<Work> _work_queue {};
 
+    void *_timeout_cookie = nullptr;
+
 #ifdef NO_PROMISES
     std::mutex _promise_mutex {};
     enum class PromiseState {

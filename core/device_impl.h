@@ -4,6 +4,7 @@
 #include "mavlink_include.h"
 #include "mavlink_parameters.h"
 #include "mavlink_commands.h"
+#include "timeout_handler.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -28,16 +29,14 @@ public:
 
     typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
 
-    typedef std::function<void()> timeout_handler_t;
-
     void register_mavlink_message_handler(uint16_t msg_id, mavlink_message_handler_t callback,
                                           const void *cookie);
 
     void unregister_all_mavlink_message_handlers(const void *cookie);
 
-    void register_timeout_handler(timeout_handler_t callback,
+    void register_timeout_handler(std::function<void()> callback,
                                   double duration_s,
-                                  const void *cookie);
+                                  void **cookie);
 
     void refresh_timeout_handler(const void *cookie);
 
@@ -116,15 +115,6 @@ private:
     std::mutex _mavlink_handler_table_mutex {};
     std::vector<MavlinkHandlerTableEntry> _mavlink_handler_table {};
 
-    struct TimeoutHandlerMapEntry {
-        dl_time_t time;
-        double duration_s;
-        timeout_handler_t callback;
-    };
-
-    std::mutex _timeout_handler_map_mutex {};
-    std::map<const void *, TimeoutHandlerMapEntry> _timeout_handler_map {};
-
     std::atomic<uint8_t> _target_system_id;
 
     // The component ID is hardcoded for now.
@@ -156,6 +146,8 @@ private:
     MavlinkParameters _params;
 
     MavlinkCommands _commands;
+
+    TimeoutHandler _timeout_handler {};
 };
 
 
