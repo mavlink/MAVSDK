@@ -60,7 +60,6 @@ public:
 
     void request_autopilot_version();
 
-    uint64_t get_target_uuid() const;
     uint8_t get_target_system_id() const;
     uint8_t get_target_component_id() const;
 
@@ -95,11 +94,10 @@ private:
 
     void process_heartbeat(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
+    void heartbeats_timed_out();
 
     static void device_thread(DeviceImpl *self);
     static void send_heartbeat(DeviceImpl *self);
-    static void check_timeouts(DeviceImpl *self);
-    static void check_heartbeat_timeout(DeviceImpl *self);
 
     static void receive_float_param(bool success, MavlinkParameters::ParamValue value,
                                     get_param_float_callback_t callback);
@@ -119,7 +117,7 @@ private:
 
     // The component ID is hardcoded for now.
     uint8_t _target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    uint64_t _target_uuid {0};
+
     bool _target_supports_mission_int {false};
     bool _armed {false};
 
@@ -134,12 +132,10 @@ private:
     static constexpr uint8_t _own_system_id = 0;
     static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
 
-    static std::mutex _last_heartbeat_reiceved_time_mutex;
-    static dl_time_t _last_heartbeat_received_time;
-
     static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
 
-    std::atomic<bool> _heartbeats_arriving {false};
+    std::atomic<bool> _connected {false};
+    void *_heartbeat_timeout_cookie = nullptr;
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 

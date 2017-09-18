@@ -112,13 +112,13 @@ public:
     ConnectionResult add_serial_connection(std::string dev_path, int baudrate);
 
     /**
-     * @brief Get vector of device UUIDs.
+     * @brief Get vector of device system IDs.
      *
-     * This returns a vector of the UUIDs of all devices that have been discovered.
+     * This returns a vector of the system IDs of all devices that have been discovered.
      *
-     * @return A reference to the vector containing the UUIDs.
+     * @return A reference to the vector containing the system IDs.
      */
-    const std::vector<uint64_t> &device_uuids() const;
+    const std::vector<uint8_t> &device_system_ids() const;
 
     /**
      * @brief Get the first discovered device.
@@ -130,22 +130,32 @@ public:
     Device &device() const;
 
     /**
-     * @brief Get the device with the specified UUID.
+     * @brief Get the device with the specified system ID.
      *
-     * This returns a device for a given UUID if such a device has been discovered and a null
+     * This returns a device for a given system ID if such a device has been discovered and a null
      * device otherwise.
      *
-     * @param uuid UUID of device to get.
+     * @param system_id mavlink system ID of device to get.
      * @return A reference to the specified device.
      */
-    Device &device(uint64_t uuid) const;
+    Device &device(uint8_t system_id) const;
+
+
+    /**
+     * @brief Return true if a device is connected.
+     *
+     * This returns true if we have received heartbeats in the last 3 seconds.
+     * This interface presents the same information that you receive using the
+     * callbacks `register_on_discover` and `register_on_timeout`.
+     */
+    bool is_connected(uint8_t system_id) const;
 
     /**
      * @brief Callback type for discover and timeout notifications.
      *
-     * @param uuid UUID of device.
+     * @param system_id mavlink system ID of device.
      */
-    typedef std::function<void(uint64_t uuid)> event_callback_t;
+    typedef std::function<void(uint8_t system_id)> event_callback_t;
 
     /**
      * @brief Register callback for device discovery.
