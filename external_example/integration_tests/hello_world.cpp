@@ -16,8 +16,8 @@ TEST_F(SitlTest, ExternalExampleHello)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // One vehicle should have connected.
-    std::vector<uint64_t> uuids = dc.device_uuids();
-    EXPECT_EQ(uuids.size(), 1);
+    std::vector<uint8_t> system_ids = dc.device_system_ids();
+    EXPECT_EQ(system_ids.size(), 1);
 
     // Apparently it can say hello.
     dc.device().example().say_hello();
