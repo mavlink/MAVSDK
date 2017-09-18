@@ -52,6 +52,8 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
 
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
+    set_uuid(autopilot_version.uid);
+
     Info::Version version = {};
 
     version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
@@ -108,8 +110,16 @@ void InfoImpl::translate_binary_to_str(uint8_t *binary, unsigned binary_len,
 
 uint64_t InfoImpl::get_uuid() const
 {
-    return _parent->get_target_uuid();
+    std::lock_guard<std::mutex> lock(_uuid_mutex);
+    return _uuid;
 }
+
+void InfoImpl::set_uuid(uint64_t uuid)
+{
+    std::lock_guard<std::mutex> lock(_uuid_mutex);
+    _uuid = uuid;
+}
+
 
 bool InfoImpl::is_complete() const
 {
