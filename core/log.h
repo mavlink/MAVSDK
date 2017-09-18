@@ -6,6 +6,8 @@
 #include <android/log.h>
 #else
 #include <iostream>
+#include <iomanip>
+#include <ctime>
 #endif
 
 #define ANSI_COLOR_RED     "\x1b[31m"
@@ -76,20 +78,27 @@ public:
                 break;
         }
 #else
+
+        // Time output taken from:
+        // https://stackoverflow.com/questions/16357999#answer-16358111
+        auto t = std::time(nullptr);
+        auto tm = *std::localtime(&t);
+        std::cout << "[" << std::put_time(&tm, "%H:%M:%S");
+
         switch (_log_level) {
             case LogLevel::Debug:
-                std::cout << "[Debug  ] ";
+                std::cout << " | Debug  ] ";
                 break;
             case LogLevel::Info:
-                std::cout << "[Info   ] ";
+                std::cout << " | Info   ] ";
                 break;
             case LogLevel::Warn:
                 std::cout << ANSI_COLOR_YELLOW;
-                std::cout << "[Warning] ";
+                std::cout << " | Warning] ";
                 break;
             case LogLevel::Err:
                 std::cout << ANSI_COLOR_RED;
-                std::cout << "[Error  ] ";
+                std::cout << " | Error  ] ";
                 break;
         }
 
