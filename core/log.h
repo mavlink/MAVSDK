@@ -47,8 +47,8 @@ class LogDetailed
 {
 public:
     LogDetailed(const char *filename, int filenumber) : _s(),
-        _filename(filename),
-        _filenumber(filenumber)
+        _caller_filename(filename),
+        _caller_filenumber(filenumber)
     {}
 
     template <typename T>
@@ -94,7 +94,7 @@ public:
         }
 
         std::cout << _s.str();
-        std::cout << " (" << _filename << ":" << _filenumber << ")";
+        std::cout << " (" << _caller_filename << ":" << _caller_filenumber << ")";
 
         switch (_log_level) {
             case LogLevel::Info:
@@ -122,8 +122,8 @@ protected:
 
 private:
     std::stringstream _s;
-    const char *_filename;
-    int _filenumber;
+    const char *_caller_filename;
+    int _caller_filenumber;
 };
 
 class LogDebugDetailed : public LogDetailed
