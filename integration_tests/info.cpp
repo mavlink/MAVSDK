@@ -4,7 +4,7 @@
 
 using namespace dronecore;
 
-static void on_discover(uint64_t uuid);
+static void on_discover(uint8_t system_id);
 static bool _discovered_device = false;
 
 TEST_F(SitlTest, Info)
@@ -48,8 +48,8 @@ TEST_F(SitlTest, Info)
     }
 }
 
-void on_discover(uint64_t uuid)
+void on_discover(uint8_t system_id)
 {
-    std::cout << "Found device with UUID: " << uuid << std::endl;
+    std::cout << "Found device with system ID: " << system_id << std::endl;
     _discovered_device = true;
 }

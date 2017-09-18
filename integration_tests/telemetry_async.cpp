@@ -47,19 +47,19 @@ TEST_F(SitlTest, TelemetryAsync)
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    std::vector<uint64_t> uuids = dc.device_uuids();
+    std::vector<uint8_t> system_ids = dc.device_system_ids();
 
-    for (auto it = uuids.begin(); it != uuids.end(); ++it) {
-        std::cout << "found device with UUID: " << *it << std::endl;
+    for (auto it = system_ids.begin(); it != system_ids.end(); ++it) {
+        std::cout << "found device with system ID: " << *it << std::endl;
     }
 
-    ASSERT_EQ(uuids.size(), 1);
+    ASSERT_EQ(system_ids.size(), 1);
 
-    uint64_t uuid = uuids.at(0);
+    uint64_t system_id = system_ids.at(0);
 
     ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
 
-    Device &device = dc.device(uuid);
+    Device &device = dc.device(system_id);
 
     device.telemetry().set_rate_position_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
