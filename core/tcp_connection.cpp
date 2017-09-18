@@ -79,7 +79,7 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 
-    sockaddr_in remote_addr {};
+    struct sockaddr_in remote_addr {};
     remote_addr.sin_family = AF_INET;
     remote_addr.sin_port = htons(_remote_port_number);
     remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());

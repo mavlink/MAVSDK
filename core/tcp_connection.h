@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #ifndef WINDOWS
 #include <netdb.h>
+#include <netinet/in.h>
 #else
 #include <winsock2.h>
 #include <Ws2tcpip.h> // For InetPton
@@ -32,7 +33,7 @@ public:
 private:
     DroneCore::ConnectionResult setup_port();
     void start_recv_thread();
-    int resolve_address(const std::string &ip_address, int port, sockaddr_in *addr);
+    int resolve_address(const std::string &ip_address, int port, struct sockaddr_in *addr);
     static void receive(TcpConnection *parent);
 
     static constexpr int DEFAULT_TCP_REMOTE_PORT = 5760;
