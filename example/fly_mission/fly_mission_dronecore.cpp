@@ -73,8 +73,8 @@ int main(int /*argc*/, char ** /*argv*/)
     }
 
     std::cout << DRONECORE << "Waiting to discover device..." << std::endl;
-    dc.register_on_discover([&discovered_device](uint64_t uuid) {
-        std::cout << DRONECORE << "Discovered device with UUID: " << uuid << std::endl;
+    dc.register_on_discover([&discovered_device](uint8_t system_id) {
+        std::cout << DRONECORE << "Discovered device with system ID: " << (int)system_id << std::endl;
         discovered_device = true;
     });
 
@@ -85,9 +85,9 @@ int main(int /*argc*/, char ** /*argv*/)
         return 1;
     }
 
-    // We don't need to specifiy the UUID if it's only one device anyway.
+    // We don't need to specifiy the system ID if it's only one device anyway.
     // If there were multiple, we could specify it with:
-    // dc.device(uint64_t uuid);
+    // dc.device(uint8_t system_id);
     Device &device = dc.device();
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
