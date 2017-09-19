@@ -47,14 +47,23 @@ message MissionResult {
 }
 
 message MissionItem {
-    double latitude = 1;
-    double longitude = 2;
-    double altitude = 3;
-    float speed = 4;
+    double latitude_deg = 1;
+    double longitude_deg = 2;
+    double relative_altitude_m = 3;
+    float speed_m_s = 4;
     bool is_fly_through = 5;
-    float pitch = 6;
-    float yaw = 7;
-    int32 camera_action = 8;
+    float gimbal_pitch_deg = 6;
+    float gimbal_yaw_deg = 7;
+
+    enum CameraAction {
+        NONE = 0;
+        TAKE_PHOTO = 1;
+        START_PHOTO_INTERVAL = 2;
+        STOP_PHOTO_INTERVAL = 3;
+        START_VIDEO = 4;
+        STOP_VIDEO = 5;
+    }
+    CameraAction camera_action = 8;
 }
 
 message Mission {
