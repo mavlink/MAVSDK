@@ -15,8 +15,12 @@
 #define ANSI_COLOR_GRAY    "\x1b[37m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
+#ifndef WINDOWS
 // Remove path and extract only filename.
 #define __FILENAME__ (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
+#else
+#define __FILENAME__  __FILE__
+#endif
 
 // For release builds, don't show debug printfs, and just discard it into the NullStream.
 class NullStream
