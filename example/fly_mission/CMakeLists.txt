@@ -15,8 +15,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 # This finds thread libs on Linux, Mac, and Windows.
 find_package(Threads REQUIRED)
 
+# Not needed if DroneCore installed system-wide
 include_directories(
-    # Not needed if installed system-wide
     ${CMAKE_SOURCE_DIR}/../../install/include
 )
 
@@ -24,6 +24,7 @@ add_executable(fly_mission
     fly_mission_dronecore.cpp
 )
 
+# Not needed if DroneCore installed system-wide
 if(WINDOWS)
     set(dronecore_lib "${CMAKE_SOURCE_DIR}/../../install/lib/dronecore.lib")
 else()
@@ -31,9 +32,8 @@ else()
 endif()
 
 target_link_libraries(fly_mission
-    ${dronecore_lib}
-    # If installed system-wide:
-    # dronecore
+    ${dronecore_lib}  # Remove/comment out this line if DroneCore used locally
+    # dronecore  # Uncomment/add this line if DroneCore installed system-wide
     ${CMAKE_THREAD_LIBS_INIT}
     ${platform_libs}
 )
