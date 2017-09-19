@@ -69,12 +69,12 @@ public:
      * @brief Possible camera actions at a mission item.
      */
     enum class CameraAction {
+        NONE, /**< @brief No action. */
         TAKE_PHOTO, /**< @brief Take single photo. */
         START_PHOTO_INTERVAL, /**< @brief Start capturing photos at regular intervals - see set_camera_photo_interval(). */
         STOP_PHOTO_INTERVAL, /**< @brief Stop capturing photos at regular intervals. */
         START_VIDEO, /**< @brief Start capturing video. */
-        STOP_VIDEO, /**< @brief Stop capturing video. */
-        NONE /**< @brief No action. */
+        STOP_VIDEO /**< @brief Stop capturing video. */
     };
 
     /**
