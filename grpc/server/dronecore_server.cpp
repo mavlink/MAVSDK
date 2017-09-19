@@ -60,7 +60,7 @@ public:
     Status SendMission(ServerContext *context, const dronecorerpc::Mission *mission,
                        dronecorerpc::MissionResult *response) override
     {
-        // TODO: there has to be a beter way than using std::future.
+        // TODO: there has to be a better way than using std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
 
@@ -94,7 +94,7 @@ public:
     Status StartMission(ServerContext *context, const Empty *request,
                         dronecorerpc::MissionResult *response) override
     {
-        // TODO: there has to be a beter way than using std::future.
+        // TODO: there has to be a better way than using std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
 
