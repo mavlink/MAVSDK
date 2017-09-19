@@ -22,15 +22,15 @@ public:
     bool send_message(const mavlink_message_t &message);
     void add_connection(Connection *connection);
 
-    const std::vector<uint64_t> &get_device_uuids() const;
+    const std::vector<uint8_t> &get_device_system_ids() const;
     Device &get_device();
-    Device &get_device(uint64_t uuid);
+    Device &get_device(uint8_t system_id);
 
     void register_on_discover(DroneCore::event_callback_t callback);
     void register_on_timeout(DroneCore::event_callback_t callback);
 
-    void notify_on_discover(uint64_t uuid);
-    void notify_on_timeout(uint64_t uuid);
+    void notify_on_discover(uint8_t system_id);
+    void notify_on_timeout(uint8_t system_id);
 
 private:
     void create_device_if_not_existing(uint8_t system_id);

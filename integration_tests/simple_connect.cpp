@@ -17,14 +17,14 @@ TEST_F(SitlTest, TwoConnections)
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    std::vector<uint64_t> uuids = dc->device_uuids();
+    std::vector<uint8_t> system_ids = dc->device_system_ids();
 
-    for (auto it = uuids.begin(); it != uuids.end(); ++it) {
-        std::cout << "found device with UUID: " << *it << std::endl;
+    for (auto it = system_ids.begin(); it != system_ids.end(); ++it) {
+        std::cout << "found device with system ID: " << (int)(*it) << std::endl;
     }
 
-    ASSERT_EQ(uuids.size(), 1);
-    uint64_t uuid = uuids[0];
+    ASSERT_EQ(system_ids.size(), 1);
+    uint64_t system_id = system_ids[0];
 
     std::cout << "deleting it" << std::endl;
     delete dc;
@@ -36,10 +36,10 @@ TEST_F(SitlTest, TwoConnections)
     ASSERT_EQ(dc->add_udp_connection(14540), DroneCore::ConnectionResult::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    uuids = dc->device_uuids();
+    system_ids = dc->device_system_ids();
 
-    ASSERT_EQ(uuids.size(), 1);
-    EXPECT_EQ(uuid, uuids[0]);
+    ASSERT_EQ(system_ids.size(), 1);
+    EXPECT_EQ(system_id, system_ids[0]);
 
     std::cout << "created and started yet again" << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(1));

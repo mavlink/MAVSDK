@@ -92,9 +92,9 @@ DroneCore::ConnectionResult DroneCore::add_serial_connection(std::string dev_pat
 #endif
 }
 
-const std::vector<uint64_t> &DroneCore::device_uuids() const
+const std::vector<uint8_t> &DroneCore::device_system_ids() const
 {
-    return _impl->get_device_uuids();
+    return _impl->get_device_system_ids();
 }
 
 Device &DroneCore::device() const
@@ -102,9 +102,9 @@ Device &DroneCore::device() const
     return _impl->get_device();
 }
 
-Device &DroneCore::device(uint64_t uuid) const
+Device &DroneCore::device(uint8_t system_id) const
 {
-    return _impl->get_device(uuid);
+    return _impl->get_device(system_id);
 }
 
 void DroneCore::register_on_discover(event_callback_t callback)

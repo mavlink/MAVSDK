@@ -115,28 +115,28 @@ void DroneCoreImpl::add_connection(Connection *new_connection)
     _connections.push_back(new_connection);
 }
 
-const std::vector<uint64_t> &DroneCoreImpl::get_device_uuids() const
+const std::vector<uint8_t> &DroneCoreImpl::get_device_system_ids() const
 {
     // This needs to survive the scope but we need to clean it up.
-    static std::vector<uint64_t> uuids = {};
-    uuids.clear();
+    static std::vector<uint8_t> system_ids = {};
+    system_ids.clear();
 
     for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
-        uint64_t uuid = it->second->get_target_uuid();
-        if (uuid != 0) {
-            uuids.push_back(uuid);
+        uint8_t system_id = it->second->get_target_system_id();
+        if (system_id != 0) {
+            system_ids.push_back(system_id);
         }
     }
 
-    return uuids;
+    return system_ids;
 }
 
 Device &DroneCoreImpl::get_device()
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
-        // In get_device withoiut uuid, we expect to have only
-        // one device conneted.
+        // In get_device without system ID, we expect to have only
+        // one device connected.
         if (_device_impls.size() == 1) {
             return *(_devices.at(_device_impls.begin()->first));
         }
@@ -161,27 +161,27 @@ Device &DroneCoreImpl::get_device()
     }
 }
 
-Device &DroneCoreImpl::get_device(uint64_t uuid)
+Device &DroneCoreImpl::get_device(uint8_t system_id)
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
         // TODO: make a cache map for this.
         for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
-            if (it->second->get_target_uuid() == uuid) {
+            if (it->second->get_target_system_id() == system_id) {
                 return *(_devices.at(it->first));
             }
         }
     }
 
-    // We have not found a device with this UUID.
+    // We have not found a device with this system ID.
     // TODO: this is an error condition that we ought to handle properly.
-    Debug() << "device with UUID: " << uuid << " not found";
+    Debug() << "device with system ID: " << system_id << " not found";
 
     // Create a dummy
-    uint8_t system_id = 0;
-    create_device_if_not_existing(system_id);
+    uint8_t dummy_system_id = 0;
+    create_device_if_not_existing(dummy_system_id);
 
-    return *_devices[system_id];
+    return *_devices[dummy_system_id];
 }
 
 void DroneCoreImpl::create_device_if_not_existing(uint8_t system_id)
@@ -207,17 +207,19 @@ void DroneCoreImpl::create_device_if_not_existing(uint8_t system_id)
     _devices.insert(std::pair<uint8_t, Device *>(system_id, new_device));
 }
 
-void DroneCoreImpl::notify_on_discover(uint64_t uuid)
+void DroneCoreImpl::notify_on_discover(uint8_t system_id)
 {
+    Debug() << "Discovered " << (int)system_id;
     if (_on_discover_callback != nullptr) {
-        _on_discover_callback(uuid);
+        _on_discover_callback(system_id);
     }
 }
 
-void DroneCoreImpl::notify_on_timeout(uint64_t uuid)
+void DroneCoreImpl::notify_on_timeout(uint8_t system_id)
 {
+    Debug() << "Lost " << (int)system_id;
     if (_on_timeout_callback != nullptr) {
-        _on_timeout_callback(uuid);
+        _on_timeout_callback(system_id);
     }
 }
 

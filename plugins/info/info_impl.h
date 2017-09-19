@@ -22,15 +22,19 @@ public:
 
 private:
     void set_version(Info::Version version);
+    void set_uuid(uint64_t uuid);
 
     void process_heartbeat(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
 
-    mutable std::mutex _version_mutex;
-    Info::Version _version = {};
+    mutable std::mutex _version_mutex {};
+    Info::Version _version {};
 
     static void translate_binary_to_str(uint8_t *binary, unsigned binary_len,
                                         char *str, unsigned str_len);
+
+    mutable std::mutex _uuid_mutex {};
+    uint64_t _uuid = 0;
 };
 
 } // namespace dronecore

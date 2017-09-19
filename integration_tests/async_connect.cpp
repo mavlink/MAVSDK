@@ -8,10 +8,10 @@ using namespace std::placeholders; // for _1
 
 static bool _discovered_device = false;
 static bool _timeouted_device = false;
-static uint64_t _uuid = 0;
+static uint8_t _system_id = 0;
 
-void on_discover(uint64_t uuid);
-void on_timeout(uint64_t uuid);
+void on_discover(uint8_t system_id);
+void on_timeout(uint8_t system_id);
 
 TEST_F(SitlTest, AsyncConnect)
 {
@@ -39,20 +39,20 @@ TEST_F(SitlTest, AsyncConnect)
     }
 }
 
-void on_discover(uint64_t uuid)
+void on_discover(uint8_t system_id)
 {
-    std::cout << "Found device with UUID: " << uuid << std::endl;
+    std::cout << "Found device with system ID: " << (int)system_id << std::endl;
     _discovered_device = true;
-    _uuid = uuid;
-    // The UUID should not be 0.
-    EXPECT_NE(_uuid, 0);
+    _system_id = system_id;
+    // The system ID should not be 0.
+    EXPECT_NE(_system_id, 0);
 }
 
-void on_timeout(uint64_t uuid)
+void on_timeout(uint8_t system_id)
 {
-    std::cout << "Lost device with UUID: " << uuid << std::endl;
+    std::cout << "Lost device with system ID: " << (int)system_id << std::endl;
     _timeouted_device = true;
 
-    // The UUID should still be the same.
-    EXPECT_EQ(_uuid, uuid);
+    // The system ID should still be the same.
+    EXPECT_EQ(_system_id, system_id);
 }
