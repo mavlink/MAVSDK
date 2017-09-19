@@ -6,7 +6,6 @@
 #include <android/log.h>
 #else
 #include <iostream>
-#include <iomanip>
 #include <ctime>
 #endif
 
@@ -84,10 +83,15 @@ public:
 #else
 
         // Time output taken from:
-        // https://stackoverflow.com/questions/16357999#answer-16358111
-        auto t = std::time(nullptr);
-        auto tm = *std::localtime(&t);
-        std::cout << "[" << std::put_time(&tm, "%H:%M:%S");
+        // https://stackoverflow.com/questions/16357999#answer-16358264
+
+
+        time_t rawtime;
+        time(&rawtime);
+        struct tm *timeinfo = localtime(&rawtime);
+        char time_buffer[10] {}; // We need 8 characters + \0
+        strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S", timeinfo);
+        std::cout << "[" << time_buffer;
 
         switch (_log_level) {
             case LogLevel::Debug:
