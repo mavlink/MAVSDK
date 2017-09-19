@@ -95,18 +95,18 @@ public:
 
         switch (_log_level) {
             case LogLevel::Debug:
-                std::cout << " | Debug  ] ";
+                std::cout << "|Debug] ";
                 break;
             case LogLevel::Info:
-                std::cout << " | Info   ] ";
+                std::cout << "|Info ] ";
                 break;
             case LogLevel::Warn:
                 std::cout << ANSI_COLOR_YELLOW;
-                std::cout << " | Warning] ";
+                std::cout << "|Warn ] ";
                 break;
             case LogLevel::Err:
                 std::cout << ANSI_COLOR_RED;
-                std::cout << " | Error  ] ";
+                std::cout << "|Error] ";
                 break;
         }
 
