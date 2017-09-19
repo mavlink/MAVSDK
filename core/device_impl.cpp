@@ -196,6 +196,11 @@ bool DeviceImpl::send_message(const mavlink_message_t &message)
 
 void DeviceImpl::request_autopilot_version()
 {
+    if (_target_uuid_initialized) {
+        // Already initialized, we can exit.
+        return;
+    }
+
     if (!_autopilot_version_pending && _target_uuid_retries >= 3) {
         // We give up getting a UUID and use the system ID.
 
