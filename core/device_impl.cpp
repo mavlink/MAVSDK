@@ -31,6 +31,9 @@ DeviceImpl::~DeviceImpl()
     _should_exit = true;
     unregister_all_mavlink_message_handlers(this);
 
+    unregister_timeout_handler(_autopilot_version_timed_out_cookie);
+    unregister_timeout_handler(_heartbeat_timeout_cookie);
+
     if (_device_thread != nullptr) {
         _device_thread->join();
         delete _device_thread;
@@ -142,6 +145,9 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
 
     _target_uuid_initialized = true;
     set_connected();
+
+    _autopilot_version_pending = false;
+    unregister_timeout_handler(_autopilot_version_timed_out_cookie);
 }
 
 void DeviceImpl::heartbeats_timed_out()
@@ -190,7 +196,7 @@ bool DeviceImpl::send_message(const mavlink_message_t &message)
 
 void DeviceImpl::request_autopilot_version()
 {
-    if (_target_uuid_retries++ >= 3) {
+    if (!_autopilot_version_pending && _target_uuid_retries >= 3) {
         // We give up getting a UUID and use the system ID.
 
         Debug() << "No UUID received, using system ID instead.";
@@ -200,6 +206,8 @@ void DeviceImpl::request_autopilot_version()
         return;
     }
 
+    _autopilot_version_pending = true;
+
     // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
     send_command_with_ack_async(
         MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
@@ -207,6 +215,20 @@ void DeviceImpl::request_autopilot_version()
         nullptr,
         MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT
     );
+    ++_target_uuid_retries;
+
+    // We set a timeout to stay "pending" for half a second. This way, we don't give up too
+    // early e.g. because multiple components send heartbeats and we receive them all at once
+    // and run out of retries.
+
+    // We create a temp reference, so we don't need to capture `this`.
+    auto &pending_tmp = _autopilot_version_pending;
+    register_timeout_handler(
+    [&pending_tmp]() {
+        pending_tmp = false;
+    },
+    0.5,
+    &_autopilot_version_timed_out_cookie);
 }
 
 void DeviceImpl::set_connected()
