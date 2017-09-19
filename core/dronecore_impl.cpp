@@ -136,7 +136,7 @@ Device &DroneCoreImpl::get_device()
     {
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
         // In get_device without system ID, we expect to have only
-        // one device conneted.
+        // one device connected.
         if (_device_impls.size() == 1) {
             return *(_devices.at(_device_impls.begin()->first));
         }
