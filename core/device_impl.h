@@ -145,6 +145,9 @@ private:
     bool _connected {false};
     void *_heartbeat_timeout_cookie = nullptr;
 
+    std::atomic<bool> _autopilot_version_pending {false};
+    void *_autopilot_version_timed_out_cookie = nullptr;
+
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
     MavlinkParameters _params;
