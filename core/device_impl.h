@@ -53,10 +53,10 @@ public:
                                      command_result_callback_t callback,
                                      uint8_t component_id = 0);
 
-    MavlinkCommands::Result set_msg_rate(uint16_t message_id, double rate_hz);
+    MavlinkCommands::Result set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id = 0);
 
     void set_msg_rate_async(uint16_t message_id, double rate_hz,
-                            command_result_callback_t callback);
+                            command_result_callback_t callback, uint8_t component_id = 0);
 
     void request_autopilot_version();
 
