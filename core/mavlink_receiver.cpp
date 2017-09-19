@@ -66,8 +66,8 @@ void MavlinkReceiver::debug_drop_rate()
 
         if (!_first) {
 
-            Debug() << "-------------------------------------------------------------------"
-                    << "-----------";
+            LogDebug() << "-------------------------------------------------------------------"
+                       << "-----------";
 
             if (_bytes_received <= sys_status.errors_comm &&
                 sys_status.errors_count2 <= sys_status.errors_comm) {
@@ -89,7 +89,7 @@ void MavlinkReceiver::debug_drop_rate()
                            _bytes_at_sdk_overall, _bytes_sent_overall);
 
             } else {
-                Debug() << "Missed SYS_STATUS";
+                LogDebug() << "Missed SYS_STATUS";
             }
         }
         _first = false;
@@ -104,30 +104,30 @@ void MavlinkReceiver::debug_drop_rate()
 void MavlinkReceiver::print_line(const char *index, unsigned count, unsigned count_total,
                                  unsigned overall_bytes, unsigned overall_bytes_total)
 {
-    Debug() << "count "
-            << index
-            << ": "
-            << std::setw(6)
-            << count
-            << ", loss: "
-            << std::setw(6)
-            << count_total -  count
-            << ",  "
-            << std::setw(6)
-            << std::setprecision(2)
-            << std::fixed
-            << 100.0 * float(count) / float(count_total)
-            << " %, overall: "
-            << std::setw(6)
-            << std::setprecision(2)
-            << std::fixed
-            << (100.0 * double(overall_bytes) / double(overall_bytes_total))
-            << " %, "
-            << std::setw(6)
-            << std::setprecision(2)
-            << std::fixed
-            << (double(overall_bytes) / _time_elapsed / 1024.0)
-            << " KiB/s";
+    LogDebug() << "count "
+               << index
+               << ": "
+               << std::setw(6)
+               << count
+               << ", loss: "
+               << std::setw(6)
+               << count_total -  count
+               << ",  "
+               << std::setw(6)
+               << std::setprecision(2)
+               << std::fixed
+               << 100.0 * float(count) / float(count_total)
+               << " %, overall: "
+               << std::setw(6)
+               << std::setprecision(2)
+               << std::fixed
+               << (100.0 * double(overall_bytes) / double(overall_bytes_total))
+               << " %, "
+               << std::setw(6)
+               << std::setprecision(2)
+               << std::fixed
+               << (double(overall_bytes) / _time_elapsed / 1024.0)
+               << " KiB/s";
 }
 #endif
 
