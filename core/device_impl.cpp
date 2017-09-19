@@ -367,7 +367,8 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
                                   callback);
 }
 
-MavlinkCommands::Result DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz)
+MavlinkCommands::Result DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz,
+                                                 uint8_t component_id)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
@@ -375,13 +376,20 @@ MavlinkCommands::Result DeviceImpl::set_msg_rate(uint16_t message_id, double rat
         interval_us = 1e6f / (float)rate_hz;
     }
 
-    return send_command_with_ack(
-               MAV_CMD_SET_MESSAGE_INTERVAL,
-               MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
+    if (component_id != 0) {
+        return send_command_with_ack(
+                   MAV_CMD_SET_MESSAGE_INTERVAL,
+                   MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+                   component_id);
+    } else {
+        return send_command_with_ack(
+                   MAV_CMD_SET_MESSAGE_INTERVAL,
+                   MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
+    }
 }
 
 void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
-                                    command_result_callback_t callback)
+                                    command_result_callback_t callback, uint8_t component_id)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
@@ -389,10 +397,18 @@ void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
         interval_us = 1e6f / (float)rate_hz;
     }
 
-    send_command_with_ack_async(
-        MAV_CMD_SET_MESSAGE_INTERVAL,
-        MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
-        callback);
+    if (component_id != 0) {
+        send_command_with_ack_async(
+            MAV_CMD_SET_MESSAGE_INTERVAL,
+            MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+            callback,
+            component_id);
+    } else {
+        send_command_with_ack_async(
+            MAV_CMD_SET_MESSAGE_INTERVAL,
+            MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+            callback);
+    }
 }
 
 
