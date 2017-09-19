@@ -63,15 +63,18 @@ void TimeoutHandler::run_once()
 
             if (it->second->callback) {
 
-                // Unlock while we callback because it might in turn want to add timeouts.
+                // Get a copy for the callback because we will remove it.
                 std::function<void()> callback = it->second->callback;
+
+                // Self-destruct before calling to avoid locking issues.
+                _timeouts.erase(it++);
+
+                // Unlock while we callback because it might in turn want to add timeouts.
                 _timeouts_mutex.unlock();
                 callback();
                 _timeouts_mutex.lock();
             }
 
-            // Self-destruct before calling to avoid locking issues.
-            _timeouts.erase(it++);
 
         } else {
             ++it;

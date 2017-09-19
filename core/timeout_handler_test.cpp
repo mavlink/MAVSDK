@@ -116,3 +116,25 @@ TEST(TimeoutHandler, TimeoutRemoved)
     th.run_once();
     EXPECT_FALSE(timeout_happened);
 }
+
+TEST(TimeoutHandler, TimeoutRemovedDuringCallback)
+{
+    TimeoutHandler th;
+
+    bool timeout_happened = false;
+
+    void *cookie = nullptr;
+    th.add([&th, &cookie, &timeout_happened]() {
+        // This is evil but can potentially happen. We remove our own timeout while
+        // being called.
+        th.remove(cookie);
+        timeout_happened = true;
+    }, 0.5, &cookie);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    th.run_once();
+    EXPECT_FALSE(timeout_happened);
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    th.run_once();
+    EXPECT_TRUE(timeout_happened);
+}
