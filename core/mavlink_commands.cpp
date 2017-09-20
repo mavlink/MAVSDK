@@ -36,33 +36,6 @@ MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
                                                       uint8_t target_system_id,
                                                       uint8_t target_component_id)
 {
-    // Some architectures sadly don't have the promises (yet). Therefore, we have this crude
-    // while loop to wait until the async task is done.
-#ifdef NO_PROMISES
-    {
-        std::lock_guard<std::mutex> lock(_promise_mutex);
-        // We can't buffer with this implementation.
-        if (_promise_state != PromiseState::IDLE) {
-            return Result::BUSY;
-        }
-
-        _promise_state = PromiseState::BUSY;
-        queue_command_async(command, params, target_system_id, target_component_id,
-                            std::bind(&MavlinkCommands::_promise_receive_command_result,
-                                      this, std::placeholders::_1, std::placeholders::_2));
-    }
-    while (true) {
-        {
-            std::lock_guard<std::mutex> lock(_promise_mutex);
-            if (_promise_state == PromiseState::DONE) {
-                _promise_state = PromiseState::IDLE;
-                return _promise_last_result;
-            }
-        }
-        // Check at 100 Hz.
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-#else
     struct PromiseResult {
         Result result;
         float progress;
@@ -94,23 +67,8 @@ MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
         }
         return promise_result.result;
     }
-#endif
 }
 
-#ifdef NO_PROMISES
-void MavlinkCommands::_promise_receive_command_result(Result result, float progress)
-{
-    std::lock_guard<std::mutex> lock(_promise_mutex);
-    if (_promise_state == PromiseState::BUSY) {
-        if (result != Result::IN_PROGRESS) {
-            _promise_state = PromiseState::DONE;
-            _promise_last_result = result;
-        } else {
-            LogInfo() << "In progress: " << progress;
-        }
-    }
-}
-#endif
 
 void MavlinkCommands::queue_command_async(uint16_t command,
                                           const MavlinkCommands::Params params,
