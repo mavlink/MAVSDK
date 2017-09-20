@@ -107,12 +107,6 @@ add_library(dronecore STATIC
 # other applications.
 if(ANDROID)
     set(lib_path "lib/android/${ANDROID_ABI}")
-
-    # The old armeabi arch doesn't support promises yet with gcc 4.9.
-    if (ANDROID_ABI STREQUAL "armeabi")
-        add_definitions(-DNO_PROMISES)
-    endif()
-
 elseif(IOS)
     set(lib_path "lib/ios")
 else()
