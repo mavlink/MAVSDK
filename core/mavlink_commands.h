@@ -77,17 +77,6 @@ private:
     LockedQueue<Work> _work_queue {};
 
     void *_timeout_cookie = nullptr;
-
-#ifdef NO_PROMISES
-    std::mutex _promise_mutex {};
-    enum class PromiseState {
-        IDLE,
-        BUSY,
-        DONE
-    } _promise_state {PromiseState::IDLE};
-    Result _promise_last_result {};
-    void _promise_receive_command_result(Result result, float progress);
-#endif
 };
 
 } // namespace dronecore
