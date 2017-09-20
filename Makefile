@@ -91,37 +91,44 @@ ios_simulator: ios_curl
 
 android_x86: android_curl
 	$(call cmake-build, \
-    -DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
+		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
+		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=x86)
 
 android_x86_64: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
+		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=x86_64)
 
 android_mips: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
+		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=mips)
 
 android_mips64: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
+		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=mips64)
 
 android_armeabi: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
+		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=armeabi)
 
 android_armeabi-v7a: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
+		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=armeabi-v7a)
 
 android_arm64-v8a: android_curl
 	$(call cmake-build, \
-        -DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
+		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
+		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=arm64-v8a)
 
 android_curl: android_env_check
