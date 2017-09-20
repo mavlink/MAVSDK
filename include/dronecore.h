@@ -115,6 +115,7 @@ public:
      * @brief Get vector of device UUIDs.
      *
      * This returns a vector of the UUIDs of all devices that have been discovered.
+     * Devices without UUIDs will just use the mavlink system IDs ranging from (0..255).
      *
      * @return A reference to the vector containing the UUIDs.
      */
@@ -143,7 +144,7 @@ public:
     /**
      * @brief Callback type for discover and timeout notifications.
      *
-     * @param uuid UUID of device.
+     * @param uuid UUID of device (or mavlink system ID if UUID is not supported by the device)
      */
     typedef std::function<void(uint64_t uuid)> event_callback_t;
 
