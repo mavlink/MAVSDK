@@ -152,6 +152,7 @@ if(NOT IOS AND NOT ANDROID)
         core/unittests_main.cpp
         core/http_loader_test.cpp
         core/timeout_handler_test.cpp
+        core/locked_list_test.cpp
         ${plugin_unittest_source_files}
         ${unit_tests_src}
     )
