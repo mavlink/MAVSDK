@@ -1,4 +1,4 @@
 # build folders
-**/build
-**/install
-**/logs
+build/*
+install/*
+logs/*
