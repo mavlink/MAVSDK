@@ -37,11 +37,12 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     Device &device = dc.device();
 
     while (!device.telemetry().health_all_ok()) {
-        LogInfo() << "waiting for device to be ready";
+        LogInfo() << "Waiting for device to be ready";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     LogInfo() << "Device ready, let's start";
+    LogInfo() << "Creating and uploading mission";
 
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
@@ -87,6 +88,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
                          MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
 
     {
+        LogInfo() << "Uploading mission...";
         // We only have the send_mission function asynchronous for now, so we wrap it using
         // std::future.
         auto prom = std::make_shared<std::promise<void>>();
@@ -95,26 +97,31 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         mission_items, [prom](Mission::Result result) {
             EXPECT_EQ(result, Mission::Result::SUCCESS);
             prom->set_value();
+            LogInfo() << "Mission uploaded.";
         });
 
         future_result.wait();
         future_result.get();
     }
 
+    LogInfo() << "Arming...";
     const Action::Result arm_result = device.action().arm();
     EXPECT_EQ(arm_result, Action::Result::SUCCESS);
+    LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
     // We pass on device to receive_mission_progress because we need it in the callback.
     device.mission().subscribe_progress(std::bind(&receive_mission_progress, _1, _2, &device));
 
     {
+        LogInfo() << "Starting mission.";
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
         device.mission().start_mission_async(
         [prom](Mission::Result result) {
             EXPECT_EQ(result, Mission::Result::SUCCESS);
             prom->set_value();
+            LogInfo() << "Started mission.";
         });
 
         future_result.wait();
@@ -131,7 +138,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         LogInfo() << "in air";
 
     }
-    LogInfo() << "Landed, exiting.";
+    LogInfo() << "Disarmed, exiting.";
 }
 
 std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
