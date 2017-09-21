@@ -100,7 +100,6 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
             LogInfo() << "Mission uploaded.";
         });
 
-        future_result.wait();
         future_result.get();
     }
 
@@ -124,7 +123,6 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
             LogInfo() << "Started mission.";
         });
 
-        future_result.wait();
         future_result.get();
     }
 
@@ -179,7 +177,6 @@ void receive_mission_progress(int current, int total, Device *device)
                 prom->set_value();
             });
 
-            future_result.wait();
             future_result.get();
         }
         // We don't want to pause muptiple times in case we get the progress notification
@@ -199,7 +196,6 @@ void receive_mission_progress(int current, int total, Device *device)
                 prom->set_value();
             });
 
-            future_result.wait();
             future_result.get();
         }
     }
