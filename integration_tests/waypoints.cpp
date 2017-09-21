@@ -126,15 +126,9 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         future_result.get();
     }
 
-    // Make sure we have taken off before checking for landed.
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-
-    // FIXME: this check does currently not work in SITL.
-    while (device.telemetry().in_air()) {
+    while (device.telemetry().armed()) {
         // Wait until we're done.
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        LogInfo() << "in air";
-
     }
     LogInfo() << "Disarmed, exiting.";
 }
