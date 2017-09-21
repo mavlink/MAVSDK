@@ -202,9 +202,6 @@ void MissionImpl::send_mission_async(const std::vector<std::shared_ptr<MissionIt
     }
 
     _result_callback = callback;
-
-    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 5.0,
-                                      &_timeout_cookie);
 }
 
 void MissionImpl::assemble_mavlink_messages()
@@ -404,15 +401,6 @@ void MissionImpl::assemble_mavlink_messages()
     }
 }
 
-void MissionImpl::timeout_happened()
-{
-    LogErr() << "timeout happened";
-    _activity = Activity::NONE;
-
-    _last_set_current_mavlink_mission_item = -1;
-    report_mission_result(_result_callback, Mission::Result::TIMEOUT);
-}
-
 void MissionImpl::start_mission_async(const Mission::result_callback_t &callback)
 {
     if (_activity != Activity::NONE) {
@@ -441,9 +429,6 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
         MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 
     _result_callback = callback;
-
-    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 1.0,
-                                      &_timeout_cookie);
 }
 
 void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback)
@@ -474,9 +459,6 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
         MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 
     _result_callback = callback;
-
-    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 1.0,
-                                      &_timeout_cookie);
 }
 
 void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t &callback)
@@ -517,8 +499,6 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
 
     _activity = Activity::SET_CURRENT;
     _result_callback = callback;
-    _parent->register_timeout_handler(std::bind(&MissionImpl::timeout_happened, this), 1.0,
-                                      &_timeout_cookie);
 }
 
 void MissionImpl::send_mission_item(uint16_t seq)

@@ -40,8 +40,6 @@ public:
 private:
     void assemble_mavlink_messages();
 
-    void timeout_happened();
-
     void process_mission_request(const mavlink_message_t &message);
     void process_mission_request_int(const mavlink_message_t &message);
     void process_mission_ack(const mavlink_message_t &message);
