@@ -30,22 +30,26 @@ TEST_F(SitlTest, ActionAsyncHover)
     device.telemetry().in_air_async(std::bind(&receive_in_air, _1));
 
     while (!_all_ok) {
-        std::cout << "Waiting to be ready..." << std::endl;
+        LogInfo() << "Waiting to be ready...";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
+    LogInfo() << "Arming...";
     device.action().arm_async(std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
+    LogInfo() << "Setting takeoff altitude...";
     device.action().set_takeoff_altitude(5.0f);
 
+    LogInfo() << "Taking off...";
     device.action().takeoff_async(std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
+    LogInfo() << "Landing...";
     device.action().land_async(std::bind(&receive_result, _1));
 
     while (_in_air) {
-        std::cout << "Waiting to be landed..." << std::endl;
+        LogInfo() << "Waiting to be landed...";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
