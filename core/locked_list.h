@@ -5,6 +5,9 @@
 
 namespace dronecore {
 
+// Note: this wrapper around list was developed for `MavlinkCommands` but was not used
+// eventually. Instead, `std::list` was used directly and protected with a `std::mutex`.
+
 template <class T>
 class LockedList
 {
