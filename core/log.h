@@ -12,6 +12,7 @@
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
 #define ANSI_COLOR_GRAY    "\x1b[37m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
@@ -101,6 +102,7 @@ public:
                 std::cout << "|Debug] ";
                 break;
             case LogLevel::Info:
+                std::cout << ANSI_COLOR_BLUE;
                 std::cout << "|Info ] ";
                 break;
             case LogLevel::Warn:
@@ -117,9 +119,9 @@ public:
         std::cout << " (" << _caller_filename << ":" << _caller_filenumber << ")";
 
         switch (_log_level) {
-            case LogLevel::Info:
-                break;
             case LogLevel::Debug:
+                break;
+            case LogLevel::Info:
             // FALLTHROUGH
             case LogLevel::Warn:
             // FALLTHROUGH
