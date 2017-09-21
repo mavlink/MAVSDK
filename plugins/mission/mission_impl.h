@@ -66,8 +66,6 @@ private:
         SEND_COMMAND
     } _activity = Activity::NONE;
 
-    int _last_set_current_mavlink_mission_item = -1;
-
     int _last_current_mavlink_mission_item;
     int _last_reached_mavlink_mission_item;
 
