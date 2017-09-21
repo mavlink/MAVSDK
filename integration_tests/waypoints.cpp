@@ -41,7 +41,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    LogInfo() << "Device ready, let's start";
+    LogInfo() << "Device ready";
     LogInfo() << "Creating and uploading mission";
 
     std::vector<std::shared_ptr<MissionItem>> mission_items;
