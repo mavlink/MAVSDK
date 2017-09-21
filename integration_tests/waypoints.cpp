@@ -200,7 +200,7 @@ void receive_mission_progress(int current, int total, Device *device)
 
     if (current == total) {
         // We are done, and can do RTL to go home.
-        const Action::Result result = device->action().arm();
+        const Action::Result result = device->action().return_to_launch();
         EXPECT_EQ(result, Action::Result::SUCCESS);
     }
 }
