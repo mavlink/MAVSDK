@@ -14,7 +14,7 @@ void TimeoutHandler::add(std::function<void()> callback, double duration_s, void
 {
     auto new_timeout = std::make_shared<Timeout>();
     new_timeout->callback = callback;
-    new_timeout->time = steady_time_in_future(duration_s);
+    new_timeout->start_time = steady_time();
     new_timeout->duration_s = duration_s;
 
     void *new_cookie = static_cast<void *>(new_timeout.get());
@@ -35,8 +35,17 @@ void TimeoutHandler::refresh(const void *cookie)
 
     auto it = _timeouts.find((void *)(cookie));
     if (it != _timeouts.end()) {
-        dl_time_t future_time = steady_time_in_future(it->second->duration_s);
-        it->second->time = future_time;
+        it->second->start_time = steady_time();
+    }
+}
+
+void TimeoutHandler::update(double new_duration_s, const void *cookie)
+{
+    std::lock_guard<std::mutex> lock(_timeouts_mutex);
+
+    auto it = _timeouts.find((void *)(cookie));
+    if (it != _timeouts.end()) {
+        it->second->duration_s = new_duration_s;
     }
 }
 
@@ -54,12 +63,11 @@ void TimeoutHandler::run_once()
 {
     _timeouts_mutex.lock();
 
-    dl_time_t now = steady_time();
 
     for (auto it = _timeouts.begin(); it != _timeouts.end(); /* no ++it */) {
 
         // If time is passed, call timeout callback.
-        if (it->second->time < now) {
+        if (elapsed_since_s(it->second->start_time) > it->second->duration_s) {
 
             if (it->second->callback) {
 

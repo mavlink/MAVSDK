@@ -40,6 +40,8 @@ public:
 
     void refresh_timeout_handler(const void *cookie);
 
+    void update_timeout_handler(double new_duration_s, const void *cookie);
+
     void unregister_timeout_handler(const void *cookie);
 
     bool send_message(const mavlink_message_t &message);

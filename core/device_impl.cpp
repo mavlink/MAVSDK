@@ -79,6 +79,11 @@ void DeviceImpl::refresh_timeout_handler(const void *cookie)
     _timeout_handler.refresh(cookie);
 }
 
+void DeviceImpl::update_timeout_handler(double new_duration_s, const void *cookie)
+{
+    _timeout_handler.update(new_duration_s, cookie);
+}
+
 void DeviceImpl::unregister_timeout_handler(const void *cookie)
 {
     _timeout_handler.remove(cookie);

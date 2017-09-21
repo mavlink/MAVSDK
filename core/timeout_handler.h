@@ -22,6 +22,7 @@ public:
 
     void add(std::function<void()> callback, double duration_s, void **cookie);
     void refresh(const void *cookie);
+    void update(double new_duration_s, const void *cookie);
     void remove(const void *cookie);
 
     void run_once();
@@ -29,7 +30,7 @@ public:
 private:
     struct Timeout {
         std::function<void()> callback;
-        dl_time_t time;
+        dl_time_t start_time;
         double duration_s;
     };
 
