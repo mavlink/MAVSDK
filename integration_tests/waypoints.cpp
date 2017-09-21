@@ -95,7 +95,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         auto future_result = prom->get_future();
         device.mission().send_mission_async(
         mission_items, [prom](Mission::Result result) {
-            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            ASSERT_EQ(result, Mission::Result::SUCCESS);
             prom->set_value();
             LogInfo() << "Mission uploaded.";
         });
@@ -119,7 +119,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         auto future_result = prom->get_future();
         device.mission().start_mission_async(
         [prom](Mission::Result result) {
-            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            ASSERT_EQ(result, Mission::Result::SUCCESS);
             prom->set_value();
             LogInfo() << "Started mission.";
         });
