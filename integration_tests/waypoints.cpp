@@ -157,7 +157,7 @@ void receive_mission_progress(int current, int total, Device *device)
 {
     LogInfo() << "Mission status update: " << current << " / " << total;
 
-    if (current == 2) {
+    if (current == 2 && !_break_done) {
 
         // Some time after the mission item 2, we take a quick break.
         std::this_thread::sleep_for(std::chrono::seconds(2));
