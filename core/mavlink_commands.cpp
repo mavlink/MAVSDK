@@ -238,6 +238,8 @@ void MavlinkCommands::do_work()
         LogDebug() << "Sending command " << (*it)->num_sent
                    << " time (" << (int)(*it)->mavlink_command << ")";
 
+        // Reset timeout flag for next re-send.
+        (*it)->timed_out = false;
         if (!_parent->send_message((*it)->mavlink_message)) {
             LogErr() << "connection send error (" << (*it)->mavlink_command << ")";
             if ((*it)->callback) {
