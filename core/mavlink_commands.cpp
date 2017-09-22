@@ -57,21 +57,19 @@ MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
                        );
 
     std::future<PromiseResult> res = prom->get_future();
-    while (true) {
-        // Block now to wait for result.
-        res.wait();
+    // Block now to wait for result.
+    res.wait();
 
-        PromiseResult promise_result = res.get();
+    PromiseResult promise_result = res.get();
 
-        // We should not get notified for progress because `std::future` does not support
-        // being called multiple times.
+    // We should not get notified for progress because `std::future` does not support
+    // being called multiple times.
 
-        //if (promise_result.result == Result::IN_PROGRESS) {
-        //    LogInfo() << "In progress: " << promise_result.progress;
-        //    continue;
-        //}
-        return promise_result.result;
-    }
+    //if (promise_result.result == Result::IN_PROGRESS) {
+    //    LogInfo() << "In progress: " << promise_result.progress;
+    //    continue;
+    //}
+    return promise_result.result;
 }
 
 
