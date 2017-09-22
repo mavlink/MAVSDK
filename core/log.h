@@ -1,7 +1,6 @@
 #pragma once
 
 #include <sstream>
-#include "global_include.h"
 
 #if ANDROID
 #include <android/log.h>
@@ -82,8 +81,9 @@ public:
                 __android_log_print(ANDROID_LOG_ERROR, "DroneCore", "%s", _s.str().c_str());
                 break;
         }
-        UNUSED(_caller_filename);
-        UNUSED(_caller_filenumber);
+        // Unused:
+        (void)_caller_filename;
+        (void)_caller_filenumber;
 #else
 
         switch (_log_level) {
