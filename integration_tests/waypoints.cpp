@@ -28,11 +28,22 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
 {
     DroneCore dc;
 
-    DroneCore::ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
+    {
+        auto prom = std::make_shared<std::promise<void>>();
+        auto future_result = prom->get_future();
 
-    // Wait for device to connect via heartbeat.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+        LogInfo() << "Waiting to discover device...";
+        dc.register_on_discover([prom](uint64_t uuid) {
+            LogInfo() << "Discovered device with UUID: " << uuid;
+            prom->set_value();
+        });
+
+        DroneCore::ConnectionResult ret = dc.add_udp_connection();
+        ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
+
+        future_result.get();
+    }
+
 
     Device &device = dc.device();
 
@@ -126,6 +137,9 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         future_result.get();
     }
 
+    // We need to wait a bit, otherwise the armed state might not be correct yet.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
     while (device.telemetry().armed()) {
         // Wait until we're done.
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -164,7 +178,7 @@ void receive_mission_progress(int current, int total, Device *device)
         {
             auto prom = std::make_shared<std::promise<void>>();
             auto future_result = prom->get_future();
-
+            LogInfo() << "Pausing mission...";
             device->mission().pause_mission_async(
             [prom](Mission::Result result) {
                 EXPECT_EQ(result, Mission::Result::SUCCESS);
@@ -172,6 +186,7 @@ void receive_mission_progress(int current, int total, Device *device)
             });
 
             future_result.get();
+            LogInfo() << "Mission paused.";
         }
         // We don't want to pause muptiple times in case we get the progress notification
         // several times.
@@ -184,6 +199,7 @@ void receive_mission_progress(int current, int total, Device *device)
         {
             auto prom = std::make_shared<std::promise<void>>();
             auto future_result = prom->get_future();
+            LogInfo() << "Resuming mission...";
             device->mission().start_mission_async(
             [prom](Mission::Result result) {
                 EXPECT_EQ(result, Mission::Result::SUCCESS);
@@ -191,14 +207,17 @@ void receive_mission_progress(int current, int total, Device *device)
             });
 
             future_result.get();
+            LogInfo() << "Mission resumed.";
         }
     }
 
 
     if (current == total) {
         // We are done, and can do RTL to go home.
+        LogInfo() << "Commanding RTL...";
         const Action::Result result = device->action().return_to_launch();
         EXPECT_EQ(result, Action::Result::SUCCESS);
+        LogInfo() << "Commanded RTL.";
     }
 }
 
