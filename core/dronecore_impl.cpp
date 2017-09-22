@@ -62,6 +62,8 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
         return;
     }
 
+    // LogDebug() << "Received " << (int)message.msgid;
+
     std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
     // Change system id of null device
