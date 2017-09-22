@@ -229,7 +229,7 @@ void MavlinkCommands::do_work()
              != active_command_ids.end());
 
         if (found_command_id) {
-            LogDebug() << "We need to wait to send " << (int)(*it)->mavlink_command;
+            // LogDebug() << "We need to wait to send " << (int)(*it)->mavlink_command;
             ++it;
             continue;
         }
