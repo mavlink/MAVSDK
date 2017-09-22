@@ -71,6 +71,9 @@ script:
     make;
     make docs;
     make run_unit_tests;
+    make install;
+    (cd example/takeoff_land && mkdir build && cd build && cmake .. && make);
+    (cd example/fly_mission && mkdir build && cd build && cmake .. && make);
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make;
