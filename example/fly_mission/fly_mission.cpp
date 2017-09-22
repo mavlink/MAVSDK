@@ -24,9 +24,9 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                                      float gimbal_yaw_deg,
                                                      MissionItem::CameraAction camera_action);
 
-static void receive_mission_progress(int current, int total, Device *device);
+static void receive_mission_progress(int current, int total);
 
-static bool _break_done = false;
+static std::atomic<bool> _want_to_pause {false};
 
 int main(int /*argc*/, char ** /*argv*/)
 {
@@ -138,7 +138,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
     // We pass on device to receive_mission_progress because we need it in the callback.
-    device.mission().subscribe_progress(std::bind(&receive_mission_progress, _1, _2, &device));
+    device.mission().subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
 
     {
         std::cout << "Starting mission." << std::endl;
@@ -154,6 +154,65 @@ int main(int /*argc*/, char ** /*argv*/)
         if (result != Mission::Result::SUCCESS) {
             std::cout << "Mission start failed (" << Mission::result_str(result) << "), exiting." << std::endl;
             return 1;
+        }
+    }
+
+    while (!_want_to_pause) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    {
+        auto prom = std::make_shared<std::promise<Mission::Result>>();
+        auto future_result = prom->get_future();
+
+        std::cout << "Pausing mission..." << std::endl;
+        device.mission().pause_mission_async(
+        [prom](Mission::Result result) {
+            prom->set_value(result);
+        });
+
+        const Mission::Result result = future_result.get();
+        if (result != Mission::Result::SUCCESS) {
+            std::cout << "Failed to pause mission (" << Mission::result_str(result) << ")" << std::endl;
+        } else {
+            std::cout << "Mission paused." << std::endl;
+        }
+    }
+
+    // Pause for 5 seconds.
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    // Then continue.
+    {
+        auto prom = std::make_shared<std::promise<Mission::Result>>();
+        auto future_result = prom->get_future();
+
+        std::cout << "Resuming mission..." << std::endl;
+        device.mission().start_mission_async(
+        [prom](Mission::Result result) {
+            prom->set_value(result);
+        });
+
+        const Mission::Result result = future_result.get();
+        if (result != Mission::Result::SUCCESS) {
+            std::cout << "Failed to resume mission (" << Mission::result_str(result) << ")" << std::endl;
+        } else {
+            std::cout << "Resumed mission." << std::endl;
+        }
+    }
+
+    while (!device.mission().mission_finished()) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    {
+        // We are done, and can do RTL to go home.
+        std::cout << "Commanding RTL..." << std::endl;
+        const Action::Result result = device.action().return_to_launch();
+        if (result != Action::Result::SUCCESS) {
+            std::cout << "Failed to command RTL (" << Action::result_str(result) << ")" << std::endl;
+        } else {
+            std::cout << "Commanded RTL." << std::endl;
         }
     }
 
@@ -186,69 +245,14 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
     return new_item;
 }
 
-void receive_mission_progress(int current, int total, Device *device)
+void receive_mission_progress(int current, int total)
 {
     std::cout << "Mission status update: " << current << " / " << total << std::endl;
 
-    if (current == 2 && !_break_done) {
-
-        // Some time after the mission item 2, we take a quick break.
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-
-        {
-            auto prom = std::make_shared<std::promise<Mission::Result>>();
-            auto future_result = prom->get_future();
-
-            std::cout << "Pausing mission..." << std::endl;
-            device->mission().pause_mission_async(
-            [prom](Mission::Result result) {
-                prom->set_value(result);
-            });
-
-            const Mission::Result result = future_result.get();
-            if (result != Mission::Result::SUCCESS) {
-                std::cout << "Failed to pause mission (" << Mission::result_str(result) << ")" << std::endl;
-            } else {
-                std::cout << "Mission paused." << std::endl;
-            }
-        }
-        // We don't want to pause muptiple times in case we get the progress notification
-        // several times.
-        _break_done = true;
-
-        // Pause for 5 seconds.
-        std::this_thread::sleep_for(std::chrono::seconds(5));
-
-        // Then continue.
-        {
-            auto prom = std::make_shared<std::promise<Mission::Result>>();
-            auto future_result = prom->get_future();
-
-            std::cout << "Resuming mission..." << std::endl;
-            device->mission().start_mission_async(
-            [prom](Mission::Result result) {
-                prom->set_value(result);
-            });
-
-            const Mission::Result result = future_result.get();
-            if (result != Mission::Result::SUCCESS) {
-                std::cout << "Failed to resume mission (" << Mission::result_str(result) << ")" << std::endl;
-            } else {
-                std::cout << "Resumed mission." << std::endl;
-            }
-        }
-    }
-
-
-    if (current == total) {
-        // We are done, and can do RTL to go home.
-        std::cout << "Commanding RTL..." << std::endl;
-        const Action::Result result = device->action().return_to_launch();
-        if (result != Action::Result::SUCCESS) {
-            std::cout << "Commanding RTL failed (" << Action::result_str(result) << ")" << std::endl;
-        } else {
-            std::cout << "Commanded RTL" << std::endl;
-        }
+    if (current >= 2) {
+        // We can only set a flag here. If we do more request inside the callback,
+        // we risk blocking the system.
+        _want_to_pause = true;
     }
 }
 
