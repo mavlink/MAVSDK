@@ -2,12 +2,12 @@
 #include <functional>
 #include <memory>
 #include <future>
+#include <atomic>
 #include "integration_test_helper.h"
 #include "dronecore.h"
 
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
-
 
 
 static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
@@ -19,9 +19,9 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                                      float gimbal_yaw_deg,
                                                      MissionItem::CameraAction camera_action);
 
-static void receive_mission_progress(int current, int total, Device *device);
+static void receive_mission_progress(int current, int total);
 
-static bool _break_done = false;
+static std::atomic<bool> _want_to_pause {false};
 
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
@@ -120,8 +120,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    // We pass on device to receive_mission_progress because we need it in the callback.
-    device.mission().subscribe_progress(std::bind(&receive_mission_progress, _1, _2, &device));
+    device.mission().subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
 
     {
         LogInfo() << "Starting mission.";
@@ -135,6 +134,54 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         });
 
         future_result.get();
+    }
+
+    while (!_want_to_pause) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    {
+        auto prom = std::make_shared<std::promise<void>>();
+        auto future_result = prom->get_future();
+        LogInfo() << "Pausing mission...";
+        device.mission().pause_mission_async(
+        [prom](Mission::Result result) {
+            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            prom->set_value();
+        });
+
+        future_result.get();
+        LogInfo() << "Mission paused.";
+    }
+
+    // Pause for 5 seconds.
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    // Then continue.
+    {
+        auto prom = std::make_shared<std::promise<void>>();
+        auto future_result = prom->get_future();
+        LogInfo() << "Resuming mission...";
+        device.mission().start_mission_async(
+        [prom](Mission::Result result) {
+            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            prom->set_value();
+        });
+
+        future_result.get();
+        LogInfo() << "Mission resumed.";
+    }
+
+    while (!device.mission().mission_finished()) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
+    {
+        // We are done, and can do RTL to go home.
+        LogInfo() << "Commanding RTL...";
+        const Action::Result result = device.action().return_to_launch();
+        EXPECT_EQ(result, Action::Result::SUCCESS);
+        LogInfo() << "Commanded RTL.";
     }
 
     // We need to wait a bit, otherwise the armed state might not be correct yet.
@@ -166,58 +213,14 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
     return new_item;
 }
 
-void receive_mission_progress(int current, int total, Device *device)
+void receive_mission_progress(int current, int total)
 {
     LogInfo() << "Mission status update: " << current << " / " << total;
 
-    if (current == 2 && !_break_done) {
-
-        // Some time after the mission item 2, we take a quick break.
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-
-        {
-            auto prom = std::make_shared<std::promise<void>>();
-            auto future_result = prom->get_future();
-            LogInfo() << "Pausing mission...";
-            device->mission().pause_mission_async(
-            [prom](Mission::Result result) {
-                EXPECT_EQ(result, Mission::Result::SUCCESS);
-                prom->set_value();
-            });
-
-            future_result.get();
-            LogInfo() << "Mission paused.";
-        }
-        // We don't want to pause muptiple times in case we get the progress notification
-        // several times.
-        _break_done = true;
-
-        // Pause for 5 seconds.
-        std::this_thread::sleep_for(std::chrono::seconds(5));
-
-        // Then continue.
-        {
-            auto prom = std::make_shared<std::promise<void>>();
-            auto future_result = prom->get_future();
-            LogInfo() << "Resuming mission...";
-            device->mission().start_mission_async(
-            [prom](Mission::Result result) {
-                EXPECT_EQ(result, Mission::Result::SUCCESS);
-                prom->set_value();
-            });
-
-            future_result.get();
-            LogInfo() << "Mission resumed.";
-        }
-    }
-
-
-    if (current == total) {
-        // We are done, and can do RTL to go home.
-        LogInfo() << "Commanding RTL...";
-        const Action::Result result = device->action().return_to_launch();
-        EXPECT_EQ(result, Action::Result::SUCCESS);
-        LogInfo() << "Commanded RTL.";
+    if (current >= 2) {
+        // We can only set a flag here. If we do more request inside the callback,
+        // we risk blocking the system.
+        _want_to_pause = true;
     }
 }
 
