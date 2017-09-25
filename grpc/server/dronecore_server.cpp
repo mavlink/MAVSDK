@@ -12,6 +12,12 @@
 
 #include "dronecore.h"
 #include "dronecore.grpc.pb.h"
+#include "action.h"
+#include "action.grpc.pb.h"
+#include "mission.h"
+#include "mission.grpc.pb.h"
+#include "telemetry.h"
+#include "telemetry.grpc.pb.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -21,16 +27,29 @@ using grpc::ServerReaderWriter;
 using grpc::ServerWriter;
 using grpc::Status;
 using dronecorerpc::Empty;
+using dronecorerpc::ActionEmpty;
+using dronecorerpc::MissionEmpty;
+using dronecorerpc::TelemetryEmpty;
 using dronecorerpc::DroneCoreRPC;
+using dronecorerpc::ActionRPC;
+using dronecorerpc::MissionRPC;
+using dronecorerpc::TelemetryRPC;
 
 using namespace dronecore;
 using namespace std::placeholders;
 
+static DroneCore dc;
+
 class DroneCoreRPCImpl final : public DroneCoreRPC::Service
 {
-
 public:
-    Status Arm(ServerContext *context, const Empty *request,
+    // Actually it's all in the plugins right now.
+};
+
+class ActionRPCImpl final : public ActionRPC::Service
+{
+public:
+    Status Arm(ServerContext *context, const ActionEmpty *request,
                dronecorerpc::ActionResult *response) override
     {
         const Action::Result action_result = dc.device().action().arm();
@@ -39,7 +58,7 @@ public:
         return Status::OK;
     }
 
-    Status TakeOff(ServerContext *context, const Empty *request,
+    Status TakeOff(ServerContext *context, const ActionEmpty *request,
                    dronecorerpc::ActionResult *response) override
     {
         const Action::Result action_result = dc.device().action().takeoff();
@@ -48,7 +67,7 @@ public:
         return Status::OK;
     }
 
-    Status Land(ServerContext *context, const Empty *request,
+    Status Land(ServerContext *context, const ActionEmpty *request,
                 dronecorerpc::ActionResult *response) override
     {
         const Action::Result action_result = dc.device().action().land();
@@ -56,7 +75,11 @@ public:
         response->set_result_str(Action::result_str(action_result));
         return Status::OK;
     }
+};
 
+class MissionRPCImpl final : public MissionRPC::Service
+{
+public:
     Status SendMission(ServerContext *context, const dronecorerpc::Mission *mission,
                        dronecorerpc::MissionResult *response) override
     {
@@ -91,7 +114,7 @@ public:
         return Status::OK;
     }
 
-    Status StartMission(ServerContext *context, const Empty *request,
+    Status StartMission(ServerContext *context, const MissionEmpty *request,
                         dronecorerpc::MissionResult *response) override
     {
         // TODO: there has to be a better way than using std::future.
@@ -110,8 +133,12 @@ public:
         future_result.get();
         return Status::OK;
     }
+};
 
-    Status TelemetryPositionSubscription(ServerContext *context, const Empty *request,
+class TelemetryRPCImpl final : public TelemetryRPC::Service
+{
+
+    Status TelemetryPositionSubscription(ServerContext *context, const TelemetryEmpty *request,
                                          ServerWriter<dronecorerpc::TelemetryPosition> *writer) override
     {
         dc.device().telemetry().position_async([&writer](Telemetry::Position position) {
@@ -128,27 +155,27 @@ public:
         }
         return Status::OK;
     }
-
-
-    DroneCore dc;
-
-private:
 };
+
+
 
 void RunServer()
 {
     std::string server_address("0.0.0.0:50051");
     DroneCoreRPCImpl service;
+    ActionRPCImpl action_service;
+    MissionRPCImpl mission_service;
+    TelemetryRPCImpl telemetry_service;
 
     bool discovered_device = false;
-    DroneCore::ConnectionResult connection_result = service.dc.add_udp_connection();
+    DroneCore::ConnectionResult connection_result = dc.add_udp_connection();
     if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
         std::cout << "Connection failed: " << DroneCore::connection_result_str(
                       connection_result) << std::endl;
         return;
     }
     std::cout << "Waiting to discover device..." << std::endl;
-    service.dc.register_on_discover([&discovered_device](uint64_t uuid) {
+    dc.register_on_discover([&discovered_device](uint64_t uuid) {
         std::cout << "Discovered device with UUID: " << uuid << std::endl;
         discovered_device = true;
     });
@@ -162,6 +189,9 @@ void RunServer()
     ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
     builder.RegisterService(&service);
+    builder.RegisterService(&action_service);
+    builder.RegisterService(&mission_service);
+    builder.RegisterService(&telemetry_service);
     std::unique_ptr<Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;
     server->Wait();

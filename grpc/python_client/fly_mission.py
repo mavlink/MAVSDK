@@ -6,7 +6,11 @@ import grpc
 from threading import Thread
 import time
 import dronecore_pb2 as dc
-import dronecore_pb2_grpc
+# import dronecore_pb2_grpc
+import action_pb2 as dc_action
+import action_pb2_grpc
+import mission_pb2 as dc_mission
+import mission_pb2_grpc
 
 
 thread_status = True
@@ -22,33 +26,35 @@ def wait_func(future_status):
 def run():
     global thread_status
     channel = grpc.insecure_channel('0.0.0.0:50051')
-    stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+    # stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+    action_stub = action_pb2_grpc.ActionRPCStub(channel)
+    mission_stub = mission_pb2_grpc.MissionRPCStub(channel)
 
     mission_items = []
-    mission_items.append(dc.MissionItem(latitude=47.398170327054473,
-                                        longitude=8.5456490218639658,
-                                        altitude=10,
-                                        speed=2,
+    mission_items.append(dc_mission.MissionItem(latitude_deg=47.398170327054473,
+                                        longitude_deg=8.5456490218639658,
+                                        relative_altitude_m=10,
+                                        speed_m_s=2,
                                         is_fly_through=True,
-                                        pitch=0,
-                                        yaw=-60,
-                                        camera_action=5))
-    mission_items.append(dc.MissionItem(latitude=47.398241338125118,
-                                        longitude=8.5455360114574432,
-                                        altitude=10,
-                                        speed=2,
+                                        gimbal_pitch_deg=0,
+                                        gimbal_yaw_deg=-60,
+                                        camera_action=dc_mission.MissionItem.NONE))
+    mission_items.append(dc_mission.MissionItem(latitude_deg=47.398241338125118,
+                                        longitude_deg=8.5455360114574432,
+                                        relative_altitude_m=10,
+                                        speed_m_s=2,
                                         is_fly_through=True,
-                                        pitch=0,
-                                        yaw=-60,
-                                        camera_action=0))
+                                        gimbal_pitch_deg=0,
+                                        gimbal_yaw_deg=-60,
+                                        camera_action=dc_mission.MissionItem.NONE))
 
-    stub.SendMission(dc.Mission(mission_items=mission_items))
+    mission_stub.SendMission(dc_mission.Mission(mission_items=mission_items))
     time.sleep(1)
 
-    stub.Arm(dc.Empty())
+    action_stub.Arm(dc_action.ActionEmpty())
     time.sleep(1)
 
-    future_status = stub.StartMission.future(dc.Empty())
+    future_status = mission_stub.StartMission.future(dc_mission.MissionEmpty())
     t = Thread(target=wait_func, args=(future_status,))
     t.start()
 
