@@ -134,7 +134,7 @@ public:
      */
     struct RCStatus {
         bool available_once; /**< @brief true if an RC signal has been available once. */
-        bool lost; /**< @brief true if the RC signal is lost. */
+        bool available; /**< @brief true if the RC signal is available now. */
         float signal_strength_percent; /**< @brief Signal strength as a percentage (range: 0 to 100). */
     };
 

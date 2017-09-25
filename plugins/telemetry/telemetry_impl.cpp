@@ -784,7 +784,7 @@ void TelemetryImpl::set_rc_status(bool available, float signal_strength_percent)
         _rc_status.signal_strength_percent = 0.0f;
     }
 
-    _rc_status.lost = !available;
+    _rc_status.available = available;
 
 }
 
