@@ -52,6 +52,12 @@ int main(int /*argc*/, char ** /*argv*/)
         future_result.get();
     }
 
+    dc.register_on_timeout([](uint64_t uuid) {
+        std::cout << "Device with UUID timed out: " << uuid << std::endl;
+        std::cout << "Exiting." << std::endl;
+        exit(0);
+    });
+
     // We don't need to specifiy the UUID if it's only one device anyway.
     // If there were multiple, we could specify it with:
     // dc.device(uint64_t uuid);
