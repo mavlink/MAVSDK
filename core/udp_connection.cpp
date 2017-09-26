@@ -27,8 +27,7 @@ namespace dronecore {
 UdpConnection::UdpConnection(DroneCoreImpl *parent,
                              int local_port_number) :
     Connection(parent),
-    _local_port_number(local_port_number),
-    _should_exit(false)
+    _local_port_number(local_port_number)
 {
     if (_local_port_number == 0) {
         _local_port_number = DEFAULT_UDP_LOCAL_PORT;
@@ -132,23 +131,28 @@ DroneCore::ConnectionResult UdpConnection::stop()
 
 bool UdpConnection::send_message(const mavlink_message_t &message)
 {
-    if (_remote_ip.empty()) {
-        LogErr() << "Remote IP unknown";
-        return false;
-    }
-
-    if (_remote_port_number == 0) {
-        LogErr() << "Remote port unknown";
-        return false;
-    }
-
     struct sockaddr_in dest_addr;
-    memset((char *)&dest_addr, 0, sizeof(dest_addr));
-    dest_addr.sin_family = AF_INET;
 
-    inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
+    {
+        std::lock_guard<std::mutex> lock(_remote_mutex);
 
-    dest_addr.sin_port = htons(_remote_port_number);
+        if (_remote_ip.empty()) {
+            LogErr() << "Remote IP unknown";
+            return false;
+        }
+
+        if (_remote_port_number == 0) {
+            LogErr() << "Remote port unknown";
+            return false;
+        }
+
+        memset((char *)&dest_addr, 0, sizeof(dest_addr));
+        dest_addr.sin_family = AF_INET;
+
+        inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
+
+        dest_addr.sin_port = htons(_remote_port_number);
+    }
 
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
@@ -192,38 +196,40 @@ void UdpConnection::receive(UdpConnection *parent)
             continue;
         }
 
-        int new_remote_port_number = ntohs(src_addr.sin_port);
-        std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
+        {
+            std::lock_guard<std::mutex> lock(parent->_remote_mutex);
 
-        // TODO make calls to remote threadsafe.
+            int new_remote_port_number = ntohs(src_addr.sin_port);
+            std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
 
-        if (parent->_remote_ip.empty()) {
+            if (parent->_remote_ip.empty()) {
 
-            if (parent->_remote_port_number == 0 ||
-                parent->_remote_port_number == new_remote_port_number) {
-                // Set IP if we don't know it yet.
-                parent->_remote_ip = new_remote_ip;
-                parent->_remote_port_number = new_remote_port_number;
+                if (parent->_remote_port_number == 0 ||
+                    parent->_remote_port_number == new_remote_port_number) {
+                    // Set IP if we don't know it yet.
+                    parent->_remote_ip = new_remote_ip;
+                    parent->_remote_port_number = new_remote_port_number;
 
-                LogInfo() << "Partner IP: " << parent->_remote_ip
-                          << ":" << parent->_remote_port_number;
+                    LogInfo() << "Partner IP: " << parent->_remote_ip
+                              << ":" << parent->_remote_port_number;
+
+                } else {
+
+                    LogWarn() << "Ignoring message from remote port " << new_remote_port_number
+                              << " instead of " << parent->_remote_port_number;
+                    continue;
+                }
+
+            } else if (parent->_remote_ip.compare(new_remote_ip) != 0) {
+                LogWarn() << "Ignoring message from IP: " << new_remote_ip;
+                continue;
 
             } else {
-
-                LogWarn() << "Ignoring message from remote port " << new_remote_port_number
-                          << " instead of " << parent->_remote_port_number;
-                continue;
-            }
-
-        } else if (parent->_remote_ip.compare(new_remote_ip) != 0) {
-            LogWarn() << "Ignoring message from IP: " << new_remote_ip;
-            continue;
-
-        } else {
-            if (parent->_remote_port_number != new_remote_port_number) {
-                LogWarn() << "Ignoring message from remote port " << new_remote_port_number
-                          << " instead of " << parent->_remote_port_number;
-                continue;
+                if (parent->_remote_port_number != new_remote_port_number) {
+                    LogWarn() << "Ignoring message from remote port " << new_remote_port_number
+                              << " instead of " << parent->_remote_port_number;
+                    continue;
+                }
             }
         }
 
