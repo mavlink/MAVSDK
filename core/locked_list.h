@@ -20,8 +20,8 @@ public:
     class iterator: public std::list<T>::iterator
     {
     public:
-        iterator(typename std::list<T>::iterator c, std::mutex &mutex) :
-            std::list<T>::iterator(c),
+        iterator(typename std::list<T>::iterator iter, std::mutex &mutex) :
+            std::list<T>::iterator(iter),
             _mutex(&mutex)
         {}
 
