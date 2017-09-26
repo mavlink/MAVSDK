@@ -39,13 +39,13 @@ void TimeoutHandler::refresh(const void *cookie)
     }
 }
 
-void TimeoutHandler::update(double new_duration_s, const void *cookie)
+void TimeoutHandler::update(double updated_duration_s, const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
     auto it = _timeouts.find((void *)(cookie));
     if (it != _timeouts.end()) {
-        it->second->duration_s = new_duration_s;
+        it->second->duration_s = updated_duration_s;
     }
 }
 

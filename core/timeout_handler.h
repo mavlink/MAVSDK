@@ -22,7 +22,7 @@ public:
 
     void add(std::function<void()> callback, double duration_s, void **cookie);
     void refresh(const void *cookie);
-    void update(double new_duration_s, const void *cookie);
+    void update(double updated_duration_s, const void *cookie);
     void remove(const void *cookie);
 
     void run_once();
