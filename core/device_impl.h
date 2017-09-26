@@ -87,6 +87,8 @@ public:
     static uint8_t get_own_system_id() { return _own_system_id; }
     static uint8_t get_own_component_id() { return _own_component_id; }
 
+    bool is_connected() const;
+
     // Non-copyable
     DeviceImpl(const DeviceImpl &) = delete;
     const DeviceImpl &operator=(const DeviceImpl &) = delete;

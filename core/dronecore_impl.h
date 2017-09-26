@@ -26,6 +26,9 @@ public:
     Device &get_device();
     Device &get_device(uint64_t uuid);
 
+    bool is_connected() const;
+    bool is_connected(uint64_t uuid) const;
+
     void register_on_discover(DroneCore::event_callback_t callback);
     void register_on_timeout(DroneCore::event_callback_t callback);
 
@@ -38,7 +41,7 @@ private:
     std::mutex _connections_mutex;
     std::vector<Connection *> _connections;
 
-    std::recursive_mutex _devices_mutex;
+    mutable std::recursive_mutex _devices_mutex;
     std::map<uint8_t, Device *> _devices;
     std::map<uint8_t, DeviceImpl *> _device_impls;
 

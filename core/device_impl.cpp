@@ -40,6 +40,11 @@ DeviceImpl::~DeviceImpl()
     }
 }
 
+bool DeviceImpl::is_connected() const
+{
+    return _heartbeats_arriving;
+}
+
 void DeviceImpl::register_mavlink_message_handler(uint16_t msg_id,
                                                   mavlink_message_handler_t callback,
                                                   const void *cookie)

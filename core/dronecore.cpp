@@ -107,6 +107,16 @@ Device &DroneCore::device(uint64_t uuid) const
     return _impl->get_device(uuid);
 }
 
+bool DroneCore::is_connected() const
+{
+    return _impl->is_connected();
+}
+
+bool DroneCore::is_connected(uint64_t uuid) const
+{
+    return _impl->is_connected(uuid);
+}
+
 void DroneCore::register_on_discover(event_callback_t callback)
 {
     _impl->register_on_discover(callback);
