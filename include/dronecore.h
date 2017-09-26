@@ -148,6 +148,29 @@ public:
     typedef std::function<void(uint64_t uuid)> event_callback_t;
 
     /**
+     * @brief Returns true if exactly one device is currently connected.
+     *
+     * Connected means we are receiving heartbeats from this device.
+     * It means the same as "discovered" and "not timed out".
+     *
+     * If multiple devices have connected, this will return false.
+     *
+     * @return true if exactly one device is connected.
+     */
+    bool is_connected() const;
+
+    /**
+     * @brief Returns true if a device is currently connected.
+     *
+     * Connected means we are receiving heartbeats from this device.
+     * It means the same as "discovered" and "not timed out".
+     *
+     * @param uuid UUID of device to check.
+     * @return true if device is connected.
+     */
+    bool is_connected(uint64_t uuid) const;
+
+    /**
      * @brief Register callback for device discovery.
      *
      * This sets a callback that will be notified if a new device is discovered.
