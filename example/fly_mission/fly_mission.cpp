@@ -123,7 +123,6 @@ int main(int /*argc*/, char ** /*argv*/)
         device.mission().send_mission_async(
         mission_items, [prom](Mission::Result result) {
             prom->set_value(result);
-            std::cout << "Mission uploaded." << std::endl;
         });
 
         const Mission::Result result = future_result.get();
@@ -131,6 +130,7 @@ int main(int /*argc*/, char ** /*argv*/)
             std::cout << "Mission upload failed (" << Mission::result_str(result) << "), exiting." << std::endl;
             return 1;
         }
+        std::cout << "Mission uploaded." << std::endl;
     }
 
     std::cout << "Arming..." << std::endl;
