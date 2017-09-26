@@ -203,7 +203,7 @@ void MavlinkCommands::do_work()
     for (auto it = _work_list.begin(); it != _work_list.end(); /* ++it */) {
 
         // We ignore what has already been sent and is not timed out yet.
-        if ((*it)->num_sent != 0 && !(*it)->timed_out) {
+        if ((*it)->num_command_sent != 0 && !(*it)->timed_out) {
             // Mark it as active.
             active_command_ids.push_back((*it)->mavlink_command);
 
@@ -212,7 +212,7 @@ void MavlinkCommands::do_work()
         }
 
         // We remove what has already been resent a few times.
-        if ((*it)->timed_out && (*it)->num_sent >= RETRIES) {
+        if ((*it)->timed_out && (*it)->num_command_sent >= RETRIES) {
             if ((*it)->callback) {
                 auto callback_tmp = (*it)->callback;
                 _mutex.unlock();
@@ -235,7 +235,7 @@ void MavlinkCommands::do_work()
         }
 
         // Now we can actually send it.
-        LogDebug() << "Sending command " << (*it)->num_sent
+        LogDebug() << "Sending command " << (*it)->num_command_sent
                    << " time (" << (int)(*it)->mavlink_command << ")";
 
         // Reset timeout flag for next re-send.
@@ -254,7 +254,7 @@ void MavlinkCommands::do_work()
             continue;
         }
 
-        ++((*it)->num_sent);
+        ++((*it)->num_command_sent);
 
         std::shared_ptr<Work> work_ptr = *it;
         // Let's set a timer for retransmission if needed.

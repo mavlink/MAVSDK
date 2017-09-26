@@ -59,7 +59,7 @@ private:
     static constexpr int RETRIES = 3;
 
     struct Work {
-        int num_sent = 0;
+        int num_command_sent = 0;
         bool timed_out = true;
         double timeout_s = DEFAULT_TIMEOUT_NORMAL_S;
         uint16_t mavlink_command = 0;
