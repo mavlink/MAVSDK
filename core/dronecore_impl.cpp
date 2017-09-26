@@ -184,6 +184,28 @@ Device &DroneCoreImpl::get_device(uint64_t uuid)
     return *_devices[system_id];
 }
 
+bool DroneCoreImpl::is_connected() const
+{
+    std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
+
+    if (_device_impls.size() == 1) {
+        return _device_impls.begin()->second->is_connected();
+    }
+    return false;
+}
+
+bool DroneCoreImpl::is_connected(uint64_t uuid) const
+{
+    std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
+
+    for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
+        if (it->second->get_target_uuid() == uuid) {
+            return it->second->is_connected();
+        }
+    }
+    return false;
+}
+
 void DroneCoreImpl::create_device_if_not_existing(uint8_t system_id)
 {
     std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
