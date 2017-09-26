@@ -202,34 +202,25 @@ void UdpConnection::receive(UdpConnection *parent)
             int new_remote_port_number = ntohs(src_addr.sin_port);
             std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
 
-            if (parent->_remote_ip.empty()) {
+            if (parent->_remote_ip.empty() ||
+                parent->_remote_port_number == 0) {
 
-                if (parent->_remote_port_number == 0 ||
-                    parent->_remote_port_number == new_remote_port_number) {
-                    // Set IP if we don't know it yet.
-                    parent->_remote_ip = new_remote_ip;
-                    parent->_remote_port_number = new_remote_port_number;
+                // Set IP if we don't know it yet.
+                parent->_remote_ip = new_remote_ip;
+                parent->_remote_port_number = new_remote_port_number;
 
-                    LogInfo() << "Partner IP: " << parent->_remote_ip
-                              << ":" << parent->_remote_port_number;
+                LogInfo() << "New device on: " << parent->_remote_ip
+                          << ":" << parent->_remote_port_number;
 
-                } else {
+            } else if (parent->_remote_ip.compare(new_remote_ip) != 0 ||
+                       parent->_remote_port_number != new_remote_port_number) {
 
-                    LogWarn() << "Ignoring message from remote port " << new_remote_port_number
-                              << " instead of " << parent->_remote_port_number;
-                    continue;
-                }
+                // It is possible that wifi disconnects and a device might get a new
+                // IP and/or UDP port.
+                parent->_remote_ip = new_remote_ip;
+                parent->_remote_port_number = new_remote_port_number;
 
-            } else if (parent->_remote_ip.compare(new_remote_ip) != 0) {
-                LogWarn() << "Ignoring message from IP: " << new_remote_ip;
-                continue;
-
-            } else {
-                if (parent->_remote_port_number != new_remote_port_number) {
-                    LogWarn() << "Ignoring message from remote port " << new_remote_port_number
-                              << " instead of " << parent->_remote_port_number;
-                    continue;
-                }
+                LogInfo() << "Device changed to: " << new_remote_ip;
             }
         }
 
