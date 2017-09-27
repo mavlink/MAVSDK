@@ -18,6 +18,7 @@ skip_branch_with_pr: true
 # build configuration, i.e. Debug, Release, etc.
 configuration:
   - Debug
+  - Release
 
 # scripts that are called at very beginning, before repo cloning
 init:
@@ -40,11 +41,19 @@ build: on
 build_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
   - cd curl-7.55.1\winbuild
-  - nmake /f Makefile.vc mode=static VC=14 MACHINE=x64 DEBUG=no
+  - if "%configuration%"=="Debug" (
+      nmake /f Makefile.vc mode=static VC=14 MACHINE=x64 DEBUG=yes
+    ) else (
+      nmake /f Makefile.vc mode=static VC=14 MACHINE=x64 DEBUG=no
+    )
   - cd C:\dronecore
   - md build
   - cd build
-  - cmake -DWIN_CURL_INCLUDE_DIR:STRING=C:\\curl-7.55.1\\include -DWIN_CURL_LIB:STRING="C:\curl-7.55.1\builds\libcurl-vc14-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 14 2015 Win64" ..
+  - if "%configuration%"=="Debug" (
+      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.55.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.55.1\builds\libcurl-vc14-x64-debug-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE="Debug" ..
+    ) else (
+      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.55.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.55.1\builds\libcurl-vc14-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE="Release" ..
+    )
   - cmake --build . --target install
 
 test: on
