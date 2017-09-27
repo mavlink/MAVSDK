@@ -16,7 +16,7 @@ if(NOT MSVC)
     set(curl_lib "curl")
 else()
     # MSBuild
-    add_definitions("-std=c++11 -WX -W2 -DWINDOWS -DCURL_STATICLIB -MT")
+    add_definitions("-std=c++11 -WX -W2 -DWINDOWS -DCURL_STATICLIB /MD")
     set(platform_libs "Ws2_32.lib")
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)
