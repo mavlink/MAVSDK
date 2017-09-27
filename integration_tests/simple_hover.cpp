@@ -37,14 +37,12 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     Device &device = dc.device();
 
-    for (int i = 0; ; ++i) {
-        if (device.telemetry().health_all_ok()) {
-            break;
-        }
+    int iteration = 0;
+    while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        ASSERT_LT(i, 10);
+        ASSERT_LT(++iteration, 10);
     }
 
     Action::Result action_ret = device.action().arm();
@@ -71,15 +69,13 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     action_ret = device.action().land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
-    for (int i = 0; ; ++i) {
-        if (!device.telemetry().in_air()) {
-            break;
-        }
+    iteration = 0;
+    while (device.telemetry().in_air()) {
         std::cout << "waiting for device to be landed" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         // TODO: currently we need to wait a long time until landed is detected.
-        ASSERT_LT(i, wait_time_s + 5);
+        ASSERT_LT(++iteration, 10);
     }
 
     action_ret = device.action().disarm();
