@@ -69,28 +69,33 @@ install:
 script:
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
     make;
+    make install;
     make docs;
     make run_unit_tests;
-    make install;
     (cd example/takeoff_land && mkdir build && cd build && cmake .. && make);
     (cd example/fly_mission && mkdir build && cd build && cmake .. && make);
     make clean;
     make BUILD_TYPE=Release;
+    make install;
     make run_unit_tests;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make install;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make run_unit_tests;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make fix_style;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make docs;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make clean;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make BUILD_TYPE=Release;
+    docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make install;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make run_unit_tests;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     make;
+    make install;
     make run_unit_tests;
     make clean;
     make BUILD_TYPE=Release;
+    make install;
     make run_unit_tests;
   fi
