@@ -125,7 +125,7 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
         _last_reached_mavlink_mission_item = -1;
 
         report_mission_result(_result_callback, Mission::Result::SUCCESS);
-        LogInfo() << "Sucess, done";
+        LogInfo() << "Mission accepted";
         _activity = Activity::NONE;
     } else if (mission_ack.type == MAV_MISSION_NO_SPACE) {
         LogErr() << "Error: too many waypoints: " << int(mission_ack.type);
