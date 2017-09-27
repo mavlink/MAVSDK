@@ -19,10 +19,6 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                                      float gimbal_yaw_deg,
                                                      MissionItem::CameraAction camera_action);
 
-static void receive_mission_progress(int current, int total);
-
-static std::atomic<bool> _want_to_pause {false};
-
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
 {
@@ -119,8 +115,19 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     EXPECT_EQ(arm_result, Action::Result::SUCCESS);
     LogInfo() << "Armed.";
 
+
+    std::atomic<bool> want_to_pause {false};
+
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    device.mission().subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
+    device.mission().subscribe_progress(
+    [&want_to_pause](int current, int total) {
+        LogInfo() << "Mission status update: " << current << " / " << total;
+        if (current >= 2) {
+            // We can only set a flag here. If we do more request inside the callback,
+            // we risk blocking the system.
+            want_to_pause = true;
+        }
+    });
 
     {
         LogInfo() << "Starting mission.";
@@ -136,7 +143,8 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         future_result.get();
     }
 
-    while (!_want_to_pause) {
+
+    while (!want_to_pause) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -212,15 +220,3 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
     new_item->set_camera_action(camera_action);
     return new_item;
 }
-
-void receive_mission_progress(int current, int total)
-{
-    LogInfo() << "Mission status update: " << current << " / " << total;
-
-    if (current >= 2) {
-        // We can only set a flag here. If we do more request inside the callback,
-        // we risk blocking the system.
-        _want_to_pause = true;
-    }
-}
-
