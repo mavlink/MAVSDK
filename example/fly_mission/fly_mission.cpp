@@ -143,7 +143,6 @@ int main(int /*argc*/, char ** /*argv*/)
     std::cout << "Armed." << std::endl;
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    // We pass on device to receive_mission_progress because we need it in the callback.
     device.mission().subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
 
     {
