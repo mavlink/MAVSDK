@@ -64,7 +64,15 @@ public:
         void set_from_mavlink_param_ext_value(mavlink_param_ext_value_t mavlink_ext_value)
         {
             switch (mavlink_ext_value.param_type) {
-                // FIXME: the camera params are UINT32 but we treat them as INT32.
+                // FIXME: the camera params are others but we treat them as INT32.
+                case MAV_PARAM_TYPE_UINT8:
+                // FALLTHROUGH
+                case MAV_PARAM_TYPE_INT8:
+                // FALLTHROUGH
+                case MAV_PARAM_TYPE_UINT16:
+                // FALLTHROUGH
+                case MAV_PARAM_TYPE_INT16:
+                // FALLTHROUGH
                 case MAV_PARAM_TYPE_UINT32:
                 // FALLTHROUGH
                 case MAV_PARAM_TYPE_INT32: {
