@@ -220,7 +220,7 @@ void UdpConnection::receive(UdpConnection *parent)
                 parent->_remote_ip = new_remote_ip;
                 parent->_remote_port_number = new_remote_port_number;
 
-                LogInfo() << "Device changed to: " << new_remote_ip;
+                LogInfo() << "Device changed to: " << new_remote_ip << ":" << new_remote_port_number;
             }
         }
 
