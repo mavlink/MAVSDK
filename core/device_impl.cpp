@@ -157,7 +157,7 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
 
 void DeviceImpl::heartbeats_timed_out()
 {
-    Debug() << "heartbeats timed out";
+    LogInfo() << "heartbeats timed out";
     set_disconnected();
 }
 
@@ -209,7 +209,7 @@ void DeviceImpl::request_autopilot_version()
     if (!_autopilot_version_pending && _target_uuid_retries >= 3) {
         // We give up getting a UUID and use the system ID.
 
-        Debug() << "No UUID received, using system ID instead.";
+        LogWarn() << "No UUID received, using system ID instead.";
         _target_uuid = _target_system_id;
         _target_uuid_initialized = true;
         set_connected();

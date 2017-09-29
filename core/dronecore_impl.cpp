@@ -231,7 +231,7 @@ void DroneCoreImpl::create_device_if_not_existing(uint8_t system_id)
 
 void DroneCoreImpl::notify_on_discover(uint64_t uuid)
 {
-    Debug() << "Discovered " << uuid;
+    LogDebug() << "Discovered " << uuid;
     if (_on_discover_callback != nullptr) {
         _on_discover_callback(uuid);
     }
@@ -239,7 +239,7 @@ void DroneCoreImpl::notify_on_discover(uint64_t uuid)
 
 void DroneCoreImpl::notify_on_timeout(uint64_t uuid)
 {
-    Debug() << "Lost " << uuid;
+    LogDebug() << "Lost " << uuid;
     if (_on_timeout_callback != nullptr) {
         _on_timeout_callback(uuid);
     }
