@@ -8,6 +8,7 @@
 #include <string>
 #include <functional>
 #include <cstring> // for memcpy
+#include <cassert>
 
 namespace dronecore {
 
@@ -89,6 +90,7 @@ public:
                 default:
                     // This would be worrying
                     LogErr() << "Error: unknown mavlink ext param type";
+                    assert(false);
                     break;
             }
         }
