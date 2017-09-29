@@ -357,6 +357,8 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 
             } else {
 
+                LogErr() << "Somehow we did not get an ack, we got: " << int(param_ext_ack.param_result);
+
                 // We are done but unsuccessful
                 // TODO: we need better error feedback
                 if (work.callback) {
