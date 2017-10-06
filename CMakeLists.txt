@@ -122,6 +122,10 @@ add_library(dronecore STATIC
     ${plugin_source_files}
 )
 
+# cmake should check for C++11
+set_property(TARGET dronecore PROPERTY CXX_STANDARD 11)
+set_property(TARGET dronecore PROPERTY CXX_STANDARD_REQUIRED ON)
+
 set_target_properties(dronecore
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
