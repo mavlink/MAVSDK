@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 2.8.12)
 add_definitions(
     -std=c++11
     -Wno-unused-parameter
-    -Wno-expansion-to-defined
+    -Wno-shadow
 )
 
 set(proto_dir ${CMAKE_SOURCE_DIR}/grpc/proto)
