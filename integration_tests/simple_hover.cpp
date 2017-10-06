@@ -59,7 +59,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     action_ret = device.action().takeoff();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
     // We wait 1.5s / m plus a margin of 3s.
-    const int wait_time_s = (int)(altitude_m * 1.5f + 3.0f);
+    const int wait_time_s = altitude_m * 1.5f + 3.0f;
     std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
 
 
