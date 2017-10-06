@@ -11,7 +11,26 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 if(NOT MSVC)
     # Clang and GCC
     # We are not using exceptions to make it easier to write wrappers.
-    add_definitions("-std=c++11 -Wall -Wextra -Werror -fno-exceptions -Wshadow -Wno-strict-aliasing")
+    add_definitions(
+        -std=c++11
+        -Wall
+        -Wextra
+        -Werror
+        -fno-exceptions
+    )
+
+    set(warnings "-Wshadow -Wno-strict-aliasing -Wuseless-cast -Wlogical-op -Wold-style-cast -Wdouble-promotion -Wformat=2")
+
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6)
+            set(warnings "${warnings} -Wduplicated-cond -Wnull-dereference")
+        endif()
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7)
+            set(warnings "${warnings} -Wduplicated-branches")
+        endif()
+
+    endif()
+
     set(platform_libs "pthread")
     set(curl_lib "curl")
 else()
@@ -103,6 +122,10 @@ add_library(dronecore STATIC
     ${plugin_source_files}
 )
 
+set_target_properties(dronecore
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)
+
 # We support install in order to use the header and static library files in
 # other applications.
 if(ANDROID)
@@ -156,6 +179,10 @@ if(NOT IOS AND NOT ANDROID)
         ${unit_tests_src}
     )
 
+    set_target_properties(unit_tests_runner
+        PROPERTIES COMPILE_FLAGS ${warnings}
+    )
+
     target_link_libraries(unit_tests_runner
         dronecore
         gtest
@@ -176,6 +203,10 @@ if(NOT IOS AND NOT ANDROID)
     # This includes all GTests that run integration tests
     add_executable(integration_tests_runner
         ${integration_tests_src}
+    )
+
+    set_target_properties(integration_tests_runner
+        PROPERTIES COMPILE_FLAGS ${warnings}
     )
 
     target_link_libraries(integration_tests_runner
