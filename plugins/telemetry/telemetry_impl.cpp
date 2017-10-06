@@ -61,39 +61,39 @@ void TelemetryImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
-        std::bind(&TelemetryImpl::process_global_position_int, this, _1), (void *)this);
+        std::bind(&TelemetryImpl::process_global_position_int, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HOME_POSITION,
-        std::bind(&TelemetryImpl::process_home_position, this, _1), (void *)this);
+        std::bind(&TelemetryImpl::process_home_position, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
-        std::bind(&TelemetryImpl::process_attitude_quaternion, this, _1), (void *)this);
+        std::bind(&TelemetryImpl::process_attitude_quaternion, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MOUNT_ORIENTATION,
-        std::bind(&TelemetryImpl::process_mount_orientation, this, _1), (void *)this);
+        std::bind(&TelemetryImpl::process_mount_orientation, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GPS_RAW_INT,
-        std::bind(&TelemetryImpl::process_gps_raw_int, this, _1), (void *)this);
+        std::bind(&TelemetryImpl::process_gps_raw_int, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
-        std::bind(&TelemetryImpl::process_extended_sys_state, this, _1), (void *)this);
+        std::bind(&TelemetryImpl::process_extended_sys_state, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_SYS_STATUS,
-        std::bind(&TelemetryImpl::process_sys_status, this, _1), (void *)this);
+        std::bind(&TelemetryImpl::process_sys_status, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&TelemetryImpl::process_heartbeat, this, _1), (void *)this);
+        std::bind(&TelemetryImpl::process_heartbeat, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS,
-        std::bind(&TelemetryImpl::process_rc_channels, this, _1), (void *)this);
+        std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
 
     _parent->register_timeout_handler(
         std::bind(&TelemetryImpl::receive_rc_channels_timeout, this), 1.0, &_timeout_cookie);
@@ -133,7 +133,7 @@ void TelemetryImpl::init()
 
 void TelemetryImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers((void *)this);
+    _parent->unregister_all_mavlink_message_handlers(this);
 }
 
 Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)

@@ -22,12 +22,12 @@ void OffboardImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&OffboardImpl::process_heartbeat, this, std::placeholders::_1),
-        (void *)this);
+        this);
 }
 
 void OffboardImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers((void *)this);
+    _parent->unregister_all_mavlink_message_handlers(this);
 }
 
 Offboard::Result OffboardImpl::start() const
@@ -164,7 +164,7 @@ void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
     //const static uint16_t IGNORE_YAW = (1 << 10);
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
-    const float yaw = (float)to_rad_from_deg(velocity_ned_yaw.yaw_deg);
+    const float yaw = to_rad_from_deg(velocity_ned_yaw.yaw_deg);
     const float yaw_rate = 0.0f;
     const float x = 0.0f;
     const float y = 0.0f;
@@ -180,7 +180,7 @@ void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
     mavlink_msg_set_position_target_local_ned_pack(_parent->get_own_system_id(),
                                                    _parent->get_own_component_id(),
                                                    &message,
-                                                   (uint32_t)(elapsed_s() * 1e3f),
+                                                   static_cast<uint32_t>(elapsed_s() * 1e3),
                                                    _parent->get_target_system_id(),
                                                    _parent->get_target_component_id(),
                                                    MAV_FRAME_LOCAL_NED,
@@ -208,7 +208,7 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
     //const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
     const float yaw = 0.0f;
-    const float yaw_rate = (float)to_rad_from_deg(velocity_body_yawspeed.yawspeed_deg_s);
+    const float yaw_rate = to_rad_from_deg(velocity_body_yawspeed.yawspeed_deg_s);
     const float x = 0.0f;
     const float y = 0.0f;
     const float z = 0.0f;
@@ -223,7 +223,7 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
     mavlink_msg_set_position_target_local_ned_pack(_parent->get_own_system_id(),
                                                    _parent->get_own_component_id(),
                                                    &message,
-                                                   (uint32_t)(elapsed_s() * 1e3f),
+                                                   static_cast<uint32_t>(elapsed_s() * 1e3),
                                                    _parent->get_target_system_id(),
                                                    _parent->get_target_component_id(),
                                                    MAV_FRAME_BODY_NED,

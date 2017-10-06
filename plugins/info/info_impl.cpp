@@ -22,11 +22,11 @@ void InfoImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&InfoImpl::process_heartbeat, this, _1), (void *)this);
+        std::bind(&InfoImpl::process_heartbeat, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        std::bind(&InfoImpl::process_autopilot_version, this, _1), (void *)this);
+        std::bind(&InfoImpl::process_autopilot_version, this, _1), this);
 }
 
 void InfoImpl::deinit()
@@ -102,7 +102,7 @@ void InfoImpl::translate_binary_to_str(uint8_t *binary, unsigned binary_len,
         // The binary is in little endian, therefore we need to swap the bytes for us to read.
         snprintf(&str[i * 2], str_len - i * 2,
                  "%02x",
-                 ((uint8_t *)binary)[binary_len - 1 - i]);
+                 binary[binary_len - 1 - i]);
     }
 }
 

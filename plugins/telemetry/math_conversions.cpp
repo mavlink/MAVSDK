@@ -6,12 +6,12 @@ namespace dronecore {
 
 float to_deg_from_rad(float rad)
 {
-    return (float)(rad * 180.0f / M_PI);
+    return rad * 180.0f / static_cast<float>(M_PI);
 }
 
 float to_rad_from_deg(float deg)
 {
-    return (float)(deg / 180.0f * M_PI);
+    return deg / 180.0f * static_cast<float>(M_PI);
 }
 
 Telemetry::EulerAngle to_euler_angle_from_quaternion(Telemetry::Quaternion quaternion)
