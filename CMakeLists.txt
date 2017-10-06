@@ -7,19 +7,16 @@ project(dronecore)
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
 
-# We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
+    # We want C++11 and lots of warnings.
     # We are not using exceptions to make it easier to write wrappers.
     add_definitions(
         -std=c++11
-        -Wall
-        -Wextra
-        -Werror
         -fno-exceptions
     )
 
-    set(warnings "-Wshadow -Wno-strict-aliasing -Wuseless-cast -Wlogical-op -Wold-style-cast -Wdouble-promotion -Wformat=2")
+    set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wuseless-cast -Wlogical-op -Wold-style-cast -Wdouble-promotion -Wformat=2")
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6)
@@ -28,14 +25,22 @@ if(NOT MSVC)
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7)
             set(warnings "${warnings} -Wduplicated-branches")
         endif()
-
     endif()
 
     set(platform_libs "pthread")
     set(curl_lib "curl")
+
 else()
     # MSBuild
-    add_definitions("-std=c++11 -WX -W2 -DWINDOWS -DCURL_STATICLIB /MD")
+    add_definitions(
+        -std=c++11
+        -DWINDOWS
+        -DCURL_STATICLIB
+        /MD
+    )
+
+    set(warnings "-WX -W2")
+
     set(platform_libs "Ws2_32.lib")
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)
