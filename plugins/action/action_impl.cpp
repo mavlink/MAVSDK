@@ -24,7 +24,7 @@ void ActionImpl::init()
     // We need the system state.
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
-        std::bind(&ActionImpl::process_extended_sys_state, this, _1), (void *)this);
+        std::bind(&ActionImpl::process_extended_sys_state, this, _1), this);
 
     // And we need to make sure the system state is actually sent.
     // We use the async call here because we should not block in the init call because
@@ -36,7 +36,7 @@ void ActionImpl::init()
 
 void ActionImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers((void *)this);
+    _parent->unregister_all_mavlink_message_handlers(this);
 }
 
 Action::Result ActionImpl::arm() const

@@ -28,23 +28,23 @@ void MissionImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_REQUEST,
-        std::bind(&MissionImpl::process_mission_request, this, _1), (void *)this);
+        std::bind(&MissionImpl::process_mission_request, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_REQUEST_INT,
-        std::bind(&MissionImpl::process_mission_request_int, this, _1), (void *)this);
+        std::bind(&MissionImpl::process_mission_request_int, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ACK,
-        std::bind(&MissionImpl::process_mission_ack, this, _1), (void *)this);
+        std::bind(&MissionImpl::process_mission_ack, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_CURRENT,
-        std::bind(&MissionImpl::process_mission_current, this, _1), (void *)this);
+        std::bind(&MissionImpl::process_mission_current, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
-        std::bind(&MissionImpl::process_mission_item_reached, this, _1), (void *)this);
+        std::bind(&MissionImpl::process_mission_item_reached, this, _1), this);
 }
 
 void MissionImpl::deinit()

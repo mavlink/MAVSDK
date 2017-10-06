@@ -21,16 +21,16 @@ void LoggingImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_LOGGING_DATA,
-        std::bind(&LoggingImpl::process_logging_data, this, _1), (void *)this);
+        std::bind(&LoggingImpl::process_logging_data, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_LOGGING_DATA_ACKED,
-        std::bind(&LoggingImpl::process_logging_data_acked, this, _1), (void *)this);
+        std::bind(&LoggingImpl::process_logging_data_acked, this, _1), this);
 }
 
 void LoggingImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers((void *)this);
+    _parent->unregister_all_mavlink_message_handlers(this);
 }
 
 Logging::Result LoggingImpl::start_logging() const
