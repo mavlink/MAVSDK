@@ -163,13 +163,10 @@ if(NOT IOS AND NOT ANDROID)
     enable_testing()
 
     add_subdirectory(libs/gtest EXCLUDE_FROM_ALL)
-    include_directories(libs/gtest/googletest/include)
-    include_directories(libs/gtest/googlemock/include)
 
-    if(NOT MSVC)
-        # gtest has these warnings
-        add_definitions("-Wno-sign-compare")
-    endif()
+    # SYSTEM because we don't want warnings for gtest headers.
+    include_directories(SYSTEM libs/gtest/googletest/include)
+    include_directories(SYSTEM libs/gtest/googlemock/include)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 
