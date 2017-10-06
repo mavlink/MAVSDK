@@ -52,7 +52,7 @@ double to_deg_from_rad(double rad)
 
 bool are_equal(float one, float two)
 {
-    return (fabs(one - two) < std::numeric_limits<float>::epsilon());
+    return (fabsf(one - two) < std::numeric_limits<float>::epsilon());
 }
 
 bool are_equal(double one, double two)

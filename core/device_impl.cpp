@@ -405,7 +405,7 @@ MavlinkCommands::Result DeviceImpl::set_msg_rate(uint16_t message_id, double rat
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
     if (rate_hz > 0) {
-        interval_us = 1e6f / (float)rate_hz;
+        interval_us = 1e6f / static_cast<float>(rate_hz);
     }
 
     if (component_id != 0) {
@@ -426,7 +426,7 @@ void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
     if (rate_hz > 0) {
-        interval_us = 1e6f / (float)rate_hz;
+        interval_us = 1e6f / static_cast<float>(rate_hz);
     }
 
     if (component_id != 0) {

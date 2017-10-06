@@ -79,13 +79,12 @@ DroneCore::ConnectionResult UdpConnection::setup_port()
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 
-    struct sockaddr_in addr;
-    memset((char *)&addr, 0, sizeof(addr));
+    struct sockaddr_in addr {};
     addr.sin_family = AF_INET;
     addr.sin_port = htons(_local_port_number);
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    if (bind(_socket_fd, (sockaddr *)&addr, sizeof(addr)) != 0) {
+    if (bind(_socket_fd, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
         return DroneCore::ConnectionResult::BIND_ERROR;
     }
@@ -131,7 +130,7 @@ DroneCore::ConnectionResult UdpConnection::stop()
 
 bool UdpConnection::send_message(const mavlink_message_t &message)
 {
-    struct sockaddr_in dest_addr;
+    struct sockaddr_in dest_addr {};
 
     {
         std::lock_guard<std::mutex> lock(_remote_mutex);
@@ -146,7 +145,6 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
             return false;
         }
 
-        memset((char *)&dest_addr, 0, sizeof(dest_addr));
         dest_addr.sin_family = AF_INET;
 
         inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
@@ -160,8 +158,8 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, (const char *)buffer, buffer_len, 0,
-                          (const sockaddr *)&dest_addr, sizeof(dest_addr));
+    int send_len = sendto(_socket_fd, buffer, buffer_len, 0,
+                          reinterpret_cast<const sockaddr *>(&dest_addr), sizeof(dest_addr));
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -181,7 +179,7 @@ void UdpConnection::receive(UdpConnection *parent)
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
         int recv_len = recvfrom(parent->_socket_fd, buffer, sizeof(buffer), 0,
-                                (struct sockaddr *)&src_addr, &src_addr_len);
+                                reinterpret_cast<struct sockaddr *>(&src_addr), &src_addr_len);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,

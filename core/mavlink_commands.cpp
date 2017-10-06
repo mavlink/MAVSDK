@@ -23,12 +23,12 @@ MavlinkCommands::MavlinkCommands(DeviceImpl *parent) :
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
         std::bind(&MavlinkCommands::receive_command_ack,
-                  this, std::placeholders::_1), (void *)this);
+                  this, std::placeholders::_1), this);
 }
 
 MavlinkCommands::~MavlinkCommands()
 {
-    _parent->unregister_all_mavlink_message_handlers((void *)this);
+    _parent->unregister_all_mavlink_message_handlers(this);
 }
 
 MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
@@ -143,8 +143,8 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             break;
 
         case MAV_RESULT_IN_PROGRESS:
-            if ((int)command_ack.progress != 255) {
-                LogInfo() << "progress: " << (int)command_ack.progress
+            if (static_cast<int>(command_ack.progress) != 255) {
+                LogInfo() << "progress: " << static_cast<int>(command_ack.progress)
                           << " % (" << work.mavlink_command << ").";
             }
             // FIXME: We can only call callbacks with promises once, so let's not do it
