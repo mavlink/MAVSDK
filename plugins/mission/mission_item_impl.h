@@ -42,8 +42,8 @@ public:
     bool is_position_finite() const;
 
 private:
-    double _latitude_deg = NAN;
-    double _longitude_deg = NAN;
+    double _latitude_deg = double(NAN);
+    double _longitude_deg = double(NAN);
     float _relative_altitude_m = NAN;
     float _speed_m_s = NAN;
     bool _fly_through = false;

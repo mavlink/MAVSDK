@@ -10,9 +10,9 @@ namespace dronecore {
 
 TelemetryImpl::TelemetryImpl() :
     _position_mutex(),
-    _position(Telemetry::Position {NAN, NAN, NAN, NAN}),
+    _position(Telemetry::Position {double(NAN), double(NAN), NAN, NAN}),
     _home_position_mutex(),
-    _home_position(Telemetry::Position {NAN, NAN, NAN, NAN}),
+    _home_position(Telemetry::Position {double(NAN), double(NAN), NAN, NAN}),
     _in_air(false),
     _armed(false),
     _attitude_quaternion_mutex(),
