@@ -25,6 +25,11 @@ if(NOT MSVC)
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7)
             set(warnings "${warnings} -Wduplicated-branches")
         endif()
+
+        if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
+            set(warnings "${warnings} -Wno-missing-field-initializers")
+        endif()
+
         set(warnings "${warnings} -Wuseless-cast -Wlogical-op")
     endif()
 
@@ -54,23 +59,21 @@ else()
     set(curl_lib ${WIN_CURL_LIB})
 endif()
 
+# Clang needs this warning disabled.
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    # Some time ago we needed `-stdlib=libc++` but that does not seem to be true anymore.
+    set(warnings "${warnings} -Wno-missing-braces")
+endif()
+
+
 # We need a define if on APPLE
 if(APPLE)
     add_definitions("-DAPPLE")
 endif()
 
-# Clang needs this warning disabled.
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    # Some time ago we needed `-stdlib=libc++` but that does not seem to be true anymore.
-    add_definitions("-Wno-missing-braces")
-endif()
 
 if (ANDROID)
-    add_definitions("-frtti")
-endif()
-
-if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
-    add_definitions("-Wno-missing-field-initializers")
+    add_definitions(-frtti)
 endif()
 
 # Add definition for __FILENAME__ so we don't need to use __FILE__ because it also
