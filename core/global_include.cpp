@@ -50,6 +50,16 @@ double to_deg_from_rad(double rad)
     return rad / M_PI * 180.0;
 }
 
+float to_rad_from_deg(float deg)
+{
+    return deg / 180.0f * M_PI_F;
+}
+
+float to_deg_from_rad(float rad)
+{
+    return rad / M_PI_F * 180.0f;
+}
+
 bool are_equal(float one, float two)
 {
     return (fabsf(one - two) < std::numeric_limits<float>::epsilon());
