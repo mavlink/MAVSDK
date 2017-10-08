@@ -112,8 +112,8 @@ script:
 
 after_success:
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
-  coveralls --root . --build-root build/default \
-    --exclude=libs --exclude="plugins" --exclude="/usr/include/" --exclude="curl-android-ios" \
-    --exclude="debug_helpers" --exclude="example" --exclude="external_example" \
+  coveralls --root . --build-root build/default
+    --exclude=libs --exclude="plugins" --exclude="/usr/include/" --exclude="curl-android-ios"
+    --exclude="debug_helpers" --exclude="example" --exclude="external_example"
     --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
   fi
