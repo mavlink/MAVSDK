@@ -158,7 +158,7 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, buffer, buffer_len, 0,
+    int send_len = sendto(_socket_fd, reinterpret_cast<char *>(buffer), buffer_len, 0,
                           reinterpret_cast<const sockaddr *>(&dest_addr), sizeof(dest_addr));
 
     if (send_len != buffer_len) {
