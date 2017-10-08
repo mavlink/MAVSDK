@@ -16,7 +16,7 @@ if(NOT MSVC)
         -fno-exceptions
     )
 
-    set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wuseless-cast -Wlogical-op -Wold-style-cast -Wdouble-promotion -Wformat=2")
+    set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2")
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6)
@@ -25,6 +25,7 @@ if(NOT MSVC)
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7)
             set(warnings "${warnings} -Wduplicated-branches")
         endif()
+        set(warnings "${warnings} -Wuseless-cast -Wlogical-op")
     endif()
 
     set(platform_libs "pthread")
