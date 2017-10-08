@@ -34,7 +34,7 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-        - BUILD_TARGET=gcc_build
+        - BUILD_TARGET=coverage_build
         - CC=gcc-6
         - CXX=g++-6
       addons:
@@ -60,6 +60,11 @@ addons:
     packages:
     - libcurl4-openssl-dev
 
+before_install:
+- if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
+    pip install --user cpp-coveralls;
+  fi
+
 install:
 - set -e
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
@@ -79,6 +84,11 @@ script:
     make install;
     make run_unit_tests;
   fi
+- if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
+    make BUILD_TYPE=Coverage;
+    make run_unit_tests;
+  fi
+
 - if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make;
     docker run -it -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore make install;
@@ -98,4 +108,12 @@ script:
     make BUILD_TYPE=Release;
     make install;
     make run_unit_tests;
+  fi
+
+after_success:
+- if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
+  coveralls --root . --build-root build/default \
+    --exclude=libs --exclude="plugins" --exclude="/usr/include/" --exclude="curl-android-ios" \
+    --exclude="debug_helpers" --exclude="example" --exclude="external_example" \
+    --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
   fi
