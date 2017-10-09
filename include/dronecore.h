@@ -115,7 +115,7 @@ public:
      * @brief Get vector of device UUIDs.
      *
      * This returns a vector of the UUIDs of all devices that have been discovered.
-     * Devices without UUIDs will just use the mavlink system IDs ranging from (0..255).
+     * If a device doesn't have a UUID then DroneCore will instead use its MAVLink system ID (range: 0..255).
      *
      * @return A reference to the vector containing the UUIDs.
      */
@@ -144,7 +144,7 @@ public:
     /**
      * @brief Callback type for discover and timeout notifications.
      *
-     * @param uuid UUID of device (or mavlink system ID if UUID is not supported by the device)
+     * @param uuid UUID of device (or MAVLink system ID for devices that don't have a UUID).
      */
     typedef std::function<void(uint64_t uuid)> event_callback_t;
 
