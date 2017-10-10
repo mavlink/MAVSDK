@@ -11,8 +11,8 @@ if [[ $AUTOSTART_SITL != 1 ]]; then
     exit 0
 fi
 
-if [[ -n "$PX4_FIRMARE_DIR" ]]; then
-    px4_firmware_dir=$PX4_FIRMARE_DIR
+if [[ -n "$PX4_FIRMWARE_DIR" ]]; then
+    px4_firmware_dir=$PX4_FIRMWARE_DIR
 else
     # Try to use the documented default path.
     px4_firmware_dir=$HOME/src/Firmware
