@@ -16,7 +16,7 @@ def run():
 
     arm_result = stub.Arm.future(dc.Empty())
     arm_result = wait_until(arm_result)
-    if arm_result.result == dc.ActionResult.SUCCESS:
+    if arm_result.result == dc.ActionResult.Result_SUCCESS:
         print("arming ok")
     else:
         print("arming failed: " + arm_result.result_str)
@@ -25,7 +25,7 @@ def run():
 
     takeoff_result = stub.TakeOff.future(dc.Empty())
     takeoff_result = wait_until(takeoff_result)
-    if takeoff_result.result == dc.ActionResult.SUCCESS:
+    if takeoff_result.result == dc.ActionResult.Result_SUCCESS:
         print("takeoff ok")
     else:
         print("takeoff failed: " + takeoff_result.result_str)
@@ -34,7 +34,7 @@ def run():
 
     land_result = stub.Land.future(dc.Empty())
     land_result = wait_until(land_result)
-    if land_result.result == dc.ActionResult.SUCCESS:
+    if land_result.result == dc.ActionResult.Result_SUCCESS:
         print("landing ok")
     else:
         print("landing failed: " + land_result.result_str)

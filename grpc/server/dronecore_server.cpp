@@ -67,11 +67,12 @@ public:
         std::vector<std::shared_ptr<MissionItem>> mission_items;
         for (auto &mission_item : mission->mission_items()) {
             auto new_item = std::make_shared<MissionItem>();
-            new_item->set_position(mission_item.latitude(), mission_item.longitude());
-            new_item->set_relative_altitude(mission_item.altitude());
-            new_item->set_speed(mission_item.speed());
+            new_item->set_position(mission_item.latitude_deg(), mission_item.longitude_deg());
+            new_item->set_relative_altitude(mission_item.relative_altitude_m());
+            new_item->set_speed(mission_item.speed_m_s());
             new_item->set_fly_through(mission_item.is_fly_through());
-            new_item->set_gimbal_pitch_and_yaw(mission_item.pitch(), mission_item.yaw());
+            new_item->set_gimbal_pitch_and_yaw(mission_item.gimbal_pitch_deg(),
+                                               mission_item.gimbal_yaw_deg());
             new_item->set_camera_action(static_cast<dronecore::MissionItem::CameraAction>
                                         (mission_item.camera_action()));
             mission_items.push_back(new_item);
