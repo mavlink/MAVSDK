@@ -17,15 +17,15 @@ message Empty {}
 message ActionResult {
 
     enum Result {
-        SUCCESS = 0;
-        NO_DEVICE = 1;
-        CONNECTION_ERROR = 2;
-        BUSY = 3;
-        COMMAND_DENIED = 4;
-        COMMAND_DENIED_LANDED_STATE_UNKNOWN = 5;
-        COMMAND_DENIED_NOT_LANDED = 6;
-        TIMEOUT = 7;
-        UNKNOWN = 8;
+        Result_SUCCESS = 0;
+        Result_NO_DEVICE = 1;
+        Result_CONNECTION_ERROR = 2;
+        Result_BUSY = 3;
+        Result_COMMAND_DENIED = 4;
+        Result_COMMAND_DENIED_LANDED_STATE_UNKNOWN = 5;
+        Result_COMMAND_DENIED_NOT_LANDED = 6;
+        Result_TIMEOUT = 7;
+        Result_UNKNOWN = 8;
     }
     Result result = 1;
     string result_str = 2;
@@ -34,27 +34,37 @@ message ActionResult {
 message MissionResult {
 
     enum Result {
-        SUCCESS = 0;
-        ERROR = 1;
-        TOO_MANY_MISSION_ITEMS = 2;
-        BUSY = 3;
-        TIMEOUT = 4;
-        INVALID_ARGUMENT = 5;
-        UNKNOWN = 6;
+        Result_SUCCESS = 0;
+        Result_ERROR = 1;
+        Result_TOO_MANY_MISSION_ITEMS = 2;
+        Result_BUSY = 3;
+        Result_TIMEOUT = 4;
+        Result_INVALID_ARGUMENT = 5;
+        Result_UNKNOWN = 6;
     }
     Result result = 1;
     string result_str = 2;
 }
 
 message MissionItem {
-    double latitude = 1;
-    double longitude = 2;
-    double altitude = 3;
-    float speed = 4;
+
+    enum CameraAction {
+        CameraAction_TAKE_PHOTO = 0;
+        CameraAction_START_PHOTO_INTERVAL = 1;
+        CameraAction_STOP_PHOTO_INTERVAL = 2;
+        CameraAction_START_VIDEO = 3;
+        CameraAction_STOP_VIDEO = 4;
+        CameraAction_NONE = 5;
+    }
+
+    double latitude_deg = 1;
+    double longitude_deg = 2;
+    double relative_altitude_m = 3;
+    float speed_m_s = 4;
     bool is_fly_through = 5;
-    float pitch = 6;
-    float yaw = 7;
-    int32 camera_action = 8;
+    float gimbal_pitch_deg = 6;
+    float gimbal_yaw_deg = 7;
+    CameraAction camera_action = 8;
 }
 
 message Mission {
