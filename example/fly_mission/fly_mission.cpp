@@ -86,7 +86,7 @@ int main(int /*argc*/, char ** /*argv*/)
     mission_items.push_back(
         add_mission_item(47.398139363821485, 8.5453846156597137,
                          10.0f, 5.0f, true,
-                         -46.0f, 0.0f,
+                         -45.0f, 0.0f,
                          MissionItem::CameraAction::START_VIDEO));
 
     mission_items.push_back(
