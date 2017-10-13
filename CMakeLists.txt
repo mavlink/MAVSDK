@@ -97,7 +97,7 @@ include_directories(
     ${external_plugins}
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/core
-    ${EXTERNAL_DIR}/${additional_includes}
+    SYSTEM ${EXTERNAL_DIR}/${additional_includes}
 )
 
 if (ANDROID)
