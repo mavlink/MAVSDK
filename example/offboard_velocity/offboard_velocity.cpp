@@ -95,13 +95,6 @@ int main(int argc, char **argv)
         std::cout << "[" << offb_mode << "] Done..." << std::endl;
         wait_sec(5);
 
-        struct VelocityNEDYaw {
-            float north_m_s; /**< Velocity North in metres/second. */
-            float east_m_s; /**< Velocity East in metres/second. */
-            float down_m_s; /**< Velocity Down in metres/second. */
-            float yaw_deg; /**< Yaw in degrees (0 North, positive is clock-wise looking from above. */
-        };
-
         {
             const float step_size = 0.01f;
             const float one_cycle = 2.0f * (float)M_PI;
