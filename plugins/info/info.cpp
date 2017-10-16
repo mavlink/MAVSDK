@@ -27,4 +27,9 @@ Info::Version Info::get_version() const
     return _impl->get_version();
 }
 
+Info::Product Info::get_product() const
+{
+    return _impl->get_product();
+}
+
 } // namespace dronecore
