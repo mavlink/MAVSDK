@@ -97,6 +97,7 @@ private:
 
     void process_heartbeat(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
+    void process_statustext(const mavlink_message_t &message);
     void heartbeats_timed_out();
     void set_connected();
     void set_disconnected();

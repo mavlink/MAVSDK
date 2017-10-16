@@ -24,6 +24,10 @@ DeviceImpl::DeviceImpl(DroneCoreImpl *parent,
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&DeviceImpl::process_autopilot_version, this, _1), this);
+
+    register_mavlink_message_handler(
+        MAVLINK_MSG_ID_STATUSTEXT,
+        std::bind(&DeviceImpl::process_statustext, this, _1), this);
 }
 
 DeviceImpl::~DeviceImpl()
@@ -153,6 +157,50 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
 
     _autopilot_version_pending = false;
     unregister_timeout_handler(_autopilot_version_timed_out_cookie);
+}
+
+void DeviceImpl::process_statustext(const mavlink_message_t &message)
+{
+    mavlink_statustext_t statustext;
+    mavlink_msg_statustext_decode(&message, &statustext);
+
+    std::string debug_str = "mavlink ";
+
+    switch (statustext.severity) {
+        case MAV_SEVERITY_EMERGENCY:
+            debug_str += "emergency";
+            break;
+        case MAV_SEVERITY_ALERT:
+            debug_str += "alert";
+            break;
+        case MAV_SEVERITY_CRITICAL:
+            debug_str += "critical";
+            break;
+        case MAV_SEVERITY_ERROR:
+            debug_str += "error";
+            break;
+        case MAV_SEVERITY_WARNING:
+            debug_str += "warning";
+            break;
+        case MAV_SEVERITY_NOTICE:
+            debug_str += "notice";
+            break;
+        case MAV_SEVERITY_INFO:
+            debug_str += "info";
+            break;
+        case MAV_SEVERITY_DEBUG:
+            debug_str += "debug";
+            break;
+        default:
+            break;
+    }
+
+    // statustext.text is not null terminated, therefore we copy it first to
+    // an array big enough that is zeroed.
+    char text_with_null[sizeof(statustext.text) + 1] {};
+    memcpy(text_with_null, statustext.text, sizeof(statustext.text));
+
+    LogDebug() << debug_str << ": " << text_with_null;
 }
 
 void DeviceImpl::heartbeats_timed_out()
