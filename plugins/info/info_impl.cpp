@@ -52,7 +52,7 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
 
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
-    Info::Version version = {};
+    Info::Version version {};
 
     version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
     version.flight_sw_minor = (autopilot_version.flight_sw_version >> (8 * 2)) & 0xFF;
@@ -92,6 +92,18 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
                             Info::GIT_HASH_STR_LEN);
 
     set_version(version);
+
+    Info::Product product {};
+
+    product.vendor_id = autopilot_version.vendor_id;
+    const char *vendor_name = vendor_id_str(autopilot_version.vendor_id);
+    STRNCPY(product.vendor_name, vendor_name, sizeof(product.vendor_name));
+
+    product.product_id = autopilot_version.product_id;
+    const char *product_name = product_id_str(autopilot_version.product_id);
+    STRNCPY(product.product_name, product_name, sizeof(product.product_name));
+
+    set_product(product);
 }
 
 void InfoImpl::translate_binary_to_str(uint8_t *binary, unsigned binary_len,
@@ -131,11 +143,44 @@ Info::Version InfoImpl::get_version() const
     return _version;
 }
 
+Info::Product InfoImpl::get_product() const
+{
+    std::lock_guard<std::mutex> lock(_product_mutex);
+    return _product;
+}
+
 void InfoImpl::set_version(Info::Version version)
 {
     std::lock_guard<std::mutex> lock(_version_mutex);
     _version = version;
 }
+
+void InfoImpl::set_product(Info::Product product)
+{
+    std::lock_guard<std::mutex> lock(_product_mutex);
+    _product = product;
+}
+
+const char *InfoImpl::vendor_id_str(uint16_t vendor_id)
+{
+    switch (vendor_id) {
+        case 0x26ac:
+            return "Yuneec";
+        default:
+            return "undefined";
+    }
+}
+
+const char *InfoImpl::product_id_str(uint16_t product_id)
+{
+    switch (product_id) {
+        case 0x0010:
+            return "H520";
+        default:
+            return "undefined";
+    }
+}
+
 
 
 } // namespace dronecore

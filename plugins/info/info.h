@@ -44,8 +44,16 @@ public:
         int os_sw_minor; /**< @brief Operating system software minor version. */
         int os_sw_patch; /**< @brief Operating system software patch version. */
         char os_sw_git_hash[GIT_HASH_STR_LEN];/**< @brief Operating system software git hash as string. */
-        uint16_t vendor_id; /**< @brief ID of board vendor. */
-        uint16_t product_id; /**< @brief ID of product. */
+    };
+
+    /**
+     * @brief Type containing device product information.
+     */
+    struct Product {
+        int vendor_id; /**< @brief ID of board vendor. */
+        char vendor_name[32]; /**< @brief Name of vendor. */
+        int product_id; /**< @brief ID of product. */
+        char product_name[32]; /**< @brief Name of product. */
     };
 
     /**
@@ -70,6 +78,13 @@ public:
      * @return The version object for the device.
      */
     Version get_version() const;
+
+    /**
+     * @brief Get device product information.
+     *
+     * @return The product object for the device.
+     */
+    Product get_product() const;
 
     // Non-copyable
     /**
