@@ -44,6 +44,12 @@ TEST_F(SitlTest, Info)
         // FIXME: This is currently 0.
         //EXPECT_NE(version.os_sw_major, 0);
 
+
+        Info::Product product = dc.device().info().get_product();
+
+        std::cout << "Vendor: " << product.vendor_name << std::endl;
+        std::cout << "Product: " << product.product_name << std::endl;
+
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
