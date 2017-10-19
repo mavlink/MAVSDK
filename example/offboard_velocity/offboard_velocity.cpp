@@ -4,6 +4,7 @@
 * @author Author: Julian Oes <julian@oes.ch>, Shakthi Prashanth <shakthi.prashanth.m@intel.com>
 * @date 2017-10-17
 */
+
 #include <iostream>
 #include <cmath>
 #include <thread>
