@@ -10,6 +10,7 @@
 #endif
 
 #define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
 #define ANSI_COLOR_BLUE    "\x1b[34m"
 #define ANSI_COLOR_GRAY    "\x1b[37m"
@@ -88,6 +89,7 @@ public:
 
         switch (_log_level) {
             case LogLevel::Debug:
+                std::cout << ANSI_COLOR_GREEN;
                 break;
             case LogLevel::Info:
                 std::cout << ANSI_COLOR_BLUE;
@@ -129,7 +131,7 @@ public:
 
         switch (_log_level) {
             case LogLevel::Debug:
-                break;
+            // FALLTHROUGH
             case LogLevel::Info:
             // FALLTHROUGH
             case LogLevel::Warn:
