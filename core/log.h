@@ -126,10 +126,10 @@ public:
                 break;
         }
 
+        std::cout << ANSI_COLOR_RESET;
+
         std::cout << _s.str();
         std::cout << " (" << _caller_filename << ":" << _caller_filenumber << ")";
-
-        std::cout << ANSI_COLOR_RESET;
 
         std::cout << std::endl;
 #endif
