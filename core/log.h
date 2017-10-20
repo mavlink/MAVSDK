@@ -129,17 +129,7 @@ public:
         std::cout << _s.str();
         std::cout << " (" << _caller_filename << ":" << _caller_filenumber << ")";
 
-        switch (_log_level) {
-            case LogLevel::Debug:
-            // FALLTHROUGH
-            case LogLevel::Info:
-            // FALLTHROUGH
-            case LogLevel::Warn:
-            // FALLTHROUGH
-            case LogLevel::Err:
-                std::cout << ANSI_COLOR_RESET;
-                break;
-        }
+        std::cout << ANSI_COLOR_RESET;
 
         std::cout << std::endl;
 #endif
