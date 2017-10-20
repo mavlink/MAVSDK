@@ -484,6 +484,10 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t &message)
     bool rc_ok = (rc_channels.chancount > 0);
     set_rc_status(rc_ok, rc_channels.rssi);
 
+    if (_rc_status_subscription) {
+        _rc_status_subscription(get_rc_status());
+    }
+
     _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
