@@ -22,6 +22,7 @@ static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
 static void print_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
 static void print_gps_info(Telemetry::GPSInfo gps_info);
 static void print_battery(Telemetry::Battery battery);
+static void print_rc_status(Telemetry::RCStatus rc_status);
 
 static bool _set_rate_error = false;
 static bool _received_position = false;
@@ -37,6 +38,7 @@ static bool _received_camera_euler_angle = false;
 static bool _received_ground_speed = false;
 static bool _received_gps_info = false;
 static bool _received_battery = false;
+static bool _received_rc_status = false;
 
 
 TEST_F(SitlTest, TelemetryAsync)
@@ -106,22 +108,25 @@ TEST_F(SitlTest, TelemetryAsync)
 
     device.telemetry().battery_async(std::bind(&print_battery, _1));
 
+    device.telemetry().rc_status_async(std::bind(&print_rc_status, _1));
+
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
-    ASSERT_FALSE(_set_rate_error);
-    ASSERT_TRUE(_received_position);
-    ASSERT_TRUE(_received_home_position);
-    ASSERT_TRUE(_received_in_air);
-    ASSERT_TRUE(_received_armed);
-    ASSERT_TRUE(_received_quaternion);
-    ASSERT_TRUE(_received_euler_angle);
+    EXPECT_FALSE(_set_rate_error);
+    EXPECT_TRUE(_received_position);
+    EXPECT_TRUE(_received_home_position);
+    EXPECT_TRUE(_received_in_air);
+    EXPECT_TRUE(_received_armed);
+    EXPECT_TRUE(_received_quaternion);
+    EXPECT_TRUE(_received_euler_angle);
 #if CAMERA_AVAILABLE==1
-    ASSERT_TRUE(_received_camera_quaternion);
-    ASSERT_TRUE(_received_camera_euler_angle);
+    EXPECT_TRUE(_received_camera_quaternion);
+    EXPECT_TRUE(_received_camera_euler_angle);
 #endif
-    ASSERT_TRUE(_received_ground_speed);
-    ASSERT_TRUE(_received_gps_info);
-    ASSERT_TRUE(_received_battery);
+    EXPECT_TRUE(_received_ground_speed);
+    EXPECT_TRUE(_received_gps_info);
+    EXPECT_TRUE(_received_battery);
+    EXPECT_TRUE(_received_rc_status);
 }
 
 void receive_result(Telemetry::Result result)
@@ -129,7 +134,7 @@ void receive_result(Telemetry::Result result)
     if (result != Telemetry::Result::SUCCESS) {
         _set_rate_error = true;
         std::cerr << "Received ret: " << int(result) << std::endl;
-        ASSERT_TRUE(false);
+        EXPECT_TRUE(false);
     }
 }
 
@@ -228,3 +233,10 @@ void print_battery(Telemetry::Battery battery)
 
     _received_battery = true;
 }
+
+void print_rc_status(Telemetry::RCStatus rc_status)
+{
+    std::cout << "RC status [ RSSI: " << rc_status.signal_strength_percent * 100 << "]" << std::endl;
+    _received_rc_status = true;
+}
+
