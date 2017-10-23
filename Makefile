@@ -41,7 +41,7 @@ CURL_BUILD_DIR := $(ROOT_DIR)/curl-android-ios
 # Set default cmake here but replace with special version for Android build.
 CMAKE_BIN = cmake
 
-INSTALL_PREFIX ?= $(CURRENT_DIR)/install
+INSTALL_PREFIX ?= /usr/local
 
 # Function to create build_* directory and call make there.
 define cmake-build
@@ -166,7 +166,6 @@ run_integration_tests: default
 clean:
 	@rm -rf build/
 	@rm -rf logs/
-	@rm -rf install/
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
