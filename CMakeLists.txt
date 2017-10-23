@@ -141,7 +141,6 @@ add_library(dronecore ${library_type}
 
 target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
-    curl
     ${curl_lib}
 )
 
