@@ -35,7 +35,6 @@ add_executable(dronecore_server
 
 target_link_libraries(dronecore_server
     dronecore
-    pthread
     ${Protobuf_PROTOC_LIBRARIES}
     ${GRPC_LIBRARIES}
     #grpc++_reflection
