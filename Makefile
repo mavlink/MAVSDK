@@ -71,9 +71,10 @@ default:
 	$(call cmake-build)
 
 docs: install
-	- mkdir install/docs
-	- (cd install && doxygen ../.doxygen)
-	- python generate_markdown_from_doxygen_xml.py
+	- (cd $(INSTALL_PREFIX)/include/dronecore \
+        && mkdir -p docs \
+        && doxygen $(CURRENT_DIR)/.doxygen \
+        && $(CURRENT_DIR)/generate_markdown_from_doxygen_xml.py docs docs)
 
 ios: ios_curl
 	$(call cmake-build, \
