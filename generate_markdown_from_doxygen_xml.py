@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 """
-This script converts Doxygen XML output into gitbook-compatible markdown. There are no arguments.
+This script converts Doxygen XML output into gitbook-compatible markdown.
 
-- The directories that are parsed for source/outputs is DOXYGEN_XML_DIR (set DOXYGEN_ROOT_DIR for path from this file execution)
-- All files in DOXYGEN_XML_DIR will be parsed, but only xml files for public c++ classes and struct are handled (implementation classes ignored).
+- The directories that are parsed for source/outputs are passed using the input_dir argument.
+- All files will be parsed, but only xml files for public c++ classes and struct are handled (implementation classes ignored).
 
 How it works:
 - There are Python objects for each C++ type - e.g. cppClass, cppTypdef etc. (cppClass covers both class and struct)
@@ -27,10 +27,6 @@ import os
 import xml.etree.ElementTree as ET
 
 
-# Load all the xml files in the dir
-DOXYGEN_ROOT_DIR= './install/docs'
-DOXYGEN_XML_DIR = DOXYGEN_ROOT_DIR + '/xml'
-DOXYGEN_OUTPUT_DIR = DOXYGEN_ROOT_DIR + '/markdown'
 
 
 def cleanup_markdown_string(aString):
@@ -911,9 +907,15 @@ class cppClass:
 
 # Start actual execution
 parser = argparse.ArgumentParser(description='Generate markdown from doxygen XML output.')
-parser.add_argument("-d", "--debug", default='',help="Any argument used here will include debug info in markdown output - ie some strings for various objects.")
+parser.add_argument("-d", "--debug", default='', help="Any argument used here will include debug info in markdown output - ie some strings for various objects.")
+parser.add_argument("input_dir", help="Directory where xml input can be found.")
+parser.add_argument("output_dir", help="Directory where markdown output should be saved.")
 args = parser.parse_args()
 
+# Load all the xml files in the dir
+DOXYGEN_ROOT_DIR= args.input_dir
+DOXYGEN_XML_DIR = args.input_dir + "/xml"
+DOXYGEN_OUTPUT_DIR = args.output_dir + '/markdown'
 
 
 # Check if XML file path exists
