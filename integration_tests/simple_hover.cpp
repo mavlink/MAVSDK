@@ -75,7 +75,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         // TODO: currently we need to wait a long time until landed is detected.
-        ASSERT_LT(++iteration, 10);
+        ASSERT_LT(++iteration, 2 * wait_time_s);
     }
 
     action_ret = device.action().disarm();
