@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 set(CMAKE_INSTALL_PREFIX "../install" CACHE PATH "default cache path")
+
 project(dronecore)
 
 # Add DEBUG define for Debug target
@@ -108,8 +109,14 @@ if (IOS)
     include_directories(curl-android-ios/prebuilt-with-ssl/ios/include)
 endif()
 
+if (IOS OR ANDROID OR WINDOWS)
+    set(library_type "STATIC")
+else()
+    set(library_type "SHARED")
+endif()
+
 # We build one static library.
-add_library(dronecore STATIC
+add_library(dronecore ${library_type}
     core/global_include.cpp
     core/connection.cpp
     core/device.cpp
@@ -134,6 +141,7 @@ add_library(dronecore STATIC
 
 target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
+    curl
     ${curl_lib}
 )
 
@@ -149,7 +157,7 @@ set_target_properties(dronecore
 add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
 include_directories(SYSTEM libs/tinyxml2)
 
-# We support install in order to use the header and static library files in
+# We support install in order to use the header and library files in
 # other applications.
 if(ANDROID)
     set(lib_path "lib/android/${ANDROID_ABI}")
@@ -210,7 +218,6 @@ if(NOT IOS AND NOT ANDROID)
         dronecore
         gtest
         gtest_main
-        ${platform_libs}
         gmock
         ${additional_libs}
         tinyxml2
@@ -236,7 +243,6 @@ if(NOT IOS AND NOT ANDROID)
         dronecore
         gtest
         gtest_main
-        ${platform_libs}
         ${additional_libs}
         tinyxml2
     )
@@ -296,6 +302,5 @@ if (DROP_DEBUG EQUAL 1)
 
     target_link_libraries(drop_debug
         dronecore
-        ${platform_libs}
     )
 endif()
