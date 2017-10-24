@@ -17,6 +17,7 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                                      bool is_fly_through,
                                                      float gimbal_pitch_deg,
                                                      float gimbal_yaw_deg,
+                                                     float camera_action_delay_s,
                                                      MissionItem::CameraAction camera_action);
 
 static void compare_mission_items(const std::shared_ptr<MissionItem> original,
@@ -61,6 +62,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
                          8.5456490218639658,
                          10.0f, 5.0f, false,
                          20.0f, 60.0f,
+                         NAN,
                          MissionItem::CameraAction::NONE));
 
     mission_items.push_back(
@@ -68,12 +70,14 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
                          8.5455360114574432,
                          10.0f, 2.0f, true,
                          0.0f, -60.0f,
+                         5.0f,
                          MissionItem::CameraAction::TAKE_PHOTO));
 
     mission_items.push_back(
         add_mission_item(47.398139363821485, 8.5453846156597137,
                          10.0f, 5.0f, true,
                          -46.0f, 0.0f,
+                         NAN,
                          MissionItem::CameraAction::START_VIDEO));
 
     mission_items.push_back(
@@ -81,6 +85,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
                          8.5454618036746979,
                          10.0f, 2.0f, false,
                          -90.0f, 30.0f,
+                         NAN,
                          MissionItem::CameraAction::STOP_VIDEO));
 
     mission_items.push_back(
@@ -88,6 +93,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
                          8.5456969141960144,
                          10.0f, 5.0f, false,
                          -45.0f, -30.0f,
+                         NAN,
                          MissionItem::CameraAction::START_PHOTO_INTERVAL));
 
     mission_items.push_back(
@@ -95,6 +101,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
                          8.5455576181411743,
                          10.0f, 5.0f, false,
                          0.0f, 0.0f,
+                         NAN,
                          MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
 
     {
@@ -240,6 +247,7 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                               bool is_fly_through,
                                               float gimbal_pitch_deg,
                                               float gimbal_yaw_deg,
+                                              float camera_action_delay_s,
                                               MissionItem::CameraAction camera_action)
 {
     auto new_item = std::make_shared<MissionItem>();
@@ -248,6 +256,7 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
     new_item->set_speed(speed_m_s);
     new_item->set_fly_through(is_fly_through);
     new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
+    new_item->set_camera_action_delay(camera_action_delay_s);
     new_item->set_camera_action(camera_action);
 
     // In order to test setting the interval, add it here.
