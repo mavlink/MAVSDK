@@ -40,6 +40,11 @@ void MissionItemImpl::set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg)
     _gimbal_yaw_deg = yaw_deg;
 }
 
+void MissionItemImpl::set_camera_action_delay(float delay_s)
+{
+    _camera_action_delay_s = delay_s;
+}
+
 void MissionItemImpl::set_camera_action(MissionItem::CameraAction action)
 {
     _camera_action = action;

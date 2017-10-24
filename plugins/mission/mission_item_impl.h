@@ -16,6 +16,7 @@ public:
     void set_speed(float speed_m_s);
     void set_fly_through(bool fly_through);
     void set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg);
+    void set_camera_action_delay(float delay_s);
     void set_camera_action(MissionItem::CameraAction action);
     void set_camera_photo_interval(double interval_s);
 
@@ -26,6 +27,7 @@ public:
     bool get_fly_through() const { return _fly_through; };
     float get_gimbal_pitch_deg() const { return _gimbal_pitch_deg; }
     float get_gimbal_yaw_deg() const { return _gimbal_yaw_deg; }
+    float get_camera_action_delay_s() const { return _camera_action_delay_s; }
     MissionItem::CameraAction get_camera_action() const { return _camera_action; }
     double get_camera_photo_interval_s() const { return _camera_photo_interval_s; }
 
@@ -49,6 +51,7 @@ private:
     bool _fly_through = false;
     float _gimbal_pitch_deg = NAN;
     float _gimbal_yaw_deg = NAN;
+    float _camera_action_delay_s = NAN;
     MissionItem::CameraAction _camera_action {MissionItem::CameraAction::NONE};
     double _camera_photo_interval_s = 1.0;
 };

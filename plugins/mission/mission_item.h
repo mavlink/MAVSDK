@@ -66,6 +66,16 @@ public:
     void set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg);
 
     /**
+     * @brief Set a delay before executing camera action.
+     *
+     * This can be used to wait for vehicle to slow down or a gimbal to arrive at the set
+     * orientation.
+     *
+     * @param delay_s The time to wait for in seconds.
+     */
+    void set_camera_action_delay(float delay_s);
+
+    /**
      * @brief Possible camera actions at a mission item.
      */
     enum class CameraAction {
@@ -128,6 +138,13 @@ public:
      * @return Speed in metres/second.
      */
     float get_speed_m_s() const;
+
+    /**
+     * @brief Get the delay before executing camera action.
+     *
+     * @return The delay in seconds.
+     */
+    float get_camera_action_delay_s() const;
 
     /**
      * @brief Get the camera action set for this mission item.
