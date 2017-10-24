@@ -306,6 +306,12 @@ void MissionImpl::assemble_mavlink_messages()
 {
     _mavlink_mission_item_messages.clear();
 
+    bool last_position_valid = false; // This flag is to protect us from using an invalid x/y.
+    MAV_FRAME last_frame;
+    int32_t last_x;
+    int32_t last_y;
+    float last_z;
+
     unsigned item_i = 0;
     for (auto item : _mission_items) {
 
@@ -334,6 +340,12 @@ void MissionImpl::assemble_mavlink_messages()
                                               mission_item_impl.get_mavlink_y(),
                                               mission_item_impl.get_mavlink_z(),
                                               MAV_MISSION_TYPE_MISSION);
+
+            last_position_valid = true; // because we checked is_position_finite
+            last_x = mission_item_impl.get_mavlink_x();
+            last_y = mission_item_impl.get_mavlink_y();
+            last_z = mission_item_impl.get_mavlink_z();
+            last_frame = mission_item_impl.get_mavlink_frame();
 
             _mavlink_mission_item_to_mission_item_indices.insert(
                 std::pair <int, int>
@@ -409,6 +421,49 @@ void MissionImpl::assemble_mavlink_messages()
                 std::pair <int, int>
             {static_cast<int>(_mavlink_mission_item_messages.size()), item_i});
             _mavlink_mission_item_messages.push_back(message_gimbal);
+        }
+
+        // FIXME: It is a bit of a hack to set a LOITER_TIME waypoint to add a delay.
+        //        A better solution would be to properly use NAV_DELAY instead. This
+        //        would not require us to keep the last lat/lon.
+        if (std::isfinite(mission_item_impl.get_camera_action_delay_s())) {
+            if (!last_position_valid) {
+                // In the case where we get a delay without a previous position, we will have to
+                // ignore it.
+                LogErr() << "Can't set camera action delay without previous position set.";
+
+            } else {
+
+                // Current is the 0th waypoint
+                uint8_t current = ((_mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+
+                uint8_t autocontinue = 1;
+
+                std::shared_ptr<mavlink_message_t> message_delay(new mavlink_message_t());
+                mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
+                                                  _parent->get_own_component_id(),
+                                                  message_delay.get(),
+                                                  _parent->get_target_system_id(),
+                                                  _parent->get_target_component_id(),
+                                                  _mavlink_mission_item_messages.size(),
+                                                  last_frame,
+                                                  MAV_CMD_NAV_LOITER_TIME,
+                                                  current,
+                                                  autocontinue,
+                                                  mission_item_impl.get_camera_action_delay_s(), // loiter time in seconds
+                                                  NAN, // empty
+                                                  0.0f, // radius around waypoint in meters ?
+                                                  0.0f, // loiter at center of waypoint
+                                                  last_x,
+                                                  last_y,
+                                                  last_z,
+                                                  MAV_MISSION_TYPE_MISSION);
+
+                _mavlink_mission_item_to_mission_item_indices.insert(
+                    std::pair <int, int>
+                {static_cast<int>(_mavlink_mission_item_messages.size()), item_i});
+                _mavlink_mission_item_messages.push_back(message_delay);
+            }
         }
 
         if (mission_item_impl.get_camera_action() != MissionItem::CameraAction::NONE) {
