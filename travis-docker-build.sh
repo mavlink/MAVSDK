@@ -10,6 +10,7 @@ make fix_style
 (cd example/fly_mission && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make)
 (cd example/offboard_velocity && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make)
 make clean
+git clean -dfx
 
 make BUILD_TYPE=Release run_unit_tests -j4
 make install
