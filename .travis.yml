@@ -76,15 +76,16 @@ install:
 
 script:
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
-    make EXTERNAL_DIR=external_example;
+    make INSTALL_PREFIX=. EXTERNAL_DIR=external_example;
     make default install;
     make docs;
     make run_unit_tests;
     (cd example/takeoff_land && mkdir build && cd build && cmake .. && make);
     (cd example/fly_mission && mkdir build && cd build && cmake .. && make);
+    (cd example/offboard_velocity && mkdir build && cd build && cmake .. && make);
     make clean;
-    make BUILD_TYPE=Release;
-    make default install;
+    make INSTALL_PREFIX=. BUILD_TYPE=Release;
+    make install;
     make run_unit_tests;
   fi
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
