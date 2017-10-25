@@ -11,6 +11,7 @@
 
 list(APPEND integration_tests
     simple_connect
+    followme_target
     async_connect
     telemetry_simple
     telemetry_async
@@ -22,9 +23,9 @@ list(APPEND integration_tests
     offboard_velocity
     logging
     info
-	mission
     mission_change_speed
 	mission_survey
+	waypoints
     curl
 )
 

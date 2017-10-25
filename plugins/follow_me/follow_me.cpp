@@ -12,9 +12,15 @@ FollowMe::~FollowMe()
 {
 }
 
-void FollowMe::say_hello() const
+
+FollowMe::Result FollowMe::start() const
 {
-    _impl->say_hello();
+    return _impl->start();
+}
+
+FollowMe::Result FollowMe::stop() const
+{
+    return _impl->stop();
 }
 
 } // namespace dronecore
