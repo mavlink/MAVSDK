@@ -110,6 +110,8 @@ private:
     static void receive_int_param(bool success, MavlinkParameters::ParamValue value,
                                   get_param_int_callback_t callback);
 
+    static bool is_zero(const uint8_t *arr, size_t len);
+
     struct MavlinkHandlerTableEntry {
         uint16_t msg_id;
         mavlink_message_handler_t callback;
@@ -143,6 +145,8 @@ private:
     static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
 
     static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
+
+    static constexpr int _UUID_LEN = 18;
 
     std::mutex _connection_mutex {};
     bool _connected {false};

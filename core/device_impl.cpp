@@ -135,12 +135,21 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
     _target_supports_mission_int =
         ((autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT) ? true : false);
 
-    if (_target_uuid == 0 && autopilot_version.uid != 0) {
+    uint8_t new_uuid[_UUID_LEN] {};
+
+    if (is_zero(autopilot_version.uid2, sizeof(autopilot_version.uid2))) {
+        const uint8_t *uid2_ptr = reinterpret_cast<uint8_t*>(&autopilot_version.uid);
+        memcpy(new_uuid, uid2_ptr, sizeof(autopilot_version.uid));
+    } else {
+        memcpy(new_uuid, autopilot_version.uid2, sizeof(autopilot_version.uid2));
+    }
+
+    if (is_zero(_target_uuid) && !is_zero(new_uuid)) {
 
         // This is the best case. The device has a UUID and we were able to get it.
-        _target_uuid = autopilot_version.uid;
+        memcpy(_target_uuid, new_uuid, sizeof(_target_uuid);
 
-    } else if (_target_uuid == 0 && autopilot_version.uid == 0) {
+    } else if (is_zero(target_uuid) && is_zero(new_uuid)) {
 
         // This is not ideal because the device has no valid UUID.
         // In this case we use the mavlink system ID as the UUID.
@@ -157,6 +166,16 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
 
     _autopilot_version_pending = false;
     unregister_timeout_handler(_autopilot_version_timed_out_cookie);
+}
+
+bool DeviceImpl::is_zero(const uint8_t *arr, size_t len)
+{
+    for (size_t i = 0; i < len; ++i) {
+        if (arr[i] != 0) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void DeviceImpl::process_statustext(const mavlink_message_t &message)
