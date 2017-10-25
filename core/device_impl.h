@@ -43,6 +43,7 @@ public:
 
     void add_call_every(std::function<void()> callback, float interval_s, void **cookie);
     void change_call_every(float interval_s, const void *cookie);
+    void reset_call_every(const void *cookie);
     void remove_call_every(const void *cookie);
 
     bool send_message(const mavlink_message_t &message);

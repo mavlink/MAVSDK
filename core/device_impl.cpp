@@ -115,6 +115,11 @@ void DeviceImpl::change_call_every(float interval_s, const void *cookie)
     _call_every_handler.change(interval_s, cookie);
 }
 
+void DeviceImpl::reset_call_every(const void *cookie)
+{
+    _call_every_handler.reset(cookie);
+}
+
 void DeviceImpl::remove_call_every(const void *cookie)
 {
     _call_every_handler.remove(cookie);
