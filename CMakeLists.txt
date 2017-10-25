@@ -127,6 +127,7 @@ add_library(dronecore STATIC
     core/curl_wrapper.cpp
     core/http_loader.cpp
     core/timeout_handler.cpp
+    core/call_every_handler.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/core/device_plugin_container.cpp
     ${plugin_source_files}
 )
@@ -185,6 +186,7 @@ if(NOT IOS AND NOT ANDROID)
         core/unittests_main.cpp
         core/http_loader_test.cpp
         core/timeout_handler_test.cpp
+        core/call_every_handler_test.cpp
         ${plugin_unittest_source_files}
         ${unit_tests_src}
     )
