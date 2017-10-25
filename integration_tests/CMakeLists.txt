@@ -10,22 +10,23 @@
 #endif()
 
 list(APPEND integration_tests
-    simple_connect
-    async_connect
-    telemetry_simple
-    telemetry_async
-    telemetry_modes
-    telemetry_health
-    simple_hover
-    async_hover
-    takeoff_and_kill
-    offboard_velocity
-    logging
-    info
-	mission
-    mission_change_speed
-	mission_survey
-    curl
+#    simple_connect
+     followme_target
+#    async_connect
+#    telemetry_simple
+#    telemetry_async
+#    telemetry_modes
+#    telemetry_health
+#    simple_hover
+#    async_hover
+#    takeoff_and_kill
+#    offboard_velocity
+#    logging
+#    info
+#    mission_change_speed
+#	mission_survey
+#	waypoints
+#    curl
 )
 
 
