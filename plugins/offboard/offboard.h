@@ -37,6 +37,7 @@ public:
         BUSY, /**< @brief Vehicle busy. */
         COMMAND_DENIED, /**< @brief Command denied. */
         TIMEOUT, /**< @brief %Request timeout. */
+        NO_SETPOINT_SET, /**< Can't start without setpoint set. */
         UNKNOWN /**< @brief Unknown error. */
     };
 
