@@ -12,7 +12,7 @@ TEST(CallEveryHandler, Single)
     int num_called = 0;
 
     void *cookie = nullptr;
-    ceh.add([&num_called]() { ++num_called; }, 0.1, &cookie);
+    ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 11; ++i) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -30,7 +30,7 @@ TEST(CallEveryHandler, Multiple)
     int num_called = 0;
 
     void *cookie = nullptr;
-    ceh.add([&num_called]() { ++num_called; }, 0.1, &cookie);
+    ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 10; ++i) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -39,7 +39,7 @@ TEST(CallEveryHandler, Multiple)
     EXPECT_EQ(num_called, 10);
 
     num_called = 0;
-    ceh.change(0.2, cookie);
+    ceh.change(0.2f, cookie);
 
     for (int i = 0; i < 20; ++i) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -64,8 +64,8 @@ TEST(CallEveryHandler, InParallel)
 
     void *cookie1 = nullptr;
     void *cookie2 = nullptr;
-    ceh.add([&num_called1]() { ++num_called1; }, 0.1, &cookie1);
-    ceh.add([&num_called2]() { ++num_called2; }, 0.2, &cookie2);
+    ceh.add([&num_called1]() { ++num_called1; }, 0.1f, &cookie1);
+    ceh.add([&num_called2]() { ++num_called2; }, 0.2f, &cookie2);
 
     for (int i = 0; i < 10; ++i) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -78,8 +78,8 @@ TEST(CallEveryHandler, InParallel)
     num_called1 = 0;
     num_called2 = 0;
 
-    ceh.change(0.4, cookie1);
-    ceh.change(0.1, cookie2);
+    ceh.change(0.4f, cookie1);
+    ceh.change(0.1f, cookie2);
 
     for (int i = 0; i < 10; ++i) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -97,7 +97,7 @@ TEST(CallEveryHandler, Reset)
     int num_called = 0;
 
     void *cookie = nullptr;
-    ceh.add([&num_called]() { ++num_called; }, 0.1, &cookie);
+    ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 8; ++i) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
