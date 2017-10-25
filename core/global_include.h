@@ -35,6 +35,7 @@ typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
 
 dl_time_t steady_time();
 dl_time_t steady_time_in_future(double duration_s);
+void shift_steady_time_by(dl_time_t &time, double offset_s);
 
 double elapsed_s();
 double elapsed_since_s(const dl_time_t &since);
