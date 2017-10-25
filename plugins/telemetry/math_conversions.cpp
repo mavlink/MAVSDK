@@ -4,15 +4,7 @@
 
 namespace dronecore {
 
-float to_deg_from_rad(float rad)
-{
-    return (float)(rad * 180.0f / M_PI);
-}
-
-float to_rad_from_deg(float deg)
-{
-    return (float)(deg / 180.0f * M_PI);
-}
+// TODO: this needs to be unit tested.
 
 Telemetry::EulerAngle to_euler_angle_from_quaternion(Telemetry::Quaternion quaternion)
 {

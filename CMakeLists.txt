@@ -7,16 +7,46 @@ project(dronecore)
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
 
-# We want C++11 and lots of warnings.
 if(NOT MSVC)
     # Clang and GCC
+    # We want C++11 and lots of warnings.
     # We are not using exceptions to make it easier to write wrappers.
-    add_definitions("-std=c++11 -Wall -Wextra -Werror -fno-exceptions -Wshadow -Wno-strict-aliasing")
+    add_definitions(
+        -std=c++11
+        -fno-exceptions
+    )
+
+    set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2")
+
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6)
+            set(warnings "${warnings} -Wduplicated-cond -Wnull-dereference")
+        endif()
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7)
+            set(warnings "${warnings} -Wduplicated-branches")
+        endif()
+
+        if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
+            set(warnings "${warnings} -Wno-missing-field-initializers")
+        endif()
+
+        set(warnings "${warnings} -Wuseless-cast -Wlogical-op")
+    endif()
+
     set(platform_libs "pthread")
     set(curl_lib "curl")
+
 else()
     # MSBuild
-    add_definitions("-std=c++11 -WX -W2 -DWINDOWS -DCURL_STATICLIB")
+    add_definitions(
+        -std=c++11
+        -DWINDOWS
+        -DCURL_STATICLIB
+        /MD
+    )
+
+    set(warnings "-WX -W2")
+
     set(platform_libs "Ws2_32.lib")
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)
@@ -29,23 +59,21 @@ else()
     set(curl_lib ${WIN_CURL_LIB})
 endif()
 
+# Clang needs this warning disabled.
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    # Some time ago we needed `-stdlib=libc++` but that does not seem to be true anymore.
+    set(warnings "${warnings} -Wno-missing-braces")
+endif()
+
+
 # We need a define if on APPLE
 if(APPLE)
     add_definitions("-DAPPLE")
 endif()
 
-# Clang needs this warning disabled.
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    # Some time ago we needed `-stdlib=libc++` but that does not seem to be true anymore.
-    add_definitions("-Wno-missing-braces")
-endif()
 
 if (ANDROID)
-    add_definitions("-frtti")
-endif()
-
-if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
-    add_definitions("-Wno-missing-field-initializers")
+    add_definitions(-frtti)
 endif()
 
 # Add definition for __FILENAME__ so we don't need to use __FILE__ because it also
@@ -69,7 +97,7 @@ include_directories(
     ${external_plugins}
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/core
-    ${EXTERNAL_DIR}/${additional_includes}
+    SYSTEM ${EXTERNAL_DIR}/${additional_includes}
 )
 
 if (ANDROID)
@@ -101,6 +129,14 @@ add_library(dronecore STATIC
     core/timeout_handler.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/core/device_plugin_container.cpp
     ${plugin_source_files}
+)
+
+# cmake should check for C++11
+set_property(TARGET dronecore PROPERTY CXX_STANDARD 11)
+set_property(TARGET dronecore PROPERTY CXX_STANDARD_REQUIRED ON)
+
+set_target_properties(dronecore
+    PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
 # We support install in order to use the header and static library files in
@@ -136,13 +172,10 @@ if(NOT IOS AND NOT ANDROID)
     enable_testing()
 
     add_subdirectory(libs/gtest EXCLUDE_FROM_ALL)
-    include_directories(libs/gtest/googletest/include)
-    include_directories(libs/gtest/googlemock/include)
 
-    if(NOT MSVC)
-        # gtest has these warnings
-        add_definitions("-Wno-sign-compare")
-    endif()
+    # SYSTEM because we don't want warnings for gtest headers.
+    include_directories(SYSTEM libs/gtest/googletest/include)
+    include_directories(SYSTEM libs/gtest/googlemock/include)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 
@@ -154,6 +187,10 @@ if(NOT IOS AND NOT ANDROID)
         core/timeout_handler_test.cpp
         ${plugin_unittest_source_files}
         ${unit_tests_src}
+    )
+
+    set_target_properties(unit_tests_runner
+        PROPERTIES COMPILE_FLAGS ${warnings}
     )
 
     target_link_libraries(unit_tests_runner
@@ -176,6 +213,10 @@ if(NOT IOS AND NOT ANDROID)
     # This includes all GTests that run integration tests
     add_executable(integration_tests_runner
         ${integration_tests_src}
+    )
+
+    set_target_properties(integration_tests_runner
+        PROPERTIES COMPILE_FLAGS ${warnings}
     )
 
     target_link_libraries(integration_tests_runner
@@ -204,6 +245,33 @@ if(NOT IOS AND NOT ANDROID)
             ${CMAKE_CURRENT_BINARY_DIR}
     )
 
+    set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
+    set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
+    set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage")
+
+    # We try to find gRPC. If we find it we try to include it in the build.
+    include(grpc/FindGRPC.cmake)
+    if(GRPC_LIBRARIES)
+
+        # If protobuf is installed to e.g. /opt/protobuf, you need to specifiy this via environment variable:
+        # `export PROTOBUF_DIR=/opt/protobuf`
+        #
+        if (DEFINED ENV{PROTOBUF_DIR})
+            message(STATUS "PROTOBUF_DIR manually set, using protobuf from $ENV{PROTOBUF_DIR}")
+            set(Protobuf_INCLUDE_DIRS "$ENV{PROTOBUF_DIR}/include")
+            set(Protobuf_PROTOC_EXECUTABLE "$ENV{PROTOBUF_DIR}/bin/protoc")
+            set(Protobuf_PROTOC_LIBRARY_DIR "$ENV{PROTOBUF_DIR}/lib")
+            set(Protobuf_PROTOC_LIBRARIES "$ENV{PROTOBUF_DIR}/lib/libprotobuf.so")
+        else()
+            message(STATUS "PROTOBUF_DIR not set, checking automatically for Protobuf")
+            include(FindProtobuf REQUIRED)
+        endif()
+
+        add_subdirectory(grpc/server)
+        add_subdirectory(grpc/python_client)
+    else()
+        message(STATUS "gRPC not found, skipping gRPC build")
+    endif()
 endif()
 
 if (DROP_DEBUG EQUAL 1)

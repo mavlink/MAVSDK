@@ -68,7 +68,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     ASSERT_TRUE(_mission_started_ok);
 
     int last_item = -1;
-    while (_current_item < mission_items.size()) {
+    while (_current_item < static_cast<int>(mission_items.size())) {
 
         if (last_item != _current_item) {
             // Don't check the first because it's just a speed command and neither the second

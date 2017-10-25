@@ -27,8 +27,7 @@ namespace dronecore {
 UdpConnection::UdpConnection(DroneCoreImpl *parent,
                              int local_port_number) :
     Connection(parent),
-    _local_port_number(local_port_number),
-    _should_exit(false)
+    _local_port_number(local_port_number)
 {
     if (_local_port_number == 0) {
         _local_port_number = DEFAULT_UDP_LOCAL_PORT;
@@ -80,13 +79,12 @@ DroneCore::ConnectionResult UdpConnection::setup_port()
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 
-    struct sockaddr_in addr;
-    memset((char *)&addr, 0, sizeof(addr));
+    struct sockaddr_in addr {};
     addr.sin_family = AF_INET;
     addr.sin_port = htons(_local_port_number);
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    if (bind(_socket_fd, (sockaddr *)&addr, sizeof(addr)) != 0) {
+    if (bind(_socket_fd, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
         return DroneCore::ConnectionResult::BIND_ERROR;
     }
@@ -132,23 +130,27 @@ DroneCore::ConnectionResult UdpConnection::stop()
 
 bool UdpConnection::send_message(const mavlink_message_t &message)
 {
-    if (_remote_ip.empty()) {
-        LogErr() << "Remote IP unknown";
-        return false;
+    struct sockaddr_in dest_addr {};
+
+    {
+        std::lock_guard<std::mutex> lock(_remote_mutex);
+
+        if (_remote_ip.empty()) {
+            LogErr() << "Remote IP unknown";
+            return false;
+        }
+
+        if (_remote_port_number == 0) {
+            LogErr() << "Remote port unknown";
+            return false;
+        }
+
+        dest_addr.sin_family = AF_INET;
+
+        inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
+
+        dest_addr.sin_port = htons(_remote_port_number);
     }
-
-    if (_remote_port_number == 0) {
-        LogErr() << "Remote port unknown";
-        return false;
-    }
-
-    struct sockaddr_in dest_addr;
-    memset((char *)&dest_addr, 0, sizeof(dest_addr));
-    dest_addr.sin_family = AF_INET;
-
-    inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
-
-    dest_addr.sin_port = htons(_remote_port_number);
 
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
@@ -156,8 +158,8 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, (const char *)buffer, buffer_len, 0,
-                          (const sockaddr *)&dest_addr, sizeof(dest_addr));
+    int send_len = sendto(_socket_fd, reinterpret_cast<char *>(buffer), buffer_len, 0,
+                          reinterpret_cast<const sockaddr *>(&dest_addr), sizeof(dest_addr));
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -177,7 +179,7 @@ void UdpConnection::receive(UdpConnection *parent)
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
         int recv_len = recvfrom(parent->_socket_fd, buffer, sizeof(buffer), 0,
-                                (struct sockaddr *)&src_addr, &src_addr_len);
+                                reinterpret_cast<struct sockaddr *>(&src_addr), &src_addr_len);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
@@ -192,38 +194,31 @@ void UdpConnection::receive(UdpConnection *parent)
             continue;
         }
 
-        int new_remote_port_number = ntohs(src_addr.sin_port);
-        std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
+        {
+            std::lock_guard<std::mutex> lock(parent->_remote_mutex);
 
-        // TODO make calls to remote threadsafe.
+            int new_remote_port_number = ntohs(src_addr.sin_port);
+            std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
 
-        if (parent->_remote_ip.empty()) {
+            if (parent->_remote_ip.empty() ||
+                parent->_remote_port_number == 0) {
 
-            if (parent->_remote_port_number == 0 ||
-                parent->_remote_port_number == new_remote_port_number) {
                 // Set IP if we don't know it yet.
                 parent->_remote_ip = new_remote_ip;
                 parent->_remote_port_number = new_remote_port_number;
 
-                LogInfo() << "Partner IP: " << parent->_remote_ip
+                LogInfo() << "New device on: " << parent->_remote_ip
                           << ":" << parent->_remote_port_number;
 
-            } else {
+            } else if (parent->_remote_ip.compare(new_remote_ip) != 0 ||
+                       parent->_remote_port_number != new_remote_port_number) {
 
-                LogWarn() << "Ignoring message from remote port " << new_remote_port_number
-                          << " instead of " << parent->_remote_port_number;
-                continue;
-            }
+                // It is possible that wifi disconnects and a device might get a new
+                // IP and/or UDP port.
+                parent->_remote_ip = new_remote_ip;
+                parent->_remote_port_number = new_remote_port_number;
 
-        } else if (parent->_remote_ip.compare(new_remote_ip) != 0) {
-            LogWarn() << "Ignoring message from IP: " << new_remote_ip;
-            continue;
-
-        } else {
-            if (parent->_remote_port_number != new_remote_port_number) {
-                LogWarn() << "Ignoring message from remote port " << new_remote_port_number
-                          << " instead of " << parent->_remote_port_number;
-                continue;
+                LogInfo() << "Device changed to: " << new_remote_ip << ":" << new_remote_port_number;
             }
         }
 

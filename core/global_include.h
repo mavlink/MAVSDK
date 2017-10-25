@@ -24,6 +24,10 @@
 #define STRNCPY strncpy
 #endif
 
+#ifndef M_PI_F
+#define M_PI_F float(M_PI)
+#endif
+
 
 namespace dronecore {
 
@@ -37,6 +41,9 @@ double elapsed_since_s(const dl_time_t &since);
 
 double to_rad_from_deg(double deg);
 double to_deg_from_rad(double rad);
+
+float to_rad_from_deg(float deg);
+float to_deg_from_rad(float rad);
 
 bool are_equal(float one, float two);
 bool are_equal(double one, double two);

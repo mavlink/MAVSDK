@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 
-project(fly_mission)
+project(offboard)
 
 if(NOT MSVC)
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
@@ -20,8 +20,8 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/../../install/include
 )
 
-add_executable(fly_mission
-    fly_mission.cpp
+add_executable(offboard
+    offboard_velocity.cpp
 )
 
 # Not needed if DroneCore installed system-wide
@@ -31,7 +31,7 @@ else()
     set(dronecore_lib "${CMAKE_SOURCE_DIR}/../../install/lib/libdronecore.a")
 endif()
 
-target_link_libraries(fly_mission
+target_link_libraries(offboard
     ${dronecore_lib}  # Remove/comment out this line if DroneCore used locally
     # dronecore  # Uncomment/add this line if DroneCore installed system-wide
     ${CMAKE_THREAD_LIBS_INIT}

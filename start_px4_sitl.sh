@@ -11,8 +11,8 @@ if [[ $AUTOSTART_SITL != 1 ]]; then
     exit 0
 fi
 
-if [[ -n "$PX4_FIRMARE_DIR" ]]; then
-    px4_firmware_dir=$PX4_FIRMARE_DIR
+if [[ -n "$PX4_FIRMWARE_DIR" ]]; then
+    px4_firmware_dir=$PX4_FIRMWARE_DIR
 else
     # Try to use the documented default path.
     px4_firmware_dir=$HOME/src/Firmware
@@ -46,15 +46,15 @@ fi
 pushd .
 
 # Go to Firmware build dir.
-cd $px4_firmware_dir/build_posix_sitl_default/tmp
+cd $px4_firmware_dir/build/posix_sitl_default/tmp
 
 # And run
 $px4_firmware_dir/Tools/sitl_run.sh \
-    $px4_firmware_dir/build_posix_sitl_default/src/firmware/posix/px4 \
+    $px4_firmware_dir/build/posix_sitl_default/src/firmware/posix/px4 \
     posix-configs/SITL/init/lpe \
     none gazebo iris \
     $px4_firmware_dir \
-    $px4_firmware_dir/build_posix_sitl_default 2>1 > $log_dir/px4_sitl-$timestamp.log &
+    $px4_firmware_dir/build/posix_sitl_default 2>1 > $log_dir/px4_sitl-$timestamp.log &
 
 # Go back to dir where we started
 popd

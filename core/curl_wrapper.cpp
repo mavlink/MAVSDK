@@ -22,7 +22,7 @@ CurlWrapper::~CurlWrapper()
 // taken from https://stackoverflow.com/questions/9786150/save-curl-content-result-into-a-string-in-c
 static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp)
 {
-    ((std::string *)userp)->append((char *)contents, size * nmemb);
+    reinterpret_cast<std::string *>(userp)->append(reinterpret_cast<char *>(contents), size * nmemb);
     return size * nmemb;
 }
 
@@ -59,7 +59,7 @@ static int upload_progress_update(void *p, double dltotal, double dlnow, double 
     UNUSED(dltotal);
     UNUSED(dlnow);
 
-    struct dl_up_progress *myp = (struct dl_up_progress *)p;
+    struct dl_up_progress *myp = reinterpret_cast<struct dl_up_progress *>(p);
 
     if (myp->progress_callback == nullptr) {
         return 0;
@@ -69,7 +69,7 @@ static int upload_progress_update(void *p, double dltotal, double dlnow, double 
         return myp->progress_callback(0, Status::Idle, CURLcode::CURLE_OK);
     }
 
-    int percentage = (int)(100 / ultotal * ulnow);
+    int percentage = static_cast<int>(100.0 / ultotal * ulnow);
 
     if (percentage > myp->progress_in_percentage) {
         myp->progress_in_percentage = percentage;
@@ -166,7 +166,7 @@ static int download_progress_update(void *p, double dltotal, double dlnow, doubl
     UNUSED(ultotal);
     UNUSED(ulnow);
 
-    struct dl_up_progress *myp = (struct dl_up_progress *)p;
+    struct dl_up_progress *myp = reinterpret_cast<struct dl_up_progress *>(p);
 
     if (myp->progress_callback == nullptr) {
         return 0;
@@ -176,7 +176,7 @@ static int download_progress_update(void *p, double dltotal, double dlnow, doubl
         return myp->progress_callback(0, Status::Idle, CURLcode::CURLE_OK);
     }
 
-    int percentage = (int)(100 / dltotal * dlnow);
+    int percentage = static_cast<int>(100 / dltotal * dlnow);
 
     if (percentage > myp->progress_in_percentage) {
         myp->progress_in_percentage = percentage;

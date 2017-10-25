@@ -160,7 +160,7 @@ void SerialConnection::receive(SerialConnection *parent)
         if (recv_len < -1) {
             LogErr() << "read failure: " << GET_ERROR(errno);
         }
-        if (recv_len > (int)sizeof(buffer) || recv_len == 0) {
+        if (recv_len > static_cast<int>(sizeof(buffer)) || recv_len == 0) {
             continue;
         }
         parent->_mavlink_receiver->set_new_datagram(buffer, recv_len);

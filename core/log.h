@@ -1,7 +1,6 @@
 #pragma once
 
 #include <sstream>
-#include "global_include.h"
 
 #if ANDROID
 #include <android/log.h>
@@ -11,7 +10,9 @@
 #endif
 
 #define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
 #define ANSI_COLOR_GRAY    "\x1b[37m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
@@ -81,14 +82,28 @@ public:
                 __android_log_print(ANDROID_LOG_ERROR, "DroneCore", "%s", _s.str().c_str());
                 break;
         }
-        UNUSED(_caller_filename);
-        UNUSED(_caller_filenumber);
+        // Unused:
+        (void)_caller_filename;
+        (void)_caller_filenumber;
 #else
+
+        switch (_log_level) {
+            case LogLevel::Debug:
+                std::cout << ANSI_COLOR_GREEN;
+                break;
+            case LogLevel::Info:
+                std::cout << ANSI_COLOR_BLUE;
+                break;
+            case LogLevel::Warn:
+                std::cout << ANSI_COLOR_YELLOW;
+                break;
+            case LogLevel::Err:
+                std::cout << ANSI_COLOR_RED;
+                break;
+        }
 
         // Time output taken from:
         // https://stackoverflow.com/questions/16357999#answer-16358264
-
-
         time_t rawtime;
         time(&rawtime);
         struct tm *timeinfo = localtime(&rawtime);
@@ -104,29 +119,17 @@ public:
                 std::cout << "|Info ] ";
                 break;
             case LogLevel::Warn:
-                std::cout << ANSI_COLOR_YELLOW;
                 std::cout << "|Warn ] ";
                 break;
             case LogLevel::Err:
-                std::cout << ANSI_COLOR_RED;
                 std::cout << "|Error] ";
                 break;
         }
 
+        std::cout << ANSI_COLOR_RESET;
+
         std::cout << _s.str();
         std::cout << " (" << _caller_filename << ":" << _caller_filenumber << ")";
-
-        switch (_log_level) {
-            case LogLevel::Info:
-                break;
-            case LogLevel::Debug:
-            // FALLTHROUGH
-            case LogLevel::Warn:
-            // FALLTHROUGH
-            case LogLevel::Err:
-                std::cout << ANSI_COLOR_RESET;
-                break;
-        }
 
         std::cout << std::endl;
 #endif

@@ -129,7 +129,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
                 tag_text='<code>'+lead_text+child_text+'</code>'+tail_text
             else:
                 tag_text='`'+lead_text+child_text+'`'+tail_text
-    if aTag.tag=='bold':
+    elif aTag.tag=='bold':
         if ignore_current_tag: #This tag is ignored, meaning that we don't add any special markup for it.
             tag_text=lead_text+child_text+tail_text
         else:
@@ -137,7 +137,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
                 tag_text='<b>'+lead_text+child_text+'</b>'+tail_text
             else:
                 tag_text='**'+lead_text+child_text+'**'+tail_text
-    if aTag.tag=='emphasis':
+    elif aTag.tag=='emphasis':
         if ignore_current_tag: #This tag is ignored, meaning that we don't add any special markup for it.
             tag_text=lead_text+child_text+tail_text
         else:

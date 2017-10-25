@@ -40,8 +40,6 @@ public:
 private:
     void assemble_mavlink_messages();
 
-    void timeout_happened();
-
     void process_mission_request(const mavlink_message_t &message);
     void process_mission_request_int(const mavlink_message_t &message);
     void process_mission_ack(const mavlink_message_t &message);
@@ -67,8 +65,6 @@ private:
         SET_MISSION,
         SEND_COMMAND
     } _activity = Activity::NONE;
-
-    int _last_set_current_mavlink_mission_item = -1;
 
     int _last_current_mavlink_mission_item;
     int _last_reached_mavlink_mission_item;

@@ -1,6 +1,6 @@
-#include <iostream>
-#include "integration_test_helper.h"
 #include "dronecore.h"
+#include "integration_test_helper.h"
+#include <iostream>
 
 using namespace dronecore;
 
@@ -16,7 +16,8 @@ TEST_F(SitlTest, TelemetryFlightModes)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
-    device.telemetry().flight_mode_async(std::bind(&print_mode, std::placeholders::_1));
+    device.telemetry().flight_mode_async(
+        std::bind(&print_mode, std::placeholders::_1));
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
@@ -35,7 +36,7 @@ TEST_F(SitlTest, TelemetryFlightModes)
 
 void print_mode(Telemetry::FlightMode flight_mode)
 {
-    std::cout << "Got FlightMode: " << int(flight_mode) << std::endl;
+    std::cout << "Got FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+              << std::endl;
     _flight_mode = flight_mode;
 }
-

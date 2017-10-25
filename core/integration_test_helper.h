@@ -9,7 +9,11 @@ class SitlTest : public testing::Test
 protected:
     virtual void SetUp()
     {
-        system("./start_px4_sitl.sh");
+        const int ret = system("./start_px4_sitl.sh");
+        if (ret != 0) {
+            dronecore::LogErr() << "./start_px4_sitl.sh failed, giving up.";
+            abort();
+        }
         // We need to wait a bit until it's up and running.
         std::this_thread::sleep_for(std::chrono::seconds(3));
     }
@@ -17,6 +21,10 @@ protected:
     {
         // Don't rush this either.
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        system("./stop_px4_sitl.sh");
+        const int ret = system("./stop_px4_sitl.sh");
+        if (ret != 0) {
+            dronecore::LogErr() << "./stop_px4_sitl.sh failed, giving up.";
+            abort();
+        }
     }
 };

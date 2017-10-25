@@ -84,7 +84,8 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
     remote_addr.sin_port = htons(_remote_port_number);
     remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());
 
-    if (connect(_socket_fd, (sockaddr *)&remote_addr, sizeof(struct sockaddr_in)) < 0) {
+    if (connect(_socket_fd, reinterpret_cast<sockaddr *>(&remote_addr),
+                sizeof(struct sockaddr_in)) < 0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         return DroneCore::ConnectionResult::SOCKET_CONNECTION_ERROR;
     }
@@ -140,8 +141,7 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
         return false;
     }
 
-    struct sockaddr_in dest_addr;
-    memset((char *)&dest_addr, 0, sizeof(dest_addr));
+    struct sockaddr_in dest_addr {};
     dest_addr.sin_family = AF_INET;
 
     inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
@@ -154,8 +154,8 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, (const char *)buffer, buffer_len, 0,
-                          (const sockaddr *)&dest_addr, sizeof(dest_addr));
+    int send_len = sendto(_socket_fd, reinterpret_cast<char *>(buffer), buffer_len, 0,
+                          reinterpret_cast<const sockaddr *>(&dest_addr), sizeof(dest_addr));
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);

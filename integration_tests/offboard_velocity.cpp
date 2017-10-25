@@ -45,8 +45,8 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
     {
         const float step_size = 0.01f;
-        const float one_cycle = 2.0f * (float)M_PI;
-        const unsigned steps = (unsigned)(one_cycle / step_size);
+        const float one_cycle = 2.0f * M_PI_F;
+        const unsigned steps = static_cast<unsigned>(one_cycle / step_size);
 
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);

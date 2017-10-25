@@ -34,12 +34,14 @@ private:
     static constexpr int DEFAULT_UDP_LOCAL_PORT = 14540;
 
     int _local_port_number;
+
+    std::mutex _remote_mutex = {};
     std::string _remote_ip = {};
     int _remote_port_number = 0;
-    std::mutex _mutex = {};
+
     int _socket_fd = -1;
     std::thread *_recv_thread = nullptr;
-    std::atomic_bool _should_exit;
+    std::atomic_bool _should_exit {false};
 };
 
 } // namespace dronecore

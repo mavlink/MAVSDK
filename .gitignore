@@ -2,3 +2,9 @@
 **/build
 **/install
 **/logs
+.vscode
+# aut-generated files (below) from Qt Creator
+*.config
+*.creator
+*.files
+*.includes

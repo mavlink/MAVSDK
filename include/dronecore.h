@@ -115,6 +115,7 @@ public:
      * @brief Get vector of device UUIDs.
      *
      * This returns a vector of the UUIDs of all devices that have been discovered.
+     * If a device doesn't have a UUID then DroneCore will instead use its MAVLink system ID (range: 0..255).
      *
      * @return A reference to the vector containing the UUIDs.
      */
@@ -143,9 +144,32 @@ public:
     /**
      * @brief Callback type for discover and timeout notifications.
      *
-     * @param uuid UUID of device.
+     * @param uuid UUID of device (or MAVLink system ID for devices that don't have a UUID).
      */
     typedef std::function<void(uint64_t uuid)> event_callback_t;
+
+    /**
+     * @brief Returns `true` if exactly one device is currently connected.
+     *
+     * Connected means we are receiving heartbeats from this device.
+     * It means the same as "discovered" and "not timed out".
+     *
+     * If multiple devices have connected, this will return `false`.
+     *
+     * @return `true` if exactly one device is connected.
+     */
+    bool is_connected() const;
+
+    /**
+     * @brief Returns `true` if a device is currently connected.
+     *
+     * Connected means we are receiving heartbeats from this device.
+     * It means the same as "discovered" and "not timed out".
+     *
+     * @param uuid UUID of device to check.
+     * @return `true` if device is connected.
+     */
+    bool is_connected(uint64_t uuid) const;
 
     /**
      * @brief Register callback for device discovery.

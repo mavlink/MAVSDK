@@ -33,7 +33,7 @@ void TimeoutHandler::refresh(const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
-    auto it = _timeouts.find((void *)(cookie));
+    auto it = _timeouts.find(const_cast<void *>(cookie));
     if (it != _timeouts.end()) {
         dl_time_t future_time = steady_time_in_future(it->second->duration_s);
         it->second->time = future_time;
@@ -44,9 +44,9 @@ void TimeoutHandler::remove(const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
-    auto it = _timeouts.find((void *)cookie);
+    auto it = _timeouts.find(const_cast<void *>(cookie));
     if (it != _timeouts.end()) {
-        _timeouts.erase((void *)cookie);
+        _timeouts.erase(const_cast<void *>(cookie));
     }
 }
 

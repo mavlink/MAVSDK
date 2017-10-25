@@ -7,8 +7,6 @@
 namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
-std::mutex DeviceImpl::_last_heartbeat_reiceved_time_mutex;
-dl_time_t DeviceImpl::_last_heartbeat_received_time;
 
 DeviceImpl::DeviceImpl(DroneCoreImpl *parent,
                        uint8_t target_system_id) :
@@ -26,6 +24,10 @@ DeviceImpl::DeviceImpl(DroneCoreImpl *parent,
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&DeviceImpl::process_autopilot_version, this, _1), this);
+
+    register_mavlink_message_handler(
+        MAVLINK_MSG_ID_STATUSTEXT,
+        std::bind(&DeviceImpl::process_statustext, this, _1), this);
 }
 
 DeviceImpl::~DeviceImpl()
@@ -33,11 +35,19 @@ DeviceImpl::~DeviceImpl()
     _should_exit = true;
     unregister_all_mavlink_message_handlers(this);
 
+    unregister_timeout_handler(_autopilot_version_timed_out_cookie);
+    unregister_timeout_handler(_heartbeat_timeout_cookie);
+
     if (_device_thread != nullptr) {
         _device_thread->join();
         delete _device_thread;
         _device_thread = nullptr;
     }
+}
+
+bool DeviceImpl::is_connected() const
+{
+    return _connected;
 }
 
 void DeviceImpl::register_mavlink_message_handler(uint16_t msg_id,
@@ -100,18 +110,16 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    /* If we don't know the UUID yet, or we had a timeout, we want to check that the
-     * UUID is still the same. */
-    if (_target_uuid == 0 || !_heartbeats_arriving) {
+    _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
+
+    // We do not call on_discovery here but wait with the notification until we know the UUID.
+
+    /* If we don't know the UUID yet, we try to find out. */
+    if (_target_uuid == 0 && !_target_uuid_initialized) {
         request_autopilot_version();
     }
 
-    _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
-
-    _heartbeats_arriving = true;
-
-    std::lock_guard<std::mutex> lock(_last_heartbeat_reiceved_time_mutex);
-    _last_heartbeat_received_time = steady_time();
+    set_connected();
 }
 
 void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
@@ -127,23 +135,78 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
     _target_supports_mission_int =
         ((autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT) ? true : false);
 
-    if (_target_uuid == 0) {
+    if (_target_uuid == 0 && autopilot_version.uid != 0) {
+
+        // This is the best case. The device has a UUID and we were able to get it.
         _target_uuid = autopilot_version.uid;
-        _parent->notify_on_discover(_target_uuid);
 
-    } else if (_target_uuid == autopilot_version.uid) {
-        if (!_heartbeats_arriving) {
-            // It looks like the vehicle has reconnected, let's accept it again.
-            _parent->notify_on_discover(_target_uuid);
-        } else {
-            // This means we just got a autopilot version message but we don't need it
-            // or didn't request it.
-        }
+    } else if (_target_uuid == 0 && autopilot_version.uid == 0) {
 
-    } else {
+        // This is not ideal because the device has no valid UUID.
+        // In this case we use the mavlink system ID as the UUID.
+        _target_uuid = _target_system_id;
+
+    } else if (_target_uuid != autopilot_version.uid) {
+
         // TODO: this is bad, we should raise a flag to invalidate device.
         LogErr() << "Error: UUID changed";
     }
+
+    _target_uuid_initialized = true;
+    set_connected();
+
+    _autopilot_version_pending = false;
+    unregister_timeout_handler(_autopilot_version_timed_out_cookie);
+}
+
+void DeviceImpl::process_statustext(const mavlink_message_t &message)
+{
+    mavlink_statustext_t statustext;
+    mavlink_msg_statustext_decode(&message, &statustext);
+
+    std::string debug_str = "mavlink ";
+
+    switch (statustext.severity) {
+        case MAV_SEVERITY_EMERGENCY:
+            debug_str += "emergency";
+            break;
+        case MAV_SEVERITY_ALERT:
+            debug_str += "alert";
+            break;
+        case MAV_SEVERITY_CRITICAL:
+            debug_str += "critical";
+            break;
+        case MAV_SEVERITY_ERROR:
+            debug_str += "error";
+            break;
+        case MAV_SEVERITY_WARNING:
+            debug_str += "warning";
+            break;
+        case MAV_SEVERITY_NOTICE:
+            debug_str += "notice";
+            break;
+        case MAV_SEVERITY_INFO:
+            debug_str += "info";
+            break;
+        case MAV_SEVERITY_DEBUG:
+            debug_str += "debug";
+            break;
+        default:
+            break;
+    }
+
+    // statustext.text is not null terminated, therefore we copy it first to
+    // an array big enough that is zeroed.
+    char text_with_null[sizeof(statustext.text) + 1] {};
+    memcpy(text_with_null, statustext.text, sizeof(statustext.text));
+
+    LogDebug() << debug_str << ": " << text_with_null;
+}
+
+void DeviceImpl::heartbeats_timed_out()
+{
+    LogInfo() << "heartbeats timed out";
+    set_disconnected();
 }
 
 void DeviceImpl::device_thread(DeviceImpl *self)
@@ -156,16 +219,17 @@ void DeviceImpl::device_thread(DeviceImpl *self)
             send_heartbeat(self);
             last_time = steady_time();
         }
-        check_timeouts(self);
-        check_heartbeat_timeout(self);
+
+        self->_timeout_handler.run_once();
         self->_params.do_work();
         self->_commands.do_work();
-        if (self->_heartbeats_arriving) {
+
+        if (self->_connected) {
             // Work fairly fast if we're connected.
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         } else {
             // Be less aggressive when unconnected.
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
 }
@@ -178,26 +242,6 @@ void DeviceImpl::send_heartbeat(DeviceImpl *self)
     self->send_message(message);
 }
 
-void DeviceImpl::check_timeouts(DeviceImpl *self)
-{
-    self->_timeout_handler.run_once();
-}
-
-void DeviceImpl::check_heartbeat_timeout(DeviceImpl *self)
-{
-    std::lock_guard<std::mutex> lock(_last_heartbeat_reiceved_time_mutex);
-    if (elapsed_since_s(self->_last_heartbeat_received_time) > DeviceImpl::_HEARTBEAT_TIMEOUT_S) {
-        if (self->_heartbeats_arriving) {
-            self->_parent->notify_on_timeout(self->_target_uuid);
-            self->_heartbeats_arriving = false;
-        }
-    } else {
-        if (!self->_heartbeats_arriving) {
-            self->_heartbeats_arriving = true;
-        }
-    }
-}
-
 bool DeviceImpl::send_message(const mavlink_message_t &message)
 {
     return _parent->send_message(message);
@@ -205,15 +249,82 @@ bool DeviceImpl::send_message(const mavlink_message_t &message)
 
 void DeviceImpl::request_autopilot_version()
 {
+    if (_target_uuid_initialized) {
+        // Already initialized, we can exit.
+        return;
+    }
+
+    if (!_autopilot_version_pending && _target_uuid_retries >= 3) {
+        // We give up getting a UUID and use the system ID.
+
+        LogWarn() << "No UUID received, using system ID instead.";
+        _target_uuid = _target_system_id;
+        _target_uuid_initialized = true;
+        set_connected();
+        return;
+    }
+
+    _autopilot_version_pending = true;
+
+    // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
     send_command_with_ack_async(
         MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
         MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         nullptr,
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT
+    );
+    ++_target_uuid_retries;
+
+    // We set a timeout to stay "pending" for half a second. This way, we don't give up too
+    // early e.g. because multiple components send heartbeats and we receive them all at once
+    // and run out of retries.
+
+    // We create a temp reference, so we don't need to capture `this`.
+    auto &pending_tmp = _autopilot_version_pending;
+    register_timeout_handler(
+    [&pending_tmp]() {
+        pending_tmp = false;
+    },
+    0.5,
+    &_autopilot_version_timed_out_cookie);
+}
+
+void DeviceImpl::set_connected()
+{
+    std::lock_guard<std::mutex> lock(_connection_mutex);
+
+    if (!_connected && _target_uuid_initialized) {
+        _parent->notify_on_discover(_target_uuid);
+        _connected = true;
+
+        register_timeout_handler(std::bind(&DeviceImpl::heartbeats_timed_out, this),
+                                 _HEARTBEAT_TIMEOUT_S,
+                                 &_heartbeat_timeout_cookie);
+    } else if (_connected) {
+        refresh_timeout_handler(_heartbeat_timeout_cookie);
+    }
+    // If not yet connected there is nothing to do/
+}
+
+void DeviceImpl::set_disconnected()
+{
+    std::lock_guard<std::mutex> lock(_connection_mutex);
+
+    // This might not be needed because this is probably called from the triggered
+    // timeout anyway but it should also do no harm.
+    //unregister_timeout_handler(_heartbeat_timeout_cookie);
+    //_heartbeat_timeout_cookie = nullptr;
+
+    _connected = false;
+    _parent->notify_on_timeout(_target_uuid);
+
+    // Let's reset the flag hope again for the next time we see this target.
+    _target_uuid_initialized = 0;
 }
 
 uint64_t DeviceImpl::get_target_uuid() const
 {
+    // We want to support UUIDs if the autopilot tells us.
     return _target_uuid;
 }
 
@@ -336,32 +447,48 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
                                   callback);
 }
 
-MavlinkCommands::Result DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz)
+MavlinkCommands::Result DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz,
+                                                 uint8_t component_id)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
     if (rate_hz > 0) {
-        interval_us = 1e6f / (float)rate_hz;
+        interval_us = 1e6f / static_cast<float>(rate_hz);
     }
 
-    return send_command_with_ack(
-               MAV_CMD_SET_MESSAGE_INTERVAL,
-               MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
+    if (component_id != 0) {
+        return send_command_with_ack(
+                   MAV_CMD_SET_MESSAGE_INTERVAL,
+                   MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+                   component_id);
+    } else {
+        return send_command_with_ack(
+                   MAV_CMD_SET_MESSAGE_INTERVAL,
+                   MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
+    }
 }
 
 void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
-                                    command_result_callback_t callback)
+                                    command_result_callback_t callback, uint8_t component_id)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
     if (rate_hz > 0) {
-        interval_us = 1e6f / (float)rate_hz;
+        interval_us = 1e6f / static_cast<float>(rate_hz);
     }
 
-    send_command_with_ack_async(
-        MAV_CMD_SET_MESSAGE_INTERVAL,
-        MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
-        callback);
+    if (component_id != 0) {
+        send_command_with_ack_async(
+            MAV_CMD_SET_MESSAGE_INTERVAL,
+            MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+            callback,
+            component_id);
+    } else {
+        send_command_with_ack_async(
+            MAV_CMD_SET_MESSAGE_INTERVAL,
+            MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+            callback);
+    }
 }
 
 
