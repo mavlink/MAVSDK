@@ -66,9 +66,9 @@ public:
     uint64_t uuid() const;
 
     /**
-     * @brief Tests if this Version object is fully populated from hardware.
+     * @brief Tests if the Version and Product objects are fully populated from hardware.
      *
-     * @return `true` if Version object is fully populated from device.
+     * @return `true` if Version and Product objects are fully populated from device.
      */
     bool is_complete() const;
 
