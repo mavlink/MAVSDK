@@ -37,11 +37,8 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
-    // Let yaw settle.
-    for (unsigned i = 0; i < 100; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     {
         const float step_size = 0.01f;
@@ -56,35 +53,22 @@ TEST_F(SitlTest, OffboardVelocityNED)
         }
     }
 
-    for (unsigned i = 0; i < 400; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    for (unsigned i = 0; i < 400; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    for (unsigned i = 0; i < 400; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    for (unsigned i = 0; i < 400; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(4));
 
     offboard_result = device.offboard().stop();
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
     action_ret = device.action().land();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
-
-    std::this_thread::sleep_for(std::chrono::seconds(10));
-
-    action_ret = device.action().disarm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }
 
@@ -121,55 +105,34 @@ TEST_F(SitlTest, OffboardVelocityBody)
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
     // Turn around yaw and climb
-    for (unsigned i = 0; i < 200; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Turn back
-    for (unsigned i = 0; i < 200; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    // Wait for a bit
-    for (unsigned i = 0; i < 200; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Fly a circle
-    for (unsigned i = 0; i < 500; ++i) {
-        device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    // Wait for a bit
-    for (unsigned i = 0; i < 500; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Fly a circle sideways
-    for (unsigned i = 0; i < 500; ++i) {
-        device.offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Wait for a bit
-    for (unsigned i = 0; i < 500; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     offboard_result = device.offboard().stop();
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
     action_ret = device.action().land();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
-
-    std::this_thread::sleep_for(std::chrono::seconds(10));
-
-    action_ret = device.action().disarm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }
