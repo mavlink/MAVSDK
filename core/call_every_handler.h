@@ -22,6 +22,7 @@ public:
 
     void add(std::function<void()> callback, float interval_s, void **cookie);
     void change(float interval_s, const void *cookie);
+    void reset(const void *cookie);
     void remove(const void *cookie);
 
     void run_once();

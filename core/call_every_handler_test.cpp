@@ -89,3 +89,35 @@ TEST(CallEveryHandler, InParallel)
     EXPECT_EQ(num_called1, 2);
     EXPECT_EQ(num_called2, 10);
 }
+
+TEST(CallEveryHandler, Reset)
+{
+    CallEveryHandler ceh;
+
+    int num_called = 0;
+
+    void *cookie = nullptr;
+    ceh.add([&num_called]() { ++num_called; }, 0.1, &cookie);
+
+    for (int i = 0; i < 8; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        ceh.run_once();
+        if (i == 8) {
+        }
+    }
+    EXPECT_EQ(num_called, 0);
+
+    ceh.reset(cookie);
+
+    for (int i = 0; i < 8; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        ceh.run_once();
+    }
+    EXPECT_EQ(num_called, 0);
+
+    for (int i = 0; i < 3; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        ceh.run_once();
+    }
+    EXPECT_EQ(num_called, 1);
+}
