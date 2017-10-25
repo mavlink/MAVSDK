@@ -5,6 +5,7 @@
 #include "mavlink_parameters.h"
 #include "mavlink_commands.h"
 #include "timeout_handler.h"
+#include "call_every_handler.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -37,10 +38,12 @@ public:
     void register_timeout_handler(std::function<void()> callback,
                                   double duration_s,
                                   void **cookie);
-
     void refresh_timeout_handler(const void *cookie);
-
     void unregister_timeout_handler(const void *cookie);
+
+    void add_call_every(std::function<void()> callback, float interval_s, void **cookie);
+    void change_call_every(float interval_s, const void *cookie);
+    void remove_call_every(const void *cookie);
 
     bool send_message(const mavlink_message_t &message);
 
@@ -158,6 +161,7 @@ private:
     MavlinkCommands _commands;
 
     TimeoutHandler _timeout_handler {};
+    CallEveryHandler _call_every_handler {};
 };
 
 
