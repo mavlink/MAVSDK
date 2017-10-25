@@ -105,6 +105,21 @@ void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
     }
 }
 
+void DeviceImpl::add_call_every(std::function<void()> callback, float interval_s, void **cookie)
+{
+    _call_every_handler.add(callback, interval_s, cookie);
+}
+
+void DeviceImpl::change_call_every(float interval_s, const void *cookie)
+{
+    _call_every_handler.change(interval_s, cookie);
+}
+
+void DeviceImpl::remove_call_every(const void *cookie)
+{
+    _call_every_handler.remove(cookie);
+}
+
 void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
 {
     mavlink_heartbeat_t heartbeat;
@@ -220,6 +235,7 @@ void DeviceImpl::device_thread(DeviceImpl *self)
             last_time = steady_time();
         }
 
+        self->_call_every_handler.run_once();
         self->_timeout_handler.run_once();
         self->_params.do_work();
         self->_commands.do_work();
