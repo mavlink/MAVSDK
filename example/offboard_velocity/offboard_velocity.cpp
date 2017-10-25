@@ -1,7 +1,9 @@
 /**
 * @file offboard_velocity.cpp
 * @brief Example that demonstrates offboard velocity control in local NED and body coordinates
-* @author Author: Julian Oes <julian@oes.ch>, Shakthi Prashanth <shakthi.prashanth.m@intel.com>
+*
+* @authors Author: Julian Oes <julian@oes.ch>,
+*                  Shakthi Prashanth <shakthi.prashanth.m@intel.com>
 * @date 2017-10-17
 */
 
@@ -76,12 +78,9 @@ bool offb_ctrl_ned(Device &device)
 
     // Let yaw settle.
     offboard_log(offb_mode, " Let yaw settle...");
-    for (unsigned i = 0; i < 100; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+    sleep_for(seconds(1));
     offboard_log(offb_mode, " Done...");
-    sleep_for(seconds(5));
 
     {
         const float step_size = 0.01f;
@@ -99,31 +98,24 @@ bool offb_ctrl_ned(Device &device)
     // NOTE: Use sleep_for() after each velocity-ned command to closely monitor their behaviour.
 
     offboard_log(offb_mode,  " Turn clock-wise 270 deg");
-    for (unsigned i = 0; i < 400; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
+    sleep_for(seconds(2));
+
     offboard_log(offb_mode, " Done");
 
     offboard_log(offb_mode, " Go UP 2 m/s, Turn clock-wise 180 deg");
-    for (unsigned i = 0; i < 400; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
+    sleep_for(seconds(4));
     offboard_log(offb_mode, " Done...");
 
     offboard_log(offb_mode,  " Turn clock-wise 90 deg");
-    for (unsigned i = 0; i < 400; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+    sleep_for(seconds(4));
     offboard_log(offb_mode, " Done...");
 
     offboard_log(offb_mode,  " Go DOWN 1.0 m/s");
-    for (unsigned i = 0; i < 400; ++i) {
-        device.offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
+    sleep_for(seconds(4));
     offboard_log(offb_mode, " Done...");
 
     // Now, stop offboard mode.
@@ -152,53 +144,39 @@ bool offb_ctrl_body(Device &device)
 
     // Turn around yaw and climb
     offboard_log(offb_mode, " Turn around yaw & climb");
-    for (unsigned i = 0; i < 200; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
+    sleep_for(seconds(2));
 
     // Turn back
     offboard_log(offb_mode, " Turn back");
-    for (unsigned i = 0; i < 200; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
+    sleep_for(seconds(2));
 
     // Wait for a bit
     offboard_log(offb_mode, " Wait for a bit");
-    for (unsigned i = 0; i < 200; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    sleep_for(seconds(2));
     // NOTE: Use sleep_for() after each velocity-ned command to closely monitor their behaviour.
 
     // Fly a circle
     offboard_log(offb_mode, " Fly a circle");
-    for (unsigned i = 0; i < 500; ++i) {
-        device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
+    sleep_for(seconds(5));
 
     // Wait for a bit
     offboard_log(offb_mode, " Wait for a bit");
-    for (unsigned i = 0; i < 500; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    sleep_for(seconds(5));
 
     // Fly a circle sideways
     offboard_log(offb_mode, " Fly a circle sideways...");
-    for (unsigned i = 0; i < 500; ++i) {
-        device.offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
+    sleep_for(seconds(5));
 
     // Wait for a bit
     offboard_log(offb_mode, " Wait for a bit");
-    for (unsigned i = 0; i < 500; ++i) {
-        device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-        sleep_for(milliseconds(10));
-    }
+    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    sleep_for(seconds(5));
 
     // Now, stop offboard mode.
     offboard_result = device.offboard().stop();
