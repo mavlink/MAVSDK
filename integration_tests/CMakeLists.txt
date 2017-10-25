@@ -28,7 +28,7 @@ list(APPEND integration_tests
     gimbal
     curl
     transition_multicopter_fixedwing
-    followme_target
+    follow_me
 )
 
 
