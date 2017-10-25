@@ -4,6 +4,7 @@
 #include "mavlink_include.h"
 #include "device_impl.h"
 #include "offboard.h"
+#include <mutex>
 
 namespace dronecore {
 
@@ -26,6 +27,9 @@ public:
     void set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
 
 private:
+    void send_velocity_ned();
+    void send_velocity_body();
+
     void process_heartbeat(const mavlink_message_t &message);
     void receive_command_result(MavlinkCommands::Result result,
                                 const Offboard::result_callback_t &callback);
@@ -38,10 +42,23 @@ private:
 
     void timeout_happened();
 
-    bool _offboard_mode_active;
-    Offboard::result_callback_t _result_callback;
+    bool _offboard_mode_active = false;
+    Offboard::result_callback_t _result_callback = nullptr;
 
     void *_timeout_cookie = nullptr;
+
+    mutable std::mutex _mutex {};
+    enum class Mode {
+        NOT_ACTIVE,
+        VELOCITY_NED,
+        VELOCITY_BODY
+    } _mode = Mode::NOT_ACTIVE;
+    Offboard::VelocityNEDYaw _velocity_ned_yaw {};
+    Offboard::VelocityBodyYawspeed _velocity_body_yawspeed {};
+
+    void *_call_every_cookie = nullptr;
+
+    const float SEND_INTERVAL_S = 0.1f;
 };
 
 } // namespace dronecore
