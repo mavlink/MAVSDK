@@ -1,11 +1,11 @@
 /**
-* @file offboard_velocity.cpp
-* @brief Example that demonstrates offboard velocity control in local NED and body coordinates
-*
-* @authors Author: Julian Oes <julian@oes.ch>,
-*                  Shakthi Prashanth <shakthi.prashanth.m@intel.com>
-* @date 2017-10-17
-*/
+ * @file offboard_velocity.cpp
+ * @brief Example that demonstrates offboard velocity control in local NED and body coordinates
+ *
+ * @authors Author: Julian Oes <julian@oes.ch>,
+ *                  Shakthi Prashanth <shakthi.prashanth.m@intel.com>
+ * @date 2017-10-17
+ */
 
 #include <iostream>
 #include <cmath>
@@ -60,10 +60,10 @@ inline void offboard_log(const std::string &offb_mode, const std::string msg)
 }
 
 /**
-* @name connected device
-* @brief Does Offboard control using NED co-ordinates
-* returns true if everything went well in Offboard control, exits with a log otherwise.
-**/
+ * Does Offboard control using NED co-ordinates.
+ *
+ * returns true if everything went well in Offboard control, exits with a log otherwise.
+ */
 bool offb_ctrl_ned(Device &device)
 {
     const std::string offb_mode = "NED";
@@ -127,10 +127,10 @@ bool offb_ctrl_ned(Device &device)
 }
 
 /**
-* @name connected device
-* @brief Does Offboard control using BODY co-ordinates
-* returns true if everything went well in Offboard control, exits with a log otherwise.
-*/
+ * Does Offboard control using body co-ordinates.
+ *
+ * returns true if everything went well in Offboard control, exits with a log otherwise.
+ */
 bool offb_ctrl_body(Device &device)
 {
     const std::string offb_mode = "BODY";
