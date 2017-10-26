@@ -90,6 +90,7 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
             if (callback) {
                 callback(Offboard::Result::NO_SETPOINT_SET);
             }
+            return;
         }
     }
 
