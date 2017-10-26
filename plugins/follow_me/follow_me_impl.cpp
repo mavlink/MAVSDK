@@ -43,7 +43,7 @@ void FollowMeImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&FollowMeImpl::process_heartbeat, this, _1), (void *)this);
+        std::bind(&FollowMeImpl::process_heartbeat, this, _1), static_cast<void *>(this));
 
 }
 
@@ -60,7 +60,7 @@ void FollowMeImpl::timeout_occurred()
     // update current location coordinates
     _motion_report.lat_int += 10;
     _motion_report.lon_int += 5;
-    _motion_report.alt += 10.0;
+    _motion_report.alt += 10.0f;
 
     _estimatation_capabilities |= (1 << static_cast<int>(FollowMe::ESTCapabilities::POS));
 
@@ -72,8 +72,8 @@ void FollowMeImpl::timeout_occurred()
     _motion_report.vz += 0.5f;
 
     // calculate x,y velocity if it's
-    _motion_report.vx += 0.05;
-    _motion_report.vy += 0.04;
+    _motion_report.vx += 0.05f;
+    _motion_report.vy += 0.04f;
 
     _estimatation_capabilities |= (1 << static_cast<int>(FollowMe::ESTCapabilities::VEL));
 

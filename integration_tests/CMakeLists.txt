@@ -25,7 +25,7 @@ list(APPEND integration_tests
     info
     mission_change_speed
 	mission_survey
-	waypoints
+	mission
     curl
 )
 
