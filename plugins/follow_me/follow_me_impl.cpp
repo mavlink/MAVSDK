@@ -131,7 +131,8 @@ void FollowMeImpl::send_gcs_motion_report()
                                    0);
 
     std::cout << __func__ <<
-              ((_parent->send_message(msg)) ? ("--------------------> sent follow_target") : ("############### Failed to send follow_target"))
+              ((_parent->send_message(msg)) ? ("--------------------> sent follow_target")
+               : ("############### Failed to send follow_target"))
               <<
               std::endl;
     // Register timer again for emitting motion reports periodically
