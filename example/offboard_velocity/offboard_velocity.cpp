@@ -56,7 +56,7 @@ inline void connection_error_exit(DroneCore::ConnectionResult result, const std:
 // Logs during Offboard control
 inline void offboard_log(const std::string &offb_mode, const std::string msg)
 {
-    std::cout << "[" << offb_mode << "]" << msg << std::endl;
+    std::cout << "[" << offb_mode << "] " << msg << std::endl;
 }
 
 /**
@@ -69,59 +69,45 @@ bool offb_ctrl_ned(Device &device)
     const std::string offb_mode = "NED";
     // Send it once before starting offboard, otherwise it will be rejected.
     device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
-    offboard_log(offb_mode, " Sent Null velocity command once before starting OFFBOARD");
 
     Offboard::Result offboard_result = device.offboard().start();
     offboard_error_exit(offboard_result, "Offboard start failed");
-    offboard_log(offb_mode, " OFFBOARD started");
-    sleep_for(seconds(1));
+    offboard_log(offb_mode, "Offboard started");
 
-    // Let yaw settle.
-    offboard_log(offb_mode, " Let yaw settle...");
+    offboard_log(offb_mode,  "Turn to face East");
     device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-    sleep_for(seconds(1));
-    offboard_log(offb_mode, " Done...");
+    sleep_for(seconds(1)); // Let yaw settle.
 
     {
         const float step_size = 0.01f;
         const float one_cycle = 2.0f * (float)M_PI;
-        const unsigned steps = (unsigned)(one_cycle / step_size);
+        const unsigned steps = 2 * unsigned(one_cycle / step_size);
 
-        offboard_log(offb_mode,  " Go right & oscillate");
+        offboard_log(offb_mode,  "Go North and back South");
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
             device.offboard().set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
             sleep_for(milliseconds(10));
         }
     }
-    offboard_log(offb_mode, " Done...");
-    // NOTE: Use sleep_for() after each velocity-ned command to closely monitor their behaviour.
 
-    offboard_log(offb_mode,  " Turn clock-wise 270 deg");
+    offboard_log(offb_mode,  "Turn to face West");
     device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
     sleep_for(seconds(2));
 
-    offboard_log(offb_mode, " Done");
 
-    offboard_log(offb_mode, " Go UP 2 m/s, Turn clock-wise 180 deg");
+    offboard_log(offb_mode, "Go up 2 m/s, turn to face South");
     device.offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
     sleep_for(seconds(4));
-    offboard_log(offb_mode, " Done...");
 
-    offboard_log(offb_mode,  " Turn clock-wise 90 deg");
-    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-    sleep_for(seconds(4));
-    offboard_log(offb_mode, " Done...");
-
-    offboard_log(offb_mode,  " Go DOWN 1.0 m/s");
+    offboard_log(offb_mode,  "Go down 1 m/s, turn to face North");
     device.offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
     sleep_for(seconds(4));
-    offboard_log(offb_mode, " Done...");
 
     // Now, stop offboard mode.
     offboard_result = device.offboard().stop();
     offboard_error_exit(offboard_result, "Offboard stop failed: ");
-    offboard_log(offb_mode, " OFFBOARD stopped");
+    offboard_log(offb_mode, "Offboard stopped");
 
     return true;
 }
@@ -135,53 +121,44 @@ bool offb_ctrl_body(Device &device)
 {
     const std::string offb_mode = "BODY";
 
+    // Send it once before starting offboard, otherwise it will be rejected.
     device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-    offboard_log(offb_mode,  " Sent once before starting OFFBOARD");
 
     Offboard::Result offboard_result = device.offboard().start();
     offboard_error_exit(offboard_result, "Offboard start failed: ");
-    offboard_log(offb_mode, " OFFBOARD started");
+    offboard_log(offb_mode, "Offboard started");
 
-    // Turn around yaw and climb
-    offboard_log(offb_mode, " Turn around yaw & climb");
+    offboard_log(offb_mode, "Turn clock-wise and climb");
     device.offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
-    sleep_for(seconds(2));
+    sleep_for(seconds(5));
 
-    // Turn back
-    offboard_log(offb_mode, " Turn back");
+    offboard_log(offb_mode, "Turn back anti-clockwise");
     device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
-    sleep_for(seconds(2));
+    sleep_for(seconds(5));
 
-    // Wait for a bit
-    offboard_log(offb_mode, " Wait for a bit");
+    offboard_log(offb_mode, "Wait for a bit");
     device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
     sleep_for(seconds(2));
-    // NOTE: Use sleep_for() after each velocity-ned command to closely monitor their behaviour.
 
-    // Fly a circle
-    offboard_log(offb_mode, " Fly a circle");
-    device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
-    sleep_for(seconds(5));
+    offboard_log(offb_mode, "Fly a circle");
+    device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 30.0f});
+    sleep_for(seconds(15));
 
-    // Wait for a bit
-    offboard_log(offb_mode, " Wait for a bit");
+    offboard_log(offb_mode, "Wait for a bit");
     device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
     sleep_for(seconds(5));
 
-    // Fly a circle sideways
-    offboard_log(offb_mode, " Fly a circle sideways...");
-    device.offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
-    sleep_for(seconds(5));
+    offboard_log(offb_mode, "Fly a circle sideways");
+    device.offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 30.0f});
+    sleep_for(seconds(15));
 
-    // Wait for a bit
-    offboard_log(offb_mode, " Wait for a bit");
+    offboard_log(offb_mode, "Wait for a bit");
     device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
-    sleep_for(seconds(5));
+    sleep_for(seconds(8));
 
-    // Now, stop offboard mode.
     offboard_result = device.offboard().stop();
     offboard_error_exit(offboard_result, "Offboard stop failed: ");
-    offboard_log(offb_mode, " OFFBOARD stopped");
+    offboard_log(offb_mode, "Offboard stopped");
 
     return true;
 }
@@ -190,7 +167,6 @@ int main(int, char **)
 {
     DroneCore dc;
 
-    // add udp connection
     DroneCore::ConnectionResult conn_result = dc.add_udp_connection();
     connection_error_exit(conn_result, "Connection failed");
 
@@ -200,7 +176,7 @@ int main(int, char **)
         sleep_for(seconds(1));
     }
 
-    // Device got connected...
+    // Device got discovered.
     Device &device = dc.device();
 
     while (!device.telemetry().health_all_ok()) {
@@ -209,25 +185,22 @@ int main(int, char **)
     }
     std::cout << "Device is ready" << std::endl;
 
-    // Arm
     Action::Result arm_result = device.action().arm();
     action_error_exit(arm_result, "Arming failed");
     std::cout << "Armed" << std::endl;
 
-    // Takeoff
     Action::Result takeoff_result = device.action().takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5));
 
-    //  using LOCAL NED co-ordinates
+    //  using local NED co-ordinates
     bool ret = offb_ctrl_ned(device);
     if (ret == false) {
         return EXIT_FAILURE;
     }
-    std::cout << "---------------------------" << std::endl;
 
-    //  using BODY NED co-ordinates
+    //  using body co-ordinates
     ret = offb_ctrl_body(device);
     if (ret == false) {
         return EXIT_FAILURE;
