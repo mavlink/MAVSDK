@@ -43,7 +43,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     {
         const float step_size = 0.01f;
         const float one_cycle = 2.0f * M_PI_F;
-        const unsigned steps = static_cast<unsigned>(one_cycle / step_size);
+        const unsigned steps = 2 * unsigned(one_cycle / step_size);
 
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
@@ -104,14 +104,15 @@ TEST_F(SitlTest, OffboardVelocityBody)
 
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
-    // Turn around yaw and climb
+    // Yaw clockwise and climb
     device.offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    // Turn back
+    // Yaw anti-clockwise
     device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
+    // Wait for a bit
     device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
@@ -119,6 +120,7 @@ TEST_F(SitlTest, OffboardVelocityBody)
     device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
+    // Wait for a bit
     device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
