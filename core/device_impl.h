@@ -95,6 +95,10 @@ public:
 
     Time &get_time() { return _time; };
 
+    // This allows a plugin to lock and unlock all mavlink communication.
+    void lock_communication();
+    void unlock_communication();
+
     // Non-copyable
     DeviceImpl(const DeviceImpl &) = delete;
     const DeviceImpl &operator=(const DeviceImpl &) = delete;
@@ -167,6 +171,8 @@ private:
     CallEveryHandler _call_every_handler;
 
     Time _time {};
+
+    std::atomic<bool> _communication_locked {false};
 };
 
 
