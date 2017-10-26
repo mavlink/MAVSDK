@@ -6,14 +6,21 @@ namespace dronecore {
 
 class OffboardImpl;
 
+
 /**
  * @brief This class is used to control a drone with velocity commands.
  *
  * The module is called offboard because the velocity commands can be sent from external sources
  * as opposed to onboard control right inside the autopilot "board".
  *
+ * Client code must specify a setpoint before starting offboard mode.
+ * DroneCore automatically resends setpoints at 20Hz (PX4 Offboard mode requires that setpoints are
+ * minimally resent at 2Hz). If more precise control is required, clients can call the
+ * setpoint methods at whatever rate is required.
+ *
  * **Attention:** this is work in progress, use with caution!
  */
+
 class Offboard
 {
 public:
@@ -58,21 +65,21 @@ public:
      * @brief Type for Velocity commands in NED (North East Down) coordinates and yaw.
      */
     struct VelocityNEDYaw {
-        float north_m_s; /**< Velocity North in metres/second. */
-        float east_m_s; /**< Velocity East in metres/second. */
-        float down_m_s; /**< Velocity Down in metres/second. */
-        float yaw_deg; /**< Yaw in degrees (0 North, positive is clock-wise looking from above. */
+        float north_m_s; /**< @brief Velocity North in metres/second. */
+        float east_m_s; /**< @brief Velocity East in metres/second. */
+        float down_m_s; /**< @brief Velocity Down in metres/second. */
+        float yaw_deg; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from above). */
     };
 
     /**
      * @brief Type for velocity commands in body coordinates (forward, right, down and yaw angular rate).
      */
     struct VelocityBodyYawspeed {
-        float forward_m_s; /**< Velocity forward in metres/second. */
-        float right_m_s; /**< Velocity right in metres/secon.d */
-        float down_m_s; /**< Velocity down in metres/second. */
-        float yawspeed_deg_s; /**< Yaw angular rate in degrees/second (positive for clock-wise
-                                   looking from above. */
+        float forward_m_s; /**< @brief Velocity forward in metres/second. */
+        float right_m_s; /**< @brief Velocity right in metres/secon.d */
+        float down_m_s; /**< @brief Velocity down in metres/second. */
+        float yawspeed_deg_s; /**< @brief Yaw angular rate in degrees/second (positive for clock-wise
+                                   looking from above). */
     };
 
     /**
@@ -121,7 +128,6 @@ public:
      */
     void set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed);
 
-    // Non-copyable
     /**
      * @brief Copy constructor (object is not copyable).
      */
