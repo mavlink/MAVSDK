@@ -164,7 +164,7 @@ void DeviceImpl::process_statustext(const mavlink_message_t &message)
     mavlink_statustext_t statustext;
     mavlink_msg_statustext_decode(&message, &statustext);
 
-    std::string debug_str = "mavlink ";
+    std::string debug_str = "MAVLink ";
 
     switch (statustext.severity) {
         case MAV_SEVERITY_EMERGENCY:
