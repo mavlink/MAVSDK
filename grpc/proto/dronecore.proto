@@ -5,68 +5,6 @@ package dronecorerpc;
 
 // Interface exported by the server.
 service DroneCoreRPC {
-    rpc Arm(Empty) returns(ActionResult) {}
-    rpc TakeOff(Empty) returns(ActionResult) {}
-    rpc Land(Empty) returns(ActionResult) {}
-    rpc SendMission(Mission) returns(MissionResult) {}
-    rpc StartMission(Empty) returns(MissionResult) {}
 }
 
 message Empty {}
-
-message ActionResult {
-
-    enum Result {
-        Result_SUCCESS = 0;
-        Result_NO_DEVICE = 1;
-        Result_CONNECTION_ERROR = 2;
-        Result_BUSY = 3;
-        Result_COMMAND_DENIED = 4;
-        Result_COMMAND_DENIED_LANDED_STATE_UNKNOWN = 5;
-        Result_COMMAND_DENIED_NOT_LANDED = 6;
-        Result_TIMEOUT = 7;
-        Result_UNKNOWN = 8;
-    }
-    Result result = 1;
-    string result_str = 2;
-}
-
-message MissionResult {
-
-    enum Result {
-        Result_SUCCESS = 0;
-        Result_ERROR = 1;
-        Result_TOO_MANY_MISSION_ITEMS = 2;
-        Result_BUSY = 3;
-        Result_TIMEOUT = 4;
-        Result_INVALID_ARGUMENT = 5;
-        Result_UNKNOWN = 6;
-    }
-    Result result = 1;
-    string result_str = 2;
-}
-
-message MissionItem {
-
-    enum CameraAction {
-        CameraAction_TAKE_PHOTO = 0;
-        CameraAction_START_PHOTO_INTERVAL = 1;
-        CameraAction_STOP_PHOTO_INTERVAL = 2;
-        CameraAction_START_VIDEO = 3;
-        CameraAction_STOP_VIDEO = 4;
-        CameraAction_NONE = 5;
-    }
-
-    double latitude_deg = 1;
-    double longitude_deg = 2;
-    double relative_altitude_m = 3;
-    float speed_m_s = 4;
-    bool is_fly_through = 5;
-    float gimbal_pitch_deg = 6;
-    float gimbal_yaw_deg = 7;
-    CameraAction camera_action = 8;
-}
-
-message Mission {
-    repeated MissionItem mission_items = 1;
-}

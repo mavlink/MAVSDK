@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package dronecorerpc;
+
+service ActionRPC {
+    rpc Arm(ActionEmpty) returns(ActionResult) {}
+    rpc TakeOff(ActionEmpty) returns(ActionResult) {}
+    rpc Land(ActionEmpty) returns(ActionResult) {}
+}
+
+// FIXME these different Empty types are ugly
+message ActionEmpty {}
+
+message ActionResult {
+
+    enum Result {
+        SUCCESS = 0;
+        NO_DEVICE = 1;
+        CONNECTION_ERROR = 2;
+        BUSY = 3;
+        COMMAND_DENIED = 4;
+        COMMAND_DENIED_LANDED_STATE_UNKNOWN = 5;
+        COMMAND_DENIED_NOT_LANDED = 6;
+        TIMEOUT = 7;
+        UNKNOWN = 8;
+    }
+    Result result = 1;
+    string result_str = 2;
+}
+

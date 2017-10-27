@@ -16,4 +16,33 @@ if(${PYTHONINTERP_FOUND})
             ${proto_dir}/dronecore.proto
         DEPENDS ${proto_dir}/dronecore.proto
     )
+    add_custom_command(TARGET pydronecore
+        COMMAND ${PYTHON_EXECUTABLE}
+            -m grpc_tools.protoc
+            -I ${proto_dir}
+            --python_out=.
+            --grpc_python_out=.
+            ${proto_dir}/action.proto
+        DEPENDS ${proto_dir}/action.proto
+    )
+
+    add_custom_command(TARGET pydronecore
+        COMMAND ${PYTHON_EXECUTABLE}
+            -m grpc_tools.protoc
+            -I ${proto_dir}
+            --python_out=.
+            --grpc_python_out=.
+            ${proto_dir}/mission.proto
+        DEPENDS ${proto_dir}/mission.proto
+    )
+
+    add_custom_command(TARGET pydronecore
+        COMMAND ${PYTHON_EXECUTABLE}
+            -m grpc_tools.protoc
+            -I ${proto_dir}
+            --python_out=.
+            --grpc_python_out=.
+            ${proto_dir}/telemetry.proto
+        DEPENDS ${proto_dir}/telemetry.proto
+    )
 endif()
