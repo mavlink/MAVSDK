@@ -111,11 +111,6 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback),
         MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
-
-    _result_callback = callback;
-
-    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), 1.0,
-                                      &_timeout_cookie);
 }
 
 void OffboardImpl::stop_async(Offboard::result_callback_t callback)
@@ -145,37 +140,15 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
                   std::placeholders::_1, callback),
         MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 
-    _result_callback = callback;
-
-    _parent->register_timeout_handler(std::bind(&OffboardImpl::timeout_happened, this), 1.0,
-                                      &_timeout_cookie);
 }
 
 void OffboardImpl::receive_command_result(MavlinkCommands::Result result,
                                           const Offboard::result_callback_t &callback)
 {
-    // We got a command back, so we can get rid of the timeout handler.
-    _parent->unregister_timeout_handler(_timeout_cookie);
-
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
-
-    callback(offboard_result);
-}
-
-void OffboardImpl::timeout_happened()
-{
-    report_offboard_result(_result_callback, Offboard::Result::TIMEOUT);
-}
-
-void OffboardImpl::report_offboard_result(const Offboard::result_callback_t &callback,
-                                          Offboard::Result result)
-{
-    if (callback == nullptr) {
-        LogWarn() << "Callback is not set";
-        return;
+    if (callback) {
+        callback(offboard_result);
     }
-
-    callback(result);
 }
 
 void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)

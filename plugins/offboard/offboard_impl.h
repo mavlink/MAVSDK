@@ -34,18 +34,9 @@ private:
     void receive_command_result(MavlinkCommands::Result result,
                                 const Offboard::result_callback_t &callback);
 
-    static void report_offboard_result(const Offboard::result_callback_t &callback,
-                                       Offboard::Result result);
-
     static Offboard::Result offboard_result_from_command_result(
         MavlinkCommands::Result result);
 
-    void timeout_happened();
-
-    bool _offboard_mode_active = false;
-    Offboard::result_callback_t _result_callback = nullptr;
-
-    void *_timeout_cookie = nullptr;
 
     mutable std::mutex _mutex {};
     enum class Mode {
