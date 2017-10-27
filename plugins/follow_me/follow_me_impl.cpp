@@ -11,26 +11,7 @@ FollowMeImpl::FollowMeImpl() :
     PluginImplBase()
 {
     _start = std::chrono::system_clock::now();
-
     _estimatation_capabilities = 0;
-
-    // initialize current location coordinates
-    _motion_report.lat_int = 47.3977418 * 1e7;
-    _motion_report.lon_int = 8.5455938 * 1e7;
-    _motion_report.alt = 500.04;
-
-    // initialize current eph & epv
-    _motion_report.pos_std_dev[0] = _motion_report.pos_std_dev[1] = 0.8f;
-    _motion_report.pos_std_dev[2] = 0.0;
-
-    // initialize z velocity as if it's available
-    _motion_report.vz = 0.0;
-
-    // initialize x,y velocity as if it's available
-    auto direction = 0.13; // unit: Knot
-    auto velocity = 5.0; // unit: m/s
-    _motion_report.vx = cos(direction) * velocity;
-    _motion_report.vy = sin(direction) * velocity;
 }
 
 FollowMeImpl::~FollowMeImpl()
@@ -43,8 +24,7 @@ void FollowMeImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&FollowMeImpl::process_heartbeat, this, _1), (void *)this);
-
+        std::bind(&FollowMeImpl::process_heartbeat, this, _1), static_cast<void *>(this));
 }
 
 void FollowMeImpl::deinit()
@@ -60,7 +40,7 @@ void FollowMeImpl::timeout_occurred()
     // update current location coordinates
     _motion_report.lat_int += 10;
     _motion_report.lon_int += 5;
-    _motion_report.alt += 10.0;
+    _motion_report.alt += 10.0f;
 
     _estimatation_capabilities |= (1 << static_cast<int>(FollowMe::ESTCapabilities::POS));
 
@@ -72,14 +52,39 @@ void FollowMeImpl::timeout_occurred()
     _motion_report.vz += 0.5f;
 
     // calculate x,y velocity if it's
-    _motion_report.vx += 0.05;
-    _motion_report.vy += 0.04;
+    _motion_report.vx += 0.05f;
+    _motion_report.vy += 0.04f;
 
     _estimatation_capabilities |= (1 << static_cast<int>(FollowMe::ESTCapabilities::VEL));
 
     send_gcs_motion_report();
 }
 
+/**
+ * @brief FollowMeImpl::set_motion_report
+ * @param mr
+ */
+void FollowMeImpl::set_motion_report(const FollowMe::MotionReport &mr)
+{
+    _motion_report = mr;
+}
+
+/**
+ * @brief FollowMeImpl::start
+ * @param mr
+ * @return
+ */
+FollowMe::Result FollowMeImpl::start(const FollowMe::MotionReport &mr)
+{
+    // save motion report provided by application
+    _motion_report = mr;
+    return start();
+}
+
+/**
+ * @brief FollowMeImpl::start
+ * @return
+ */
 FollowMe::Result FollowMeImpl::start()
 {
     _parent->register_timeout_handler(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0,
@@ -102,6 +107,9 @@ FollowMe::Result FollowMeImpl::start()
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
+/**
+ * @brief FollowMeImpl::send_gcs_motion_report
+ */
 void FollowMeImpl::send_gcs_motion_report()
 {
     using namespace std::chrono;
@@ -140,9 +148,24 @@ void FollowMeImpl::send_gcs_motion_report()
                                       &_timeout_cookie);
 }
 
-FollowMe::Result FollowMeImpl::stop()
+FollowMe::Result FollowMeImpl::stop() const
 {
-    return FollowMe::Result::SUCCESS;
+    // Note: the safety flag is not needed in future versions of the PX4 Firmware
+    //       but want to be rather safe than sorry.
+    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+
+    uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
+    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
+
+    return get_result_from_mavcmd_result(
+               _parent->send_command_with_ack(
+                   MAV_CMD_DO_SET_MODE,
+                   MavlinkCommands::Params {float(mode),
+                                            float(custom_mode),
+                                            float(custom_sub_mode),
+                                            NAN, NAN, NAN, NAN},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 FollowMe::Result
@@ -185,8 +208,5 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
     }
     _followme_mode_active = followme_mode_active;
 }
-
-
-
 
 } // namespace dronecore
