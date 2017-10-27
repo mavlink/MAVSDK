@@ -41,8 +41,8 @@ public:
      */
     struct MotionReport {
         // set to home position used by PX4.
-        int32_t lat_int = static_cast<uint32_t>(47.3977419f * 1e7);        // X Position in WGS84 frame in 1e7 * meters
-        int32_t lon_int = static_cast<uint32_t>(8.5455938f * 1e7);        // Y Position in WGS84 frame in 1e7 * meters
+        int32_t lat_int = static_cast<uint32_t>(47.3977419 * 1e7);        // X Position in WGS84 frame in 1e7 * meters
+        int32_t lon_int = static_cast<uint32_t>(8.5455938 * 1e7);        // Y Position in WGS84 frame in 1e7 * meters
         float alt = 488.03f;              //	Altitude in meters in AMSL altitude
         // velocity
         float vx = cos(0.13) * 5.0;               //	X velocity in NED frame in meter / s
