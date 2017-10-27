@@ -45,8 +45,8 @@ void FollowMeImpl::timeout_occurred()
     _estimatation_capabilities |= (1 << static_cast<int>(FollowMe::ESTCapabilities::POS));
 
     // update current eph & epv
-    _motion_report.pos_std_dev[0] += _motion_report.pos_std_dev[1] = 0.05f;
-    _motion_report.pos_std_dev[2] = 0.05f;
+    _motion_report.pos_std_dev[0] += _motion_report.pos_std_dev[1] += 0.05f;
+    _motion_report.pos_std_dev[2] += 0.05f;
 
     // calculate z velocity if it's available
     _motion_report.vz += 0.5f;
@@ -119,9 +119,10 @@ void FollowMeImpl::send_gcs_motion_report()
 
     mavlink_message_t msg {};
     float vel[3] = { _motion_report.vx, _motion_report.vy, 0.f };
-    float accel_unknown[3] = { 0, 0, 0 };
-    float attitude_q_unknown[4] = { 1, 0, 0, 0 };
-    float rates_unknown[3] = { 0, 0, 0 };
+    float accel_unknown[3] = { 0.f, 0.f, 0.f };
+    float attitude_q_unknown[4] = { 1.f, 0.f, 0.f, 0.f };
+    float rates_unknown[3] = { 0.f, 0.f, 0.f };
+    uint64_t custom_state = 0;
 
     mavlink_msg_follow_target_pack(_parent->get_own_system_id(),
                                    _parent->get_own_component_id(),
@@ -136,7 +137,7 @@ void FollowMeImpl::send_gcs_motion_report()
                                    attitude_q_unknown,
                                    rates_unknown,
                                    _motion_report.pos_std_dev,
-                                   0);
+                                   custom_state);
 
     std::cout << __func__ <<
               ((_parent->send_message(msg)) ? ("--------------------> sent follow_target")
