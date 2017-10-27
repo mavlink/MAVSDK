@@ -94,6 +94,8 @@ public:
     /**
      * @brief Stop offboard control (synchronous).
      *
+     * The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
+     *
      * @return Result of request.
      */
     Offboard::Result stop() const;
@@ -109,6 +111,8 @@ public:
 
     /**
      * @brief Stop offboard control (asynchronous).
+     *
+     * The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
      *
      * @param callback Callback to receive request result.
      */
