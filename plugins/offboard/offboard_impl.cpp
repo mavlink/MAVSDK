@@ -57,7 +57,7 @@ Offboard::Result OffboardImpl::start() const
 Offboard::Result OffboardImpl::stop() const
 {
     {
-        //std::lock_guard<std::mutex> lock(_mutex);
+        std::lock_guard<std::mutex> lock(_mutex);
         if (_mode != Mode::NOT_ACTIVE && _call_every_cookie != nullptr) {
             _parent->remove_call_every(_call_every_cookie);
         }
@@ -84,7 +84,7 @@ Offboard::Result OffboardImpl::stop() const
 void OffboardImpl::start_async(Offboard::result_callback_t callback)
 {
     {
-        //std::lock_guard<std::mutex> lock(_mutex);
+        std::lock_guard<std::mutex> lock(_mutex);
 
         if (_mode == Mode::NOT_ACTIVE) {
             if (callback) {
