@@ -12,12 +12,12 @@ Offboard::~Offboard()
 {
 }
 
-Offboard::Result Offboard::start() const
+Offboard::Result Offboard::start()
 {
     return _impl->start();
 }
 
-Offboard::Result Offboard::stop() const
+Offboard::Result Offboard::stop()
 {
     return _impl->stop();
 }
@@ -30,6 +30,11 @@ void Offboard::start_async(result_callback_t callback)
 void Offboard::stop_async(result_callback_t callback)
 {
     _impl->stop_async(callback);
+}
+
+bool Offboard::is_active() const
+{
+    return _impl->is_active();
 }
 
 void Offboard::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
