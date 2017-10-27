@@ -159,6 +159,8 @@ void OffboardImpl::receive_command_result(MavlinkCommands::Result result,
 void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
 {
     _mutex.lock();
+    _velocity_ned_yaw = velocity_ned_yaw;
+
     if (_mode != Mode::VELOCITY_NED) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
@@ -176,7 +178,6 @@ void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
         // reschedule the next call, so we don't send setpoints too often.
         _parent->reset_call_every(_call_every_cookie);
     }
-    _velocity_ned_yaw = velocity_ned_yaw;
     _mutex.unlock();
 
     // also send it right now to reduce latency
@@ -186,6 +187,8 @@ void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
 void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed)
 {
     _mutex.lock();
+    _velocity_body_yawspeed = velocity_body_yawspeed;
+
     if (_mode != Mode::VELOCITY_BODY) {
         if (_call_every_cookie) {
             // If we're already sending other setpoints, stop that now.
@@ -203,7 +206,6 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
         // reschedule the next call, so we don't send setpoints too often.
         _parent->reset_call_every(_call_every_cookie);
     }
-    _velocity_body_yawspeed = velocity_body_yawspeed;
     _mutex.unlock();
 
     // also send it right now to reduce latency
