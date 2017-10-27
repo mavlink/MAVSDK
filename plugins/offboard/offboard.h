@@ -89,7 +89,7 @@ public:
      *
      * @return Result of request.
      */
-    Offboard::Result start() const;
+    Offboard::Result start();
 
     /**
      * @brief Stop offboard control (synchronous).
@@ -98,7 +98,7 @@ public:
      *
      * @return Result of request.
      */
-    Offboard::Result stop() const;
+    Offboard::Result stop();
 
     /**
      * @brief Start offboard control (asynchronous).
@@ -117,6 +117,16 @@ public:
      * @param callback Callback to receive request result.
      */
     void stop_async(result_callback_t callback);
+
+    /**
+     * @brief Check if offboard control is active.
+     *
+     * `true` means that the vehicle is in offboard mode and we are actively sending
+     * setpoints.
+     *
+     * @return `true` if active
+     */
+    bool is_active() const;
 
     /**
      * @brief Set the velocity in NED coordinates and yaw.

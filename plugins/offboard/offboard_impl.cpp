@@ -27,7 +27,7 @@ void OffboardImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-Offboard::Result OffboardImpl::start() const
+Offboard::Result OffboardImpl::start()
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -54,12 +54,12 @@ Offboard::Result OffboardImpl::start() const
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
-Offboard::Result OffboardImpl::stop() const
+Offboard::Result OffboardImpl::stop()
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        if (_mode != Mode::NOT_ACTIVE && _call_every_cookie != nullptr) {
-            _parent->remove_call_every(_call_every_cookie);
+        if (_mode != Mode::NOT_ACTIVE) {
+            stop_sending_setpoints();
         }
     }
 
@@ -117,8 +117,8 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        if (_mode != Mode::NOT_ACTIVE && _call_every_cookie != nullptr) {
-            _parent->remove_call_every(_call_every_cookie);
+        if (_mode != Mode::NOT_ACTIVE) {
+            stop_sending_setpoints();
         }
     }
 
@@ -139,7 +139,12 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback),
         MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+}
 
+bool OffboardImpl::is_active() const
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    return (_mode != Mode::NOT_ACTIVE);
 }
 
 void OffboardImpl::receive_command_result(MavlinkCommands::Result result,
@@ -312,7 +317,26 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t &message)
             offboard_mode_active = true;
         }
     }
-    _offboard_mode_active = offboard_mode_active;
+
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (!offboard_mode_active && _mode != Mode::NOT_ACTIVE) {
+            // It seems that we are no longer in offboard mode but still trying to send
+            // setpoints. Let's stop for now.
+            stop_sending_setpoints();
+        }
+    }
+}
+
+void OffboardImpl::stop_sending_setpoints()
+{
+    // We assume that we already acquired the mutex in this function.
+
+    if (_call_every_cookie != nullptr) {
+        _parent->remove_call_every(_call_every_cookie);
+        _call_every_cookie = nullptr;
+    }
+    _mode = Mode::NOT_ACTIVE;
 }
 
 Offboard::Result
