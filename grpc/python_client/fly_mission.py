@@ -6,7 +6,12 @@ import grpc
 from threading import Thread
 import time
 import dronecore_pb2 as dc
-import dronecore_pb2_grpc
+#import dronecore_pb2_grpc
+# import dronecore_pb2_grpc
+import action_pb2 as dc_action
+import action_pb2_grpc
+import mission_pb2 as dc_mission
+import mission_pb2_grpc
 
 
 thread_status = True
@@ -22,7 +27,9 @@ def wait_func(future_status):
 def run():
     global thread_status
     channel = grpc.insecure_channel('0.0.0.0:50051')
-    stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+#    stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+    action_stub = action_pb2_grpc.ActionRPCStub(channel)
+    mission_stub = mission_pb2_grpc.MissionRPCStub(channel)
 
     mission_items = []
 
@@ -86,13 +93,13 @@ def run():
         gimbal_yaw_deg=0,
         camera_action=dc.MissionItem.CameraAction_STOP_PHOTO_INTERVAL))
 
-    stub.SendMission(dc.Mission(mission_items=mission_items))
+    mission_stub.SendMission(dc.Mission(mission_items=mission_items))
     time.sleep(1)
 
-    stub.Arm(dc.Empty())
+    action_stub.Arm(dc.Empty())
     time.sleep(1)
 
-    future_status = stub.StartMission.future(dc.Empty())
+    future_status = mission_stub.StartMission.future(dc_mission.MissionEmpty())
     t = Thread(target=wait_func, args=(future_status,))
     t.start()
 

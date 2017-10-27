@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package dronecorerpc;
+
+service TelemetryRPC {
+    rpc TelemetryPositionSubscription(TelemetryEmpty) returns(stream TelemetryPosition) {}
+}
+
+message TelemetryEmpty {}
+
+message TelemetryPosition {
+    double latitude_deg = 1;
+    double longitude_deg = 2;
+    float absolute_altitude_m = 3;
+    float relative_altitude_m = 4;
+}
