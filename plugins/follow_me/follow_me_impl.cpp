@@ -117,17 +117,17 @@ void FollowMeImpl::send_gcs_motion_report()
     auto end = system_clock::now();
     auto elapsed_seconds = system_clock::to_time_t(end) - system_clock::to_time_t(_start);
 
-    mavlink_message_t msg {};
     float vel[3] = { _motion_report.vx, _motion_report.vy, 0.f };
     float accel_unknown[3] = { 0.f, 0.f, 0.f };
     float attitude_q_unknown[4] = { 1.f, 0.f, 0.f, 0.f };
     float rates_unknown[3] = { 0.f, 0.f, 0.f };
     uint64_t custom_state = 0;
 
+    mavlink_message_t msg {};
     mavlink_msg_follow_target_pack(_parent->get_own_system_id(),
                                    _parent->get_own_component_id(),
                                    &msg,
-                                   elapsed_seconds * 1e-6,
+                                   elapsed_seconds * 1000, /* in milliseconds */
                                    _estimatation_capabilities,
                                    _motion_report.lat_int,
                                    _motion_report.lon_int,
