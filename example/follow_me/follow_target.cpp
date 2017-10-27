@@ -88,13 +88,13 @@ int main(int, char **)
     // Start FollowMe mode (by passing optional position)
     FollowMe::Result followme_result = device.followme().start();
     followme_error_exit(followme_result, "Failed to start FollowMe mode");
-    std::cout << "[FollowMe] Waiting for 20 secs :-) ..." << std::endl;
+    std::cout << "[FollowMe] Started. Waiting for 20 secs :-) ..." << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(20));
 
     // Stop FollowMe mode
     followme_result = device.followme().stop();
     followme_error_exit(followme_result, "Failed to stop FollowMe mode");
-    std::cout << "Exiting." << std::endl;
+    std::cout << "[FollowMe] Stopped. Exiting now." << std::endl;
 
     return 0;
 }
