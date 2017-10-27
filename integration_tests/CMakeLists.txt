@@ -25,8 +25,6 @@ list(APPEND integration_tests
 	mission
     mission_change_speed
 	mission_survey
-    gimbal
-	mission
     curl
     transition_multicopter_fixedwing
     follow_me
