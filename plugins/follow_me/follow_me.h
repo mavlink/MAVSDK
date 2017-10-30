@@ -3,6 +3,13 @@
 #include <iostream>
 #include <cmath>
 
+    /**
+      IMPORTANT NOTE:
+        Macro FOLLOW_ME_TESTING is used to test FollowMe plugin.
+        In real scenario, GCS (DroneCore Application) doesn't provide poistion,
+        but instead, current location of the device is captured by platform-specific Location Framework.
+
+      */
 #ifndef FOLLOW_ME_TESTING
 #define FOLLOW_ME_TESTING
 #endif
@@ -30,18 +37,11 @@ public:
         UNKNOWN /**< @brief Unknown error. */
     };
 
+#ifdef FOLLOW_ME_TESTING
     static const double DEF_LAT; /**< @brief Default latitude of GCS */
     static const double DEF_LONG; /**< @brief Default longitude of GCS */
     static const double DEF_ALT; /**< @brief Default altitude of GCS */
 
-    /**
-      IMPORTANT NOTE:
-        Macro FOLLOW_ME_TESTING is used to test FollowMe plugin.
-        In real scenario, GCS (DroneCore Application) doesn't provide poistion,
-        but instead, current location of the device is captured by platform-specific Location Framework.
-
-      */
-#ifdef FOLLOW_ME_TESTING
     /**
      * @brief GCS Position
      */

@@ -48,8 +48,10 @@ std::string FollowMe::result_str(Result result)
     }
 }
 
+#ifdef FOLLOW_ME_TESTING
 const double DEF_LAT = 47.3977418; /**< @brief Default latitude of GCS */
 const double DEF_LONG = 8.5455938; /**< @brief Default longitude of GCS */
 const double DEF_ALT = 488.02; /**< @brief Default altitude of GCS */
+#endif
 
 } // namespace dronecore
