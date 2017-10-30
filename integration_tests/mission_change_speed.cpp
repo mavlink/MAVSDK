@@ -9,7 +9,7 @@
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 
-static void receive_send_mission_result(Mission::Result result);
+static void receive_upload_mission_result(Mission::Result result);
 static void receive_start_mission_result(Mission::Result result);
 static void receive_mission_progress(int current, int total);
 
@@ -53,8 +53,8 @@ TEST_F(SitlTest, MissionChangeSpeed)
     mission_items.push_back(add_waypoint(47.39824201089737, 8.5447561722784542, 10, speeds[2]));
     mission_items.push_back(add_waypoint(47.397733642793433, 8.5447776308767516, 10, speeds[3]));
 
-    device.mission().send_mission_async(mission_items,
-                                        std::bind(&receive_send_mission_result, _1));
+    device.mission().upload_mission_async(mission_items,
+                                          std::bind(&receive_upload_mission_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_sent_ok);
 
@@ -106,7 +106,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     ASSERT_EQ(result, Action::Result::SUCCESS);
 }
 
-void receive_send_mission_result(Mission::Result result)
+void receive_upload_mission_result(Mission::Result result)
 {
     EXPECT_EQ(result, Mission::Result::SUCCESS);
 

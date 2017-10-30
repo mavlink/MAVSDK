@@ -96,11 +96,11 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
 
     {
         LogInfo() << "Uploading mission...";
-        // We only have the send_mission function asynchronous for now, so we wrap it using
+        // We only have the upload_mission function asynchronous for now, so we wrap it using
         // std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        device.mission().send_mission_async(
+        device.mission().upload_mission_async(
         mission_items, [prom](Mission::Result result) {
             ASSERT_EQ(result, Mission::Result::SUCCESS);
             prom->set_value();
