@@ -204,10 +204,6 @@ void MissionImpl::assemble_mavlink_messages()
     // TODO: delete all entries first
     _mavlink_mission_item_messages.clear();
 
-    float last_speed_m_s = NAN;
-    float last_gimbal_pitch_deg = NAN;
-    float last_gimbal_yaw_deg = NAN;
-
     unsigned item_i = 0;
     for (auto item : _mission_items) {
 
@@ -243,8 +239,7 @@ void MissionImpl::assemble_mavlink_messages()
             _mavlink_mission_item_messages.push_back(message);
         }
 
-        if (std::isfinite(mission_item_impl.get_speed_m_s()) &&
-            !are_equal(last_speed_m_s, mission_item_impl.get_speed_m_s())) {
+        if (std::isfinite(mission_item_impl.get_speed_m_s())) {
 
             // The speed has changed, we need to add a speed command.
 
@@ -277,14 +272,10 @@ void MissionImpl::assemble_mavlink_messages()
                 std::pair <int, int>
             {static_cast<int>(_mavlink_mission_item_messages.size()), item_i});
             _mavlink_mission_item_messages.push_back(message_speed);
-
-            last_speed_m_s = mission_item_impl.get_speed_m_s();
         }
 
-        if ((std::isfinite(mission_item_impl.get_gimbal_yaw_deg()) ||
-             std::isfinite(mission_item_impl.get_gimbal_pitch_deg())) &&
-            (!are_equal(last_gimbal_yaw_deg, mission_item_impl.get_gimbal_yaw_deg()) ||
-             !are_equal(last_gimbal_pitch_deg, mission_item_impl.get_gimbal_pitch_deg()))) {
+        if (std::isfinite(mission_item_impl.get_gimbal_yaw_deg()) ||
+            std::isfinite(mission_item_impl.get_gimbal_pitch_deg())) {
             // The gimbal has changed, we need to add a gimbal command.
 
             // Current is the 0th waypoint
@@ -316,9 +307,6 @@ void MissionImpl::assemble_mavlink_messages()
                 std::pair <int, int>
             {static_cast<int>(_mavlink_mission_item_messages.size()), item_i});
             _mavlink_mission_item_messages.push_back(message_gimbal);
-
-            last_gimbal_yaw_deg = mission_item_impl.get_gimbal_yaw_deg();
-            last_gimbal_pitch_deg = mission_item_impl.get_gimbal_pitch_deg();
         }
 
         if (mission_item_impl.get_camera_action() != MissionItem::CameraAction::NONE) {
@@ -387,9 +375,6 @@ void MissionImpl::assemble_mavlink_messages()
                 std::pair <int, int>
             {static_cast<int>(_mavlink_mission_item_messages.size()), item_i});
             _mavlink_mission_item_messages.push_back(message_camera);
-
-            last_gimbal_yaw_deg = mission_item_impl.get_gimbal_yaw_deg();
-            last_gimbal_pitch_deg = mission_item_impl.get_gimbal_pitch_deg();
         }
 
         ++item_i;
