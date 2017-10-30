@@ -3,13 +3,13 @@
 #include <iostream>
 #include <cmath>
 
-    /**
-      IMPORTANT NOTE:
-        Macro FOLLOW_ME_TESTING is used to test FollowMe plugin.
-        In real scenario, GCS (DroneCore Application) doesn't provide poistion,
-        but instead, current location of the device is captured by platform-specific Location Framework.
+/**
+  IMPORTANT NOTE:
+    Macro FOLLOW_ME_TESTING is used to test FollowMe plugin.
+    In real scenario, GCS (DroneCore Application) doesn't provide poistion,
+    but instead, current location of the device is captured by platform-specific Location Framework.
 
-      */
+  */
 #ifndef FOLLOW_ME_TESTING
 #define FOLLOW_ME_TESTING
 #endif
