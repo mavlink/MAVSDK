@@ -35,6 +35,8 @@ public:
         BUSY, /**< @brief %Vehicle busy. */
         TIMEOUT, /**< @brief Request timed out. */
         INVALID_ARGUMENT, /**< @brief Invalid argument. */
+        UNSUPPORTED, /**< @brief The mission downloaded from the device is not supported. */
+        NO_MISSION_AVAILABLE, /**< @brief No mission available on device. */
         UNKNOWN /**< @brief Unknown error. */
     };
 
@@ -59,6 +61,22 @@ public:
      */
     void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
                               result_callback_t callback);
+
+    /**
+     * @brief Callback type for `download_mission_async` call to get mission items and result.
+     */
+    typedef std::function<void(Result, std::vector<std::shared_ptr<MissionItem>>)>
+    mission_items_and_result_callback_t;
+
+    /**
+     * @brief Downloads a vector of mission items from the device (asynchronous).
+     *
+     * The mission items are downloaded from a drone.
+     *
+     * @param mission_items reference to vector of mission items.
+     * @param callback callback to receive result of this request
+     */
+    void download_mission_async(mission_items_and_result_callback_t callback);
 
     /**
      * @brief Starts the mission (asynchronous).

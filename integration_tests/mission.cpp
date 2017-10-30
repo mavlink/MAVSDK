@@ -19,6 +19,9 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                                      float gimbal_yaw_deg,
                                                      MissionItem::CameraAction camera_action);
 
+static void compare_mission_items(const std::shared_ptr<MissionItem> original,
+                                  const std::shared_ptr<MissionItem> downloaded);
+
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
 {
@@ -108,6 +111,34 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         });
 
         future_result.get();
+    }
+
+    {
+        // Download the mission again and compare it.
+        LogInfo() << "Downloading mission...";
+        // We only have the download_mission function asynchronous for now, so we wrap it using
+        // std::future.
+        auto prom = std::make_shared<std::promise<void>>();
+        auto future_result = prom->get_future();
+        device.mission().download_mission_async(
+            [prom, mission_items](
+                Mission::Result result,
+        std::vector<std::shared_ptr<MissionItem>> mission_items_downloaded) {
+            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            prom->set_value();
+            LogInfo() << "Mission downloaded (to check it).";
+
+            EXPECT_EQ(mission_items.size(), mission_items_downloaded.size());
+
+            if (mission_items.size() == mission_items_downloaded.size()) {
+                for (unsigned i = 0; i < mission_items.size(); ++i) {
+                    compare_mission_items(mission_items.at(i), mission_items_downloaded.at(i));
+                }
+            }
+        });
+
+        future_result.get();
+
     }
 
     LogInfo() << "Arming...";
@@ -218,5 +249,35 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
     new_item->set_fly_through(is_fly_through);
     new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
     new_item->set_camera_action(camera_action);
+
+    // In order to test setting the interval, add it here.
+    if (camera_action == MissionItem::CameraAction::START_PHOTO_INTERVAL) {
+        new_item->set_camera_photo_interval(1.5);
+    }
+
     return new_item;
+}
+
+void compare_mission_items(const std::shared_ptr<MissionItem> original,
+                           const std::shared_ptr<MissionItem> downloaded)
+{
+    EXPECT_NEAR(original->get_latitude_deg(), downloaded->get_latitude_deg(), 1e-6);
+    EXPECT_NEAR(original->get_longitude_deg(), downloaded->get_longitude_deg(), 1e-6);
+
+    EXPECT_FLOAT_EQ(original->get_relative_altitude_m(),
+                    downloaded->get_relative_altitude_m());
+
+    EXPECT_EQ(original->get_fly_through(), downloaded->get_fly_through());
+    if (std::isfinite(original->get_speed_m_s())) {
+        EXPECT_FLOAT_EQ(original->get_speed_m_s(), downloaded->get_speed_m_s());
+    }
+
+    EXPECT_EQ(original->get_camera_action(), downloaded->get_camera_action());
+
+    if (original->get_camera_action() == MissionItem::CameraAction::START_PHOTO_INTERVAL &&
+        std::isfinite(original->get_camera_photo_interval_s())) {
+
+        EXPECT_DOUBLE_EQ(original->get_camera_photo_interval_s(),
+                         downloaded->get_camera_photo_interval_s());
+    }
 }

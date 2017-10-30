@@ -20,6 +20,11 @@ void Mission::upload_mission_async(const std::vector<std::shared_ptr<MissionItem
     _impl->upload_mission_async(mission_items, callback);
 }
 
+void Mission::download_mission_async(Mission::mission_items_and_result_callback_t callback)
+{
+    _impl->download_mission_async(callback);
+}
+
 void Mission::start_mission_async(result_callback_t callback)
 {
     _impl->start_mission_async(callback);

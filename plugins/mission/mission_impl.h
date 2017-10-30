@@ -22,6 +22,8 @@ public:
     void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
                               const Mission::result_callback_t &callback);
 
+    void download_mission_async(const Mission::mission_items_and_result_callback_t &callback);
+
     void start_mission_async(const Mission::result_callback_t &callback);
     void pause_mission_async(const Mission::result_callback_t &callback);
 
@@ -39,33 +41,45 @@ public:
     const MissionImpl &operator=(const MissionImpl &) = delete;
 
 private:
-    void assemble_mavlink_messages();
-
     void process_mission_request(const mavlink_message_t &message);
     void process_mission_request_int(const mavlink_message_t &message);
     void process_mission_ack(const mavlink_message_t &message);
     void process_mission_current(const mavlink_message_t &message);
     void process_mission_item_reached(const mavlink_message_t &message);
+    void process_mission_count(const mavlink_message_t &message);
+    void process_mission_item_int(const mavlink_message_t &message);
+
+    void process_timeout();
+
     void upload_mission_item(uint16_t seq);
 
     void copy_mission_item_vector(const std::vector<std::shared_ptr<MissionItem>> &mission_items);
 
+    void assemble_mavlink_messages();
+
     static void report_mission_result(const Mission::result_callback_t &callback,
                                       Mission::Result result);
+
+    void report_mission_items_and_result(const Mission::mission_items_and_result_callback_t &callback,
+                                         Mission::Result result);
 
     void report_progress();
 
     void receive_command_result(MavlinkCommands::Result result,
                                 const Mission::result_callback_t &callback);
 
+    void download_next_mission_item();
+    void assemble_mission_items();
 
     std::mutex _mutex {};
     Mission::result_callback_t _result_callback = nullptr;
+    Mission::mission_items_and_result_callback_t _mission_items_and_result_callback = nullptr;
 
     enum class Activity {
         NONE,
         SET_CURRENT,
         SET_MISSION,
+        GET_MISSION,
         SEND_COMMAND
     } _activity = Activity::NONE;
 
@@ -90,6 +104,8 @@ private:
 
     int _num_mission_items_to_download = -1;
     int _next_mission_item_to_download = -1;
+    std::vector<std::shared_ptr<mavlink_mission_item_int_t>> _mavlink_mission_items_downloaded {};
+
     void *_timeout_cookie = nullptr;
 };
 
