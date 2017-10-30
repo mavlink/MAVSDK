@@ -488,6 +488,7 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
 
     if (!_parent->send_message(message)) {
         report_mission_result(callback, Mission::Result::ERROR);
+        return;
     }
 
     _activity = Activity::SET_CURRENT;
