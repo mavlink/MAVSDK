@@ -7,14 +7,7 @@
 namespace dronecore {
 
 MissionImpl::MissionImpl() :
-    PluginImplBase(),
-    _result_callback(nullptr),
-    _last_current_mavlink_mission_item(-1),
-    _last_reached_mavlink_mission_item(-1),
-    _mission_items(),
-    _mavlink_mission_item_messages(),
-    _mavlink_mission_item_to_mission_item_indices(),
-    _progress_callback(nullptr)
+    PluginImplBase()
 {
 }
 
@@ -258,7 +251,7 @@ void MissionImpl::assemble_mavlink_messages()
 
             uint8_t autocontinue = 1;
 
-            std::shared_ptr<mavlink_message_t> message_speed(new mavlink_message_t());
+            auto message_speed = std::make_shared<mavlink_message_t>();
             mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
                                               _parent->get_own_component_id(),
                                               message_speed.get(),
@@ -297,7 +290,7 @@ void MissionImpl::assemble_mavlink_messages()
 
             uint8_t autocontinue = 1;
 
-            std::shared_ptr<mavlink_message_t> message_gimbal(new mavlink_message_t());
+            auto message_gimbal = std::make_shared<mavlink_message_t>();
             mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
                                               _parent->get_own_component_id(),
                                               message_gimbal.get(),
@@ -368,7 +361,7 @@ void MissionImpl::assemble_mavlink_messages()
                     break;
             }
 
-            std::shared_ptr<mavlink_message_t> message_camera(new mavlink_message_t());
+            auto message_camera = std::make_shared<mavlink_message_t>();
             mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
                                               _parent->get_own_component_id(),
                                               message_camera.get(),

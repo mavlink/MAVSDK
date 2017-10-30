@@ -211,7 +211,7 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                               float gimbal_yaw_deg,
                                               MissionItem::CameraAction camera_action)
 {
-    std::shared_ptr<MissionItem> new_item(new MissionItem());
+    auto new_item = std::make_shared<MissionItem>();
     new_item->set_position(latitude_deg, longitude_deg);
     new_item->set_relative_altitude(relative_altitude_m);
     new_item->set_speed(speed_m_s);
