@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <map>
+#include <mutex>
 #include "device_impl.h"
 #include "mission.h"
 #include "mavlink_include.h"
@@ -57,6 +58,8 @@ private:
     void receive_command_result(MavlinkCommands::Result result,
                                 const Mission::result_callback_t &callback);
 
+
+    std::mutex _mutex {};
     Mission::result_callback_t _result_callback = nullptr;
 
     enum class Activity {

@@ -68,6 +68,8 @@ void MissionImpl::process_mission_request(const mavlink_message_t &unused)
 
 void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     mavlink_mission_request_int_t mission_request_int;
     mavlink_msg_mission_request_int_decode(&message, &mission_request_int);
 
@@ -92,6 +94,8 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
 
 void MissionImpl::process_mission_ack(const mavlink_message_t &message)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (_activity != Activity::SET_MISSION) {
         LogWarn() << "Error: not sure how to process Mission ack.";
         return;
@@ -133,6 +137,8 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
 
 void MissionImpl::process_mission_current(const mavlink_message_t &message)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     mavlink_mission_current_t mission_current;
     mavlink_msg_mission_current_decode(&message, &mission_current);
 
@@ -152,6 +158,8 @@ void MissionImpl::process_mission_current(const mavlink_message_t &message)
 
 void MissionImpl::process_mission_item_reached(const mavlink_message_t &message)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     mavlink_mission_item_reached_t mission_item_reached;
     mavlink_msg_mission_item_reached_decode(&message, &mission_item_reached);
 
@@ -165,6 +173,8 @@ void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<Mission
                                        &mission_items,
                                        const Mission::result_callback_t &callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (_activity != Activity::NONE) {
         report_mission_result(callback, Mission::Result::BUSY);
         return;
@@ -383,6 +393,8 @@ void MissionImpl::assemble_mavlink_messages()
 
 void MissionImpl::start_mission_async(const Mission::result_callback_t &callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (_activity != Activity::NONE) {
         report_mission_result(callback, Mission::Result::BUSY);
         return;
@@ -413,6 +425,8 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
 
 void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (_activity != Activity::NONE) {
         report_mission_result(callback, Mission::Result::BUSY);
         return;
@@ -443,6 +457,8 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
 
 void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t &callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (_activity != Activity::NONE) {
         report_mission_result(callback, Mission::Result::BUSY);
         return;
@@ -527,6 +543,8 @@ void MissionImpl::report_progress()
 void MissionImpl::receive_command_result(MavlinkCommands::Result result,
                                          const Mission::result_callback_t &callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (_activity == Activity::SEND_COMMAND) {
         _activity = Activity::NONE;
     }
