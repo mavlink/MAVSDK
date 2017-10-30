@@ -4,6 +4,8 @@ include(FindPythonInterp REQUIRED)
 
 add_custom_target(pydronecore ALL)
 
+set(plugins_dir ${CMAKE_SOURCE_DIR}/grpc/server/plugins)
+
 if(${PYTHONINTERP_FOUND})
     set(proto_dir ${CMAKE_SOURCE_DIR}/grpc/proto)
 
@@ -16,33 +18,18 @@ if(${PYTHONINTERP_FOUND})
             ${proto_dir}/dronecore.proto
         DEPENDS ${proto_dir}/dronecore.proto
     )
-    add_custom_command(TARGET pydronecore
-        COMMAND ${PYTHON_EXECUTABLE}
-            -m grpc_tools.protoc
-            -I ${proto_dir}
-            --python_out=.
-            --grpc_python_out=.
-            ${proto_dir}/action.proto
-        DEPENDS ${proto_dir}/action.proto
-    )
 
-    add_custom_command(TARGET pydronecore
-        COMMAND ${PYTHON_EXECUTABLE}
-            -m grpc_tools.protoc
-            -I ${proto_dir}
-            --python_out=.
-            --grpc_python_out=.
-            ${proto_dir}/mission.proto
-        DEPENDS ${proto_dir}/mission.proto
+    foreach(plugin ${plugins_list})
+        add_custom_command(TARGET pydronecore
+	        COMMAND ${PYTHON_EXECUTABLE}
+                -m grpc_tools.protoc
+                -I ${proto_dir}
+                -I ${plugins_dir}/${plugin}
+	            --python_out=.
+                --grpc_python_out=.
+                ${plugins_dir}${plugin}/${plugin}.proto
+            DEPENDS ${plugins_dir}/${plugin}/${plugin}.proto
     )
+	endforeach()
 
-    add_custom_command(TARGET pydronecore
-        COMMAND ${PYTHON_EXECUTABLE}
-            -m grpc_tools.protoc
-            -I ${proto_dir}
-            --python_out=.
-            --grpc_python_out=.
-            ${proto_dir}/telemetry.proto
-        DEPENDS ${proto_dir}/telemetry.proto
-    )
 endif()

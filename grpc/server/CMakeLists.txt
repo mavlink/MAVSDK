@@ -10,6 +10,8 @@ add_definitions(
 )
 
 set(proto_dir ${CMAKE_SOURCE_DIR}/grpc/proto)
+set(plugins_dir ${CMAKE_SOURCE_DIR}/grpc/server/plugins/)
+set(plugins_list action mission telemetry)
 
 add_custom_command(OUTPUT dronecore.grpc.pb.cc
     COMMAND ${Protobuf_PROTOC_EXECUTABLE}
@@ -27,53 +29,28 @@ add_custom_command(OUTPUT dronecore.pb.cc
     DEPENDS ${proto_dir}/dronecore.proto
 )
 
-add_custom_command(OUTPUT action.grpc.pb.cc
-    COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-        -I ${proto_dir}
-        --grpc_out=.
-        --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN}
-        --cpp_out=. ${proto_dir}/action.proto
-    DEPENDS ${proto_dir}/action.proto
-)
 
-add_custom_command(OUTPUT action.pb.cc
-    COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-        -I ${proto_dir}
-        --cpp_out=. ${proto_dir}/action.proto
-    DEPENDS ${proto_dir}/action.proto
+foreach(plugin ${plugins_list})
+    add_custom_command(OUTPUT ${plugin}.grpc.pb.cc
+        COMMAND ${Protobuf_PROTOC_EXECUTABLE}
+            -I ${proto_dir}
+            -I ${plugins_dir}/${plugin}
+            --grpc_out=.
+            --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN}
+            --cpp_out=. ${plugins_dir}/${plugin}/${plugin}.proto
+        DEPENDS ${plugins_dir}/${plugin}/${plugin}.proto
 )
+endforeach()
 
-add_custom_command(OUTPUT mission.grpc.pb.cc
-    COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-        -I ${proto_dir}
-        --grpc_out=.
-        --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN}
-        --cpp_out=. ${proto_dir}/mission.proto
-    DEPENDS ${proto_dir}/mission.proto
+foreach(plugin ${plugins_list})
+    add_custom_command(OUTPUT ${plugin}.pb.cc
+        COMMAND ${Protobuf_PROTOC_EXECUTABLE}
+            -I ${proto_dir}
+            -I ${plugins_dir}/${plugin}
+            --cpp_out=. ${plugins_dir}/${plugin}/${plugin}.proto
+        DEPENDS ${plugins_dir}/${plugin}/${plugin}.proto
 )
-
-add_custom_command(OUTPUT mission.pb.cc
-    COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-        -I ${proto_dir}
-        --cpp_out=. ${proto_dir}/mission.proto
-    DEPENDS ${proto_dir}/mission.proto
-)
-
-add_custom_command(OUTPUT telemetry.grpc.pb.cc
-    COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-        -I ${proto_dir}
-        --grpc_out=.
-        --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN}
-        --cpp_out=. ${proto_dir}/telemetry.proto
-    DEPENDS ${proto_dir}/telemetry.proto
-)
-
-add_custom_command(OUTPUT telemetry.pb.cc
-    COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-        -I ${proto_dir}
-        --cpp_out=. ${proto_dir}/telemetry.proto
-    DEPENDS ${proto_dir}/telemetry.proto
-)
+endforeach()
 
 add_executable(dronecore_server
     dronecore_server.cpp
@@ -99,4 +76,5 @@ include_directories(
     ${Protobuf_INCLUDE_DIRS}
     ${GRPC_INCLUDE_DIRS}
     ${CMAKE_BINARY_DIR}/grpc/server
+    ${plugins_dir}
 )
