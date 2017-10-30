@@ -14,10 +14,10 @@ Mission::~Mission()
 }
 
 
-void Mission::send_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
-                                 result_callback_t callback)
+void Mission::upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
+                                   result_callback_t callback)
 {
-    _impl->send_mission_async(mission_items, callback);
+    _impl->upload_mission_async(mission_items, callback);
 }
 
 void Mission::start_mission_async(result_callback_t callback)

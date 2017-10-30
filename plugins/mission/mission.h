@@ -49,7 +49,7 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     /**
-     * @brief Sends a vector of mission items to the device (asynchronous).
+     * @brief Uploads a vector of mission items to the device (asynchronous).
      *
      * The mission items are uploaded to a drone. Once uploaded the mission can be started and
      * executed even if a connection is lost.
@@ -57,13 +57,13 @@ public:
      * @param mission_items reference to vector of mission items.
      * @param callback callback to receive result of this request
      */
-    void send_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
-                            result_callback_t callback);
+    void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
+                              result_callback_t callback);
 
     /**
      * @brief Starts the mission (asynchronous).
      *
-     * Note that the mission must be uplaoded to the vehicle using `send_mission_async()` before
+     * Note that the mission must be uplaoded to the vehicle using `upload_mission_async()` before
      * this method is called.
      *
      * @param callback callback to receive result of this request

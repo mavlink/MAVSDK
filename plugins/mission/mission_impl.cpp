@@ -90,7 +90,7 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
         return;
     }
 
-    send_mission_item(mission_request_int.seq);
+    upload_mission_item(mission_request_int.seq);
 
 
     // Reset the timeout because we're still communicating.
@@ -167,9 +167,9 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t &message)
     }
 }
 
-void MissionImpl::send_mission_async(const std::vector<std::shared_ptr<MissionItem>>
-                                     &mission_items,
-                                     const Mission::result_callback_t &callback)
+void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<MissionItem>>
+                                       &mission_items,
+                                       const Mission::result_callback_t &callback)
 {
     if (_activity != Activity::NONE) {
         report_mission_result(callback, Mission::Result::BUSY);
@@ -501,7 +501,7 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
     _result_callback = callback;
 }
 
-void MissionImpl::send_mission_item(uint16_t seq)
+void MissionImpl::upload_mission_item(uint16_t seq)
 {
     LogDebug() << "Send mission item " << int(seq);
     if (seq >= _mavlink_mission_item_messages.size()) {
