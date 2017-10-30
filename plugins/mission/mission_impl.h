@@ -57,7 +57,7 @@ private:
     void receive_command_result(MavlinkCommands::Result result,
                                 const Mission::result_callback_t &callback);
 
-    Mission::result_callback_t _result_callback;
+    Mission::result_callback_t _result_callback = nullptr;
 
     enum class Activity {
         NONE,
@@ -66,15 +66,15 @@ private:
         SEND_COMMAND
     } _activity = Activity::NONE;
 
-    int _last_current_mavlink_mission_item;
-    int _last_reached_mavlink_mission_item;
+    int _last_current_mavlink_mission_item = -1;
+    int _last_reached_mavlink_mission_item = -1;
 
-    std::vector<std::shared_ptr<MissionItem>> _mission_items;
-    std::vector<std::shared_ptr<mavlink_message_t>> _mavlink_mission_item_messages;
+    std::vector<std::shared_ptr<MissionItem>> _mission_items {};
+    std::vector<std::shared_ptr<mavlink_message_t>> _mavlink_mission_item_messages {};
 
-    std::map<int, int> _mavlink_mission_item_to_mission_item_indices;
+    std::map<int, int> _mavlink_mission_item_to_mission_item_indices {};
 
-    Mission::progress_callback_t _progress_callback;
+    Mission::progress_callback_t _progress_callback = nullptr;
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 
@@ -85,9 +85,9 @@ private:
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_LOITER = 3;
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_MISSION = 4;
 
+    int _num_mission_items_to_download = -1;
+    int _next_mission_item_to_download = -1;
     void *_timeout_cookie = nullptr;
 };
-
-//static std::function<void(MavlinkCommands::Result)> empty_callback;
 
 } // namespace dronecore
