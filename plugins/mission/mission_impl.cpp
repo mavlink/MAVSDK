@@ -263,6 +263,7 @@ void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<Mission
 
     if (!_parent->send_message(message)) {
         report_mission_result(callback, Mission::Result::ERROR);
+        return;
     }
 
     _activity = Activity::SET_MISSION;
