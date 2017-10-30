@@ -10,6 +10,9 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 # This finds thread libs on Linux, Mac, and Windows.
 find_package(Threads REQUIRED)
 
+# For testing FollowMe plugin
+set(CMAKE_CXX_FLAGS_DEBUG "-DFOLLOW_ME_TESTING")
+
 if(NOT MSVC)
     # Clang and GCC
     # We want C++11 and lots of warnings.

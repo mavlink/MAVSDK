@@ -513,6 +513,8 @@ Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t cu
                     return Telemetry::FlightMode::RETURN_TO_LAUNCH;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND:
                     return Telemetry::FlightMode::LAND;
+                case px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET:
+                    return Telemetry::FlightMode::FOLLOW_ME;
                 default:
                     return Telemetry::FlightMode::UNKNOWN;
             }

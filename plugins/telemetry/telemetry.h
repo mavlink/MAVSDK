@@ -106,6 +106,7 @@ public:
         RETURN_TO_LAUNCH, /**< @brief Returning to launch position (then landing). */
         LAND, /**< @brief Landing. */
         OFFBOARD, /**< @brief Offboard mode. */
+        FOLLOW_ME, /**< @brief FollowMe mode. */
         UNKNOWN /**< @brief Mode not known. */
     };
 
