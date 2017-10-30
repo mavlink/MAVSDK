@@ -18,8 +18,8 @@ public:
     void init() override;
     void deinit() override;
 
-    void send_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
-                            const Mission::result_callback_t &callback);
+    void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
+                              const Mission::result_callback_t &callback);
 
     void start_mission_async(const Mission::result_callback_t &callback);
     void pause_mission_async(const Mission::result_callback_t &callback);
@@ -45,7 +45,7 @@ private:
     void process_mission_ack(const mavlink_message_t &message);
     void process_mission_current(const mavlink_message_t &message);
     void process_mission_item_reached(const mavlink_message_t &message);
-    void send_mission_item(uint16_t seq);
+    void upload_mission_item(uint16_t seq);
 
     void copy_mission_item_vector(const std::vector<std::shared_ptr<MissionItem>> &mission_items);
 
