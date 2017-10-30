@@ -3,6 +3,10 @@
 #include <iostream>
 #include <cmath>
 
+#ifndef FOLLOW_ME_TESTING
+#define FOLLOW_ME_TESTING
+#endif
+
 namespace dronecore {
 
 class FollowMeImpl;
@@ -26,37 +30,34 @@ public:
         UNKNOWN /**< @brief Unknown error. */
     };
 
-    /**
-     * @brief Altitude flag for Follow Target command.
-     */
-    enum class ESTCapabilities {
-        POS = 0,
-        VEL = 1,
-        ACCEL = 2,
-        ATT_RATES = 3
-    };
+    static const double DEF_LAT; /**< @brief Default latitude of GCS */
+    static const double DEF_LONG; /**< @brief Default longitude of GCS */
+    static const double DEF_ALT; /**< @brief Default altitude of GCS */
 
     /**
-     * @brief Motion report info which will be emitted peridically to the Vehicle
-     */
-    struct MotionReport {
-        // set to home position used by PX4.
-        int32_t lat_int = static_cast<uint32_t>(47.3977419 *
-                                                1e7);        // X Position in WGS84 frame in 1e7 * meters
-        int32_t lon_int = static_cast<uint32_t>(8.5455938 *
-                                                1e7);        // Y Position in WGS84 frame in 1e7 * meters
-        float alt = 488.03f;              //	Altitude in meters in AMSL altitude
-        // velocity
-        float vx = cos(0.13) * 5.0;               //	X velocity in NED frame in meter / s
-        float vy = sin(0.13) * 5.0;              //	Y velocity in NED frame in meter / s
-        float vz = 0;               //	Z velocity in NED frame in meter / s
-        // acceleration
-        float afx;              //	X acceleration in NED frame in meter / s^2 or N
-        float afy;              //	Y acceleration in NED frame in meter / s^2 or N
-        float afz;              //	Z acceleration in NED frame in meter / s^2 or N
+      IMPORTANT NOTE:
+        Macro FOLLOW_ME_TESTING is used to test FollowMe plugin.
+        In real scenario, GCS (DroneCore Application) doesn't provide poistion,
+        but instead, current location of the device is captured by platform-specific Location Framework.
 
-        float pos_std_dev[3] = { 0.8f, 0.8f, 0.f };   // -1 for unknown
+      */
+#ifdef FOLLOW_ME_TESTING
+    /**
+     * @brief GCS Position
+     */
+    struct GCSPosition {
+        double lat = DEF_LAT; /**< @brief Latitude of GCS device */
+        double lon = DEF_LONG; /**< @brief Longitude of GCS device */
+        double alt = DEF_ALT; /**< @brief Altitude of GCS device */
+        /**
+         * @brief Constructor of GCSPosition
+         * @param _lat latitude set by application
+         * @param _lon longtitude set by application
+         * @param _alt altitude set by application
+         */
+        GCSPosition(double _lat, double _lon, double _alt) : lat(_lat), lon(_lon), alt(_alt) {}
     };
+#endif
 
     /**
      * @brief Return English string for FollowMe error codes
@@ -72,11 +73,13 @@ public:
      */
     FollowMe::Result start() const;
 
+#ifdef FOLLOW_ME_TESTING
     /**
      * @brief Starts FollowMe mode with position
      * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
      */
-    FollowMe::Result start(const MotionReport &mr);
+    FollowMe::Result start(const GCSPosition &gcs_pos);
+#endif
 
     /**
      * @brief Stops FollowMe mode
@@ -84,11 +87,6 @@ public:
      */
     FollowMe::Result stop() const;
 
-    /**
-     * @brief Sets position of the FollowMe mode
-     * @return none
-     */
-    void set_motion_report(const MotionReport &mr);
 
     // Non-copyable
     FollowMe(const FollowMe &) = delete;

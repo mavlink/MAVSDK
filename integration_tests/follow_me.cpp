@@ -7,8 +7,16 @@
 #include "dronecore.h"
 
 using namespace dronecore;
+using namespace std::chrono;
+using namespace std::this_thread;
 
-TEST_F(SitlTest, FollowMeTargetTest)
+#ifndef FOLLOW_ME_TESTING
+#define FOLLOW_ME_TESTING
+#endif
+
+void print_flight_mode(Telemetry::FlightMode flight_mode);
+
+TEST_F(SitlTest, FollowMe)
 {
     DroneCore dc;
 
@@ -16,26 +24,38 @@ TEST_F(SitlTest, FollowMeTargetTest)
     ASSERT_EQ(DroneCore::ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    sleep_for(seconds(2));
     Device &device = dc.device();
 
     while (!device.telemetry().health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        sleep_for(seconds(1));
     }
 
     Action::Result action_ret = device.action().arm();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
+    device.telemetry().flight_mode_async(
+        std::bind(&print_flight_mode, std::placeholders::_1));
+
     action_ret = device.action().takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    sleep_for(seconds(5));
 
     FollowMe::Result followme_result = device.followme().start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
 
-    std::cout << "[FollowMe] Waiting for 20 secs :-) ...";
-    std::this_thread::sleep_for(std::chrono::seconds(20));
-    std::cout << "Done." << std::endl;
+    // Let the device follow GCS for 10 sec, say.
+    sleep_for(seconds(10));
+
+    followme_result = device.followme().stop();
+    ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
+    sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
+}
+
+void print_flight_mode(Telemetry::FlightMode flight_mode)
+{
+    std::cout << "FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+              << std::endl;
 }

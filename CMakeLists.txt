@@ -6,6 +6,9 @@ project(dronecore)
 # Add DEBUG define for Debug target
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
+# For testing FollowMe plugin
+set(CMAKE_CXX_FLAGS_DEBUG "-DFOLLOW_ME_TESTING")
+
 
 if(NOT MSVC)
     # Clang and GCC

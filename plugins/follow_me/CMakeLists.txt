@@ -9,14 +9,6 @@ set(source_files
     PARENT_SCOPE
 )
 
-# Add DEBUG define for Debug target
-set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
-
-set(unittest_source_files
-    follow_me_impl_test.cpp
-    PARENT_SCOPE
-)
-
 set(header_files
     follow_me.h
     PARENT_SCOPE

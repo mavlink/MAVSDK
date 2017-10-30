@@ -10,7 +10,7 @@ namespace dronecore {
 FollowMeImpl::FollowMeImpl() :
     PluginImplBase()
 {
-    _start = std::chrono::system_clock::now();
+    _start_time = steady_time();
     _estimatation_capabilities = 0;
 }
 
@@ -38,11 +38,11 @@ void FollowMeImpl::timeout_occurred()
     // Ideally GPS info should come from a platform-specific framwork.
 
     // update current location coordinates
-    _motion_report.lat_int += 10;
-    _motion_report.lon_int += 5;
-    _motion_report.alt += 10.0f;
+    _motion_report.lat_int += 1;
+    _motion_report.lon_int += 2;
+    _motion_report.alt += 5.0f;
 
-    _estimatation_capabilities |= (1 << static_cast<int>(FollowMe::ESTCapabilities::POS));
+    _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::POS));
 
     // update current eph & epv
     _motion_report.pos_std_dev[0] += _motion_report.pos_std_dev[1] += 0.05f;
@@ -55,18 +55,21 @@ void FollowMeImpl::timeout_occurred()
     _motion_report.vx += 0.05f;
     _motion_report.vy += 0.04f;
 
-    _estimatation_capabilities |= (1 << static_cast<int>(FollowMe::ESTCapabilities::VEL));
+    _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::VEL));
 
     send_gcs_motion_report();
 }
 
+#ifdef FOLLOW_ME_TESTING
 /**
  * @brief FollowMeImpl::set_motion_report
  * @param mr
  */
-void FollowMeImpl::set_motion_report(const FollowMe::MotionReport &mr)
+void FollowMeImpl::MotionReport::set_position(const FollowMe::GCSPosition &gcs_pos)
 {
-    _motion_report = mr;
+    lat_int = gcs_pos.lat * 1e7;
+    lon_int = gcs_pos.lon * 1e7;
+    alt = static_cast<float>(gcs_pos.alt);
 }
 
 /**
@@ -74,12 +77,13 @@ void FollowMeImpl::set_motion_report(const FollowMe::MotionReport &mr)
  * @param mr
  * @return
  */
-FollowMe::Result FollowMeImpl::start(const FollowMe::MotionReport &mr)
+FollowMe::Result FollowMeImpl::start(const FollowMe::GCSPosition &gcs_pos)
 {
     // save motion report provided by application
-    _motion_report = mr;
+    _motion_report.set_position(gcs_pos);
     return start();
 }
+#endif
 
 /**
  * @brief FollowMeImpl::start
@@ -87,6 +91,9 @@ FollowMe::Result FollowMeImpl::start(const FollowMe::MotionReport &mr)
  */
 FollowMe::Result FollowMeImpl::start()
 {
+    /*
+     * FIXME: Will be replaced by CallEveryHandler class.
+     */
     _parent->register_timeout_handler(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0,
                                       &_timeout_cookie);
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
@@ -97,7 +104,7 @@ FollowMe::Result FollowMeImpl::start()
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
 
-    return get_result_from_mavcmd_result(
+    return to_follow_me_result(
                _parent->send_command_with_ack(
                    MAV_CMD_DO_SET_MODE,
                    MavlinkCommands::Params {float(mode),
@@ -112,22 +119,21 @@ FollowMe::Result FollowMeImpl::start()
  */
 void FollowMeImpl::send_gcs_motion_report()
 {
-    using namespace std::chrono;
+    dl_time_t now = steady_time();
+    auto elapsed_sec = elapsed_since_s(now);
 
-    auto end = system_clock::now();
-    auto elapsed_seconds = system_clock::to_time_t(end) - system_clock::to_time_t(_start);
-
-    float vel[3] = { _motion_report.vx, _motion_report.vy, 0.f };
-    float accel_unknown[3] = { 0.f, 0.f, 0.f };
-    float attitude_q_unknown[4] = { 1.f, 0.f, 0.f, 0.f };
-    float rates_unknown[3] = { 0.f, 0.f, 0.f };
+    // needed by http://mavlink.org/messages/common#FOLLOW_TARGET
+    const float vel[3] = { _motion_report.vx, _motion_report.vy, NAN };
+    const float accel_unknown[3] = { NAN, NAN, NAN };
+    const float attitude_q_unknown[4] = { 1.f, NAN, NAN, NAN };
+    const float rates_unknown[3] = { NAN, NAN, NAN };
     uint64_t custom_state = 0;
 
     mavlink_message_t msg {};
     mavlink_msg_follow_target_pack(_parent->get_own_system_id(),
                                    _parent->get_own_component_id(),
                                    &msg,
-                                   elapsed_seconds * 1000, /* in milliseconds */
+                                   elapsed_sec * 1000, /* in milliseconds */
                                    _estimatation_capabilities,
                                    _motion_report.lat_int,
                                    _motion_report.lon_int,
@@ -139,11 +145,11 @@ void FollowMeImpl::send_gcs_motion_report()
                                    _motion_report.pos_std_dev,
                                    custom_state);
 
-    std::cout << __func__ <<
-              ((_parent->send_message(msg)) ? ("--------------------> sent follow_target")
-               : ("############### Failed to send follow_target"))
-              <<
-              std::endl;
+    if (_parent->send_message(msg)) {
+        LogDebug() << "Sent FollowTarget to Device";
+    } else {
+        LogErr() << "Failed to send FollowTarget..";
+    }
     // Register timer again for emitting motion reports periodically
     _parent->register_timeout_handler(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0,
                                       &_timeout_cookie);
@@ -159,7 +165,7 @@ FollowMe::Result FollowMeImpl::stop() const
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
 
-    return get_result_from_mavcmd_result(
+    return to_follow_me_result(
                _parent->send_command_with_ack(
                    MAV_CMD_DO_SET_MODE,
                    MavlinkCommands::Params {float(mode),
@@ -170,7 +176,7 @@ FollowMe::Result FollowMeImpl::stop() const
 }
 
 FollowMe::Result
-FollowMeImpl::get_result_from_mavcmd_result(MavlinkCommands::Result result) const
+FollowMeImpl::to_follow_me_result(MavlinkCommands::Result result) const
 {
     switch (result) {
         case MavlinkCommands::Result::SUCCESS:
@@ -204,7 +210,7 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
         if (px4_custom_mode.main_mode == px4::PX4_CUSTOM_MAIN_MODE_AUTO &&
             px4_custom_mode.sub_mode == px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET) {
             followme_mode_active = true;
-            std::cout << "Hurray! Flight is in FollowMe mode!!" << std::endl;
+            LogDebug() << "FollowMe mode!!";
         }
     }
     _followme_mode_active = followme_mode_active;

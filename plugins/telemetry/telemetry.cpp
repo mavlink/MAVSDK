@@ -238,6 +238,7 @@ void Telemetry::flight_mode_async(flight_mode_callback_t callback)
 
 const char *Telemetry::flight_mode_str(FlightMode flight_mode)
 {
+    LogDebug() << "Flight mode val " << flight_mode;
     switch (flight_mode) {
         case FlightMode::READY:
             return "Ready";
@@ -253,6 +254,8 @@ const char *Telemetry::flight_mode_str(FlightMode flight_mode)
             return "Land";
         case FlightMode::OFFBOARD:
             return "Offboard";
+        case FlightMode::FOLLOW_ME:
+            return "FollowMe";
         case FlightMode::UNKNOWN:
         default:
             return "Unknown";
