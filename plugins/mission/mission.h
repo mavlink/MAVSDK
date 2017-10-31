@@ -56,8 +56,8 @@ public:
      * The mission items are uploaded to a drone. Once uploaded the mission can be started and
      * executed even if a connection is lost.
      *
-     * @param mission_items reference to vector of mission items.
-     * @param callback callback to receive result of this request
+     * @param mission_items Reference to vector of mission items.
+     * @param callback Callback to receive result of this request.
      */
     void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
                               result_callback_t callback);
@@ -73,8 +73,8 @@ public:
      *
      * The mission items are downloaded from a drone.
      *
-     * @param mission_items reference to vector of mission items.
-     * @param callback callback to receive result of this request
+     * @param mission_items Reference to vector of mission items.
+     * @param callback Callback to receive result of this request.
      */
     void download_mission_async(mission_items_and_result_callback_t callback);
 
@@ -84,7 +84,7 @@ public:
      * Note that the mission must be uplaoded to the vehicle using `upload_mission_async()` before
      * this method is called.
      *
-     * @param callback callback to receive result of this request
+     * @param callback callback to receive result of this request.
      */
     void start_mission_async(result_callback_t callback);
 
@@ -96,7 +96,7 @@ public:
      * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
      * around the location where it paused.
      *
-     * @param callback callback to receive result of this request
+     * @param callback Callback to receive result of this request.
      */
     void pause_mission_async(result_callback_t callback);
 
@@ -109,8 +109,8 @@ public:
      * Note that this is not necessarily true for general missions using mavlink if loop counters
      * are used.
      *
-     * @param current index for mission index to go to next (0 based)
-     * @param callback callback to receive result of this request.
+     * @param current Index for mission index to go to next (0 based).
+     * @param callback Callback to receive result of this request.
      */
     void set_current_mission_item_async(int current, result_callback_t callback);
 
@@ -143,15 +143,15 @@ public:
      *
      * The mission is finished if current == total.
      *
-     * @param current current mission item index (0 based)
-     * @param total total number of mission items
+     * @param current Current mission item index (0 based).
+     * @param total Total number of mission items.
      */
     typedef std::function<void(int current, int total)> progress_callback_t;
 
     /**
      * @brief Subscribes to mission progress (asynchronous).
      *
-     * @param callback callback to receive mission progress
+     * @param callback Callback to receive mission progress.
      */
     void subscribe_progress(progress_callback_t callback);
 
