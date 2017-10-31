@@ -140,6 +140,10 @@ set_target_properties(dronecore
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+# We need tinyxml2 for the camera definition parsing.
+add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
+include_directories(SYSTEM libs/tinyxml2)
+
 # We support install in order to use the header and static library files in
 # other applications.
 if(ANDROID)
@@ -203,6 +207,7 @@ if(NOT IOS AND NOT ANDROID)
         ${curl_lib}
         gmock
         ${additional_libs}
+        tinyxml2
     )
 
     add_test(unit_tests
@@ -228,6 +233,7 @@ if(NOT IOS AND NOT ANDROID)
         ${platform_libs}
         ${curl_lib}
         ${additional_libs}
+        tinyxml2
     )
 
     add_test(integration_tests
