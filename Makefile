@@ -70,10 +70,6 @@ all: default
 default:
 	$(call cmake-build)
 
-# install basically just runs default install
-install: ARGS += install
-install: default
-
 docs: install
 	- mkdir install/docs
 	- (cd install && doxygen ../.doxygen)
