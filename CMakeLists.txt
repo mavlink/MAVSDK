@@ -195,6 +195,8 @@ if(NOT IOS AND NOT ANDROID)
         ${unit_tests_src}
     )
 
+    target_compile_definitions(unit_tests_runner PRIVATE MOCK_TIME=1)
+
     set_target_properties(unit_tests_runner
         PROPERTIES COMPILE_FLAGS ${warnings}
     )

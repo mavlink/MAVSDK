@@ -40,6 +40,11 @@ void shift_steady_time_by(dl_time_t &time, double offset_s);
 double elapsed_s();
 double elapsed_since_s(const dl_time_t &since);
 
+// Alternative to std::this_thread::sleep_for because they are mocked
+// for unit testing.
+template <typename Duration>
+void dc_sleep_for(Duration d);
+
 double to_rad_from_deg(double deg);
 double to_deg_from_rad(double rad);
 
