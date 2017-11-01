@@ -15,10 +15,10 @@ TEST(TimeoutHandler, Timeout)
         timeout_happened = true;
     }, 0.5, &cookie);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    dc_sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    dc_sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 
@@ -36,10 +36,10 @@ TEST(TimeoutHandler, TimeoutNoCookie)
         timeout_happened = true;
     }, 0.5, nullptr);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    dc_sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    dc_sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 }
@@ -61,10 +61,10 @@ TEST(TimeoutHandler, CallTimeoutInTimeoutCallback)
         }, 5.0, &cookie2);
     }, 0.5, &cookie1);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    dc_sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    dc_sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 
@@ -83,14 +83,14 @@ TEST(TimeoutHandler, TimeoutRefreshed)
         timeout_happened = true;
     }, 0.5, &cookie);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(400));
+    dc_sleep_for(std::chrono::milliseconds(400));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
     th.refresh(cookie);
-    std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    dc_sleep_for(std::chrono::milliseconds(300));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    dc_sleep_for(std::chrono::milliseconds(300));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 
@@ -108,11 +108,11 @@ TEST(TimeoutHandler, TimeoutRemoved)
         timeout_happened = true;
     }, 0.5, &cookie);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    dc_sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
     th.remove(cookie);
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    dc_sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
 }
@@ -131,10 +131,10 @@ TEST(TimeoutHandler, TimeoutRemovedDuringCallback)
         timeout_happened = true;
     }, 0.5, &cookie);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    dc_sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    dc_sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 }
