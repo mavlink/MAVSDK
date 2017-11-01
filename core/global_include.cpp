@@ -1,23 +1,73 @@
+#define POISON_DISABLED
 #include "global_include.h"
+
 #include <cfloat>
 #include <cstdint>
 #include <limits>
 
 namespace dronecore {
 
+using std::chrono::steady_clock;
+
+#ifdef MOCK_TIME
+class MockTime
+{
+public:
+    // Singleton
+    static MockTime &instance()
+    {
+        static MockTime instance;
+        return instance;
+    }
+
+    std::chrono::time_point<steady_clock, std::chrono::nanoseconds> get_now()
+    {
+        return _current;
+    }
+
+    template <typename Duration>
+    void add(Duration d)
+    {
+        _current += d;
+    }
+
+    MockTime(MockTime const &) = delete;
+    void operator=(MockTime const &) = delete;
+
+private:
+    MockTime()
+    {
+        // Start with current time so we don't start from 0.
+        _current = steady_clock::now();
+    }
+
+    std::chrono::time_point<steady_clock, std::chrono::nanoseconds> _current {};
+};
+
+// Explicitly instantiate for all durations we know and potentially need.
+template void MockTime::add<std::chrono::hours>(std::chrono::hours);
+template void MockTime::add<std::chrono::minutes>(std::chrono::minutes);
+template void MockTime::add<std::chrono::seconds>(std::chrono::seconds);
+template void MockTime::add<std::chrono::milliseconds>(std::chrono::milliseconds);
+template void MockTime::add<std::chrono::microseconds>(std::chrono::microseconds);
+template void MockTime::add<std::chrono::nanoseconds>(std::chrono::nanoseconds);
+
+#endif
+
+
 
 dl_time_t steady_time()
 {
-    using std::chrono::steady_clock;
-
+#ifndef MOCK_TIME
     return steady_clock::now();
+#else
+    return MockTime::instance().get_now();
+#endif
 }
 
 double elapsed_s()
 {
-    using std::chrono::steady_clock;
-
-    auto now = steady_clock::now().time_since_epoch();
+    auto now = steady_time().time_since_epoch();
 
     return (now.count()) * steady_clock::period::num /
            static_cast<double>(steady_clock::period::den);
@@ -25,17 +75,35 @@ double elapsed_s()
 
 double elapsed_since_s(const dl_time_t &since)
 {
-    using std::chrono::steady_clock;
-
-    auto now = steady_clock::now();
+    auto now = steady_time();
 
     return ((now - since).count()) * steady_clock::period::num /
            static_cast<double>(steady_clock::period::den);
 }
 
+template <typename Duration>
+void dc_sleep_for(Duration d)
+{
+#ifndef MOCK_TIME
+    std::this_thread::sleep_for(d);
+#else
+    MockTime::instance().add(d);
+    // We also add some overhead that sleep usually has.
+    MockTime::instance().add(std::chrono::microseconds(10));
+#endif
+}
+
+template void dc_sleep_for<>(std::chrono::hours);
+template void dc_sleep_for<>(std::chrono::minutes);
+template void dc_sleep_for<>(std::chrono::seconds);
+template void dc_sleep_for<>(std::chrono::milliseconds);
+template void dc_sleep_for<>(std::chrono::microseconds);
+template void dc_sleep_for<>(std::chrono::nanoseconds);
+
+
 dl_time_t steady_time_in_future(double duration_s)
 {
-    auto now = std::chrono::steady_clock::now();
+    auto now = steady_time();
     return now + std::chrono::milliseconds(int64_t(duration_s * 1e3));
 }
 
