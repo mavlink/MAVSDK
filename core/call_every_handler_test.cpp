@@ -15,7 +15,7 @@ TEST(CallEveryHandler, Single)
     ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 11; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        dc_sleep_for(std::chrono::milliseconds(10));
         ceh.run_once();
     }
     EXPECT_EQ(num_called, 1);
@@ -33,7 +33,7 @@ TEST(CallEveryHandler, Multiple)
     ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 10; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        dc_sleep_for(std::chrono::milliseconds(100));
         ceh.run_once();
     }
     EXPECT_EQ(num_called, 10);
@@ -42,7 +42,7 @@ TEST(CallEveryHandler, Multiple)
     ceh.change(0.2f, cookie);
 
     for (int i = 0; i < 20; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        dc_sleep_for(std::chrono::milliseconds(100));
         ceh.run_once();
     }
 
@@ -50,7 +50,7 @@ TEST(CallEveryHandler, Multiple)
 
     num_called = 0;
     ceh.remove(cookie);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    dc_sleep_for(std::chrono::milliseconds(100));
     ceh.run_once();
     EXPECT_EQ(num_called, 0);
 }
@@ -68,7 +68,7 @@ TEST(CallEveryHandler, InParallel)
     ceh.add([&num_called2]() { ++num_called2; }, 0.2f, &cookie2);
 
     for (int i = 0; i < 10; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        dc_sleep_for(std::chrono::milliseconds(100));
         ceh.run_once();
     }
 
@@ -82,7 +82,7 @@ TEST(CallEveryHandler, InParallel)
     ceh.change(0.1f, cookie2);
 
     for (int i = 0; i < 10; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        dc_sleep_for(std::chrono::milliseconds(100));
         ceh.run_once();
     }
 
@@ -100,7 +100,7 @@ TEST(CallEveryHandler, Reset)
     ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 8; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        dc_sleep_for(std::chrono::milliseconds(10));
         ceh.run_once();
         if (i == 8) {
         }
@@ -110,13 +110,13 @@ TEST(CallEveryHandler, Reset)
     ceh.reset(cookie);
 
     for (int i = 0; i < 8; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        dc_sleep_for(std::chrono::milliseconds(10));
         ceh.run_once();
     }
     EXPECT_EQ(num_called, 0);
 
     for (int i = 0; i < 3; ++i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        dc_sleep_for(std::chrono::milliseconds(10));
         ceh.run_once();
     }
     EXPECT_EQ(num_called, 1);
