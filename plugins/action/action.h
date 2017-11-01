@@ -119,6 +119,26 @@ public:
     Result return_to_launch() const;
 
     /**
+     * @brief Send command to transition the drone to fixedwing.
+     *
+     * Note that this is only for the vtol type.
+     * Also, transition to fixedwing is only allowed from multicopter.
+     *
+     * @return Result of request.
+     */
+    Result transition_to_fixedwing() const;
+
+    /**
+     * @brief Send command to transition the drone to multicopter.
+     *
+     * Note that this is only for the vtol type.
+     * Also, transition to multicopter is only allowed from fixedwing.
+     *
+     * @return Result of request.
+     */
+    Result transition_to_multicopter() const;
+
+    /**
      * @brief Callback type for asynchronous Action calls.
      */
     typedef std::function<void(Result)> result_callback_t;
@@ -185,6 +205,26 @@ public:
      * @param callback Function to call with result of request.
      */
     void return_to_launch_async(result_callback_t callback);
+
+    /**
+     * @brief Send command to transition the drone to fixedwing (asynchronous).
+     *
+     * Note that this is only for the vtol type.
+     * Also, transition to fixedwing is only allowed from multicopter.
+     *
+     * @param callback Function to call with result of request.
+     */
+    void transition_to_fixedwing_async(result_callback_t callback);
+
+    /**
+     * @brief Send command to transition the drone to multicopter (asynchronous).
+     *
+     * Note that this is only for the vtol type. 
+     * Also, transition to fixedwing is only allowed from multicopter.
+     *
+     * @param callback Function to call with result of request.
+     */
+    void transition_to_multicopter_async(result_callback_t callback);
 
     /**
      * @brief Set takeoff altitude above ground.

@@ -1,8 +1,9 @@
 # build folders
-build/
-logs/
+**/build
+**/install/
+**/logs
 .vscode
-# auto-generated files (below) from Qt Creator
+# aut-generated files (below) from Qt Creator
 *.config
 *.creator
 *.files

@@ -110,14 +110,8 @@ if (IOS)
     include_directories(curl-android-ios/prebuilt-with-ssl/ios/include)
 endif()
 
-if (IOS OR ANDROID OR MSVC OR APPLE)
+if (IOS OR ANDROID OR MSVC)
     set(library_type "STATIC")
-
-    # We need tinyxml2 for the camera definition parsing.
-    # We use the submodule when linking statically.
-    add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
-    include_directories(SYSTEM libs/tinyxml2)
-
 else()
     set(library_type "SHARED")
 endif()
@@ -149,7 +143,7 @@ add_library(dronecore ${library_type}
 target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
     ${curl_lib}
-    tinyxml2
+#    tinyxml2
 )
 
 # cmake should check for C++11
@@ -160,9 +154,9 @@ set_target_properties(dronecore
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-# Use tinyxml2 from the host system for Linux.
-if(NOT IOS AND NOT ANDROID AND NOT MSVC AND NOT APPLE)
-endif()
+# We need tinyxml2 for the camera definition parsing.
+#add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
+#include_directories(SYSTEM libs/tinyxml2)
 
 # We support install in order to use the header and library files in
 # other applications.
