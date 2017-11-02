@@ -142,6 +142,7 @@ add_library(dronecore ${library_type}
 target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
     ${curl_lib}
+    tinyxml2
 )
 
 # cmake should check for C++11
@@ -219,7 +220,6 @@ if(NOT IOS AND NOT ANDROID)
         gtest_main
         gmock
         ${additional_libs}
-        tinyxml2
     )
 
     add_test(unit_tests
@@ -242,8 +242,8 @@ if(NOT IOS AND NOT ANDROID)
         dronecore
         gtest
         gtest_main
+	gmock
         ${additional_libs}
-        tinyxml2
     )
 
     add_test(integration_tests
