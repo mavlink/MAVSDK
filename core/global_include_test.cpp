@@ -4,6 +4,10 @@
 #include <ctime>
 #include <cmath>
 
+#ifdef FAKE_TIME
+#define Time FakeTime
+#endif
+
 using namespace dronecore;
 
 TEST(GlobalInclude, SteadyTimeIncreasing)
