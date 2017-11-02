@@ -45,6 +45,8 @@ else()
         -DWINDOWS
         -DCURL_STATICLIB
     )
+    set(CMAKE_CXX_FLAGS_RELEASE "/MD")
+    set(CMAKE_CXX_FLAGS_DEBUG "/MDd")
 
     set(warnings "-WX -W2")
 
