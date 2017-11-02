@@ -53,12 +53,12 @@ public:
     virtual void sleep_for(std::chrono::nanoseconds ns);
 };
 
-class MockTime : public Time
+class FakeTime : public Time
 {
 public:
-    MockTime();
+    FakeTime();
 
-    virtual ~MockTime();
+    virtual ~FakeTime();
     virtual dl_time_t steady_time() override;
     virtual void sleep_for(std::chrono::hours h) override;
     virtual void sleep_for(std::chrono::minutes m) override;
