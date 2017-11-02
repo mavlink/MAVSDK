@@ -2,11 +2,16 @@
 #include <gtest/gtest.h>
 #include <atomic>
 
+#ifdef MOCK_TIME
+#define Time MockTime
+#endif
+
 using namespace dronecore;
 
 TEST(TimeoutHandler, Timeout)
 {
-    TimeoutHandler th;
+    Time time;
+    TimeoutHandler th(time);
 
     bool timeout_happened = false;
 
@@ -15,10 +20,10 @@ TEST(TimeoutHandler, Timeout)
         timeout_happened = true;
     }, 0.5, &cookie);
 
-    dc_sleep_for(std::chrono::milliseconds(250));
+    time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    dc_sleep_for(std::chrono::milliseconds(500));
+    time.sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 
@@ -27,7 +32,8 @@ TEST(TimeoutHandler, Timeout)
 
 TEST(TimeoutHandler, TimeoutNoCookie)
 {
-    TimeoutHandler th;
+    Time time;
+    TimeoutHandler th(time);
 
     bool timeout_happened = false;
 
@@ -36,17 +42,18 @@ TEST(TimeoutHandler, TimeoutNoCookie)
         timeout_happened = true;
     }, 0.5, nullptr);
 
-    dc_sleep_for(std::chrono::milliseconds(250));
+    time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    dc_sleep_for(std::chrono::milliseconds(500));
+    time.sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 }
 
 TEST(TimeoutHandler, CallTimeoutInTimeoutCallback)
 {
-    TimeoutHandler th;
+    Time time;
+    TimeoutHandler th(time);
 
     bool timeout_happened = false;
 
@@ -61,10 +68,10 @@ TEST(TimeoutHandler, CallTimeoutInTimeoutCallback)
         }, 5.0, &cookie2);
     }, 0.5, &cookie1);
 
-    dc_sleep_for(std::chrono::milliseconds(250));
+    time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    dc_sleep_for(std::chrono::milliseconds(500));
+    time.sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 
@@ -74,7 +81,8 @@ TEST(TimeoutHandler, CallTimeoutInTimeoutCallback)
 
 TEST(TimeoutHandler, TimeoutRefreshed)
 {
-    TimeoutHandler th;
+    Time time {};
+    TimeoutHandler th(time);
 
     bool timeout_happened = false;
 
@@ -83,14 +91,14 @@ TEST(TimeoutHandler, TimeoutRefreshed)
         timeout_happened = true;
     }, 0.5, &cookie);
 
-    dc_sleep_for(std::chrono::milliseconds(400));
+    time.sleep_for(std::chrono::milliseconds(400));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
     th.refresh(cookie);
-    dc_sleep_for(std::chrono::milliseconds(300));
+    time.sleep_for(std::chrono::milliseconds(300));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    dc_sleep_for(std::chrono::milliseconds(300));
+    time.sleep_for(std::chrono::milliseconds(300));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 
@@ -99,7 +107,8 @@ TEST(TimeoutHandler, TimeoutRefreshed)
 
 TEST(TimeoutHandler, TimeoutRemoved)
 {
-    TimeoutHandler th;
+    Time time {};
+    TimeoutHandler th(time);
 
     bool timeout_happened = false;
 
@@ -108,18 +117,19 @@ TEST(TimeoutHandler, TimeoutRemoved)
         timeout_happened = true;
     }, 0.5, &cookie);
 
-    dc_sleep_for(std::chrono::milliseconds(250));
+    time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
     th.remove(cookie);
-    dc_sleep_for(std::chrono::milliseconds(500));
+    time.sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
 }
 
 TEST(TimeoutHandler, TimeoutRemovedDuringCallback)
 {
-    TimeoutHandler th;
+    Time time {};
+    TimeoutHandler th(time);
 
     bool timeout_happened = false;
 
@@ -131,10 +141,10 @@ TEST(TimeoutHandler, TimeoutRemovedDuringCallback)
         timeout_happened = true;
     }, 0.5, &cookie);
 
-    dc_sleep_for(std::chrono::milliseconds(250));
+    time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
     EXPECT_FALSE(timeout_happened);
-    dc_sleep_for(std::chrono::milliseconds(500));
+    time.sleep_for(std::chrono::milliseconds(500));
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 }

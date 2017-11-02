@@ -11,7 +11,7 @@ namespace dronecore {
 class TimeoutHandler
 {
 public:
-    TimeoutHandler();
+    TimeoutHandler(Time &time);
     ~TimeoutHandler();
 
     // delete copy and move constructors and assign operators
@@ -35,6 +35,8 @@ private:
 
     std::map<void *, std::shared_ptr<Timeout>> _timeouts {};
     std::mutex _timeouts_mutex {};
+
+    Time &_time;
 };
 
 } // namespace dronecore

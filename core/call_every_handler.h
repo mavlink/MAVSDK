@@ -11,7 +11,7 @@ namespace dronecore {
 class CallEveryHandler
 {
 public:
-    CallEveryHandler();
+    CallEveryHandler(Time &time);
     ~CallEveryHandler();
 
     // delete copy and move constructors and assign operators
@@ -36,6 +36,8 @@ private:
 
     std::map<void *, std::shared_ptr<Entry>> _entries {};
     std::mutex _entries_mutex {};
+
+    Time &_time;
 };
 
 } // namespace dronecore
