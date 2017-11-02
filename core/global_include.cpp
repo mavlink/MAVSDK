@@ -1,4 +1,3 @@
-#define POISON_DISABLED
 #include "global_include.h"
 
 #include <cfloat>
@@ -9,63 +8,15 @@ namespace dronecore {
 
 using std::chrono::steady_clock;
 
-#ifdef MOCK_TIME
-class MockTime
+Time::Time() {}
+Time::~Time() {}
+
+dl_time_t Time::steady_time()
 {
-public:
-    // Singleton
-    static MockTime &instance()
-    {
-        static MockTime instance;
-        return instance;
-    }
-
-    std::chrono::time_point<steady_clock, std::chrono::nanoseconds> get_now()
-    {
-        return _current;
-    }
-
-    template <typename Duration>
-    void add(Duration d)
-    {
-        _current += d;
-    }
-
-    MockTime(MockTime const &) = delete;
-    void operator=(MockTime const &) = delete;
-
-private:
-    MockTime()
-    {
-        // Start with current time so we don't start from 0.
-        _current = steady_clock::now();
-    }
-
-    std::chrono::time_point<steady_clock, std::chrono::nanoseconds> _current {};
-};
-
-// Explicitly instantiate for all durations we know and potentially need.
-template void MockTime::add<std::chrono::hours>(std::chrono::hours);
-template void MockTime::add<std::chrono::minutes>(std::chrono::minutes);
-template void MockTime::add<std::chrono::seconds>(std::chrono::seconds);
-template void MockTime::add<std::chrono::milliseconds>(std::chrono::milliseconds);
-template void MockTime::add<std::chrono::microseconds>(std::chrono::microseconds);
-template void MockTime::add<std::chrono::nanoseconds>(std::chrono::nanoseconds);
-
-#endif
-
-
-
-dl_time_t steady_time()
-{
-#ifndef MOCK_TIME
     return steady_clock::now();
-#else
-    return MockTime::instance().get_now();
-#endif
 }
 
-double elapsed_s()
+double Time::elapsed_s()
 {
     auto now = steady_time().time_since_epoch();
 
@@ -73,7 +24,7 @@ double elapsed_s()
            static_cast<double>(steady_clock::period::den);
 }
 
-double elapsed_since_s(const dl_time_t &since)
+double Time::elapsed_since_s(const dl_time_t &since)
 {
     auto now = steady_time();
 
@@ -81,36 +32,103 @@ double elapsed_since_s(const dl_time_t &since)
            static_cast<double>(steady_clock::period::den);
 }
 
-template <typename Duration>
-void dc_sleep_for(Duration d)
-{
-#ifndef MOCK_TIME
-    std::this_thread::sleep_for(d);
-#else
-    MockTime::instance().add(d);
-    // We also add some overhead that sleep usually has.
-    MockTime::instance().add(std::chrono::microseconds(10));
-#endif
-}
-
-template void dc_sleep_for<>(std::chrono::hours);
-template void dc_sleep_for<>(std::chrono::minutes);
-template void dc_sleep_for<>(std::chrono::seconds);
-template void dc_sleep_for<>(std::chrono::milliseconds);
-template void dc_sleep_for<>(std::chrono::microseconds);
-template void dc_sleep_for<>(std::chrono::nanoseconds);
-
-
-dl_time_t steady_time_in_future(double duration_s)
+dl_time_t Time::steady_time_in_future(double duration_s)
 {
     auto now = steady_time();
     return now + std::chrono::milliseconds(int64_t(duration_s * 1e3));
 }
 
-void shift_steady_time_by(dl_time_t &time, double offset_s)
+void Time::shift_steady_time_by(dl_time_t &time, double offset_s)
 {
     time += std::chrono::milliseconds(int64_t(offset_s * 1e3));
 }
+
+void Time::sleep_for(std::chrono::hours h)
+{
+    std::this_thread::sleep_for(h);
+}
+
+void Time::sleep_for(std::chrono::minutes m)
+{
+    std::this_thread::sleep_for(m);
+}
+
+void Time::sleep_for(std::chrono::seconds s)
+{
+    std::this_thread::sleep_for(s);
+}
+
+void Time::sleep_for(std::chrono::milliseconds ms)
+{
+    std::this_thread::sleep_for(ms);
+}
+
+void Time::sleep_for(std::chrono::microseconds us)
+{
+    std::this_thread::sleep_for(us);
+}
+
+void Time::sleep_for(std::chrono::nanoseconds ns)
+{
+    std::this_thread::sleep_for(ns);
+}
+
+
+MockTime::MockTime() :
+    Time()
+{
+    // Start with current time so we don't start from 0.
+    _current = steady_clock::now();
+}
+
+MockTime::~MockTime() {}
+
+dl_time_t MockTime::steady_time()
+{
+    return _current;
+}
+
+void MockTime::sleep_for(std::chrono::hours h)
+{
+    _current += h;
+    add_overhead();
+}
+
+void MockTime::sleep_for(std::chrono::minutes m)
+{
+    _current += m;
+    add_overhead();
+}
+
+void MockTime::sleep_for(std::chrono::seconds s)
+{
+    _current += s;
+    add_overhead();
+}
+
+void MockTime::sleep_for(std::chrono::milliseconds ms)
+{
+    _current += ms;
+    add_overhead();
+}
+
+void MockTime::sleep_for(std::chrono::microseconds us)
+{
+    _current += us;
+    add_overhead();
+}
+
+void MockTime::sleep_for(std::chrono::nanoseconds ns)
+{
+    _current += ns;
+    add_overhead();
+}
+
+void MockTime::add_overhead()
+{
+    _current += std::chrono::microseconds(50);
+}
+
 
 double to_rad_from_deg(double deg)
 {

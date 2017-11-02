@@ -33,17 +33,44 @@ namespace dronecore {
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
 
-dl_time_t steady_time();
-dl_time_t steady_time_in_future(double duration_s);
-void shift_steady_time_by(dl_time_t &time, double offset_s);
+class Time
+{
+public:
+    Time();
+    virtual ~Time();
 
-double elapsed_s();
-double elapsed_since_s(const dl_time_t &since);
+    virtual dl_time_t steady_time();
+    double elapsed_s();
+    double elapsed_since_s(const dl_time_t &since);
+    dl_time_t steady_time_in_future(double duration_s);
+    void shift_steady_time_by(dl_time_t &time, double offset_s);
 
-// Alternative to std::this_thread::sleep_for because they are mocked
-// for unit testing.
-template <typename Duration>
-void dc_sleep_for(Duration d);
+    virtual void sleep_for(std::chrono::hours h);
+    virtual void sleep_for(std::chrono::minutes m);
+    virtual void sleep_for(std::chrono::seconds s);
+    virtual void sleep_for(std::chrono::milliseconds ms);
+    virtual void sleep_for(std::chrono::microseconds us);
+    virtual void sleep_for(std::chrono::nanoseconds ns);
+};
+
+class MockTime : public Time
+{
+public:
+    MockTime();
+
+    virtual ~MockTime();
+    virtual dl_time_t steady_time() override;
+    virtual void sleep_for(std::chrono::hours h) override;
+    virtual void sleep_for(std::chrono::minutes m) override;
+    virtual void sleep_for(std::chrono::seconds s) override;
+    virtual void sleep_for(std::chrono::milliseconds ms) override;
+    virtual void sleep_for(std::chrono::microseconds us) override;
+    virtual void sleep_for(std::chrono::nanoseconds ns) override;
+
+private:
+    std::chrono::time_point<std::chrono::steady_clock, std::chrono::nanoseconds> _current {};
+    void add_overhead();
+};
 
 double to_rad_from_deg(double deg);
 double to_deg_from_rad(double rad);
