@@ -3,8 +3,8 @@
 #include <atomic>
 #include "log.h"
 
-#ifdef MOCK_TIME
-#define Time MockTime
+#ifdef FAKE_TIME
+#define Time FakeTime
 #endif
 
 using namespace dronecore;

@@ -74,57 +74,57 @@ void Time::sleep_for(std::chrono::nanoseconds ns)
 }
 
 
-MockTime::MockTime() :
+FakeTime::FakeTime() :
     Time()
 {
     // Start with current time so we don't start from 0.
     _current = steady_clock::now();
 }
 
-MockTime::~MockTime() {}
+FakeTime::~FakeTime() {}
 
-dl_time_t MockTime::steady_time()
+dl_time_t FakeTime::steady_time()
 {
     return _current;
 }
 
-void MockTime::sleep_for(std::chrono::hours h)
+void FakeTime::sleep_for(std::chrono::hours h)
 {
     _current += h;
     add_overhead();
 }
 
-void MockTime::sleep_for(std::chrono::minutes m)
+void FakeTime::sleep_for(std::chrono::minutes m)
 {
     _current += m;
     add_overhead();
 }
 
-void MockTime::sleep_for(std::chrono::seconds s)
+void FakeTime::sleep_for(std::chrono::seconds s)
 {
     _current += s;
     add_overhead();
 }
 
-void MockTime::sleep_for(std::chrono::milliseconds ms)
+void FakeTime::sleep_for(std::chrono::milliseconds ms)
 {
     _current += ms;
     add_overhead();
 }
 
-void MockTime::sleep_for(std::chrono::microseconds us)
+void FakeTime::sleep_for(std::chrono::microseconds us)
 {
     _current += us;
     add_overhead();
 }
 
-void MockTime::sleep_for(std::chrono::nanoseconds ns)
+void FakeTime::sleep_for(std::chrono::nanoseconds ns)
 {
     _current += ns;
     add_overhead();
 }
 
-void MockTime::add_overhead()
+void FakeTime::add_overhead()
 {
     _current += std::chrono::microseconds(50);
 }
