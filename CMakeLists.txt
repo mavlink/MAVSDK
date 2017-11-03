@@ -238,6 +238,7 @@ if(NOT IOS AND NOT ANDROID)
 
     # This includes all GTests that run integration tests
     add_executable(integration_tests_runner
+        core/unittests_main.cpp
         ${integration_tests_src}
     )
 
