@@ -37,28 +37,6 @@ public:
         UNKNOWN /**< @brief Unknown error. */
     };
 
-#ifdef FOLLOW_ME_TESTING
-    static const double DEF_LAT; /**< @brief Default latitude of GCS */
-    static const double DEF_LONG; /**< @brief Default longitude of GCS */
-    static const double DEF_ALT; /**< @brief Default altitude of GCS */
-
-    /**
-     * @brief GCS Position
-     */
-    struct GCSPosition {
-        double lat = DEF_LAT; /**< @brief Latitude of GCS device */
-        double lon = DEF_LONG; /**< @brief Longitude of GCS device */
-        double alt = DEF_ALT; /**< @brief Altitude of GCS device */
-        /**
-         * @brief Constructor of GCSPosition
-         * @param _lat latitude set by application
-         * @param _lon longtitude set by application
-         * @param _alt altitude set by application
-         */
-        GCSPosition(double _lat, double _lon, double _alt) : lat(_lat), lon(_lon), alt(_alt) {}
-    };
-#endif
-
     /**
      * @brief Return English string for FollowMe error codes
      *
@@ -72,14 +50,6 @@ public:
      * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
      */
     FollowMe::Result start() const;
-
-#ifdef FOLLOW_ME_TESTING
-    /**
-     * @brief Starts FollowMe mode with position
-     * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
-     */
-    FollowMe::Result start(const GCSPosition &gcs_pos);
-#endif
 
     /**
      * @brief Stops FollowMe mode

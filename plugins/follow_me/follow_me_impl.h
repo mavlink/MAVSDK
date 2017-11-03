@@ -20,11 +20,6 @@ public:
 
     FollowMe::Result start();
     FollowMe::Result stop() const;
-#ifdef FOLLOW_ME_TESTING
-    FollowMe::Result start(const FollowMe::GCSPosition &gcs_pos);
-    void set_gcs_position(const FollowMe::GCSPosition &gcs_pos);
-#endif
-
 private:
     /* private methods */
     /*****************************************************/
@@ -48,6 +43,12 @@ private:
      * @brief Motion report info which will be emitted periodically to the Vehicle
      */
     struct MotionReport {
+#ifdef FOLLOW_ME_TESTING
+        constexpr static const double DEF_LATITUDE = 47.3977436;
+        constexpr static const double DEF_LONGITUDE = 8.5455864;
+        constexpr static const double DEF_ALTITUDE =  488.27;
+#endif
+
         // GCS Position
         int32_t lat_int;
         int32_t lon_int;
@@ -61,22 +62,40 @@ private:
         float afy;
         float afz;
 
-        float pos_std_dev[3];
+        std::array<float, 3> pos_std_dev;
+
+        /**
+         * @brief MotionReport
+         * @param _lat
+         * @param _lon
+         * @param _alt
+         */
 #ifdef FOLLOW_ME_TESTING
-        /* modifiers */
-        void set_position(const FollowMe::GCSPosition &gcs_pos);
+        MotionReport(double _lat = DEF_LATITUDE, double _lon = DEF_LONGITUDE,
+                     double _alt = DEF_ALTITUDE)
+#else
+        MotionReport(double _lat, double _lon, double _alt)
 #endif
+
+        {
+            lat_int = _lat * 1e7;
+            lon_int = _lon * 1e7;
+            alt = static_cast<float>(_alt);
+            vx = vy = vz = 0.f;
+            afx = afy = afz = 0.f;
+            pos_std_dev.fill(0);
+        }
     };
 
     // required for emitting MotionReport updates to Vehicle
-    MotionReport _motion_report {};
-    dl_time_t _start_time;
-    uint8_t _estimatation_capabilities;
+    MotionReport _motion_report;
+    dl_time_t _start_time = steady_time();
+    uint8_t _estimatation_capabilities = 0;
 
     TimeoutHandler _motion_report_timer;
     void *_timeout_cookie = nullptr;
 
-    bool _followme_mode_active;
+    bool _followme_mode_active = false;
 };
 
 } // namespace dronecore
