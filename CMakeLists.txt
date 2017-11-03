@@ -169,6 +169,7 @@ else()
 endif()
 
 install(TARGETS dronecore
+    EXPORT dronecore-targets
     DESTINATION ${lib_path}
 )
 
