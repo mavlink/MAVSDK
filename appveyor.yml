@@ -62,20 +62,19 @@ build_script:
 
 test: on
 
+# We need to manually copy the dlls for now, otherwise they are not found.
 test_script:
   - cd C:\dronecore
   - if "%configuration%"=="Debug" (
-      # We need to manually copy the dlls for now, otherwise they are not found.
-      cp build\libs\gtest\googlemock\gtest\Debug\gtest.dll build\Debug\
-      cp build\libs\gtest\googlemock\gtest\Debug\gtest_main.dll build\Debug\
-      cp build\libs\gtest\googlemock\Debug\gmock.dll build\Debug\
-      cd build\Debug
+      cp build\libs\gtest\googlemock\gtest\Debug\gtest.dll build\Debug\ &&
+      cp build\libs\gtest\googlemock\gtest\Debug\gtest_main.dll build\Debug\ &&
+      cp build\libs\gtest\googlemock\Debug\gmock.dll build\Debug\ &&
+      cd build\Debug &&
       unit_tests_runner.exe
     ) else (
-      # We need to manually copy the dlls for now, otherwise they are not found.
-      cp build\libs\gtest\googlemock\gtest\Release\gtest.dll build\Release\
-      cp build\libs\gtest\googlemock\gtest\Release\gtest_main.dll build\Release\
-      cp build\libs\gtest\googlemock\Release\gmock.dll build\Release\
-      cd build\Release
+      cp build\libs\gtest\googlemock\gtest\Release\gtest.dll build\Release\ &&
+      cp build\libs\gtest\googlemock\gtest\Release\gtest_main.dll build\Release\ &&
+      cp build\libs\gtest\googlemock\Release\gmock.dll build\Release\ &&
+      cd build\Release &&
       unit_tests_runner.exe
     )
