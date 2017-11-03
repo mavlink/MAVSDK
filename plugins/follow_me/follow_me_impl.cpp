@@ -10,8 +10,6 @@ namespace dronecore {
 FollowMeImpl::FollowMeImpl() :
     PluginImplBase()
 {
-    _start_time = steady_time();
-    _estimatation_capabilities = 0;
 }
 
 FollowMeImpl::~FollowMeImpl()
@@ -34,16 +32,21 @@ void FollowMeImpl::deinit()
 
 void FollowMeImpl::timeout_occurred()
 {
-    // FIXME: This is HARD-coded as of now.
-    // Ideally GPS info should come from a platform-specific framwork.
-
+#ifdef FOLLOW_ME_TESTING
+    // FIXME: We're arbitarily changing latitude, longitude.
+    // Need to make it Box or Circle for better visual demo
+    double lat_offset = 0.00001904 * 1e7;
+    double lon_offset = 0.000000954 * 1e7;
     // update current location coordinates
-    _motion_report.lat_int += 1;
-    _motion_report.lon_int += 2;
-    _motion_report.alt += 5.0f;
+    _motion_report.lat_int -= static_cast<int32_t>(lat_offset);
+    _motion_report.lon_int -= static_cast<int32_t>(lon_offset);
 
     _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::POS));
+#else
+    // Ideally GPS position should come from a platform-specific framwork.
+#endif
 
+#ifdef FOLLOW_ME_TESTING
     // update current eph & epv
     _motion_report.pos_std_dev[0] += _motion_report.pos_std_dev[1] += 0.05f;
     _motion_report.pos_std_dev[2] += 0.05f;
@@ -56,34 +59,12 @@ void FollowMeImpl::timeout_occurred()
     _motion_report.vy += 0.04f;
 
     _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::VEL));
+#else
+    // Ideally GPS info such as eph, epv, velocity should come from a platform-specific framwork.
+#endif
 
     send_gcs_motion_report();
 }
-
-#ifdef FOLLOW_ME_TESTING
-/**
- * @brief FollowMeImpl::set_motion_report
- * @param mr
- */
-void FollowMeImpl::MotionReport::set_position(const FollowMe::GCSPosition &gcs_pos)
-{
-    lat_int = gcs_pos.lat * 1e7;
-    lon_int = gcs_pos.lon * 1e7;
-    alt = static_cast<float>(gcs_pos.alt);
-}
-
-/**
- * @brief FollowMeImpl::start
- * @param mr
- * @return
- */
-FollowMe::Result FollowMeImpl::start(const FollowMe::GCSPosition &gcs_pos)
-{
-    // save motion report provided by application
-    _motion_report.set_position(gcs_pos);
-    return start();
-}
-#endif
 
 /**
  * @brief FollowMeImpl::start
@@ -91,9 +72,7 @@ FollowMe::Result FollowMeImpl::start(const FollowMe::GCSPosition &gcs_pos)
  */
 FollowMe::Result FollowMeImpl::start()
 {
-    /*
-     * FIXME: Will be replaced by CallEveryHandler class.
-     */
+    // FIXME: Will be replaced by CallEveryHandler class.
     _parent->register_timeout_handler(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0,
                                       &_timeout_cookie);
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
@@ -142,7 +121,7 @@ void FollowMeImpl::send_gcs_motion_report()
                                    accel_unknown,
                                    attitude_q_unknown,
                                    rates_unknown,
-                                   _motion_report.pos_std_dev,
+                                   _motion_report.pos_std_dev.data(),
                                    custom_state);
 
     if (_parent->send_message(msg)) {

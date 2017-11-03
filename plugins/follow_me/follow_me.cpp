@@ -17,11 +17,6 @@ FollowMe::Result FollowMe::start() const
     return _impl->start();
 }
 
-FollowMe::Result FollowMe::start(const GCSPosition &gcs_pos)
-{
-    return _impl->start(gcs_pos);
-}
-
 FollowMe::Result FollowMe::stop() const
 {
     return _impl->stop();

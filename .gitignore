@@ -4,6 +4,6 @@ logs/
 .vscode
 # auto-generated files (below) from Qt Creator
 *.config
-*.creator
+*.creator*
 *.files
 *.includes
