@@ -19,7 +19,7 @@ public:
     void deinit() override;
 
     FollowMe::Result start();
-    FollowMe::Result stop() const;
+    FollowMe::Result stop();
 private:
     /* private methods */
     /*****************************************************/
@@ -87,12 +87,12 @@ private:
         }
     };
 
-    // required for emitting MotionReport updates to Vehicle
-    MotionReport _motion_report;
     dl_time_t _start_time = steady_time();
     uint8_t _estimatation_capabilities = 0;
 
-    TimeoutHandler _motion_report_timer;
+    // required for emitting MotionReport updates to Vehicle
+    MotionReport _motion_report;
+    CallEveryHandler _motion_report_timer;
     void *_timeout_cookie = nullptr;
 
     bool _followme_mode_active = false;

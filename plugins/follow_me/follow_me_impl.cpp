@@ -33,13 +33,23 @@ void FollowMeImpl::deinit()
 void FollowMeImpl::timeout_occurred()
 {
 #ifdef FOLLOW_ME_TESTING
+    static int alternative = 1;
     // FIXME: We're arbitarily changing latitude, longitude.
     // Need to make it Box or Circle for better visual demo
-    double lat_offset = 0.00001904 * 1e7;
-    double lon_offset = 0.000000954 * 1e7;
+    const double lat_offset = 0.00001904 * 1e7;
+    const double lon_offset = 0.000000954 * 1e7;
+
     // update current location coordinates
-    _motion_report.lat_int -= static_cast<int32_t>(lat_offset);
-    _motion_report.lon_int -= static_cast<int32_t>(lon_offset);
+    // Using simple logic to make drone oscillate
+    if (alternative++ % 2 == 0) {
+        _motion_report.lat_int += static_cast<int32_t>(lat_offset);
+        _motion_report.lon_int += static_cast<int32_t>(lon_offset);
+        LogInfo() << "+ Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
+    } else {
+        _motion_report.lat_int -= static_cast<int32_t>(lat_offset);
+        _motion_report.lon_int -= static_cast<int32_t>(lon_offset);
+        LogInfo() << "- Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
+    }
 
     _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::POS));
 #else
@@ -73,8 +83,7 @@ void FollowMeImpl::timeout_occurred()
 FollowMe::Result FollowMeImpl::start()
 {
     // FIXME: Will be replaced by CallEveryHandler class.
-    _parent->register_timeout_handler(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0,
-                                      &_timeout_cookie);
+    _parent->add_call_every(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0f, &_timeout_cookie);
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
     uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
@@ -134,8 +143,10 @@ void FollowMeImpl::send_gcs_motion_report()
                                       &_timeout_cookie);
 }
 
-FollowMe::Result FollowMeImpl::stop() const
+FollowMe::Result FollowMeImpl::stop()
 {
+    _parent->remove_call_every(_timeout_cookie);
+
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
     uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
