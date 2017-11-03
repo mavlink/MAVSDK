@@ -25,10 +25,10 @@ add_executable(takeoff_and_land
 )
 
 # Not needed if DroneCore installed system-wide
-if(WINDOWS)
+if(MSVC)
     set(dronecore_lib "${CMAKE_SOURCE_DIR}/../../install/lib/dronecore.lib")
 else()
-    set(dronecore_lib "${CMAKE_SOURCE_DIR}/../../install/lib/libdronecore.a")
+    set(dronecore_lib "${CMAKE_SOURCE_DIR}/../../install/lib/libdronecore.so")
 endif()
 
 target_link_libraries(takeoff_and_land
