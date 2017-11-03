@@ -52,7 +52,7 @@ build_script:
   - if "%configuration%"=="Debug" (
       cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.55.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.55.1\builds\libcurl-vc14-x64-debug-static-ipv6-sspi-winssl\lib\libcurl_a_debug.lib" -G "Visual Studio 14 2015 Win64" ..
     ) else (
-      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.55.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.55.1\builds\libcurl-vc14-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 14 2015 Win64" -DBUILD_SHARED_LIBS=OFF ..
+      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.55.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.55.1\builds\libcurl-vc14-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 14 2015 Win64" ..
     )
   - if "%configuration%"=="Debug" (
       cmake --build . --target install --config Debug
