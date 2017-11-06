@@ -73,7 +73,7 @@ install:
 
 script:
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
-    make;
+    make EXTERNAL_DIR=external_example;
     make default install;
     make docs;
     make run_unit_tests;
