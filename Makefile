@@ -70,7 +70,7 @@ all: default
 default:
 	$(call cmake-build)
 
-docs: install
+docs:
 	- (cd $(INSTALL_PREFIX)/include/dronecore \
         && mkdir -p docs \
         && doxygen $(CURRENT_DIR)/.doxygen \
@@ -184,6 +184,6 @@ else
 endif
 
 .PHONY:
-	clean install docs fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
+	clean docs fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
 
 # vim:ft=make:
