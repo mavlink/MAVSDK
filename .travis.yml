@@ -13,6 +13,7 @@ matrix:
         apt:
           packages:
             - doxygen
+            - libtinyxml2-dev
     - os: linux
       dist: trusty
       sudo: false
@@ -29,6 +30,7 @@ matrix:
             - gcc-5
             - g++-5
             - doxygen
+            - libtinyxml2-dev
     - os: linux
       dist: trusty
       sudo: false
@@ -45,6 +47,7 @@ matrix:
             - gcc-6
             - g++-6
             - doxygen
+            - libtinyxml2-dev
     - os: linux
       sudo: required
       services:
