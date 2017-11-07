@@ -121,8 +121,8 @@ public:
     /**
      * @brief Send command to transition the drone to fixedwing.
      *
-     * Note that this is only for the vtol type.
-     * Also, transition to fixedwing is only allowed from multicopter.
+     * The associated action will only be executed for VTOL vehicles in multicopter mode.
+     * On other vehicles/modes the command will fail with a Result.
      *
      * @return Result of request.
      */
@@ -131,8 +131,8 @@ public:
     /**
      * @brief Send command to transition the drone to multicopter.
      *
-     * Note that this is only for the vtol type.
-     * Also, transition to multicopter is only allowed from fixedwing.
+     * The associated action will only be executed for VTOL vehicles in fixedwing mode.
+     * On other vehicles/modes the command will fail with a Result.
      *
      * @return Result of request.
      */
