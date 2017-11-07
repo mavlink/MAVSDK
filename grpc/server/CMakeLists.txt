@@ -52,17 +52,13 @@ foreach(plugin ${plugins_list})
 )
 endforeach()
 
-add_executable(dronecore_server
-    dronecore_server.cpp
-    dronecore.pb.cc # generated
-    dronecore.grpc.pb.cc # generated
-	action.pb.cc # generated
-    action.grpc.pb.cc # generated
-    mission.pb.cc # generated
-    mission.grpc.pb.cc # generated
-    telemetry.pb.cc # generated
-    telemetry.grpc.pb.cc # generated
-)
+set(plugins_src dronecore_server.cpp dronecore.pb.cc dronecore.grpc.pb.cc)
+foreach(plugin ${plugins_list})
+    list(APPEND plugins_src ${plugin}.pb.cc)
+    list(APPEND plugins_src ${plugin}.grpc.pb.cc)
+endforeach(plugin)
+
+add_executable(dronecore_server ${plugins_src})
 
 target_link_libraries(dronecore_server
     dronecore

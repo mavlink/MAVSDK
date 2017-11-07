@@ -1,9 +1,9 @@
 #include "telemetry.h"
 #include "telemetry.grpc.pb.h"
+#include <google/protobuf/empty.pb.h>
 
 using grpc::Status;
 using grpc::ServerContext;
-using dronecorerpc::TelemetryEmpty;
 using dronecorerpc::TelemetryRPC;
 using grpc::ServerWriter;
 
@@ -12,12 +12,12 @@ using namespace dronecore;
 class TelemetryRPCImpl final : public TelemetryRPC::Service
 {
 public:
-	TelemetryRPCImpl(DroneCore* dc_obj) 
-	{
-		dc = dc_obj;
-	}
+    TelemetryRPCImpl(DroneCore *dc_obj)
+    {
+        dc = dc_obj;
+    }
 
-    Status TelemetryPositionSubscription(ServerContext *context, const TelemetryEmpty *request,
+    Status TelemetryPositionSubscription(ServerContext *context, const ::google::protobuf::Empty *request,
                                          ServerWriter<dronecorerpc::TelemetryPosition> *writer) override
     {
         dc->device().telemetry().position_async([&writer](Telemetry::Position position) {
@@ -35,6 +35,6 @@ public:
         return Status::OK;
     }
 
-private: 
-	DroneCore* dc;
+private:
+    DroneCore *dc;
 };

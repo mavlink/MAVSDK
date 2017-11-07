@@ -1,13 +1,13 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 package dronecorerpc;
 
 service MissionRPC {
     rpc SendMission(Mission) returns(MissionResult) {}
-    rpc StartMission(MissionEmpty) returns(MissionResult) {}
+    rpc StartMission(google.protobuf.Empty) returns(MissionResult) {}
 }
-
-message MissionEmpty {}
 
 message MissionResult {
 

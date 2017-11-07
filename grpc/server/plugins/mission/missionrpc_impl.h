@@ -1,9 +1,9 @@
 #include "mission.h"
 #include "mission.grpc.pb.h"
+#include <google/protobuf/empty.pb.h>
 
 using grpc::Status;
 using grpc::ServerContext;
-using dronecorerpc::MissionEmpty;
 using dronecorerpc::MissionRPC;
 
 using namespace dronecore;
@@ -11,11 +11,11 @@ using namespace dronecore;
 class MissionRPCImpl final : public MissionRPC::Service
 {
 public:
-	MissionRPCImpl(DroneCore* dc_obj)
-	{
-		dc = dc_obj;
-	}
-	
+    MissionRPCImpl(DroneCore *dc_obj)
+    {
+        dc = dc_obj;
+    }
+
     Status SendMission(ServerContext *context, const dronecorerpc::Mission *mission,
                        dronecorerpc::MissionResult *response) override
     {
@@ -50,9 +50,9 @@ public:
         return Status::OK;
     }
 
-    Status StartMission(ServerContext *context, const MissionEmpty *request,
+    Status StartMission(ServerContext *context, const ::google::protobuf::Empty *request,
                         dronecorerpc::MissionResult *response) override
-    {   
+    {
         // TODO: there has to be a beter way than using std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
@@ -71,5 +71,5 @@ public:
     }
 
 private:
-	DroneCore* dc;
+    DroneCore *dc;
 };
