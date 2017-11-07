@@ -1,22 +1,23 @@
 #include "action.h"
 #include "action.grpc.pb.h"
+#include <google/protobuf/empty.pb.h>
 
 using grpc::Status;
 using grpc::ServerContext;
 using dronecorerpc::ActionRPC;
-using dronecorerpc::ActionEmpty;
+using dronecorerpc::Empty;
 
 using namespace dronecore;
 
 class ActionRPCImpl final : public ActionRPC::Service
 {
 public:
-	ActionRPCImpl(DroneCore* dc_obj)
-	{
-		dc = dc_obj;
-	}
-	
-    Status Arm(ServerContext *context, const ActionEmpty *request,
+    ActionRPCImpl(DroneCore *dc_obj)
+    {
+        dc = dc_obj;
+    }
+
+    Status Arm(ServerContext *context, const ::google::protobuf::Empty *request,
                dronecorerpc::ActionResult *response) override
     {
         const Action::Result action_result = dc->device().action().arm();
@@ -25,7 +26,7 @@ public:
         return Status::OK;
     }
 
-    Status TakeOff(ServerContext *context, const ActionEmpty *request,
+    Status TakeOff(ServerContext *context, const ::google::protobuf::Empty *request,
                    dronecorerpc::ActionResult *response) override
     {
         const Action::Result action_result = dc->device().action().takeoff();
@@ -34,7 +35,7 @@ public:
         return Status::OK;
     }
 
-    Status Land(ServerContext *context, const ActionEmpty *request,
+    Status Land(ServerContext *context, const ::google::protobuf::Empty *request,
                 dronecorerpc::ActionResult *response) override
     {
         const Action::Result action_result = dc->device().action().land();
@@ -44,5 +45,5 @@ public:
     }
 
 private:
-	DroneCore* dc;
+    DroneCore *dc;
 };

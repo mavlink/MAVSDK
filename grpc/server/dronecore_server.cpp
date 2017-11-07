@@ -23,7 +23,6 @@ using grpc::ServerContext;
 using grpc::ServerReader;
 using grpc::ServerReaderWriter;
 using grpc::Status;
-using dronecorerpc::Empty;
 using dronecorerpc::DroneCoreRPC;
 
 using namespace dronecore;
@@ -31,9 +30,9 @@ using namespace std::placeholders;
 
 static DroneCore dc;
 
-template<typename T> ::grpc::Service *createInstances(DroneCore* dc_obj) {return new T(dc_obj);}
+template<typename T> ::grpc::Service *createInstances(DroneCore *dc_obj) {return new T(dc_obj);}
 
-typedef std::map<std::string, ::grpc::Service*(*)(DroneCore* dc_obj)> map_type;
+typedef std::map<std::string, ::grpc::Service*(*)(DroneCore *dc_obj)> map_type;
 
 class DroneCoreRPCImpl final : public DroneCoreRPC::Service
 {

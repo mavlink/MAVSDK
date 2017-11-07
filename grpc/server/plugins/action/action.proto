@@ -1,15 +1,14 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 package dronecorerpc;
 
 service ActionRPC {
-    rpc Arm(ActionEmpty) returns(ActionResult) {}
-    rpc TakeOff(ActionEmpty) returns(ActionResult) {}
-    rpc Land(ActionEmpty) returns(ActionResult) {}
+    rpc Arm(google.protobuf.Empty) returns(ActionResult) {}
+    rpc TakeOff(google.protobuf.Empty) returns(ActionResult) {}
+    rpc Land(google.protobuf.Empty) returns(ActionResult) {}
 }
-
-// FIXME these different Empty types are ugly
-message ActionEmpty {}
 
 message ActionResult {
 
