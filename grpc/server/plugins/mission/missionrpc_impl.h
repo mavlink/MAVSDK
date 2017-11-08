@@ -37,7 +37,7 @@ public:
             mission_items.push_back(new_item);
         }
 
-        dc->device().mission().send_mission_async(
+        dc->device().mission().upload_mission_async(
         mission_items, [prom, response](Mission::Result result) {
             response->set_result(static_cast<dronecorerpc::MissionResult::Result>(result));
             response->set_result_str(Mission::result_str(result));

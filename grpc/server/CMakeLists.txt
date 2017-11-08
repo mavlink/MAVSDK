@@ -52,7 +52,7 @@ foreach(plugin ${plugins_list})
 )
 endforeach()
 
-set(plugins_src dronecore_server.cpp dronecore.pb.cc dronecore.grpc.pb.cc)
+set(plugins_src ${CMAKE_CURRENT_BINARY_DIR}/dronecore_server.cpp dronecore.pb.cc dronecore.grpc.pb.cc)
 foreach(plugin ${plugins_list})
     list(APPEND plugins_src ${plugin}.pb.cc)
     list(APPEND plugins_src ${plugin}.grpc.pb.cc)
@@ -67,6 +67,8 @@ target_link_libraries(dronecore_server
     #grpc++_reflection
     dl
 )
+
+include(autogenerate_plugin_container.cmake)
 
 include_directories(
     ${Protobuf_INCLUDE_DIRS}

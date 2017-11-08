@@ -17,7 +17,8 @@ public:
         dc = dc_obj;
     }
 
-    Status TelemetryPositionSubscription(ServerContext *context, const ::google::protobuf::Empty *request,
+    Status TelemetryPositionSubscription(ServerContext *context,
+                                         const ::google::protobuf::Empty *request,
                                          ServerWriter<dronecorerpc::TelemetryPosition> *writer) override
     {
         dc->device().telemetry().position_async([&writer](Telemetry::Position position) {

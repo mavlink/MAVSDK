@@ -47,14 +47,12 @@ void RunServer()
     DroneCoreRPCImpl service;
 
     map_type map;
-    map["action"] = &createInstances<ActionRPCImpl>;
-    map["mission"] = &createInstances<MissionRPCImpl>;
-    map["telemetry"] = &createInstances<TelemetryRPCImpl>;
-
     std::string plugin;
     std::fstream file;
     file.open("../proto/plugins.conf");
     std::vector<::grpc::Service *> list;
+${PLUGIN_MAP_APPEND_STRING}
+    
     while (file >> plugin) {
         auto service_obj = map[plugin](&dc);
         list.push_back(service_obj);
