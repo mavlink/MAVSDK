@@ -7,8 +7,11 @@
 
 namespace dronecore {
 
+using namespace std::placeholders; // for `_1`
+
 FollowMeImpl::FollowMeImpl() :
-    PluginImplBase()
+    PluginImplBase(),
+    _config(FollowMe::Configuration {})
 {
 }
 
@@ -18,8 +21,6 @@ FollowMeImpl::~FollowMeImpl()
 
 void FollowMeImpl::init()
 {
-    using namespace std::placeholders; // for `_1`
-
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&FollowMeImpl::process_heartbeat, this, _1), static_cast<void *>(this));
@@ -40,23 +41,23 @@ void FollowMeImpl::timeout_occurred()
     const double lon_offset = 0.000000954 * 1e7;
 
     // update current location coordinates
-    // Using simple logic to make drone oscillate
+    // Using trivial logic to make drone oscillate
     if (alternative++ % 2 == 0) {
         _motion_report.lat_int += static_cast<int32_t>(lat_offset);
         _motion_report.lon_int += static_cast<int32_t>(lon_offset);
+#if 0
         LogInfo() << "+ Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
+#endif
     } else {
         _motion_report.lat_int -= static_cast<int32_t>(lat_offset);
         _motion_report.lon_int -= static_cast<int32_t>(lon_offset);
+#if 0
         LogInfo() << "- Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
+#endif
     }
 
     _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::POS));
-#else
-    // Ideally GPS position should come from a platform-specific framwork.
-#endif
 
-#ifdef FOLLOW_ME_TESTING
     // update current eph & epv
     _motion_report.pos_std_dev[0] += _motion_report.pos_std_dev[1] += 0.05f;
     _motion_report.pos_std_dev[2] += 0.05f;
@@ -70,10 +71,88 @@ void FollowMeImpl::timeout_occurred()
 
     _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::VEL));
 #else
-    // Ideally GPS info such as eph, epv, velocity should come from a platform-specific framwork.
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    // Ideally GPS position, eph, epv, velocity is provided by
+    // a platform-specific framwork.
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
 #endif
 
+    // send to GCS position details to Vehicle
     send_gcs_motion_report();
+}
+
+FollowMe::Configuration FollowMeImpl::get_config() const
+{
+    return _config;
+}
+
+void FollowMeImpl::receive_param_min_height(bool success, float min_height_m)
+{
+    LogInfo() << min_height_m;
+    if (success) {
+        _config.set_min_height_m(min_height_m);
+    }
+}
+
+void FollowMeImpl::receive_param_follow_target_dist(bool success, float ft_dist_m)
+{
+    LogInfo() << ft_dist_m;
+    if (success) {
+        _config.set_follow_target_dist_m(ft_dist_m);
+    }
+}
+
+void FollowMeImpl::receive_param_follow_dir(bool success, int32_t dir)
+{
+    LogInfo() << dir;
+    if (success) {
+        FollowMe::Configuration::FollowDirection d = FollowMe::Configuration::FollowDirection::NONE;
+        switch (dir) {
+            case 0: d = FollowMe::Configuration::FollowDirection::FRONT_RIGHT; break;
+            case 1: d = FollowMe::Configuration::FollowDirection::BEHIND; break;
+            case 2: d = FollowMe::Configuration::FollowDirection::FRONT; break;
+            case 3: d = FollowMe::Configuration::FollowDirection::FRONT_LEFT; break;
+            default: break;
+        }
+        _config.set_follow_dir(d);
+    }
+}
+
+void FollowMeImpl::receive_param_dyn_fltr_alg_rsp(bool success, float rsp)
+{
+    LogInfo() << rsp;
+    if (success) {
+        _config.set_dynamic_filter_algo_rsp_val(rsp);
+    }
+}
+
+void FollowMeImpl::set_config(const FollowMe::Configuration &cfg)
+{
+    auto height = cfg.min_height_m();
+    auto dist = cfg.follow_target_dist_m();
+    int32_t dir = static_cast<int32_t>(cfg.follow_dir());
+    auto rsp = cfg.dynamic_filter_alg_responsiveness();
+
+    LogInfo() << "Going to set min height " << height << " mts";
+    if (cfg.min_height_m() != FollowMe::Configuration::DEF_DIST_WRT_FT)
+        _parent->set_param_float_async("NAV_FT_MIN_HT", height,
+                                       std::bind(&FollowMeImpl::receive_param_min_height,
+                                                 this, _1, height));
+
+    if (cfg.follow_target_dist_m() != FollowMe::Configuration::DEF_DIST_WRT_FT)
+        _parent->set_param_float_async("NAV_FT_DST", dist,
+                                       std::bind(&FollowMeImpl::receive_param_follow_target_dist,
+                                                 this, _1, dist));
+    if (cfg.follow_dir() != FollowMe::Configuration::DEF_FOLLOW_DIR)
+        _parent->set_param_int_async("NAV_FT_FS", dir,
+                                     std::bind(&FollowMeImpl::receive_param_follow_dir,
+                                               this, _1, dir));
+    if (cfg.dynamic_filter_alg_responsiveness() != FollowMe::Configuration::DEF_DYN_FLT_ALG_RSP)
+        _parent->set_param_float_async("NAV_FT_RS", rsp,
+                                       std::bind(&FollowMeImpl::receive_param_dyn_fltr_alg_rsp,
+                                                 this, _1, rsp));
 }
 
 /**
@@ -108,7 +187,7 @@ FollowMe::Result FollowMeImpl::start()
 void FollowMeImpl::send_gcs_motion_report()
 {
     dl_time_t now = steady_time();
-    auto elapsed_sec = elapsed_since_s(now);
+    auto elapsed_msec = elapsed_since_ms(now);
 
     // needed by http://mavlink.org/messages/common#FOLLOW_TARGET
     const float vel[3] = { _motion_report.vx, _motion_report.vy, NAN };
@@ -121,7 +200,7 @@ void FollowMeImpl::send_gcs_motion_report()
     mavlink_msg_follow_target_pack(_parent->get_own_system_id(),
                                    _parent->get_own_component_id(),
                                    &msg,
-                                   elapsed_sec * 1000, /* in milliseconds */
+                                   elapsed_msec,
                                    _estimatation_capabilities,
                                    _motion_report.lat_int,
                                    _motion_report.lon_int,

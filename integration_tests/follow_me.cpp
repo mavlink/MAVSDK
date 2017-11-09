@@ -43,6 +43,12 @@ TEST_F(SitlTest, FollowMe)
 
     sleep_for(seconds(5));
 
+    FollowMe::Configuration follow_cfg = device.followme().get_config();
+    follow_cfg.set_min_height_m(15.f);
+    follow_cfg.set_follow_dir(FollowMe::Configuration::FollowDirection::FRONT_RIGHT);
+
+    device.followme().set_config(follow_cfg);
+
     FollowMe::Result followme_result = device.followme().start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
 

@@ -7,6 +7,17 @@
 #include "timeout_handler.h"
 #include "global_include.h"
 
+/**
+  IMPORTANT NOTE:
+    Macro FOLLOW_ME_TESTING is used to test FollowMe plugin.
+    In real scenario, GCS (DroneCore Application) doesn't provide poistion,
+    but instead, current location of the device is captured by platform-specific Location Framework.
+
+ */
+#ifndef FOLLOW_ME_TESTING
+#define FOLLOW_ME_TESTING
+#endif
+
 namespace dronecore {
 
 class FollowMeImpl : public PluginImplBase
@@ -18,6 +29,9 @@ public:
     void init() override;
     void deinit() override;
 
+    FollowMe::Configuration get_config() const;
+    void set_config(const FollowMe::Configuration &cfg);
+
     FollowMe::Result start();
     FollowMe::Result stop();
 private:
@@ -27,6 +41,11 @@ private:
     FollowMe::Result to_follow_me_result(MavlinkCommands::Result result) const;
     void timeout_occurred();
     void send_gcs_motion_report();
+
+    void receive_param_min_height(bool success, float min_height_m);
+    void receive_param_follow_target_dist(bool success, float ft_dist_m);
+    void receive_param_follow_dir(bool success, int32_t dir);
+    void receive_param_dyn_fltr_alg_rsp(bool success, float rsp);
     /*****************************************************/
 
     /**
@@ -43,12 +62,6 @@ private:
      * @brief Motion report info which will be emitted periodically to the Vehicle
      */
     struct MotionReport {
-#ifdef FOLLOW_ME_TESTING
-        constexpr static const double DEF_LATITUDE = 47.3977436;
-        constexpr static const double DEF_LONGITUDE = 8.5455864;
-        constexpr static const double DEF_ALTITUDE =  488.27;
-#endif
-
         // GCS Position
         int32_t lat_int;
         int32_t lon_int;
@@ -71,12 +84,16 @@ private:
          * @param _alt
          */
 #ifdef FOLLOW_ME_TESTING
+        // Initial GCS position is set to PX4 Home
+        constexpr static const double DEF_LATITUDE = 47.3977436;
+        constexpr static const double DEF_LONGITUDE = 8.5455864;
+        constexpr static const double DEF_ALTITUDE =  488.27;
+        // Constructor
         MotionReport(double _lat = DEF_LATITUDE, double _lon = DEF_LONGITUDE,
                      double _alt = DEF_ALTITUDE)
 #else
         MotionReport(double _lat, double _lon, double _alt)
 #endif
-
         {
             lat_int = _lat * 1e7;
             lon_int = _lon * 1e7;
@@ -95,6 +112,8 @@ private:
     CallEveryHandler _motion_report_timer;
     void *_timeout_cookie = nullptr;
 
+    // Configuration
+    FollowMe::Configuration _config;
     bool _followme_mode_active = false;
 };
 

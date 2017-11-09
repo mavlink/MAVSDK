@@ -22,6 +22,16 @@ FollowMe::Result FollowMe::stop() const
     return _impl->stop();
 }
 
+FollowMe::Configuration FollowMe::get_config() const
+{
+    return _impl->get_config();
+}
+
+void FollowMe::set_config(const FollowMe::Configuration &cfg)
+{
+    return _impl->set_config(cfg);
+}
+
 std::string FollowMe::result_str(Result result)
 {
     switch (result) {
@@ -42,11 +52,5 @@ std::string FollowMe::result_str(Result result)
             return "Unknown";
     }
 }
-
-#ifdef FOLLOW_ME_TESTING
-const double DEF_LAT = 47.3977418; /**< @brief Default latitude of GCS */
-const double DEF_LONG = 8.5455938; /**< @brief Default longitude of GCS */
-const double DEF_ALT = 488.02; /**< @brief Default altitude of GCS */
-#endif
 
 } // namespace dronecore

@@ -33,6 +33,11 @@ double elapsed_since_s(const dl_time_t &since)
            static_cast<double>(steady_clock::period::den);
 }
 
+double elapsed_since_ms(const dl_time_t &since)
+{
+    return elapsed_since_s(since) * 1000;
+}
+
 dl_time_t steady_time_in_future(double duration_s)
 {
     auto now = std::chrono::steady_clock::now();
