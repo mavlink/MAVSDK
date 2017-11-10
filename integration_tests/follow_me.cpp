@@ -43,6 +43,59 @@ TEST_F(SitlTest, FollowMe)
 
     sleep_for(seconds(5));
 
+    ////////////////////////////////////////
+    /// Uses Default PX4 FollowMe config////
+    // Min height: 8mts
+    // Distance to device: 8mts
+    // Responsiveness: 0.5
+    // Device follows from: Behind
+    ////////////////////////////////////////
+
+    // start following with default configuration
+    FollowMe::Result followme_result = device.followme().start();
+    ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
+
+    // Let the device follow you (GCS) for half a min, say.
+    sleep_for(seconds(30));
+
+    // stops following
+    followme_result = device.followme().stop();
+    ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
+    sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
+
+    action_ret = device.action().land();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+}
+
+TEST_F(SitlTest, FollowMeWithConfig)
+{
+    DroneCore dc;
+
+    DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(DroneCore::ConnectionResult::SUCCESS, ret);
+
+    // Wait for device to connect via heartbeat.
+    sleep_for(seconds(2));
+    Device &device = dc.device();
+
+    while (!device.telemetry().health_all_ok()) {
+        std::cout << "waiting for device to be ready" << std::endl;
+        sleep_for(seconds(1));
+    }
+
+    Action::Result action_ret = device.action().arm();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+
+    device.telemetry().flight_mode_async(
+        std::bind(&print_flight_mode, std::placeholders::_1));
+
+    action_ret = device.action().takeoff();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+
+    sleep_for(seconds(5));
+
+    // configure follow me behaviour
+>>>>>>> 248d951... integration_tests: follow_me changes
     FollowMe::Configuration follow_cfg = device.followme().get_config();
     follow_cfg.set_min_height_m(15.f);
     follow_cfg.set_follow_dir(FollowMe::Configuration::FollowDirection::FRONT_RIGHT);
