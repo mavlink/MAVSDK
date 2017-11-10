@@ -544,7 +544,7 @@ void MissionImpl::assemble_mission_items()
         } else if (it->command == MAV_CMD_IMAGE_START_CAPTURE) {
             if (it->param2 > 0 && int(it->param3) == 0) {
                 new_mission_item->set_camera_action(MissionItem::CameraAction::START_PHOTO_INTERVAL);
-                new_mission_item->set_camera_photo_interval(it->param2);
+                new_mission_item->set_camera_photo_interval(double(it->param2));
             } else if (int(it->param2) == 0 && int(it->param3) == 1) {
                 new_mission_item->set_camera_action(MissionItem::CameraAction::TAKE_PHOTO);
             } else {
