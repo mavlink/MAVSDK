@@ -2,7 +2,8 @@
 
 namespace dronecore {
 
-CallEveryHandler::CallEveryHandler()
+CallEveryHandler::CallEveryHandler(Time &time) :
+    _time(time)
 {
 }
 
@@ -14,7 +15,7 @@ void CallEveryHandler::add(std::function<void()> callback, float interval_s, voi
 {
     auto new_entry = std::make_shared<Entry>();
     new_entry->callback = callback;
-    new_entry->last_time = steady_time();
+    new_entry->last_time = _time.steady_time();
     new_entry->interval_s = interval_s;
 
     void *new_cookie = static_cast<void *>(new_entry.get());
@@ -45,7 +46,7 @@ void CallEveryHandler::reset(const void *cookie)
 
     auto it = _entries.find(const_cast<void *>(cookie));
     if (it != _entries.end()) {
-        it->second->last_time = steady_time();
+        it->second->last_time = _time.steady_time();
     }
 }
 
@@ -65,9 +66,9 @@ void CallEveryHandler::run_once()
 
     for (auto it = _entries.begin(); it != _entries.end(); ++it) {
 
-        if (elapsed_since_s(it->second->last_time) > double(it->second->interval_s)) {
+        if (_time.elapsed_since_s(it->second->last_time) > double(it->second->interval_s)) {
 
-            shift_steady_time_by(it->second->last_time, double(it->second->interval_s));
+            _time.shift_steady_time_by(it->second->last_time, double(it->second->interval_s));
 
             if (it->second->callback) {
 

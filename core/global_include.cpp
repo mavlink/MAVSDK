@@ -1,53 +1,139 @@
 #include "global_include.h"
+
 #include <cfloat>
 #include <cstdint>
 #include <limits>
 
 namespace dronecore {
 
+using std::chrono::steady_clock;
 
-dl_time_t steady_time()
+Time::Time() {}
+Time::~Time() {}
+
+dl_time_t Time::steady_time()
 {
-    using std::chrono::steady_clock;
-
     return steady_clock::now();
 }
 
-double elapsed_s()
+double Time::elapsed_s()
 {
-    using std::chrono::steady_clock;
-
-    auto now = steady_clock::now().time_since_epoch();
+    auto now = steady_time().time_since_epoch();
 
     return (now.count()) * steady_clock::period::num /
            static_cast<double>(steady_clock::period::den);
 }
 
-double elapsed_since_s(const dl_time_t &since)
+double Time::elapsed_since_s(const dl_time_t &since)
 {
-    using std::chrono::steady_clock;
-
-    auto now = steady_clock::now();
+    auto now = steady_time();
 
     return ((now - since).count()) * steady_clock::period::num /
            static_cast<double>(steady_clock::period::den);
 }
 
-double elapsed_since_ms(const dl_time_t &since)
+double Time::elapsed_since_ms(const dl_time_t &since)
 {
-    return elapsed_since_s(since) * 1000;
+    return elapsed_since_s(since) * 1000; // milliseconds
 }
 
-dl_time_t steady_time_in_future(double duration_s)
+dl_time_t Time::steady_time_in_future(double duration_s)
 {
-    auto now = std::chrono::steady_clock::now();
+    auto now = steady_time();
     return now + std::chrono::milliseconds(int64_t(duration_s * 1e3));
 }
 
-void shift_steady_time_by(dl_time_t &time, double offset_s)
+void Time::shift_steady_time_by(dl_time_t &time, double offset_s)
 {
     time += std::chrono::milliseconds(int64_t(offset_s * 1e3));
 }
+
+void Time::sleep_for(std::chrono::hours h)
+{
+    std::this_thread::sleep_for(h);
+}
+
+void Time::sleep_for(std::chrono::minutes m)
+{
+    std::this_thread::sleep_for(m);
+}
+
+void Time::sleep_for(std::chrono::seconds s)
+{
+    std::this_thread::sleep_for(s);
+}
+
+void Time::sleep_for(std::chrono::milliseconds ms)
+{
+    std::this_thread::sleep_for(ms);
+}
+
+void Time::sleep_for(std::chrono::microseconds us)
+{
+    std::this_thread::sleep_for(us);
+}
+
+void Time::sleep_for(std::chrono::nanoseconds ns)
+{
+    std::this_thread::sleep_for(ns);
+}
+
+
+FakeTime::FakeTime() :
+    Time()
+{
+    // Start with current time so we don't start from 0.
+    _current = steady_clock::now();
+}
+
+FakeTime::~FakeTime() {}
+
+dl_time_t FakeTime::steady_time()
+{
+    return _current;
+}
+
+void FakeTime::sleep_for(std::chrono::hours h)
+{
+    _current += h;
+    add_overhead();
+}
+
+void FakeTime::sleep_for(std::chrono::minutes m)
+{
+    _current += m;
+    add_overhead();
+}
+
+void FakeTime::sleep_for(std::chrono::seconds s)
+{
+    _current += s;
+    add_overhead();
+}
+
+void FakeTime::sleep_for(std::chrono::milliseconds ms)
+{
+    _current += ms;
+    add_overhead();
+}
+
+void FakeTime::sleep_for(std::chrono::microseconds us)
+{
+    _current += us;
+    add_overhead();
+}
+
+void FakeTime::sleep_for(std::chrono::nanoseconds ns)
+{
+    _current += ns;
+    add_overhead();
+}
+
+void FakeTime::add_overhead()
+{
+    _current += std::chrono::microseconds(50);
+}
+
 
 double to_rad_from_deg(double deg)
 {

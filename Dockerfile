@@ -25,6 +25,7 @@ RUN apt-get update \
         automake \
         python \
         python-pip \
+        libtinyxml2-dev \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
@@ -40,12 +41,12 @@ RUN pip install grpcio grpcio-tools
 RUN mkdir /opt/grpc && chown $USER:$USER /opt/grpc
 RUN mkdir /opt/protobuf && chown $USER:$USER /opt/protobuf
 
-ADD grpc/0001-Makefile-fix-wrong-SHARED-version-suffix.patch 0001-Makefile-fix-wrong-SHARED-version-suffix.patch
+ADD grpc/0001-Makefile-fix-wrong-C-version-suffix.patch 0001-Makefile-fix-wrong-C-version-suffix.patch
 
-RUN git clone -b v1.6.x https://github.com/grpc/grpc \
+RUN git clone -b v1.7.x https://github.com/grpc/grpc \
     && cd grpc \
     && git submodule update --init \
-    && git apply ../0001-Makefile-fix-wrong-SHARED-version-suffix.patch \
+    && git apply ../0001-Makefile-fix-wrong-C-version-suffix.patch \
     && make -j8 HAS_SYSTEM_PROTOBUF=false \
     && make prefix=/opt/grpc install \
     && cd third_party/protobuf \

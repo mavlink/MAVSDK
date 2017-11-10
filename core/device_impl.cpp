@@ -13,7 +13,9 @@ DeviceImpl::DeviceImpl(DroneCoreImpl *parent,
     _target_system_id(target_system_id),
     _parent(parent),
     _params(this),
-    _commands(this)
+    _commands(this),
+    _timeout_handler(_time),
+    _call_every_handler(_time)
 {
     _device_thread = new std::thread(device_thread, this);
 
@@ -235,9 +237,9 @@ void DeviceImpl::device_thread(DeviceImpl *self)
 
     while (!self->_should_exit) {
 
-        if (elapsed_since_s(last_time) >= DeviceImpl::_HEARTBEAT_SEND_INTERVAL_S) {
+        if (self->_time.elapsed_since_s(last_time) >= DeviceImpl::_HEARTBEAT_SEND_INTERVAL_S) {
             send_heartbeat(self);
-            last_time = steady_time();
+            last_time = self->_time.steady_time();
         }
 
         self->_call_every_handler.run_once();

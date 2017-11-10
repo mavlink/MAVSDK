@@ -41,7 +41,7 @@ CURL_BUILD_DIR := $(ROOT_DIR)/curl-android-ios
 # Set default cmake here but replace with special version for Android build.
 CMAKE_BIN = cmake
 
-INSTALL_PREFIX ?= $(CURRENT_DIR)/install
+INSTALL_PREFIX ?= /usr/local
 
 # Function to create build_* directory and call make there.
 define cmake-build
@@ -70,10 +70,11 @@ all: default
 default:
 	$(call cmake-build)
 
-docs: install
-	- mkdir install/docs
-	- (cd install && doxygen ../.doxygen)
-	- python generate_markdown_from_doxygen_xml.py
+docs:
+	- (cd $(INSTALL_PREFIX)/include/dronecore \
+        && mkdir -p docs \
+        && doxygen $(CURRENT_DIR)/.doxygen \
+        && $(CURRENT_DIR)/generate_markdown_from_doxygen_xml.py docs docs)
 
 ios: ios_curl
 	$(call cmake-build, \
@@ -165,7 +166,6 @@ run_integration_tests: default
 clean:
 	@rm -rf build/
 	@rm -rf logs/
-	@rm -rf install/
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
@@ -184,6 +184,6 @@ else
 endif
 
 .PHONY:
-	clean install docs fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
+	clean docs fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
 
 # vim:ft=make:

@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 
 """
-This script converts Doxygen XML output into gitbook-compatible markdown. There are no arguments.
+This script converts Doxygen XML output into gitbook-compatible markdown.
 
-- The directories that are parsed for source/outputs is DOXYGEN_XML_DIR (set DOXYGEN_ROOT_DIR for path from this file execution)
-- All files in DOXYGEN_XML_DIR will be parsed, but only xml files for public c++ classes and struct are handled (implementation classes ignored).
+- The directories that are parsed for source/outputs are passed using the input_dir argument.
+- All files will be parsed, but only xml files for public c++ classes and struct are handled (implementation classes ignored).
 
 How it works:
 - There are Python objects for each C++ type - e.g. cppClass, cppTypdef etc. (cppClass covers both class and struct)
-- Each object has a method import_from_doxygen_class_file() which takes a Tag (or filename for CPP) and parses in data. 
+- Each object has a method import_from_doxygen_class_file() which takes a Tag (or filename for CPP) and parses in data.
   - The cpp class takes a file, and creates the sub objects it owns (e.g. methods), calling their import_from_doxygen_class_file() method with a tag.
 - Each object (mostly) has a markdown_overview() and markdown() method that renders the markdown from the respective objects
-- markdown_any_tag() - 
-  - Some objects/values will be empty and others will store tagged information that is only partially parsed from XML (in theory this allows us 
-  to change the output rendering, because we store it in generic format). The markdown_any_tag() method can be used to get 
-  markdown text or an empty string from any stored attribute. 
+- markdown_any_tag() -
+  - Some objects/values will be empty and others will store tagged information that is only partially parsed from XML (in theory this allows us
+  to change the output rendering, because we store it in generic format). The markdown_any_tag() method can be used to get
+  markdown text or an empty string from any stored attribute.
   - This can be safely called on any "data" type attributed
   - This will report an error on console if an unsupported tag is detected. The tag will render in output anyway, but may contain odd tags.
 - cleanup_markdown_string
@@ -24,24 +24,20 @@ How it works:
 
 import argparse
 import os
-import xml.etree.ElementTree as ET 
+import xml.etree.ElementTree as ET
 
 
-# Load all the xml files in the dir 
-DOXYGEN_ROOT_DIR= './install/docs'
-DOXYGEN_XML_DIR = DOXYGEN_ROOT_DIR + '/xml'
-DOXYGEN_OUTPUT_DIR = DOXYGEN_ROOT_DIR + '/markdown'
 
 
 def cleanup_markdown_string(aString):
     """
     Cleans up markdown so it looks a bit prettier
     - removes lots of empty lines
-    - removes empty lines with lots of spaces. 
+    - removes empty lines with lots of spaces.
     """
     #print('debug:cleanup_markdown_string')
     import re
-    
+
     # Remove spaces following new line.
     def strip_spaces_empty_lines(matchobj):
         #print('debug:strip_spaces_empty_lines:group0: %s' % matchobj.group(0))
@@ -53,8 +49,8 @@ def cleanup_markdown_string(aString):
         print('debug:strip_multiple_empty_lines:group0: %s' % matchobj.group(0))
         return '\n\n'
     output_string = re.sub(r'\n{4,10}', strip_multiple_empty_lines, output_string)
-    
-    
+
+
     return output_string
 
 
@@ -64,7 +60,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
     aTag - the ElementTree tag or a string (returns string immediately)
     html - render the tag as HTML (False by default). Setting propagates to sub tags
     para - Turn off para tags - useful when a para is in a list.
-    consume - return empty string. Removes everything below a particular point. A good way of hiding sub elements of a tree we know have been parsed - e.g. the simplesect tag in the detaileddescription tag contains return values, that we have pre-processed. 
+    consume - return empty string. Removes everything below a particular point. A good way of hiding sub elements of a tree we know have been parsed - e.g. the simplesect tag in the detaileddescription tag contains return values, that we have pre-processed.
     """
     if consume:
         return '' #
@@ -79,27 +75,27 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
     lead_text=''
     child_text=''
     tail_text=''
-    
+
     lead_text=aTag.text
     if not lead_text: #unless it is an empty tag!
        lead_text=''
     #print('lead_text: %s' % lead_text)
     #Next bit only gets run if there are children
-        
+
     # Tail text test
     tail_text=aTag.tail
     if not tail_text:
         tail_text =''
     #print('tail_text: %s' % tail_text)
-    
+
     #This section is for when you want to affect a sub tag based on a parent tag.
     ignore_current_tag=False #Use to disable the current tag. Currently only used for turning off "computeroutput" if children are ref.
     for child in aTag:
         if child.tag=='simplesect':
             if child.attrib['kind']=='return':
-                pass # simplesect contains return info for function. We parse it specifically in other code so here we make sure it this tag doesn't get processed. 
+                pass # simplesect contains return info for function. We parse it specifically in other code so here we make sure it this tag doesn't get processed.
             else:
-                #Just in case there is a different type of simplesect, this tells us we need to think about it. 
+                #Just in case there is a different type of simplesect, this tells us we need to think about it.
                 print('Unhanded kind in simplesect tag in markdown_any_tag:kind: %s' % child.attrib['kind'])
                 child_text+=str(ET.tostring(child),'utf-8')
         elif child.tag=='parameterlist':
@@ -120,7 +116,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             print('Unhanded tag in markdown_any_tag: %s' % child.tag)
             child_text+=str(ET.tostring(child),'utf-8')
 
-    # He we handle this tag. 
+    # He we handle this tag.
     if aTag.tag=='computeroutput':
         if ignore_current_tag: #This tag is ignored, meaning that we don't add any special markup for it.
             tag_text=lead_text+child_text+tail_text
@@ -151,7 +147,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
                 tag_text='<p>'+lead_text+child_text+'</p>'+tail_text
             else:
                 tag_text='\n\n'+lead_text+child_text+'\n\n'+tail_text
-        else: #para disabled, render without them. 
+        else: #para disabled, render without them.
             tag_text=lead_text+child_text+tail_text
     elif aTag.tag=='itemizedlist':
         if html:
@@ -182,7 +178,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
         #print('lead_text: %s' % lead_text)
         if html:
             lead_text='<a href="%s">%s</a>' % (link_url,link_text)
-        tag_text=lead_text+tail_text #lead text includes child text (added above). 
+        tag_text=lead_text+tail_text #lead text includes child text (added above).
         #print ("ref tag_text: %s" % tag_text)
 
     elif aTag.tag=='ulink':
@@ -196,13 +192,13 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             lead_text='<a href="%s">%s</a>' % (link_url,link_text)
         tag_text=lead_text+tail_text #note, child text included in the URL text above. There won't be any though.
         #print('tag_text: %s' % tag_text)
-        
+
     else:
         tag_text=lead_text+child_text+tail_text
-        
+
     #print('debug:end:markdown_any_tag - tag_text: %s' % tag_text)
     return tag_text
-        
+
 
 
 
@@ -237,12 +233,12 @@ class cppAttribute:
 
         self.type = aTag.find('type')
         self.definition = aTag.find('definition')
-        self.argsstring = aTag.find('argsstring') 
+        self.argsstring = aTag.find('argsstring')
         self.initializer = aTag.find('initializer')
         self.briefdescription = aTag.find('briefdescription')  # Needs for processing
         self.detaileddescription = aTag.find('detaileddescription') # Needs for processing
         self.inbodydescription = aTag.find('inbodydescription') # Needs for processing
-        
+
     def markdown_overview(self):
         #print('debug:start:cppAttribute:markdown_overview')
         static_string=''
@@ -254,11 +250,11 @@ class cppAttribute:
         #print('debug: self.name: %s' % self.name)
         #print('debug: self.initializer: %s' % self.initializer)
         #print('debug: self.briefdescription: %s' % markdown_any_tag(self.briefdescription).strip() )
-        
+
         output_string+='\n\n%s %s [%s](#%s)%s - %s\n\n' % (static_string,markdown_any_tag(self.type).strip(), self.name,self.id,markdown_any_tag(self.initializer).strip(),markdown_any_tag(self.briefdescription).strip() )
         return output_string
-        
-        
+
+
     def markdown(self):
         output_string=''
         output_string+='\n\n### %s {#%s}\n' % (self.name,self.id)
@@ -279,9 +275,9 @@ class cppAttribute:
             output_string+='\n<!-- argsstring: %s -->\n' % markdown_any_tag(self.argsstring).strip()
 
         return output_string
-                
 
-        
+
+
 
 class cppInnerClass: #Data structures
     def __init__(self):
@@ -289,14 +285,14 @@ class cppInnerClass: #Data structures
         self.name = 'UNKNOWN'
         self.prot = 'UNKNOWN'
 
-        
+
 class cppTypeDefParams:
     def __init__(self):
         self.type= ''
         self.name = ''
         self.description = 'UNKNOWN'
-        
-        
+
+
 class cppTypeDef:
     def __init__(self):
         self.kind='typedef'
@@ -311,7 +307,7 @@ class cppTypeDef:
         self.detaileddescription = 'UNKNOWN'
         self.inbodydescription = 'UNKNOWN'
         self.params = []
-        
+
     def import_from_doxygen_class_file(self, aTag):
         #print('start:typedef:import_from_doxygen_class_file')
         #print(aTag)
@@ -319,7 +315,7 @@ class cppTypeDef:
         self.id = aTag.attrib['id']
         self.prot= aTag.attrib['prot']
         self.static= aTag.attrib['static']
-        
+
         self.name = aTag.find('name').text
         self.type = aTag.find('type') #needs further processing
         self.definition = aTag.find('definition') #needs further processing
@@ -328,7 +324,7 @@ class cppTypeDef:
         self.detaileddescription = aTag.find('detaileddescription')  # needs more processing
         self.inbodydescription = aTag.find('inbodydescription')  # needs more processing
         self.params=[]
-        
+
         name_nodes=aTag.findall(".//parameterlist[@kind='param']/parameteritem/parameternamelist/")
         #print(name_nodes)
         for item in name_nodes:
@@ -342,19 +338,19 @@ class cppTypeDef:
             #print('newParam.name: %s' % newParam.name)
             self.params.append(newParam)
 
-        
+
     def markdown_overview(self):
-        # render the typedef at top section - 
+        # render the typedef at top section -
         #output_string='%s [%s](#%s) &emsp;- %s' % (markdown_any_tag(self.type).strip(),self.name,self.id,markdown_any_tag(self.briefdescription).strip())
         #output_string+='\n\ntype: %s' % markdown_any_tag(self.type).strip()
-        #output_string+='\n\nid: %s' % self.id 
+        #output_string+='\n\nid: %s' % self.id
         #output_string+='\n\ndefinition: %s' % markdown_any_tag(self.definition).strip()
         #output_string+='\n\nargsstring: %s' % markdown_any_tag(self.argsstring).strip()
-        
+
         output_string='\n%s [%s](#%s) | %s' % (markdown_any_tag(self.type).strip(),self.name,self.id,markdown_any_tag(self.briefdescription).strip())
 
         return output_string
-        
+
     def markdown(self):
         # TBD
         output_string=''
@@ -362,8 +358,8 @@ class cppTypeDef:
         output_string+='\n```cpp\n%s\n```\n' % markdown_any_tag(self.definition).strip()
         output_string+='\n\n%s' % markdown_any_tag(self.briefdescription).strip()
         output_string+='\n\n%s' % markdown_any_tag(self.detaileddescription).strip()
-        
-        #generate params list 
+
+        #generate params list
         if len(self.params)>0:
             output_string+='\n\n**Parameters**\n'
             params_string=''
@@ -373,7 +369,7 @@ class cppTypeDef:
             output_string+=params_string
         return output_string
 
-        
+
 
 class cppEnumValue:
     def __init__(self):
@@ -384,7 +380,7 @@ class cppEnumValue:
         self.briefdescription='UNKNOWN'
         self.detaileddescription='UNKNOWN'
 
-        
+
     def import_from_doxygen_class_file(self, aTag):
         #print(aTag)
         #print(aTag.attrib)
@@ -402,8 +398,8 @@ class cppEnumValue:
         self.detaileddescription = aTag.find('detaileddescription') #needs more processing
 
 
-        
-        
+
+
 class cppEnum:
     def __init__(self):
         self.kind='enum'
@@ -415,7 +411,7 @@ class cppEnum:
         self.detaileddescription='UNKNOWN'
         self.inbodydescription='UNKNOWN'
         self.enum_values=[]
-        
+
     def import_from_doxygen_class_file(self, aTag):
         #print('start:enum:import_from_doxygen_class_file')
         #print(aTag)
@@ -427,8 +423,8 @@ class cppEnum:
         self.briefdescription = aTag.find('briefdescription') #needs further processing
         self.detaileddescription = aTag.find('detaileddescription') #needs further processing
         self.inbodydescription = aTag.find('inbodydescription') #needs further processing
-        
-        
+
+
         enumvalue_nodes = aTag.findall("enumvalue")
         #print('enumvalue_nodes: %s' % enumvalue_nodes)
         if len(enumvalue_nodes)==0:
@@ -437,16 +433,16 @@ class cppEnum:
             newEnumValue=cppEnumValue()
             newEnumValue.import_from_doxygen_class_file(child)
             self.enum_values.append(newEnumValue)
-        
+
     def markdown_overview(self):
         # render the enum at top section - just names with link down to the full description
         # Generate enum in HTML list as this is the only way to get good indentation in markdown.
-        
+
         """
         enum_brief_description=markdown_any_tag(self.briefdescription).strip()
         output_string='\nenum [%s](#%s) {<ul><li style="list-style-type: none;">' % (self.name,self.id)
-        
-        #generate params list 
+
+        #generate params list
         if len(self.enum_values)>0:
             first_iter = True
             for enum_value in self.enum_values:
@@ -469,14 +465,14 @@ class cppEnum:
         output_string+='\n\n### enum %s {#%s}\n' % (self.name,self.id)
 
         output_string+='\n\n%s' % markdown_any_tag(self.briefdescription).strip()
-        
+
         output_string+='\n\n%s' % markdown_any_tag(self.detaileddescription).strip()
-        
+
         if len(self.enum_values)>0:
             output_string+='\n\n Value | Description\n--- | ---'
             for enum_value in self.enum_values:
                 output_string+='\n<span id="%s"></span> `%s` | %s %s' % (enum_value.id,enum_value.name, markdown_any_tag(enum_value.briefdescription).strip(),markdown_any_tag(enum_value.detaileddescription).strip())
-     
+
         if args.debug:
             output_string+='\n\n'
             output_string+='<!-- inbodydescription: %s --> \n' % markdown_any_tag(self.inbodydescription).strip()
@@ -484,9 +480,9 @@ class cppEnum:
             output_string+='<!-- static: %s -->\n' % self.static
 
         return output_string
-        
-        
-        
+
+
+
 
 class cppFunctionParams:
     def __init__(self):
@@ -515,11 +511,11 @@ class cppFunction:
         self.constructor_func = 'false'
         self.destructor_func = 'false'
         self.params=[]
-        
-       
+
+
     def import_from_doxygen_class_file(self, func_xml):
         #print(func_xml.attrib)
-        
+
         self.name = func_xml.find('name').text
 
         self.id = func_xml.attrib['id']
@@ -536,7 +532,7 @@ class cppFunction:
         self.briefdescription = func_xml.find('briefdescription') #needs more processing
         self.detaileddescription = func_xml.find('detaileddescription') #needs further parsing
         self.inbodydescription = func_xml.find('inbodydescription') #needs more processing
-        
+
         #Get return type comment
         return_nodes = func_xml.findall(".//simplesect[@kind='return']")
         comment_node=''
@@ -568,18 +564,18 @@ class cppFunction:
                    newParam.description=''
 
                 #print('newParam.description: %s ' % markdown_any_tag(newParam.description).strip())
-                
+
             self.params.append(newParam)
 
-            
+
     def markdown_overview(self):
         # Print function in overview
         #output_string='%s [%s](#%s) %s - %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, markdown_any_tag(self.argsstring).strip(),markdown_any_tag(self.briefdescription).strip())
         output_string='%s | [%s](#%s) %s | %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, markdown_any_tag(self.argsstring).strip(),markdown_any_tag(self.briefdescription).strip())
         return output_string
-        
-        
-            
+
+
+
     def markdown(self):
         functionstring=''
         functionstring+='\n\n### %s() {#%s}\n' % (self.name,self.id)
@@ -588,8 +584,8 @@ class cppFunction:
         # Description
         functionstring+='\n\n%s' % markdown_any_tag(self.briefdescription).strip()
         functionstring+='\n\n%s' % markdown_any_tag(self.detaileddescription).strip()
-        
-        #generate params list 
+
+        #generate params list
         if len(self.params)>0:
             functionstring+='\n\n**Parameters**\n'
             params_string=''
@@ -600,7 +596,7 @@ class cppFunction:
                 params_string+='\n* %s%s - %s' % (markdown_any_tag(param.type).strip(),declname_string,markdown_any_tag(param.description).strip())
 
             functionstring+=params_string
-        
+
         #generate return type
         return_text=markdown_any_tag(self.return_type).strip()
         if len(return_text)>0 and not return_text=='void':
@@ -620,7 +616,7 @@ class cppFunction:
             functionstring+='<!-- inline: %s -->\n' % markdown_any_tag(self.inline).strip()
 
         return functionstring
-        
+
 
 class cppClass:
     def __init__(self):
@@ -653,7 +649,7 @@ class cppClass:
     def import_doxygen_class_file(self, name, full_filename):
         tree = ET.parse(full_filename)
         root = tree.getroot()
-        
+
         kind=root[0].attrib['kind']
         if not (kind=='class' or kind=='struct'):
            raise Exception('File not of correct type - reports wrong kind')
@@ -664,11 +660,11 @@ class cppClass:
             self.include_file = root[0].find('includes').text
         except:
             pass # It has a default empty value.
-        
+
         self.detaileddescription=root[0].find('detaileddescription')
         self.briefdescription=root[0].find('briefdescription')
-        
-        
+
+
         # Get all inner classes/struct defined in this class - these are links to separate docs
         inner_class_nodes=root.findall(".//innerclass")
         #print(inner_class_nodes)
@@ -678,8 +674,8 @@ class cppClass:
             newInnerClass.id=item.attrib['refid']
             newInnerClass.prot=item.attrib['prot']
             self.inner_classes.append(newInnerClass)
-        
-        
+
+
         sections = root[0].findall("sectiondef")
         for section in sections:
             section_kind=section.attrib['kind']
@@ -707,28 +703,28 @@ class cppClass:
                             self.protected_functions.append(newFunction)
                     elif section_kind=='public-static-func':
                         self.public_static_functions.append(newFunction)
-                        
+
 
             elif section_kind=='public-attrib':
                 for child in section:
                     newAttribute=cppAttribute()
                     newAttribute.import_from_doxygen_class_file(child)
                     self.public_attributes.append(newAttribute)
-                        
-                        
+
+
             elif section_kind=='protected-attrib':
                 for child in section:
                     newAttribute=cppAttribute()
                     newAttribute.import_from_doxygen_class_file(child)
                     self.protected_attribs.append(newAttribute)
 
-                    
+
             elif section_kind=='public-static-attrib':
                 for child in section:
                     newAttribute=cppAttribute()
                     newAttribute.import_from_doxygen_class_file(child)
                     self.public_static_attributes.append(newAttribute)
-                    
+
 
 
             elif section_kind=='public-type':
@@ -745,13 +741,13 @@ class cppClass:
                         print('UNHANDLED public-type: %s' % child.attrib['kind'])
             else:
                 print('UNHANDLED section: XX%sYY' % section_kind)
-            
 
-              
+
+
     def markdown_overview_members(self):
         outputstring=''
-        
-        
+
+
         ## Data structures (inner classes - actual classes in other docs)
         if len(self.inner_classes)>0:
             outputstring+='\n\n## Data Structures\n\n'
@@ -762,9 +758,9 @@ class cppClass:
                 #not using Prot
                 outputstring+='struct [%s](%s)' % (link_name,link_url)
                 #print(outputstring)
-            
-            
-            
+
+
+
         ## Public Types
         if len(self.public_enums)>0 or len(self.public_typedef)>0:
             outputstring+='\n\n## Public Types\n\n'
@@ -778,7 +774,7 @@ class cppClass:
                 for the_type in self.public_typedef:
                     #outputstring+='\n\n'
                     outputstring+=the_type.markdown_overview()
-                
+
         ## Functions
         if len(self.public_functions)>0 or len(self.public_constructor_destructors)>0:
             outputstring+='\n\n## Public Member Functions\n\n'
@@ -788,21 +784,21 @@ class cppClass:
                 outputstring+='\n%s' % the_item.markdown_overview().strip()
             for the_item in self.public_functions:
                 outputstring+='\n%s' % the_item.markdown_overview().strip()
-                
+
 
         ## Data Fields/Public attributes
         if len(self.public_attributes)>0:
             outputstring+='\n\n## Data Fields\n'
             for the_item in self.public_attributes:
                 outputstring+=the_item.markdown_overview()
-                
-                
+
+
         if len(self.public_static_attributes)>0:
             outputstring+='\n\n## Static Public Attributes\n'
             for the_item in self.public_static_attributes:
                 outputstring+=the_item.markdown_overview()
-               
-                
+
+
         # Static Public Functions
         if len(self.public_static_functions)>0:
             outputstring+='\n\n## Static Public Member Functions\n\n'
@@ -810,7 +806,7 @@ class cppClass:
             outputstring+='\n---: | --- | ---'
             for the_item in self.public_static_functions:
                 outputstring+='\n%s' % the_item.markdown_overview().strip()
-                
+
         if len(self.protected_functions)>0 or len(self.protected_constructor_destructors)>0:
             outputstring+='\n\n## Protected Member Functions\n'
             outputstring+='\n\nType | Name | Description'
@@ -819,7 +815,7 @@ class cppClass:
                 outputstring+='\n%s' % the_item.markdown_overview().strip()
             for the_item in self.protected_functions:
                 outputstring+='\n%s' % the_item.markdown_overview().strip()
-                
+
         # Protected Attributes
         if len(self.protected_attribs)>0:
             outputstring+='\n\n## Protected Attributes\n'
@@ -827,17 +823,17 @@ class cppClass:
                 outputstring+='[%s %s](#%s)\n\n' % (the_item.type, the_item.name,the_item.id)
 
         return outputstring
-        
-        
+
+
     def markdown(self):
         outputstring=''
         kind_name='Class'
         if self.kind=='struct':
             kind_name='Struct'
         outputstring+='# %s %s Reference\n' % (self.compound_name, kind_name)
-        
+
         outputstring+='`#include: %s`\n' % self.include_file
-        
+
         outputstring+='\n----' # Description
         outputstring+='\n\n%s' % markdown_any_tag(self.briefdescription)
         outputstring+='\n\n%s' % markdown_any_tag(self.detaileddescription)
@@ -847,7 +843,7 @@ class cppClass:
         outputstring+='\n\n'
 
         ## Detail sections
-        
+
         ## Constructors and Destructor docs
         if len(self.public_constructor_destructors)>0 or len(self.protected_constructor_destructors)>0:
             outputstring+='\n\n## Constructor & Destructor Documentation\n\n'
@@ -878,42 +874,48 @@ class cppClass:
                 #print(self.public_static_functions)
                 for the_function in self.public_static_functions:
                     outputstring+=the_function.markdown()
-        
+
         ## Protected Member Functions
         if len(self.protected_functions)>0:
             outputstring+='\n\n## Protected Member Functions\n'
             for the_function in self.protected_functions:
                 outputstring+=the_function.markdown()
-                
-        ## Member Data Documentation 
+
+        ## Member Data Documentation
         if len(self.protected_attribs)>0:
             outputstring+='\n\n## Member Data Documentation\n\n'
             for the_item in self.protected_attribs:
                 outputstring+=the_item.markdown()
-                
+
         ## Field Documentation
         if len(self.public_static_attributes)>0 or len(self.public_attributes)>0:
             outputstring+='\n\n## Field Documentation\n\n'
             if len(self.public_static_attributes)>0:
                 for the_item in self.public_static_attributes:
                     outputstring+=the_item.markdown()
-                    
+
             if len(self.public_attributes)>0:
                 for the_item in self.public_attributes:
                     outputstring+=the_item.markdown()
-                
-            
-            
+
+
+
         outputstring=cleanup_markdown_string(outputstring)
-            
+
         return outputstring
 
 
 # Start actual execution
 parser = argparse.ArgumentParser(description='Generate markdown from doxygen XML output.')
-parser.add_argument("-d", "--debug", default='',help="Any argument used here will include debug info in markdown output - ie some strings for various objects.")
+parser.add_argument("-d", "--debug", default='', help="Any argument used here will include debug info in markdown output - ie some strings for various objects.")
+parser.add_argument("input_dir", help="Directory where xml input can be found.")
+parser.add_argument("output_dir", help="Directory where markdown output should be saved.")
 args = parser.parse_args()
 
+# Load all the xml files in the dir
+DOXYGEN_ROOT_DIR= args.input_dir
+DOXYGEN_XML_DIR = args.input_dir + "/xml"
+DOXYGEN_OUTPUT_DIR = args.output_dir + '/markdown'
 
 
 # Check if XML file path exists
@@ -938,11 +940,11 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
         if not name.endswith('.xml'):
             skip_string=" %s - (not XML)" % current_filename
             skipped_files.append(skip_string)
-            continue 
+            continue
         if name.endswith('_8h.xml'):
             skip_string=" %s - (header file)" % current_filename
             skipped_files.append(skip_string)
-            continue 
+            continue
         if name.endswith('_8cpp.xml'):
             skip_string=" %s - (cpp file)" % current_filename
             skipped_files.append(skip_string)
@@ -965,12 +967,12 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
             currentClass.import_doxygen_class_file(name,current_filename)
             markdown_string=currentClass.markdown()
             outputfile_name=DOXYGEN_OUTPUT_DIR+'/'+name[:-4]+'.md'
-           
+
             #print('OUTPUTFILENAME: %s' % outputfile_name)
             with open(outputfile_name, 'w') as the_file:
                 the_file.write(markdown_string)
             continue
-        
+
         if name.startswith('struct'):
             print("  Generating: %s (struct xml)" % current_filename)
             currentClass=cppClass()
@@ -978,15 +980,15 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
             markdown_string=currentClass.markdown()
             #print(markdown_string)
             outputfile_name=DOXYGEN_OUTPUT_DIR+'/'+name[:-4]+'.md'
-           
+
             #print('OUTPUTFILENAME: %s' % outputfile_name)
             with open(outputfile_name, 'w') as the_file:
                 the_file.write(markdown_string)
             continue
-        
-        #File is not handled. 
+
+        #File is not handled.
         not_handled_files.append(current_filename)
-           
+
 
 if skipped_files:
     print("Skipped files:")

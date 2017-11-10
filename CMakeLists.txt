@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 set(CMAKE_INSTALL_PREFIX "../install" CACHE PATH "default cache path")
+
 project(dronecore)
 
 # Add DEBUG define for Debug target
@@ -9,6 +10,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 # For testing FollowMe plugin
 set(CMAKE_CXX_FLAGS_DEBUG "-DFOLLOW_ME_TESTING")
 
+# This finds thread libs on Linux, Mac, and Windows.
+find_package(Threads REQUIRED)
 
 if(NOT MSVC)
     # Clang and GCC
@@ -36,7 +39,6 @@ if(NOT MSVC)
         set(warnings "${warnings} -Wuseless-cast -Wlogical-op")
     endif()
 
-    set(platform_libs "pthread")
     set(curl_lib "curl")
 
 else()
@@ -45,12 +47,12 @@ else()
         -std=c++11
         -DWINDOWS
         -DCURL_STATICLIB
-        /MD
     )
+    set(CMAKE_CXX_FLAGS_RELEASE "/MD")
+    set(CMAKE_CXX_FLAGS_DEBUG "/MDd")
 
     set(warnings "-WX -W2")
 
-    set(platform_libs "Ws2_32.lib")
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)
         message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl_include\"")
@@ -111,8 +113,20 @@ if (IOS)
     include_directories(curl-android-ios/prebuilt-with-ssl/ios/include)
 endif()
 
+if (IOS OR ANDROID OR MSVC OR APPLE)
+    set(library_type "STATIC")
+
+    # We need tinyxml2 for the camera definition parsing.
+    # We use the submodule when linking statically.
+    add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
+    include_directories(SYSTEM libs/tinyxml2)
+
+else()
+    set(library_type "SHARED")
+endif()
+
 # We build one static library.
-add_library(dronecore STATIC
+add_library(dronecore ${library_type}
     core/global_include.cpp
     core/connection.cpp
     core/device.cpp
@@ -135,6 +149,12 @@ add_library(dronecore STATIC
     ${plugin_source_files}
 )
 
+target_link_libraries(dronecore
+    ${CMAKE_THREAD_LIBS_INIT}
+    ${curl_lib}
+    tinyxml2
+)
+
 # cmake should check for C++11
 set_property(TARGET dronecore PROPERTY CXX_STANDARD 11)
 set_property(TARGET dronecore PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -143,11 +163,11 @@ set_target_properties(dronecore
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-# We need tinyxml2 for the camera definition parsing.
-add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
-include_directories(SYSTEM libs/tinyxml2)
+# Use tinyxml2 from the host system for Linux.
+if(NOT IOS AND NOT ANDROID AND NOT MSVC AND NOT APPLE)
+endif()
 
-# We support install in order to use the header and static library files in
+# We support install in order to use the header and library files in
 # other applications.
 if(ANDROID)
     set(lib_path "lib/android/${ANDROID_ABI}")
@@ -158,6 +178,7 @@ else()
 endif()
 
 install(TARGETS dronecore
+    EXPORT dronecore-targets
     DESTINATION ${lib_path}
 )
 
@@ -198,6 +219,14 @@ if(NOT IOS AND NOT ANDROID)
         ${unit_tests_src}
     )
 
+    if (MSVC)
+        # We need this to prevent linking errors from happening in the Windows build.
+        target_compile_definitions(unit_tests_runner PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)
+        target_compile_options(unit_tests_runner PUBLIC "/wd4251" "/wd4275")
+    endif()
+
+    target_compile_definitions(unit_tests_runner PRIVATE FAKE_TIME=1)
+
     set_target_properties(unit_tests_runner
         PROPERTIES COMPILE_FLAGS ${warnings}
     )
@@ -206,11 +235,8 @@ if(NOT IOS AND NOT ANDROID)
         dronecore
         gtest
         gtest_main
-        ${platform_libs}
-        ${curl_lib}
         gmock
         ${additional_libs}
-        tinyxml2
     )
 
     add_test(unit_tests
@@ -222,6 +248,7 @@ if(NOT IOS AND NOT ANDROID)
 
     # This includes all GTests that run integration tests
     add_executable(integration_tests_runner
+        core/unittests_main.cpp
         ${integration_tests_src}
     )
 
@@ -233,11 +260,15 @@ if(NOT IOS AND NOT ANDROID)
         dronecore
         gtest
         gtest_main
-        ${platform_libs}
-        ${curl_lib}
+        gmock
         ${additional_libs}
-        tinyxml2
     )
+
+    if (MSVC)
+        # We need this to prevent linking errors from happening in the Windows build.
+        target_compile_definitions(integration_tests_runner PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)
+        target_compile_options(integration_tests_runner PUBLIC "/wd4251" "/wd4275")
+    endif()
 
     add_test(integration_tests
         integration_tests_runner
@@ -294,6 +325,5 @@ if (DROP_DEBUG EQUAL 1)
 
     target_link_libraries(drop_debug
         dronecore
-        ${platform_libs}
     )
 endif()

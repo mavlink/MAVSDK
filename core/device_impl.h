@@ -93,6 +93,8 @@ public:
 
     bool is_connected() const;
 
+    Time &get_time() { return _time; };
+
     // Non-copyable
     DeviceImpl(const DeviceImpl &) = delete;
     const DeviceImpl &operator=(const DeviceImpl &) = delete;
@@ -161,8 +163,10 @@ private:
 
     MavlinkCommands _commands;
 
-    TimeoutHandler _timeout_handler {};
-    CallEveryHandler _call_every_handler {};
+    TimeoutHandler _timeout_handler;
+    CallEveryHandler _call_every_handler;
+
+    Time _time {};
 };
 
 

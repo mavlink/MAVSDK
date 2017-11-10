@@ -2,7 +2,7 @@
 version: "{build}"
 
 # Operating system (build VM template)
-os: Visual Studio 2015
+os: Visual Studio 2017
 
 # build platform, i.e. Win32 (instead of x86), x64, Any CPU. This setting is optional.
 platform:
@@ -28,31 +28,33 @@ init:
 # clone directory
 clone_folder: C:\dronecore
 
+
 # scripts to run before build
 before_build:
+
   - cd C:\dronecore
   - git submodule update --init --recursive --depth 20
   - cd C:\
-  - appveyor DownloadFile https://curl.haxx.se/download/curl-7.55.1.zip
-  - 7z x -y curl-7.55.1.zip
+  - appveyor DownloadFile https://curl.haxx.se/download/curl-7.56.1.zip
+  - 7z x -y curl-7.56.1.zip
 
 build: on
 
 build_script:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
-  - cd curl-7.55.1\winbuild
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cd curl-7.56.1\winbuild
   - if "%configuration%"=="Debug" (
-      nmake /f Makefile.vc mode=static VC=14 MACHINE=x64 DEBUG=yes
+      nmake /f Makefile.vc mode=static VC=15 MACHINE=x64 DEBUG=yes
     ) else (
-      nmake /f Makefile.vc mode=static VC=14 MACHINE=x64 DEBUG=no
+      nmake /f Makefile.vc mode=static VC=15 MACHINE=x64 DEBUG=no
     )
   - cd C:\dronecore
   - md build
   - cd build
   - if "%configuration%"=="Debug" (
-      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.55.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.55.1\builds\libcurl-vc14-x64-debug-static-ipv6-sspi-winssl\lib\libcurl_a_debug.lib" -G "Visual Studio 14 2015 Win64" ..
+      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.56.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.56.1\builds\libcurl-vc15-x64-debug-static-ipv6-sspi-winssl\lib\libcurl_a_debug.lib" -G "Visual Studio 15 2017 Win64" ..
     ) else (
-      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.55.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.55.1\builds\libcurl-vc14-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 14 2015 Win64" -DBUILD_SHARED_LIBS=OFF ..
+      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.56.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.56.1\builds\libcurl-vc15-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 15 2017 Win64" ..
     )
   - if "%configuration%"=="Debug" (
       cmake --build . --target install --config Debug
@@ -62,10 +64,19 @@ build_script:
 
 test: on
 
+# We need to manually copy the dlls for now, otherwise they are not found.
 test_script:
   - cd C:\dronecore
   - if "%configuration%"=="Debug" (
-      build\Debug\unit_tests_runner.exe
+      cp build\libs\gtest\googlemock\gtest\Debug\gtest.dll build\Debug\ &&
+      cp build\libs\gtest\googlemock\gtest\Debug\gtest_main.dll build\Debug\ &&
+      cp build\libs\gtest\googlemock\Debug\gmock.dll build\Debug\ &&
+      cd build\Debug &&
+      unit_tests_runner.exe
     ) else (
-      build\Release\unit_tests_runner.exe
+      cp build\libs\gtest\googlemock\gtest\Release\gtest.dll build\Release\ &&
+      cp build\libs\gtest\googlemock\gtest\Release\gtest_main.dll build\Release\ &&
+      cp build\libs\gtest\googlemock\Release\gmock.dll build\Release\ &&
+      cd build\Release &&
+      unit_tests_runner.exe
     )
