@@ -1,0 +1,87 @@
+#include "call_every_handler.h"
+
+namespace dronecore {
+
+CallEveryHandler::CallEveryHandler()
+{
+}
+
+CallEveryHandler::~CallEveryHandler()
+{
+}
+
+void CallEveryHandler::add(std::function<void()> callback, float interval_s, void **cookie)
+{
+    auto new_entry = std::make_shared<Entry>();
+    new_entry->callback = callback;
+    new_entry->last_time = steady_time();
+    new_entry->interval_s = interval_s;
+
+    void *new_cookie = static_cast<void *>(new_entry.get());
+
+    {
+        std::lock_guard<std::mutex> lock(_entries_mutex);
+        _entries.insert(std::pair<void *, std::shared_ptr<Entry>>(new_cookie, new_entry));
+    }
+
+    if (cookie != nullptr) {
+        *cookie = new_cookie;
+    }
+}
+
+void CallEveryHandler::change(float interval_s, const void *cookie)
+{
+    std::lock_guard<std::mutex> lock(_entries_mutex);
+
+    auto it = _entries.find(const_cast<void *>(cookie));
+    if (it != _entries.end()) {
+        it->second->interval_s = interval_s;
+    }
+}
+
+void CallEveryHandler::reset(const void *cookie)
+{
+    std::lock_guard<std::mutex> lock(_entries_mutex);
+
+    auto it = _entries.find(const_cast<void *>(cookie));
+    if (it != _entries.end()) {
+        it->second->last_time = steady_time();
+    }
+}
+
+void CallEveryHandler::remove(const void *cookie)
+{
+    std::lock_guard<std::mutex> lock(_entries_mutex);
+
+    auto it = _entries.find(const_cast<void *>(cookie));
+    if (it != _entries.end()) {
+        _entries.erase(const_cast<void *>(cookie));
+    }
+}
+
+void CallEveryHandler::run_once()
+{
+    _entries_mutex.lock();
+
+    for (auto it = _entries.begin(); it != _entries.end(); ++it) {
+
+        if (elapsed_since_s(it->second->last_time) > double(it->second->interval_s)) {
+
+            shift_steady_time_by(it->second->last_time, double(it->second->interval_s));
+
+            if (it->second->callback) {
+
+                // Get a copy for the callback because we unlock.
+                std::function<void()> callback = it->second->callback;
+
+                // Unlock while we callback because it might in turn want to add timeouts.
+                _entries_mutex.unlock();
+                callback();
+                _entries_mutex.lock();
+            }
+        }
+    }
+    _entries_mutex.unlock();
+}
+
+} // namespace dronecore

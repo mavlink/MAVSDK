@@ -7,11 +7,12 @@
 
 namespace dronecore {
 
+using namespace std::placeholders; // for `_1`
+
 FollowMeImpl::FollowMeImpl() :
-    PluginImplBase()
+    PluginImplBase(),
+    _config(FollowMe::Configuration {})
 {
-    _start = std::chrono::system_clock::now();
-    _estimatation_capabilities = 0;
 }
 
 FollowMeImpl::~FollowMeImpl()
@@ -20,8 +21,6 @@ FollowMeImpl::~FollowMeImpl()
 
 void FollowMeImpl::init()
 {
-    using namespace std::placeholders; // for `_1`
-
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&FollowMeImpl::process_heartbeat, this, _1), static_cast<void *>(this));
@@ -34,15 +33,30 @@ void FollowMeImpl::deinit()
 
 void FollowMeImpl::timeout_occurred()
 {
-    // FIXME: This is HARD-coded as of now.
-    // Ideally GPS info should come from a platform-specific framwork.
+#ifdef FOLLOW_ME_TESTING
+    static int alternative = 1;
+    // FIXME: We're arbitarily changing latitude, longitude.
+    // Need to make it Box or Circle for better visual demo
+    const double lat_offset = 0.00001904 * 1e7;
+    const double lon_offset = 0.000000954 * 1e7;
 
     // update current location coordinates
-    _motion_report.lat_int += 10;
-    _motion_report.lon_int += 5;
-    _motion_report.alt += 10.0f;
+    // Using trivial logic to make drone oscillate
+    if (alternative++ % 2 == 0) {
+        _motion_report.lat_int += static_cast<int32_t>(lat_offset);
+        _motion_report.lon_int += static_cast<int32_t>(lon_offset);
+#if 0
+        LogInfo() << "+ Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
+#endif
+    } else {
+        _motion_report.lat_int -= static_cast<int32_t>(lat_offset);
+        _motion_report.lon_int -= static_cast<int32_t>(lon_offset);
+#if 0
+        LogInfo() << "- Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
+#endif
+    }
 
-    _estimatation_capabilities |= (1 << static_cast<int>(FollowMe::ESTCapabilities::POS));
+    _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::POS));
 
     // update current eph & epv
     _motion_report.pos_std_dev[0] += _motion_report.pos_std_dev[1] += 0.05f;
@@ -55,30 +69,90 @@ void FollowMeImpl::timeout_occurred()
     _motion_report.vx += 0.05f;
     _motion_report.vy += 0.04f;
 
-    _estimatation_capabilities |= (1 << static_cast<int>(FollowMe::ESTCapabilities::VEL));
+    _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::VEL));
+#else
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    // Ideally GPS position, eph, epv, velocity is provided by
+    // a platform-specific framwork.
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+#endif
 
+    // send to GCS position details to Vehicle
     send_gcs_motion_report();
 }
 
-/**
- * @brief FollowMeImpl::set_motion_report
- * @param mr
- */
-void FollowMeImpl::set_motion_report(const FollowMe::MotionReport &mr)
+FollowMe::Configuration FollowMeImpl::get_config() const
 {
-    _motion_report = mr;
+    return _config;
 }
 
-/**
- * @brief FollowMeImpl::start
- * @param mr
- * @return
- */
-FollowMe::Result FollowMeImpl::start(const FollowMe::MotionReport &mr)
+void FollowMeImpl::receive_param_min_height(bool success, float min_height_m)
 {
-    // save motion report provided by application
-    _motion_report = mr;
-    return start();
+    LogInfo() << min_height_m;
+    if (success) {
+        _config.set_min_height_m(min_height_m);
+    }
+}
+
+void FollowMeImpl::receive_param_follow_target_dist(bool success, float ft_dist_m)
+{
+    LogInfo() << ft_dist_m;
+    if (success) {
+        _config.set_follow_target_dist_m(ft_dist_m);
+    }
+}
+
+void FollowMeImpl::receive_param_follow_dir(bool success, int32_t dir)
+{
+    LogInfo() << dir;
+    if (success) {
+        FollowMe::Configuration::FollowDirection d = FollowMe::Configuration::FollowDirection::NONE;
+        switch (dir) {
+            case 0: d = FollowMe::Configuration::FollowDirection::FRONT_RIGHT; break;
+            case 1: d = FollowMe::Configuration::FollowDirection::BEHIND; break;
+            case 2: d = FollowMe::Configuration::FollowDirection::FRONT; break;
+            case 3: d = FollowMe::Configuration::FollowDirection::FRONT_LEFT; break;
+            default: break;
+        }
+        _config.set_follow_dir(d);
+    }
+}
+
+void FollowMeImpl::receive_param_dyn_fltr_alg_rsp(bool success, float rsp)
+{
+    LogInfo() << rsp;
+    if (success) {
+        _config.set_dynamic_filter_algo_rsp_val(rsp);
+    }
+}
+
+void FollowMeImpl::set_config(const FollowMe::Configuration &cfg)
+{
+    auto height = cfg.min_height_m();
+    auto dist = cfg.follow_target_dist_m();
+    int32_t dir = static_cast<int32_t>(cfg.follow_dir());
+    auto rsp = cfg.dynamic_filter_alg_responsiveness();
+
+    LogInfo() << "Going to set min height " << height << " mts";
+    if (cfg.min_height_m() != FollowMe::Configuration::DEF_DIST_WRT_FT)
+        _parent->set_param_float_async("NAV_FT_MIN_HT", height,
+                                       std::bind(&FollowMeImpl::receive_param_min_height,
+                                                 this, _1, height));
+
+    if (cfg.follow_target_dist_m() != FollowMe::Configuration::DEF_DIST_WRT_FT)
+        _parent->set_param_float_async("NAV_FT_DST", dist,
+                                       std::bind(&FollowMeImpl::receive_param_follow_target_dist,
+                                                 this, _1, dist));
+    if (cfg.follow_dir() != FollowMe::Configuration::DEF_FOLLOW_DIR)
+        _parent->set_param_int_async("NAV_FT_FS", dir,
+                                     std::bind(&FollowMeImpl::receive_param_follow_dir,
+                                               this, _1, dir));
+    if (cfg.dynamic_filter_alg_responsiveness() != FollowMe::Configuration::DEF_DYN_FLT_ALG_RSP)
+        _parent->set_param_float_async("NAV_FT_RS", rsp,
+                                       std::bind(&FollowMeImpl::receive_param_dyn_fltr_alg_rsp,
+                                                 this, _1, rsp));
 }
 
 /**
@@ -87,8 +161,8 @@ FollowMe::Result FollowMeImpl::start(const FollowMe::MotionReport &mr)
  */
 FollowMe::Result FollowMeImpl::start()
 {
-    _parent->register_timeout_handler(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0,
-                                      &_timeout_cookie);
+    // FIXME: Will be replaced by CallEveryHandler class.
+    _parent->add_call_every(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0f, &_timeout_cookie);
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
     uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
@@ -97,7 +171,7 @@ FollowMe::Result FollowMeImpl::start()
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
 
-    return get_result_from_mavcmd_result(
+    return to_follow_me_result(
                _parent->send_command_with_ack(
                    MAV_CMD_DO_SET_MODE,
                    MavlinkCommands::Params {float(mode),
@@ -112,22 +186,21 @@ FollowMe::Result FollowMeImpl::start()
  */
 void FollowMeImpl::send_gcs_motion_report()
 {
-    using namespace std::chrono;
+    dl_time_t now = steady_time();
+    auto elapsed_msec = elapsed_since_ms(now);
 
-    auto end = system_clock::now();
-    auto elapsed_seconds = system_clock::to_time_t(end) - system_clock::to_time_t(_start);
-
-    float vel[3] = { _motion_report.vx, _motion_report.vy, 0.f };
-    float accel_unknown[3] = { 0.f, 0.f, 0.f };
-    float attitude_q_unknown[4] = { 1.f, 0.f, 0.f, 0.f };
-    float rates_unknown[3] = { 0.f, 0.f, 0.f };
+    // needed by http://mavlink.org/messages/common#FOLLOW_TARGET
+    const float vel[3] = { _motion_report.vx, _motion_report.vy, NAN };
+    const float accel_unknown[3] = { NAN, NAN, NAN };
+    const float attitude_q_unknown[4] = { 1.f, NAN, NAN, NAN };
+    const float rates_unknown[3] = { NAN, NAN, NAN };
     uint64_t custom_state = 0;
 
     mavlink_message_t msg {};
     mavlink_msg_follow_target_pack(_parent->get_own_system_id(),
                                    _parent->get_own_component_id(),
                                    &msg,
-                                   elapsed_seconds * 1000, /* in milliseconds */
+                                   elapsed_msec,
                                    _estimatation_capabilities,
                                    _motion_report.lat_int,
                                    _motion_report.lon_int,
@@ -136,21 +209,23 @@ void FollowMeImpl::send_gcs_motion_report()
                                    accel_unknown,
                                    attitude_q_unknown,
                                    rates_unknown,
-                                   _motion_report.pos_std_dev,
+                                   _motion_report.pos_std_dev.data(),
                                    custom_state);
 
-    std::cout << __func__ <<
-              ((_parent->send_message(msg)) ? ("--------------------> sent follow_target")
-               : ("############### Failed to send follow_target"))
-              <<
-              std::endl;
+    if (_parent->send_message(msg)) {
+        LogDebug() << "Sent FollowTarget to Device";
+    } else {
+        LogErr() << "Failed to send FollowTarget..";
+    }
     // Register timer again for emitting motion reports periodically
     _parent->register_timeout_handler(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0,
                                       &_timeout_cookie);
 }
 
-FollowMe::Result FollowMeImpl::stop() const
+FollowMe::Result FollowMeImpl::stop()
 {
+    _parent->remove_call_every(_timeout_cookie);
+
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
     uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
@@ -159,7 +234,7 @@ FollowMe::Result FollowMeImpl::stop() const
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
 
-    return get_result_from_mavcmd_result(
+    return to_follow_me_result(
                _parent->send_command_with_ack(
                    MAV_CMD_DO_SET_MODE,
                    MavlinkCommands::Params {float(mode),
@@ -170,7 +245,7 @@ FollowMe::Result FollowMeImpl::stop() const
 }
 
 FollowMe::Result
-FollowMeImpl::get_result_from_mavcmd_result(MavlinkCommands::Result result) const
+FollowMeImpl::to_follow_me_result(MavlinkCommands::Result result) const
 {
     switch (result) {
         case MavlinkCommands::Result::SUCCESS:
@@ -204,7 +279,7 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
         if (px4_custom_mode.main_mode == px4::PX4_CUSTOM_MAIN_MODE_AUTO &&
             px4_custom_mode.sub_mode == px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET) {
             followme_mode_active = true;
-            std::cout << "Hurray! Flight is in FollowMe mode!!" << std::endl;
+            LogDebug() << "FollowMe mode!!";
         }
     }
     _followme_mode_active = followme_mode_active;

@@ -6,6 +6,9 @@ project(dronecore)
 # Add DEBUG define for Debug target
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
+# For testing FollowMe plugin
+set(CMAKE_CXX_FLAGS_DEBUG "-DFOLLOW_ME_TESTING")
+
 
 if(NOT MSVC)
     # Clang and GCC
@@ -127,6 +130,7 @@ add_library(dronecore STATIC
     core/curl_wrapper.cpp
     core/http_loader.cpp
     core/timeout_handler.cpp
+    core/call_every_handler.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/core/device_plugin_container.cpp
     ${plugin_source_files}
 )
@@ -138,6 +142,10 @@ set_property(TARGET dronecore PROPERTY CXX_STANDARD_REQUIRED ON)
 set_target_properties(dronecore
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
+
+# We need tinyxml2 for the camera definition parsing.
+add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
+include_directories(SYSTEM libs/tinyxml2)
 
 # We support install in order to use the header and static library files in
 # other applications.
@@ -185,6 +193,7 @@ if(NOT IOS AND NOT ANDROID)
         core/unittests_main.cpp
         core/http_loader_test.cpp
         core/timeout_handler_test.cpp
+        core/call_every_handler_test.cpp
         ${plugin_unittest_source_files}
         ${unit_tests_src}
     )
@@ -201,6 +210,7 @@ if(NOT IOS AND NOT ANDROID)
         ${curl_lib}
         gmock
         ${additional_libs}
+        tinyxml2
     )
 
     add_test(unit_tests
@@ -226,6 +236,7 @@ if(NOT IOS AND NOT ANDROID)
         ${platform_libs}
         ${curl_lib}
         ${additional_libs}
+        tinyxml2
     )
 
     add_test(integration_tests

@@ -4,6 +4,7 @@
 #include "mavlink_include.h"
 #include "device_impl.h"
 #include "offboard.h"
+#include <mutex>
 
 namespace dronecore {
 
@@ -16,32 +17,42 @@ public:
     void init() override;
     void deinit() override;
 
-    Offboard::Result start() const;
-    Offboard::Result stop() const;
+    Offboard::Result start();
+    Offboard::Result stop();
 
     void start_async(Offboard::result_callback_t callback);
     void stop_async(Offboard::result_callback_t callback);
+
+    bool is_active() const;
 
     void set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw);
     void set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
 
 private:
+    void send_velocity_ned();
+    void send_velocity_body();
+
     void process_heartbeat(const mavlink_message_t &message);
     void receive_command_result(MavlinkCommands::Result result,
                                 const Offboard::result_callback_t &callback);
 
-    static void report_offboard_result(const Offboard::result_callback_t &callback,
-                                       Offboard::Result result);
-
     static Offboard::Result offboard_result_from_command_result(
         MavlinkCommands::Result result);
 
-    void timeout_happened();
+    void stop_sending_setpoints();
 
-    bool _offboard_mode_active;
-    Offboard::result_callback_t _result_callback;
+    mutable std::mutex _mutex {};
+    enum class Mode {
+        NOT_ACTIVE,
+        VELOCITY_NED,
+        VELOCITY_BODY
+    } _mode = Mode::NOT_ACTIVE;
+    Offboard::VelocityNEDYaw _velocity_ned_yaw {};
+    Offboard::VelocityBodyYawspeed _velocity_body_yawspeed {};
 
-    void *_timeout_cookie = nullptr;
+    void *_call_every_cookie = nullptr;
+
+    const float SEND_INTERVAL_S = 0.1f;
 };
 
 } // namespace dronecore

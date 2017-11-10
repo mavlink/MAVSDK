@@ -70,10 +70,6 @@ all: default
 default:
 	$(call cmake-build)
 
-# install basically just runs default install
-install: ARGS += install
-install: default
-
 docs: install
 	- mkdir install/docs
 	- (cd install && doxygen ../.doxygen)
@@ -170,7 +166,6 @@ clean:
 	@rm -rf build/
 	@rm -rf logs/
 	@rm -rf install/
-	@rm -rf $(CURL_BUILD_DIR)/prebuilt-with-ssl/android
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE

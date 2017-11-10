@@ -24,8 +24,10 @@ list(APPEND integration_tests
     logging
     info
     mission_change_speed
-	mission_survey
-	mission
+    mission_survey
+    mission
+    follow_me
+    gimbal
     curl
 )
 

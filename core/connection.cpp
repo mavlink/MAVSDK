@@ -31,7 +31,7 @@ bool Connection::start_mavlink_receiver()
 
 void Connection::stop_mavlink_receiver()
 {
-    if (!_mavlink_receiver) {
+    if (_mavlink_receiver) {
 
         uint8_t used_channel = _mavlink_receiver->get_channel();
         // Destroy receiver before giving the channel back.

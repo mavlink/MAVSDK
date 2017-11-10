@@ -17,14 +17,19 @@ FollowMe::Result FollowMe::start() const
     return _impl->start();
 }
 
-FollowMe::Result FollowMe::start(const MotionReport &mr)
-{
-    return _impl->start(mr);
-}
-
 FollowMe::Result FollowMe::stop() const
 {
     return _impl->stop();
+}
+
+FollowMe::Configuration FollowMe::get_config() const
+{
+    return _impl->get_config();
+}
+
+void FollowMe::set_config(const FollowMe::Configuration &cfg)
+{
+    return _impl->set_config(cfg);
 }
 
 std::string FollowMe::result_str(Result result)

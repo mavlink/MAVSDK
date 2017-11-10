@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 
+
 namespace dronecore {
 
 class FollowMeImpl;
@@ -27,36 +28,150 @@ public:
     };
 
     /**
-     * @brief Altitude flag for Follow Target command.
+     * @brief FollowMe configuration.
+     * Reference: https://docs.px4.io/en/advanced_config/parameter_reference.html#follow-target
      */
-    enum class ESTCapabilities {
-        POS = 0,
-        VEL = 1,
-        ACCEL = 2,
-        ATT_RATES = 3
+    class Configuration
+    {
+    public:
+        /**
+         * @brief Side to follow target from
+         */
+        enum class FollowDirection {
+            NONE = -1,
+            FRONT_RIGHT = 0, /**< @brief Follow from front right */
+            BEHIND = 1, /**< @brief Follow from behind */
+            FRONT = 2, /**< @brief Follow from front */
+            FRONT_LEFT = 3 /**< @brief Follow from front left */
+        };
+
+        // Default configuration
+        ///////////////////////////////////////////////////////////
+        static constexpr const float DEF_HEIGHT_ABOVE_HOME =
+            8.0f; /**< @brief Default follow target altitude */
+        static constexpr const float MIN_HEIGHT_ABOVE_HOME = 8.0f; /**< @brief Min follow target altitude */
+
+        static constexpr const float DEF_DIST_WRT_FT = 8.0f; /**< @brief Distance to follow target from */
+        static constexpr const float MIN_DIST_WRT_FT =
+            1.0f; /**< @brief Min distance to follow target from */
+
+        static constexpr const FollowDirection DEF_FOLLOW_DIR =
+            FollowDirection::BEHIND; /**< @brief Side to follow target from */
+        static constexpr const float DEF_DYN_FLT_ALG_RSP =
+            0.5f; /**< @brief Default Dynamic filtering algorithm responsiveness to target movement */
+        static constexpr const float MIN_DYN_FLT_ALG_RSP =
+            0.0f; /**< @brief Min Dynamic filtering algorithm responsiveness to target movement */
+        static constexpr const float MAX_DYN_FLT_ALG_RSP =
+            1.0f; /**< @brief Max Dynamic filtering algorithm responsiveness to target movement */
+        ///////////////////////////////////////////////////////////
+
+        // FollowMe Configuration Accessors
+        /**
+         * @brief min_height_m
+         * @return
+         */
+        float min_height_m() const
+        {
+            return _min_height_m;
+        }
+        /**
+         * @brief follow_target_distance_m
+         * @return
+         */
+        float follow_target_dist_m() const
+        {
+            return _follow_target_dist_m;
+        }
+        /**
+         * @brief follow_dir
+         * @return
+         */
+        FollowDirection follow_dir() const
+        {
+            return _follow_dir;
+        }
+
+        /**
+         * @brief dynamic_filter_alg_responsiveness
+         * @return
+         */
+        float dynamic_filter_alg_responsiveness() const
+        {
+            return _dyn_flt_alg_responsiveness;
+        }
+
+
+        // Methods that configure FollowMe behavior
+        /**
+         * @brief set_min_height
+         * @param mht
+         * @return
+         */
+        bool set_min_height_m(float mht)
+        {
+            if (mht < MIN_HEIGHT_ABOVE_HOME) {
+                return false;
+            }
+            _min_height_m = mht;
+            return true;
+        }
+
+        /**
+         * @brief set_follow_target_dist
+         * @param ft_dst
+         * @return
+         */
+        bool set_follow_target_dist_m(float ft_dst)
+        {
+            if (ft_dst < MIN_DIST_WRT_FT) {
+                return false;
+            }
+            _follow_target_dist_m = ft_dst;
+            return true;
+        }
+
+        /**
+         * @brief set_follow_dir
+         * @param dir
+         */
+        void set_follow_dir(FollowDirection dir)
+        {
+            _follow_dir = dir;
+        }
+
+        /**
+         * @brief set_dynamic_filter_algo_rsp_val
+         * @param responsiveness
+         * @return
+         */
+        bool set_dynamic_filter_algo_rsp_val(float responsiveness)
+        {
+            if (responsiveness < 0.f || responsiveness > 1.0f) {
+                return false;
+            }
+            _dyn_flt_alg_responsiveness = responsiveness;
+            return true;
+        }
+
+    private:
+        float _min_height_m = 8.0f; // Default & Minimum follow target altitude in meters
+        float _follow_target_dist_m = 8.0f; // Default Distance to follow target from
+        FollowDirection _follow_dir = FollowDirection::BEHIND; // Follow target from behind by default
+        float _dyn_flt_alg_responsiveness =
+            0.5f; // Dynamic filtering algorithm responsiveness to target movement
     };
 
     /**
-     * @brief Motion report info which will be emitted peridically to the Vehicle
+     * @brief Gets current FollowMe configuration
+     * @return
      */
-    struct MotionReport {
-        // set to home position used by PX4.
-        int32_t lat_int = static_cast<uint32_t>(47.3977419 *
-                                                1e7);        // X Position in WGS84 frame in 1e7 * meters
-        int32_t lon_int = static_cast<uint32_t>(8.5455938 *
-                                                1e7);        // Y Position in WGS84 frame in 1e7 * meters
-        float alt = 488.03f;              //	Altitude in meters in AMSL altitude
-        // velocity
-        float vx = cos(0.13) * 5.0;               //	X velocity in NED frame in meter / s
-        float vy = sin(0.13) * 5.0;              //	Y velocity in NED frame in meter / s
-        float vz = 0;               //	Z velocity in NED frame in meter / s
-        // acceleration
-        float afx;              //	X acceleration in NED frame in meter / s^2 or N
-        float afy;              //	Y acceleration in NED frame in meter / s^2 or N
-        float afz;              //	Z acceleration in NED frame in meter / s^2 or N
+    Configuration get_config() const;
 
-        float pos_std_dev[3] = { 0.8f, 0.8f, 0.f };   // -1 for unknown
-    };
+    /**
+     * @brief Sets FollowMe configuration
+     * @param config
+     */
+    void set_config(const Configuration &config);
 
     /**
      * @brief Return English string for FollowMe error codes
@@ -73,22 +188,11 @@ public:
     FollowMe::Result start() const;
 
     /**
-     * @brief Starts FollowMe mode with position
-     * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
-     */
-    FollowMe::Result start(const MotionReport &mr);
-
-    /**
      * @brief Stops FollowMe mode
      * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
      */
     FollowMe::Result stop() const;
 
-    /**
-     * @brief Sets position of the FollowMe mode
-     * @return none
-     */
-    void set_motion_report(const MotionReport &mr);
 
     // Non-copyable
     FollowMe(const FollowMe &) = delete;
