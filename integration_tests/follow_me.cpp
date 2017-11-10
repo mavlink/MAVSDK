@@ -55,7 +55,7 @@ TEST_F(SitlTest, FollowMe)
     FollowMe::Result followme_result = device.followme().start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
 
-    // Let the device follow you (GCS) for a min, say.
+    // Let the device follow you (GCS) for half a min, say.
     sleep_for(seconds(30));
 
     // stops following
@@ -109,7 +109,7 @@ TEST_F(SitlTest, FollowMeWithConfig)
     FollowMe::Result followme_result = device.followme().start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
 
-    // Let the device follow you (GCS) for a min, say.
+    // Let the device follow you (GCS) for half a min, say.
     sleep_for(seconds(30));
 
     // stops following
