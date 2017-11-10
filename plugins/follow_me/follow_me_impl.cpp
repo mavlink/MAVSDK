@@ -4,6 +4,7 @@
 #include "px4_custom_mode.h"
 #include <functional>
 #include <cmath>
+#include <array>
 
 namespace dronecore {
 
