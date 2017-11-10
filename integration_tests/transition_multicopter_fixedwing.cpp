@@ -30,28 +30,32 @@ void takeoff_and_transition_to_fixedwing()
 
 	Device &device = dc.device();
 
-	// Takeoff
+	// We need to takeoff first, otherwise we can't actually transition
+    LogInfo() << "Taking off";
 	takeoff(device);
 
-	// Transition to fixedwing
+    LogInfo() << "Transitioning to fixedwing";
 	device.action().transition_to_fixedwing();
+
+	// Wait a little before the transition back to multicopter,
+	// so we can actually see it fly
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-	// Transition to multicopter
+    LogInfo() << "Transitioning to multicopter";
 	device.action().transition_to_multicopter();
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-	// Land and disarm
+	// Return safely to launch position so the next test
+	// can start with a clean slate
 	land_and_disarm(device);
 }
 
 void land_and_disarm(Device& device)
 {
-	// Return to launch location
 	device.action().return_to_launch();
 
+    // Wait until the vtol is disarmed.
     while (device.telemetry().armed()) {
-        // Wait until we're done.
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     LogInfo() << "Disarmed, exiting.";
