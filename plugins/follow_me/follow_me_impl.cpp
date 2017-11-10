@@ -4,13 +4,13 @@
 #include "px4_custom_mode.h"
 #include <functional>
 #include <cmath>
+#include <array>
 
 namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
 FollowMeImpl::FollowMeImpl() :
-    PluginImplBase(),
     _time(),
     _timeout_cookie(nullptr),
     _motion_report(),
