@@ -36,7 +36,7 @@ void FollowMeImpl::timeout_occurred()
 {
 #ifdef FOLLOW_ME_TESTING
     static int alternative = 1;
-    // FIXME: We're arbitarily changing latitude, longitude.
+    // TODO: We're arbitarily changing latitude, longitude.
     // Need to make it Box or Circle for better visual demo
     const double lat_offset = 0.00001904 * 1e7;
     const double lon_offset = 0.000000954 * 1e7;
@@ -60,7 +60,8 @@ void FollowMeImpl::timeout_occurred()
     _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::POS));
 
     // update current eph & epv
-    _motion_report.pos_std_dev[0] += _motion_report.pos_std_dev[1] += 0.05f;
+    _motion_report.pos_std_dev[0] += 0.05f;
+    _motion_report.pos_std_dev[1] += 0.05f;
     _motion_report.pos_std_dev[2] += 0.05f;
 
     // calculate z velocity if it's available
@@ -210,7 +211,7 @@ void FollowMeImpl::send_gcs_motion_report()
                                    accel_unknown,
                                    attitude_q_unknown,
                                    rates_unknown,
-                                   _motion_report.pos_std_dev.data(),
+                                   _motion_report.pos_std_dev,
                                    custom_state);
 
     if (_parent->send_message(msg)) {

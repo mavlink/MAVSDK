@@ -15,6 +15,7 @@ using namespace std::this_thread;
 #endif
 
 void print_flight_mode(Telemetry::FlightMode flight_mode);
+void print_config(FollowMe::Configuration cfg);
 
 TEST_F(SitlTest, FollowMe)
 {
@@ -50,6 +51,8 @@ TEST_F(SitlTest, FollowMe)
     // Responsiveness: 0.5
     // Device follows from: Behind
     ////////////////////////////////////////
+    auto defult_cfg = device.followme().get_config();
+    print_config(defult_cfg);
 
     // start following with default configuration
     FollowMe::Result followme_result = device.followme().start();
@@ -65,6 +68,7 @@ TEST_F(SitlTest, FollowMe)
 
     action_ret = device.action().land();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+    sleep_for(seconds(2)); // let the device land
 }
 
 TEST_F(SitlTest, FollowMeWithConfig)

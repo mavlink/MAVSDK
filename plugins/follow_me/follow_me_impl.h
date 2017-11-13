@@ -74,8 +74,8 @@ private:
         float afx;
         float afy;
         float afz;
-
-        std::array<float, 3> pos_std_dev;
+        // for eph, epv
+        float pos_std_dev[3];
 
         /**
          * @brief MotionReport
@@ -90,17 +90,15 @@ private:
         constexpr static const double DEF_ALTITUDE =  488.27;
         // Constructor
         MotionReport(double _lat = DEF_LATITUDE, double _lon = DEF_LONGITUDE,
-                     double _alt = DEF_ALTITUDE)
+                     double _alt = DEF_ALTITUDE): vx(0.f), vy(0.f), vz(0.f), afx(0.f), afy(0.f), afz(0.f), pos_std_dev{}
 #else
-        MotionReport(double _lat, double _lon, double _alt)
+        MotionReport(double _lat, double _lon, double _alt): vx(0.f), vy(0.f), vz(0.f), afx(0.f), afy(0.f),
+            afz(0.f), pos_std_dev {}
 #endif
         {
             lat_int = _lat * 1e7;
             lon_int = _lon * 1e7;
             alt = static_cast<float>(_alt);
-            vx = vy = vz = 0.f;
-            afx = afy = afz = 0.f;
-            pos_std_dev.fill(0);
         }
     };
 

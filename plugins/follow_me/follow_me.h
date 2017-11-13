@@ -39,145 +39,121 @@ public:
          */
         enum class FollowDirection {
             NONE = -1,
-            FRONT_RIGHT = 0, /**< @brief Follow from front right */
-            BEHIND = 1, /**< @brief Follow from behind */
-            FRONT = 2, /**< @brief Follow from front */
-            FRONT_LEFT = 3 /**< @brief Follow from front left */
+            FRONT_RIGHT = 0, /**< @brief Follow from front right. */
+            BEHIND = 1, /**< @brief Follow from behind. */
+            FRONT = 2, /**< @brief Follow from front. */
+            FRONT_LEFT = 3 /**< @brief Follow from front left. */
         };
 
         // Default configuration
         ///////////////////////////////////////////////////////////
-        static constexpr const float DEF_HEIGHT_ABOVE_HOME =
-            8.0f; /**< @brief Default follow target altitude */
-        static constexpr const float MIN_HEIGHT_ABOVE_HOME = 8.0f; /**< @brief Min follow target altitude */
+        /**< @brief Default follow target height. */
+        static constexpr const float DEF_HEIGHT_ABOVE_HOME = 8.0f;
+        /**< @brief Min follow target height. */
+        static constexpr const float MIN_HEIGHT_ABOVE_HOME = 8.0f;
 
-        static constexpr const float DEF_DIST_WRT_FT = 8.0f; /**< @brief Distance to follow target from */
-        static constexpr const float MIN_DIST_WRT_FT =
-            1.0f; /**< @brief Min distance to follow target from */
+        /**< @brief Distance to follow target from. */
+        static constexpr const float DEF_DIST_WRT_FT = 8.0f;
+        /**< @brief Min distance to follow target from. */
+        static constexpr const float MIN_DIST_WRT_FT = 1.0f;
 
-        static constexpr const FollowDirection DEF_FOLLOW_DIR =
-            FollowDirection::BEHIND; /**< @brief Side to follow target from */
-        static constexpr const float DEF_DYN_FLT_ALG_RSP =
-            0.5f; /**< @brief Default Dynamic filtering algorithm responsiveness to target movement */
-        static constexpr const float MIN_DYN_FLT_ALG_RSP =
-            0.0f; /**< @brief Min Dynamic filtering algorithm responsiveness to target movement */
-        static constexpr const float MAX_DYN_FLT_ALG_RSP =
-            1.0f; /**< @brief Max Dynamic filtering algorithm responsiveness to target movement */
+        /**< @brief Side to follow target from. */
+        static constexpr const FollowDirection DEF_FOLLOW_DIR = FollowDirection::BEHIND;
+
+        /**< @brief Default dynamic filtering algorithm responsiveness to target movement. */
+        static constexpr const float DEF_DYN_FLT_ALG_RSP = 0.5f;
+        /**< @brief Min dynamic filtering algorithm responsiveness to target movement. */
+        static constexpr const float MIN_DYN_FLT_ALG_RSP = 0.0f;
+
+        /**< @brief Max dynamic filtering algorithm responsiveness to target movement. */
+        static constexpr const float MAX_DYN_FLT_ALG_RSP = 1.0f;
         ///////////////////////////////////////////////////////////
 
-        // FollowMe Configuration Accessors
+        // FollowMe Configuration Accessors.
         /**
-         * @brief min_height_m
-         * @return
+         * @brief Gets minimum follow target height, in meters.
+         * @return Minimum follow target height.
          */
-        float min_height_m() const
-        {
-            return _min_height_m;
-        }
-        /**
-         * @brief follow_target_distance_m
-         * @return
-         */
-        float follow_target_dist_m() const
-        {
-            return _follow_target_dist_m;
-        }
-        /**
-         * @brief follow_dir
-         * @return
-         */
-        FollowDirection follow_dir() const
-        {
-            return _follow_dir;
-        }
+        float min_height_m() const;
 
         /**
-         * @brief dynamic_filter_alg_responsiveness
-         * @return
+         * @brief Gets distance to follow target from, in meters.
+         * @return Current distance to follow target from, in meters.
          */
-        float dynamic_filter_alg_responsiveness() const
-        {
-            return _dyn_flt_alg_responsiveness;
-        }
-
-
-        // Methods that configure FollowMe behavior
-        /**
-         * @brief set_min_height
-         * @param mht
-         * @return
-         */
-        bool set_min_height_m(float mht)
-        {
-            if (mht < MIN_HEIGHT_ABOVE_HOME) {
-                return false;
-            }
-            _min_height_m = mht;
-            return true;
-        }
+        float follow_target_dist_m() const;
 
         /**
-         * @brief set_follow_target_dist
-         * @param ft_dst
-         * @return
+         * @brief Gets Side to follow target from.
+         * @return %FollowDirection representing Side to follow target from.
          */
-        bool set_follow_target_dist_m(float ft_dst)
-        {
-            if (ft_dst < MIN_DIST_WRT_FT) {
-                return false;
-            }
-            _follow_target_dist_m = ft_dst;
-            return true;
-        }
+        FollowDirection follow_dir() const;
 
         /**
-         * @brief set_follow_dir
-         * @param dir
+         * @brief String form of %FollowDirection
+         * @param dir enum %FollowDirection
+         * @return std::string representation of enum %FollowDirection
          */
-        void set_follow_dir(FollowDirection dir)
-        {
-            _follow_dir = dir;
-        }
+        static std::string to_str(FollowDirection dir);
 
         /**
-         * @brief set_dynamic_filter_algo_rsp_val
+         * @brief Gets current dynamic filtering algorithm responsiveness value.
+         * @return Current responsiveness value
+         */
+        float dynamic_filter_alg_responsiveness() const;
+
+        // Methods that configure FollowMe behavior.
+        /**
+         * @brief Sets minimum follow target height, in meters.
+         * @param mht: min height in meters relative to home for following a target.
+         * @return true (success) if given height >= 8.0 meters, false (failure) otherwise.
+         */
+        bool set_min_height_m(float mht);
+
+        /**
+         * @brief Sets distance in meters to follow target from.
+         * @param ft_dst distance in meters to follow the target at.
+         * @return true (success) if given distance >= 1.0 meters, false (failure) otherwise.
+         */
+        bool set_follow_target_dist_m(float ft_dst);
+
+        /**
+         * @brief Sets the side to follow target from.
+         * @param dir Side to follow target from.
+         */
+        void set_follow_dir(FollowDirection dir);
+
+        /**
+         * @brief Sets dynamic filtering algorithm responsiveness to target movement.
+         * Lower numbers increase the responsiveness to changing long lat but also ignore less noise.
          * @param responsiveness
-         * @return
+         * @return true (success) if responsiveness is in range (0.0 to 1.0), false (failure) otherwise.
          */
-        bool set_dynamic_filter_algo_rsp_val(float responsiveness)
-        {
-            if (responsiveness < 0.f || responsiveness > 1.0f) {
-                return false;
-            }
-            _dyn_flt_alg_responsiveness = responsiveness;
-            return true;
-        }
+        bool set_dynamic_filter_algo_rsp_val(float responsiveness);
 
     private:
-        float _min_height_m = 8.0f; // Default & Minimum follow target altitude in meters
-        float _follow_target_dist_m = 8.0f; // Default Distance to follow target from
-        FollowDirection _follow_dir = FollowDirection::BEHIND; // Follow target from behind by default
-        float _dyn_flt_alg_responsiveness =
-            0.5f; // Dynamic filtering algorithm responsiveness to target movement
+        float _min_height_m = 8.0f; // Default & Minimum follow target height in meters.
+        float _follow_target_dist_m = 8.0f; // Default Distance to follow target from.
+        FollowDirection _follow_dir = FollowDirection::BEHIND; // Follow target from behind by default.
+        float _dyn_flt_alg_responsiveness = 0.5f; // Default responsiveness to target movement.
     };
 
     /**
-     * @brief Gets current FollowMe configuration
-     * @return
+     * @brief Gets current FollowMe configuration.
+     * @return current FollowMe configuration.
      */
     Configuration get_config() const;
 
     /**
-     * @brief Sets FollowMe configuration
-     * @param config
+     * @brief Applies FollowMe configuration by sending them to device.
+     * @param config FollowMe configuration to be applied.
      */
     void set_config(const Configuration &config);
 
     /**
-     * @brief Return English string for FollowMe error codes
+     * @brief Return English string for FollowMe error codes.
      *
      * @param result FollowMe::Result code
-     * @returns returns std::string describing error code
+     * @return Returns std::string describing error code
      */
     static std::string result_str(Result result);
 
@@ -192,7 +168,6 @@ public:
      * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
      */
     FollowMe::Result stop() const;
-
 
     // Non-copyable
     FollowMe(const FollowMe &) = delete;
