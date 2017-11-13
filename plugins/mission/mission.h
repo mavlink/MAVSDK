@@ -71,7 +71,7 @@ public:
     /**
      * @brief Downloads a vector of mission items from the device (asynchronous).
      *
-     * The method will fail if any of the downloaded mission items are not supported 
+     * The method will fail if any of the downloaded mission items are not supported
      * by the DroneCore API.
      *
      * @param mission_items Reference to vector of mission items.
@@ -92,7 +92,7 @@ public:
     /**
      * @brief Pauses the mission (asynchronous).
      *
-     * Pausing the mission puts the vehicle into 
+     * Pausing the mission puts the vehicle into
      * [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
      * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
      * around the location where it paused.
