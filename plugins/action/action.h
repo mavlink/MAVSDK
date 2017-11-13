@@ -219,7 +219,7 @@ public:
     /**
      * @brief Send command to transition the drone to multicopter (asynchronous).
      *
-     * Note that this is only for the vtol type. 
+     * Note that this is only for the vtol type.
      * Also, transition to fixedwing is only allowed from multicopter.
      *
      * @param callback Function to call with result of request.

@@ -90,10 +90,10 @@ int main(int /*argc*/, char ** /*argv*/)
         return 1;
     }
 
-	// Wait
-	std::this_thread::sleep_for(std::chrono::seconds(10));
+    // Wait
+    std::this_thread::sleep_for(std::chrono::seconds(10));
 
-	// Change to FW
+    // Change to FW
     const Action::Result fw_result = device.action().transition_to_fixedwing();
 
     if (fw_result != Action::Result::SUCCESS) {
@@ -102,30 +102,30 @@ int main(int /*argc*/, char ** /*argv*/)
         //return 1;
     }
 
-	// Wait
-	std::this_thread::sleep_for(std::chrono::seconds(10));
+    // Wait
+    std::this_thread::sleep_for(std::chrono::seconds(10));
 
     // Change to VTOL
     const Action::Result mc_result = device.action().transition_to_multicopter();
     if (mc_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Transition to multi copter failed:" << Action::result_str(
                       mc_result) << NORMAL_CONSOLE_TEXT << std::endl;
-    //    return 1;
+        //    return 1;
     }
 
-	// Wait
-	std::this_thread::sleep_for(std::chrono::seconds(5));
+    // Wait
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Return to launch
     const Action::Result rtl_result = device.action().return_to_launch();
     if (rtl_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Returning to launch failed:" << Action::result_str(
                       rtl_result) << NORMAL_CONSOLE_TEXT << std::endl;
-    //    return 1;
+        //    return 1;
     }
 
-	// Wait
-	std::this_thread::sleep_for(std::chrono::seconds(20));
+    // Wait
+    std::this_thread::sleep_for(std::chrono::seconds(20));
 
     // Land
     std::cout << "Landing..." << std::endl;
@@ -133,7 +133,7 @@ int main(int /*argc*/, char ** /*argv*/)
     if (land_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << Action::result_str(
                       land_result) << NORMAL_CONSOLE_TEXT << std::endl;
-    //    return 1;
+        //    return 1;
     }
 
     // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
