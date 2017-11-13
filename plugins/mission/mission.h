@@ -63,7 +63,7 @@ public:
                               result_callback_t callback);
 
     /**
-     * @brief Callback type for `download_mission_async` call to get mission items and result.
+     * @brief Callback type for `download_mission_async()` call to get mission items and result.
      */
     typedef std::function<void(Result, std::vector<std::shared_ptr<MissionItem>>)>
     mission_items_and_result_callback_t;
@@ -71,7 +71,8 @@ public:
     /**
      * @brief Downloads a vector of mission items from the device (asynchronous).
      *
-     * The mission items are downloaded from a drone.
+     * The method will fail if any of the downloaded mission items are not supported
+     * by the DroneCore API.
      *
      * @param mission_items Reference to vector of mission items.
      * @param callback Callback to receive result of this request.
@@ -81,7 +82,7 @@ public:
     /**
      * @brief Starts the mission (asynchronous).
      *
-     * Note that the mission must be uplaoded to the vehicle using `upload_mission_async()` before
+     * Note that the mission must be uploaded to the vehicle using `upload_mission_async()` before
      * this method is called.
      *
      * @param callback callback to receive result of this request.
@@ -91,8 +92,8 @@ public:
     /**
      * @brief Pauses the mission (asynchronous).
      *
-     * Pausing the mission puts the vehicle into HOLD mode
-     * (See https://docs.px4.io/en/flight_modes/hold.html).
+     * Pausing the mission puts the vehicle into
+     * [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
      * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
      * around the location where it paused.
      *
@@ -106,7 +107,7 @@ public:
      * By setting the current index to 0, the mission is restarted from the beginning. If it is set
      * to a specific index of a mission item, the mission will be set to this item.
      *
-     * Note that this is not necessarily true for general missions using mavlink if loop counters
+     * Note that this is not necessarily true for general missions using MAVLink if loop counters
      * are used.
      *
      * @param current Index for mission index to go to next (0 based).
