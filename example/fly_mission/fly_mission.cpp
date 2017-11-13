@@ -112,11 +112,11 @@ int main(int /*argc*/, char ** /*argv*/)
 
     {
         std::cout << "Uploading mission..." << std::endl;
-        // We only have the send_mission function asynchronous for now, so we wrap it using
+        // We only have the upload_mission function asynchronous for now, so we wrap it using
         // std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        device.mission().send_mission_async(
+        device.mission().upload_mission_async(
         mission_items, [prom](Mission::Result result) {
             prom->set_value(result);
         });

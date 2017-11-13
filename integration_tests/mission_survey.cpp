@@ -27,7 +27,7 @@ enum class MissionState : unsigned {
 static MissionState _mission_state = MissionState::INIT;
 
 //Mission::mission_result_t receive_mission_result;
-static void receive_send_mission_result(Mission::Result result);
+static void receive_upload_mission_result(Mission::Result result);
 static void receive_start_mission_result(Mission::Result result);
 static void receive_mission_progress(int current, int total);
 static void receive_arm_result(Action::Result result);
@@ -135,9 +135,9 @@ TEST_F(SitlTest, MissionSurvey)
         }
         switch (_mission_state) {
             case MissionState::INIT:
-                device.mission().send_mission_async(
+                device.mission().upload_mission_async(
                     mis,
-                    std::bind(&receive_send_mission_result, _1));
+                    std::bind(&receive_upload_mission_result, _1));
                 _mission_state = MissionState::UPLOADING;
                 break;
             case MissionState::UPLOADING:
@@ -199,7 +199,7 @@ TEST_F(SitlTest, MissionSurvey)
     EXPECT_EQ(_mission_state, MissionState::DONE);
 }
 
-void receive_send_mission_result(Mission::Result result)
+void receive_upload_mission_result(Mission::Result result)
 {
     EXPECT_EQ(result, Mission::Result::SUCCESS);
 
