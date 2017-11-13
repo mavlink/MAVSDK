@@ -15,6 +15,7 @@ using namespace std::this_thread;
 #endif
 
 void print_flight_mode(Telemetry::FlightMode flight_mode);
+void print_config(FollowMe::Configuration cfg);
 
 TEST_F(SitlTest, FollowMe)
 {
@@ -50,6 +51,8 @@ TEST_F(SitlTest, FollowMe)
     // Responsiveness: 0.5
     // Device follows from: Behind
     ////////////////////////////////////////
+    auto defult_cfg = device.followme().get_config();
+    print_config(defult_cfg);
 
     // start following with default configuration
     FollowMe::Result followme_result = device.followme().start();
@@ -65,6 +68,7 @@ TEST_F(SitlTest, FollowMe)
 
     action_ret = device.action().land();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+    sleep_for(seconds(2)); // let the device land
 }
 
 TEST_F(SitlTest, FollowMeWithConfig)
@@ -128,3 +132,17 @@ void print_flight_mode(Telemetry::FlightMode flight_mode)
               << std::endl;
 }
 
+void print_config(FollowMe::Configuration cfg)
+{
+    auto height = cfg.min_height_m();
+    auto dist = cfg.follow_target_dist_m();
+    auto resp = cfg.dynamic_filter_alg_responsiveness();
+    auto dir = cfg.follow_dir();
+    std::cout << "Default PX4 FollowMe config" << std::endl;
+    std::cout << "---------------------------" << std::endl;
+    std::cout << "Min Height: " << height << "m" << std::endl;
+    std::cout << "Distance: " << dist << "m" << std::endl;
+    std::cout << "Responsiveness: " << resp << std::endl;
+    std::cout << "Following from: " << FollowMe::Configuration::to_str(dir) << std::endl;
+    std::cout << "---------------------------" << std::endl;
+}
