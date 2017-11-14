@@ -93,7 +93,7 @@ int main(int /*argc*/, char ** /*argv*/)
     // Wait
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
-    // Change to FW
+    std::cout << "Transition to fixedwing..." << std::endl;
     const Action::Result fw_result = device.action().transition_to_fixedwing();
 
     if (fw_result != Action::Result::SUCCESS) {
@@ -106,6 +106,7 @@ int main(int /*argc*/, char ** /*argv*/)
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     // Change to VTOL
+    std::cout << "Transition back to multicopter..." << std::endl;
     const Action::Result mc_result = device.action().transition_to_multicopter();
     if (mc_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Transition to multi copter failed:" << Action::result_str(
@@ -117,6 +118,7 @@ int main(int /*argc*/, char ** /*argv*/)
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Return to launch
+    std::cout << "Return to launch..." << std::endl;
     const Action::Result rtl_result = device.action().return_to_launch();
     if (rtl_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Returning to launch failed:" << Action::result_str(
