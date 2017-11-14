@@ -44,17 +44,20 @@ void FollowMeImpl::timeout_occurred()
     // TODO: We're arbitarily changing latitude, longitude.
     // Need to make it Box or Circle for better visual demo
     const double lat_offset = 0.00014904 * 1e7;
-    const double lon_offset = 0.000000954 * 1e7;
+    const double lon_offset = 0.000004954 * 1e7;
+    const float rel_alt = 0.1f;
 
     // update current location coordinates
     // Using trivial logic to make drone oscillate
     if (alternative++ % 2 == 0) {
         _motion_report.lat_int += static_cast<int32_t>(lat_offset);
         _motion_report.lon_int += static_cast<int32_t>(lon_offset);
+        _motion_report.alt += rel_alt;
         // LogInfo() << "+ Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
     } else {
         _motion_report.lat_int -= static_cast<int32_t>(lat_offset);
         _motion_report.lon_int -= static_cast<int32_t>(lon_offset);
+        _motion_report.alt -= rel_alt;
         // LogInfo() << "- Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
     }
 
@@ -94,7 +97,7 @@ FollowMe::Configuration FollowMeImpl::get_config() const
 void FollowMeImpl::receive_param_min_height(bool success, float min_height_m)
 {
     if (success) {
-        LogInfo() << "NAV_FT_MIN_HT: " << min_height_m;
+        LogInfo() << "NAV_MIN_FT_HT: " << min_height_m << "m";
         _config.set_min_height_m(min_height_m);
     }
 }
@@ -102,7 +105,7 @@ void FollowMeImpl::receive_param_min_height(bool success, float min_height_m)
 void FollowMeImpl::receive_param_follow_target_dist(bool success, float ft_dist_m)
 {
     if (success) {
-        LogInfo() << "NAV_FT_DST: " << ft_dist_m;
+        LogInfo() << "NAV_FT_DST: " << ft_dist_m << "m";
         _config.set_follow_target_dist_m(ft_dist_m);
     }
 }
@@ -110,7 +113,6 @@ void FollowMeImpl::receive_param_follow_target_dist(bool success, float ft_dist_
 void FollowMeImpl::receive_param_follow_dir(bool success, int32_t dir)
 {
     if (success) {
-        LogInfo() << "NAV_FT_FS: " << dir;
         FollowMe::Configuration::FollowDirection d = FollowMe::Configuration::FollowDirection::NONE;
         switch (dir) {
             case 0: d = FollowMe::Configuration::FollowDirection::FRONT_RIGHT; break;
@@ -119,6 +121,7 @@ void FollowMeImpl::receive_param_follow_dir(bool success, int32_t dir)
             case 3: d = FollowMe::Configuration::FollowDirection::FRONT_LEFT; break;
             default: break;
         }
+        LogInfo() << "NAV_FT_FS: " << FollowMe::Configuration::to_str(d);
         if (d != FollowMe::Configuration::FollowDirection::NONE) {
             _config.set_follow_dir(d);
         }
@@ -142,7 +145,7 @@ void FollowMeImpl::set_config(const FollowMe::Configuration &cfg)
 
     LogInfo() << "Going to set min height " << height << " mts";
     if (cfg.min_height_m() != FollowMe::Configuration::DEF_DIST_WRT_FT)
-        _parent->set_param_float_async("NAV_FT_MIN_HT", height,
+        _parent->set_param_float_async("NAV_MIN_FT_HT", height,
                                        std::bind(&FollowMeImpl::receive_param_min_height,
                                                  this, _1, height));
 
