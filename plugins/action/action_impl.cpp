@@ -8,9 +8,7 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-ActionImpl::ActionImpl() :
-    _in_air_state_known(false),
-    _in_air(false)
+ActionImpl::ActionImpl()
 {
 }
 
@@ -159,6 +157,14 @@ Action::Result ActionImpl::return_to_launch() const
 
 Action::Result ActionImpl::transition_to_fixedwing() const
 {
+    if (!_vtol_transition_support_known) {
+        return Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN;
+    }
+
+    if (!_vtol_transition_possible) {
+        return Action::Result::NO_VTOL_TRANSITION_SUPPORT;
+    }
+
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_DO_VTOL_TRANSITION,
@@ -168,6 +174,20 @@ Action::Result ActionImpl::transition_to_fixedwing() const
 
 void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &callback)
 {
+    if (!_vtol_transition_support_known) {
+        if (callback) {
+            callback(Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN);
+        }
+        return;
+    }
+
+    if (!_vtol_transition_possible) {
+        if (callback) {
+            callback(Action::Result::NO_VTOL_TRANSITION_SUPPORT);
+        }
+        return;
+    }
+
     _parent->send_command_with_ack_async(
         MAV_CMD_DO_VTOL_TRANSITION,
         MavlinkCommands::Params {float(MAV_VTOL_STATE_FW)},
@@ -179,6 +199,14 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &
 
 Action::Result ActionImpl::transition_to_multicopter() const
 {
+    if (!_vtol_transition_support_known) {
+        return Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN;
+    }
+
+    if (!_vtol_transition_possible) {
+        return Action::Result::NO_VTOL_TRANSITION_SUPPORT;
+    }
+
     return action_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_DO_VTOL_TRANSITION,
@@ -188,6 +216,20 @@ Action::Result ActionImpl::transition_to_multicopter() const
 
 void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t &callback)
 {
+    if (!_vtol_transition_support_known) {
+        if (callback) {
+            callback(Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN);
+        }
+        return;
+    }
+
+    if (!_vtol_transition_possible) {
+        if (callback) {
+            callback(Action::Result::NO_VTOL_TRANSITION_SUPPORT);
+        }
+        return;
+    }
+
     _parent->send_command_with_ack_async(
         MAV_CMD_DO_VTOL_TRANSITION,
         MavlinkCommands::Params {float(MAV_VTOL_STATE_MC)},
@@ -373,6 +415,13 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
         _in_air = false;
     }
     _in_air_state_known = true;
+
+    if (extended_sys_state.vtol_state != MAV_VTOL_STATE_UNDEFINED) {
+        _vtol_transition_possible = true;
+    } else {
+        _vtol_transition_possible = false;
+    }
+    _vtol_transition_support_known = true;
 }
 
 void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &callback)

@@ -44,6 +44,8 @@ public:
         COMMAND_DENIED_LANDED_STATE_UNKNOWN, /**< @brief Command refused because landed state is unknown. */
         COMMAND_DENIED_NOT_LANDED, /**< @brief Command refused because vehicle not landed. */
         TIMEOUT, /**< @brief Timeout waiting for command acknowledgement from vehicle. */
+        VTOL_TRANSITION_SUPPORT_UNKNOWN, /**< @brief hybrid/VTOL transition refused because VTOL support is unknown. */
+        NO_VTOL_TRANSITION_SUPPORT, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
         UNKNOWN /**< @brief Unspecified error. */
     };
 
