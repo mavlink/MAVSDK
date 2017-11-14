@@ -99,10 +99,12 @@ TEST_F(SitlTest, FollowMeWithConfig)
     sleep_for(seconds(5));
 
     // configure follow me behaviour
->>>>>>> 248d951... integration_tests: follow_me changes
     FollowMe::Configuration follow_cfg = device.followme().get_config();
-    follow_cfg.set_min_height_m(15.f);
-    follow_cfg.set_follow_dir(FollowMe::Configuration::FollowDirection::FRONT_RIGHT);
+    follow_cfg.set_min_height_m(12.f); // set min height
+    follow_cfg.set_follow_target_dist_m(25.f); // set distance b/w device and GCS during FollowMe mode
+    follow_cfg.set_dynamic_filter_algo_rsp_val(0.2f); // set to higher responsiveness
+    follow_cfg.set_follow_dir(
+        FollowMe::Configuration::FollowDirection::FRONT); // Device follows you from FRONT side
 
     device.followme().set_config(follow_cfg);
 
