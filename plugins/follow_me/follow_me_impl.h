@@ -96,8 +96,8 @@ private:
             afz(0.f), pos_std_dev {}
 #endif
         {
-            lat_int = _lat * 1e7;
-            lon_int = _lon * 1e7;
+            lat_int = static_cast<int32_t>(_lat * 1e7);
+            lon_int = static_cast<int32_t>(_lon * 1e7);
             alt = static_cast<float>(_alt);
         }
     };
