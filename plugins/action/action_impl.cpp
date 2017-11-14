@@ -157,6 +157,46 @@ Action::Result ActionImpl::return_to_launch() const
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
+Action::Result ActionImpl::transition_to_fixedwing() const
+{
+    return action_result_from_command_result(
+               _parent->send_command_with_ack(
+                   MAV_CMD_DO_VTOL_TRANSITION,
+                   MavlinkCommands::Params {float(MAV_VTOL_STATE_FW)},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+}
+
+void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &callback)
+{
+    _parent->send_command_with_ack_async(
+        MAV_CMD_DO_VTOL_TRANSITION,
+        MavlinkCommands::Params {float(MAV_VTOL_STATE_FW)},
+        std::bind(&ActionImpl::command_result_callback,
+                  _1,
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+}
+
+Action::Result ActionImpl::transition_to_multicopter() const
+{
+    return action_result_from_command_result(
+               _parent->send_command_with_ack(
+                   MAV_CMD_DO_VTOL_TRANSITION,
+                   MavlinkCommands::Params {float(MAV_VTOL_STATE_MC)},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+}
+
+void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t &callback)
+{
+    _parent->send_command_with_ack_async(
+        MAV_CMD_DO_VTOL_TRANSITION,
+        MavlinkCommands::Params {float(MAV_VTOL_STATE_MC)},
+        std::bind(&ActionImpl::command_result_callback,
+                  _1,
+                  callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+}
+
 void ActionImpl::arm_async(const Action::result_callback_t &callback)
 {
     Action::Result ret = arming_allowed();

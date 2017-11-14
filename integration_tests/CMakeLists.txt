@@ -27,6 +27,7 @@ list(APPEND integration_tests
 	mission_survey
     gimbal
     curl
+    transition_multicopter_fixedwing
 )
 
 
