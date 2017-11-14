@@ -42,6 +42,16 @@ Action::Result Action::return_to_launch() const
     return _impl->return_to_launch();
 }
 
+Action::Result Action::transition_to_fixedwing() const
+{
+    return _impl->transition_to_fixedwing();
+}
+
+Action::Result Action::transition_to_multicopter() const
+{
+    return _impl->transition_to_multicopter();
+}
+
 void Action::arm_async(result_callback_t callback)
 {
     _impl->arm_async(callback);
@@ -70,6 +80,16 @@ void Action::land_async(result_callback_t callback)
 void Action::return_to_launch_async(result_callback_t callback)
 {
     _impl->return_to_launch_async(callback);
+}
+
+void Action::transition_to_multicopter_async(result_callback_t callback)
+{
+    _impl->transition_to_multicopter_async(callback);
+}
+
+void Action::transition_to_fixedwing_async(result_callback_t callback)
+{
+    _impl->transition_to_fixedwing_async(callback);
 }
 
 void Action::set_takeoff_altitude(float relative_altitude_m)

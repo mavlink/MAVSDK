@@ -4,14 +4,16 @@ from __future__ import print_function
 import grpc
 import time
 import dronecore_pb2 as dc
-import dronecore_pb2_grpc
-
+#import dronecore_pb2_grpc
+import action_pb2 as dc_action
+import action_pb2_grpc
 
 def run():
     channel = grpc.insecure_channel('0.0.0.0:50051')
-    stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+#    stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+	action_stub = action_pb2_grpc.ActionRPCStub(channel)
 
-    arm_result = stub.Arm(dc.Empty())
+    arm_result = action_stub.Arm(dc.Empty())
     if arm_result.result == dc.ActionResult.SUCCESS:
         print("arming ok")
     else:
@@ -19,7 +21,7 @@ def run():
 
     time.sleep(2)
 
-    takeoff_result = stub.TakeOff(dc.Empty())
+    takeoff_result = action_stub.TakeOff(dc.Empty())
     if takeoff_result.result == dc.ActionResult.SUCCESS:
         print("takeoff ok")
     else:
@@ -27,7 +29,7 @@ def run():
 
     time.sleep(5)
 
-    land_result = stub.Land(dc.Empty())
+    land_result = action_stub.Land(dc.Empty())
     if land_result.result == dc.ActionResult.SUCCESS:
         print("landing ok")
     else:

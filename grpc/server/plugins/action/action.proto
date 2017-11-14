@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package dronecorerpc;
+
+service ActionRPC {
+    rpc Arm(google.protobuf.Empty) returns(ActionResult) {}
+    rpc TakeOff(google.protobuf.Empty) returns(ActionResult) {}
+    rpc Land(google.protobuf.Empty) returns(ActionResult) {}
+}
+
+message ActionResult {
+
+    enum Result {
+        SUCCESS = 0;
+        NO_DEVICE = 1;
+        CONNECTION_ERROR = 2;
+        BUSY = 3;
+        COMMAND_DENIED = 4;
+        COMMAND_DENIED_LANDED_STATE_UNKNOWN = 5;
+        COMMAND_DENIED_NOT_LANDED = 6;
+        TIMEOUT = 7;
+        UNKNOWN = 8;
+    }
+    Result result = 1;
+    string result_str = 2;
+}
+
