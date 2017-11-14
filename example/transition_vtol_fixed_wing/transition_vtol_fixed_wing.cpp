@@ -105,7 +105,6 @@ int main(int /*argc*/, char ** /*argv*/)
     // Wait
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
-    // Change to VTOL
     std::cout << "Transition back to multicopter..." << std::endl;
     const Action::Result mc_result = device.action().transition_to_multicopter();
     if (mc_result != Action::Result::SUCCESS) {
