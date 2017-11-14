@@ -289,4 +289,9 @@ void compare_mission_items(const std::shared_ptr<MissionItem> original,
         EXPECT_DOUBLE_EQ(original->get_camera_photo_interval_s(),
                          downloaded->get_camera_photo_interval_s());
     }
+
+    if (std::isfinite(original->get_camera_action_delay_s())) {
+        EXPECT_FLOAT_EQ(original->get_camera_action_delay_s(),
+                        downloaded->get_camera_action_delay_s());
+    }
 }

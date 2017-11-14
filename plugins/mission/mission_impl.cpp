@@ -625,6 +625,9 @@ void MissionImpl::assemble_mission_items()
                 result = Mission::Result::UNSUPPORTED;
             }
 
+        } else if (it->command == MAV_CMD_NAV_LOITER_TIME) {
+            new_mission_item->set_camera_action_delay(it->param1);
+
         } else {
             LogErr() << "UNSUPPORTED mission item command (" << it->command << ")";
             result = Mission::Result::UNSUPPORTED;
