@@ -131,6 +131,10 @@ const char *Action::result_str(Result result)
             return "Command denied, not landed";
         case Result::TIMEOUT:
             return "Timeout";
+        case Result::VTOL_TRANSITION_SUPPORT_UNKNOWN:
+            return "VTOL transition unknown";
+        case Result::NO_VTOL_TRANSITION_SUPPORT:
+            return "No VTOL transition support";
         case Result::UNKNOWN:
         default:
             return "Unknown";
