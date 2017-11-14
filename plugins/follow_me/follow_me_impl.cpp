@@ -43,7 +43,7 @@ void FollowMeImpl::timeout_occurred()
     static int alternative = 1;
     // TODO: We're arbitarily changing latitude, longitude.
     // Need to make it Box or Circle for better visual demo
-    const double lat_offset = 0.00001904 * 1e7;
+    const double lat_offset = 0.00014904 * 1e7;
     const double lon_offset = 0.000000954 * 1e7;
 
     // update current location coordinates
@@ -166,7 +166,7 @@ void FollowMeImpl::set_config(const FollowMe::Configuration &cfg)
  */
 FollowMe::Result FollowMeImpl::start()
 {
-    _parent->add_call_every(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0f, &_timeout_cookie);
+    _parent->add_call_every(std::bind(&FollowMeImpl::timeout_occurred, this), 0.6f, &_timeout_cookie);
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
     uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
@@ -204,7 +204,7 @@ void FollowMeImpl::send_gcs_motion_report()
     mavlink_msg_follow_target_pack(_parent->get_own_system_id(),
                                    _parent->get_own_component_id(),
                                    &msg,
-                                   elapsed_msec,
+                                   static_cast<uint64_t>(elapsed_msec),
                                    _estimatation_capabilities,
                                    _motion_report.lat_int,
                                    _motion_report.lon_int,
@@ -221,9 +221,6 @@ void FollowMeImpl::send_gcs_motion_report()
     } else {
         LogErr() << "Failed to send FollowTarget..";
     }
-    // Register timer again for emitting motion reports periodically
-    _parent->register_timeout_handler(std::bind(&FollowMeImpl::timeout_occurred, this), 1.0,
-                                      &_timeout_cookie);
 }
 
 FollowMe::Result FollowMeImpl::stop()
