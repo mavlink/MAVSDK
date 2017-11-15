@@ -73,18 +73,21 @@ public:
         /**
          * @brief Gets minimum follow target height, in meters.
          * @return Minimum follow target height.
+         * @sa set_min_height_m(float)
          */
         float min_height_m() const;
 
         /**
          * @brief Gets distance to follow target from, in meters.
          * @return Current distance to follow target from, in meters.
+         * @sa set_follow_target_dist_m(float)
          */
         float follow_target_dist_m() const;
 
         /**
          * @brief Gets Side to follow target from.
          * @return %FollowDirection representing Side to follow target from.
+         * @sa set_follow_dir(FollowDirection), to_str(FollowDirection)
          */
         FollowDirection follow_dir() const;
 
@@ -92,20 +95,23 @@ public:
          * @brief String form of %FollowDirection
          * @param dir enum %FollowDirection
          * @return std::string representation of enum %FollowDirection
+         * @sa follow_dir(), set_follow_dir(FollowDirection)
          */
         static std::string to_str(FollowDirection dir);
 
         /**
          * @brief Gets current dynamic filtering algorithm responsiveness value.
          * @return Current responsiveness value
+         * @sa set_responsiveness(float)
          */
-        float dynamic_filter_alg_responsiveness() const;
+        float responsiveness() const;
 
         // Methods that configure FollowMe behavior.
         /**
          * @brief Sets minimum follow target height, in meters.
          * @param mht: min height in meters relative to home for following a target.
          * @return true (success) if given height >= 8.0 meters, false (failure) otherwise.
+         * @sa min_height_m()
          */
         bool set_min_height_m(float mht);
 
@@ -113,12 +119,14 @@ public:
          * @brief Sets distance in meters to follow target from.
          * @param ft_dst distance in meters to follow the target at.
          * @return true (success) if given distance >= 1.0 meters, false (failure) otherwise.
+         * @sa follow_target_dist_m()
          */
         bool set_follow_target_dist_m(float ft_dst);
 
         /**
          * @brief Sets the side to follow target from.
          * @param dir Side to follow target from.
+         * @sa follow_dir(), to_str(FollowDirection)
          */
         void set_follow_dir(FollowDirection dir);
 
@@ -127,8 +135,9 @@ public:
          * Lower numbers increase the responsiveness to changing long lat but also ignore less noise.
          * @param responsiveness
          * @return true (success) if responsiveness is in range (0.0 to 1.0), false (failure) otherwise.
+         * @sa responsiveness()
          */
-        bool set_dynamic_filter_algo_rsp_val(float responsiveness);
+        bool set_responsiveness(float responsiveness);
 
     private:
         float _min_height_m = 8.0f; // Default & Minimum follow target height in meters.
@@ -140,12 +149,14 @@ public:
     /**
      * @brief Gets current FollowMe configuration.
      * @return current FollowMe configuration.
+     * @sa set_config(const Configuration &)
      */
     Configuration get_config() const;
 
     /**
      * @brief Applies FollowMe configuration by sending them to device.
      * @param config FollowMe configuration to be applied.
+     * @sa get_config()
      */
     void set_config(const Configuration &config);
 
@@ -160,12 +171,14 @@ public:
     /**
      * @brief Starts FollowMe mode
      * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
+     * @sa stop()
      */
     FollowMe::Result start() const;
 
     /**
      * @brief Stops FollowMe mode
      * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
+     * @sa start()
      */
     FollowMe::Result stop() const;
 

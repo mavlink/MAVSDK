@@ -28,7 +28,7 @@ FollowMe::Configuration::FollowDirection FollowMe::Configuration::follow_dir() c
     return _follow_dir;
 }
 
-float FollowMe::Configuration::dynamic_filter_alg_responsiveness() const
+float FollowMe::Configuration::responsiveness() const
 {
     return _dyn_flt_alg_responsiveness;
 }
@@ -56,7 +56,7 @@ void FollowMe::Configuration::set_follow_dir(FollowMe::Configuration::FollowDire
     _follow_dir = dir;
 }
 
-bool FollowMe::Configuration::set_dynamic_filter_algo_rsp_val(float responsiveness)
+bool FollowMe::Configuration::set_responsiveness(float responsiveness)
 {
     if (responsiveness < 0.f || responsiveness > 1.0f) {
         return false;

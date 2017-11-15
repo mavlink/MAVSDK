@@ -45,7 +45,7 @@ private:
     void receive_param_min_height(bool success, float min_height_m);
     void receive_param_follow_target_dist(bool success, float ft_dist_m);
     void receive_param_follow_dir(bool success, int32_t dir);
-    void receive_param_dyn_fltr_alg_rsp(bool success, float rsp);
+    void receive_param_responsiveness(bool success, float rsp);
     /*****************************************************/
 
     /**

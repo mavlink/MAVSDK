@@ -130,11 +130,11 @@ void FollowMeImpl::receive_param_follow_dir(bool success, int32_t dir)
     }
 }
 
-void FollowMeImpl::receive_param_dyn_fltr_alg_rsp(bool success, float rsp)
+void FollowMeImpl::receive_param_responsiveness(bool success, float rsp)
 {
     if (success) {
         LogInfo() << "NAV_FT_RS: " << rsp;
-        _config.set_dynamic_filter_algo_rsp_val(rsp);
+        _config.set_responsiveness(rsp);
     }
 }
 
@@ -143,7 +143,7 @@ void FollowMeImpl::set_config(const FollowMe::Configuration &cfg)
     auto height = cfg.min_height_m();
     auto dist = cfg.follow_target_dist_m();
     int32_t dir = static_cast<int32_t>(cfg.follow_dir());
-    auto rsp = cfg.dynamic_filter_alg_responsiveness();
+    auto rsp = cfg.responsiveness();
 
     LogInfo() << "Going to set min height " << height << " mts";
     if (cfg.min_height_m() != FollowMe::Configuration::DEF_DIST_WRT_FT)
@@ -159,9 +159,9 @@ void FollowMeImpl::set_config(const FollowMe::Configuration &cfg)
         _parent->set_param_int_async("NAV_FT_FS", dir,
                                      std::bind(&FollowMeImpl::receive_param_follow_dir,
                                                this, _1, dir));
-    if (cfg.dynamic_filter_alg_responsiveness() != FollowMe::Configuration::DEF_DYN_FLT_ALG_RSP)
+    if (cfg.responsiveness() != FollowMe::Configuration::DEF_DYN_FLT_ALG_RSP)
         _parent->set_param_float_async("NAV_FT_RS", rsp,
-                                       std::bind(&FollowMeImpl::receive_param_dyn_fltr_alg_rsp,
+                                       std::bind(&FollowMeImpl::receive_param_responsiveness,
                                                  this, _1, rsp));
 }
 

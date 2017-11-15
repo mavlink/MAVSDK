@@ -61,7 +61,7 @@ TEST_F(SitlTest, FollowMe)
     // Let the device follow you (GCS) for half a min, say.
     sleep_for(seconds(30));
 
-    // stops following
+    // stop following
     followme_result = device.followme().stop();
     ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
@@ -102,7 +102,7 @@ TEST_F(SitlTest, FollowMeWithConfig)
     FollowMe::Configuration follow_cfg = device.followme().get_config();
     follow_cfg.set_min_height_m(40.f); // increase min height
     follow_cfg.set_follow_target_dist_m(50.f); // set distance b/w device and GCS during FollowMe mode
-    follow_cfg.set_dynamic_filter_algo_rsp_val(0.2f); // set to higher responsiveness
+    follow_cfg.set_responsiveness(0.2f); // set to higher responsiveness
     follow_cfg.set_follow_dir(
         FollowMe::Configuration::FollowDirection::FRONT); // Device follows you from FRONT side
 
@@ -136,7 +136,7 @@ void print_config(FollowMe::Configuration cfg)
 {
     auto height = cfg.min_height_m();
     auto dist = cfg.follow_target_dist_m();
-    auto resp = cfg.dynamic_filter_alg_responsiveness();
+    auto resp = cfg.responsiveness();
     auto dir = cfg.follow_dir();
     std::cout << "Default PX4 FollowMe config" << std::endl;
     std::cout << "---------------------------" << std::endl;
