@@ -14,7 +14,8 @@ class ActionImpl;
  *
  * The action methods send their associated MAVLink commands to the vehicle and complete
  * (return synchronously or callback asynchronously) with an Action::Result value
- * indicating whether the vehicle has accepted or rejected the command, or that there has been some error.
+ * indicating whether the vehicle has accepted or rejected the command, or that there has been some
+ * error.
  * If the command is accepted, the vehicle will then start to perform the associated action.
  */
 class Action
@@ -112,9 +113,9 @@ public:
     /**
      * @brief Send command to *return to the launch* (takeoff) position and *land* (asynchronous).
      *
-     * This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which generally means it will rise up to a certain
-     * altitude to clear any obstacles before heading back to the launch (takeoff) position and
-     * land there.
+     * This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which
+     * generally means it will rise up to a certain altitude to clear any obstacles before heading
+     * back to the launch (takeoff) position and land there.
      *
      * @return Result of request.
      */
@@ -200,9 +201,9 @@ public:
     /**
      * @brief Send command to *return to the launch* (takeoff) position and *land*  (asynchronous).
      *
-     * This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which generally means it will rise up to a certain
-     * altitude to clear any obstacles before heading back to the launch (takeoff) position and
-     * land there.
+     * This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which
+     * generally means it will rise up to a certain altitude to clear any obstacles before heading
+     * back to the launch (takeoff) position and land there.
      *
      * @param callback Function to call with result of request.
      */
