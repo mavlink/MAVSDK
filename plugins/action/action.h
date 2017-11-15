@@ -124,8 +124,9 @@ public:
     /**
      * @brief Send command to transition the drone to fixedwing.
      *
-     * The associated action will only be executed for VTOL vehicles in multicopter mode.
-     * On other vehicles/modes the command will fail with a Result.
+     * The associated action will only be executed for VTOL vehicles (on other vehicle types the
+     * command will fail with a Result). The command will succeed if called when the vehicle is
+     * already in fixedwing mode.
      *
      * @return Result of request.
      */
@@ -134,8 +135,9 @@ public:
     /**
      * @brief Send command to transition the drone to multicopter.
      *
-     * The associated action will only be executed for VTOL vehicles in fixedwing mode.
-     * On other vehicles/modes the command will fail with a Result.
+     * The associated action will only be executed for VTOL vehicles (on other vehicle types the
+     * command will fail with a Result). The command will succeed if called when the vehicle is
+     * already in multicopter mode.
      *
      * @return Result of request.
      */
@@ -212,8 +214,9 @@ public:
     /**
      * @brief Send command to transition the drone to fixedwing (asynchronous).
      *
-     * Note that this is only for the vtol type.
-     * Also, transition to fixedwing is only allowed from multicopter.
+     * The associated action will only be executed for VTOL vehicles (on other vehicle types the
+     * command will fail with a Result). The command will succeed if called when the vehicle is
+     * already in fixedwing mode.
      *
      * @param callback Function to call with result of request.
      */
@@ -222,8 +225,9 @@ public:
     /**
      * @brief Send command to transition the drone to multicopter (asynchronous).
      *
-     * Note that this is only for the vtol type.
-     * Also, transition to fixedwing is only allowed from multicopter.
+     * The associated action will only be executed for VTOL vehicles (on other vehicle types the
+     * command will fail with a Result). The command will succeed if called when the vehicle is
+     * already in multicopter mode.
      *
      * @param callback Function to call with result of request.
      */
