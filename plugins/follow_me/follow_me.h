@@ -137,7 +137,7 @@ public:
          * @return true (success) if responsiveness is in range (0.0 to 1.0), false (failure) otherwise.
          * @sa responsiveness()
          */
-        bool set_responsiveness(float responsiveness);
+        bool set_responsiveness(float resp);
 
     private:
         float _min_height_m = 8.0f; // Default & Minimum follow target height in meters.

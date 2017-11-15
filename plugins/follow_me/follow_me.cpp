@@ -56,12 +56,12 @@ void FollowMe::Configuration::set_follow_dir(FollowMe::Configuration::FollowDire
     _follow_dir = dir;
 }
 
-bool FollowMe::Configuration::set_responsiveness(float responsiveness)
+bool FollowMe::Configuration::set_responsiveness(float resp)
 {
-    if (responsiveness < 0.f || responsiveness > 1.0f) {
+    if (resp < 0.f || resp > 1.0f) {
         return false;
     }
-    _dyn_flt_alg_responsiveness = responsiveness;
+    _dyn_flt_alg_responsiveness = resp;
     return true;
 }
 
