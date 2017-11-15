@@ -98,6 +98,10 @@ void DeviceImpl::unregister_timeout_handler(const void *cookie)
 
 void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
 {
+    if (_communication_locked) {
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
 
     for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end(); ++it) {
@@ -267,6 +271,10 @@ void DeviceImpl::send_heartbeat(DeviceImpl *self)
 
 bool DeviceImpl::send_message(const mavlink_message_t &message)
 {
+    if (_communication_locked) {
+        return false;
+    }
+
     return _parent->send_message(message);
 }
 
@@ -512,6 +520,16 @@ void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
             MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
             callback);
     }
+}
+
+void DeviceImpl::lock_communication()
+{
+    _communication_locked = true;
+}
+
+void DeviceImpl::unlock_communication()
+{
+    _communication_locked = false;
 }
 
 
