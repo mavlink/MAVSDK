@@ -22,9 +22,9 @@ list(APPEND integration_tests
     offboard_velocity
     logging
     info
-	mission
     mission_change_speed
     mission_survey
+    mission
     gimbal
     curl
     transition_multicopter_fixedwing

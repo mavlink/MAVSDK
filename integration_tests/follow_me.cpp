@@ -106,21 +106,43 @@ TEST_F(SitlTest, FollowMeWithConfig)
     follow_cfg.set_follow_dir(
         FollowMe::Configuration::FollowDirection::FRONT); // Device follows you from FRONT side
 
+    // Apply configuration
     device.followme().set_config(follow_cfg);
 
+    // start following
     FollowMe::Result followme_result = device.followme().start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
 
-    // Let the device follow GCS for 60 sec, say.
-    sleep_for(seconds(60));
+    // Let the device follow you (GCS) for half a min, say.
+    sleep_for(seconds(30));
 
+    // stops following
     followme_result = device.followme().stop();
     ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
+
+    action_ret = device.action().land();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 }
+
 
 void print_flight_mode(Telemetry::FlightMode flight_mode)
 {
     std::cout << "FlightMode: " << Telemetry::flight_mode_str(flight_mode)
               << std::endl;
+}
+
+void print_config(FollowMe::Configuration cfg)
+{
+    auto height = cfg.min_height_m();
+    auto dist = cfg.follow_target_dist_m();
+    auto resp = cfg.dynamic_filter_alg_responsiveness();
+    auto dir = cfg.follow_dir();
+    std::cout << "Default PX4 FollowMe config" << std::endl;
+    std::cout << "---------------------------" << std::endl;
+    std::cout << "Min Height: " << height << "m" << std::endl;
+    std::cout << "Distance: " << dist << "m" << std::endl;
+    std::cout << "Responsiveness: " << resp << std::endl;
+    std::cout << "Following from: " << FollowMe::Configuration::to_str(dir) << std::endl;
+    std::cout << "---------------------------" << std::endl;
 }

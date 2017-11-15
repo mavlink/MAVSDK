@@ -42,6 +42,7 @@ public:
     virtual dl_time_t steady_time();
     double elapsed_s();
     double elapsed_since_s(const dl_time_t &since);
+    double elapsed_since_ms(const dl_time_t &since);
     dl_time_t steady_time_in_future(double duration_s);
     void shift_steady_time_by(dl_time_t &time, double offset_s);
 

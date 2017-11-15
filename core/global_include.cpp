@@ -32,6 +32,11 @@ double Time::elapsed_since_s(const dl_time_t &since)
            static_cast<double>(steady_clock::period::den);
 }
 
+double Time::elapsed_since_ms(const dl_time_t &since)
+{
+    return elapsed_since_s(since) * 1000; // milliseconds
+}
+
 dl_time_t Time::steady_time_in_future(double duration_s)
 {
     auto now = steady_time();

@@ -12,7 +12,13 @@ using namespace std::placeholders; // for `_1`
 
 FollowMeImpl::FollowMeImpl() :
     PluginImplBase(),
-    _config(FollowMe::Configuration {})
+    _time(),
+    _timeout_cookie(nullptr),
+    _motion_report(),
+    _motion_report_timer(_time),
+    _estimatation_capabilities(0),
+    _config(),
+    _followme_mode_active(false)
 {
 }
 
@@ -48,6 +54,7 @@ void FollowMeImpl::timeout_occurred()
         _motion_report.lat_int += static_cast<int32_t>(lat_offset);
         _motion_report.lon_int += static_cast<int32_t>(lon_offset);
         _motion_report.alt += rel_alt;
+        // LogInfo() << "+ Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
     } else {
         _motion_report.lat_int -= static_cast<int32_t>(lat_offset);
         _motion_report.lon_int -= static_cast<int32_t>(lon_offset);
@@ -90,31 +97,22 @@ FollowMe::Configuration FollowMeImpl::get_config() const
 
 void FollowMeImpl::receive_param_min_height(bool success, float min_height_m)
 {
-    LogInfo() << min_height_m;
     if (success) {
-<<<<<<< HEAD
-=======
         LogInfo() << "NAV_MIN_FT_HT: " << min_height_m << "m";
->>>>>>> 83ef11b... PX4 param used for FollowMe Min Height was misspelled. Corrected it.
         _config.set_min_height_m(min_height_m);
     }
 }
 
 void FollowMeImpl::receive_param_follow_target_dist(bool success, float ft_dist_m)
 {
-    LogInfo() << ft_dist_m;
     if (success) {
-<<<<<<< HEAD
-=======
         LogInfo() << "NAV_FT_DST: " << ft_dist_m << "m";
->>>>>>> 83ef11b... PX4 param used for FollowMe Min Height was misspelled. Corrected it.
         _config.set_follow_target_dist_m(ft_dist_m);
     }
 }
 
 void FollowMeImpl::receive_param_follow_dir(bool success, int32_t dir)
 {
-    LogInfo() << dir;
     if (success) {
         FollowMe::Configuration::FollowDirection d = FollowMe::Configuration::FollowDirection::NONE;
         switch (dir) {
@@ -124,21 +122,18 @@ void FollowMeImpl::receive_param_follow_dir(bool success, int32_t dir)
             case 3: d = FollowMe::Configuration::FollowDirection::FRONT_LEFT; break;
             default: break;
         }
-<<<<<<< HEAD
         _config.set_follow_dir(d);
-=======
         LogInfo() << "NAV_FT_FS: " << FollowMe::Configuration::to_str(d);
         if (d != FollowMe::Configuration::FollowDirection::NONE) {
             _config.set_follow_dir(d);
         }
->>>>>>> 83ef11b... PX4 param used for FollowMe Min Height was misspelled. Corrected it.
     }
 }
 
 void FollowMeImpl::receive_param_dyn_fltr_alg_rsp(bool success, float rsp)
 {
-    LogInfo() << rsp;
     if (success) {
+        LogInfo() << "NAV_FT_RS: " << rsp;
         _config.set_dynamic_filter_algo_rsp_val(rsp);
     }
 }
@@ -200,8 +195,8 @@ FollowMe::Result FollowMeImpl::start()
  */
 void FollowMeImpl::send_gcs_motion_report()
 {
-    dl_time_t now = steady_time();
-    auto elapsed_msec = elapsed_since_ms(now);
+    dl_time_t now = _time.steady_time();
+    auto elapsed_msec = _time.elapsed_since_ms(now);
 
     // needed by http://mavlink.org/messages/common#FOLLOW_TARGET
     const float vel[3] = { _motion_report.vx, _motion_report.vy, NAN };

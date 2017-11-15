@@ -102,17 +102,15 @@ private:
         }
     };
 
-    dl_time_t _start_time = steady_time();
-    uint8_t _estimatation_capabilities = 0;
-
+    Time _time;
+    void *_timeout_cookie;
     // required for emitting MotionReport updates to Vehicle
     MotionReport _motion_report;
     CallEveryHandler _motion_report_timer;
-    void *_timeout_cookie = nullptr;
-
-    // Configuration
+    uint8_t _estimatation_capabilities;
+    // holds followme configuration
     FollowMe::Configuration _config;
-    bool _followme_mode_active = false;
+    bool _followme_mode_active;
 };
 
 } // namespace dronecore
