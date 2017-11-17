@@ -12,74 +12,43 @@ FollowMe::~FollowMe()
 {
 }
 
-// FollowMe::Configuration methods
-float FollowMe::Configuration::min_height_m() const
+// Config
+const FollowMe::Config &FollowMe::get_config() const
 {
-    return _min_height_m;
+    return _impl->get_config();
 }
 
-float FollowMe::Configuration::follow_target_dist_m() const
+bool FollowMe::set_config(const FollowMe::Config &config)
 {
-    return _follow_target_dist_m;
+    return _impl->set_config(config);
 }
 
-FollowMe::Configuration::FollowDirection FollowMe::Configuration::follow_dir() const
+// Follow info
+const FollowMe::FollowInfo &FollowMe::get_follow_info() const
 {
-    return _follow_dir;
+    return _impl->get_follow_info();
 }
 
-float FollowMe::Configuration::responsiveness() const
+void FollowMe::set_follow_info(const FollowMe::FollowInfo &info)
 {
-    return _dyn_flt_alg_responsiveness;
+    _impl->set_follow_info(info);
 }
 
-bool FollowMe::Configuration::set_min_height_m(float mht)
-{
-    if (mht < MIN_HEIGHT_ABOVE_HOME) {
-        return false;
-    }
-    _min_height_m = mht;
-    return true;
-}
-
-bool FollowMe::Configuration::set_follow_target_dist_m(float ft_dst)
-{
-    if (ft_dst < MIN_DIST_WRT_FT) {
-        return false;
-    }
-    _follow_target_dist_m = ft_dst;
-    return true;
-}
-
-void FollowMe::Configuration::set_follow_dir(FollowMe::Configuration::FollowDirection dir)
-{
-    _follow_dir = dir;
-}
-
-bool FollowMe::Configuration::set_responsiveness(float resp)
-{
-    if (resp < 0.f || resp > 1.0f) {
-        return false;
-    }
-    _dyn_flt_alg_responsiveness = resp;
-    return true;
-}
-
-std::string FollowMe::Configuration::to_str(FollowMe::Configuration::FollowDirection dir)
+std::string FollowMe::Config::to_str(FollowMe::Config::FollowDirection dir)
 {
     switch (dir) {
-        case FollowMe::Configuration::FollowDirection::FRONT_RIGHT:
-            return "Front Right";
-        case FollowMe::Configuration::FollowDirection::BEHIND:
-            return "Behind";
-        case FollowMe::Configuration::FollowDirection::FRONT_LEFT:
-            return "Front Left";
-        case FollowMe::Configuration::FollowDirection::FRONT:
-            return "Front";
-        case FollowMe::Configuration::FollowDirection::NONE:
-            return "None";
+        case FollowMe::Config::FollowDirection::FRONT_RIGHT:
+            return "FRONT RIGHT";
+        case FollowMe::Config::FollowDirection::BEHIND:
+            return "BEHIND";
+        case FollowMe::Config::FollowDirection::FRONT_LEFT:
+            return "FRONT LEFT";
+        case FollowMe::Config::FollowDirection::FRONT:
+            return "FRONT";
+        case FollowMe::Config::FollowDirection::NONE:
+            return "NONE";
     }
-    return nullptr;
+    return nullptr; // to please compiler not to warn
 }
 
 FollowMe::Result FollowMe::start() const
@@ -90,16 +59,6 @@ FollowMe::Result FollowMe::start() const
 FollowMe::Result FollowMe::stop() const
 {
     return _impl->stop();
-}
-
-FollowMe::Configuration FollowMe::get_config() const
-{
-    return _impl->get_config();
-}
-
-void FollowMe::set_config(const FollowMe::Configuration &cfg)
-{
-    return _impl->set_config(cfg);
 }
 
 std::string FollowMe::result_str(Result result)
@@ -122,5 +81,23 @@ std::string FollowMe::result_str(Result result)
             return "Unknown";
     }
 }
+
+const float FollowMe::Config::DEF_HEIGHT_M =
+    8.0f; /**< @brief Default height (in meters) above home. */
+const float FollowMe::Config::DEF_FOLLOW_DIST_M =
+    8.0f; /**< @brief Default Follow distance (in meters) to target. */
+const FollowMe::Config::FollowDirection FollowMe::Config::DEF_FOLLOW_DIR =
+    FollowMe::Config::FollowDirection::BEHIND; /**< @brief Default side to follow target from. */
+const float FollowMe::Config::DEF_RESPONSIVENSS =
+    0.5f; /**< @brief Default responsiveness to target movement. */
+
+const float FollowMe::Config::MIN_HEIGHT_M =
+    8.0f; /**< @brief Min follow target height, in meters. */
+const float FollowMe::Config::MIN_FOLLOW_DIST_M =
+    1.0f;  /**< @brief Min distance to follow target from, in meters. */
+const float FollowMe::Config::MIN_RESPONSIVENESS =
+    0.0f; /**< @brief Min responsiveness to target movement. */
+const float FollowMe::Config::MAX_RESPONSIVENESS =
+    1.0f; /**< @brief Max responsiveness to target movement. */
 
 } // namespace dronecore

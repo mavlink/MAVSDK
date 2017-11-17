@@ -4,7 +4,6 @@
 #include "px4_custom_mode.h"
 #include <functional>
 #include <cmath>
-#include <array>
 
 namespace dronecore {
 
@@ -12,14 +11,15 @@ using namespace std::placeholders; // for `_1`
 
 FollowMeImpl::FollowMeImpl() :
     PluginImplBase(),
-    _time(),
-    _timeout_cookie(nullptr),
-    _motion_report(),
-    _motion_report_timer(_time),
+    _time{},
+    _ce_cookie(nullptr),
+    _follow_info{},
+    _follow_info_timer(_time),
     _estimatation_capabilities(0),
-    _config(),
+    _config{},
     _followme_mode_active(false)
 {
+    // We can intialize follow info with Motion info provided by Android or iOS frameworks
 }
 
 FollowMeImpl::~FollowMeImpl()
@@ -38,140 +38,235 @@ void FollowMeImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void FollowMeImpl::timeout_occurred()
-{
 #ifdef FOLLOW_ME_TESTING
-    static int alternative = 1;
-    // TODO: We're arbitarily changing latitude, longitude.
-    // Need to make it Box or Circle for better visual demo
-    const double lat_offset = 0.00014904 * 1e7;
-    const double lon_offset = 0.000004954 * 1e7;
-    const float rel_alt = 0.1f;
+void FollowMeImpl::update_fake_follow_info()
+{
+    // This is very hard-coded co-ordinates of the Ground Control station
+    // for the Vechicle to follow.
+    static struct SpiralPoint {
+        double lat, lon;
+    } spiral_points[] = {
+        { 47.39779928779934, 8.54559461331354 },
+        {         47.39780291, 8.54557048 },
+        {        47.39779838, 8.5455517 },
+        {       47.39778748, 8.54554499 },
+        {      47.39777659, 8.54553561 },
+        {     47.39776569, 8.54553292 },
+        {    47.39774663, 8.54552622 },
+        {   47.39772938, 8.54552488 },
+        {         47.39771304, 8.54554231 },
+        {        47.39770578, 8.5455745 },
+        {       47.39770487, 8.54559596 },
+        {      47.39770578, 8.54561741 },
+        {     47.39770669, 8.54563887 },
+        {    47.39771486, 8.54565765 },
+        {   47.39773029, 8.54567642 },
+        {  47.39775026, 8.54568447 },
+        {         47.39776751, 8.54569118 },
+        {        47.39778203, 8.54569118 },
+        {       47.39779838, 8.54568447 },
+        {      47.39781835, 8.54566972 },
+        {     47.39782107, 8.54564692 },
+        {    47.3978247, 8.54561876 },
+        {   47.3978247, 8.54559193 },
+        {  47.3978247, 8.54556511 },
+        {         47.39782107, 8.54553427 },
+        {        47.39780836, 8.54552756 },
+        {       47.39779656, 8.54551549 },
+        {      47.39777568, 8.54550342 },
+        {     47.3977548, 8.54549671 },
+        {    47.39773755, 8.54549671 },
+        {   47.39771849, 8.54550208 },
+        {         47.39770396, 8.54551415 },
+        {        47.39769398, 8.54554097 },
+        {       47.39768762, 8.54556243 },
+        {      47.39768672, 8.54557852 },
+        {     47.3976849, 8.54559998 },
+        {    47.39768399, 8.54562278 },
+        {   47.39768399, 8.54564155 },
+        {  47.39769035, 8.54566569 },
+        {         47.39770759, 8.54568983 },
+        {        47.39772757, 8.54569922  },
+        {       47.39774481, 8.54570727 },
+        {      47.39776025, 8.54572202 },
+        {     47.39778567, 8.54572336 },
+        {    47.39780291, 8.54572202 },
+        {   47.39782107, 8.54571263 },
+        {  47.39783469, 8.54569788 },
+        {         47.39783832, 8.54568179 },
+        {        47.39784104, 8.54566569 },
+        {       47.39784376, 8.54564424 },
+    };
 
     // update current location coordinates
-    // Using trivial logic to make drone oscillate
-    if (alternative++ % 2 == 0) {
-        _motion_report.lat_int += static_cast<int32_t>(lat_offset);
-        _motion_report.lon_int += static_cast<int32_t>(lon_offset);
-        _motion_report.alt += rel_alt;
-        // LogInfo() << "+ Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
-    } else {
-        _motion_report.lat_int -= static_cast<int32_t>(lat_offset);
-        _motion_report.lon_int -= static_cast<int32_t>(lon_offset);
-        _motion_report.alt -= rel_alt;
-        // LogInfo() << "- Lat: " << _motion_report.lat_int << ", Long: " << _motion_report.lon_int;
-    }
-
+    _follow_info.lat = spiral_points[_spiral_idx].lat;
+    _follow_info.lon = spiral_points[_spiral_idx].lon;
+    // LogInfo() << "+ Lat: " << _follow_info.lat << ", Long: " << _follow_info.lon;
+    _spiral_idx++;
     _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::POS));
 
     // update current eph & epv
-    _motion_report.pos_std_dev[0] += 0.05f;
-    _motion_report.pos_std_dev[1] += 0.05f;
-    _motion_report.pos_std_dev[2] += 0.05f;
+    _follow_info.pos_std_dev[0] += 0.57f;
+    _follow_info.pos_std_dev[1] += 0.57f;
+    _follow_info.pos_std_dev[2] += 0.50f;
 
-    // calculate z velocity if it's available
-    _motion_report.vz += 0.5f;
-
-    // calculate x,y velocity if it's
-    _motion_report.vx += 0.05f;
-    _motion_report.vy += 0.04f;
-
+    _follow_info.vx_ms += 0.05f;
+    _follow_info.vy_ms += 0.14f;
+    _follow_info.vz_ms += 0.8f;
     _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::VEL));
-#else
+}
+#endif
+
+void FollowMeImpl::update_follow_info()
+{
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     // Ideally GPS position, eph, epv, velocity is provided by
     // a platform-specific framwork.
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
-#endif
-
-    // send to GCS position details to Vehicle
-    send_gcs_motion_report();
 }
 
-FollowMe::Configuration FollowMeImpl::get_config() const
+void FollowMeImpl::follow_info_handler()
+{
+#ifdef FOLLOW_ME_TESTING
+    update_fake_follow_info();
+#endif
+    update_follow_info();
+    send_follow_info();
+}
+
+const FollowMe::Config &FollowMeImpl::get_config() const
 {
     return _config;
 }
 
-void FollowMeImpl::receive_param_min_height(bool success, float min_height_m)
+bool FollowMeImpl::set_config(const FollowMe::Config &config)
 {
-    if (success) {
-        LogInfo() << "NAV_MIN_FT_HT: " << min_height_m << "m";
-        _config.set_min_height_m(min_height_m);
+    auto height = config.min_height_m;
+    auto distance = config.follow_dist_m;
+    int32_t direction = static_cast<int32_t>(config.follow_dir);
+    auto responsiveness = config.responsiveness;
+
+    // Valdidate configuration
+    if (!is_config_ok(config)) {
+        LogErr() << "set_config() failed. Last configuration is preserved.";
+        return false;
     }
-}
 
-void FollowMeImpl::receive_param_follow_target_dist(bool success, float ft_dist_m)
-{
-    if (success) {
-        LogInfo() << "NAV_FT_DST: " << ft_dist_m << "m";
-        _config.set_follow_target_dist_m(ft_dist_m);
-    }
-}
-
-void FollowMeImpl::receive_param_follow_dir(bool success, int32_t dir)
-{
-    if (success) {
-        FollowMe::Configuration::FollowDirection d = FollowMe::Configuration::FollowDirection::NONE;
-        switch (dir) {
-            case 0: d = FollowMe::Configuration::FollowDirection::FRONT_RIGHT; break;
-            case 1: d = FollowMe::Configuration::FollowDirection::BEHIND; break;
-            case 2: d = FollowMe::Configuration::FollowDirection::FRONT; break;
-            case 3: d = FollowMe::Configuration::FollowDirection::FRONT_LEFT; break;
-            default: break;
-        }
-        _config.set_follow_dir(d);
-        LogInfo() << "NAV_FT_FS: " << FollowMe::Configuration::to_str(d);
-        if (d != FollowMe::Configuration::FollowDirection::NONE) {
-            _config.set_follow_dir(d);
-        }
-    }
-}
-
-void FollowMeImpl::receive_param_responsiveness(bool success, float rsp)
-{
-    if (success) {
-        LogInfo() << "NAV_FT_RS: " << rsp;
-        _config.set_responsiveness(rsp);
-    }
-}
-
-void FollowMeImpl::set_config(const FollowMe::Configuration &cfg)
-{
-    auto height = cfg.min_height_m();
-    auto dist = cfg.follow_target_dist_m();
-    int32_t dir = static_cast<int32_t>(cfg.follow_dir());
-    auto rsp = cfg.responsiveness();
-
-    LogInfo() << "Going to set min height " << height << " mts";
-    if (cfg.min_height_m() != FollowMe::Configuration::DEF_DIST_WRT_FT)
+    // Send configuration to Vehicle
+    if (height != FollowMe::Config::DEF_HEIGHT_M)
         _parent->set_param_float_async("NAV_MIN_FT_HT", height,
-                                       std::bind(&FollowMeImpl::receive_param_min_height,
+                                       std::bind(&FollowMeImpl::rcv_param_min_height,
                                                  this, _1, height));
+    if (distance != FollowMe::Config::DEF_FOLLOW_DIST_M)
+        _parent->set_param_float_async("NAV_FT_DST", distance,
+                                       std::bind(&FollowMeImpl::rcv_param_follow_distance,
+                                                 this, _1, distance));
+    if (config.follow_dir != FollowMe::Config::DEF_FOLLOW_DIR)
+        _parent->set_param_int_async("NAV_FT_FS", direction,
+                                     std::bind(&FollowMeImpl::rcv_param_follow_direction,
+                                               this, _1, direction));
+    if (responsiveness != FollowMe::Config::DEF_RESPONSIVENSS)
+        _parent->set_param_float_async("NAV_FT_RS", responsiveness,
+                                       std::bind(&FollowMeImpl::rcv_param_responsiveness,
+                                                 this, _1, responsiveness));
 
-    if (cfg.follow_target_dist_m() != FollowMe::Configuration::DEF_DIST_WRT_FT)
-        _parent->set_param_float_async("NAV_FT_DST", dist,
-                                       std::bind(&FollowMeImpl::receive_param_follow_target_dist,
-                                                 this, _1, dist));
-    if (cfg.follow_dir() != FollowMe::Configuration::DEF_FOLLOW_DIR)
-        _parent->set_param_int_async("NAV_FT_FS", dir,
-                                     std::bind(&FollowMeImpl::receive_param_follow_dir,
-                                               this, _1, dir));
-    if (cfg.responsiveness() != FollowMe::Configuration::DEF_DYN_FLT_ALG_RSP)
-        _parent->set_param_float_async("NAV_FT_RS", rsp,
-                                       std::bind(&FollowMeImpl::receive_param_responsiveness,
-                                                 this, _1, rsp));
+    // FIXME: We've sent valid configuration to Vehicle.
+    // But that doesn't mean configuration is applied, untill we receive confirmation.
+    // For now we're hoping that it is applied successfully.
+    return true;
 }
 
-/**
- * @brief FollowMeImpl::start
- * @return
- */
+bool FollowMeImpl::is_config_ok(const FollowMe::Config &config) const
+{
+    auto config_ok = false;
+
+    if (config.min_height_m < FollowMe::Config::MIN_HEIGHT_M) {
+        LogErr() << "Err: Min height must be atleast 8.0 meters";
+    } else if (config.follow_dist_m < FollowMe::Config::MIN_FOLLOW_DIST_M) {
+        LogErr() << "Err: Min Follow distance must be atleast 1.0 meter";
+    } else if (config.follow_dir < FollowMe::Config::FollowDirection::FRONT_RIGHT ||
+               config.follow_dir > FollowMe::Config::FollowDirection::NONE) {
+        LogErr() << "Err: Invalid Follow direction";
+    } else if (config.responsiveness < FollowMe::Config::MIN_RESPONSIVENESS ||
+               config.responsiveness > FollowMe::Config::MAX_RESPONSIVENESS) {
+        LogErr() << "Err: Responsiveness must be in range (0.0 to 1.0)";
+    } else { // Config is OK
+        config_ok = true;
+    }
+
+    return config_ok;
+}
+
+const FollowMe::FollowInfo &FollowMeImpl::get_follow_info() const
+{
+    return _follow_info;
+}
+
+void FollowMeImpl::set_follow_info(const FollowMe::FollowInfo &info)
+{
+    _follow_info = info;
+}
+
+void FollowMeImpl::rcv_param_min_height(bool success, float min_height_m)
+{
+    if (success) {
+        LogInfo() << "NAV_MIN_FT_HT: curr: " << _config.min_height_m << "m -> new: " << min_height_m << "m";
+        _config.min_height_m = min_height_m;
+    } else {
+        LogErr() << "Failed to set NAV_MIN_FT_HT: " << min_height_m << "m";
+    }
+}
+
+void FollowMeImpl::rcv_param_follow_distance(bool success, float follow_dist_m)
+{
+    if (success) {
+        LogInfo() << "NAV_FT_DST: curr: " << _config.follow_dist_m << "m -> new: " << follow_dist_m << "m";
+        _config.follow_dist_m = follow_dist_m;
+    } else {
+        LogErr() << "Failed to set NAV_FT_DST: " << follow_dist_m << "m";
+    }
+}
+
+void FollowMeImpl::rcv_param_follow_direction(bool success, int32_t dir)
+{
+    auto new_dir = FollowMe::Config::FollowDirection::NONE;
+    switch (dir) {
+        case 0: new_dir = FollowMe::Config::FollowDirection::FRONT_RIGHT; break;
+        case 1: new_dir = FollowMe::Config::FollowDirection::BEHIND; break;
+        case 2: new_dir = FollowMe::Config::FollowDirection::FRONT; break;
+        case 3: new_dir = FollowMe::Config::FollowDirection::FRONT_LEFT; break;
+        default: break;
+    }
+    auto curr_dir_str = FollowMe::Config::to_str(_config.follow_dir);
+    auto new_dir_str = FollowMe::Config::to_str(new_dir);
+    if (success) {
+        LogInfo() << "NAV_FT_FS: curr: " << curr_dir_str << " -> new: " << new_dir_str;
+        if (new_dir != FollowMe::Config::FollowDirection::NONE) {
+            _config.follow_dir = new_dir;
+        }
+    } else {
+        LogErr() << "Failed to set NAV_FT_FS: " <<  FollowMe::Config::to_str(new_dir);
+    }
+}
+
+void FollowMeImpl::rcv_param_responsiveness(bool success, float responsiveness)
+{
+    if (success) {
+        LogInfo() << "NAV_FT_RS: curr: " << _config.responsiveness << " -> new: " << responsiveness;
+        _config.responsiveness = responsiveness;
+    } else {
+        LogErr() << "Failed to set NAV_FT_RS: " << responsiveness;
+    }
+}
+
 FollowMe::Result FollowMeImpl::start()
 {
-    _parent->add_call_every(std::bind(&FollowMeImpl::timeout_occurred, this), 0.6f, &_timeout_cookie);
+#ifdef FOLLOW_ME_TESTING
+    _spiral_idx = 0;
+#endif
+    _parent->add_call_every(std::bind(&FollowMeImpl::follow_info_handler, this), 1.0f, &_ce_cookie);
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
     uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
@@ -190,16 +285,16 @@ FollowMe::Result FollowMeImpl::start()
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
-/**
- * @brief FollowMeImpl::send_gcs_motion_report
- */
-void FollowMeImpl::send_gcs_motion_report()
+void FollowMeImpl::send_follow_info()
 {
     dl_time_t now = _time.steady_time();
-    auto elapsed_msec = _time.elapsed_since_ms(now);
+    uint64_t elapsed_msec = _time.elapsed_since_s(now) * 1000; // milliseconds
 
     // needed by http://mavlink.org/messages/common#FOLLOW_TARGET
-    const float vel[3] = { _motion_report.vx, _motion_report.vy, NAN };
+    const int32_t lat_int = static_cast<int32_t>(_follow_info.lat * 1e7);
+    const int32_t lon_int = static_cast<int32_t>(_follow_info.lon * 1e7);
+    const float alt = static_cast<float>(_follow_info.alt);
+    const float vel[3] = { _follow_info.vx_ms, _follow_info.vy_ms, NAN };
     const float accel_unknown[3] = { NAN, NAN, NAN };
     const float attitude_q_unknown[4] = { 1.f, NAN, NAN, NAN };
     const float rates_unknown[3] = { NAN, NAN, NAN };
@@ -209,28 +304,26 @@ void FollowMeImpl::send_gcs_motion_report()
     mavlink_msg_follow_target_pack(_parent->get_own_system_id(),
                                    _parent->get_own_component_id(),
                                    &msg,
-                                   static_cast<uint64_t>(elapsed_msec),
+                                   elapsed_msec,
                                    _estimatation_capabilities,
-                                   _motion_report.lat_int,
-                                   _motion_report.lon_int,
-                                   _motion_report.alt,
+                                   lat_int,
+                                   lon_int,
+                                   alt,
                                    vel,
                                    accel_unknown,
                                    attitude_q_unknown,
                                    rates_unknown,
-                                   _motion_report.pos_std_dev,
+                                   _follow_info.pos_std_dev,
                                    custom_state);
 
-    if (_parent->send_message(msg)) {
-        LogDebug() << "Sent FollowTarget to Device";
-    } else {
-        LogErr() << "Failed to send FollowTarget..";
+    if (!_parent->send_message(msg)) {
+        LogErr() << "send_follow_info() failed..";
     }
 }
 
 FollowMe::Result FollowMeImpl::stop()
 {
-    _parent->remove_call_every(_timeout_cookie);
+    _parent->remove_call_every(_ce_cookie);
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.

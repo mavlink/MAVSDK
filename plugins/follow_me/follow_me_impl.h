@@ -10,13 +10,9 @@
 /**
   IMPORTANT NOTE:
     Macro FOLLOW_ME_TESTING is used to test FollowMe plugin.
-    In real scenario, GCS (DroneCore Application) doesn't provide poistion,
+    In real scenario, GCS (DroneCore Application) doesn't set Follow info,
     but instead, current location of the device is captured by platform-specific Location Framework.
-
  */
-#ifndef FOLLOW_ME_TESTING
-#define FOLLOW_ME_TESTING
-#endif
 
 namespace dronecore {
 
@@ -29,87 +25,46 @@ public:
     void init() override;
     void deinit() override;
 
-    FollowMe::Configuration get_config() const;
-    void set_config(const FollowMe::Configuration &cfg);
+    const FollowMe::Config &get_config() const;
+    bool set_config(const FollowMe::Config &config);
+
+    const FollowMe::FollowInfo &get_follow_info() const;
+    void set_follow_info(const FollowMe::FollowInfo &info);
+
 
     FollowMe::Result start();
     FollowMe::Result stop();
 private:
-    /* private methods */
-    /*****************************************************/
     void process_heartbeat(const mavlink_message_t &message);
+    void follow_info_handler();
+    void send_follow_info();
+    bool is_config_ok(const FollowMe::Config &config) const;
+    void rcv_param_min_height(bool success, float min_height_m);
+    void rcv_param_follow_distance(bool success, float distance);
+    void rcv_param_follow_direction(bool success, int32_t dir);
+    void rcv_param_responsiveness(bool success, float rsp);
     FollowMe::Result to_follow_me_result(MavlinkCommands::Result result) const;
-    void timeout_occurred();
-    void send_gcs_motion_report();
-
-    void receive_param_min_height(bool success, float min_height_m);
-    void receive_param_follow_target_dist(bool success, float ft_dist_m);
-    void receive_param_follow_dir(bool success, int32_t dir);
-    void receive_param_responsiveness(bool success, float rsp);
-    /*****************************************************/
-
-    /**
-     * @brief Altitude flag for Follow Target command.
-     */
-    enum class ESTCapabilities {
-        POS = 0,
-        VEL = 1,
-        ACCEL = 2,
-        ATT_RATES = 3
-    };
-
-    /**
-     * @brief Motion report info which will be emitted periodically to the Vehicle
-     */
-    struct MotionReport {
-        // GCS Position
-        int32_t lat_int;
-        int32_t lon_int;
-        float alt;
-        // Velocity in NED frame in meter / s
-        float vx;
-        float vy;
-        float vz;
-        // Acceleration in NED frame in meter/s^2 or NAN
-        float afx;
-        float afy;
-        float afz;
-        // for eph, epv
-        float pos_std_dev[3];
-
-        /**
-         * @brief MotionReport
-         * @param _lat
-         * @param _lon
-         * @param _alt
-         */
+    void update_follow_info();
 #ifdef FOLLOW_ME_TESTING
-        // Initial GCS position is set to PX4 Home
-        constexpr static const double DEF_LATITUDE = 47.3977436;
-        constexpr static const double DEF_LONGITUDE = 8.5455864;
-        constexpr static const double DEF_ALTITUDE =  488.27;
-        // Constructor
-        MotionReport(double _lat = DEF_LATITUDE, double _lon = DEF_LONGITUDE,
-                     double _alt = DEF_ALTITUDE): vx(0.f), vy(0.f), vz(0.f), afx(0.f), afy(0.f), afz(0.f), pos_std_dev{}
-#else
-        MotionReport(double _lat, double _lon, double _alt): vx(0.f), vy(0.f), vz(0.f), afx(0.f), afy(0.f),
-            afz(0.f), pos_std_dev {}
+    void update_fake_follow_info();
+    int _spiral_idx;
 #endif
-        {
-            lat_int = static_cast<int32_t>(_lat * 1e7);
-            lon_int = static_cast<int32_t>(_lon * 1e7);
-            alt = static_cast<float>(_alt);
-        }
+
+    enum class ESTCapabilities {
+        POS,
+        VEL,
+        ACCEL,
+        ATT_RATES
     };
 
     Time _time;
-    void *_timeout_cookie;
-    // required for emitting MotionReport updates to Vehicle
-    MotionReport _motion_report;
-    CallEveryHandler _motion_report_timer;
+    void *_ce_cookie;
+    // required for emitting follow target updates to Vehicle
+    FollowMe::FollowInfo _follow_info;
+    CallEveryHandler _follow_info_timer;
     uint8_t _estimatation_capabilities;
     // holds followme configuration
-    FollowMe::Configuration _config;
+    FollowMe::Config _config;
     bool _followme_mode_active;
 };
 
