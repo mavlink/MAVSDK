@@ -192,7 +192,7 @@ private:
 
     void *_timeout_cookie = nullptr;
 
-    dl_time_t _last_request_time = {};
+    // dl_time_t _last_request_time = {};
 };
 
 } // namespace dronecore
