@@ -131,8 +131,9 @@ void FollowMeImpl::follow_info_handler()
 {
 #ifdef FOLLOW_ME_TESTING
     update_fake_follow_info();
-#endif
+#else
     update_follow_info();
+#endif
     send_follow_info();
 }
 
@@ -143,16 +144,16 @@ const FollowMe::Config &FollowMeImpl::get_config() const
 
 bool FollowMeImpl::set_config(const FollowMe::Config &config)
 {
-    auto height = config.min_height_m;
-    auto distance = config.follow_dist_m;
-    int32_t direction = static_cast<int32_t>(config.follow_dir);
-    auto responsiveness = config.responsiveness;
-
     // Valdidate configuration
     if (!is_config_ok(config)) {
         LogErr() << "set_config() failed. Last configuration is preserved.";
         return false;
     }
+
+    auto height = config.min_height_m;
+    auto distance = config.follow_dist_m;
+    int32_t direction = static_cast<int32_t>(config.follow_dir);
+    auto responsiveness = config.responsiveness;
 
     // Send configuration to Vehicle
     if (height != FollowMe::Config::DEF_HEIGHT_M)
