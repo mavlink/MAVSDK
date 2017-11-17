@@ -50,8 +50,8 @@ public:
         // Min & Max ranges as per PX4 FollowMe Configuration.
         static const float MIN_HEIGHT_M; /**< @brief Min follow target height, in meters. */
         static const float MIN_FOLLOW_DIST_M;  /**< @brief Min distance to follow target from, in meters. */
-        static const float MIN_RESPONSIVENESS; /**< @brief Min responsiveness to target movement. */
-        static const float MAX_RESPONSIVENESS; /**< @brief Max responsiveness to target movement. */
+        static const float MIN_RESPONSIVENESS; /**< @brief Min responsiveness to target movement. Range (0.0 to 1.0) */
+        static const float MAX_RESPONSIVENESS; /**< @brief Max responsiveness to target movement. Range (0.0 to 1.0) */
 
         float min_height_m = DEF_HEIGHT_M; /**< @brief Default follow target height in meters. */
         float follow_dist_m = DEF_FOLLOW_DIST_M; /**< @brief Default distance to follow target from. */
