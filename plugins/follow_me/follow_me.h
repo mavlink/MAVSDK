@@ -42,22 +42,21 @@ public:
             NONE
         };
         // Default Configuration
-        static const float DEF_HEIGHT_M; /**< @brief Default height (in meters) above home. */
-        static const float DEF_FOLLOW_DIST_M; /**< @brief Default Follow distance (in meters) to target. */
-        static const FollowDirection DEF_FOLLOW_DIR; /**< @brief Default side to follow target from. */
-        static const float DEF_RESPONSIVENSS; /**< @brief Default responsiveness to target movement. */
+        static const float DEF_HEIGHT_M; /**< @brief Default height (in mts) above home. */
+        static const float DEF_FOLLOW_DIST_M; /**< @brief Default Follow distance (in mts). */
+        static const FollowDirection DEF_FOLLOW_DIR; /**< @brief Default follow direction. */
+        static const float DEF_RESPONSIVENSS; /**< @brief Default responsiveness to target. */
 
         // Min & Max ranges as per PX4 FollowMe Configuration.
-        static const float MIN_HEIGHT_M; /**< @brief Min follow target height, in meters. */
-        static const float MIN_FOLLOW_DIST_M;  /**< @brief Min distance to follow target from, in meters. */
-        static const float MIN_RESPONSIVENESS; /**< @brief Min responsiveness to target movement. Range (0.0 to 1.0) */
-        static const float MAX_RESPONSIVENESS; /**< @brief Max responsiveness to target movement. Range (0.0 to 1.0) */
+        static const float MIN_HEIGHT_M; /**< @brief Min follow height, in mts. >= 8.0m */
+        static const float MIN_FOLLOW_DIST_M;  /**< @brief Min follow distance from, in mts. >= 1.0m */
+        static const float MIN_RESPONSIVENESS; /**< @brief Min responsiveness: 0.0 */
+        static const float MAX_RESPONSIVENESS; /**< @brief Max responsiveness: 1.0 */
 
-        float min_height_m = DEF_HEIGHT_M; /**< @brief Default follow target height in meters. */
-        float follow_dist_m = DEF_FOLLOW_DIST_M; /**< @brief Default distance to follow target from. */
-        FollowDirection follow_dir =
-            FollowDirection::BEHIND; /**< @brief Follow target from behind by default. */
-        float responsiveness = DEF_RESPONSIVENSS; /**< @brief Default responsiveness to target movement. */
+        float min_height_m = DEF_HEIGHT_M; /**< @brief Default follow height: 8.0 mts */
+        float follow_dist_m = DEF_FOLLOW_DIST_M; /**< @brief Default follow distance: 8.0 mts */
+        FollowDirection follow_dir = FollowDirection::BEHIND; /**< @brief Default side: BEHIND. */
+        float responsiveness = DEF_RESPONSIVENSS; /**< @brief Def responsiveness: 0.5 (0.0 to 1.0)*/
 
         /**
          * @brief Human-readable string of enum `FollowDirection`.
