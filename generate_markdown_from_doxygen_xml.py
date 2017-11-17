@@ -920,10 +920,10 @@ DOXYGEN_OUTPUT_DIR = args.output_dir + '/markdown'
 
 # Check if XML file path exists
 if not os.path.exists(DOXYGEN_ROOT_DIR):
-    print('Docs directory does not exist. Run: `make docs`')
+    print('Docs directory does not exist.')
     exit()
 if not os.path.exists(DOXYGEN_XML_DIR):
-    print('XML directory does not exist (created by doxygen). Run: `make docs`')
+    print('XML directory does not exist (created by doxygen).')
     exit()
 if not os.path.exists(DOXYGEN_OUTPUT_DIR):
     #make output dir
