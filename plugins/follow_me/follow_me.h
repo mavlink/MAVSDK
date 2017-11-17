@@ -3,6 +3,10 @@
 #include <iostream>
 #include <cmath>
 
+#ifndef FOLLOW_ME_TESTING
+#define FOLLOW_ME_TESTING
+#endif
+
 namespace dronecore {
 
 class FollowMeImpl;
