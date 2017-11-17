@@ -102,6 +102,10 @@ include_directories(
     SYSTEM ${EXTERNAL_DIR}/${additional_includes}
 )
 
+if (DEFINED additional_includes AND NOT additional_includes STREQUAL "")
+    message(STATUS "Additional includes: ${additional_includes}")
+endif()
+
 if (ANDROID)
     include_directories(curl-android-ios/prebuilt-with-ssl/android/include)
 endif()
