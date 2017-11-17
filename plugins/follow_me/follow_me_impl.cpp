@@ -288,9 +288,9 @@ FollowMe::Result FollowMeImpl::start()
 void FollowMeImpl::send_follow_info()
 {
     dl_time_t now = _time.steady_time();
-    uint64_t elapsed_msec = _time.elapsed_since_s(now) * 1000; // milliseconds
 
     // needed by http://mavlink.org/messages/common#FOLLOW_TARGET
+    uint64_t elapsed_msec = static_cast<uint64_t>(_time.elapsed_since_s(now) * 1000); // milliseconds
     const int32_t lat_int = static_cast<int32_t>(_follow_info.lat * 1e7);
     const int32_t lon_int = static_cast<int32_t>(_follow_info.lon * 1e7);
     const float alt = static_cast<float>(_follow_info.alt);
