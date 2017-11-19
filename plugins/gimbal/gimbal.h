@@ -39,7 +39,7 @@ public:
     /**
      * @brief Returns a human-readable English string for Gimbal::Result.
      *
-     * @param Result The enum value for which a human readable string is required.
+     * @param result The enum value for which a human readable string is required.
      * @return Human readable string for the Gimbal::Result.
      */
     static const char *result_str(Result result);
