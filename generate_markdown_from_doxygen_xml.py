@@ -953,11 +953,11 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
             skip_string=" %s - (directory listing)" % current_filename
             skipped_files.append(skip_string)
             continue
-        if name is 'index.xml':
+        if name.endswith('index.xml'):
             skip_string=" %s - (index page)" % current_filename
             skipped_files.append(skip_string)
             continue
-        if name is 'namespacedronecore.xml':
+        if name.endswith('namespacedronecore.xml'):
             skip_string=" %s - (index page)" % current_filename
             skipped_files.append(skip_string)
             continue
