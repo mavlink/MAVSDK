@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Run with argument `--skip-checks` to skip checks for clean build and removing install dir.
+
 # exit on any error
 set -e
 
@@ -11,19 +13,26 @@ set -e
 # Get current directory of script.
 source_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+skip_checks=false
+if [ "$#" -eq 1 -a "$1" == "--skip-checks" ]; then
+    skip_checks=true
+fi
+
 # We use a local install folder so we don't need sudo.
 install_prefix="$source_dir/install"
 
-# We need to do a clean build, otherwise the INSTALL_PREFIX has no effect.
-if [ -e $source_dir/build/ ]; then
-    echo "Build directory ($install_prefix) already exists, you should do 'make clean' first."
-    exit 1
-fi
+if [ "$skip_checks" = false ]; then
+    # We need to do a clean build, otherwise the INSTALL_PREFIX has no effect.
+    if [ -e $source_dir/build/ ]; then
+        echo "Build directory ($install_prefix) already exists, you should do 'make clean' first."
+        exit 1
+    fi
 
-# Check for leftover install artefacts.
-if [ -e $install_prefix ]; then
-    echo "Install directory ($install_prefix) already exists, you should delete it up first."
-    exit 1
+    # Check for leftover install artefacts.
+    if [ -e $install_prefix ]; then
+        echo "Install directory ($install_prefix) already exists, you should delete it up first."
+        exit 1
+    fi
 fi
 
 # Build and install locally.
