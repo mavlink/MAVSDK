@@ -200,7 +200,7 @@ public:
     void register_on_timeout(event_callback_t callback);
 
 private:
-    /** @private. */
+    /* @private. */
     DroneCoreImpl *_impl;
 
     // Non-copyable
