@@ -70,12 +70,6 @@ all: default
 default:
 	$(call cmake-build)
 
-docs:
-	- (cd $(INSTALL_PREFIX)/include/dronecore \
-        && mkdir -p docs \
-        && doxygen $(CURRENT_DIR)/.doxygen \
-        && $(CURRENT_DIR)/generate_markdown_from_doxygen_xml.py docs docs)
-
 ios: ios_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
@@ -184,6 +178,6 @@ else
 endif
 
 .PHONY:
-	clean docs fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
+	clean fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
 
 # vim:ft=make:

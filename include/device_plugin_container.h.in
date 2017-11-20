@@ -39,23 +39,28 @@ public:
 
 ${PLUGIN_GET_STRING}
 
-    // Non-copyable
+    /**
+     * @brief Copy constructor (object is not copyable).
+     */
     DevicePluginContainer(const DevicePluginContainer &) = delete;
+    /**
+     * @brief Equality operator (object is not copyable).
+     */
     const DevicePluginContainer &operator=(const DevicePluginContainer &) = delete;
 
 protected:
-    /** @private. */
+    /* @private. */
     virtual void init_plugins();
 
-    /** @private. */
+    /* @private. */
     virtual void deinit_plugins();
 
-    /** @private. */
+    /* @private. */
     DeviceImpl *_impl;
 
 ${PLUGIN_MEMBER_STRING}
 
-    /** @private. */
+    /* @private. */
     std::vector<PluginImplBase *> _plugin_impl_list;
 };
 
