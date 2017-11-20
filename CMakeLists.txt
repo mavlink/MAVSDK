@@ -7,9 +7,6 @@ project(dronecore)
 # Add DEBUG define for Debug target
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
 
-# For testing FollowMe plugin
-set(CMAKE_CXX_FLAGS_DEBUG "-DFOLLOW_ME_TESTING")
-
 # This finds thread libs on Linux, Mac, and Windows.
 find_package(Threads REQUIRED)
 

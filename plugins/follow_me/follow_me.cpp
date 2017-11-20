@@ -12,7 +12,6 @@ FollowMe::~FollowMe()
 {
 }
 
-// Config
 const FollowMe::Config &FollowMe::get_config() const
 {
     return _impl->get_config();
@@ -23,15 +22,9 @@ bool FollowMe::set_config(const FollowMe::Config &config)
     return _impl->set_config(config);
 }
 
-// Follow info
-const FollowMe::FollowInfo &FollowMe::get_follow_info() const
+void FollowMe::register_follow_target_info_callback(FollowMe::follow_target_info_callback_t cb)
 {
-    return _impl->get_follow_info();
-}
-
-void FollowMe::set_follow_info(const FollowMe::FollowInfo &info)
-{
-    _impl->set_follow_info(info);
+    _impl->register_follow_target_info_callback(cb);
 }
 
 std::string FollowMe::Config::to_str(FollowMe::Config::FollowDirection dir)

@@ -236,9 +236,8 @@ void Telemetry::flight_mode_async(flight_mode_callback_t callback)
     return _impl->flight_mode_async(callback);
 }
 
-const char *Telemetry::flight_mode_str(FlightMode flight_mode)
+std::string Telemetry::flight_mode_str(FlightMode flight_mode)
 {
-    LogDebug() << "Flight mode val " << flight_mode;
     switch (flight_mode) {
         case FlightMode::READY:
             return "Ready";

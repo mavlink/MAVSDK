@@ -9,13 +9,10 @@
 using namespace dronecore;
 using namespace std::chrono;
 using namespace std::this_thread;
-
-#ifndef FOLLOW_ME_TESTING
-#define FOLLOW_ME_TESTING
-#endif
+using namespace std::placeholders;
 
 void print(const FollowMe::Config &config);
-void print(const FollowMe::FollowInfo &info);
+void fill_follow_target_info(FollowMe::FollowTargetInfo &info);
 
 TEST_F(SitlTest, FollowMe)
 {
@@ -48,11 +45,11 @@ TEST_F(SitlTest, FollowMe)
 
     sleep_for(seconds(5));
 
-    auto defult_config = device.followme().get_config();
-    print(defult_config);
+    auto curr_config = device.followme().get_config();
+    print(curr_config);
 
-    auto info = device.followme().get_follow_info();
-    print(info);
+    // Feed Follow target info
+    device.followme().register_follow_target_info_callback(std::bind(fill_follow_target_info, _1));
 
     // start following with default configuration
     FollowMe::Result followme_result = device.followme().start();
@@ -113,11 +110,14 @@ TEST_F(SitlTest, FollowMeWithConfig)
     bool configured = device.followme().set_config(config);
     ASSERT_EQ(true, configured);
 
-    // set initial motion report details
-    FollowMe::FollowInfo info;
-    info.lat += .000003;
-    device.followme().set_follow_info(info);
-    print(info);
+    sleep_for(seconds(2)); // untill config is applied
+
+    // Verify your configuration
+    auto curr_config = device.followme().get_config();
+    print(curr_config);
+
+    // Feed Follow target info
+    device.followme().register_follow_target_info_callback(std::bind(fill_follow_target_info, _1));
 
     // start following
     FollowMe::Result followme_result = device.followme().start();
@@ -135,16 +135,9 @@ TEST_F(SitlTest, FollowMeWithConfig)
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 }
 
-
-void print(Telemetry::FlightMode flight_mode)
-{
-    std::cout << "FlightMode: " << Telemetry::flight_mode_str(flight_mode)
-              << std::endl;
-}
-
 void print(const FollowMe::Config &config)
 {
-    std::cout << "Default PX4 FollowMe config" << std::endl;
+    std::cout << "Current FollowMe configuration of the device" << std::endl;
     std::cout << "---------------------------" << std::endl;
     std::cout << "Min Height: " << config.min_height_m << "m" << std::endl;
     std::cout << "Distance: " << config.follow_dist_m << "m" << std::endl;
@@ -153,11 +146,85 @@ void print(const FollowMe::Config &config)
     std::cout << "---------------------------" << std::endl;
 }
 
-void print(const FollowMe::FollowInfo &info)
+void fill_follow_target_info(FollowMe::FollowTargetInfo &info)
 {
-    std::cout << "Follow info" << std::endl;
-    std::cout << "-----------" << std::endl;
-    std::cout << "GCS at Lat: " << info.lat << " Lon: " << info.lon << " Alt: " <<
-              info.alt << std::endl;
-    std::cout << "-----------" << std::endl;
+    static FollowMe::FollowTargetInfo spiral_path[] = {
+        { 47.39779928779934, 8.54559461331354, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39780291, 8.54557048, 489.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39779838, 8.5455517, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39778748, 8.54554499, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39777659, 8.54553561, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39776569, 8.54553292, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39774663, 8.54552622, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39772938, 8.54552488, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39771304, 8.54554231, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39770578, 8.5455745, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39770487, 8.54559596, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39770578, 8.54561741, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39770669, 8.54563887, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39771486, 8.54565765, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39773029, 8.54567642, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39775026, 8.54568447, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39776751, 8.54569118, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39778203, 8.54569118, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39779838, 8.54568447, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39781835, 8.54566972, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39782107, 8.54564692, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.3978247, 8.54561876, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.3978247, 8.54559193, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.3978247, 8.54556511, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39782107, 8.54553427, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39780836, 8.54552756, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39779656, 8.54551549, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39777568, 8.54550342, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.3977548, 8.54549671, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39773755, 8.54549671, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39771849, 8.54550208, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39770396, 8.54551415, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39769398, 8.54554097, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39768762, 8.54556243, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39768672, 8.54557852, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.3976849, 8.54559998, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39768399, 8.54562278, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39768399, 8.54564155, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39769035, 8.54566569, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39770759, 8.54568983, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39772757, 8.54569922, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f}},
+        { 47.39774481, 8.54570727, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39776025, 8.54572202, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39778567, 8.54572336, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39780291, 8.54572202, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39782107, 8.54571263, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39783469, 8.54569788, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39783832, 8.54568179, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39784104, 8.54566569, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39784376, 8.54564424, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39784386, 8.54564435, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39784396, 8.54564444, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39784386, 8.54564454, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39784346, 8.54564464, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39784336, 8.54564424, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39772757, 8.54569922, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39774481, 8.54570727, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39776025, 8.54572202, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39778567, 8.54572336, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39770396, 8.54551415, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39769398, 8.54554097, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39768762, 8.54556243, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39768672, 8.54557852, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.3976849, 8.54559998, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39779928779934, 8.54559461331354, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39780291, 8.54557048, 489.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39779838, 8.5455517, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39778748, 8.54554499, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39777659, 8.54553561, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39776569, 8.54553292, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39774663, 8.54552622, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39772938, 8.54552488, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} },
+        { 47.39771304, 8.54554231, 500.0, 50.f, 50.f, 50.f, 10.f, 10.f, 0.f, {4.f, 3.f, 0.f} }
+    };
+    static int index = 0;
+
+    info = spiral_path[index++];
+    // for now, lets leave others unchanged.
 }

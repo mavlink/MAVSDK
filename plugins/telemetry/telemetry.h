@@ -113,7 +113,7 @@ public:
     /**
      * @brief Get a human readable English string for a flight mode.
      */
-    static const char *flight_mode_str(FlightMode flight_mode);
+    static std::string flight_mode_str(FlightMode flight_mode);
 
     /**
      * @brief Various health flags.

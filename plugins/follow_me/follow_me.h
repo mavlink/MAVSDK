@@ -2,10 +2,7 @@
 
 #include <iostream>
 #include <cmath>
-
-#ifndef FOLLOW_ME_TESTING
-#define FOLLOW_ME_TESTING
-#endif
+#include <functional>
 
 namespace dronecore {
 
@@ -46,10 +43,10 @@ public:
             NONE
         };
         // Default Configuration
-        static const float DEF_HEIGHT_M; /**< @brief Default height (in mts) above home. */
-        static const float DEF_FOLLOW_DIST_M; /**< @brief Default Follow distance (in mts). */
-        static const FollowDirection DEF_FOLLOW_DIR; /**< @brief Default follow direction. */
-        static const float DEF_RESPONSIVENSS; /**< @brief Default responsiveness to target. */
+        static const float DEF_HEIGHT_M; /**< @brief Default height above home: 8.0 mts */
+        static const float DEF_FOLLOW_DIST_M; /**< @brief Default Follow distance: 8.0 mts */
+        static const FollowDirection DEF_FOLLOW_DIR; /**< @brief Default follow direction: BEHIND */
+        static const float DEF_RESPONSIVENSS; /**< @brief Default responsiveness to target: 0.5 */
 
         // Min & Max ranges as per PX4 FollowMe Configuration.
         static const float MIN_HEIGHT_M; /**< @brief Min follow height, in mts. >= 8.0m */
@@ -57,10 +54,10 @@ public:
         static const float MIN_RESPONSIVENESS; /**< @brief Min responsiveness: 0.0 */
         static const float MAX_RESPONSIVENESS; /**< @brief Max responsiveness: 1.0 */
 
-        float min_height_m = DEF_HEIGHT_M; /**< @brief Default follow height: 8.0 mts */
-        float follow_dist_m = DEF_FOLLOW_DIST_M; /**< @brief Default follow distance: 8.0 mts */
-        FollowDirection follow_dir = FollowDirection::BEHIND; /**< @brief Default side: BEHIND. */
-        float responsiveness = DEF_RESPONSIVENSS; /**< @brief Def responsiveness: 0.5 (0.0 to 1.0)*/
+        float min_height_m; /**< @brief Min follow height above home */
+        float follow_dist_m; /**< @brief Follow horizontal distance b/w Vehicle & GCS. */
+        FollowDirection follow_dir; /**< @brief Side to follow target from. */
+        float responsiveness; /**< @brief Responsiveness: Range (0.0 to 1.0)*/
 
         /**
          * @brief Human-readable string of enum `FollowDirection`.
@@ -86,40 +83,41 @@ public:
      */
     bool set_config(const Config &config);
 
-#ifdef FOLLOW_ME_TESTING
     /**
-     * @brief Follow info which will be emitted periodically to the Vehicle
+     * @brief Follow info which will be emitted periodically to the Vehicle.
      */
-    struct FollowInfo {
-        double lat = 47.3977418; /**< @brief Latitude */
-        double lon = 8.5455938; /**< @brief Longitude */
-        double alt = 488.04; /**< @brief Altitude */
+    struct FollowTargetInfo {
+        double lat; /**< @brief Latitude */
+        double lon; /**< @brief Longitude */
+        double alt; /**< @brief Altitude */
 
-        float vx_ms = 0.f; /**< @brief X Velocity in NED frame in m/s */
-        float vy_ms = 0.f; /**< @brief Y Velocity in NED frame in m/s */
-        float vz_ms = 0.f; /**< @brief Z Velocity in NED frame in m/s */
+        float vx_ms; /**< @brief X Velocity in NED frame in m/s */
+        float vy_ms; /**< @brief Y Velocity in NED frame in m/s */
+        float vz_ms; /**< @brief Z Velocity in NED frame in m/s */
 
-        float ax_ms2 = 0.f; /**< @brief X Acceleration  in NED frame in m/s2 or NAN */
-        float ay_ms2 = 0.f; /**< @brief Y Acceleration  in NED frame in m/s2 or NAN */
-        float az_ms2 = 0.f; /**< @brief Z Acceleration  in NED frame in m/s2 or NAN */
+        float ax_ms2; /**< @brief X Acceleration  in NED frame in m/s2 or NAN */
+        float ay_ms2; /**< @brief Y Acceleration  in NED frame in m/s2 or NAN */
+        float az_ms2; /**< @brief Z Acceleration  in NED frame in m/s2 or NAN */
 
-        float pos_std_dev[3] = {}; /**< @brief epv, epv values */
+        float pos_std_dev[3];/**< @brief epv, epv values */
     };
 
     /**
-     * @brief Gets current follow information
-     * @return read-only reference to current follow info
-     * @sa set_follow_info(const FollowInfo&)
+     * @brief Callback that is called by FollowMe plugin to get `FollowTargetinfo`.
+     * @param follow target info to be filled by callback
      */
-    const FollowInfo &get_follow_info() const;
+    typedef std::function<void (FollowTargetInfo &)> follow_target_info_callback_t;
 
     /**
-     * @brief Sets follow information
-     * @param follow info to be set
-     * @sa get_follow_info()
+     * @brief Registers follow target information callback. This callback is called periodically
+     * by FollowMe plugin. Make sure callback fills proper Follow target info.
+     * @param Application callback that fills follow target info
      */
-    void set_follow_info(const FollowInfo &info);
-#endif
+    void register_follow_target_info_callback(follow_target_info_callback_t callback);
+
+    /**
+      TODO: We're not sure whether de-register is required. Yet to decide.
+     */
 
     /**
      * @brief Return English string for FollowMe error codes.
