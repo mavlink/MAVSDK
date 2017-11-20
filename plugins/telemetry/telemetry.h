@@ -155,6 +155,7 @@ public:
      * @brief Get human-readable English string for Telemetry::Result.
      *
      * @param result The enum value for which string is needed.
+     * @return Human readable string for the Telemetry::Result.
      */
     static const char *result_str(Result result);
 
