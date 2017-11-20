@@ -8,7 +8,7 @@ set -e
 # 2. run doxygen and create html and xml docs,
 # 3. run script to generate markdown from xml
 
-# Get the directory where of this script.
+# Get current directory of script.
 source_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # We use a local install folder so we don't need sudo.
@@ -22,7 +22,7 @@ fi
 
 # Check for leftover install artefacts.
 if [ -e $install_prefix ]; then
-    echo "Install directory ($install_prefix) already exists, you should clean it up first."
+    echo "Install directory ($install_prefix) already exists, you should delete it up first."
     exit 1
 fi
 
