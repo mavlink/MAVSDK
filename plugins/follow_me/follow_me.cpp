@@ -27,6 +27,11 @@ void FollowMe::register_follow_target_info_callback(FollowMe::follow_target_info
     _impl->register_follow_target_info_callback(cb);
 }
 
+void FollowMe::deregister_follow_target_info_callback()
+{
+    _impl->deregister_follow_target_info_callback();
+}
+
 std::string FollowMe::Config::to_str(FollowMe::Config::FollowDirection dir)
 {
     switch (dir) {

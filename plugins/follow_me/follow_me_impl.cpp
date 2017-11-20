@@ -246,6 +246,11 @@ void FollowMeImpl::register_follow_target_info_callback(FollowMe::follow_target_
     _get_follow_target_info_cb = cb;
 }
 
+void FollowMeImpl::deregister_follow_target_info_callback()
+{
+    _get_follow_target_info_cb = nullptr;
+}
+
 FollowMe::Result FollowMeImpl::start()
 {
     _parent->add_call_every(std::bind(&FollowMeImpl::follow_target_info_handler, this), 1.0f,

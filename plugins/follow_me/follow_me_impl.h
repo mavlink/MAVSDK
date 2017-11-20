@@ -22,6 +22,7 @@ public:
     bool set_config(const FollowMe::Config &config);
 
     void register_follow_target_info_callback(FollowMe::follow_target_info_callback_t callback);
+    void deregister_follow_target_info_callback();
 
     FollowMe::Result start();
     FollowMe::Result stop();

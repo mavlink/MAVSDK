@@ -116,7 +116,7 @@ TEST_F(SitlTest, FollowMeWithConfig)
     auto curr_config = device.followme().get_config();
     print(curr_config);
 
-    // Feed Follow target info
+    // Register callback to feed follow target info
     device.followme().register_follow_target_info_callback(std::bind(fill_follow_target_info, _1));
 
     // start following
@@ -125,6 +125,9 @@ TEST_F(SitlTest, FollowMeWithConfig)
 
     // Let the device follow you (GCS) for half a min, say.
     sleep_for(seconds(30));
+
+    // De-register follow target callback.
+    device.followme().deregister_follow_target_info_callback();
 
     // stops following
     followme_result = device.followme().stop();

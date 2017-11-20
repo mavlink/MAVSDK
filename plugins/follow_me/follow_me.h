@@ -111,13 +111,19 @@ public:
     /**
      * @brief Registers follow target information callback. This callback is called periodically
      * by FollowMe plugin. Make sure callback fills proper Follow target info.
+     * It is optional to register this callback.
+     * If registered, plugin will get follow target info from callback.
+     * If not registered, plugin will use platform-specific framework to get follow target info.
      * @param Application callback that fills follow target info
+     * @sa deregister_follow_target_info_callback()
      */
     void register_follow_target_info_callback(follow_target_info_callback_t callback);
 
     /**
-      TODO: We're not sure whether de-register is required. Yet to decide.
+     * @brief De-registers follow target info callback, if registered earlier.
+     * @sa register_follow_target_info_callback(follow_target_info_callback_t)
      */
+    void deregister_follow_target_info_callback();
 
     /**
      * @brief Return English string for FollowMe error codes.
