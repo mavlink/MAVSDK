@@ -42,6 +42,9 @@ public:
 
     /**
      * @brief Gets a human-readable English string for an Mission::Result.
+     *
+     * @param result Enum for which string is required.
+     * @return Human readable string for the Mission::Result.
      */
     static const char *result_str(Result result);
 

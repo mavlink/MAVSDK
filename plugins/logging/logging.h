@@ -41,7 +41,7 @@ public:
      * @brief Returns human-readable English string for Logging::Result.
      *
      * @param result Enum for which string is required.
-     * @return result Human-readable string.
+     * @return result Human-readable string for Logging::Result.
      */
     static const char *result_str(Result result);
 
