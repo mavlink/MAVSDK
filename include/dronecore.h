@@ -89,6 +89,7 @@ public:
     /**
      * @brief Adds a TCP connection with a specific IP address and port number.
      *
+     * @param remote_ip Remote IP address to connect to.
      * @param remote_port The TCP port to connect to.
      * @return The result of adding the connection.
      */
@@ -106,6 +107,7 @@ public:
     /**
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as specified.
      *
+     * @param dev_path COM or UART dev node name/path.
      * @param baudrate Baudrate of the serial port.
      * @return The result of adding the connection.
      */
@@ -198,7 +200,7 @@ public:
     void register_on_timeout(event_callback_t callback);
 
 private:
-    /** @private. */
+    /* @private. */
     DroneCoreImpl *_impl;
 
     // Non-copyable

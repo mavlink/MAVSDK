@@ -42,6 +42,9 @@ public:
 
     /**
      * @brief Gets a human-readable English string for an Mission::Result.
+     *
+     * @param result Enum for which string is required.
+     * @return Human readable string for the Mission::Result.
      */
     static const char *result_str(Result result);
 
@@ -74,8 +77,7 @@ public:
      * The method will fail if any of the downloaded mission items are not supported
      * by the DroneCore API.
      *
-     * @param mission_items Reference to vector of mission items.
-     * @param callback Callback to receive result of this request.
+     * @param callback Callback to receive mission items and result of this request.
      */
     void download_mission_async(mission_items_and_result_callback_t callback);
 
