@@ -128,7 +128,7 @@ public:
      * Android - https://developer.android.com/reference/android/location/Location.html
      * Apple - https://developer.apple.com/documentation/corelocation
      * Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation
-     * @param Application callback that fills follow target info
+     * @param callback Application callback that fills follow target info
      * @sa deregister_follow_target_info_callback()
      */
     void register_follow_target_info_callback(follow_target_info_callback_t callback);
