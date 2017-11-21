@@ -24,6 +24,7 @@ public:
         BUSY, /**< @brief Vehicle busy. */
         COMMAND_DENIED, /**< @brief Command denied. */
         TIMEOUT, /**< @brief %Request timeout. */
+        CALLBACK_NOT_REGISTERED, /**< @brief Follow target info callback is not registered */
         UNKNOWN /**< @brief Unknown error. */
     };
 
@@ -99,7 +100,8 @@ public:
         float ay_ms2; /**< @brief Y Acceleration  in NED frame in m/s2 or NAN */
         float az_ms2; /**< @brief Z Acceleration  in NED frame in m/s2 or NAN */
 
-        float pos_std_dev[3];/**< @brief epv, epv values */
+        float eph_m; /**< @brief Standard deviation of Horizontal position error, in meters */
+        float epv_m; /**< @brief Standard deviation of Vertical position error, in meters */
     };
 
     /**
@@ -111,16 +113,28 @@ public:
     /**
      * @brief Registers follow target information callback. This callback is called periodically
      * by FollowMe plugin. Make sure callback fills proper Follow target info.
-     * It is optional to register this callback.
-     * If registered, plugin will get follow target info from callback.
-     * If not registered, plugin will use platform-specific framework to get follow target info.
+     * It is MANDATORY to register this callback.
+     * FollowMe plugin will get follow target info from callback soon after FollowMe::start() is called.
+     * Starting FollowMe without callback registration results in failure.
+     * Callback should appropriately fill below values into OUT argument of the callback.
+     * ******************************************
+     * Latitude, Longitude, Altitude
+     * X-velocity, Y-velocity, Z-velocity - in m/s
+     * X-acceleration, Y-acceleration, Z-acceleration - in m/s2
+     * EPH & EPV - Standard deviations of Horizontal & Vertical position error - in meters.
+     * ******************************************
+     * App can obtain these data from Location framework of the underlying platform.
+     * Below is a hint to Apps to avail services available on their underlying platforms.
+     * Android - https://developer.android.com/reference/android/location/Location.html
+     * Apple - https://developer.apple.com/documentation/corelocation
+     * Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation
      * @param Application callback that fills follow target info
      * @sa deregister_follow_target_info_callback()
      */
     void register_follow_target_info_callback(follow_target_info_callback_t callback);
 
     /**
-     * @brief De-registers follow target info callback, if registered earlier.
+     * @brief De-registers follow target info callback.
      * @sa register_follow_target_info_callback(follow_target_info_callback_t)
      */
     void deregister_follow_target_info_callback();

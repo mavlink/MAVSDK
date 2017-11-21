@@ -55,11 +55,6 @@ void FollowMeImpl::load_device_config()
                                                           _1, _2));
 }
 
-void FollowMeImpl::platform_follow_target_info_provider(FollowMe::FollowTargetInfo &)
-{
-    // Fill Follow target info obtained from platform-specific Location framework.
-}
-
 void FollowMeImpl::reset_follow_target_info()
 {
     _follow_target_info = FollowMe::FollowTargetInfo();
@@ -67,12 +62,8 @@ void FollowMeImpl::reset_follow_target_info()
 
 void FollowMeImpl::update_follow_target_info()
 {
-    // Request the callback to fill follow target info, if registered by application
-    if (_get_follow_target_info_cb) {
-        _get_follow_target_info_cb(_follow_target_info);
-    } else { // if callback is not registered, request platform to fill.
-        platform_follow_target_info_provider(_follow_target_info);
-    }
+    // Request the callback to fill follow target info
+    _follow_target_info_cb(_follow_target_info);
 
     // for eph, epv
     if (_follow_target_info.lat || _follow_target_info.lon || _follow_target_info.alt) {
@@ -99,10 +90,11 @@ void FollowMeImpl::send_follow_target_info()
     const int32_t lat_int = static_cast<int32_t>(_follow_target_info.lat * 1e7);
     const int32_t lon_int = static_cast<int32_t>(_follow_target_info.lon * 1e7);
     const float alt = static_cast<float>(_follow_target_info.alt);
-    const float vel[3] = { _follow_target_info.vx_ms, _follow_target_info.vy_ms, NAN };
-    const float accel_unknown[3] = { NAN, NAN, NAN };
-    const float attitude_q_unknown[4] = { 1.f, NAN, NAN, NAN };
-    const float rates_unknown[3] = { NAN, NAN, NAN };
+    const float pos_std_dev[] = { _follow_target_info.eph_m, _follow_target_info.eph_m, _follow_target_info.epv_m };
+    const float vel[] = { _follow_target_info.vx_ms, _follow_target_info.vy_ms, NAN };
+    const float accel_unknown[] = { NAN, NAN, NAN };
+    const float attitude_q_unknown[] = { 1.f, NAN, NAN, NAN };
+    const float rates_unknown[] = { NAN, NAN, NAN };
     uint64_t custom_state = 0;
 
     mavlink_message_t msg {};
@@ -118,7 +110,7 @@ void FollowMeImpl::send_follow_target_info()
                                    accel_unknown,
                                    attitude_q_unknown,
                                    rates_unknown,
-                                   _follow_target_info.pos_std_dev,
+                                   pos_std_dev,
                                    custom_state);
 
     if (!_parent->send_message(msg)) {
@@ -243,16 +235,25 @@ void FollowMeImpl::receive_param_responsiveness(bool success, float responsivene
 
 void FollowMeImpl::register_follow_target_info_callback(FollowMe::follow_target_info_callback_t cb)
 {
-    _get_follow_target_info_cb = cb;
+    _follow_target_info_cb = cb;
 }
 
 void FollowMeImpl::deregister_follow_target_info_callback()
 {
-    _get_follow_target_info_cb = nullptr;
+    _follow_target_info_cb = nullptr;
 }
 
 FollowMe::Result FollowMeImpl::start()
 {
+    FollowMe::Result result;
+
+    // if callback is not registered, don't go ahead if registered by application
+    if (!_follow_target_info_cb) {
+        result = FollowMe::Result::CALLBACK_NOT_REGISTERED;
+        LogErr() << "FollowMe: Fatal: " << FollowMe::result_str(result);
+        return result;
+    }
+
     _parent->add_call_every(std::bind(&FollowMeImpl::follow_target_info_handler, this), 1.0f,
                             &_ce_cookie);
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
@@ -263,14 +264,19 @@ FollowMe::Result FollowMeImpl::start()
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
 
-    return to_follow_me_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_DO_SET_MODE,
-                   MavlinkCommands::Params {float(mode),
-                                            float(custom_mode),
-                                            float(custom_sub_mode),
-                                            NAN, NAN, NAN, NAN},
-                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+
+    result = to_follow_me_result(
+                 _parent->send_command_with_ack(
+                     MAV_CMD_DO_SET_MODE,
+                     MavlinkCommands::Params {float(mode),
+                                              float(custom_mode),
+                                              float(custom_sub_mode),
+                                              NAN, NAN, NAN, NAN},
+                     MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+    if (result != FollowMe::Result::SUCCESS) {
+        LogErr() << "FollowMe: Error: " << FollowMe::result_str(result);
+    }
+    return result;
 }
 
 FollowMe::Result FollowMeImpl::stop()

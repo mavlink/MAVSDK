@@ -74,6 +74,8 @@ std::string FollowMe::result_str(Result result)
             return "Command denied";
         case Result::TIMEOUT:
             return "Timeout";
+        case Result::CALLBACK_NOT_REGISTERED:
+            return "Follow target info callback is not registered";
         case Result::UNKNOWN:
         default:
             return "Unknown";

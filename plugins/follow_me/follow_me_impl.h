@@ -29,7 +29,6 @@ public:
 private:
     void process_heartbeat(const mavlink_message_t &message);
 
-    void platform_follow_target_info_provider(FollowMe::FollowTargetInfo &info);
     void follow_target_info_handler();
     void update_follow_target_info();
     void reset_follow_target_info();
@@ -54,7 +53,7 @@ private:
     void *_ce_cookie;
     // required for emitting follow target updates to Vehicle
     FollowMe::FollowTargetInfo _follow_target_info;
-    FollowMe::follow_target_info_callback_t _get_follow_target_info_cb;
+    FollowMe::follow_target_info_callback_t _follow_target_info_cb;
     CallEveryHandler _follow_target_info_timer;
     uint8_t _estimatation_capabilities;
     // holds followme configuration
