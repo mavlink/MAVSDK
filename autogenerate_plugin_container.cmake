@@ -143,11 +143,11 @@ foreach(class_name ${plugin_class_names})
         "${PLUGIN_GET_STRING}    ${class_name} &${get_name}() { return ${member_name}; }\n\n")
 
     set(PLUGIN_MEMBER_STRING
-        "${PLUGIN_MEMBER_STRING}    /* @private */\n")
+        "${PLUGIN_MEMBER_STRING}    /** @private internal use only.*/\n")
     set(PLUGIN_MEMBER_STRING
         "${PLUGIN_MEMBER_STRING}    ${impl_class_name} *${impl_member_name};\n")
     set(PLUGIN_MEMBER_STRING
-        "${PLUGIN_MEMBER_STRING}    /** @private */\n")
+        "${PLUGIN_MEMBER_STRING}    /** @private internal use only.*/\n")
     set(PLUGIN_MEMBER_STRING
         "${PLUGIN_MEMBER_STRING}    ${class_name} ${member_name};\n")
 
