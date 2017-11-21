@@ -49,18 +49,18 @@ ${PLUGIN_GET_STRING}
     const DevicePluginContainer &operator=(const DevicePluginContainer &) = delete;
 
 protected:
-    /* @private. */
+    /** @private internal use only. */
     virtual void init_plugins();
 
-    /* @private. */
+    /** @private internal use only. */
     virtual void deinit_plugins();
 
-    /* @private. */
+    /** @private internal use only. */
     DeviceImpl *_impl;
 
 ${PLUGIN_MEMBER_STRING}
 
-    /* @private. */
+    /** @private internal use only. */
     std::vector<PluginImplBase *> _plugin_impl_list;
 };
 
