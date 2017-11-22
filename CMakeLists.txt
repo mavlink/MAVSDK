@@ -76,6 +76,10 @@ endif()
 
 if (ANDROID)
     add_definitions(-frtti)
+    # Workaround for a plugin where the __androidx86__ is necessary.
+    if (ANDROID_ABI STREQUAL "x86")
+        add_definitions(-D__androidx86__)
+    endif()
 endif()
 
 # Add definition for __FILENAME__ so we don't need to use __FILE__ because it also
