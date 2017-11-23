@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 set(CMAKE_INSTALL_PREFIX "../install" CACHE PATH "default cache path")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 project(dronecore)
 
@@ -296,9 +297,8 @@ if(NOT IOS AND NOT ANDROID)
     set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
     set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage")
 
-    # We try to find gRPC. If we find it we try to include it in the build.
-    include(grpc/FindGRPC.cmake)
-    if(GRPC_LIBRARIES)
+    find_package(GRPC)
+    if(GRPC_FOUND)
 
         # If protobuf is installed to e.g. /opt/protobuf, you need to specifiy this via environment variable:
         # `export PROTOBUF_DIR=/opt/protobuf`
@@ -312,7 +312,7 @@ if(NOT IOS AND NOT ANDROID)
             set(Protobuf_LIBRARIES "$ENV{PROTOBUF_DIR}/lib/libprotobuf.so")
         else()
             message(STATUS "PROTOBUF_DIR not set, checking automatically for Protobuf")
-            include(FindProtobuf REQUIRED)
+            find_package(Protobuf REQUIRED)
         endif()
 
         add_subdirectory(grpc/server)

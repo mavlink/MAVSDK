@@ -38,6 +38,7 @@ endif()
 
 set(GRPC_LIBRARIES ${GRPCPP_LIBRARY} ${GRPC_LIBRARY} ${GPR_LIBRARY})
 if(GRPC_LIBRARIES)
+    set(GRPC_FOUND YES)
     message(STATUS "Found GRPC: ${GRPC_LIBRARIES}; plugin - ${GRPC_CPP_PLUGIN}")
 endif()
 

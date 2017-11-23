@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
 
-#project(grpcdronecore)
-
-
 add_definitions(
     -std=c++11
     -Wno-unused-parameter
@@ -28,7 +25,6 @@ add_custom_command(OUTPUT dronecore.pb.cc
         --cpp_out=. ${proto_dir}/dronecore.proto
     DEPENDS ${proto_dir}/dronecore.proto
 )
-
 
 foreach(plugin ${plugins_list})
     add_custom_command(OUTPUT ${plugin}.grpc.pb.cc
@@ -64,7 +60,6 @@ target_link_libraries(dronecore_server
     dronecore
     ${Protobuf_LIBRARIES}
     ${GRPC_LIBRARIES}
-    #grpc++_reflection
     dl
 )
 
