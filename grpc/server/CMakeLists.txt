@@ -62,7 +62,7 @@ add_executable(dronecore_server ${plugins_src})
 
 target_link_libraries(dronecore_server
     dronecore
-    ${Protobuf_PROTOC_LIBRARIES}
+    ${Protobuf_LIBRARIES}
     ${GRPC_LIBRARIES}
     #grpc++_reflection
     dl
