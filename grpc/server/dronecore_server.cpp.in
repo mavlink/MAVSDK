@@ -49,7 +49,11 @@ void RunServer()
     map_type map;
     std::string plugin;
     std::fstream file;
-    file.open("../proto/plugins.conf");
+    file.open("plugins.conf");
+    if(!file) {
+        std::cout << "Error in reading conf file" << std::endl;
+        return;
+    }
     std::vector<::grpc::Service *> list;
 ${PLUGIN_MAP_APPEND_STRING}
     
@@ -80,8 +84,8 @@ ${PLUGIN_MAP_APPEND_STRING}
     ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
     builder.RegisterService(&service);
-    for (auto service : list) {
-        builder.RegisterService(service);
+    for (auto plugin_service : list) {
+        builder.RegisterService(plugin_service);
     }
     std::unique_ptr<Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;
