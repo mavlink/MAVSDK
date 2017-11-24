@@ -5,6 +5,7 @@ include(FindPythonInterp REQUIRED)
 add_custom_target(pydronecore ALL)
 
 set(plugins_dir ${CMAKE_SOURCE_DIR}/grpc/server/plugins)
+set(plugins_list action mission telemetry)
 
 if(${PYTHONINTERP_FOUND})
     set(proto_dir ${CMAKE_SOURCE_DIR}/grpc/proto)
@@ -27,7 +28,7 @@ if(${PYTHONINTERP_FOUND})
                 -I ${plugins_dir}/${plugin}
                 --python_out=.
                 --grpc_python_out=.
-                ${plugins_dir}${plugin}/${plugin}.proto
+                ${plugins_dir}/${plugin}/${plugin}.proto
             DEPENDS ${plugins_dir}/${plugin}/${plugin}.proto
     )
     endforeach()

@@ -10,6 +10,8 @@ import action_pb2 as dc_action
 import action_pb2_grpc
 import telemetry_pb2 as dc_telemetry
 import telemetry_pb2_grpc
+from google.protobuf import empty_pb2
+import threading
 
 class Colors:
     BLUE = "\033[34m"
@@ -21,8 +23,7 @@ def wait_until(status):
 
 def print_altitude(telemetry_stub, stop):
     for i, position in enumerate(
-        telemetry_stub.TelemetryPositionSubscription(
-            dc_telemetry.TelemetryEmpty())):
+        telemetry_stub.TelemetryPositionSubscription(empty_pb2.Empty())):
         # Position updates with SITL are too fast, we skip 9/10.
         if i % 10 == 0:
             print(Colors.BLUE, end="")
@@ -43,27 +44,27 @@ def run():
     t = threading.Thread(target=print_altitude, args=(telemetry_stub, t_stop))
     t.start()
 
-    arm_result = stub.Arm.future(dc.Empty())
+    arm_result = action_stub.Arm.future(empty_pb2.Empty())
     arm_result = wait_until(arm_result)
-    if arm_result.result == dc.ActionResult.Result_SUCCESS:
+    if arm_result.result == dc_action.ActionResult.SUCCESS:
         print("arming ok")
     else:
         print("arming failed: " + arm_result.result_str)
 
     time.sleep(2)
 
-    takeoff_result = stub.TakeOff.future(dc.Empty())
+    takeoff_result = action_stub.TakeOff.future(empty_pb2.Empty())
     takeoff_result = wait_until(takeoff_result)
-    if takeoff_result.result == dc.ActionResult.Result_SUCCESS:
+    if takeoff_result.result == dc_action.ActionResult.SUCCESS:
         print("takeoff ok")
     else:
         print("takeoff failed: " + takeoff_result.result_str)
 
     time.sleep(5)
 
-    land_result = stub.Land.future(dc.Empty())
+    land_result = action_stub.Land.future(empty_pb2.Empty())
     land_result = wait_until(land_result)
-    if land_result.result == dc.ActionResult.Result_SUCCESS:
+    if land_result.result == dc_action.ActionResult.SUCCESS:
         print("landing ok")
     else:
         print("landing failed: " + land_result.result_str)

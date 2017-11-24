@@ -12,6 +12,7 @@ import action_pb2 as dc_action
 import action_pb2_grpc
 import mission_pb2 as dc_mission
 import mission_pb2_grpc
+from google.protobuf import empty_pb2
 
 
 thread_status = True
@@ -33,7 +34,7 @@ def run():
 
     mission_items = []
 
-    mission_items.append(dc.MissionItem(
+    mission_items.append(dc_mission.MissionItem(
         latitude_deg=47.398170327054473,
         longitude_deg=8.5456490218639658,
         relative_altitude_m=10,
@@ -41,9 +42,9 @@ def run():
         is_fly_through=False,
         gimbal_pitch_deg=20,
         gimbal_yaw_deg=60,
-        camera_action=dc.MissionItem.CameraAction_NONE))
+        camera_action=dc_mission.MissionItem.NONE))
 
-    mission_items.append(dc.MissionItem(
+    mission_items.append(dc_mission.MissionItem(
         latitude_deg=47.398241338125118,
         longitude_deg=8.5455360114574432,
         relative_altitude_m=10,
@@ -51,9 +52,9 @@ def run():
         is_fly_through=True,
         gimbal_pitch_deg=0,
         gimbal_yaw_deg=-60,
-        camera_action=dc.MissionItem.CameraAction_TAKE_PHOTO))
+        camera_action=dc_mission.MissionItem.TAKE_PHOTO))
 
-    mission_items.append(dc.MissionItem(
+    mission_items.append(dc_mission.MissionItem(
         latitude_deg=47.398139363821485,
         longitude_deg=8.5453846156597137,
         relative_altitude_m=10,
@@ -61,9 +62,9 @@ def run():
         is_fly_through=True,
         gimbal_pitch_deg=-45,
         gimbal_yaw_deg=0,
-        camera_action=dc.MissionItem.CameraAction_START_VIDEO))
+        camera_action=dc_mission.MissionItem.START_VIDEO))
 
-    mission_items.append(dc.MissionItem(
+    mission_items.append(dc_mission.MissionItem(
         latitude_deg=47.398058617228855,
         longitude_deg=8.5454618036746979,
         relative_altitude_m=10,
@@ -71,9 +72,9 @@ def run():
         is_fly_through=False,
         gimbal_pitch_deg=-90,
         gimbal_yaw_deg=30,
-        camera_action=dc.MissionItem.CameraAction_STOP_VIDEO))
+        camera_action=dc_mission.MissionItem.STOP_VIDEO))
 
-    mission_items.append(dc.MissionItem(
+    mission_items.append(dc_mission.MissionItem(
         latitude_deg=47.398100366082858,
         longitude_deg=8.5456969141960144,
         relative_altitude_m=10,
@@ -81,9 +82,9 @@ def run():
         is_fly_through=False,
         gimbal_pitch_deg=-45,
         gimbal_yaw_deg=-30,
-        camera_action=dc.MissionItem.CameraAction_START_PHOTO_INTERVAL))
+        camera_action=dc_mission.MissionItem.START_PHOTO_INTERVAL))
 
-    mission_items.append(dc.MissionItem(
+    mission_items.append(dc_mission.MissionItem(
         latitude_deg=47.398001890458097,
         longitude_deg=8.5455576181411743,
         relative_altitude_m=10,
@@ -91,15 +92,15 @@ def run():
         is_fly_through=False,
         gimbal_pitch_deg=0,
         gimbal_yaw_deg=0,
-        camera_action=dc.MissionItem.CameraAction_STOP_PHOTO_INTERVAL))
+        camera_action=dc_mission.MissionItem.STOP_PHOTO_INTERVAL))
 
-    mission_stub.SendMission(dc.Mission(mission_items=mission_items))
+    mission_stub.SendMission(dc_mission.Mission(mission_items=mission_items))
     time.sleep(1)
 
-    action_stub.Arm(dc.Empty())
+    action_stub.Arm(empty_pb2.Empty())
     time.sleep(1)
 
-    future_status = mission_stub.StartMission.future(dc_mission.MissionEmpty())
+    future_status = mission_stub.StartMission.future(empty_pb2.Empty())
     t = Thread(target=wait_func, args=(future_status,))
     t.start()
 
