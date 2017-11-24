@@ -21,20 +21,17 @@ public:
     const FollowMe::Config &get_config() const;
     bool set_config(const FollowMe::Config &config);
 
-    void register_follow_target_info_callback(FollowMe::follow_target_info_callback_t callback);
-    void deregister_follow_target_info_callback();
-
     FollowMe::Result start();
     FollowMe::Result stop();
+
+    bool is_active() const;
+
+    FollowMe::Result set_curr_target_location(const FollowMe::TargetLocation &location);
 private:
     void process_heartbeat(const mavlink_message_t &message);
 
-    void follow_target_info_handler();
-    void update_follow_target_info();
-    void reset_follow_target_info();
-    void send_follow_target_info();
-
-    void load_device_config();
+    // Config methods
+    void set_default_config();
     bool is_config_ok(const FollowMe::Config &config) const;
     void receive_param_min_height(bool success, float min_height_m);
     void receive_param_follow_distance(bool success, float distance);
@@ -42,23 +39,31 @@ private:
     void receive_param_responsiveness(bool success, float rsp);
     FollowMe::Result to_follow_me_result(MavlinkCommands::Result result) const;
 
-    enum class ESTCapabilities {
+    void send_curr_target_location();
+    void stop_sending_target_location();
+
+    friend bool operator!(FollowMe::TargetLocation &location);
+
+    enum class EstimationCapabilites {
         POS,
-        VEL,
-        ACCEL,
-        ATT_RATES
+        VEL
     };
 
+    enum class Mode {
+        NOT_ACTIVE,
+        ACTIVE
+    } _mode = Mode::NOT_ACTIVE;
+    void set_mode(Mode mode);
+
+    mutable std::mutex _mutex {};
+    FollowMe::TargetLocation _curr_target_location {}; // sent to vehicle
+    void *_curr_target_location_cookie = nullptr;
+
     Time _time;
-    void *_ce_cookie;
-    // required for emitting follow target updates to Vehicle
-    FollowMe::FollowTargetInfo _follow_target_info;
-    FollowMe::follow_target_info_callback_t _follow_target_info_cb;
-    CallEveryHandler _follow_target_info_timer;
-    uint8_t _estimatation_capabilities;
-    // holds followme configuration
-    FollowMe::Config _config;
-    bool _followme_mode_active;
+    uint8_t _estimatation_capabilities; // sent to vehicle
+    FollowMe::Config _config; // has FollowMe configuration settings
+
+    const float SENDER_RATE = 0.1f; // send once in a every 10 seconds
 };
 
 } // namespace dronecore

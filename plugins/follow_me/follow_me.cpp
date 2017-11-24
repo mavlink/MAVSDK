@@ -22,14 +22,14 @@ bool FollowMe::set_config(const FollowMe::Config &config)
     return _impl->set_config(config);
 }
 
-void FollowMe::register_follow_target_info_callback(FollowMe::follow_target_info_callback_t cb)
+bool FollowMe::is_active() const
 {
-    _impl->register_follow_target_info_callback(cb);
+    return _impl->is_active();
 }
 
-void FollowMe::deregister_follow_target_info_callback()
+FollowMe::Result FollowMe::set_curr_target_location(const TargetLocation &target_location)
 {
-    _impl->deregister_follow_target_info_callback();
+    return _impl->set_curr_target_location(target_location);
 }
 
 std::string FollowMe::Config::to_str(FollowMe::Config::FollowDirection dir)
@@ -74,8 +74,8 @@ std::string FollowMe::result_str(Result result)
             return "Command denied";
         case Result::TIMEOUT:
             return "Timeout";
-        case Result::CALLBACK_NOT_REGISTERED:
-            return "Follow target info callback is not registered";
+        case Result::NOT_ACTIVE:
+            return "FollowMe is not active";
         case Result::UNKNOWN:
         default:
             return "Unknown";

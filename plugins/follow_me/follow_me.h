@@ -8,10 +8,29 @@ namespace dronecore {
 
 class FollowMeImpl;
 
+/**
+ * @brief FollowMe plugin is used to make your drone to follow your Ground Control Station (Phone/Tab). <br>
+ *
+ * Application need to obtain current GCS position from underying platform,
+ * and feed to it FollowMe, which makes your drone to move.
+ * When GCS keeps moving to a new position, position updates are sent to the drone
+ * accordingly; this results in drone movement relative to that of GCS.
+ *
+ * Please refer https://docs.px4.io/en/flight_modes/follow_me.html for more information.
+ *
+ */
 class FollowMe
 {
 public:
+    /**
+     * @brief Constructor (internal use only).
+     * @param impl Private internal implementation.
+     */
     explicit FollowMe(FollowMeImpl *impl);
+
+    /**
+     * @brief Destructor (internal use only).
+     */
     ~FollowMe();
 
     /**
@@ -24,7 +43,7 @@ public:
         BUSY, /**< @brief Vehicle busy. */
         COMMAND_DENIED, /**< @brief Command denied. */
         TIMEOUT, /**< @brief %Request timeout. */
-        CALLBACK_NOT_REGISTERED, /**< @brief Follow target info callback is not registered */
+        NOT_ACTIVE, /**< @brief FollowMe is not activated yet */
         UNKNOWN /**< @brief Unknown error. */
     };
 
@@ -55,10 +74,11 @@ public:
         static const float MIN_RESPONSIVENESS; /**< @brief Min responsiveness: 0.0 */
         static const float MAX_RESPONSIVENESS; /**< @brief Max responsiveness: 1.0 */
 
-        float min_height_m; /**< @brief Min follow height above home */
-        float follow_dist_m; /**< @brief Follow horizontal distance b/w Vehicle & GCS. */
-        FollowDirection follow_dir; /**< @brief Side to follow target from. */
-        float responsiveness; /**< @brief Responsiveness: Range (0.0 to 1.0)*/
+        float min_height_m = DEF_HEIGHT_M; /**< @brief Min follow height above home */
+        float follow_dist_m =
+            DEF_FOLLOW_DIST_M; /**< @brief Follow horizontal distance b/w Vehicle & GCS. */
+        FollowDirection follow_dir = DEF_FOLLOW_DIR; /**< @brief Side to follow target from. */
+        float responsiveness = DEF_RESPONSIVENSS; /**< @brief Responsiveness: Range (0.0 to 1.0)*/
 
         /**
          * @brief Human-readable string of enum `FollowDirection`.
@@ -85,59 +105,36 @@ public:
     bool set_config(const Config &config);
 
     /**
-     * @brief Follow info which will be emitted periodically to the Vehicle.
+     * @brief Checks whether FollowMe is active.
+     * @return true if FollowMe is active, false otherwise.
      */
-    struct FollowTargetInfo {
-        double lat; /**< @brief Latitude */
-        double lon; /**< @brief Longitude */
-        double alt; /**< @brief Altitude */
+    bool is_active() const;
 
-        float vx_ms; /**< @brief X Velocity in NED frame in m/s */
-        float vy_ms; /**< @brief Y Velocity in NED frame in m/s */
-        float vz_ms; /**< @brief Z Velocity in NED frame in m/s */
+    /**
+     * @brief Represents geographic location of the target in motion
+     */
+    struct TargetLocation {
+        double lattitude_deg; /**< @brief Latitude */
+        double longitude_deg; /**< @brief Longitude */
+        double absolute_altitude_m; /**< @brief AMSL, in meters */
 
-        float ax_ms2; /**< @brief X Acceleration  in NED frame in m/s2 or NAN */
-        float ay_ms2; /**< @brief Y Acceleration  in NED frame in m/s2 or NAN */
-        float az_ms2; /**< @brief Z Acceleration  in NED frame in m/s2 or NAN */
-
-        float eph_m; /**< @brief Standard deviation of Horizontal position error, in meters */
-        float epv_m; /**< @brief Standard deviation of Vertical position error, in meters */
+        float velocity_x_mps; /**< @brief X-velocity in m/s2 */
+        float velocity_y_mps; /**< @brief Y-velocity in m/s2 */
+        float velocity_z_mps; /**< @brief Z-velocity in m/s2 */
     };
 
     /**
-     * @brief Callback that is called by FollowMe plugin to get `FollowTargetinfo`.
-     * @param follow target info to be filled by callback
+     * @brief Sets current location of the moving target
+     * @note App can obtain location of the moving target from Location framework of the underlying platform. <br>
+     * Below is a hint to Apps to avail services available on their underlying platforms. <br>
+     * Android - https://developer.android.com/reference/android/location/Location.html <br>
+     * Apple - https://developer.apple.com/documentation/corelocation <br>
+     * Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation <br>
+     * @param pos current location of the target
+     * @return Result::SUCCESS when location is set,
+     *         Result::NOT_STARTED_YET when you set the location before starting FollowMe.
      */
-    typedef std::function<void (FollowTargetInfo &)> follow_target_info_callback_t;
-
-    /**
-     * @brief Registers follow target information callback. This callback is called periodically
-     * by FollowMe plugin. Make sure callback fills proper Follow target info.
-     * It is MANDATORY to register this callback.
-     * FollowMe plugin will get follow target info from callback soon after FollowMe::start() is called.
-     * Starting FollowMe without callback registration results in failure.
-     * Callback should appropriately fill below values into OUT argument of the callback.
-     * ******************************************
-     * Latitude, Longitude, Altitude
-     * X-velocity, Y-velocity, Z-velocity - in m/s
-     * X-acceleration, Y-acceleration, Z-acceleration - in m/s2
-     * EPH & EPV - Standard deviations of Horizontal & Vertical position error - in meters.
-     * ******************************************
-     * App can obtain these data from Location framework of the underlying platform.
-     * Below is a hint to Apps to avail services available on their underlying platforms.
-     * Android - https://developer.android.com/reference/android/location/Location.html
-     * Apple - https://developer.apple.com/documentation/corelocation
-     * Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation
-     * @param callback Application callback that fills follow target info
-     * @sa deregister_follow_target_info_callback()
-     */
-    void register_follow_target_info_callback(follow_target_info_callback_t callback);
-
-    /**
-     * @brief De-registers follow target info callback.
-     * @sa register_follow_target_info_callback(follow_target_info_callback_t)
-     */
-    void deregister_follow_target_info_callback();
+    Result set_curr_target_location(const TargetLocation &location);
 
     /**
      * @brief Return English string for FollowMe error codes.

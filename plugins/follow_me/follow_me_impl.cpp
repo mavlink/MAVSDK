@@ -11,13 +11,10 @@ using namespace std::placeholders; // for `_1`
 
 FollowMeImpl::FollowMeImpl() :
     PluginImplBase(),
-    _time{},
-    _ce_cookie(nullptr),
-    _follow_target_info{},
-    _follow_target_info_timer(_time),
+    _curr_target_location {},
+    _time {},
     _estimatation_capabilities(0),
-    _config{},
-    _followme_mode_active(false)
+    _config {}
 {
 }
 
@@ -30,7 +27,7 @@ void FollowMeImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&FollowMeImpl::process_heartbeat, this, _1), static_cast<void *>(this));
-    load_device_config();
+    set_default_config();
 }
 
 void FollowMeImpl::deinit()
@@ -38,60 +35,56 @@ void FollowMeImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-// Loads current FollowMe configuration of the device.
-void FollowMeImpl::load_device_config()
+bool operator!(FollowMe::TargetLocation &location)
 {
-    LogInfo() << "Loading current FollowMe configuration from device...";
-    _parent->get_param_float_async("NAV_MIN_FT_HT", std::bind(&FollowMeImpl::receive_param_min_height,
-                                                              this,
-                                                              _1, _2));
-    _parent->get_param_float_async("NAV_FT_DST", std::bind(&FollowMeImpl::receive_param_follow_distance,
-                                                           this, _1, _2));
-    _parent->get_param_int_async("NAV_FT_FS", std::bind(&FollowMeImpl::receive_param_follow_direction,
-                                                        this,
-                                                        _1, _2));
-    _parent->get_param_float_async("NAV_FT_RS", std::bind(&FollowMeImpl::receive_param_responsiveness,
-                                                          this,
-                                                          _1, _2));
+    // It is not possible for any of portion of location to be zero.
+    return location.lattitude_deg == 0.0;
 }
 
-void FollowMeImpl::reset_follow_target_info()
+// Applies default FollowMe configuration to the device
+void FollowMeImpl::set_default_config()
 {
-    _follow_target_info = FollowMe::FollowTargetInfo();
+    LogInfo() << "Applying default FollowMe configuration FollowMe to the device...";
+    FollowMe::Config default_config {};
+
+    auto height = default_config.min_height_m;
+    auto distance = default_config.follow_dist_m;
+    int32_t direction = static_cast<int32_t>(default_config.follow_dir);
+    auto responsiveness = default_config.responsiveness;
+
+    // Send configuration to Vehicle
+    _parent->set_param_float_async("NAV_MIN_FT_HT", height,
+                                   std::bind(&FollowMeImpl::receive_param_min_height,
+                                             this, _1, height));
+    _parent->set_param_float_async("NAV_FT_DST", distance,
+                                   std::bind(&FollowMeImpl::receive_param_follow_distance,
+                                             this, _1, distance));
+    _parent->set_param_int_async("NAV_FT_FS", direction,
+                                 std::bind(&FollowMeImpl::receive_param_follow_direction,
+                                           this, _1, direction));
+    _parent->set_param_float_async("NAV_FT_RS", responsiveness,
+                                   std::bind(&FollowMeImpl::receive_param_responsiveness,
+                                             this, _1, responsiveness));
 }
 
-void FollowMeImpl::update_follow_target_info()
+void FollowMeImpl::send_curr_target_location()
 {
-    // Request the callback to fill follow target info
-    _follow_target_info_cb(_follow_target_info);
-
-    // for eph, epv
-    if (_follow_target_info.lat || _follow_target_info.lon || _follow_target_info.alt) {
-        _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::POS));
+    if (!is_active()) {
+        return;
     }
-    // for x, y velocity
-    if (_follow_target_info.vx_ms || _follow_target_info.vy_ms || _follow_target_info.vz_ms) {
-        _estimatation_capabilities |= (1 << static_cast<int>(ESTCapabilities::VEL));
-    }
-}
 
-void FollowMeImpl::follow_target_info_handler()
-{
-    update_follow_target_info();
-    send_follow_target_info();
-    reset_follow_target_info();
-}
-
-void FollowMeImpl::send_follow_target_info()
-{
     dl_time_t now = _time.steady_time();
     // needed by http://mavlink.org/messages/common#FOLLOW_TARGET
     uint64_t elapsed_msec = static_cast<uint64_t>(_time.elapsed_since_s(now) * 1000); // milliseconds
-    const int32_t lat_int = static_cast<int32_t>(_follow_target_info.lat * 1e7);
-    const int32_t lon_int = static_cast<int32_t>(_follow_target_info.lon * 1e7);
-    const float alt = static_cast<float>(_follow_target_info.alt);
-    const float pos_std_dev[] = { _follow_target_info.eph_m, _follow_target_info.eph_m, _follow_target_info.epv_m };
-    const float vel[] = { _follow_target_info.vx_ms, _follow_target_info.vy_ms, NAN };
+
+    _mutex.lock();
+    const int32_t lat_int = static_cast<int32_t>(_curr_target_location.lattitude_deg * 1e7);
+    const int32_t lon_int = static_cast<int32_t>(_curr_target_location.longitude_deg * 1e7);
+    const float alt = static_cast<float>(_curr_target_location.absolute_altitude_m);
+    _mutex.unlock();
+
+    const float pos_std_dev[] = { NAN, NAN, NAN };
+    const float vel[] = { NAN, NAN, NAN };
     const float accel_unknown[] = { NAN, NAN, NAN };
     const float attitude_q_unknown[] = { 1.f, NAN, NAN, NAN };
     const float rates_unknown[] = { NAN, NAN, NAN };
@@ -114,8 +107,18 @@ void FollowMeImpl::send_follow_target_info()
                                    custom_state);
 
     if (!_parent->send_message(msg)) {
-        LogErr() << "send_follow_target_info() failed..";
+        LogErr() << "send_curr_target_location() failed..";
     }
+}
+
+void FollowMeImpl::stop_sending_target_location()
+{
+    // We assume that mutex was acuired by the caller
+    if (_curr_target_location_cookie) {
+        _parent->remove_call_every(_curr_target_location_cookie);
+        _curr_target_location_cookie = nullptr;
+    }
+    _mode = Mode::NOT_ACTIVE;
 }
 
 const FollowMe::Config &FollowMeImpl::get_config() const
@@ -137,22 +140,18 @@ bool FollowMeImpl::set_config(const FollowMe::Config &config)
     auto responsiveness = config.responsiveness;
 
     // Send configuration to Vehicle
-    if (height != FollowMe::Config::DEF_HEIGHT_M)
-        _parent->set_param_float_async("NAV_MIN_FT_HT", height,
-                                       std::bind(&FollowMeImpl::receive_param_min_height,
-                                                 this, _1, height));
-    if (distance != FollowMe::Config::DEF_FOLLOW_DIST_M)
-        _parent->set_param_float_async("NAV_FT_DST", distance,
-                                       std::bind(&FollowMeImpl::receive_param_follow_distance,
-                                                 this, _1, distance));
-    if (config.follow_dir != FollowMe::Config::DEF_FOLLOW_DIR)
-        _parent->set_param_int_async("NAV_FT_FS", direction,
-                                     std::bind(&FollowMeImpl::receive_param_follow_direction,
-                                               this, _1, direction));
-    if (responsiveness != FollowMe::Config::DEF_RESPONSIVENSS)
-        _parent->set_param_float_async("NAV_FT_RS", responsiveness,
-                                       std::bind(&FollowMeImpl::receive_param_responsiveness,
-                                                 this, _1, responsiveness));
+    _parent->set_param_float_async("NAV_MIN_FT_HT", height,
+                                   std::bind(&FollowMeImpl::receive_param_min_height,
+                                             this, _1, height));
+    _parent->set_param_float_async("NAV_FT_DST", distance,
+                                   std::bind(&FollowMeImpl::receive_param_follow_distance,
+                                             this, _1, distance));
+    _parent->set_param_int_async("NAV_FT_FS", direction,
+                                 std::bind(&FollowMeImpl::receive_param_follow_direction,
+                                           this, _1, direction));
+    _parent->set_param_float_async("NAV_FT_RS", responsiveness,
+                                   std::bind(&FollowMeImpl::receive_param_responsiveness,
+                                             this, _1, responsiveness));
 
     // FIXME: We've sent valid configuration to Vehicle.
     // But that doesn't mean configuration is applied, untill we receive confirmation.
@@ -233,29 +232,36 @@ void FollowMeImpl::receive_param_responsiveness(bool success, float responsivene
     }
 }
 
-void FollowMeImpl::register_follow_target_info_callback(FollowMe::follow_target_info_callback_t cb)
+bool FollowMeImpl::is_active() const
 {
-    _follow_target_info_cb = cb;
+    std::lock_guard<std::mutex> lock(_mutex);
+    return _mode == Mode::ACTIVE;
 }
 
-void FollowMeImpl::deregister_follow_target_info_callback()
+FollowMe::Result FollowMeImpl::set_curr_target_location(const FollowMe::TargetLocation &location)
 {
-    _follow_target_info_cb = nullptr;
+    _mutex.lock();
+
+    _curr_target_location = location;
+    _estimatation_capabilities |= (1 << static_cast<int>(EstimationCapabilites::POS));
+
+    if (_curr_target_location_cookie) {
+        _parent->remove_call_every(_curr_target_location_cookie);
+        _curr_target_location_cookie = nullptr;
+    }
+    // start sending location update.
+    _parent->add_call_every([this]() { send_curr_target_location(); },
+    SENDER_RATE,
+    &_curr_target_location_cookie);
+    _mutex.unlock();
+
+    send_curr_target_location();
+
+    return FollowMe::Result::SUCCESS;
 }
 
 FollowMe::Result FollowMeImpl::start()
 {
-    FollowMe::Result result;
-
-    // if callback is not registered, don't go ahead if registered by application
-    if (!_follow_target_info_cb) {
-        result = FollowMe::Result::CALLBACK_NOT_REGISTERED;
-        LogErr() << "FollowMe: Fatal: " << FollowMe::result_str(result);
-        return result;
-    }
-
-    _parent->add_call_every(std::bind(&FollowMeImpl::follow_target_info_handler, this), 1.0f,
-                            &_ce_cookie);
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
     uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
@@ -265,24 +271,24 @@ FollowMe::Result FollowMeImpl::start()
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
 
 
-    result = to_follow_me_result(
-                 _parent->send_command_with_ack(
-                     MAV_CMD_DO_SET_MODE,
-                     MavlinkCommands::Params {float(mode),
-                                              float(custom_mode),
-                                              float(custom_sub_mode),
-                                              NAN, NAN, NAN, NAN},
-                     MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
-    if (result != FollowMe::Result::SUCCESS) {
-        LogErr() << "FollowMe: Error: " << FollowMe::result_str(result);
-    }
-    return result;
+    return to_follow_me_result(
+               _parent->send_command_with_ack(
+                   MAV_CMD_DO_SET_MODE,
+                   MavlinkCommands::Params {float(mode),
+                                            float(custom_mode),
+                                            float(custom_sub_mode),
+                                            NAN, NAN, NAN, NAN},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
 FollowMe::Result FollowMeImpl::stop()
 {
-    _parent->remove_call_every(_ce_cookie);
-
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (_mode == Mode::ACTIVE) {
+            stop_sending_target_location();
+        }
+    }
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
     uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
@@ -328,7 +334,7 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    bool followme_mode_active = false;
+    bool follow_me_active = false; // tells whether we're in FollowMe mode right now
     if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
 
         px4::px4_custom_mode px4_custom_mode;
@@ -336,10 +342,21 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
 
         if (px4_custom_mode.main_mode == px4::PX4_CUSTOM_MAIN_MODE_AUTO &&
             px4_custom_mode.sub_mode == px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET) {
-            followme_mode_active = true;
+            follow_me_active = true; // we're in FollowMe mode
         }
     }
-    _followme_mode_active = followme_mode_active;
+
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (!follow_me_active && _mode == Mode::ACTIVE) {
+            // We're NOT in FollowMe mode anymore.
+            // Lets stop sending target location updates
+            stop_sending_target_location();
+        } else if (_mode == Mode::NOT_ACTIVE) {
+            // We're in FollowMe mode now
+            _mode = Mode::ACTIVE;
+        }
+    }
 }
 
 } // namespace dronecore
