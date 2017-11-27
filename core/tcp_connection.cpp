@@ -7,8 +7,10 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <unistd.h> // for close()
+#else
 #pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
 #endif
+
 #include <cassert>
 
 #ifndef WINDOWS
