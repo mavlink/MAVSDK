@@ -5,10 +5,10 @@ from __future__ import print_function
 import grpc
 from threading import Thread
 import time
-import dronecore_pb2 as dc
-#import dronecore_pb2_grpc
+# import dronecore_pb2 as dc
 # import dronecore_pb2_grpc
-import action_pb2 as dc_action
+# import dronecore_pb2_grpc
+# import action_pb2 as dc_action
 import action_pb2_grpc
 import mission_pb2 as dc_mission
 import mission_pb2_grpc
@@ -28,7 +28,7 @@ def wait_func(future_status):
 def run():
     global thread_status
     channel = grpc.insecure_channel('0.0.0.0:50051')
-#    stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+    # stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
     action_stub = action_pb2_grpc.ActionRPCStub(channel)
     mission_stub = mission_pb2_grpc.MissionRPCStub(channel)
 

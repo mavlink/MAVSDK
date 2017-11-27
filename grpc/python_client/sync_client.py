@@ -3,11 +3,12 @@
 from __future__ import print_function
 import grpc
 import time
-import dronecore_pb2 as dc
-#import dronecore_pb2_grpc
+# import dronecore_pb2 as dc
+# import dronecore_pb2_grpc
 import action_pb2 as dc_action
 import action_pb2_grpc
 from google.protobuf import empty_pb2
+
 
 def run():
     channel = grpc.insecure_channel('0.0.0.0:50051')

@@ -1,29 +1,31 @@
 #!/usr/bin/env python
 
+
 from __future__ import print_function
 import grpc
 import time
-import dronecore_pb2 as dc
-#import dronecore_pb2_grpc
+import threading
 # import dronecore_pb2_grpc
 import action_pb2 as dc_action
 import action_pb2_grpc
-import telemetry_pb2 as dc_telemetry
+# import telemetry_pb2 as dc_telemetry
 import telemetry_pb2_grpc
 from google.protobuf import empty_pb2
-import threading
+
 
 class Colors:
     BLUE = "\033[34m"
     RESET = "\033[0m"
 
+
 def wait_until(status):
     ret = status.result()
     return ret
 
+
 def print_altitude(telemetry_stub, stop):
     for i, position in enumerate(
-        telemetry_stub.TelemetryPositionSubscription(empty_pb2.Empty())):
+            telemetry_stub.TelemetryPositionSubscription(empty_pb2.Empty())):
         # Position updates with SITL are too fast, we skip 9/10.
         if i % 10 == 0:
             print(Colors.BLUE, end="")
@@ -33,9 +35,10 @@ def print_altitude(telemetry_stub, stop):
         if stop.is_set():
             break
 
+
 def run():
     channel = grpc.insecure_channel('0.0.0.0:50051')
-#    stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+    # stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
     action_stub = action_pb2_grpc.ActionRPCStub(channel)
     telemetry_stub = telemetry_pb2_grpc.TelemetryRPCStub(channel)
 
@@ -69,6 +72,7 @@ def run():
     else:
         print("landing failed: " + land_result.result_str)
     time.sleep(3)
+
 
 if __name__ == '__main__':
     run()
