@@ -8,7 +8,8 @@ add_definitions(
 
 set(proto_dir ${CMAKE_SOURCE_DIR}/grpc/proto)
 set(plugins_dir ${CMAKE_SOURCE_DIR}/grpc/server/plugins/)
-set(plugins_list action mission telemetry)
+
+file(STRINGS ../proto/plugins.conf plugins_list)
 
 add_custom_command(OUTPUT dronecore.grpc.pb.cc
     COMMAND ${Protobuf_PROTOC_EXECUTABLE}

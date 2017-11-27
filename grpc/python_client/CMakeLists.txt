@@ -5,7 +5,6 @@ include(FindPythonInterp REQUIRED)
 add_custom_target(pydronecore ALL)
 
 set(plugins_dir ${CMAKE_SOURCE_DIR}/grpc/server/plugins)
-set(plugins_list action mission telemetry)
 
 if(${PYTHONINTERP_FOUND})
     set(proto_dir ${CMAKE_SOURCE_DIR}/grpc/proto)
@@ -19,6 +18,8 @@ if(${PYTHONINTERP_FOUND})
             ${proto_dir}/dronecore.proto
         DEPENDS ${proto_dir}/dronecore.proto
     )
+
+    file(STRINGS ../proto/plugins.conf plugins_list)
 
     foreach(plugin ${plugins_list})
         add_custom_command(TARGET pydronecore
