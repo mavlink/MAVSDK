@@ -49,7 +49,7 @@ void RunServer()
     map_type map;
     std::string plugin;
     std::fstream file;
-    file.open("plugins.conf");
+    file.open("grpc/proto/plugins.conf");
     if(!file) {
         std::cout << "Error in reading conf file" << std::endl;
         return;
