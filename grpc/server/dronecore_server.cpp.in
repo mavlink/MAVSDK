@@ -12,6 +12,7 @@
 #include <grpc++/security/server_credentials.h>
 
 #include "dronecore.h"
+#include "log.h"
 #include "dronecore.grpc.pb.h"
 #include "action/actionrpc_impl.h"
 #include "mission/missionrpc_impl.h"
@@ -50,13 +51,13 @@ void RunServer()
     std::string plugin;
     std::fstream file;
     file.open("grpc/proto/plugins.conf");
-    if(!file) {
-        std::cout << "Error in reading conf file" << std::endl;
+    if (!file) {
+        LogErr() << "Error in reading conf file";
         return;
     }
     std::vector<::grpc::Service *> list;
 ${PLUGIN_MAP_APPEND_STRING}
-    
+
     while (file >> plugin) {
         auto service_obj = map[plugin](&dc);
         list.push_back(service_obj);
@@ -65,19 +66,18 @@ ${PLUGIN_MAP_APPEND_STRING}
     bool discovered_device = false;
     DroneCore::ConnectionResult connection_result = dc.add_udp_connection();
     if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
-        std::cout << "Connection failed: " << DroneCore::connection_result_str(
-                      connection_result) << std::endl;
+        LogErr() << "Connection failed: " << DroneCore::connection_result_str(connection_result);
         return;
     }
-    std::cout << "Waiting to discover device..." << std::endl;
+    LogInfo() << "Waiting to discover device...";
     dc.register_on_discover([&discovered_device](uint64_t uuid) {
-        std::cout << "Discovered device with UUID: " << uuid << std::endl;
+        LogInfo() << "Discovered device with UUID: " << uuid;
         discovered_device = true;
     });
     // We usually receive heartbeats at 1Hz, therefore we should find a device after around 2 seconds.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     if (!discovered_device) {
-        std::cout << "No device found, exiting." << std::endl;
+        LogErr() << "No device found, exiting.";
         return;
     }
 
@@ -88,7 +88,7 @@ ${PLUGIN_MAP_APPEND_STRING}
         builder.RegisterService(plugin_service);
     }
     std::unique_ptr<Server> server(builder.BuildAndStart());
-    std::cout << "Server listening on " << server_address << std::endl;
+    LogInfo() << "Server listening on " << server_address;
     server->Wait();
 }
 
