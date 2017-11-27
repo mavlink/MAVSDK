@@ -3,8 +3,8 @@
 
 from __future__ import print_function
 import grpc
-from threading import Thread
 import time
+import threading
 # import dronecore_pb2 as dc
 # import dronecore_pb2_grpc
 # import dronecore_pb2_grpc
@@ -101,7 +101,7 @@ def run():
     time.sleep(1)
 
     future_status = mission_stub.StartMission.future(empty_pb2.Empty())
-    t = Thread(target=wait_func, args=(future_status,))
+    t = threading.Thread(target=wait_func, args=(future_status,))
     t.start()
 
     while(thread_status):
