@@ -11,7 +11,7 @@ from google.protobuf import empty_pb2
 
 def run():
     channel = grpc.insecure_channel('0.0.0.0:50051')
-#    stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+    # stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
     action_stub = action_pb2_grpc.ActionRPCStub(channel)
 
     arm_result = action_stub.Arm(empty_pb2.Empty())
