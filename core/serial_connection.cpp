@@ -66,7 +66,7 @@ DroneCore::ConnectionResult SerialConnection::setup_port()
 
     bzero(&tc, sizeof(tc));
 
-    _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);// | O_NDELAY);
+    _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY);
     if (_fd == -1) {
         return DroneCore::ConnectionResult::CONNECTION_ERROR;
     }
