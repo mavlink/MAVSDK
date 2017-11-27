@@ -12,6 +12,7 @@
 #include <winsock2.h>
 #include <Ws2tcpip.h> // For InetPton
 #undef SOCKET_ERROR // conflicts with ConnectionResult::SOCKET_ERROR
+#pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
 #endif
 
 #include <cassert>

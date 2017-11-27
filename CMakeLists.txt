@@ -160,6 +160,11 @@ target_link_libraries(dronecore
     ${curl_lib}
     tinyxml2
 )
+if (MSVC)
+    target_link_libraries(dronecore
+        ws2_32
+    )
+endif()
 
 # cmake should check for C++11
 set_property(TARGET dronecore PROPERTY CXX_STANDARD 11)
