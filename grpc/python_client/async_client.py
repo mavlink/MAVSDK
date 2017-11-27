@@ -5,6 +5,7 @@ from __future__ import print_function
 import grpc
 import time
 import threading
+# import dronecore_pb2 as dc
 # import dronecore_pb2_grpc
 import action_pb2 as dc_action
 import action_pb2_grpc
@@ -72,6 +73,8 @@ def run():
     else:
         print("landing failed: " + land_result.result_str)
     time.sleep(3)
+
+    t_stop.set()
 
 
 if __name__ == '__main__':
