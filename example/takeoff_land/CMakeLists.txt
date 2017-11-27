@@ -6,6 +6,8 @@ if(NOT MSVC)
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
 else()
     add_definitions("-std=c++11 -WX -W2")
+    include_directories(${CMAKE_SOURCE_DIR}/../../install/include)
+    link_directories(${CMAKE_SOURCE_DIR}/../../install/lib)
 endif()
 
 add_executable(takeoff_and_land
@@ -15,3 +17,4 @@ add_executable(takeoff_and_land
 target_link_libraries(takeoff_and_land
     dronecore
 )
+
