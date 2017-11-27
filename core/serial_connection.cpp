@@ -82,8 +82,8 @@ DroneCore::ConnectionResult SerialConnection::setup_port()
     tc.c_cflag &= ~(CSIZE | PARENB | CBAUD | CRTSCTS);
     tc.c_cflag |= CS8 | BOTHER;
 
-    tc.c_cc[VMIN] = 0;
-    tc.c_cc[VTIME] = 0;
+    tc.c_cc[VMIN] = 1; // We want at least 1 byte to be available.
+    tc.c_cc[VTIME] = 0; // We don't timeout but wait indefinitely.
     tc.c_ispeed = _baudrate;
     tc.c_ospeed = _baudrate;
 
