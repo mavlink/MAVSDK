@@ -142,6 +142,13 @@ public:
     void set_curr_target_location(const TargetLocation &location);
 
     /**
+     * @brief Returns the most recent location of the target.
+     * @param last_location Last location to be filled.
+     * @sa set_curr_target_location()
+     */
+    void get_last_location(TargetLocation &prev_location);
+
+    /**
      * @brief Returns English string for FollowMe error codes.
      *
      * @param result FollowMe::Result code.

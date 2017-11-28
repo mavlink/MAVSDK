@@ -96,6 +96,12 @@ void FollowMeImpl::set_curr_target_location(const FollowMe::TargetLocation &loca
     send_curr_target_location();
 }
 
+void FollowMeImpl::get_last_location(FollowMe::TargetLocation &last_location)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    last_location = _curr_target_location;
+}
+
 bool FollowMeImpl::is_active() const
 {
     std::lock_guard<std::mutex> lock(_mutex);

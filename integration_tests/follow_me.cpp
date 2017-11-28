@@ -35,26 +35,31 @@ TEST_F(SitlTest, FollowMe)
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     device.telemetry().flight_mode_async(
-    std::bind([](Telemetry::FlightMode mode) {
-        std::cout << "FlightMode: " << Telemetry::flight_mode_str(mode)
-                  << std::endl;
-    }, std::placeholders::_1));
+    std::bind([&](Telemetry::FlightMode flight_mode) {
+        FollowMe::TargetLocation last_location;
+        device.follow_me().get_last_location(last_location);
 
+        std::cout << "FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+                  << " @Lat: " << last_location.latitude_deg << ", "  <<
+                    "Lon: " << last_location.longitude_deg << ", " <<
+                    "Alt: " << last_location.absolute_altitude_m << std::endl;
+
+    }, std::placeholders::_1));
 
     action_ret = device.action().takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     sleep_for(seconds(5)); // let it reach takeoff altitude
 
-    auto curr_config = device.followme().get_config();
+    auto curr_config = device.follow_me().get_config();
     print(curr_config);
 
-    // Set just a single location before starting FollowMe.
-    device.followme().set_curr_target_location({47.39768399, 8.54564155, 501.0, 0.f, 0.f, 0.f});
+    // Set just a single location before starting FollowMe (optional)
+    device.follow_me().set_curr_target_location({47.39768399, 8.54564155, 501.0, 0.f, 0.f, 0.f});
 
     // Start following with default configuration
-    FollowMe::Result followme_result = device.followme().start();
-    ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
+    FollowMe::Result follow_me_result = device.follow_me().start();
+    ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
     sleep_for(seconds(1));
 
     std::cout << "wait for 5 secs...";
@@ -62,8 +67,8 @@ TEST_F(SitlTest, FollowMe)
     std::cout << "done" << std::endl;
 
     // stop following
-    followme_result = device.followme().stop();
-    ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
+    follow_me_result = device.follow_me().stop();
+    ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
 
     action_ret = device.action().land();
@@ -91,9 +96,14 @@ TEST_F(SitlTest, FollowMeWithConfig)
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     device.telemetry().flight_mode_async(
-    std::bind([](Telemetry::FlightMode flight_mode) {
+    std::bind([&](Telemetry::FlightMode flight_mode) {
+        FollowMe::TargetLocation last_location;
+        device.follow_me().get_last_location(last_location);
+
         std::cout << "FlightMode: " << Telemetry::flight_mode_str(flight_mode)
-                  << std::endl;
+                  << " @Lat: " << last_location.latitude_deg << ", "  <<
+                    "Lon: " << last_location.longitude_deg << ", " <<
+                    "Alt: " << last_location.absolute_altitude_m << std::endl;
 
     }, std::placeholders::_1));
 
@@ -111,25 +121,25 @@ TEST_F(SitlTest, FollowMeWithConfig)
         FollowMe::Config::FollowDirection::FRONT; // Device follows you from FRONT side
 
     // Apply configuration
-    bool configured = device.followme().set_config(config);
+    bool configured = device.follow_me().set_config(config);
     ASSERT_EQ(true, configured);
 
     sleep_for(seconds(2)); // until config is applied
 
     // Verify your configuration
-    auto curr_config = device.followme().get_config();
+    auto curr_config = device.follow_me().get_config();
     print(curr_config);
 
     // Start following
-    FollowMe::Result followme_result = device.followme().start();
-    ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
+    FollowMe::Result follow_me_result = device.follow_me().start();
+    ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
 
     // send location updates once in every 2 seconds
-    send_location_updates(device.followme(), 40, 0.5f);
+    send_location_updates(device.follow_me(), 40, 0.5f);
 
     // Stop following
-    followme_result = device.followme().stop();
-    ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
+    follow_me_result = device.follow_me().stop();
+    ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
 
     action_ret = device.action().land();

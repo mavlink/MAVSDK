@@ -32,6 +32,11 @@ void FollowMe::set_curr_target_location(const TargetLocation &target_location)
     return _impl->set_curr_target_location(target_location);
 }
 
+void FollowMe::get_last_location(TargetLocation &last_location)
+{
+    return _impl->get_last_location(last_location);
+}
+
 std::string FollowMe::Config::to_str(FollowMe::Config::FollowDirection direction)
 {
     switch (direction) {
