@@ -38,8 +38,8 @@ TEST_F(SitlTest, FollowMe)
     std::bind([](Telemetry::FlightMode mode) {
         std::cout << "FlightMode: " << Telemetry::flight_mode_str(mode)
                   << std::endl;
-
     }, std::placeholders::_1));
+
 
     action_ret = device.action().takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
@@ -49,12 +49,17 @@ TEST_F(SitlTest, FollowMe)
     auto curr_config = device.followme().get_config();
     print(curr_config);
 
-    // start following with default configuration
+    // Set just a single location before starting FollowMe.
+    device.followme().set_curr_target_location({47.39768399, 8.54564155, 501.0, 0.f, 0.f, 0.f});
+
+    // Start following with default configuration
     FollowMe::Result followme_result = device.followme().start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, followme_result);
+    sleep_for(seconds(1));
 
-    // send location updates every second
-    send_location_updates(device.followme(), 10, 1.f);
+    std::cout << "wait for 5 secs...";
+    sleep_for(seconds(5));
+    std::cout << "done" << std::endl;
 
     // stop following
     followme_result = device.followme().stop();
@@ -102,13 +107,14 @@ TEST_F(SitlTest, FollowMeWithConfig)
     config.min_height_m = 12.f; // increase min height
     config.follow_dist_m = 20.f; // set distance b/w device and GCS during FollowMe mode
     config.responsiveness = 0.2f; // set to higher responsiveness
-    config.follow_dir = FollowMe::Config::FollowDirection::FRONT; // Device follows you from FRONT side
+    config.follow_direction =
+        FollowMe::Config::FollowDirection::FRONT; // Device follows you from FRONT side
 
     // Apply configuration
     bool configured = device.followme().set_config(config);
     ASSERT_EQ(true, configured);
 
-    sleep_for(seconds(2)); // untill config is applied
+    sleep_for(seconds(2)); // until config is applied
 
     // Verify your configuration
     auto curr_config = device.followme().get_config();
@@ -138,7 +144,7 @@ void print(const FollowMe::Config &config)
     std::cout << "Min Height: " << config.min_height_m << "m" << std::endl;
     std::cout << "Distance: " << config.follow_dist_m << "m" << std::endl;
     std::cout << "Responsiveness: " << config.responsiveness << std::endl;
-    std::cout << "Following from: " << FollowMe::Config::to_str(config.follow_dir) << std::endl;
+    std::cout << "Following from: " << FollowMe::Config::to_str(config.follow_direction) << std::endl;
     std::cout << "---------------------------" << std::endl;
 }
 
@@ -146,9 +152,26 @@ void send_location_updates(FollowMe &follow_me, int count, float rate)
 {
     // TODO: Generate these co-ordinates from algorithm
     FollowMe::TargetLocation spiral_path[] = {
+        { 47.39768399, 8.54564155, 501.0, 0.f, 0.f, 0.f },
+        { 47.39769035, 8.54566569, 501.0, 0.f, 0.f, 0.f },
+        { 47.39770759, 8.54568983, 502.0, 0.f, 0.f, 0.f },
+        { 47.39772757, 8.54569922, 502.0, 0.f, 0.f, 0.f },
+        { 47.39774481, 8.54570727, 507.0, 0.f, 0.f, 0.f },
+        { 47.39776025, 8.54572202, 502.0, 0.f, 0.f, 0.f },
+        { 47.39778567, 8.54572336, 505.0, 0.f, 0.f, 0.f },
+        { 47.39780291, 8.54572202, 507.0, 0.f, 0.f, 0.f },
+        { 47.39782107, 8.54571263, 502.0, 0.f, 0.f, 0.f },
+        { 47.39783469, 8.54569788, 501.0, 0.f, 0.f, 0.f },
+        { 47.39783832, 8.54568179, 501.0, 0.f, 0.f, 0.f },
+        { 47.39784104, 8.54566569, 503.0, 0.f, 0.f, 0.f },
+        { 47.39784376, 8.54564424, 502.0, 0.f, 0.f, 0.f },
+        { 47.39772938, 8.54552488, 505.0, 0.f, 0.f, 0.f },
+        { 47.39782475, 8.54559193, 501.0, 0.f, 0.f, 0.f },
+        { 47.39780291, 8.54557048, 490.0, 0.f, 0.f, 0.f },
+        { 47.39771304, 8.54554231, 502.0, 0.f, 0.f, 0.f },
+        { 47.39780836, 8.54552756, 491.0, 0.f, 0.f, 0.f },
         { 47.3997373, 8.5426978, 490.0, 0.f, 0.f, 0.f },
         { 47.39973730, 8.54269780, 510.0, 0.f, 0.f, 0.f },
-        { 47.39780291, 8.54557048, 490.0, 0.f, 0.f, 0.f },
         { 47.39779838, 8.54555174, 492.0, 0.f, 0.f, 0.f },
         { 47.39778748, 8.54554499, 493.0, 0.f, 0.f, 0.f },
         { 47.39777659, 8.54553561, 494.0, 0.f, 0.f, 0.f },
@@ -169,10 +192,8 @@ void send_location_updates(FollowMe &follow_me, int count, float rate)
         { 47.39781835, 8.54566972, 502.0, 0.f, 0.f, 0.f },
         { 47.39782107, 8.54564692, 502.0, 0.f, 0.f, 0.f },
         { 47.39782474, 8.54561876, 502.0, 0.f, 0.f, 0.f },
-        { 47.39782475, 8.54559193, 501.0, 0.f, 0.f, 0.f },
         { 47.39782474, 8.54556511, 501.0, 0.f, 0.f, 0.f },
         { 47.39782107, 8.54553427, 503.0, 0.f, 0.f, 0.f },
-        { 47.39780836, 8.54552756, 502.0, 0.f, 0.f, 0.f },
         { 47.39779656, 8.54551549, 501.0, 0.f, 0.f, 0.f },
         { 47.39777568, 8.54550342, 501.0, 0.f, 0.f, 0.f },
         { 47.39775482, 8.54549671, 504.0, 0.f, 0.f, 0.f },
@@ -218,7 +239,6 @@ void send_location_updates(FollowMe &follow_me, int count, float rate)
         { 47.39777659, 8.54553561, 510.0, 0.f, 0.f, 0.f },
         { 47.39776569, 8.54553292, 501.0, 0.f, 0.f, 0.f },
         { 47.39774663, 8.54552622, 502.0, 0.f, 0.f, 0.f },
-        { 47.39772938, 8.54552488, 505.0, 0.f, 0.f, 0.f },
         { 47.39771304, 8.54554231, 505.0, 0.f, 0.f, 0.f }
     };
 

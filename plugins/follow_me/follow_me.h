@@ -9,14 +9,12 @@ namespace dronecore {
 class FollowMeImpl;
 
 /**
- * @brief FollowMe plugin is used to make your drone to follow your Ground Control Station (Phone/Tab). <br>
+ * @brief This class enables vehicle tracking of a specified target (typically a ground station carried by a user).
  *
- * Application need to obtain current GCS position from underying platform,
- * and feed to it FollowMe, which makes your drone to move.
- * When GCS keeps moving to a new position, position updates are sent to the drone
- * accordingly; this results in drone movement relative to that of GCS.
+ * The API is used to supply both the position(s) for the target and the relative follow position of the vehicle.
+ * Applications must get target position information from the underlying platform (or some other source).
  *
- * Please refer https://docs.px4.io/en/flight_modes/follow_me.html for more information.
+ * See https://docs.px4.io/en/flight_modes/follow_me.html for more information.
  *
  */
 class FollowMe
@@ -34,16 +32,16 @@ public:
     ~FollowMe();
 
     /**
-     * @brief Results of FollowMe operations
+     * @brief Results of FollowMe operations.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief %Request succeeded. */
+        SUCCESS = 0, /**< @brief Request succeeded. */
         NO_DEVICE, /**< @brief No device connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
         BUSY, /**< @brief Vehicle busy. */
         COMMAND_DENIED, /**< @brief Command denied. */
-        TIMEOUT, /**< @brief %Request timeout. */
-        NOT_ACTIVE, /**< @brief FollowMe is not activated yet */
+        TIMEOUT, /**< @brief Request timeout. */
+        NOT_ACTIVE, /**< @brief FollowMe is not activated. */
         UNKNOWN /**< @brief Unknown error. */
     };
 
@@ -53,7 +51,7 @@ public:
      */
     struct Config {
         /**
-         * @brief Side to follow target from.
+         * @brief Relative position of following vehicle.
          */
         enum class FollowDirection {
             FRONT_RIGHT, /**< @brief Follow from front right. */
@@ -62,41 +60,46 @@ public:
             FRONT_LEFT, /**< @brief Follow from front left. */
             NONE
         };
-        // Default Configuration
-        static const float DEF_HEIGHT_M; /**< @brief Default height above home: 8.0 mts */
-        static const float DEF_FOLLOW_DIST_M; /**< @brief Default Follow distance: 8.0 mts */
-        static const FollowDirection DEF_FOLLOW_DIR; /**< @brief Default follow direction: BEHIND */
-        static const float DEF_RESPONSIVENSS; /**< @brief Default responsiveness to target: 0.5 */
 
-        // Min & Max ranges as per PX4 FollowMe Configuration.
-        static const float MIN_HEIGHT_M; /**< @brief Min follow height, in mts. >= 8.0m */
-        static const float MIN_FOLLOW_DIST_M;  /**< @brief Min follow distance from, in mts. >= 1.0m */
-        static const float MIN_RESPONSIVENESS; /**< @brief Min responsiveness: 0.0 */
-        static const float MAX_RESPONSIVENESS; /**< @brief Max responsiveness: 1.0 */
+        constexpr static const float DEFAULT_HEIGHT_M =
+            8.0; /**< @brief Default height above home, in meters. */
+        constexpr static const float DEFAULT_FOLLOW_DIST_M =
+            8.0; /**< @brief Default follow distance, in meters. */
+        constexpr static const FollowDirection DEFAULT_FOLLOW_DIR =
+            FollowDirection::BEHIND; /**< @brief Default follow direction. */
+        constexpr static const float DEFAULT_RESPONSIVENSS =
+            0.5f; /**< @brief Default responsiveness to target. */
 
-        float min_height_m = DEF_HEIGHT_M; /**< @brief Min follow height above home */
+        constexpr static const float MIN_HEIGHT_M = 8.0f; /**< @brief Min follow height, in meters. */
+        constexpr static const float MIN_FOLLOW_DIST_M =
+            1.0f; /**< @brief Min follow distance from, in meters. */
+        constexpr static const float MIN_RESPONSIVENESS = 0.f; /**< @brief Min responsiveness. */
+        constexpr static const float MAX_RESPONSIVENESS = 1.0f; /**< @brief Max responsiveness. */
+
+        float min_height_m = DEFAULT_HEIGHT_M; /**< @brief Min follow height above home, in meters. */
         float follow_dist_m =
-            DEF_FOLLOW_DIST_M; /**< @brief Follow horizontal distance b/w Vehicle & GCS. */
-        FollowDirection follow_dir = DEF_FOLLOW_DIR; /**< @brief Side to follow target from. */
-        float responsiveness = DEF_RESPONSIVENSS; /**< @brief Responsiveness: Range (0.0 to 1.0)*/
+            DEFAULT_FOLLOW_DIST_M; /**< @brief Horizontal distance b/w vehicle & target. */
+        FollowDirection follow_direction =
+            DEFAULT_FOLLOW_DIR; /**< @brief Relative position of the following vehicle. */
+        float responsiveness = DEFAULT_RESPONSIVENSS; /**< @brief Responsiveness: Range (0.0 to 1.0)*/
 
         /**
-         * @brief Human-readable string of enum `FollowDirection`.
-         * @param dir follow direction
+         * @brief Human-readable string for enum `FollowDirection`.
+         * @param direction Follow direction
          * @return std::string representing given direction
          */
-        static std::string to_str(FollowDirection dir);
+        static std::string to_str(FollowDirection direction);
     };
 
     /**
      * @brief Gets current FollowMe configuration.
-     * @return current FollowMe configuration.
+     * @return Current FollowMe configuration.
      * @sa set_config(const Config &)
      */
     const Config &get_config() const;
 
     /**
-     * @brief Applies FollowMe configuration by sending them to device.
+     * @brief Applies FollowMe configuration by sending it to device.
      * @param config FollowMe configuration to be applied.
      * @return true if configuration is applied successfully, false if config values are out-of-range.
      *         In case of failure, last configuration is preserved.
@@ -111,48 +114,50 @@ public:
     bool is_active() const;
 
     /**
-     * @brief Represents geographic location of the target in motion
+     * @brief Geographical location of the target in motion.
      */
     struct TargetLocation {
-        double lattitude_deg; /**< @brief Latitude */
-        double longitude_deg; /**< @brief Longitude */
+        double latitude_deg; /**< @brief Latitude, in degrees */
+        double longitude_deg; /**< @brief Longitude, in degrees */
         double absolute_altitude_m; /**< @brief AMSL, in meters */
 
-        float velocity_x_mps; /**< @brief X-velocity in m/s2 */
-        float velocity_y_mps; /**< @brief Y-velocity in m/s2 */
-        float velocity_z_mps; /**< @brief Z-velocity in m/s2 */
+        float velocity_x_m_s; /**< @brief X-velocity in m/s */
+        float velocity_y_m_s; /**< @brief Y-velocity in m/s */
+        float velocity_z_m_s; /**< @brief Z-velocity in m/s */
     };
 
     /**
      * @brief Sets current location of the moving target
-     * @note App can obtain location of the moving target from Location framework of the underlying platform. <br>
-     * Below is a hint to Apps to avail services available on their underlying platforms. <br>
-     * Android - https://developer.android.com/reference/android/location/Location.html <br>
-     * Apple - https://developer.apple.com/documentation/corelocation <br>
-     * Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation <br>
-     * @param pos current location of the target
-     * @return Result::SUCCESS when location is set,
-     *         Result::NOT_STARTED_YET when you set the location before starting FollowMe.
+     * @note App can obtain location of the moving target from Location framework of the underlying platform.
+     * The following links provide information about location services on different platforms:
+     *
+     * Android - https://developer.android.com/reference/android/location/Location.html
+     *
+     * Apple - https://developer.apple.com/documentation/corelocation
+     *
+     * Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation
+     *
+     * @param location Current location of the target.
      */
-    Result set_curr_target_location(const TargetLocation &location);
+    void set_curr_target_location(const TargetLocation &location);
 
     /**
-     * @brief Return English string for FollowMe error codes.
+     * @brief Returns English string for FollowMe error codes.
      *
-     * @param result FollowMe::Result code
-     * @return Returns std::string describing error code
+     * @param result FollowMe::Result code.
+     * @return Returns std::string describing error code.
      */
     static std::string result_str(Result result);
 
     /**
-     * @brief Starts FollowMe mode
-     * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
-     * @sa stop()
+     * @brief Starts FollowMe mode.
+     * @return Result::SUCCESS if succeeded, error otherwise.
+     * @sa stop(), `FollowMe::Result`
      */
     FollowMe::Result start() const;
 
     /**
-     * @brief Stops FollowMe mode
+     * @brief Stops FollowMe mode.
      * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
      * @sa start()
      */
