@@ -119,7 +119,13 @@ set(PLUGIN_LIST_APPEND_STRING "")
 # Go through all the plugins and generate the strings.
 foreach(class_name ${plugin_class_names})
 
-    string(TOLOWER ${class_name} class_name_lowercase)
+    # We want to go from CamelCase to snake_case.
+    # CamelCase -> Camel_Case
+    string(REGEX REPLACE "(.)([A-Z][a-z]+)" "\\1_\\2" class_name_with_underscores "${class_name}")
+    # Camel0Case -> Camel0_Case
+    string(REGEX REPLACE "([a-z0-9])([A-Z])" "\\1_\\2" class_name_with_underscores "${class_name_with_underscores}")
+    # Camel_Case to snake_case
+    string(TOLOWER ${class_name_with_underscores} class_name_lowercase)
 
     set(get_name ${class_name_lowercase})
     set(member_name "_${class_name_lowercase}")

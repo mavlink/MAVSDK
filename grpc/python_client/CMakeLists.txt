@@ -21,15 +21,15 @@ if(${PYTHONINTERP_FOUND})
 
     foreach(plugin ${plugins_list})
         add_custom_command(TARGET pydronecore
-	        COMMAND ${PYTHON_EXECUTABLE}
+            COMMAND ${PYTHON_EXECUTABLE}
                 -m grpc_tools.protoc
                 -I ${proto_dir}
                 -I ${plugins_dir}/${plugin}
-	            --python_out=.
+                --python_out=.
                 --grpc_python_out=.
                 ${plugins_dir}${plugin}/${plugin}.proto
             DEPENDS ${plugins_dir}/${plugin}/${plugin}.proto
     )
-	endforeach()
+    endforeach()
 
 endif()
