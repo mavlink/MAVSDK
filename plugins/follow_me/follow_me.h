@@ -85,7 +85,7 @@ public:
 
         /**
          * @brief Human-readable string for enum `FollowDirection`.
-         * @param direction Follow direction
+         * @param[in] direction Follow direction
          * @return std::string representing given direction
          */
         static std::string to_str(FollowDirection direction);
@@ -94,16 +94,14 @@ public:
     /**
      * @brief Gets current FollowMe configuration.
      * @return Current FollowMe configuration.
-     * @sa set_config(const Config &)
      */
     const Config &get_config() const;
 
     /**
      * @brief Applies FollowMe configuration by sending it to device.
-     * @param config FollowMe configuration to be applied.
+     * @param[in] config FollowMe configuration to be applied.
      * @return true if configuration is applied successfully, false if config values are out-of-range.
      *         In case of failure, last configuration is preserved.
-     * @sa get_config()
      */
     bool set_config(const Config &config);
 
@@ -128,7 +126,8 @@ public:
 
     /**
      * @brief Sets current location of the moving target
-     * @note App can obtain location of the moving target from Location framework of the underlying platform.
+     * App can obtain location of the moving target from Location framework of the underlying platform.
+     *
      * The following links provide information about location services on different platforms:
      *
      * Android - https://developer.android.com/reference/android/location/Location.html
@@ -137,36 +136,33 @@ public:
      *
      * Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation
      *
-     * @param location Current location of the target.
+     * @param[in] location Current location of the target.
      */
     void set_curr_target_location(const TargetLocation &location);
 
     /**
      * @brief Returns the most recent location of the target.
-     * @param last_location Last location to be filled.
-     * @sa set_curr_target_location()
+     * @param[out] last_location Last location to be filled.
      */
-    void get_last_location(TargetLocation &prev_location);
+    void get_last_location(TargetLocation &last_location);
 
     /**
      * @brief Returns English string for FollowMe error codes.
      *
-     * @param result FollowMe::Result code.
+     * @param[in] result FollowMe::Result code.
      * @return Returns std::string describing error code.
      */
     static std::string result_str(Result result);
 
     /**
      * @brief Starts FollowMe mode.
-     * @return Result::SUCCESS if succeeded, error otherwise.
-     * @sa stop(), `FollowMe::Result`
+     * @return FollowMe::Result::SUCCESS if succeeded, error otherwise.
      */
     FollowMe::Result start() const;
 
     /**
      * @brief Stops FollowMe mode.
-     * @return Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
-     * @sa start()
+     * @return FollowMe::Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
      */
     FollowMe::Result stop() const;
 
