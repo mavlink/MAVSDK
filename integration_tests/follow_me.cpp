@@ -41,8 +41,8 @@ TEST_F(SitlTest, FollowMe)
 
         std::cout << "FlightMode: " << Telemetry::flight_mode_str(flight_mode)
                   << " @Lat: " << last_location.latitude_deg << ", "  <<
-                    "Lon: " << last_location.longitude_deg << ", " <<
-                    "Alt: " << last_location.absolute_altitude_m << std::endl;
+                  "Lon: " << last_location.longitude_deg << ", " <<
+                  "Alt: " << last_location.absolute_altitude_m << std::endl;
 
     }, std::placeholders::_1));
 
@@ -102,8 +102,8 @@ TEST_F(SitlTest, FollowMeWithConfig)
 
         std::cout << "FlightMode: " << Telemetry::flight_mode_str(flight_mode)
                   << " @Lat: " << last_location.latitude_deg << ", "  <<
-                    "Lon: " << last_location.longitude_deg << ", " <<
-                    "Alt: " << last_location.absolute_altitude_m << std::endl;
+                  "Lon: " << last_location.longitude_deg << ", " <<
+                  "Alt: " << last_location.absolute_altitude_m << std::endl;
 
     }, std::placeholders::_1));
 

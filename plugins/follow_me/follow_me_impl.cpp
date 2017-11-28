@@ -13,7 +13,9 @@ using namespace std::placeholders; // for `_1`
 FollowMeImpl::FollowMeImpl() :
     PluginImplBase()
 {
-    _curr_target_location = FollowMe::TargetLocation { NAN, NAN, NAN, NAN, NAN, NAN };
+    // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
+    _curr_target_location = FollowMe::TargetLocation { double(NAN), double(NAN), double(NAN),
+                                                       NAN, NAN, NAN };
 }
 
 FollowMeImpl::~FollowMeImpl()
