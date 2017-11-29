@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Run with argument `--skip-checks` to skip checks for clean build and removing install dir.
+# Run with argument `--clean` for clean build and removing install dir.
 
 # exit on any error
 set -e
@@ -13,22 +13,37 @@ set -e
 # Get current directory of script.
 source_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-skip_checks=false
-if [ "$#" -eq 1 -a "$1" == "--skip-checks" ]; then
-    skip_checks=true
+help_msg="
+Usage: ./generate_docs.sh [OPTIONS]
+1. Builds and installs the source
+2. Runs doxygen and create HTML and XML docs
+3. Runs script to generate markdown from XML
+
+  --clean    for clean build and removing install dir.
+  --help     display this help and exit
+"
+
+clean_build=false
+if [ "$#" -eq 1 -a "$1" == "--clean" ]; then
+    clean_build=true
+elif [ "$#" -eq 1 ]; then
+	echo "$help_msg"
+	if [ "$1" == "--help" ]; then
+		exit 0
+	else
+		exit 1
+	fi
 fi
 
 # We use a local install folder so we don't need sudo.
 install_prefix="$source_dir/install"
 
-if [ "$skip_checks" = false ]; then
+if [ "$clean_build" = true ]; then
     # We need to do a clean build, otherwise the INSTALL_PREFIX has no effect.
     # Check for leftover install artefacts.
     if [ -e $source_dir/build/ ] || [ -e $install_prefix ] ; then
-        echo "Either your Build/Install directory ($install_prefix) already exists, Lets clean it for you. Re-run now!"
-		rm -rf $install_prefix
 		make clean
-        exit 1
+		rm -rf $install_prefix
     fi
 fi
 
