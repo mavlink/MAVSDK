@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Run with argument `--clean` for clean build and removing install dir.
+# Run with argument `--clean` for clean build and removal of install directory.
 
 # exit on any error
 set -e
@@ -19,7 +19,7 @@ Usage: ./generate_docs.sh [OPTIONS]
 2. Runs doxygen and create HTML and XML docs
 3. Runs script to generate markdown from XML
 
-  --clean    for clean build and removing install dir.
+  --clean    for clean build and removal of install directory.
   --help     display this help and exit
 "
 
