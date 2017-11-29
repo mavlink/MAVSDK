@@ -94,6 +94,10 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
         if child.tag=='simplesect':
             if child.attrib['kind']=='return':
                 pass # simplesect contains return info for function. We parse it specifically in other code so here we make sure it this tag doesn't get processed.
+            elif child.attrib['kind']=='see':
+                pass #Prevent further handling of see here.  
+            elif child.attrib['kind']=='note':
+                child_text += markdown_any_tag(child,html=html,para=para) #generate child text.
             else:
                 #Just in case there is a different type of simplesect, this tells us we need to think about it.
                 print('Unhanded kind in simplesect tag in markdown_any_tag:kind: %s' % child.attrib['kind'])
@@ -116,7 +120,8 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             print('Unhanded tag in markdown_any_tag: %s' % child.tag)
             child_text+=str(ET.tostring(child),'utf-8')
 
-    # He we handle this tag.
+    # Here we handle this tag.
+    tag_text=''
     if aTag.tag=='computeroutput':
         if ignore_current_tag: #This tag is ignored, meaning that we don't add any special markup for it.
             tag_text=lead_text+child_text+tail_text
@@ -193,10 +198,35 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
         tag_text=lead_text+tail_text #note, child text included in the URL text above. There won't be any though.
         #print('tag_text: %s' % tag_text)
 
+    elif aTag.tag=='detaileddescription':
+        #Strip out seealso tags from detailed description (so it can be agreggated under Seealso section)
+        seealso_tags=aTag.findall(".//simplesect[@kind='see']")
+        seealso_text=''
+        if seealso_tags:
+            for item in seealso_tags:
+                seealso_text+='\n- %s' % markdown_any_tag(item).strip()
+
+            seealso_text='\n\n**See Also:**%s\n\n' % seealso_text
+            #print('debug:tag:seealso_text: %s' % seealso_text)
+        
+        tag_text=lead_text+child_text+seealso_text+tail_text
+
+
+    elif aTag.tag=='simplesect':
+        if aTag.attrib['kind']=='note':
+            #Handle @note (note) tag.
+            lead_text=' %s' % lead_text
+            tag_text='\n\n> **Note** '+lead_text.strip()+child_text.strip()+tail_text.strip()+'\n\n'
+        elif aTag.attrib['kind']=='see': 
+            # Note we should ONLY see this via the detaileddescription handling 
+            # Because children that are simplesect are not parsed.
+            tag_text=lead_text+child_text+tail_text
+
+
     else:
         tag_text=lead_text+child_text+tail_text
 
-    #print('debug:end:markdown_any_tag - tag_text: %s' % tag_text)
+    #print('debug:end:markdown_any_tag (%s) tag_text: %s' % (aTag.tag,tag_text.strip()))
     return tag_text
 
 
