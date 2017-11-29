@@ -61,6 +61,48 @@ build_script:
     ) else (
       cmake --build . --target install --config Release
     )
+  - cd ..
+  - cd example\takeoff_land
+  - md build
+  - cd build
+  - cmake ..  -G "Visual Studio 15 2017 Win64"
+  - if "%configuration%"=="Debug" (
+      cmake --build . --config Debug
+    ) else (
+      cmake --build . --config Release
+    )
+  - cd ..\..\..
+  - cd example\fly_mission
+  - md build
+  - cd build
+  - cmake ..  -G "Visual Studio 15 2017 Win64"
+  - if "%configuration%"=="Debug" (
+      cmake --build . --config Debug
+    ) else (
+      cmake --build . --config Release
+    )
+  - cd ..\..\..
+  - cd example\offboard_velocity
+  - md build
+  - cd build
+  - cmake ..  -G "Visual Studio 15 2017 Win64"
+  - if "%configuration%"=="Debug" (
+      cmake --build . --config Debug
+    ) else (
+      cmake --build . --config Release
+    )
+  - cd ..\..\..
+  - cd example\transition_vtol_fixed_wing
+  - md build
+  - cd build
+  - cmake ..  -G "Visual Studio 15 2017 Win64"
+  - if "%configuration%"=="Debug" (
+      cmake --build . --config Debug
+    ) else (
+      cmake --build . --config Release
+    )
+  - cd ..\..\..
+
 
 test: on
 

@@ -19,6 +19,8 @@ if(${PYTHONINTERP_FOUND})
         DEPENDS ${proto_dir}/dronecore.proto
     )
 
+    file(STRINGS ../proto/plugins.conf plugins_list)
+
     foreach(plugin ${plugins_list})
         add_custom_command(TARGET pydronecore
             COMMAND ${PYTHON_EXECUTABLE}
@@ -27,7 +29,7 @@ if(${PYTHONINTERP_FOUND})
                 -I ${plugins_dir}/${plugin}
                 --python_out=.
                 --grpc_python_out=.
-                ${plugins_dir}${plugin}/${plugin}.proto
+                ${plugins_dir}/${plugin}/${plugin}.proto
             DEPENDS ${plugins_dir}/${plugin}/${plugin}.proto
     )
     endforeach()
