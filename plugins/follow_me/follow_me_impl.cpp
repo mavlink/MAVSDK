@@ -5,7 +5,6 @@
 #include <functional>
 #include <cmath>
 
-
 namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
@@ -14,8 +13,9 @@ FollowMeImpl::FollowMeImpl() :
     PluginImplBase()
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
-    _curr_target_location = FollowMe::TargetLocation { double(NAN), double(NAN), double(NAN),
-                                                       NAN, NAN, NAN };
+    _last_location =  _curr_target_location = \
+                                              FollowMe::TargetLocation { double(NAN), double(NAN), double(NAN),
+                                                                         NAN, NAN, NAN };
 }
 
 FollowMeImpl::~FollowMeImpl()
@@ -84,17 +84,19 @@ void FollowMeImpl::set_curr_target_location(const FollowMe::TargetLocation &loca
         _mutex.unlock();
         return;
     }
-    // if set
+    // If set already, reschedule it.
     if (_curr_target_location_cookie) {
-        _parent->remove_call_every(_curr_target_location_cookie);
+        _parent->reset_call_every(_curr_target_location_cookie);
         _curr_target_location_cookie = nullptr;
+    } else {
+        // Regiter now for sending in the next cycle.
+        _parent->add_call_every([this]() { send_curr_target_location(); },
+        SENDER_RATE,
+        &_curr_target_location_cookie);
     }
-    // start sending location update.
-    _parent->add_call_every([this]() { send_curr_target_location(); },
-    SENDER_RATE,
-    &_curr_target_location_cookie);
     _mutex.unlock();
 
+    // Send it immediately for now.
     send_curr_target_location();
 }
 
@@ -112,10 +114,6 @@ bool FollowMeImpl::is_active() const
 
 FollowMe::Result FollowMeImpl::start()
 {
-    if (is_location_set())
-        _parent->add_call_every([this]() { send_curr_target_location(); },
-    SENDER_RATE,
-    &_curr_target_location_cookie);
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
     uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
@@ -125,14 +123,26 @@ FollowMe::Result FollowMeImpl::start()
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
 
 
-    return to_follow_me_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_DO_SET_MODE,
-                   MavlinkCommands::Params {float(mode),
-                                            float(custom_mode),
-                                            float(custom_sub_mode),
-                                            NAN, NAN, NAN, NAN},
-                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+    FollowMe::Result result = to_follow_me_result(
+                                  _parent->send_command_with_ack(
+                                      MAV_CMD_DO_SET_MODE,
+                                      MavlinkCommands::Params {float(mode),
+                                                               float(custom_mode),
+                                                               float(custom_sub_mode),
+                                                               NAN, NAN, NAN, NAN},
+                                      MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+
+    if (result == FollowMe::Result::SUCCESS) {
+        // If location was set before, lets send it to vehicle
+        std::lock_guard<std::mutex> lock(
+            _mutex); // locking is not necessary here but lets do it for integrity
+        if (is_current_location_set()) {
+            _parent->add_call_every([this]() { send_curr_target_location(); },
+            SENDER_RATE,
+            &_curr_target_location_cookie);
+        }
+    }
+    return result;
 }
 
 FollowMe::Result FollowMeImpl::stop()
@@ -211,7 +221,6 @@ bool FollowMeImpl::is_config_ok(const FollowMe::Config &config) const
 void FollowMeImpl::receive_param_min_height(bool success, float min_height_m)
 {
     if (success) {
-        LogInfo() << "NAV_MIN_FT_HT: " << min_height_m << "m";
         _config.min_height_m = min_height_m;
     } else {
         LogErr() << "Failed to set NAV_MIN_FT_HT: " << min_height_m << "m";
@@ -221,7 +230,6 @@ void FollowMeImpl::receive_param_min_height(bool success, float min_height_m)
 void FollowMeImpl::receive_param_follow_distance(bool success, float follow_dist_m)
 {
     if (success) {
-        LogInfo() << "NAV_FT_DST: " << follow_dist_m << "m";
         _config.follow_dist_m = follow_dist_m;
     } else {
         LogErr() << "Failed to set NAV_FT_DST: " << follow_dist_m << "m";
@@ -241,7 +249,6 @@ void FollowMeImpl::receive_param_follow_direction(bool success, int32_t directio
     auto curr_direction_s = FollowMe::Config::to_str(_config.follow_direction);
     auto new_direction_s = FollowMe::Config::to_str(new_direction);
     if (success) {
-        LogInfo() << "NAV_FT_FS: " << new_direction_s;
         if (new_direction != FollowMe::Config::FollowDirection::NONE) {
             _config.follow_direction = new_direction;
         }
@@ -253,7 +260,6 @@ void FollowMeImpl::receive_param_follow_direction(bool success, int32_t directio
 void FollowMeImpl::receive_param_responsiveness(bool success, float responsiveness)
 {
     if (success) {
-        LogInfo() << "NAV_FT_RS: " << responsiveness;
         _config.responsiveness = responsiveness;
     } else {
         LogErr() << "Failed to set NAV_FT_RS: " << responsiveness;
@@ -281,9 +287,10 @@ FollowMeImpl::to_follow_me_result(MavlinkCommands::Result result) const
     }
 }
 
-bool FollowMeImpl::is_location_set() const
+bool FollowMeImpl::is_current_location_set() const
 {
-    // if the target's latitude is NAN, we assume that location is not set.
+    // If the target's latitude is NAN, we assume that location is not set.
+    // We assume that mutex was acquired by the caller
     return std::isfinite(_curr_target_location.latitude_deg);
 }
 
@@ -331,6 +338,9 @@ void FollowMeImpl::send_curr_target_location()
 
     if (!_parent->send_message(msg)) {
         LogErr() << "send_curr_target_location() failed..";
+    } else {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _last_location = _curr_target_location;
     }
 }
 

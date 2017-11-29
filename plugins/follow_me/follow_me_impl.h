@@ -41,7 +41,7 @@ private:
     void receive_param_responsiveness(bool success, float rsp);
     FollowMe::Result to_follow_me_result(MavlinkCommands::Result result) const;
 
-    bool is_location_set() const;
+    bool is_current_location_set() const;
     void send_curr_target_location();
     void stop_sending_target_location();
 
@@ -57,13 +57,14 @@ private:
 
     mutable std::mutex _mutex {};
     FollowMe::TargetLocation _curr_target_location; // sent to vehicle
+    FollowMe::TargetLocation _last_location; // sent to vehicle
     void *_curr_target_location_cookie = nullptr;
 
     Time _time {};
     uint8_t _estimatation_capabilities = 0; // sent to vehicle
     FollowMe::Config _config {}; // has FollowMe configuration settings
 
-    const float SENDER_RATE = 0.1f; // send location updates once in a every 10 seconds
+    const float SENDER_RATE = 1.0f; // send location updates once in a second
 };
 
 } // namespace dronecore
