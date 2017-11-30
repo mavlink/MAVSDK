@@ -33,6 +33,7 @@ public:
 
     /**
      * @brief Results of FollowMe operations.
+     * @sa result_str()
      */
     enum class Result {
         SUCCESS = 0, /**< @brief Request succeeded. */
@@ -48,10 +49,12 @@ public:
     /**
      * @brief FollowMe Configuration.
      * Reference: https://docs.px4.io/en/advanced_config/parameter_reference.html#follow-target
+     * @sa get_config(), set_config()
      */
     struct Config {
         /**
          * @brief Relative position of following vehicle.
+         * @sa to_str()
          */
         enum class FollowDirection {
             FRONT_RIGHT, /**< @brief Follow from front right. */
@@ -74,7 +77,7 @@ public:
         float responsiveness = 0.5f; /**< @brief Responsiveness, Range (0.0-1.0) */
 
         /**
-         * @brief Human-readable string for enum `FollowDirection`.
+         * @brief Human-readable string for enum #FollowDirection.
          * @param[in] direction Follow direction
          * @return std::string representing given direction
          */
@@ -84,6 +87,7 @@ public:
     /**
      * @brief Gets current FollowMe configuration.
      * @return Current FollowMe configuration.
+     * @sa set_config()
      */
     const Config &get_config() const;
 
@@ -92,6 +96,7 @@ public:
      * @param[in] config FollowMe configuration to be applied.
      * @return true if configuration is applied successfully, false if config values are out-of-range.
      *         In case of failure, last configuration is preserved.
+     * @sa get_config()
      */
     bool set_config(const Config &config);
 
@@ -118,28 +123,28 @@ public:
      * @brief Sets current location of the moving target
      * App can obtain location of the moving target from Location framework of the underlying platform.
      *
+     * @note
      * The following links provide information about location services on different platforms:
-     *
-     * Android - https://developer.android.com/reference/android/location/Location.html
-     *
-     * Apple - https://developer.apple.com/documentation/corelocation
-     *
-     * Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation
+     * - Android - https://developer.android.com/reference/android/location/Location.html
+     * - Apple - https://developer.apple.com/documentation/corelocation
+     * - Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation
      *
      * @param[in] location Current location of the target.
+     * @sa get_last_location()
      */
     void set_curr_target_location(const TargetLocation &location);
 
     /**
      * @brief Returns the most recent location of the target.
      * @param[out] last_location Last location to be filled.
+     * @sa set_curr_target_location()
      */
     void get_last_location(TargetLocation &last_location);
 
     /**
-     * @brief Returns English string for FollowMe error codes.
+     * @brief Returns English string for FollowMe error codes
      *
-     * @param[in] result FollowMe::Result code.
+     * @param[in] result #Result code.
      * @return Returns std::string describing error code.
      */
     static std::string result_str(Result result);
