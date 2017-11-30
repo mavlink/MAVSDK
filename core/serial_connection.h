@@ -34,7 +34,7 @@ private:
     std::mutex _mutex = {};
     int _fd = -1;
     std::thread *_recv_thread = nullptr;
-    std::atomic_bool _should_exit;
+    std::atomic_bool _should_exit{false};
 };
 
 } // namespace dronecore
