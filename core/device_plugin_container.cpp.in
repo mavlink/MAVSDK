@@ -24,7 +24,12 @@ DevicePluginContainer::~DevicePluginContainer()
 {
     deinit_plugins();
 
-${PLUGIN_DTOR_STRING}
+    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); /*++it*/) {
+        // Desctruct
+        delete *it;
+        // And remove from list
+        it = _plugin_impl_list.erase(it);
+    }
 
     _impl = nullptr;
 }
