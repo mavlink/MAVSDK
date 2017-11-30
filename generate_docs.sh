@@ -25,8 +25,8 @@ if [ "$skip_checks" = false ]; then
     # We need to do a clean build, otherwise the INSTALL_PREFIX has no effect.
     # Check for leftover install artefacts.
     if [ -e $source_dir/build/ ] || [ -e $install_prefix ] ; then
-		printf "Cleaup your build & install directory using below command.\nmake clean && rm -rf $install_prefix\n"
-		exit 1
+	printf "Cleaup your build & install directory using below command.\nmake clean && rm -rf $install_prefix\n"
+	exit 1
     fi
 fi
 
