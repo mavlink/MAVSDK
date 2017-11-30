@@ -325,6 +325,10 @@ void DeviceImpl::set_connected()
     std::lock_guard<std::mutex> lock(_connection_mutex);
 
     if (!_connected && _target_uuid_initialized) {
+
+        if (_on_discovery_callback) {
+            _on_discovery_callback();
+        }
         _parent->notify_on_discover(_target_uuid);
         _connected = true;
 
@@ -337,6 +341,15 @@ void DeviceImpl::set_connected()
     // If not yet connected there is nothing to do/
 }
 
+void DeviceImpl::subscribe_on_discovery(std::function <void()> callback)
+{
+    _on_discovery_callback = callback;
+}
+void DeviceImpl::subscribe_on_timeout(std::function <void()> callback)
+{
+    _on_timeout_callback = callback;
+}
+
 void DeviceImpl::set_disconnected()
 {
     std::lock_guard<std::mutex> lock(_connection_mutex);
@@ -347,6 +360,9 @@ void DeviceImpl::set_disconnected()
     //_heartbeat_timeout_cookie = nullptr;
 
     _connected = false;
+    if (_on_timeout_callback) {
+        _on_timeout_callback();
+    }
     _parent->notify_on_timeout(_target_uuid);
 
     // Let's reset the flag hope again for the next time we see this target.

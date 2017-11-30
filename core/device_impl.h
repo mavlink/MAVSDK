@@ -92,6 +92,8 @@ public:
     static uint8_t get_own_component_id() { return _own_component_id; }
 
     bool is_connected() const;
+    void subscribe_on_discovery(std::function <void()> callback);
+    void subscribe_on_timeout(std::function <void()> callback);
 
     Time &get_time() { return _time; };
 
@@ -159,6 +161,9 @@ private:
     std::mutex _connection_mutex {};
     bool _connected {false};
     void *_heartbeat_timeout_cookie = nullptr;
+
+    std::function<void()> _on_discovery_callback = nullptr;
+    std::function<void()> _on_timeout_callback = nullptr;
 
     std::atomic<bool> _autopilot_version_pending {false};
     void *_autopilot_version_timed_out_cookie = nullptr;
