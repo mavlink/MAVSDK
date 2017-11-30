@@ -56,7 +56,10 @@ protected:
     virtual void deinit_plugins();
 
     /** @private internal use only. */
-    DeviceImpl *_impl;
+    virtual void enable_plugins();
+
+    /** @private internal use only. */
+    virtual void disable_plugins();
 
 ${PLUGIN_MEMBER_STRING}
 
