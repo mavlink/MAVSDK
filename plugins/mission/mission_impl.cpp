@@ -48,10 +48,19 @@ void MissionImpl::init()
         std::bind(&MissionImpl::process_mission_item_int, this, _1), this);
 }
 
+void MissionImpl::enable()
+{
+
+}
+
+void MissionImpl::disable()
+{
+    _parent->unregister_timeout_handler(_timeout_cookie);
+}
+
 void MissionImpl::deinit()
 {
     _parent->unregister_all_mavlink_message_handlers(this);
-    _parent->unregister_timeout_handler(_timeout_cookie);
 }
 
 void MissionImpl::process_mission_request(const mavlink_message_t &unused)

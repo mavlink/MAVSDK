@@ -19,6 +19,9 @@ public:
     void init() override;
     void deinit() override;
 
+    void enable() override;
+    void disable() override;
+
     void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
                               const Mission::result_callback_t &callback);
 

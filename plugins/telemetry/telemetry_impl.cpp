@@ -94,6 +94,15 @@ void TelemetryImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS,
         std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
+}
+
+void TelemetryImpl::deinit()
+{
+    _parent->unregister_all_mavlink_message_handlers(this);
+}
+
+void TelemetryImpl::enable()
+{
 
     _parent->register_timeout_handler(
         std::bind(&TelemetryImpl::receive_rc_channels_timeout, this), 1.0, &_timeout_cookie);
@@ -131,9 +140,9 @@ void TelemetryImpl::init()
 #endif
 }
 
-void TelemetryImpl::deinit()
+void TelemetryImpl::disable()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _parent->unregister_timeout_handler(_timeout_cookie);
 }
 
 Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)

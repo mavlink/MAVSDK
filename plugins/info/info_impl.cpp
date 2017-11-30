@@ -34,6 +34,16 @@ void InfoImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
+void InfoImpl::enable()
+{
+
+}
+
+void InfoImpl::disable()
+{
+
+}
+
 void InfoImpl::process_heartbeat(const mavlink_message_t &message)
 {
     UNUSED(message);
