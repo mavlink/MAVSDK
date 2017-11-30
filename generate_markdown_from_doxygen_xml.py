@@ -89,11 +89,16 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
     #print('tail_text: %s' % tail_text)
 
     #This section is for when you want to affect a sub tag based on a parent tag.
+    #Main use is to prevent children of a particular type being rendered, when child processing handled elsewere.
     ignore_current_tag=False #Use to disable the current tag. Currently only used for turning off "computeroutput" if children are ref.
     for child in aTag:
         if child.tag=='simplesect':
             if child.attrib['kind']=='return':
                 pass # simplesect contains return info for function. We parse it specifically in other code so here we make sure it this tag doesn't get processed.
+            elif child.attrib['kind']=='see':
+                pass #Prevent further handling of "see" children.  
+            elif child.attrib['kind']=='note':
+                pass #Prevent further handling of "note" children.  
             else:
                 #Just in case there is a different type of simplesect, this tells us we need to think about it.
                 print('Unhanded kind in simplesect tag in markdown_any_tag:kind: %s' % child.attrib['kind'])
@@ -106,7 +111,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
                 child_text+=str(ET.tostring(child),'utf-8')
         elif child.tag=='ref':
             if aTag.tag=='computeroutput':
-                ignore_current_tag=True
+                ignore_current_tag=True #Ignore computer output markup in links
             child_text += markdown_any_tag(child,html=html,para=para)
         elif child.tag=='computeroutput' or child.tag=='para' or child.tag=='listitem' or child.tag=='ulink' or child.tag=='bold' or child.tag=='emphasis':
             child_text += markdown_any_tag(child,html=html,para=para) #.strip()
@@ -116,7 +121,9 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             print('Unhanded tag in markdown_any_tag: %s' % child.tag)
             child_text+=str(ET.tostring(child),'utf-8')
 
-    # He we handle this tag.
+    # This section handles processing of the current tag.
+    # Current params like 'html' and ignore_current_tag can affect rendering.
+    tag_text=''
     if aTag.tag=='computeroutput':
         if ignore_current_tag: #This tag is ignored, meaning that we don't add any special markup for it.
             tag_text=lead_text+child_text+tail_text
@@ -193,10 +200,42 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
         tag_text=lead_text+tail_text #note, child text included in the URL text above. There won't be any though.
         #print('tag_text: %s' % tag_text)
 
+    elif aTag.tag=='detaileddescription':
+        #Strip out note tags from detailed description (so it can be agreggated under Notes section)
+        note_tags=aTag.findall(".//simplesect[@kind='note']")
+        note_text=''
+        if note_tags:
+            for item in note_tags:
+                note_text+='\n- %s' % markdown_any_tag(item).strip()
+
+            note_text='\n\n**Notes:**%s\n\n' % note_text
+            #print('debug:tag:note_text: %s' % note_text)
+
+        #Strip out seealso tags from detailed description (so it can be agreggated under Seealso section)
+        seealso_tags=aTag.findall(".//simplesect[@kind='see']")
+        seealso_text=''
+        if seealso_tags:
+            for item in seealso_tags:
+                seealso_text+='\n- %s' % markdown_any_tag(item).strip()
+
+            seealso_text='\n\n**See Also:**%s\n\n' % seealso_text
+            #print('debug:tag:seealso_text: %s' % seealso_text)
+        
+        tag_text=lead_text+child_text+note_text+seealso_text+tail_text
+
+
+    elif aTag.tag=='simplesect':
+        if aTag.attrib['kind']=='note' or aTag.attrib['kind']=='see':
+            #Handle @note (note) and @sa (see) tags.
+            # Note we should ONLY see this via the detaileddescription handling 
+            # Because children that are simplesect are not parsed.
+            tag_text=lead_text+child_text+tail_text
+
+
     else:
         tag_text=lead_text+child_text+tail_text
 
-    #print('debug:end:markdown_any_tag - tag_text: %s' % tag_text)
+    #print('debug:end:markdown_any_tag (%s) tag_text: %s' % (aTag.tag,tag_text.strip()))
     return tag_text
 
 
