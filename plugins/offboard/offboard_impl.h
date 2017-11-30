@@ -17,6 +17,9 @@ public:
     void init() override;
     void deinit() override;
 
+    void enable() override;
+    void disable() override;
+
     Offboard::Result start();
     Offboard::Result stop();
 

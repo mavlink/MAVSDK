@@ -17,6 +17,9 @@ public:
     void init() override;
     void deinit() override;
 
+    void enable() override;
+    void disable() override;
+
     Action::Result arm() const;
     Action::Result disarm() const;
     Action::Result kill() const;

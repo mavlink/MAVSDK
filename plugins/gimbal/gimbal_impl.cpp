@@ -23,6 +23,14 @@ void GimbalImpl::deinit()
 {
 }
 
+void GimbalImpl::enable()
+{
+}
+
+void GimbalImpl::disable()
+{
+}
+
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     const float roll_deg = 0.0f;

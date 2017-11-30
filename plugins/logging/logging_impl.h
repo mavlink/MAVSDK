@@ -16,6 +16,9 @@ public:
     void init() override;
     void deinit() override;
 
+    void enable() override;
+    void disable() override;
+
     Logging::Result start_logging() const;
     Logging::Result stop_logging() const;
 

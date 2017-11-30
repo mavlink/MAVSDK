@@ -13,13 +13,16 @@ public:
     InfoImpl();
     ~InfoImpl();
 
+    void init() override;
+    void deinit() override;
+
+    void enable() override;
+    void disable() override;
+
     uint64_t get_uuid() const;
     bool is_complete() const;
     Info::Version get_version() const;
     Info::Product get_product() const;
-
-    void init() override;
-    void deinit() override;
 
 private:
     void set_version(Info::Version version);

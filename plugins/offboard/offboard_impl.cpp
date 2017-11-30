@@ -27,6 +27,14 @@ void OffboardImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
+void OffboardImpl::enable()
+{
+}
+
+void OffboardImpl::disable()
+{
+}
+
 Offboard::Result OffboardImpl::start()
 {
     {

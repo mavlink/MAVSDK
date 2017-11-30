@@ -24,6 +24,9 @@ public:
     void init() override;
     void deinit() override;
 
+    void enable() override;
+    void disable() override;
+
     Telemetry::Result set_rate_position(double rate_hz);
     Telemetry::Result set_rate_home_position(double rate_hz);
     Telemetry::Result set_rate_in_air(double rate_hz);
