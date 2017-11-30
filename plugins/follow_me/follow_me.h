@@ -61,27 +61,17 @@ public:
             NONE
         };
 
-        constexpr static const float DEFAULT_HEIGHT_M =
-            8.0; /**< @brief Default height above home, in meters. */
-        constexpr static const float DEFAULT_FOLLOW_DIST_M =
-            8.0; /**< @brief Default follow distance, in meters. */
-        constexpr static const FollowDirection DEFAULT_FOLLOW_DIR =
-            FollowDirection::BEHIND; /**< @brief Default follow direction. */
-        constexpr static const float DEFAULT_RESPONSIVENSS =
-            0.5f; /**< @brief Default responsiveness to target. */
-
         constexpr static const float MIN_HEIGHT_M = 8.0f; /**< @brief Min follow height, in meters. */
         constexpr static const float MIN_FOLLOW_DIST_M =
-            1.0f; /**< @brief Min follow distance from, in meters. */
+            1.0f; /**< @brief Min follow distance, in meters. */
         constexpr static const float MIN_RESPONSIVENESS = 0.f; /**< @brief Min responsiveness. */
         constexpr static const float MAX_RESPONSIVENESS = 1.0f; /**< @brief Max responsiveness. */
 
-        float min_height_m = DEFAULT_HEIGHT_M; /**< @brief Min follow height above home, in meters. */
-        float follow_dist_m =
-            DEFAULT_FOLLOW_DIST_M; /**< @brief Horizontal distance b/w vehicle & target. */
+        float min_height_m = 8.0f; /**< @brief Min follow height, in meters. */
+        float follow_dist_m = 8.0f; /** @brief Horizontal follow distance to target, in meters. */
         FollowDirection follow_direction =
-            DEFAULT_FOLLOW_DIR; /**< @brief Relative position of the following vehicle. */
-        float responsiveness = DEFAULT_RESPONSIVENSS; /**< @brief Responsiveness: Range (0.0 to 1.0)*/
+            FollowDirection::BEHIND; /**< @brief Relative position of the following vehicle. */
+        float responsiveness = 0.5f; /**< @brief Responsiveness, Range (0.0-1.0) */
 
         /**
          * @brief Human-readable string for enum `FollowDirection`.

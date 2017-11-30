@@ -48,10 +48,9 @@ std::string FollowMe::Config::to_str(FollowMe::Config::FollowDirection direction
             return "Front left";
         case FollowMe::Config::FollowDirection::FRONT:
             return "Front";
-        case FollowMe::Config::FollowDirection::NONE:
+        default:
             return "None";
     }
-    return nullptr; // to please compiler not to warn
 }
 
 FollowMe::Result FollowMe::start() const
@@ -82,6 +81,7 @@ std::string FollowMe::result_str(Result result)
         case Result::NOT_ACTIVE:
             return "FollowMe is not active";
         case Result::UNKNOWN:
+        // FALLTHROUGH
         default:
             return "Unknown";
     }

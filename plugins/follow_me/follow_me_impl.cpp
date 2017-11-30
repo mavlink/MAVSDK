@@ -372,7 +372,7 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
     }
 
     {
-        _mutex.lock();
+        std::lock_guard<std::mutex> lock(_mutex);
         if (!follow_me_active && _mode == Mode::ACTIVE) {
             // We're NOT in FollowMe mode anymore.
             // Lets stop sending target location updates
@@ -383,7 +383,6 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
             _mutex.unlock(); // we must unlock to avoid deadlock in send_curr_target_location()
             return;
         }
-        _mutex.unlock();
     }
 }
 
