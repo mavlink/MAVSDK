@@ -19,6 +19,7 @@ void PluginImplBase::set_parent(DeviceImpl *parent)
 #ifdef __GNUG__ // GNU C++ compiler
 #include <cxxabi.h>
 #include <stdlib.h>
+#include <string>
 std::string demangle(const char *mangled_name)
 {
     std::string result;
@@ -34,6 +35,7 @@ std::string demangle(const char *mangled_name)
     return result;
 }
 #else
+#include <string>
 std::string demangle(const char *name)
 {
     return name;
