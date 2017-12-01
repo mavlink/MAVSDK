@@ -6,13 +6,9 @@
 namespace dronecore {
 
 ExampleImpl::ExampleImpl() :
-    PluginImplBase()
-{
-}
+    PluginImplBase() {}
 
-ExampleImpl::~ExampleImpl()
-{
-}
+ExampleImpl::~ExampleImpl() {}
 
 void ExampleImpl::init()
 {
@@ -21,13 +17,16 @@ void ExampleImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&ExampleImpl::process_heartbeat, this, _1), this);
-
 }
 
 void ExampleImpl::deinit()
 {
     _parent->unregister_all_mavlink_message_handlers(this);
 }
+
+void ExampleImpl::enable() {}
+
+void ExampleImpl::disable() {}
 
 void ExampleImpl::say_hello() const
 {
@@ -40,8 +39,5 @@ void ExampleImpl::process_heartbeat(const mavlink_message_t &message)
 
     LogDebug() << "I received a heartbeat";
 }
-
-
-
 
 } // namespace dronecore

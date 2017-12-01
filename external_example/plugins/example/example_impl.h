@@ -17,6 +17,9 @@ public:
     void init() override;
     void deinit() override;
 
+    void enable() override;
+    void disable() override;
+
 private:
     void process_heartbeat(const mavlink_message_t &message);
 };
