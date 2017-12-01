@@ -8,13 +8,9 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-ActionImpl::ActionImpl()
-{
-}
+ActionImpl::ActionImpl() {}
 
-ActionImpl::~ActionImpl()
-{
-}
+ActionImpl::~ActionImpl() {}
 
 void ActionImpl::init()
 {
@@ -39,10 +35,7 @@ void ActionImpl::enable()
                                 MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
-void ActionImpl::disable()
-{
-
-}
+void ActionImpl::disable() {}
 
 Action::Result ActionImpl::arm() const
 {

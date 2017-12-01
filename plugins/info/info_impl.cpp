@@ -8,13 +8,9 @@ namespace dronecore {
 InfoImpl::InfoImpl() :
     PluginImplBase(),
     _version_mutex(),
-    _version()
-{
-}
+    _version() {}
 
-InfoImpl::~InfoImpl()
-{
-}
+InfoImpl::~InfoImpl() {}
 
 void InfoImpl::init()
 {
@@ -34,15 +30,9 @@ void InfoImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void InfoImpl::enable()
-{
+void InfoImpl::enable() {}
 
-}
-
-void InfoImpl::disable()
-{
-
-}
+void InfoImpl::disable() {}
 
 void InfoImpl::process_heartbeat(const mavlink_message_t &message)
 {

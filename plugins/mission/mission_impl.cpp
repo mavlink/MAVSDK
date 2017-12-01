@@ -7,13 +7,9 @@
 namespace dronecore {
 
 MissionImpl::MissionImpl() :
-    PluginImplBase()
-{
-}
+    PluginImplBase() {}
 
-MissionImpl::~MissionImpl()
-{
-}
+MissionImpl::~MissionImpl() {}
 
 void MissionImpl::init()
 {
@@ -48,10 +44,7 @@ void MissionImpl::init()
         std::bind(&MissionImpl::process_mission_item_int, this, _1), this);
 }
 
-void MissionImpl::enable()
-{
-
-}
+void MissionImpl::enable() {}
 
 void MissionImpl::disable()
 {
