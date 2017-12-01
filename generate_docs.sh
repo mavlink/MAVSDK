@@ -22,16 +22,10 @@ fi
 install_prefix="$source_dir/install"
 
 if [ "$skip_checks" = false ]; then
-    # We need to do a clean build, otherwise the INSTALL_PREFIX has no effect.
-    if [ -e $source_dir/build/ ]; then
-        echo "Build directory ($install_prefix) already exists, you should do 'make clean' first."
-        exit 1
-    fi
-
-    # Check for leftover install artefacts.
-    if [ -e $install_prefix ]; then
-        echo "Install directory ($install_prefix) already exists, you should delete it up first."
-        exit 1
+    # Clean-up build & install directory
+    if [ -e $source_dir/build/ ] || [ -e $install_prefix ] ; then
+	printf "Clean-up your build & install directory using below command.\nmake clean && rm -rf $install_prefix\n"
+	exit 1
     fi
 fi
 

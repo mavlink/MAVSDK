@@ -10,25 +10,30 @@ MAINTAINER Julian Oes <julian@oes.ch>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
-	&& apt-get -y --quiet --no-install-recommends install \
-		cmake \
-		build-essential \
-		colordiff \
-		astyle \
-		git \
-		libcurl4-openssl-dev \
-		doxygen \
+    && apt-get -y --quiet --no-install-recommends install \
+        cmake \
+        build-essential \
+        colordiff \
+        git \
+        libcurl4-openssl-dev \
+        doxygen \
         autoconf \
         libtool \
+        wget \
         ca-certificates \
         autoconf \
         automake \
         python \
         python-pip \
         libtinyxml2-dev \
-	&& apt-get -y autoremove \
-	&& apt-get clean autoclean \
-	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+    && apt-get -y autoremove \
+    && apt-get clean autoclean \
+    && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# We need the latest astyle version
+RUN wget http://archive.ubuntu.com/ubuntu/pool/universe/a/astyle/astyle_3.0.1-1ubuntu1_amd64.deb \
+    && dpkg -i astyle_3.0.1-1ubuntu1_amd64.deb \
+    && rm astyle_3.0.1-1ubuntu1_amd64.deb
 
 RUN pip install grpcio grpcio-tools
 
