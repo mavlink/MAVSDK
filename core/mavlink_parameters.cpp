@@ -138,7 +138,7 @@ void MavlinkParameters::do_work()
             return;
         }
 
-        // _last_request_time = steady_time();
+        // _last_request_time = _parent->get_time().steady_time();
 
         // We want to get notified if a timeout happens
         _parent->register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
@@ -195,7 +195,7 @@ void MavlinkParameters::do_work()
             return;
         }
 
-        // _last_request_time = steady_time();
+        // _last_request_time = _parent->get_time().steady_time();
 
         // We want to get notified if a timeout happens
         _parent->register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
@@ -232,7 +232,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
                 }
                 _state = State::NONE;
                 _parent->unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " << _parent->get_time().elapsed_since_s(_last_request_time);
                 _get_param_queue.pop_front();
             }
         }
@@ -254,7 +254,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
 
                 _state = State::NONE;
                 _parent->unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " << _parent->get_time().elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
             }
         }
@@ -288,7 +288,7 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
                 }
                 _state = State::NONE;
                 _parent->unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " << _parent->get_time().elapsed_since_s(_last_request_time);
                 _get_param_queue.pop_front();
             }
         }
@@ -311,7 +311,7 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
 
                 _state = State::NONE;
                 _parent->unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " << _parent->get_time().elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
             }
         }
@@ -347,7 +347,7 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 
                 _state = State::NONE;
                 _parent->unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " << _parent->get_time().elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
 
             } else if (param_ext_ack.param_result == PARAM_ACK_IN_PROGRESS) {
@@ -367,7 +367,7 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 
                 _state = State::NONE;
                 _parent->unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " << _parent->get_time().elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
             }
 
@@ -394,7 +394,7 @@ void MavlinkParameters::receive_timeout()
                 ParamValue empty_value;
                 // Notify about timeout
                 LogErr() << "Error: get param busy timeout: " << work.param_name;
-                // LogDebug() << "Got it after: " << elapsed_since_s(_last_request_time);
+                // LogErr() << "Got it after: " << _parent->get_time().elapsed_since_s(_last_request_time);
                 work.callback(false, empty_value);
             }
             _state = State::NONE;
@@ -411,6 +411,7 @@ void MavlinkParameters::receive_timeout()
             if (work.callback) {
                 // Notify about timeout
                 LogErr() << "Error: set param busy timeout: " << work.param_name;
+                // LogErr() << "Got it after: " << _parent->get_time().elapsed_since_s(_last_request_time);
                 work.callback(false);
             }
             _state = State::NONE;
