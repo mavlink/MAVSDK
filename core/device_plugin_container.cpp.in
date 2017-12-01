@@ -12,8 +12,8 @@ ${PLUGIN_CTOR_STRING}
 {
 ${PLUGIN_LIST_APPEND_STRING}
 
-    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); ++it) {
-        (**it).set_parent(impl);
+    for (auto plugin_impl : _plugin_impl_list) {
+        plugin_impl->set_parent(impl);
     }
 
     init_plugins();
@@ -26,39 +26,37 @@ DevicePluginContainer::~DevicePluginContainer()
 {
     deinit_plugins();
 
-    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); /*++it*/) {
-        // Desctruct
-        delete *it;
-        // And remove from list
-        it = _plugin_impl_list.erase(it);
+    while (!_plugin_impl_list.empty()) {
+        delete _plugin_impl_list.back();
+        _plugin_impl_list.pop_back();
     }
 }
 
 void DevicePluginContainer::init_plugins()
 {
-    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); ++it) {
-        (**it).init();
+    for (auto plugin_impl : _plugin_impl_list) {
+        plugin_impl->init();
     }
 }
 
 void DevicePluginContainer::deinit_plugins()
 {
-    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); ++it) {
-        (**it).deinit();
+    for (auto plugin_impl : _plugin_impl_list) {
+        plugin_impl->deinit();
     }
 }
 
 void DevicePluginContainer::enable_plugins()
 {
-    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); ++it) {
-        (**it).enable();
+    for (auto plugin_impl : _plugin_impl_list) {
+        plugin_impl->enable();
     }
 }
 
 void DevicePluginContainer::disable_plugins()
 {
-    for (auto it = _plugin_impl_list.begin(); it != _plugin_impl_list.end(); ++it) {
-        (**it).disable();
+    for (auto plugin_impl : _plugin_impl_list) {
+        plugin_impl->disable();
     }
 }
 
