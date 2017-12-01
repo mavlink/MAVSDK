@@ -580,7 +580,7 @@ public:
     /**
      * @brief Callback type for health status updates.
      *
-     * @param health_all_ok
+     * @param health_all_ok If all health flags are ok.
      */
     typedef std::function<void(bool health_all_ok)> health_all_ok_callback_t;
 
