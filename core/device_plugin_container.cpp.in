@@ -6,16 +6,9 @@ ${IMPL_INCLUDES_STRING}
 
 namespace dronecore {
 
-DevicePluginContainer::DevicePluginContainer(DeviceImpl *impl) :
-${PLUGIN_CTOR_STRING}
-    _plugin_impl_list()
+DevicePluginContainer::DevicePluginContainer(DeviceImpl *impl)
 {
-${PLUGIN_LIST_APPEND_STRING}
-
-    for (auto plugin_impl : _plugin_impl_list) {
-        plugin_impl->set_parent(impl);
-    }
-
+    construct_plugins(impl);
     init_plugins();
 
     impl->subscribe_on_discovery(std::bind(&DevicePluginContainer::enable_plugins, this));
@@ -26,6 +19,23 @@ DevicePluginContainer::~DevicePluginContainer()
 {
     disable_plugins();
     deinit_plugins();
+    destruct_plugins();
+}
+
+
+void DevicePluginContainer::construct_plugins(DeviceImpl *impl)
+{
+${PLUGIN_CTOR_STRING}
+${PLUGIN_LIST_APPEND_STRING}
+
+    for (auto plugin_impl : _plugin_impl_list) {
+        plugin_impl->set_parent(impl);
+    }
+}
+
+void DevicePluginContainer::destruct_plugins()
+{
+${PLUGIN_DTOR_STRING}
 
     while (!_plugin_impl_list.empty()) {
         delete _plugin_impl_list.back();
@@ -60,6 +70,5 @@ void DevicePluginContainer::disable_plugins()
         plugin_impl->disable();
     }
 }
-
 
 } // namespace dronecore
