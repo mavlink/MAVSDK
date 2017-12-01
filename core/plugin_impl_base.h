@@ -14,11 +14,8 @@ public:
     virtual void init() = 0;
     virtual void deinit() = 0;
 
-    // TODO: make this pure virtual after a while.
-    virtual void enable();
-
-    // TODO: make this pure virtual after a while.
-    virtual void disable();
+    virtual void enable() = 0;
+    virtual void disable() = 0;
 
     // Non-copyable
     PluginImplBase(const PluginImplBase &) = delete;
