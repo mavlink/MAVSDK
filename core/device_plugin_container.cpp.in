@@ -24,6 +24,7 @@ ${PLUGIN_LIST_APPEND_STRING}
 
 DevicePluginContainer::~DevicePluginContainer()
 {
+    disable_plugins();
     deinit_plugins();
 
     while (!_plugin_impl_list.empty()) {

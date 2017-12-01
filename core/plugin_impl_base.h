@@ -41,7 +41,9 @@ public:
     virtual void enable() = 0;
 
     /*
-     * The method `disable()` is called when a device has timed out.
+     * The method `disable()` is called when a device has timed out. The method is also
+     * called before `deinit()` is called in case we destruct with a device still
+     * connected.
      *
      * Plugins should stop whatever they were doing in order to prevent warnings and
      * errors because communication to the device no longer work, e.g. stop setting
