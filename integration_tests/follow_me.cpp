@@ -56,7 +56,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     print(curr_config);
 
     // Set just a single location before starting FollowMe (optional)
-    device.follow_me().set_curr_target_location({47.39768399, 8.54564155, 0.f, 0.f, 0.f, 0.f});
+    device.follow_me().set_curr_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
 
     // Start following with default configuration
     FollowMe::Result follow_me_result = device.follow_me().start();
