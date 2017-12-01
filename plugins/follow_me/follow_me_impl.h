@@ -18,6 +18,9 @@ public:
     void init() override;
     void deinit() override;
 
+    void enable() override;
+    void disable() override;
+
     const FollowMe::Config &get_config() const;
     bool set_config(const FollowMe::Config &config);
 

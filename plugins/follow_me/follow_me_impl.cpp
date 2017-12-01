@@ -18,9 +18,7 @@ FollowMeImpl::FollowMeImpl() :
                                                                          NAN, NAN, NAN };
 }
 
-FollowMeImpl::~FollowMeImpl()
-{
-}
+FollowMeImpl::~FollowMeImpl() {}
 
 void FollowMeImpl::init()
 {
@@ -33,6 +31,13 @@ void FollowMeImpl::init()
 void FollowMeImpl::deinit()
 {
     _parent->unregister_all_mavlink_message_handlers(this);
+}
+
+void FollowMeImpl::enable() {}
+
+void FollowMeImpl::disable()
+{
+    stop_sending_target_location();
 }
 
 const FollowMe::Config &FollowMeImpl::get_config() const
