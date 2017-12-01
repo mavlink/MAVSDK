@@ -7,29 +7,17 @@
 namespace dronecore {
 
 GimbalImpl::GimbalImpl() :
-    PluginImplBase()
-{
-}
+    PluginImplBase() {}
 
-GimbalImpl::~GimbalImpl()
-{
-}
+GimbalImpl::~GimbalImpl() {}
 
-void GimbalImpl::init()
-{
-}
+void GimbalImpl::init() {}
 
-void GimbalImpl::deinit()
-{
-}
+void GimbalImpl::deinit() {}
 
-void GimbalImpl::enable()
-{
-}
+void GimbalImpl::enable() {}
 
-void GimbalImpl::disable()
-{
-}
+void GimbalImpl::disable() {}
 
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {

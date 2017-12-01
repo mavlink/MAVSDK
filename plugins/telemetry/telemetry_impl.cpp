@@ -47,13 +47,9 @@ TelemetryImpl::TelemetryImpl() :
     _health_all_ok_subscription(nullptr),
     _rc_status_subscription(nullptr),
     _ground_speed_ned_rate_hz(0.0),
-    _position_rate_hz(0.0)
-{
-}
+    _position_rate_hz(0.0) {}
 
-TelemetryImpl::~TelemetryImpl()
-{
-}
+TelemetryImpl::~TelemetryImpl() {}
 
 void TelemetryImpl::init()
 {

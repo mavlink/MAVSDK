@@ -5,13 +5,9 @@
 
 namespace dronecore {
 
-OffboardImpl::OffboardImpl()
-{
-}
+OffboardImpl::OffboardImpl() {}
 
-OffboardImpl::~OffboardImpl()
-{
-}
+OffboardImpl::~OffboardImpl() {}
 
 void OffboardImpl::init()
 {
@@ -27,13 +23,9 @@ void OffboardImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void OffboardImpl::enable()
-{
-}
+void OffboardImpl::enable() {}
 
-void OffboardImpl::disable()
-{
-}
+void OffboardImpl::disable() {}
 
 Offboard::Result OffboardImpl::start()
 {
