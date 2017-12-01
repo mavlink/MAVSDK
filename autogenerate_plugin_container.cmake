@@ -104,6 +104,9 @@ set(FORWARD_DECLARATION_STRING "")
 # Contains the constructor entries.
 set(PLUGIN_CTOR_STRING "")
 
+# Contains the destructor entries.
+set(PLUGIN_DTOR_STRING "")
+
 # Contains the member variables for the plugin instances.
 set(PLUGIN_MEMBER_STRING "")
 
@@ -143,7 +146,7 @@ foreach(class_name ${plugin_class_names})
     set(PLUGIN_GET_STRING
         "${PLUGIN_GET_STRING}     */\n")
     set(PLUGIN_GET_STRING
-        "${PLUGIN_GET_STRING}    ${class_name} &${get_name}() { return ${member_name}; }\n\n")
+        "${PLUGIN_GET_STRING}    ${class_name} &${get_name}() { return *${member_name}; }\n\n")
 
     set(PLUGIN_MEMBER_STRING
         "${PLUGIN_MEMBER_STRING}    /** @private internal use only.*/\n")
@@ -152,12 +155,15 @@ foreach(class_name ${plugin_class_names})
     set(PLUGIN_MEMBER_STRING
         "${PLUGIN_MEMBER_STRING}    /** @private internal use only.*/\n")
     set(PLUGIN_MEMBER_STRING
-        "${PLUGIN_MEMBER_STRING}    ${class_name} ${member_name};\n")
+        "${PLUGIN_MEMBER_STRING}    ${class_name} *${member_name};\n")
 
     set(PLUGIN_CTOR_STRING
-        "${PLUGIN_CTOR_STRING}    ${impl_member_name}(new ${impl_class_name}()),\n")
+        "${PLUGIN_CTOR_STRING}    ${impl_member_name} = new ${impl_class_name}();\n")
     set(PLUGIN_CTOR_STRING
-        "${PLUGIN_CTOR_STRING}    ${member_name}(${impl_member_name}),\n")
+        "${PLUGIN_CTOR_STRING}    ${member_name} = new ${class_name}(${impl_member_name}),\n")
+
+    set(PLUGIN_DTOR_STRING
+        "${PLUGIN_DTOR_STRING}    delete ${member_name};\n")
 
     set(PLUGIN_LIST_APPEND_STRING
         "${PLUGIN_LIST_APPEND_STRING}   _plugin_impl_list.push_back(${impl_member_name});\n")

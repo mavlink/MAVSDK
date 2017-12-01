@@ -50,21 +50,27 @@ ${PLUGIN_GET_STRING}
 
 protected:
     /** @private internal use only. */
-    virtual void init_plugins();
+    void construct_plugins(DeviceImpl *impl);
 
     /** @private internal use only. */
-    virtual void deinit_plugins();
+    void destruct_plugins();
 
     /** @private internal use only. */
-    virtual void enable_plugins();
+    void init_plugins();
 
     /** @private internal use only. */
-    virtual void disable_plugins();
+    void deinit_plugins();
+
+    /** @private internal use only. */
+    void enable_plugins();
+
+    /** @private internal use only. */
+    void disable_plugins();
 
 ${PLUGIN_MEMBER_STRING}
 
     /** @private internal use only. */
-    std::vector<PluginImplBase *> _plugin_impl_list;
+    std::vector<PluginImplBase *> _plugin_impl_list {};
 };
 
 } // namespace dronecore
