@@ -401,7 +401,7 @@ public:
     /**
      * @brief Returns true if the overall health is ok (synchronous).
      *
-     * @return true if all individual health flags are true.
+     * @return True if all health flags are OK.
      */
     bool health_all_ok() const;
 
