@@ -90,9 +90,6 @@ endif()
 set (additional_includes "")
 set (additional_libs "")
 
-# Autogenerate the device_plugin_container.{h|cpp} to include all plugins.
-include(autogenerate_plugin_container.cmake)
-
 # Header files in include denote public facing header files, the rest is in
 # core or the respective plugin directories.
 include_directories(
@@ -134,7 +131,6 @@ endif()
 add_library(dronecore ${library_type}
     core/global_include.cpp
     core/connection.cpp
-    core/device.cpp
     core/device_impl.cpp
     core/mavlink_parameters.cpp
     core/mavlink_commands.cpp
@@ -150,7 +146,6 @@ add_library(dronecore ${library_type}
     core/http_loader.cpp
     core/timeout_handler.cpp
     core/call_every_handler.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/core/device_plugin_container.cpp
     ${plugin_source_files}
 )
 
@@ -200,7 +195,8 @@ install(FILES
     DESTINATION "include/dronecore"
 )
 
-if(NOT IOS AND NOT ANDROID)
+# TODO: enable again
+if(NOT IOS AND NOT ANDROID AND false)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")

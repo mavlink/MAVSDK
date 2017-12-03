@@ -1,10 +1,10 @@
 #pragma once
 
-#include "device.h"
-
 #include <string>
 #include <vector>
 #include <functional>
+
+#include "device_impl.h"
 
 namespace dronecore {
 
@@ -130,7 +130,7 @@ public:
      *
      * @return A reference to a device.
      */
-    Device &device() const;
+    DeviceImpl &device() const;
 
     /**
      * @brief Get the device with the specified UUID.
@@ -141,7 +141,7 @@ public:
      * @param uuid UUID of device to get.
      * @return A reference to the specified device.
      */
-    Device &device(uint64_t uuid) const;
+    DeviceImpl &device(uint64_t uuid) const;
 
     /**
      * @brief Callback type for discover and timeout notifications.
