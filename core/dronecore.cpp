@@ -97,12 +97,12 @@ const std::vector<uint64_t> &DroneCore::device_uuids() const
     return _impl->get_device_uuids();
 }
 
-Device &DroneCore::device() const
+DeviceImpl &DroneCore::device() const
 {
     return _impl->get_device();
 }
 
-Device &DroneCore::device(uint64_t uuid) const
+DeviceImpl &DroneCore::device(uint64_t uuid) const
 {
     return _impl->get_device(uuid);
 }
