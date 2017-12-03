@@ -12,8 +12,8 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-DeviceImpl::DeviceImpl(DroneCoreImpl *parent,
-                       uint8_t target_system_id) :
+Device::Device(DroneCoreImpl *parent,
+               uint8_t target_system_id) :
     _target_system_id(target_system_id),
     _parent(parent),
     _params(this),
@@ -25,18 +25,18 @@ DeviceImpl::DeviceImpl(DroneCoreImpl *parent,
 
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&DeviceImpl::process_heartbeat, this, _1), this);
+        std::bind(&Device::process_heartbeat, this, _1), this);
 
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        std::bind(&DeviceImpl::process_autopilot_version, this, _1), this);
+        std::bind(&Device::process_autopilot_version, this, _1), this);
 
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_STATUSTEXT,
-        std::bind(&DeviceImpl::process_statustext, this, _1), this);
+        std::bind(&Device::process_statustext, this, _1), this);
 }
 
-DeviceImpl::~DeviceImpl()
+Device::~Device()
 {
     _should_exit = true;
     unregister_all_mavlink_message_handlers(this);
@@ -51,14 +51,14 @@ DeviceImpl::~DeviceImpl()
     }
 }
 
-bool DeviceImpl::is_connected() const
+bool Device::is_connected() const
 {
     return _connected;
 }
 
-void DeviceImpl::register_mavlink_message_handler(uint16_t msg_id,
-                                                  mavlink_message_handler_t callback,
-                                                  const void *cookie)
+void Device::register_mavlink_message_handler(uint16_t msg_id,
+                                              mavlink_message_handler_t callback,
+                                              const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
 
@@ -66,7 +66,7 @@ void DeviceImpl::register_mavlink_message_handler(uint16_t msg_id,
     _mavlink_handler_table.push_back(entry);
 }
 
-void DeviceImpl::unregister_all_mavlink_message_handlers(const void *cookie)
+void Device::unregister_all_mavlink_message_handlers(const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
 
@@ -83,24 +83,24 @@ void DeviceImpl::unregister_all_mavlink_message_handlers(const void *cookie)
     _mavlink_handler_table.clear();
 }
 
-void DeviceImpl::register_timeout_handler(std::function<void()> callback,
-                                          double duration_s,
-                                          void **cookie)
+void Device::register_timeout_handler(std::function<void()> callback,
+                                      double duration_s,
+                                      void **cookie)
 {
     _timeout_handler.add(callback, duration_s, cookie);
 }
 
-void DeviceImpl::refresh_timeout_handler(const void *cookie)
+void Device::refresh_timeout_handler(const void *cookie)
 {
     _timeout_handler.refresh(cookie);
 }
 
-void DeviceImpl::unregister_timeout_handler(const void *cookie)
+void Device::unregister_timeout_handler(const void *cookie)
 {
     _timeout_handler.remove(cookie);
 }
 
-void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
+void Device::process_mavlink_message(const mavlink_message_t &message)
 {
     if (_communication_locked) {
         return;
@@ -127,27 +127,27 @@ void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
 #endif
 }
 
-void DeviceImpl::add_call_every(std::function<void()> callback, float interval_s, void **cookie)
+void Device::add_call_every(std::function<void()> callback, float interval_s, void **cookie)
 {
     _call_every_handler.add(callback, interval_s, cookie);
 }
 
-void DeviceImpl::change_call_every(float interval_s, const void *cookie)
+void Device::change_call_every(float interval_s, const void *cookie)
 {
     _call_every_handler.change(interval_s, cookie);
 }
 
-void DeviceImpl::reset_call_every(const void *cookie)
+void Device::reset_call_every(const void *cookie)
 {
     _call_every_handler.reset(cookie);
 }
 
-void DeviceImpl::remove_call_every(const void *cookie)
+void Device::remove_call_every(const void *cookie)
 {
     _call_every_handler.remove(cookie);
 }
 
-void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
+void Device::process_heartbeat(const mavlink_message_t &message)
 {
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
@@ -164,7 +164,7 @@ void DeviceImpl::process_heartbeat(const mavlink_message_t &message)
     set_connected();
 }
 
-void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
+void Device::process_autopilot_version(const mavlink_message_t &message)
 {
     // Ignore if they don't come from the autopilot component
     if (message.compid != MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
@@ -201,7 +201,7 @@ void DeviceImpl::process_autopilot_version(const mavlink_message_t &message)
     unregister_timeout_handler(_autopilot_version_timed_out_cookie);
 }
 
-void DeviceImpl::process_statustext(const mavlink_message_t &message)
+void Device::process_statustext(const mavlink_message_t &message)
 {
     mavlink_statustext_t statustext;
     mavlink_msg_statustext_decode(&message, &statustext);
@@ -245,19 +245,19 @@ void DeviceImpl::process_statustext(const mavlink_message_t &message)
     LogDebug() << debug_str << ": " << text_with_null;
 }
 
-void DeviceImpl::heartbeats_timed_out()
+void Device::heartbeats_timed_out()
 {
     LogInfo() << "heartbeats timed out";
     set_disconnected();
 }
 
-void DeviceImpl::device_thread(DeviceImpl *self)
+void Device::device_thread(Device *self)
 {
     dl_time_t last_time {};
 
     while (!self->_should_exit) {
 
-        if (self->_time.elapsed_since_s(last_time) >= DeviceImpl::_HEARTBEAT_SEND_INTERVAL_S) {
+        if (self->_time.elapsed_since_s(last_time) >= Device::_HEARTBEAT_SEND_INTERVAL_S) {
             send_heartbeat(self);
             last_time = self->_time.steady_time();
         }
@@ -277,7 +277,7 @@ void DeviceImpl::device_thread(DeviceImpl *self)
     }
 }
 
-void DeviceImpl::send_heartbeat(DeviceImpl *self)
+void Device::send_heartbeat(Device *self)
 {
     mavlink_message_t message;
     mavlink_msg_heartbeat_pack(_own_system_id, _own_component_id, &message,
@@ -285,7 +285,7 @@ void DeviceImpl::send_heartbeat(DeviceImpl *self)
     self->send_message(message);
 }
 
-bool DeviceImpl::send_message(const mavlink_message_t &message)
+bool Device::send_message(const mavlink_message_t &message)
 {
     if (_communication_locked) {
         return false;
@@ -297,7 +297,7 @@ bool DeviceImpl::send_message(const mavlink_message_t &message)
     return _parent->send_message(message);
 }
 
-void DeviceImpl::request_autopilot_version()
+void Device::request_autopilot_version()
 {
     if (_target_uuid_initialized) {
         // Already initialized, we can exit.
@@ -339,7 +339,7 @@ void DeviceImpl::request_autopilot_version()
     &_autopilot_version_timed_out_cookie);
 }
 
-void DeviceImpl::set_connected()
+void Device::set_connected()
 {
     std::lock_guard<std::mutex> lock(_connection_mutex);
 
@@ -351,7 +351,7 @@ void DeviceImpl::set_connected()
         _parent->notify_on_discover(_target_uuid);
         _connected = true;
 
-        register_timeout_handler(std::bind(&DeviceImpl::heartbeats_timed_out, this),
+        register_timeout_handler(std::bind(&Device::heartbeats_timed_out, this),
                                  _HEARTBEAT_TIMEOUT_S,
                                  &_heartbeat_timeout_cookie);
     } else if (_connected) {
@@ -360,16 +360,16 @@ void DeviceImpl::set_connected()
     // If not yet connected there is nothing to do/
 }
 
-void DeviceImpl::subscribe_on_discovery(std::function <void()> callback)
+void Device::subscribe_on_discovery(std::function <void()> callback)
 {
     _on_discovery_callback = callback;
 }
-void DeviceImpl::subscribe_on_timeout(std::function <void()> callback)
+void Device::subscribe_on_timeout(std::function <void()> callback)
 {
     _on_timeout_callback = callback;
 }
 
-void DeviceImpl::set_disconnected()
+void Device::set_disconnected()
 {
     std::lock_guard<std::mutex> lock(_connection_mutex);
 
@@ -385,63 +385,63 @@ void DeviceImpl::set_disconnected()
     _parent->notify_on_timeout(_target_uuid);
 }
 
-uint64_t DeviceImpl::get_target_uuid() const
+uint64_t Device::get_target_uuid() const
 {
     // We want to support UUIDs if the autopilot tells us.
     return _target_uuid;
 }
 
-uint8_t DeviceImpl::get_target_system_id() const
+uint8_t Device::get_target_system_id() const
 {
     return _target_system_id;
 }
 
-uint8_t DeviceImpl::get_target_component_id() const
+uint8_t Device::get_target_component_id() const
 {
     return _target_component_id;
 }
 
-void DeviceImpl::set_target_system_id(uint8_t system_id)
+void Device::set_target_system_id(uint8_t system_id)
 {
     _target_system_id = system_id;
 }
 
-void DeviceImpl::set_param_float_async(const std::string &name, float value, success_t callback)
+void Device::set_param_float_async(const std::string &name, float value, success_t callback)
 {
     MavlinkParameters::ParamValue param_value;
     param_value.set_float(value);
     _params.set_param_async(name, param_value, callback);
 }
 
-void DeviceImpl::set_param_int_async(const std::string &name, int32_t value, success_t callback)
+void Device::set_param_int_async(const std::string &name, int32_t value, success_t callback)
 {
     MavlinkParameters::ParamValue param_value;
     param_value.set_int(value);
     _params.set_param_async(name, param_value, callback);
 }
 
-void DeviceImpl::set_param_ext_float_async(const std::string &name, float value, success_t callback)
+void Device::set_param_ext_float_async(const std::string &name, float value, success_t callback)
 {
     MavlinkParameters::ParamValue param_value;
     param_value.set_float(value);
     _params.set_param_async(name, param_value, callback, true);
 }
 
-void DeviceImpl::set_param_ext_int_async(const std::string &name, int32_t value, success_t callback)
+void Device::set_param_ext_int_async(const std::string &name, int32_t value, success_t callback)
 {
     MavlinkParameters::ParamValue param_value;
     param_value.set_int(value);
     _params.set_param_async(name, param_value, callback, true);
 }
 
-void DeviceImpl::get_param_float_async(const std::string &name,
-                                       get_param_float_callback_t callback)
+void Device::get_param_float_async(const std::string &name,
+                                   get_param_float_callback_t callback)
 {
-    _params.get_param_async(name, std::bind(&DeviceImpl::receive_float_param, _1, _2,
+    _params.get_param_async(name, std::bind(&Device::receive_float_param, _1, _2,
                                             callback));
 }
 
-MavlinkCommands::Result DeviceImpl::set_flight_mode(FlightMode device_mode)
+MavlinkCommands::Result Device::set_flight_mode(FlightMode device_mode)
 {
     uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
 
@@ -491,7 +491,7 @@ MavlinkCommands::Result DeviceImpl::set_flight_mode(FlightMode device_mode)
     return ret;
 }
 
-void DeviceImpl::set_flight_mode_async(FlightMode device_mode, command_result_callback_t callback)
+void Device::set_flight_mode_async(FlightMode device_mode, command_result_callback_t callback)
 {
     uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
 
@@ -542,44 +542,44 @@ void DeviceImpl::set_flight_mode_async(FlightMode device_mode, command_result_ca
                                 MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
-void DeviceImpl::get_param_int_async(const std::string &name,
-                                     get_param_int_callback_t callback)
+void Device::get_param_int_async(const std::string &name,
+                                 get_param_int_callback_t callback)
 {
-    _params.get_param_async(name, std::bind(&DeviceImpl::receive_int_param, _1, _2,
+    _params.get_param_async(name, std::bind(&Device::receive_int_param, _1, _2,
                                             callback));
 }
 
-void DeviceImpl::get_param_ext_float_async(const std::string &name,
-                                           get_param_float_callback_t callback)
+void Device::get_param_ext_float_async(const std::string &name,
+                                       get_param_float_callback_t callback)
 {
-    _params.get_param_async(name, std::bind(&DeviceImpl::receive_float_param, _1, _2,
+    _params.get_param_async(name, std::bind(&Device::receive_float_param, _1, _2,
                                             callback), true);
 }
 
-void DeviceImpl::get_param_ext_int_async(const std::string &name,
-                                         get_param_int_callback_t callback)
+void Device::get_param_ext_int_async(const std::string &name,
+                                     get_param_int_callback_t callback)
 {
-    _params.get_param_async(name, std::bind(&DeviceImpl::receive_int_param, _1, _2,
+    _params.get_param_async(name, std::bind(&Device::receive_int_param, _1, _2,
                                             callback), true);
 }
 
-void DeviceImpl::receive_float_param(bool success, MavlinkParameters::ParamValue value,
-                                     get_param_float_callback_t callback)
+void Device::receive_float_param(bool success, MavlinkParameters::ParamValue value,
+                                 get_param_float_callback_t callback)
 {
     if (callback) {
         callback(success, value.get_float());
     }
 }
 
-void DeviceImpl::receive_int_param(bool success, MavlinkParameters::ParamValue value,
-                                   get_param_int_callback_t callback)
+void Device::receive_int_param(bool success, MavlinkParameters::ParamValue value,
+                               get_param_int_callback_t callback)
 {
     if (callback) {
         callback(success, value.get_int());
     }
 }
 
-MavlinkCommands::Result DeviceImpl::send_command_with_ack(
+MavlinkCommands::Result Device::send_command_with_ack(
     uint16_t command, const MavlinkCommands::Params &params, uint8_t component_id)
 {
     if (_target_system_id == 0 && _target_component_id == 0) {
@@ -592,10 +592,10 @@ MavlinkCommands::Result DeviceImpl::send_command_with_ack(
     return _commands.send_command(command, params, _target_system_id, component_id_to_use);
 }
 
-void DeviceImpl::send_command_with_ack_async(uint16_t command,
-                                             const MavlinkCommands::Params &params,
-                                             command_result_callback_t callback,
-                                             uint8_t component_id)
+void Device::send_command_with_ack_async(uint16_t command,
+                                         const MavlinkCommands::Params &params,
+                                         command_result_callback_t callback,
+                                         uint8_t component_id)
 {
     if (_target_system_id == 0 && _target_component_id == 0) {
         if (callback) {
@@ -611,8 +611,8 @@ void DeviceImpl::send_command_with_ack_async(uint16_t command,
                                   callback);
 }
 
-MavlinkCommands::Result DeviceImpl::set_msg_rate(uint16_t message_id, double rate_hz,
-                                                 uint8_t component_id)
+MavlinkCommands::Result Device::set_msg_rate(uint16_t message_id, double rate_hz,
+                                             uint8_t component_id)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
@@ -632,8 +632,8 @@ MavlinkCommands::Result DeviceImpl::set_msg_rate(uint16_t message_id, double rat
     }
 }
 
-void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
-                                    command_result_callback_t callback, uint8_t component_id)
+void Device::set_msg_rate_async(uint16_t message_id, double rate_hz,
+                                command_result_callback_t callback, uint8_t component_id)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
@@ -655,12 +655,12 @@ void DeviceImpl::set_msg_rate_async(uint16_t message_id, double rate_hz,
     }
 }
 
-void DeviceImpl::lock_communication()
+void Device::lock_communication()
 {
     _communication_locked = true;
 }
 
-void DeviceImpl::unlock_communication()
+void Device::unlock_communication()
 {
     _communication_locked = false;
 }

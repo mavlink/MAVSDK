@@ -17,7 +17,7 @@ namespace dronecore {
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
-MavlinkCommands::MavlinkCommands(DeviceImpl *parent) :
+MavlinkCommands::MavlinkCommands(Device *parent) :
     _parent(parent)
 {
     _parent->register_mavlink_message_handler(

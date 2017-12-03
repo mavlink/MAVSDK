@@ -8,7 +8,7 @@ DroneCoreImpl::DroneCoreImpl() :
     _connections_mutex(),
     _connections(),
     _devices_mutex(),
-    _device_impls(),
+    _devices(),
     _on_discover_callback(nullptr),
     _on_timeout_callback(nullptr)
 {}
@@ -19,10 +19,10 @@ DroneCoreImpl::~DroneCoreImpl()
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
         _should_exit = true;
 
-        for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
+        for (auto it = _devices.begin(); it != _devices.end(); ++it) {
             delete it->second;
         }
-        _device_impls.clear();
+        _devices.clear();
     }
 
     std::vector<Connection *> tmp_connections;
@@ -59,11 +59,11 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
     // Change system id of null device
-    if (_device_impls.find(0) != _device_impls.end()) {
-        auto null_device_impl = _device_impls[0];
-        _device_impls.erase(0);
-        null_device_impl->set_target_system_id(message.sysid);
-        _device_impls.insert(std::pair<uint8_t, DeviceImpl *>(message.sysid, null_device_impl));
+    if (_devices.find(0) != _devices.end()) {
+        auto null_device = _devices[0];
+        _devices.erase(0);
+        null_device->set_target_system_id(message.sysid);
+        _devices.insert(std::pair<uint8_t, Device *>(message.sysid, null_device));
     }
 
     create_device_if_not_existing(message.sysid);
@@ -78,8 +78,8 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
         LogDebug() << "sysid: " << int(message.sysid);
     }
 
-    if (_device_impls.find(message.sysid) != _device_impls.end()) {
-        _device_impls.at(message.sysid)->process_mavlink_message(message);
+    if (_devices.find(message.sysid) != _devices.end()) {
+        _devices.at(message.sysid)->process_mavlink_message(message);
     }
 }
 
@@ -109,7 +109,7 @@ const std::vector<uint64_t> &DroneCoreImpl::get_device_uuids() const
     static std::vector<uint64_t> uuids = {};
     uuids.clear();
 
-    for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
+    for (auto it = _devices.begin(); it != _devices.end(); ++it) {
         uint64_t uuid = it->second->get_target_uuid();
         if (uuid != 0) {
             uuids.push_back(uuid);
@@ -119,44 +119,44 @@ const std::vector<uint64_t> &DroneCoreImpl::get_device_uuids() const
     return uuids;
 }
 
-DeviceImpl &DroneCoreImpl::get_device()
+Device &DroneCoreImpl::get_device()
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
         // In get_device withoiut uuid, we expect to have only
         // one device conneted.
-        if (_device_impls.size() == 1) {
-            return *(_device_impls.at(_device_impls.begin()->first));
+        if (_devices.size() == 1) {
+            return *(_devices.at(_devices.begin()->first));
         }
 
-        if (_device_impls.size() > 1) {
+        if (_devices.size() > 1) {
             LogErr() << "Error: more than one device found:";
 
             int i = 0;
-            for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
+            for (auto it = _devices.begin(); it != _devices.end(); ++it) {
                 LogWarn() << "strange: " << i << ": " << int(it->first) << ", " << it->second;
                 ++i;
             }
 
             // Just return first device instead of failing.
-            return *_device_impls.begin()->second;
+            return *_devices.begin()->second;
         } else {
             LogErr() << "Error: no device found.";
             uint8_t system_id = 0;
             create_device_if_not_existing(system_id);
-            return *_device_impls[system_id];
+            return *_devices[system_id];
         }
     }
 }
 
-DeviceImpl &DroneCoreImpl::get_device(uint64_t uuid)
+Device &DroneCoreImpl::get_device(uint64_t uuid)
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
         // TODO: make a cache map for this.
-        for (auto device_impl : _device_impls) {
-            if (device_impl.second->get_target_uuid() == uuid) {
-                return *device_impl.second;
+        for (auto device : _devices) {
+            if (device.second->get_target_uuid() == uuid) {
+                return *device.second;
             }
         }
     }
@@ -169,15 +169,15 @@ DeviceImpl &DroneCoreImpl::get_device(uint64_t uuid)
     uint8_t system_id = 0;
     create_device_if_not_existing(system_id);
 
-    return *_device_impls[system_id];
+    return *_devices[system_id];
 }
 
 bool DroneCoreImpl::is_connected() const
 {
     std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
-    if (_device_impls.size() == 1) {
-        return _device_impls.begin()->second->is_connected();
+    if (_devices.size() == 1) {
+        return _devices.begin()->second->is_connected();
     }
     return false;
 }
@@ -186,7 +186,7 @@ bool DroneCoreImpl::is_connected(uint64_t uuid) const
 {
     std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
-    for (auto it = _device_impls.begin(); it != _device_impls.end(); ++it) {
+    for (auto it = _devices.begin(); it != _devices.end(); ++it) {
         if (it->second->get_target_uuid() == uuid) {
             return it->second->is_connected();
         }
@@ -199,19 +199,19 @@ void DroneCoreImpl::create_device_if_not_existing(uint8_t system_id)
     std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
 
     if (_should_exit) {
-        // When the device_impl got destroyed in the destructor, we have to give up.
+        // When the device got destroyed in the destructor, we have to give up.
         return;
     }
 
     // existing already.
-    if (_device_impls.find(system_id) != _device_impls.end()) {
+    if (_devices.find(system_id) != _devices.end()) {
         //LogDebug() << "ID: " << int(system_id) << " exists already.";
         return;
     }
 
     // Create both lists in parallel
-    DeviceImpl *new_device_impl = new DeviceImpl(this, system_id);
-    _device_impls.insert(std::pair<uint8_t, DeviceImpl *>(system_id, new_device_impl));
+    Device *new_device = new Device(this, system_id);
+    _devices.insert(std::pair<uint8_t, Device *>(system_id, new_device));
 }
 
 void DroneCoreImpl::notify_on_discover(uint64_t uuid)

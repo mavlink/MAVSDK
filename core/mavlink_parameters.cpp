@@ -3,7 +3,7 @@
 
 namespace dronecore {
 
-MavlinkParameters::MavlinkParameters(DeviceImpl *parent) :
+MavlinkParameters::MavlinkParameters(Device *parent) :
     _parent(parent)
 {
     _parent->register_mavlink_message_handler(

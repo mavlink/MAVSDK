@@ -130,7 +130,7 @@ public:
      *
      * @return A reference to a device.
      */
-    DeviceImpl &device() const;
+    Device &device() const;
 
     /**
      * @brief Get the device with the specified UUID.
@@ -141,7 +141,7 @@ public:
      * @param uuid UUID of device to get.
      * @return A reference to the specified device.
      */
-    DeviceImpl &device(uint64_t uuid) const;
+    Device &device(uint64_t uuid) const;
 
     /**
      * @brief Callback type for discover and timeout notifications.
