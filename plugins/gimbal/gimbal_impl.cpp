@@ -1,5 +1,5 @@
 #include "gimbal_impl.h"
-#include "device_impl.h"
+#include "device.h"
 #include "global_include.h"
 #include "mavlink_include.h"
 #include <functional>

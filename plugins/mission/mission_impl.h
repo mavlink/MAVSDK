@@ -3,7 +3,7 @@
 #include <memory>
 #include <map>
 #include <mutex>
-#include "device_impl.h"
+#include "device.h"
 #include "mission.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"

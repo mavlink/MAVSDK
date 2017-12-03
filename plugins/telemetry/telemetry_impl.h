@@ -2,7 +2,7 @@
 
 #include "telemetry.h"
 #include "plugin_impl_base.h"
-#include "device_impl.h"
+#include "device.h"
 #include "mavlink_include.h"
 #include <atomic>
 #include <mutex>

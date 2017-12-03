@@ -1,5 +1,5 @@
 #include "info_impl.h"
-#include "device_impl.h"
+#include "device.h"
 #include "global_include.h"
 #include <functional>
 

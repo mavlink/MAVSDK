@@ -2,7 +2,7 @@
 
 #include "dronecore.h"
 #include "connection.h"
-#include "device_impl.h"
+#include "device.h"
 #include "mavlink_include.h"
 #include <vector>
 #include <map>

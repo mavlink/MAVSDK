@@ -1,6 +1,6 @@
 #pragma once
 
-#include "device_impl.h"
+#include "device.h"
 #include "gimbal.h"
 #include "plugin_impl_base.h"
 

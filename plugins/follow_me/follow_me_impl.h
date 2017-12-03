@@ -3,7 +3,7 @@
 #include "follow_me.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
-#include "device_impl.h"
+#include "device.h"
 #include "timeout_handler.h"
 #include "global_include.h"
 #include "log.h"

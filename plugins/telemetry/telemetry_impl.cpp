@@ -1,5 +1,5 @@
 #include "telemetry_impl.h"
-#include "device_impl.h"
+#include "device.h"
 #include "math_conversions.h"
 #include "global_include.h"
 #include "px4_custom_mode.h"

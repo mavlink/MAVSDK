@@ -131,7 +131,7 @@ endif()
 add_library(dronecore ${library_type}
     core/global_include.cpp
     core/connection.cpp
-    core/device_impl.cpp
+    core/device.cpp
     core/mavlink_parameters.cpp
     core/mavlink_commands.cpp
     core/dronecore.cpp

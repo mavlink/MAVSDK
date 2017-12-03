@@ -4,7 +4,7 @@
 #include <vector>
 #include <functional>
 
-#include "device_impl.h"
+#include "device.h"
 
 namespace dronecore {
 
