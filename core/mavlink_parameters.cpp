@@ -1,5 +1,5 @@
 #include "mavlink_parameters.h"
-#include "device_impl.h"
+#include "device.h"
 
 namespace dronecore {
 

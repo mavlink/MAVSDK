@@ -1,4 +1,4 @@
-#include "device_impl.h"
+#include "device.h"
 #include "global_include.h"
 #include "dronecore_impl.h"
 #include "mavlink_include.h"

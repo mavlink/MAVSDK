@@ -2,7 +2,7 @@
 
 #include "plugin_impl_base.h"
 #include "mavlink_include.h"
-#include "device_impl.h"
+#include "device.h"
 #include "offboard.h"
 #include <mutex>
 

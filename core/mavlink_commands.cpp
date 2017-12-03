@@ -1,5 +1,5 @@
 #include "mavlink_commands.h"
-#include "device_impl.h"
+#include "device.h"
 #include <future>
 #include <memory>
 

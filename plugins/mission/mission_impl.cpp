@@ -1,6 +1,6 @@
 #include "mission_impl.h"
 #include "mission_item_impl.h"
-#include "device_impl.h"
+#include "device.h"
 #include "global_include.h"
 #include <cmath>
 
