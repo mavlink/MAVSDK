@@ -2,7 +2,7 @@
 
 namespace dronecore {
 
-class DeviceImpl;
+class Device;
 
 class PluginImplBase
 {
@@ -10,7 +10,7 @@ public:
     PluginImplBase();
     virtual ~PluginImplBase() = default;
 
-    void set_parent(DeviceImpl *parent);
+    void set_parent(Device *parent);
 
     /*
      * The method `init()` is called when a plugin is instantiated which happens
@@ -18,7 +18,7 @@ public:
      * exists and is connected, it might just be an empty dummy device.
      *
      * Plugins should do initialization steps with other parts of DroneCore
-     * at this state, e.g. set up callbacks with _parent (DeviceImpl).
+     * at this state, e.g. set up callbacks with _parent (Device).
      */
     virtual void init() = 0;
 
@@ -58,7 +58,7 @@ public:
     const PluginImplBase &operator=(const PluginImplBase &) = delete;
 
 protected:
-    DeviceImpl *_parent;
+    Device *_parent;
 };
 
 } // namespace dronecore

@@ -13,7 +13,7 @@
 
 namespace dronecore {
 
-class DeviceImpl;
+class Device;
 
 class TelemetryImpl : public PluginImplBase
 {

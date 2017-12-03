@@ -40,7 +40,7 @@ void InfoImpl::process_heartbeat(const mavlink_message_t &message)
 
     if (!is_complete()) {
         // We try to request more info if not all info is available.
-        // We can't rely on DeviceImpl to request the autopilot_version,
+        // We can't rely on Device to request the autopilot_version,
         // so we do it here, anyway.
         _parent->request_autopilot_version();
     }

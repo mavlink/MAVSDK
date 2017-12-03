@@ -22,8 +22,8 @@ public:
     void add_connection(Connection *connection);
 
     const std::vector<uint64_t> &get_device_uuids() const;
-    DeviceImpl &get_device();
-    DeviceImpl &get_device(uint64_t uuid);
+    Device &get_device();
+    Device &get_device(uint64_t uuid);
 
     bool is_connected() const;
     bool is_connected(uint64_t uuid) const;
@@ -41,7 +41,7 @@ private:
     std::vector<Connection *> _connections;
 
     mutable std::recursive_mutex _devices_mutex;
-    std::map<uint8_t, DeviceImpl *> _device_impls;
+    std::map<uint8_t, Device *> _devices;
 
     DroneCore::event_callback_t _on_discover_callback;
     DroneCore::event_callback_t _on_timeout_callback;
