@@ -196,14 +196,13 @@ install(FILES
     DESTINATION "include/dronecore"
 )
 
-# TODO: enable again
-if(NOT IOS AND NOT ANDROID AND false)
 set(dronecore_install_include_dir "include/dronecore")
 set(dronecore_install_lib_dir ${lib_path})
 
 add_subdirectory(plugins/action)
 add_subdirectory(plugins/telemetry)
 
+if(NOT IOS AND NOT ANDROID)
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
