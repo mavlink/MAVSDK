@@ -93,6 +93,7 @@ set (additional_libs "")
 # Header files in include denote public facing header files, the rest is in
 # core or the respective plugin directories.
 include_directories(
+    .
     include
     libs/include
     core
@@ -141,6 +142,7 @@ add_library(dronecore ${library_type}
     core/serial_connection.cpp
     core/tcp_connection.cpp
     core/udp_connection.cpp
+    core/plugin_base.cpp
     core/plugin_impl_base.cpp
     core/curl_wrapper.cpp
     core/http_loader.cpp
@@ -189,8 +191,7 @@ install(TARGETS dronecore
 
 install(FILES
     include/dronecore.h
-    include/device.h
-    ${CMAKE_CURRENT_BINARY_DIR}/include/device_plugin_container.h
+    core/device.h
     ${plugin_header_paths}
     DESTINATION "include/dronecore"
 )

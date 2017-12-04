@@ -7,10 +7,8 @@ class Device;
 class PluginImplBase
 {
 public:
-    PluginImplBase();
+    explicit PluginImplBase(Device *device);
     virtual ~PluginImplBase() = default;
-
-    void set_parent(Device *parent);
 
     /*
      * The method `init()` is called when a plugin is instantiated which happens
