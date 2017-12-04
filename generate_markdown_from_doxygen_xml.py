@@ -206,12 +206,13 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
         note_text=''
         if note_tags:
             for item in note_tags:
-                note_text+='\n- %s' % markdown_any_tag(item).strip()
+                note_text+='\n%s' % markdown_any_tag(item).strip()
 
-            note_text='\n\n**Notes:**%s\n\n' % note_text
+            note_text='\n\n**Notes:**\n\n%s\n\n' % note_text
             #print('debug:tag:note_text: %s' % note_text)
 
         #Strip out seealso tags from detailed description (so it can be agreggated under Seealso section)
+        """
         seealso_tags=aTag.findall(".//simplesect[@kind='see']")
         seealso_text=''
         if seealso_tags:
@@ -220,12 +221,13 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
 
             seealso_text='\n\n**See Also:**%s\n\n' % seealso_text
             #print('debug:tag:seealso_text: %s' % seealso_text)
-        
-        tag_text=lead_text+child_text+note_text+seealso_text+tail_text
+        """
+
+        tag_text=lead_text+child_text+note_text+tail_text
 
 
     elif aTag.tag=='simplesect':
-        if aTag.attrib['kind']=='note' or aTag.attrib['kind']=='see':
+        if aTag.attrib['kind']=='note' or aTag.attrib['kind']=='see' or aTag.attrib['kind']=='return':
             #Handle @note (note) and @sa (see) tags.
             # Note we should ONLY see this via the detaileddescription handling 
             # Because children that are simplesect are not parsed.
@@ -239,7 +241,20 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
     return tag_text
 
 
-
+def seealso_from_tag(aTag):
+    """
+    Get see also info below any tag. Intended to be run on a detailed_description.
+    """
+    #Strip out seealso tags from detailed description (so it can be agreggated under Seealso section)
+    #print('debug:function:seealso_from_tag: tag (%s)' % aTag.tag)
+    seealso_tags=aTag.findall(".//simplesect[@kind='see']")
+    seealso_text=''
+    if seealso_tags:
+        for item in seealso_tags:
+            seealso_text+='\n- %s' % markdown_any_tag(item).strip()
+        seealso_text='\n\n**See Also:**%s\n\n' % seealso_text
+        #print('debug:seealso_from_tag: seealso_text (%s)' % seealso_text)
+    return seealso_text
 
 
 
@@ -259,6 +274,7 @@ class cppAttribute:
         self.briefdescription='UNKNOWN'
         self.detaileddescription='UNKNOWN'
         self.inbodydescription='UNKNOWN'
+        self.seealso = ''
 
     def import_from_doxygen_class_file(self, aTag):
         #print(aTag.attrib)
@@ -273,16 +289,17 @@ class cppAttribute:
         self.type = aTag.find('type')
         self.definition = aTag.find('definition')
         self.argsstring = aTag.find('argsstring')
-        self.initializer = aTag.find('initializer')
-        self.briefdescription = aTag.find('briefdescription')  # Needs for processing
-        self.detaileddescription = aTag.find('detaileddescription') # Needs for processing
-        self.inbodydescription = aTag.find('inbodydescription') # Needs for processing
+        self.initializer = aTag.find('initializer') # Needs more processing
+        self.briefdescription = aTag.find('briefdescription')  # Needs more processing
+        self.detaileddescription = aTag.find('detaileddescription') # Needs more processing
+        self.seealso = seealso_from_tag(self.detaileddescription)
+        self.inbodydescription = aTag.find('inbodydescription') # Needs more processing
 
     def markdown_overview(self):
         #print('debug:start:cppAttribute:markdown_overview')
         static_string=''
         if self.static=='yes':
-            static_string='static'
+            static_string='static '
         output_string=''
         #print('debug: static_string: %s' % static_string)
         #print('debug: self.type: %s' % self.type)
@@ -290,17 +307,35 @@ class cppAttribute:
         #print('debug: self.initializer: %s' % self.initializer)
         #print('debug: self.briefdescription: %s' % markdown_any_tag(self.briefdescription).strip() )
 
-        output_string+='\n\n%s %s [%s](#%s)%s - %s\n\n' % (static_string,markdown_any_tag(self.type).strip(), self.name,self.id,markdown_any_tag(self.initializer).strip(),markdown_any_tag(self.briefdescription).strip() )
-        return output_string
+        #Clean initialiser (removed inner spaces)
+        cleaned_initializer=markdown_any_tag(self.initializer).strip()
+        cleaned_initializer=" ".join(cleaned_initializer.split())
 
+        output_string+='\n\n%s%s [%s](#%s) %s - %s\n\n' % (static_string,markdown_any_tag(self.type).strip(), self.name.strip(),self.id.strip(),cleaned_initializer,markdown_any_tag(self.briefdescription).strip() )
+        return output_string
 
     def markdown(self):
         output_string=''
         output_string+='\n\n### %s {#%s}\n' % (self.name,self.id)
-        output_string+='\n```cpp\n%s%s\n```\n' % (markdown_any_tag(self.definition).strip(),markdown_any_tag(self.initializer).strip())
+
+        #Get value of initialiser, preventing lins text (that won't work in code block)
+        value_initializer =''
+        if self.initializer:
+            value_initializer = self.initializer.find('.//ref').text
+            if value_initializer:
+                value_initializer='= '+value_initializer
+            else:
+               value_initializer=markdown_any_tag(self.initializer).strip()
+               value_initializer=" ".join(value_initializer.split())
+            print('value_initializer: %s' % value_initializer)
+
+        output_string+='\n```cpp\n%s%s\n```\n' % (markdown_any_tag(self.definition).strip(),value_initializer)
 
         output_string+='\n\n%s' % markdown_any_tag(self.briefdescription).strip()
         output_string+='\n\n%s' % markdown_any_tag(self.detaileddescription).strip()
+
+        if len(self.seealso)>0:
+            output_string += self.seealso #Note, untested
 
         if args.debug:
             output_string+='\n\n<!-- [%s %s](#%s) -->' % (self.type, self.name,self.id)
@@ -312,6 +347,11 @@ class cppAttribute:
             output_string+='\n<!-- detaileddescription: %s -->' % markdown_any_tag(self.detaileddescription).strip()
             output_string+='\n<!-- briefdescription: %s -->\n' % markdown_any_tag(self.briefdescription).strip()
             output_string+='\n<!-- argsstring: %s -->\n' % markdown_any_tag(self.argsstring).strip()
+            output_string+='\n<!-- type: %s -->\n' % markdown_any_tag(self.type).strip()
+            output_string+='\n<!-- id: %s -->\n' % markdown_any_tag(self.id).strip()
+            output_string+='\n<!-- name: %s -->\n' % markdown_any_tag(self.name).strip()
+            output_string+='\n<!-- initializer: %s -->\n' % markdown_any_tag(self.initializer).strip()
+
 
         return output_string
 
@@ -344,6 +384,7 @@ class cppTypeDef:
         self.argsstring = 'UNKNOWN'
         self.briefdescription = 'UNKNOWN'
         self.detaileddescription = 'UNKNOWN'
+        self.seealso = ''
         self.inbodydescription = 'UNKNOWN'
         self.params = []
 
@@ -361,6 +402,7 @@ class cppTypeDef:
         self.argsstring = aTag.find('argsstring') #needs further processing
         self.briefdescription = aTag.find('briefdescription') #needs more processing
         self.detaileddescription = aTag.find('detaileddescription')  # needs more processing
+        self.seealso = seealso_from_tag(self.detaileddescription)
         self.inbodydescription = aTag.find('inbodydescription')  # needs more processing
         self.params=[]
 
@@ -406,6 +448,10 @@ class cppTypeDef:
                 params_string+='\n* **%s** - %s' % (markdown_any_tag(param.name).strip(),markdown_any_tag(param.description).strip())
 
             output_string+=params_string
+
+        if len(self.seealso)>0:
+            output_string+=self.seealso
+
         return output_string
 
 
@@ -449,6 +495,7 @@ class cppEnum:
         self.briefdescription='UNKNOWN'
         self.detaileddescription='UNKNOWN'
         self.inbodydescription='UNKNOWN'
+        self.seealso=''
         self.enum_values=[]
 
     def import_from_doxygen_class_file(self, aTag):
@@ -461,6 +508,7 @@ class cppEnum:
         self.static= aTag.attrib['static']
         self.briefdescription = aTag.find('briefdescription') #needs further processing
         self.detaileddescription = aTag.find('detaileddescription') #needs further processing
+        self.seealso = seealso_from_tag(self.detaileddescription)
         self.inbodydescription = aTag.find('inbodydescription') #needs further processing
 
 
@@ -508,9 +556,14 @@ class cppEnum:
         output_string+='\n\n%s' % markdown_any_tag(self.detaileddescription).strip()
 
         if len(self.enum_values)>0:
-            output_string+='\n\n Value | Description\n--- | ---'
+            output_string+='\n\nValue | Description\n--- | ---'
             for enum_value in self.enum_values:
                 output_string+='\n<span id="%s"></span> `%s` | %s %s' % (enum_value.id,enum_value.name, markdown_any_tag(enum_value.briefdescription).strip(),markdown_any_tag(enum_value.detaileddescription).strip())
+
+
+        if len(self.seealso)>0:
+            output_string+=self.seealso
+
 
         if args.debug:
             output_string+='\n\n'
@@ -549,6 +602,7 @@ class cppFunction:
         self.inbodydescription='UNKNOWN'
         self.constructor_func = 'false'
         self.destructor_func = 'false'
+        self.seealso = ''
         self.params=[]
 
 
@@ -570,6 +624,7 @@ class cppFunction:
         self.argsstring = func_xml.find('argsstring') #needs more processing
         self.briefdescription = func_xml.find('briefdescription') #needs more processing
         self.detaileddescription = func_xml.find('detaileddescription') #needs further parsing
+        self.seealso = seealso_from_tag(self.detaileddescription)
         self.inbodydescription = func_xml.find('inbodydescription') #needs more processing
 
         #Get return type comment
@@ -641,6 +696,10 @@ class cppFunction:
         if len(return_text)>0 and not return_text=='void':
             functionstring+='\n\n**Returns**\n'
             functionstring+='\n&emsp;%s - %s' % (markdown_any_tag(self.return_type).strip(),markdown_any_tag(self.return_type_comment).strip())
+            #print('debug:cppFunction:markdown:return_text: %s' % functionstring)
+
+        if len(self.seealso)>0:
+            functionstring+=self.seealso
 
         if args.debug:
             functionstring+='\n\n'
@@ -669,6 +728,7 @@ class cppClass:
         self.language = 'cpp'
         self.detaileddescription=''
         self.briefdescription=''
+        self.seealso = ''
         self.derived_components=[]
         self.public_attributes=[]
         self.protected_attribs=[]
@@ -702,6 +762,7 @@ class cppClass:
 
         self.detaileddescription=root[0].find('detaileddescription')
         self.briefdescription=root[0].find('briefdescription')
+        self.seealso = seealso_from_tag(self.detaileddescription)
 
 
         # Get all inner classes/struct defined in this class - these are links to separate docs
@@ -829,7 +890,7 @@ class cppClass:
         if len(self.public_attributes)>0:
             outputstring+='\n\n## Data Fields\n'
             for the_item in self.public_attributes:
-                outputstring+=the_item.markdown_overview()
+                outputstring+='\n\n%s' % the_item.markdown_overview().strip()
 
 
         if len(self.public_static_attributes)>0:
@@ -876,6 +937,9 @@ class cppClass:
         outputstring+='\n----' # Description
         outputstring+='\n\n%s' % markdown_any_tag(self.briefdescription)
         outputstring+='\n\n%s' % markdown_any_tag(self.detaileddescription)
+        if len(self.seealso)>0:
+            outputstring+=self.seealso
+
 
         # Overview Section
         outputstring+=self.markdown_overview_members()
