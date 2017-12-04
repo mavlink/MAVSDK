@@ -1,51 +1,84 @@
-#set(_libs
-#    dronecore
-#    pthread
-#)
-#if (IOS)
-#    set(_libs
-#        ${_libs}
-#        libstdc++
-#    )
-#endif()
-
-# TODO enable again
-list(APPEND integration_tests
-    #simple_connect
-    #async_connect
-    telemetry_simple
-    #telemetry_async
-    #telemetry_modes
-    #telemetry_health
-    #simple_hover
-    async_hover
-    #takeoff_and_kill
-    #offboard_velocity
-    #logging
-    #info
-    #mission
-    #mission_change_speed
-    #mission_survey
-    #gimbal
-    #curl
-    #transition_multicopter_fixedwing
-    #follow_me
+# SYSTEM because we don't want warnings for gtest headers.
+include_directories(
+    SYSTEM ${CMAKE_SOURCE_DIR}/libs/gtest/googletest/include
+    SYSTEM ${CMAKE_SOURCE_DIR}/libs/gtest/googlemock/include
 )
-
-
-foreach(name ${integration_tests})
-    # This can be used to produce individual executables
-    #add_executable(${name}
-    #    ${name}_main.cpp
-    #    ${name}.cpp
-    #)
-    #
-    #target_link_libraries(${name}
-    #    ${_libs}
-    #)
-
-    list(APPEND integration_tests_src ${CMAKE_CURRENT_SOURCE_DIR}/${name}.cpp)
-endforeach()
 
 # These are consumed in ../CMakeLists.txt
 set(integration_tests_src ${integration_tests_src} PARENT_SCOPE)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
+
+# `make test` does not show output, but `make check` does
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
+
+# This includes all GTests that run integration tests
+# TODO enable again
+add_executable(integration_tests_runner
+    ../core/unittests_main.cpp
+    #simple_connect.cpp
+    #async_connect.cpp
+    telemetry_simple.cpp
+    #telemetry_async.cpp
+    #telemetry_modes.cpp
+    #telemetry_health.cpp
+    #simple_hover.cpp
+    async_hover.cpp
+    #takeoff_and_kill.cpp
+    #offboard_velocity.cpp
+    #logging.cpp
+    #info.cpp
+    #mission.cpp
+    #mission_change_speed.cpp
+    #mission_survey.cpp
+    #gimbal.cpp
+    #curl.cpp
+    #transition_multicopter_fixedwing.cpp
+    #follow_me.cpp
+)
+
+include_directories(
+    ${CMAKE_SOURCE_DIR}/core
+    ${CMAKE_SOURCE_DIR}
+)
+
+set_target_properties(integration_tests_runner
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)
+
+target_link_libraries(integration_tests_runner
+    dronecore
+    dronecore_telemetry
+    dronecore_action
+    gtest
+    gtest_main
+    gmock
+)
+
+if (MSVC)
+    # We need this to prevent linking errors from happening in the Windows build.
+    target_compile_definitions(integration_tests_runner PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)
+    target_compile_options(integration_tests_runner PUBLIC "/wd4251" "/wd4275")
+endif()
+
+add_test(integration_tests
+    integration_tests_runner
+)
+
+add_custom_command(TARGET integration_tests_runner
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/start_px4_sitl.sh
+        ${CMAKE_CURRENT_BINARY_DIR}
+)
+add_custom_command(TARGET integration_tests_runner
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/stop_px4_sitl.sh
+        ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
+set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
+set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage")
+

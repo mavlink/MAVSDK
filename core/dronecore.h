@@ -4,11 +4,12 @@
 #include <vector>
 #include <functional>
 
-#include "device.h"
+//#include "device.h"
 
 namespace dronecore {
 
 class DroneCoreImpl;
+class Device;
 
 /**
  * @brief This is the main class of **%DroneCore MAVLink API Library** (for the Dronecode Platform).
