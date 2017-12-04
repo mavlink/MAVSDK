@@ -1,14 +1,14 @@
 #include "global_include.h"
 #include "action_impl.h"
 #include "dronecore_impl.h"
-#include "telemetry.h"
 #include "px4_custom_mode.h"
 
 namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-ActionImpl::ActionImpl() {}
+ActionImpl::ActionImpl(Device *device) :
+    PluginImplBase(device) {}
 
 ActionImpl::~ActionImpl() {}
 
