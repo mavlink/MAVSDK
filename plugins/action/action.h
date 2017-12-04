@@ -1,9 +1,12 @@
 #pragma once
 
 #include <functional>
+#include "plugin_base.h"
 
 namespace dronecore {
 
+
+class Device;
 class ActionImpl;
 
 /**
@@ -18,7 +21,7 @@ class ActionImpl;
  * error.
  * If the command is accepted, the vehicle will then start to perform the associated action.
  */
-class Action
+class Action : public PluginBase
 {
 public:
     /**
@@ -26,7 +29,7 @@ public:
      *
      * @param impl Private internal implementation.
      */
-    explicit Action(ActionImpl *impl);
+    explicit Action(Device *device);
 
     /**
      * @brief Destructor (internal use only).

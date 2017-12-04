@@ -11,7 +11,7 @@ namespace dronecore {
 class ActionImpl : public PluginImplBase
 {
 public:
-    ActionImpl();
+    ActionImpl(Device *device);
     ~ActionImpl();
 
     void init() override;

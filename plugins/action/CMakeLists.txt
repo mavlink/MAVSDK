@@ -1,21 +1,14 @@
-set(class_name
-    Action
-    PARENT_SCOPE
-)
-
-set(source_files
+add_library(dronecore_action SHARED
     action.cpp
     action_impl.cpp
-    PARENT_SCOPE
 )
 
-set(header_files
+install(FILES
     action.h
-    PARENT_SCOPE
+    DESTINATION ${dronecore_install_include_dir}
 )
 
-set(impl_header_files
-    action_impl.h
-    PARENT_SCOPE
+install(TARGETS dronecore_action
+    #EXPORT dronecore-targets
+    DESTINATION ${dronecore_install_lib_dir}
 )
-
