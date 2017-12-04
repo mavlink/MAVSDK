@@ -120,8 +120,9 @@ public:
     };
 
     /**
-     * @brief Sets current location of the moving target
-     * App can obtain location of the moving target from Location framework of the underlying platform.
+     * @brief Sets current location of the moving target.
+     *
+     * An app can obtain the location of the moving target from Location framework of the underlying platform.
      *
      * @note
      * The following links provide information about location services on different platforms:
