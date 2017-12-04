@@ -14,7 +14,7 @@ class FollowMeImpl;
  * The API is used to supply both the position(s) for the target and the relative follow position of the vehicle.
  * Applications must get target position information from the underlying platform (or some other source).
  *
- * See https://docs.px4.io/en/flight_modes/follow_me.html for more information.
+ * @sa [Follow Me Mode](https://docs.px4.io/en/flight_modes/follow_me.html) (PX4 User Guide)
  *
  */
 class FollowMe
@@ -48,8 +48,8 @@ public:
 
     /**
      * @brief FollowMe Configuration.
-     * Reference: https://docs.px4.io/en/advanced_config/parameter_reference.html#follow-target
      * @sa get_config(), set_config()
+     * @sa [Parameter Reference](https://docs.px4.io/en/advanced_config/parameter_reference.html#follow-target) (PX4 User Guide)
      */
     struct Config {
         /**
@@ -71,7 +71,7 @@ public:
         constexpr static const float MAX_RESPONSIVENESS = 1.0f; /**< @brief Max responsiveness. */
 
         float min_height_m = 8.0f; /**< @brief Min follow height, in meters. */
-        float follow_dist_m = 8.0f; /** @brief Horizontal follow distance to target, in meters. */
+        float follow_dist_m = 8.0f; /**< @brief Horizontal follow distance to target, in meters. */
         FollowDirection follow_direction =
             FollowDirection::BEHIND; /**< @brief Relative position of the following vehicle. */
         float responsiveness = 0.5f; /**< @brief Responsiveness, Range (0.0-1.0) */
@@ -94,7 +94,7 @@ public:
     /**
      * @brief Applies FollowMe configuration by sending it to device.
      * @param[in] config FollowMe configuration to be applied.
-     * @return true if configuration is applied successfully, false if config values are out-of-range.
+     * @return `true` if configuration is applied successfully, `false` if config values are out-of-range.
      *         In case of failure, last configuration is preserved.
      * @sa get_config()
      */
@@ -102,7 +102,7 @@ public:
 
     /**
      * @brief Checks whether FollowMe is active.
-     * @return true if FollowMe is active, false otherwise.
+     * @return `true` if FollowMe is active, `false` otherwise.
      */
     bool is_active() const;
 
@@ -120,8 +120,9 @@ public:
     };
 
     /**
-     * @brief Sets current location of the moving target
-     * App can obtain location of the moving target from Location framework of the underlying platform.
+     * @brief Sets current location of the moving target.
+     *
+     * An app can obtain the location of the moving target from Location framework of the underlying platform.
      *
      * @note
      * The following links provide information about location services on different platforms:
@@ -161,8 +162,16 @@ public:
      */
     FollowMe::Result stop() const;
 
+
     // Non-copyable
+    /**
+     * @brief Copy constructor (object is not copyable).
+     */
     FollowMe(const FollowMe &) = delete;
+
+    /**
+     * @brief Equality operator (object is not copyable).
+     */
     const FollowMe &operator=(const FollowMe &) = delete;
 
 private:
