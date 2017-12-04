@@ -5,12 +5,7 @@
 
 namespace dronecore {
 
-PluginImplBase::PluginImplBase() :
-    _parent() {}
-
-void PluginImplBase::set_parent(Device *parent)
-{
-    _parent = parent;
-}
+PluginImplBase::PluginImplBase(Device *device) :
+    _parent(device) {}
 
 } // namespace dronecore
