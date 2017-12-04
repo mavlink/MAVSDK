@@ -8,6 +8,8 @@
 #include <thread>
 #include <chrono>
 #include <cstdint>
+#include <dronecore/action.h>
+#include <dronecore/telemetry.h>
 
 using namespace dronecore;
 
@@ -49,8 +51,11 @@ int main(int /*argc*/, char ** /*argv*/)
     // dc.device(uint64_t uuid);
     Device &device = dc.device();
 
+    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto action = std::make_shared<Action>(&device);
+
     // We want to listen to the altitude of the drone at 1 Hz.
-    const Telemetry::Result set_rate_result = dc.device().telemetry().set_rate_position(1.0);
+    const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Setting rate failed:" << Telemetry::result_str(
                       set_rate_result) << NORMAL_CONSOLE_TEXT << std::endl;
@@ -59,7 +64,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
 
     // Set up callback to monitor altitude while the vehicle is in flight
-    device.telemetry().position_async([](Telemetry::Position position) {
+    telemetry->position_async([](Telemetry::Position position) {
         std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
                   << "Altitude: " << position.relative_altitude_m << " m"
                   << NORMAL_CONSOLE_TEXT // set to default color again
@@ -68,14 +73,14 @@ int main(int /*argc*/, char ** /*argv*/)
 
 
     // Check if vehicle is ready to arm
-    if (device.telemetry().health_all_ok() != true) {
+    if (telemetry->health_all_ok() != true) {
         std::cout << ERROR_CONSOLE_TEXT << "Vehicle not ready to arm" << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
 
     // Arm vehicle
     std::cout << "Arming..." << std::endl;
-    const Action::Result arm_result = device.action().arm();
+    const Action::Result arm_result = action->arm();
 
     if (arm_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << Action::result_str(
@@ -85,7 +90,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
     // Take off
     std::cout << "Taking off..." << std::endl;
-    const Action::Result takeoff_result = device.action().takeoff();
+    const Action::Result takeoff_result = action->takeoff();
     if (takeoff_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << Action::result_str(
                       takeoff_result) << NORMAL_CONSOLE_TEXT << std::endl;
@@ -96,7 +101,7 @@ int main(int /*argc*/, char ** /*argv*/)
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     std::cout << "Landing..." << std::endl;
-    const Action::Result land_result = device.action().land();
+    const Action::Result land_result = action->land();
     if (land_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << Action::result_str(
                       land_result) << NORMAL_CONSOLE_TEXT << std::endl;
