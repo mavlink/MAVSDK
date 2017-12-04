@@ -3,13 +3,19 @@
 
 namespace dronecore {
 
-Telemetry::Telemetry(TelemetryImpl *impl) :
-    _impl(impl)
+Telemetry::Telemetry(Device *device) :
+    PluginBase()
 {
+    _impl = new TelemetryImpl(device);
+    _impl->init();
+    _impl->enable();
 }
 
 Telemetry::~Telemetry()
 {
+    _impl->disable();
+    _impl->deinit();
+    delete _impl;
 }
 
 Telemetry::Result Telemetry::set_rate_position(double rate_hz)
