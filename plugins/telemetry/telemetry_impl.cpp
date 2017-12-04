@@ -8,7 +8,8 @@
 
 namespace dronecore {
 
-TelemetryImpl::TelemetryImpl() :
+TelemetryImpl::TelemetryImpl(Device *device) :
+    PluginImplBase(device),
     _position_mutex(),
     _position(Telemetry::Position {double(NAN), double(NAN), NAN, NAN}),
     _home_position_mutex(),

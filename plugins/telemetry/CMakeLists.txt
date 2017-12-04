@@ -1,22 +1,15 @@
-set(class_name
-    Telemetry
-    PARENT_SCOPE
-)
-
-set(source_files
+add_library(dronecore_telemetry SHARED
     telemetry.cpp
     telemetry_impl.cpp
     math_conversions.cpp
-    PARENT_SCOPE
 )
 
-set(header_files
+install(FILES
     telemetry.h
-    PARENT_SCOPE
+    DESTINATION ${dronecore_install_include_dir}
 )
 
-
-set(impl_header_files
-    telemetry_impl.h
-    PARENT_SCOPE
+install(TARGETS dronecore_telemetry
+    #EXPORT dronecore-targets
+    DESTINATION ${dronecore_install_lib_dir}
 )

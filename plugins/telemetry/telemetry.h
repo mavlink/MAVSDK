@@ -1,22 +1,24 @@
 #pragma once
 
 #include <functional>
+#include "plugin_base.h"
 
 namespace dronecore {
 
 class TelemetryImpl;
+class Device;
 
 /**
  * @brief This class allows users to get vehicle telemetry and state information
  * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
  */
-class Telemetry
+class Telemetry : public PluginBase
 {
 public:
     /**
      * @brief Constructor (internal use only).
      */
-    explicit Telemetry(TelemetryImpl *impl);
+    explicit Telemetry(Device *device);
 
     /**
      * @brief Destructor (internal use only).
