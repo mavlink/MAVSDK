@@ -101,16 +101,13 @@ after_success:
     --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
   fi
 
-before_deploy:
-- export RELEASE_PKG_FILE=$(ls *.deb)
-- echo "Deploying $RELEASE_PKG_FILE to GitHub releases"
-
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
     secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
-  file: ${RELEASE_PKG_FILE}
+  file_glob: true
+  file: "*.deb"
   condition: ${BUILD_TARGET} = docker_build
   on:
     repo: dronecore/DroneCore
