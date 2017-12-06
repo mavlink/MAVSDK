@@ -4,6 +4,9 @@
 #include "mavlink_include.h"
 #include <functional>
 
+// Set to 1 to log incoming/outgoing mavlink messages.
+#define MESSAGE_DEBUGGING 0
+
 namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
@@ -104,11 +107,23 @@ void DeviceImpl::process_mavlink_message(const mavlink_message_t &message)
 
     std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
 
+#if MESSAGE_DEBUGGING==1
+    bool forwarded = false;
+#endif
     for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end(); ++it) {
         if (it->msg_id == message.msgid) {
+#if MESSAGE_DEBUGGING==1
+            LogDebug() << "Forwarding msg " << int(message.msgid) << " to " << size_t(it->cookie);
+            forwarded = true;
+#endif
             it->callback(message);
         }
     }
+#if MESSAGE_DEBUGGING==1
+    if (!forwarded) {
+        LogDebug() << "Ignoring msg " << int(message.msgid);
+    }
+#endif
 }
 
 void DeviceImpl::add_call_every(std::function<void()> callback, float interval_s, void **cookie)
@@ -275,6 +290,9 @@ bool DeviceImpl::send_message(const mavlink_message_t &message)
         return false;
     }
 
+#if MESSAGE_DEBUGGING==1
+    LogDebug() << "Sending msg " << size_t(message.msgid);
+#endif
     return _parent->send_message(message);
 }
 
