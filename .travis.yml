@@ -97,6 +97,9 @@ after_success:
     --exclude="debug_helpers" --exclude="example" --exclude="external_example"
     --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
   fi
+- if [[ "${DEPLOY_BUILD" = "yes" ]]; then
+    ./create_deb.sh;
+  fi;
 
 deploy:
   provider: releases
