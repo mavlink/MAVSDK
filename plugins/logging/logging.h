@@ -1,23 +1,25 @@
 #pragma once
 
 #include <functional>
+#include "plugin_base.h"
 
 namespace dronecore {
 
 class LoggingImpl;
+class Device;
 
 /**
  * @brief The Logging class allows log data using logger and log streaming from the vehicle.
  *
  * **This feature is not yet implemented**.
  */
-class Logging
+class Logging : public PluginBase
 {
 public:
     /**
      * @brief Constructor (internal use only).
      */
-    explicit Logging(LoggingImpl *impl);
+    explicit Logging(Device *device);
 
     /**
      * @brief Destructor (internal use only).

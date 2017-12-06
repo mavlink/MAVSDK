@@ -1,21 +1,23 @@
 #pragma once
 
 #include <cstdint>
+#include "plugin_base.h"
 
 namespace dronecore {
 
+class Device;
 class InfoImpl;
 
 /**
  * @brief The Info class provides basic infomation about the hardware and/or software of a device.
  */
-class Info
+class Info : public PluginBase
 {
 public:
     /**
      * @brief Constructor (internal use only).
      */
-    explicit Info(InfoImpl *impl);
+    explicit Info(Device *device);
 
     /**
      * @brief Destructor (internal use only).

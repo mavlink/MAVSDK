@@ -1,21 +1,19 @@
-set(class_name
-    Gimbal
-    PARENT_SCOPE
-)
-
-set(source_files
+add_library(dronecore_gimbal SHARED
     gimbal.cpp
     gimbal_impl.cpp
-    PARENT_SCOPE
 )
 
-set(header_files
+include_directories(
+    ${CMAKE_SOURCE_DIR}/core
+    ${CMAKE_SOURCE_DIR}/libs/include
+)
+
+install(FILES
     gimbal.h
-    PARENT_SCOPE
+    DESTINATION ${dronecore_install_include_dir}
 )
 
-set(impl_header_files
-    gimbal_impl.h
-    PARENT_SCOPE
+install(TARGETS dronecore_gimbal
+    #EXPORT dronecore-targets
+    DESTINATION ${dronecore_install_lib_dir}
 )
-

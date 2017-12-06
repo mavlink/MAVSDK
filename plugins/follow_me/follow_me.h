@@ -1,10 +1,15 @@
 #pragma once
 
 #include <string>
+#include <iostream>
+#include <cmath>
+#include <functional>
+#include "plugin_base.h"
 
 namespace dronecore {
 
 class FollowMeImpl;
+class Device;
 
 /**
  * @brief This class enables vehicle tracking of a specified target (typically a ground station carried by a user).
@@ -15,14 +20,14 @@ class FollowMeImpl;
  * @sa [Follow Me Mode](https://docs.px4.io/en/flight_modes/follow_me.html) (PX4 User Guide)
  *
  */
-class FollowMe
+class FollowMe : public PluginBase
 {
 public:
     /**
      * @brief Constructor (internal use only).
      * @param impl Private internal implementation.
      */
-    explicit FollowMe(FollowMeImpl *impl);
+    explicit FollowMe(Device *device);
 
     /**
      * @brief Destructor (internal use only).

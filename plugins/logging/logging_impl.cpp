@@ -6,7 +6,8 @@
 
 namespace dronecore {
 
-LoggingImpl::LoggingImpl() {}
+LoggingImpl::LoggingImpl(Device *device) :
+    PluginImplBase(device) {}
 
 LoggingImpl::~LoggingImpl() {}
 

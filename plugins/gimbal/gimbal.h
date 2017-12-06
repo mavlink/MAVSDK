@@ -1,17 +1,19 @@
 #pragma once
 
 #include <functional>
+#include "plugin_base.h"
 
 namespace dronecore {
 
 class GimbalImpl;
+class Device;
 
 /**
  * @brief The Gimbal class enables to control a gimbal.
  *
  * Synchronous and asynchronous variants of the gimbal methods are supplied.
  */
-class Gimbal
+class Gimbal : public PluginBase
 {
 public:
     /**
@@ -19,7 +21,7 @@ public:
      *
      * @param impl Private internal implementation.
      */
-    explicit Gimbal(GimbalImpl *impl);
+    explicit Gimbal(Device *device);
 
     /**
      * @brief Destructor (internal use only).

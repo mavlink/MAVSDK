@@ -1,10 +1,12 @@
 #pragma once
 
 #include <functional>
+#include "plugin_base.h"
 
 namespace dronecore {
 
 class OffboardImpl;
+class Device;
 
 
 /**
@@ -21,13 +23,13 @@ class OffboardImpl;
  * **Attention:** this is work in progress, use with caution!
  */
 
-class Offboard
+class Offboard : public PluginBase
 {
 public:
     /**
      * @brief Constructor (internal use only).
      */
-    explicit Offboard(OffboardImpl *impl);
+    explicit Offboard(Device *device);
 
     /**
      * @brief Destructor (internal use only).

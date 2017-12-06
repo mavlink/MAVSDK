@@ -83,7 +83,13 @@ add_subdirectory(core)
 
 # Add default plugins.
 add_subdirectory(plugins/action)
+add_subdirectory(plugins/gimbal)
+add_subdirectory(plugins/mission)
+add_subdirectory(plugins/offboard)
 add_subdirectory(plugins/telemetry)
+add_subdirectory(plugins/logging)
+add_subdirectory(plugins/info)
+add_subdirectory(plugins/follow_me)
 
 
 if(NOT IOS AND NOT ANDROID)

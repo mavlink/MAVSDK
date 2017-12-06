@@ -3,13 +3,19 @@
 
 namespace dronecore {
 
-Info::Info(InfoImpl *impl) :
-    _impl(impl)
+Info::Info(Device *device) :
+    PluginBase()
 {
+    _impl = new InfoImpl(device);
+    _impl->init();
+    _impl->enable();
 }
 
 Info::~Info()
 {
+    _impl->disable();
+    _impl->deinit();
+    delete _impl;
 }
 
 uint64_t Info::uuid() const

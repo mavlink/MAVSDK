@@ -13,7 +13,7 @@ namespace dronecore {
 class MissionImpl : public PluginImplBase
 {
 public:
-    MissionImpl();
+    MissionImpl(Device *device);
     ~MissionImpl();
 
     void init() override;

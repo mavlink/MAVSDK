@@ -1,10 +1,12 @@
 #pragma once
 
+#include "plugin_base.h"
+
 namespace dronecore {
 
 class ExampleImpl;
 
-class Example
+class Example : public PluginBase
 {
 public:
     explicit Example(ExampleImpl *impl);

@@ -5,7 +5,8 @@
 
 namespace dronecore {
 
-OffboardImpl::OffboardImpl() {}
+OffboardImpl::OffboardImpl(Device *device) :
+    PluginImplBase(device) {}
 
 OffboardImpl::~OffboardImpl() {}
 
@@ -37,7 +38,7 @@ Offboard::Result OffboardImpl::start()
     }
 
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(DeviceImpl::FlightMode::OFFBOARD));
+               _parent->set_flight_mode(Device::FlightMode::OFFBOARD));
 }
 
 Offboard::Result OffboardImpl::stop()
@@ -50,7 +51,7 @@ Offboard::Result OffboardImpl::stop()
     }
 
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(DeviceImpl::FlightMode::HOLD));
+               _parent->set_flight_mode(Device::FlightMode::HOLD));
 }
 
 void OffboardImpl::start_async(Offboard::result_callback_t callback)
@@ -67,7 +68,7 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
     }
 
     _parent->set_flight_mode_async(
-        DeviceImpl::FlightMode::OFFBOARD,
+        Device::FlightMode::OFFBOARD,
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }
@@ -82,7 +83,7 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
     }
 
     _parent->set_flight_mode_async(
-        DeviceImpl::FlightMode::HOLD,
+        Device::FlightMode::HOLD,
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }

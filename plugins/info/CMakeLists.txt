@@ -1,21 +1,19 @@
-set(class_name
-    Info
-    PARENT_SCOPE
-)
-
-set(source_files
+add_library(dronecore_info SHARED
     info.cpp
     info_impl.cpp
-    PARENT_SCOPE
 )
 
-set(header_files
+include_directories(
+    ${CMAKE_SOURCE_DIR}/core
+    ${CMAKE_SOURCE_DIR}/libs/include
+)
+
+install(FILES
     info.h
-    PARENT_SCOPE
+    DESTINATION ${dronecore_install_include_dir}
 )
 
-set(impl_header_files
-    info_impl.h
-    PARENT_SCOPE
+install(TARGETS dronecore_info
+    #EXPORT dronecore-targets
+    DESTINATION ${dronecore_install_lib_dir}
 )
-

@@ -4,21 +4,23 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include "plugin_base.h"
 
 namespace dronecore {
 
 class MissionImpl;
+class Device;
 
 /**
  * @brief The Mission class enables waypoint missions.
  */
-class Mission
+class Mission : public PluginBase
 {
 public:
     /**
      * @brief Constructor (internal use only).
      */
-    explicit Mission(MissionImpl *impl);
+    explicit Mission(Device *device);
 
     /**
      * @brief Destructor (internal use only).

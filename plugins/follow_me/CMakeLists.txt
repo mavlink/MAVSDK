@@ -1,23 +1,19 @@
-set(class_name
-    FollowMe
-    PARENT_SCOPE
-)
-
-set(source_files
+add_library(dronecore_follow_me SHARED
     follow_me.cpp
     follow_me_impl.cpp
-    PARENT_SCOPE
 )
 
-set(header_files
+include_directories(
+    ${CMAKE_SOURCE_DIR}/core
+    ${CMAKE_SOURCE_DIR}/libs/include
+)
+
+install(FILES
     follow_me.h
-    PARENT_SCOPE
+    DESTINATION ${dronecore_install_include_dir}
 )
 
-set(impl_header_files
-    follow_me_impl.h
-    PARENT_SCOPE
+install(TARGETS dronecore_follow_me
+    #EXPORT dronecore-targets
+    DESTINATION ${dronecore_install_lib_dir}
 )
-
-# To include an additional library, use:
-# set(additional_libs "some_library" PARENT_SCOPE)
