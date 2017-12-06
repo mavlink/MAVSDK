@@ -5,8 +5,8 @@
 
 namespace dronecore {
 
-InfoImpl::InfoImpl() :
-    PluginImplBase(),
+InfoImpl::InfoImpl(Device *device) :
+    PluginImplBase(device),
     _version_mutex(),
     _version() {}
 

@@ -1,21 +1,19 @@
-set(class_name
-    Logging
-    PARENT_SCOPE
-)
-
-set(source_files
+add_library(dronecore_logging SHARED
     logging.cpp
-    logging_impl.cpp
-    PARENT_SCOPE
+    logging.cpp
 )
 
-set(header_files
-    logging.h
-    PARENT_SCOPE
+include_directories(
+    ${CMAKE_SOURCE_DIR}/core
+    ${CMAKE_SOURCE_DIR}/libs/include
 )
 
-set(impl_header_files
-    logging_impl.h
-    PARENT_SCOPE
+install(FILES
+    loggin.h
+    DESTINATION ${dronecore_install_include_dir}
 )
 
+install(TARGETS dronecore_logging
+    #EXPORT dronecore-targets
+    DESTINATION ${dronecore_install_lib_dir}
+)

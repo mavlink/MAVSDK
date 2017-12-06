@@ -6,8 +6,8 @@
 
 namespace dronecore {
 
-MissionImpl::MissionImpl() :
-    PluginImplBase() {}
+MissionImpl::MissionImpl(Device *device) :
+    PluginImplBase(device) {}
 
 MissionImpl::~MissionImpl() {}
 
@@ -672,7 +672,7 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
     _activity = Activity::SEND_COMMAND;
 
     _parent->set_flight_mode_async(
-        DeviceImpl::FlightMode::MISSION,
+        Device::FlightMode::MISSION,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
@@ -691,7 +691,7 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
     _activity = Activity::SEND_COMMAND;
 
     _parent->set_flight_mode_async(
-        DeviceImpl::FlightMode::HOLD,
+        Device::FlightMode::HOLD,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 

@@ -9,7 +9,7 @@ namespace dronecore {
 class GimbalImpl : public PluginImplBase
 {
 public:
-    GimbalImpl();
+    GimbalImpl(Device *device);
     ~GimbalImpl();
 
     void init() override;

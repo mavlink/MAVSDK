@@ -7,8 +7,8 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-FollowMeImpl::FollowMeImpl() :
-    PluginImplBase()
+FollowMeImpl::FollowMeImpl(Device *device) :
+    PluginImplBase(device)
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
     _last_location =  _target_location = \
@@ -148,7 +148,7 @@ FollowMe::Result FollowMeImpl::start()
 {
     FollowMe::Result result = to_follow_me_result(
                                   _parent->set_flight_mode(
-                                      DeviceImpl::FlightMode::FOLLOW_ME));
+                                      Device::FlightMode::FOLLOW_ME));
 
     if (result == FollowMe::Result::SUCCESS) {
         // If location was set before, lets send it to vehicle
@@ -173,7 +173,7 @@ FollowMe::Result FollowMeImpl::stop()
     }
     return to_follow_me_result(
                _parent->set_flight_mode(
-                   DeviceImpl::FlightMode::HOLD));
+                   Device::FlightMode::HOLD));
 }
 
 // Applies default FollowMe configuration to the device
