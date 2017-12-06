@@ -8,7 +8,7 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-      - BUILD_TARGET=gcc_build
+      - MATRIX_EVAL="BUILD_TARGET=gcc_build && DEPLOY_BUILD=yes"
       addons:
         apt:
           packages:
@@ -18,9 +18,7 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-        - BUILD_TARGET=gcc_build
-        - CC=gcc-5
-        - CXX=g++-5
+      - MATRIX_EVAL="BUILD_TARGET=gcc_build && CC=gcc-5 && CXX=g++-5"
       addons:
         apt:
           sources:
@@ -34,10 +32,7 @@ matrix:
       sudo: false
       compiler: gcc
       env:
-        - BUILD_TARGET=coverage_build
-        - DEPLOY_BUILD=yes
-        - CC=gcc-6
-        - CXX=g++-6
+      - MATRIX_EVAL="BUILD_TARGET=coverage_build && CC=gcc-6 && CXX=g++-6"
       addons:
         apt:
           sources:
@@ -62,6 +57,7 @@ addons:
     - libcurl4-openssl-dev
 
 before_install:
+- eval "${MATRIX_EVAL}"
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     pip install --user cpp-coveralls;
   fi
