@@ -4,8 +4,8 @@
 #include "mavlink_include.h"
 #include <functional>
 
-// Uncomment to log incoming/outgoing mavlink messages.
-//#define MESSAGE_DEBUGGING 1
+// Set to 1 to log incoming/outgoing mavlink messages.
+#define MESSAGE_DEBUGGING 0
 
 namespace dronecore {
 
