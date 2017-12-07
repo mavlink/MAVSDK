@@ -13,7 +13,7 @@
 
 #include "dronecore.h"
 #include "log.h"
-#include "dronecore.grpc.pb.h"
+#include "dronecore/dronecore.grpc.pb.h"
 #include "action/actionrpc_impl.h"
 #include "mission/missionrpc_impl.h"
 #include "telemetry/telemetryrpc_impl.h"
@@ -44,13 +44,15 @@ void RunServer()
     map_type map;
     std::string plugin;
     std::fstream file;
-    file.open("grpc/proto/plugins.conf");
+    file.open("grpc/server/src/plugins/plugins.conf");
     if (!file) {
         LogErr() << "Error in reading conf file";
         return;
     }
     std::vector<::grpc::Service *> list;
-${PLUGIN_MAP_APPEND_STRING}
+    map["action"] = &createInstances<ActionRPCImpl>;
+    map["telemetry"] = &createInstances<TelemetryRPCImpl>;
+    map["mission"] = &createInstances<MissionRPCImpl>;
 
 
     while (file >> plugin) {

@@ -1,5 +1,5 @@
 #include "mission.h"
-#include "mission.grpc.pb.h"
+#include "mission/mission.grpc.pb.h"
 #include <google/protobuf/empty.pb.h>
 
 using grpc::Status;
