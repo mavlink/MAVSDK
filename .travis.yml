@@ -13,6 +13,7 @@ matrix:
         apt:
           packages:
             - libtinyxml2-dev
+            - checkinstall
     - os: linux
       dist: trusty
       sudo: false
