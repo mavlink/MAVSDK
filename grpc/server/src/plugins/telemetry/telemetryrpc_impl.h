@@ -1,6 +1,5 @@
 #include "telemetry.h"
-#include "telemetry.grpc.pb.h"
-
+#include "telemetry/telemetry.grpc.pb.h"
 
 using grpc::Status;
 using grpc::ServerContext;

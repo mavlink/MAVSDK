@@ -1,5 +1,5 @@
 #include "action.h"
-#include "action.grpc.pb.h"
+#include "action/action.grpc.pb.h"
 #include <google/protobuf/empty.pb.h>
 
 using grpc::Status;

@@ -10,3 +10,6 @@
 [submodule "libs/tinyxml2"]
 	path = libs/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
+[submodule "grpc/server/proto"]
+	path = grpc/server/proto
+	url = https://github.com/dronecore/DroneCore-Proto.git
