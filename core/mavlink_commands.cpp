@@ -125,15 +125,28 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
 
         case MAV_RESULT_DENIED:
             LogWarn() << "command denied (" << work.mavlink_command << ").";
-        // FALLTHRU
+            _state = State::FAILED;
+            if (work.callback) {
+                work.callback(Result::COMMAND_DENIED, NAN);
+            }
+            break;
 
         case MAV_RESULT_UNSUPPORTED:
             LogWarn() << "command unsupported (" << work.mavlink_command << ").";
-        // FALLTHRU
+            _state = State::FAILED;
+            if (work.callback) {
+                work.callback(Result::COMMAND_DENIED, NAN);
+            }
+            break;
 
         case MAV_RESULT_TEMPORARILY_REJECTED:
             LogWarn() << "command temporarily rejected (" << work.mavlink_command << ").";
-        // FALLTHRU
+            _state = State::FAILED;
+            if (work.callback) {
+                work.callback(Result::COMMAND_DENIED, NAN);
+            }
+            break;
+
         case MAV_RESULT_FAILED:
             LogWarn() << "command failed (" << work.mavlink_command << ").";
             _state = State::FAILED;
