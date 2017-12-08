@@ -10,7 +10,7 @@ version=`echo $version | sed 's/v\([0-9]*\.[0-9]*\.[0-9]*\).*$/\1/'`
 make clean
 make INSTALL_PREFIX=/usr BUILD_TYPE=Release
 
-checkinstall \
+sudo checkinstall \
     --maintainer="Julian Oes \<julian@oes.ch\>" \
     --pkgname="dronecore-dev" \
     --pkgversion="$version" \
@@ -22,5 +22,5 @@ checkinstall \
     --backup=no \
     --deldoc=yes \
     --deldesc=yes \
-    --default sudo make default install
+    --default make default install
 
