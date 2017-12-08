@@ -17,7 +17,7 @@ sudo checkinstall \
     --pkgarch="amd64" \
     --pkgrelease=1 \
     --pkglicense="BSD-3-clause" \
-    --requires="libcurl4-openssl-dev libtinyxml2-dev" \
+    --requires="libcurl4-openssl-dev,libtinyxml2-dev" \
     --provides="dronecore-dev" \
     --backup=no \
     --deldoc=yes \
