@@ -5,7 +5,7 @@ matrix:
   include:
     - os: linux
       dist: trusty
-      sudo: false
+      sudo: true
       compiler: gcc
       env:
       - MATRIX_EVAL="BUILD_TARGET=gcc_build && DEPLOY_BUILD=yes"
@@ -43,7 +43,7 @@ matrix:
             - g++-6
             - libtinyxml2-dev
     - os: linux
-      sudo: required
+      sudo: true
       services:
         - docker
       env: BUILD_TARGET=docker_build

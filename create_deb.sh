@@ -22,5 +22,5 @@ checkinstall \
     --backup=no \
     --deldoc=yes \
     --deldesc=yes \
-    --default make default install
+    --default sudo make default install
 
