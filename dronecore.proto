@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package dronecorerpc;
+
+option java_package = "io.dronecore.rpc";
+option java_outer_classname = "DroneCore";
+
+// Interface exported by the server.
+service DroneCoreRPC {
+}
+
+message Empty {}

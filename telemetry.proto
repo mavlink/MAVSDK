@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package dronecorerpc;
+
+option java_package = "io.dronecore.rpc";
+option java_outer_classname = "Telemetry";
+
+service TelemetryRPC {
+    rpc TelemetryPositionSubscription(google.protobuf.Empty) returns(stream TelemetryPosition) {}
+}
+
+message TelemetryPosition {
+    double latitude_deg = 1;
+    double longitude_deg = 2;
+    float absolute_altitude_m = 3;
+    float relative_altitude_m = 4;
+}
