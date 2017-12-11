@@ -114,11 +114,11 @@ test_script:
       cp build\libs\gtest\googlemock\gtest\Debug\gtest_maind.dll build\Debug\ &&
       cp build\libs\gtest\googlemock\Debug\gmockd.dll build\Debug\ &&
       cd build\Debug &&
-      unit_tests_runner.exe
+      dronecore-unittests.exe
     ) else (
       cp build\libs\gtest\googlemock\gtest\Release\gtest.dll build\Release\ &&
       cp build\libs\gtest\googlemock\gtest\Release\gtest_main.dll build\Release\ &&
       cp build\libs\gtest\googlemock\Release\gmock.dll build\Release\ &&
       cd build\Release &&
-      unit_tests_runner.exe
+      dronecore-unittests.exe
     )
