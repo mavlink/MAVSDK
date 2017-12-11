@@ -17,7 +17,7 @@ common_args="--input-type dir  \
     --license BSD-3-clause \
     --force"
 
-files="\
+library_files="\
     build/default/include/device_plugin_container.h=/usr/include/dronecore/device_plugin_container.h \
     include/device.h=/usr/include/dronecore/device.h \
     include/dronecore.h=/usr/include/dronecore/dronecore.h \
@@ -39,13 +39,31 @@ fpm $common_args \
     --deb-no-default-config-files \
     --name libdronecore-dev \
     --provides libdronecore-dev \
-    $files
+    $library_files
 
 fpm $common_args \
     --output-type rpm \
-    --depends libtinyxml2-devel \
+    --depends tinyxml2-devel \
     --depends libcurl-devel \
     --name libdronecore-devel \
     --provides libdronecore-devel \
-    $files
+    $library_files
 
+
+integrationtests_files="\
+    build/default/dronecore-integrationtests=/usr/bin/dronecore-integrationtests"
+
+fpm $common_args \
+    --output-type deb \
+    --depends libdronecore-dev \
+    --deb-no-default-config-files \
+    --name dronecore-integrationtests \
+    --provides dronecore-integrationtests \
+    $integrationtests_files
+
+fpm $common_args \
+    --output-type rpm \
+    --depends libdronecore-devel \
+    --name dronecore-integrationtests \
+    --provides dronecore-integrationtests \
+    $integrationtests_files
