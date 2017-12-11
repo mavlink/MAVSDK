@@ -152,10 +152,10 @@ run_all_tests: default
 	${MAKE} -C build/default check
 
 run_unit_tests: default
-	build/default/unit_tests_runner
+	build/default/dronecore-unittests
 
 run_integration_tests: default
-	build/default/integration_tests_runner
+	build/default/dronecore-integrationtests
 
 clean:
 	@rm -rf build/
