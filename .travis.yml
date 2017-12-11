@@ -102,7 +102,7 @@ after_success:
 - if [[ "${DEPLOY_BUILD}" = "yes" ]]; then
     gem install --no-ri --no-rdoc fpm;
     export PATH=$PATH:$GEM_HOME/bin;
-    ./create_deb.sh;
+    ./create_packages.sh;
   fi;
 
 deploy:
