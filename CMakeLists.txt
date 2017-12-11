@@ -219,7 +219,7 @@ if(NOT IOS AND NOT ANDROID)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 
-    add_executable(unit_tests_runner
+    add_executable(dronecore-unittests
         core/global_include_test.cpp
         core/mavlink_channels_test.cpp
         core/unittests_main.cpp
@@ -232,17 +232,17 @@ if(NOT IOS AND NOT ANDROID)
 
     if (MSVC)
         # We need this to prevent linking errors from happening in the Windows build.
-        target_compile_definitions(unit_tests_runner PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)
-        target_compile_options(unit_tests_runner PUBLIC "/wd4251" "/wd4275")
+        target_compile_definitions(dronecore-unittests PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)
+        target_compile_options(dronecore-unittests PUBLIC "/wd4251" "/wd4275")
     endif()
 
-    target_compile_definitions(unit_tests_runner PRIVATE FAKE_TIME=1)
+    target_compile_definitions(dronecore-unittests PRIVATE FAKE_TIME=1)
 
-    set_target_properties(unit_tests_runner
+    set_target_properties(dronecore-unittests
         PROPERTIES COMPILE_FLAGS ${warnings}
     )
 
-    target_link_libraries(unit_tests_runner
+    target_link_libraries(dronecore-unittests
         dronecore
         gtest
         gtest_main
@@ -251,23 +251,23 @@ if(NOT IOS AND NOT ANDROID)
     )
 
     add_test(unit_tests
-        unit_tests_runner
+        dronecore-unittests
     )
 
     # `make test` does not show output, but `make check` does
     add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
     # This includes all GTests that run integration tests
-    add_executable(integration_tests_runner
+    add_executable(dronecore-integrationtests
         core/unittests_main.cpp
         ${integration_tests_src}
     )
 
-    set_target_properties(integration_tests_runner
+    set_target_properties(dronecore-integrationtests
         PROPERTIES COMPILE_FLAGS ${warnings}
     )
 
-    target_link_libraries(integration_tests_runner
+    target_link_libraries(dronecore-integrationtests
         dronecore
         gtest
         gtest_main
@@ -277,21 +277,21 @@ if(NOT IOS AND NOT ANDROID)
 
     if (MSVC)
         # We need this to prevent linking errors from happening in the Windows build.
-        target_compile_definitions(integration_tests_runner PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)
-        target_compile_options(integration_tests_runner PUBLIC "/wd4251" "/wd4275")
+        target_compile_definitions(dronecore-integrationtests PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)
+        target_compile_options(dronecore-integrationtests PUBLIC "/wd4251" "/wd4275")
     endif()
 
     add_test(integration_tests
-        integration_tests_runner
+        dronecore-integrationtests
     )
 
-    add_custom_command(TARGET integration_tests_runner
+    add_custom_command(TARGET dronecore-integrationtests
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_SOURCE_DIR}/start_px4_sitl.sh
             ${CMAKE_CURRENT_BINARY_DIR}
     )
-    add_custom_command(TARGET integration_tests_runner
+    add_custom_command(TARGET dronecore-integrationtests
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_SOURCE_DIR}/stop_px4_sitl.sh
