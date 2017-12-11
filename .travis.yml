@@ -13,8 +13,8 @@ matrix:
         apt:
           packages:
             - libtinyxml2-dev
-            - checkinstall
             - libcurl4-openssl-dev
+            - ruby-dev
     - os: linux
       dist: trusty
       sudo: false
@@ -100,6 +100,8 @@ after_success:
     --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
   fi
 - if [[ "${DEPLOY_BUILD}" = "yes" ]]; then
+    gem install --no-ri --no-rdoc fpm;
+    export PATH=$PATH:$GEM_HOME/bin;
     ./create_deb.sh;
   fi;
 
