@@ -8,14 +8,12 @@ matrix:
       sudo: true
       compiler: gcc
       env:
-      - MATRIX_EVAL="BUILD_TARGET=gcc_build && DEPLOY_BUILD=yes"
+      - MATRIX_EVAL="BUILD_TARGET=gcc_build"
       addons:
         apt:
           packages:
             - libtinyxml2-dev
             - libcurl4-openssl-dev
-            - ruby-dev
-            - rpm
     - os: linux
       dist: trusty
       sudo: false
@@ -30,6 +28,7 @@ matrix:
             - gcc-5
             - g++-5
             - libtinyxml2-dev
+            - libcurl4-openssl-dev
     - os: linux
       dist: trusty
       sudo: false
@@ -44,34 +43,41 @@ matrix:
             - gcc-6
             - g++-6
             - libtinyxml2-dev
+            - libcurl4-openssl-dev
     - os: linux
       sudo: true
       services:
         - docker
-      env: BUILD_TARGET=docker_build
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=docker_build_ubuntu"
+    - os: linux
+      sudo: true
+      services:
+        - docker
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora"
     - os: osx
       osx_image: xcode9.2
       env:
         - BUILD_TARGET=osx_build
 
-addons:
-  apt:
-    packages:
-    - libcurl4-openssl-dev
-
 before_install:
 - eval "${MATRIX_EVAL}"
+
+install:
+- set -e
+- if [[ "${BUILD_TARGET}" = "docker_build_ubuntu" ]]; then
+    docker pull dronecore/dronecore-ubuntu-16.04;
+  fi
+- if [[ "${BUILD_TARGET}" = "docker_build_fedora" ]]; then
+    docker pull dronecore/dronecore-fedora-27;
+  fi
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     pip install --user cpp-coveralls;
   fi
 
-install:
-- set -e
-- if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
-    docker pull dronecore/dronecore;
-  fi
-
 script:
+- set -e
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
     make BUILD_TYPE=Debug run_unit_tests -j4;
     make clean;
@@ -80,8 +86,13 @@ script:
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     make BUILD_TYPE=Coverage run_unit_tests -j4;
   fi
-- if [[ "${BUILD_TARGET}" = "docker_build" ]]; then
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/docker1000/src/DroneCore:rw dronecore/dronecore ./travis-docker-build.sh;
+- if [[ "${BUILD_TARGET}" = "docker_build_ubuntu" ]]; then
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-ubuntu-16.04 ./travis-docker-build.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-ubuntu-16.04 ./create_packages.sh;
+  fi
+- if [[ "${BUILD_TARGET}" = "docker_build_fedora" ]]; then
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-fedora-27 ./travis-docker-build.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-fedora-27 ./create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     make;
@@ -100,11 +111,6 @@ after_success:
     --exclude="debug_helpers" --exclude="example" --exclude="external_example"
     --exclude-pattern=".*CMakeFiles.*" --exclude-pattern=".*_test.*";
   fi
-- if [[ "${DEPLOY_BUILD}" = "yes" ]]; then
-    gem install --no-ri --no-rdoc fpm;
-    export PATH=$PATH:$GEM_HOME/bin;
-    ./create_packages.sh;
-  fi;
 
 deploy:
   provider: releases
@@ -115,7 +121,6 @@ deploy:
   file:
   - "*.deb"
   - "*.rpm"
-  condition: ${DEPLOY_BUILD} = yes
   on:
     repo: dronecore/DroneCore
     tags: true
