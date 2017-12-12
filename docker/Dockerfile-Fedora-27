@@ -23,6 +23,7 @@ RUN dnf -y install \
     which \
     astyle \
     doxygen \
+    python \
     && dnf clean all
 
 RUN gem install --no-ri --no-rdoc fpm;
