@@ -32,38 +32,44 @@ library_files="\
     plugins/offboard/offboard.h=/usr/include/dronecore/offboard.h \
     plugins/telemetry/telemetry.h=/usr/include/dronecore/telemetry.h"
 
-fpm $common_args \
-    --output-type deb \
-    --depends libtinyxml2-dev \
-    --depends libcurl4-openssl-dev \
-    --deb-no-default-config-files \
-    --name libdronecore-dev \
-    --provides libdronecore-dev \
-    $library_files
-
-fpm $common_args \
-    --output-type rpm \
-    --depends tinyxml2-devel \
-    --depends libcurl-devel \
-    --name libdronecore-devel \
-    --provides libdronecore-devel \
-    $library_files
-
-
 integrationtests_files="\
     build/default/dronecore-integrationtests=/usr/bin/dronecore-integrationtests"
 
-fpm $common_args \
-    --output-type deb \
-    --depends libdronecore-dev \
-    --deb-no-default-config-files \
-    --name dronecore-integrationtests \
-    --provides dronecore-integrationtests \
-    $integrationtests_files
+if cat /etc/os-release | grep -q 'Ubuntu\|Debian'
+then
+    echo "Building DEB package"
+    fpm $common_args \
+        --output-type deb \
+        --depends libtinyxml2-dev \
+        --depends libcurl4-openssl-dev \
+        --deb-no-default-config-files \
+        --name libdronecore-dev \
+        --provides libdronecore-dev \
+        $library_files
 
-fpm $common_args \
-    --output-type rpm \
-    --depends libdronecore-devel \
-    --name dronecore-integrationtests \
-    --provides dronecore-integrationtests \
-    $integrationtests_files
+    fpm $common_args \
+        --output-type deb \
+        --depends libdronecore-dev \
+        --deb-no-default-config-files \
+        --name dronecore-integrationtests \
+        --provides dronecore-integrationtests \
+        $integrationtests_files
+
+elif cat /etc/os-release | grep -q 'Fedora\|RedHat'
+then
+    echo "Building RPM package"
+    fpm $common_args \
+        --output-type rpm \
+        --depends libdronecore-devel \
+        --name dronecore-integrationtests \
+        --provides dronecore-integrationtests \
+        $integrationtests_files
+
+    fpm $common_args \
+        --output-type rpm \
+        --depends tinyxml2-devel \
+        --depends libcurl-devel \
+        --name libdronecore-devel \
+        --provides libdronecore-devel \
+        $library_files
+fi
