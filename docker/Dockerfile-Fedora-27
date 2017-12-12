@@ -20,6 +20,7 @@ RUN dnf -y install \
     ruby-devel \
     redhat-rpm-config \
     rpm-build \
+    which \
     astyle \
     && dnf clean all
 
