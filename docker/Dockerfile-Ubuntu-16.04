@@ -4,7 +4,7 @@
 # Author: Julian Oes <julian@oes.ch>
 #
 
-FROM ubuntu:xenial
+FROM ubuntu:16.04
 MAINTAINER Julian Oes <julian@oes.ch>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -26,6 +26,7 @@ RUN apt-get update \
         python \
         python-pip \
         libtinyxml2-dev \
+        ruby-dev \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
@@ -65,6 +66,8 @@ RUN git clone -b v1.7.x https://github.com/grpc/grpc \
 ENV GRPC_DIR=/opt/grpc
 ENV PROTOBUF_DIR=/opt/protobuf
 
+RUN gem install --no-ri --no-rdoc fpm;
+
 CMD ["/bin/bash"]
 
-WORKDIR "/home/docker1000/src/DroneCore"
+WORKDIR "/root/DroneCore"
