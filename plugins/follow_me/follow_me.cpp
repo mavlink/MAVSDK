@@ -27,14 +27,14 @@ bool FollowMe::is_active() const
     return _impl->is_active();
 }
 
-void FollowMe::set_curr_target_location(const TargetLocation &target_location)
+void FollowMe::set_target_location(const TargetLocation &target_location)
 {
-    return _impl->set_curr_target_location(target_location);
+    return _impl->set_target_location(target_location);
 }
 
-void FollowMe::get_last_location(TargetLocation &last_location)
+const FollowMe::TargetLocation &FollowMe::get_last_location() const
 {
-    return _impl->get_last_location(last_location);
+    return _impl->get_last_location();
 }
 
 std::string FollowMe::Config::to_str(FollowMe::Config::FollowDirection direction)

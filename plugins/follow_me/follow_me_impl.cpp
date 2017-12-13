@@ -9,9 +9,9 @@ FollowMeImpl::FollowMeImpl() :
     PluginImplBase()
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
-    _last_location =  _curr_target_location = \
-                                              FollowMe::TargetLocation { double(NAN), double(NAN), double(NAN),
-                                                                         NAN, NAN, NAN };
+    _last_location =  _target_location = \
+                                         FollowMe::TargetLocation { double(NAN), double(NAN), double(NAN),
+                                                                    NAN, NAN, NAN };
 }
 
 FollowMeImpl::~FollowMeImpl() {}
@@ -74,11 +74,11 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
     return FollowMe::Result::SUCCESS;
 }
 
-void FollowMeImpl::set_curr_target_location(const FollowMe::TargetLocation &location)
+void FollowMeImpl::set_target_location(const FollowMe::TargetLocation &location)
 {
     _mutex.lock();
-    _curr_target_location = location;
-    // We're sending only lat, long & alt to the vehicle.
+    _target_location = location;
+    // We're interested only in lat, long.
     _estimatation_capabilities |= (1 << static_cast<int>(EstimationCapabilites::POS));
 
     if (_mode != Mode::ACTIVE) {
@@ -86,25 +86,25 @@ void FollowMeImpl::set_curr_target_location(const FollowMe::TargetLocation &loca
         return;
     }
     // If set already, reschedule it.
-    if (_curr_target_location_cookie) {
-        _parent->reset_call_every(_curr_target_location_cookie);
-        _curr_target_location_cookie = nullptr;
+    if (_target_location_cookie) {
+        _parent->reset_call_every(_target_location_cookie);
+        _target_location_cookie = nullptr;
     } else {
         // Regiter now for sending in the next cycle.
-        _parent->add_call_every([this]() { send_curr_target_location(); },
+        _parent->add_call_every([this]() { send_target_location(); },
         SENDER_RATE,
-        &_curr_target_location_cookie);
+        &_target_location_cookie);
     }
     _mutex.unlock();
 
     // Send it immediately for now.
-    send_curr_target_location();
+    send_target_location();
 }
 
-void FollowMeImpl::get_last_location(FollowMe::TargetLocation &last_location)
+const FollowMe::TargetLocation &FollowMeImpl::get_last_location() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    last_location = _curr_target_location;
+    return _last_location;
 }
 
 bool FollowMeImpl::is_active() const
@@ -137,10 +137,10 @@ FollowMe::Result FollowMeImpl::start()
         // If location was set before, lets send it to vehicle
         std::lock_guard<std::mutex> lock(
             _mutex); // locking is not necessary here but lets do it for integrity
-        if (is_current_location_set()) {
-            _parent->add_call_every([this]() { send_curr_target_location(); },
+        if (is_target_location_set()) {
+            _parent->add_call_every([this]() { send_target_location(); },
             SENDER_RATE,
-            &_curr_target_location_cookie);
+            &_target_location_cookie);
         }
     }
     return result;
@@ -288,14 +288,14 @@ FollowMeImpl::to_follow_me_result(MavlinkCommands::Result result) const
     }
 }
 
-bool FollowMeImpl::is_current_location_set() const
+bool FollowMeImpl::is_target_location_set() const
 {
     // If the target's latitude is NAN, we assume that location is not set.
     // We assume that mutex was acquired by the caller
-    return std::isfinite(_curr_target_location.latitude_deg);
+    return std::isfinite(_target_location.latitude_deg);
 }
 
-void FollowMeImpl::send_curr_target_location()
+void FollowMeImpl::send_target_location()
 {
     // Don't send if we're not in FollowMe mode.
     if (!is_active()) {
@@ -307,11 +307,11 @@ void FollowMeImpl::send_curr_target_location()
     uint64_t elapsed_msec = static_cast<uint64_t>(_time.elapsed_since_s(now) * 1000); // milliseconds
 
     _mutex.lock();
-//    LogDebug() << "Lat: " << _curr_target_location.latitude_deg << " Lon: " << _curr_target_location.longitude_deg <<
-//	" Alt: " << _curr_target_location.absolute_altitude_m;
-    const int32_t lat_int = static_cast<int32_t>(_curr_target_location.latitude_deg * 1e7);
-    const int32_t lon_int = static_cast<int32_t>(_curr_target_location.longitude_deg * 1e7);
-    const float alt = static_cast<float>(_curr_target_location.absolute_altitude_m);
+//    LogDebug() << "Lat: " << _target_location.latitude_deg << " Lon: " << _target_location.longitude_deg <<
+//	" Alt: " << _target_location.absolute_altitude_m;
+    const int32_t lat_int = static_cast<int32_t>(_target_location.latitude_deg * 1e7);
+    const int32_t lon_int = static_cast<int32_t>(_target_location.longitude_deg * 1e7);
+    const float alt = static_cast<float>(_target_location.absolute_altitude_m);
     _mutex.unlock();
 
     const float pos_std_dev[] = { NAN, NAN, NAN };
@@ -338,19 +338,19 @@ void FollowMeImpl::send_curr_target_location()
                                    custom_state);
 
     if (!_parent->send_message(msg)) {
-        LogErr() << "send_curr_target_location() failed..";
+        LogErr() << "send_target_location() failed..";
     } else {
         std::lock_guard<std::mutex> lock(_mutex);
-        _last_location = _curr_target_location;
+        _last_location = _target_location;
     }
 }
 
 void FollowMeImpl::stop_sending_target_location()
 {
     // We assume that mutex was acquired by the caller
-    if (_curr_target_location_cookie) {
-        _parent->remove_call_every(_curr_target_location_cookie);
-        _curr_target_location_cookie = nullptr;
+    if (_target_location_cookie) {
+        _parent->remove_call_every(_target_location_cookie);
+        _target_location_cookie = nullptr;
     }
     _mode = Mode::NOT_ACTIVE;
 }
@@ -381,7 +381,7 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
         } else if (follow_me_active && _mode == Mode::NOT_ACTIVE) {
             // We're in FollowMe mode now
             _mode = Mode::ACTIVE;
-            _mutex.unlock(); // we must unlock to avoid deadlock in send_curr_target_location()
+            _mutex.unlock(); // we must unlock to avoid deadlock in send_target_location()
             return;
         }
     }

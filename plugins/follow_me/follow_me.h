@@ -120,7 +120,7 @@ public:
     };
 
     /**
-     * @brief Sets current location of the moving target.
+     * @brief Sets location of the moving target.
      *
      * An app can obtain the location of the moving target from Location framework of the underlying platform.
      *
@@ -130,17 +130,17 @@ public:
      * - Apple - https://developer.apple.com/documentation/corelocation
      * - Windows - https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation
      *
-     * @param[in] location Current location of the target.
+     * @param[in] location Location of the moving target.
      * @sa get_last_location()
      */
-    void set_curr_target_location(const TargetLocation &location);
+    void set_target_location(const TargetLocation &location);
 
     /**
-     * @brief Returns the most recent location of the target.
-     * @param[out] last_location Last location to be filled.
-     * @sa set_curr_target_location()
+     * @brief Returns the last location of the target.
+     * @return Last location of the target.
+     * @sa set_target_location()
      */
-    void get_last_location(TargetLocation &last_location);
+    const TargetLocation &get_last_location() const;
 
     /**
      * @brief Returns English string for FollowMe error codes
