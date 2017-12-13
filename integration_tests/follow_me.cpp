@@ -33,13 +33,12 @@ TEST_F(SitlTest, FollowMeOneLocation)
         sleep_for(seconds(1));
     }
 
-    Action::Result action_ret = device.action().arm();
+    auto action_ret = device.action().arm();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     device.telemetry().flight_mode_async(
     std::bind([&](Telemetry::FlightMode flight_mode) {
-        FollowMe::TargetLocation last_location;
-        device.follow_me().get_last_location(last_location);
+        auto last_location = device.follow_me().get_last_location();
 
         std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
                   << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
@@ -55,10 +54,10 @@ TEST_F(SitlTest, FollowMeOneLocation)
     print(curr_config);
 
     // Set just a single location before starting FollowMe (optional)
-    device.follow_me().set_curr_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
+    device.follow_me().set_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
 
     // Start following with default configuration
-    FollowMe::Result follow_me_result = device.follow_me().start();
+    auto follow_me_result = device.follow_me().start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
     sleep_for(seconds(1));
 
@@ -91,13 +90,12 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
         sleep_for(seconds(1));
     }
 
-    Action::Result action_ret = device.action().arm();
+    auto action_ret = device.action().arm();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     device.telemetry().flight_mode_async(
     std::bind([&](Telemetry::FlightMode flight_mode) {
-        FollowMe::TargetLocation last_location;
-        device.follow_me().get_last_location(last_location);
+        auto last_location = device.follow_me().get_last_location();
 
         std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
                   << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
@@ -119,7 +117,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
         FollowMe::Config::FollowDirection::FRONT; // Device follows target from FRONT side
 
     // Apply configuration
-    FollowMe::Result config_result = device.follow_me().set_config(config);
+    auto config_result = device.follow_me().set_config(config);
     ASSERT_EQ(FollowMe::Result::SUCCESS, config_result);
 
     sleep_for(seconds(2)); // until config is applied
@@ -129,7 +127,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     print(curr_config);
 
     // Start following
-    FollowMe::Result follow_me_result = device.follow_me().start();
+    auto follow_me_result = device.follow_me().start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
 
     // send location update every second
@@ -273,7 +271,7 @@ void send_location_updates(FollowMe &follow_me, size_t count, float rate)
         if (count-- == 0) {
             return;
         }
-        follow_me.set_curr_target_location(pos);
+        follow_me.set_target_location(pos);
         auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
         sleep_for(milliseconds(sleep_duration_ms));
     }

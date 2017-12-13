@@ -24,8 +24,8 @@ public:
     const FollowMe::Config &get_config() const;
     FollowMe::Result set_config(const FollowMe::Config &config);
 
-    void set_curr_target_location(const FollowMe::TargetLocation &location);
-    void get_last_location(FollowMe::TargetLocation &last_location);
+    void set_target_location(const FollowMe::TargetLocation &location);
+    const FollowMe::TargetLocation &get_last_location() const;
 
     bool is_active() const;
 
@@ -44,8 +44,8 @@ private:
     void receive_param_responsiveness(bool success, float rsp);
     FollowMe::Result to_follow_me_result(MavlinkCommands::Result result) const;
 
-    bool is_current_location_set() const;
-    void send_curr_target_location();
+    bool is_target_location_set() const;
+    void send_target_location();
     void stop_sending_target_location();
 
     enum class EstimationCapabilites {
@@ -59,9 +59,9 @@ private:
     } _mode = Mode::NOT_ACTIVE;
 
     mutable std::mutex _mutex {};
-    FollowMe::TargetLocation _curr_target_location; // sent to vehicle
+    FollowMe::TargetLocation _target_location; // sent to vehicle
     FollowMe::TargetLocation _last_location; // sent to vehicle
-    void *_curr_target_location_cookie = nullptr;
+    void *_target_location_cookie = nullptr;
 
     Time _time {};
     uint8_t _estimatation_capabilities = 0; // sent to vehicle
