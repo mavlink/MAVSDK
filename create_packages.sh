@@ -35,6 +35,9 @@ library_files="\
 integrationtests_files="\
     build/default/dronecore-integrationtests=/usr/bin/dronecore-integrationtests"
 
+echo "#!/bin/sh" > run_ldconfig
+echo "/sbin/ldconfig" >> run_ldconfig
+
 if cat /etc/os-release | grep -q 'Ubuntu\|Debian'
 then
     echo "Building DEB package"
@@ -45,6 +48,8 @@ then
         --deb-no-default-config-files \
         --name libdronecore-dev \
         --provides libdronecore-dev \
+        --after-install run_ldconfig \
+        --after-remove run_ldconfig \
         $library_files
 
     fpm $common_args \
@@ -63,6 +68,8 @@ then
         --depends libdronecore-devel \
         --name dronecore-integrationtests \
         --provides dronecore-integrationtests \
+        --after-install run_ldconfig \
+        --after-remove run_ldconfig \
         $integrationtests_files
 
     fpm $common_args \
@@ -73,3 +80,5 @@ then
         --provides libdronecore-devel \
         $library_files
 fi
+
+rm run_ldconfig
