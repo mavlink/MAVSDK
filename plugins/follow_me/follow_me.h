@@ -107,7 +107,7 @@ public:
     bool is_active() const;
 
     /**
-     * @brief Geographical location of the target in motion.
+     * @brief Type for Geographical location of the target in motion.
      */
     struct TargetLocation {
         double latitude_deg; /**< @brief Latitude, in degrees */
