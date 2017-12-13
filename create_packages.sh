@@ -14,7 +14,7 @@ common_args="--input-type dir  \
     --version $version \
     --maintainer julian@oes.ch \
     --url http://dronecore.io \
-    --license BSD-3-clause \
+    --license BSD-3-Clause \
     --force"
 
 library_files="\
