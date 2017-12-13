@@ -1,9 +1,5 @@
 #include "follow_me_impl.h"
-#include "device_impl.h"
-#include "global_include.h"
 #include "px4_custom_mode.h"
-#include <functional>
-#include <cmath>
 
 namespace dronecore {
 
