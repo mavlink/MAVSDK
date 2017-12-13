@@ -41,6 +41,7 @@ public:
         COMMAND_DENIED, /**< @brief Command denied. */
         TIMEOUT, /**< @brief Request timeout. */
         NOT_ACTIVE, /**< @brief FollowMe is not activated. */
+        SET_CONFIG_FAILED, /**< @brief Failed to set FollowMe configuration. */
         UNKNOWN /**< @brief Unknown error. */
     };
 
@@ -92,11 +93,12 @@ public:
     /**
      * @brief Applies FollowMe configuration by sending it to device.
      * @param[in] config FollowMe configuration to be applied.
-     * @return `true` if configuration is applied successfully, `false` if config values are out-of-range.
+     * @return FollowMe::Result::SUCCESS if configuration is applied successfully,
+     *         FollowMe::Result::SET_CONFIG_FAILED on failure.
      *         In case of failure, last configuration is preserved.
      * @sa get_config()
      */
-    bool set_config(const Config &config);
+    Result set_config(const Config &config);
 
     /**
      * @brief Checks whether FollowMe is active.

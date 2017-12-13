@@ -41,12 +41,12 @@ const FollowMe::Config &FollowMeImpl::get_config() const
     return _config;
 }
 
-bool FollowMeImpl::set_config(const FollowMe::Config &config)
+FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
 {
     // Valdidate configuration
     if (!is_config_ok(config)) {
         LogErr() << "set_config() failed. Last configuration is preserved.";
-        return false;
+        return FollowMe::Result::SET_CONFIG_FAILED;
     }
 
     auto height = config.min_height_m;
@@ -71,7 +71,7 @@ bool FollowMeImpl::set_config(const FollowMe::Config &config)
     // FIXME: We've sent valid configuration to Vehicle.
     // But that doesn't mean configuration is applied, untill we receive confirmation.
     // For now we're hoping that it is applied successfully.
-    return true;
+    return FollowMe::Result::SUCCESS;
 }
 
 void FollowMeImpl::set_curr_target_location(const FollowMe::TargetLocation &location)

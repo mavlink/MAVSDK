@@ -22,7 +22,7 @@ public:
     void disable() override;
 
     const FollowMe::Config &get_config() const;
-    bool set_config(const FollowMe::Config &config);
+    FollowMe::Result set_config(const FollowMe::Config &config);
 
     void set_curr_target_location(const FollowMe::TargetLocation &location);
     void get_last_location(FollowMe::TargetLocation &last_location);

@@ -17,7 +17,7 @@ const FollowMe::Config &FollowMe::get_config() const
     return _impl->get_config();
 }
 
-bool FollowMe::set_config(const FollowMe::Config &config)
+FollowMe::Result FollowMe::set_config(const FollowMe::Config &config)
 {
     return _impl->set_config(config);
 }
@@ -80,6 +80,8 @@ std::string FollowMe::result_str(Result result)
             return "Timeout";
         case Result::NOT_ACTIVE:
             return "FollowMe is not active";
+        case Result::SET_CONFIG_FAILED:
+            return "Failed to set configuration";
         case Result::UNKNOWN:
         // FALLTHROUGH
         default:
