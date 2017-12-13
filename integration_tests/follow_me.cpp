@@ -41,10 +41,9 @@ TEST_F(SitlTest, FollowMeOneLocation)
         FollowMe::TargetLocation last_location;
         device.follow_me().get_last_location(last_location);
 
-        std::cout << "FlightMode: " << Telemetry::flight_mode_str(flight_mode)
-                  << " @Lat: " << last_location.latitude_deg << ", "  <<
-                  "Lon: " << last_location.longitude_deg << std::endl;
-
+        std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+                  << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
+                  "Lon: " << last_location.longitude_deg << " deg." << std::endl;
     }, std::placeholders::_1));
 
     action_ret = device.action().takeoff();
@@ -100,9 +99,9 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
         FollowMe::TargetLocation last_location;
         device.follow_me().get_last_location(last_location);
 
-        std::cout << "FlightMode: " << Telemetry::flight_mode_str(flight_mode)
-                  << " @Lat: " << last_location.latitude_deg << ", "  <<
-                  "Lon: " << last_location.longitude_deg << std::endl;
+        std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+                  << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
+                  "Lon: " << last_location.longitude_deg << " deg." << std::endl;
 
     }, std::placeholders::_1));
 
@@ -120,8 +119,8 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
         FollowMe::Config::FollowDirection::FRONT; // Device follows target from FRONT side
 
     // Apply configuration
-    bool configured = device.follow_me().set_config(config);
-    ASSERT_EQ(true, configured);
+    FollowMe::Result config_result = device.follow_me().set_config(config);
+    ASSERT_EQ(FollowMe::Result::SUCCESS, config_result);
 
     sleep_for(seconds(2)); // until config is applied
 
