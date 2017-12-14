@@ -3,17 +3,21 @@ syntax = "proto3";
 package dronecorerpc;
 
 option java_package = "io.dronecore.rpc";
-option java_outer_classname = "Telemetry";
+option java_outer_classname = "TelemetryProto";
 
 service TelemetryRPC {
-    rpc TelemetryPositionSubscription(UUID) returns(stream TelemetryPosition) {}
+    rpc SubscribeTelemetryPosition(SubscribePositionRequest) returns(stream Position) {}
 }
 
 message UUID {
     uint64 uuid = 1;
 }
 
-message TelemetryPosition {
+message SubscribePositionRequest {
+    UUID uuid = 1;
+}
+
+message Position {
     double latitude_deg = 1;
     double longitude_deg = 2;
     float absolute_altitude_m = 3;

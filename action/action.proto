@@ -2,21 +2,32 @@ syntax = "proto3";
 
 package dronecorerpc;
 
-option java_package = "io.dronecore.rpc";
-option java_outer_classname = "Action";
+option java_package = "io.dronecore.action";
+option java_outer_classname = "ActionProto";
 
 service ActionRPC {
-    rpc Arm(UUID) returns(ActionResult) {}
-    rpc TakeOff(UUID) returns(ActionResult) {}
-    rpc Land(UUID) returns(ActionResult) {}
+    rpc Arm(ArmRequest) returns(ActionResult) {}
+    rpc TakeOff(TakeOffRequest) returns(ActionResult) {}
+    rpc Land(LandRequest) returns(ActionResult) {}
 }
 
 message UUID {
-    uint64 uuid = 1;
+    uint64 value = 1;
+}
+
+message ArmRequest {
+    UUID uuid = 1;
+}
+
+message TakeOffRequest {
+    UUID uuid = 1;
+}
+
+message LandRequest {
+    UUID uuid = 1;
 }
 
 message ActionResult {
-
     enum Result {
         SUCCESS = 0;
         NO_DEVICE = 1;
@@ -28,6 +39,7 @@ message ActionResult {
         TIMEOUT = 7;
         UNKNOWN = 8;
     }
+
     Result result = 1;
     string result_str = 2;
 }

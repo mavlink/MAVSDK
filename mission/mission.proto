@@ -2,28 +2,25 @@ syntax = "proto3";
 
 package dronecorerpc;
 
+option java_package = "io.dronecore.rpc";
+option java_outer_classname = "MissionProto";
+
 service MissionRPC {
-    rpc SendMission(Mission) returns(MissionResult) {}
-    rpc StartMission(UUID) returns(MissionResult) {}
+    rpc SendMission(SendMissionRequest) returns(MissionResult) {}
+    rpc StartMission(StartMissionRequest) returns(MissionResult) {}
 }
 
 message UUID {
     uint64 uuid = 1;
 }
 
-message MissionResult {
+message SendMissionRequest {
+    UUID uuid = 1;
+    Mission mission = 2;
+}
 
-    enum Result {
-        SUCCESS = 0;
-        ERROR = 1;
-        TOO_MANY_MISSION_ITEMS = 2;
-        BUSY = 3;
-        TIMEOUT = 4;
-        INVALID_ARGUMENT = 5;
-        UNKNOWN = 6;
-    }
-    Result result = 1;
-    string result_str = 2;
+message Mission {
+    repeated MissionItem mission_items = 1;
 }
 
 message MissionItem {
@@ -34,6 +31,7 @@ message MissionItem {
     bool is_fly_through = 5;
     float gimbal_pitch_deg = 6;
     float gimbal_yaw_deg = 7;
+    CameraAction camera_action = 8;
 
     enum CameraAction {
         NONE = 0;
@@ -43,10 +41,23 @@ message MissionItem {
         START_VIDEO = 4;
         STOP_VIDEO = 5;
     }
-    CameraAction camera_action = 8;
 }
 
-message Mission {
-    repeated MissionItem mission_items = 1;
-    uint64 uuid = 2;
+message MissionResult {
+    Result result = 1;
+    string result_str = 2;
+
+    enum Result {
+        SUCCESS = 0;
+        ERROR = 1;
+        TOO_MANY_MISSION_ITEMS = 2;
+        BUSY = 3;
+        TIMEOUT = 4;
+        INVALID_ARGUMENT = 5;
+        UNKNOWN = 6;
+    }
+}
+
+message StartMissionRequest {
+    UUID uuid = 1;
 }
