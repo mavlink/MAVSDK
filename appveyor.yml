@@ -110,9 +110,9 @@ test: on
 test_script:
   - cd C:\dronecore
   - if "%configuration%"=="Debug" (
-      cp build\libs\gtest\googlemock\gtest\Debug\gtest.dll build\Debug\ &&
-      cp build\libs\gtest\googlemock\gtest\Debug\gtest_main.dll build\Debug\ &&
-      cp build\libs\gtest\googlemock\Debug\gmock.dll build\Debug\ &&
+      cp build\libs\gtest\googlemock\gtest\Debug\gtestd.dll build\Debug\ &&
+      cp build\libs\gtest\googlemock\gtest\Debug\gtest_maind.dll build\Debug\ &&
+      cp build\libs\gtest\googlemock\Debug\gmockd.dll build\Debug\ &&
       cd build\Debug &&
       unit_tests_runner.exe
     ) else (
