@@ -32,9 +32,6 @@ library_files="\
     plugins/offboard/offboard.h=/usr/include/dronecore/offboard.h \
     plugins/telemetry/telemetry.h=/usr/include/dronecore/telemetry.h"
 
-integrationtests_files="\
-    build/default/dronecore-integrationtests=/usr/bin/dronecore-integrationtests"
-
 echo "#!/bin/sh" > run_ldconfig
 echo "/sbin/ldconfig" >> run_ldconfig
 
@@ -52,32 +49,17 @@ then
         --after-remove run_ldconfig \
         $library_files
 
-    fpm $common_args \
-        --output-type deb \
-        --depends libdronecore-dev \
-        --deb-no-default-config-files \
-        --name dronecore-integrationtests \
-        --provides dronecore-integrationtests \
-        $integrationtests_files
-
 elif cat /etc/os-release | grep -q 'Fedora\|RedHat'
 then
     echo "Building RPM package"
-    fpm $common_args \
-        --output-type rpm \
-        --depends libdronecore-devel \
-        --name dronecore-integrationtests \
-        --provides dronecore-integrationtests \
-        --after-install run_ldconfig \
-        --after-remove run_ldconfig \
-        $integrationtests_files
-
     fpm $common_args \
         --output-type rpm \
         --depends tinyxml2-devel \
         --depends libcurl-devel \
         --name libdronecore-devel \
         --provides libdronecore-devel \
+        --after-install run_ldconfig \
+        --after-remove run_ldconfig \
         $library_files
 fi
 
