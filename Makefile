@@ -159,9 +159,12 @@ run_unit_tests: default
 run_integration_tests: default
 	build/default/dronecore-integrationtests
 
-clean:
+distclean:
 	@rm -rf build/
 	@rm -rf logs/
+
+clean:
+	@if [ -d build ]; then find build -mindepth 2 -path build/*/external -prune -o -exec rm -rf {} +; fi
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
