@@ -2,7 +2,9 @@
 #include "global_include.h"
 #include "dronecore_impl.h"
 #include "mavlink_include.h"
+#include "plugin_impl_base.h"
 #include <functional>
+#include <algorithm>
 #include "px4_custom_mode.h"
 
 // Set to 1 to log incoming/outgoing mavlink messages.
@@ -341,48 +343,57 @@ void Device::request_autopilot_version()
 
 void Device::set_connected()
 {
-    std::lock_guard<std::mutex> lock(_connection_mutex);
+    {
+        std::lock_guard<std::mutex> lock(_connection_mutex);
 
-    if (!_connected && _target_uuid_initialized) {
+        bool enable_needed = false;
+        if (!_connected && _target_uuid_initialized) {
 
-        if (_on_discovery_callback) {
-            _on_discovery_callback();
+            _parent->notify_on_discover(_target_uuid);
+            _connected = true;
+
+            register_timeout_handler(std::bind(&Device::heartbeats_timed_out, this),
+                                     _HEARTBEAT_TIMEOUT_S,
+                                     &_heartbeat_timeout_cookie);
+
+            enable_needed = true;
+
+        } else if (_connected) {
+            refresh_timeout_handler(_heartbeat_timeout_cookie);
         }
-        _parent->notify_on_discover(_target_uuid);
-        _connected = true;
-
-        register_timeout_handler(std::bind(&Device::heartbeats_timed_out, this),
-                                 _HEARTBEAT_TIMEOUT_S,
-                                 &_heartbeat_timeout_cookie);
-    } else if (_connected) {
-        refresh_timeout_handler(_heartbeat_timeout_cookie);
+        // If not yet connected there is nothing to do/
     }
-    // If not yet connected there is nothing to do/
-}
-
-void Device::subscribe_on_discovery(std::function <void()> callback)
-{
-    _on_discovery_callback = callback;
-}
-void Device::subscribe_on_timeout(std::function <void()> callback)
-{
-    _on_timeout_callback = callback;
+    if (enable_needed) {
+        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
+        for (auto plugin_impl : _plugin_impls) {
+            plugin_impl->enable();
+        }
+    }
 }
 
 void Device::set_disconnected()
 {
-    std::lock_guard<std::mutex> lock(_connection_mutex);
+    {
+        std::lock_guard<std::mutex> lock(_connection_mutex);
 
-    // This might not be needed because this is probably called from the triggered
-    // timeout anyway but it should also do no harm.
-    //unregister_timeout_handler(_heartbeat_timeout_cookie);
-    //_heartbeat_timeout_cookie = nullptr;
+        // This might not be needed because this is probably called from the triggered
+        // timeout anyway but it should also do no harm.
+        //unregister_timeout_handler(_heartbeat_timeout_cookie);
+        //_heartbeat_timeout_cookie = nullptr;
 
-    _connected = false;
-    if (_on_timeout_callback) {
-        _on_timeout_callback();
+        _connected = false;
+        _parent->notify_on_timeout(_target_uuid);
+
+        // Let's reset the flag hope again for the next time we see this target.
+        _target_uuid_initialized = 0;
     }
-    _parent->notify_on_timeout(_target_uuid);
+
+    {
+        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
+        for (auto plugin_impl : _plugin_impls) {
+            plugin_impl->disable();
+        }
+    }
 }
 
 uint64_t Device::get_target_uuid() const
@@ -652,6 +663,40 @@ void Device::set_msg_rate_async(uint16_t message_id, double rate_hz,
             MAV_CMD_SET_MESSAGE_INTERVAL,
             MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
             callback);
+    }
+}
+
+void Device::register_plugin(PluginImplBase *plugin_impl)
+{
+    assert(plugin_impl);
+
+    plugin_impl->init();
+
+    {
+        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
+        _plugin_impls.push_back(plugin_impl);
+    }
+
+    // If we're connected already, let's enable it straightaway.
+    if (_connected) {
+        plugin_impl->enable();
+    }
+}
+
+void Device::unregister_plugin(PluginImplBase *plugin_impl)
+{
+    assert(plugin_impl);
+
+    plugin_impl->disable();
+    plugin_impl->deinit();
+
+    // Remove first, so it won't get enabled/disabled anymore.
+    {
+        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
+        auto found = std::find(_plugin_impls.begin(), _plugin_impls.end(), plugin_impl);
+        if (found != _plugin_impls.end()) {
+            _plugin_impls.erase(found);
+        }
     }
 }
 
