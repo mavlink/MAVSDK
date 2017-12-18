@@ -47,6 +47,7 @@ private:
     int _socket_fd = -1;
     std::thread *_recv_thread = nullptr;
     std::atomic_bool _should_exit;
+    std::atomic_bool _is_ok {false};
 };
 
 } // namespace dronecore
