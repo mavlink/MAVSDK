@@ -45,7 +45,7 @@ TcpConnection::~TcpConnection()
 
 bool TcpConnection::is_ok() const
 {
-    return true;
+    return _is_ok;
 }
 
 DroneCore::ConnectionResult TcpConnection::start()
@@ -71,6 +71,7 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
+        _is_ok = false;
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 #endif
@@ -79,6 +80,7 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
 
     if (_socket_fd < 0) {
         LogErr() << "socket error" << GET_ERROR(errno);
+        _is_ok = false;
         return DroneCore::ConnectionResult::SOCKET_ERROR;
     }
 
@@ -90,9 +92,11 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
     if (connect(_socket_fd, reinterpret_cast<sockaddr *>(&remote_addr),
                 sizeof(struct sockaddr_in)) < 0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
+        _is_ok = false;
         return DroneCore::ConnectionResult::SOCKET_CONNECTION_ERROR;
     }
 
+    _is_ok = true;
     return DroneCore::ConnectionResult::SUCCESS;
 }
 
@@ -162,6 +166,7 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);
+        _is_ok = false;
         return false;
     }
     return true;
@@ -174,11 +179,18 @@ void TcpConnection::receive(TcpConnection *parent)
 
     while (!parent->_should_exit) {
 
+        if (!parent->_is_ok) {
+            LogErr() << "TCP receive error, trying to reconnect...";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            parent->setup_port();
+        }
+
         int recv_len = recv(parent->_socket_fd, buffer, sizeof(buffer), 0);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
             // therefore we check _should_exit again.
+            parent->_is_ok = false;
             continue;
         }
 
@@ -186,6 +198,8 @@ void TcpConnection::receive(TcpConnection *parent)
             // This happens on desctruction when close(_socket_fd) is called,
             // therefore be quiet.
             //LogErr() << "recvfrom error: " << GET_ERROR(errno);
+            // Something went wrong, we should try to re-connect in next iteration.
+            parent->_is_ok = false;
             continue;
         }
 
