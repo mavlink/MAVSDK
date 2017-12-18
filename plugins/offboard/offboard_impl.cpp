@@ -6,9 +6,15 @@
 namespace dronecore {
 
 OffboardImpl::OffboardImpl(Device *device) :
-    PluginImplBase(device) {}
+    PluginImplBase(device)
+{
+    _parent->register_plugin(this);
+}
 
-OffboardImpl::~OffboardImpl() {}
+OffboardImpl::~OffboardImpl()
+{
+    _parent->unregister_plugin(this);
+}
 
 void OffboardImpl::init()
 {

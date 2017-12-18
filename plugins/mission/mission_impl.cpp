@@ -7,9 +7,15 @@
 namespace dronecore {
 
 MissionImpl::MissionImpl(Device *device) :
-    PluginImplBase(device) {}
+    PluginImplBase(device)
+{
+    _parent->register_plugin(this);
+}
 
-MissionImpl::~MissionImpl() {}
+MissionImpl::~MissionImpl()
+{
+    _parent->unregister_plugin(this);
+}
 
 void MissionImpl::init()
 {

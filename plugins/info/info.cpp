@@ -7,14 +7,10 @@ Info::Info(Device *device) :
     PluginBase()
 {
     _impl = new InfoImpl(device);
-    _impl->init();
-    _impl->enable();
 }
 
 Info::~Info()
 {
-    _impl->disable();
-    _impl->deinit();
     delete _impl;
 }
 

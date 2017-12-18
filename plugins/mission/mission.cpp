@@ -8,14 +8,10 @@ Mission::Mission(Device *device) :
     PluginBase()
 {
     _impl = new MissionImpl(device);
-    _impl->init();
-    _impl->enable();
 }
 
 Mission::~Mission()
 {
-    _impl->disable();
-    _impl->deinit();
     delete _impl;
 }
 

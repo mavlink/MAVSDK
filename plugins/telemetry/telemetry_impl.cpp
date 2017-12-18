@@ -48,9 +48,15 @@ TelemetryImpl::TelemetryImpl(Device *device) :
     _health_all_ok_subscription(nullptr),
     _rc_status_subscription(nullptr),
     _ground_speed_ned_rate_hz(0.0),
-    _position_rate_hz(0.0) {}
+    _position_rate_hz(-1.0)
+{
+    _parent->register_plugin(this);
+}
 
-TelemetryImpl::~TelemetryImpl() {}
+TelemetryImpl::~TelemetryImpl()
+{
+    _parent->unregister_plugin(this);
+}
 
 void TelemetryImpl::init()
 {

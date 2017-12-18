@@ -6,9 +6,15 @@
 namespace dronecore {
 
 ExampleImpl::ExampleImpl() :
-    PluginImplBase() {}
+    PluginImplBase()
+{
+    _parent->register_plugin(this);
+}
 
-ExampleImpl::~ExampleImpl() {}
+ExampleImpl::~ExampleImpl()
+{
+    _parent->register_plugin(this);
+}
 
 void ExampleImpl::init()
 {
