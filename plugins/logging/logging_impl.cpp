@@ -7,9 +7,15 @@
 namespace dronecore {
 
 LoggingImpl::LoggingImpl(Device *device) :
-    PluginImplBase(device) {}
+    PluginImplBase(device)
+{
+    _parent->register_plugin(this);
+}
 
-LoggingImpl::~LoggingImpl() {}
+LoggingImpl::~LoggingImpl()
+{
+    _parent->unregister_plugin(this);
+}
 
 void LoggingImpl::init()
 {

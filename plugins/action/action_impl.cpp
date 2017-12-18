@@ -8,9 +8,15 @@ namespace dronecore {
 using namespace std::placeholders; // for `_1`
 
 ActionImpl::ActionImpl(Device *device) :
-    PluginImplBase(device) {}
+    PluginImplBase(device)
+{
+    _parent->register_plugin(this);
+}
 
-ActionImpl::~ActionImpl() {}
+ActionImpl::~ActionImpl()
+{
+    _parent->unregister_plugin(this);
+}
 
 void ActionImpl::init()
 {

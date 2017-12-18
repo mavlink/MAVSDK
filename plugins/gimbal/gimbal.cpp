@@ -7,14 +7,10 @@ Gimbal::Gimbal(Device *device) :
     PluginBase()
 {
     _impl = new GimbalImpl(device);
-    _impl->init();
-    _impl->enable();
 }
 
 Gimbal::~Gimbal()
 {
-    _impl->disable();
-    _impl->deinit();
     delete _impl;
 }
 

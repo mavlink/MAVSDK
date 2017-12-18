@@ -14,9 +14,13 @@ FollowMeImpl::FollowMeImpl(Device *device) :
     _last_location =  _target_location = \
                                          FollowMe::TargetLocation { double(NAN), double(NAN), double(NAN),
                                                                     NAN, NAN, NAN };
+    _parent->register_plugin(this);
 }
 
-FollowMeImpl::~FollowMeImpl() {}
+FollowMeImpl::~FollowMeImpl()
+{
+    _parent->unregister_plugin(this);
+}
 
 void FollowMeImpl::init()
 {

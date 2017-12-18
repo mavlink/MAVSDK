@@ -7,9 +7,15 @@
 namespace dronecore {
 
 GimbalImpl::GimbalImpl(Device *device) :
-    PluginImplBase(device) {}
+    PluginImplBase(device)
+{
+    _parent->register_plugin(this);
+}
 
-GimbalImpl::~GimbalImpl() {}
+GimbalImpl::~GimbalImpl()
+{
+    _parent->unregister_plugin(this);
+}
 
 void GimbalImpl::init() {}
 

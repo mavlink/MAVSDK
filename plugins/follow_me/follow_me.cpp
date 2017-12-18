@@ -7,12 +7,11 @@ FollowMe::FollowMe(Device *device) :
     PluginBase()
 {
     _impl = new FollowMeImpl(device);
-    _impl->init();
-    _impl->enable();
 }
 
 FollowMe::~FollowMe()
 {
+    delete _impl;
 }
 
 const FollowMe::Config &FollowMe::get_config() const

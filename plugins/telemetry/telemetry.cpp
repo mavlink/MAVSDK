@@ -7,14 +7,10 @@ Telemetry::Telemetry(Device *device) :
     PluginBase()
 {
     _impl = new TelemetryImpl(device);
-    _impl->init();
-    _impl->enable();
 }
 
 Telemetry::~Telemetry()
 {
-    _impl->disable();
-    _impl->deinit();
     delete _impl;
 }
 
