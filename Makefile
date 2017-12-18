@@ -42,6 +42,7 @@ CURL_BUILD_DIR := $(ROOT_DIR)/curl-android-ios
 CMAKE_BIN = cmake
 
 INSTALL_PREFIX ?= /usr/local
+BUILD_DRONECORESERVER ?= NO
 
 # Function to create build_* directory and call make there.
 define cmake-build
@@ -54,6 +55,7 @@ define cmake-build
         -DEXTERNAL_DIR:STRING=$(EXTERNAL_DIR) \
         -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
         -DCMAKE_INSTALL_PREFIX=$(INSTALL_PREFIX) \
+		-DCMAKE_BUILD_DRONECORESERVER=$(BUILD_DRONECORESERVER) \
 		-DDROP_DEBUG=$(DROP_DEBUG) \
         -G$(CMAKE_GENERATOR)) \
 	|| (rm -rf $(BUILD_DIR)) \
@@ -179,5 +181,3 @@ endif
 
 .PHONY:
 	clean fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
-
-# vim:ft=make:
