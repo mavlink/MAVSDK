@@ -3,8 +3,17 @@ syntax = "proto3";
 
 package dronecorerpc;
 
+import "google/protobuf/empty.proto" ;
+
 // Interface exported by the server.
 service DroneCoreRPC {
+    rpc Get_UUID_List(google.protobuf.Empty) returns(Active_UUID_List) {}
 }
 
-message Empty {}
+message UUID {
+    uint64 uuid = 1;
+}
+
+message Active_UUID_List {
+    repeated UUID uuid_list = 1;
+}

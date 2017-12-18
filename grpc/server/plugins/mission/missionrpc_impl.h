@@ -5,6 +5,7 @@
 using grpc::Status;
 using grpc::ServerContext;
 using dronecorerpc::MissionRPC;
+using dronecorerpc::UUID;
 
 using namespace dronecore;
 
@@ -37,7 +38,7 @@ public:
             mission_items.push_back(new_item);
         }
 
-        dc->device().mission().upload_mission_async(
+        dc->device(mission->uuid()).mission().upload_mission_async(
         mission_items, [prom, response](Mission::Result result) {
             response->set_result(static_cast<dronecorerpc::MissionResult::Result>(result));
             response->set_result_str(Mission::result_str(result));
@@ -50,14 +51,14 @@ public:
         return Status::OK;
     }
 
-    Status StartMission(ServerContext *context, const ::google::protobuf::Empty *request,
+    Status StartMission(ServerContext *context, const UUID *request,
                         dronecorerpc::MissionResult *response) override
     {
         // TODO: there has to be a beter way than using std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
 
-        dc->device().mission().start_mission_async(
+        dc->device(request->uuid()).mission().start_mission_async(
         [prom, response](Mission::Result result) {
             response->set_result(static_cast<dronecorerpc::MissionResult::Result>(result));
             response->set_result_str(Mission::result_str(result));

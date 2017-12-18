@@ -5,14 +5,14 @@ from __future__ import print_function
 import grpc
 import time
 import threading
-# import dronecore_pb2 as dc
-# import dronecore_pb2_grpc
-# import dronecore_pb2_grpc
+import sys
 # import action_pb2 as dc_action
 import action_pb2_grpc
 import mission_pb2 as dc_mission
 import mission_pb2_grpc
 from google.protobuf import empty_pb2
+import dronecore_pb2 as dronecore
+import dronecore_pb2_grpc
 
 
 thread_status = True
@@ -31,6 +31,17 @@ def run():
     # stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
     action_stub = action_pb2_grpc.ActionRPCStub(channel)
     mission_stub = mission_pb2_grpc.MissionRPCStub(channel)
+    dronecore_stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+
+    response=dronecore_stub.Get_UUID_List(empty_pb2.Empty())
+    size=len(response.uuid_list)
+    print("Devices registered : {}".format(size))
+
+    device_uuid=dronecore.UUID()
+    if len(sys.argv) == 2:
+        device_uuid.uuid=int(sys.argv[1])
+    else :
+        device_uuid.uuid=response.uuid_list[0].uuid
 
     mission_items = []
 
@@ -94,13 +105,16 @@ def run():
         gimbal_yaw_deg=0,
         camera_action=dc_mission.MissionItem.STOP_PHOTO_INTERVAL))
 
-    mission_stub.SendMission(dc_mission.Mission(mission_items=mission_items))
+    device_mission=dc_mission.Mission()
+    device_mission.uuid=device_uuid.uuid
+    device_mission.mission_items.extend(mission_items)
+    mission_stub.SendMission(device_mission)
     time.sleep(1)
 
-    action_stub.Arm(empty_pb2.Empty())
+    action_stub.Arm(device_uuid)
     time.sleep(1)
 
-    future_status = mission_stub.StartMission.future(empty_pb2.Empty())
+    future_status = mission_stub.StartMission.future(device_uuid)
     t = threading.Thread(target=wait_func, args=(future_status,))
     t.start()
 

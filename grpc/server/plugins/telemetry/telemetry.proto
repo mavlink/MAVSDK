@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
+import "dronecore.proto";
 
 package dronecorerpc;
 
 service TelemetryRPC {
-    rpc TelemetryPositionSubscription(google.protobuf.Empty) returns(stream TelemetryPosition) {}
+    rpc TelemetryPositionSubscription(UUID) returns(stream TelemetryPosition) {}
 }
 
 message TelemetryPosition {

@@ -5,14 +5,14 @@ from __future__ import print_function
 import grpc
 import time
 import threading
-# import dronecore_pb2 as dc
-# import dronecore_pb2_grpc
+import sys
 import action_pb2 as dc_action
 import action_pb2_grpc
 # import telemetry_pb2 as dc_telemetry
 import telemetry_pb2_grpc
 from google.protobuf import empty_pb2
-
+import dronecore_pb2 as dronecore
+import dronecore_pb2_grpc
 
 class Colors:
     BLUE = "\033[34m"
@@ -24,9 +24,9 @@ def wait_until(status):
     return ret
 
 
-def print_altitude(telemetry_stub, stop):
+def print_altitude(telemetry_stub, device_uuid, stop):
     for i, position in enumerate(
-            telemetry_stub.TelemetryPositionSubscription(empty_pb2.Empty())):
+        telemetry_stub.TelemetryPositionSubscription(device_uuid)):
         # Position updates with SITL are too fast, we skip 9/10.
         if i % 10 == 0:
             print(Colors.BLUE, end="")
@@ -39,16 +39,25 @@ def print_altitude(telemetry_stub, stop):
 
 def run():
     channel = grpc.insecure_channel('0.0.0.0:50051')
-    # stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
     action_stub = action_pb2_grpc.ActionRPCStub(channel)
     telemetry_stub = telemetry_pb2_grpc.TelemetryRPCStub(channel)
+    dronecore_stub = dronecore_pb2_grpc.DroneCoreRPCStub(channel)
+    response=dronecore_stub.Get_UUID_List(empty_pb2.Empty())
+    size=len(response.uuid_list)
+    print("Devices registered : {}".format(size))
+
+    device_uuid=dronecore.UUID()
+    if len(sys.argv) == 2:
+        device_uuid.uuid=int(sys.argv[1])
+    else :
+        device_uuid.uuid=response.uuid_list[0].uuid
 
     # We use this stop event later to stop the thread.
     t_stop = threading.Event()
-    t = threading.Thread(target=print_altitude, args=(telemetry_stub, t_stop))
+    t = threading.Thread(target=print_altitude, args=(telemetry_stub, device_uuid, t_stop))
     t.start()
 
-    arm_result = action_stub.Arm.future(empty_pb2.Empty())
+    arm_result = action_stub.Arm.future(device_uuid)
     arm_result = wait_until(arm_result)
     if arm_result.result == dc_action.ActionResult.SUCCESS:
         print("arming ok")
@@ -57,7 +66,7 @@ def run():
 
     time.sleep(2)
 
-    takeoff_result = action_stub.TakeOff.future(empty_pb2.Empty())
+    takeoff_result = action_stub.TakeOff.future(device_uuid)
     takeoff_result = wait_until(takeoff_result)
     if takeoff_result.result == dc_action.ActionResult.SUCCESS:
         print("takeoff ok")
@@ -66,7 +75,7 @@ def run():
 
     time.sleep(5)
 
-    land_result = action_stub.Land.future(empty_pb2.Empty())
+    land_result = action_stub.Land.future(device_uuid)
     land_result = wait_until(land_result)
     if land_result.result == dc_action.ActionResult.SUCCESS:
         print("landing ok")

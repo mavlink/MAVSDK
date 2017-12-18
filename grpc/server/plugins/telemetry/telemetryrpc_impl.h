@@ -1,11 +1,12 @@
 #include "telemetry.h"
 #include "telemetry.grpc.pb.h"
-#include <google/protobuf/empty.pb.h>
+
 
 using grpc::Status;
 using grpc::ServerContext;
 using dronecorerpc::TelemetryRPC;
 using grpc::ServerWriter;
+using dronecorerpc::UUID;
 
 using namespace dronecore;
 
@@ -18,10 +19,10 @@ public:
     }
 
     Status TelemetryPositionSubscription(ServerContext *context,
-                                         const ::google::protobuf::Empty *request,
+                                         const UUID *request,
                                          ServerWriter<dronecorerpc::TelemetryPosition> *writer) override
     {
-        dc->device().telemetry().position_async([&writer](Telemetry::Position position) {
+        dc->device(request->uuid()).telemetry().position_async([&writer](Telemetry::Position position) {
             dronecorerpc::TelemetryPosition rpc_position;
             rpc_position.set_latitude_deg(position.latitude_deg);
             rpc_position.set_longitude_deg(position.longitude_deg);

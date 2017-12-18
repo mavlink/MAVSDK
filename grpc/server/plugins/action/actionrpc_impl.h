@@ -5,7 +5,7 @@
 using grpc::Status;
 using grpc::ServerContext;
 using dronecorerpc::ActionRPC;
-using dronecorerpc::Empty;
+using dronecorerpc::UUID;
 
 using namespace dronecore;
 
@@ -17,28 +17,28 @@ public:
         dc = dc_obj;
     }
 
-    Status Arm(ServerContext *context, const ::google::protobuf::Empty *request,
+    Status Arm(ServerContext *context, const UUID *request,
                dronecorerpc::ActionResult *response) override
     {
-        const Action::Result action_result = dc->device().action().arm();
+        const Action::Result action_result = dc->device(request->uuid()).action().arm();
         response->set_result(static_cast<dronecorerpc::ActionResult::Result>(action_result));
         response->set_result_str(Action::result_str(action_result));
         return Status::OK;
     }
 
-    Status TakeOff(ServerContext *context, const ::google::protobuf::Empty *request,
+    Status TakeOff(ServerContext *context, const UUID *request,
                    dronecorerpc::ActionResult *response) override
     {
-        const Action::Result action_result = dc->device().action().takeoff();
+        const Action::Result action_result = dc->device(request->uuid()).action().takeoff();
         response->set_result(static_cast<dronecorerpc::ActionResult::Result>(action_result));
         response->set_result_str(Action::result_str(action_result));
         return Status::OK;
     }
 
-    Status Land(ServerContext *context, const ::google::protobuf::Empty *request,
+    Status Land(ServerContext *context, const UUID *request,
                 dronecorerpc::ActionResult *response) override
     {
-        const Action::Result action_result = dc->device().action().land();
+        const Action::Result action_result = dc->device(request->uuid()).action().land();
         response->set_result(static_cast<dronecorerpc::ActionResult::Result>(action_result));
         response->set_result_str(Action::result_str(action_result));
         return Status::OK;
