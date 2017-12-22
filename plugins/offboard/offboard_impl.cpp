@@ -38,20 +38,11 @@ Offboard::Result OffboardImpl::start()
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
     uint8_t custom_sub_mode = 0;
 
     return offboard_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_DO_SET_MODE,
-                   MavlinkCommands::Params {float(mode),
-                                            float(custom_mode),
-                                            float(custom_sub_mode),
-                                            NAN, NAN, NAN, NAN},
-                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+               _parent->set_flight_mode(custom_sub_mode, custom_mode));
 }
 
 Offboard::Result OffboardImpl::stop()
@@ -65,20 +56,11 @@ Offboard::Result OffboardImpl::stop()
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
 
     return offboard_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_DO_SET_MODE,
-                   MavlinkCommands::Params {float(mode),
-                                            float(custom_mode),
-                                            float(custom_sub_mode),
-                                            NAN, NAN, NAN, NAN},
-                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+               _parent->set_flight_mode(custom_sub_mode, custom_mode));
 }
 
 void OffboardImpl::start_async(Offboard::result_callback_t callback)
@@ -96,21 +78,13 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
     uint8_t custom_sub_mode = 0;
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_DO_SET_MODE,
-        MavlinkCommands::Params {float(mode),
-                                 float(custom_mode),
-                                 float(custom_sub_mode),
-                                 NAN, NAN, NAN, NAN},
+    _parent->set_flight_mode_async(
+        custom_sub_mode, custom_mode,
         std::bind(&OffboardImpl::receive_command_result, this,
-                  std::placeholders::_1, callback),
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+                  std::placeholders::_1, callback));
 }
 
 void OffboardImpl::stop_async(Offboard::result_callback_t callback)
@@ -124,21 +98,13 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_DO_SET_MODE,
-        MavlinkCommands::Params {float(mode),
-                                 float(custom_mode),
-                                 float(custom_sub_mode),
-                                 NAN, NAN, NAN, NAN},
+    _parent->set_flight_mode_async(
+        custom_sub_mode, custom_mode,
         std::bind(&OffboardImpl::receive_command_result, this,
-                  std::placeholders::_1, callback),
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+                  std::placeholders::_1, callback));
 }
 
 bool OffboardImpl::is_active() const

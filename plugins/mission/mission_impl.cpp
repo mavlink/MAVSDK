@@ -671,23 +671,15 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
 
     _activity = Activity::SEND_COMMAND;
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_DO_SET_MODE,
-        MavlinkCommands::Params {float(mode),
-                                 float(custom_mode),
-                                 float(custom_sub_mode),
-                                 NAN, NAN, NAN, NAN},
+    _parent->set_flight_mode_async(
+        custom_sub_mode, custom_mode,
         std::bind(&MissionImpl::receive_command_result, this,
-                  std::placeholders::_1, callback),
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+                  std::placeholders::_1, callback));
 
     _result_callback = callback;
 }
@@ -703,23 +695,15 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
 
     _activity = Activity::SEND_COMMAND;
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_DO_SET_MODE,
-        MavlinkCommands::Params {float(mode),
-                                 float(custom_mode),
-                                 float(custom_sub_mode),
-                                 NAN, NAN, NAN, NAN},
+    _parent->set_flight_mode_async(
+        custom_sub_mode, custom_mode,
         std::bind(&MissionImpl::receive_command_result, this,
-                  std::placeholders::_1, callback),
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+                  std::placeholders::_1, callback));
 
     _result_callback = callback;
 }
