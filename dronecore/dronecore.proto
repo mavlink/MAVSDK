@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package dronecorerpc;
 
-option java_package = "io.dronecore.rpc";
-option java_outer_classname = "DroneCoreProto";
+option java_package = "io.dronecore.core";
+option java_outer_classname = "CoreProto";
 
 service DroneCoreRPC {
     rpc Get_UUID_List(google.protobuf.Empty) returns(Active_UUID_List) {}
