@@ -45,20 +45,11 @@ Action::Result ActionImpl::arm() const
     }
 
     // Go to LOITER mode first.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
 
     ret = action_result_from_command_result(
-              _parent->send_command_with_ack(
-                  MAV_CMD_DO_SET_MODE,
-                  MavlinkCommands::Params {float(mode),
-                                           float(custom_mode),
-                                           float(custom_sub_mode),
-                                           NAN, NAN, NAN, NAN},
-                  MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+              _parent->set_flight_mode(custom_sub_mode, custom_mode));
 
     if (ret != Action::Result::SUCCESS) {
         return ret;
@@ -102,20 +93,12 @@ Action::Result ActionImpl::takeoff() const
     }
 
     // Go to LOITER mode first.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
 
-    ret = action_result_from_command_result(
-              _parent->send_command_with_ack(
-                  MAV_CMD_DO_SET_MODE,
-                  MavlinkCommands::Params {float(mode),
-                                           float(custom_mode),
-                                           float(custom_sub_mode),
-                                           NAN, NAN, NAN, NAN},
-                  MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+    ret = action_result_from_command_result(_parent->set_flight_mode(
+                                                custom_sub_mode,
+                                                custom_mode));
 
     return action_result_from_command_result(
                _parent->send_command_with_ack(
@@ -138,21 +121,12 @@ Action::Result ActionImpl::return_to_launch() const
 {
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED |
-                   flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
-    return action_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_DO_SET_MODE,
-                   MavlinkCommands::Params {float(mode),
-                                            float(custom_mode),
-                                            float(custom_sub_mode),
-                                            NAN, NAN, NAN, NAN},
-                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+    return action_result_from_command_result(_parent->set_flight_mode(
+                                                 custom_sub_mode,
+                                                 custom_mode));
 }
 
 Action::Result ActionImpl::transition_to_fixedwing() const
@@ -347,23 +321,14 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t &callbac
 {
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED |
-                   flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_DO_SET_MODE,
-        MavlinkCommands::Params {float(mode),
-                                 float(custom_mode),
-                                 float(custom_sub_mode),
-                                 NAN, NAN, NAN, NAN},
+    _parent->set_flight_mode_async(
+        custom_sub_mode, custom_mode,
         std::bind(&ActionImpl::command_result_callback,
                   _1,
-                  callback),
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+                  callback));
 }
 
 Action::Result ActionImpl::arming_allowed() const
@@ -426,40 +391,24 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
 
 void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &callback)
 {
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_DO_SET_MODE,
-        MavlinkCommands::Params {float(mode),
-                                 float(custom_mode),
-                                 float(custom_sub_mode),
-                                 NAN, NAN, NAN, NAN},
+    _parent->set_flight_mode_async(
+        custom_sub_mode, custom_mode,
         std::bind(&ActionImpl::takeoff_async_continued, this, _1,
-                  callback),
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+                  callback));
 }
 
 void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callback)
 {
-    uint8_t flag_safety_armed = _parent->is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-
-    uint8_t mode = VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_DO_SET_MODE,
-        MavlinkCommands::Params {float(mode),
-                                 float(custom_mode),
-                                 float(custom_sub_mode),
-                                 NAN, NAN, NAN, NAN},
+    _parent->set_flight_mode_async(
+        custom_sub_mode, custom_mode,
         std::bind(&ActionImpl::arm_async_continued, this, _1,
-                  callback),
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+                  callback));
 }
 
 

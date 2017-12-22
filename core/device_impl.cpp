@@ -3,6 +3,7 @@
 #include "dronecore_impl.h"
 #include "mavlink_include.h"
 #include <functional>
+#include "px4_custom_mode.h"
 
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0
@@ -438,6 +439,40 @@ void DeviceImpl::get_param_float_async(const std::string &name,
 {
     _params.get_param_async(name, std::bind(&DeviceImpl::receive_float_param, _1, _2,
                                             callback));
+}
+
+MavlinkCommands::Result DeviceImpl::set_flight_mode(uint8_t custom_sub_mode, uint8_t custom_mode)
+{
+    uint8_t flag_safety_armed = DeviceImpl::is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+
+    uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
+
+    MavlinkCommands::Result ret = send_command_with_ack(
+                                      MAV_CMD_DO_SET_MODE,
+                                      MavlinkCommands::Params {float(mode),
+                                                               float(custom_mode),
+                                                               float(custom_sub_mode),
+                                                               NAN, NAN, NAN, NAN},
+                                      MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+
+    return ret;
+}
+
+void DeviceImpl::set_flight_mode_async(uint8_t custom_sub_mode, uint8_t custom_mode,
+                                       command_result_callback_t callback)
+{
+    uint8_t flag_safety_armed = DeviceImpl::is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+
+    uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
+
+    send_command_with_ack_async(
+        MAV_CMD_DO_SET_MODE,
+        MavlinkCommands::Params {float(mode),
+                                 float(custom_mode),
+                                 float(custom_sub_mode),
+                                 NAN, NAN, NAN, NAN},
+        callback,
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void DeviceImpl::get_param_int_async(const std::string &name,
