@@ -1,15 +1,12 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
+import "dronecore.proto";
 
 package dronecorerpc;
 
-option java_package = "io.dronecore.rpc";
-option java_outer_classname = "MissionBinding";
-
 service MissionRPC {
     rpc SendMission(Mission) returns(MissionResult) {}
-    rpc StartMission(google.protobuf.Empty) returns(MissionResult) {}
+    rpc StartMission(UUID) returns(MissionResult) {}
 }
 
 message MissionResult {
@@ -49,4 +46,5 @@ message MissionItem {
 
 message Mission {
     repeated MissionItem mission_items = 1;
+    uint64 uuid = 2;
 }

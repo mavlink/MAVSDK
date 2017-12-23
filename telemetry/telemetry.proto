@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
+import "dronecore.proto";
 
 package dronecorerpc;
 
@@ -8,7 +8,7 @@ option java_package = "io.dronecore.rpc";
 option java_outer_classname = "Telemetry";
 
 service TelemetryRPC {
-    rpc TelemetryPositionSubscription(google.protobuf.Empty) returns(stream TelemetryPosition) {}
+    rpc TelemetryPositionSubscription(UUID) returns(stream TelemetryPosition) {}
 }
 
 message TelemetryPosition {

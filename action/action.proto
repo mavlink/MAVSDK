@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "google/protobuf/empty.proto";
+import "dronecore.proto";
 
 package dronecorerpc;
 
@@ -8,9 +8,9 @@ option java_package = "io.dronecore.rpc";
 option java_outer_classname = "Action";
 
 service ActionRPC {
-    rpc Arm(google.protobuf.Empty) returns(ActionResult) {}
-    rpc TakeOff(google.protobuf.Empty) returns(ActionResult) {}
-    rpc Land(google.protobuf.Empty) returns(ActionResult) {}
+    rpc Arm(UUID) returns(ActionResult) {}
+    rpc TakeOff(UUID) returns(ActionResult) {}
+    rpc Land(UUID) returns(ActionResult) {}
 }
 
 message ActionResult {
