@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "dronecore.proto";
-
 package dronecorerpc;
 
 option java_package = "io.dronecore.rpc";
@@ -9,6 +7,10 @@ option java_outer_classname = "Telemetry";
 
 service TelemetryRPC {
     rpc TelemetryPositionSubscription(UUID) returns(stream TelemetryPosition) {}
+}
+
+message UUID {
+    uint64 uuid = 1;
 }
 
 message TelemetryPosition {

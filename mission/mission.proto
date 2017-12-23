@@ -1,12 +1,14 @@
 syntax = "proto3";
 
-import "dronecore.proto";
-
 package dronecorerpc;
 
 service MissionRPC {
     rpc SendMission(Mission) returns(MissionResult) {}
     rpc StartMission(UUID) returns(MissionResult) {}
+}
+
+message UUID {
+    uint64 uuid = 1;
 }
 
 message MissionResult {

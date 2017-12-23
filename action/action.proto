@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "dronecore.proto";
-
 package dronecorerpc;
 
 option java_package = "io.dronecore.rpc";
@@ -11,6 +9,10 @@ service ActionRPC {
     rpc Arm(UUID) returns(ActionResult) {}
     rpc TakeOff(UUID) returns(ActionResult) {}
     rpc Land(UUID) returns(ActionResult) {}
+}
+
+message UUID {
+    uint64 uuid = 1;
 }
 
 message ActionResult {
