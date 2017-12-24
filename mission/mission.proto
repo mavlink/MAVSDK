@@ -19,6 +19,10 @@ message SendMissionRequest {
     Mission mission = 2;
 }
 
+message StartMissionRequest {
+    UUID uuid = 1;
+}
+
 message Mission {
     repeated MissionItem mission_items = 1;
 }
@@ -56,8 +60,4 @@ message MissionResult {
         INVALID_ARGUMENT = 5;
         UNKNOWN = 6;
     }
-}
-
-message StartMissionRequest {
-    UUID uuid = 1;
 }
