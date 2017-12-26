@@ -3,26 +3,24 @@
 
 using grpc::Status;
 using grpc::ServerContext;
-using dronecorerpc::TelemetryRPC;
 using grpc::ServerWriter;
-using dronecorerpc::UUID;
 
 using namespace dronecore;
 
-class TelemetryRPCImpl final : public TelemetryRPC::Service
+class TelemetryServiceImpl final : public rpc::telemetry::TelemetryService::Service
 {
 public:
-    TelemetryRPCImpl(DroneCore *dc_obj)
+    TelemetryServiceImpl(DroneCore *dc_obj)
     {
         dc = dc_obj;
     }
 
-    Status TelemetryPositionSubscription(ServerContext *context,
-                                         const UUID *request,
-                                         ServerWriter<dronecorerpc::TelemetryPosition> *writer) override
+    Status SubscribePosition(ServerContext *context,
+                             const rpc::telemetry::SubscribePositionRequest *request,
+                             ServerWriter<rpc::telemetry::Position> *writer) override
     {
-        dc->device(request->uuid()).telemetry().position_async([&writer](Telemetry::Position position) {
-            dronecorerpc::TelemetryPosition rpc_position;
+        dc->device(request->uuid().value()).telemetry().position_async([&writer](Telemetry::Position position) {
+            rpc::telemetry::Position rpc_position;
             rpc_position.set_latitude_deg(position.latitude_deg);
             rpc_position.set_longitude_deg(position.longitude_deg);
             rpc_position.set_relative_altitude_m(position.relative_altitude_m);

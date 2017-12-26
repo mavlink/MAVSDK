@@ -13,11 +13,11 @@
 
 #include "dronecore.h"
 #include "log.h"
-#include "dronecore/dronecore.grpc.pb.h"
 #include "action/actionrpc_impl.h"
+#include "core/core.grpc.pb.h"
+#include "core/corerpc_impl.h"
 #include "mission/missionrpc_impl.h"
 #include "telemetry/telemetryrpc_impl.h"
-#include "dronecore/dronecorerpc_impl.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -25,35 +25,35 @@ using grpc::ServerContext;
 using grpc::ServerReader;
 using grpc::ServerReaderWriter;
 using grpc::Status;
-using dronecorerpc::DroneCoreRPC;
 
 using namespace dronecore;
 using namespace std::placeholders;
 
 static DroneCore dc;
 
-template<typename T> ::grpc::Service *createInstances(DroneCore *dc_obj) {return new T(dc_obj);}
+template<typename T> ::grpc::Service *createInstances(DroneCore *dc_obj) { return new T(dc_obj); }
 
 typedef std::map<std::string, ::grpc::Service*(*)(DroneCore *dc_obj)> map_type;
 
 void RunServer()
 {
     std::string server_address("0.0.0.0:50051");
-    DroneCoreRPCImpl service(&dc);
+    CoreServiceImpl service(&dc);
 
     map_type map;
     std::string plugin;
     std::fstream file;
     file.open("grpc/server/src/plugins/plugins.conf");
+
     if (!file) {
         LogErr() << "Error in reading conf file";
         return;
     }
-    std::vector<::grpc::Service *> list;
-    map["action"] = &createInstances<ActionRPCImpl>;
-    map["telemetry"] = &createInstances<TelemetryRPCImpl>;
-    map["mission"] = &createInstances<MissionRPCImpl>;
 
+    std::vector<::grpc::Service *> list;
+    map["action"] = &createInstances<ActionServiceImpl>;
+    map["telemetry"] = &createInstances<TelemetryServiceImpl>;
+    map["mission"] = &createInstances<MissionServiceImpl>;
 
     while (file >> plugin) {
         auto service_obj = map[plugin](&dc);

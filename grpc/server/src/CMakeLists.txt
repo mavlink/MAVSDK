@@ -2,21 +2,19 @@ cmake_minimum_required(VERSION 2.8)
 
 file(STRINGS ${PLUGINS_DIR}/plugins.conf PLUGINS_LIST)
 
-add_custom_command(OUTPUT dronecore/dronecore.grpc.pb.cc
+add_custom_command(OUTPUT core/core.grpc.pb.cc
     COMMAND $<TARGET_FILE:protobuf::protoc>
         -I ${PROTO_DIR}
         --grpc_out=.
         --plugin=protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_cpp_plugin>
-        ${PROTO_DIR}/dronecore/dronecore.proto;
-        #DEPENDS ${PROTO_DIR}/dronecore.proto
+        ${PROTO_DIR}/core/core.proto;
 )
 
-add_custom_command(OUTPUT dronecore/dronecore.pb.cc
+add_custom_command(OUTPUT core/core.pb.cc
     COMMAND $<TARGET_FILE:protobuf::protoc>
         -I ${PROTO_DIR}
         --cpp_out=.
-        ${PROTO_DIR}/dronecore/dronecore.proto
-        #DEPENDS ${PROTO_DIR}/dronecore.proto
+        ${PROTO_DIR}/core/core.proto
 )
 
 foreach(PLUGIN ${PLUGINS_LIST})
@@ -41,7 +39,7 @@ foreach(PLUGIN ${PLUGINS_LIST})
     )
 endforeach()
 
-set(PLUGINS_SRC dronecore_server.cpp dronecore/dronecore.pb.cc dronecore/dronecore.grpc.pb.cc)
+set(PLUGINS_SRC dronecore_server.cpp core/core.pb.cc core/core.grpc.pb.cc)
 foreach(PLUGIN ${PLUGINS_LIST})
     list(APPEND PLUGINS_SRC ${PLUGIN}/${PLUGIN}.pb.cc)
     list(APPEND PLUGINS_SRC ${PLUGIN}/${PLUGIN}.grpc.pb.cc)
