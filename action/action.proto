@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package dronecorerpc;
+package dronecore.rpc.action;
 
 option java_package = "io.dronecore.action";
 option java_outer_classname = "ActionProto";
 
-service ActionRPC {
+service ActionService {
     rpc Arm(ArmRequest) returns(ActionResult) {}
     rpc TakeOff(TakeOffRequest) returns(ActionResult) {}
     rpc Land(LandRequest) returns(ActionResult) {}
