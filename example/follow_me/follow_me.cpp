@@ -5,6 +5,7 @@
 #include <cstdint>
 
 using namespace dronecore;
+using namespace std::placeholders;
 
 #define ERROR_CONSOLE_TEXT "\033[31m" //Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
@@ -60,43 +61,34 @@ int main(int /*argc*/, char ** /*argv*/)
         return 1;
     }
 
-#if 0
     device.telemetry().flight_mode_async(
     std::bind([&](Telemetry::FlightMode flight_mode) {
         auto last_location = device.follow_me().get_last_location();
 
         std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
-                 << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
+                  << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
                   "Lon: " << last_location.longitude_deg << " deg." << std::endl;
-    }, std::placeholders::_1));
-#endif
+    }, _1));
 
-	//std::string mode = Telemetry::flight_mode_str(Telemetry::FlightMode::TAKEOFF);
-//	Telemetry::FlightMode mode = device.telemetry().flight_mode();
-
-	//std::cout << "Result: " << FollowMe::result_str(FollowMe::Result::SUCCESS);
-//	std::cout << "Result: " << Mission::result_str(Mission::Result::SUCCESS);
 
     // Take off
-std::cout << "Taking off..." << std::endl;
+    std::cout << "Taking off..." << std::endl;
     const Action::Result takeoff_result = device.action().takeoff();
     if (takeoff_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << Action::result_str(
                       takeoff_result) << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    // Let it hover for a bit before landing again.
+    // Start Follow Me
+    device.follow_me().set_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
+    FollowMe::Result follow_me_result = device.follow_me().start();
+    if (follow_me_result != FollowMe::Result::SUCCESS) {
+        std::cout << ERROR_CONSOLE_TEXT << "failed to initiate follow me mode" << std::endl;
+
+    }
     std::this_thread::sleep_for(std::chrono::seconds(10));
-
-//device.follow_me().set_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
-device.follow_me().set_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
-FollowMe::Result follow_me_result = device.follow_me().start();
- if(follow_me_result!=FollowMe::Result::SUCCESS){
-  std::cout<<ERROR_CONSOLE_TEXT<<"failed to initiate follow me mode"<<std::endl;
-
-}
-    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     std::cout << "Landing..." << std::endl;
     const Action::Result land_result = device.action().land();
