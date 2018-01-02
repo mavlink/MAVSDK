@@ -146,14 +146,9 @@ FollowMe::Result FollowMeImpl::start()
 {
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
-
-
     FollowMe::Result result = to_follow_me_result(
                                   _parent->set_flight_mode(
-                                      custom_sub_mode,
-                                      custom_mode));
+                                      DeviceImpl::FOLLOW_ME));
 
     if (result == FollowMe::Result::SUCCESS) {
         // If location was set before, lets send it to vehicle
@@ -178,13 +173,9 @@ FollowMe::Result FollowMeImpl::stop()
     }
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-
     return to_follow_me_result(
                _parent->set_flight_mode(
-                   custom_sub_mode,
-                   custom_mode));
+                   DeviceImpl::HOLD));
 }
 
 // Applies default FollowMe configuration to the device

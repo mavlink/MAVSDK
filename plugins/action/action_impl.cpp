@@ -45,11 +45,8 @@ Action::Result ActionImpl::arm() const
     }
 
     // Go to LOITER mode first.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-
     ret = action_result_from_command_result(
-              _parent->set_flight_mode(custom_sub_mode, custom_mode));
+              _parent->set_flight_mode(DeviceImpl::HOLD));
 
     if (ret != Action::Result::SUCCESS) {
         return ret;
@@ -93,12 +90,8 @@ Action::Result ActionImpl::takeoff() const
     }
 
     // Go to LOITER mode first.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-
     ret = action_result_from_command_result(_parent->set_flight_mode(
-                                                custom_sub_mode,
-                                                custom_mode));
+                                                DeviceImpl::HOLD));
 
     return action_result_from_command_result(
                _parent->send_command_with_ack(
@@ -121,12 +114,9 @@ Action::Result ActionImpl::return_to_launch() const
 {
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
     return action_result_from_command_result(_parent->set_flight_mode(
-                                                 custom_sub_mode,
-                                                 custom_mode));
+                                                 DeviceImpl::RETURN_TO_LAUNCH));
 }
 
 Action::Result ActionImpl::transition_to_fixedwing() const
@@ -321,11 +311,9 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t &callbac
 {
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
 
     _parent->set_flight_mode_async(
-        custom_sub_mode, custom_mode,
+        DeviceImpl::RETURN_TO_LAUNCH,
         std::bind(&ActionImpl::command_result_callback,
                   _1,
                   callback));
@@ -391,22 +379,16 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
 
 void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &callback)
 {
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-
     _parent->set_flight_mode_async(
-        custom_sub_mode, custom_mode,
+        DeviceImpl::HOLD,
         std::bind(&ActionImpl::takeoff_async_continued, this, _1,
                   callback));
 }
 
 void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callback)
 {
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-
     _parent->set_flight_mode_async(
-        custom_sub_mode, custom_mode,
+        DeviceImpl::HOLD,
         std::bind(&ActionImpl::arm_async_continued, this, _1,
                   callback));
 }

@@ -24,7 +24,8 @@ public:
         BUSY,
         COMMAND_DENIED,
         TIMEOUT,
-        IN_PROGRESS
+        IN_PROGRESS,
+        UNSUPPORTED_MODE
     };
 
     typedef std::function<void(Result, float)> command_result_callback_t;
