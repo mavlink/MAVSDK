@@ -38,11 +38,8 @@ Offboard::Result OffboardImpl::start()
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
-    uint8_t custom_sub_mode = 0;
-
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(custom_sub_mode, custom_mode));
+               _parent->set_flight_mode(DeviceImpl::OFFBOARD));
 }
 
 Offboard::Result OffboardImpl::stop()
@@ -56,11 +53,8 @@ Offboard::Result OffboardImpl::stop()
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(custom_sub_mode, custom_mode));
+               _parent->set_flight_mode(DeviceImpl::HOLD));
 }
 
 void OffboardImpl::start_async(Offboard::result_callback_t callback)
@@ -78,11 +72,8 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
-    uint8_t custom_sub_mode = 0;
-
     _parent->set_flight_mode_async(
-        custom_sub_mode, custom_mode,
+        DeviceImpl::OFFBOARD,
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }
@@ -98,11 +89,8 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-
     _parent->set_flight_mode_async(
-        custom_sub_mode, custom_mode,
+        DeviceImpl::HOLD,
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }

@@ -671,13 +671,11 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
 
     _activity = Activity::SEND_COMMAND;
 
     _parent->set_flight_mode_async(
-        custom_sub_mode, custom_mode,
+        DeviceImpl::MISSION,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
@@ -695,13 +693,10 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
-    uint8_t custom_mode = PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-
     _activity = Activity::SEND_COMMAND;
 
     _parent->set_flight_mode_async(
-        custom_sub_mode, custom_mode,
+        DeviceImpl::HOLD,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
