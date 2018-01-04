@@ -382,9 +382,6 @@ void DeviceImpl::set_disconnected()
         _on_timeout_callback();
     }
     _parent->notify_on_timeout(_target_uuid);
-
-    // Let's reset the flag hope again for the next time we see this target.
-    _target_uuid_initialized = 0;
 }
 
 uint64_t DeviceImpl::get_target_uuid() const
