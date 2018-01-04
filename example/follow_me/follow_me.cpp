@@ -1,105 +1,145 @@
+/**
+* @file follow_me.cpp
+* @brief Example that demonstrates the usage of Follow Me plugin.
+* @author Shakthi Prashanth <shakthi.prashanth.m@intel.com>
+* @date 2018-01-03
+*/
+
 #include <dronecore/dronecore.h>
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <cstdint>
 
 using namespace dronecore;
-using namespace std::placeholders;
+using namespace std::placeholders; // for `_1`
+using namespace std::chrono; // for seconds(), milliseconds(), etc
+using namespace std::this_thread;  // for sleep_for()
 
+// For coloring output
 #define ERROR_CONSOLE_TEXT "\033[31m" //Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
 
-int main(int /*argc*/, char ** /*argv*/)
+inline void action_error_exit(Action::Result result, const std::string &message);
+inline void follow_me_error_exit(FollowMe::Result result, const std::string &message);
+inline void connection_error_exit(DroneCore::ConnectionResult result, const std::string &message);
+void send_location_updates(FollowMe &follow_me, size_t count = 50ul, float rate = 1.f);
+
+int main(int, char **)
 {
     DroneCore dc;
 
-    bool discovered_device = false;
+    DroneCore::ConnectionResult conn_result = dc.add_udp_connection();
+    connection_error_exit(conn_result, "Connection failed");
 
-    DroneCore::ConnectionResult connection_result = dc.add_udp_connection();
-
-    if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
-                  << DroneCore::connection_result_str(connection_result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
+    // Wait for the device to connect via heartbeat
+    while (!dc.is_connected()) {
+        std::cout << "Wait for device to connect via heartbeat" << std::endl;
+        sleep_for(seconds(1));
     }
 
-    std::cout << "Waiting to discover device..." << std::endl;
-    dc.register_on_discover([&discovered_device](uint64_t uuid) {
-        std::cout << "Discovered device with UUID: " << uuid << std::endl;
-        discovered_device = true;
-    });
-
-    // We usually receive heartbeats at 1Hz, therefore we should find a device after around 2 seconds.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
-    if (!discovered_device) {
-        std::cout << ERROR_CONSOLE_TEXT << "No device found, exiting." << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
-    }
-
-    // We don't need to specify the UUID if it's only one device anyway.
-    // If there were multiple, we could specify it with:
-    // dc.device(uint64_t uuid);
+    // Device got discovered.
     Device &device = dc.device();
-
-    // Check if vehicle is ready to arm
-    if (device.telemetry().health_all_ok() != true) {
-        std::cout << ERROR_CONSOLE_TEXT << "Vehicle not ready to arm" << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
+    while (!device.telemetry().health_all_ok()) {
+        std::cout << "Waiting for device to be ready" << std::endl;
+        sleep_for(seconds(1));
     }
+    std::cout << "Device is ready" << std::endl;
 
-    // Arm vehicle
-    std::cout << "Arming..." << std::endl;
-    const Action::Result arm_result = device.action().arm();
+    // Arm
+    Action::Result arm_result = device.action().arm();
+    action_error_exit(arm_result, "Arming failed");
+    std::cout << "Armed" << std::endl;
 
-    if (arm_result != Action::Result::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << Action::result_str(
-                      arm_result) << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
-    }
-
+    // Subscribe to receive updates on flight mode. You can find out whether FollowMe is active.
     device.telemetry().flight_mode_async(
     std::bind([&](Telemetry::FlightMode flight_mode) {
-        auto last_location = device.follow_me().get_last_location();
-
+        const FollowMe::TargetLocation last_location = device.follow_me().get_last_location();
         std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
                   << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
                   "Lon: " << last_location.longitude_deg << " deg." << std::endl;
     }, _1));
 
-
-    // Take off
-    std::cout << "Taking off..." << std::endl;
-    const Action::Result takeoff_result = device.action().takeoff();
-    if (takeoff_result != Action::Result::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << Action::result_str(
-                      takeoff_result) << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
-    }
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    // Takeoff
+    Action::Result takeoff_result = device.action().takeoff();
+    action_error_exit(takeoff_result, "Takeoff failed");
+    std::cout << "In Air..." << std::endl;
+    sleep_for(seconds(5));
 
     // Start Follow Me
-    device.follow_me().set_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
     FollowMe::Result follow_me_result = device.follow_me().start();
-    if (follow_me_result != FollowMe::Result::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "failed to initiate follow me mode" << std::endl;
+    follow_me_error_exit(follow_me_result, "Failed to start FollowMe mode");
 
-    }
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    // Keep sending location updates to Drone at rate 1Hz.
+    send_location_updates(device.follow_me());
 
-    std::cout << "Landing..." << std::endl;
+    // Land
     const Action::Result land_result = device.action().land();
-    if (land_result != Action::Result::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << Action::result_str(
-                      land_result) << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
-    }
+    action_error_exit(land_result, "Landing failed");
 
     // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    sleep_for(seconds(5));
     std::cout << "Finished..." << std::endl;
     return 0;
+}
+
+// Handles Action's result
+inline void action_error_exit(Action::Result result, const std::string &message)
+{
+    if (result != Action::Result::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(
+                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+// Handles FollowMe's result
+inline void follow_me_error_exit(FollowMe::Result result, const std::string &message)
+{
+    if (result != FollowMe::Result::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message << FollowMe::result_str(
+                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+// Handles connection result
+inline void connection_error_exit(DroneCore::ConnectionResult result, const std::string &message)
+{
+    if (result != DroneCore::ConnectionResult::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message
+                  << DroneCore::connection_result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+void send_location_updates(FollowMe &follow_me, size_t count, float rate)
+{
+    FollowMe::TargetLocation location = { 47.3977419, 8.5455938, 0.0, 0.f, 0.f, 0.f };
+    const auto LATITUDE_IN_DEG_PER_METER = 0.000009044;
+    const auto LONGITUDE_IN_DEG_PER_METER = 0.000008985;
+
+    for (auto i = 1u; i < count / 5; i++) {
+        follow_me.set_target_location(location);
+        auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
+        sleep_for(milliseconds(sleep_duration_ms));
+        location.latitude_deg -= LATITUDE_IN_DEG_PER_METER * 4;
+    }
+    for (auto i = 1u; i < count / 5; i++) {
+        follow_me.set_target_location(location);
+        auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
+        sleep_for(milliseconds(sleep_duration_ms));
+        location.longitude_deg += LONGITUDE_IN_DEG_PER_METER * 4;
+    }
+    for (auto i = 1u; i < count / 5; i++) {
+        follow_me.set_target_location(location);
+        auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
+        sleep_for(milliseconds(sleep_duration_ms));
+        location.latitude_deg += LATITUDE_IN_DEG_PER_METER * 4;
+    }
+    for (auto i = 1u; i < count / 5; i++) {
+        follow_me.set_target_location(location);
+        auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
+        sleep_for(milliseconds(sleep_duration_ms));
+        location.longitude_deg -= LONGITUDE_IN_DEG_PER_METER * 4;
+    }
 }
