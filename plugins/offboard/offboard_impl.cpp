@@ -36,10 +36,8 @@ Offboard::Result OffboardImpl::start()
         }
     }
 
-    // Note: the safety flag is not needed in future versions of the PX4 Firmware
-    //       but want to be rather safe than sorry.
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(DeviceImpl::OFFBOARD));
+               _parent->set_flight_mode(DeviceImpl::FlightMode::OFFBOARD));
 }
 
 Offboard::Result OffboardImpl::stop()
@@ -51,10 +49,8 @@ Offboard::Result OffboardImpl::stop()
         }
     }
 
-    // Note: the safety flag is not needed in future versions of the PX4 Firmware
-    //       but want to be rather safe than sorry.
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(DeviceImpl::HOLD));
+               _parent->set_flight_mode(DeviceImpl::FlightMode::HOLD));
 }
 
 void OffboardImpl::start_async(Offboard::result_callback_t callback)
@@ -70,10 +66,8 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
         }
     }
 
-    // Note: the safety flag is not needed in future versions of the PX4 Firmware
-    //       but want to be rather safe than sorry.
     _parent->set_flight_mode_async(
-        DeviceImpl::OFFBOARD,
+        DeviceImpl::FlightMode::OFFBOARD,
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }
@@ -87,10 +81,8 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
         }
     }
 
-    // Note: the safety flag is not needed in future versions of the PX4 Firmware
-    //       but want to be rather safe than sorry.
     _parent->set_flight_mode_async(
-        DeviceImpl::HOLD,
+        DeviceImpl::FlightMode::HOLD,
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }

@@ -144,11 +144,9 @@ bool FollowMeImpl::is_active() const
 
 FollowMe::Result FollowMeImpl::start()
 {
-    // Note: the safety flag is not needed in future versions of the PX4 Firmware
-    //       but want to be rather safe than sorry.
     FollowMe::Result result = to_follow_me_result(
                                   _parent->set_flight_mode(
-                                      DeviceImpl::FOLLOW_ME));
+                                      DeviceImpl::FlightMode::FOLLOW_ME));
 
     if (result == FollowMe::Result::SUCCESS) {
         // If location was set before, lets send it to vehicle
@@ -171,11 +169,9 @@ FollowMe::Result FollowMeImpl::stop()
             stop_sending_target_location();
         }
     }
-    // Note: the safety flag is not needed in future versions of the PX4 Firmware
-    //       but want to be rather safe than sorry.
     return to_follow_me_result(
                _parent->set_flight_mode(
-                   DeviceImpl::HOLD));
+                   DeviceImpl::FlightMode::HOLD));
 }
 
 // Applies default FollowMe configuration to the device

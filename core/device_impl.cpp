@@ -441,32 +441,41 @@ void DeviceImpl::get_param_float_async(const std::string &name,
                                             callback));
 }
 
-MavlinkCommands::Result DeviceImpl::set_flight_mode(FLIGHT_MODE device_mode)
+MavlinkCommands::Result DeviceImpl::set_flight_mode(FlightMode device_mode)
 {
     uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
 
     uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
 
+    // Note: the safety flag is not needed in future versions of the PX4 Firmware
+    //       but want to be rather safe than sorry.
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = 0;
 
     switch (device_mode) {
-        case HOLD: custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
+        case FlightMode::HOLD :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
             break;
-        case RETURN_TO_LAUNCH :
+        case FlightMode::RETURN_TO_LAUNCH :
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
             break;
-        case TAKEOFF : custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
+        case FlightMode::TAKEOFF :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
             break;
-        case LAND : custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
+        case FlightMode::LAND :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
             break;
-        case MISSION : custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
+        case FlightMode::MISSION :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
             break;
-        case FOLLOW_ME : custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
+        case FlightMode::FOLLOW_ME :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
             break;
-        case OFFBOARD : custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
+        case FlightMode::OFFBOARD :
+            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
             break;
-        default : return MavlinkCommands::Result::UNSUPPORTED_MODE;
+        default :
+            return MavlinkCommands::Result::UNSUPPORTED_MODE;
 
     }
 
@@ -481,33 +490,42 @@ MavlinkCommands::Result DeviceImpl::set_flight_mode(FLIGHT_MODE device_mode)
     return ret;
 }
 
-void DeviceImpl::set_flight_mode_async(FLIGHT_MODE device_mode,
+void DeviceImpl::set_flight_mode_async(FlightMode device_mode,
                                        command_result_callback_t callback)
 {
     uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
 
     uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
 
+    // Note: the safety flag is not needed in future versions of the PX4 Firmware
+    //       but want to be rather safe than sorry.
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = 0;
 
     switch (device_mode) {
-        case HOLD: custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
+        case FlightMode::HOLD :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
             break;
-        case RETURN_TO_LAUNCH :
+        case FlightMode::RETURN_TO_LAUNCH :
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
             break;
-        case TAKEOFF : custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
+        case FlightMode::TAKEOFF :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
             break;
-        case LAND : custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
+        case FlightMode::LAND :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
             break;
-        case MISSION : custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
+        case FlightMode::MISSION :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
             break;
-        case FOLLOW_ME : custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
+        case FlightMode::FOLLOW_ME :
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
             break;
-        case OFFBOARD : custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
+        case FlightMode::OFFBOARD :
+            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
             break;
-        default : return ;
+        default :
+            return ;
     }
 
 
