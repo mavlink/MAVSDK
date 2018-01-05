@@ -111,7 +111,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     // configure follow me behaviour
     FollowMe::Config config;
     config.min_height_m = 12.f; // increase min height
-    config.follow_dist_m = 20.f; // set distance b/w device and target during FollowMe mode
+    config.follow_distance_m = 20.f; // set distance b/w device and target during FollowMe mode
     config.responsiveness = 0.2f; // set to higher responsiveness
     config.follow_direction =
         FollowMe::Config::FollowDirection::FRONT; // Device follows target from FRONT side
@@ -148,7 +148,7 @@ void print(const FollowMe::Config &config)
     std::cout << "Current FollowMe configuration of the device" << std::endl;
     std::cout << "---------------------------" << std::endl;
     std::cout << "Min Height: " << config.min_height_m << "m" << std::endl;
-    std::cout << "Distance: " << config.follow_dist_m << "m" << std::endl;
+    std::cout << "Distance: " << config.follow_distance_m << "m" << std::endl;
     std::cout << "Responsiveness: " << config.responsiveness << std::endl;
     std::cout << "Following from: " << FollowMe::Config::to_str(config.follow_direction) << std::endl;
     std::cout << "---------------------------" << std::endl;
