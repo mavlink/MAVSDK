@@ -8,6 +8,7 @@
 #include <dronecore/dronecore.h>
 #include <iostream>
 #include <thread>
+#include <memory>
 #include <chrono>
 #include "fake_location_provider.h"
 
@@ -71,8 +72,9 @@ int main(int, char **)
     follow_me_error_exit(follow_me_result, "Failed to start FollowMe mode");
 
     boost::asio::io_context io; // for event loop
+    std::unique_ptr<FakeLocationProvider> location_provider(new FakeLocationProvider(io));
     // Register for platform-specific Location provider. We're using FakeLocationProvider for the example.
-    (new FakeLocationProvider(io))->request_location_updates([&device](double lat, double lon) {
+    location_provider->request_location_updates([&device](double lat, double lon) {
         device.follow_me().set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
     });
     io.run(); // will run as long as location updates continue to happen.
