@@ -70,7 +70,7 @@ public:
         constexpr static const float MAX_RESPONSIVENESS = 1.0f; /**< @brief Max responsiveness. */
 
         float min_height_m = 8.0f; /**< @brief Min follow height, in meters. */
-        float follow_dist_m = 8.0f; /**< @brief Horizontal follow distance to target, in meters. */
+        float follow_distance_m = 8.0f; /**< @brief Horizontal follow distance to target, in meters. */
         FollowDirection follow_direction =
             FollowDirection::BEHIND; /**< @brief Relative position of the following vehicle. */
         float responsiveness = 0.5f; /**< @brief Responsiveness, Range (0.0-1.0) */

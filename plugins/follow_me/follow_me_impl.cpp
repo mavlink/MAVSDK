@@ -50,7 +50,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
     }
 
     auto height = config.min_height_m;
-    auto distance = config.follow_dist_m;
+    auto distance = config.follow_distance_m;
     int32_t direction = static_cast<int32_t>(config.follow_direction);
     auto responsiveness = config.responsiveness;
 
@@ -179,7 +179,7 @@ void FollowMeImpl::set_default_config()
     FollowMe::Config default_config {};
 
     auto height = default_config.min_height_m;
-    auto distance = default_config.follow_dist_m;
+    auto distance = default_config.follow_distance_m;
     int32_t direction = static_cast<int32_t>(default_config.follow_direction);
     auto responsiveness = default_config.responsiveness;
 
@@ -204,7 +204,7 @@ bool FollowMeImpl::is_config_ok(const FollowMe::Config &config) const
 
     if (config.min_height_m < FollowMe::Config::MIN_HEIGHT_M) {
         LogErr() << "Err: Min height must be atleast 8.0 meters";
-    } else if (config.follow_dist_m < FollowMe::Config::MIN_FOLLOW_DIST_M) {
+    } else if (config.follow_distance_m < FollowMe::Config::MIN_FOLLOW_DIST_M) {
         LogErr() << "Err: Min Follow distance must be atleast 1.0 meter";
     } else if (config.follow_direction < FollowMe::Config::FollowDirection::FRONT_RIGHT ||
                config.follow_direction > FollowMe::Config::FollowDirection::NONE) {
@@ -228,12 +228,12 @@ void FollowMeImpl::receive_param_min_height(bool success, float min_height_m)
     }
 }
 
-void FollowMeImpl::receive_param_follow_distance(bool success, float follow_dist_m)
+void FollowMeImpl::receive_param_follow_distance(bool success, float follow_distance_m)
 {
     if (success) {
-        _config.follow_dist_m = follow_dist_m;
+        _config.follow_distance_m = follow_distance_m;
     } else {
-        LogErr() << "Failed to set NAV_FT_DST: " << follow_dist_m << "m";
+        LogErr() << "Failed to set NAV_FT_DST: " << follow_distance_m << "m";
     }
 }
 
