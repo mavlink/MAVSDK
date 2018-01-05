@@ -305,13 +305,11 @@ void FollowMeImpl::send_target_location()
     uint64_t elapsed_msec = static_cast<uint64_t>(_time.elapsed_since_s(now) * 1000); // milliseconds
 
     _mutex.lock();
-//    LogDebug() << "Lat: " << _target_location.latitude_deg << " Lon: " << _target_location.longitude_deg
-//               <<
-//               " Alt: " << _target_location.absolute_altitude_m;
+//    LogDebug() << "Lat: " << _target_location.latitude_deg << " Lon: " << _target_location.longitude_deg <<
+//	" Alt: " << _target_location.absolute_altitude_m;
     const int32_t lat_int = static_cast<int32_t>(_target_location.latitude_deg * 1e7);
     const int32_t lon_int = static_cast<int32_t>(_target_location.longitude_deg * 1e7);
     const float alt = static_cast<float>(_target_location.absolute_altitude_m);
-//    LogDebug() << "Lat int: " << lat_int << " Lon int: " << lon_int << " Alt: " << alt;
     _mutex.unlock();
 
     const float pos_std_dev[] = { NAN, NAN, NAN };
