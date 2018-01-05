@@ -104,7 +104,7 @@ include_directories(
     ${external_plugins}
     ${CMAKE_CURRENT_BINARY_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}/core
-    SYSTEM ${EXTERNAL_DIR}/${additional_includes}
+    SYSTEM ${additional_includes}
 )
 
 if (DEFINED additional_includes AND NOT additional_includes STREQUAL "")
