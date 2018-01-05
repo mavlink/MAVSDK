@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(follow_me)
 
-add_definitions("-std=c++11 -Wall -Wextra -Werror")
+find_package(Boost 1.66 COMPONENTS REQUIRED system)
+include_directories(${Boost_INCLUDE_DIR})
 
+add_definitions("-std=c++11 -g -Wall -Wextra -Werror")
 if(NOT MSVC)
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
 else()
@@ -14,9 +16,11 @@ endif()
 
 add_executable(follow_me
     follow_me.cpp
+    fake_location_provider.cpp
 )
 
 target_link_libraries(follow_me
+    LINK_PUBLIC ${Boost_LIBRARIES}
     dronecore
+    pthread
 )
-

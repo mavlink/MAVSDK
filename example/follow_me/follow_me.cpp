@@ -9,6 +9,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include "fake_location_provider.h"
 
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
@@ -23,7 +24,6 @@ using namespace std::this_thread;  // for sleep_for()
 inline void action_error_exit(Action::Result result, const std::string &message);
 inline void follow_me_error_exit(FollowMe::Result result, const std::string &message);
 inline void connection_error_exit(DroneCore::ConnectionResult result, const std::string &message);
-void send_location_updates(FollowMe &follow_me, size_t count = 50ul, float rate = 1.f);
 
 int main(int, char **)
 {
@@ -56,9 +56,9 @@ int main(int, char **)
     std::bind([&](Telemetry::FlightMode flight_mode) {
         const FollowMe::TargetLocation last_location = device.follow_me().get_last_location();
         std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
-                  << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
-                  "Lon: " << last_location.longitude_deg << " deg." << std::endl;
-    }, _1));
+                  << "] Vehicle is at: " << last_location.latitude_deg << ", "
+                  << last_location.longitude_deg << " degrees." << std::endl;
+    }, std::placeholders::_1));
 
     // Takeoff
     Action::Result takeoff_result = device.action().takeoff();
@@ -70,8 +70,16 @@ int main(int, char **)
     FollowMe::Result follow_me_result = device.follow_me().start();
     follow_me_error_exit(follow_me_result, "Failed to start FollowMe mode");
 
-    // Keep sending location updates to Drone at rate 1Hz.
-    send_location_updates(device.follow_me());
+    boost::asio::io_context io; // for event loop
+    // Register for platform-specific Location provider. We're using FakeLocationProvider for the example.
+    (new FakeLocationProvider(io))->request_location_updates([&device](double lat, double lon) {
+        device.follow_me().set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
+    });
+    io.run(); // will run as long as location updates continue to happen.
+
+    // Stop Follow Me
+    follow_me_result = device.follow_me().stop();
+    follow_me_error_exit(follow_me_result, "Failed to stop FollowMe mode");
 
     // Land
     const Action::Result land_result = device.action().land();
@@ -109,37 +117,5 @@ inline void connection_error_exit(DroneCore::ConnectionResult result, const std:
                   << DroneCore::connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
-    }
-}
-
-void send_location_updates(FollowMe &follow_me, size_t count, float rate)
-{
-    FollowMe::TargetLocation location = { 47.3977419, 8.5455938, 0.0, 0.f, 0.f, 0.f };
-    const auto LATITUDE_IN_DEG_PER_METER = 0.000009044;
-    const auto LONGITUDE_IN_DEG_PER_METER = 0.000008985;
-
-    for (auto i = 1u; i < count / 5; i++) {
-        follow_me.set_target_location(location);
-        auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
-        sleep_for(milliseconds(sleep_duration_ms));
-        location.latitude_deg -= LATITUDE_IN_DEG_PER_METER * 4;
-    }
-    for (auto i = 1u; i < count / 5; i++) {
-        follow_me.set_target_location(location);
-        auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
-        sleep_for(milliseconds(sleep_duration_ms));
-        location.longitude_deg += LONGITUDE_IN_DEG_PER_METER * 4;
-    }
-    for (auto i = 1u; i < count / 5; i++) {
-        follow_me.set_target_location(location);
-        auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
-        sleep_for(milliseconds(sleep_duration_ms));
-        location.latitude_deg += LATITUDE_IN_DEG_PER_METER * 4;
-    }
-    for (auto i = 1u; i < count / 5; i++) {
-        follow_me.set_target_location(location);
-        auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
-        sleep_for(milliseconds(sleep_duration_ms));
-        location.longitude_deg -= LONGITUDE_IN_DEG_PER_METER * 4;
     }
 }
