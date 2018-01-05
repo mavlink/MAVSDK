@@ -247,8 +247,6 @@ void FollowMeImpl::receive_param_follow_direction(bool success, int32_t directio
         case 3: new_direction = FollowMe::Config::FollowDirection::FRONT_LEFT; break;
         default: break;
     }
-    auto curr_direction_s = FollowMe::Config::to_str(_config.follow_direction);
-    auto new_direction_s = FollowMe::Config::to_str(new_direction);
     if (success) {
         if (new_direction != FollowMe::Config::FollowDirection::NONE) {
             _config.follow_direction = new_direction;
