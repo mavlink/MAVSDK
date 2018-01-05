@@ -6,8 +6,7 @@
 	url = https://github.com/google/googletest
 [submodule "curl-android-ios"]
 	path = curl-android-ios
-	url = https://github.com/gcesarmza/curl-android-ios.git
-	ignore = dirty
+	url = https://github.com/dronecore/curl-android-ios.git
 [submodule "libs/tinyxml2"]
 	path = libs/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
