@@ -125,6 +125,8 @@ android_arm64-v8a: android_curl
 android_curl: android_env_check
 	+@if [ ! -e $(CURL_BUILD_DIR)/prebuilt-with-ssl/android ]; then \
 		$(CURL_BUILD_DIR)/curl-compile-scripts/build_Android.sh; \
+	else \
+		$(CURL_BUILD_DIR)/curl-compile-scripts/build_Android.sh --openssl-configure-only; \
 	fi
 
 ios_curl:
