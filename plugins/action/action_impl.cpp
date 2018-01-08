@@ -90,8 +90,8 @@ Action::Result ActionImpl::takeoff() const
     }
 
     // Go to LOITER mode first.
-    ret = action_result_from_command_result(_parent->set_flight_mode(
-                                                DeviceImpl::FlightMode::HOLD));
+    ret = action_result_from_command_result(
+              _parent->set_flight_mode(DeviceImpl::FlightMode::HOLD));
 
     return action_result_from_command_result(
                _parent->send_command_with_ack(
@@ -112,8 +112,8 @@ Action::Result ActionImpl::land() const
 
 Action::Result ActionImpl::return_to_launch() const
 {
-    return action_result_from_command_result(_parent->set_flight_mode(
-                                                 DeviceImpl::FlightMode::RETURN_TO_LAUNCH));
+    return action_result_from_command_result(
+               _parent->set_flight_mode(DeviceImpl::FlightMode::RETURN_TO_LAUNCH));
 }
 
 Action::Result ActionImpl::transition_to_fixedwing() const
@@ -308,9 +308,7 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t &callbac
 {
     _parent->set_flight_mode_async(
         DeviceImpl::FlightMode::RETURN_TO_LAUNCH,
-        std::bind(&ActionImpl::command_result_callback,
-                  _1,
-                  callback));
+        std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
 Action::Result ActionImpl::arming_allowed() const
@@ -375,16 +373,14 @@ void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &ca
 {
     _parent->set_flight_mode_async(
         DeviceImpl::FlightMode::HOLD,
-        std::bind(&ActionImpl::takeoff_async_continued, this, _1,
-                  callback));
+        std::bind(&ActionImpl::takeoff_async_continued, this, _1, callback));
 }
 
 void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callback)
 {
     _parent->set_flight_mode_async(
         DeviceImpl::FlightMode::HOLD,
-        std::bind(&ActionImpl::arm_async_continued, this, _1,
-                  callback));
+        std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
 }
 
 

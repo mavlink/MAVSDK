@@ -453,29 +453,30 @@ MavlinkCommands::Result DeviceImpl::set_flight_mode(FlightMode device_mode)
     uint8_t custom_sub_mode = 0;
 
     switch (device_mode) {
-        case FlightMode::HOLD :
+        case FlightMode::HOLD:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
             break;
-        case FlightMode::RETURN_TO_LAUNCH :
+        case FlightMode::RETURN_TO_LAUNCH:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
             break;
-        case FlightMode::TAKEOFF :
+        case FlightMode::TAKEOFF:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
             break;
-        case FlightMode::LAND :
+        case FlightMode::LAND:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
             break;
-        case FlightMode::MISSION :
+        case FlightMode::MISSION:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
             break;
-        case FlightMode::FOLLOW_ME :
+        case FlightMode::FOLLOW_ME:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
             break;
-        case FlightMode::OFFBOARD :
+        case FlightMode::OFFBOARD:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
             break;
         default :
-            return MavlinkCommands::Result::UNSUPPORTED_MODE;
+            LogErr() << "Unknown Flight mode.";
+            return MavlinkCommands::Result::ERROR;
 
     }
 
@@ -490,8 +491,7 @@ MavlinkCommands::Result DeviceImpl::set_flight_mode(FlightMode device_mode)
     return ret;
 }
 
-void DeviceImpl::set_flight_mode_async(FlightMode device_mode,
-                                       command_result_callback_t callback)
+void DeviceImpl::set_flight_mode_async(FlightMode device_mode, command_result_callback_t callback)
 {
     uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
 
@@ -503,40 +503,43 @@ void DeviceImpl::set_flight_mode_async(FlightMode device_mode,
     uint8_t custom_sub_mode = 0;
 
     switch (device_mode) {
-        case FlightMode::HOLD :
+        case FlightMode::HOLD:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
             break;
-        case FlightMode::RETURN_TO_LAUNCH :
+        case FlightMode::RETURN_TO_LAUNCH:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
             break;
-        case FlightMode::TAKEOFF :
+        case FlightMode::TAKEOFF:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
             break;
-        case FlightMode::LAND :
+        case FlightMode::LAND:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
             break;
-        case FlightMode::MISSION :
+        case FlightMode::MISSION:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
             break;
-        case FlightMode::FOLLOW_ME :
+        case FlightMode::FOLLOW_ME:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
             break;
-        case FlightMode::OFFBOARD :
+        case FlightMode::OFFBOARD:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
             break;
         default :
+            LogErr() << "Unknown flight mode.";
+            if (callback) {
+                callback(MavlinkCommands::Result::ERROR, NAN);
+            }
             return ;
     }
 
 
-    send_command_with_ack_async(
-        MAV_CMD_DO_SET_MODE,
-        MavlinkCommands::Params {float(mode),
-                                 float(custom_mode),
-                                 float(custom_sub_mode),
-                                 NAN, NAN, NAN, NAN},
-        callback,
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+    send_command_with_ack_async(MAV_CMD_DO_SET_MODE,
+                                MavlinkCommands::Params {float(mode),
+                                                         float(custom_mode),
+                                                         float(custom_sub_mode),
+                                                         NAN, NAN, NAN, NAN},
+                                callback,
+                                MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void DeviceImpl::get_param_int_async(const std::string &name,

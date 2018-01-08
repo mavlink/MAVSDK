@@ -89,8 +89,7 @@ public:
     void set_param_ext_float_async(const std::string &name, float value, success_t callback);
     void set_param_ext_int_async(const std::string &name, int32_t value, success_t callback);
     MavlinkCommands::Result set_flight_mode(FlightMode mode);
-    void set_flight_mode_async(FlightMode mode,
-                               command_result_callback_t callback);
+    void set_flight_mode_async(FlightMode mode, command_result_callback_t callback);
 
     typedef std::function <void(bool success, float value)> get_param_float_callback_t;
     typedef std::function <void(bool success, int32_t value)> get_param_int_callback_t;
