@@ -65,10 +65,16 @@ int main(int, char **)
     Action::Result takeoff_result = device.action().takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
     std::cout << "In Air..." << std::endl;
-    sleep_for(seconds(5));
+    sleep_for(seconds(5)); // Wait for drone to reach takeoff altitude
+
+    // Configure Min height of the drone to be "20 meters" above home & Follow direction as "Front right".
+    FollowMe::Config config;
+    config.min_height_m = 20.0;
+    config.follow_direction = FollowMe::Config::FollowDirection::FRONT_RIGHT;
+    FollowMe::Result follow_me_result = device.follow_me().set_config(config);
 
     // Start Follow Me
-    FollowMe::Result follow_me_result = device.follow_me().start();
+    follow_me_result = device.follow_me().start();
     follow_me_error_exit(follow_me_result, "Failed to start FollowMe mode");
 
     boost::asio::io_context io; // for event loop
@@ -83,13 +89,17 @@ int main(int, char **)
     follow_me_result = device.follow_me().stop();
     follow_me_error_exit(follow_me_result, "Failed to stop FollowMe mode");
 
+    // Stop flight mode updates.
+    device.telemetry().flight_mode_async(nullptr);
+
     // Land
     const Action::Result land_result = device.action().land();
     action_error_exit(land_result, "Landing failed");
-
-    // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
-    sleep_for(seconds(5));
-    std::cout << "Finished..." << std::endl;
+    while (device.telemetry().in_air()) {
+        std::cout << "waiting until landed" << std::endl;
+        sleep_for(seconds(1));
+    }
+    std::cout << "Landed..." << std::endl;
     return 0;
 }
 

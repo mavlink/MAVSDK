@@ -120,12 +120,6 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     FollowMe::Result config_result = device.follow_me().set_config(config);
     ASSERT_EQ(FollowMe::Result::SUCCESS, config_result);
 
-    sleep_for(seconds(2)); // until config is applied
-
-    // Verify your configuration
-    auto curr_config = device.follow_me().get_config();
-    print(curr_config);
-
     // Start following
     FollowMe::Result follow_me_result = device.follow_me().start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
