@@ -136,7 +136,7 @@ public:
     void set_velocity_ned(VelocityNEDYaw velocity_ned_yaw);
 
     /**
-     * @brief Set the velocity body coordinates coordinates and yaw angular rate.
+     * @brief Set the velocity body coordinates and yaw angular rate.
      *
      * @param velocity_body_yawspeed Velocity and yaw angular rate `struct`.
      */

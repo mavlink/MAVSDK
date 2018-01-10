@@ -553,7 +553,7 @@ public:
     typedef std::function<void(FlightMode flight_mode)> flight_mode_callback_t;
 
     /**
-     * @brief Subscribe to battery status updates (asynchronous).
+     * @brief Subscribe to flight mode updates (asynchronous).
      *
      * Note that flight mode updates are limited to 1Hz.
      *
