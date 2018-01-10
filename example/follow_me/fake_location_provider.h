@@ -1,8 +1,17 @@
 #pragma once
 
 #include <functional>
+/**
+  ********************************************************************************************
+  ********************************************************************************************
+  Important note: Boost isn't a dependency for DroneCore library.
+  We're using Boost::Asio in this example ONLY to simulate asynchronous Fake location provider.
+  Applications on platforms Android, Windows, Apple, etc should make use their platform-specific
+  Location Provider in place of FakeLocationProvider.
+  ********************************************************************************************
+  ********************************************************************************************
+  */
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 /**
@@ -16,13 +25,10 @@ public:
 
     FakeLocationProvider(boost::asio::io_context &io)
         : timer_(io, boost::posix_time::seconds(1))
-    {
-    }
+    {}
 
     ~FakeLocationProvider()
-    {
-        std::cout << "FakeLocationProvider: Done" << std::endl;
-    }
+    {}
 
     void request_location_updates(location_callback_t callback);
 
