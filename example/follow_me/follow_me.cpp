@@ -1,6 +1,9 @@
 /**
 * @file follow_me.cpp
 * @brief Example that demonstrates the usage of Follow Me plugin.
+* The example registers with FakeLocationProvider for location updates
+* and sends them to the Follow Me plugin which are sent to drone. You can observe
+* drone following you. We print last location of the drone in flight mode callback.
 * @author Shakthi Prashanth <shakthi.prashanth.m@intel.com>
 * @date 2018-01-03
 */

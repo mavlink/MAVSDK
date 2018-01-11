@@ -6,7 +6,7 @@
   ********************************************************************************************
   Important note: Boost isn't a dependency for DroneCore library.
   We're using Boost::Asio in this example ONLY to simulate asynchronous Fake location provider.
-  Applications on platforms Android, Windows, Apple, etc should make use their platform-specific
+  Applications on platforms Android, Windows, Apple, etc should make use of their platform-specific
   Location Provider in place of FakeLocationProvider.
   ********************************************************************************************
   ********************************************************************************************
