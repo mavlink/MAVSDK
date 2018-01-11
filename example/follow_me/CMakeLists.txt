@@ -5,7 +5,6 @@ project(follow_me)
 find_package(Boost 1.66 COMPONENTS REQUIRED system)
 include_directories(${Boost_INCLUDE_DIR})
 
-add_definitions("-std=c++11 -g -Wall -Wextra -Werror")
 if(NOT MSVC)
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
 else()
