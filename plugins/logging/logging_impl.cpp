@@ -1,7 +1,6 @@
 #include "global_include.h"
 #include "logging_impl.h"
 #include "dronecore_impl.h"
-#include "telemetry.h"
 #include "px4_custom_mode.h"
 
 namespace dronecore {
