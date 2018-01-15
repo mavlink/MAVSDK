@@ -1,6 +1,7 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "dronecore.h"
+#include "plugins/telemetry/telemetry.h"
 
 #define CAMERA_AVAILABLE 0 // Set to 1 if camera is available and should be tested.
 
@@ -63,52 +64,54 @@ TEST_F(SitlTest, TelemetryAsync)
 
     Device &device = dc.device(uuid);
 
-    device.telemetry().set_rate_position_async(10.0, std::bind(&receive_result, _1));
+    auto telemetry = std::make_shared<Telemetry>(&device);
+
+    telemetry->set_rate_position_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    device.telemetry().set_rate_home_position_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_home_position_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    device.telemetry().set_rate_in_air_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_in_air_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    device.telemetry().set_rate_attitude_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_attitude_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    device.telemetry().set_rate_ground_speed_ned_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_ground_speed_ned_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    device.telemetry().set_rate_gps_info_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_gps_info_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    device.telemetry().set_rate_battery_async(10.0, std::bind(&receive_result, _1));
+    telemetry->set_rate_battery_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    device.telemetry().position_async(std::bind(&print_position, _1));
+    telemetry->position_async(std::bind(&print_position, _1));
 
-    device.telemetry().home_position_async(std::bind(&print_home_position, _1));
+    telemetry->home_position_async(std::bind(&print_home_position, _1));
 
-    device.telemetry().in_air_async(std::bind(&print_in_air, _1));
+    telemetry->in_air_async(std::bind(&print_in_air, _1));
 
-    device.telemetry().armed_async(std::bind(&print_armed, _1));
+    telemetry->armed_async(std::bind(&print_armed, _1));
 
-    device.telemetry().attitude_quaternion_async(std::bind(&print_quaternion, _1));
+    telemetry->attitude_quaternion_async(std::bind(&print_quaternion, _1));
 
-    device.telemetry().attitude_euler_angle_async(std::bind(&print_euler_angle, _1));
+    telemetry->attitude_euler_angle_async(std::bind(&print_euler_angle, _1));
 
 #if CAMERA_AVAILABLE==1
-    device.telemetry().camera_attitude_quaternion_async(std::bind(&print_camera_quaternion, _1));
+    telemetry->camera_attitude_quaternion_async(std::bind(&print_camera_quaternion, _1));
 
-    device.telemetry().camera_attitude_euler_angle_async(std::bind(&print_camera_euler_angle, _1));
+    telemetry->camera_attitude_euler_angle_async(std::bind(&print_camera_euler_angle, _1));
 #endif
 
-    device.telemetry().ground_speed_ned_async(std::bind(&print_ground_speed_ned, _1));
+    telemetry->ground_speed_ned_async(std::bind(&print_ground_speed_ned, _1));
 
-    device.telemetry().gps_info_async(std::bind(&print_gps_info, _1));
+    telemetry->gps_info_async(std::bind(&print_gps_info, _1));
 
-    device.telemetry().battery_async(std::bind(&print_battery, _1));
+    telemetry->battery_async(std::bind(&print_battery, _1));
 
-    device.telemetry().rc_status_async(std::bind(&print_rc_status, _1));
+    telemetry->rc_status_async(std::bind(&print_rc_status, _1));
 
     std::this_thread::sleep_for(std::chrono::seconds(10));
 

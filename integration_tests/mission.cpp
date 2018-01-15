@@ -5,6 +5,9 @@
 #include <atomic>
 #include "integration_test_helper.h"
 #include "dronecore.h"
+#include "plugins/telemetry/telemetry.h"
+#include "plugins/action/action.h"
+#include "plugins/mission/mission.h"
 
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
@@ -46,8 +49,11 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
 
 
     Device &device = dc.device();
+    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto mission = std::make_shared<Mission>(&device);
+    auto action = std::make_shared<Action>(&device);
 
-    while (!device.telemetry().health_all_ok()) {
+    while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for device to be ready";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
@@ -110,7 +116,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         // std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        device.mission().upload_mission_async(
+        mission->upload_mission_async(
         mission_items, [prom](Mission::Result result) {
             ASSERT_EQ(result, Mission::Result::SUCCESS);
             prom->set_value();
@@ -127,7 +133,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         // std::future.
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        device.mission().download_mission_async(
+        mission->download_mission_async(
             [prom, mission_items](
                 Mission::Result result,
         std::vector<std::shared_ptr<MissionItem>> mission_items_downloaded) {
@@ -149,7 +155,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     }
 
     LogInfo() << "Arming...";
-    const Action::Result arm_result = device.action().arm();
+    const Action::Result arm_result = action->arm();
     EXPECT_EQ(arm_result, Action::Result::SUCCESS);
     LogInfo() << "Armed.";
 
@@ -157,7 +163,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     std::atomic<bool> want_to_pause {false};
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    device.mission().subscribe_progress(
+    mission->subscribe_progress(
     [&want_to_pause](int current, int total) {
         LogInfo() << "Mission status update: " << current << " / " << total;
         if (current >= 2) {
@@ -171,7 +177,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         LogInfo() << "Starting mission.";
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
-        device.mission().start_mission_async(
+        mission->start_mission_async(
         [prom](Mission::Result result) {
             ASSERT_EQ(result, Mission::Result::SUCCESS);
             prom->set_value();
@@ -190,7 +196,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
         LogInfo() << "Pausing mission...";
-        device.mission().pause_mission_async(
+        mission->pause_mission_async(
         [prom](Mission::Result result) {
             EXPECT_EQ(result, Mission::Result::SUCCESS);
             prom->set_value();
@@ -208,7 +214,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
         LogInfo() << "Resuming mission...";
-        device.mission().start_mission_async(
+        mission->start_mission_async(
         [prom](Mission::Result result) {
             EXPECT_EQ(result, Mission::Result::SUCCESS);
             prom->set_value();
@@ -218,14 +224,14 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         LogInfo() << "Mission resumed.";
     }
 
-    while (!device.mission().mission_finished()) {
+    while (!mission->mission_finished()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     {
         // We are done, and can do RTL to go home.
         LogInfo() << "Commanding RTL...";
-        const Action::Result result = device.action().return_to_launch();
+        const Action::Result result = action->return_to_launch();
         EXPECT_EQ(result, Action::Result::SUCCESS);
         LogInfo() << "Commanded RTL.";
     }
@@ -233,7 +239,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     // We need to wait a bit, otherwise the armed state might not be correct yet.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    while (device.telemetry().armed()) {
+    while (telemetry->armed()) {
         // Wait until we're done.
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }

@@ -1,6 +1,8 @@
-#include "dronecore.h"
-#include "integration_test_helper.h"
 #include <iostream>
+#include "dronecore.h"
+#include "plugins/action/action.h"
+#include "plugins/telemetry/telemetry.h"
+#include "integration_test_helper.h"
 
 using namespace dronecore;
 
@@ -16,20 +18,24 @@ TEST_F(SitlTest, TelemetryFlightModes)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
-    device.telemetry().flight_mode_async(
+
+    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto action = std::make_shared<Action>(&device);
+
+    telemetry->flight_mode_async(
         std::bind(&print_mode, std::placeholders::_1));
 
-    while (!device.telemetry().health_all_ok()) {
+    while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    device.action().arm();
+    action->arm();
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    device.action().takeoff();
+    action->takeoff();
     std::this_thread::sleep_for(std::chrono::seconds(2));
     ASSERT_EQ(_flight_mode, Telemetry::FlightMode::TAKEOFF);
-    device.action().land();
+    action->land();
     std::this_thread::sleep_for(std::chrono::seconds(2));
     ASSERT_EQ(_flight_mode, Telemetry::FlightMode::LAND);
 }

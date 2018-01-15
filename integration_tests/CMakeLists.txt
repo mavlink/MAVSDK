@@ -16,25 +16,25 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 # TODO enable again
 add_executable(integration_tests_runner
     ../core/unittests_main.cpp
-    #simple_connect.cpp
-    #async_connect.cpp
+    simple_connect.cpp
+    async_connect.cpp
     telemetry_simple.cpp
-    #telemetry_async.cpp
-    #telemetry_modes.cpp
-    #telemetry_health.cpp
-    #simple_hover.cpp
+    telemetry_async.cpp
+    telemetry_modes.cpp
+    telemetry_health.cpp
+    simple_hover.cpp
     async_hover.cpp
-    #takeoff_and_kill.cpp
-    #offboard_velocity.cpp
-    #logging.cpp
-    #info.cpp
-    #mission.cpp
-    #mission_change_speed.cpp
-    #mission_survey.cpp
-    #gimbal.cpp
-    #curl.cpp
-    #transition_multicopter_fixedwing.cpp
-    #follow_me.cpp
+    takeoff_and_kill.cpp
+    offboard_velocity.cpp
+    logging.cpp
+    info.cpp
+    mission.cpp
+    mission_change_speed.cpp
+    mission_survey.cpp
+    gimbal.cpp
+    curl.cpp
+    transition_multicopter_fixedwing.cpp
+    follow_me.cpp
 )
 
 include_directories(
@@ -50,6 +50,12 @@ target_link_libraries(integration_tests_runner
     dronecore
     dronecore_telemetry
     dronecore_action
+    dronecore_mission
+    dronecore_offboard
+    dronecore_logging
+    dronecore_info
+    dronecore_gimbal
+    dronecore_follow_me
     gtest
     gtest_main
     gmock
