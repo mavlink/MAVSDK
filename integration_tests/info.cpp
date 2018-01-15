@@ -1,6 +1,7 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "dronecore.h"
+#include "plugins/info/info.h"
 
 using namespace dronecore;
 
@@ -21,8 +22,12 @@ TEST_F(SitlTest, Info)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
+
+    Device &device = dc.device();
+    auto info = std::make_shared<Info>(&device);
+
     for (unsigned i = 0; i < 3; ++i) {
-        Info::Version version = dc.device().info().get_version();
+        Info::Version version = info->get_version();
 
         std::cout << "Flight version: "
                   << version.flight_sw_major << "."
@@ -45,7 +50,7 @@ TEST_F(SitlTest, Info)
         //EXPECT_NE(version.os_sw_major, 0);
 
 
-        Info::Product product = dc.device().info().get_product();
+        Info::Product product = info->get_product();
 
         std::cout << "Vendor: " << product.vendor_name << std::endl;
         std::cout << "Product: " << product.product_name << std::endl;

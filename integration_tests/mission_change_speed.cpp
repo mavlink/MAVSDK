@@ -5,6 +5,9 @@
 #include <cmath>
 #include "integration_test_helper.h"
 #include "dronecore.h"
+#include "plugins/telemetry/telemetry.h"
+#include "plugins/action/action.h"
+#include "plugins/mission/mission.h"
 
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
@@ -17,7 +20,7 @@ std::shared_ptr<MissionItem> only_set_speed(float speed_m_s);
 std::shared_ptr<MissionItem> add_waypoint(double latitude_deg, double longitude_deg,
                                           float relative_altitude_m, float speed_m_s);
 
-static float current_speed(Device &device);
+float current_speed(std::shared_ptr<Telemetry> &telemetry);
 
 static std::atomic<bool> _mission_sent_ok {false};
 static std::atomic<bool> _mission_started_ok {false};
@@ -38,8 +41,11 @@ TEST_F(SitlTest, MissionChangeSpeed)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
+    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto mission = std::make_shared<Mission>(&device);
+    auto action = std::make_shared<Action>(&device);
 
-    while (!device.telemetry().health_all_ok()) {
+    while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
@@ -53,17 +59,17 @@ TEST_F(SitlTest, MissionChangeSpeed)
     mission_items.push_back(add_waypoint(47.39824201089737, 8.5447561722784542, 10, speeds[2]));
     mission_items.push_back(add_waypoint(47.397733642793433, 8.5447776308767516, 10, speeds[3]));
 
-    device.mission().upload_mission_async(mission_items,
-                                          std::bind(&receive_upload_mission_result, _1));
+    mission->upload_mission_async(mission_items,
+                                  std::bind(&receive_upload_mission_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_sent_ok);
 
-    Action::Result result = device.action().arm();
+    Action::Result result = action->arm();
     ASSERT_EQ(result, Action::Result::SUCCESS);
 
-    device.mission().subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
+    mission->subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
 
-    device.mission().start_mission_async(std::bind(&receive_start_mission_result, _1));
+    mission->start_mission_async(std::bind(&receive_start_mission_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_started_ok);
 
@@ -77,7 +83,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
                 // Time to accelerate
                 std::this_thread::sleep_for(std::chrono::seconds(6));
                 const float speed_correct = speeds[_current_item - 1];
-                const float speed_actual = current_speed(device);
+                const float speed_actual = current_speed(telemetry);
                 LogWarn() << "speed check, should be: " << speed_correct << " m/s, "
                           << "actually: " << speed_actual << " m/s";
                 EXPECT_GT(speed_actual, speed_correct - 1.0f);
@@ -89,20 +95,20 @@ TEST_F(SitlTest, MissionChangeSpeed)
     }
     LogInfo() << "mission done";
 
-    result = device.action().return_to_launch();
+    result = action->return_to_launch();
     ASSERT_EQ(result, Action::Result::SUCCESS);
 
-    while (!device.mission().mission_finished()) {
+    while (!mission->mission_finished()) {
         std::cout << "waiting until mission is done" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    while (device.telemetry().in_air()) {
+    while (telemetry->in_air()) {
         std::cout << "waiting until landed" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    result = device.action().disarm();
+    result = action->disarm();
     ASSERT_EQ(result, Action::Result::SUCCESS);
 }
 
@@ -146,12 +152,12 @@ add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_
     return new_item;
 }
 
-float current_speed(Device &device)
+float current_speed(std::shared_ptr<Telemetry> &telemetry)
 {
-    return std::sqrt(device.telemetry().ground_speed_ned().velocity_north_m_s *
-                     device.telemetry().ground_speed_ned().velocity_north_m_s +
-                     device.telemetry().ground_speed_ned().velocity_east_m_s *
-                     device.telemetry().ground_speed_ned().velocity_east_m_s);
+    return std::sqrt(telemetry->ground_speed_ned().velocity_north_m_s *
+                     telemetry->ground_speed_ned().velocity_north_m_s +
+                     telemetry->ground_speed_ned().velocity_east_m_s *
+                     telemetry->ground_speed_ned().velocity_east_m_s);
 }
 
 void receive_mission_progress(int current, int total)

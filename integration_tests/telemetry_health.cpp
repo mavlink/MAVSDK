@@ -1,6 +1,7 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "dronecore.h"
+#include "plugins/telemetry/telemetry.h"
 
 using namespace dronecore;
 
@@ -16,7 +17,9 @@ TEST_F(SitlTest, TelemetryHealth)
 
     Device &device = dc.device();
 
-    device.telemetry().health_async(std::bind(&print_health, std::placeholders::_1));
+    auto telemetry = std::make_shared<Telemetry>(&device);
+
+    telemetry->health_async(std::bind(&print_health, std::placeholders::_1));
     std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 

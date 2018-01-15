@@ -6,6 +6,9 @@
 #include "integration_test_helper.h"
 #include "global_include.h"
 #include "dronecore.h"
+#include "plugins/telemetry/telemetry.h"
+#include "plugins/action/action.h"
+#include "plugins/follow_me/follow_me.h"
 
 using namespace dronecore;
 using namespace std::chrono;
@@ -13,7 +16,8 @@ using namespace std::this_thread;
 using namespace std::placeholders;
 
 void print(const FollowMe::Config &config);
-void send_location_updates(FollowMe &follow_me_handle, size_t count = 25ul, float rate = 1.f);
+void send_location_updates(std::shared_ptr<FollowMe> follow_me, size_t count = 25ul,
+                           float rate = 1.f);
 
 const size_t N_LOCATIONS = 100ul;
 
@@ -27,37 +31,40 @@ TEST_F(SitlTest, FollowMeOneLocation)
     // Wait for device to connect via heartbeat.
     sleep_for(seconds(2));
     Device &device = dc.device();
+    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto follow_me = std::make_shared<FollowMe>(&device);
+    auto action = std::make_shared<Action>(&device);
 
-    while (!device.telemetry().health_all_ok()) {
+    while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
         sleep_for(seconds(1));
     }
 
-    Action::Result action_ret = device.action().arm();
+    Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    device.telemetry().flight_mode_async(
+    telemetry->flight_mode_async(
     std::bind([&](Telemetry::FlightMode flight_mode) {
-        const FollowMe::TargetLocation last_location = device.follow_me().get_last_location();
+        const FollowMe::TargetLocation last_location = follow_me->get_last_location();
 
         std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
                   << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
                   "Lon: " << last_location.longitude_deg << " deg." << std::endl;
     }, std::placeholders::_1));
 
-    action_ret = device.action().takeoff();
+    action_ret = action->takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     sleep_for(seconds(5)); // let it reach takeoff altitude
 
-    auto curr_config = device.follow_me().get_config();
+    auto curr_config = follow_me->get_config();
     print(curr_config);
 
     // Set just a single location before starting FollowMe (optional)
-    device.follow_me().set_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
+    follow_me->set_target_location({47.39768399, 8.54564155, 0.0, 0.f, 0.f, 0.f});
 
     // Start following with default configuration
-    FollowMe::Result follow_me_result = device.follow_me().start();
+    FollowMe::Result follow_me_result = follow_me->start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
     sleep_for(seconds(1));
 
@@ -65,11 +72,11 @@ TEST_F(SitlTest, FollowMeOneLocation)
     sleep_for(seconds(5));
 
     // stop following
-    follow_me_result = device.follow_me().stop();
+    follow_me_result = follow_me->stop();
     ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
 
-    action_ret = device.action().land();
+    action_ret = action->land();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
     sleep_for(seconds(2)); // let the device land
 }
@@ -84,18 +91,21 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     // Wait for device to connect via heartbeat.
     sleep_for(seconds(2));
     Device &device = dc.device();
+    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto follow_me = std::make_shared<FollowMe>(&device);
+    auto action = std::make_shared<Action>(&device);
 
-    while (!device.telemetry().health_all_ok()) {
+    while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for device to be ready" << std::endl;
         sleep_for(seconds(1));
     }
 
-    Action::Result action_ret = device.action().arm();
+    Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    device.telemetry().flight_mode_async(
+    telemetry->flight_mode_async(
     std::bind([&](Telemetry::FlightMode flight_mode) {
-        const FollowMe::TargetLocation last_location = device.follow_me().get_last_location();
+        const FollowMe::TargetLocation last_location = follow_me->get_last_location();
 
         std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
                   << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
@@ -103,7 +113,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
 
     }, std::placeholders::_1));
 
-    action_ret = device.action().takeoff();
+    action_ret = action->takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     sleep_for(seconds(5));
@@ -117,22 +127,22 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
         FollowMe::Config::FollowDirection::FRONT; // Device follows target from FRONT side
 
     // Apply configuration
-    FollowMe::Result config_result = device.follow_me().set_config(config);
+    FollowMe::Result config_result = follow_me->set_config(config);
     ASSERT_EQ(FollowMe::Result::SUCCESS, config_result);
 
     // Start following
-    FollowMe::Result follow_me_result = device.follow_me().start();
+    FollowMe::Result follow_me_result = follow_me->start();
     ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
 
     // send location update every second
-    send_location_updates(device.follow_me());
+    send_location_updates(follow_me);
 
     // Stop following
-    follow_me_result = device.follow_me().stop();
+    follow_me_result = follow_me->stop();
     ASSERT_EQ(FollowMe::Result::SUCCESS, follow_me_result);
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
 
-    action_ret = device.action().land();
+    action_ret = action->land();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
     sleep_for(seconds(2)); // let it land
 }
@@ -148,7 +158,7 @@ void print(const FollowMe::Config &config)
     std::cout << "---------------------------" << std::endl;
 }
 
-void send_location_updates(FollowMe &follow_me, size_t count, float rate)
+void send_location_updates(std::shared_ptr<FollowMe> follow_me, size_t count, float rate)
 {
     // TODO: Generate these co-ordinates from an algorithm
     // Altitude here is ignored by PX4, as we've set min altitude in configuration.
@@ -265,7 +275,7 @@ void send_location_updates(FollowMe &follow_me, size_t count, float rate)
         if (count-- == 0) {
             return;
         }
-        follow_me.set_target_location(pos);
+        follow_me->set_target_location(pos);
         auto sleep_duration_ms = static_cast<int>(1 / rate * 1000);
         sleep_for(milliseconds(sleep_duration_ms));
     }

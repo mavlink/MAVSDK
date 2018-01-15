@@ -4,6 +4,9 @@
 #include <atomic>
 #include "integration_test_helper.h"
 #include "dronecore.h"
+#include "plugins/telemetry/telemetry.h"
+#include "plugins/action/action.h"
+#include "plugins/mission/mission.h"
 
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
@@ -55,8 +58,11 @@ TEST_F(SitlTest, MissionSurvey)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
+    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto mission = std::make_shared<Mission>(&device);
+    auto action = std::make_shared<Action>(&device);
 
-    while (!device.telemetry().health_all_ok()) {
+    while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
@@ -135,7 +141,7 @@ TEST_F(SitlTest, MissionSurvey)
         }
         switch (_mission_state) {
             case MissionState::INIT:
-                device.mission().upload_mission_async(
+                mission->upload_mission_async(
                     mis,
                     std::bind(&receive_upload_mission_result, _1));
                 _mission_state = MissionState::UPLOADING;
@@ -144,8 +150,8 @@ TEST_F(SitlTest, MissionSurvey)
                 break;
             case MissionState::UPLOADING_DONE:
                 std::cout << "arming!" << std::endl;
-                if (!device.telemetry().armed()) {
-                    device.action().arm_async(std::bind(&receive_arm_result, _1));
+                if (!telemetry->armed()) {
+                    action->arm_async(std::bind(&receive_arm_result, _1));
                     _mission_state = MissionState::ARMING;
                 }
                 break;
@@ -156,7 +162,7 @@ TEST_F(SitlTest, MissionSurvey)
                 // the message DO_SET_MODE. Once it ignores it as in the spec, this is not
                 // needed anymore.
                 std::this_thread::sleep_for(std::chrono::seconds(2));
-                device.mission().start_mission_async(
+                mission->start_mission_async(
                     std::bind(&receive_start_mission_result, _1));
                 _mission_state = MissionState::STARTING;
                 break;
@@ -165,23 +171,23 @@ TEST_F(SitlTest, MissionSurvey)
             case MissionState::STARTING_DONE:
                 _mission_state = MissionState::MISSION;
 
-                device.mission().subscribe_progress(
+                mission->subscribe_progress(
                     std::bind(&receive_mission_progress, _1, _2));
                 break;
             case MissionState::MISSION:
                 break;
             case MissionState::MISSION_DONE:
-                device.action().return_to_launch_async(
+                action->return_to_launch_async(
                     std::bind(&receive_return_to_launch_result, _1));
                 _mission_state = MissionState::RETURN;
                 break;
             case MissionState::RETURN:
-                if (!device.telemetry().in_air()) {
+                if (!telemetry->in_air()) {
                     _mission_state = MissionState::RETURN_DONE;
                 }
                 break;
             case MissionState::RETURN_DONE:
-                device.action().disarm_async(std::bind(&receive_disarm_result, _1));
+                action->disarm_async(std::bind(&receive_disarm_result, _1));
                 break;
             case MissionState::DONE:
                 finished = true;

@@ -2,6 +2,10 @@
 #include <cmath>
 #include "integration_test_helper.h"
 #include "dronecore.h"
+#include "plugins/action/action.h"
+#include "plugins/telemetry/telemetry.h"
+#include "plugins/offboard/offboard.h"
+#include "plugins/mission/mission.h"
 
 using namespace dronecore;
 
@@ -15,29 +19,34 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
     // Wait for device to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    Device &device = dc.device();
 
-    while (!device.telemetry().health_all_ok()) {
+    Device &device = dc.device();
+    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto action = std::make_shared<Action>(&device);
+    auto offboard = std::make_shared<Offboard>(&device);
+    auto mission = std::make_shared<Mission>(&device);
+
+    while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    Action::Result action_ret = device.action().arm();
+    Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    action_ret = device.action().takeoff();
+    action_ret = action->takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
 
-    Offboard::Result offboard_result = device.offboard().start();
+    Offboard::Result offboard_result = offboard->start();
 
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
-    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     {
@@ -48,52 +57,52 @@ TEST_F(SitlTest, OffboardVelocityNED)
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
             //std::cout << "vx: " << vx << std::endl;
-            device.offboard().set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
+            offboard->set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
 
     // Let's make sure that offboard knows it is active.
-    EXPECT_TRUE(device.offboard().is_active());
+    EXPECT_TRUE(offboard->is_active());
 
     // Then randomly, we just interfere with a mission command to pause it.
-    device.mission().pause_mission_async(nullptr);
+    mission->pause_mission_async(nullptr);
     // This needs some time to propagate.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     // Now it should be inactive.
-    EXPECT_TRUE(device.offboard().is_active());
+    EXPECT_TRUE(offboard->is_active());
 
     // So we start it yet again.
-    offboard_result = device.offboard().start();
+    offboard_result = offboard->start();
 
     // It should complain because no setpoint is set.
     EXPECT_EQ(offboard_result, Offboard::Result::NO_SETPOINT_SET);
 
     // Alright, set one then.
-    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
+    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
     // And start again.
-    offboard_result = device.offboard().start();
+    offboard_result = offboard->start();
     // Now it should work.
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
-    EXPECT_TRUE(device.offboard().is_active());
+    EXPECT_TRUE(offboard->is_active());
 
     // Ok let's carry on.
-    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
+    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    device.offboard().set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
+    offboard->set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
     std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    device.offboard().set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
+    offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
     std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    device.offboard().set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
+    offboard->set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
     std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    offboard_result = device.offboard().stop();
+    offboard_result = offboard->stop();
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
-    action_ret = device.action().land();
+    action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }
 
@@ -109,57 +118,61 @@ TEST_F(SitlTest, OffboardVelocityBody)
     std::this_thread::sleep_for(std::chrono::seconds(2));
     Device &device = dc.device();
 
-    while (!device.telemetry().health_all_ok()) {
+    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto action = std::make_shared<Action>(&device);
+    auto offboard = std::make_shared<Offboard>(&device);
+
+    while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    Action::Result action_ret = device.action().arm();
+    Action::Result action_ret = action->arm();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
-    action_ret = device.action().takeoff();
+    action_ret = action->takeoff();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Send it once before starting offboard, otherwise it will be rejected.
-    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
 
-    Offboard::Result offboard_result = device.offboard().start();
+    Offboard::Result offboard_result = offboard->start();
 
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
     // Yaw clockwise and climb
-    device.offboard().set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
+    offboard->set_velocity_body({0.0f, 0.0f, -1.0f, 60.0f});
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Yaw anti-clockwise
-    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
+    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, -60.0f});
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Wait for a bit
-    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Fly a circle
-    device.offboard().set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
+    offboard->set_velocity_body({5.0f, 0.0f, 0.0f, 60.0f});
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Wait for a bit
-    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Fly a circle sideways
-    device.offboard().set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
+    offboard->set_velocity_body({0.0f, -5.0f, 0.0f, 60.0f});
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Wait for a bit
-    device.offboard().set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
+    offboard->set_velocity_body({0.0f, 0.0f, 0.0f, 0.0f});
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    offboard_result = device.offboard().stop();
+    offboard_result = offboard->stop();
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
-    action_ret = device.action().land();
+    action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }
