@@ -1,6 +1,6 @@
 add_library(dronecore_logging SHARED
     logging.cpp
-    logging.cpp
+    logging_impl.cpp
 )
 
 include_directories(
