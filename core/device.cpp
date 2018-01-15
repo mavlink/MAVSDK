@@ -343,10 +343,10 @@ void Device::request_autopilot_version()
 
 void Device::set_connected()
 {
+    bool enable_needed = false;
     {
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
-        bool enable_needed = false;
         if (!_connected && _target_uuid_initialized) {
 
             _parent->notify_on_discover(_target_uuid);
@@ -355,7 +355,6 @@ void Device::set_connected()
             register_timeout_handler(std::bind(&Device::heartbeats_timed_out, this),
                                      _HEARTBEAT_TIMEOUT_S,
                                      &_heartbeat_timeout_cookie);
-
             enable_needed = true;
 
         } else if (_connected) {
