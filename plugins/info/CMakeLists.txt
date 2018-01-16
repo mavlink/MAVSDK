@@ -8,6 +8,10 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/libs/include
 )
 
+target_link_libraries(dronecore_info
+    dronecore
+)
+
 install(FILES
     info.h
     DESTINATION ${dronecore_install_include_dir}
