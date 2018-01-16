@@ -9,6 +9,10 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/libs/include
 )
 
+target_link_libraries(dronecore_telemetry
+    dronecore
+)
+
 install(FILES
     telemetry.h
     DESTINATION ${dronecore_install_include_dir}
