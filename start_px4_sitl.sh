@@ -50,7 +50,7 @@ cd $px4_firmware_dir/build/posix_sitl_default/tmp
 
 # And run
 $px4_firmware_dir/Tools/sitl_run.sh \
-    $px4_firmware_dir/build/posix_sitl_default/src/firmware/posix/px4 \
+    $px4_firmware_dir/build/posix_sitl_default/px4 \
     posix-configs/SITL/init/lpe \
     none gazebo iris \
     $px4_firmware_dir \
