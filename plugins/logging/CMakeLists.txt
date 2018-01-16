@@ -9,7 +9,7 @@ include_directories(
 )
 
 install(FILES
-    loggin.h
+    logging.h
     DESTINATION ${dronecore_install_include_dir}
 )
 
