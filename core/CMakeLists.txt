@@ -4,7 +4,7 @@
 find_package(Threads REQUIRED)
 
 include_directories(
-    ${CMAKE_SOURCE_DIR}/libs/include
+    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
 )
 
 if (ANDROID)
