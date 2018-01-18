@@ -114,6 +114,7 @@ if(NOT IOS AND NOT ANDROID)
         #core/http_loader_test.cpp
         timeout_handler_test.cpp
         call_every_handler_test.cpp
+        curl_test.cpp
         ${plugin_unittest_source_files}
     )
 
