@@ -5,7 +5,7 @@ add_library(dronecore_follow_me SHARED
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/core
-    ${CMAKE_SOURCE_DIR}/libs/include
+    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
 )
 
 target_link_libraries(dronecore_follow_me
