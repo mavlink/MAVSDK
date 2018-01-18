@@ -32,7 +32,6 @@ add_executable(integration_tests_runner
     mission_change_speed.cpp
     mission_survey.cpp
     gimbal.cpp
-    curl.cpp
     transition_multicopter_fixedwing.cpp
     follow_me.cpp
 )
