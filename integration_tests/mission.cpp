@@ -26,6 +26,9 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
 static void compare_mission_items(const std::shared_ptr<MissionItem> original,
                                   const std::shared_ptr<MissionItem> downloaded);
 
+// Set to 1 to test with 1200 mission items.
+#define MANY_ITEMS_TEST 0
+
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
 {
@@ -63,52 +66,59 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
 
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
-    mission_items.push_back(
-        add_mission_item(47.398170327054473,
-                         8.5456490218639658,
-                         10.0f, 5.0f, false,
-                         20.0f, 60.0f,
-                         NAN,
-                         MissionItem::CameraAction::NONE));
+#if MANY_ITEMS_TEST==1
+    for (int i = 0; i < 50; ++i) {
+#endif
+        mission_items.push_back(
+            add_mission_item(47.398170327054473,
+                             8.5456490218639658,
+                             10.0f, 5.0f, false,
+                             20.0f, 60.0f,
+                             NAN,
+                             MissionItem::CameraAction::NONE));
 
-    mission_items.push_back(
-        add_mission_item(47.398241338125118,
-                         8.5455360114574432,
-                         10.0f, 2.0f, true,
-                         0.0f, -60.0f,
-                         5.0f,
-                         MissionItem::CameraAction::TAKE_PHOTO));
+        mission_items.push_back(
+            add_mission_item(47.398241338125118,
+                             8.5455360114574432,
+                             10.0f, 2.0f, true,
+                             0.0f, -60.0f,
+                             5.0f,
+                             MissionItem::CameraAction::TAKE_PHOTO));
 
-    mission_items.push_back(
-        add_mission_item(47.398139363821485, 8.5453846156597137,
-                         10.0f, 5.0f, true,
-                         -46.0f, 0.0f,
-                         NAN,
-                         MissionItem::CameraAction::START_VIDEO));
+        mission_items.push_back(
+            add_mission_item(47.398139363821485, 8.5453846156597137,
+                             10.0f, 5.0f, true,
+                             -46.0f, 0.0f,
+                             NAN,
+                             MissionItem::CameraAction::START_VIDEO));
 
-    mission_items.push_back(
-        add_mission_item(47.398058617228855,
-                         8.5454618036746979,
-                         10.0f, 2.0f, false,
-                         -90.0f, 30.0f,
-                         NAN,
-                         MissionItem::CameraAction::STOP_VIDEO));
+        mission_items.push_back(
+            add_mission_item(47.398058617228855,
+                             8.5454618036746979,
+                             10.0f, 2.0f, false,
+                             -90.0f, 30.0f,
+                             NAN,
+                             MissionItem::CameraAction::STOP_VIDEO));
 
-    mission_items.push_back(
-        add_mission_item(47.398100366082858,
-                         8.5456969141960144,
-                         10.0f, 5.0f, false,
-                         -45.0f, -30.0f,
-                         NAN,
-                         MissionItem::CameraAction::START_PHOTO_INTERVAL));
+        mission_items.push_back(
+            add_mission_item(47.398100366082858,
+                             8.5456969141960144,
+                             10.0f, 5.0f, false,
+                             -45.0f, -30.0f,
+                             NAN,
+                             MissionItem::CameraAction::START_PHOTO_INTERVAL));
 
-    mission_items.push_back(
-        add_mission_item(47.398001890458097,
-                         8.5455576181411743,
-                         10.0f, 5.0f, false,
-                         0.0f, 0.0f,
-                         NAN,
-                         MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
+        mission_items.push_back(
+            add_mission_item(47.398001890458097,
+                             8.5455576181411743,
+                             10.0f, 5.0f, false,
+                             0.0f, 0.0f,
+                             NAN,
+                             MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
+
+#if MANY_ITEMS_TEST==1
+    }
+#endif
 
     {
         LogInfo() << "Uploading mission...";
