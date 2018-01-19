@@ -50,7 +50,7 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
 int main(int argc, char **argv)
 {
     if (argc != 2) {
-        std::cerr << "Usage: fly_mission <path of QGC mission plan file>";
+        std::cerr << "Usage: fly_mission <path of QGC mission plan file>" << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -304,8 +304,8 @@ std::vector<std::shared_ptr<MissionItem>> compose_mission_items_from_json(const 
             params.push_back(p.number_value());
         }
 
-		// This looks bit complicated at app users.
-		// Should we handle them in plugin ?
+        // This looks bit complicated at app users.
+        // Should we handle them in plugin ?
         switch (command) {
             case MAV_CMD_IMAGE_START_CAPTURE:
                 no_of_photos = static_cast<size_t>(params[3]);
