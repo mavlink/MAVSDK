@@ -19,7 +19,8 @@ public:
                              const rpc::telemetry::SubscribePositionRequest *request,
                              ServerWriter<rpc::telemetry::Position> *writer) override
     {
-        dc->device(request->uuid().value()).telemetry().position_async([&writer](Telemetry::Position position) {
+        dc->device(request->uuid().value()).telemetry().position_async([&writer](
+        Telemetry::Position position) {
             rpc::telemetry::Position rpc_position;
             rpc_position.set_latitude_deg(position.latitude_deg);
             rpc_position.set_longitude_deg(position.longitude_deg);
