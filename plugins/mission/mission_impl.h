@@ -7,6 +7,9 @@
 #include "mission.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
+#include <json11.hpp>
+
+using namespace json11;
 
 namespace dronecore {
 
@@ -39,6 +42,8 @@ public:
 
     void subscribe_progress(Mission::progress_callback_t callback);
 
+    static Mission::Result import_mission_items_from_QGC_plan(Mission::mission_items_t &items,
+                                                              std::string qgc_plan_file);
     // Non-copyable
     MissionImpl(const MissionImpl &) = delete;
     const MissionImpl &operator=(const MissionImpl &) = delete;
@@ -73,6 +78,9 @@ private:
 
     void download_next_mission_item();
     void assemble_mission_items();
+
+    static Mission::Result compose_mission_items_from_json(Mission::mission_items_t &mission_items,
+                                                           const Json &mission_json);
 
     std::mutex _mutex {};
     Mission::result_callback_t _result_callback = nullptr;
