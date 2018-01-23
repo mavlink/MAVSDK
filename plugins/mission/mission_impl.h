@@ -43,7 +43,7 @@ public:
     void subscribe_progress(Mission::progress_callback_t callback);
 
     static Mission::Result import_mission_items_from_QGC_plan(Mission::mission_items_t &items,
-                                                              std::string qgc_plan_file);
+                                                              const std::string &qgc_plan_file);
     // Non-copyable
     MissionImpl(const MissionImpl &) = delete;
     const MissionImpl &operator=(const MissionImpl &) = delete;

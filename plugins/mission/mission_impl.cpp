@@ -936,7 +936,7 @@ void MissionImpl::process_timeout()
 
 Mission::Result
 MissionImpl::import_mission_items_from_QGC_plan(Mission::mission_items_t &mission_items,
-                                                std::string qgc_plan_file)
+                                                const std::string &qgc_plan_file)
 {
     std::ifstream file(qgc_plan_file);
     if (!file) { // File open error

@@ -77,7 +77,8 @@ public:
      * @param qgc_plan_file Path of the QGC plan.
      * @return SUCCESS if successful in importing mission items, error code otherwise.
      */
-    static Result import_mission_items_from_QGC_plan(mission_items_t &items, std::string qgc_plan_file);
+    static Result import_mission_items_from_QGC_plan(mission_items_t &items,
+                                                     const std::string &qgc_plan_file);
 
     /**
      * @brief Uploads a vector of mission items to the device (asynchronous).

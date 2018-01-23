@@ -93,7 +93,7 @@ void Mission::subscribe_progress(progress_callback_t callback)
 }
 
 Mission::Result Mission::import_mission_items_from_QGC_plan(Mission::mission_items_t &items,
-                                                            std::string qgc_plan_file)
+                                                            const std::string &qgc_plan_file)
 {
     return MissionImpl::import_mission_items_from_QGC_plan(items, qgc_plan_file);
 }
