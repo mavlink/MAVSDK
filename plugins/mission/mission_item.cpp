@@ -95,4 +95,22 @@ double MissionItem::get_camera_photo_interval_s() const
     return _impl->get_camera_photo_interval_s();
 }
 
+std::string MissionItem::to_str(MissionItem::CameraAction camera_action)
+{
+    switch (camera_action) {
+        case MissionItem::CameraAction::TAKE_PHOTO:
+            return "Take photo";
+        case MissionItem::CameraAction::START_PHOTO_INTERVAL:
+            return "Start photo interval";
+        case MissionItem::CameraAction::STOP_PHOTO_INTERVAL:
+            return "Stop photo interval";
+        case MissionItem::CameraAction::START_VIDEO:
+            return "Start video";
+        case MissionItem::CameraAction::STOP_VIDEO:
+            return "Stop video";
+        default:
+            return "Unknown";
+    }
+}
+
 } // namespace dronelin

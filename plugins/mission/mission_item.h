@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace dronecore {
 
@@ -86,6 +87,13 @@ public:
         STOP_VIDEO, /**< @brief Stop capturing video. */
         NONE /**< @brief No action. */
     };
+
+    /**
+     * @brief Converts CamerAction to English strings.
+     * @param camera_action Enum Camera action.
+     * @return Human readable english string for CamerAction.
+     */
+    static std::string to_str(CameraAction camera_action);
 
     /**
      * @brief Set the camera action for a mission item.
