@@ -996,8 +996,7 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
                 speed_m_s = params[1];
                 break;
             case MAV_CMD_DO_MOUNT_CONTROL:
-                // Possible bug in QGroundcontrol. It stores -ve values for pitch in deg.
-                gimbal_pitch_deg = -params[0];
+                gimbal_pitch_deg = -params[0]; // Pitch value is -ve as its in NED frame.
                 gimbal_yaw_deg = params[2];
                 break;
             case MAV_CMD_NAV_WAYPOINT:
