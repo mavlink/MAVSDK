@@ -971,7 +971,7 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
         float gimbal_pitch_deg = 0.f, gimbal_yaw_deg = 0.f;
         bool is_fly_through = false;
         double lat_deg = NAN, lon_deg = NAN, rel_alt_deg = NAN;
-        size_t photo_inteval = 0;
+        double photo_inteval = 0.;
         auto camera_action = MissionItem::CameraAction::NONE;
         auto command = json_mission_item["command"].int_value();
 
@@ -983,7 +983,7 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
 
         switch (command) {
             case MAV_CMD_IMAGE_START_CAPTURE:
-                photo_inteval = static_cast<size_t>(params[1]);
+                photo_inteval = params[1];
                 camera_action = MissionItem::CameraAction::START_PHOTO_INTERVAL;
                 break;
             case MAV_CMD_VIDEO_START_STREAMING:
