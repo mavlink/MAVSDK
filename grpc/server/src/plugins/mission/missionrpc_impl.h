@@ -36,11 +36,11 @@ public:
         }
 
         dc->device(request->uuid().value()).mission().upload_mission_async(
-            mission_items, [prom, response](Mission::Result result) {
-                response->set_result(static_cast<rpc::mission::MissionResult::Result>(result));
-                response->set_result_str(Mission::result_str(result));
-                prom->set_value();
-            }
+        mission_items, [prom, response](Mission::Result result) {
+            response->set_result(static_cast<rpc::mission::MissionResult::Result>(result));
+            response->set_result_str(Mission::result_str(result));
+            prom->set_value();
+        }
         );
 
         future_result.wait();
