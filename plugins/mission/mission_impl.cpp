@@ -971,7 +971,7 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
         float gimbal_pitch_deg = 0.f, gimbal_yaw_deg = 0.f;
         bool is_fly_through = false;
         double lat_deg = NAN, lon_deg = NAN, rel_alt_deg = NAN;
-        size_t no_of_photos = 0;
+        size_t photo_inteval = 0;
         auto camera_action = MissionItem::CameraAction::NONE;
         auto command = json_mission_item["command"].int_value();
 
@@ -981,28 +981,24 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
             params.push_back(p.number_value());
         }
 
-        switch (json_mission_item["command"].int_value()) {
+        switch (command) {
             case MAV_CMD_IMAGE_START_CAPTURE:
-                no_of_photos = static_cast<size_t>(params[3]);
-                if (no_of_photos > 1) {
-                    camera_action = MissionItem::CameraAction::START_PHOTO_INTERVAL;
-                } else if (no_of_photos == 1) {
-                    camera_action = MissionItem::CameraAction::TAKE_PHOTO;
-                }
+                photo_inteval = static_cast<size_t>(params[1]);
+                camera_action = MissionItem::CameraAction::START_PHOTO_INTERVAL;
                 break;
             case MAV_CMD_VIDEO_START_STREAMING:
                 camera_action = MissionItem::CameraAction::START_VIDEO;
                 break;
             case MAV_CMD_VIDEO_STOP_STREAMING:
-                camera_action = MissionItem::CameraAction::START_VIDEO;
+                camera_action = MissionItem::CameraAction::STOP_VIDEO;
                 break;
             case MAV_CMD_DO_CHANGE_SPEED:
-                speed_m_s = params[2];
+                speed_m_s = params[1];
                 break;
             case MAV_CMD_DO_MOUNT_CONTROL:
                 // Possible bug in QGroundcontrol. It stores -ve values for pitch in deg.
                 gimbal_pitch_deg = -params[0];
-                gimbal_yaw_deg = params[3];
+                gimbal_yaw_deg = params[2];
                 break;
             case MAV_CMD_NAV_WAYPOINT:
                 is_fly_through = (params[0] == 0.0) ? true : false;
@@ -1014,15 +1010,15 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
             case MAV_CMD_NAV_RETURN_TO_LAUNCH:
                 break;
             default: // Unsupported mission command
-                LogErr() << "Mission: Unsupported mission command: " << command;
-                return Mission::Result::UNSUPPORTED_MISSION_CMD;
+                LogWarn() << "Mission: Unsupported mission command: " << command << ". Ignoring.";
+                break;
         }
         // Maybe removed
-        LogDebug() << "Mission: Cmd: " << command << " Lat: " << lat_deg << " Lon: " << lon_deg << " Alt: " <<
-                   rel_alt_deg <<
+        LogDebug() << "Mission: Cmd: " << command <<
+                   " Lat: " << lat_deg << " Lon: " << lon_deg << " Alt: " << rel_alt_deg <<
                    " Speed " << speed_m_s << " Is fly thru: " << (is_fly_through ? "true" : "false") <<
                    " Gimbal pitch:  " << gimbal_pitch_deg << " deg Gimbal yaw: " << gimbal_yaw_deg <<
-                   " deg Camera action: " << static_cast<int>(camera_action) << "\n";
+                   " deg Camera action: " << MissionItem::to_str(camera_action) << "\n";
 
         // Add mission item to the list
         mission_items.push_back([&]() -> std::shared_ptr<MissionItem> const {
@@ -1032,6 +1028,9 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
             new_item->set_speed(speed_m_s);
             new_item->set_fly_through(is_fly_through);
             new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
+            if (photo_inteval) {
+                new_item->set_camera_photo_interval(photo_inteval);
+            }
             new_item->set_camera_action(camera_action);
             return new_item;
         }());
