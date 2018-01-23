@@ -47,6 +47,9 @@ public:
         INVALID_ARGUMENT, /**< @brief Invalid argument. */
         UNSUPPORTED, /**< @brief The mission downloaded from the device is not supported. */
         NO_MISSION_AVAILABLE, /**< @brief No mission available on device. */
+        FAILED_TO_OPEN_QGC_PLAN, /**< @brief Failed to open QGroundControl plan */
+        FAILED_TO_PARSE_QGC_PLAN, /**< @brief Failed to parse QGroundControl plan */
+        UNSUPPORTED_MISSION_CMD, /**< @brief Unsupported mission command */
         UNKNOWN /**< @brief Unknown error. */
     };
 
@@ -62,6 +65,19 @@ public:
      * @brief Callback type for async mission calls.
      */
     typedef std::function<void(Result)> result_callback_t;
+
+    /**
+     * @brief Type for vector of mission items.
+     */
+    typedef std::vector<std::shared_ptr<MissionItem>> mission_items_t;
+
+    /**
+     * @brief Imports QGC plan mission items.
+     * @param[out] items Imported mission items from QGC plan.
+     * @param qgc_plan_file Path of the QGC plan.
+     * @return SUCCESS if successful in importing mission items, error code otherwise.
+     */
+    static Result import_mission_items_from_QGC_plan(mission_items_t &items, std::string qgc_plan_file);
 
     /**
      * @brief Uploads a vector of mission items to the device (asynchronous).
