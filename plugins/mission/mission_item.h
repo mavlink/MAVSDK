@@ -78,7 +78,7 @@ public:
 
     /**
      * @brief Possible camera actions at a mission item.
-	 * @sa to_str()
+     * @sa to_str()
      */
     enum class CameraAction {
         TAKE_PHOTO, /**< @brief Take single photo. */
