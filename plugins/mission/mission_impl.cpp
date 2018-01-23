@@ -1015,10 +1015,10 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
         }
         // Maybe removed
         LogDebug() << "Mission: Cmd: " << command <<
-                   " Lat: " << lat_deg << " Lon: " << lon_deg << " Alt: " << rel_alt_deg <<
-                   " Speed " << speed_m_s << " Is fly thru: " << (is_fly_through ? "true" : "false") <<
-                   " Gimbal pitch:  " << gimbal_pitch_deg << " deg Gimbal yaw: " << gimbal_yaw_deg <<
-                   " deg Camera action: " << MissionItem::to_str(camera_action) << "\n";
+                   ", Lat: " << lat_deg << " deg, Lon: " << lon_deg << " deg, Rel alt: " << rel_alt_deg <<
+                   " meters, Speed: " << speed_m_s << " m/s, Is fly thru: " << (is_fly_through ? "true" : "false") <<
+                   " Gimbal pitch: " << gimbal_pitch_deg << " deg,  Gimbal yaw: " << gimbal_yaw_deg <<
+                   " deg, Camera action: " << MissionItem::to_str(camera_action) << "\n";
 
         // Add mission item to the list
         mission_items.push_back([&]() -> std::shared_ptr<MissionItem> const {
