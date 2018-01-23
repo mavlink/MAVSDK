@@ -78,6 +78,7 @@ public:
 
     /**
      * @brief Possible camera actions at a mission item.
+	 * @sa to_str()
      */
     enum class CameraAction {
         TAKE_PHOTO, /**< @brief Take single photo. */
@@ -89,9 +90,9 @@ public:
     };
 
     /**
-     * @brief Converts CamerAction to English strings.
-     * @param camera_action Enum Camera action.
-     * @return Human readable english string for CamerAction.
+     * @brief Converts #CameraAction to English strings.
+     * @param camera_action Enum #CameraAction.
+     * @return Human readable english string for #CameraAction.
      */
     static std::string to_str(CameraAction camera_action);
 
