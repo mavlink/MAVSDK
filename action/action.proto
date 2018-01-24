@@ -6,38 +6,97 @@ option java_package = "io.dronecore.action";
 option java_outer_classname = "ActionProto";
 
 service ActionService {
-    rpc Arm(ArmRequest) returns(ActionResult) {}
-    rpc TakeOff(TakeOffRequest) returns(ActionResult) {}
-    rpc Land(LandRequest) returns(ActionResult) {}
+    rpc Arm(ArmRequest) returns(ArmResponse) {}
+    rpc Disarm(DisarmRequest) returns(DisarmResponse) {}
+    rpc Takeoff(TakeoffRequest) returns(TakeoffResponse) {}
+    rpc Land(LandRequest) returns(LandResponse) {}
+    rpc Kill(KillRequest) returns(KillResponse) {}
+    rpc ReturnToLaunch(ReturnToLaunchRequest) returns(ReturnToLaunchResponse) {}
+    rpc TransitionToFixedWings(TransitionToFixedWingsRequest) returns(TransitionToFixedWingsResponse) {}
+    rpc TransitionToMulticopter(TransitionToMulticopterRequest) returns(TransitionToMulticopterResponse) {}
+    rpc GetTakeoffAltitude(GetTakeoffAltitudeRequest) returns(GetTakeoffAltitudeResponse) {}
+    rpc SetTakeoffAltitude(SetTakeoffAltitudeRequest) returns(SetTakeoffAltitudeResponse) {}
+    rpc GetMaximumSpeed(GetMaximumSpeedRequest) returns(GetMaximumSpeedResponse) {}
+    rpc SetMaximumSpeed(SetMaximumSpeedRequest) returns(SetMaximumSpeedResponse) {}
 }
 
-message UUID {
-    uint64 value = 1;
+message ArmRequest {}
+message ArmResponse {
+    ActionResult action_result = 1;
 }
 
-message ArmRequest {
-    UUID uuid = 1;
+message DisarmRequest {}
+message DisarmResponse {
+    ActionResult action_result = 1;
 }
 
-message TakeOffRequest {
-    UUID uuid = 1;
+message TakeoffRequest {}
+message TakeoffResponse {
+    ActionResult action_result = 1;
 }
 
-message LandRequest {
-    UUID uuid = 1;
+message LandRequest {}
+message LandResponse {
+    ActionResult action_result = 1;
+}
+
+message KillRequest {}
+message KillResponse {
+    ActionResult action_result = 1;
+}
+
+message ReturnToLaunchRequest {}
+message ReturnToLaunchResponse {
+    ActionResult action_result = 1;
+}
+
+message TransitionToFixedWingsRequest {}
+message TransitionToFixedWingsResponse {
+    ActionResult action_result = 1;
+}
+
+message TransitionToMulticopterRequest {}
+message TransitionToMulticopterResponse {
+    ActionResult action_result = 1;
+}
+
+message GetTakeoffAltitudeRequest {}
+message GetTakeoffAltitudeResponse {
+    float altitude_m = 1;
+}
+
+message SetTakeoffAltitudeRequest {
+    float altitude_m = 1;
+}
+message SetTakeoffAltitudeResponse {
+    ActionResult action_result = 1;
+}
+
+message GetMaximumSpeedRequest {}
+message GetMaximumSpeedResponse {
+    float speed_m_s = 1;
+}
+
+message SetMaximumSpeedRequest {
+    float speed_m_s = 1;
+}
+message SetMaximumSpeedResponse {
+    ActionResult action_result = 1;
 }
 
 message ActionResult {
     enum Result {
-        SUCCESS = 0;
-        NO_DEVICE = 1;
-        CONNECTION_ERROR = 2;
-        BUSY = 3;
-        COMMAND_DENIED = 4;
-        COMMAND_DENIED_LANDED_STATE_UNKNOWN = 5;
-        COMMAND_DENIED_NOT_LANDED = 6;
-        TIMEOUT = 7;
-        UNKNOWN = 8;
+        UNKNOWN = 0;
+        SUCCESS = 1;
+        NO_DEVICE = 2;
+        CONNECTION_ERROR = 3;
+        BUSY = 4;
+        COMMAND_DENIED = 5;
+        COMMAND_DENIED_LANDED_STATE_UNKNOWN = 6;
+        COMMAND_DENIED_NOT_LANDED = 7;
+        TIMEOUT = 8;
+        VTOL_TRANSITION_SUPPORT_UNKNOWN = 9;
+        NO_VTOL_TRANSITION_SUPPORT = 10;
     }
 
     Result result = 1;
