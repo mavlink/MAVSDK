@@ -23,8 +23,8 @@ install_prefix="$source_dir/install"
 
 if [ "$skip_checks" = false ]; then
     # Clean-up build & install directory
-    if [ -d $source_dir/build ] && [ "$(ls $source_dir/build/default)" ] || [ -d $install_prefix ] ; then
-	printf "Clean-up your build & install directory using below command.\nmake clean && rm -rf $install_prefix\n"
+    if [ -d $source_dir/build ] || [ -d $install_prefix ] ; then
+	printf "Clean-up your build & install directory using below command.\nmake distclean && rm -rf $install_prefix\n"
 	exit 1
     fi
 fi
