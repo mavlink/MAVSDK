@@ -75,6 +75,7 @@ public:
      * @brief Imports QGC plan mission items.
      * @param[out] items Imported mission items from QGC plan.
      * @param qgc_plan_file Path of the QGC plan.
+     * @sa [QGroundControl Plan file format](https://dev.qgroundcontrol.com/en/file_formats/plan.html) (QGroundControl Dev  Guide)
      * @return SUCCESS if successful in importing mission items, error code otherwise.
      */
     static Result import_mission_items_from_QGC_plan(mission_items_t &items,
