@@ -45,24 +45,24 @@ else()
 endif()
 
 add_library(dronecore ${library_type}
-    global_include.cpp
+    call_every_handler.cpp
     connection.cpp
+    curl_wrapper.cpp
     device.cpp
-    mavlink_parameters.cpp
-    mavlink_commands.cpp
     dronecore.cpp
     dronecore_impl.cpp
+    global_include.cpp
+    http_loader.cpp
+    mavlink_parameters.cpp
+    mavlink_commands.cpp
     mavlink_channels.cpp
     mavlink_receiver.cpp
-    serial_connection.cpp
-    tcp_connection.cpp
-    udp_connection.cpp
     plugin_base.cpp
     plugin_impl_base.cpp
-    curl_wrapper.cpp
-    http_loader.cpp
+    serial_connection.cpp
+    tcp_connection.cpp
     timeout_handler.cpp
-    call_every_handler.cpp
+    udp_connection.cpp
 )
 
 # cmake should check for C++11

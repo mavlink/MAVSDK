@@ -93,8 +93,12 @@ add_subdirectory(plugins/follow_me)
 
 
 if(NOT IOS AND NOT ANDROID)
-    # Build gRPC client and server.
-    add_subdirectory(grpc)
+    if (CMAKE_BUILD_DRONECORESERVER)
+        message(STATUS "Building dronecore server")
+        add_subdirectory(grpc/server)
+    else()
+        message(STATUS "BUILD_DRONECORESERVER not set: not building dronecore server")
+    endif()
 
     enable_testing()
     add_subdirectory(${CMAKE_SOURCE_DIR}/libs/gtest EXCLUDE_FROM_ALL)
