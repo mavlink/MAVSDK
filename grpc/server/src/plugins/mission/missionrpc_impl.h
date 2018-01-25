@@ -12,6 +12,7 @@ public:
     MissionServiceImpl(DroneCore *dc_obj)
     {
         dc = dc_obj;
+        mission = std::make_shared<Mission>(&dc->device());
     }
 
     Status SendMission(ServerContext *context, const rpc::mission::SendMissionRequest *request,
@@ -35,7 +36,7 @@ public:
             mission_items.push_back(new_item);
         }
 
-        dc->device(request->uuid().value()).mission().upload_mission_async(
+        mission->upload_mission_async(
         mission_items, [prom, response](Mission::Result result) {
             response->set_result(static_cast<rpc::mission::MissionResult::Result>(result));
             response->set_result_str(Mission::result_str(result));
@@ -55,7 +56,7 @@ public:
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
 
-        dc->device(request->uuid().value()).mission().start_mission_async(
+        mission->start_mission_async(
         [prom, response](Mission::Result result) {
             response->set_result(static_cast<rpc::mission::MissionResult::Result>(result));
             response->set_result_str(Mission::result_str(result));
@@ -70,4 +71,5 @@ public:
 
 private:
     DroneCore *dc;
+    std::shared_ptr<Mission> mission;
 };

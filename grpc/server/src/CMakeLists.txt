@@ -25,7 +25,6 @@ foreach(PLUGIN ${PLUGINS_LIST})
             --plugin=protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_cpp_plugin>
             --cpp_out=.
             ${PROTO_DIR}/${PLUGIN}/${PLUGIN}.proto
-            #DEPENDS ${PROTO_DIR}/${PLUGIN}.proto
     )
 endforeach()
 
@@ -35,7 +34,6 @@ foreach(PLUGIN ${PLUGINS_LIST})
             -I ${PROTO_DIR}
             --cpp_out=.
             ${PROTO_DIR}/${PLUGIN}/${PLUGIN}.proto
-            #DEPENDS ${PROTO_DIR}/${PLUGIN}.proto
     )
 endforeach()
 
@@ -57,6 +55,10 @@ target_compile_options(
 target_include_directories(
     dronecore_server
     PUBLIC
+    ${CMAKE_SOURCE_DIR}/core
+    ${CMAKE_SOURCE_DIR}/plugins/action
+    ${CMAKE_SOURCE_DIR}/plugins/mission
+    ${CMAKE_SOURCE_DIR}/plugins/telemetry
     ${CMAKE_BINARY_DIR}/grpc/server/src
     ${PLUGINS_DIR}
 )
@@ -64,6 +66,9 @@ target_include_directories(
 target_link_libraries(
     dronecore_server
     dronecore
+    dronecore_action
+    dronecore_mission
+    dronecore_telemetry
     gRPC::grpc++
     dl
 )

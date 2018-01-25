@@ -13,13 +13,14 @@ public:
     TelemetryServiceImpl(DroneCore *dc_obj)
     {
         dc = dc_obj;
+        telemetry = std::make_shared<Telemetry>(&dc->device());
     }
 
     Status SubscribePosition(ServerContext *context,
                              const rpc::telemetry::SubscribePositionRequest *request,
                              ServerWriter<rpc::telemetry::Position> *writer) override
     {
-        dc->device(request->uuid().value()).telemetry().position_async([&writer](
+        telemetry->position_async([&writer](
         Telemetry::Position position) {
             rpc::telemetry::Position rpc_position;
             rpc_position.set_latitude_deg(position.latitude_deg);
@@ -28,6 +29,7 @@ public:
             rpc_position.set_absolute_altitude_m(position.absolute_altitude_m);
             writer->Write(rpc_position);
         });
+
         // TODO: This is probably not the best idea.
         while (true) {
             std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -37,4 +39,5 @@ public:
 
 private:
     DroneCore *dc;
+    std::shared_ptr<Telemetry> telemetry;
 };

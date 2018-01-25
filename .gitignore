@@ -1,5 +1,5 @@
 # build & install folders
-build/
+build*/
 install/
 logs/
 .vscode
@@ -8,3 +8,4 @@ logs/
 *.creator*
 *.files
 *.includes
+CMakeLists.txt.user*
