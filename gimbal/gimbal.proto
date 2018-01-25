@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package dronecore.rpc.gimbal;
+
+option java_package = "io.dronecore.gimbal";
+option java_outer_classname = "GimbalProto";
+
+service GimbalService {
+    rpc SetPitchAndYaw(SetPitchAndYawRequest) returns(SetPitchAndYawResponse) {}
+}
+
+message SetPitchAndYawRequest {
+    float pitch_deg = 1;
+    float yaw_deg = 2;
+}
+message SetPitchAndYawResponse {
+    GimbalResult gimbal_result = 1;
+}
+
+message GimbalResult {
+    enum Result {
+        SUCCESS = 0;
+        ERROR = 1;
+        TIMEOUT = 2;
+        UNKNOWN = 1000;
+    }
+
+    Result result = 1;
+    string result_str = 2;
+}
