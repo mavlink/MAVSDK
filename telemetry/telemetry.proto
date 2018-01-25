@@ -6,15 +6,90 @@ option java_package = "io.dronecore.telemetry";
 option java_outer_classname = "TelemetryProto";
 
 service TelemetryService {
-    rpc SubscribePosition(SubscribePositionRequest) returns(stream Position) {}
+    rpc SubscribePosition(SubscribePositionRequest) returns(stream PositionResponse) {}
+    rpc SubscribeHome(SubscribeHomeRequest) returns(stream HomeResponse) {}
+    rpc SubscribeInAir(SubscribeInAirRequest) returns(stream InAirResponse) {}
+    rpc SubscribeArmed(SubscribeArmedRequest) returns(stream ArmedResponse) {}
+    rpc SubscribeAttitudeQuaternion(SubscribeAttitudeQuaternionRequest) returns(stream AttitudeQuaternionResponse) {}
+    rpc SubscribeAttitudeEuler(SubscribeAttitudeEulerRequest) returns(stream AttitudeEulerResponse) {}
+    rpc SubscribeCameraAttitudeQuaternion(SubscribeCameraAttitudeQuaternionRequest) returns(stream CameraAttitudeQuaternionResponse) {}
+    rpc SubscribeCameraAttitudeEuler(SubscribeCameraAttitudeEulerRequest) returns(stream CameraAttitudeEulerResponse) {}
+    rpc SubscribeGroundSpeedNED(SubscribeGroundSpeedNEDRequest) returns(stream GroundSpeedNEDResponse) {}
+    rpc SubscribeGPSInfo(SubscribeGPSInfoRequest) returns(stream GPSInfoResponse) {}
+    rpc SubscribeBattery(SubscribeBatteryRequest) returns(stream BatteryResponse) {}
+    rpc SubscribeFlightMode(SubscribeFlightModeRequest) returns(stream FlightModeResponse) {}
+    rpc SubscribeHealth(SubscribeHealthRequest) returns(stream HealthResponse) {}
+    rpc SubscribeRCStatus(SubscribeRCStatusRequest) returns(stream RCStatusResponse) {}
 }
 
-message UUID {
-    uint64 value = 1;
+message SubscribePositionRequest {}
+message PositionResponse {
+    Position position = 1;
 }
 
-message SubscribePositionRequest {
-    UUID uuid = 1;
+message SubscribeHomeRequest {}
+message HomeResponse {
+    Position home = 1;
+}
+
+message SubscribeInAirRequest {}
+message InAirResponse {
+    bool is_in_air = 1;
+}
+
+message SubscribeArmedRequest {}
+message ArmedResponse {
+   bool is_armed = 1;
+}
+
+message SubscribeAttitudeQuaternionRequest {}
+message AttitudeQuaternionResponse {
+    Quaternion attitude_quaternion = 1;
+}
+
+message SubscribeAttitudeEulerRequest {}
+message AttitudeEulerResponse {
+    EulerAngle attitude_euler = 1;
+}
+
+message SubscribeCameraAttitudeQuaternionRequest {}
+message CameraAttitudeQuaternionResponse {
+    Quaternion attitude_quaternion = 1;
+}
+
+message SubscribeCameraAttitudeEulerRequest {}
+message CameraAttitudeEulerResponse {
+    EulerAngle attitude_euler = 1;
+}
+
+message SubscribeGroundSpeedNEDRequest {}
+message GroundSpeedNEDResponse {
+    SpeedNED ground_speed_ned = 1;
+}
+
+message SubscribeGPSInfoRequest {}
+message GPSInfoResponse {
+    GPSInfo gps_info = 1;
+}
+
+message SubscribeBatteryRequest {}
+message BatteryResponse {
+    Battery battery = 1;
+}
+
+message SubscribeFlightModeRequest {}
+message FlightModeResponse {
+    FlightMode flight_mode = 1;
+}
+
+message SubscribeHealthRequest {}
+message HealthResponse {
+    Health health = 1;
+}
+
+message SubscribeRCStatusRequest {}
+message RCStatusResponse {
+    RCStatus rc_status = 1;
 }
 
 message Position {
@@ -22,4 +97,71 @@ message Position {
     double longitude_deg = 2;
     float absolute_altitude_m = 3;
     float relative_altitude_m = 4;
+}
+
+message Quaternion {
+    float w = 1;
+    float x = 2;
+    float y = 3;
+    float z = 4;
+}
+
+message EulerAngle {
+    float roll_deg = 1;
+    float pitch_deg = 2;
+    float yaw_deg = 3;
+}
+
+message SpeedNED {
+    float velocity_north_m_s = 1;
+    float velocity_east_m_s = 2;
+    float velocity_down_m_s = 3;
+}
+
+message GPSInfo {
+    int32 num_satellites = 1;
+    FixType fix_type = 2;
+}
+
+enum FixType {
+    NO_GPS = 0;
+    NO_FIX = 1;
+    FIX_2D = 2;
+    FIX_3D = 3;
+    FIX_DGPS = 4;
+    RTK_FLOAT = 5;
+    RTK_FIXED = 6;
+}
+
+message Battery {
+    float voltage_v = 1;
+    float remaining_percent = 2;
+}
+
+enum FlightMode {
+    UNKNOWN = 0;
+    READY = 1;
+    TAKEOFF = 2;
+    HOLD = 3;
+    MISSION = 4;
+    RETURN_TO_LAUNCH = 5;
+    LAND = 6;
+    OFFBOARD = 7;
+    FOLLOW_ME = 8;
+}
+
+message Health {
+    bool is_gyrometer_calibration_ok = 1;
+    bool is_accelerometer_calibration_ok = 2;
+    bool is_magnetometer_calibration_ok = 3;
+    bool is_level_calibration_ok = 4;
+    bool is_local_position_ok = 5;
+    bool is_global_position_ok = 6;
+    bool is_home_position_ok = 7;
+}
+
+message RCStatus {
+    bool was_available_once = 1;
+    bool is_available = 2;
+    float signal_strength_percent = 3;
 }
