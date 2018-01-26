@@ -10,11 +10,15 @@
 * @date 2018-01-03
 */
 
-#include <dronecore/dronecore.h>
-#include <iostream>
-#include <thread>
-#include <memory>
 #include <chrono>
+#include <dronecore/action.h>
+#include <dronecore/dronecore.h>
+#include <dronecore/follow_me.h>
+#include <dronecore/telemetry.h>
+#include <iostream>
+#include <memory>
+#include <thread>
+
 #include "fake_location_provider.h"
 
 using namespace dronecore;
@@ -46,28 +50,32 @@ int main(int, char **)
 
     // Device got discovered.
     Device &device = dc.device();
-    while (!device.telemetry().health_all_ok()) {
+    std::shared_ptr<Action> action = std::make_shared<Action>(&device);
+    std::shared_ptr<FollowMe> follow_me = std::make_shared<FollowMe>(&device);
+    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(&device);
+
+    while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for device to be ready" << std::endl;
         sleep_for(seconds(1));
     }
     std::cout << "Device is ready" << std::endl;
 
     // Arm
-    Action::Result arm_result = device.action().arm();
+    Action::Result arm_result = action->arm();
     action_error_exit(arm_result, "Arming failed");
     std::cout << "Armed" << std::endl;
 
     // Subscribe to receive updates on flight mode. You can find out whether FollowMe is active.
-    device.telemetry().flight_mode_async(
+    telemetry->flight_mode_async(
     std::bind([&](Telemetry::FlightMode flight_mode) {
-        const FollowMe::TargetLocation last_location = device.follow_me().get_last_location();
+        const FollowMe::TargetLocation last_location = follow_me->get_last_location();
         std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
                   << "] Vehicle is at: " << last_location.latitude_deg << ", "
                   << last_location.longitude_deg << " degrees." << std::endl;
     }, std::placeholders::_1));
 
     // Takeoff
-    Action::Result takeoff_result = device.action().takeoff();
+    Action::Result takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5)); // Wait for drone to reach takeoff altitude
@@ -76,31 +84,31 @@ int main(int, char **)
     FollowMe::Config config;
     config.min_height_m = 20.0;
     config.follow_direction = FollowMe::Config::FollowDirection::FRONT_RIGHT;
-    FollowMe::Result follow_me_result = device.follow_me().set_config(config);
+    FollowMe::Result follow_me_result = follow_me->set_config(config);
 
     // Start Follow Me
-    follow_me_result = device.follow_me().start();
+    follow_me_result = follow_me->start();
     follow_me_error_exit(follow_me_result, "Failed to start FollowMe mode");
 
     boost::asio::io_context io; // for event loop
     std::unique_ptr<FakeLocationProvider> location_provider(new FakeLocationProvider(io));
     // Register for platform-specific Location provider. We're using FakeLocationProvider for the example.
-    location_provider->request_location_updates([&device](double lat, double lon) {
-        device.follow_me().set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
+    location_provider->request_location_updates([&device, &follow_me](double lat, double lon) {
+        follow_me->set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
     });
     io.run(); // will run as long as location updates continue to happen.
 
     // Stop Follow Me
-    follow_me_result = device.follow_me().stop();
+    follow_me_result = follow_me->stop();
     follow_me_error_exit(follow_me_result, "Failed to stop FollowMe mode");
 
     // Stop flight mode updates.
-    device.telemetry().flight_mode_async(nullptr);
+    telemetry->flight_mode_async(nullptr);
 
     // Land
-    const Action::Result land_result = device.action().land();
+    const Action::Result land_result = action->land();
     action_error_exit(land_result, "Landing failed");
-    while (device.telemetry().in_air()) {
+    while (telemetry->in_air()) {
         std::cout << "waiting until landed" << std::endl;
         sleep_for(seconds(1));
     }
