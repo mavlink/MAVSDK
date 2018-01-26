@@ -18,10 +18,9 @@ common_args="--input-type dir  \
     --force"
 
 library_files="\
-    build/default/include/device_plugin_container.h=/usr/include/dronecore/device_plugin_container.h \
-    include/device.h=/usr/include/dronecore/device.h \
-    include/dronecore.h=/usr/include/dronecore/dronecore.h \
-    build/default/libdronecore.so=/usr/lib/libdronecore.so \
+    core/device.h=/usr/include/dronecore/device.h \
+    core/dronecore.h=/usr/include/dronecore/dronecore.h \
+    build/default/core/libdronecore.so=/usr/lib/libdronecore.so \
     plugins/action/action.h=/usr/include/dronecore/action.h \
     plugins/follow_me/follow_me.h=/usr/include/dronecore/follow_me.h \
     plugins/gimbal/gimbal.h=/usr/include/dronecore/gimbal.h \
