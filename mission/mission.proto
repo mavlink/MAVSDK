@@ -6,25 +6,69 @@ option java_package = "io.dronecore.mission";
 option java_outer_classname = "MissionProto";
 
 service MissionService {
-    rpc SendMission(SendMissionRequest) returns(MissionResult) {}
-    rpc StartMission(StartMissionRequest) returns(MissionResult) {}
+    rpc UploadMission(UploadMissionRequest) returns(UploadMissionResponse) {}
+    rpc DownloadMission(DownloadMissionRequest) returns(DownloadMissionResponse) {}
+    rpc StartMission(StartMissionRequest) returns(StartMissionResponse) {}
+    rpc PauseMission(PauseMissionRequest) returns(PauseMissionResponse) {}
+    rpc SetCurrentMissionItemIndex(SetCurrentMissionItemIndexRequest) returns(SetCurrentMissionItemIndexResponse) {}
+    rpc GetCurrentMissionItemIndex(GetCurrentMissionItemIndexRequest) returns(GetCurrentMissionItemIndexResponse) {}
+    rpc GetMissionCount(GetMissionCountRequest) returns(GetMissionCountResponse) {}
+    rpc IsMissionFinished(IsMissionFinishedRequest) returns(IsMissionFinishedResponse) {}
+    rpc SubscribeMissionProgress(SubscribeMissionProgressRequest) returns(stream MissionProgressResponse) {}
 }
 
-message UUID {
-    uint64 value = 1;
+message UploadMissionRequest {
+    Mission mission = 1;
+}
+message UploadMissionResponse {
+    MissionResult mission_result = 1;
 }
 
-message SendMissionRequest {
-    UUID uuid = 1;
-    Mission mission = 2;
+message DownloadMissionRequest {}
+message DownloadMissionResponse {
+    Mission mission = 1;
 }
 
-message StartMissionRequest {
-    UUID uuid = 1;
+message StartMissionRequest {}
+message StartMissionResponse {
+    MissionResult mission_result = 1;
+}
+
+message PauseMissionRequest {}
+message PauseMissionResponse {
+    MissionResult mission_result = 1;
+}
+
+message SetCurrentMissionItemIndexRequest {
+    int32 index = 1;
+}
+message SetCurrentMissionItemIndexResponse {
+    MissionResult mission_result = 1;
+}
+
+message GetCurrentMissionItemIndexRequest {}
+message GetCurrentMissionItemIndexResponse {
+    int32 index = 1;
+}
+
+message GetMissionCountRequest {}
+message GetMissionCountResponse {
+    int32 count = 1;
+}
+
+message IsMissionFinishedRequest {}
+message IsMissionFinishedResponse {
+    bool is_finished = 1;
+}
+
+message SubscribeMissionProgressRequest {}
+message MissionProgressResponse {
+    int32 current_item_index = 1;
+    int32 mission_count = 2;
 }
 
 message Mission {
-    repeated MissionItem mission_items = 1;
+    repeated MissionItem mission_item = 1;
 }
 
 message MissionItem {
@@ -52,12 +96,14 @@ message MissionResult {
     string result_str = 2;
 
     enum Result {
-        SUCCESS = 0;
-        ERROR = 1;
-        TOO_MANY_MISSION_ITEMS = 2;
-        BUSY = 3;
-        TIMEOUT = 4;
-        INVALID_ARGUMENT = 5;
-        UNKNOWN = 6;
+        UNKNOWN = 0;
+        SUCCESS = 1;
+        ERROR = 2;
+        TOO_MANY_MISSION_ITEMS = 3;
+        BUSY = 4;
+        TIMEOUT = 5;
+        INVALID_ARGUMENT = 6;
+        UNSUPPORTED = 7;
+        NO_MISSION_AVAILABLE = 8;
     }
 }
