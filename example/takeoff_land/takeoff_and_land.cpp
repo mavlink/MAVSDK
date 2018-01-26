@@ -3,13 +3,13 @@
 //
 // Author: Julian Oes <julian@oes.ch>
 
-#include <dronecore/dronecore.h>
-#include <iostream>
-#include <thread>
 #include <chrono>
 #include <cstdint>
 #include <dronecore/action.h>
+#include <dronecore/dronecore.h>
 #include <dronecore/telemetry.h>
+#include <iostream>
+#include <thread>
 
 using namespace dronecore;
 

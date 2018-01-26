@@ -16,4 +16,7 @@ add_executable(fly_mission
 
 target_link_libraries(fly_mission
     dronecore
+    dronecore_action
+    dronecore_mission
+    dronecore_telemetry
 )

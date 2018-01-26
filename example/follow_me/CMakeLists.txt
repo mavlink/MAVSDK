@@ -21,5 +21,7 @@ add_executable(follow_me
 target_link_libraries(follow_me
     LINK_PUBLIC ${Boost_LIBRARIES}
     dronecore
+    dronecore_action
+    dronecore_follow_me
     pthread
 )

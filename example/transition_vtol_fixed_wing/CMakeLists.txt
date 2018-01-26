@@ -16,4 +16,6 @@ add_executable(transition_vtol_fixed_wing
 
 target_link_libraries(transition_vtol_fixed_wing
     dronecore
+    dronecore_action
+    dronecore_telemetry
 )

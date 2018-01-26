@@ -16,6 +16,7 @@ target_link_libraries(dronecore_mission
 
 install(FILES
     mission.h
+    mission_item.h
     DESTINATION ${dronecore_install_include_dir}
 )
 

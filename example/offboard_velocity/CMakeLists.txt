@@ -17,4 +17,7 @@ add_executable(offboard
 
 target_link_libraries(offboard
     dronecore
+    dronecore_action
+    dronecore_offboard
+    dronecore_telemetry
 )
