@@ -36,7 +36,7 @@ DROP_DEBUG ?= 0
 
 CURRENT_DIR := $(shell pwd)
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-CURL_BUILD_DIR := $(ROOT_DIR)/curl-android-ios
+CURL_BUILD_DIR := $(ROOT_DIR)/core/external/curl-android-ios
 
 # Set default cmake here but replace with special version for Android build.
 CMAKE_BIN = cmake
