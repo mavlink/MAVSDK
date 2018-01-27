@@ -7,15 +7,15 @@ include_directories(
     SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
 )
 
-if (ANDROID)
-    include_directories(curl-android-ios/prebuilt-with-ssl/android/include)
+if(ANDROID)
+    include_directories(external/curl-android-ios/prebuilt-with-ssl/android/include)
 endif()
 
-if (IOS)
-    include_directories(curl-android-ios/prebuilt-with-ssl/ios/include)
+if(IOS)
+    include_directories(external/curl-android-ios/prebuilt-with-ssl/ios/include)
 endif()
 
-if (IOS OR ANDROID OR MSVC OR APPLE)
+if(IOS OR ANDROID OR MSVC OR APPLE)
     set(library_type "STATIC")
 
     # We need tinyxml2 for the camera definition parsing.
@@ -27,12 +27,12 @@ else()
     set(library_type "SHARED")
 endif()
 
-if(NOT MSVC)
+if(NOT MSVC AND NOT ANDROID)
     set(curl_lib "curl")
     add_definitions(
         -DCURL_STATICLIB
     )
-else()
+elseif(MSVC)
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)
         message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl_include\"")
