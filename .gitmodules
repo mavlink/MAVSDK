@@ -5,7 +5,7 @@
 	path = libs/gtest
 	url = https://github.com/google/googletest
 [submodule "curl-android-ios"]
-	path = curl-android-ios
+	path = core/external/curl-android-ios
 	url = https://github.com/dronecore/curl-android-ios.git
 [submodule "libs/tinyxml2"]
 	path = core/libs/tinyxml2
