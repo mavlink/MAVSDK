@@ -13,7 +13,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
 # This includes all GTests that run integration tests
-# TODO enable again
 add_executable(integration_tests_runner
     ../core/unittests_main.cpp
     simple_connect.cpp
