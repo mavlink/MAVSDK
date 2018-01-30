@@ -39,6 +39,10 @@ else()
     set(CMAKE_CXX_FLAGS_DEBUG "/MDd")
 
     set(warnings "-WX -W2")
+
+    # We need this so Windows links to e.g. dronecore_telemetry.dll. 
+    # Without this option it will look for dronecore_telemetry.lib and fail.
+    option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)
 endif()
 
 # Clang needs this warning disabled.

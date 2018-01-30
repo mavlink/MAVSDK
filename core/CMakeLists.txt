@@ -27,12 +27,9 @@ else()
     set(library_type "SHARED")
 endif()
 
-if(NOT MSVC AND NOT ANDROID)
+if (NOT MSVC)
     set(curl_lib "curl")
-    add_definitions(
-        -DCURL_STATICLIB
-    )
-elseif(MSVC)
+else()
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)
         message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl_include\"")
@@ -43,6 +40,10 @@ elseif(MSVC)
     include_directories(${WIN_CURL_INCLUDE_DIR})
     set(curl_lib ${WIN_CURL_LIB})
 endif()
+
+add_definitions(
+    -DCURL_STATICLIB
+)
 
 add_library(dronecore ${library_type}
     call_every_handler.cpp
