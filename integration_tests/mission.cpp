@@ -26,8 +26,8 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
 static void compare_mission_items(const std::shared_ptr<MissionItem> original,
                                   const std::shared_ptr<MissionItem> downloaded);
 
-// Set to 1 to test with 1200 mission items.
-#define MANY_ITEMS_TEST 0
+// Set to 50 to test with about 1200 mission items.
+static constexpr int test_with_many_items = 1;
 
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
@@ -66,9 +66,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
 
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
-#if MANY_ITEMS_TEST==1
-    for (int i = 0; i < 50; ++i) {
-#endif
+    for (int i = 0; i < test_with_many_items; ++i) {
         mission_items.push_back(
             add_mission_item(47.398170327054473,
                              8.5456490218639658,
@@ -116,9 +114,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
                              NAN,
                              MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
 
-#if MANY_ITEMS_TEST==1
     }
-#endif
 
     {
         LogInfo() << "Uploading mission...";
