@@ -35,8 +35,6 @@ else()
         -std=c++11
         -DWINDOWS
     )
-    set(CMAKE_CXX_FLAGS_RELEASE "/MD")
-    set(CMAKE_CXX_FLAGS_DEBUG "/MDd")
 
     set(warnings "-WX -W2")
 
@@ -57,7 +55,7 @@ if(APPLE)
 endif()
 
 # Add DEBUG define for Debug target
-set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 # TODO: move into plugin
 if (ANDROID)
