@@ -41,9 +41,13 @@ The links below take you to the respective header files:
 - [telemetry](plugins/telemetry/telemetry.h): to receive telemetry data
 - [action](plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
 - [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
-- [offboard](plugins/offboard/offboard.h): for velocity or position control
+- [offboard](plugins/offboard/offboard.h): for velocity control
+- [gimbal](plugins/gimbal/gimbal.h): control a gimbal
+- [follow_me](plugins/follow_me/follow_me.h): drone tracks a position supplied by DroneCore.
+- [logging](plugins/logging/logging.h): (not implemented) data logging and streaming from the vehicle.
 
 For more information see the [API Overview](https://docs.dronecore.io/en/getting_started/#api-overview) in the DroneCore Guide.
+
 
 ## Guide Docs (Build instructions etc.)
 
