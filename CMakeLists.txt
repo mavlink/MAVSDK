@@ -38,7 +38,7 @@ else()
 
     set(warnings "-WX -W2")
 
-    # We need this so Windows links to e.g. dronecore_telemetry.dll. 
+    # We need this so Windows links to e.g. dronecore_telemetry.dll.
     # Without this option it will look for dronecore_telemetry.lib and fail.
     option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)
 endif()
@@ -56,6 +56,10 @@ endif()
 
 # Add DEBUG define for Debug target
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+
+set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage")
+set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_COVERAGE} --coverage")
+set(CMAKE_LINKER_FLAGS_COVERAGE "${CMAKE_LINKER_FLAGS_COVERAGE} --coverage")
 
 # TODO: move into plugin
 if (ANDROID)
