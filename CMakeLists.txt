@@ -94,6 +94,9 @@ add_subdirectory(plugins)
 if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
     add_subdirectory(${EXTERNAL_DIR}/plugins
         ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/plugins)
+    include_directories(
+        ${EXTERNAL_DIR}
+    )
 endif()
 
 if(NOT IOS AND NOT ANDROID)
