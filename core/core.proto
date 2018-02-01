@@ -6,15 +6,16 @@ option java_package = "io.dronecore.core";
 option java_outer_classname = "CoreProto";
 
 service CoreService {
-    rpc SubscribeDevices(SubscribeDevicesRequest) returns(stream Device) {}
+    rpc ListRunningPlugins(ListRunningPluginsRequest) returns(ListRunningPluginsResponse) {}
 }
 
-message UUID {
-    uint64 value = 1;
+message ListRunningPluginsRequest {}
+message ListRunningPluginsResponse {
+    repeated PluginInfo = 1;
 }
 
-message SubscribeDevicesRequest {}
-
-message Device {
-    UUID uuid = 1;
+message PluginInfo {
+    string name = 1;
+    string address = 2;
+    int32 port = 3;
 }

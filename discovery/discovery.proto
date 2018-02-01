@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package dronecore.rpc.discovery;
+
+option java_package = "io.dronecore.discovery";
+option java_outer_classname = "DiscoveryProto";
+
+service DiscoveryService {
+    rpc SubscribeDiscoveredDevices(SubscribeDiscoveredDevicesRequest) returns(stream DiscoveredDeviceResponse) {}
+}
+
+message SubscribeDiscoveredDevicesRequest {}
+message DiscoveredDeviceResponse {
+    DeviceInfo device_info = 1;
+}
+
+message DeviceInfo {
+    uint64 uuid = 1;
+    string address = 2;
+    int32 port = 3;
+    bool is_core_instance = 4;
+}
