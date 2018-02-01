@@ -1,28 +1,29 @@
-set(class_name
-    Example
-    PARENT_SCOPE
-)
-
-set(source_files
+add_library(dronecore_example SHARED
     example.cpp
     example_impl.cpp
-    PARENT_SCOPE
 )
 
-set(unittest_source_files
-    example_impl_test.cpp
-    PARENT_SCOPE
+include_directories(
+    ${CMAKE_SOURCE_DIR}/core
+    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
 )
 
-set(header_files
+if(ANDROID)
+    target_link_libraries(dronecore_example
+        log
+    )
+endif()
+
+target_link_libraries(dronecore_example
+    dronecore
+)
+
+install(FILES
     example.h
-    PARENT_SCOPE
+    DESTINATION ${dronecore_install_include_dir}
 )
 
-set(impl_header_files
-    example_impl.h
-    PARENT_SCOPE
+install(TARGETS dronecore_example
+    #EXPORT dronecore-targets
+    DESTINATION ${dronecore_install_lib_dir}
 )
-
-# To include an additional library, use:
-# set(additional_libs "some_library" PARENT_SCOPE)

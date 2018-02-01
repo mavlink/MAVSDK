@@ -3,13 +3,14 @@
 #include "example.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
+#include "device.h"
 
 namespace dronecore {
 
 class ExampleImpl : public PluginImplBase
 {
 public:
-    ExampleImpl();
+    ExampleImpl(Device *device);
     ~ExampleImpl();
 
     void say_hello() const;

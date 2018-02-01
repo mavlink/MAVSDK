@@ -1,12 +1,11 @@
 #include "example_impl.h"
-#include "device.h"
 #include "global_include.h"
 #include <functional>
 
 namespace dronecore {
 
-ExampleImpl::ExampleImpl() :
-    PluginImplBase()
+ExampleImpl::ExampleImpl(Device *device) :
+    PluginImplBase(device)
 {
     _parent->register_plugin(this);
 }
