@@ -88,15 +88,13 @@ set(dronecore_install_lib_dir ${lib_path})
 add_subdirectory(core)
 
 # Add default plugins.
-add_subdirectory(plugins/action)
-add_subdirectory(plugins/gimbal)
-add_subdirectory(plugins/mission)
-add_subdirectory(plugins/offboard)
-add_subdirectory(plugins/telemetry)
-add_subdirectory(plugins/logging)
-add_subdirectory(plugins/info)
-add_subdirectory(plugins/follow_me)
+add_subdirectory(plugins)
 
+# Add external plugins.
+if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
+    add_subdirectory(${EXTERNAL_DIR}/plugins
+        ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/plugins)
+endif()
 
 if(NOT IOS AND NOT ANDROID)
     if (CMAKE_BUILD_DRONECORESERVER)
