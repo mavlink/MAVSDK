@@ -7,14 +7,6 @@ include_directories(
     SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
 )
 
-if(ANDROID)
-    include_directories(external/curl-android-ios/prebuilt-with-ssl/android/include)
-endif()
-
-if(IOS)
-    include_directories(external/curl-android-ios/prebuilt-with-ssl/ios/include)
-endif()
-
 if(IOS OR ANDROID OR MSVC OR APPLE)
     set(library_type "STATIC")
 
@@ -23,13 +15,16 @@ if(IOS OR ANDROID OR MSVC OR APPLE)
     add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
     include_directories(SYSTEM libs/tinyxml2)
 else()
-    # Use tinyxml2 from the host system for Linux.
     set(library_type "SHARED")
 endif()
 
-if (NOT MSVC)
-    set(curl_lib "curl")
-else()
+if(ANDROID)
+    set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/external/curl-android-ios/prebuilt-with-ssl/android/include)
+    set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/external/curl-android-ios/prebuilt-with-ssl/android/${ANDROID_ABI}/libcurl.a)
+elseif(IOS)
+    set(CURL_INCLUDE_DIRS external/curl-android-ios/prebuilt-with-ssl/ios/include)
+    set(CURL_LIBRARY external/curl-android-ios/prebuilt-with-ssl/ios/libcurl.a)
+elseif(MSVC)
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)
         message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl_include\"")
@@ -37,13 +32,19 @@ else()
     if(NOT WIN_CURL_LIB)
         message(FATAL_ERROR "Please provide argument -DWIN_CURL_LIBSTRING=\"path_to_curl_lib\"")
     endif()
-    include_directories(${WIN_CURL_INCLUDE_DIR})
-    set(curl_lib ${WIN_CURL_LIB})
+
+    set(CURL_INCLUDE_DIRS ${WIN_CURL_INCLUDE_DIR})
+    set(CURL_LIBRARY ${WIN_CURL_LIB})
+else()
+    find_package(CURL REQUIRED)
+    set(CURL_LIBRARY "curl")
 endif()
 
 add_definitions(
     -DCURL_STATICLIB
 )
+
+include_directories(${CURL_INCLUDE_DIRS})
 
 add_library(dronecore ${library_type}
     call_every_handler.cpp
@@ -72,7 +73,7 @@ set_property(TARGET dronecore PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
-    ${curl_lib}
+    ${CURL_LIBRARY}
     tinyxml2
 )
 
