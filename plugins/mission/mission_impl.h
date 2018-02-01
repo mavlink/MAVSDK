@@ -86,6 +86,9 @@ private:
         SEND_COMMAND
     } _activity = Activity::NONE;
 
+    unsigned _retries = 0;
+    static constexpr unsigned MAX_RETRIES = 3;
+
     int _last_current_mavlink_mission_item = -1;
     int _last_reached_mavlink_mission_item = -1;
 
@@ -109,6 +112,8 @@ private:
     int _next_mission_item_to_download = -1;
     std::vector<std::shared_ptr<mavlink_mission_item_int_t>> _mavlink_mission_items_downloaded {};
 
+    static constexpr double RETRY_TIMEOUT_S = 0.250;
+    static constexpr double PROCESS_TIMEOUT_S = 1.5;
     void *_timeout_cookie = nullptr;
 };
 

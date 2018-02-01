@@ -76,7 +76,6 @@ void MissionImpl::process_mission_request(const mavlink_message_t &unused)
                                  MAV_MISSION_UNSUPPORTED,
                                  MAV_MISSION_TYPE_MISSION);
 
-
     _parent->send_message(message);
 
     // Reset the timeout because we're still communicating.
@@ -102,6 +101,7 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
         return;
     }
 
+    _retries = 0;
     upload_mission_item(mission_request_int.seq);
 
 
@@ -199,7 +199,11 @@ void MissionImpl::process_mission_count(const mavlink_message_t &message)
 
     _num_mission_items_to_download = mission_count.count;
     _next_mission_item_to_download = 0;
-    _parent->refresh_timeout_handler(_timeout_cookie);
+    // We are now requesting mission items and use a lower timeout for this.
+    _parent->unregister_timeout_handler(_timeout_cookie);
+
+    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
+                                      RETRY_TIMEOUT_S, &_timeout_cookie);
     download_next_mission_item();
 }
 
@@ -210,33 +214,49 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
     auto mission_item_int_ptr = std::make_shared<mavlink_mission_item_int_t>();
     mavlink_msg_mission_item_int_decode(&message, mission_item_int_ptr.get());
 
-    _mavlink_mission_items_downloaded.push_back(mission_item_int_ptr);
-
     if (mission_item_int_ptr->seq == _next_mission_item_to_download) {
         LogDebug() << "Received mission item " << _next_mission_item_to_download;
-    }
 
-    if (_next_mission_item_to_download + 1 == _num_mission_items_to_download) {
-        _parent->unregister_timeout_handler(_timeout_cookie);
+        _mavlink_mission_items_downloaded.push_back(mission_item_int_ptr);
+        _retries = 0;
 
-        mavlink_message_t ack_message;
-        mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
-                                     _parent->get_own_component_id(),
-                                     &ack_message,
-                                     _parent->get_target_system_id(),
-                                     _parent->get_target_component_id(),
-                                     MAV_MISSION_ACCEPTED,
-                                     MAV_MISSION_TYPE_MISSION);
+        if (_next_mission_item_to_download + 1 == _num_mission_items_to_download) {
 
-        _parent->send_message(ack_message);
+            // Wrap things up if we're finished.
+            _parent->unregister_timeout_handler(_timeout_cookie);
 
-        assemble_mission_items();
+            mavlink_message_t ack_message;
+            mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
+                                         _parent->get_own_component_id(),
+                                         &ack_message,
+                                         _parent->get_target_system_id(),
+                                         _parent->get_target_component_id(),
+                                         MAV_MISSION_ACCEPTED,
+                                         MAV_MISSION_TYPE_MISSION);
+
+            _parent->send_message(ack_message);
+
+            assemble_mission_items();
+
+        } else {
+            // Otherwise keep going.
+            ++_next_mission_item_to_download;
+            _parent->refresh_timeout_handler(_timeout_cookie);
+            download_next_mission_item();
+        }
 
     } else {
-        ++_next_mission_item_to_download;
+        LogDebug() << "Received mission item " << int(mission_item_int_ptr->seq)
+                   << " instead of " << _next_mission_item_to_download << " (ignored)";
+
+        // Refresh because we at least still seem to be active.
         _parent->refresh_timeout_handler(_timeout_cookie);
+
+        // And request it again in case our request got lost.
         download_next_mission_item();
+        return;
     }
+
 }
 
 void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<MissionItem>>
@@ -274,6 +294,11 @@ void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<Mission
         return;
     }
 
+    // We use the longer process timeout here because essentially the autopilot needs to pull
+    // the items up.
+    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
+                                      PROCESS_TIMEOUT_S, &_timeout_cookie);
+
     _activity = Activity::SET_MISSION;
     _result_callback = callback;
 }
@@ -301,12 +326,14 @@ void MissionImpl::download_mission_async(const Mission::mission_items_and_result
         return;
     }
 
-    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this), 1.0,
-                                      &_timeout_cookie);
+    // We retry the list request and mission item request, so we use the lower timeout.
+    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
+                                      RETRY_TIMEOUT_S, &_timeout_cookie);
 
     // Clear our internal cache and re-populate it.
     _mavlink_mission_items_downloaded.clear();
     _activity = Activity::GET_MISSION;
+    _retries = 0;
     _mission_items_and_result_callback = callback;
 }
 
@@ -881,10 +908,27 @@ void MissionImpl::process_timeout()
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    LogErr() << "Mission handling timed out.";
+    if (_activity == Activity::SET_MISSION) {
+        // We can't retry this, the autopilot should be requesting the items
+        // again.
+        _activity = Activity::NONE;
+        LogWarn() << "Mission handling timed out while uploading mission.";
 
-    if (_activity != Activity::NONE) {
-        report_mission_result(_result_callback, Mission::Result::TIMEOUT);
+    } else if (_activity == Activity::GET_MISSION) {
+        if (_retries++ > MAX_RETRIES) {
+            _activity = Activity::NONE;
+            _retries = 0;
+            LogWarn() << "Mission handling timed out while downloading mission.";
+            report_mission_result(_result_callback, Mission::Result::TIMEOUT);
+        } else {
+            LogWarn() << "Retrying requesting mission item...";
+            // We are retrying, so we use the lower timeout.
+            _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
+                                              RETRY_TIMEOUT_S, &_timeout_cookie);
+            download_next_mission_item();
+        }
+    } else {
+        LogWarn() << "unknown mission timeout";
     }
 }
 
