@@ -18,34 +18,6 @@ else()
     set(library_type "SHARED")
 endif()
 
-if(ANDROID)
-    set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/external/curl-android-ios/prebuilt-with-ssl/android/include)
-    set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/external/curl-android-ios/prebuilt-with-ssl/android/${ANDROID_ABI}/libcurl.a)
-elseif(IOS)
-    set(CURL_INCLUDE_DIRS external/curl-android-ios/prebuilt-with-ssl/ios/include)
-    set(CURL_LIBRARY external/curl-android-ios/prebuilt-with-ssl/ios/libcurl.a)
-elseif(MSVC)
-    # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
-    if(NOT WIN_CURL_INCLUDE_DIR)
-        message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl_include\"")
-    endif()
-    if(NOT WIN_CURL_LIB)
-        message(FATAL_ERROR "Please provide argument -DWIN_CURL_LIBSTRING=\"path_to_curl_lib\"")
-    endif()
-
-    set(CURL_INCLUDE_DIRS ${WIN_CURL_INCLUDE_DIR})
-    set(CURL_LIBRARY ${WIN_CURL_LIB})
-else()
-    find_package(CURL REQUIRED)
-    set(CURL_LIBRARY "curl")
-endif()
-
-add_definitions(
-    -DCURL_STATICLIB
-)
-
-include_directories(${CURL_INCLUDE_DIRS})
-
 add_library(dronecore ${library_type}
     call_every_handler.cpp
     connection.cpp
