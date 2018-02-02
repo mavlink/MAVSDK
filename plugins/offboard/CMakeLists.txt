@@ -3,11 +3,6 @@ add_library(dronecore_offboard SHARED
     offboard_impl.cpp
 )
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/core
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
-)
-
 target_link_libraries(dronecore_offboard
     dronecore
 )

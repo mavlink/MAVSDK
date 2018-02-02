@@ -1,3 +1,8 @@
+include_directories(
+    ${CMAKE_SOURCE_DIR}/core
+    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
+)
+
 add_subdirectory(action)
 add_subdirectory(gimbal)
 add_subdirectory(mission)

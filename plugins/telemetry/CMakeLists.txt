@@ -4,11 +4,6 @@ add_library(dronecore_telemetry SHARED
     math_conversions.cpp
 )
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/core
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
-)
-
 target_link_libraries(dronecore_telemetry
     dronecore
 )
