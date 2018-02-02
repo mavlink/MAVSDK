@@ -7,13 +7,15 @@ include_directories(
     SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
 )
 
-if(IOS OR ANDROID OR MSVC OR APPLE)
+if(IOS OR MSVC OR APPLE)
     set(library_type "STATIC")
-
     # We need tinyxml2 for the camera definition parsing.
-    # We use the submodule when linking statically.
     add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
     include_directories(SYSTEM libs/tinyxml2)
+elseif(ANDROID)
+    # We need tinyxml2 for the camera definition parsing.
+    add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
+    set(library_type "SHARED")
 else()
     set(library_type "SHARED")
 endif()
@@ -47,6 +49,7 @@ target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
     tinyxml2
+    z
 )
 
 # Link to Windows networking lib.
