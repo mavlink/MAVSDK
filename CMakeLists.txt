@@ -68,6 +68,7 @@ if (ANDROID)
     if (ANDROID_ABI STREQUAL "x86")
         add_definitions(-D__androidx86__)
     endif()
+
 endif()
 
 # We support install in order to use the header and library files in

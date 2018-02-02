@@ -8,12 +8,6 @@ include_directories(
     SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
 )
 
-if(ANDROID)
-    target_link_libraries(dronecore_logging
-        log
-    )
-endif()
-
 target_link_libraries(dronecore_logging
     dronecore
 )

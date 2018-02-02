@@ -84,6 +84,12 @@ if (MSVC)
     )
 endif()
 
+if(ANDROID)
+    target_link_libraries(dronecore
+        log
+    )
+endif()
+
 set_target_properties(dronecore
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
