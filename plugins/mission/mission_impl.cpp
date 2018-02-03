@@ -986,6 +986,9 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
                 photo_inteval = params[1];
                 camera_action = MissionItem::CameraAction::START_PHOTO_INTERVAL;
                 break;
+            case MAV_CMD_IMAGE_STOP_CAPTURE:
+                camera_action = MissionItem::CameraAction::STOP_PHOTO_INTERVAL;
+                break;
             case MAV_CMD_VIDEO_START_STREAMING:
                 camera_action = MissionItem::CameraAction::START_VIDEO;
                 break;
@@ -996,7 +999,7 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
                 speed_m_s = params[1];
                 break;
             case MAV_CMD_DO_MOUNT_CONTROL:
-                gimbal_pitch_deg = -params[0]; // Pitch value is -ve as its in NED frame.
+                gimbal_pitch_deg = params[0]; // Pitch value is -ve as its in NED frame.
                 gimbal_yaw_deg = params[2];
                 break;
             case MAV_CMD_NAV_WAYPOINT:
@@ -1017,7 +1020,8 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
                    ", Lat: " << lat_deg << " deg, Lon: " << lon_deg << " deg, Rel alt: " << rel_alt_deg <<
                    " meters, Speed: " << speed_m_s << " m/s, Is fly thru: " << (is_fly_through ? "true" : "false") <<
                    " Gimbal pitch: " << gimbal_pitch_deg << " deg,  Gimbal yaw: " << gimbal_yaw_deg <<
-                   " deg, Camera action: " << MissionItem::to_str(camera_action) << "\n";
+                   " deg, Photo interval: " << photo_inteval << ", Camera action: " << MissionItem::to_str(
+                       camera_action) << "\n";
 
         // Add mission item to the list
         mission_items.push_back([&]() -> std::shared_ptr<MissionItem> const {
