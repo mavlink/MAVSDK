@@ -22,17 +22,31 @@
 #include <iostream>
 #include <memory>
 
+#define ERROR_CONSOLE_TEXT "\033[31m" //Turn text on console red
+#define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
+#define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
+
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
+using namespace std::chrono; // for seconds(), milliseconds()
+using namespace std::this_thread; // for sleep_for()
 
-static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
-                                                     double longitude_deg,
-                                                     float relative_altitude_m,
-                                                     float speed_m_s,
-                                                     bool is_fly_through,
-                                                     float gimbal_pitch_deg,
-                                                     float gimbal_yaw_deg,
-                                                     MissionItem::CameraAction camera_action);
+// Handles Action's result
+inline void handle_action_err_exit(Action::Result result, const std::string &message);
+// Handles Mission's result
+inline void handle_mission_err_exit(Mission::Result result, const std::string &message);
+// Handles Connection result
+inline void handle_connection_err_exit(DroneCore::ConnectionResult result,
+                                       const std::string &message);
+
+static std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
+                                                      double longitude_deg,
+                                                      float relative_altitude_m,
+                                                      float speed_m_s,
+                                                      bool is_fly_through,
+                                                      float gimbal_pitch_deg,
+                                                      float gimbal_yaw_deg,
+                                                      MissionItem::CameraAction camera_action);
 
 int main(int /*argc*/, char ** /*argv*/)
 {
@@ -49,11 +63,7 @@ int main(int /*argc*/, char ** /*argv*/)
         });
 
         DroneCore::ConnectionResult connection_result = dc.add_udp_connection();
-        if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
-            std::cout << "Connection failed: " << DroneCore::connection_result_str(
-                          connection_result) << std::endl;
-            return 1;
-        }
+        handle_connection_err_exit(connection_result, "Connection failed: ");
 
         future_result.get();
     }
@@ -74,7 +84,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
     while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for device to be ready" << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        sleep_for(seconds(1));
     }
 
     std::cout << "Device ready" << std::endl;
@@ -83,45 +93,45 @@ int main(int /*argc*/, char ** /*argv*/)
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
     mission_items.push_back(
-        add_mission_item(47.398170327054473,
-                         8.5456490218639658,
-                         10.0f, 5.0f, false,
-                         20.0f, 60.0f,
-                         MissionItem::CameraAction::NONE));
+        make_mission_item(47.398170327054473,
+                          8.5456490218639658,
+                          10.0f, 5.0f, false,
+                          20.0f, 60.0f,
+                          MissionItem::CameraAction::NONE));
 
     mission_items.push_back(
-        add_mission_item(47.398241338125118,
-                         8.5455360114574432,
-                         10.0f, 2.0f, true,
-                         0.0f, -60.0f,
-                         MissionItem::CameraAction::TAKE_PHOTO));
+        make_mission_item(47.398241338125118,
+                          8.5455360114574432,
+                          10.0f, 2.0f, true,
+                          0.0f, -60.0f,
+                          MissionItem::CameraAction::TAKE_PHOTO));
 
     mission_items.push_back(
-        add_mission_item(47.398139363821485, 8.5453846156597137,
-                         10.0f, 5.0f, true,
-                         -45.0f, 0.0f,
-                         MissionItem::CameraAction::START_VIDEO));
+        make_mission_item(47.398139363821485, 8.5453846156597137,
+                          10.0f, 5.0f, true,
+                          -45.0f, 0.0f,
+                          MissionItem::CameraAction::START_VIDEO));
 
     mission_items.push_back(
-        add_mission_item(47.398058617228855,
-                         8.5454618036746979,
-                         10.0f, 2.0f, false,
-                         -90.0f, 30.0f,
-                         MissionItem::CameraAction::STOP_VIDEO));
+        make_mission_item(47.398058617228855,
+                          8.5454618036746979,
+                          10.0f, 2.0f, false,
+                          -90.0f, 30.0f,
+                          MissionItem::CameraAction::STOP_VIDEO));
 
     mission_items.push_back(
-        add_mission_item(47.398100366082858,
-                         8.5456969141960144,
-                         10.0f, 5.0f, false,
-                         -45.0f, -30.0f,
-                         MissionItem::CameraAction::START_PHOTO_INTERVAL));
+        make_mission_item(47.398100366082858,
+                          8.5456969141960144,
+                          10.0f, 5.0f, false,
+                          -45.0f, -30.0f,
+                          MissionItem::CameraAction::START_PHOTO_INTERVAL));
 
     mission_items.push_back(
-        add_mission_item(47.398001890458097,
-                         8.5455576181411743,
-                         10.0f, 5.0f, false,
-                         0.0f, 0.0f,
-                         MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
+        make_mission_item(47.398001890458097,
+                          8.5455576181411743,
+                          10.0f, 5.0f, false,
+                          0.0f, 0.0f,
+                          MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
 
     {
         std::cout << "Uploading mission..." << std::endl;
@@ -144,11 +154,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
     std::cout << "Arming..." << std::endl;
     const Action::Result arm_result = action->arm();
-    if (arm_result != Action::Result::SUCCESS) {
-        std::cout << "Arming failed (" << Action::result_str(arm_result) << "), exiting." << std::endl;
-        return 1;
-    }
-
+    handle_action_err_exit(arm_result, "Arm failed: ");
     std::cout << "Armed." << std::endl;
 
     std::atomic<bool> want_to_pause {false};
@@ -175,14 +181,11 @@ int main(int /*argc*/, char ** /*argv*/)
         });
 
         const Mission::Result result = future_result.get();
-        if (result != Mission::Result::SUCCESS) {
-            std::cout << "Mission start failed (" << Mission::result_str(result) << "), exiting." << std::endl;
-            return 1;
-        }
+        handle_mission_err_exit(result, "Mission start failed: ");
     }
 
     while (!want_to_pause) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        sleep_for(seconds(1));
     }
 
     {
@@ -204,7 +207,7 @@ int main(int /*argc*/, char ** /*argv*/)
     }
 
     // Pause for 5 seconds.
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    sleep_for(seconds(5));
 
     // Then continue.
     {
@@ -226,7 +229,7 @@ int main(int /*argc*/, char ** /*argv*/)
     }
 
     while (!mission->mission_finished()) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        sleep_for(seconds(1));
     }
 
     {
@@ -241,23 +244,23 @@ int main(int /*argc*/, char ** /*argv*/)
     }
 
     // We need to wait a bit, otherwise the armed state might not be correct yet.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    sleep_for(seconds(2));
 
     while (telemetry->armed()) {
         // Wait until we're done.
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        sleep_for(seconds(1));
     }
     std::cout << "Disarmed, exiting." << std::endl;
 }
 
-std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
-                                              double longitude_deg,
-                                              float relative_altitude_m,
-                                              float speed_m_s,
-                                              bool is_fly_through,
-                                              float gimbal_pitch_deg,
-                                              float gimbal_yaw_deg,
-                                              MissionItem::CameraAction camera_action)
+std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
+                                               double longitude_deg,
+                                               float relative_altitude_m,
+                                               float speed_m_s,
+                                               bool is_fly_through,
+                                               float gimbal_pitch_deg,
+                                               float gimbal_yaw_deg,
+                                               MissionItem::CameraAction camera_action)
 {
     std::shared_ptr<MissionItem> new_item(new MissionItem());
     new_item->set_position(latitude_deg, longitude_deg);
@@ -267,4 +270,34 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
     new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
     new_item->set_camera_action(camera_action);
     return new_item;
+}
+
+inline void handle_action_err_exit(Action::Result result, const std::string &message)
+{
+    if (result != Action::Result::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(
+                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+inline void handle_mission_err_exit(Mission::Result result, const std::string &message)
+{
+    if (result != Mission::Result::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(
+                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+// Handles connection result
+inline void handle_connection_err_exit(DroneCore::ConnectionResult result,
+                                       const std::string &message)
+{
+    if (result != DroneCore::ConnectionResult::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message
+                  << DroneCore::connection_result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
+        exit(EXIT_FAILURE);
+    }
 }
