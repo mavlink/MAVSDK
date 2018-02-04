@@ -41,10 +41,6 @@ add_library(dronecore ${library_type}
     udp_connection.cpp
 )
 
-# cmake should check for C++11
-set_property(TARGET dronecore PROPERTY CXX_STANDARD 11)
-set_property(TARGET dronecore PROPERTY CXX_STANDARD_REQUIRED ON)
-
 target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
