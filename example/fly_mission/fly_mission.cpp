@@ -1,26 +1,22 @@
 /**
 * @file fly_mission.cpp
 *
-* @brief Demonstrates how add & fly waypoint missions from QGC plan using DroneCore.
+* @brief Demonstrates how to Add & Fly Waypoint missions using DroneCore.
 * The example is summarised below:
-* 1. Imports mission items from QGroundControl plan file.
+* 1. Adds mission items.
 * 2. Starts mission from first mission item.
 * 3. Illustrates Pause/Resume mission item.
 * 4. Exits after the mission is accomplished.
-* Note: Before you run this example, plan your missions in QGroundControl & save them to a file.
 *
 * @author Julian Oes <julian@oes.ch>,
 *         Shakthi Prashanth M <shakthi.prashanth.m@intel.com>
-
 * @date 2017-09-06
 */
 
-
 #include <dronecore/action.h>
 #include <dronecore/dronecore.h>
-#include <iostream>
-#include <cstdlib>
-#include <cmath>
+#include <dronecore/mission.h>
+#include <dronecore/telemetry.h>
 #include <functional>
 #include <future>
 #include <iostream>
@@ -28,16 +24,18 @@
 
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
-using namespace std::this_thread; // for sleep_for()
-using namespace std::chrono; // for milliseconds(), seconds().
 
-int main(int argc, char **argv)
+static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
+                                                     double longitude_deg,
+                                                     float relative_altitude_m,
+                                                     float speed_m_s,
+                                                     bool is_fly_through,
+                                                     float gimbal_pitch_deg,
+                                                     float gimbal_yaw_deg,
+                                                     MissionItem::CameraAction camera_action);
+
+int main(int /*argc*/, char ** /*argv*/)
 {
-    if (argc != 2) {
-        std::cerr << "Usage: fly_mission <path of QGC mission plan file>" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
     DroneCore dc;
 
     {
@@ -54,7 +52,7 @@ int main(int argc, char **argv)
         if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
             std::cout << "Connection failed: " << DroneCore::connection_result_str(
                           connection_result) << std::endl;
-            exit(EXIT_FAILURE);
+            return 1;
         }
 
         future_result.get();
@@ -63,7 +61,7 @@ int main(int argc, char **argv)
     dc.register_on_timeout([](uint64_t uuid) {
         std::cout << "Device with UUID timed out: " << uuid << std::endl;
         std::cout << "Exiting." << std::endl;
-        exit(EXIT_SUCCESS);
+        exit(0);
     });
 
     // We don't need to specifiy the UUID if it's only one device anyway.
@@ -76,27 +74,54 @@ int main(int argc, char **argv)
 
     while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for device to be ready" << std::endl;
-        sleep_for(seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+
     std::cout << "Device ready" << std::endl;
+    std::cout << "Creating and uploading mission" << std::endl;
 
-    // Import Mission items from QGC plan
-    Mission::mission_items_t mission_items;
-    std::string qgc_plan(argv[1]);
-    Mission::Result import_res = Mission::import_mission_items_from_QGC_plan(mission_items, qgc_plan);
-    if (import_res != Mission::Result::SUCCESS) {
-        std::cerr << "Failed to import mission items from QGC plan! "
-                  "Error: " << Mission::result_str(import_res) <<
-                  ". Exiting..." << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    std::vector<std::shared_ptr<MissionItem>> mission_items;
 
-    if (mission_items.size() == 0) {
-        std::cerr << "No missions! Exiting..." << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    std::cout << "Found " << mission_items.size() << " mission items in the given QGC plan." <<
-              std::endl;
+    mission_items.push_back(
+        add_mission_item(47.398170327054473,
+                         8.5456490218639658,
+                         10.0f, 5.0f, false,
+                         20.0f, 60.0f,
+                         MissionItem::CameraAction::NONE));
+
+    mission_items.push_back(
+        add_mission_item(47.398241338125118,
+                         8.5455360114574432,
+                         10.0f, 2.0f, true,
+                         0.0f, -60.0f,
+                         MissionItem::CameraAction::TAKE_PHOTO));
+
+    mission_items.push_back(
+        add_mission_item(47.398139363821485, 8.5453846156597137,
+                         10.0f, 5.0f, true,
+                         -45.0f, 0.0f,
+                         MissionItem::CameraAction::START_VIDEO));
+
+    mission_items.push_back(
+        add_mission_item(47.398058617228855,
+                         8.5454618036746979,
+                         10.0f, 2.0f, false,
+                         -90.0f, 30.0f,
+                         MissionItem::CameraAction::STOP_VIDEO));
+
+    mission_items.push_back(
+        add_mission_item(47.398100366082858,
+                         8.5456969141960144,
+                         10.0f, 5.0f, false,
+                         -45.0f, -30.0f,
+                         MissionItem::CameraAction::START_PHOTO_INTERVAL));
+
+    mission_items.push_back(
+        add_mission_item(47.398001890458097,
+                         8.5455576181411743,
+                         10.0f, 5.0f, false,
+                         0.0f, 0.0f,
+                         MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
 
     {
         std::cout << "Uploading mission..." << std::endl;
@@ -112,7 +137,7 @@ int main(int argc, char **argv)
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::SUCCESS) {
             std::cout << "Mission upload failed (" << Mission::result_str(result) << "), exiting." << std::endl;
-            exit(EXIT_FAILURE);
+            return 1;
         }
         std::cout << "Mission uploaded." << std::endl;
     }
@@ -121,7 +146,7 @@ int main(int argc, char **argv)
     const Action::Result arm_result = action->arm();
     if (arm_result != Action::Result::SUCCESS) {
         std::cout << "Arming failed (" << Action::result_str(arm_result) << "), exiting." << std::endl;
-        exit(EXIT_FAILURE);
+        return 1;
     }
 
     std::cout << "Armed." << std::endl;
@@ -152,12 +177,12 @@ int main(int argc, char **argv)
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::SUCCESS) {
             std::cout << "Mission start failed (" << Mission::result_str(result) << "), exiting." << std::endl;
-            exit(EXIT_FAILURE);
+            return 1;
         }
     }
 
     while (!want_to_pause) {
-        sleep_for(seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     {
@@ -179,7 +204,7 @@ int main(int argc, char **argv)
     }
 
     // Pause for 5 seconds.
-    sleep_for(seconds(5));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     // Then continue.
     {
@@ -200,8 +225,8 @@ int main(int argc, char **argv)
         }
     }
 
-    while (!device.mission().mission_finished()) {
-        sleep_for(seconds(1));
+    while (!mission->mission_finished()) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     {
@@ -216,11 +241,30 @@ int main(int argc, char **argv)
     }
 
     // We need to wait a bit, otherwise the armed state might not be correct yet.
-    sleep_for(seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     while (telemetry->armed()) {
         // Wait until we're done.
-        sleep_for(seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     std::cout << "Disarmed, exiting." << std::endl;
+}
+
+std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
+                                              double longitude_deg,
+                                              float relative_altitude_m,
+                                              float speed_m_s,
+                                              bool is_fly_through,
+                                              float gimbal_pitch_deg,
+                                              float gimbal_yaw_deg,
+                                              MissionItem::CameraAction camera_action)
+{
+    std::shared_ptr<MissionItem> new_item(new MissionItem());
+    new_item->set_position(latitude_deg, longitude_deg);
+    new_item->set_relative_altitude(relative_altitude_m);
+    new_item->set_speed(speed_m_s);
+    new_item->set_fly_through(is_fly_through);
+    new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
+    new_item->set_camera_action(camera_action);
+    return new_item;
 }
