@@ -65,50 +65,55 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     Mission::mission_items_t mission_items_local;
 
     QGCMissionItem item = items_test[CHANGE_SPEED];
-    mission_items_local.push_back(make_mission_item(double(NAN), double(NAN), NAN,
+    mission_items_local.push_back(make_mission_item(double(NAN),
+                                                    double(NAN),
+                                                    NAN,
                                                     item.params[1],
                                                     (item.params[0] == 0.f),
                                                     NAN, NAN, NAN));
 
     item = items_test[TAKEOFF];
-    mission_items_local.push_back(make_mission_item(item.params[4],
-                                                    item.params[5],
+    mission_items_local.push_back(make_mission_item(double(item.params[4]),
+                                                    double(item.params[5]),
                                                     item.params[6], NAN));
 
     item = items_test[GIMBAL_CTRL];
-    mission_items_local.push_back(make_mission_item(double(NAN), double(NAN), NAN, NAN, false,
+    mission_items_local.push_back(make_mission_item(double(NAN),
+                                                    double(NAN),
+                                                    NAN, NAN, false,
                                                     item.params[0],
                                                     item.params[2], NAN));
 
     item = items_test[IMG_START];
-    mission_items_local.push_back(make_mission_item(item.params[4],
-                                                    item.params[5],
-                                                    item.params[6], NAN,
+    mission_items_local.push_back(make_mission_item(double(item.params[4]),
+                                                    double(item.params[5]),
+                                                    item.params[6],
+                                                    NAN,
                                                     false, NAN, NAN,
                                                     item.params[1],
                                                     MissionItem::CameraAction::START_PHOTO_INTERVAL));
 
     item = items_test[WP_1];
-    mission_items_local.push_back(make_mission_item(item.params[4],
-                                                    item.params[5],
+    mission_items_local.push_back(make_mission_item(double(item.params[4]),
+                                                    double(item.params[5]),
                                                     item.params[6],
                                                     NAN, true));
 
     item = items_test[WP_2];
-    mission_items_local.push_back(make_mission_item(item.params[4],
-                                                    item.params[5],
+    mission_items_local.push_back(make_mission_item(double(item.params[4]),
+                                                    double(item.params[5]),
                                                     item.params[6],
                                                     NAN, true));
 
     item = items_test[WP_3];
-    mission_items_local.push_back(make_mission_item(item.params[4],
-                                                    item.params[5],
+    mission_items_local.push_back(make_mission_item(double(item.params[4]),
+                                                    double(item.params[5]),
                                                     item.params[6],
                                                     NAN, true));
 
     item = items_test[IMG_STOP];
-    mission_items_local.push_back(make_mission_item(item.params[4],
-                                                    item.params[5],
+    mission_items_local.push_back(make_mission_item(double(item.params[4]),
+                                                    double(item.params[5]),
                                                     item.params[6], NAN,
                                                     false, NAN, NAN, 0.f,
                                                     MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
@@ -150,7 +155,7 @@ std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
     new_item->set_camera_action(camera_action);
     // In order to test setting the interval, add it here.
     if (camera_action == MissionItem::CameraAction::START_PHOTO_INTERVAL) {
-        new_item->set_camera_photo_interval(camera_photo_interval_s);
+        new_item->set_camera_photo_interval(double(camera_photo_interval_s));
     }
 
     return new_item;
@@ -167,10 +172,10 @@ void compare(const std::shared_ptr<MissionItem> local,
         if (std::isfinite(local->get_longitude_deg())) {
             EXPECT_NEAR(local->get_longitude_deg(), imported->get_longitude_deg(), 1e-6);
         }
-
-        if (std::isfinite(local->get_relative_altitude_m()))
+        if (std::isfinite(local->get_relative_altitude_m())) {
             EXPECT_FLOAT_EQ(local->get_relative_altitude_m(),
                             imported->get_relative_altitude_m());
+        }
 
         EXPECT_EQ(local->get_fly_through(), imported->get_fly_through());
         if (std::isfinite(local->get_speed_m_s())) {
