@@ -13,11 +13,11 @@ endif()
 
 if(IOS OR MSVC OR APPLE)
     # We need tinyxml2 for the camera definition parsing.
-    add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
-    include_directories(SYSTEM libs/tinyxml2)
+    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
+    include_directories(SYSTEM third_party/tinyxml2)
 elseif(ANDROID)
     # We need tinyxml2 for the camera definition parsing.
-    add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
+    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
 endif()
 
 add_library(dronecore ${library_type}

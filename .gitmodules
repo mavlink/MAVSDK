@@ -8,7 +8,7 @@
 	path = core/third_party/curl-android-ios
 	url = https://github.com/dronecore/curl-android-ios.git
 [submodule "libs/tinyxml2"]
-	path = core/libs/tinyxml2
+	path = core/third_party/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
 [submodule "grpc/server/proto"]
 	path = grpc/server/proto
