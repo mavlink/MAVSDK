@@ -86,8 +86,8 @@ install(FILES
 
 if(NOT IOS AND NOT ANDROID)
     # SYSTEM because we don't want warnings for gtest headers.
-    include_directories(SYSTEM libs/gtest/googletest/include)
-    include_directories(SYSTEM libs/gtest/googlemock/include)
+    include_directories(SYSTEM third_party/gtest/googletest/include)
+    include_directories(SYSTEM third_party/gtest/googlemock/include)
 
     add_executable(unit_tests_runner
         global_include_test.cpp

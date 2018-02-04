@@ -2,7 +2,7 @@
 	path = third_party/mavlink/include/mavlink/v2.0
 	url = https://github.com/mavlink/c_library_v2.git
 [submodule "libs/gtest"]
-	path = libs/gtest
+	path = third_party/gtest
 	url = https://github.com/google/googletest
 [submodule "curl-android-ios"]
 	path = core/external/curl-android-ios

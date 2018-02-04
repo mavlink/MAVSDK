@@ -138,7 +138,7 @@ if(NOT IOS AND NOT ANDROID)
     endif()
 
     enable_testing()
-    add_subdirectory(${CMAKE_SOURCE_DIR}/libs/gtest EXCLUDE_FROM_ALL)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
     add_subdirectory(integration_tests)
 
