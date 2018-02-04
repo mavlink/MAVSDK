@@ -1015,13 +1015,15 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
                 LogWarn() << "Mission: Unsupported mission command: " << command << ". Ignoring.";
                 break;
         }
-        // Maybe removed
+// Log disabled now; enable when necessary.
+#if 0
         LogDebug() << "Mission: Cmd: " << command <<
                    ", Lat: " << lat_deg << " deg, Lon: " << lon_deg << " deg, Rel alt: " << rel_alt_deg <<
                    " meters, Speed: " << speed_m_s << " m/s, Is fly thru: " << (is_fly_through ? "true" : "false") <<
                    " Gimbal pitch: " << gimbal_pitch_deg << " deg,  Gimbal yaw: " << gimbal_yaw_deg <<
                    " deg, Photo interval: " << photo_inteval << ", Camera action: " << MissionItem::to_str(
                        camera_action) << "\n";
+#endif
 
         // Add mission item to the list
         mission_items.push_back([&]() -> std::shared_ptr<MissionItem> const {

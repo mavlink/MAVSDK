@@ -129,6 +129,9 @@ if(NOT IOS AND NOT ANDROID)
     # SYSTEM because we don't want warnings for gtest headers.
     include_directories(SYSTEM third_party/gtest/googletest/include)
     include_directories(SYSTEM third_party/gtest/googlemock/include)
+    include_directories(SYSTEM libs/gtest/googletest/include)
+    include_directories(SYSTEM libs/gtest/googlemock/include)
+    include_directories(${CMAKE_SOURCE_DIR}/core)
 
     add_executable(unit_tests_runner
         global_include_test.cpp
@@ -139,7 +142,9 @@ if(NOT IOS AND NOT ANDROID)
         timeout_handler_test.cpp
         call_every_handler_test.cpp
         curl_test.cpp
+		# FIXME: Below line is NOT capturing plugin unit tests sources. So adding manually.
         ${plugin_unittest_source_files}
+		${CMAKE_SOURCE_DIR}/plugins/mission/mission_import_qgc_test.cpp
     )
 
     if (MSVC)
@@ -159,6 +164,7 @@ if(NOT IOS AND NOT ANDROID)
         gtest
         gtest_main
         gmock
+		dronecore_mission
     )
 
     add_test(unit_tests
