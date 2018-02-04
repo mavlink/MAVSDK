@@ -1,6 +1,6 @@
 include_directories(
     ${CMAKE_SOURCE_DIR}/core
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
+    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
 )
 
 add_subdirectory(action)

@@ -2,7 +2,7 @@ find_package(Threads REQUIRED)
 find_package(ZLIB REQUIRED)
 
 include_directories(
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
+    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
 )
 
 if(IOS OR MSVC)
