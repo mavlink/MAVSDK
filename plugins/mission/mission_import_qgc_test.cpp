@@ -51,12 +51,12 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     // file:://plugins/mission/qgroundcontrol_sample.plan
     QGCMissionItem items_test[] = {
         { MAV_CMD_DO_CHANGE_SPEED, { 1.f, 25.f, -1.f, 0.f, 0.f, 0.f, 0.f } },
-        { MAV_CMD_NAV_TAKEOFF, { 0.f, 0.f, 0.f, 0.f, 47.397815180625855, 8.545421242149587, 15.f } },
+        { MAV_CMD_NAV_TAKEOFF, { 0.f, 0.f, 0.f, 0.f, 47.397815180625855f, 8.545421242149587f, 15.f } },
         { MAV_CMD_DO_MOUNT_CONTROL, { 40.f, 0.f, 50.f, 0.f, 0.f, 0.f, 0.f } },
         { MAV_CMD_IMAGE_START_CAPTURE, { 0.f, 1.f, 1.f, 0.f, 0.f, 0.f, 0.f } },
-        { MAV_CMD_NAV_WAYPOINT, { 0.f, 0.f, 0.f, 0.f, 47.39773165601306, 8.545165094893491, 15.f } },
-        { MAV_CMD_NAV_WAYPOINT, { 0.f, 0.f, 0.f, 0.f, 47.39765177077532, 8.545249586057452, 15.f } },
-        { MAV_CMD_NAV_WAYPOINT, { 0.f, 0.f, 0.f, 0.f, 47.397651769568846, 8.545434657161934, 15.f } },
+        { MAV_CMD_NAV_WAYPOINT, { 0.f, 0.f, 0.f, 0.f, 47.39773165601306f, 8.545165094893491f, 15.f } },
+        { MAV_CMD_NAV_WAYPOINT, { 0.f, 0.f, 0.f, 0.f, 47.39765177077532f, 8.545249586057452f, 15.f } },
+        { MAV_CMD_NAV_WAYPOINT, { 0.f, 0.f, 0.f, 0.f, 47.397651769568846f, 8.545434657161934f, 15.f } },
         { MAV_CMD_IMAGE_STOP_CAPTURE, { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f } },
         { MAV_CMD_NAV_RETURN_TO_LAUNCH, { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f } }
     };
