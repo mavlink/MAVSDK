@@ -45,7 +45,7 @@ static std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
 static void compare(const std::shared_ptr<MissionItem> local,
                     const std::shared_ptr<MissionItem> imported);
 
-TEST(QGCMissionItem, ValidateQGCMissonItems)
+TEST(QGCMissionImport, ValidateQGCMissonItems)
 {
     // These mission items are meant to match those in
     // file:://plugins/mission/qgroundcontrol_sample.plan
