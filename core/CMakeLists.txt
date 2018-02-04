@@ -1,23 +1,23 @@
-# Build libdronecore
-
-# This finds thread libs on Linux, Mac, and Windows.
 find_package(Threads REQUIRED)
+find_package(ZLIB REQUIRED)
 
 include_directories(
     SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
 )
 
-if(IOS OR MSVC OR APPLE)
+if(IOS OR MSVC)
     set(library_type "STATIC")
+else()
+    set(library_type "SHARED")
+endif()
+
+if(IOS OR MSVC OR APPLE)
     # We need tinyxml2 for the camera definition parsing.
     add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
     include_directories(SYSTEM libs/tinyxml2)
 elseif(ANDROID)
     # We need tinyxml2 for the camera definition parsing.
     add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
-    set(library_type "SHARED")
-else()
-    set(library_type "SHARED")
 endif()
 
 add_library(dronecore ${library_type}
@@ -49,7 +49,7 @@ target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
     tinyxml2
-    z
+    ${ZLIB_LIBRARIES}
 )
 
 # Link to Windows networking lib.
