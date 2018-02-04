@@ -4,12 +4,13 @@ set(CMAKE_INSTALL_PREFIX "../install" CACHE PATH "default cache path")
 
 project(dronecore)
 
+set_property(GLOBAL PROPERTY CXX_STANDARD 11)
+
 if(NOT MSVC)
     # Clang and GCC
     # We want C++11 and lots of warnings.
     # We are not using exceptions to make it easier to write wrappers.
     add_definitions(
-        -std=c++11
         -fno-exceptions
     )
 
@@ -32,7 +33,6 @@ if(NOT MSVC)
 else()
     # MSBuild
     add_definitions(
-        -std=c++11
         -DWINDOWS
     )
 
