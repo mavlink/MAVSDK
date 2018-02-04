@@ -971,7 +971,7 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
         float gimbal_pitch_deg = 0.f, gimbal_yaw_deg = 0.f;
         bool is_fly_through = false;
         double lat_deg = NAN, lon_deg = NAN, rel_alt_deg = NAN;
-        double photo_inteval = 0.;
+        double photo_interval = 0.;
         auto camera_action = MissionItem::CameraAction::NONE;
         auto command = json_mission_item["command"].int_value();
 
@@ -983,7 +983,7 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
 
         switch (command) {
             case MAV_CMD_IMAGE_START_CAPTURE:
-                photo_inteval = params[1];
+                photo_interval = params[1];
                 camera_action = MissionItem::CameraAction::START_PHOTO_INTERVAL;
                 break;
             case MAV_CMD_IMAGE_STOP_CAPTURE:
@@ -1021,7 +1021,7 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
                    ", Lat: " << lat_deg << " deg, Lon: " << lon_deg << " deg, Rel alt: " << rel_alt_deg <<
                    " meters, Speed: " << speed_m_s << " m/s, Is fly thru: " << (is_fly_through ? "true" : "false") <<
                    " Gimbal pitch: " << gimbal_pitch_deg << " deg,  Gimbal yaw: " << gimbal_yaw_deg <<
-                   " deg, Photo interval: " << photo_inteval << ", Camera action: " << MissionItem::to_str(
+                   " deg, Photo interval: " << photo_interval << ", Camera action: " << MissionItem::to_str(
                        camera_action) << "\n";
 #endif
 
@@ -1033,8 +1033,8 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
             new_item->set_speed(speed_m_s);
             new_item->set_fly_through(is_fly_through);
             new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
-            if (photo_inteval) {
-                new_item->set_camera_photo_interval(photo_inteval);
+            if (photo_interval) {
+                new_item->set_camera_photo_interval(photo_interval);
             }
             new_item->set_camera_action(camera_action);
             return new_item;
