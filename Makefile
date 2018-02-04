@@ -164,7 +164,7 @@ distclean:
 	@rm -rf logs/
 
 clean:
-	@if [ -d build ]; then find build -mindepth 2 -path build/*/external -prune -o -exec rm -rf {} +; fi
+	@if [ -d build ]; then find build -mindepth 2 -path "build/*/external" -prune -o -exec rm -rf {} +; fi
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
