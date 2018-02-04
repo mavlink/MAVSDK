@@ -35,12 +35,9 @@ add_executable(integration_tests_runner
     follow_me.cpp
 )
 
-find_package(ZLIB REQUIRED)
-
 include_directories(
     ${CMAKE_SOURCE_DIR}/core
     ${CMAKE_SOURCE_DIR}
-    ${ZLIB_INCLUDE_DIRS}
 )
 
 set_target_properties(integration_tests_runner
@@ -57,7 +54,6 @@ target_link_libraries(integration_tests_runner
     dronecore_info
     dronecore_gimbal
     dronecore_follow_me
-    ${ZLIB_LIBRARIES}
     gtest
     gtest_main
     gmock

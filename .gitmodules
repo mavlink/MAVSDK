@@ -13,3 +13,6 @@
 [submodule "grpc/server/proto"]
 	path = grpc/server/proto
 	url = https://github.com/dronecore/DroneCore-Proto.git
+[submodule "third_party/zlib"]
+	path = third_party/zlib
+	url = https://github.com/madler/zlib

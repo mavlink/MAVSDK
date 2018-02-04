@@ -1,7 +1,7 @@
 find_package(Threads REQUIRED)
-find_package(ZLIB REQUIRED)
 
 include_directories(
+    ${DRONECORE_ZLIB_INCLUDE_DIRS}
     SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
 )
 
@@ -49,7 +49,7 @@ target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
     tinyxml2
-    ${ZLIB_LIBRARIES}
+    ${DRONECORE_ZLIB_LIBRARIES}
 )
 
 # Link to Windows networking lib.

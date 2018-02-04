@@ -71,6 +71,8 @@ if (ANDROID)
 
 endif()
 
+include(cmake/zlib.cmake)
+
 # We support install in order to use the header and library files in
 # other applications.
 if(ANDROID)
