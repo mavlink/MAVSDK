@@ -125,7 +125,7 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     Mission::mission_items_t mission_items_imported;
     Mission::Result import_result = Mission::import_mission_items_from_QGC_plan(
                                         mission_items_imported,
-                                        "plugins/mission/qgroundcontrol_sample.plan");
+                                        "example/fly_qgc_mission/qgroundcontrol_sample.plan");
     ASSERT_EQ(import_result, Mission::Result::SUCCESS);
     EXPECT_NE(mission_items_imported.size(), 0);
 
