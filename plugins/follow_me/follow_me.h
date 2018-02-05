@@ -24,7 +24,7 @@ class FollowMe : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin and associates it with a specified Device.
+     * @brief Constructor. Creates the plugin for a specific Device.
      *
      * The plugin is typically created as shown below:
      *
@@ -32,9 +32,7 @@ public:
      *     auto follow_me = std::make_shared<FollowMe>(&device);
      *     ```
      *
-     * The plugin is owned by the device (and will be destroyed along with it).
-     *
-     * @param device The device associated with this plugin.
+     * @param device The specific device associated with this plugin.
      */
     explicit FollowMe(Device *device);
 

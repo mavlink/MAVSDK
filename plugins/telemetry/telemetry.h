@@ -16,7 +16,7 @@ class Telemetry : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin and associates it with a specified Device.
+     * @brief Constructor. Creates the plugin for a specific Device.
      *
      * The plugin is typically created as shown below:
      *
@@ -24,9 +24,7 @@ public:
      *     auto telemetry = std::make_shared<Telemetry>(&device);
      *     ```
      *
-     * The plugin is owned by the device (and will be destroyed along with it).
-     *
-     * @param device The device associated with this plugin.
+     * @param device The specific device associated with this plugin.
      */
     explicit Telemetry(Device *device);
 
