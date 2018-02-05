@@ -48,6 +48,13 @@ target_link_libraries(dronecore
     ${DRONECORE_ZLIB_LIBRARIES}
 )
 
+if (IOS)
+    target_link_libraries(dronecore
+        "-framework Foundation"
+        "-framework Security"
+    )
+endif()
+
 # Link to Windows networking lib.
 if (MSVC)
     target_link_libraries(dronecore
