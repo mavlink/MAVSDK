@@ -1004,14 +1004,12 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
                 break;
             case MAV_CMD_NAV_WAYPOINT:
                 is_fly_through = (params[0] == 0.0) ? true : false;
-            // NO break here, because params 4, 5 & 6 of both
-            // of these commands are Lat, Lon & Alt respectively.
+            // FALLTHROUGH
+            // because params 4, 5 & 6 of these commands are same (Lat, Lon & Alt).
             case MAV_CMD_NAV_TAKEOFF:
                 lat_deg = params[4];
                 lon_deg = params[5];
                 rel_alt_deg = params[6];
-                break;
-            case MAV_CMD_NAV_RETURN_TO_LAUNCH:
                 break;
             default: // Unsupported mission command
                 LogWarn() << "Mission: Unsupported mission command: " << command << ". Ignoring.";

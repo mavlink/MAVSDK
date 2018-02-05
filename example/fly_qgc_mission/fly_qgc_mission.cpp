@@ -40,8 +40,8 @@ using namespace std::placeholders; // for `_1`
 using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
 
-// FIXME: Using relative path for QGC mission plan. What's the right way ?
-const std::string DEFAULT_QGC_MISSION_PLAN = "../../../plugins/mission/qgroundcontrol_sample.plan";
+// Sample QGC Mission plan.
+const std::string DEFAULT_QGC_MISSION_PLAN = "../qgroundcontrol_sample.plan";
 
 // Handles Action's result
 inline void handle_action_err_exit(Action::Result result, const std::string &message);
