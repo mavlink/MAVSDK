@@ -1004,6 +1004,8 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
                 break;
             case MAV_CMD_NAV_WAYPOINT:
                 is_fly_through = (params[0] == 0.0) ? true : false;
+            // NO break here, because params 4, 5 & 6 of both
+            // of these commands are Lat, Lon & Alt respectively.
             case MAV_CMD_NAV_TAKEOFF:
                 lat_deg = params[4];
                 lon_deg = params[5];
