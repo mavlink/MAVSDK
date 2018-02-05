@@ -1,50 +1,24 @@
-# Build libdronecore
-
-# This finds thread libs on Linux, Mac, and Windows.
 find_package(Threads REQUIRED)
 
 include_directories(
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
+    ${DRONECORE_ZLIB_INCLUDE_DIRS}
+    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
 )
 
-if(IOS OR ANDROID OR MSVC OR APPLE)
+if(IOS OR MSVC)
     set(library_type "STATIC")
-
-    # We need tinyxml2 for the camera definition parsing.
-    # We use the submodule when linking statically.
-    add_subdirectory(libs/tinyxml2 EXCLUDE_FROM_ALL)
-    include_directories(SYSTEM libs/tinyxml2)
 else()
     set(library_type "SHARED")
 endif()
 
-if(ANDROID)
-    set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/external/curl-android-ios/prebuilt-with-ssl/android/include)
-    set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/external/curl-android-ios/prebuilt-with-ssl/android/${ANDROID_ABI}/libcurl.a)
-elseif(IOS)
-    set(CURL_INCLUDE_DIRS external/curl-android-ios/prebuilt-with-ssl/ios/include)
-    set(CURL_LIBRARY external/curl-android-ios/prebuilt-with-ssl/ios/libcurl.a)
-elseif(MSVC)
-    # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
-    if(NOT WIN_CURL_INCLUDE_DIR)
-        message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl_include\"")
-    endif()
-    if(NOT WIN_CURL_LIB)
-        message(FATAL_ERROR "Please provide argument -DWIN_CURL_LIBSTRING=\"path_to_curl_lib\"")
-    endif()
-
-    set(CURL_INCLUDE_DIRS ${WIN_CURL_INCLUDE_DIR})
-    set(CURL_LIBRARY ${WIN_CURL_LIB})
-else()
-    find_package(CURL REQUIRED)
-    set(CURL_LIBRARY "curl")
+if(IOS OR MSVC OR APPLE)
+    # We need tinyxml2 for the camera definition parsing.
+    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
+    include_directories(SYSTEM third_party/tinyxml2)
+elseif(ANDROID)
+    # We need tinyxml2 for the camera definition parsing.
+    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
 endif()
-
-add_definitions(
-    -DCURL_STATICLIB
-)
-
-include_directories(${CURL_INCLUDE_DIRS})
 
 add_library(dronecore ${library_type}
     call_every_handler.cpp
@@ -67,20 +41,30 @@ add_library(dronecore ${library_type}
     udp_connection.cpp
 )
 
-# cmake should check for C++11
-set_property(TARGET dronecore PROPERTY CXX_STANDARD 11)
-set_property(TARGET dronecore PROPERTY CXX_STANDARD_REQUIRED ON)
-
 target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
     tinyxml2
+    ${DRONECORE_ZLIB_LIBRARIES}
 )
+
+if (IOS)
+    target_link_libraries(dronecore
+        "-framework Foundation"
+        "-framework Security"
+    )
+endif()
 
 # Link to Windows networking lib.
 if (MSVC)
     target_link_libraries(dronecore
         ws2_32
+    )
+endif()
+
+if(ANDROID)
+    target_link_libraries(dronecore
+        log
     )
 endif()
 
@@ -105,8 +89,8 @@ install(FILES
 
 if(NOT IOS AND NOT ANDROID)
     # SYSTEM because we don't want warnings for gtest headers.
-    include_directories(SYSTEM libs/gtest/googletest/include)
-    include_directories(SYSTEM libs/gtest/googlemock/include)
+    include_directories(SYSTEM third_party/gtest/googletest/include)
+    include_directories(SYSTEM third_party/gtest/googlemock/include)
 
     add_executable(unit_tests_runner
         global_include_test.cpp

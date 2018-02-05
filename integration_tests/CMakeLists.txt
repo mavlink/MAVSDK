@@ -1,7 +1,7 @@
 # SYSTEM because we don't want warnings for gtest headers.
 include_directories(
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/gtest/googletest/include
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/gtest/googlemock/include
+    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/gtest/googletest/include
+    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/gtest/googlemock/include
 )
 
 # These are consumed in ../CMakeLists.txt

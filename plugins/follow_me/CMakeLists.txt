@@ -3,17 +3,6 @@ add_library(dronecore_follow_me SHARED
     follow_me_impl.cpp
 )
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/core
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
-)
-
-if(ANDROID)
-    target_link_libraries(dronecore_follow_me
-        log
-    )
-endif()
-
 target_link_libraries(dronecore_follow_me
     dronecore
 )

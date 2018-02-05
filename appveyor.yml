@@ -110,15 +110,15 @@ test: on
 test_script:
   - cd C:\dronecore
   - if "%configuration%"=="Debug" (
-      copy build\libs\gtest\googlemock\gtest\Debug\gtestd.dll build\core\Debug\ &&
-      copy build\libs\gtest\googlemock\gtest\Debug\gtest_maind.dll build\core\Debug\ &&
-      copy build\libs\gtest\googlemock\Debug\gmockd.dll build\core\Debug\ &&
+      copy build\third_party\gtest\googlemock\gtest\Debug\gtestd.dll build\core\Debug\ &&
+      copy build\third_party\gtest\googlemock\gtest\Debug\gtest_maind.dll build\core\Debug\ &&
+      copy build\third_party\gtest\googlemock\Debug\gmockd.dll build\core\Debug\ &&
       cd build\core\Debug &&
       unit_tests_runner.exe
     ) else (
-      copy build\libs\gtest\googlemock\gtest\Release\gtest.dll build\core\Release\ &&
-      copy build\libs\gtest\googlemock\gtest\Release\gtest_main.dll build\core\Release\ &&
-      copy build\libs\gtest\googlemock\Release\gmock.dll build\core\Release\ &&
+      copy build\third_party\gtest\googlemock\gtest\Release\gtest.dll build\core\Release\ &&
+      copy build\third_party\gtest\googlemock\gtest\Release\gtest_main.dll build\core\Release\ &&
+      copy build\third_party\gtest\googlemock\Release\gmock.dll build\core\Release\ &&
       cd build\core\Release &&
       unit_tests_runner.exe
     )

@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.1)
 
 set(CMAKE_INSTALL_PREFIX "../install" CACHE PATH "default cache path")
+
+set(CMAKE_CXX_STANDARD 11)
 
 project(dronecore)
 
@@ -9,7 +11,6 @@ if(NOT MSVC)
     # We want C++11 and lots of warnings.
     # We are not using exceptions to make it easier to write wrappers.
     add_definitions(
-        -std=c++11
         -fno-exceptions
     )
 
@@ -32,7 +33,6 @@ if(NOT MSVC)
 else()
     # MSBuild
     add_definitions(
-        -std=c++11
         -DWINDOWS
     )
 
@@ -68,7 +68,10 @@ if (ANDROID)
     if (ANDROID_ABI STREQUAL "x86")
         add_definitions(-D__androidx86__)
     endif()
+
 endif()
+
+include(cmake/zlib.cmake)
 
 # We support install in order to use the header and library files in
 # other applications.
@@ -84,19 +87,49 @@ endif()
 set(dronecore_install_include_dir "include/dronecore")
 set(dronecore_install_lib_dir ${lib_path})
 
+# core and some plugins require curl
+if(ANDROID)
+    set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/android/include)
+    set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/android/${ANDROID_ABI}/libcurl.a)
+elseif(IOS)
+    set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/ios/include)
+    set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/ios/libcurl.a)
+elseif(MSVC)
+    # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
+    if(NOT WIN_CURL_INCLUDE_DIR)
+        message(FATAL_ERROR "Please provide argument -DWIN_CURL_INCLUDE_DIR:STRING=\"path_to_curl_include\"")
+    endif()
+    if(NOT WIN_CURL_LIB)
+        message(FATAL_ERROR "Please provide argument -DWIN_CURL_LIBSTRING=\"path_to_curl_lib\"")
+    endif()
+
+    set(CURL_INCLUDE_DIRS ${WIN_CURL_INCLUDE_DIR})
+    set(CURL_LIBRARY ${WIN_CURL_LIB})
+
+    add_definitions(
+        -DCURL_STATICLIB
+    )
+else()
+    find_package(CURL REQUIRED)
+    set(CURL_LIBRARY "curl")
+endif()
+
+include_directories(${CURL_INCLUDE_DIRS})
+
 # Build the actual dronecore library.
 add_subdirectory(core)
 
 # Add default plugins.
-add_subdirectory(plugins/action)
-add_subdirectory(plugins/gimbal)
-add_subdirectory(plugins/mission)
-add_subdirectory(plugins/offboard)
-add_subdirectory(plugins/telemetry)
-add_subdirectory(plugins/logging)
-add_subdirectory(plugins/info)
-add_subdirectory(plugins/follow_me)
+add_subdirectory(plugins)
 
+# Add external plugins.
+if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
+    add_subdirectory(${EXTERNAL_DIR}/plugins
+        ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/plugins)
+    include_directories(
+        ${EXTERNAL_DIR}
+    )
+endif()
 
 if(NOT IOS AND NOT ANDROID)
     if (CMAKE_BUILD_DRONECORESERVER)
@@ -107,7 +140,7 @@ if(NOT IOS AND NOT ANDROID)
     endif()
 
     enable_testing()
-    add_subdirectory(${CMAKE_SOURCE_DIR}/libs/gtest EXCLUDE_FROM_ALL)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
     add_subdirectory(integration_tests)
 

@@ -3,17 +3,6 @@ add_library(dronecore_action SHARED
     action_impl.cpp
 )
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/core
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
-)
-
-if(ANDROID)
-    target_link_libraries(dronecore_action
-        log
-    )
-endif()
-
 target_link_libraries(dronecore_action
     dronecore
 )
