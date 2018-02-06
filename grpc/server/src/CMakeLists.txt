@@ -2,16 +2,23 @@ cmake_minimum_required(VERSION 2.8)
 
 file(STRINGS ${PLUGINS_DIR}/plugins.conf PLUGINS_LIST)
 
+set(PROTOC_BINARY ${CMAKE_BINARY_DIR}/../default/third_party/protobuf/bin/protoc)
+set(GRPC_CPP_PLUGIN_BINARY ${CMAKE_BINARY_DIR}/../default/third_party/grpc/bin/grpc_cpp_plugin)
+
+if(NOT EXISTS ${PROTOC_BINARY} OR NOT EXISTS ${GRPC_CPP_PLUGIN_BINARY})
+    message(FATAL_ERROR "Could not find 'protoc' or 'grpc_cpp_plugin' in the 'default' build folder. Please build for your host first (`make BUILD_DRONECORESERVER=YES default`).")
+endif()
+
 add_custom_command(OUTPUT core/core.grpc.pb.cc
-    COMMAND $<TARGET_FILE:protobuf::protoc>
+    COMMAND ${PROTOC_BINARY}
         -I ${PROTO_DIR}
         --grpc_out=.
-        --plugin=protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_cpp_plugin>
+        --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN_BINARY}
         ${PROTO_DIR}/core/core.proto;
 )
 
 add_custom_command(OUTPUT core/core.pb.cc
-    COMMAND $<TARGET_FILE:protobuf::protoc>
+    COMMAND ${PROTOC_BINARY}
         -I ${PROTO_DIR}
         --cpp_out=.
         ${PROTO_DIR}/core/core.proto
@@ -19,10 +26,10 @@ add_custom_command(OUTPUT core/core.pb.cc
 
 foreach(PLUGIN ${PLUGINS_LIST})
     add_custom_command(OUTPUT ${PLUGIN}/${PLUGIN}.grpc.pb.cc
-        COMMAND $<TARGET_FILE:protobuf::protoc>
+        COMMAND ${PROTOC_BINARY}
             -I ${PROTO_DIR}
             --grpc_out=.
-            --plugin=protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_cpp_plugin>
+            --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN_BINARY}
             --cpp_out=.
             ${PROTO_DIR}/${PLUGIN}/${PLUGIN}.proto
     )
@@ -30,7 +37,7 @@ endforeach()
 
 foreach(PLUGIN ${PLUGINS_LIST})
     add_custom_command(OUTPUT ${PLUGIN}/${PLUGIN}.pb.cc
-        COMMAND $<TARGET_FILE:protobuf::protoc>
+        COMMAND ${PROTOC_BINARY}
             -I ${PROTO_DIR}
             --cpp_out=.
             ${PROTO_DIR}/${PLUGIN}/${PLUGIN}.proto

@@ -1,4 +1,4 @@
-add_library(dronecore_action SHARED
+add_library(dronecore_action ${PLUGIN_LIBRARY_TYPE}
     action.cpp
     action_impl.cpp
 )
@@ -13,6 +13,5 @@ install(FILES
 )
 
 install(TARGETS dronecore_action
-    #EXPORT dronecore-targets
     DESTINATION ${dronecore_install_lib_dir}
 )

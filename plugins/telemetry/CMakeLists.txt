@@ -1,4 +1,4 @@
-add_library(dronecore_telemetry SHARED
+add_library(dronecore_telemetry ${PLUGIN_LIBRARY_TYPE}
     telemetry.cpp
     telemetry_impl.cpp
     math_conversions.cpp
