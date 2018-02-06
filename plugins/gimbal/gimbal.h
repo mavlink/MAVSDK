@@ -17,9 +17,15 @@ class Gimbal : public PluginBase
 {
 public:
     /**
-     * @brief Constructor (internal use only).
+     * @brief Constructor. Creates the plugin for a specific Device.
      *
-     * @param impl Private internal implementation.
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto gimbal = std::make_shared<Gimbal>(&device);
+     *     ```
+     *
+     * @param device The specific device associated with this plugin.
      */
     explicit Gimbal(Device *device);
 

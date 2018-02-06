@@ -25,9 +25,15 @@ class Action : public PluginBase
 {
 public:
     /**
-     * @brief Constructor (internal use only).
+     * @brief Constructor. Creates the plugin for a specific Device.
      *
-     * @param impl Private internal implementation.
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto action = std::make_shared<Action>(&device);
+     *     ```
+     *
+     * @param device The specific device associated with this plugin.
      */
     explicit Action(Device *device);
 

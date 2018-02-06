@@ -113,7 +113,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             if aTag.tag=='computeroutput':
                 ignore_current_tag=True #Ignore computer output markup in links
             child_text += markdown_any_tag(child,html=html,para=para)
-        elif child.tag=='computeroutput' or child.tag=='para' or child.tag=='listitem' or child.tag=='ulink' or child.tag=='bold' or child.tag=='emphasis':
+        elif child.tag=='computeroutput' or child.tag=='para' or child.tag=='listitem' or child.tag=='ulink' or child.tag=='bold' or child.tag=='emphasis' or child.tag=='verbatim':
             child_text += markdown_any_tag(child,html=html,para=para) #.strip()
         elif child.tag=='itemizedlist':
             child_text += markdown_any_tag(child,html=True,para=para)
@@ -232,6 +232,9 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             # Note we should ONLY see this via the detaileddescription handling 
             # Because children that are simplesect are not parsed.
             tag_text=lead_text+child_text+tail_text
+
+    elif aTag.tag=='verbatim':
+        tag_text='\n\n'+lead_text+child_text+'\n\n'+tail_text
 
 
     else:

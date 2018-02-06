@@ -27,7 +27,15 @@ class Offboard : public PluginBase
 {
 public:
     /**
-     * @brief Constructor (internal use only).
+     * @brief Constructor. Creates the plugin for a specific Device.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto offboard = std::make_shared<Offboard>(&device);
+     *     ```
+     *
+     * @param device The specific device associated with this plugin.
      */
     explicit Offboard(Device *device);
 
