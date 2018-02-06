@@ -955,26 +955,104 @@ MissionImpl::import_mission_items_from_QGC_plan(Mission::mission_items_t &missio
     }
 
     // Compose mission items
-    return compose_mission_items_from_json(mission_items, parsed_plan);
+    return compose_mission_items(mission_items, parsed_plan);
+}
+
+Mission::Result MissionImpl::compose_mission_items(MAV_CMD cmd, std::vector<double> params,
+                                                   std::shared_ptr<MissionItem> &new_mission_item,
+                                                   Mission::mission_items_t &mission_items)
+{
+    Mission::Result result = Mission::Result::SUCCESS;
+    static int i = 0;
+    LogInfo() << ++i << "-> cmd " << cmd;
+
+    // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
+    do {
+        if (cmd == MAV_CMD_NAV_WAYPOINT ||
+            cmd == MAV_CMD_NAV_TAKEOFF ||
+            cmd == MAV_CMD_NAV_LAND ||
+            cmd == MAV_CMD_NAV_LOITER_TIME ||
+            cmd == MAV_CMD_NAV_RETURN_TO_LAUNCH) {
+            mission_items.push_back(new_mission_item);
+            new_mission_item = std::make_shared<MissionItem>();
+
+            if (cmd == MAV_CMD_NAV_WAYPOINT) {
+                auto is_fly_thru = !(int(params[0]) > 0);
+                new_mission_item->set_fly_through(is_fly_thru);
+            }
+            if (cmd == MAV_CMD_NAV_LOITER_TIME) {
+                auto loiter_time_s = float(params[0]);
+                new_mission_item->set_loiter_time(loiter_time_s);
+            }
+            auto lat = params[4], lon = params[5];
+            new_mission_item->set_position(lat, lon);
+
+            auto rel_alt = float(params[6]);
+            new_mission_item->set_relative_altitude(rel_alt);
+            LogInfo() << cmd << ": Alt " << rel_alt;
+
+        } else if (cmd == MAV_CMD_DO_MOUNT_CONTROL) {
+            auto pitch = float(params[0]), yaw = float(params[2]);
+            new_mission_item->set_gimbal_pitch_and_yaw(pitch, yaw);
+            LogInfo() << cmd << ": Pitch " << pitch << ", Yaw " << yaw;
+
+        } else if (cmd == MAV_CMD_IMAGE_START_CAPTURE) {
+            auto photo_interval = int(params[1]),  photo_count = int(params[2]);
+
+            if (photo_interval > 0 && photo_count == 0) {
+                new_mission_item->set_camera_action(MissionItem::CameraAction::START_PHOTO_INTERVAL);
+                new_mission_item->set_camera_photo_interval(photo_interval);
+            } else if (photo_interval == 0 && photo_count == 1) {
+                new_mission_item->set_camera_action(MissionItem::CameraAction::TAKE_PHOTO);
+            } else {
+                LogErr() << "Mission item START_CAPTURE params unsupported.";
+                result = Mission::Result::UNSUPPORTED;
+                break;
+            }
+
+        } else if (cmd == MAV_CMD_IMAGE_STOP_CAPTURE) {
+            new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_PHOTO_INTERVAL);
+
+        } else if (cmd == MAV_CMD_VIDEO_START_CAPTURE) {
+            new_mission_item->set_camera_action(MissionItem::CameraAction::START_VIDEO);
+
+        } else if (cmd == MAV_CMD_VIDEO_STOP_CAPTURE) {
+            new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_VIDEO);
+
+        } else if (cmd == MAV_CMD_DO_CHANGE_SPEED) {
+            enum { AirSpeed, GroundSpeed };
+            auto speed_type = int(params[0]);
+            auto speed_m_s = float(params[1]);
+            auto throttle = params[2];
+            auto is_absolute = (params[3] == 0);
+
+            if (speed_type == int(GroundSpeed) && throttle < 0 && is_absolute) {
+                new_mission_item->set_speed(speed_m_s);
+            } else {
+                LogErr() << cmd << "Mission item DO_CHANGE_SPEED params unsupported";
+                result = Mission::Result::UNSUPPORTED;
+                break;
+            }
+        } else {
+            LogWarn() << "UNSUPPORTED mission item command (" << cmd << ")";
+        }
+    } while (false); // Executed once per method invokation.
+
+    return result;
 }
 
 Mission::Result
-MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_items,
-                                             const Json &qgc_plan_json)
+MissionImpl::compose_mission_items(Mission::mission_items_t &mission_items,
+                                   const Json &qgc_plan_json)
 {
     const auto json_mission_items = qgc_plan_json["mission"];
+    Mission::Result result = Mission::Result::SUCCESS;
+    auto new_mission_item = std::make_shared<MissionItem>();
 
     // Compose mission items by iterating JSON mission items
     for (auto &json_mission_item : json_mission_items["items"].array_items()) {
         // Parameters of Mission item & MAV command of it.
-        float speed_m_s = 0.f;
-        float gimbal_pitch_deg = 0.f, gimbal_yaw_deg = 0.f;
-        float loiter_time_s = 0.f;
-        bool is_fly_through = false;
-        double lat_deg = NAN, lon_deg = NAN, rel_alt_deg = NAN;
-        double photo_interval = 0.;
-        auto camera_action = MissionItem::CameraAction::NONE;
-        auto command = json_mission_item["command"].int_value();
+        auto cmd = json_mission_item["command"].int_value();
 
         // Extract parameters of each mission item
         std::vector<double> params;
@@ -982,72 +1060,13 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
             params.push_back(p.number_value());
         }
 
-        switch (command) {
-            case MAV_CMD_IMAGE_START_CAPTURE:
-                photo_interval = params[1];
-                camera_action = MissionItem::CameraAction::START_PHOTO_INTERVAL;
-                break;
-            case MAV_CMD_IMAGE_STOP_CAPTURE:
-                camera_action = MissionItem::CameraAction::STOP_PHOTO_INTERVAL;
-                break;
-            case MAV_CMD_VIDEO_START_STREAMING:
-                camera_action = MissionItem::CameraAction::START_VIDEO;
-                break;
-            case MAV_CMD_VIDEO_STOP_STREAMING:
-                camera_action = MissionItem::CameraAction::STOP_VIDEO;
-                break;
-            case MAV_CMD_DO_CHANGE_SPEED:
-                speed_m_s = params[1];
-                break;
-            case MAV_CMD_DO_MOUNT_CONTROL:
-                gimbal_pitch_deg = params[0]; // Pitch value is -ve as its in NED frame.
-                gimbal_yaw_deg = params[2];
-                break;
-            case MAV_CMD_NAV_LOITER_TIME:
-                loiter_time_s = params[0];
-            // FALLTHROUGH
-            case MAV_CMD_NAV_WAYPOINT:
-                is_fly_through = (params[0] == 0.0) ? true : false;
-            // FALLTHROUGH
-            // because params 4, 5 & 6 of these commands are same (Lat, Lon & Alt).
-            case MAV_CMD_NAV_TAKEOFF:
-                lat_deg = params[4];
-                lon_deg = params[5];
-                rel_alt_deg = params[6];
-                break;
-            default: // Unsupported mission command
-                LogWarn() << "Mission: Unsupported mission command: " << command << ". Ignoring.";
-                break;
+        result = compose_mission_items(static_cast<MAV_CMD>(cmd), params, new_mission_item, mission_items);
+        if (result != Mission::Result::SUCCESS) {
+            break;
         }
-// Log disabled now; enable when necessary.
-#if 0
-        LogDebug() << "Mission: Cmd: " << command <<
-                   ", Lat: " << lat_deg << " deg, Lon: " << lon_deg << " deg, Rel alt: " << rel_alt_deg <<
-                   " meters, Speed: " << speed_m_s << " m/s, Is fly thru: " << (is_fly_through ? "true" : "false") <<
-                   " Gimbal pitch: " << gimbal_pitch_deg << " deg,  Gimbal yaw: " << gimbal_yaw_deg <<
-                   " deg, Photo interval: " << photo_interval << ", Camera action: " << MissionItem::to_str(
-                       camera_action) << "\n";
-#endif
-
-        // Add mission item to the list
-        mission_items.push_back([&]() -> std::shared_ptr<MissionItem> const {
-            std::shared_ptr<MissionItem> new_item(new MissionItem());
-            new_item->set_position(lat_deg, lon_deg);
-            new_item->set_relative_altitude(rel_alt_deg);
-            new_item->set_speed(speed_m_s);
-            new_item->set_fly_through(is_fly_through);
-            new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
-            if (photo_interval) {
-                new_item->set_camera_photo_interval(photo_interval);
-            }
-            if (loiter_time_s) {
-                new_item->set_loiter_time(loiter_time_s);
-            }
-            new_item->set_camera_action(camera_action);
-            return new_item;
-        }());
     }
-    return Mission::Result::SUCCESS;
+    mission_items.push_back(new_mission_item);
+    return result;
 }
 
 } // namespace dronecore

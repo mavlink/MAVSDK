@@ -79,8 +79,13 @@ private:
     void download_next_mission_item();
     void assemble_mission_items();
 
-    static Mission::Result compose_mission_items_from_json(Mission::mission_items_t &mission_items,
-                                                           const Json &mission_json);
+    static Mission::Result
+    compose_mission_items(Mission::mission_items_t &mission_items,
+                          const Json &mission_json);
+    static Mission::Result
+    compose_mission_items(MAV_CMD cmd, std::vector<double> params,
+                          std::shared_ptr<MissionItem> &new_mission_item,
+                          Mission::mission_items_t &mission_items);
 
     std::mutex _mutex {};
     Mission::result_callback_t _result_callback = nullptr;

@@ -13,34 +13,100 @@
 
 using namespace dronecore;
 
-// Anonymous enum is intentional to avoid explicit qualification.
-enum {
-    CHANGE_SPEED,
-    TAKEOFF,
-    GIMBAL_CTRL,
-    IMG_START,
-    WP_1,
-    WP_2,
-    WP_3,
-    IMG_STOP,
-    RTL
-};
-
 struct QGCMissionItem {
-    static const size_t N_PARAMS = 7;
     MAV_CMD cmd;
-    float params[N_PARAMS];
+    std::vector<double> params;
 };
 
-static std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
-                                                      double longitude_deg,
-                                                      float relative_altitude_m,
-                                                      float speed_m_s = NAN,
-                                                      bool is_fly_through = false,
-                                                      float gimbal_pitch_deg = NAN,
-                                                      float gimbal_yaw_deg = NAN,
-                                                      float camera_photo_interval_s = NAN,
-                                                      MissionItem::CameraAction camera_action = MissionItem::CameraAction::NONE);
+Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
+                                      std::shared_ptr<MissionItem> &new_mission_item,
+                                      Mission::mission_items_t &mission_items)
+{
+    Mission::Result result = Mission::Result::SUCCESS;
+    static int i = 0;
+    LogInfo() << ++i << "-> cmd " << cmd;
+
+    // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
+    do {
+        if (cmd == MAV_CMD_NAV_WAYPOINT ||
+            cmd == MAV_CMD_NAV_TAKEOFF ||
+            cmd == MAV_CMD_NAV_LAND ||
+            cmd == MAV_CMD_NAV_LOITER_TIME ||
+            cmd == MAV_CMD_NAV_RETURN_TO_LAUNCH) {
+            // When we get Mission items with position/altitude contained,
+            // it will become a new DroneCore mission item;
+//            if (mission_items.size() != 0) { // If its non-first item
+            mission_items.push_back(new_mission_item);
+            new_mission_item = std::make_shared<MissionItem>();
+//            }
+
+            if (cmd == MAV_CMD_NAV_WAYPOINT) {
+                auto is_fly_thru = !(int(params[0]) > 0);
+                new_mission_item->set_fly_through(is_fly_thru);
+            }
+            if (cmd == MAV_CMD_NAV_LOITER_TIME) {
+                auto loiter_time_s = float(params[0]);
+                new_mission_item->set_loiter_time(loiter_time_s);
+            }
+//            if (cmd != MAV_CMD_NAV_TAKEOFF) {
+            auto lat = params[4], lon = params[5];
+            new_mission_item->set_position(lat, lon);
+//            }
+            auto rel_alt = float(params[6]);
+            new_mission_item->set_relative_altitude(rel_alt);
+            LogInfo() << cmd << ": Alt " << rel_alt;
+
+        } else if (cmd == MAV_CMD_DO_MOUNT_CONTROL) {
+            auto pitch = float(params[0]), yaw = float(params[2]);
+            new_mission_item->set_gimbal_pitch_and_yaw(pitch, yaw);
+            LogInfo() << cmd << ": Pitch " << pitch << ", Yaw " << yaw;
+
+        } else if (cmd == MAV_CMD_IMAGE_START_CAPTURE) {
+            auto photo_interval = int(params[1]),  photo_count = int(params[2]);
+
+            if (photo_interval > 0 && photo_count == 0) {
+                new_mission_item->set_camera_action(MissionItem::CameraAction::START_PHOTO_INTERVAL);
+                new_mission_item->set_camera_photo_interval(photo_interval);
+            } else if (photo_interval == 0 && photo_count == 1) {
+                new_mission_item->set_camera_action(MissionItem::CameraAction::TAKE_PHOTO);
+            } else {
+                LogErr() << "Mission item START_CAPTURE params unsupported.";
+                result = Mission::Result::UNSUPPORTED;
+                break;
+            }
+
+        } else if (cmd == MAV_CMD_IMAGE_STOP_CAPTURE) {
+            new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_PHOTO_INTERVAL);
+
+        } else if (cmd == MAV_CMD_VIDEO_START_CAPTURE) {
+            new_mission_item->set_camera_action(MissionItem::CameraAction::START_VIDEO);
+
+        } else if (cmd == MAV_CMD_VIDEO_STOP_CAPTURE) {
+            new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_VIDEO);
+
+        } else if (cmd == MAV_CMD_DO_CHANGE_SPEED) {
+            enum { AirSpeed, GroundSpeed };
+            auto speed_type = int(params[0]);
+            auto speed_m_s = float(params[1]);
+            auto throttle = params[2];
+            auto is_absolute = (params[3] == 0);
+
+            if (speed_type == int(GroundSpeed) && throttle < 0 && is_absolute) {
+                new_mission_item->set_speed(speed_m_s);
+            } else {
+                LogErr() << cmd << "Mission item DO_CHANGE_SPEED params unsupported";
+                result = Mission::Result::UNSUPPORTED;
+                break;
+            }
+        } else {
+            LogWarn() << "UNSUPPORTED mission item command (" << cmd << ")";
+        }
+    } while (false); // Executed once per method invokation.
+
+
+    return result;
+}
+
 
 static void compare(const std::shared_ptr<MissionItem> local,
                     const std::shared_ptr<MissionItem> imported);
@@ -48,78 +114,33 @@ static void compare(const std::shared_ptr<MissionItem> local,
 TEST(QGCMissionImport, ValidateQGCMissonItems)
 {
     // These mission items are meant to match those in
-    // file:://plugins/mission/qgroundcontrol_sample.plan
+    // file:://example/fly_qgc_mission/qgroundcontrol_sample.plan
     QGCMissionItem items_test[] = {
-        { MAV_CMD_DO_CHANGE_SPEED, { 1.f, 25.f, -1.f, 0.f, 0.f, 0.f, 0.f } },
-        { MAV_CMD_NAV_TAKEOFF, { 0.f, 0.f, 0.f, 0.f, 47.397815180625855f, 8.545421242149587f, 15.f } },
-        { MAV_CMD_DO_MOUNT_CONTROL, { 40.f, 0.f, 50.f, 0.f, 0.f, 0.f, 0.f } },
-        { MAV_CMD_IMAGE_START_CAPTURE, { 0.f, 1.f, 1.f, 0.f, 0.f, 0.f, 0.f } },
-        { MAV_CMD_NAV_WAYPOINT, { 0.f, 0.f, 0.f, 0.f, 47.39773165601306f, 8.545165094893491f, 15.f } },
-        { MAV_CMD_NAV_WAYPOINT, { 0.f, 0.f, 0.f, 0.f, 47.39765177077532f, 8.545249586057452f, 15.f } },
-        { MAV_CMD_NAV_WAYPOINT, { 0.f, 0.f, 0.f, 0.f, 47.397651769568846f, 8.545434657161934f, 15.f } },
-        { MAV_CMD_IMAGE_STOP_CAPTURE, { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f } },
-        { MAV_CMD_NAV_RETURN_TO_LAUNCH, { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f } }
+        { MAV_CMD_DO_CHANGE_SPEED, { 1., 25., -1., 0., 0., 0., 0. } },
+        { MAV_CMD_NAV_TAKEOFF, { 0., 0., 0., 0., 47.397815180625855, 8.545421242149587, 15. } },
+        { MAV_CMD_DO_MOUNT_CONTROL, { 40., 0., 50., 0., 0., 0., 0. } },
+        { MAV_CMD_IMAGE_START_CAPTURE, { 0., 0., 1., 0., 0., 0., 0. } },
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39773165601306, 8.545165094893491, 15. } },
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39765177077532, 8.545249586057452, 15. } },
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.397651769568846, 8.545434657161934, 15. } },
+        { MAV_CMD_IMAGE_STOP_CAPTURE, { 0., 0., 0., 0., 0., 0., 0. } },
+        { MAV_CMD_NAV_RETURN_TO_LAUNCH, { 0., 0., 0., 0., 0., 0., 0. } }
     };
 
     // Build mission items for comparison
     Mission::mission_items_t mission_items_local;
+    auto new_mission_item = std::make_shared<MissionItem>();
+    Mission::Result result = Mission::Result::SUCCESS;
 
-    QGCMissionItem item = items_test[CHANGE_SPEED];
-    mission_items_local.push_back(make_mission_item(double(NAN),
-                                                    double(NAN),
-                                                    NAN,
-                                                    item.params[1],
-                                                    (item.params[0] == 0.f),
-                                                    NAN, NAN, NAN));
+    for (auto &qgc_it : items_test) {
+        auto cmd = qgc_it.cmd;
+        auto params = qgc_it.params;
+        result = compose_mission_items(cmd, params, new_mission_item, mission_items_local);
+        EXPECT_EQ(result, Mission::Result::SUCCESS);
+    }
+    mission_items_local.push_back(new_mission_item);
+    LogInfo() << "# of mission items: " << mission_items_local.size();
 
-    item = items_test[TAKEOFF];
-    mission_items_local.push_back(make_mission_item(double(item.params[4]),
-                                                    double(item.params[5]),
-                                                    item.params[6], NAN));
-
-    item = items_test[GIMBAL_CTRL];
-    mission_items_local.push_back(make_mission_item(double(NAN),
-                                                    double(NAN),
-                                                    NAN, NAN, false,
-                                                    item.params[0],
-                                                    item.params[2], NAN));
-
-    item = items_test[IMG_START];
-    mission_items_local.push_back(make_mission_item(double(item.params[4]),
-                                                    double(item.params[5]),
-                                                    item.params[6],
-                                                    NAN,
-                                                    false, NAN, NAN,
-                                                    item.params[1],
-                                                    MissionItem::CameraAction::START_PHOTO_INTERVAL));
-
-    item = items_test[WP_1];
-    mission_items_local.push_back(make_mission_item(double(item.params[4]),
-                                                    double(item.params[5]),
-                                                    item.params[6],
-                                                    NAN, true));
-
-    item = items_test[WP_2];
-    mission_items_local.push_back(make_mission_item(double(item.params[4]),
-                                                    double(item.params[5]),
-                                                    item.params[6],
-                                                    NAN, true));
-
-    item = items_test[WP_3];
-    mission_items_local.push_back(make_mission_item(double(item.params[4]),
-                                                    double(item.params[5]),
-                                                    item.params[6],
-                                                    NAN, true));
-
-    item = items_test[IMG_STOP];
-    mission_items_local.push_back(make_mission_item(double(item.params[4]),
-                                                    double(item.params[5]),
-                                                    item.params[6], NAN,
-                                                    false, NAN, NAN, 0.f,
-                                                    MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
-
-    item = items_test[RTL];
-    mission_items_local.push_back(make_mission_item(double(NAN), double(NAN), NAN, NAN));
 
     // Import Mission items from QGC plan
     Mission::mission_items_t mission_items_imported;
@@ -132,33 +153,9 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     // Compare local & parsed mission items
     ASSERT_EQ(mission_items_local.size(), mission_items_imported.size());
     for (unsigned i = 0; i < mission_items_imported.size(); ++i) {
+        LogInfo() << "************ Mission Item #" << i;
         compare(mission_items_local.at(i), mission_items_imported.at(i));
     }
-}
-
-std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
-                                               double longitude_deg,
-                                               float relative_altitude_m,
-                                               float speed_m_s,
-                                               bool is_fly_through,
-                                               float gimbal_pitch_deg,
-                                               float gimbal_yaw_deg,
-                                               float camera_photo_interval_s,
-                                               MissionItem::CameraAction camera_action)
-{
-    auto new_item = std::make_shared<MissionItem>();
-    new_item->set_position(latitude_deg, longitude_deg);
-    new_item->set_relative_altitude(relative_altitude_m);
-    new_item->set_speed(speed_m_s);
-    new_item->set_fly_through(is_fly_through);
-    new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
-    new_item->set_camera_action(camera_action);
-    // In order to test setting the interval, add it here.
-    if (camera_action == MissionItem::CameraAction::START_PHOTO_INTERVAL) {
-        new_item->set_camera_photo_interval(double(camera_photo_interval_s));
-    }
-
-    return new_item;
 }
 
 void compare(const std::shared_ptr<MissionItem> local,
