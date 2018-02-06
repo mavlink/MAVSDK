@@ -40,9 +40,9 @@ void MissionItemImpl::set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg)
     _gimbal_yaw_deg = yaw_deg;
 }
 
-void MissionItemImpl::set_camera_action_delay(float delay_s)
+void MissionItemImpl::set_loiter_time(float loiter_time_s)
 {
-    _camera_action_delay_s = delay_s;
+    _loiter_time_s = loiter_time_s;
 }
 
 void MissionItemImpl::set_camera_action(MissionItem::CameraAction action)

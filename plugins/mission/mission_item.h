@@ -67,14 +67,14 @@ public:
     void set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg);
 
     /**
-     * @brief Set a delay before executing camera action.
+     * @brief Set loiter time in seconds.
      *
      * This can be used to wait for vehicle to slow down or a gimbal to arrive at the set
      * orientation.
      *
-     * @param delay_s The time to wait for in seconds.
+     * @param loiter_time_s The time to wait (loiter) for, in seconds.
      */
-    void set_camera_action_delay(float delay_s);
+    void set_loiter_time(float loiter_time_s);
 
     /**
      * @brief Possible camera actions at a mission item.
@@ -149,11 +149,11 @@ public:
     float get_speed_m_s() const;
 
     /**
-     * @brief Get the delay before executing camera action.
+     * @brief Get loiter time in seconds.
      *
-     * @return The delay in seconds.
+     * @return Loiter time in seconds.
      */
-    float get_camera_action_delay_s() const;
+    float get_loiter_time_s() const;
 
     /**
      * @brief Get the camera action set for this mission item.

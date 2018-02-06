@@ -20,7 +20,7 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                                      bool is_fly_through,
                                                      float gimbal_pitch_deg,
                                                      float gimbal_yaw_deg,
-                                                     float camera_action_delay_s,
+                                                     float loiter_time_s,
                                                      MissionItem::CameraAction camera_action);
 
 static void compare_mission_items(const std::shared_ptr<MissionItem> original,
@@ -259,7 +259,7 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                               bool is_fly_through,
                                               float gimbal_pitch_deg,
                                               float gimbal_yaw_deg,
-                                              float camera_action_delay_s,
+                                              float loiter_time_s,
                                               MissionItem::CameraAction camera_action)
 {
     auto new_item = std::make_shared<MissionItem>();
@@ -268,7 +268,7 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
     new_item->set_speed(speed_m_s);
     new_item->set_fly_through(is_fly_through);
     new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
-    new_item->set_camera_action_delay(camera_action_delay_s);
+    new_item->set_loiter_time(loiter_time_s);
     new_item->set_camera_action(camera_action);
 
     // In order to test setting the interval, add it here.
@@ -302,8 +302,8 @@ void compare_mission_items(const std::shared_ptr<MissionItem> original,
                          downloaded->get_camera_photo_interval_s());
     }
 
-    if (std::isfinite(original->get_camera_action_delay_s())) {
-        EXPECT_FLOAT_EQ(original->get_camera_action_delay_s(),
-                        downloaded->get_camera_action_delay_s());
+    if (std::isfinite(original->get_loiter_time_s())) {
+        EXPECT_FLOAT_EQ(original->get_loiter_time_s(),
+                        downloaded->get_loiter_time_s());
     }
 }

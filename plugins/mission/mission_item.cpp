@@ -40,9 +40,9 @@ void MissionItem::set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg)
     _impl->set_gimbal_pitch_and_yaw(pitch_deg, yaw_deg);
 }
 
-void MissionItem::set_camera_action_delay(float delay_s)
+void MissionItem::set_loiter_time(float loiter_time_s)
 {
-    _impl->set_camera_action_delay(delay_s);
+    _impl->set_loiter_time(loiter_time_s);
 }
 
 void MissionItem::set_camera_action(CameraAction action)
@@ -80,9 +80,9 @@ float MissionItem::get_speed_m_s() const
     return _impl->get_speed_m_s();
 }
 
-float MissionItem::get_camera_action_delay_s() const
+float MissionItem::get_loiter_time_s() const
 {
-    return _impl->get_camera_action_delay_s();
+    return _impl->get_loiter_time_s();
 }
 
 MissionItem::CameraAction MissionItem::get_camera_action() const
