@@ -18,7 +18,15 @@ class Mission : public PluginBase
 {
 public:
     /**
-     * @brief Constructor (internal use only).
+     * @brief Constructor. Creates the plugin for a specific Device.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto mission = std::make_shared<Mission>(&device);
+     *     ```
+     *
+     * @param device The specific device associated with this plugin.
      */
     explicit Mission(Device *device);
 

@@ -24,8 +24,15 @@ class FollowMe : public PluginBase
 {
 public:
     /**
-     * @brief Constructor (internal use only).
-     * @param impl Private internal implementation.
+     * @brief Constructor. Creates the plugin for a specific Device.
+     *
+     * The plugin is typically created as shown below:
+     *
+     *     ```cpp
+     *     auto follow_me = std::make_shared<FollowMe>(&device);
+     *     ```
+     *
+     * @param device The specific device associated with this plugin.
      */
     explicit FollowMe(Device *device);
 
