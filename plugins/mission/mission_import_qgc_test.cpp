@@ -193,8 +193,8 @@ void compare(const std::shared_ptr<MissionItem> local,
                          imported->get_camera_photo_interval_s());
     }
 
-    if (std::isfinite(local->get_camera_action_delay_s())) {
-        EXPECT_FLOAT_EQ(local->get_camera_action_delay_s(),
-                        imported->get_camera_action_delay_s());
+    if (std::isfinite(local->get_loiter_time_s())) {
+        EXPECT_FLOAT_EQ(local->get_loiter_time_s(),
+                        imported->get_loiter_time_s());
     }
 }

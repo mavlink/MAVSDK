@@ -463,7 +463,7 @@ void MissionImpl::assemble_mavlink_messages()
         // FIXME: It is a bit of a hack to set a LOITER_TIME waypoint to add a delay.
         //        A better solution would be to properly use NAV_DELAY instead. This
         //        would not require us to keep the last lat/lon.
-        if (std::isfinite(mission_item_impl.get_camera_action_delay_s())) {
+        if (std::isfinite(mission_item_impl.get_loiter_time_s())) {
             if (!last_position_valid) {
                 // In the case where we get a delay without a previous position, we will have to
                 // ignore it.
@@ -487,7 +487,7 @@ void MissionImpl::assemble_mavlink_messages()
                                                   MAV_CMD_NAV_LOITER_TIME,
                                                   current,
                                                   autocontinue,
-                                                  mission_item_impl.get_camera_action_delay_s(), // loiter time in seconds
+                                                  mission_item_impl.get_loiter_time_s(), // loiter time in seconds
                                                   NAN, // empty
                                                   0.0f, // radius around waypoint in meters ?
                                                   0.0f, // loiter at center of waypoint
@@ -663,7 +663,7 @@ void MissionImpl::assemble_mission_items()
             }
 
         } else if (it->command == MAV_CMD_NAV_LOITER_TIME) {
-            new_mission_item->set_camera_action_delay(it->param1);
+            new_mission_item->set_loiter_time(it->param1);
 
         } else {
             LogErr() << "UNSUPPORTED mission item command (" << it->command << ")";
