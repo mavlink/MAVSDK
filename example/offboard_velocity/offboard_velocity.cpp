@@ -67,7 +67,7 @@ inline void offboard_log(const std::string &offb_mode, const std::string msg)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_ned(Offboard* offboard)
+bool offb_ctrl_ned(std::shared_ptr<dronecore::Offboard> offboard)
 {
     const std::string offb_mode = "NED";
     // Send it once before starting offboard, otherwise it will be rejected.
@@ -120,7 +120,7 @@ bool offb_ctrl_ned(Offboard* offboard)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_body(Offboard* offboard)
+bool offb_ctrl_body(std::shared_ptr<dronecore::Offboard> offboard)
 {
 
     const std::string offb_mode = "BODY";
