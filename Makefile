@@ -94,18 +94,6 @@ android_x86_64: android_curl
 		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=x86_64)
 
-android_mips: android_curl
-	$(call cmake-build, \
-		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
-		-DANDROID_STL:STRING=c++_static \
-		-DANDROID_ABI=mips)
-
-android_mips64: android_curl
-	$(call cmake-build, \
-		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
-		-DANDROID_STL:STRING=c++_static \
-		-DANDROID_ABI=mips64)
-
 android_armeabi: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
@@ -140,9 +128,7 @@ android: \
     android_x86_64 \
     android_armeabi \
     android_armeabi-v7a \
-    android_arm64-v8a \
-    android_mips \
-    android_mips64
+    android_arm64-v8a
 
 fix_style:
 	@$(ROOT_DIR)/fix_style.sh $(ROOT_DIR)

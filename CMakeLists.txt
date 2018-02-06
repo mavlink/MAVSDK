@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 set(CMAKE_INSTALL_PREFIX "../install" CACHE PATH "default cache path")
 
+list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR}/third_party)
+
 set(CMAKE_CXX_STANDARD 11)
 
 project(dronecore)
@@ -92,8 +94,8 @@ if(ANDROID)
     set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/android/include)
     set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/android/${ANDROID_ABI}/libcurl.a)
 elseif(IOS)
-    set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/ios/include)
-    set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/ios/libcurl.a)
+    set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/iOS/include)
+    set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/iOS/libcurl.a)
 elseif(MSVC)
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)
@@ -131,14 +133,14 @@ if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
     )
 endif()
 
-if(NOT IOS AND NOT ANDROID)
-    if (CMAKE_BUILD_DRONECORESERVER)
-        message(STATUS "Building dronecore server")
-        add_subdirectory(grpc/server)
-    else()
-        message(STATUS "BUILD_DRONECORESERVER not set: not building dronecore server")
-    endif()
+if (CMAKE_BUILD_DRONECORESERVER)
+    message(STATUS "Building dronecore server")
+    add_subdirectory(grpc/server)
+else()
+    message(STATUS "BUILD_DRONECORESERVER not set: not building dronecore server")
+endif()
 
+if(NOT IOS AND NOT ANDROID)
     enable_testing()
     add_subdirectory(${CMAKE_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 

@@ -1,4 +1,4 @@
-add_library(dronecore_mission SHARED
+add_library(dronecore_mission ${PLUGIN_LIBRARY_TYPE}
     mission.cpp
     mission_impl.cpp
     mission_item.cpp

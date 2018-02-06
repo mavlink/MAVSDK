@@ -6,9 +6,9 @@ include_directories(
 )
 
 if(IOS OR MSVC)
-    set(library_type "STATIC")
+    set(LIBRARY_TYPE "STATIC")
 else()
-    set(library_type "SHARED")
+    set(LIBRARY_TYPE "SHARED")
 endif()
 
 
@@ -57,7 +57,7 @@ else()
     # miraculously.
 endif()
 
-add_library(dronecore ${library_type}
+add_library(dronecore ${LIBRARY_TYPE}
     call_every_handler.cpp
     connection.cpp
     curl_wrapper.cpp
@@ -164,4 +164,3 @@ if(NOT IOS AND NOT ANDROID)
         unit_tests_runner
     )
 endif()
-
