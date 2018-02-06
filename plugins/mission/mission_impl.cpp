@@ -969,6 +969,7 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
         // Parameters of Mission item & MAV command of it.
         float speed_m_s = 0.f;
         float gimbal_pitch_deg = 0.f, gimbal_yaw_deg = 0.f;
+        float loiter_time_s = 0.f;
         bool is_fly_through = false;
         double lat_deg = NAN, lon_deg = NAN, rel_alt_deg = NAN;
         double photo_interval = 0.;
@@ -1002,6 +1003,9 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
                 gimbal_pitch_deg = params[0]; // Pitch value is -ve as its in NED frame.
                 gimbal_yaw_deg = params[2];
                 break;
+            case MAV_CMD_NAV_LOITER_TIME:
+                loiter_time_s = params[0];
+            // FALLTHROUGH
             case MAV_CMD_NAV_WAYPOINT:
                 is_fly_through = (params[0] == 0.0) ? true : false;
             // FALLTHROUGH
@@ -1035,6 +1039,9 @@ MissionImpl::compose_mission_items_from_json(Mission::mission_items_t &mission_i
             new_item->set_gimbal_pitch_and_yaw(gimbal_pitch_deg, gimbal_yaw_deg);
             if (photo_interval) {
                 new_item->set_camera_photo_interval(photo_interval);
+            }
+            if (loiter_time_s) {
+                new_item->set_loiter_time(loiter_time_s);
             }
             new_item->set_camera_action(camera_action);
             return new_item;
