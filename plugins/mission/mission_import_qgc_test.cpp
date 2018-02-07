@@ -1,5 +1,5 @@
 /**
-  @file Unit test for #Mission::import_mission_items_from_QGC_plan().
+  @file Unit test for #Mission::import_QGC_mission().
   @author Shakthi Prashanth <shakthi.prashanth.m@intel.com>
 */
 
@@ -64,8 +64,8 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     // Import Mission items from QGC plan
     Mission::mission_items_t mission_items_imported;
     const std::string QGC_SAMPLE_PLAN = "example/fly_qgc_mission/qgroundcontrol_sample.plan";
-    Mission::Result import_result = Mission::import_mission_items_from_QGC_plan(
-                                        mission_items_imported, QGC_SAMPLE_PLAN);
+    Mission::Result import_result = Mission::import_QGC_mission(mission_items_imported,
+                                                                QGC_SAMPLE_PLAN);
     ASSERT_EQ(import_result, Mission::Result::SUCCESS);
     EXPECT_NE(mission_items_imported.size(), 0);
 
