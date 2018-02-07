@@ -11,7 +11,24 @@ else()
     set(library_type "SHARED")
 endif()
 
-if(IOS OR MSVC OR APPLE)
+if(IOS OR APPLE)
+    # We need tinyxml2 for the camera definition parsing.
+    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
+    include_directories(SYSTEM third_party/tinyxml2)
+    # We install the tinyxml2 library manually.
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        # Need to remove that d again.
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.5.0.1.dylib
+            DESTINATION ${lib_path}
+            RENAME libtinyxml2.dylib
+        )
+    else()
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2.5.0.1.dylib
+            DESTINATION ${lib_path}
+            RENAME libtinyxml2.dylib
+        )
+    endif()
+elseif(MSVC)
     # We need tinyxml2 for the camera definition parsing.
     add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
     include_directories(SYSTEM third_party/tinyxml2)
