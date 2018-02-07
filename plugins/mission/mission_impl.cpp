@@ -963,38 +963,34 @@ Mission::Result MissionImpl::compose_mission_items(MAV_CMD cmd, std::vector<doub
                                                    Mission::mission_items_t &mission_items)
 {
     Mission::Result result = Mission::Result::SUCCESS;
-    static int i = 0;
-    LogInfo() << ++i << "-> cmd " << cmd;
 
     // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
     do {
         if (cmd == MAV_CMD_NAV_WAYPOINT ||
             cmd == MAV_CMD_NAV_TAKEOFF ||
-            cmd == MAV_CMD_NAV_LAND ||
-            cmd == MAV_CMD_NAV_LOITER_TIME ||
-            cmd == MAV_CMD_NAV_RETURN_TO_LAUNCH) {
-            mission_items.push_back(new_mission_item);
-            new_mission_item = std::make_shared<MissionItem>();
+            cmd == MAV_CMD_NAV_LAND) {
+            if (new_mission_item->has_position_set()) {
+                mission_items.push_back(new_mission_item);
+                new_mission_item = std::make_shared<MissionItem>();
+            }
 
             if (cmd == MAV_CMD_NAV_WAYPOINT) {
                 auto is_fly_thru = !(int(params[0]) > 0);
                 new_mission_item->set_fly_through(is_fly_thru);
-            }
-            if (cmd == MAV_CMD_NAV_LOITER_TIME) {
-                auto loiter_time_s = float(params[0]);
-                new_mission_item->set_loiter_time(loiter_time_s);
             }
             auto lat = params[4], lon = params[5];
             new_mission_item->set_position(lat, lon);
 
             auto rel_alt = float(params[6]);
             new_mission_item->set_relative_altitude(rel_alt);
-            LogInfo() << cmd << ": Alt " << rel_alt;
 
         } else if (cmd == MAV_CMD_DO_MOUNT_CONTROL) {
             auto pitch = float(params[0]), yaw = float(params[2]);
             new_mission_item->set_gimbal_pitch_and_yaw(pitch, yaw);
-            LogInfo() << cmd << ": Pitch " << pitch << ", Yaw " << yaw;
+
+        } else if (cmd == MAV_CMD_NAV_LOITER_TIME) {
+            auto loiter_time_s = float(params[0]);
+            new_mission_item->set_loiter_time(loiter_time_s);
 
         } else if (cmd == MAV_CMD_IMAGE_START_CAPTURE) {
             auto photo_interval = int(params[1]),  photo_count = int(params[2]);

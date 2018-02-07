@@ -23,43 +23,33 @@ Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
                                       Mission::mission_items_t &mission_items)
 {
     Mission::Result result = Mission::Result::SUCCESS;
-    static int i = 0;
-    LogInfo() << ++i << "-> cmd " << cmd;
 
     // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
     do {
         if (cmd == MAV_CMD_NAV_WAYPOINT ||
             cmd == MAV_CMD_NAV_TAKEOFF ||
-            cmd == MAV_CMD_NAV_LAND ||
-            cmd == MAV_CMD_NAV_LOITER_TIME ||
-            cmd == MAV_CMD_NAV_RETURN_TO_LAUNCH) {
-            // When we get Mission items with position/altitude contained,
-            // it will become a new DroneCore mission item;
-//            if (mission_items.size() != 0) { // If its non-first item
-            mission_items.push_back(new_mission_item);
-            new_mission_item = std::make_shared<MissionItem>();
-//            }
-
+            cmd == MAV_CMD_NAV_LAND) {
+            if (new_mission_item->has_position_set()) {
+                mission_items.push_back(new_mission_item);
+                new_mission_item = std::make_shared<MissionItem>();
+            }
             if (cmd == MAV_CMD_NAV_WAYPOINT) {
                 auto is_fly_thru = !(int(params[0]) > 0);
                 new_mission_item->set_fly_through(is_fly_thru);
             }
-            if (cmd == MAV_CMD_NAV_LOITER_TIME) {
-                auto loiter_time_s = float(params[0]);
-                new_mission_item->set_loiter_time(loiter_time_s);
-            }
-//            if (cmd != MAV_CMD_NAV_TAKEOFF) {
             auto lat = params[4], lon = params[5];
             new_mission_item->set_position(lat, lon);
-//            }
+
             auto rel_alt = float(params[6]);
             new_mission_item->set_relative_altitude(rel_alt);
-            LogInfo() << cmd << ": Alt " << rel_alt;
 
         } else if (cmd == MAV_CMD_DO_MOUNT_CONTROL) {
             auto pitch = float(params[0]), yaw = float(params[2]);
             new_mission_item->set_gimbal_pitch_and_yaw(pitch, yaw);
-            LogInfo() << cmd << ": Pitch " << pitch << ", Yaw " << yaw;
+
+        } else if (cmd == MAV_CMD_NAV_LOITER_TIME) {
+            auto loiter_time_s = float(params[0]);
+            new_mission_item->set_loiter_time(loiter_time_s);
 
         } else if (cmd == MAV_CMD_IMAGE_START_CAPTURE) {
             auto photo_interval = int(params[1]),  photo_count = int(params[2]);
@@ -103,10 +93,8 @@ Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
         }
     } while (false); // Executed once per method invokation.
 
-
     return result;
 }
-
 
 static void compare(const std::shared_ptr<MissionItem> local,
                     const std::shared_ptr<MissionItem> imported);
@@ -116,15 +104,22 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     // These mission items are meant to match those in
     // file:://example/fly_qgc_mission/qgroundcontrol_sample.plan
     QGCMissionItem items_test[] = {
-        { MAV_CMD_DO_CHANGE_SPEED, { 1., 25., -1., 0., 0., 0., 0. } },
-        { MAV_CMD_NAV_TAKEOFF, { 0., 0., 0., 0., 47.397815180625855, 8.545421242149587, 15. } },
-        { MAV_CMD_DO_MOUNT_CONTROL, { 40., 0., 50., 0., 0., 0., 0. } },
-        { MAV_CMD_IMAGE_START_CAPTURE, { 0., 0., 1., 0., 0., 0., 0. } },
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39773165601306, 8.545165094893491, 15. } },
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39765177077532, 8.545249586057452, 15. } },
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.397651769568846, 8.545434657161934, 15. } },
-        { MAV_CMD_IMAGE_STOP_CAPTURE, { 0., 0., 0., 0., 0., 0., 0. } },
-        { MAV_CMD_NAV_RETURN_TO_LAUNCH, { 0., 0., 0., 0., 0., 0., 0. } }
+        { MAV_CMD_NAV_TAKEOFF, { 0., 0., 0., 0., 47.39781011, 8.54553801, 15. } },
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779921, 8.54546693, 15. } },
+        { MAV_CMD_DO_MOUNT_CONTROL, { 25.0, 0., 50.0 } }, // Gimbal pitch & yaw in deg
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39773658, 8.54543743, 15. } },
+        { MAV_CMD_IMAGE_START_CAPTURE, { 0., 0., 1., } }, // Take 1 photo
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39768937, 8.54548034, 15. } },
+        { MAV_CMD_IMAGE_START_CAPTURE, { 0, 1., 0., } }, // Start image capture
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39768029, 8.54561177, 15. } },
+        { MAV_CMD_DO_CHANGE_SPEED, { 1., 100., -1., 0 } },
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779649, 8.54566005, 15. } },
+        { MAV_CMD_NAV_LOITER_TIME, { 30. } }, // Loiter for 30 seconds
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779468, 8.54561445, 15. } },
+        { MAV_CMD_VIDEO_START_CAPTURE, {} }, // Start video capture
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39784279, 8.54553533, 15. } },
+        { MAV_CMD_IMAGE_STOP_CAPTURE, {} }, // Stop image capture
+        { MAV_CMD_VIDEO_STOP_CAPTURE, {} }, // Stop video capture
     };
 
     // Build mission items for comparison
@@ -139,21 +134,19 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
         EXPECT_EQ(result, Mission::Result::SUCCESS);
     }
     mission_items_local.push_back(new_mission_item);
-    LogInfo() << "# of mission items: " << mission_items_local.size();
 
 
     // Import Mission items from QGC plan
     Mission::mission_items_t mission_items_imported;
+    const std::string QGC_SAMPLE_PLAN = "example/fly_qgc_mission/qgroundcontrol_sample.plan";
     Mission::Result import_result = Mission::import_mission_items_from_QGC_plan(
-                                        mission_items_imported,
-                                        "example/fly_qgc_mission/qgroundcontrol_sample.plan");
+                                        mission_items_imported, QGC_SAMPLE_PLAN);
     ASSERT_EQ(import_result, Mission::Result::SUCCESS);
     EXPECT_NE(mission_items_imported.size(), 0);
 
     // Compare local & parsed mission items
     ASSERT_EQ(mission_items_local.size(), mission_items_imported.size());
     for (unsigned i = 0; i < mission_items_imported.size(); ++i) {
-        LogInfo() << "************ Mission Item #" << i;
         compare(mission_items_local.at(i), mission_items_imported.at(i));
     }
 }
