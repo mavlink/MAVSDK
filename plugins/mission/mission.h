@@ -72,14 +72,14 @@ public:
     typedef std::vector<std::shared_ptr<MissionItem>> mission_items_t;
 
     /**
-     * @brief Imports QGC plan mission items.
-     * @param[out] items Imported mission items from QGC plan.
+     * @brief Imports QGC mission and composes DroneCore mission items out of it.
+     * @param[out] mission_items Imported mission items from QGC plan.
      * @param qgc_plan_file Path of the QGC plan.
      * @sa [QGroundControl Plan file format](https://dev.qgroundcontrol.com/en/file_formats/plan.html) (QGroundControl Dev  Guide)
-     * @return SUCCESS if successful in importing mission items, error code otherwise.
+     * @return SUCCESS if successful in importing QGC mission items, error code otherwise.
      */
-    static Result import_mission_items_from_QGC_plan(mission_items_t &items,
-                                                     const std::string &qgc_plan_file);
+    static Result import_QGC_mission(mission_items_t &mission_items,
+                                     const std::string &qgc_plan_file);
 
     /**
      * @brief Uploads a vector of mission items to the device (asynchronous).

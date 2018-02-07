@@ -92,10 +92,10 @@ void Mission::subscribe_progress(progress_callback_t callback)
     _impl->subscribe_progress(callback);
 }
 
-Mission::Result Mission::import_mission_items_from_QGC_plan(Mission::mission_items_t &items,
-                                                            const std::string &qgc_plan_file)
+Mission::Result Mission::import_QGC_mission(Mission::mission_items_t &mission_items,
+                                            const std::string &qgc_plan_file)
 {
-    return MissionImpl::import_mission_items_from_QGC_plan(items, qgc_plan_file);
+    return MissionImpl::import_QGC_mission(mission_items, qgc_plan_file);
 }
 
 } // namespace dronelin

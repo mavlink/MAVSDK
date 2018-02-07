@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 
     // Import Mission items from QGC plan
     Mission::mission_items_t mission_items;
-    Mission::Result import_res = Mission::import_mission_items_from_QGC_plan(mission_items, qgc_plan);
+    Mission::Result import_res = Mission::import_QGC_mission(mission_items, qgc_plan);
     handle_mission_err_exit(import_res, "Failed to import mission items: ");
 
     if (mission_items.size() == 0) {
