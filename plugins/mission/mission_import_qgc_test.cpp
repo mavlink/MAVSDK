@@ -20,6 +20,64 @@ struct QGCMissionItem {
 
 Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
                                       std::shared_ptr<MissionItem> &new_mission_item,
+                                      Mission::mission_items_t &mission_items);
+
+static void compare(const std::shared_ptr<MissionItem> local,
+                    const std::shared_ptr<MissionItem> imported);
+
+TEST(QGCMissionImport, ValidateQGCMissonItems)
+{
+    // These mission items are meant to match those in
+    // file:://example/fly_qgc_mission/qgroundcontrol_sample.plan
+    QGCMissionItem items_test[] = {
+        { MAV_CMD_NAV_TAKEOFF, { 0., 0., 0., 0., 47.39781011, 8.54553801, 15. } },
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779921, 8.54546693, 15. } },
+        { MAV_CMD_DO_MOUNT_CONTROL, { 25.0, 0., 50.0 } }, // Gimbal pitch & yaw in deg
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39773658, 8.54543743, 15. } },
+        { MAV_CMD_IMAGE_START_CAPTURE, { 0., 0., 1., } }, // Take 1 photo
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39768937, 8.54548034, 15. } },
+        { MAV_CMD_IMAGE_START_CAPTURE, { 0, 1., 0., } }, // Start image capture
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39768029, 8.54561177, 15. } },
+        { MAV_CMD_DO_CHANGE_SPEED, { 1., 100., -1., 0 } },
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779649, 8.54566005, 15. } },
+        { MAV_CMD_NAV_LOITER_TIME, { 30. } }, // Loiter for 30 seconds
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779468, 8.54561445, 15. } },
+        { MAV_CMD_VIDEO_START_CAPTURE, {} }, // Start video capture
+        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39784279, 8.54553533, 15. } },
+        { MAV_CMD_IMAGE_STOP_CAPTURE, {} }, // Stop image capture
+        { MAV_CMD_VIDEO_STOP_CAPTURE, {} }, // Stop video capture
+    };
+
+    // Build mission items for comparison
+    Mission::mission_items_t mission_items_local;
+    auto new_mission_item = std::make_shared<MissionItem>();
+    Mission::Result result = Mission::Result::SUCCESS;
+
+    for (auto &qgc_it : items_test) {
+        auto cmd = qgc_it.cmd;
+        auto params = qgc_it.params;
+        result = compose_mission_items(cmd, params, new_mission_item, mission_items_local);
+        EXPECT_EQ(result, Mission::Result::SUCCESS);
+    }
+    mission_items_local.push_back(new_mission_item);
+
+    // Import Mission items from QGC plan
+    Mission::mission_items_t mission_items_imported;
+    const std::string QGC_SAMPLE_PLAN = "example/fly_qgc_mission/qgroundcontrol_sample.plan";
+    Mission::Result import_result = Mission::import_mission_items_from_QGC_plan(
+                                        mission_items_imported, QGC_SAMPLE_PLAN);
+    ASSERT_EQ(import_result, Mission::Result::SUCCESS);
+    EXPECT_NE(mission_items_imported.size(), 0);
+
+    // Compare local & parsed mission items
+    ASSERT_EQ(mission_items_local.size(), mission_items_imported.size());
+    for (unsigned i = 0; i < mission_items_imported.size(); ++i) {
+        compare(mission_items_local.at(i), mission_items_imported.at(i));
+    }
+}
+
+Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
+                                      std::shared_ptr<MissionItem> &new_mission_item,
                                       Mission::mission_items_t &mission_items)
 {
     Mission::Result result = Mission::Result::SUCCESS;
@@ -94,61 +152,6 @@ Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
     } while (false); // Executed once per method invokation.
 
     return result;
-}
-
-static void compare(const std::shared_ptr<MissionItem> local,
-                    const std::shared_ptr<MissionItem> imported);
-
-TEST(QGCMissionImport, ValidateQGCMissonItems)
-{
-    // These mission items are meant to match those in
-    // file:://example/fly_qgc_mission/qgroundcontrol_sample.plan
-    QGCMissionItem items_test[] = {
-        { MAV_CMD_NAV_TAKEOFF, { 0., 0., 0., 0., 47.39781011, 8.54553801, 15. } },
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779921, 8.54546693, 15. } },
-        { MAV_CMD_DO_MOUNT_CONTROL, { 25.0, 0., 50.0 } }, // Gimbal pitch & yaw in deg
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39773658, 8.54543743, 15. } },
-        { MAV_CMD_IMAGE_START_CAPTURE, { 0., 0., 1., } }, // Take 1 photo
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39768937, 8.54548034, 15. } },
-        { MAV_CMD_IMAGE_START_CAPTURE, { 0, 1., 0., } }, // Start image capture
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39768029, 8.54561177, 15. } },
-        { MAV_CMD_DO_CHANGE_SPEED, { 1., 100., -1., 0 } },
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779649, 8.54566005, 15. } },
-        { MAV_CMD_NAV_LOITER_TIME, { 30. } }, // Loiter for 30 seconds
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779468, 8.54561445, 15. } },
-        { MAV_CMD_VIDEO_START_CAPTURE, {} }, // Start video capture
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39784279, 8.54553533, 15. } },
-        { MAV_CMD_IMAGE_STOP_CAPTURE, {} }, // Stop image capture
-        { MAV_CMD_VIDEO_STOP_CAPTURE, {} }, // Stop video capture
-    };
-
-    // Build mission items for comparison
-    Mission::mission_items_t mission_items_local;
-    auto new_mission_item = std::make_shared<MissionItem>();
-    Mission::Result result = Mission::Result::SUCCESS;
-
-    for (auto &qgc_it : items_test) {
-        auto cmd = qgc_it.cmd;
-        auto params = qgc_it.params;
-        result = compose_mission_items(cmd, params, new_mission_item, mission_items_local);
-        EXPECT_EQ(result, Mission::Result::SUCCESS);
-    }
-    mission_items_local.push_back(new_mission_item);
-
-
-    // Import Mission items from QGC plan
-    Mission::mission_items_t mission_items_imported;
-    const std::string QGC_SAMPLE_PLAN = "example/fly_qgc_mission/qgroundcontrol_sample.plan";
-    Mission::Result import_result = Mission::import_mission_items_from_QGC_plan(
-                                        mission_items_imported, QGC_SAMPLE_PLAN);
-    ASSERT_EQ(import_result, Mission::Result::SUCCESS);
-    EXPECT_NE(mission_items_imported.size(), 0);
-
-    // Compare local & parsed mission items
-    ASSERT_EQ(mission_items_local.size(), mission_items_imported.size());
-    for (unsigned i = 0; i < mission_items_imported.size(); ++i) {
-        compare(mission_items_local.at(i), mission_items_imported.at(i));
-    }
 }
 
 void compare(const std::shared_ptr<MissionItem> local,
