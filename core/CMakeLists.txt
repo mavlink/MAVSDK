@@ -18,6 +18,18 @@ if(IOS OR MSVC OR APPLE)
 elseif(ANDROID)
     # We need tinyxml2 for the camera definition parsing.
     add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
+    # We install the tinyxml2 library manually.
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        # Need to remove that d again.
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.so
+            DESTINATION ${lib_path}
+            RENAME libtinyxml2.so
+        )
+    else()
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2.so
+            DESTINATION ${lib_path}
+        )
+    endif()
 endif()
 
 add_library(dronecore ${library_type}
