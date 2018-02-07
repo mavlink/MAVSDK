@@ -127,6 +127,13 @@ public:
     double get_longitude_deg() const;
 
     /**
+     * @brief Reports whether position info (Lat, Lon)
+     * was set for this mission item.
+     * @return true if Lat, Lon is set for this mission item.
+     */
+    bool has_position_set() const;
+
+    /**
      * @brief Get the relative altitude of a mission item.
      *
      * @return The altitude relative to the takeoff position in metres.

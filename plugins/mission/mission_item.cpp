@@ -65,6 +65,11 @@ double MissionItem::get_longitude_deg() const
     return _impl->get_longitude_deg();
 }
 
+bool MissionItem::has_position_set() const
+{
+    return _impl->is_position_finite();
+}
+
 float MissionItem::get_relative_altitude_m() const
 {
     return _impl->get_relative_altitude_m();
