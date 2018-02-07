@@ -67,10 +67,8 @@ inline void offboard_log(const std::string &offb_mode, const std::string msg)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_ned(Device &device)
+bool offb_ctrl_ned(std::shared_ptr<dronecore::Offboard> offboard)
 {
-    std::shared_ptr<Offboard> offboard = std::make_shared<Offboard>(&device);
-
     const std::string offb_mode = "NED";
     // Send it once before starting offboard, otherwise it will be rejected.
     offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
@@ -122,9 +120,8 @@ bool offb_ctrl_ned(Device &device)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_body(Device &device)
+bool offb_ctrl_body(std::shared_ptr<dronecore::Offboard> offboard)
 {
-    std::shared_ptr<Offboard> offboard = std::make_shared<Offboard>(&device);
 
     const std::string offb_mode = "BODY";
 
@@ -204,14 +201,15 @@ int main(int, char **)
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5));
 
+
     //  using local NED co-ordinates
-    bool ret = offb_ctrl_ned(device);
+    bool ret = offb_ctrl_ned(offboard);
     if (ret == false) {
         return EXIT_FAILURE;
     }
 
     //  using body co-ordinates
-    ret = offb_ctrl_body(device);
+    ret = offb_ctrl_body(offboard);
     if (ret == false) {
         return EXIT_FAILURE;
     }
