@@ -6,16 +6,15 @@
 *
 * Steps to run this example:
 * 1. (a) Create a Mission in QGroundControl and save them to a file (.plan) (OR)
-*    (b) Use a pre-created sample mission plan in "plugins/mission/qgroundcontrol_sample.plan".
+*    (b) Use a pre-created sample mission plan in "example/fly_qgc_mission/qgroundcontrol_sample.plan".
 *    Click [here](https://user-images.githubusercontent.com/26615772/31763673-972c5bb6-b4dc-11e7-8ff0-f8b39b6b88c3.png) to see how sample mission plan in QGroundControl looks like.
 * 2. Run the example by passing path of the QGC mission plan as argument (Uses sample mission plan by default).
 *
 * Example description:
-* 1. Imports QGC missions from .plan file.
-* 2. Uploads them to vehicle.
+* 1. Imports QGC mission items from .plan file.
+* 2. Uploads mission items to vehicle.
 * 3. Starts mission from first mission item.
-* 3. Illustrates Pause/Resume mission item.
-* 4. Exits after the mission is accomplished.
+* 4. Commands RTL once QGC Mission is accomplished.
 *
 * @author Shakthi Prashanth M <shakthi.prashanth.m@intel.com>,
 *         Julian Oes <julian@oes.ch>
@@ -36,12 +35,8 @@
 #define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
 
 using namespace dronecore;
-using namespace std::placeholders; // for `_1`
 using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
-
-// Sample QGC Mission plan.
-const std::string DEFAULT_QGC_MISSION_PLAN = "../qgroundcontrol_sample.plan";
 
 // Handles Action's result
 inline void handle_action_err_exit(Action::Result result, const std::string &message);
@@ -53,7 +48,10 @@ inline void handle_connection_err_exit(DroneCore::ConnectionResult result,
 
 int main(int argc, char **argv)
 {
+    // Sample QGC Mission plan.
+    const std::string DEFAULT_QGC_MISSION_PLAN = "../qgroundcontrol_sample.plan";
     std::string qgc_plan(DEFAULT_QGC_MISSION_PLAN);
+
     if (argc != 2) {
         std::cout << "Usage: " << argv[0] << " <path of QGC Mission plan>\n";
         std::cout << "Importing mission from Default mission plan: " << qgc_plan << std::endl;
@@ -134,17 +132,10 @@ int main(int argc, char **argv)
     handle_action_err_exit(arm_result, "Arm failed: ");
     std::cout << "Armed." << std::endl;
 
-    std::atomic<bool> want_to_pause {false};
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
     mission->subscribe_progress(
-    [&want_to_pause](int current, int total) {
+    [](int current, int total) {
         std::cout << "Mission status update: " << current << " / " << total << std::endl;
-
-        if (current >= 2) {
-            // We can only set a flag here. If we do more request inside the callback,
-            // we risk blocking the system.
-            want_to_pause = true;
-        }
     });
 
     {
@@ -161,53 +152,12 @@ int main(int argc, char **argv)
         handle_mission_err_exit(result, "Mission start failed: ");
     }
 
-    while (!want_to_pause) {
-        sleep_for(seconds(1));
-    }
-
-    {
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
-
-        std::cout << "Pausing mission..." << std::endl;
-        mission->pause_mission_async(
-        [prom](Mission::Result result) {
-            prom->set_value(result);
-        });
-
-        const Mission::Result result = future_result.get();
-        if (result != Mission::Result::SUCCESS) {
-            std::cout << "Failed to pause mission (" << Mission::result_str(result) << ")" << std::endl;
-        } else {
-            std::cout << "Mission paused." << std::endl;
-        }
-    }
-
-    // Pause for 5 seconds.
-    sleep_for(seconds(5));
-
-    // Then continue.
-    {
-        auto prom = std::make_shared<std::promise<Mission::Result>>();
-        auto future_result = prom->get_future();
-
-        std::cout << "Resuming mission..." << std::endl;
-        mission->start_mission_async(
-        [prom](Mission::Result result) {
-            prom->set_value(result);
-        });
-
-        const Mission::Result result = future_result.get();
-        if (result != Mission::Result::SUCCESS) {
-            std::cout << "Failed to resume mission (" << Mission::result_str(result) << ")" << std::endl;
-        } else {
-            std::cout << "Resumed mission." << std::endl;
-        }
-    }
-
     while (!mission->mission_finished()) {
         sleep_for(seconds(1));
     }
+
+    // Lets wait for sometime.
+    sleep_for(seconds(5));
 
     {
         // We are done, and can do RTL to go home.
@@ -220,14 +170,7 @@ int main(int argc, char **argv)
         }
     }
 
-    // We need to wait a bit, otherwise the armed state might not be correct yet.
-    sleep_for(seconds(2));
-
-    while (telemetry->armed()) {
-        // Wait until we're done.
-        sleep_for(seconds(1));
-    }
-    std::cout << "Disarmed, exiting." << std::endl;
+    return 0;
 }
 
 inline void handle_action_err_exit(Action::Result result, const std::string &message)
