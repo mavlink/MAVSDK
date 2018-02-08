@@ -20,6 +20,9 @@ RUN dnf -y install \
     ruby-devel \
     redhat-rpm-config \
     rpm-build \
+    autoconf \
+    automake \
+    libtool \
     which \
     astyle \
     doxygen \
