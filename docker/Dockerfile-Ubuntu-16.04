@@ -24,6 +24,8 @@ RUN apt-get update \
         autoconf \
         automake \
         python \
+        autotools-dev \
+        libltdl-dev \
         python-pip \
         libtinyxml2-dev \
         ruby-dev \
