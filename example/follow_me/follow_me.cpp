@@ -90,7 +90,7 @@ int main(int, char **)
     follow_me_result = follow_me->start();
     follow_me_error_exit(follow_me_result, "Failed to start FollowMe mode");
 
-    boost::asio::io_context io; // for event loop
+    boost::asio::io_service io; // for event loop
     std::unique_ptr<FakeLocationProvider> location_provider(new FakeLocationProvider(io));
     // Register for platform-specific Location provider. We're using FakeLocationProvider for the example.
     location_provider->request_location_updates([&device, &follow_me](double lat, double lon) {

@@ -23,7 +23,7 @@ class FakeLocationProvider
 public:
     typedef std::function<void(double lat, double lon)> location_callback_t;
 
-    FakeLocationProvider(boost::asio::io_context &io)
+    FakeLocationProvider(boost::asio::io_service &io)
         : timer_(io, boost::posix_time::seconds(1))
     {}
 

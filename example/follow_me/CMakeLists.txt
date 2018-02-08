@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(follow_me)
 
-find_package(Boost 1.66 COMPONENTS REQUIRED system)
+find_package(Boost 1.58 COMPONENTS REQUIRED system)
 include_directories(${Boost_INCLUDE_DIR})
 
 if(NOT MSVC)
@@ -23,5 +23,6 @@ target_link_libraries(follow_me
     dronecore
     dronecore_action
     dronecore_follow_me
+    dronecore_telemetry
     pthread
 )
