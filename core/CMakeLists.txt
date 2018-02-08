@@ -48,6 +48,10 @@ elseif(ANDROID)
     add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
     include_directories(SYSTEM third_party/tinyxml2)
     link_directories(third_party/tinyxml2)
+elseif(MSVC)
+    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
+    include_directories(SYSTEM third_party/tinyxml2)
+    link_directories(third_party/tinyxml2)
 else()
     # For Linux for now we use the system tinyxml2, otherwise the unit test crashes
     # miraculously.
