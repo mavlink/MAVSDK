@@ -11,11 +11,12 @@ else()
     set(library_type "SHARED")
 endif()
 
+# We need tinyxml2 for the camera definition parsing.
+add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
+include_directories(SYSTEM third_party/tinyxml2)
+
 if(IOS OR APPLE)
-    # We need tinyxml2 for the camera definition parsing.
-    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
-    include_directories(SYSTEM third_party/tinyxml2)
-    # We install the tinyxml2 library manually.
+    # We install the tinyxml2 library manually for macOS and iOS.
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         # Need to remove that d again.
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.5.0.1.dylib
@@ -28,14 +29,8 @@ if(IOS OR APPLE)
             RENAME libtinyxml2.dylib
         )
     endif()
-elseif(MSVC)
-    # We need tinyxml2 for the camera definition parsing.
-    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
-    include_directories(SYSTEM third_party/tinyxml2)
 elseif(ANDROID)
-    # We need tinyxml2 for the camera definition parsing.
-    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
-    # We install the tinyxml2 library manually.
+    # We install the tinyxml2 library manually for Android.
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         # Need to remove that d again.
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.so
