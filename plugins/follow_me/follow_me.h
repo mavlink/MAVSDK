@@ -28,9 +28,9 @@ public:
      *
      * The plugin is typically created as shown below:
      *
-     *     ```cpp
+     *     \code{cpp}
      *     auto follow_me = std::make_shared<FollowMe>(&device);
-     *     ```
+     *     \endcode
      *
      * @param device The specific device associated with this plugin.
      */

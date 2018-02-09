@@ -22,9 +22,9 @@ public:
      *
      * The plugin is typically created as shown below:
      *
-     *     ```cpp
+     *     \code{cpp}
      *     auto mission = std::make_shared<Mission>(&device);
-     *     ```
+     *     \endcode
      *
      * @param device The specific device associated with this plugin.
      */
