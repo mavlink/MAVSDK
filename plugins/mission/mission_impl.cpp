@@ -935,8 +935,8 @@ void MissionImpl::process_timeout()
 }
 
 Mission::Result
-MissionImpl::import_QGC_mission(Mission::mission_items_t &mission_items,
-                                const std::string &qgc_plan_file)
+MissionImpl::import_qgroundcontrol_mission(Mission::mission_items_t &mission_items,
+                                           const std::string &qgc_plan_file)
 {
     std::ifstream file(qgc_plan_file);
     if (!file) { // File open error
