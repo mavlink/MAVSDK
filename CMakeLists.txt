@@ -63,16 +63,6 @@ set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage")
 set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_COVERAGE} --coverage")
 set(CMAKE_LINKER_FLAGS_COVERAGE "${CMAKE_LINKER_FLAGS_COVERAGE} --coverage")
 
-# TODO: move into plugin
-if (ANDROID)
-    add_definitions(-frtti)
-    # Workaround for a plugin where the __androidx86__ is necessary.
-    if (ANDROID_ABI STREQUAL "x86")
-        add_definitions(-D__androidx86__)
-    endif()
-
-endif()
-
 include(cmake/zlib.cmake)
 
 # We support install in order to use the header and library files in
