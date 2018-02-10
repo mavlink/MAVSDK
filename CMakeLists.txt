@@ -8,13 +8,16 @@ set(CMAKE_CXX_STANDARD 11)
 
 project(dronecore)
 
-if(NOT MSVC)
-    # Clang and GCC
-    # We want C++11 and lots of warnings.
+if(MSVC)
+    add_definitions(-DWINDOWS)
+    set(warnings "-WX -W2")
+
+    # We need this so Windows links to e.g. dronecore_telemetry.dll.
+    # Without this option it will look for dronecore_telemetry.lib and fail.
+    option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)
+else()
     # We are not using exceptions to make it easier to write wrappers.
-    add_definitions(
-        -fno-exceptions
-    )
+    add_definitions(-fno-exceptions)
 
     set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2")
 
@@ -31,24 +34,9 @@ if(NOT MSVC)
         endif()
 
         set(warnings "${warnings} -Wuseless-cast -Wlogical-op")
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(warnings "${warnings} -Wno-missing-braces")
     endif()
-else()
-    # MSBuild
-    add_definitions(
-        -DWINDOWS
-    )
-
-    set(warnings "-WX -W2")
-
-    # We need this so Windows links to e.g. dronecore_telemetry.dll.
-    # Without this option it will look for dronecore_telemetry.lib and fail.
-    option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)
-endif()
-
-# Clang needs this warning disabled.
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    # Some time ago we needed `-stdlib=libc++` but that does not seem to be true anymore.
-    set(warnings "${warnings} -Wno-missing-braces")
 endif()
 
 # We need a define if on APPLE
