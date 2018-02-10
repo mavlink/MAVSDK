@@ -2,6 +2,7 @@ find_package(Threads REQUIRED)
 
 include_directories(
     ${DRONECORE_ZLIB_INCLUDE_DIRS}
+    ${CURL_INCLUDE_DIRS}
     SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
 )
 
@@ -10,7 +11,6 @@ if(IOS OR MSVC)
 else()
     set(LIBRARY_TYPE "SHARED")
 endif()
-
 
 # We need tinyxml2 for the camera definition parsing.
 if(IOS OR APPLE)
