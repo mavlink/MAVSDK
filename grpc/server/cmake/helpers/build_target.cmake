@@ -11,6 +11,7 @@ function(build_target SRC_DIR TARGET_DIR)
             -DBINARY_DIR=${TARGET_DIR}
             -DANDROID_ABI=${ANDROID_ABI}
             -DANDROID_STL=${ANDROID_STL}
+            -DANDROID_PLATFORM=${ANDROID_PLATFORM}
             -DIOS_PLATFORM=${IOS_PLATFORM}
             -DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR}
             ${SRC_DIR}
