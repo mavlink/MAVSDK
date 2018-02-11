@@ -21,8 +21,10 @@ if(ANDROID)
         CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX:PATH=${BINARY_DIR}
             -DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DANDROID_ABI:STRING=${ANDROID_ABI}
             -DANDROID_STL:STRING=${ANDROID_STL}
+            -DANDROID_PLATFORM=${ANDROID_PLATFORM}
         INSTALL_COMMAND true)
 elseif(IOS)
     message(STATUS "Preparing external project \"boringssl\" for iOS...")
@@ -37,6 +39,7 @@ elseif(IOS)
         CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX:PATH=${BINARY_DIR}
             -DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DIOS_PLATFORM=${IOS_PLATFORM}
             -DOPENSSL_NO_ASM=ON # Note: https://github.com/grpc/grpc/issues/9440
         INSTALL_COMMAND true)
@@ -62,6 +65,7 @@ else()
         PREFIX boringssl
         CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX:PATH=${BINARY_DIR}
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DCMAKE_POSITION_INDEPENDENT_CODE=ON
             -DOPENSSL_NO_ASM=${OPENSSL_NO_ASM}
         INSTALL_COMMAND true)
