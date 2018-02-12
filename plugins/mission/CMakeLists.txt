@@ -7,18 +7,12 @@ add_library(dronecore_mission ${PLUGIN_LIBRARY_TYPE}
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/core
-    SYSTEM ${CMAKE_SOURCE_DIR}/libs/include
-    SYSTEM libs/json11
+    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/include
+    SYSTEM third_party/json11
 )
 
 # JSON parser library for parsing QGC plan for Mission
-add_subdirectory(libs/json11)
-
-if(ANDROID)
-    target_link_libraries(dronecore_mission
-        log
-    )
-endif()
+add_subdirectory(third_party/json11)
 
 target_link_libraries(dronecore_mission
     dronecore
@@ -36,12 +30,7 @@ install(TARGETS dronecore_mission
     DESTINATION ${dronecore_install_lib_dir}
 )
 
-set(unittest_source_files
-    mission_import_qgc_test.cpp
-    PARENT_SCOPE
+list(APPEND plugin_unittest_source_files
+    ${CMAKE_SOURCE_DIR}/plugins/mission/mission_import_qgc_test.cpp
 )
-
-set(impl_header_files
-    mission_impl.h
-    PARENT_SCOPE
-)
+set(plugin_unittest_source_files ${plugin_unittest_source_files} PARENT_SCOPE)

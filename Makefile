@@ -142,7 +142,7 @@ run_all_tests: default
 	${MAKE} -C build/default check
 
 run_unit_tests: default
-	build/default/core/unit_tests_runner
+	build/default/unit_tests_runner
 
 run_integration_tests: default
 	build/default/integration_tests/integration_tests_runner
