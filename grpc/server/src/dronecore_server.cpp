@@ -33,32 +33,10 @@ static DroneCore dc;
 
 template<typename T> ::grpc::Service *createInstances(DroneCore *dc_obj) { return new T(dc_obj); }
 
-typedef std::map<std::string, ::grpc::Service*(*)(DroneCore *dc_obj)> map_type;
-
 void RunServer()
 {
     std::string server_address("0.0.0.0:50051");
     CoreServiceImpl service(&dc);
-
-    map_type map;
-    std::string plugin;
-    std::fstream file;
-    file.open("grpc/server/src/plugins/plugins.conf");
-
-    if (!file) {
-        LogErr() << "Error in reading conf file";
-        return;
-    }
-
-    std::vector<::grpc::Service *> list;
-    map["action"] = &createInstances<ActionServiceImpl>;
-    map["telemetry"] = &createInstances<TelemetryServiceImpl>;
-    map["mission"] = &createInstances<MissionServiceImpl>;
-
-    while (file >> plugin) {
-        auto service_obj = map[plugin](&dc);
-        list.push_back(service_obj);
-    }
 
     int discovered_device = 0;
     ConnectionResult connection_result = dc.add_udp_connection(14550);
@@ -71,6 +49,7 @@ void RunServer()
         LogInfo() << "Discovered device with UUID: " << uuid;
         discovered_device += 1;
     });
+
     // We usually receive heartbeats at 1Hz, therefore we should find a device after around 2 seconds.
     std::this_thread::sleep_for(std::chrono::seconds(10));
     if (discovered_device == 0) {
@@ -81,9 +60,11 @@ void RunServer()
     ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
     builder.RegisterService(&service);
-    for (auto plugin_service : list) {
-        builder.RegisterService(plugin_service);
-    }
+
+    builder.RegisterService(createInstances<ActionServiceImpl>(&dc));
+    builder.RegisterService(createInstances<TelemetryServiceImpl>(&dc));
+    builder.RegisterService(createInstances<MissionServiceImpl>(&dc));
+
     std::unique_ptr<Server> server(builder.BuildAndStart());
     LogInfo() << "Server listening on " << server_address;
     server->Wait();
