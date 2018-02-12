@@ -954,13 +954,15 @@ MissionImpl::import_qgroundcontrol_mission(Mission::mission_items_t &mission_ite
         return Mission::Result::FAILED_TO_PARSE_QGC_PLAN;
     }
 
-    // Compose mission items
-    return compose_mission_items(mission_items, parsed_plan);
+    // Import mission items
+    return import_mission_items(mission_items, parsed_plan);
 }
 
-Mission::Result MissionImpl::compose_mission_items(MAV_CMD cmd, std::vector<double> params,
-                                                   std::shared_ptr<MissionItem> &new_mission_item,
-                                                   Mission::mission_items_t &mission_items)
+// Build a mission item out of cmd, params and add them to the mission vector.
+Mission::Result
+MissionImpl::build_mission_items(MAV_CMD cmd, std::vector<double> params,
+                                 std::shared_ptr<MissionItem> &new_mission_item,
+                                 Mission::mission_items_t &all_mission_items)
 {
     Mission::Result result = Mission::Result::SUCCESS;
 
@@ -970,7 +972,7 @@ Mission::Result MissionImpl::compose_mission_items(MAV_CMD cmd, std::vector<doub
             cmd == MAV_CMD_NAV_TAKEOFF ||
             cmd == MAV_CMD_NAV_LAND) {
             if (new_mission_item->has_position_set()) {
-                mission_items.push_back(new_mission_item);
+                all_mission_items.push_back(new_mission_item);
                 new_mission_item = std::make_shared<MissionItem>();
             }
 
@@ -1016,7 +1018,7 @@ Mission::Result MissionImpl::compose_mission_items(MAV_CMD cmd, std::vector<doub
             new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_VIDEO);
 
         } else if (cmd == MAV_CMD_DO_CHANGE_SPEED) {
-            enum { AirSpeed, GroundSpeed };
+            enum { AirSpeed = 0, GroundSpeed = 1 };
             auto speed_type = int(params[0]);
             auto speed_m_s = float(params[1]);
             auto throttle = params[2];
@@ -1038,17 +1040,17 @@ Mission::Result MissionImpl::compose_mission_items(MAV_CMD cmd, std::vector<doub
 }
 
 Mission::Result
-MissionImpl::compose_mission_items(Mission::mission_items_t &mission_items,
-                                   const Json &qgc_plan_json)
+MissionImpl::import_mission_items(Mission::mission_items_t &all_mission_items,
+                                  const Json &qgc_plan_json)
 {
     const auto json_mission_items = qgc_plan_json["mission"];
     Mission::Result result = Mission::Result::SUCCESS;
     auto new_mission_item = std::make_shared<MissionItem>();
 
-    // Compose mission items by iterating JSON mission items
+    // Iterate JSON mission items and build DroneCore mission items
     for (auto &json_mission_item : json_mission_items["items"].array_items()) {
         // Parameters of Mission item & MAV command of it.
-        auto cmd = json_mission_item["command"].int_value();
+        MAV_CMD cmd = static_cast<MAV_CMD>(json_mission_item["command"].int_value());
 
         // Extract parameters of each mission item
         std::vector<double> params;
@@ -1056,12 +1058,15 @@ MissionImpl::compose_mission_items(Mission::mission_items_t &mission_items,
             params.push_back(p.number_value());
         }
 
-        result = compose_mission_items(static_cast<MAV_CMD>(cmd), params, new_mission_item, mission_items);
+        result = build_mission_items(cmd, params,
+                                     new_mission_item,
+                                     all_mission_items);
         if (result != Mission::Result::SUCCESS) {
             break;
         }
     }
-    mission_items.push_back(new_mission_item);
+    // Don't forget to add the last mission which possibly didn't have position set.
+    all_mission_items.push_back(new_mission_item);
     return result;
 }
 

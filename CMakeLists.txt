@@ -11,6 +11,8 @@ include(cmake/compiler_flags.cmake)
 include(cmake/zlib.cmake)
 include(cmake/curl.cmake)
 
+set(UNIT_TEST_SOURCE_FILES "")
+
 # We support install in order to use the header and library files in
 # other applications.
 if(ANDROID)
@@ -46,12 +48,15 @@ if(NOT IOS AND NOT ANDROID)
     enable_testing()
     add_subdirectory(${CMAKE_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
+    # Build integration tests
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
         add_subdirectory(${EXTERNAL_DIR}/integration_tests
             ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
     endif()
+
+    include(unit_tests.cmake)
 endif()
 
 if (DROP_DEBUG EQUAL 1)

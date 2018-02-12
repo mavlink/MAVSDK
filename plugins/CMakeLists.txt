@@ -17,3 +17,5 @@ add_subdirectory(telemetry)
 add_subdirectory(logging)
 add_subdirectory(info)
 add_subdirectory(follow_me)
+
+set(plugin_unittest_source_files ${plugin_unittest_source_files} PARENT_SCOPE)

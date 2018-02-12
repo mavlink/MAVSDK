@@ -17,6 +17,6 @@
 	path = third_party/zlib
 	url = https://github.com/madler/zlib
 	ignore = dirty
-[submodule "plugins/mission/libs/json11"]
-	path = plugins/mission/libs/json11
+[submodule "plugins/mission/third_party/json11"]
+	path = plugins/mission/third_party/json11
 	url = https://github.com/dropbox/json11
