@@ -56,7 +56,7 @@ if(NOT IOS AND NOT ANDROID)
             ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
     endif()
 
-    include(unit_tests.cmake)
+    include(cmake/unit_tests.cmake)
 endif()
 
 if (DROP_DEBUG EQUAL 1)
