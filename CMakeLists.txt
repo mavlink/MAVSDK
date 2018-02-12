@@ -11,10 +11,6 @@ include(cmake/compiler_flags.cmake)
 include(cmake/zlib.cmake)
 include(cmake/curl.cmake)
 
-set(UNIT_TEST_SOURCE_FILES "")
-
-# We support install in order to use the header and library files in
-# other applications.
 if(ANDROID)
     set(lib_path "lib/android/${ANDROID_ABI}")
 elseif(IOS)
@@ -23,14 +19,12 @@ else()
     set(lib_path "lib")
 endif()
 
-# We want to use consistent install directories across libraries.
 set(dronecore_install_include_dir "include/dronecore")
 set(dronecore_install_lib_dir ${lib_path})
 
 add_subdirectory(core)
 add_subdirectory(plugins)
 
-# Add external plugins.
 if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
     add_subdirectory(${EXTERNAL_DIR}/plugins
         ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/plugins)
@@ -48,7 +42,6 @@ if(NOT IOS AND NOT ANDROID)
     enable_testing()
     add_subdirectory(${CMAKE_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
-    # Build integration tests
     add_subdirectory(integration_tests)
 
     if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")

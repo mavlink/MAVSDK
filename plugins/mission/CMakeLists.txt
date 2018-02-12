@@ -30,7 +30,7 @@ install(TARGETS dronecore_mission
     DESTINATION ${dronecore_install_lib_dir}
 )
 
-list(APPEND plugin_unittest_source_files
+list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/plugins/mission/mission_import_qgc_test.cpp
 )
-set(plugin_unittest_source_files ${plugin_unittest_source_files} PARENT_SCOPE)
+set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
