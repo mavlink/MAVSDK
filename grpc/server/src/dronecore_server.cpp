@@ -33,34 +33,30 @@ static DroneCore dc;
 
 template<typename T> ::grpc::Service *createInstances(DroneCore *dc_obj) { return new T(dc_obj); }
 
-void RunServer()
+int RunServer()
 {
-    std::string server_address("0.0.0.0:50051");
-    CoreServiceImpl service(&dc);
+    ConnectionResult connection_result = dc.add_udp_connection(14540);
 
-    int discovered_device = 0;
-    ConnectionResult connection_result = dc.add_udp_connection(14550);
     if (connection_result != ConnectionResult::SUCCESS) {
         LogErr() << "Connection failed: " << connection_result_str(connection_result);
-        return;
+        return 1;
     }
+
     LogInfo() << "Waiting to discover device...";
-    dc.register_on_discover([&discovered_device](uint64_t uuid) {
-        LogInfo() << "Discovered device with UUID: " << uuid;
-        discovered_device += 1;
+    dc.register_on_discover([](uint64_t uuid) {
+        LogInfo() << "Device discovered [UUID: " << uuid << "]";
+    });
+    dc.register_on_timeout([](uint64_t uuid) {
+        LogInfo() << "Device timed out [UUID: " << uuid << "]";
     });
 
-    // We usually receive heartbeats at 1Hz, therefore we should find a device after around 2 seconds.
-    std::this_thread::sleep_for(std::chrono::seconds(10));
-    if (discovered_device == 0) {
-        LogErr() << "No device found, exiting.";
-        return;
-    }
+    std::string server_address("0.0.0.0:50051");
 
     ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-    builder.RegisterService(&service);
 
+    CoreServiceImpl service(&dc);
+    builder.RegisterService(&service);
     builder.RegisterService(createInstances<ActionServiceImpl>(&dc));
     builder.RegisterService(createInstances<TelemetryServiceImpl>(&dc));
     builder.RegisterService(createInstances<MissionServiceImpl>(&dc));
@@ -72,6 +68,5 @@ void RunServer()
 
 int main(int argc, char **argv)
 {
-    RunServer();
-    return 0;
+    return RunServer();
 }
