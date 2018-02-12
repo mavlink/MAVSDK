@@ -113,7 +113,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             if aTag.tag=='computeroutput':
                 ignore_current_tag=True #Ignore computer output markup in links
             child_text += markdown_any_tag(child,html=html,para=para)
-        elif child.tag=='computeroutput' or child.tag=='para' or child.tag=='listitem' or child.tag=='ulink' or child.tag=='bold' or child.tag=='emphasis' or child.tag=='verbatim':
+        elif child.tag=='computeroutput' or child.tag=='para' or child.tag=='listitem' or child.tag=='ulink' or child.tag=='bold' or child.tag=='emphasis' or child.tag=='verbatim' or child.tag=='programlisting' or child.tag=='codeline' or child.tag=='highlight' or child.tag=='sp':
             child_text += markdown_any_tag(child,html=html,para=para) #.strip()
         elif child.tag=='itemizedlist':
             child_text += markdown_any_tag(child,html=True,para=para)
@@ -166,6 +166,27 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             tag_text='\n<li>'+lead_text+child_text+'</li>'+tail_text
         else:
             tag_text='\n* '+lead_text+child_text+tail_text #single level implementation.
+    elif aTag.tag=='programlisting':
+        if html:
+            tag_text='\n<code>'+lead_text+child_text+'</code>'+tail_text
+        else:
+            tag_text='\n```cpp'+lead_text+child_text+'\n```\n' + tail_text #single level implementation.
+    elif aTag.tag=='codeline':
+        if html:
+            tag_text='\n<br>'+lead_text+child_text+tail_text
+        else:
+            tag_text='\n'+lead_text+child_text+tail_text.strip() #single level implementation.
+    elif aTag.tag=='highlight':
+        if html:
+            tag_text='<em>'+lead_text+child_text+'</em>'+tail_text
+        else:
+            tag_text= lead_text+child_text+tail_text #single level implementation.
+    elif aTag.tag=='sp':
+        if html:
+            tag_text='<!-- sp- ->' + lead_text+child_text+tail_text
+        else:
+            tag_text= ' ' + lead_text+child_text+tail_text #single level implementation.
+
     elif aTag.tag=='ref':
         #Internal link tag handling.
         kind_ref=aTag.attrib['kindref']
