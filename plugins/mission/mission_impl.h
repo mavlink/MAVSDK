@@ -3,9 +3,10 @@
 #include <memory>
 #include <map>
 #include <mutex>
+
 #include "device.h"
-#include "mission.h"
 #include "mavlink_include.h"
+#include "mission.h"
 #include "plugin_impl_base.h"
 #include <json11.hpp>
 
