@@ -11,7 +11,7 @@ service CoreService {
 
 message ListRunningPluginsRequest {}
 message ListRunningPluginsResponse {
-    repeated PluginInfo = 1;
+    repeated PluginInfo plugin_info = 1;
 }
 
 message PluginInfo {
