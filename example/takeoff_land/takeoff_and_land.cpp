@@ -17,13 +17,21 @@ using namespace dronecore;
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
 
-int main(int /*argc*/, char ** /*argv*/)
+int main(int argc, char ** argv)
 {
     DroneCore dc;
 
     bool discovered_device = false;
-
-    DroneCore::ConnectionResult connection_result = dc.add_udp_connection();
+    if(argc == 1)
+    {
+        std::cout << ERROR_CONSOLE_TEXT << "Pass connection url as argument :" << std::endl
+                  << " For TCP : tcp://[server_host][:port]" << std::endl
+                  << " For UDP : udp://[bind_host][:port]" << std::endl
+                  << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl;
+        return 1;
+    }
+    std::string connection_url(argv[1]);
+    DroneCore::ConnectionResult connection_result = dc.add_any_connection(connection_url);
 
     if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "

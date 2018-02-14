@@ -23,6 +23,76 @@ DroneCore::~DroneCore()
     _impl = nullptr;
 }
 
+DroneCore::ConnectionResult DroneCore::add_any_connection(std::string str)
+{
+    std::string delimiter = "://";
+    std::string connection_str[3];
+    size_t pos = 0, i = 0;
+    while(i<2)
+    {
+        pos = str.find(delimiter);
+        if(pos != std::string::npos)
+        {
+            connection_str[i] = str.substr(0, pos);
+            str.erase(0, pos+delimiter.length());
+            if(str == "")
+				break;
+            delimiter=":";
+        }
+	    i++;
+    }
+    connection_str[2] = str;
+    if(connection_str[0] != "serial")
+        return add_link_connection(connection_str);
+    else if(connection_str[0] == "serial")
+    {
+        if(connection_str[1] == "")
+            return add_serial_connection();
+        else
+            return add_serial_connection(connection_str[1], stoi(connection_str[2]));
+    }
+	return DroneCore::ConnectionResult::DESTINATION_IP_UNKNOWN;
+}
+
+
+DroneCore::ConnectionResult DroneCore::add_link_connection(std::string* connection_str)
+{
+    int local_port_number = 0;
+    if(connection_str[2] == "")
+    {
+        if(connection_str[1] != "")
+        {
+            local_port_number = stoi(connection_str[1]);
+            /* default ip for tcp if only port number is specified */
+            connection_str[1]="127.0.0.1";
+        }
+    }
+    else
+    {
+        local_port_number = stoi(connection_str[2]);
+    }
+    if(connection_str[0] == "udp")
+    {
+        if(local_port_number == 0)
+            return add_udp_connection();
+        else
+        {
+            return add_udp_connection(local_port_number);
+        }
+    }
+    if(connection_str[0] == "tcp")
+    {
+        if(local_port_number == 0)
+            return add_tcp_connection();
+        else
+        {
+            return add_tcp_connection(connection_str[1], local_port_number);
+        }
+    }
+	return DroneCore::ConnectionResult::DESTINATION_IP_UNKNOWN;
+
+}
+
 DroneCore::ConnectionResult DroneCore::add_udp_connection()
 {
     return add_udp_connection(0);

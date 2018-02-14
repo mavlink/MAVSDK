@@ -61,6 +61,8 @@ public:
      */
     static const char *connection_result_str(ConnectionResult);
 
+    ConnectionResult add_any_connection(std::string str);
+
     /**
      * @brief Adds a UDP connection to the default port.
      *
@@ -207,6 +209,7 @@ private:
     // Non-copyable
     DroneCore(const DroneCore &) = delete;
     const DroneCore &operator=(const DroneCore &) = delete;
+    ConnectionResult add_link_connection(std::string*);
 };
 
 } // namespace dronecore
