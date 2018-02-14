@@ -15,18 +15,19 @@ endif()
 # We need tinyxml2 for the camera definition parsing.
 if(IOS OR APPLE)
     # We install the tinyxml2 library manually for macOS and iOS.
-    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        # Need to remove that d again.
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.5.0.1.dylib
-            DESTINATION ${lib_path}
-            RENAME libtinyxml2.dylib
-        )
-    else()
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2.5.0.1.dylib
-            DESTINATION ${lib_path}
-            RENAME libtinyxml2.dylib
-        )
-    endif()
+    # The install is commented out as long as we build statically.
+    #if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    #    # Need to remove that d again.
+    #    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.5.0.1.dylib
+    #        DESTINATION ${lib_path}
+    #        RENAME libtinyxml2.dylib
+    #    )
+    #else()
+    #    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2.5.0.1.dylib
+    #        DESTINATION ${lib_path}
+    #        RENAME libtinyxml2.dylib
+    #    )
+    #endif()
 
     add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
     include_directories(SYSTEM third_party/tinyxml2)
