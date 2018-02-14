@@ -1,22 +1,22 @@
-[submodule "libs/include/mavlink/v2.0"]
+[submodule "c_library_v2"]
 	path = third_party/mavlink/include/mavlink/v2.0
 	url = https://github.com/mavlink/c_library_v2.git
-[submodule "libs/gtest"]
+[submodule "gtest"]
 	path = third_party/gtest
 	url = https://github.com/google/googletest
 [submodule "curl-android-ios"]
 	path = core/third_party/curl-android-ios
 	url = https://github.com/dronecore/curl-android-ios.git
-[submodule "libs/tinyxml2"]
+[submodule "tinyxml2"]
 	path = core/third_party/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
-[submodule "grpc/server/proto"]
+[submodule "DronCore-Proto"]
 	path = grpc/server/proto
 	url = https://github.com/dronecore/DroneCore-Proto.git
-[submodule "third_party/zlib"]
+[submodule "zlib"]
 	path = third_party/zlib
 	url = https://github.com/madler/zlib
 	ignore = dirty
-[submodule "plugins/mission/third_party/json11"]
+[submodule "json11"]
 	path = plugins/mission/third_party/json11
 	url = https://github.com/dropbox/json11
