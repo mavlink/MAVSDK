@@ -1,4 +1,4 @@
-add_library(dronecore_info SHARED
+add_library(dronecore_info ${PLUGIN_LIBRARY_TYPE}
     info.cpp
     info_impl.cpp
 )

@@ -1,4 +1,4 @@
-add_library(dronecore_gimbal SHARED
+add_library(dronecore_gimbal ${PLUGIN_LIBRARY_TYPE}
     gimbal.cpp
     gimbal_impl.cpp
 )

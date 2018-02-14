@@ -1,4 +1,4 @@
-add_library(dronecore_follow_me SHARED
+add_library(dronecore_follow_me ${PLUGIN_LIBRARY_TYPE}
     follow_me.cpp
     follow_me_impl.cpp
 )

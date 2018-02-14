@@ -1,4 +1,4 @@
-add_library(dronecore_logging SHARED
+add_library(dronecore_logging ${PLUGIN_LIBRARY_TYPE}
     logging.cpp
     logging_impl.cpp
 )

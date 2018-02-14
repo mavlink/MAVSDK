@@ -1,4 +1,4 @@
-add_library(dronecore_offboard SHARED
+add_library(dronecore_offboard ${PLUGIN_LIBRARY_TYPE}
     offboard.cpp
     offboard_impl.cpp
 )
