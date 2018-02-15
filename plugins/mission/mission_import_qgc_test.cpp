@@ -11,6 +11,13 @@
 #include "global_include.h"
 #include "log.h"
 
+// To locate QGroundControl plan file during Unit test.
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+const std::string SLASH = "\\";
+#else
+const std::string SLASH = "/";
+#endif
+
 using namespace dronecore;
 
 struct QGCMissionItem {
@@ -28,7 +35,7 @@ static void compare(const std::shared_ptr<MissionItem> local,
 TEST(QGCMissionImport, ValidateQGCMissonItems)
 {
     // These mission items are meant to match those in
-    // file:://example/fly_qgc_mission/qgroundcontrol_sample.plan
+    // file:://plugins/mission/qgroundcontrol_sample.plan
     QGCMissionItem items_test[] = {
         { MAV_CMD_NAV_TAKEOFF, { 0., 0., 0., 0., 47.39781011, 8.54553801, 15. } },
         { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779921, 8.54546693, 15. } },
@@ -61,9 +68,13 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     }
     mission_items_local.push_back(new_mission_item);
 
+    // Locate path of QGC Sample plan
+    std::string self_file_path = __FILE__;
+    std::string self_dir_path = self_file_path.substr(0, self_file_path.rfind(SLASH));
+    const std::string QGC_SAMPLE_PLAN = self_dir_path + SLASH + "qgroundcontrol_sample.plan";
+
     // Import Mission items from QGC plan
     Mission::mission_items_t mission_items_imported;
-    const std::string QGC_SAMPLE_PLAN = "example/fly_qgc_mission/qgroundcontrol_sample.plan";
     Mission::Result import_result = Mission::import_qgroundcontrol_mission(mission_items_imported,
                                                                            QGC_SAMPLE_PLAN);
     ASSERT_EQ(import_result, Mission::Result::SUCCESS);
@@ -82,7 +93,7 @@ Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
 {
     Mission::Result result = Mission::Result::SUCCESS;
 
-    // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
+    // Choosen "Do - While(0)" loop for the convenience of using `break` statement.
     do {
         if (cmd == MAV_CMD_NAV_WAYPOINT ||
             cmd == MAV_CMD_NAV_TAKEOFF ||
@@ -147,7 +158,7 @@ Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
                 break;
             }
         } else {
-            LogWarn() << "UNSUPPORTED mission item command (" << cmd << ")";
+            LogWarn() << "UNSUPPORTED mission item command(" << cmd << ")";
         }
     } while (false); // Executed once per method invokation.
 
