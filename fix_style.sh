@@ -9,6 +9,7 @@ ASTYLE_VER_REQUIRED_1="Artistic Style Version 2.05.1"
 ASTYLE_VER_REQUIRED_2="Artistic Style Version 2.06"
 ASTYLE_VER_REQUIRED_3="Artistic Style Version 3.0"
 ASTYLE_VER_REQUIRED_4="Artistic Style Version 3.0.1"
+ASTYLE_VER_REQUIRED_5="Artistic Style Version 3.1"
 
 astyle_ver() {
     echo "At least ${ASTYLE_VER_REQUIRED_1} is required"
@@ -28,7 +29,8 @@ else
     if [ "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_1" -a \
          "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_2" -a \
          "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_3" -a \
-         "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_4" ];
+         "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_4" -a \
+         "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_5" ];
     then
         echo "Error: you're using ${ASTYLE_VER}"
         echo "but should be using ${ASTYLE_VER_REQUIRED} instead"
