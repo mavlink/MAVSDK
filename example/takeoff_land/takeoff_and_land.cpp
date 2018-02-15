@@ -17,21 +17,22 @@ using namespace dronecore;
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
 
-int main(int argc, char ** argv)
+void usage(std::string arg);
+
+int main(int argc, char **argv)
 {
     DroneCore dc;
+    std::string connection_url;
+    DroneCore::ConnectionResult connection_result;
 
     bool discovered_device = false;
-    if(argc == 1)
-    {
-        std::cout << ERROR_CONSOLE_TEXT << "Pass connection url as argument :" << std::endl
-                  << " For TCP : tcp://[server_host][:port]" << std::endl
-                  << " For UDP : udp://[bind_host][:port]" << std::endl
-                  << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl;
-        return 1;
+    if (argc == 1) {
+        usage(argv[0]);
+        connection_result = dc.add_any_connection();
+    } else {
+        connection_url = argv[1];
+        connection_result = dc.add_any_connection(connection_url);
     }
-    std::string connection_url(argv[1]);
-    DroneCore::ConnectionResult connection_result = dc.add_any_connection(connection_url);
 
     if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
@@ -120,4 +121,14 @@ int main(int argc, char ** argv)
     std::this_thread::sleep_for(std::chrono::seconds(5));
     std::cout << "Finished..." << std::endl;
     return 0;
+}
+
+void usage(std::string arg)
+{
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg << " [connection_url]" << std::endl
+              << "Connection URL format should be :" << std::endl
+              << " For TCP : tcp://[server_host][:server_port]" << std::endl
+              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl;
+    std::cout << "Default connection URL is udp://:14540" << std::endl;
 }

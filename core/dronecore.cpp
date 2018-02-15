@@ -23,74 +23,67 @@ DroneCore::~DroneCore()
     _impl = nullptr;
 }
 
-DroneCore::ConnectionResult DroneCore::add_any_connection(std::string str)
+DroneCore::ConnectionResult DroneCore::add_any_connection(const std::string &connection_url)
 {
     std::string delimiter = "://";
-    std::string connection_str[3];
-    size_t pos = 0, i = 0;
-    while(i<2)
-    {
-        pos = str.find(delimiter);
-        if(pos != std::string::npos)
-        {
-            connection_str[i] = str.substr(0, pos);
-            str.erase(0, pos+delimiter.length());
-            if(str == "")
-				break;
-            delimiter=":";
+    std::string conn_url(connection_url);
+    std::vector<std::string> connection_str;
+    size_t pos = 0;
+    /*Parse the connection url to get Protocol, IP or Serial dev node
+      and port number or baudrate as per the URL definition
+    */
+    for (int i = 0; i < 2; i++) {
+        pos = conn_url.find(delimiter);
+        if (pos != std::string::npos) {
+            connection_str.push_back(conn_url.substr(0, pos));
+            // Erase the string which is parsed already
+            conn_url.erase(0, pos + delimiter.length());
+            if (conn_url == "") {
+                break;
+            }
+            delimiter = ":";
         }
-	    i++;
     }
-    connection_str[2] = str;
-    if(connection_str[0] != "serial")
-        return add_link_connection(connection_str);
-    else if(connection_str[0] == "serial")
-    {
-        if(connection_str[1] == "")
+    connection_str.push_back(conn_url);
+    /* check if the protocol is Network protocol or Serial */
+    if (connection_str.at(0) != "serial") {
+        int port = 0;
+        if (connection_str.at(2) != "") {
+            port = std::stoi(connection_str.at(2));
+        }
+        return add_link_connection(connection_str.at(0), connection_str.at(1),
+                                   port); //Network Protocol : TCP or UDP
+    } else {
+        if (connection_str.at(1) == "") {
             return add_serial_connection();
-        else
-            return add_serial_connection(connection_str[1], stoi(connection_str[2]));
+        } else {
+            return add_serial_connection(connection_str.at(1), std::stoi(connection_str.at(2)));
+        }
     }
-	return DroneCore::ConnectionResult::DESTINATION_IP_UNKNOWN;
 }
 
-
-DroneCore::ConnectionResult DroneCore::add_link_connection(std::string* connection_str)
+/* Creates a connection link only for the Network protocols : UDP and TCP*/
+DroneCore::ConnectionResult DroneCore::add_link_connection(const std::string &protocol,
+                                                           const std::string &ip,
+                                                           const int port)
 {
     int local_port_number = 0;
-    if(connection_str[2] == "")
-    {
-        if(connection_str[1] != "")
-        {
-            local_port_number = stoi(connection_str[1]);
+    std::string local_ip = ip;
+    if (port == 0) {
+        if (ip != "") {
+            local_port_number = std::stoi(ip);
             /* default ip for tcp if only port number is specified */
-            connection_str[1]="127.0.0.1";
+            local_ip = "127.0.0.1";
         }
+    } else {
+        local_port_number = port;
     }
-    else
-    {
-        local_port_number = stoi(connection_str[2]);
-    }
-    if(connection_str[0] == "udp")
-    {
-        if(local_port_number == 0)
-            return add_udp_connection();
-        else
-        {
-            return add_udp_connection(local_port_number);
-        }
-    }
-    if(connection_str[0] == "tcp")
-    {
-        if(local_port_number == 0)
-            return add_tcp_connection();
-        else
-        {
-            return add_tcp_connection(connection_str[1], local_port_number);
-        }
-    }
-	return DroneCore::ConnectionResult::DESTINATION_IP_UNKNOWN;
 
+    if (protocol == "udp") {
+        return add_udp_connection(local_port_number);
+    } else { //TCP connection
+        return add_tcp_connection(local_ip, local_port_number);
+    }
 }
 
 DroneCore::ConnectionResult DroneCore::add_udp_connection()
@@ -224,6 +217,8 @@ const char *DroneCore::connection_result_str(ConnectionResult result)
             return "Destination IP unknown";
         case ConnectionResult::CONNECTIONS_EXHAUSTED:
             return "Connections exhausted";
+        case ConnectionResult::CONNECTION_URL_INVALID:
+            return "Invalid connection URL";
         default:
             return "Unknown";
     }
