@@ -53,7 +53,8 @@ public:
         DEVICE_BUSY, /**< @brief %Device is busy. */
         COMMAND_DENIED, /**< @brief Command is denied. */
         DESTINATION_IP_UNKNOWN, /**< @brief %Connection IP is unknown. */
-        CONNECTIONS_EXHAUSTED /**< @brief %Connections exhausted. */
+        CONNECTIONS_EXHAUSTED, /**< @brief %Connections exhausted. */
+        CONNECTION_URL_INVALID /**< @brief URL invalid. */
     };
 
     /**
@@ -61,7 +62,22 @@ public:
      */
     static const char *connection_result_str(ConnectionResult);
 
-    ConnectionResult add_any_connection(std::string str);
+    /**
+     * @brief Adds Connection via URL
+     *
+     * Supports connection: Serial, TCP or UDP.
+     * Connection URL format should be:
+     * - UDP - udp://[Bind_host][:Bind_port]
+     * - TCP - tcp://[Server_host][:Server_port]
+     * - Serial - serial://[Dev_Node][:Baudrate]
+     *
+     * Default URL : udp://:14540.
+     * - Default Bind host IP is localhost(127.0.0.1)
+     *
+     * @param connection_url connection URL string.
+     * @return The result of adding the connection.
+     */
+    ConnectionResult add_any_connection(const std::string &connection_url = "udp://:14540");
 
     /**
      * @brief Adds a UDP connection to the default port.
@@ -209,7 +225,9 @@ private:
     // Non-copyable
     DroneCore(const DroneCore &) = delete;
     const DroneCore &operator=(const DroneCore &) = delete;
-    ConnectionResult add_link_connection(std::string*);
+    /* Adds a connection for Network protocol*/
+    ConnectionResult add_link_connection(const std::string &protocol, const std::string &ip,
+                                         const int port);
 };
 
 } // namespace dronecore
