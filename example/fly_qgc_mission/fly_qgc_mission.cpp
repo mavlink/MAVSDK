@@ -48,9 +48,8 @@ inline void handle_connection_err_exit(DroneCore::ConnectionResult result,
 
 int main(int argc, char **argv)
 {
-    // Sample QGC Mission plan.
-    const std::string DEFAULT_QGC_MISSION_PLAN = "../qgroundcontrol_sample.plan";
-    std::string qgc_plan(DEFAULT_QGC_MISSION_PLAN);
+    // Locate path of QGC Sample plan
+    std::string qgc_plan = "../../../plugins/mission/qgroundcontrol_sample.plan";
 
     if (argc != 2) {
         std::cout << "Usage: " << argv[0] << " <path of QGC Mission plan>\n";
