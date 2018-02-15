@@ -1,5 +1,6 @@
 include_directories(${CMAKE_SOURCE_DIR}/core)
 include_directories(${CMAKE_SOURCE_DIR}/third_party/mavlink/include)
+include_directories(${CURL_INCLUDE_DIRS})
 
 add_executable(unit_tests_runner
     ${UNIT_TEST_SOURCES}
