@@ -6,7 +6,7 @@ include_directories(
     SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
 )
 
-if(IOS OR MSVC)
+if(IOS OR MSVC OR APPLE)
     set(LIBRARY_TYPE "STATIC")
 else()
     set(LIBRARY_TYPE "SHARED")
