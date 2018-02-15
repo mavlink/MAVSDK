@@ -1,4 +1,4 @@
-[submodule "c_library_v2"]
+[submodule "mavlink_v2"]
 	path = third_party/mavlink/include/mavlink/v2.0
 	url = https://github.com/mavlink/c_library_v2.git
 [submodule "gtest"]
@@ -10,7 +10,7 @@
 [submodule "tinyxml2"]
 	path = core/third_party/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
-[submodule "DronCore-Proto"]
+[submodule "dronecore-proto"]
 	path = grpc/server/proto
 	url = https://github.com/dronecore/DroneCore-Proto.git
 [submodule "zlib"]
