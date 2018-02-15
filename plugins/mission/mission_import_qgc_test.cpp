@@ -12,7 +12,7 @@
 #include "log.h"
 
 // To locate QGroundControl plan file during Unit test.
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#ifdef WINDOWS
 const std::string SLASH = "\\";
 #else
 const std::string SLASH = "/";
