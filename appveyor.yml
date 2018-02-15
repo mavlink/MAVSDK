@@ -113,8 +113,8 @@ test_script:
       copy build\third_party\gtest\googlemock\gtest\Debug\gtestd.dll build\Debug\ &&
       copy build\third_party\gtest\googlemock\gtest\Debug\gtest_maind.dll build\Debug\ &&
       copy build\third_party\gtest\googlemock\Debug\gmockd.dll build\Debug\ &&
-      copy build\plugins\mission\Debug\dronecore_mission.dll build\Debug\ &&
-      copy build\plugins\mission\third_party\json11\Debug\json11.dll build\Debug\ &&
+      copy build\plugins\mission\Debug\dronecore_missiond.dll build\Debug\ &&
+      copy build\plugins\mission\third_party\json11\Debug\json11d.dll build\Debug\ &&
       build\Debug\unit_tests_runner.exe
     ) else (
       copy build\third_party\gtest\googlemock\gtest\Release\gtest.dll build\Release\ &&
