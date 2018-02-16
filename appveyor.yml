@@ -103,6 +103,26 @@ build_script:
       cmake --build . --config Release
     )
   - cd ..\..\..
+  - cd example\follow_me
+  - md build
+  - cd build
+  - cmake ..  -G "Visual Studio 15 2017 Win64"
+  - if "%configuration%"=="Debug" (
+      cmake --build . --config Debug
+    ) else (
+      cmake --build . --config Release
+    )
+  - cd ..\..\..
+  - cd example\fly_qgc_mission
+  - md build
+  - cd build
+  - cmake ..  -G "Visual Studio 15 2017 Win64"
+  - if "%configuration%"=="Debug" (
+      cmake --build . --config Debug
+    ) else (
+      cmake --build . --config Release
+    )
+  - cd ..\..\..
 
 
 test: on
