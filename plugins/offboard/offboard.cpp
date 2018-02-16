@@ -42,6 +42,11 @@ void Offboard::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_ya
     return _impl->set_velocity_body(velocity_body_yawspeed);
 }
 
+void Offboard::set_position_local_ned(Offboard::PositionLocalNED position_local_ned)
+{
+    return _impl->set_position_local_ned(position_local_ned);
+}
+
 const char *Offboard::result_str(Result result)
 {
     switch (result) {
