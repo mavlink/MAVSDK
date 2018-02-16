@@ -93,6 +93,12 @@ public:
     };
 
     /**
+     * @brief Types required for actuator control commands.
+     */
+    typedef float ActuatorControlTarget[8];
+    typedef uint8_t ActuatorControlGroup;
+
+    /**
      * @brief Start offboard control (synchronous).
      *
      * **Attention:** this is work in progress, use with caution!
@@ -151,6 +157,13 @@ public:
      * @param velocity_body_yawspeed Velocity and yaw angular rate `struct`.
      */
     void set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed);
+
+    /**
+     * @brief Set the actuator control targets for a specific control group.
+     *
+     * @param actuator_control_target float[8] and control_group uint8_t.
+     */
+    void set_actuator_control_target(ActuatorControlTarget actuator_control_target, ActuatorControlGroup control_group);
 
     /**
      * @brief Copy constructor (object is not copyable).
