@@ -112,8 +112,7 @@ int main(int argc, char **argv)
 
     {
         std::cout << "Uploading mission..." << std::endl;
-        // We only have the upload_mission function asynchronous for now, so we wrap it using
-        // std::future.
+        // Wrap the asynchronous upload_mission function using std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
         mission->upload_mission_async(
@@ -131,7 +130,7 @@ int main(int argc, char **argv)
     handle_action_err_exit(arm_result, "Arm failed: ");
     std::cout << "Armed." << std::endl;
 
-    // Before starting the mission, we want to be sure to subscribe to the mission progress.
+    // Before starting the mission subscribe to the mission progress.
     mission->subscribe_progress(
     [](int current, int total) {
         std::cout << "Mission status update: " << current << " / " << total << std::endl;
@@ -155,11 +154,11 @@ int main(int argc, char **argv)
         sleep_for(seconds(1));
     }
 
-    // Lets wait for sometime.
+    // Wait for some time.
     sleep_for(seconds(5));
 
     {
-        // We are done, and can do RTL to go home.
+        // Mission complete. Command RTL to go home.
         std::cout << "Commanding RTL..." << std::endl;
         const Action::Result result = action->return_to_launch();
         if (result != Action::Result::SUCCESS) {
