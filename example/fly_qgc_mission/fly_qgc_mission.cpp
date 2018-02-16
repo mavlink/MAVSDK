@@ -83,7 +83,7 @@ int main(int argc, char **argv)
         exit(0);
     });
 
-    // We don't need to specifiy the UUID if it's only one device anyway.
+    // We don't need to specify the UUID if it's only one device anyway.
     // If there were multiple, we could specify it with:
     // dc.device(uint64_t uuid);
     Device &device = dc.device();
