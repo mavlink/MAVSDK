@@ -7,7 +7,7 @@
 * Steps to run this example:
 * 1. (a) Create a Mission in QGroundControl and save them to a file (.plan) (OR)
 *    (b) Use a pre-created sample mission plan in "example/fly_qgc_mission/qgroundcontrol_sample.plan".
-*    Click [here](https://user-images.githubusercontent.com/26615772/31763673-972c5bb6-b4dc-11e7-8ff0-f8b39b6b88c3.png) to see how sample mission plan in QGroundControl looks like.
+*    Click [here](https://user-images.githubusercontent.com/26615772/31763673-972c5bb6-b4dc-11e7-8ff0-f8b39b6b88c3.png) to see what sample mission plan in QGroundControl looks like.
 * 2. Run the example by passing path of the QGC mission plan as argument (Uses sample mission plan by default).
 *
 * Example description:
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
         exit(0);
     });
 
-    // We don't need to specifiy the UUID if it's only one device anyway.
+    // We don't need to specify the UUID if it's only one device anyway.
     // If there were multiple, we could specify it with:
     // dc.device(uint64_t uuid);
     Device &device = dc.device();
@@ -112,8 +112,7 @@ int main(int argc, char **argv)
 
     {
         std::cout << "Uploading mission..." << std::endl;
-        // We only have the upload_mission function asynchronous for now, so we wrap it using
-        // std::future.
+        // Wrap the asynchronous upload_mission function using std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
         mission->upload_mission_async(
@@ -131,7 +130,7 @@ int main(int argc, char **argv)
     handle_action_err_exit(arm_result, "Arm failed: ");
     std::cout << "Armed." << std::endl;
 
-    // Before starting the mission, we want to be sure to subscribe to the mission progress.
+    // Before starting the mission subscribe to the mission progress.
     mission->subscribe_progress(
     [](int current, int total) {
         std::cout << "Mission status update: " << current << " / " << total << std::endl;
@@ -155,11 +154,11 @@ int main(int argc, char **argv)
         sleep_for(seconds(1));
     }
 
-    // Lets wait for sometime.
+    // Wait for some time.
     sleep_for(seconds(5));
 
     {
-        // We are done, and can do RTL to go home.
+        // Mission complete. Command RTL to go home.
         std::cout << "Commanding RTL..." << std::endl;
         const Action::Result result = action->return_to_launch();
         if (result != Action::Result::SUCCESS) {
