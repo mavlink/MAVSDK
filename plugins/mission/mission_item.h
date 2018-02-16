@@ -69,10 +69,11 @@ public:
     /**
      * @brief Set loiter time in seconds.
      *
-     * This can be used to wait for vehicle to slow down or a gimbal to arrive at the set
+     * This specifies the delay at a waypoint before executing next mission item.
+     * It can be used to wait for vehicle to slow down or a gimbal to arrive at the set
      * orientation.
      *
-     * @param loiter_time_s The time to wait (loiter) for, in seconds.
+     * @param loiter_time_s The time to wait (loiter), in seconds.
      */
     void set_loiter_time(float loiter_time_s);
 
