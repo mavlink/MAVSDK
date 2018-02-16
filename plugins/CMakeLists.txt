@@ -3,7 +3,7 @@ include_directories(
     SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
 )
 
-if(IOS OR ANDROID)
+if(IOS OR ANDROID OR APPLE)
     set(PLUGIN_LIBRARY_TYPE STATIC)
 else()
     set(PLUGIN_LIBRARY_TYPE SHARED)
