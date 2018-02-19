@@ -72,11 +72,19 @@ public:
     typedef std::vector<std::shared_ptr<MissionItem>> mission_items_t;
 
     /**
-     * @brief Imports QGroundControl(QGC) mission and composes DroneCore mission items out of it.
-     * @param[out] mission_items Imported mission items from QGC plan.
-     * @param qgc_plan_file Path of the QGC plan.
-     * @sa [QGroundControl Plan file format](https://dev.qgroundcontrol.com/en/file_formats/plan.html) (QGroundControl Dev  Guide)
-     * @return SUCCESS if successful in importing QGC mission items, error code otherwise.
+     * @brief Imports a **QGroundControl** (QGC) mission plan.
+     *
+     * The method composes the plan into a vector of MissionItem shared pointers that can
+     * then be uploaded to a vehicle.
+     * The method will fail if any of the imported mission items are not supported
+     * by the %DroneCore API.
+     *
+     * @param[out] mission_items Vector of mission items imported from QGC plan.
+     * @param qgc_plan_file File path of the QGC plan.
+     * @sa [QGroundControl Plan file format](https://dev.qgroundcontrol.com/en/file_formats/plan.html) (QGroundControl Dev Guide)
+     * @return Result::SUCCESS if successful in importing QGC mission items.
+     *     Otherwise one of the error codes: Result::FAILED_TO_OPEN_QGC_PLAN,
+     *     Result::FAILED_TO_PARSE_QGC_PLAN, Result::UNSUPPORTED_MISSION_CMD.
      */
     static Result import_qgroundcontrol_mission(mission_items_t &mission_items,
                                                 const std::string &qgc_plan_file);
