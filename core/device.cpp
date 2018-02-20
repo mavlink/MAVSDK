@@ -154,7 +154,10 @@ void Device::process_heartbeat(const mavlink_message_t &message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
+    if (message.compid == MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
+        _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
+        _hitl_enabled = ((heartbeat.base_mode & MAV_MODE_FLAG_HIL_ENABLED) ? true : false);
+    }
 
     // We do not call on_discovery here but wait with the notification until we know the UUID.
 
@@ -453,9 +456,12 @@ void Device::get_param_float_async(const std::string &name,
 
 MavlinkCommands::Result Device::set_flight_mode(FlightMode device_mode)
 {
-    uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+    const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+    const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
 
-    uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
+    const uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED
+                         | flag_safety_armed
+                         | flag_hitl_enabled;
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.

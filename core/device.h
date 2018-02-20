@@ -156,7 +156,8 @@ private:
     std::atomic<bool> _target_uuid_initialized {false};
 
     bool _target_supports_mission_int {false};
-    bool _armed {false};
+    std::atomic<bool> _armed {false};
+    std::atomic<bool> _hitl_enabled {false};
 
     DroneCoreImpl *_parent;
 
