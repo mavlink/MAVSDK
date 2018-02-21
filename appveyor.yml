@@ -41,6 +41,7 @@ before_build:
 build: on
 
 build_script:
+  - set CL=/MP
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cd curl-7.56.1\winbuild
   - if "%configuration%"=="Debug" (
