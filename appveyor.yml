@@ -37,7 +37,7 @@ before_build:
   - cd C:\
   - appveyor DownloadFile https://curl.haxx.se/download/curl-7.56.1.zip
   - 7z x -y curl-7.56.1.zip
-  - appveyor DownloadFile http://sourceforge.net/projects/boost/files/boost/1.64.0/boost_1_64_0.7z
+  - appveyor DownloadFile https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.7z
   - 7z x -y boost_1_64_0.7z
 
 build: on
