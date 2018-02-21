@@ -31,9 +31,9 @@ public:
      *
      * The plugin is typically created as shown below:
      *
-     *     ```cpp
+     *     \code{cpp}
      *     auto offboard = std::make_shared<Offboard>(&device);
-     *     ```
+     *     \endcode
      *
      * @param device The specific device associated with this plugin.
      */

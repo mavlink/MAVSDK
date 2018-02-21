@@ -29,9 +29,9 @@ public:
      *
      * The plugin is typically created as shown below:
      *
-     *     ```cpp
+     *     \code{cpp}
      *     auto action = std::make_shared<Action>(&device);
-     *     ```
+     *     \endcode
      *
      * @param device The specific device associated with this plugin.
      */
