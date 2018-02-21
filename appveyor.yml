@@ -51,7 +51,8 @@ build_script:
     ) else (
       nmake /f Makefile.vc mode=static VC=15 MACHINE=x64 DEBUG=no
     )
-  - cd C:\dronecore
+  - set dronecore_dir=C:\dronecore
+  - cd %dronecore_dir%
   - md build
   - cd build
   - if "%configuration%"=="Debug" (
@@ -71,6 +72,7 @@ build_script:
   - cd %boost_dir%
   - bootstrap.bat
   - b2 --with-system --with-date_time --j%cores% toolset=%msvcver% address-model=64 architecture=x86 link=static threading=multi runtime-link=shared --build-type=minimal stage --stagedir=stage/x64
+  - cd %dronecore_dir%
   - cd example\takeoff_land
   - md build
   - cd build
@@ -80,7 +82,7 @@ build_script:
     ) else (
       cmake --build . --config Release
     )
-  - cd ..\..\..
+  - cd %dronecore_dir%
   - cd example\fly_mission
   - md build
   - cd build
@@ -90,7 +92,7 @@ build_script:
     ) else (
       cmake --build . --config Release
     )
-  - cd ..\..\..
+  - cd %dronecore_dir%
   - cd example\offboard_velocity
   - md build
   - cd build
@@ -100,7 +102,7 @@ build_script:
     ) else (
       cmake --build . --config Release
     )
-  - cd ..\..\..
+  - cd %dronecore_dir%
   - cd example\transition_vtol_fixed_wing
   - md build
   - cd build
@@ -110,7 +112,7 @@ build_script:
     ) else (
       cmake --build . --config Release
     )
-  - cd ..\..\..
+  - cd %dronecore_dir%
   - cd example\follow_me
   - md build
   - cd build
@@ -120,7 +122,7 @@ build_script:
     ) else (
       cmake --build . --config Release
     )
-  - cd ..\..\..
+  - cd %dronecore_dir%
   - cd example\fly_qgc_mission
   - md build
   - cd build
@@ -130,14 +132,14 @@ build_script:
     ) else (
       cmake --build . --config Release
     )
-  - cd ..\..\..
+  - cd %dronecore_dir%
 
 
 test: on
 
 # We need to manually copy the dlls for now, otherwise they are not found.
 test_script:
-  - cd C:\dronecore
+  - cd %dronecore_dir%
   - if "%configuration%"=="Debug" (
       copy build\third_party\gtest\googlemock\gtest\Debug\gtestd.dll build\Debug\ &&
       copy build\third_party\gtest\googlemock\gtest\Debug\gtest_maind.dll build\Debug\ &&
