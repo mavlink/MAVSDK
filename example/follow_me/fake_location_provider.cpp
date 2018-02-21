@@ -1,5 +1,10 @@
 
 #include "fake_location_provider.h"
+#include <chrono> // for seonds()
+#include <thread> // for sleep_for()
+
+using std::this_thread::sleep_for;
+using std::chrono::seconds;
 
 void FakeLocationProvider::request_location_updates(location_callback_t callback)
 {
@@ -16,42 +21,42 @@ void FakeLocationProvider::compute_next_location()
         latitude_deg_ -= LATITUDE_DEG_PER_METER * 4;
         timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
         timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep(1);
+        sleep_for(seconds(1));
     }
     if (count_++ < 20) {
         location_callback_(latitude_deg_, longitude_deg_);
         longitude_deg_ += LONGITUDE_DEG_PER_METER * 4;
         timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
         timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep(1);
+        sleep_for(seconds(1));
     }
     if (count_++ < 30) {
         location_callback_(latitude_deg_, longitude_deg_);
         latitude_deg_ += LATITUDE_DEG_PER_METER * 4;
         timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
         timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep(1);
+        sleep_for(seconds(1));
     }
     if (count_++ < 40) {
         location_callback_(latitude_deg_, longitude_deg_);
         longitude_deg_ -= LONGITUDE_DEG_PER_METER * 4;
         timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
         timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep(1);
+        sleep_for(seconds(1));
     }
     if (count_++ < 50) {
         location_callback_(latitude_deg_, longitude_deg_);
         latitude_deg_ -= LATITUDE_DEG_PER_METER * 3;
         timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
         timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep(1);
+        sleep_for(seconds(1));
     }
     if (count_++ < MAX_LOCATIONS) {
         location_callback_(latitude_deg_, longitude_deg_);
         longitude_deg_ += LONGITUDE_DEG_PER_METER * 3;
         timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
         timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep(1);
+        sleep_for(seconds(1));
     }
 }
 

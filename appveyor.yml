@@ -37,6 +37,8 @@ before_build:
   - cd C:\
   - appveyor DownloadFile https://curl.haxx.se/download/curl-7.56.1.zip
   - 7z x -y curl-7.56.1.zip
+  - appveyor DownloadFile http://sourceforge.net/projects/boost/files/boost/1.64.0/boost_1_64_0.7z
+  - 7z x -y boost_1_64_0.7z
 
 build: on
 
@@ -62,7 +64,13 @@ build_script:
     ) else (
       cmake --build . --target install --config Release
     )
-  - cd ..
+  - cd C:\boost_1_64_0
+  - set boost_dir=C:\boost_1_64_0
+  - set cores=%NUMBER_OF_PROCESSORS%
+  - set msvcver=msvc-14.1
+  - cd %boost_dir%
+  - bootstrap.bat
+  - b2 --with-system --with-date_time --j%cores% toolset=%msvcver% address-model=64 architecture=x86 link=static threading=multi runtime-link=shared --build-type=minimal stage --stagedir=stage/x64
   - cd example\takeoff_land
   - md build
   - cd build
@@ -106,7 +114,7 @@ build_script:
   - cd example\follow_me
   - md build
   - cd build
-  - cmake ..  -G "Visual Studio 15 2017 Win64"
+  - cmake ..  -G "Visual Studio 15 2017 Win64" -DBoost_USE_STATIC_LIBS=ON
   - if "%configuration%"=="Debug" (
       cmake --build . --config Debug
     ) else (
