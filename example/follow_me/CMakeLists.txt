@@ -7,6 +7,8 @@ if (MSVC)
     include_directories(${CMAKE_SOURCE_DIR}/../../install/include)
     link_directories(${CMAKE_SOURCE_DIR}/../../install/lib)
     add_definitions("-std=c++11 -WX -W2")
+    # This is to avoid auto-linking of libraries that we don't build
+    add_definitions("-DBOOST_ALL_NO_LIB")
 else()
     find_package(Boost 1.58 COMPONENTS system REQUIRED )
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
