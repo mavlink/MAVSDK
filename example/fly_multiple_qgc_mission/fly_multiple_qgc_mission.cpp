@@ -83,8 +83,8 @@ int main(int argc, char **argv)
     for (auto plan : plans) {
         fly_qgc_mission(device, plan);
         // Wait for some time.
-        std::cout << "Lets wait for 5 seconds before starting next mission." << std::endl;
-        sleep_for(seconds(5));
+        std::cout << "Lets wait for 2 seconds before starting next mission." << std::endl;
+        sleep_for(seconds(2));
 
         // Land it, if not already.
         if (telemetry->in_air()) {
