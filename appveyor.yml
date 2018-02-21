@@ -72,6 +72,8 @@ build_script:
   - cd %boost_dir%
   - bootstrap.bat
   - b2 --with-system --with-date_time --j%cores% toolset=%msvcver% address-model=64 architecture=x86 link=static threading=multi runtime-link=shared --build-type=minimal stage --stagedir=stage/x64
+  - set BOOST_ROOT=%boost_dir%
+  - set BOOST_LIBRARYDIR=%boost_dir%\stage\x64\lib
   - cd %dronecore_dir%
   - cd example\takeoff_land
   - md build
