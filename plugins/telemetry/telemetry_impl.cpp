@@ -391,7 +391,7 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t &message)
     Telemetry::EulerAngle euler_angle {
         mount_orientation.roll,
         mount_orientation.pitch,
-        mount_orientation.yaw
+        mount_orientation.yaw_absolute
     };
 
     set_camera_attitude_euler_angle(euler_angle);
