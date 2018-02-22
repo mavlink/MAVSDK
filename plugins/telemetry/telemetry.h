@@ -364,12 +364,18 @@ public:
     /**
      * @brief Get the camera's attitude in quaternions (synchronous).
      *
+     * Note this attitude is relative to North, so in the absolute frame
+     * and not relative to the vehicle's attitude.
+     *
      * @return Camera's attitude as quaternion.
      */
     Quaternion camera_attitude_quaternion() const;
 
     /**
      * @brief Get the camera's attitude in Euler angles (synchronous).
+     *
+     * Note this attitude is relative to North, so in the absolute frame.
+     * and not relative to the vehicle's attitude.
      *
      * @return Camera's attitude as Euler angle.
      */
