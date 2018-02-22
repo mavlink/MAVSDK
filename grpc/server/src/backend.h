@@ -1,7 +1,8 @@
-#include <future>
 #include <grpc++/server.h>
 #include <memory>
+#include <mutex>
 
+#include "connection_initiator.h"
 #include "dronecore.h"
 
 namespace dronecore {
@@ -16,17 +17,12 @@ public:
     bool run(const int mavlink_listen_port = 14540);
 
 private:
-    bool connect_to_vehicle(int port);
-    bool add_udp_connection(int port);
-    void log_uuid_on_timeout();
-    void wait_for_discovery();
-    std::future<uint64_t> wrapped_register_on_discover();
-
     bool run_server();
     void setup_port(grpc::ServerBuilder &builder);
 
-    dronecore::DroneCore dc;
-    std::unique_ptr<grpc::Server> server;
+    dronecore::DroneCore _dc;
+    dronecore::backend::ConnectionInitiator<dronecore::DroneCore> _connection_initiator;
+    std::unique_ptr<grpc::Server> _server;
 };
 
 } // namespace backend

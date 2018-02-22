@@ -20,6 +20,4 @@ target_link_libraries(unit_tests_runner
     gmock
 )
 
-add_test(unit_tests
-    unit_tests_runner
-)
+add_test(unit_tests unit_tests_runner)
