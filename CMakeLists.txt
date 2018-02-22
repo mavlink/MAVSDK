@@ -7,9 +7,16 @@ list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR}/third_party)
 
 project(dronecore)
 
+option(BUILD_TESTS "Build tests" ON)
+
 include(cmake/compiler_flags.cmake)
 include(cmake/zlib.cmake)
 include(cmake/curl.cmake)
+
+if(BUILD_TESTS AND (IOS OR ANDROID))
+    message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
+    set(BUILD_TESTS OFF)
+endif()
 
 if(ANDROID)
     set(lib_path "lib/android/${ANDROID_ABI}")
@@ -31,14 +38,7 @@ if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
     include_directories(${EXTERNAL_DIR})
 endif()
 
-if (CMAKE_BUILD_DRONECORESERVER)
-    message(STATUS "Building dronecore server")
-    add_subdirectory(grpc/server)
-else()
-    message(STATUS "BUILD_DRONECORESERVER not set: not building dronecore server")
-endif()
-
-if(NOT IOS AND NOT ANDROID)
+if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(${CMAKE_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
@@ -50,6 +50,13 @@ if(NOT IOS AND NOT ANDROID)
     endif()
 
     include(cmake/unit_tests.cmake)
+endif()
+
+if (CMAKE_BUILD_DRONECORESERVER)
+    message(STATUS "Building dronecore server")
+    add_subdirectory(grpc/server)
+else()
+    message(STATUS "BUILD_DRONECORESERVER not set: not building dronecore server")
 endif()
 
 if (DROP_DEBUG EQUAL 1)
