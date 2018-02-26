@@ -34,10 +34,8 @@ if(APPLE)
 elseif(ANDROID)
     # We install the tinyxml2 library manually for Android.
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        # Need to remove that d again.
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.so
             DESTINATION ${lib_path}
-            RENAME libtinyxml2.so
         )
     else()
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2.so
