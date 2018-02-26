@@ -36,10 +36,6 @@ private:
     int resolve_address(const std::string &ip_address, int port, struct sockaddr_in *addr);
     static void receive(TcpConnection *parent);
 
-    static constexpr int DEFAULT_TCP_REMOTE_PORT = 5760;
-    static constexpr auto DEFAULT_TCP_REMOTE_IP = "127.0.0.1";
-    std::string _local_ip = "127.0.0.1";
-    int _local_port_number = 14580; //unused port
     std::string _remote_ip = {};
     int _remote_port_number;
 

@@ -28,12 +28,7 @@ namespace dronecore {
 UdpConnection::UdpConnection(DroneCoreImpl *parent,
                              int local_port_number) :
     Connection(parent),
-    _local_port_number(local_port_number)
-{
-    if (_local_port_number == 0) {
-        _local_port_number = DEFAULT_UDP_LOCAL_PORT;
-    }
-}
+    _local_port_number(local_port_number) {}
 
 UdpConnection::~UdpConnection()
 {

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "dronecore.h"
-#include "connection.h"
-#include "device.h"
-#include "mavlink_include.h"
-#include <vector>
 #include <map>
 #include <mutex>
+#include <vector>
 
+#include "connection.h"
+#include "device.h"
+#include "dronecore.h"
+#include "mavlink_include.h"
 
 namespace dronecore {
 
@@ -19,7 +19,13 @@ public:
 
     void receive_message(const mavlink_message_t &message);
     bool send_message(const mavlink_message_t &message);
+    DroneCore::ConnectionResult add_any_connection(const std::string &connection_url);
+    DroneCore::ConnectionResult add_link_connection(const std::string &protocol, const std::string &ip,
+                                                    int port);
+    DroneCore::ConnectionResult add_udp_connection(int local_port_number);
     void add_connection(Connection *connection);
+    DroneCore::ConnectionResult add_tcp_connection(const std::string &remote_ip, int remote_port);
+    DroneCore::ConnectionResult add_serial_connection(const std::string &dev_path, int baudrate);
 
     const std::vector<uint64_t> &get_device_uuids() const;
     Device &get_device();
