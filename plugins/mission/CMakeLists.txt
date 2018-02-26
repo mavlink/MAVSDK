@@ -30,6 +30,12 @@ install(TARGETS dronecore_mission
     DESTINATION ${dronecore_install_lib_dir}
 )
 
+if(ANDROID)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/json11/libjson11.so
+        DESTINATION ${lib_path}
+    )
+endif()
+
 list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/plugins/mission/mission_import_qgc_test.cpp
 )
