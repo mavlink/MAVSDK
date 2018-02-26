@@ -49,6 +49,11 @@ void Offboard::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_ya
     return _impl->set_velocity_body(velocity_body_yawspeed);
 }
 
+void Offboard::set_actuator_control_target(ActuatorControlTarget actuator_control_target, ActuatorControlGroup control_group)
+{
+    return _impl->set_actuator_control_target(actuator_control_target, control_group);
+}
+
 const char *Offboard::result_str(Result result)
 {
     switch (result) {

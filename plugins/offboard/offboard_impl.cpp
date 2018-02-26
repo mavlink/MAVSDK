@@ -165,6 +165,37 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
     send_velocity_body();
 }
 
+void OffboardImpl::set_actuator_control_target(Offboard::ActuatorControlTarget actuator_control_target, Offboard::ActuatorControlGroup actuator_control_group)
+{
+    _mutex.lock();
+    _actuator_control_group = actuator_control_group;
+    memcpy(_actuator_control_target,actuator_control_target,8*sizeof(float));
+
+    if (_mode != Mode::ACTUATOR_CONTROL) {
+        if (_call_every_cookie) {
+            // If we're already sending other setpoints, stop that now.
+            _parent->remove_call_every(_call_every_cookie);
+            _call_every_cookie = nullptr;
+        }
+        // We automatically send actuator setpoints from now on.
+        _parent->add_call_every([this]() { send_actuator_control_target(); },
+        SEND_INTERVAL_S,
+        &_call_every_cookie);
+
+        _mode = Mode::VELOCITY_BODY;
+    } else {
+        // We're already sending these kind of setpoints. Since the setpoint change, let's
+        // reschedule the next call, so we don't send setpoints too often.
+        _parent->reset_call_every(_call_every_cookie);
+    }
+    _mutex.unlock();
+
+    // also send it right now to reduce latency
+    send_actuator_control_target();
+}
+
+
+
 void OffboardImpl::send_velocity_ned()
 {
     const static uint16_t IGNORE_X = (1 << 0);
@@ -254,6 +285,28 @@ void OffboardImpl::send_velocity_body()
                                                    IGNORE_YAW,
                                                    x, y, z, vx, vy, vz, afx, afy, afz,
                                                    yaw, yaw_rate);
+    _parent->send_message(message);
+}
+
+void OffboardImpl::send_actuator_control_target()
+{
+
+
+    _mutex.lock();
+    const Offboard::ActuatorControlGroup group_mlx  = _actuator_control_group;
+    Offboard::ActuatorControlTarget actuator_control_target;
+    memcpy(actuator_control_target,_actuator_control_target,8*sizeof(float));
+    _mutex.unlock();
+
+    mavlink_message_t message;
+    mavlink_msg_set_actuator_control_target_pack(_parent->get_own_system_id(),
+                                                 _parent->get_own_component_id(),
+                                                 &message,
+                                                 static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+                                                 group_mlx,
+                                                 _parent->get_target_system_id(),
+                                                 _parent->get_target_component_id(),
+                                                 actuator_control_target);
     _parent->send_message(message);
 }
 

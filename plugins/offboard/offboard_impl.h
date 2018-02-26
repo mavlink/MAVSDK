@@ -30,10 +30,12 @@ public:
 
     void set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw);
     void set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
+    void set_actuator_control_target(Offboard::ActuatorControlTarget actuator_control_target, Offboard::ActuatorControlGroup control_group);
 
 private:
     void send_velocity_ned();
     void send_velocity_body();
+    void send_actuator_control_target();
 
     void process_heartbeat(const mavlink_message_t &message);
     void receive_command_result(MavlinkCommands::Result result,
@@ -48,10 +50,13 @@ private:
     enum class Mode {
         NOT_ACTIVE,
         VELOCITY_NED,
-        VELOCITY_BODY
+        VELOCITY_BODY,
+        ACTUATOR_CONTROL
     } _mode = Mode::NOT_ACTIVE;
     Offboard::VelocityNEDYaw _velocity_ned_yaw {};
     Offboard::VelocityBodyYawspeed _velocity_body_yawspeed {};
+    Offboard::ActuatorControlTarget _actuator_control_target{0};
+    Offboard::ActuatorControlGroup  _actuator_control_group;
 
     void *_call_every_cookie = nullptr;
 
