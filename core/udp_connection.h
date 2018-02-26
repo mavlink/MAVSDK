@@ -30,9 +30,6 @@ private:
 
     static void receive(UdpConnection *parent);
 
-    // This port is shared with mavros, so either one, this SDK or mavros can be used.
-    static constexpr int DEFAULT_UDP_LOCAL_PORT = 14540;
-
     int _local_port_number;
 
     std::mutex _remote_mutex = {};

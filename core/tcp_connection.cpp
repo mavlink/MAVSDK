@@ -26,15 +26,7 @@ TcpConnection::TcpConnection(DroneCoreImpl *parent, const std::string &remote_ip
     Connection(parent),
     _remote_ip(remote_ip),
     _remote_port_number(remote_port),
-    _should_exit(false)
-{
-    if (_remote_port_number == 0) {
-        _remote_port_number = DEFAULT_TCP_REMOTE_PORT;
-    }
-    if (_remote_ip == "") {
-        _remote_ip = DEFAULT_TCP_REMOTE_IP;
-    }
-}
+    _should_exit(false) {}
 
 TcpConnection::~TcpConnection()
 {

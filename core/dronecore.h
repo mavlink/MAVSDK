@@ -4,8 +4,6 @@
 #include <vector>
 #include <functional>
 
-//#include "device.h"
-
 namespace dronecore {
 
 class DroneCoreImpl;
@@ -22,6 +20,12 @@ class Device;
 class DroneCore
 {
 public:
+    static constexpr auto DEFAULT_UDP_CONNECTION_URL = "udp://:14540";
+    static constexpr int DEFAULT_UDP_PORT = 14540;
+    static constexpr auto DEFAULT_TCP_REMOTE_IP = "127.0.0.1";
+    static constexpr int DEFAULT_TCP_REMOTE_PORT = 5760;
+    static constexpr auto DEFAULT_SERIAL_DEV_PATH = "/dev/ttyS0";
+    static constexpr int DEFAULT_SERIAL_BAUDRATE = 57600;
 
     /**
      * @brief Constructor.
@@ -60,7 +64,7 @@ public:
     /**
      * @brief Translates the DroneCore::ConnectionResult enum to a human-readable English string.
      */
-    static const char *connection_result_str(ConnectionResult);
+    static const char *connection_result_str(const ConnectionResult result);
 
     /**
      * @brief Adds Connection via URL
@@ -77,60 +81,35 @@ public:
      * @param connection_url connection URL string.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_any_connection(const std::string &connection_url = "udp://:14540");
-
-    /**
-     * @brief Adds a UDP connection to the default port.
-     *
-     * This will listen on UDP port 14540.
-     *
-     * @return The result of adding the connection.
-     */
-    ConnectionResult add_udp_connection();
+    ConnectionResult add_any_connection(const std::string &connection_url = DEFAULT_UDP_CONNECTION_URL);
 
     /**
      * @brief Adds a UDP connection to the specified port number.
      *
-     * @param local_port_number The local UDP port to listen to.
+     * @param local_port_number The local UDP port to listen to (defaults to 14540, the same as mavros).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_udp_connection(int local_port_number);
-
-    /**
-     * @brief Adds a TCP connection to the default IP address/port.
-     *
-     * This will connect to local TCP port 5760.
-     *
-     * @return The result of adding the connection.
-     */
-    ConnectionResult add_tcp_connection();
+    ConnectionResult add_udp_connection(int local_port_number = DEFAULT_UDP_PORT);
 
     /**
      * @brief Adds a TCP connection with a specific IP address and port number.
      *
-     * @param remote_ip Remote IP address to connect to.
-     * @param remote_port The TCP port to connect to.
+     * @param remote_ip Remote IP address to connect to (defaults to 127.0.0.1).
+     * @param remote_port The TCP port to connect to (defaults to 5760).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_tcp_connection(std::string remote_ip, int remote_port);
-
-    /**
-     * @brief Adds a serial connection with the default arguments.
-     *
-     * This will connect to serial port ttyS1 (COM0).
-     *
-     * @return The result of adding the connection.
-     */
-    ConnectionResult add_serial_connection();
+    ConnectionResult add_tcp_connection(const std::string &remote_ip = DEFAULT_TCP_REMOTE_IP,
+                                        int remote_port = DEFAULT_TCP_REMOTE_PORT);
 
     /**
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as specified.
      *
-     * @param dev_path COM or UART dev node name/path.
-     * @param baudrate Baudrate of the serial port.
+     * @param dev_path COM or UART dev node name/path (defaults to "/dev/ttyS0").
+     * @param baudrate Baudrate of the serial port (defaults to 57600).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_serial_connection(std::string dev_path, int baudrate);
+    ConnectionResult add_serial_connection(const std::string &dev_path = DEFAULT_SERIAL_DEV_PATH,
+                                           int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
     /**
      * @brief Get vector of device UUIDs.
@@ -225,6 +204,7 @@ private:
     // Non-copyable
     DroneCore(const DroneCore &) = delete;
     const DroneCore &operator=(const DroneCore &) = delete;
+
     /* Adds a connection for Network protocol*/
     ConnectionResult add_link_connection(const std::string &protocol, const std::string &ip,
                                          const int port);
