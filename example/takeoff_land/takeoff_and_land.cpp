@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 {
     DroneCore dc;
     std::string connection_url;
-    DroneCore::ConnectionResult connection_result;
+    ConnectionResult connection_result;
 
     bool discovered_device = false;
     if (argc == 1) {
@@ -34,9 +34,9 @@ int main(int argc, char **argv)
         connection_result = dc.add_any_connection(connection_url);
     }
 
-    if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
+    if (connection_result != ConnectionResult::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
-                  << DroneCore::connection_result_str(connection_result)
+                  << connection_result_str(connection_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }

@@ -105,7 +105,7 @@ bool DroneCoreImpl::send_message(const mavlink_message_t &message)
     return true;
 }
 
-DroneCore::ConnectionResult DroneCoreImpl::add_any_connection(const std::string &connection_url)
+ConnectionResult DroneCoreImpl::add_any_connection(const std::string &connection_url)
 {
     std::string delimiter = "://";
     std::string conn_url(connection_url);
@@ -145,8 +145,8 @@ DroneCore::ConnectionResult DroneCoreImpl::add_any_connection(const std::string 
     }
 }
 
-DroneCore::ConnectionResult DroneCoreImpl::add_link_connection(const std::string &protocol,
-                                                               const std::string &ip, const int port)
+ConnectionResult DroneCoreImpl::add_link_connection(const std::string &protocol,
+                                                    const std::string &ip, const int port)
 {
     int local_port_number = 0;
     std::string local_ip = ip;
@@ -167,18 +167,18 @@ DroneCore::ConnectionResult DroneCoreImpl::add_link_connection(const std::string
     }
 }
 
-DroneCore::ConnectionResult DroneCoreImpl::add_udp_connection(const int local_port_number)
+ConnectionResult DroneCoreImpl::add_udp_connection(const int local_port_number)
 {
     Connection *new_connection = new UdpConnection(this, local_port_number);
-    DroneCore::ConnectionResult ret = new_connection->start();
+    ConnectionResult ret = new_connection->start();
 
-    if (ret != DroneCore::ConnectionResult::SUCCESS) {
+    if (ret != ConnectionResult::SUCCESS) {
         delete new_connection;
         return ret;
     }
 
     add_connection(new_connection);
-    return DroneCore::ConnectionResult::SUCCESS;
+    return ConnectionResult::SUCCESS;
 }
 
 void DroneCoreImpl::add_connection(Connection *new_connection)
@@ -187,39 +187,39 @@ void DroneCoreImpl::add_connection(Connection *new_connection)
     _connections.push_back(new_connection);
 }
 
-DroneCore::ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
-                                                              const int remote_port)
+ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
+                                                   const int remote_port)
 {
     Connection *new_connection = new TcpConnection(this, remote_ip, remote_port);
-    DroneCore::ConnectionResult ret = new_connection->start();
+    ConnectionResult ret = new_connection->start();
 
-    if (ret != DroneCore::ConnectionResult::SUCCESS) {
+    if (ret != ConnectionResult::SUCCESS) {
         delete new_connection;
         return ret;
     }
 
     add_connection(new_connection);
-    return DroneCore::ConnectionResult::SUCCESS;
+    return ConnectionResult::SUCCESS;
 }
 
-DroneCore::ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_path,
-                                                                 const int baudrate)
+ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_path,
+                                                      const int baudrate)
 {
 #if !defined(WINDOWS) && !defined(APPLE)
     Connection *new_connection = new SerialConnection(this, dev_path, baudrate);
-    DroneCore::ConnectionResult ret = new_connection->start();
+    ConnectionResult ret = new_connection->start();
 
-    if (ret != DroneCore::ConnectionResult::SUCCESS) {
+    if (ret != ConnectionResult::SUCCESS) {
         delete new_connection;
         return ret;
     }
 
     add_connection(new_connection);
-    return DroneCore::ConnectionResult::SUCCESS;
+    return ConnectionResult::SUCCESS;
 #else
     UNUSED(dev_path);
     UNUSED(baudrate);
-    return DroneCore::ConnectionResult::NOT_IMPLEMENTED;
+    return ConnectionResult::NOT_IMPLEMENTED;
 #endif
 }
 

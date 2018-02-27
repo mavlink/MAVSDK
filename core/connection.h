@@ -14,8 +14,8 @@ public:
     Connection(DroneCoreImpl *parent);
     virtual ~Connection();
 
-    virtual DroneCore::ConnectionResult start() = 0;
-    virtual DroneCore::ConnectionResult stop() = 0;
+    virtual ConnectionResult start() = 0;
+    virtual ConnectionResult stop() = 0;
     virtual bool is_ok() const = 0;
 
     virtual bool send_message(const mavlink_message_t &message) = 0;

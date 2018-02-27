@@ -46,11 +46,11 @@ inline void offboard_error_exit(Offboard::Result result, const std::string &mess
 }
 
 // Handles connection result
-inline void connection_error_exit(DroneCore::ConnectionResult result, const std::string &message)
+inline void connection_error_exit(ConnectionResult result, const std::string &message)
 {
-    if (result != DroneCore::ConnectionResult::SUCCESS) {
+    if (result != ConnectionResult::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message
-                  << DroneCore::connection_result_str(result)
+                  << connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -171,7 +171,7 @@ int main(int, char **)
 {
     DroneCore dc;
 
-    DroneCore::ConnectionResult conn_result = dc.add_udp_connection();
+    ConnectionResult conn_result = dc.add_udp_connection();
     connection_error_exit(conn_result, "Connection failed");
 
     // Wait for the device to connect via heartbeat

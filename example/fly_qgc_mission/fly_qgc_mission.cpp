@@ -43,7 +43,7 @@ inline void handle_action_err_exit(Action::Result result, const std::string &mes
 // Handles Mission's result
 inline void handle_mission_err_exit(Mission::Result result, const std::string &message);
 // Handles Connection result
-inline void handle_connection_err_exit(DroneCore::ConnectionResult result,
+inline void handle_connection_err_exit(ConnectionResult result,
                                        const std::string &message);
 
 int main(int argc, char **argv)
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
             prom->set_value();
         });
 
-        DroneCore::ConnectionResult connection_result = dc.add_udp_connection();
+        ConnectionResult connection_result = dc.add_udp_connection();
         handle_connection_err_exit(connection_result, "Connection failed: ");
 
         future_result.get();
@@ -190,12 +190,12 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string &m
 }
 
 // Handles connection result
-inline void handle_connection_err_exit(DroneCore::ConnectionResult result,
+inline void handle_connection_err_exit(ConnectionResult result,
                                        const std::string &message)
 {
-    if (result != DroneCore::ConnectionResult::SUCCESS) {
+    if (result != ConnectionResult::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message
-                  << DroneCore::connection_result_str(result)
+                  << connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }

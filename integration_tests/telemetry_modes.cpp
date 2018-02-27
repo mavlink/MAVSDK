@@ -13,8 +13,8 @@ TEST_F(SitlTest, TelemetryFlightModes)
 {
     DroneCore dc;
 
-    DroneCore::ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
+    ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
