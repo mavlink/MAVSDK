@@ -10,17 +10,14 @@ using namespace dronecore;
 class TelemetryServiceImpl final : public rpc::telemetry::TelemetryService::Service
 {
 public:
-    TelemetryServiceImpl(DroneCore *dc_obj)
-    {
-        dc = dc_obj;
-        telemetry = std::make_shared<Telemetry>(&dc->device());
-    }
+    TelemetryServiceImpl(Telemetry &telemetry)
+        : telemetry(telemetry) {}
 
     Status SubscribePosition(ServerContext *context,
                              const rpc::telemetry::SubscribePositionRequest *request,
                              ServerWriter<rpc::telemetry::Position> *writer) override
     {
-        telemetry->position_async([&writer](
+        telemetry.position_async([&writer](
         Telemetry::Position position) {
             rpc::telemetry::Position rpc_position;
             rpc_position.set_latitude_deg(position.latitude_deg);
@@ -38,6 +35,5 @@ public:
     }
 
 private:
-    DroneCore *dc;
-    std::shared_ptr<Telemetry> telemetry;
+    Telemetry &telemetry;
 };

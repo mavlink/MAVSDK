@@ -9,18 +9,16 @@ using namespace dronecore;
 class CoreServiceImpl final: public rpc::core::CoreService::Service
 {
 public:
-    CoreServiceImpl(DroneCore *dc_obj)
-    {
-        dc = dc_obj;
-    }
+    CoreServiceImpl(DroneCore &dc)
+        : dc(dc) {}
 
     Status SubscribeDevices(ServerContext *context,
                             const rpc::core::SubscribeDevicesRequest *request,
                             ServerWriter<rpc::core::Device> *writer) override
     {
-        std::vector<uint64_t> list = dc->device_uuids();
+        std::vector<uint64_t> list = dc.device_uuids();
 
-        for (auto uuid : dc->device_uuids()) {
+        for (auto uuid : dc.device_uuids()) {
             auto *rpc_uuid = new rpc::core::UUID();
             rpc_uuid->set_value(uuid);
 
@@ -34,5 +32,5 @@ public:
     }
 
 private:
-    DroneCore *dc;
+    DroneCore &dc;
 };
