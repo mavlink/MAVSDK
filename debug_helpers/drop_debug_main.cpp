@@ -21,8 +21,8 @@ int main(int argc, const char *argv[])
 
     dronecore::DroneCore dc;
 
-    dronecore::DroneCore::ConnectionResult ret = dc.add_udp_connection();
-    if (ret != dronecore::DroneCore::ConnectionResult::SUCCESS) {
+    dronecore::ConnectionResult ret = dc.add_udp_connection();
+    if (ret != dronecore::ConnectionResult::SUCCESS) {
         std::cout << "failed to add connection" << std::endl;
         return -1;
     }

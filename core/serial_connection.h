@@ -12,8 +12,8 @@ class SerialConnection : public Connection
 public:
     explicit SerialConnection(DroneCoreImpl *parent, const std::string &path, int baudrate);
     bool is_ok() const;
-    DroneCore::ConnectionResult start();
-    DroneCore::ConnectionResult stop();
+    ConnectionResult start();
+    ConnectionResult stop();
     ~SerialConnection();
 
     bool send_message(const mavlink_message_t &message);
@@ -22,7 +22,7 @@ public:
     const SerialConnection &operator=(const SerialConnection &) = delete;
 
 private:
-    DroneCore::ConnectionResult setup_port();
+    ConnectionResult setup_port();
     void start_recv_thread();
     static void receive(SerialConnection *parent);
 

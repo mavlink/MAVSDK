@@ -44,23 +44,23 @@ bool SerialConnection::is_ok() const
     return true;
 }
 
-DroneCore::ConnectionResult SerialConnection::start()
+ConnectionResult SerialConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return DroneCore::ConnectionResult::CONNECTIONS_EXHAUSTED;
+        return ConnectionResult::CONNECTIONS_EXHAUSTED;
     }
 
-    DroneCore::ConnectionResult ret = setup_port();
-    if (ret != DroneCore::ConnectionResult::SUCCESS) {
+    ConnectionResult ret = setup_port();
+    if (ret != ConnectionResult::SUCCESS) {
         return ret;
     }
 
     start_recv_thread();
 
-    return DroneCore::ConnectionResult::SUCCESS;
+    return ConnectionResult::SUCCESS;
 }
 
-DroneCore::ConnectionResult SerialConnection::setup_port()
+ConnectionResult SerialConnection::setup_port()
 {
     struct termios2 tc;
 
@@ -68,12 +68,12 @@ DroneCore::ConnectionResult SerialConnection::setup_port()
 
     _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY);
     if (_fd == -1) {
-        return DroneCore::ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::CONNECTION_ERROR;
     }
     if (ioctl(_fd, TCGETS2, &tc) == -1) {
         LogErr() << "Could not get termios2 " << GET_ERROR(errno);
         close(_fd);
-        return DroneCore::ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::CONNECTION_ERROR;
     }
 
     tc.c_iflag &= ~(IGNBRK | BRKINT | ICRNL | INLCR | PARMRK | INPCK | ISTRIP | IXON);
@@ -90,15 +90,15 @@ DroneCore::ConnectionResult SerialConnection::setup_port()
     if (ioctl(_fd, TCSETS2, &tc) == -1) {
         LogErr() << "Could not set terminal attributes " << GET_ERROR(errno);
         close(_fd);
-        return DroneCore::ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::CONNECTION_ERROR;
     }
 
     if (ioctl(_fd, TCFLSH, TCIOFLUSH) == -1) {
         LogErr() << "Could not flush terminal " << GET_ERROR(errno);
         close(_fd);
-        return DroneCore::ConnectionResult::CONNECTION_ERROR;
+        return ConnectionResult::CONNECTION_ERROR;
     }
-    return DroneCore::ConnectionResult::SUCCESS;
+    return ConnectionResult::SUCCESS;
 }
 
 void SerialConnection::start_recv_thread()
@@ -106,7 +106,7 @@ void SerialConnection::start_recv_thread()
     _recv_thread = new std::thread(receive, this);
 }
 
-DroneCore::ConnectionResult SerialConnection::stop()
+ConnectionResult SerialConnection::stop()
 {
     _should_exit = true;
     //TODO for windows
@@ -122,7 +122,7 @@ DroneCore::ConnectionResult SerialConnection::stop()
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
-    return DroneCore::ConnectionResult::SUCCESS;
+    return ConnectionResult::SUCCESS;
 }
 
 bool SerialConnection::send_message(const mavlink_message_t &message)

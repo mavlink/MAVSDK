@@ -21,11 +21,11 @@ int main(int /*argc*/, char ** /*argv*/)
 
     bool discovered_device = false;
 
-    DroneCore::ConnectionResult connection_result = dc.add_udp_connection();
+    ConnectionResult connection_result = dc.add_udp_connection();
 
-    if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
+    if (connection_result != ConnectionResult::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
-                  << DroneCore::connection_result_str(connection_result)
+                  << connection_result_str(connection_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
