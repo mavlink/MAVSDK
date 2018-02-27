@@ -1,67 +1,33 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
-file(STRINGS ${PLUGINS_DIR}/plugins.conf PLUGINS_LIST)
+set(COMPONENTS_LIST core action mission telemetry)
 
-set(PROTOC_BINARY ${CMAKE_BINARY_DIR}/../default/third_party/protobuf/bin/protoc)
-set(GRPC_CPP_PLUGIN_BINARY ${CMAKE_BINARY_DIR}/../default/third_party/grpc/bin/grpc_cpp_plugin)
+include(cmake/compile_proto.cmake)
 
-if(NOT EXISTS ${PROTOC_BINARY} OR NOT EXISTS ${GRPC_CPP_PLUGIN_BINARY})
-    message(FATAL_ERROR "Could not find 'protoc' or 'grpc_cpp_plugin' in the 'default' build folder. Please build for your host first (`make BUILD_DRONECORESERVER=YES default`).")
-endif()
+foreach(COMPONENT_NAME ${COMPONENTS_LIST})
+    compile_proto_pb(${COMPONENT_NAME} PB_COMPILED_SOURCE)
+    list(APPEND PB_COMPILED_SOURCES ${PB_COMPILED_SOURCE})
 
-add_custom_command(OUTPUT core/core.grpc.pb.cc
-    COMMAND ${PROTOC_BINARY}
-        -I ${PROTO_DIR}
-        --grpc_out=.
-        --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN_BINARY}
-        ${PROTO_DIR}/core/core.proto;
-)
-
-add_custom_command(OUTPUT core/core.pb.cc
-    COMMAND ${PROTOC_BINARY}
-        -I ${PROTO_DIR}
-        --cpp_out=.
-        ${PROTO_DIR}/core/core.proto
-)
-
-foreach(PLUGIN ${PLUGINS_LIST})
-    add_custom_command(OUTPUT ${PLUGIN}/${PLUGIN}.grpc.pb.cc
-        COMMAND ${PROTOC_BINARY}
-            -I ${PROTO_DIR}
-            --grpc_out=.
-            --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN_BINARY}
-            --cpp_out=.
-            ${PROTO_DIR}/${PLUGIN}/${PLUGIN}.proto
-    )
+    compile_proto_grpc(${COMPONENT_NAME} GRPC_COMPILED_SOURCE)
+    list(APPEND GRPC_COMPILED_SOURCES ${GRPC_COMPILED_SOURCE})
 endforeach()
 
-foreach(PLUGIN ${PLUGINS_LIST})
-    add_custom_command(OUTPUT ${PLUGIN}/${PLUGIN}.pb.cc
-        COMMAND ${PROTOC_BINARY}
-            -I ${PROTO_DIR}
-            --cpp_out=.
-            ${PROTO_DIR}/${PLUGIN}/${PLUGIN}.proto
-    )
-endforeach()
-
-set(PLUGINS_SRC dronecore_server.cpp core/core.pb.cc core/core.grpc.pb.cc)
-foreach(PLUGIN ${PLUGINS_LIST})
-    list(APPEND PLUGINS_SRC ${PLUGIN}/${PLUGIN}.pb.cc)
-    list(APPEND PLUGINS_SRC ${PLUGIN}/${PLUGIN}.grpc.pb.cc)
-endforeach()
-
-add_executable(dronecore_server ${PLUGINS_SRC})
-
-target_compile_options(
-    dronecore_server
-    PUBLIC
-    -Wno-unused-parameter
-    -Wno-shadow
+add_library(backend
+    backend.cpp
+    ${GRPC_COMPILED_SOURCES}
+    ${PB_COMPILED_SOURCES}
 )
 
-target_include_directories(
-    dronecore_server
-    PUBLIC
+target_link_libraries(backend
+    dronecore
+    dronecore_action
+    dronecore_mission
+    dronecore_telemetry
+    gRPC::grpc++
+)
+
+target_include_directories(backend
+    PRIVATE
     ${CMAKE_SOURCE_DIR}/core
     ${CMAKE_SOURCE_DIR}/plugins/action
     ${CMAKE_SOURCE_DIR}/plugins/mission
@@ -70,12 +36,16 @@ target_include_directories(
     ${PLUGINS_DIR}
 )
 
-target_link_libraries(
-    dronecore_server
+add_executable(backend_bin
+    dronecore_server.cpp
+)
+
+target_link_libraries(backend_bin
+    backend
     dronecore
-    dronecore_action
-    dronecore_mission
-    dronecore_telemetry
-    gRPC::grpc++
-    dl
+)
+
+target_include_directories(backend_bin
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/core
 )

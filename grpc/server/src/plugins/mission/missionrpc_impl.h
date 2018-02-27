@@ -1,3 +1,5 @@
+#include <future>
+
 #include "mission.h"
 #include "mission/mission.grpc.pb.h"
 
@@ -9,11 +11,8 @@ using namespace dronecore;
 class MissionServiceImpl final : public rpc::mission::MissionService::Service
 {
 public:
-    MissionServiceImpl(DroneCore *dc_obj)
-    {
-        dc = dc_obj;
-        mission = std::make_shared<Mission>(&dc->device());
-    }
+    MissionServiceImpl(Mission &mission)
+        : mission(mission) {}
 
     Status SendMission(ServerContext *context, const rpc::mission::SendMissionRequest *request,
                        rpc::mission::MissionResult *response) override
@@ -36,7 +35,7 @@ public:
             mission_items.push_back(new_item);
         }
 
-        mission->upload_mission_async(
+        mission.upload_mission_async(
         mission_items, [prom, response](Mission::Result result) {
             response->set_result(static_cast<rpc::mission::MissionResult::Result>(result));
             response->set_result_str(Mission::result_str(result));
@@ -56,7 +55,7 @@ public:
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
 
-        mission->start_mission_async(
+        mission.start_mission_async(
         [prom, response](Mission::Result result) {
             response->set_result(static_cast<rpc::mission::MissionResult::Result>(result));
             response->set_result_str(Mission::result_str(result));
@@ -70,6 +69,5 @@ public:
     }
 
 private:
-    DroneCore *dc;
-    std::shared_ptr<Mission> mission;
+    Mission &mission;
 };

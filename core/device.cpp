@@ -387,7 +387,7 @@ void Device::set_disconnected()
         _parent->notify_on_timeout(_target_uuid);
 
         // Let's reset the flag hope again for the next time we see this target.
-        _target_uuid_initialized = 0;
+        _target_uuid_initialized = false;
     }
 
     {
