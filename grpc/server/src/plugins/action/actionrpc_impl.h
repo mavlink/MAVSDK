@@ -9,16 +9,13 @@ using namespace dronecore;
 class ActionServiceImpl final : public rpc::action::ActionService::Service
 {
 public:
-    ActionServiceImpl(DroneCore *dc_obj)
-    {
-        dc = dc_obj;
-        action = std::make_shared<Action>(&dc->device());
-    }
+    ActionServiceImpl(const Action &action)
+        : action(action) {}
 
     Status Arm(ServerContext *context, const rpc::action::ArmRequest *request,
                rpc::action::ActionResult *response) override
     {
-        const Action::Result action_result = action->arm();
+        const Action::Result action_result = action.arm();
         response->set_result(static_cast<rpc::action::ActionResult::Result>(action_result));
         response->set_result_str(Action::result_str(action_result));
         return Status::OK;
@@ -27,7 +24,7 @@ public:
     Status TakeOff(ServerContext *context, const rpc::action::TakeOffRequest *request,
                    rpc::action::ActionResult *response) override
     {
-        const Action::Result action_result = action->takeoff();
+        const Action::Result action_result = action.takeoff();
         response->set_result(static_cast<rpc::action::ActionResult::Result>(action_result));
         response->set_result_str(Action::result_str(action_result));
         return Status::OK;
@@ -36,13 +33,12 @@ public:
     Status Land(ServerContext *context, const rpc::action::LandRequest *request,
                 rpc::action::ActionResult *response) override
     {
-        const Action::Result action_result = action->land();
+        const Action::Result action_result = action.land();
         response->set_result(static_cast<rpc::action::ActionResult::Result>(action_result));
         response->set_result_str(Action::result_str(action_result));
         return Status::OK;
     }
 
 private:
-    DroneCore *dc;
-    std::shared_ptr<Action> action;
+    const Action &action;
 };
