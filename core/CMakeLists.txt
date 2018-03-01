@@ -13,7 +13,7 @@ else()
 endif()
 
 # We need tinyxml2 for the camera definition parsing.
-if(APPLE)
+if(APPLE AND NOT IOS)
     # We install the tinyxml2 library manually for macOS and iOS.
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         # Need to remove that d again.
@@ -31,6 +31,7 @@ if(APPLE)
     add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
     include_directories(SYSTEM third_party/tinyxml2)
     link_directories(third_party/tinyxml2)
+    set(TINYXML2_LIBRARY tinyxml2)
 elseif(ANDROID)
     # We install the tinyxml2 library manually for Android.
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -48,13 +49,16 @@ elseif(ANDROID)
     add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
     include_directories(SYSTEM third_party/tinyxml2)
     link_directories(third_party/tinyxml2)
+    set(TINYXML2_LIBRARY tinyxml2)
 elseif(MSVC)
     add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
     include_directories(SYSTEM third_party/tinyxml2)
     link_directories(third_party/tinyxml2)
+    set(TINYXML2_LIBRARY tinyxml2)
 else()
     # For Linux for now we use the system tinyxml2, otherwise the unit test crashes
     # miraculously.
+    set(TINYXML2_LIBRARY tinyxml2)
 endif()
 
 add_library(dronecore ${LIBRARY_TYPE}
@@ -81,7 +85,7 @@ add_library(dronecore ${LIBRARY_TYPE}
 target_link_libraries(dronecore
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
-    tinyxml2
+    ${TINYXML2_LIBRARY}
     ${DRONECORE_ZLIB_LIBRARIES}
 )
 
