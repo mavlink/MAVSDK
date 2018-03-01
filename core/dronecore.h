@@ -4,6 +4,8 @@
 #include <vector>
 #include <functional>
 
+#include "connection_result.h"
+
 namespace dronecore {
 
 class DroneCoreImpl;
@@ -38,33 +40,6 @@ public:
      * Disconnects all connected vehicles and releases all resources.
      */
     ~DroneCore();
-
-    /**
-     * @brief Result type returned when adding a connection.
-     *
-     * **Note**: DroneCore does not throw exceptions. Instead a result of this type will be
-     * returned when you add a connection: add_udp_connection().
-     */
-    enum class ConnectionResult {
-        SUCCESS = 0, /**< @brief %Connection succeeded. */
-        TIMEOUT, /**< @brief %Connection timed out. */
-        SOCKET_ERROR, /**< @brief Socket error. */
-        BIND_ERROR, /**< @brief Bind error. */
-        SOCKET_CONNECTION_ERROR,
-        CONNECTION_ERROR, /**< @brief %Connection error. */
-        NOT_IMPLEMENTED, /**< @brief %Connection type not implemented. */
-        DEVICE_NOT_CONNECTED, /**< @brief No device is connected. */
-        DEVICE_BUSY, /**< @brief %Device is busy. */
-        COMMAND_DENIED, /**< @brief Command is denied. */
-        DESTINATION_IP_UNKNOWN, /**< @brief %Connection IP is unknown. */
-        CONNECTIONS_EXHAUSTED, /**< @brief %Connections exhausted. */
-        CONNECTION_URL_INVALID /**< @brief URL invalid. */
-    };
-
-    /**
-     * @brief Translates the DroneCore::ConnectionResult enum to a human-readable English string.
-     */
-    static const char *connection_result_str(const ConnectionResult result);
 
     /**
      * @brief Adds Connection via URL

@@ -22,8 +22,8 @@ TEST_F(SitlTest, GimbalMove)
 {
     DroneCore dc;
 
-    DroneCore::ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
+    ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -48,8 +48,8 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
 {
     DroneCore dc;
 
-    DroneCore::ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
+    ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));

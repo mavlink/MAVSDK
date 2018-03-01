@@ -23,8 +23,8 @@ void takeoff_and_transition_to_fixedwing()
     // Init & connect
     DroneCore dc;
 
-    DroneCore::ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
+    ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for device to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));

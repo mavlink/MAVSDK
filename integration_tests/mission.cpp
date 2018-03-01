@@ -44,8 +44,8 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
             prom->set_value();
         });
 
-        DroneCore::ConnectionResult ret = dc.add_udp_connection();
-        ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
+        ConnectionResult ret = dc.add_udp_connection();
+        ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
         future_result.get();
     }

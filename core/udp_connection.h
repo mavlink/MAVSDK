@@ -15,8 +15,8 @@ public:
     explicit UdpConnection(DroneCoreImpl *parent, int local_port_number);
     ~UdpConnection();
     bool is_ok() const;
-    DroneCore::ConnectionResult start();
-    DroneCore::ConnectionResult stop();
+    ConnectionResult start();
+    ConnectionResult stop();
 
     bool send_message(const mavlink_message_t &message);
 
@@ -25,7 +25,7 @@ public:
     const UdpConnection &operator=(const UdpConnection &) = delete;
 
 private:
-    DroneCore::ConnectionResult setup_port();
+    ConnectionResult setup_port();
     void start_recv_thread();
 
     static void receive(UdpConnection *parent);

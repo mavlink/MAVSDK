@@ -61,9 +61,9 @@ void RunServer()
     }
 
     int discovered_device = 0;
-    DroneCore::ConnectionResult connection_result = dc.add_udp_connection(14550);
-    if (connection_result != DroneCore::ConnectionResult::SUCCESS) {
-        LogErr() << "Connection failed: " << DroneCore::connection_result_str(connection_result);
+    ConnectionResult connection_result = dc.add_udp_connection(14550);
+    if (connection_result != ConnectionResult::SUCCESS) {
+        LogErr() << "Connection failed: " << connection_result_str(connection_result);
         return;
     }
     LogInfo() << "Waiting to discover device...";

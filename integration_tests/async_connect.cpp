@@ -17,7 +17,7 @@ TEST_F(SitlTest, AsyncConnect)
 {
     DroneCore dc;
 
-    ASSERT_EQ(dc.add_udp_connection(), DroneCore::ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
 
     dc.register_on_discover(std::bind(&on_discover, _1));
     dc.register_on_timeout(std::bind(&on_timeout, _1));

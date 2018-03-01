@@ -21,8 +21,8 @@ public:
     explicit TcpConnection(DroneCoreImpl *parent, const std::string &ip, int port_number);
     ~TcpConnection();
     bool is_ok() const;
-    DroneCore::ConnectionResult start();
-    DroneCore::ConnectionResult stop();
+    ConnectionResult start();
+    ConnectionResult stop();
 
     bool send_message(const mavlink_message_t &message);
 
@@ -31,7 +31,7 @@ public:
     const TcpConnection &operator=(const TcpConnection &) = delete;
 
 private:
-    DroneCore::ConnectionResult setup_port();
+    ConnectionResult setup_port();
     void start_recv_thread();
     int resolve_address(const std::string &ip_address, int port, struct sockaddr_in *addr);
     static void receive(TcpConnection *parent);

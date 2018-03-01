@@ -40,23 +40,23 @@ bool TcpConnection::is_ok() const
     return _is_ok;
 }
 
-DroneCore::ConnectionResult TcpConnection::start()
+ConnectionResult TcpConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return DroneCore::ConnectionResult::CONNECTIONS_EXHAUSTED;
+        return ConnectionResult::CONNECTIONS_EXHAUSTED;
     }
 
-    DroneCore::ConnectionResult ret = setup_port();
-    if (ret != DroneCore::ConnectionResult::SUCCESS) {
+    ConnectionResult ret = setup_port();
+    if (ret != ConnectionResult::SUCCESS) {
         return ret;
     }
 
     start_recv_thread();
 
-    return DroneCore::ConnectionResult::SUCCESS;
+    return ConnectionResult::SUCCESS;
 }
 
-DroneCore::ConnectionResult TcpConnection::setup_port()
+ConnectionResult TcpConnection::setup_port()
 {
 
 #ifdef WINDOWS
@@ -64,7 +64,7 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
         _is_ok = false;
-        return DroneCore::ConnectionResult::SOCKET_ERROR;
+        return ConnectionResult::SOCKET_ERROR;
     }
 #endif
 
@@ -73,7 +73,7 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
     if (_socket_fd < 0) {
         LogErr() << "socket error" << GET_ERROR(errno);
         _is_ok = false;
-        return DroneCore::ConnectionResult::SOCKET_ERROR;
+        return ConnectionResult::SOCKET_ERROR;
     }
 
     struct sockaddr_in remote_addr {};
@@ -85,11 +85,11 @@ DroneCore::ConnectionResult TcpConnection::setup_port()
                 sizeof(struct sockaddr_in)) < 0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         _is_ok = false;
-        return DroneCore::ConnectionResult::SOCKET_CONNECTION_ERROR;
+        return ConnectionResult::SOCKET_CONNECTION_ERROR;
     }
 
     _is_ok = true;
-    return DroneCore::ConnectionResult::SUCCESS;
+    return ConnectionResult::SUCCESS;
 }
 
 void TcpConnection::start_recv_thread()
@@ -97,7 +97,7 @@ void TcpConnection::start_recv_thread()
     _recv_thread = new std::thread(receive, this);
 }
 
-DroneCore::ConnectionResult TcpConnection::stop()
+ConnectionResult TcpConnection::stop()
 {
     _should_exit = true;
 
@@ -125,7 +125,7 @@ DroneCore::ConnectionResult TcpConnection::stop()
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
-    return DroneCore::ConnectionResult::SUCCESS;
+    return ConnectionResult::SUCCESS;
 }
 
 bool TcpConnection::send_message(const mavlink_message_t &message)

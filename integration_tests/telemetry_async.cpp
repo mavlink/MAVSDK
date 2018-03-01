@@ -46,7 +46,7 @@ TEST_F(SitlTest, TelemetryAsync)
 {
     DroneCore dc;
 
-    DroneCore::ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = dc.add_udp_connection();
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
@@ -60,7 +60,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     uint64_t uuid = uuids.at(0);
 
-    ASSERT_EQ(ret, DroneCore::ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     Device &device = dc.device(uuid);
 

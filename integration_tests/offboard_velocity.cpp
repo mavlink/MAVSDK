@@ -14,8 +14,8 @@ TEST_F(SitlTest, OffboardVelocityNED)
 {
     DroneCore dc;
 
-    DroneCore::ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(DroneCore::ConnectionResult::SUCCESS, ret);
+    ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -111,8 +111,8 @@ TEST_F(SitlTest, OffboardVelocityBody)
 {
     DroneCore dc;
 
-    DroneCore::ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(DroneCore::ConnectionResult::SUCCESS, ret);
+    ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
 
     // Wait for device to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));

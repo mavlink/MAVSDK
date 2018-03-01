@@ -116,8 +116,9 @@ install(TARGETS dronecore
 )
 
 install(FILES
-    dronecore.h
+    connection_result.h
     device.h
+    dronecore.h
     plugin_base.h
     ${plugin_header_paths}
     DESTINATION "include/dronecore"
