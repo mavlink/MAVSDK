@@ -12,11 +12,26 @@ foreach(COMPONENT_NAME ${COMPONENTS_LIST})
     list(APPEND GRPC_COMPILED_SOURCES ${GRPC_COMPILED_SOURCE})
 endforeach()
 
-add_library(backend
+set(BACKEND_SOURCES
+    backend_api.h
+    backend_api.cpp
     backend.cpp
     ${GRPC_COMPILED_SOURCES}
     ${PB_COMPILED_SOURCES}
 )
+
+if(IOS)
+    set_property(SOURCE module.modulemap
+        PROPERTY MACOSX_PACKAGE_LOCATION "Modules")
+
+    list(APPEND BACKEND_SOURCES module.modulemap)
+endif()
+
+if(ANDROID OR IOS)
+    add_library(backend SHARED ${BACKEND_SOURCES})
+else()
+    add_library(backend STATIC ${BACKEND_SOURCES})
+endif()
 
 target_link_libraries(backend
     dronecore
@@ -36,16 +51,29 @@ target_include_directories(backend
     ${PLUGINS_DIR}
 )
 
-add_executable(backend_bin
-    dronecore_server.cpp
-)
+if(IOS)
+    set_target_properties(backend PROPERTIES
+        FRAMEWORK TRUE
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_NAME_DIR @rpath
+        MACOSX_FRAMEWORK_IDENTIFIER io.dronecore.backend
+        VERSION 0.0.1
+        SOVERSION 0.0.1
+        PUBLIC_HEADER backend_api.h
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "DroneCore"
+    )
+else()
+    add_executable(backend_bin
+        dronecore_server.cpp
+    )
 
-target_link_libraries(backend_bin
-    backend
-    dronecore
-)
+    target_link_libraries(backend_bin
+        backend
+        dronecore
+    )
 
-target_include_directories(backend_bin
-    PRIVATE
-    ${CMAKE_SOURCE_DIR}/core
-)
+    target_include_directories(backend_bin
+        PRIVATE
+        ${CMAKE_SOURCE_DIR}/core
+    )
+endif()
