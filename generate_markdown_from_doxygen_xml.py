@@ -377,6 +377,7 @@ class cppInnerClass: #Data structures
         self.id= 'UNKNOWN'
         self.name = 'UNKNOWN'
         self.prot = 'UNKNOWN'
+        self.kind = 'innerclass'
 
 
 class cppTypeDefParams:
@@ -475,7 +476,7 @@ class cppEnumValue:
         self.id = 'UNKNOWN'
         self.prot= 'UNKNOWN'
         self.name = 'UNKNOWN'
-        self.initializer = 'UNKNOWN'
+        self.initializer = ''
         self.briefdescription='UNKNOWN'
         self.detaileddescription='UNKNOWN'
 
@@ -487,15 +488,12 @@ class cppEnumValue:
         self.id = aTag.attrib['id']
         self.prot= aTag.attrib['prot']
         self.name = aTag.find('name').text
-        self.initializer = aTag.find('initializer')
-        if self.initializer is not None:
-            self.initializer=self.initializer.text
-            self.initializer=''.join(self.initializer.split()) #remove all whitespace
-        else:
-            self.initializer =''
+        initializer = aTag.find('initializer')
+        if initializer is not None:
+            initializer=initializer.text
+            self.initializer=''.join(initializer.split()) #remove all whitespace
         self.briefdescription = aTag.find('briefdescription') #needs more processing
         self.detaileddescription = aTag.find('detaileddescription') #needs more processing
-
 
 
 
@@ -511,6 +509,7 @@ class cppEnum:
         self.inbodydescription='UNKNOWN'
         self.seealso=''
         self.enum_values=[]
+        self.location='' # Globals only
 
     def import_from_doxygen_class_file(self, aTag):
         #print('start:enum:import_from_doxygen_class_file')
@@ -525,6 +524,9 @@ class cppEnum:
         self.seealso = seealso_from_tag(self.detaileddescription)
         self.inbodydescription = aTag.find('inbodydescription') #needs further processing
 
+        location = aTag.find('location')
+        if location is not None:
+            self.location=location.attrib['file']
 
         enumvalue_nodes = aTag.findall("enumvalue")
         #print('enumvalue_nodes: %s' % enumvalue_nodes)
@@ -558,12 +560,15 @@ class cppEnum:
 
         return output_string
 
-    def markdown(self):
+    def markdown(self,aDisplayInclude=False):
         """
         Markdown for the enum, with details
         """
         output_string=''
         output_string+='\n\n### enum %s {#%s}\n' % (self.name,self.id)
+
+        if aDisplayInclude:
+            output_string+='\n```\n#include: %s\n```\n' % (self.location)
 
         output_string+='\n\n%s' % markdown_any_tag(self.briefdescription).strip()
 
@@ -620,6 +625,7 @@ class cppFunction:
         self.destructor_func = 'false'
         self.seealso = ''
         self.params=[]
+        self.location='' #For global functions only
 
 
     def import_from_doxygen_class_file(self, func_xml):
@@ -684,6 +690,10 @@ class cppFunction:
 
             self.params.append(newParam)
 
+        location = func_xml.find('location')
+        if location is not None:
+            self.location=location.attrib['file']
+
 
         #Calculate argument string from parameters (for fully linked prototype)
         self.argsstring2=''
@@ -712,16 +722,19 @@ class cppFunction:
 
     def markdown_overview(self):
         # Print function in overview
-        #output_string='%s [%s](#%s) %s - %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, markdown_any_tag(self.argsstring).strip(),markdown_any_tag(self.briefdescription).strip())
-        #output_string='%s | [%s](#%s) %s | %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, markdown_any_tag(self.argsstring).strip(),markdown_any_tag(self.briefdescription).strip())
-        output_string='%s | [%s](#%s) %s | %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, self.argsstring2.strip(),markdown_any_tag(self.briefdescription).strip())
+        return_type=markdown_any_tag(self.return_type).strip()
+        if not return_type:
+            return_type = '&nbsp;' 
+        output_string='%s | [%s](#%s) %s | %s\n\n' % (return_type, self.name, self.id, self.argsstring2.strip(),markdown_any_tag(self.briefdescription).strip())
         return output_string
 
 
 
-    def markdown(self):
+    def markdown(self,aDisplayInclude=False):
         functionstring=''
         functionstring+='\n\n### %s() {#%s}\n' % (self.name,self.id)
+        if aDisplayInclude:
+            functionstring+='\n```\n#include: %s\n```\n' % (self.location)
         functionstring+='```cpp\n%s%s\n```\n' % (markdown_any_tag(self.definition).strip(),markdown_any_tag(self.argsstring).strip())
 
         # Description
@@ -1057,6 +1070,126 @@ class cppClass:
         return outputstring
 
 
+class cppNamespace:
+    def __init__(self):
+        self.kind = 'UNKNOWN'
+        self.compoundname = 'UNKNOWN'
+        self.name = 'UNKNOWN'
+        self.id = 'UNKNOWN'
+        self.language = 'cpp'
+        self.detaileddescription=''
+        self.briefdescription=''
+        self.functions=[]
+        self.enumerations=[]
+        self.inner_classes=[]
+
+
+    def import_doxygen_namespace_file(self, name, full_filename):
+        tree = ET.parse(full_filename)
+        root = tree.getroot()
+
+        kind=root[0].attrib['kind']
+
+        if not (kind=='namespace'):
+           raise Exception('File not of correct type - reports wrong kind: %s' % kind)
+        self.kind=kind
+        self.compound_name = root[0].find('compoundname').text
+        self.name = self.compound_name.split('::')[-1]
+
+        self.detaileddescription=root[0].find('detaileddescription')
+        self.briefdescription=root[0].find('briefdescription')
+        self.seealso = seealso_from_tag(self.detaileddescription)
+
+
+        # Get all inner classes/struct defined in this class - these are links to separate docs
+        inner_class_nodes=root.findall(".//innerclass")
+        #print(inner_class_nodes)
+        for item in inner_class_nodes:
+            newInnerClass=cppInnerClass()
+            newInnerClass.name=item.text
+            newInnerClass.id=item.attrib['refid']
+            newInnerClass.prot=item.attrib['prot']
+            self.inner_classes.append(newInnerClass)
+
+
+        sections = root[0].findall("sectiondef")
+        for section in sections:
+            section_kind=section.attrib['kind']
+            #print('section_kind: %s' % section_kind)
+            if section_kind=='enum':
+                for child in section:
+                    if child.attrib['kind']=='enum':
+                        newType=cppEnum()
+                        newType.import_from_doxygen_class_file(child)
+                        self.enumerations.append(newType)
+                    else:
+                        print('UNHANDLED enum-kind: %s' % child.attrib['kind'])
+            elif section_kind=='func':
+                for child in section:
+                    if child.attrib['kind']=='function':
+                        newType=cppFunction()
+                        newType.import_from_doxygen_class_file(child)
+                        self.functions.append(newType)
+                    else:
+                        print('UNHANDLED function-kind: %s' % child.attrib['kind'])
+
+            else:
+                print('UNHANDLED section: XX%sYY' % section_kind)
+
+
+    def markdown(self):
+        outputstring=''
+        kind_name='Namespace'
+        outputstring+='# %s %s Reference\n' % (self.compound_name, kind_name)
+
+        outputstring+='\n----' # Description
+        outputstring+='\n\n%s' % markdown_any_tag(self.briefdescription).strip()
+        outputstring+='\n\n%s' % markdown_any_tag(self.detaileddescription).strip()
+        if len(self.seealso)>0:
+            outputstring+=self.seealso
+
+        ## Data Structures
+        # TODO: Perhaps do as table "Type | Name | Description"
+        #     : Can't do now as don't have access to linked item discription
+        if len(self.inner_classes)>0:
+            outputstring+='\n\n## Data Structures\n'
+            for the_structure in self.inner_classes:
+                outputstring+='\n* [%s](%s.md)' % (the_structure.name,the_structure.id)
+            
+        if len(self.enumerations)>0:
+            outputstring+='\n\n## Enumerations\n'
+            outputstring+='\nType | Description'
+            outputstring+='\n--- | ---'
+            for the_enum in self.enumerations:
+                outputstring+='\n'+the_enum.markdown_overview().strip()
+
+
+        if len(self.functions)>0:
+            outputstring+='\n\n## Functions\n'
+            outputstring+='\nType | Name | Description'
+            outputstring+='\n--- | --- | ---'
+            for the_function in self.functions:
+                outputstring+='\n'+the_function.markdown_overview().strip()
+
+
+        if len(self.enumerations)>0:
+            outputstring+='\n\n## Enumeration Type Documentation\n'
+            for the_enum in self.enumerations:
+                outputstring+=the_enum.markdown(aDisplayInclude=True)
+
+        if len(self.functions)>0:
+            outputstring+='\n\n## Function Documentation\n'
+            for the_function in self.functions:
+                outputstring+=the_function.markdown(aDisplayInclude=True)
+
+
+        outputstring=cleanup_markdown_string(outputstring)
+
+        return outputstring
+
+
+
+
 # Start actual execution
 parser = argparse.ArgumentParser(description='Generate markdown from doxygen XML output.')
 parser.add_argument("-d", "--debug", default='', help="Any argument used here will include debug info in markdown output - ie some strings for various objects.")
@@ -1110,8 +1243,16 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
             skipped_files.append(skip_string)
             continue
         if name.endswith('namespacedronecore.xml'):
-            skip_string=" %s - (index page)" % current_filename
-            skipped_files.append(skip_string)
+            print("  Generating: %s (namespace xml index file)" % current_filename)
+            currentNamespace=cppNamespace()
+            currentNamespace.import_doxygen_namespace_file(name,current_filename)
+            
+            markdown_string=currentNamespace.markdown()
+            outputfile_name=DOXYGEN_OUTPUT_DIR+'/'+name[:-4]+'.md'
+
+            #print('OUTPUTFILENAME: %s' % outputfile_name)
+            with open(outputfile_name, 'w') as the_file:
+                the_file.write(markdown_string)
             continue
         if name.startswith('class'):
             print("  Generating: %s (class xml)" % current_filename)
