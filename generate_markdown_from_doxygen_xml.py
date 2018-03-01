@@ -321,19 +321,30 @@ class cppAttribute:
         output_string=''
         output_string+='\n\n### %s {#%s}\n' % (self.name,self.id)
 
-        #Get value of initialiser, preventing lins text (that won't work in code block)
+        #Get value of initialiser with no tags (won't work in code block)
         value_initializer =''
-        if self.initializer:
-            value_initializer = self.initializer.find('.//ref').text
-            if value_initializer:
-                value_initializer='= '+value_initializer
-            else:
-               value_initializer=markdown_any_tag(self.initializer).strip()
-               value_initializer=" ".join(value_initializer.split())
-            print('value_initializer: %s' % value_initializer)
+        temp_initializer = markdown_any_tag(self.initializer).strip()
+        if not temp_initializer: 
+            pass #Empty initializer
+            self.initializer=''
+        else:
+            if len(self.initializer):
+                # We have tags in the initialiser. Strip them.
+                value_initializer = self.initializer.find('.//ref').text #Get just the link text.
+                if value_initializer: #initialiser contains links, but we've just pulled out the text
+                    value_initializer=' = '+value_initializer.strip()
+            else: #initialiser does not contains links
+                value_initializer=temp_initializer
+                #clean up excess space in initialisation script
+                value_initializer=" ".join(value_initializer.split())
+                value_initializer=" "+value_initializer.strip()
+            #print('value_initializer: %s' % value_initializer)
+
+            
 
         output_string+='\n```cpp\n%s%s\n```\n' % (markdown_any_tag(self.definition).strip(),value_initializer)
-
+        
+        
         output_string+='\n\n%s' % markdown_any_tag(self.briefdescription).strip()
         output_string+='\n\n%s' % markdown_any_tag(self.detaileddescription).strip()
 
@@ -583,6 +594,7 @@ class cppFunctionParams:
     def __init__(self):
         self.type= ''
         self.declname = ''
+        self.defval = ''
         self.description = ''
 
 
@@ -600,6 +612,7 @@ class cppFunction:
         self.return_type_comment='UNKNOWN'
         self.definition='UNKNOWN'
         self.argsstring='UNKNOWN'
+        self.argsstring2='' #Fully linked version of self.argsstring
         self.briefdescription='UNKNOWN'
         self.detaileddescription='UNKNOWN'
         self.inbodydescription='UNKNOWN'
@@ -661,14 +674,47 @@ class cppFunction:
                    newParam.description=''
 
                 #print('newParam.description: %s ' % markdown_any_tag(newParam.description).strip())
+            # Default value for param (store as expanded value)
+            newParam.defval=param.find('defval')
+            if newParam.defval is None:
+                newParam.defval=''
+            else:
+                newParam.defval=markdown_any_tag(newParam.defval)
+
 
             self.params.append(newParam)
+
+
+        #Calculate argument string from parameters (for fully linked prototype)
+        self.argsstring2=''
+        first_loop = True
+        for param in self.params:
+            if first_loop:
+                first_loop = False
+            else:
+                self.argsstring2+=', '
+
+            self.argsstring2+=markdown_any_tag(param.type).strip()
+            if param.declname:
+                self.argsstring2+=' '+markdown_any_tag(param.declname).strip()
+            if param.defval:
+                self.argsstring2+='='+markdown_any_tag(param.defval).strip()
+        if not self.argsstring2:
+            self.argsstring2=markdown_any_tag(self.argsstring)
+        else:
+            self.argsstring2='(%s)' % self.argsstring2
+            trail_argsstring = markdown_any_tag(self.argsstring).rsplit(')',1)[1].strip()
+            if trail_argsstring:
+                self.argsstring2=self.argsstring2+trail_argsstring
+
+        #print('argstring2: %s\n\n' % self.argsstring2)
 
 
     def markdown_overview(self):
         # Print function in overview
         #output_string='%s [%s](#%s) %s - %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, markdown_any_tag(self.argsstring).strip(),markdown_any_tag(self.briefdescription).strip())
-        output_string='%s | [%s](#%s) %s | %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, markdown_any_tag(self.argsstring).strip(),markdown_any_tag(self.briefdescription).strip())
+        #output_string='%s | [%s](#%s) %s | %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, markdown_any_tag(self.argsstring).strip(),markdown_any_tag(self.briefdescription).strip())
+        output_string='%s | [%s](#%s) %s | %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, self.argsstring2.strip(),markdown_any_tag(self.briefdescription).strip())
         return output_string
 
 
