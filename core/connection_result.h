@@ -1,5 +1,9 @@
 #pragma once
 
+
+/**
+ * @brief Namespace for all dronecore types.
+ */
 namespace dronecore {
 
 /**
@@ -13,7 +17,7 @@ enum class ConnectionResult {
     TIMEOUT, /**< @brief %Connection timed out. */
     SOCKET_ERROR, /**< @brief Socket error. */
     BIND_ERROR, /**< @brief Bind error. */
-    SOCKET_CONNECTION_ERROR,
+    SOCKET_CONNECTION_ERROR, /**< @brief Socket connection error. */
     CONNECTION_ERROR, /**< @brief %Connection error. */
     NOT_IMPLEMENTED, /**< @brief %Connection type not implemented. */
     DEVICE_NOT_CONNECTED, /**< @brief No device is connected. */
@@ -25,7 +29,10 @@ enum class ConnectionResult {
 };
 
 /**
- * @brief Translates the ConnectionResult enum to a human-readable English string.
+ * @brief Returns a human-readable English string for a ConnectionResult.
+ *
+ * @param result The enum value for which a human readable string is required.
+ * @return Human readable string for the ConnectionResult.
  */
 inline const char *connection_result_str(const ConnectionResult result)
 {
