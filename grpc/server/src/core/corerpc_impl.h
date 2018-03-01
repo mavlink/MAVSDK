@@ -1,4 +1,5 @@
 #include "core/core.grpc.pb.h"
+#include "dronecore.h"
 
 using grpc::Status;
 using grpc::ServerContext;
