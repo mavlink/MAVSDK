@@ -722,7 +722,10 @@ class cppFunction:
 
     def markdown_overview(self):
         # Print function in overview
-        output_string='%s | [%s](#%s) %s | %s\n\n' % (markdown_any_tag(self.return_type).strip(), self.name, self.id, self.argsstring2.strip(),markdown_any_tag(self.briefdescription).strip())
+        return_type=markdown_any_tag(self.return_type).strip()
+        if not return_type:
+            return_type = '&nbsp;' 
+        output_string='%s | [%s](#%s) %s | %s\n\n' % (return_type, self.name, self.id, self.argsstring2.strip(),markdown_any_tag(self.briefdescription).strip())
         return output_string
 
 
