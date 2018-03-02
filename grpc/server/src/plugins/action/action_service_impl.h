@@ -1,4 +1,4 @@
-#include "action.h"
+#include "action/action.h"
 #include "action/action.grpc.pb.h"
 
 class ActionServiceImpl final : public dronecore::rpc::action::ActionService::Service

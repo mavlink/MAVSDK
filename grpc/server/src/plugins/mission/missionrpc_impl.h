@@ -1,6 +1,6 @@
 #include <future>
 
-#include "mission.h"
+#include "mission/mission.h"
 #include "mission/mission.grpc.pb.h"
 
 using grpc::Status;

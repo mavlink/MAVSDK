@@ -45,9 +45,7 @@ target_link_libraries(backend
 target_include_directories(backend
     PRIVATE
     ${CMAKE_SOURCE_DIR}/core
-    ${CMAKE_SOURCE_DIR}/plugins/action
-    ${CMAKE_SOURCE_DIR}/plugins/mission
-    ${CMAKE_SOURCE_DIR}/plugins/telemetry
+    ${CMAKE_SOURCE_DIR}/plugins
     ${CMAKE_BINARY_DIR}/grpc/server/src
     ${PLUGINS_DIR}
 )
