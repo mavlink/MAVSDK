@@ -1,5 +1,5 @@
 #include <future>
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include "connection_initiator.h"
 #include "mocks/dronecore_mock.h"

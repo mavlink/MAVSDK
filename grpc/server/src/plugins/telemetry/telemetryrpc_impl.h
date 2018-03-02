@@ -1,4 +1,4 @@
-#include "telemetry.h"
+#include "telemetry/telemetry.h"
 #include "telemetry/telemetry.grpc.pb.h"
 
 using grpc::Status;

@@ -9,6 +9,9 @@ set_target_properties(unit_tests_backend PROPERTIES COMPILE_FLAGS ${warnings})
 target_include_directories(unit_tests_backend
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/plugins
+    ${CMAKE_SOURCE_DIR}/plugins
+    ${CMAKE_BINARY_DIR}/grpc/server/src
 )
 
 target_link_libraries(unit_tests_backend
