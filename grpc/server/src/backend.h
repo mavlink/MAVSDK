@@ -8,9 +8,8 @@ class DroneCoreBackend
 public:
     DroneCoreBackend();
     ~DroneCoreBackend();
-
-    DroneCoreBackend(DroneCoreBackend &&op);
-    DroneCoreBackend &operator=(DroneCoreBackend &&op);
+    DroneCoreBackend(DroneCoreBackend &&) = delete;
+    DroneCoreBackend &operator=(DroneCoreBackend &&) = delete;
 
     bool run(const int mavlink_listen_port = 14540);
 

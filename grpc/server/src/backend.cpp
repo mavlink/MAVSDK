@@ -70,10 +70,8 @@ private:
 
 DroneCoreBackend::DroneCoreBackend() : _impl(new Impl()) {}
 DroneCoreBackend::~DroneCoreBackend() = default;
-DroneCoreBackend::DroneCoreBackend(DroneCoreBackend &&) = default;
-DroneCoreBackend &DroneCoreBackend::operator=(DroneCoreBackend &&) = default;
 
 bool DroneCoreBackend::run(const int mavlink_listen_port) { return _impl->run(mavlink_listen_port); }
 
 } // namespace backend
-} //namespace dronecore
+} // namespace dronecore
