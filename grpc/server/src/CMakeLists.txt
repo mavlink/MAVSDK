@@ -16,7 +16,7 @@ set(BACKEND_SOURCES
     backend_api.h
     backend_api.cpp
     backend.cpp
-    ${PLUGINS_DIR}/action/actionrpc_impl.cpp
+    ${PLUGINS_DIR}/action/action_service_impl.cpp
     ${GRPC_COMPILED_SOURCES}
     ${PB_COMPILED_SOURCES}
 )
