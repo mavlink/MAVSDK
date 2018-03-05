@@ -5,7 +5,6 @@
 
 namespace dronecore {
 
-
 class Device;
 class ActionImpl;
 
@@ -46,7 +45,8 @@ public:
      * @brief Possible results returned for commanded actions.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief Success. The action command was accepted by the vehicle. */
+        UNKNOWN, /**< @brief Unspecified error. */
+        SUCCESS, /**< @brief Success. The action command was accepted by the vehicle. */
         NO_DEVICE, /**< @brief No device is connected error. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
         BUSY, /**< @brief Vehicle busy error. */
@@ -55,8 +55,7 @@ public:
         COMMAND_DENIED_NOT_LANDED, /**< @brief Command refused because vehicle not landed. */
         TIMEOUT, /**< @brief Timeout waiting for command acknowledgement from vehicle. */
         VTOL_TRANSITION_SUPPORT_UNKNOWN, /**< @brief hybrid/VTOL transition refused because VTOL support is unknown. */
-        NO_VTOL_TRANSITION_SUPPORT, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
-        UNKNOWN /**< @brief Unspecified error. */
+        NO_VTOL_TRANSITION_SUPPORT /**< @brief Vehicle does not support hybrid/VTOL transitions. */
     };
 
     /**
