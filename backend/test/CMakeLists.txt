@@ -12,7 +12,7 @@ target_include_directories(unit_tests_backend
     ${CMAKE_CURRENT_SOURCE_DIR}/../src
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/plugins
     ${CMAKE_SOURCE_DIR}/plugins
-    ${CMAKE_BINARY_DIR}/grpc/server/src
+    ${CMAKE_BINARY_DIR}/backend/src
 )
 
 target_link_libraries(unit_tests_backend

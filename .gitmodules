@@ -11,7 +11,7 @@
 	path = core/third_party/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
 [submodule "dronecore-proto"]
-	path = grpc/server/proto
+	path = backend/proto
 	url = https://github.com/dronecore/DroneCore-Proto.git
 [submodule "zlib"]
 	path = third_party/zlib
