@@ -23,7 +23,7 @@ else()
             set(warnings "${warnings} -Wno-missing-field-initializers")
         endif()
 
-        set(warnings "${warnings} -Wuseless-cast -Wlogical-op")
+        set(warnings "${warnings} -Wlogical-op")
     elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         set(warnings "${warnings} -Wno-missing-braces")
     endif()

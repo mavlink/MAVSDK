@@ -15,5 +15,5 @@ public:
     MOCK_CONST_METHOD1(register_on_timeout, void(event_callback_t));
 };
 
-} // testing
-} // dronecore
+} // namespace testing
+} // namespace dronecore

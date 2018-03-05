@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 add_executable(unit_tests_backend
     connection_initiator_test.cpp
+    action_service_impl_test.cpp
 )
 
 set_target_properties(unit_tests_backend PROPERTIES COMPILE_FLAGS ${warnings})

@@ -7,6 +7,7 @@
 #include <grpc++/security/server_credentials.h>
 #include <mutex>
 
+#include "action/action.h"
 #include "action/action_service_impl.h"
 #include "connection_initiator.h"
 #include "core/corerpc_impl.h"
@@ -36,7 +37,7 @@ public:
         builder.RegisterService(&core);
 
         Action action(&_dc.device());
-        ActionServiceImpl actionService(action);
+        ActionServiceImpl<dronecore::Action> actionService(action);
         builder.RegisterService(&actionService);
 
         Mission mission(&_dc.device());
