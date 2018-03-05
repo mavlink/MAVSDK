@@ -45,7 +45,7 @@ target_include_directories(backend
     PRIVATE
     ${CMAKE_SOURCE_DIR}/core
     ${CMAKE_SOURCE_DIR}/plugins
-    ${CMAKE_BINARY_DIR}/grpc/server/src
+    ${CMAKE_BINARY_DIR}/backend/src
     ${PLUGINS_DIR}
 )
 
