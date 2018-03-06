@@ -12,6 +12,8 @@
 #include <thread>
 
 using namespace dronecore;
+using namespace std::this_thread;
+using namespace std::chrono;
 
 #define ERROR_CONSOLE_TEXT "\033[31m" //Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
@@ -48,7 +50,7 @@ int main(int argc, char **argv)
     });
 
     // We usually receive heartbeats at 1Hz, therefore we should find a device after around 2 seconds.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    sleep_for(seconds(2));
 
     if (!discovered_device) {
         std::cout << ERROR_CONSOLE_TEXT << "No device found, exiting." << NORMAL_CONSOLE_TEXT << std::endl;
@@ -82,9 +84,9 @@ int main(int argc, char **argv)
 
 
     // Check if vehicle is ready to arm
-    if (telemetry->health_all_ok() != true) {
-        std::cout << ERROR_CONSOLE_TEXT << "Vehicle not ready to arm" << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
+    while (telemetry->health_all_ok() != true) {
+        std::cout << "Vehicle is getting ready to arm" << std::endl;
+        sleep_for(seconds(1));
     }
 
     // Arm vehicle
@@ -107,7 +109,7 @@ int main(int argc, char **argv)
     }
 
     // Let it hover for a bit before landing again.
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    sleep_for(seconds(10));
 
     std::cout << "Landing..." << std::endl;
     const Action::Result land_result = action->land();
@@ -118,7 +120,7 @@ int main(int argc, char **argv)
     }
 
     // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    sleep_for(seconds(5));
     std::cout << "Finished..." << std::endl;
     return 0;
 }
