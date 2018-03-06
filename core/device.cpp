@@ -285,8 +285,9 @@ void Device::device_thread(Device *self)
 void Device::send_heartbeat(Device *self)
 {
     mavlink_message_t message;
+    // Self is GCS (its not autopilot!); hence MAV_AUTOPILOT_INVALID.
     mavlink_msg_heartbeat_pack(_own_system_id, _own_component_id, &message,
-                               MAV_TYPE_GCS, MAV_AUTOPILOT_GENERIC, 0, 0, 0);
+                               MAV_TYPE_GCS, MAV_AUTOPILOT_INVALID, 0, 0, 0);
     self->send_message(message);
 }
 
