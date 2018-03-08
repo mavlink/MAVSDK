@@ -507,9 +507,12 @@ MavlinkCommands::Result Device::set_flight_mode(FlightMode device_mode)
 
 void Device::set_flight_mode_async(FlightMode device_mode, command_result_callback_t callback)
 {
-    uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+    const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+    const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
 
-    uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed;
+    const uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED
+                         | flag_safety_armed
+                         | flag_hitl_enabled;
 
     // Note: the safety flag is not needed in future versions of the PX4 Firmware
     //       but want to be rather safe than sorry.
