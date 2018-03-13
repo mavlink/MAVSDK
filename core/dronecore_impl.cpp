@@ -28,24 +28,12 @@ DroneCoreImpl::~DroneCoreImpl()
         std::lock_guard<std::recursive_mutex> lock(_devices_mutex);
         _should_exit = true;
 
-        for (auto it = _devices.begin(); it != _devices.end(); ++it) {
-            delete it->second;
-        }
         _devices.clear();
     }
 
-    std::vector<Connection *> tmp_connections;
     {
         std::lock_guard<std::mutex> lock(_connections_mutex);
-
-        // We need to copy the connections to a temporary vector. This way they won't
-        // get used anymore while they are cleaned up.
-        tmp_connections = _connections;
         _connections.clear();
-    }
-
-    for (auto connection : tmp_connections) {
-        delete connection;
     }
 }
 
@@ -71,7 +59,7 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
         auto null_device = _devices[0];
         _devices.erase(0);
         null_device->set_target_system_id(message.sysid);
-        _devices.insert(std::pair<uint8_t, Device *>(message.sysid, null_device));
+        _devices.insert(system_entry_t(message.sysid, null_device));
     }
 
     create_device_if_not_existing(message.sysid);
@@ -169,19 +157,16 @@ ConnectionResult DroneCoreImpl::add_link_connection(const std::string &protocol,
 
 ConnectionResult DroneCoreImpl::add_udp_connection(const int local_port_number)
 {
-    Connection *new_connection = new UdpConnection(*this, local_port_number);
-    ConnectionResult ret = new_connection->start();
+    std::shared_ptr<Connection> new_conn = std::make_shared<UdpConnection>(*this, local_port_number);
 
-    if (ret != ConnectionResult::SUCCESS) {
-        delete new_connection;
-        return ret;
+    ConnectionResult ret = new_conn->start();
+    if (ret == ConnectionResult::SUCCESS) {
+        add_connection(new_conn);
     }
-
-    add_connection(new_connection);
-    return ConnectionResult::SUCCESS;
+    return ret;
 }
 
-void DroneCoreImpl::add_connection(Connection *new_connection)
+void DroneCoreImpl::add_connection(std::shared_ptr<Connection> new_connection)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
     _connections.push_back(new_connection);
@@ -190,32 +175,28 @@ void DroneCoreImpl::add_connection(Connection *new_connection)
 ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
                                                    const int remote_port)
 {
-    Connection *new_connection = new TcpConnection(*this, remote_ip, remote_port);
-    ConnectionResult ret = new_connection->start();
 
-    if (ret != ConnectionResult::SUCCESS) {
-        delete new_connection;
-        return ret;
+    std::shared_ptr<Connection> new_conn = std::make_shared<TcpConnection>(*this, remote_ip,
+                                                                           remote_port);
+
+    ConnectionResult ret = new_conn->start();
+    if (ret == ConnectionResult::SUCCESS) {
+        add_connection(new_conn);
     }
-
-    add_connection(new_connection);
-    return ConnectionResult::SUCCESS;
+    return ret;
 }
 
 ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_path,
                                                       const int baudrate)
 {
 #if !defined(WINDOWS) && !defined(APPLE)
-    Connection *new_connection = new SerialConnection(*this, dev_path, baudrate);
-    ConnectionResult ret = new_connection->start();
-
-    if (ret != ConnectionResult::SUCCESS) {
-        delete new_connection;
-        return ret;
+    std::shared_ptr<Connection> new_conn = std::make_shared<SerialConnection>(*this,
+                                                                              dev_path, baudrate);
+    ConnectionResult ret = new_conn->start();
+    if (ret == ConnectionResult::SUCCESS) {
+        add_connection(new_conn);
     }
-
-    add_connection(new_connection);
-    return ConnectionResult::SUCCESS;
+    return ret;
 #else
     UNUSED(dev_path);
     UNUSED(baudrate);
@@ -329,9 +310,9 @@ void DroneCoreImpl::create_device_if_not_existing(const uint8_t system_id)
         return;
     }
 
-    // Create both lists in parallel
-    Device *new_device = new Device(*this, system_id);
-    _devices.insert(std::pair<uint8_t, Device *>(system_id, new_device));
+    // Make new device
+    auto new_device = std::make_shared<Device>(*this, system_id);
+    _devices.insert(system_entry_t(system_id, new_device));
 }
 
 void DroneCoreImpl::notify_on_discover(const uint64_t uuid)

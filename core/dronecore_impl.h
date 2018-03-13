@@ -23,7 +23,7 @@ public:
     ConnectionResult add_link_connection(const std::string &protocol, const std::string &ip,
                                          int port);
     ConnectionResult add_udp_connection(int local_port_number);
-    void add_connection(Connection *connection);
+    void add_connection(std::shared_ptr<Connection>);
     ConnectionResult add_tcp_connection(const std::string &remote_ip, int remote_port);
     ConnectionResult add_serial_connection(const std::string &dev_path, int baudrate);
 
@@ -43,11 +43,13 @@ public:
 private:
     void create_device_if_not_existing(uint8_t system_id);
 
+    using system_entry_t = std::pair<uint8_t, std::shared_ptr<Device>>;
+
     std::mutex _connections_mutex;
-    std::vector<Connection *> _connections;
+    std::vector<std::shared_ptr<Connection>> _connections;
 
     mutable std::recursive_mutex _devices_mutex;
-    std::map<uint8_t, Device *> _devices;
+    std::map<uint8_t, std::shared_ptr<Device>> _devices;
 
     DroneCore::event_callback_t _on_discover_callback;
     DroneCore::event_callback_t _on_timeout_callback;
