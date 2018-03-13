@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <iostream>
 #include <cmath>
 #include <functional>
@@ -188,7 +189,7 @@ public:
 
 private:
     // Underlying implementation, set at instantiation
-    FollowMeImpl *_impl;
+    std::unique_ptr<FollowMeImpl> _impl;
 };
 
 } // namespace dronecore

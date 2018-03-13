@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <vector>
 #include <functional>
 
@@ -174,7 +175,7 @@ public:
 
 private:
     /* @private. */
-    DroneCoreImpl *_impl;
+    std::unique_ptr<DroneCoreImpl> _impl;
 
     // Non-copyable
     DroneCore(const DroneCore &) = delete;

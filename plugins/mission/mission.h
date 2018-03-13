@@ -206,7 +206,7 @@ public:
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    MissionImpl *_impl;
+    std::unique_ptr<MissionImpl> _impl;
 };
 
 } // namespace dronecore
