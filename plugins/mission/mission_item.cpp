@@ -5,13 +5,12 @@
 namespace dronecore {
 
 MissionItem::MissionItem() :
-    _impl(new MissionItemImpl())
+    _impl { new MissionItemImpl() }
 {
 }
 
 MissionItem::~MissionItem()
 {
-    delete _impl;
 }
 
 

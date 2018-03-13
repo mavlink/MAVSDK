@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <memory>
 
 namespace dronecore {
 
@@ -197,7 +198,7 @@ public:
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    MissionItemImpl *_impl;
+    std::unique_ptr<MissionItemImpl> _impl;
 };
 
 } // namespace dronecore

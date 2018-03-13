@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include "plugin_base.h"
 
 namespace dronecore {
@@ -281,7 +282,7 @@ public:
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    ActionImpl *_impl;
+    std::unique_ptr<ActionImpl> _impl;
 };
 
 } // namespace dronecore

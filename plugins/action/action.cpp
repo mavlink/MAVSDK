@@ -4,14 +4,13 @@
 namespace dronecore {
 
 Action::Action(Device &device) :
-    PluginBase()
+    PluginBase(),
+    _impl { new ActionImpl(device) }
 {
-    _impl = new ActionImpl(device);
 }
 
 Action::~Action()
 {
-    delete _impl;
 }
 
 Action::Result Action::arm() const

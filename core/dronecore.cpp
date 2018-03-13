@@ -6,15 +6,12 @@
 namespace dronecore {
 
 DroneCore::DroneCore() :
-    _impl(nullptr)
+    _impl { new DroneCoreImpl() }
 {
-    _impl = new DroneCoreImpl();
 }
 
 DroneCore::~DroneCore()
 {
-    delete _impl;
-    _impl = nullptr;
 }
 
 ConnectionResult DroneCore::add_any_connection(const std::string &connection_url)

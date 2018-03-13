@@ -4,14 +4,13 @@
 namespace dronecore {
 
 FollowMe::FollowMe(Device &device) :
-    PluginBase()
+    PluginBase(),
+    _impl { new FollowMeImpl(device) }
 {
-    _impl = new FollowMeImpl(device);
 }
 
 FollowMe::~FollowMe()
 {
-    delete _impl;
 }
 
 const FollowMe::Config &FollowMe::get_config() const

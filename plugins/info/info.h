@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 #include "plugin_base.h"
 
 namespace dronecore {
@@ -108,7 +109,7 @@ public:
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    InfoImpl *_impl;
+    std::unique_ptr<InfoImpl> _impl;
 };
 
 } // namespace dronecore
