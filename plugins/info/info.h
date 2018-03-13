@@ -25,7 +25,7 @@ public:
      *
      * @param device The specific device associated with this plugin.
      */
-    explicit Info(Device *device);
+    explicit Info(Device &device);
 
     /**
      * @brief Destructor (internal use only).

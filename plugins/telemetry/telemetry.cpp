@@ -3,7 +3,7 @@
 
 namespace dronecore {
 
-Telemetry::Telemetry(Device *device) :
+Telemetry::Telemetry(Device &device) :
     PluginBase()
 {
     _impl = new TelemetryImpl(device);

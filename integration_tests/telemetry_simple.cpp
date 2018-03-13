@@ -15,7 +15,7 @@ TEST_F(SitlTest, TelemetrySimple)
     std::this_thread::sleep_for(std::chrono::seconds(2));
     Device &device = dc.device();
 
-    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;

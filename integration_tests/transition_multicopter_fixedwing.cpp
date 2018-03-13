@@ -31,8 +31,8 @@ void takeoff_and_transition_to_fixedwing()
     ASSERT_TRUE(dc.is_connected());
 
     Device &device = dc.device();
-    auto action = std::make_shared<Action>(&device);
-    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto action = std::make_shared<Action>(device);
+    auto telemetry = std::make_shared<Telemetry>(device);
 
     // We need to takeoff first, otherwise we can't actually transition
     LogInfo() << "Taking off";

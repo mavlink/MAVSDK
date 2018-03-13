@@ -5,7 +5,7 @@
 
 namespace dronecore {
 
-Mission::Mission(Device *device) :
+Mission::Mission(Device &device) :
     PluginBase()
 {
     _impl = new MissionImpl(device);

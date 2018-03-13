@@ -38,8 +38,8 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     ASSERT_TRUE(dc.is_connected());
 
     Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto action = std::make_shared<Action>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto action = std::make_shared<Action>(device);
 
     int iteration = 0;
     while (!telemetry->health_all_ok()) {

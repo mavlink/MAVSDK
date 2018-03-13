@@ -27,7 +27,7 @@ public:
      *
      * @param device The specific device associated with this plugin.
      */
-    explicit Logging(Device *device);
+    explicit Logging(Device &device);
 
     /**
      * @brief Destructor (internal use only).

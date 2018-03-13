@@ -13,7 +13,7 @@ namespace dronecore {
 class FollowMeImpl : public PluginImplBase
 {
 public:
-    FollowMeImpl(Device *device);
+    FollowMeImpl(Device &device);
     ~FollowMeImpl();
 
     void init() override;

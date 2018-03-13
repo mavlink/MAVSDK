@@ -17,7 +17,7 @@ TEST_F(SitlTest, TelemetryHealth)
 
     Device &device = dc.device();
 
-    auto telemetry = std::make_shared<Telemetry>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
 
     telemetry->health_async(std::bind(&print_health, std::placeholders::_1));
     std::this_thread::sleep_for(std::chrono::seconds(3));

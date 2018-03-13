@@ -24,7 +24,7 @@ TEST_F(SitlTest, Info)
 
 
     Device &device = dc.device();
-    auto info = std::make_shared<Info>(&device);
+    auto info = std::make_shared<Info>(device);
 
     for (unsigned i = 0; i < 3; ++i) {
         Info::Version version = info->get_version();

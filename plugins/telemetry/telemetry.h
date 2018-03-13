@@ -26,7 +26,7 @@ public:
      *
      * @param device The specific device associated with this plugin.
      */
-    explicit Telemetry(Device *device);
+    explicit Telemetry(Device &device);
 
     /**
      * @brief Destructor (internal use only).

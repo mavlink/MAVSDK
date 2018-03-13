@@ -62,8 +62,8 @@ int main(int argc, char **argv)
     // dc.device(uint64_t uuid);
     Device &device = dc.device();
 
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto action = std::make_shared<Action>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto action = std::make_shared<Action>(device);
 
     // We want to listen to the altitude of the drone at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);

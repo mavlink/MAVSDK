@@ -55,8 +55,8 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
     ASSERT_TRUE(_discovered_device);
 
     Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto action = std::make_shared<Action>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto action = std::make_shared<Action>(device);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;

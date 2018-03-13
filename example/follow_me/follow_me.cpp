@@ -50,9 +50,9 @@ int main(int, char **)
 
     // Device got discovered.
     Device &device = dc.device();
-    std::shared_ptr<Action> action = std::make_shared<Action>(&device);
-    std::shared_ptr<FollowMe> follow_me = std::make_shared<FollowMe>(&device);
-    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(&device);
+    std::shared_ptr<Action> action = std::make_shared<Action>(device);
+    std::shared_ptr<FollowMe> follow_me = std::make_shared<FollowMe>(device);
+    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(device);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for device to be ready" << std::endl;

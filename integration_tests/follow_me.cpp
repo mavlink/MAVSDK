@@ -31,9 +31,9 @@ TEST_F(SitlTest, FollowMeOneLocation)
     // Wait for device to connect via heartbeat.
     sleep_for(seconds(2));
     Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto follow_me = std::make_shared<FollowMe>(&device);
-    auto action = std::make_shared<Action>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto follow_me = std::make_shared<FollowMe>(device);
+    auto action = std::make_shared<Action>(device);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
@@ -91,9 +91,9 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     // Wait for device to connect via heartbeat.
     sleep_for(seconds(2));
     Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto follow_me = std::make_shared<FollowMe>(&device);
-    auto action = std::make_shared<Action>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto follow_me = std::make_shared<FollowMe>(device);
+    auto action = std::make_shared<Action>(device);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for device to be ready" << std::endl;

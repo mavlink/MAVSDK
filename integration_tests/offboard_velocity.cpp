@@ -21,10 +21,10 @@ TEST_F(SitlTest, OffboardVelocityNED)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto action = std::make_shared<Action>(&device);
-    auto offboard = std::make_shared<Offboard>(&device);
-    auto mission = std::make_shared<Mission>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto action = std::make_shared<Action>(device);
+    auto offboard = std::make_shared<Offboard>(device);
+    auto mission = std::make_shared<Mission>(device);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;
@@ -118,9 +118,9 @@ TEST_F(SitlTest, OffboardVelocityBody)
     std::this_thread::sleep_for(std::chrono::seconds(2));
     Device &device = dc.device();
 
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto action = std::make_shared<Action>(&device);
-    auto offboard = std::make_shared<Offboard>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto action = std::make_shared<Action>(device);
+    auto offboard = std::make_shared<Offboard>(device);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;

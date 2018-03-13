@@ -7,7 +7,7 @@ class Device;
 class PluginImplBase
 {
 public:
-    explicit PluginImplBase(Device *device);
+    explicit PluginImplBase(Device &device);
     virtual ~PluginImplBase() = default;
 
     /*
@@ -56,7 +56,7 @@ public:
     const PluginImplBase &operator=(const PluginImplBase &) = delete;
 
 protected:
-    Device *_parent;
+    Device &_parent;
 };
 
 } // namespace dronecore

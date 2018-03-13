@@ -27,7 +27,7 @@ public:
      *
      * @param device The specific device associated with this plugin.
      */
-    explicit Gimbal(Device *device);
+    explicit Gimbal(Device &device);
 
     /**
      * @brief Destructor (internal use only).
