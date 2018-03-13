@@ -23,7 +23,7 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto gimbal = std::make_shared<Gimbal>(&device);
+     *     auto gimbal = std::make_shared<Gimbal>(device);
      *     ```
      *
      * @param device The specific device associated with this plugin.
