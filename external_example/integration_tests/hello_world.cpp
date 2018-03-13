@@ -18,7 +18,7 @@ TEST_F(SitlTest, ExampleHello)
     ASSERT_TRUE(dc.is_connected());
 
     Device &device = dc.device();
-    auto example = std::make_shared<Example>(&device);
+    auto example = std::make_shared<Example>(device);
 
     // Apparently it can say hello.
     example->say_hello();
