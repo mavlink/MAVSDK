@@ -5,6 +5,7 @@
 #include <grpc++/server_builder.h>
 #include <grpc++/server_context.h>
 #include <grpc++/security/server_credentials.h>
+#include <memory>
 #include <mutex>
 
 #include "action/action.h"
@@ -45,7 +46,7 @@ public:
         builder.RegisterService(&missionService);
 
         Telemetry telemetry(_dc.device());
-        TelemetryServiceImpl telemetryService(telemetry);
+        TelemetryServiceImpl<> telemetryService(telemetry);
         builder.RegisterService(&telemetryService);
 
         _server = builder.BuildAndStart();

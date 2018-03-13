@@ -1,39 +1,50 @@
-#include "telemetry/telemetry.h"
+#include <future>
+
+#include "telemetry/telemetry.h" // TODO: remove this include now that it is templated
 #include "telemetry/telemetry.grpc.pb.h"
 
-using grpc::Status;
-using grpc::ServerContext;
-using grpc::ServerWriter;
+namespace dronecore {
+namespace backend {
 
-using namespace dronecore;
-
-class TelemetryServiceImpl final : public rpc::telemetry::TelemetryService::Service
+template <typename Telemetry = Telemetry>
+class TelemetryServiceImpl final : public dronecore::rpc::telemetry::TelemetryService::Service
 {
 public:
     TelemetryServiceImpl(Telemetry &telemetry)
-        : telemetry(telemetry) {}
+        : _telemetry(telemetry),
+          _stop_promise(std::promise<void>()),
+          _stop_future(_stop_promise.get_future()) {}
 
-    Status SubscribePosition(ServerContext *context,
-                             const rpc::telemetry::SubscribePositionRequest *request,
-                             ServerWriter<rpc::telemetry::Position> *writer) override
+    grpc::Status SubscribePosition(grpc::ServerContext * /* context */,
+                                   const dronecore::rpc::telemetry::SubscribePositionRequest * /* request */,
+                                   grpc::ServerWriter<rpc::telemetry::PositionResponse> *writer) override
     {
-        telemetry.position_async([&writer](
-        Telemetry::Position position) {
-            rpc::telemetry::Position rpc_position;
-            rpc_position.set_latitude_deg(position.latitude_deg);
-            rpc_position.set_longitude_deg(position.longitude_deg);
-            rpc_position.set_relative_altitude_m(position.relative_altitude_m);
-            rpc_position.set_absolute_altitude_m(position.absolute_altitude_m);
-            writer->Write(rpc_position);
+        _telemetry.position_async([&writer](dronecore::Telemetry::Position position) {
+            auto rpc_position = new dronecore::rpc::telemetry::Position();
+            rpc_position->set_latitude_deg(position.latitude_deg);
+            rpc_position->set_longitude_deg(position.longitude_deg);
+            rpc_position->set_relative_altitude_m(position.relative_altitude_m);
+            rpc_position->set_absolute_altitude_m(position.absolute_altitude_m);
+
+            dronecore::rpc::telemetry::PositionResponse rpc_position_response;
+            rpc_position_response.set_allocated_position(rpc_position);
+            writer->Write(rpc_position_response);
         });
 
-        // TODO: This is probably not the best idea.
-        while (true) {
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        }
-        return Status::OK;
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
+    void stop()
+    {
+        _stop_promise.set_value();
     }
 
 private:
-    Telemetry &telemetry;
+    Telemetry &_telemetry;
+    std::promise<void> _stop_promise;
+    std::future<void> _stop_future;
 };
+
+} // namespace backend
+} // namespace dronecore
