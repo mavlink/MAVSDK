@@ -19,7 +19,7 @@
 
 namespace dronecore {
 
-SerialConnection::SerialConnection(DroneCoreImpl *parent, const std::string &path, int baudrate) :
+SerialConnection::SerialConnection(DroneCoreImpl &parent, const std::string &path, int baudrate) :
     Connection(parent),
     _serial_node(path),
     _baudrate(baudrate)

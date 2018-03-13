@@ -14,12 +14,12 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-Device::Device(DroneCoreImpl *parent,
+Device::Device(DroneCoreImpl &parent,
                uint8_t target_system_id) :
     _target_system_id(target_system_id),
     _parent(parent),
-    _params(this),
-    _commands(this),
+    _params(*this),
+    _commands(*this),
     _timeout_handler(_time),
     _call_every_handler(_time)
 {
@@ -263,7 +263,7 @@ void Device::device_thread(Device *self)
     while (!self->_should_exit) {
 
         if (self->_time.elapsed_since_s(last_time) >= Device::_HEARTBEAT_SEND_INTERVAL_S) {
-            send_heartbeat(self);
+            send_heartbeat(*self);
             last_time = self->_time.steady_time();
         }
 
@@ -282,13 +282,13 @@ void Device::device_thread(Device *self)
     }
 }
 
-void Device::send_heartbeat(Device *self)
+void Device::send_heartbeat(Device &self)
 {
     mavlink_message_t message;
     // Self is GCS (its not autopilot!); hence MAV_AUTOPILOT_INVALID.
     mavlink_msg_heartbeat_pack(_own_system_id, _own_component_id, &message,
                                MAV_TYPE_GCS, MAV_AUTOPILOT_INVALID, 0, 0, 0);
-    self->send_message(message);
+    self.send_message(message);
 }
 
 bool Device::send_message(const mavlink_message_t &message)
@@ -300,7 +300,7 @@ bool Device::send_message(const mavlink_message_t &message)
 #if MESSAGE_DEBUGGING==1
     LogDebug() << "Sending msg " << size_t(message.msgid);
 #endif
-    return _parent->send_message(message);
+    return _parent.send_message(message);
 }
 
 void Device::request_autopilot_version()
@@ -353,7 +353,7 @@ void Device::set_connected()
 
         if (!_connected && _target_uuid_initialized) {
 
-            _parent->notify_on_discover(_target_uuid);
+            _parent.notify_on_discover(_target_uuid);
             _connected = true;
 
             register_timeout_handler(std::bind(&Device::heartbeats_timed_out, this),
@@ -385,7 +385,7 @@ void Device::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
-        _parent->notify_on_timeout(_target_uuid);
+        _parent.notify_on_timeout(_target_uuid);
     }
 
     {

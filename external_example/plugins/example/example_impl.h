@@ -10,7 +10,7 @@ namespace dronecore {
 class ExampleImpl : public PluginImplBase
 {
 public:
-    ExampleImpl(Device *device);
+    ExampleImpl(Device &device);
     ~ExampleImpl();
 
     void say_hello() const;

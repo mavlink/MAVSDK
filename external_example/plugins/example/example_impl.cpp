@@ -4,29 +4,29 @@
 
 namespace dronecore {
 
-ExampleImpl::ExampleImpl(Device *device) :
+ExampleImpl::ExampleImpl(Device &device) :
     PluginImplBase(device)
 {
-    _parent->register_plugin(this);
+    _parent.register_plugin(this);
 }
 
 ExampleImpl::~ExampleImpl()
 {
-    _parent->register_plugin(this);
+    _parent.register_plugin(this);
 }
 
 void ExampleImpl::init()
 {
     using namespace std::placeholders; // for `_1`
 
-    _parent->register_mavlink_message_handler(
+    _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&ExampleImpl::process_heartbeat, this, _1), this);
 }
 
 void ExampleImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _parent.unregister_all_mavlink_message_handlers(this);
 }
 
 void ExampleImpl::enable() {}

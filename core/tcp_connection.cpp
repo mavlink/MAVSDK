@@ -22,7 +22,7 @@
 namespace dronecore {
 
 /* change to remote_ip and remote_port */
-TcpConnection::TcpConnection(DroneCoreImpl *parent, const std::string &remote_ip, int remote_port) :
+TcpConnection::TcpConnection(DroneCoreImpl &parent, const std::string &remote_ip, int remote_port) :
     Connection(parent),
     _remote_ip(remote_ip),
     _remote_port_number(remote_port),

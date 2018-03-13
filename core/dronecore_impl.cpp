@@ -169,7 +169,7 @@ ConnectionResult DroneCoreImpl::add_link_connection(const std::string &protocol,
 
 ConnectionResult DroneCoreImpl::add_udp_connection(const int local_port_number)
 {
-    Connection *new_connection = new UdpConnection(this, local_port_number);
+    Connection *new_connection = new UdpConnection(*this, local_port_number);
     ConnectionResult ret = new_connection->start();
 
     if (ret != ConnectionResult::SUCCESS) {
@@ -190,7 +190,7 @@ void DroneCoreImpl::add_connection(Connection *new_connection)
 ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
                                                    const int remote_port)
 {
-    Connection *new_connection = new TcpConnection(this, remote_ip, remote_port);
+    Connection *new_connection = new TcpConnection(*this, remote_ip, remote_port);
     ConnectionResult ret = new_connection->start();
 
     if (ret != ConnectionResult::SUCCESS) {
@@ -206,7 +206,7 @@ ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_pat
                                                       const int baudrate)
 {
 #if !defined(WINDOWS) && !defined(APPLE)
-    Connection *new_connection = new SerialConnection(this, dev_path, baudrate);
+    Connection *new_connection = new SerialConnection(*this, dev_path, baudrate);
     ConnectionResult ret = new_connection->start();
 
     if (ret != ConnectionResult::SUCCESS) {
@@ -330,7 +330,7 @@ void DroneCoreImpl::create_device_if_not_existing(const uint8_t system_id)
     }
 
     // Create both lists in parallel
-    Device *new_device = new Device(this, system_id);
+    Device *new_device = new Device(*this, system_id);
     _devices.insert(std::pair<uint8_t, Device *>(system_id, new_device));
 }
 

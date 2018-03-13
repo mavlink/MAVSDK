@@ -10,7 +10,7 @@ namespace dronecore {
 class SerialConnection : public Connection
 {
 public:
-    explicit SerialConnection(DroneCoreImpl *parent, const std::string &path, int baudrate);
+    explicit SerialConnection(DroneCoreImpl &parent, const std::string &path, int baudrate);
     bool is_ok() const;
     ConnectionResult start();
     ConnectionResult stop();

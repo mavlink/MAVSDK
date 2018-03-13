@@ -14,7 +14,7 @@ class Device;
 class MavlinkCommands
 {
 public:
-    explicit MavlinkCommands(Device *parent);
+    explicit MavlinkCommands(Device &parent);
     ~MavlinkCommands();
 
     enum class Result {
@@ -74,7 +74,7 @@ private:
     void receive_command_ack(mavlink_message_t message);
     void receive_timeout();
 
-    Device *_parent;
+    Device &_parent;
     LockedQueue<Work> _work_queue {};
 
     void *_timeout_cookie = nullptr;

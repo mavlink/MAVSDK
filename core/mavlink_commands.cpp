@@ -17,10 +17,10 @@ namespace dronecore {
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
-MavlinkCommands::MavlinkCommands(Device *parent) :
+MavlinkCommands::MavlinkCommands(Device &parent) :
     _parent(parent)
 {
-    _parent->register_mavlink_message_handler(
+    _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
         std::bind(&MavlinkCommands::receive_command_ack,
                   this, std::placeholders::_1), this);
@@ -28,7 +28,7 @@ MavlinkCommands::MavlinkCommands(Device *parent) :
 
 MavlinkCommands::~MavlinkCommands()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _parent.unregister_all_mavlink_message_handlers(this);
 }
 
 MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
@@ -80,8 +80,8 @@ void MavlinkCommands::queue_command_async(uint16_t command,
     //         << (int)target_component_id;
 
     Work new_work {};
-    mavlink_msg_command_long_pack(_parent->get_own_system_id(),
-                                  _parent->get_own_component_id(),
+    mavlink_msg_command_long_pack(_parent.get_own_system_id(),
+                                  _parent.get_own_component_id(),
                                   &new_work.mavlink_message,
                                   target_system_id,
                                   target_component_id,
@@ -171,8 +171,8 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             // has arrived. A possible timeout for this case is the initial
             // timeout * the possible retries because this should match the
             // case where there is no progress update and we keep trying.
-            _parent->unregister_timeout_handler(_timeout_cookie);
-            _parent->register_timeout_handler(
+            _parent.unregister_timeout_handler(_timeout_cookie);
+            _parent.register_timeout_handler(
                 std::bind(&MavlinkCommands::receive_timeout, this),
                 work.retries_to_do * work.timeout_s, &_timeout_cookie);
             break;
@@ -197,7 +197,7 @@ void MavlinkCommands::receive_timeout()
             LogInfo() << "sending again, retries to do: " << work.retries_to_do
                       << "  (" << work.mavlink_command << ").";
             // We're not sure the command arrived, let's retransmit.
-            if (!_parent->send_message(work.mavlink_message)) {
+            if (!_parent.send_message(work.mavlink_message)) {
                 LogErr() << "connection send error in retransmit (" << work.mavlink_command << ").";
                 if (work.callback) {
                     work.callback(Result::CONNECTION_ERROR, NAN);
@@ -205,7 +205,7 @@ void MavlinkCommands::receive_timeout()
                 _state = State::FAILED;
             } else {
                 --work.retries_to_do;
-                _parent->register_timeout_handler(
+                _parent.register_timeout_handler(
                     std::bind(&MavlinkCommands::receive_timeout, this),
                     work.timeout_s, &_timeout_cookie);
             }
@@ -239,7 +239,7 @@ void MavlinkCommands::do_work()
         case State::DONE:
         // FALLTHROUGH
         case State::FAILED:
-            _parent->unregister_timeout_handler(_timeout_cookie);
+            _parent.unregister_timeout_handler(_timeout_cookie);
             _work_queue.pop_front();
             _state = State::NONE;
             break;
@@ -258,7 +258,7 @@ void MavlinkCommands::do_work()
     switch (_state) {
         case State::NONE:
             // LogDebug() << "sending it the first time (" << work.mavlink_command << ")";
-            if (!_parent->send_message(work.mavlink_message)) {
+            if (!_parent.send_message(work.mavlink_message)) {
                 LogErr() << "connection send error (" << work.mavlink_command << ")";
                 if (work.callback) {
                     work.callback(Result::CONNECTION_ERROR, NAN);
@@ -267,7 +267,7 @@ void MavlinkCommands::do_work()
                 break;
             } else {
                 _state = State::WAITING;
-                _parent->register_timeout_handler(
+                _parent.register_timeout_handler(
                     std::bind(&MavlinkCommands::receive_timeout, this),
                     work.timeout_s, &_timeout_cookie);
             }
