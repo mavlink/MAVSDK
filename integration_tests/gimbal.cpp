@@ -29,8 +29,8 @@ TEST_F(SitlTest, GimbalMove)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto gimbal = std::make_shared<Gimbal>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto gimbal = std::make_shared<Gimbal>(device);
 
     telemetry->set_rate_camera_attitude(10.0);
 
@@ -55,9 +55,9 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto gimbal = std::make_shared<Gimbal>(&device);
-    auto action = std::make_shared<Action>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto gimbal = std::make_shared<Gimbal>(device);
+    auto action = std::make_shared<Action>(device);
 
     while (!telemetry->health_all_ok()) {
         LogInfo() << "waiting for device to be ready";

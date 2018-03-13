@@ -37,7 +37,7 @@ public:
      *
      * @param device The specific device associated with this plugin.
      */
-    explicit Offboard(Device *device);
+    explicit Offboard(Device &device);
 
     /**
      * @brief Destructor (internal use only).

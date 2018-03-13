@@ -11,7 +11,7 @@ namespace dronecore {
 class OffboardImpl : public PluginImplBase
 {
 public:
-    OffboardImpl(Device *device);
+    OffboardImpl(Device &device);
     ~OffboardImpl();
 
     void init() override;

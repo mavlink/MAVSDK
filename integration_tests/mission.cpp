@@ -52,9 +52,9 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
 
 
     Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto mission = std::make_shared<Mission>(&device);
-    auto action = std::make_shared<Action>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto mission = std::make_shared<Mission>(device);
+    auto action = std::make_shared<Action>(device);
 
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for device to be ready";

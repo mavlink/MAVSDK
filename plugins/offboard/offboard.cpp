@@ -3,7 +3,7 @@
 
 namespace dronecore {
 
-Offboard::Offboard(Device *device) :
+Offboard::Offboard(Device &device) :
     PluginBase()
 {
     _impl = new OffboardImpl(device);

@@ -7,28 +7,28 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-ActionImpl::ActionImpl(Device *device) :
+ActionImpl::ActionImpl(Device &device) :
     PluginImplBase(device)
 {
-    _parent->register_plugin(this);
+    _parent.register_plugin(this);
 }
 
 ActionImpl::~ActionImpl()
 {
-    _parent->unregister_plugin(this);
+    _parent.unregister_plugin(this);
 }
 
 void ActionImpl::init()
 {
     // We need the system state.
-    _parent->register_mavlink_message_handler(
+    _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
         std::bind(&ActionImpl::process_extended_sys_state, this, _1), this);
 }
 
 void ActionImpl::deinit()
 {
-    _parent->unregister_all_mavlink_message_handlers(this);
+    _parent.unregister_all_mavlink_message_handlers(this);
 }
 
 void ActionImpl::enable()
@@ -37,8 +37,8 @@ void ActionImpl::enable()
     // We use the async call here because we should not block in the init call because
     // we won't receive an answer anyway in init because the receive loop is not
     // called while we are being created here.
-    _parent->set_msg_rate_async(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, 1.0, nullptr,
-                                MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+    _parent.set_msg_rate_async(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, 1.0, nullptr,
+                               MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void ActionImpl::disable() {}
@@ -52,14 +52,14 @@ Action::Result ActionImpl::arm() const
 
     // Go to LOITER mode first.
     ret = action_result_from_command_result(
-              _parent->set_flight_mode(Device::FlightMode::HOLD));
+              _parent.set_flight_mode(Device::FlightMode::HOLD));
 
     if (ret != Action::Result::SUCCESS) {
         return ret;
     }
 
     return action_result_from_command_result(
-               _parent->send_command_with_ack(
+               _parent.send_command_with_ack(
                    MAV_CMD_COMPONENT_ARM_DISARM,
                    MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
@@ -73,7 +73,7 @@ Action::Result ActionImpl::disarm() const
     }
 
     return action_result_from_command_result(
-               _parent->send_command_with_ack(
+               _parent.send_command_with_ack(
                    MAV_CMD_COMPONENT_ARM_DISARM,
                    MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
@@ -82,7 +82,7 @@ Action::Result ActionImpl::disarm() const
 Action::Result ActionImpl::kill() const
 {
     return action_result_from_command_result(
-               _parent->send_command_with_ack(
+               _parent.send_command_with_ack(
                    MAV_CMD_COMPONENT_ARM_DISARM,
                    MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
@@ -97,10 +97,10 @@ Action::Result ActionImpl::takeoff() const
 
     // Go to LOITER mode first.
     ret = action_result_from_command_result(
-              _parent->set_flight_mode(Device::FlightMode::HOLD));
+              _parent.set_flight_mode(Device::FlightMode::HOLD));
 
     return action_result_from_command_result(
-               _parent->send_command_with_ack(
+               _parent.send_command_with_ack(
                    MAV_CMD_NAV_TAKEOFF,
                    MavlinkCommands::Params {NAN, NAN, NAN, NAN, NAN, NAN,
                                             _relative_takeoff_altitude_m},
@@ -110,7 +110,7 @@ Action::Result ActionImpl::takeoff() const
 Action::Result ActionImpl::land() const
 {
     return action_result_from_command_result(
-               _parent->send_command_with_ack(
+               _parent.send_command_with_ack(
                    MAV_CMD_NAV_LAND,
                    MavlinkCommands::Params {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
@@ -119,7 +119,7 @@ Action::Result ActionImpl::land() const
 Action::Result ActionImpl::return_to_launch() const
 {
     return action_result_from_command_result(
-               _parent->set_flight_mode(Device::FlightMode::RETURN_TO_LAUNCH));
+               _parent.set_flight_mode(Device::FlightMode::RETURN_TO_LAUNCH));
 }
 
 Action::Result ActionImpl::transition_to_fixedwing() const
@@ -133,7 +133,7 @@ Action::Result ActionImpl::transition_to_fixedwing() const
     }
 
     return action_result_from_command_result(
-               _parent->send_command_with_ack(
+               _parent.send_command_with_ack(
                    MAV_CMD_DO_VTOL_TRANSITION,
                    MavlinkCommands::Params {float(MAV_VTOL_STATE_FW)},
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
@@ -155,7 +155,7 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &
         return;
     }
 
-    _parent->send_command_with_ack_async(
+    _parent.send_command_with_ack_async(
         MAV_CMD_DO_VTOL_TRANSITION,
         MavlinkCommands::Params {float(MAV_VTOL_STATE_FW)},
         std::bind(&ActionImpl::command_result_callback,
@@ -175,7 +175,7 @@ Action::Result ActionImpl::transition_to_multicopter() const
     }
 
     return action_result_from_command_result(
-               _parent->send_command_with_ack(
+               _parent.send_command_with_ack(
                    MAV_CMD_DO_VTOL_TRANSITION,
                    MavlinkCommands::Params {float(MAV_VTOL_STATE_MC)},
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
@@ -197,7 +197,7 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
         return;
     }
 
-    _parent->send_command_with_ack_async(
+    _parent.send_command_with_ack_async(
         MAV_CMD_DO_VTOL_TRANSITION,
         MavlinkCommands::Params {float(MAV_VTOL_STATE_MC)},
         std::bind(&ActionImpl::command_result_callback,
@@ -228,7 +228,7 @@ void ActionImpl::arm_async_continued(MavlinkCommands::Result previous_result,
         return;
     }
 
-    _parent->send_command_with_ack_async(
+    _parent.send_command_with_ack_async(
         MAV_CMD_COMPONENT_ARM_DISARM,
         MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
@@ -247,7 +247,7 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
         return;
     }
 
-    _parent->send_command_with_ack_async(
+    _parent.send_command_with_ack_async(
         MAV_CMD_COMPONENT_ARM_DISARM,
         MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
@@ -258,7 +258,7 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
 
 void ActionImpl::kill_async(const Action::result_callback_t &callback)
 {
-    _parent->send_command_with_ack_async(
+    _parent.send_command_with_ack_async(
         MAV_CMD_COMPONENT_ARM_DISARM,
         MavlinkCommands::Params {0.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
@@ -289,7 +289,7 @@ void ActionImpl::takeoff_async_continued(MavlinkCommands::Result previous_result
         return;
     }
 
-    _parent->send_command_with_ack_async(
+    _parent.send_command_with_ack_async(
         MAV_CMD_NAV_TAKEOFF,
         MavlinkCommands::Params {NAN, NAN, NAN, NAN, NAN, NAN,
                                  _relative_takeoff_altitude_m},
@@ -301,7 +301,7 @@ void ActionImpl::takeoff_async_continued(MavlinkCommands::Result previous_result
 
 void ActionImpl::land_async(const Action::result_callback_t &callback)
 {
-    _parent->send_command_with_ack_async(
+    _parent.send_command_with_ack_async(
         MAV_CMD_NAV_LAND,
         MavlinkCommands::Params {NAN, NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&ActionImpl::command_result_callback,
@@ -312,7 +312,7 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
 
 void ActionImpl::return_to_launch_async(const Action::result_callback_t &callback)
 {
-    _parent->set_flight_mode_async(
+    _parent.set_flight_mode_async(
         Device::FlightMode::RETURN_TO_LAUNCH,
         std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
@@ -377,14 +377,14 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
 
 void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &callback)
 {
-    _parent->set_flight_mode_async(
+    _parent.set_flight_mode_async(
         Device::FlightMode::HOLD,
         std::bind(&ActionImpl::takeoff_async_continued, this, _1, callback));
 }
 
 void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callback)
 {
-    _parent->set_flight_mode_async(
+    _parent.set_flight_mode_async(
         Device::FlightMode::HOLD,
         std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
 }
@@ -392,9 +392,9 @@ void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callba
 
 void ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
-    _parent->set_param_float_async("MIS_TAKEOFF_ALT", relative_altitude_m,
-                                   std::bind(&ActionImpl::receive_takeoff_alt_param,
-                                             this, _1, relative_altitude_m));
+    _parent.set_param_float_async("MIS_TAKEOFF_ALT", relative_altitude_m,
+                                  std::bind(&ActionImpl::receive_takeoff_alt_param,
+                                            this, _1, relative_altitude_m));
 
 }
 
@@ -416,9 +416,9 @@ void ActionImpl::set_max_speed(float speed_m_s)
 {
     // TODO: add retries
     //const int retries = 3;
-    _parent->set_param_float_async("MPC_XY_CRUISE", speed_m_s,
-                                   std::bind(&ActionImpl::receive_max_speed_result, this, _1,
-                                             speed_m_s));
+    _parent.set_param_float_async("MPC_XY_CRUISE", speed_m_s,
+                                  std::bind(&ActionImpl::receive_max_speed_result, this, _1,
+                                            speed_m_s));
 }
 
 void ActionImpl::receive_max_speed_result(bool success, float new_speed_m_s)

@@ -3,7 +3,7 @@
 
 namespace dronecore {
 
-FollowMe::FollowMe(Device *device) :
+FollowMe::FollowMe(Device &device) :
     PluginBase()
 {
     _impl = new FollowMeImpl(device);

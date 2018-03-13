@@ -19,8 +19,8 @@ TEST_F(SitlTest, TelemetryFlightModes)
 
     Device &device = dc.device();
 
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto action = std::make_shared<Action>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto action = std::make_shared<Action>(device);
 
     telemetry->flight_mode_async(
         std::bind(&print_mode, std::placeholders::_1));

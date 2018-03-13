@@ -10,7 +10,7 @@ namespace dronecore {
 class LoggingImpl : public PluginImplBase
 {
 public:
-    LoggingImpl(Device *device);
+    LoggingImpl(Device &device);
     ~LoggingImpl();
 
     void init() override;

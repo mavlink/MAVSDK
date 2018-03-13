@@ -6,15 +6,15 @@
 
 namespace dronecore {
 
-GimbalImpl::GimbalImpl(Device *device) :
+GimbalImpl::GimbalImpl(Device &device) :
     PluginImplBase(device)
 {
-    _parent->register_plugin(this);
+    _parent.register_plugin(this);
 }
 
 GimbalImpl::~GimbalImpl()
 {
-    _parent->unregister_plugin(this);
+    _parent.unregister_plugin(this);
 }
 
 void GimbalImpl::init() {}
@@ -30,7 +30,7 @@ Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
     const float roll_deg = 0.0f;
 
     return gimbal_result_from_command_result(
-               _parent->send_command_with_ack(
+               _parent.send_command_with_ack(
                    MAV_CMD_DO_MOUNT_CONTROL,
                    MavlinkCommands::Params {pitch_deg, roll_deg, yaw_deg, NAN, NAN, NAN,
                                             MAV_MOUNT_MODE_MAVLINK_TARGETING},
@@ -41,7 +41,7 @@ void GimbalImpl::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg,
                                          Gimbal::result_callback_t callback)
 {
     const float roll_deg = 0.0f;
-    _parent->send_command_with_ack_async(
+    _parent.send_command_with_ack_async(
         MAV_CMD_DO_MOUNT_CONTROL,
         MavlinkCommands::Params {pitch_deg, roll_deg, yaw_deg, NAN, NAN, NAN,
                                  MAV_MOUNT_MODE_MAVLINK_TARGETING},

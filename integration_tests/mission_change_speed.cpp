@@ -41,9 +41,9 @@ TEST_F(SitlTest, MissionChangeSpeed)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(&device);
-    auto mission = std::make_shared<Mission>(&device);
-    auto action = std::make_shared<Action>(&device);
+    auto telemetry = std::make_shared<Telemetry>(device);
+    auto mission = std::make_shared<Mission>(device);
+    auto action = std::make_shared<Action>(device);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "waiting for device to be ready" << std::endl;

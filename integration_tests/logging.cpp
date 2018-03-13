@@ -15,7 +15,7 @@ TEST_F(SitlTest, Logging)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     Device &device = dc.device();
-    auto logging = std::make_shared<Logging>(&device);
+    auto logging = std::make_shared<Logging>(device);
     Logging::Result log_ret = logging->start_logging();
 
     if (log_ret == Logging::Result::COMMAND_DENIED) {

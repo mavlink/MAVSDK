@@ -78,9 +78,9 @@ int main(int /*argc*/, char ** /*argv*/)
     // If there were multiple, we could specify it with:
     // dc.device(uint64_t uuid);
     Device &device = dc.device();
-    std::shared_ptr<Action> action = std::make_shared<Action>(&device);
-    std::shared_ptr<Mission> mission = std::make_shared<Mission>(&device);
-    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(&device);
+    std::shared_ptr<Action> action = std::make_shared<Action>(device);
+    std::shared_ptr<Mission> mission = std::make_shared<Mission>(device);
+    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(device);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for device to be ready" << std::endl;

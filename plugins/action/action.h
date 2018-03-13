@@ -29,12 +29,12 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto action = std::make_shared<Action>(&device);
+     *     auto action = std::make_shared<Action>(device);
      *     ```
      *
      * @param device The specific device associated with this plugin.
      */
-    explicit Action(Device *device);
+    explicit Action(Device &device);
 
     /**
      * @brief Destructor (internal use only).

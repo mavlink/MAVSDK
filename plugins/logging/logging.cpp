@@ -3,7 +3,7 @@
 
 namespace dronecore {
 
-Logging::Logging(Device *device) :
+Logging::Logging(Device &device) :
     PluginBase()
 {
     _impl = new LoggingImpl(device);

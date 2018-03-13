@@ -18,7 +18,7 @@ class Device;
 class TelemetryImpl : public PluginImplBase
 {
 public:
-    TelemetryImpl(Device *device);
+    TelemetryImpl(Device &device);
     ~TelemetryImpl();
 
     void init() override;

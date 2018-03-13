@@ -34,7 +34,7 @@ public:
      *
      * @param device The specific device associated with this plugin.
      */
-    explicit FollowMe(Device *device);
+    explicit FollowMe(Device &device);
 
     /**
      * @brief Destructor (internal use only).
