@@ -5,6 +5,7 @@ add_executable(external_example_integration_tests_runner
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/core
+    ${CMAKE_SOURCE_DIR}/external_example
 )
 
 target_link_libraries(external_example_integration_tests_runner
