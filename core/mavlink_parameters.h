@@ -17,7 +17,7 @@ class Device;
 class MavlinkParameters
 {
 public:
-    explicit MavlinkParameters(Device *parent);
+    explicit MavlinkParameters(Device &parent);
     ~MavlinkParameters();
 
     class ParamValue
@@ -159,7 +159,7 @@ private:
     void process_param_ext_ack(const mavlink_message_t &message);
     void receive_timeout();
 
-    Device *_parent;
+    Device &_parent;
 
     enum class State {
         NONE,

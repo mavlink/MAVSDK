@@ -11,7 +11,7 @@ class DroneCoreImpl;
 class Connection
 {
 public:
-    Connection(DroneCoreImpl *parent);
+    Connection(DroneCoreImpl &parent);
     virtual ~Connection();
 
     virtual ConnectionResult start() = 0;
@@ -28,7 +28,7 @@ protected:
     bool start_mavlink_receiver();
     void stop_mavlink_receiver();
     void receive_message(const mavlink_message_t &message);
-    DroneCoreImpl *_parent;
+    DroneCoreImpl &_parent;
     std::unique_ptr<MavlinkReceiver> _mavlink_receiver;
 
     //void received_mavlink_message(mavlink_message_t &);

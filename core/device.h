@@ -32,7 +32,7 @@ public:
         OFFBOARD,
     };
 
-    explicit Device(DroneCoreImpl *parent,
+    explicit Device(DroneCoreImpl &parent,
                     uint8_t target_system_id);
     ~Device();
 
@@ -130,7 +130,7 @@ private:
     void set_disconnected();
 
     static void device_thread(Device *self);
-    static void send_heartbeat(Device *self);
+    static void send_heartbeat(Device &self);
 
     static void receive_float_param(bool success, MavlinkParameters::ParamValue value,
                                     get_param_float_callback_t callback);
@@ -159,7 +159,7 @@ private:
     std::atomic<bool> _armed {false};
     std::atomic<bool> _hitl_enabled {false};
 
-    DroneCoreImpl *_parent;
+    DroneCoreImpl &_parent;
 
     command_result_callback_t _command_result_callback {nullptr};
 

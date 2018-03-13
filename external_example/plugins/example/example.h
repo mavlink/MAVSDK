@@ -10,7 +10,7 @@ class ExampleImpl;
 class Example : public PluginBase
 {
 public:
-    explicit Example(Device *device);
+    explicit Example(Device &device);
     ~Example();
 
     void say_hello() const;

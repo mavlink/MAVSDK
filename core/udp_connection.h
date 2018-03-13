@@ -12,7 +12,7 @@ namespace dronecore {
 class UdpConnection : public Connection
 {
 public:
-    explicit UdpConnection(DroneCoreImpl *parent, int local_port_number);
+    explicit UdpConnection(DroneCoreImpl &parent, int local_port_number);
     ~UdpConnection();
     bool is_ok() const;
     ConnectionResult start();

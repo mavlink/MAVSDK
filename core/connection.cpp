@@ -5,7 +5,7 @@
 
 namespace dronecore {
 
-Connection::Connection(DroneCoreImpl *parent) :
+Connection::Connection(DroneCoreImpl &parent) :
     _parent(parent),
     _mavlink_receiver() {}
 
@@ -39,7 +39,7 @@ void Connection::stop_mavlink_receiver()
 
 void Connection::receive_message(const mavlink_message_t &message)
 {
-    _parent->receive_message(message);
+    _parent.receive_message(message);
 }
 
 } // namespace dronecore
