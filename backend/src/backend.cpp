@@ -36,15 +36,15 @@ public:
         CoreServiceImpl core(_dc);
         builder.RegisterService(&core);
 
-        Action action(&_dc.device());
+        Action action(_dc.device());
         ActionServiceImpl<dronecore::Action> actionService(action);
         builder.RegisterService(&actionService);
 
-        Mission mission(&_dc.device());
+        Mission mission(_dc.device());
         MissionServiceImpl missionService(mission);
         builder.RegisterService(&missionService);
 
-        Telemetry telemetry(&_dc.device());
+        Telemetry telemetry(_dc.device());
         TelemetryServiceImpl telemetryService(telemetry);
         builder.RegisterService(&telemetryService);
 
