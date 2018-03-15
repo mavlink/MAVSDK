@@ -70,7 +70,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     // This needs some time to propagate.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     // Now it should be inactive.
-    EXPECT_TRUE(offboard->is_active());
+    EXPECT_FALSE(offboard->is_active());
 
     // So we start it yet again.
     offboard_result = offboard->start();
