@@ -84,6 +84,39 @@ public:
      */
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, result_callback_t callback);
 
+
+    /**
+     * @brief Set gimbal region of interest (ROI).
+     *
+     * This sets a region of interest that the gimbal will point to.
+     * The gimbal will continue to point to the specified region until it
+     * receives a new command.
+     * The function will return when the command is accepted, however, it might
+     * take the gimbal longer to actually rotate to the ROI.
+     *
+     * @param latitude_deg Latitude in degrees
+     * @param longitude_deg Longitude in degrees
+     * @param altitude_m Altitude in meters (ASML)
+     */
+    Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m);
+
+    /**
+     * @brief Set gimbal region of interest (ROI) (asynchronous).
+     *
+     * This sets a region of interest that the gimbal will point to.
+     * The gimbal will continue to point to the specified region until it
+     * receives a new command.
+     * The callback will be called when the command is accepted, however, it might
+     * take the gimbal longer to actually be set to the new angles.
+     *
+     * @param latitude_deg Latitude in degrees
+     * @param longitude_deg Longitude in degrees
+     * @param altitude_m Altitude in meters (ASML)
+     * @param callback Function to call with result of request.
+     */
+    void set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m,
+                                result_callback_t callback);
+
     /**
      * @brief Copy constructor (object is not copyable).
      */
