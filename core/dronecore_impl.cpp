@@ -309,6 +309,8 @@ void DroneCoreImpl::make_system_with_component(uint8_t system_id, uint8_t comp_i
         return;
     }
 
+    LogDebug() << "New: System ID: " << int(system_id)
+               << " Comp ID: " << int(comp_id);
     // Make a system with its first component
     auto new_system = std::make_shared<System>(*this, system_id);
     new_system->add_new_component(comp_id);
