@@ -1,12 +1,12 @@
 #pragma once
 
+#include <atomic>
+#include <mutex>
 #include "telemetry.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 #include "mavlink_system.h"
 #include "mavlink_include.h"
-#include <atomic>
-#include <mutex>
 
 // Since not all vehicles support/require level calibration, this
 // is disabled for now.

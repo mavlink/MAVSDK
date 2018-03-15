@@ -1,8 +1,8 @@
+#include <functional>
 #include "info_impl.h"
 #include "system.h"
 #include "mavlink_system.h"
 #include "global_include.h"
-#include <functional>
 
 namespace dronecore {
 

@@ -96,17 +96,17 @@ TEST_F(SitlTest, GimbalROIOffboard)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
-    // Wait for device to connect via heartbeat.
+    // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto gimbal = std::make_shared<Gimbal>(device);
-    auto action = std::make_shared<Action>(device);
-    auto offboard = std::make_shared<Offboard>(device);
+    System &system = dc.system();
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto gimbal = std::make_shared<Gimbal>(system);
+    auto action = std::make_shared<Action>(system);
+    auto offboard = std::make_shared<Offboard>(system);
 
     while (!telemetry->health_all_ok()) {
-        LogInfo() << "waiting for device to be ready";
+        LogInfo() << "waiting for system to be ready";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
