@@ -10,6 +10,7 @@
 #include <functional>
 #include <atomic>
 #include <vector>
+#include <unordered_set>
 #include <map>
 #include <thread>
 #include <mutex>
@@ -19,6 +20,20 @@ namespace dronecore {
 class DroneCoreImpl;
 class PluginImplBase;
 
+
+/**
+ * @brief This represents GCS DroneCore client.
+ */
+struct Self {
+    static constexpr uint8_t system_id = 0;
+    static constexpr uint8_t component_id = MAV_COMP_ID_SYSTEM_CONTROL;
+    static constexpr MAV_TYPE type = MAV_TYPE_GCS;
+};
+
+/**
+ * @brief This class represents the MAVLink based Vehicle/Robot
+ * or a stand-alone device whom DroneCore application want to interact with.
+ */
 class System
 {
 public:
@@ -33,7 +48,7 @@ public:
     };
 
     explicit System(DroneCoreImpl &parent,
-                    uint8_t target_system_id);
+                    uint8_t system_id);
     ~System();
 
     void process_mavlink_message(const mavlink_message_t &message);
@@ -74,13 +89,20 @@ public:
 
     void request_autopilot_version();
 
-    uint64_t get_target_uuid() const;
-    uint8_t get_target_system_id() const;
-    uint8_t get_target_component_id() const;
+    // Adds unique component ids
+    void add_new_component(uint8_t component_id);
+    size_t total_components() const;
 
-    void set_target_system_id(uint8_t system_id);
+    uint8_t get_autopilot_id() const;
+    std::vector<uint8_t> get_camera_ids() const;
+    uint8_t get_gimbal_id() const;
 
-    bool target_supports_mission_int() const { return _target_supports_mission_int; }
+    uint64_t get_uuid() const;
+    uint8_t get_system_id() const;
+
+    void set_system_id(uint8_t system_id);
+
+    bool does_support_mission_int() const { return _supports_mission_int; }
 
     bool is_armed() const { return _armed; }
 
@@ -146,16 +168,14 @@ private:
     std::mutex _mavlink_handler_table_mutex {};
     std::vector<MavlinkHandlerTableEntry> _mavlink_handler_table {};
 
-    std::atomic<uint8_t> _target_system_id;
+    std::atomic<uint8_t> _system_id;
 
-    // The component ID is hardcoded for now.
-    uint8_t _target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    uint64_t _target_uuid {0};
+    uint64_t _uuid {0};
 
-    int _target_uuid_retries = 0;
-    std::atomic<bool> _target_uuid_initialized {false};
+    int _uuid_retries = 0;
+    std::atomic<bool> _uuid_initialized {false};
 
-    bool _target_supports_mission_int {false};
+    bool _supports_mission_int {false};
     std::atomic<bool> _armed {false};
     std::atomic<bool> _hitl_enabled {false};
 
@@ -194,6 +214,9 @@ private:
 
     std::mutex _plugin_impls_mutex {};
     std::vector<PluginImplBase *> _plugin_impls {};
+
+    // We used set to maintain unique component ids
+    std::unordered_set<uint8_t> _components;
 };
 
 

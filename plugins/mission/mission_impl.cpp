@@ -706,13 +706,8 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
 
     _activity = Activity::SEND_COMMAND;
 
-<<<<<<< e1ff82a304df8c76456fe8cdea44ef5e47db23e9
     _parent->set_flight_mode_async(
         MAVLinkSystem::FlightMode::MISSION,
-=======
-    _parent.set_flight_mode_async(
-        System::FlightMode::MISSION,
->>>>>>> Change class name `Device` to `System` (#318)
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
@@ -730,13 +725,8 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
 
     _activity = Activity::SEND_COMMAND;
 
-<<<<<<< e1ff82a304df8c76456fe8cdea44ef5e47db23e9
     _parent->set_flight_mode_async(
         MAVLinkSystem::FlightMode::HOLD,
-=======
-    _parent.set_flight_mode_async(
-        System::FlightMode::HOLD,
->>>>>>> Change class name `Device` to `System` (#318)
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
