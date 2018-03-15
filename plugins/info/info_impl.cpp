@@ -126,7 +126,7 @@ void InfoImpl::translate_binary_to_str(uint8_t *binary, unsigned binary_len,
 
 uint64_t InfoImpl::get_uuid() const
 {
-    return _parent.get_target_uuid();
+    return _parent.get_uuid();
 }
 
 bool InfoImpl::is_complete() const

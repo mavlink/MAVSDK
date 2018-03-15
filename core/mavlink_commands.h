@@ -19,7 +19,7 @@ public:
 
     enum class Result {
         SUCCESS = 0,
-        NO_DEVICE,
+        NO_SYSTEM,
         CONNECTION_ERROR,
         BUSY,
         COMMAND_DENIED,
@@ -47,7 +47,7 @@ public:
 
     void do_work();
 
-    static const int DEFAULT_COMPONENT_ID_AUTOPILOT = 1;
+    static const int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
 
     // Non-copyable
     MavlinkCommands(const MavlinkCommands &) = delete;

@@ -53,7 +53,7 @@ const char *Offboard::result_str(Result result)
     switch (result) {
         case Result::SUCCESS:
             return "Success";
-        case Result::NO_DEVICE:
+        case Result::NO_SYSTEM:
             return "No system";
         case Result::CONNECTION_ERROR:
             return "Connection error";

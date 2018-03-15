@@ -88,7 +88,7 @@ std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
     input_pairs.push_back(std::make_pair("SUCCESS", dronecore::ActionResult::SUCCESS));
-    input_pairs.push_back(std::make_pair("NO_DEVICE", dronecore::ActionResult::NO_DEVICE));
+    input_pairs.push_back(std::make_pair("NO_SYSTEM", dronecore::ActionResult::NO_DEVICE));
     input_pairs.push_back(std::make_pair("CONNECTION_ERROR",
                                          dronecore::ActionResult::CONNECTION_ERROR));
     input_pairs.push_back(std::make_pair("BUSY", dronecore::ActionResult::BUSY));

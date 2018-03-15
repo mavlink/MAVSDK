@@ -89,9 +89,9 @@ void LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
 
     mavlink_message_t answer;
     mavlink_msg_logging_ack_pack(
-        _parent.get_own_system_id(), _parent.get_own_component_id(),
+        Self::system_id, Self::component_id,
         &answer,
-        _parent.get_target_system_id(), _parent.get_target_component_id(),
+        _parent.get_system_id(), _parent.get_autopilot_id(),
         logging_data_acked.sequence);
 
     _parent.send_message(answer);
@@ -103,8 +103,8 @@ LoggingImpl::logging_result_from_command_result(MavlinkCommands::Result result)
     switch (result) {
         case MavlinkCommands::Result::SUCCESS:
             return Logging::Result::SUCCESS;
-        case MavlinkCommands::Result::NO_DEVICE:
-            return Logging::Result::NO_DEVICE;
+        case MavlinkCommands::Result::NO_SYSTEM:
+            return Logging::Result::NO_SYSTEM;
         case MavlinkCommands::Result::CONNECTION_ERROR:
             return Logging::Result::CONNECTION_ERROR;
         case MavlinkCommands::Result::BUSY:

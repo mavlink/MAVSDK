@@ -41,7 +41,8 @@ public:
     void notify_on_timeout(uint64_t uuid);
 
 private:
-    void create_system_if_not_existing(uint8_t system_id);
+    void make_system_with_component(uint8_t system_id, uint8_t component_id);
+    bool does_system_exist(uint8_t system_id);
 
     using system_entry_t = std::pair<uint8_t, std::shared_ptr<System>>;
 

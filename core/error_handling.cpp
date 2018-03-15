@@ -15,9 +15,9 @@ const char *result_str(Result res)
             return "Connection error";
         case Result::NOT_IMPLEMENTED:
             return "Not implemented";
-        case Result::DEVICE_NOT_CONNECTED:
+        case Result::SYSTEM_NOT_CONNECTED:
             return "System not connected";
-        case Result::DEVICE_BUSY:
+        case Result::SYSTEM_BUSY:
             return "System busy";
         case Result::COMMAND_DENIED:
             return "Command denied";

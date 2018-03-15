@@ -15,8 +15,8 @@ namespace dronecore {
 using namespace std::placeholders; // for `_1`
 
 System::System(DroneCoreImpl &parent,
-               uint8_t target_system_id) :
-    _target_system_id(target_system_id),
+               uint8_t system_id) :
+    _system_id(system_id),
     _parent(parent),
     _params(*this),
     _commands(*this),
@@ -162,7 +162,7 @@ void System::process_heartbeat(const mavlink_message_t &message)
     // We do not call on_discovery here but wait with the notification until we know the UUID.
 
     /* If we don't know the UUID yet, we try to find out. */
-    if (_target_uuid == 0 && !_target_uuid_initialized) {
+    if (_uuid == 0 && !_uuid_initialized) {
         request_autopilot_version();
     }
 
@@ -179,27 +179,27 @@ void System::process_autopilot_version(const mavlink_message_t &message)
     mavlink_autopilot_version_t autopilot_version;
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
-    _target_supports_mission_int =
+    _supports_mission_int =
         ((autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT) ? true : false);
 
-    if (_target_uuid == 0 && autopilot_version.uid != 0) {
+    if (_uuid == 0 && autopilot_version.uid != 0) {
 
         // This is the best case. The system has a UUID and we were able to get it.
-        _target_uuid = autopilot_version.uid;
+        _uuid = autopilot_version.uid;
 
-    } else if (_target_uuid == 0 && autopilot_version.uid == 0) {
+    } else if (_uuid == 0 && autopilot_version.uid == 0) {
 
         // This is not ideal because the system has no valid UUID.
         // In this case we use the mavlink system ID as the UUID.
-        _target_uuid = _target_system_id;
+        _uuid = _system_id;
 
-    } else if (_target_uuid != autopilot_version.uid) {
+    } else if (_uuid != autopilot_version.uid) {
 
         // TODO: this is bad, we should raise a flag to invalidate system.
         LogErr() << "Error: UUID changed";
     }
 
-    _target_uuid_initialized = true;
+    _uuid_initialized = true;
     set_connected();
 
     _autopilot_version_pending = false;
@@ -282,6 +282,16 @@ void System::system_thread(System *self)
     }
 }
 
+void System::add_new_component(uint8_t component_id)
+{
+    _components.insert(component_id);
+}
+
+size_t System::total_components() const
+{
+    return _components.size();
+}
+
 void System::send_heartbeat(System &self)
 {
     mavlink_message_t message;
@@ -305,17 +315,17 @@ bool System::send_message(const mavlink_message_t &message)
 
 void System::request_autopilot_version()
 {
-    if (_target_uuid_initialized) {
+    if (_uuid_initialized) {
         // Already initialized, we can exit.
         return;
     }
 
-    if (!_autopilot_version_pending && _target_uuid_retries >= 3) {
+    if (!_autopilot_version_pending && _uuid_retries >= 3) {
         // We give up getting a UUID and use the system ID.
 
         LogWarn() << "No UUID received, using system ID instead.";
-        _target_uuid = _target_system_id;
-        _target_uuid_initialized = true;
+        _uuid = _system_id;
+        _uuid_initialized = true;
         set_connected();
         return;
     }
@@ -329,7 +339,7 @@ void System::request_autopilot_version()
         nullptr,
         MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT
     );
-    ++_target_uuid_retries;
+    ++_uuid_retries;
 
     // We set a timeout to stay "pending" for half a second. This way, we don't give up too
     // early e.g. because multiple components send heartbeats and we receive them all at once
@@ -351,9 +361,9 @@ void System::set_connected()
     {
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
-        if (!_connected && _target_uuid_initialized) {
+        if (!_connected && _uuid_initialized) {
 
-            _parent.notify_on_discover(_target_uuid);
+            _parent.notify_on_discover(_uuid);
             _connected = true;
 
             register_timeout_handler(std::bind(&System::heartbeats_timed_out, this),
@@ -385,7 +395,7 @@ void System::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
-        _parent.notify_on_timeout(_target_uuid);
+        _parent.notify_on_timeout(_uuid);
     }
 
     {
@@ -396,25 +406,27 @@ void System::set_disconnected()
     }
 }
 
-uint64_t System::get_target_uuid() const
+uint64_t System::get_uuid() const
 {
     // We want to support UUIDs if the autopilot tells us.
-    return _target_uuid;
+    return _uuid;
 }
 
-uint8_t System::get_target_system_id() const
+uint8_t System::get_system_id() const
 {
-    return _target_system_id;
+    return _system_id;
 }
 
-uint8_t System::get_target_component_id() const
+#if 0
+uint8_t System::get_component_id() const
 {
-    return _target_component_id;
+    return _component_id;
 }
+#endif
 
-void System::set_target_system_id(uint8_t system_id)
+void System::set_system_id(uint8_t system_id)
 {
-    _target_system_id = system_id;
+    _system_id = system_id;
 }
 
 void System::set_param_float_async(const std::string &name, float value, success_t callback)
@@ -596,17 +608,48 @@ void System::receive_int_param(bool success, MavlinkParameters::ParamValue value
     }
 }
 
+uint8_t System::get_autopilot_id() const
+{
+    for (auto compid : _components)
+        if (compid == MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
+            return compid;
+        }
+    // FIXME: Not sure what should be returned if autopilot is not found
+    return uint8_t(0);
+}
+
+std::vector<uint8_t> System::get_camera_ids() const
+{
+    std::vector<uint8_t> camera_ids;
+    camera_ids.clear();
+
+    for (auto compid : _components)
+        if (compid >= MAV_COMP_ID_CAMERA && compid <= MAV_COMP_ID_CAMERA6) {
+            camera_ids.push_back(compid);
+        }
+    return camera_ids;
+}
+
+uint8_t System::get_gimbal_id() const
+{
+    for (auto compid : _components)
+        if (compid == MAV_COMP_ID_GIMBAL) {
+            return compid;
+        }
+    return uint8_t(0);
+}
+
 MavlinkCommands::Result System::send_command_with_ack(
     uint16_t command, const MavlinkCommands::Params &params, uint8_t component_id)
 {
-    if (_target_system_id == 0 && _target_component_id == 0) {
-        return MavlinkCommands::Result::NO_DEVICE;
+    if (_system_id == 0 && _components.size() == 0) {
+        return MavlinkCommands::Result::NO_SYSTEM;
     }
 
     const uint8_t component_id_to_use =
-        ((component_id != 0) ? component_id : _target_component_id);
+        ((component_id != 0) ? component_id : get_autopilot_id());
 
-    return _commands.send_command(command, params, _target_system_id, component_id_to_use);
+    return _commands.send_command(command, params, _system_id, component_id_to_use);
 }
 
 void System::send_command_with_ack_async(uint16_t command,
@@ -614,17 +657,17 @@ void System::send_command_with_ack_async(uint16_t command,
                                          command_result_callback_t callback,
                                          uint8_t component_id)
 {
-    if (_target_system_id == 0 && _target_component_id == 0) {
+    if (_system_id == 0 && _components.size() == 0) {
         if (callback) {
-            callback(MavlinkCommands::Result::NO_DEVICE, NAN);
+            callback(MavlinkCommands::Result::NO_SYSTEM, NAN);
         }
         return;
     }
 
     const uint8_t component_id_to_use =
-        ((component_id != 0) ? component_id : _target_component_id);
+        ((component_id != 0) ? component_id : _components.size() == 0);
 
-    _commands.queue_command_async(command, params, _target_system_id, component_id_to_use,
+    _commands.queue_command_async(command, params, _system_id, component_id_to_use,
                                   callback);
 }
 
