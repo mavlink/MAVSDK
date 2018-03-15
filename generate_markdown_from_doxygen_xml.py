@@ -748,8 +748,18 @@ class cppFunction:
             for param in self.params:
                 declname_string=markdown_any_tag(param.declname).strip()
                 if declname_string: #render declname string in bold, if it exists.
-                    declname_string=' **%s**' % declname_string
-                params_string+='\n* %s%s - %s' % (markdown_any_tag(param.type).strip(),declname_string,markdown_any_tag(param.description).strip())
+                    declname_string='**%s**' % declname_string
+
+                # Fix spacing for ref/pointer and ensure pointer symbol (*) escaped
+                param.type=markdown_any_tag(param.type).strip()
+                if param.type.endswith('*') or param.type.endswith('&'): # A ref or pointer
+                    temp=param.type.rsplit(' ',1)
+                    escape_text=''
+                    if param.type.endswith('*'):
+                        escape_text='\\'
+                    temp=temp[0]+escape_text+temp[1]
+                    param.type=temp
+                params_string+='\n* %s %s - %s' % (markdown_any_tag(param.type).strip(),declname_string,markdown_any_tag(param.description).strip())
 
             functionstring+=params_string
 
