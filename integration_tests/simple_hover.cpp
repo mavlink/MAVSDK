@@ -33,17 +33,17 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
-    // Wait for device to connect via heartbeat.
+    // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     ASSERT_TRUE(dc.is_connected());
 
-    Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto action = std::make_shared<Action>(device);
+    System &system = dc.system();
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = std::make_shared<Action>(system);
 
     int iteration = 0;
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for device to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         ASSERT_LT(++iteration, 10);
@@ -75,7 +75,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     iteration = 0;
     while (telemetry->in_air()) {
-        std::cout << "waiting for device to be landed" << std::endl;
+        std::cout << "waiting for system to be landed" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         // TODO: currently we need to wait a long time until landed is detected.

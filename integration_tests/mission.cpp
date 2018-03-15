@@ -38,9 +38,9 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
 
-        LogInfo() << "Waiting to discover device...";
+        LogInfo() << "Waiting to discover system...";
         dc.register_on_discover([prom](uint64_t uuid) {
-            LogInfo() << "Discovered device with UUID: " << uuid;
+            LogInfo() << "Discovered system with UUID: " << uuid;
             prom->set_value();
         });
 
@@ -51,17 +51,17 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     }
 
 
-    Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto mission = std::make_shared<Mission>(device);
-    auto action = std::make_shared<Action>(device);
+    System &system = dc.system();
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto mission = std::make_shared<Mission>(system);
+    auto action = std::make_shared<Action>(system);
 
     while (!telemetry->health_all_ok()) {
-        LogInfo() << "Waiting for device to be ready";
+        LogInfo() << "Waiting for system to be ready";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    LogInfo() << "Device ready";
+    LogInfo() << "System ready";
     LogInfo() << "Creating and uploading mission";
 
     std::vector<std::shared_ptr<MissionItem>> mission_items;

@@ -4,8 +4,8 @@
 
 namespace dronecore {
 
-ExampleImpl::ExampleImpl(Device &device) :
-    PluginImplBase(device)
+ExampleImpl::ExampleImpl(System &system) :
+    PluginImplBase(system)
 {
     _parent.register_plugin(this);
 }

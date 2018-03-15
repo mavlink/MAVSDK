@@ -7,7 +7,7 @@
 namespace dronecore {
 
 class GimbalImpl;
-class Device;
+class System;
 
 /**
  * @brief The Gimbal class enables to control a gimbal.
@@ -18,17 +18,17 @@ class Gimbal : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto gimbal = std::make_shared<Gimbal>(device);
+     *     auto gimbal = std::make_shared<Gimbal>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit Gimbal(Device &device);
+    explicit Gimbal(System &system);
 
     /**
      * @brief Destructor (internal use only).

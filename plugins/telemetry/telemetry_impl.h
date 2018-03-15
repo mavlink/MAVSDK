@@ -2,7 +2,7 @@
 
 #include "telemetry.h"
 #include "plugin_impl_base.h"
-#include "device.h"
+#include "system.h"
 #include "mavlink_include.h"
 #include <atomic>
 #include <mutex>
@@ -13,12 +13,12 @@
 
 namespace dronecore {
 
-class Device;
+class System;
 
 class TelemetryImpl : public PluginImplBase
 {
 public:
-    TelemetryImpl(Device &device);
+    TelemetryImpl(System &system);
     ~TelemetryImpl();
 
     void init() override;

@@ -26,13 +26,13 @@ void takeoff_and_transition_to_fixedwing()
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
-    // Wait for device to connect via heartbeat.
+    // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     ASSERT_TRUE(dc.is_connected());
 
-    Device &device = dc.device();
-    auto action = std::make_shared<Action>(device);
-    auto telemetry = std::make_shared<Telemetry>(device);
+    System &system = dc.system();
+    auto action = std::make_shared<Action>(system);
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     // We need to takeoff first, otherwise we can't actually transition
     LogInfo() << "Taking off";
@@ -71,7 +71,7 @@ void land_and_disarm(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> 
 void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry)
 {
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for device to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

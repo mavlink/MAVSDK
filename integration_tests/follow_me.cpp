@@ -28,15 +28,15 @@ TEST_F(SitlTest, FollowMeOneLocation)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
 
-    // Wait for device to connect via heartbeat.
+    // Wait for system to connect via heartbeat.
     sleep_for(seconds(2));
-    Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto follow_me = std::make_shared<FollowMe>(device);
-    auto action = std::make_shared<Action>(device);
+    System &system = dc.system();
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto follow_me = std::make_shared<FollowMe>(system);
+    auto action = std::make_shared<Action>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for device to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << std::endl;
         sleep_for(seconds(1));
     }
 
@@ -78,7 +78,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
 
     action_ret = action->land();
     ASSERT_EQ(ActionResult::SUCCESS, action_ret);
-    sleep_for(seconds(2)); // let the device land
+    sleep_for(seconds(2)); // let the system land
 }
 
 TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
@@ -88,15 +88,15 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
 
-    // Wait for device to connect via heartbeat.
+    // Wait for system to connect via heartbeat.
     sleep_for(seconds(2));
-    Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto follow_me = std::make_shared<FollowMe>(device);
-    auto action = std::make_shared<Action>(device);
+    System &system = dc.system();
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto follow_me = std::make_shared<FollowMe>(system);
+    auto action = std::make_shared<Action>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "Waiting for device to be ready" << std::endl;
+        std::cout << "Waiting for system to be ready" << std::endl;
         sleep_for(seconds(1));
     }
 
@@ -121,10 +121,10 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     // configure follow me behaviour
     FollowMe::Config config;
     config.min_height_m = 12.f; // increase min height
-    config.follow_distance_m = 20.f; // set distance b/w device and target during FollowMe mode
+    config.follow_distance_m = 20.f; // set distance b/w system and target during FollowMe mode
     config.responsiveness = 0.2f; // set to higher responsiveness
     config.follow_direction =
-        FollowMe::Config::FollowDirection::FRONT; // Device follows target from FRONT side
+        FollowMe::Config::FollowDirection::FRONT; // System follows target from FRONT side
 
     // Apply configuration
     FollowMe::Result config_result = follow_me->set_config(config);
@@ -149,7 +149,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
 
 void print(const FollowMe::Config &config)
 {
-    std::cout << "Current FollowMe configuration of the device" << std::endl;
+    std::cout << "Current FollowMe configuration of the system" << std::endl;
     std::cout << "---------------------------" << std::endl;
     std::cout << "Min Height: " << config.min_height_m << "m" << std::endl;
     std::cout << "Distance: " << config.follow_distance_m << "m" << std::endl;

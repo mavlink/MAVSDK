@@ -3,7 +3,7 @@
 #include "follow_me.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
-#include "device.h"
+#include "system.h"
 #include "timeout_handler.h"
 #include "global_include.h"
 #include "log.h"
@@ -13,7 +13,7 @@ namespace dronecore {
 class FollowMeImpl : public PluginImplBase
 {
 public:
-    FollowMeImpl(Device &device);
+    FollowMeImpl(System &system);
     ~FollowMeImpl();
 
     void init() override;

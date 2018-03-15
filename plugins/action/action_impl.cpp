@@ -7,8 +7,8 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-ActionImpl::ActionImpl(Device &device) :
-    PluginImplBase(device)
+ActionImpl::ActionImpl(System &system) :
+    PluginImplBase(system)
 {
     _parent.register_plugin(this);
 }
@@ -52,7 +52,7 @@ ActionResult ActionImpl::arm() const
 
     // Go to LOITER mode first.
     ret = action_result_from_command_result(
-              _parent.set_flight_mode(Device::FlightMode::HOLD));
+              _parent.set_flight_mode(System::FlightMode::HOLD));
 
     if (ret != ActionResult::SUCCESS) {
         return ret;
@@ -97,7 +97,7 @@ ActionResult ActionImpl::takeoff() const
 
     // Go to LOITER mode first.
     ret = action_result_from_command_result(
-              _parent.set_flight_mode(Device::FlightMode::HOLD));
+              _parent.set_flight_mode(System::FlightMode::HOLD));
 
     return action_result_from_command_result(
                _parent.send_command_with_ack(
@@ -119,7 +119,7 @@ ActionResult ActionImpl::land() const
 ActionResult ActionImpl::return_to_launch() const
 {
     return action_result_from_command_result(
-               _parent.set_flight_mode(Device::FlightMode::RETURN_TO_LAUNCH));
+               _parent.set_flight_mode(System::FlightMode::RETURN_TO_LAUNCH));
 }
 
 ActionResult ActionImpl::transition_to_fixedwing() const
@@ -313,7 +313,7 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
 void ActionImpl::return_to_launch_async(const Action::result_callback_t &callback)
 {
     _parent.set_flight_mode_async(
-        Device::FlightMode::RETURN_TO_LAUNCH,
+        System::FlightMode::RETURN_TO_LAUNCH,
         std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
@@ -378,14 +378,14 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
 void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &callback)
 {
     _parent.set_flight_mode_async(
-        Device::FlightMode::HOLD,
+        System::FlightMode::HOLD,
         std::bind(&ActionImpl::takeoff_async_continued, this, _1, callback));
 }
 
 void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callback)
 {
     _parent.set_flight_mode_async(
-        Device::FlightMode::HOLD,
+        System::FlightMode::HOLD,
         std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
 }
 

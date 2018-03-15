@@ -19,7 +19,7 @@ namespace dronecore {
 class DroneCoreImpl;
 class PluginImplBase;
 
-class Device
+class System
 {
 public:
     enum class FlightMode {
@@ -32,9 +32,9 @@ public:
         OFFBOARD,
     };
 
-    explicit Device(DroneCoreImpl &parent,
+    explicit System(DroneCoreImpl &parent,
                     uint8_t target_system_id);
-    ~Device();
+    ~System();
 
     void process_mavlink_message(const mavlink_message_t &message);
 
@@ -117,8 +117,8 @@ public:
     void unlock_communication();
 
     // Non-copyable
-    Device(const Device &) = delete;
-    const Device &operator=(const Device &) = delete;
+    System(const System &) = delete;
+    const System &operator=(const System &) = delete;
 
 private:
 
@@ -129,8 +129,8 @@ private:
     void set_connected();
     void set_disconnected();
 
-    static void device_thread(Device *self);
-    static void send_heartbeat(Device &self);
+    static void system_thread(System *self);
+    static void send_heartbeat(System &self);
 
     static void receive_float_param(bool success, MavlinkParameters::ParamValue value,
                                     get_param_float_callback_t callback);
@@ -163,7 +163,7 @@ private:
 
     command_result_callback_t _command_result_callback {nullptr};
 
-    std::thread *_device_thread {nullptr};
+    std::thread *_system_thread {nullptr};
     std::atomic<bool> _should_exit {false};
 
     // TODO: should our own system ID have some value?

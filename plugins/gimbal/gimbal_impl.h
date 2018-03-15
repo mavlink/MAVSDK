@@ -1,6 +1,6 @@
 #pragma once
 
-#include "device.h"
+#include "system.h"
 #include "gimbal.h"
 #include "plugin_impl_base.h"
 
@@ -9,7 +9,7 @@ namespace dronecore {
 class GimbalImpl : public PluginImplBase
 {
 public:
-    GimbalImpl(Device &device);
+    GimbalImpl(System &system);
     ~GimbalImpl();
 
     void init() override;

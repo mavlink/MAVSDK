@@ -3,9 +3,9 @@
 
 namespace dronecore {
 
-Info::Info(Device &device) :
+Info::Info(System &system) :
     PluginBase(),
-    _impl { new InfoImpl(device) }
+    _impl { new InfoImpl(system) }
 {
 }
 

@@ -6,9 +6,9 @@
 
 namespace dronecore {
 
-Telemetry::Telemetry(Device &device) :
+Telemetry::Telemetry(System &system) :
     PluginBase(),
-    _impl(new TelemetryImpl(device))
+    _impl(new TelemetryImpl(system))
 {
 }
 
@@ -287,7 +287,7 @@ const char *Telemetry::result_str(Result result)
         case Result::SUCCESS:
             return "Success";
         case Result::NO_DEVICE:
-            return "No device";
+            return "No system";
         case Result::CONNECTION_ERROR:
             return "Connection error";
         case Result::BUSY:

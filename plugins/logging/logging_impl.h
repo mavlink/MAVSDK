@@ -2,7 +2,7 @@
 
 #include "plugin_impl_base.h"
 #include "mavlink_include.h"
-#include "device.h"
+#include "system.h"
 #include "logging.h"
 
 namespace dronecore {
@@ -10,7 +10,7 @@ namespace dronecore {
 class LoggingImpl : public PluginImplBase
 {
 public:
-    LoggingImpl(Device &device);
+    LoggingImpl(System &system);
     ~LoggingImpl();
 
     void init() override;

@@ -4,7 +4,7 @@
 #include <map>
 #include <mutex>
 
-#include "device.h"
+#include "system.h"
 #include "mavlink_include.h"
 #include "mission.h"
 #include "plugin_impl_base.h"
@@ -17,7 +17,7 @@ namespace dronecore {
 class MissionImpl : public PluginImplBase
 {
 public:
-    MissionImpl(Device &device);
+    MissionImpl(System &system);
     ~MissionImpl();
 
     void init() override;

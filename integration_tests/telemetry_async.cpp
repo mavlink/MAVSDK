@@ -50,10 +50,10 @@ TEST_F(SitlTest, TelemetryAsync)
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    std::vector<uint64_t> uuids = dc.device_uuids();
+    std::vector<uint64_t> uuids = dc.system_uuids();
 
     for (auto it = uuids.begin(); it != uuids.end(); ++it) {
-        std::cout << "found device with UUID: " << *it << std::endl;
+        std::cout << "found system with UUID: " << *it << std::endl;
     }
 
     ASSERT_EQ(uuids.size(), 1);
@@ -62,9 +62,9 @@ TEST_F(SitlTest, TelemetryAsync)
 
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
-    Device &device = dc.device(uuid);
+    System &system = dc.system(uuid);
 
-    auto telemetry = std::make_shared<Telemetry>(device);
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     telemetry->set_rate_position_async(10.0, std::bind(&receive_result, _1));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

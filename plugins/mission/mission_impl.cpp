@@ -1,6 +1,6 @@
 #include "mission_impl.h"
 #include "mission_item_impl.h"
-#include "device.h"
+#include "system.h"
 #include "global_include.h"
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
@@ -8,8 +8,8 @@
 
 namespace dronecore {
 
-MissionImpl::MissionImpl(Device &device) :
-    PluginImplBase(device)
+MissionImpl::MissionImpl(System &system) :
+    PluginImplBase(system)
 {
     _parent.register_plugin(this);
 }
@@ -707,7 +707,7 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
     _activity = Activity::SEND_COMMAND;
 
     _parent.set_flight_mode_async(
-        Device::FlightMode::MISSION,
+        System::FlightMode::MISSION,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
@@ -726,7 +726,7 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
     _activity = Activity::SEND_COMMAND;
 
     _parent.set_flight_mode_async(
-        Device::FlightMode::HOLD,
+        System::FlightMode::HOLD,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 

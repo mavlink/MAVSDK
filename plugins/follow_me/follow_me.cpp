@@ -3,9 +3,9 @@
 
 namespace dronecore {
 
-FollowMe::FollowMe(Device &device) :
+FollowMe::FollowMe(System &system) :
     PluginBase(),
-    _impl { new FollowMeImpl(device) }
+    _impl { new FollowMeImpl(system) }
 {
 }
 
@@ -70,7 +70,7 @@ std::string FollowMe::result_str(Result result)
         case Result::SUCCESS:
             return "Success";
         case Result::NO_DEVICE:
-            return "No device";
+            return "No system";
         case Result::CONNECTION_ERROR:
             return "Connection error";
         case Result::BUSY:
