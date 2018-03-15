@@ -12,7 +12,7 @@ class MissionImpl;
  *
  * Each MissionItem can contain a position and/or actions.
  * Mission items are just building blocks to assemble a mission,
- * which can be sent to (or received from) a device. They cannot be used independently.
+ * which can be sent to (or received from) a system. They cannot be used independently.
  */
 class MissionItem
 {

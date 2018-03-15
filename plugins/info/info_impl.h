@@ -10,7 +10,7 @@ namespace dronecore {
 class InfoImpl : public PluginImplBase
 {
 public:
-    InfoImpl(Device &device);
+    InfoImpl(System &system);
     ~InfoImpl();
 
     void init() override;

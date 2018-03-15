@@ -3,10 +3,10 @@
 
 namespace dronecore {
 
-Example::Example(Device &device) :
+Example::Example(System &system) :
     PluginBase()
 {
-    _impl = new ExampleImpl(device);
+    _impl = new ExampleImpl(system);
 }
 
 Example::~Example()

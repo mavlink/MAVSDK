@@ -5,8 +5,8 @@
 
 namespace dronecore {
 
-LoggingImpl::LoggingImpl(Device &device) :
-    PluginImplBase(device)
+LoggingImpl::LoggingImpl(System &system) :
+    PluginImplBase(system)
 {
     _parent.register_plugin(this);
 }

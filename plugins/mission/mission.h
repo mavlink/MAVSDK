@@ -9,7 +9,7 @@
 namespace dronecore {
 
 class MissionImpl;
-class Device;
+class System;
 
 /**
  * @brief The Mission class enables waypoint missions.
@@ -18,17 +18,17 @@ class Mission : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto mission = std::make_shared<Mission>(device);
+     *     auto mission = std::make_shared<Mission>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit Mission(Device &device);
+    explicit Mission(System &system);
 
     /**
      * @brief Destructor (internal use only).
@@ -45,8 +45,8 @@ public:
         BUSY, /**< @brief %Vehicle busy. */
         TIMEOUT, /**< @brief Request timed out. */
         INVALID_ARGUMENT, /**< @brief Invalid argument. */
-        UNSUPPORTED, /**< @brief The mission downloaded from the device is not supported. */
-        NO_MISSION_AVAILABLE, /**< @brief No mission available on device. */
+        UNSUPPORTED, /**< @brief The mission downloaded from the system is not supported. */
+        NO_MISSION_AVAILABLE, /**< @brief No mission available on system. */
         FAILED_TO_OPEN_QGC_PLAN, /**< @brief Failed to open QGroundControl plan */
         FAILED_TO_PARSE_QGC_PLAN, /**< @brief Failed to parse QGroundControl plan */
         UNSUPPORTED_MISSION_CMD, /**< @brief Unsupported mission command */
@@ -90,7 +90,7 @@ public:
                                                 const std::string &qgc_plan_file);
 
     /**
-     * @brief Uploads a vector of mission items to the device (asynchronous).
+     * @brief Uploads a vector of mission items to the system (asynchronous).
      *
      * The mission items are uploaded to a drone. Once uploaded the mission can be started and
      * executed even if a connection is lost.
@@ -108,7 +108,7 @@ public:
     mission_items_and_result_callback_t;
 
     /**
-     * @brief Downloads a vector of mission items from the device (asynchronous).
+     * @brief Downloads a vector of mission items from the system (asynchronous).
      *
      * The method will fail if any of the downloaded mission items are not supported
      * by the DroneCore API.

@@ -8,7 +8,7 @@
 
 namespace dronecore {
 
-class Device;
+class System;
 class ActionImpl;
 
 /**
@@ -27,22 +27,47 @@ class Action : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto action = std::make_shared<Action>(device);
+     *     auto action = std::make_shared<Action>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit Action(Device &device);
+    explicit Action(System &system);
 
     /**
      * @brief Destructor (internal use only).
      */
     ~Action();
+
+    /**
+     * @brief Possible results returned for commanded actions.
+     */
+    enum class Result {
+        UNKNOWN, /**< @brief Unspecified error. */
+        SUCCESS, /**< @brief Success. The action command was accepted by the vehicle. */
+        NO_DEVICE, /**< @brief No system is connected error. */
+        CONNECTION_ERROR, /**< @brief %Connection error. */
+        BUSY, /**< @brief Vehicle busy error. */
+        COMMAND_DENIED, /**< @brief Command refused by vehicle. */
+        COMMAND_DENIED_LANDED_STATE_UNKNOWN, /**< @brief Command refused because landed state is unknown. */
+        COMMAND_DENIED_NOT_LANDED, /**< @brief Command refused because vehicle not landed. */
+        TIMEOUT, /**< @brief Timeout waiting for command acknowledgement from vehicle. */
+        VTOL_TRANSITION_SUPPORT_UNKNOWN, /**< @brief hybrid/VTOL transition refused because VTOL support is unknown. */
+        NO_VTOL_TRANSITION_SUPPORT /**< @brief Vehicle does not support hybrid/VTOL transitions. */
+    };
+
+    /**
+     * @brief Returns a human-readable English string for an Action::Result.
+     *
+     * @param result The enum value for which a human readable string is required.
+     * @return Human readable string for the Action::Result.
+     */
+    static const char *result_str(Result result);
 
     /**
      * @brief Send command to *arm* the drone (synchronous).

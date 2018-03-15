@@ -17,16 +17,16 @@ TEST_F(SitlTest, TelemetryFlightModes)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    Device &device = dc.device();
+    System &system = dc.system();
 
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto action = std::make_shared<Action>(device);
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = std::make_shared<Action>(system);
 
     telemetry->flight_mode_async(
         std::bind(&print_mode, std::placeholders::_1));
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for device to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

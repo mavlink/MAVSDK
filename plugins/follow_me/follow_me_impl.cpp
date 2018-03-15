@@ -1,5 +1,5 @@
 #include "follow_me_impl.h"
-#include "device.h"
+#include "system.h"
 #include "global_include.h"
 #include "px4_custom_mode.h"
 
@@ -7,8 +7,8 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-FollowMeImpl::FollowMeImpl(Device &device) :
-    PluginImplBase(device)
+FollowMeImpl::FollowMeImpl(System &system) :
+    PluginImplBase(system)
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
     _last_location =  _target_location = \
@@ -95,7 +95,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
         using namespace std::chrono; // for milliseconds()
         // Lets wait for confirmation from Vehicle about configuration change.
         while (_config_change_requested) {
-            LogDebug() << debug_str <<  "Waiting for the device confirmation of the new configuration..";
+            LogDebug() << debug_str <<  "Waiting for the system confirmation of the new configuration..";
             sleep_for(milliseconds(10));
         }
         LogInfo() << debug_str <<  "Configured: " << ANSI_COLOR_BLUE << "Min height: " <<
@@ -152,7 +152,7 @@ FollowMe::Result FollowMeImpl::start()
 {
     FollowMe::Result result = to_follow_me_result(
                                   _parent.set_flight_mode(
-                                      Device::FlightMode::FOLLOW_ME));
+                                      System::FlightMode::FOLLOW_ME));
 
     if (result == FollowMe::Result::SUCCESS) {
         // If location was set before, lets send it to vehicle
@@ -177,13 +177,13 @@ FollowMe::Result FollowMeImpl::stop()
     }
     return to_follow_me_result(
                _parent.set_flight_mode(
-                   Device::FlightMode::HOLD));
+                   System::FlightMode::HOLD));
 }
 
-// Applies default FollowMe configuration to the device
+// Applies default FollowMe configuration to the system
 void FollowMeImpl::set_default_config()
 {
-    LogInfo() << debug_str <<  "Applying default FollowMe configuration FollowMe to the device...";
+    LogInfo() << debug_str <<  "Applying default FollowMe configuration FollowMe to the system...";
     FollowMe::Config default_config {};
 
     auto height = default_config.min_height_m;

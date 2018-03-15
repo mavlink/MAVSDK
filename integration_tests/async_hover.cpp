@@ -22,17 +22,17 @@ TEST_F(SitlTest, ActionAsyncHover)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
-    // Wait for device to connect via heartbeat.
+    // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // TODO: this test is pretty dumb, should be improved with more checks.
-    Device &device = dc.device();
+    System &system = dc.system();
 
-    auto telemetry = std::make_shared<Telemetry>(device);
+    auto telemetry = std::make_shared<Telemetry>(system);
     telemetry->health_all_ok_async(std::bind(&receive_health_all_ok, _1));
     telemetry->in_air_async(std::bind(&receive_in_air, _1));
 
-    auto action = std::make_shared<Action>(device);
+    auto action = std::make_shared<Action>(system);
 
     while (!_all_ok) {
         std::cout << "Waiting to be ready..." << std::endl;

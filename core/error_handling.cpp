@@ -16,9 +16,9 @@ const char *result_str(Result res)
         case Result::NOT_IMPLEMENTED:
             return "Not implemented";
         case Result::DEVICE_NOT_CONNECTED:
-            return "Device not connected";
+            return "System not connected";
         case Result::DEVICE_BUSY:
-            return "Device busy";
+            return "System busy";
         case Result::COMMAND_DENIED:
             return "Command denied";
         case Result::DESTINATION_IP_UNKNOWN:

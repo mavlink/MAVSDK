@@ -5,9 +5,9 @@
 
 namespace dronecore {
 
-Mission::Mission(Device &device) :
+Mission::Mission(System &system) :
     PluginBase(),
-    _impl { new MissionImpl(device) }
+    _impl { new MissionImpl(system) }
 {
 }
 
@@ -63,7 +63,7 @@ const char *Mission::result_str(Result result)
         case Result::TIMEOUT:
             return "Timeout";
         case Result::UNSUPPORTED:
-            return "Mission downloaded from device is unsupported";
+            return "Mission downloaded from system is unsupported";
         case Result::FAILED_TO_OPEN_QGC_PLAN:
             return "Failed to open QGC plan";
         case Result::FAILED_TO_PARSE_QGC_PLAN:

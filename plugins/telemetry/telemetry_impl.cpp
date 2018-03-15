@@ -1,5 +1,5 @@
 #include "telemetry_impl.h"
-#include "device.h"
+#include "system.h"
 #include "math_conversions.h"
 #include "global_include.h"
 #include "px4_custom_mode.h"
@@ -8,8 +8,8 @@
 
 namespace dronecore {
 
-TelemetryImpl::TelemetryImpl(Device &device) :
-    PluginImplBase(device),
+TelemetryImpl::TelemetryImpl(System &system) :
+    PluginImplBase(system),
     _position_mutex(),
     _position(Telemetry::Position {double(NAN), double(NAN), NAN, NAN}),
     _home_position_mutex(),

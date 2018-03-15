@@ -17,17 +17,17 @@ TEST_F(SitlTest, OffboardVelocityNED)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
 
-    // Wait for device to connect via heartbeat.
+    // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto action = std::make_shared<Action>(device);
-    auto offboard = std::make_shared<Offboard>(device);
-    auto mission = std::make_shared<Mission>(device);
+    System &system = dc.system();
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = std::make_shared<Action>(system);
+    auto offboard = std::make_shared<Offboard>(system);
+    auto mission = std::make_shared<Mission>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for device to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -114,16 +114,16 @@ TEST_F(SitlTest, OffboardVelocityBody)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
 
-    // Wait for device to connect via heartbeat.
+    // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    Device &device = dc.device();
+    System &system = dc.system();
 
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto action = std::make_shared<Action>(device);
-    auto offboard = std::make_shared<Offboard>(device);
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = std::make_shared<Action>(system);
+    auto offboard = std::make_shared<Offboard>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for device to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

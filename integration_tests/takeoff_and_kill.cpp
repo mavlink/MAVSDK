@@ -7,7 +7,7 @@
 using namespace std::placeholders; // for _1
 using namespace dronecore;
 
-static bool _discovered_device = false;
+static bool _discovered_system = false;
 static uint64_t _uuid = 0;
 static void on_discover(uint64_t uuid);
 
@@ -40,9 +40,9 @@ void receive_kill_result(ActionResult result)
 
 void on_discover(uint64_t uuid)
 {
-    std::cout << "Found device with UUID: " << uuid << std::endl;
+    std::cout << "Found system with UUID: " << uuid << std::endl;
     _uuid = uuid;
-    _discovered_device = true;
+    _discovered_system = true;
 }
 
 TEST_F(SitlTest, ActionTakeoffAndKill)
@@ -52,14 +52,14 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
 
     dc.register_on_discover(std::bind(&on_discover, _1));
     std::this_thread::sleep_for(std::chrono::seconds(5));
-    ASSERT_TRUE(_discovered_device);
+    ASSERT_TRUE(_discovered_system);
 
-    Device &device = dc.device();
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto action = std::make_shared<Action>(device);
+    System &system = dc.system();
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = std::make_shared<Action>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for device to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

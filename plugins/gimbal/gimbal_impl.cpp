@@ -1,13 +1,13 @@
 #include "gimbal_impl.h"
-#include "device.h"
+#include "system.h"
 #include "global_include.h"
 #include "mavlink_include.h"
 #include <functional>
 
 namespace dronecore {
 
-GimbalImpl::GimbalImpl(Device &device) :
-    PluginImplBase(device)
+GimbalImpl::GimbalImpl(System &system) :
+    PluginImplBase(system)
 {
     _parent.register_plugin(this);
 }

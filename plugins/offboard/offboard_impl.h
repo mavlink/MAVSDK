@@ -2,7 +2,7 @@
 
 #include "plugin_impl_base.h"
 #include "mavlink_include.h"
-#include "device.h"
+#include "system.h"
 #include "offboard.h"
 #include <mutex>
 
@@ -11,7 +11,7 @@ namespace dronecore {
 class OffboardImpl : public PluginImplBase
 {
 public:
-    OffboardImpl(Device &device);
+    OffboardImpl(System &system);
     ~OffboardImpl();
 
     void init() override;

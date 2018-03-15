@@ -17,10 +17,10 @@ TEST_F(SitlTest, TwoConnections)
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    std::vector<uint64_t> uuids = dc->device_uuids();
+    std::vector<uint64_t> uuids = dc->system_uuids();
 
     for (auto it = uuids.begin(); it != uuids.end(); ++it) {
-        std::cout << "found device with UUID: " << *it << std::endl;
+        std::cout << "found system with UUID: " << *it << std::endl;
     }
 
     ASSERT_EQ(uuids.size(), 1);
@@ -36,7 +36,7 @@ TEST_F(SitlTest, TwoConnections)
     ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    uuids = dc->device_uuids();
+    uuids = dc->system_uuids();
 
     ASSERT_EQ(uuids.size(), 1);
     EXPECT_EQ(uuid, uuids[0]);

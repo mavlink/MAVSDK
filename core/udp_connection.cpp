@@ -203,18 +203,18 @@ void UdpConnection::receive(UdpConnection *parent)
                 parent->_remote_ip = new_remote_ip;
                 parent->_remote_port_number = new_remote_port_number;
 
-                LogInfo() << "New device on: " << parent->_remote_ip
+                LogInfo() << "New system on: " << parent->_remote_ip
                           << ":" << parent->_remote_port_number;
 
             } else if (parent->_remote_ip.compare(new_remote_ip) != 0 ||
                        parent->_remote_port_number != new_remote_port_number) {
 
-                // It is possible that wifi disconnects and a device might get a new
+                // It is possible that wifi disconnects and a system might get a new
                 // IP and/or UDP port.
                 parent->_remote_ip = new_remote_ip;
                 parent->_remote_port_number = new_remote_port_number;
 
-                LogInfo() << "Device changed to: " << new_remote_ip << ":" << new_remote_port_number;
+                LogInfo() << "System changed to: " << new_remote_ip << ":" << new_remote_port_number;
             }
         }
 

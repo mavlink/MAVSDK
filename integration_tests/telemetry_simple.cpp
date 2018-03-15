@@ -13,12 +13,12 @@ TEST_F(SitlTest, TelemetrySimple)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    Device &device = dc.device();
+    System &system = dc.system();
 
-    auto telemetry = std::make_shared<Telemetry>(device);
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for device to be ready" << std::endl;
+        std::cout << "waiting for system to be ready" << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

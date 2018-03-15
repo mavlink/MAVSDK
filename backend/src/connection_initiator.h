@@ -41,7 +41,7 @@ private:
     void init_timeout_logging(DroneCore &dc) const
     {
         dc.register_on_timeout([](uint64_t uuid) {
-            LogInfo() << "Device timed out [UUID: " << uuid << "]";
+            LogInfo() << "System timed out [UUID: " << uuid << "]";
         });
     }
 
@@ -61,11 +61,11 @@ private:
     {
         auto future = _discovery_promise->get_future();
 
-        LogInfo() << "Waiting to discover device...";
+        LogInfo() << "Waiting to discover system...";
 
         dc.register_on_discover([this](uint64_t uuid) {
             std::call_once(_discovery_flag, [this, uuid]() {
-                LogInfo() << "Device discovered [UUID: " << uuid << "]";
+                LogInfo() << "System discovered [UUID: " << uuid << "]";
                 _discovery_promise->set_value(uuid);
             });
         });

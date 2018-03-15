@@ -6,7 +6,7 @@
 using namespace dronecore;
 
 static void on_discover(uint64_t uuid);
-static bool _discovered_device = false;
+static bool _discovered_system = false;
 
 TEST_F(SitlTest, Info)
 {
@@ -17,14 +17,14 @@ TEST_F(SitlTest, Info)
 
     dc.register_on_discover(std::bind(&on_discover, std::placeholders::_1));
 
-    while (!_discovered_device) {
-        std::cout << "waiting for device to appear..." << std::endl;
+    while (!_discovered_system) {
+        std::cout << "waiting for system to appear..." << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
 
-    Device &device = dc.device();
-    auto info = std::make_shared<Info>(device);
+    System &system = dc.system();
+    auto info = std::make_shared<Info>(system);
 
     for (unsigned i = 0; i < 3; ++i) {
         Info::Version version = info->get_version();
@@ -61,6 +61,6 @@ TEST_F(SitlTest, Info)
 
 void on_discover(uint64_t uuid)
 {
-    std::cout << "Found device with UUID: " << uuid << std::endl;
-    _discovered_device = true;
+    std::cout << "Found system with UUID: " << uuid << std::endl;
+    _discovered_system = true;
 }
