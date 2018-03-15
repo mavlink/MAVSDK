@@ -151,6 +151,7 @@ void System::remove_call_every(const void *cookie)
 
 void System::process_heartbeat(const mavlink_message_t &message)
 {
+    LogDebug() << "Got HEARTBEAT from: " << name(message.compid);
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
@@ -161,8 +162,10 @@ void System::process_heartbeat(const mavlink_message_t &message)
 
     // We do not call on_discovery here but wait with the notification until we know the UUID.
 
-    /* If we don't know the UUID yet, we try to find out. */
-    if (_uuid == 0 && !_uuid_initialized) {
+    /* If the component is an autopilot and
+     * we don't know its UUID, then try to find out. */
+    if (message.compid == MAV_COMP_ID_AUTOPILOT1
+        && _uuid == 0 && !_uuid_initialized) {
         request_autopilot_version();
     }
 
@@ -282,14 +285,51 @@ void System::system_thread(System *self)
     }
 }
 
+std::string System::name(uint8_t component_id)
+{
+    switch (component_id) {
+        case MAV_COMP_ID_AUTOPILOT1:
+            return "Autopilot";
+        case MAV_COMP_ID_CAMERA...MAV_COMP_ID_CAMERA6:
+            return "Camera";
+        case MAV_COMP_ID_GIMBAL:
+            return "Gimbal";
+        default:
+            return "Unsupported component";
+    }
+}
+
 void System::add_new_component(uint8_t component_id)
 {
-    _components.insert(component_id);
+    auto res_pair = _components.insert(component_id);
+    if (res_pair.second) {
+        LogDebug() << "Component " << name(component_id) << " added.";
+    }
 }
 
 size_t System::total_components() const
 {
     return _components.size();
+}
+
+bool System::is_standalone() const
+{
+    return get_autopilot_id() == uint8_t(0);
+}
+
+bool System::has_autopilot() const
+{
+    return get_autopilot_id() != uint8_t(0);
+}
+
+bool System::has_camera() const
+{
+    return (get_camera_ids().size() > 0);
+}
+
+bool System::has_gimbal() const
+{
+    return get_gimbal_id() == MAV_COMP_ID_GIMBAL;
 }
 
 void System::send_heartbeat(System &self)
@@ -362,6 +402,8 @@ void System::set_connected()
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
         if (!_connected && _uuid_initialized) {
+
+            LogDebug() << "# of components: " << _components.size();
 
             _parent.notify_on_discover(_uuid);
             _connected = true;

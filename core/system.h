@@ -97,10 +97,16 @@ public:
     std::vector<uint8_t> get_camera_ids() const;
     uint8_t get_gimbal_id() const;
 
+    bool is_standalone() const;
+    bool has_autopilot() const;
+    bool has_camera() const;
+    bool has_gimbal() const;
+
     uint64_t get_uuid() const;
     uint8_t get_system_id() const;
 
     void set_system_id(uint8_t system_id);
+
 
     bool does_support_mission_int() const { return _supports_mission_int; }
 
@@ -150,6 +156,8 @@ private:
     void heartbeats_timed_out();
     void set_connected();
     void set_disconnected();
+
+    static std::string name(uint8_t component_id);
 
     static void system_thread(System *self);
     static void send_heartbeat(System &self);
