@@ -23,6 +23,17 @@ void Gimbal::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, result_call
     _impl->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback);
 }
 
+Gimbal::Result Gimbal::set_roi_location(double latitude_deg, double longitude_deg, float altitude_m)
+{
+    return _impl->set_roi_location(latitude_deg, longitude_deg, altitude_m);
+}
+
+void Gimbal::set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m,
+                                    result_callback_t callback)
+{
+    _impl->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
+}
+
 const char *Gimbal::result_str(Result result)
 {
     switch (result) {

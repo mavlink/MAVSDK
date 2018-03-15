@@ -49,6 +49,28 @@ void GimbalImpl::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg,
         MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
+Gimbal::Result GimbalImpl::set_roi_location(double latitude_deg, double longitude_deg,
+                                            float altitude_m)
+{
+    return gimbal_result_from_command_result(
+               _parent.send_command_with_ack(
+                   MAV_CMD_DO_SET_ROI_LOCATION,
+                   MavlinkCommands::Params {NAN, NAN, NAN, NAN, (float)latitude_deg, (float)longitude_deg,
+                                            altitude_m},
+                   MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
+}
+
+void GimbalImpl::set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m,
+                                        Gimbal::result_callback_t callback)
+{
+    _parent.send_command_with_ack_async(
+        MAV_CMD_DO_SET_ROI_LOCATION,
+        MavlinkCommands::Params {NAN, NAN, NAN, NAN, (float)latitude_deg, (float)longitude_deg,
+                                 altitude_m},
+        std::bind(&GimbalImpl::receive_command_result, std::placeholders::_1, callback),
+        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+}
+
 void GimbalImpl::receive_command_result(MavlinkCommands::Result command_result,
                                         const Gimbal::result_callback_t &callback)
 {
