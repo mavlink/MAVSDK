@@ -195,12 +195,12 @@ void OffboardImpl::send_velocity_ned()
     _mutex.unlock();
 
     mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(_parent.get_own_system_id(),
-                                                   _parent.get_own_component_id(),
+    mavlink_msg_set_position_target_local_ned_pack(Self::system_id,
+                                                   Self::component_id,
                                                    &message,
                                                    static_cast<uint32_t>(_parent.get_time().elapsed_s() * 1e3),
-                                                   _parent.get_target_system_id(),
-                                                   _parent.get_target_component_id(),
+                                                   _parent.get_system_id(),
+                                                   _parent.get_autopilot_id(),
                                                    MAV_FRAME_LOCAL_NED,
                                                    IGNORE_X | IGNORE_Y | IGNORE_Z |
                                                    IGNORE_AX | IGNORE_AY | IGNORE_AZ |
@@ -242,12 +242,12 @@ void OffboardImpl::send_velocity_body()
     _mutex.unlock();
 
     mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(_parent.get_own_system_id(),
-                                                   _parent.get_own_component_id(),
+    mavlink_msg_set_position_target_local_ned_pack(Self::system_id,
+                                                   Self::component_id,
                                                    &message,
                                                    static_cast<uint32_t>(_parent.get_time().elapsed_s() * 1e3),
-                                                   _parent.get_target_system_id(),
-                                                   _parent.get_target_component_id(),
+                                                   _parent.get_system_id(),
+                                                   _parent.get_autopilot_id(),
                                                    MAV_FRAME_BODY_NED,
                                                    IGNORE_X | IGNORE_Y | IGNORE_Z |
                                                    IGNORE_AX | IGNORE_AY | IGNORE_AZ |
@@ -300,8 +300,8 @@ OffboardImpl::offboard_result_from_command_result(MavlinkCommands::Result result
     switch (result) {
         case MavlinkCommands::Result::SUCCESS:
             return Offboard::Result::SUCCESS;
-        case MavlinkCommands::Result::NO_DEVICE:
-            return Offboard::Result::NO_DEVICE;
+        case MavlinkCommands::Result::NO_SYSTEM:
+            return Offboard::Result::NO_SYSTEM;
         case MavlinkCommands::Result::CONNECTION_ERROR:
             return Offboard::Result::CONNECTION_ERROR;
         case MavlinkCommands::Result::BUSY:

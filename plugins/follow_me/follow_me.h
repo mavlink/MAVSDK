@@ -48,7 +48,7 @@ public:
      */
     enum class Result {
         SUCCESS = 0, /**< @brief Request succeeded. */
-        NO_DEVICE, /**< @brief No system connected. */
+        NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
         BUSY, /**< @brief Vehicle busy. */
         COMMAND_DENIED, /**< @brief Command denied. */

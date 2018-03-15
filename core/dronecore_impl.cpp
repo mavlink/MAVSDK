@@ -58,11 +58,16 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     if (_systems.find(0) != _systems.end()) {
         auto null_system = _systems[0];
         _systems.erase(0);
-        null_system->set_target_system_id(message.sysid);
+        null_system->set_system_id(message.sysid);
         _systems.insert(system_entry_t(message.sysid, null_system));
     }
 
-    create_system_if_not_existing(message.sysid);
+    if (!does_system_exist(message.sysid)) {
+        make_system_with_component(message.sysid, message.compid);
+    } else {
+        auto system = _systems.at(message.sysid);
+        system->add_new_component(message.compid);
+    }
 
     if (_should_exit) {
         // Don't try to call at() if systems have already been destroyed
@@ -211,7 +216,7 @@ const std::vector<uint64_t> &DroneCoreImpl::get_system_uuids() const
     uuids.clear();
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        uint64_t uuid = it->second->get_target_uuid();
+        uint64_t uuid = it->second->get_uuid();
         if (uuid != 0) {
             uuids.push_back(uuid);
         }
@@ -243,8 +248,8 @@ System &DroneCoreImpl::get_system()
             return *_systems.begin()->second;
         } else {
             LogErr() << "Error: no system found.";
-            uint8_t system_id = 0;
-            create_system_if_not_existing(system_id);
+            uint8_t system_id = 0, comp_id = 0;
+            make_system_with_component(system_id, comp_id);
             return *_systems[system_id];
         }
     }
@@ -256,7 +261,7 @@ System &DroneCoreImpl::get_system(const uint64_t uuid)
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
         // TODO: make a cache map for this.
         for (auto system : _systems) {
-            if (system.second->get_target_uuid() == uuid) {
+            if (system.second->get_uuid() == uuid) {
                 return *system.second;
             }
         }
@@ -267,8 +272,8 @@ System &DroneCoreImpl::get_system(const uint64_t uuid)
     LogErr() << "system with UUID: " << uuid << " not found";
 
     // Create a dummy
-    uint8_t system_id = 0;
-    create_system_if_not_existing(system_id);
+    uint8_t system_id = 0, comp_id = 0;
+    make_system_with_component(system_id, comp_id);
 
     return *_systems[system_id];
 }
@@ -288,14 +293,14 @@ bool DroneCoreImpl::is_connected(const uint64_t uuid) const
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        if (it->second->get_target_uuid() == uuid) {
+        if (it->second->get_uuid() == uuid) {
             return it->second->is_connected();
         }
     }
     return false;
 }
 
-void DroneCoreImpl::create_system_if_not_existing(const uint8_t system_id)
+void DroneCoreImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -304,15 +309,22 @@ void DroneCoreImpl::create_system_if_not_existing(const uint8_t system_id)
         return;
     }
 
-    // existing already.
-    if (_systems.find(system_id) != _systems.end()) {
-        //LogDebug() << "ID: " << int(system_id) << " exists already.";
-        return;
-    }
-
-    // Make new system
+    // Make a system with its first component
     auto new_system = std::make_shared<System>(*this, system_id);
+    new_system->add_new_component(comp_id);
+
     _systems.insert(system_entry_t(system_id, new_system));
+}
+
+bool DroneCoreImpl::does_system_exist(uint8_t system_id)
+{
+    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+
+    if (!_should_exit) {
+        return (_systems.find(system_id) != _systems.end());
+    }
+    // When the system got destroyed in the destructor, we have to give up.
+    return false;
 }
 
 void DroneCoreImpl::notify_on_discover(const uint64_t uuid)

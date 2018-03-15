@@ -50,7 +50,7 @@ public:
     enum class Result {
         UNKNOWN, /**< @brief Unspecified error. */
         SUCCESS, /**< @brief Success. The action command was accepted by the vehicle. */
-        NO_DEVICE, /**< @brief No system is connected error. */
+        NO_SYSTEM, /**< @brief No system is connected error. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
         BUSY, /**< @brief Vehicle busy error. */
         COMMAND_DENIED, /**< @brief Command refused by vehicle. */

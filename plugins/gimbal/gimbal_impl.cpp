@@ -90,7 +90,7 @@ Gimbal::Result GimbalImpl::gimbal_result_from_command_result(MavlinkCommands::Re
             return Gimbal::Result::SUCCESS;
         case MavlinkCommands::Result::TIMEOUT:
             return Gimbal::Result::TIMEOUT;
-        case MavlinkCommands::Result::NO_DEVICE:
+        case MavlinkCommands::Result::NO_SYSTEM:
         case MavlinkCommands::Result::CONNECTION_ERROR:
         case MavlinkCommands::Result::BUSY:
         case MavlinkCommands::Result::COMMAND_DENIED:

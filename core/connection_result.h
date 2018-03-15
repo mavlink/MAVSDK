@@ -19,8 +19,8 @@ enum class ConnectionResult {
     SOCKET_CONNECTION_ERROR, /**< @brief Socket connection error. */
     CONNECTION_ERROR, /**< @brief %Connection error. */
     NOT_IMPLEMENTED, /**< @brief %Connection type not implemented. */
-    DEVICE_NOT_CONNECTED, /**< @brief No system is connected. */
-    DEVICE_BUSY, /**< @brief %System is busy. */
+    SYSTEM_NOT_CONNECTED, /**< @brief No system is connected. */
+    SYSTEM_BUSY, /**< @brief %System is busy. */
     COMMAND_DENIED, /**< @brief Command is denied. */
     DESTINATION_IP_UNKNOWN, /**< @brief %Connection IP is unknown. */
     CONNECTIONS_EXHAUSTED, /**< @brief %Connections exhausted. */
@@ -50,9 +50,9 @@ inline const char *connection_result_str(const ConnectionResult result)
             return "Connection error";
         case ConnectionResult::NOT_IMPLEMENTED:
             return "Not implemented";
-        case ConnectionResult::DEVICE_NOT_CONNECTED:
+        case ConnectionResult::SYSTEM_NOT_CONNECTED:
             return "System not connected";
-        case ConnectionResult::DEVICE_BUSY:
+        case ConnectionResult::SYSTEM_BUSY:
             return "System busy";
         case ConnectionResult::COMMAND_DENIED:
             return "Command denied";

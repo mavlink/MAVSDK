@@ -283,8 +283,8 @@ FollowMeImpl::to_follow_me_result(MavlinkCommands::Result result) const
     switch (result) {
         case MavlinkCommands::Result::SUCCESS:
             return FollowMe::Result::SUCCESS;
-        case MavlinkCommands::Result::NO_DEVICE:
-            return FollowMe::Result::NO_DEVICE;
+        case MavlinkCommands::Result::NO_SYSTEM:
+            return FollowMe::Result::NO_SYSTEM;
         case MavlinkCommands::Result::CONNECTION_ERROR:
             return FollowMe::Result::CONNECTION_ERROR;
         case MavlinkCommands::Result::BUSY:
@@ -332,8 +332,8 @@ void FollowMeImpl::send_target_location()
     uint64_t custom_state = 0;
 
     mavlink_message_t msg {};
-    mavlink_msg_follow_target_pack(_parent.get_own_system_id(),
-                                   _parent.get_own_component_id(),
+    mavlink_msg_follow_target_pack(Self::system_id,
+                                   Self::component_id,
                                    &msg,
                                    elapsed_msec,
                                    _estimatation_capabilities,

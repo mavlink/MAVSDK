@@ -110,20 +110,21 @@ void MavlinkParameters::do_work()
             memcpy(&param_value_buf[0], &temp_to_copy, sizeof(float));
 
             // FIXME: extended currently always go to the camera component
-            mavlink_msg_param_ext_set_pack(_parent.get_own_system_id(),
-                                           _parent.get_own_component_id(),
+            mavlink_msg_param_ext_set_pack(Self::system_id,
+                                           Self::component_id,
                                            &message,
-                                           _parent.get_target_system_id(),
+                                           _parent.get_system_id(),
                                            MAV_COMP_ID_CAMERA,
                                            param_id,
                                            param_value_buf,
                                            work.param_value.get_mav_param_type());
         } else {
-            mavlink_msg_param_set_pack(_parent.get_own_system_id(),
-                                       _parent.get_own_component_id(),
+            // Param set is intended for Autopilot only.
+            mavlink_msg_param_set_pack(Self::system_id,
+                                       Self::component_id,
                                        &message,
-                                       _parent.get_target_system_id(),
-                                       _parent.get_target_component_id(),
+                                       _parent.get_system_id(),
+                                       _parent.get_autopilot_id(),
                                        param_id,
                                        work.param_value.get_float_casted_value(),
                                        work.param_value.get_mav_param_type());
@@ -160,27 +161,27 @@ void MavlinkParameters::do_work()
 
         mavlink_message_t message = {};
         if (work.extended) {
-            mavlink_msg_param_ext_request_read_pack(_parent.get_own_system_id(),
-                                                    _parent.get_own_component_id(),
+            mavlink_msg_param_ext_request_read_pack(Self::system_id,
+                                                    Self::component_id,
                                                     &message,
-                                                    _parent.get_target_system_id(),
+                                                    _parent.get_system_id(),
                                                     MAV_COMP_ID_CAMERA,
                                                     param_id,
                                                     -1);
 
         } else {
             //LogDebug() << "request read: "
-            //    << (int)_parent.get_own_system_id() << ":"
-            //    << (int)_parent.get_own_component_id() <<
+            //    << (int)Self::system_id << ":"
+            //    << (int)Self::component_id <<
             //    " to "
-            //    << (int)_parent.get_target_system_id() << ":"
-            //    << (int)_parent.get_target_component_id();
+            //    << (int)_parent.get_system_id() << ":"
+            //    << (int)_parent.get_autopilot_id();
 
-            mavlink_msg_param_request_read_pack(_parent.get_own_system_id(),
-                                                _parent.get_own_component_id(),
+            mavlink_msg_param_request_read_pack(Self::system_id,
+                                                Self::component_id,
                                                 &message,
-                                                _parent.get_target_system_id(),
-                                                _parent.get_target_component_id(),
+                                                _parent.get_system_id(),
+                                                _parent.get_autopilot_id(),
                                                 param_id,
                                                 -1);
         }

@@ -296,8 +296,8 @@ Telemetry::Result TelemetryImpl::telemetry_result_from_command_result(
     switch (command_result) {
         case MavlinkCommands::Result::SUCCESS:
             return Telemetry::Result::SUCCESS;
-        case MavlinkCommands::Result::NO_DEVICE:
-            return Telemetry::Result::NO_DEVICE;
+        case MavlinkCommands::Result::NO_SYSTEM:
+            return Telemetry::Result::NO_SYSTEM;
         case MavlinkCommands::Result::CONNECTION_ERROR:
             return Telemetry::Result::CONNECTION_ERROR;
         case MavlinkCommands::Result::BUSY:
