@@ -10,7 +10,6 @@
 #include "plugins/gimbal/gimbal.h"
 #include "plugins/offboard/offboard.h"
 
-using namespace std::placeholders; // for `_1`
 using namespace dronecore;
 
 
@@ -38,7 +37,7 @@ TEST_F(SitlTest, GimbalMove)
     telemetry->set_rate_camera_attitude(10.0);
 
     telemetry->camera_attitude_euler_angle_async(
-        std::bind(&receive_gimbal_attitude_euler_angles, _1));
+        &receive_gimbal_attitude_euler_angles);
 
     for (int i = 0; i < 500; i += 1) {
 
@@ -73,7 +72,7 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
     telemetry->set_rate_camera_attitude(10.0);
 
     telemetry->camera_attitude_euler_angle_async(
-        std::bind(&receive_gimbal_attitude_euler_angles, _1));
+        &receive_gimbal_attitude_euler_angles);
 
     for (int i = 0; i < 500; i += 1) {
 
@@ -121,7 +120,7 @@ TEST_F(SitlTest, GimbalROIOffboard)
     telemetry->set_rate_camera_attitude(10.0);
 
     telemetry->camera_attitude_euler_angle_async(
-        std::bind(&receive_gimbal_attitude_euler_angles, _1));
+        &receive_gimbal_attitude_euler_angles);
 
     // Send it once before starting offboard, otherwise it will be rejected.
     offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
@@ -162,15 +161,14 @@ void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i)
     float pitch_deg = 30.0f * cosf(i / 360.0f * 2 * M_PI_F);
     float yaw_deg = 45.0f * sinf(i / 360.0f * 2 * M_PI_F);
 
-    gimbal->set_pitch_and_yaw_async(pitch_deg, yaw_deg,
-                                    std::bind(&receive_gimbal_result, _1));
+    gimbal->set_pitch_and_yaw_async(pitch_deg, yaw_deg, &receive_gimbal_result);
 }
 
 void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal, double latitude_deg,
                               double longitude_deg, float altitude_m)
 {
     gimbal->set_roi_location_async(latitude_deg, longitude_deg, altitude_m,
-                                   std::bind(&receive_gimbal_result, _1));
+                                   &receive_gimbal_result);
 }
 
 void receive_gimbal_result(Gimbal::Result result)
