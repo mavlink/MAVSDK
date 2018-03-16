@@ -97,7 +97,49 @@ public:
     std::vector<uint8_t> get_camera_ids() const;
     uint8_t get_gimbal_id() const;
 
+<<<<<<< 8a891c1f2c7d9793f35a1b11efed3fb46b33413f:core/system.h~Change class name `Device` to `System` (#318)
+=======
+    /**
+     * @brief Checks whether the system is a standalone (Non-autopilot).
+     * @return true if stand alone, false otherwise.
+     */
+    bool is_standalone() const;
+
+    /**
+     * @brief Checks whether the system is an autopilot.
+     * @return true if its an autopilot, false otherwise.
+     */
+    bool is_autopilot() const;
+
+    /**
+     * @brief Checks whether the system has camera with the given camera ID.
+     *
+     * A System may have atmost 6 cameras with ID ranging (1-6).
+     * When called without passing camera ID, it checks for the camera ID 1.
+     * @param camera_id ID of the camera in the range (1-6).
+     * @return true if camera with the given camera ID is found, false otherwise.
+     */
+    bool has_camera(uint8_t camera_id = 1) const;
+
+    /**
+     * @brief Checks whether the system has gimbal.
+     * @return true if the system has gimbal, false otherwise.
+     */
+    bool has_gimbal() const;
+
+    /**
+     * @brief Get UUID of the system.
+     *
+     * If the system doesn't have UUID, System ID is returned.
+     * @return UUID if exist, System ID otherwise.
+     */
+>>>>>>> Handle multi components: Fix Travis CI issue:core/system.h
     uint64_t get_uuid() const;
+
+    /**
+     * @brief Get System ID of the system.
+     * @return System ID of the system
+     */
     uint8_t get_system_id() const;
 
     void set_system_id(uint8_t system_id);
@@ -151,6 +193,11 @@ private:
     void set_connected();
     void set_disconnected();
 
+<<<<<<< 8a891c1f2c7d9793f35a1b11efed3fb46b33413f:core/system.h~Change class name `Device` to `System` (#318)
+=======
+    static std::string component_name(uint8_t component_id);
+
+>>>>>>> Handle multi components: Fix Travis CI issue:core/system.h
     static void system_thread(System *self);
     static void send_heartbeat(System &self);
 
