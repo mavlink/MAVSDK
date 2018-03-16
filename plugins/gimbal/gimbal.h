@@ -94,9 +94,10 @@ public:
      * The function will return when the command is accepted, however, it might
      * take the gimbal longer to actually rotate to the ROI.
      *
-     * @param latitude_deg Latitude in degrees
-     * @param longitude_deg Longitude in degrees
-     * @param altitude_m Altitude in meters (ASML)
+     * @param latitude_deg Latitude in degrees.
+     * @param longitude_deg Longitude in degrees.
+     * @param altitude_m Altitude in meters (ASML).
+     * @return Result of request.
      */
     Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m);
 
@@ -109,9 +110,9 @@ public:
      * The callback will be called when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
      *
-     * @param latitude_deg Latitude in degrees
-     * @param longitude_deg Longitude in degrees
-     * @param altitude_m Altitude in meters (ASML)
+     * @param latitude_deg Latitude in degrees.
+     * @param longitude_deg Longitude in degrees.
+     * @param altitude_m Altitude in meters (ASML).
      * @param callback Function to call with result of request.
      */
     void set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m,
