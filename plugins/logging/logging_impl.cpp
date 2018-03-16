@@ -88,11 +88,12 @@ void LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
     mavlink_msg_logging_data_acked_decode(&message, &logging_data_acked);
 
     mavlink_message_t answer;
-    mavlink_msg_logging_ack_pack(
-        Self::system_id, Self::component_id,
-        &answer,
-        _parent.get_system_id(), _parent.get_autopilot_id(),
-        logging_data_acked.sequence);
+    mavlink_msg_logging_ack_pack(ControlSystem::system_id,
+                                 ControlSystem::component_id,
+                                 &answer,
+                                 _parent.get_system_id(),
+                                 _parent.get_autopilot_id(),
+                                 logging_data_acked.sequence);
 
     _parent.send_message(answer);
 }

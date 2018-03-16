@@ -332,8 +332,8 @@ void FollowMeImpl::send_target_location()
     uint64_t custom_state = 0;
 
     mavlink_message_t msg {};
-    mavlink_msg_follow_target_pack(Self::system_id,
-                                   Self::component_id,
+    mavlink_msg_follow_target_pack(ControlSystem::system_id,
+                                   ControlSystem::component_id,
                                    &msg,
                                    elapsed_msec,
                                    _estimatation_capabilities,
