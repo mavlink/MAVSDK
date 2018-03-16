@@ -209,11 +209,9 @@ ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_pat
 #endif
 }
 
-const std::vector<uint64_t> &DroneCoreImpl::get_system_uuids() const
+std::vector<uint64_t> DroneCoreImpl::get_system_uuids() const
 {
-    // This needs to survive the scope but we need to clean it up.
-    static std::vector<uint64_t> uuids = {};
-    uuids.clear();
+    std::vector<uint64_t> uuids = {};
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
         uint64_t uuid = it->second->get_uuid();

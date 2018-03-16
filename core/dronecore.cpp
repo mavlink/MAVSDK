@@ -43,7 +43,7 @@ ConnectionResult DroneCore::add_serial_connection(const std::string &dev_path,
     return _impl->add_serial_connection(dev_path, baudrate);
 }
 
-const std::vector<uint64_t> &DroneCore::system_uuids() const
+std::vector<uint64_t> DroneCore::system_uuids() const
 {
     return _impl->get_system_uuids();
 }

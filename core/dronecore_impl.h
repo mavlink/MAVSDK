@@ -27,7 +27,7 @@ public:
     ConnectionResult add_tcp_connection(const std::string &remote_ip, int remote_port);
     ConnectionResult add_serial_connection(const std::string &dev_path, int baudrate);
 
-    const std::vector<uint64_t> &get_system_uuids() const;
+    std::vector<uint64_t> get_system_uuids() const;
     System &get_system();
     System &get_system(uint64_t uuid);
 
