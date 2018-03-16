@@ -141,7 +141,7 @@ TEST_F(SitlTest, GimbalROIOffboard)
     // fly in north-south direction (back & forth a few times)
     const float step_size = 0.01f;
     const float one_cycle = 2.0f * M_PI_F;
-    const unsigned steps = 2.5f * one_cycle / step_size;
+    const unsigned steps = static_cast<unsigned>(2.5f * one_cycle / step_size);
 
     for (unsigned i = 0; i < steps; ++i) {
         float vx = 5.0f * sinf(i * step_size);
