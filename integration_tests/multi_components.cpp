@@ -38,11 +38,11 @@ TEST_F(SitlTest, MultiComponentDiscovery)
     auto uuids = dc.system_uuids();
 
     for (auto uuid : uuids) {
-        std::cout << "We found a system with UUID: " << uuid << '\n';
+        std::cout << "We found a System with UUID: " << uuid << '\n';
         System &system = dc.system(uuid);
 
-        auto has_autopilot = system.has_autopilot();
-        EXPECT_EQ(has_autopilot, true);
+        auto is_autopilot = system.is_autopilot();
+        EXPECT_EQ(is_autopilot, true);
 
         auto has_camera = system.has_camera();
         EXPECT_EQ(has_camera, true);
@@ -50,17 +50,9 @@ TEST_F(SitlTest, MultiComponentDiscovery)
         auto has_gimbal = system.has_gimbal();
         EXPECT_EQ(has_gimbal, false);
 
-        std::cout << "System " << uuid << " has: ";
-        if (has_autopilot) {
-            std::cout << " Autopilot";
+        if (is_autopilot && has_camera && !has_gimbal) {
+            std::cout << "Its an Autopilot with a Camera" << '\n';
         }
-        if (has_camera) {
-            std::cout << " + Camera";
-        }
-        if (has_gimbal) {
-            std::cout << " + Gimbal";
-        }
-        std::cout << std::endl;
     }
 
     std::cout << "Done" << '\n';

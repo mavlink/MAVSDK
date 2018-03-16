@@ -151,7 +151,7 @@ void System::remove_call_every(const void *cookie)
 
 void System::process_heartbeat(const mavlink_message_t &message)
 {
-    LogDebug() << "Got HEARTBEAT from: " << name(message.compid);
+    LogDebug() << "Got HEARTBEAT from: " << component_name(message.compid);
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
@@ -285,7 +285,7 @@ void System::system_thread(System *self)
     }
 }
 
-std::string System::name(uint8_t component_id)
+std::string System::component_name(uint8_t component_id)
 {
     switch (component_id) {
         case MAV_COMP_ID_AUTOPILOT1:
@@ -303,7 +303,7 @@ void System::add_new_component(uint8_t component_id)
 {
     auto res_pair = _components.insert(component_id);
     if (res_pair.second) {
-        LogDebug() << "Component " << name(component_id) << " added.";
+        LogDebug() << "Component " << component_name(component_id) << " added.";
     }
 }
 
@@ -314,17 +314,46 @@ size_t System::total_components() const
 
 bool System::is_standalone() const
 {
-    return get_autopilot_id() == uint8_t(0);
+    return !is_autopilot();
 }
 
-bool System::has_autopilot() const
+bool System::is_autopilot() const
 {
     return get_autopilot_id() != uint8_t(0);
 }
 
-bool System::has_camera() const
+bool System::has_camera(uint8_t camera_id) const
 {
-    return (get_camera_ids().size() > 0);
+    auto camera_ids = get_camera_ids();
+
+    switch (camera_id) {
+        case 1:
+            for (auto cam_id : camera_ids) {
+                return (cam_id == MAV_COMP_ID_CAMERA);
+            }
+        case 2:
+            for (auto cam_id : camera_ids) {
+                return (cam_id == MAV_COMP_ID_CAMERA2);
+            }
+        case 3:
+            for (auto cam_id : camera_ids) {
+                return (cam_id == MAV_COMP_ID_CAMERA3);
+            }
+        case 4:
+            for (auto cam_id : camera_ids) {
+                return (cam_id == MAV_COMP_ID_CAMERA4);
+            }
+        case 5:
+            for (auto cam_id : camera_ids) {
+                return (cam_id == MAV_COMP_ID_CAMERA5);
+            }
+        case 6:
+            for (auto cam_id : camera_ids) {
+                return (cam_id == MAV_COMP_ID_CAMERA6);
+            }
+        default:
+            return false;
+    }
 }
 
 bool System::has_gimbal() const
