@@ -66,8 +66,11 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    action->arm();
-    action->takeoff();
+    Action::Result action_result = action->arm();
+    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+
+    action_result = action->takeoff();
+    EXPECT_EQ(action_result, Action::Result::SUCCESS);
 
     telemetry->set_rate_camera_attitude(10.0);
 
@@ -112,8 +115,11 @@ TEST_F(SitlTest, GimbalROIOffboard)
     send_gimbal_roi_location(gimbal, position.latitude_deg + latitude_offset_deg,
                              position.longitude_deg, position.absolute_altitude_m + 1.f);
 
-    action->arm();
-    action->takeoff();
+    Action::Result action_result = action->arm();
+    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+
+    action_result = action->takeoff();
+    EXPECT_EQ(action_result, Action::Result::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
@@ -124,7 +130,8 @@ TEST_F(SitlTest, GimbalROIOffboard)
 
     // Send it once before starting offboard, otherwise it will be rejected.
     offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
-    offboard->start();
+    Offboard::Result offboard_result = offboard->start();
+    EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
     auto fly_straight = [&offboard](int step_count, float max_speed) {
         for (int i = 0; i < step_count; ++i) {
