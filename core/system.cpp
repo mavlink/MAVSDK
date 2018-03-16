@@ -151,7 +151,6 @@ void System::remove_call_every(const void *cookie)
 
 void System::process_heartbeat(const mavlink_message_t &message)
 {
-    LogDebug() << "Got HEARTBEAT from: " << component_name(message.compid);
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
@@ -290,7 +289,12 @@ std::string System::component_name(uint8_t component_id)
     switch (component_id) {
         case MAV_COMP_ID_AUTOPILOT1:
             return "Autopilot";
-        case MAV_COMP_ID_CAMERA...MAV_COMP_ID_CAMERA6:
+        case MAV_COMP_ID_CAMERA:  /* FALLTHRU */
+        case MAV_COMP_ID_CAMERA2: /* FALLTHRU */
+        case MAV_COMP_ID_CAMERA3: /* FALLTHRU */
+        case MAV_COMP_ID_CAMERA4: /* FALLTHRU */
+        case MAV_COMP_ID_CAMERA5: /* FALLTHRU */
+        case MAV_COMP_ID_CAMERA6: /* FALLTHRU */
             return "Camera";
         case MAV_COMP_ID_GIMBAL:
             return "Gimbal";
@@ -324,36 +328,12 @@ bool System::is_autopilot() const
 
 bool System::has_camera(uint8_t camera_id) const
 {
-    auto camera_ids = get_camera_ids();
+    uint8_t camera_comp_id = MAV_COMP_ID_CAMERA + (camera_id - 1);
 
-    switch (camera_id) {
-        case 1:
-            for (auto cam_id : camera_ids) {
-                return (cam_id == MAV_COMP_ID_CAMERA);
-            }
-        case 2:
-            for (auto cam_id : camera_ids) {
-                return (cam_id == MAV_COMP_ID_CAMERA2);
-            }
-        case 3:
-            for (auto cam_id : camera_ids) {
-                return (cam_id == MAV_COMP_ID_CAMERA3);
-            }
-        case 4:
-            for (auto cam_id : camera_ids) {
-                return (cam_id == MAV_COMP_ID_CAMERA4);
-            }
-        case 5:
-            for (auto cam_id : camera_ids) {
-                return (cam_id == MAV_COMP_ID_CAMERA5);
-            }
-        case 6:
-            for (auto cam_id : camera_ids) {
-                return (cam_id == MAV_COMP_ID_CAMERA6);
-            }
-        default:
-            return false;
+    for (auto compid : _components) {
+        return compid == camera_comp_id;
     }
+    return false;
 }
 
 bool System::has_gimbal() const
@@ -364,9 +344,13 @@ bool System::has_gimbal() const
 void System::send_heartbeat(System &self)
 {
     mavlink_message_t message;
-    // Self is GCS (its not autopilot!); hence MAV_AUTOPILOT_INVALID.
-    mavlink_msg_heartbeat_pack(_own_system_id, _own_component_id, &message,
-                               MAV_TYPE_GCS, MAV_AUTOPILOT_INVALID, 0, 0, 0);
+    // ControlSystem is not autopilot!; hence MAV_AUTOPILOT_INVALID.
+    mavlink_msg_heartbeat_pack(ControlSystem::system_id,
+                               ControlSystem::component_id,
+                               &message,
+                               MAV_TYPE_GCS,
+                               MAV_AUTOPILOT_INVALID,
+                               0, 0, 0);
     self.send_message(message);
 }
 

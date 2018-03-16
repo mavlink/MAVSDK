@@ -80,8 +80,8 @@ void MavlinkCommands::queue_command_async(uint16_t command,
     //         << (int)target_component_id;
 
     Work new_work {};
-    mavlink_msg_command_long_pack(Self::system_id,
-                                  Self::component_id,
+    mavlink_msg_command_long_pack(ControlSystem::system_id,
+                                  ControlSystem::component_id,
                                   &new_work.mavlink_message,
                                   target_system_id,
                                   target_component_id,

@@ -24,7 +24,7 @@ class PluginImplBase;
 /**
  * @brief This represents GCS DroneCore client.
  */
-struct Self {
+struct ControlSystem {
     static constexpr uint8_t system_id = 0;
     static constexpr uint8_t component_id = MAV_COMP_ID_SYSTEM_CONTROL;
     static constexpr MAV_TYPE type = MAV_TYPE_GCS;
@@ -32,7 +32,7 @@ struct Self {
 
 /**
  * @brief This class represents the MAVLink based Vehicle/Robot
- * or a stand-alone device whom DroneCore application want to interact with.
+ * or a stand-alone system whom DroneCore application want to interact with.
  */
 class System
 {
@@ -162,9 +162,6 @@ public:
     void get_param_ext_float_async(const std::string &name, get_param_float_callback_t callback);
     void get_param_ext_int_async(const std::string &name, get_param_int_callback_t callback);
 
-    static uint8_t get_own_system_id() { return _own_system_id; }
-    static uint8_t get_own_component_id() { return _own_component_id; }
-
     bool is_connected() const;
 
     Time &get_time() { return _time; };
@@ -227,10 +224,6 @@ private:
 
     std::thread *_system_thread {nullptr};
     std::atomic<bool> _should_exit {false};
-
-    // TODO: should our own system ID have some value?
-    static constexpr uint8_t _own_system_id = 0;
-    static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
 
     static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
 
