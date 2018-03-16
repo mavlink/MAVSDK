@@ -44,7 +44,10 @@ TEST_F(SitlTest, MultiComponentDiscovery)
         auto is_autopilot = system.is_autopilot();
         EXPECT_EQ(is_autopilot, true);
 
-        auto has_camera = system.has_camera();
+        auto has_camera = system.has_camera(); // by default checks for camera 1
+        EXPECT_EQ(has_camera, true);
+
+        has_camera = system.has_camera(1); // pass camera ID explcitly
         EXPECT_EQ(has_camera, true);
 
         auto has_gimbal = system.has_gimbal();

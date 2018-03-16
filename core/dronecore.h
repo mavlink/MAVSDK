@@ -93,9 +93,9 @@ public:
      * This returns a vector of the UUIDs of all systems that have been discovered.
      * If a system doesn't have a UUID then DroneCore will instead use its MAVLink system ID (range: 0..255).
      *
-     * @return A reference to the vector containing the UUIDs.
+     * @return A vector containing the UUIDs.
      */
-    const std::vector<uint64_t> &system_uuids() const;
+    std::vector<uint64_t> system_uuids() const;
 
     /**
      * @brief Get the first discovered system.
