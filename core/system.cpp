@@ -289,13 +289,18 @@ std::string System::component_name(uint8_t component_id)
     switch (component_id) {
         case MAV_COMP_ID_AUTOPILOT1:
             return "Autopilot";
-        case MAV_COMP_ID_CAMERA:  /* FALLTHRU */
-        case MAV_COMP_ID_CAMERA2: /* FALLTHRU */
-        case MAV_COMP_ID_CAMERA3: /* FALLTHRU */
-        case MAV_COMP_ID_CAMERA4: /* FALLTHRU */
-        case MAV_COMP_ID_CAMERA5: /* FALLTHRU */
-        case MAV_COMP_ID_CAMERA6: /* FALLTHRU */
-            return "Camera";
+        case MAV_COMP_ID_CAMERA:
+            return "Camera 1";
+        case MAV_COMP_ID_CAMERA2:
+            return "Camera 2";
+        case MAV_COMP_ID_CAMERA3:
+            return "Camera 3";
+        case MAV_COMP_ID_CAMERA4:
+            return "Camera 4";
+        case MAV_COMP_ID_CAMERA5:
+            return "Camera 5";
+        case MAV_COMP_ID_CAMERA6:
+            return "Camera 6";
         case MAV_COMP_ID_GIMBAL:
             return "Gimbal";
         default:
