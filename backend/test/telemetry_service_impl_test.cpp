@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "telemetry/mocks/telemetry_mock.h"
-#include "telemetry/telemetryrpc_impl.h"
+#include "telemetry/telemetry_service_impl.h"
 
 namespace {
 

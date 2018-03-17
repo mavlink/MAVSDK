@@ -15,7 +15,7 @@
 #include "dronecore.h"
 #include "log.h"
 #include "mission/missionrpc_impl.h"
-#include "telemetry/telemetryrpc_impl.h"
+#include "telemetry/telemetry_service_impl.h"
 
 namespace dronecore {
 namespace backend {
