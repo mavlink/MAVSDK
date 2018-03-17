@@ -1,8 +1,6 @@
 #include <gmock/gmock.h>
 #include <string>
 
-// TODO remove this include
-#include "action/action.h"
 #include "action/action_service_impl.h"
 #include "action/mocks/action_mock.h"
 
@@ -15,12 +13,12 @@ using MockAction = NiceMock<dronecore::testing::MockAction>;
 using ActionServiceImpl = dronecore::backend::ActionServiceImpl<MockAction>;
 
 using ActionResult = dronecore::rpc::action::ActionResult;
-using InputPair = std::pair<std::string, dronecore::Action::Result>;
+using InputPair = std::pair<std::string, dronecore::ActionResult>;
 
 std::vector<InputPair> generateInputPairs();
-std::string armAndGetTranslatedResult(dronecore::Action::Result arm_result);
-std::string takeoffAndGetTranslatedResult(dronecore::Action::Result takeoff_result);
-std::string landAndGetTranslatedResult(dronecore::Action::Result land_result);
+std::string armAndGetTranslatedResult(dronecore::ActionResult arm_result);
+std::string takeoffAndGetTranslatedResult(dronecore::ActionResult takeoff_result);
+std::string landAndGetTranslatedResult(dronecore::ActionResult land_result);
 
 class ActionServiceImplTest : public ::testing::TestWithParam<InputPair> {};
 
@@ -30,7 +28,7 @@ TEST_P(ActionServiceImplTest, armResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string armAndGetTranslatedResult(const dronecore::Action::Result arm_result)
+std::string armAndGetTranslatedResult(const dronecore::ActionResult arm_result)
 {
     MockAction action;
     ON_CALL(action, arm())
@@ -49,7 +47,7 @@ TEST_P(ActionServiceImplTest, takeoffResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string takeoffAndGetTranslatedResult(const dronecore::Action::Result takeoff_result)
+std::string takeoffAndGetTranslatedResult(const dronecore::ActionResult takeoff_result)
 {
     MockAction action;
     ON_CALL(action, takeoff())
@@ -68,7 +66,7 @@ TEST_P(ActionServiceImplTest, landResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string landAndGetTranslatedResult(const dronecore::Action::Result land_result)
+std::string landAndGetTranslatedResult(const dronecore::ActionResult land_result)
 {
     MockAction action;
     ON_CALL(action, land())
@@ -89,22 +87,22 @@ INSTANTIATE_TEST_CASE_P(ActionResultCorrespondences,
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
-    input_pairs.push_back(std::make_pair("SUCCESS", dronecore::Action::Result::SUCCESS));
-    input_pairs.push_back(std::make_pair("NO_DEVICE", dronecore::Action::Result::NO_DEVICE));
+    input_pairs.push_back(std::make_pair("SUCCESS", dronecore::ActionResult::SUCCESS));
+    input_pairs.push_back(std::make_pair("NO_DEVICE", dronecore::ActionResult::NO_DEVICE));
     input_pairs.push_back(std::make_pair("CONNECTION_ERROR",
-                                         dronecore::Action::Result::CONNECTION_ERROR));
-    input_pairs.push_back(std::make_pair("BUSY", dronecore::Action::Result::BUSY));
-    input_pairs.push_back(std::make_pair("COMMAND_DENIED", dronecore::Action::Result::COMMAND_DENIED));
+                                         dronecore::ActionResult::CONNECTION_ERROR));
+    input_pairs.push_back(std::make_pair("BUSY", dronecore::ActionResult::BUSY));
+    input_pairs.push_back(std::make_pair("COMMAND_DENIED", dronecore::ActionResult::COMMAND_DENIED));
     input_pairs.push_back(std::make_pair("COMMAND_DENIED_LANDED_STATE_UNKNOWN",
-                                         dronecore::Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN));
+                                         dronecore::ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN));
     input_pairs.push_back(std::make_pair("COMMAND_DENIED_NOT_LANDED",
-                                         dronecore::Action::Result::COMMAND_DENIED_NOT_LANDED));
-    input_pairs.push_back(std::make_pair("TIMEOUT", dronecore::Action::Result::TIMEOUT));
+                                         dronecore::ActionResult::COMMAND_DENIED_NOT_LANDED));
+    input_pairs.push_back(std::make_pair("TIMEOUT", dronecore::ActionResult::TIMEOUT));
     input_pairs.push_back(std::make_pair("VTOL_TRANSITION_SUPPORT_UNKNOWN",
-                                         dronecore::Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN));
+                                         dronecore::ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN));
     input_pairs.push_back(std::make_pair("NO_VTOL_TRANSITION_SUPPORT",
-                                         dronecore::Action::Result::NO_VTOL_TRANSITION_SUPPORT));
-    input_pairs.push_back(std::make_pair("UNKNOWN", dronecore::Action::Result::UNKNOWN));
+                                         dronecore::ActionResult::NO_VTOL_TRANSITION_SUPPORT));
+    input_pairs.push_back(std::make_pair("UNKNOWN", dronecore::ActionResult::UNKNOWN));
 
     return input_pairs;
 }

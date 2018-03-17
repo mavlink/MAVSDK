@@ -31,7 +31,7 @@ using namespace std::this_thread;  // for sleep_for()
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
 
-inline void action_error_exit(Action::Result result, const std::string &message);
+inline void action_error_exit(ActionResult result, const std::string &message);
 inline void follow_me_error_exit(FollowMe::Result result, const std::string &message);
 inline void connection_error_exit(ConnectionResult result, const std::string &message);
 
@@ -61,7 +61,7 @@ int main(int, char **)
     std::cout << "Device is ready" << std::endl;
 
     // Arm
-    Action::Result arm_result = action->arm();
+    ActionResult arm_result = action->arm();
     action_error_exit(arm_result, "Arming failed");
     std::cout << "Armed" << std::endl;
 
@@ -75,7 +75,7 @@ int main(int, char **)
     }, std::placeholders::_1));
 
     // Takeoff
-    Action::Result takeoff_result = action->takeoff();
+    ActionResult takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5)); // Wait for drone to reach takeoff altitude
@@ -106,7 +106,7 @@ int main(int, char **)
     telemetry->flight_mode_async(nullptr);
 
     // Land
-    const Action::Result land_result = action->land();
+    const ActionResult land_result = action->land();
     action_error_exit(land_result, "Landing failed");
     while (telemetry->in_air()) {
         std::cout << "waiting until landed" << std::endl;
@@ -117,10 +117,10 @@ int main(int, char **)
 }
 
 // Handles Action's result
-inline void action_error_exit(Action::Result result, const std::string &message)
+inline void action_error_exit(ActionResult result, const std::string &message)
 {
-    if (result != Action::Result::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(
+    if (result != ActionResult::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(
                       result) << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }

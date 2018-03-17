@@ -1,7 +1,6 @@
 #include <gmock/gmock.h>
 
-// TODO remove this include!
-#include "action/action.h"
+#include "action/action_result.h"
 
 namespace dronecore {
 namespace testing {
@@ -9,9 +8,9 @@ namespace testing {
 class MockAction
 {
 public:
-    MOCK_CONST_METHOD0(arm, Action::Result());
-    MOCK_CONST_METHOD0(takeoff, Action::Result());
-    MOCK_CONST_METHOD0(land, Action::Result());
+    MOCK_CONST_METHOD0(arm, ActionResult());
+    MOCK_CONST_METHOD0(takeoff, ActionResult());
+    MOCK_CONST_METHOD0(land, ActionResult());
 };
 
 } // namespace testing

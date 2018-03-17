@@ -1,6 +1,6 @@
-#include "global_include.h"
 #include "action_impl.h"
 #include "dronecore_impl.h"
+#include "global_include.h"
 #include "px4_custom_mode.h"
 
 namespace dronecore {
@@ -43,10 +43,10 @@ void ActionImpl::enable()
 
 void ActionImpl::disable() {}
 
-Action::Result ActionImpl::arm() const
+ActionResult ActionImpl::arm() const
 {
-    Action::Result ret = arming_allowed();
-    if (ret != Action::Result::SUCCESS) {
+    ActionResult ret = arming_allowed();
+    if (ret != ActionResult::SUCCESS) {
         return ret;
     }
 
@@ -54,7 +54,7 @@ Action::Result ActionImpl::arm() const
     ret = action_result_from_command_result(
               _parent.set_flight_mode(Device::FlightMode::HOLD));
 
-    if (ret != Action::Result::SUCCESS) {
+    if (ret != ActionResult::SUCCESS) {
         return ret;
     }
 
@@ -65,10 +65,10 @@ Action::Result ActionImpl::arm() const
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
-Action::Result ActionImpl::disarm() const
+ActionResult ActionImpl::disarm() const
 {
-    Action::Result ret = disarming_allowed();
-    if (ret != Action::Result::SUCCESS) {
+    ActionResult ret = disarming_allowed();
+    if (ret != ActionResult::SUCCESS) {
         return ret;
     }
 
@@ -79,7 +79,7 @@ Action::Result ActionImpl::disarm() const
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
-Action::Result ActionImpl::kill() const
+ActionResult ActionImpl::kill() const
 {
     return action_result_from_command_result(
                _parent.send_command_with_ack(
@@ -88,10 +88,10 @@ Action::Result ActionImpl::kill() const
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
-Action::Result ActionImpl::takeoff() const
+ActionResult ActionImpl::takeoff() const
 {
-    Action::Result ret = taking_off_allowed();
-    if (ret != Action::Result::SUCCESS) {
+    ActionResult ret = taking_off_allowed();
+    if (ret != ActionResult::SUCCESS) {
         return ret;
     }
 
@@ -107,7 +107,7 @@ Action::Result ActionImpl::takeoff() const
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
-Action::Result ActionImpl::land() const
+ActionResult ActionImpl::land() const
 {
     return action_result_from_command_result(
                _parent.send_command_with_ack(
@@ -116,20 +116,20 @@ Action::Result ActionImpl::land() const
                    MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT));
 }
 
-Action::Result ActionImpl::return_to_launch() const
+ActionResult ActionImpl::return_to_launch() const
 {
     return action_result_from_command_result(
                _parent.set_flight_mode(Device::FlightMode::RETURN_TO_LAUNCH));
 }
 
-Action::Result ActionImpl::transition_to_fixedwing() const
+ActionResult ActionImpl::transition_to_fixedwing() const
 {
     if (!_vtol_transition_support_known) {
-        return Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN;
+        return ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN;
     }
 
     if (!_vtol_transition_possible) {
-        return Action::Result::NO_VTOL_TRANSITION_SUPPORT;
+        return ActionResult::NO_VTOL_TRANSITION_SUPPORT;
     }
 
     return action_result_from_command_result(
@@ -143,14 +143,14 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &
 {
     if (!_vtol_transition_support_known) {
         if (callback) {
-            callback(Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN);
+            callback(ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN);
         }
         return;
     }
 
     if (!_vtol_transition_possible) {
         if (callback) {
-            callback(Action::Result::NO_VTOL_TRANSITION_SUPPORT);
+            callback(ActionResult::NO_VTOL_TRANSITION_SUPPORT);
         }
         return;
     }
@@ -164,14 +164,14 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &
         MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
-Action::Result ActionImpl::transition_to_multicopter() const
+ActionResult ActionImpl::transition_to_multicopter() const
 {
     if (!_vtol_transition_support_known) {
-        return Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN;
+        return ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN;
     }
 
     if (!_vtol_transition_possible) {
-        return Action::Result::NO_VTOL_TRANSITION_SUPPORT;
+        return ActionResult::NO_VTOL_TRANSITION_SUPPORT;
     }
 
     return action_result_from_command_result(
@@ -185,14 +185,14 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
 {
     if (!_vtol_transition_support_known) {
         if (callback) {
-            callback(Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN);
+            callback(ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN);
         }
         return;
     }
 
     if (!_vtol_transition_possible) {
         if (callback) {
-            callback(Action::Result::NO_VTOL_TRANSITION_SUPPORT);
+            callback(ActionResult::NO_VTOL_TRANSITION_SUPPORT);
         }
         return;
     }
@@ -208,8 +208,8 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
 
 void ActionImpl::arm_async(const Action::result_callback_t &callback)
 {
-    Action::Result ret = arming_allowed();
-    if (ret != Action::Result::SUCCESS) {
+    ActionResult ret = arming_allowed();
+    if (ret != ActionResult::SUCCESS) {
         if (callback) {
             callback(ret);
         }
@@ -239,8 +239,8 @@ void ActionImpl::arm_async_continued(MavlinkCommands::Result previous_result,
 
 void ActionImpl::disarm_async(const Action::result_callback_t &callback)
 {
-    Action::Result ret = disarming_allowed();
-    if (ret != Action::Result::SUCCESS) {
+    ActionResult ret = disarming_allowed();
+    if (ret != ActionResult::SUCCESS) {
         if (callback) {
             callback(ret);
         }
@@ -269,8 +269,8 @@ void ActionImpl::kill_async(const Action::result_callback_t &callback)
 
 void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
 {
-    Action::Result ret = taking_off_allowed();
-    if (ret != Action::Result::SUCCESS) {
+    ActionResult ret = taking_off_allowed();
+    if (ret != ActionResult::SUCCESS) {
         if (callback) {
             callback(ret);
         }
@@ -317,43 +317,43 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t &callbac
         std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-Action::Result ActionImpl::arming_allowed() const
+ActionResult ActionImpl::arming_allowed() const
 {
     if (!_in_air_state_known) {
-        return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
+        return ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
     }
 
     if (_in_air) {
-        return Action::Result::COMMAND_DENIED_NOT_LANDED;
+        return ActionResult::COMMAND_DENIED_NOT_LANDED;
     }
 
-    return Action::Result::SUCCESS;
+    return ActionResult::SUCCESS;
 }
 
-Action::Result ActionImpl::taking_off_allowed() const
+ActionResult ActionImpl::taking_off_allowed() const
 {
     if (!_in_air_state_known) {
-        return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
+        return ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
     }
 
     if (_in_air) {
-        return Action::Result::COMMAND_DENIED_NOT_LANDED;
+        return ActionResult::COMMAND_DENIED_NOT_LANDED;
     }
 
-    return Action::Result::SUCCESS;
+    return ActionResult::SUCCESS;
 }
 
-Action::Result ActionImpl::disarming_allowed() const
+ActionResult ActionImpl::disarming_allowed() const
 {
     if (!_in_air_state_known) {
-        return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
+        return ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
     }
 
     if (_in_air) {
-        return Action::Result::COMMAND_DENIED_NOT_LANDED;
+        return ActionResult::COMMAND_DENIED_NOT_LANDED;
     }
 
-    return Action::Result::SUCCESS;
+    return ActionResult::SUCCESS;
 }
 
 void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
@@ -435,31 +435,31 @@ float ActionImpl::get_max_speed_m_s() const
     return _max_speed_m_s;
 }
 
-Action::Result
+ActionResult
 ActionImpl::action_result_from_command_result(MavlinkCommands::Result result)
 {
     switch (result) {
         case MavlinkCommands::Result::SUCCESS:
-            return Action::Result::SUCCESS;
+            return ActionResult::SUCCESS;
         case MavlinkCommands::Result::NO_DEVICE:
-            return Action::Result::NO_DEVICE;
+            return ActionResult::NO_DEVICE;
         case MavlinkCommands::Result::CONNECTION_ERROR:
-            return Action::Result::CONNECTION_ERROR;
+            return ActionResult::CONNECTION_ERROR;
         case MavlinkCommands::Result::BUSY:
-            return Action::Result::BUSY;
+            return ActionResult::BUSY;
         case MavlinkCommands::Result::COMMAND_DENIED:
-            return Action::Result::COMMAND_DENIED;
+            return ActionResult::COMMAND_DENIED;
         case MavlinkCommands::Result::TIMEOUT:
-            return Action::Result::TIMEOUT;
+            return ActionResult::TIMEOUT;
         default:
-            return Action::Result::UNKNOWN;
+            return ActionResult::UNKNOWN;
     }
 }
 
 void ActionImpl::command_result_callback(MavlinkCommands::Result command_result,
                                          const Action::result_callback_t &callback)
 {
-    Action::Result action_result = action_result_from_command_result(command_result);
+    ActionResult action_result = action_result_from_command_result(command_result);
 
     if (callback) {
         callback(action_result);

@@ -33,9 +33,9 @@ static MissionState _mission_state = MissionState::INIT;
 static void receive_upload_mission_result(Mission::Result result);
 static void receive_start_mission_result(Mission::Result result);
 static void receive_mission_progress(int current, int total);
-static void receive_arm_result(Action::Result result);
-static void receive_return_to_launch_result(Action::Result result);
-static void receive_disarm_result(Action::Result result);
+static void receive_arm_result(ActionResult result);
+static void receive_return_to_launch_result(ActionResult result);
+static void receive_disarm_result(ActionResult result);
 
 static std::shared_ptr<MissionItem> add_waypoint(double latitude_deg,
                                                  double longitude_deg,
@@ -238,11 +238,11 @@ void receive_mission_progress(int current, int total)
     }
 }
 
-void receive_arm_result(Action::Result result)
+void receive_arm_result(ActionResult result)
 {
-    EXPECT_EQ(result, Action::Result::SUCCESS);
+    EXPECT_EQ(result, ActionResult::SUCCESS);
 
-    if (result == Action::Result::SUCCESS) {
+    if (result == ActionResult::SUCCESS) {
         _mission_state = MissionState::ARMING_DONE;
     } else {
         std::cerr << "Error: arming result: " << unsigned(result) << std::endl;
@@ -250,11 +250,11 @@ void receive_arm_result(Action::Result result)
     }
 }
 
-void receive_return_to_launch_result(Action::Result result)
+void receive_return_to_launch_result(ActionResult result)
 {
-    EXPECT_EQ(result, Action::Result::SUCCESS);
+    EXPECT_EQ(result, ActionResult::SUCCESS);
 
-    if (result == Action::Result::SUCCESS) {
+    if (result == ActionResult::SUCCESS) {
     } else {
         std::cerr << "Error: return to land result: " << unsigned(result) << std::endl;
         _mission_state = MissionState::ERROR;
@@ -262,11 +262,11 @@ void receive_return_to_launch_result(Action::Result result)
 }
 
 
-void receive_disarm_result(Action::Result result)
+void receive_disarm_result(ActionResult result)
 {
-    EXPECT_EQ(result, Action::Result::SUCCESS);
+    EXPECT_EQ(result, ActionResult::SUCCESS);
 
-    if (result == Action::Result::SUCCESS) {
+    if (result == ActionResult::SUCCESS) {
     } else {
         std::cerr << "Error: disarming result: " << unsigned(result) << std::endl;
     }

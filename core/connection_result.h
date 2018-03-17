@@ -1,6 +1,5 @@
 #pragma once
 
-
 /**
  * @brief Namespace for all dronecore types.
  */

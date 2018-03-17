@@ -9,6 +9,7 @@ target_link_libraries(dronecore_action
 
 install(FILES
     action.h
+    action_result.h
     DESTINATION ${dronecore_install_include_dir}
 )
 

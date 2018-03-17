@@ -1,10 +1,12 @@
 #pragma once
 
-#include "plugin_impl_base.h"
-#include "mavlink_include.h"
-#include "device.h"
-#include "action.h"
 #include <cstdint>
+
+#include "action.h"
+#include "action_result.h"
+#include "device.h"
+#include "mavlink_include.h"
+#include "plugin_impl_base.h"
 
 namespace dronecore {
 
@@ -20,14 +22,14 @@ public:
     void enable() override;
     void disable() override;
 
-    Action::Result arm() const;
-    Action::Result disarm() const;
-    Action::Result kill() const;
-    Action::Result takeoff() const;
-    Action::Result land() const;
-    Action::Result return_to_launch() const;
-    Action::Result transition_to_fixedwing() const;
-    Action::Result transition_to_multicopter() const;
+    ActionResult arm() const;
+    ActionResult disarm() const;
+    ActionResult kill() const;
+    ActionResult takeoff() const;
+    ActionResult land() const;
+    ActionResult return_to_launch() const;
+    ActionResult transition_to_fixedwing() const;
+    ActionResult transition_to_multicopter() const;
 
     void arm_async(const Action::result_callback_t &callback);
     void disarm_async(const Action::result_callback_t &callback);
@@ -53,9 +55,9 @@ private:
     void arm_async_continued(MavlinkCommands::Result previous_result,
                              const Action::result_callback_t &callback);
 
-    Action::Result arming_allowed() const;
-    Action::Result disarming_allowed() const;
-    Action::Result taking_off_allowed() const;
+    ActionResult arming_allowed() const;
+    ActionResult disarming_allowed() const;
+    ActionResult taking_off_allowed() const;
 
     void process_extended_sys_state(const mavlink_message_t &message);
 
@@ -63,7 +65,7 @@ private:
 
     void receive_takeoff_alt_param(bool success, float new_relative_altitude_m);
 
-    static Action::Result action_result_from_command_result(MavlinkCommands::Result result);
+    static ActionResult action_result_from_command_result(MavlinkCommands::Result result);
 
     static void command_result_callback(MavlinkCommands::Result command_result,
                                         const Action::result_callback_t &callback);

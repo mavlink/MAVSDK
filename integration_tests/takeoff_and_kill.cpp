@@ -15,25 +15,25 @@ static bool _received_arm_result = false;
 static bool _received_takeoff_result = false;
 static bool _received_kill_result = false;
 
-static void receive_arm_result(Action::Result result);
-static void receive_takeoff_result(Action::Result result);
-static void receive_kill_result(Action::Result result);
+static void receive_arm_result(ActionResult result);
+static void receive_takeoff_result(ActionResult result);
+static void receive_kill_result(ActionResult result);
 
-void receive_arm_result(Action::Result result)
+void receive_arm_result(ActionResult result)
 {
-    ASSERT_EQ(result, Action::Result::SUCCESS);
+    ASSERT_EQ(result, ActionResult::SUCCESS);
     _received_arm_result = true;
 }
 
-void receive_takeoff_result(Action::Result result)
+void receive_takeoff_result(ActionResult result)
 {
-    ASSERT_EQ(result, Action::Result::SUCCESS);
+    ASSERT_EQ(result, ActionResult::SUCCESS);
     _received_takeoff_result = true;
 }
 
-void receive_kill_result(Action::Result result)
+void receive_kill_result(ActionResult result)
 {
-    ASSERT_EQ(result, Action::Result::SUCCESS);
+    ASSERT_EQ(result, ActionResult::SUCCESS);
     _received_kill_result = true;
 }
 

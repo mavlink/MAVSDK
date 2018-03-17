@@ -39,8 +39,8 @@ void takeoff_and_transition_to_fixedwing()
     takeoff(action, telemetry);
 
     LogInfo() << "Transitioning to fixedwing";
-    Action::Result transition_result = action->transition_to_fixedwing();
-    EXPECT_EQ(transition_result, Action::Result::SUCCESS);
+    ActionResult transition_result = action->transition_to_fixedwing();
+    EXPECT_EQ(transition_result, ActionResult::SUCCESS);
 
     // Wait a little before the transition back to multicopter,
     // so we can actually see it fly
@@ -48,7 +48,7 @@ void takeoff_and_transition_to_fixedwing()
 
     LogInfo() << "Transitioning to multicopter";
     transition_result = action->transition_to_multicopter();
-    EXPECT_EQ(transition_result, Action::Result::SUCCESS);
+    EXPECT_EQ(transition_result, ActionResult::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
@@ -75,15 +75,15 @@ void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetr
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    Action::Result action_ret = action->arm();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    ActionResult action_ret = action->arm();
+    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     float altitude_m = 10.0f;
     action->set_takeoff_altitude(altitude_m);
 
     action_ret = action->takeoff();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
+    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
     const int wait_time_s = 10;
     std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
 
