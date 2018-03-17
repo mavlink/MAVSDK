@@ -40,8 +40,8 @@ TEST_F(SitlTest, FollowMeOneLocation)
         sleep_for(seconds(1));
     }
 
-    Action::Result action_ret = action->arm();
-    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+    ActionResult action_ret = action->arm();
+    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
 
     telemetry->flight_mode_async(
     std::bind([&](Telemetry::FlightMode flight_mode) {
@@ -53,7 +53,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     }, std::placeholders::_1));
 
     action_ret = action->takeoff();
-    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
 
     sleep_for(seconds(5)); // let it reach takeoff altitude
 
@@ -77,7 +77,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
 
     action_ret = action->land();
-    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
     sleep_for(seconds(2)); // let the device land
 }
 
@@ -100,8 +100,8 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
         sleep_for(seconds(1));
     }
 
-    Action::Result action_ret = action->arm();
-    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+    ActionResult action_ret = action->arm();
+    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
 
     telemetry->flight_mode_async(
     std::bind([&](Telemetry::FlightMode flight_mode) {
@@ -114,7 +114,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     }, std::placeholders::_1));
 
     action_ret = action->takeoff();
-    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
 
     sleep_for(seconds(5));
 
@@ -143,7 +143,7 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     sleep_for(seconds(2)); // to watch flight mode change from "FollowMe" to default "HOLD"
 
     action_ret = action->land();
-    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
+    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
     sleep_for(seconds(2)); // let it land
 }
 

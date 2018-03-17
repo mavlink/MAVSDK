@@ -20,7 +20,7 @@ public:
 
         auto *rpc_action_result = new dronecore::rpc::action::ActionResult();
         rpc_action_result->set_result(rpc_result);
-        rpc_action_result->set_result_str(dronecore::Action::result_str(action_result));
+        rpc_action_result->set_result_str(dronecore::action_result_str(action_result));
 
         response->set_allocated_action_result(rpc_action_result);
 
@@ -36,7 +36,7 @@ public:
 
         auto *rpc_action_result = new dronecore::rpc::action::ActionResult();
         rpc_action_result->set_result(rpc_result);
-        rpc_action_result->set_result_str(dronecore::Action::result_str(action_result));
+        rpc_action_result->set_result_str(dronecore::action_result_str(action_result));
 
         response->set_allocated_action_result(rpc_action_result);
 
@@ -52,7 +52,7 @@ public:
 
         auto *rpc_action_result = new dronecore::rpc::action::ActionResult();
         rpc_action_result->set_result(rpc_result);
-        rpc_action_result->set_result_str(dronecore::Action::result_str(action_result));
+        rpc_action_result->set_result_str(dronecore::action_result_str(action_result));
 
         response->set_allocated_action_result(rpc_action_result);
 

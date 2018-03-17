@@ -8,7 +8,7 @@
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 
-void receive_result(Action::Result result);
+void receive_result(ActionResult result);
 void receive_health_all_ok(bool all_ok);
 void receive_in_air(bool in_air);
 
@@ -59,10 +59,10 @@ TEST_F(SitlTest, ActionAsyncHover)
 }
 
 
-void receive_result(Action::Result result)
+void receive_result(ActionResult result)
 {
     LogDebug() << "got result: " << unsigned(result);
-    EXPECT_EQ(result, Action::Result::SUCCESS);
+    EXPECT_EQ(result, ActionResult::SUCCESS);
 }
 
 void receive_health_all_ok(bool all_ok)

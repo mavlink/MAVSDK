@@ -13,42 +13,42 @@ Action::~Action()
 {
 }
 
-Action::Result Action::arm() const
+ActionResult Action::arm() const
 {
     return _impl->arm();
 }
 
-Action::Result Action::disarm() const
+ActionResult Action::disarm() const
 {
     return _impl->disarm();
 }
 
-Action::Result Action::kill() const
+ActionResult Action::kill() const
 {
     return _impl->kill();
 }
 
-Action::Result Action::takeoff() const
+ActionResult Action::takeoff() const
 {
     return _impl->takeoff();
 }
 
-Action::Result Action::land() const
+ActionResult Action::land() const
 {
     return _impl->land();
 }
 
-Action::Result Action::return_to_launch() const
+ActionResult Action::return_to_launch() const
 {
     return _impl->return_to_launch();
 }
 
-Action::Result Action::transition_to_fixedwing() const
+ActionResult Action::transition_to_fixedwing() const
 {
     return _impl->transition_to_fixedwing();
 }
 
-Action::Result Action::transition_to_multicopter() const
+ActionResult Action::transition_to_multicopter() const
 {
     return _impl->transition_to_multicopter();
 }
@@ -112,35 +112,5 @@ float Action::get_max_speed_m_s() const
 {
     return _impl->get_max_speed_m_s();
 }
-
-const char *Action::result_str(Result result)
-{
-    switch (result) {
-        case Result::SUCCESS:
-            return "Success";
-        case Result::NO_DEVICE:
-            return "No device";
-        case Result::CONNECTION_ERROR:
-            return "Connection error";
-        case Result::BUSY:
-            return "Busy";
-        case Result::COMMAND_DENIED:
-            return "Command denied";
-        case Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN:
-            return "Command denied, landed state is unknown";
-        case Result::COMMAND_DENIED_NOT_LANDED:
-            return "Command denied, not landed";
-        case Result::TIMEOUT:
-            return "Timeout";
-        case Result::VTOL_TRANSITION_SUPPORT_UNKNOWN:
-            return "VTOL transition unknown";
-        case Result::NO_VTOL_TRANSITION_SUPPORT:
-            return "No VTOL transition support";
-        case Result::UNKNOWN:
-        default:
-            return "Unknown";
-    }
-}
-
 
 } // namespace dronecore

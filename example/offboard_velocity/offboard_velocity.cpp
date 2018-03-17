@@ -26,10 +26,10 @@ using std::chrono::seconds;
 #define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
 
 // Handles Action's result
-inline void action_error_exit(Action::Result result, const std::string &message)
+inline void action_error_exit(ActionResult result, const std::string &message)
 {
-    if (result != Action::Result::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(
+    if (result != ActionResult::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(
                       result) << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -192,11 +192,11 @@ int main(int, char **)
     }
     std::cout << "Device is ready" << std::endl;
 
-    Action::Result arm_result = action->arm();
+    ActionResult arm_result = action->arm();
     action_error_exit(arm_result, "Arming failed");
     std::cout << "Armed" << std::endl;
 
-    Action::Result takeoff_result = action->takeoff();
+    ActionResult takeoff_result = action->takeoff();
     action_error_exit(takeoff_result, "Takeoff failed");
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5));
@@ -214,7 +214,7 @@ int main(int, char **)
         return EXIT_FAILURE;
     }
 
-    const Action::Result land_result = action->land();
+    const ActionResult land_result = action->land();
     action_error_exit(land_result, "Landing failed");
 
     // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
