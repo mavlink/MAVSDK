@@ -2,6 +2,7 @@
 #include "global_include.h"
 #include "dronecore_impl.h"
 #include "mavlink_include.h"
+#include "mavlink_system.h"
 #include "plugin_impl_base.h"
 #include <functional>
 #include <algorithm>
@@ -15,31 +16,16 @@ namespace dronecore {
 using namespace std::placeholders; // for `_1`
 
 System::System(DroneCoreImpl &parent,
-               uint8_t system_id) :
-    _system_id(system_id),
-    _parent(parent),
-    _params(*this),
-    _commands(*this),
-    _timeout_handler(_time),
-    _call_every_handler(_time)
+               uint8_t system_id,
+               uint8_t component_id)
 {
-    _system_thread = new std::thread(system_thread, this);
-
-    register_mavlink_message_handler(
-        MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&System::process_heartbeat, this, _1), this);
-
-    register_mavlink_message_handler(
-        MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        std::bind(&System::process_autopilot_version, this, _1), this);
-
-    register_mavlink_message_handler(
-        MAVLINK_MSG_ID_STATUSTEXT,
-        std::bind(&System::process_statustext, this, _1), this);
+    _mavlink_system = std::make_shared<MAVLinkSystem>(parent,
+                                                      system_id, component_id);
 }
 
 System::~System()
 {
+<<<<<<< 2574d38542c2c9f5b61778287af211ff857abd73:core/system.cpp~Change class name `Device` to `System` (#318)
     _should_exit = true;
     unregister_all_mavlink_message_handlers(this);
 
@@ -299,62 +285,46 @@ void System::send_heartbeat(System &self)
     mavlink_msg_heartbeat_pack(_own_system_id, _own_component_id, &message,
                                MAV_TYPE_GCS, MAV_AUTOPILOT_INVALID, 0, 0, 0);
     self.send_message(message);
+=======
 }
 
-bool System::send_message(const mavlink_message_t &message)
+bool System::is_standalone() const
 {
-    if (_communication_locked) {
-        return false;
-    }
-
-#if MESSAGE_DEBUGGING==1
-    LogDebug() << "Sending msg " << size_t(message.msgid);
-#endif
-    return _parent.send_message(message);
+    return _mavlink_system->is_standalone();
 }
 
-void System::request_autopilot_version()
+bool System::is_autopilot() const
 {
-    if (_uuid_initialized) {
-        // Already initialized, we can exit.
-        return;
-    }
-
-    if (!_autopilot_version_pending && _uuid_retries >= 3) {
-        // We give up getting a UUID and use the system ID.
-
-        LogWarn() << "No UUID received, using system ID instead.";
-        _uuid = _system_id;
-        _uuid_initialized = true;
-        set_connected();
-        return;
-    }
-
-    _autopilot_version_pending = true;
-
-    // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
-    send_command_with_ack_async(
-        MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-        MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-        nullptr,
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT
-    );
-    ++_uuid_retries;
-
-    // We set a timeout to stay "pending" for half a second. This way, we don't give up too
-    // early e.g. because multiple components send heartbeats and we receive them all at once
-    // and run out of retries.
-
-    // We create a temp reference, so we don't need to capture `this`.
-    auto &pending_tmp = _autopilot_version_pending;
-    register_timeout_handler(
-    [&pending_tmp]() {
-        pending_tmp = false;
-    },
-    0.5,
-    &_autopilot_version_timed_out_cookie);
+    return _mavlink_system->is_autopilot();
 }
 
+bool System::has_camera(uint8_t camera_id) const
+{
+    return _mavlink_system->has_camera(camera_id);
+}
+
+bool System::has_gimbal() const
+{
+    return _mavlink_system->has_gimbal();
+}
+
+void System::add_new_component(uint8_t component_id)
+{
+    return _mavlink_system->add_new_component(component_id);
+>>>>>>> core, plugins: Re-organize System class to fix #325:core/system.cpp
+}
+
+void System::process_mavlink_message(const mavlink_message_t &message)
+{
+    return _mavlink_system->process_mavlink_message(message);
+}
+
+void System::set_system_id(uint8_t system_id)
+{
+    return _mavlink_system->set_system_id(system_id);
+}
+
+<<<<<<< 2574d38542c2c9f5b61778287af211ff857abd73:core/system.cpp~Change class name `Device` to `System` (#318)
 void System::set_connected()
 {
     bool enable_needed = false;
@@ -385,379 +355,22 @@ void System::set_connected()
 }
 
 void System::set_disconnected()
+=======
+bool System::is_connected() const
+>>>>>>> core, plugins: Re-organize System class to fix #325:core/system.cpp
 {
-    {
-        std::lock_guard<std::mutex> lock(_connection_mutex);
-
-        // This might not be needed because this is probably called from the triggered
-        // timeout anyway but it should also do no harm.
-        //unregister_timeout_handler(_heartbeat_timeout_cookie);
-        //_heartbeat_timeout_cookie = nullptr;
-
-        _connected = false;
-        _parent.notify_on_timeout(_uuid);
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
-        for (auto plugin_impl : _plugin_impls) {
-            plugin_impl->disable();
-        }
-    }
+    return _mavlink_system->is_connected();
 }
 
 uint64_t System::get_uuid() const
 {
     // We want to support UUIDs if the autopilot tells us.
-    return _uuid;
+    return _mavlink_system->get_uuid();
 }
 
 uint8_t System::get_system_id() const
 {
-    return _system_id;
+    return _mavlink_system->get_system_id();
 }
-
-#if 0
-uint8_t System::get_component_id() const
-{
-    return _component_id;
-}
-#endif
-
-void System::set_system_id(uint8_t system_id)
-{
-    _system_id = system_id;
-}
-
-void System::set_param_float_async(const std::string &name, float value, success_t callback)
-{
-    MavlinkParameters::ParamValue param_value;
-    param_value.set_float(value);
-    _params.set_param_async(name, param_value, callback);
-}
-
-void System::set_param_int_async(const std::string &name, int32_t value, success_t callback)
-{
-    MavlinkParameters::ParamValue param_value;
-    param_value.set_int(value);
-    _params.set_param_async(name, param_value, callback);
-}
-
-void System::set_param_ext_float_async(const std::string &name, float value, success_t callback)
-{
-    MavlinkParameters::ParamValue param_value;
-    param_value.set_float(value);
-    _params.set_param_async(name, param_value, callback, true);
-}
-
-void System::set_param_ext_int_async(const std::string &name, int32_t value, success_t callback)
-{
-    MavlinkParameters::ParamValue param_value;
-    param_value.set_int(value);
-    _params.set_param_async(name, param_value, callback, true);
-}
-
-void System::get_param_float_async(const std::string &name,
-                                   get_param_float_callback_t callback)
-{
-    _params.get_param_async(name, std::bind(&System::receive_float_param, _1, _2,
-                                            callback));
-}
-
-MavlinkCommands::Result System::set_flight_mode(FlightMode system_mode)
-{
-    const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-    const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
-
-    const uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED
-                         | flag_safety_armed
-                         | flag_hitl_enabled;
-
-    // Note: the safety flag is not needed in future versions of the PX4 Firmware
-    //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = 0;
-
-    switch (system_mode) {
-        case FlightMode::HOLD:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-            break;
-        case FlightMode::RETURN_TO_LAUNCH:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
-            break;
-        case FlightMode::TAKEOFF:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
-            break;
-        case FlightMode::LAND:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
-            break;
-        case FlightMode::MISSION:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
-            break;
-        case FlightMode::FOLLOW_ME:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
-            break;
-        case FlightMode::OFFBOARD:
-            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
-            break;
-        default :
-            LogErr() << "Unknown Flight mode.";
-            return MavlinkCommands::Result::ERROR;
-
-    }
-
-    MavlinkCommands::Result ret = send_command_with_ack(
-                                      MAV_CMD_DO_SET_MODE,
-                                      MavlinkCommands::Params {float(mode),
-                                                               float(custom_mode),
-                                                               float(custom_sub_mode),
-                                                               NAN, NAN, NAN, NAN},
-                                      MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
-
-    return ret;
-}
-
-void System::set_flight_mode_async(FlightMode system_mode, command_result_callback_t callback)
-{
-    const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-    const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
-
-    const uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED
-                         | flag_safety_armed
-                         | flag_hitl_enabled;
-
-    // Note: the safety flag is not needed in future versions of the PX4 Firmware
-    //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = 0;
-
-    switch (system_mode) {
-        case FlightMode::HOLD:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-            break;
-        case FlightMode::RETURN_TO_LAUNCH:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
-            break;
-        case FlightMode::TAKEOFF:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
-            break;
-        case FlightMode::LAND:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
-            break;
-        case FlightMode::MISSION:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
-            break;
-        case FlightMode::FOLLOW_ME:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
-            break;
-        case FlightMode::OFFBOARD:
-            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
-            break;
-        default :
-            LogErr() << "Unknown flight mode.";
-            if (callback) {
-                callback(MavlinkCommands::Result::ERROR, NAN);
-            }
-            return ;
-    }
-
-
-    send_command_with_ack_async(MAV_CMD_DO_SET_MODE,
-                                MavlinkCommands::Params {float(mode),
-                                                         float(custom_mode),
-                                                         float(custom_sub_mode),
-                                                         NAN, NAN, NAN, NAN},
-                                callback,
-                                MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
-}
-
-void System::get_param_int_async(const std::string &name,
-                                 get_param_int_callback_t callback)
-{
-    _params.get_param_async(name, std::bind(&System::receive_int_param, _1, _2,
-                                            callback));
-}
-
-void System::get_param_ext_float_async(const std::string &name,
-                                       get_param_float_callback_t callback)
-{
-    _params.get_param_async(name, std::bind(&System::receive_float_param, _1, _2,
-                                            callback), true);
-}
-
-void System::get_param_ext_int_async(const std::string &name,
-                                     get_param_int_callback_t callback)
-{
-    _params.get_param_async(name, std::bind(&System::receive_int_param, _1, _2,
-                                            callback), true);
-}
-
-void System::receive_float_param(bool success, MavlinkParameters::ParamValue value,
-                                 get_param_float_callback_t callback)
-{
-    if (callback) {
-        callback(success, value.get_float());
-    }
-}
-
-void System::receive_int_param(bool success, MavlinkParameters::ParamValue value,
-                               get_param_int_callback_t callback)
-{
-    if (callback) {
-        callback(success, value.get_int());
-    }
-}
-
-uint8_t System::get_autopilot_id() const
-{
-    for (auto compid : _components)
-        if (compid == MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
-            return compid;
-        }
-    // FIXME: Not sure what should be returned if autopilot is not found
-    return uint8_t(0);
-}
-
-std::vector<uint8_t> System::get_camera_ids() const
-{
-    std::vector<uint8_t> camera_ids;
-    camera_ids.clear();
-
-    for (auto compid : _components)
-        if (compid >= MAV_COMP_ID_CAMERA && compid <= MAV_COMP_ID_CAMERA6) {
-            camera_ids.push_back(compid);
-        }
-    return camera_ids;
-}
-
-uint8_t System::get_gimbal_id() const
-{
-    for (auto compid : _components)
-        if (compid == MAV_COMP_ID_GIMBAL) {
-            return compid;
-        }
-    return uint8_t(0);
-}
-
-MavlinkCommands::Result System::send_command_with_ack(
-    uint16_t command, const MavlinkCommands::Params &params, uint8_t component_id)
-{
-    if (_system_id == 0 && _components.size() == 0) {
-        return MavlinkCommands::Result::NO_SYSTEM;
-    }
-
-    const uint8_t component_id_to_use =
-        ((component_id != 0) ? component_id : get_autopilot_id());
-
-    return _commands.send_command(command, params, _system_id, component_id_to_use);
-}
-
-void System::send_command_with_ack_async(uint16_t command,
-                                         const MavlinkCommands::Params &params,
-                                         command_result_callback_t callback,
-                                         uint8_t component_id)
-{
-    if (_system_id == 0 && _components.size() == 0) {
-        if (callback) {
-            callback(MavlinkCommands::Result::NO_SYSTEM, NAN);
-        }
-        return;
-    }
-
-    const uint8_t component_id_to_use =
-        ((component_id != 0) ? component_id : _components.size() == 0);
-
-    _commands.queue_command_async(command, params, _system_id, component_id_to_use,
-                                  callback);
-}
-
-MavlinkCommands::Result System::set_msg_rate(uint16_t message_id, double rate_hz,
-                                             uint8_t component_id)
-{
-    // If left at -1 it will stop the message stream.
-    float interval_us = -1.0f;
-    if (rate_hz > 0) {
-        interval_us = 1e6f / static_cast<float>(rate_hz);
-    }
-
-    if (component_id != 0) {
-        return send_command_with_ack(
-                   MAV_CMD_SET_MESSAGE_INTERVAL,
-                   MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
-                   component_id);
-    } else {
-        return send_command_with_ack(
-                   MAV_CMD_SET_MESSAGE_INTERVAL,
-                   MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
-    }
-}
-
-void System::set_msg_rate_async(uint16_t message_id, double rate_hz,
-                                command_result_callback_t callback, uint8_t component_id)
-{
-    // If left at -1 it will stop the message stream.
-    float interval_us = -1.0f;
-    if (rate_hz > 0) {
-        interval_us = 1e6f / static_cast<float>(rate_hz);
-    }
-
-    if (component_id != 0) {
-        send_command_with_ack_async(
-            MAV_CMD_SET_MESSAGE_INTERVAL,
-            MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
-            callback,
-            component_id);
-    } else {
-        send_command_with_ack_async(
-            MAV_CMD_SET_MESSAGE_INTERVAL,
-            MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
-            callback);
-    }
-}
-
-void System::register_plugin(PluginImplBase *plugin_impl)
-{
-    assert(plugin_impl);
-
-    plugin_impl->init();
-
-    {
-        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
-        _plugin_impls.push_back(plugin_impl);
-    }
-
-    // If we're connected already, let's enable it straightaway.
-    if (_connected) {
-        plugin_impl->enable();
-    }
-}
-
-void System::unregister_plugin(PluginImplBase *plugin_impl)
-{
-    assert(plugin_impl);
-
-    plugin_impl->disable();
-    plugin_impl->deinit();
-
-    // Remove first, so it won't get enabled/disabled anymore.
-    {
-        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
-        auto found = std::find(_plugin_impls.begin(), _plugin_impls.end(), plugin_impl);
-        if (found != _plugin_impls.end()) {
-            _plugin_impls.erase(found);
-        }
-    }
-}
-
-void System::lock_communication()
-{
-    _communication_locked = true;
-}
-
-void System::unlock_communication()
-{
-    _communication_locked = false;
-}
-
 
 } // namespace dronecore

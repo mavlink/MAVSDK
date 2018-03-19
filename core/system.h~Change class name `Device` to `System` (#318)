@@ -17,9 +17,11 @@
 
 namespace dronecore {
 
+class MAVLinkSystem;
 class DroneCoreImpl;
 class PluginImplBase;
 
+<<<<<<< 2574d38542c2c9f5b61778287af211ff857abd73:core/system.h~Change class name `Device` to `System` (#318)
 
 /**
  * @brief This represents GCS DroneCore client.
@@ -30,6 +32,8 @@ struct Self {
     static constexpr MAV_TYPE type = MAV_TYPE_GCS;
 };
 
+=======
+>>>>>>> core, plugins: Re-organize System class to fix #325:core/system.h
 /**
  * @brief This class represents the MAVLink based Vehicle/Robot
  * or a stand-alone device whom DroneCore application want to interact with.
@@ -37,20 +41,10 @@ struct Self {
 class System
 {
 public:
-    enum class FlightMode {
-        HOLD = 0,
-        RETURN_TO_LAUNCH,
-        TAKEOFF,
-        LAND,
-        MISSION,
-        FOLLOW_ME,
-        OFFBOARD,
-    };
-
-    explicit System(DroneCoreImpl &parent,
-                    uint8_t system_id);
+    explicit System(DroneCoreImpl &parent, uint8_t system_id, uint8_t comp_id);
     ~System();
 
+<<<<<<< 2574d38542c2c9f5b61778287af211ff857abd73:core/system.h~Change class name `Device` to `System` (#318)
     void process_mavlink_message(const mavlink_message_t &message);
 
     typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
@@ -99,6 +93,8 @@ public:
 
 <<<<<<< 8a891c1f2c7d9793f35a1b11efed3fb46b33413f:core/system.h~Change class name `Device` to `System` (#318)
 =======
+=======
+>>>>>>> core, plugins: Re-organize System class to fix #325:core/system.h
     /**
      * @brief Checks whether the system is a standalone (Non-autopilot).
      * @return true if stand alone, false otherwise.
@@ -127,6 +123,7 @@ public:
      */
     bool has_gimbal() const;
 
+<<<<<<< 2574d38542c2c9f5b61778287af211ff857abd73:core/system.h~Change class name `Device` to `System` (#318)
     /**
      * @brief Get UUID of the system.
      *
@@ -179,13 +176,18 @@ public:
     // but nevertheless there for other plugins that can be added from external.
     void lock_communication();
     void unlock_communication();
+=======
+>>>>>>> core, plugins: Re-organize System class to fix #325:core/system.h
 
+    friend class DroneCoreImpl;
+    friend class PluginImplBase;
     // Non-copyable
     System(const System &) = delete;
     const System &operator=(const System &) = delete;
 
 private:
 
+<<<<<<< 2574d38542c2c9f5b61778287af211ff857abd73:core/system.h~Change class name `Device` to `System` (#318)
     void process_heartbeat(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
     void process_statustext(const mavlink_message_t &message);
@@ -258,12 +260,18 @@ private:
     Time _time {};
 
     std::atomic<bool> _communication_locked {false};
+=======
+    void add_new_component(uint8_t component_id);
+    void process_mavlink_message(const mavlink_message_t &message);
+    void set_system_id(uint8_t system_id);
+    bool is_connected() const;
+    uint64_t get_uuid() const;
+    uint8_t get_system_id() const;
+>>>>>>> core, plugins: Re-organize System class to fix #325:core/system.h
 
-    std::mutex _plugin_impls_mutex {};
-    std::vector<PluginImplBase *> _plugin_impls {};
+    std::shared_ptr<MAVLinkSystem> mavlink_system() { return _mavlink_system; };
 
-    // We used set to maintain unique component ids
-    std::unordered_set<uint8_t> _components;
+    std::shared_ptr<MAVLinkSystem> _mavlink_system;
 };
 
 
