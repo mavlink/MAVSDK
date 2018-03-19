@@ -2,18 +2,6 @@
 
 #include "global_include.h"
 #include "mavlink_include.h"
-#include "mavlink_parameters.h"
-#include "mavlink_commands.h"
-#include "timeout_handler.h"
-#include "call_every_handler.h"
-#include <cstdint>
-#include <functional>
-#include <atomic>
-#include <vector>
-#include <unordered_set>
-#include <map>
-#include <thread>
-#include <mutex>
 
 namespace dronecore {
 
