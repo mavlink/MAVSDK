@@ -9,12 +9,12 @@
 
 namespace dronecore {
 
-class System;
+class MAVLinkSystem;
 
 class MavlinkCommands
 {
 public:
-    explicit MavlinkCommands(System &parent);
+    explicit MavlinkCommands(MAVLinkSystem &parent);
     ~MavlinkCommands();
 
     enum class Result {
@@ -74,7 +74,7 @@ private:
     void receive_command_ack(mavlink_message_t message);
     void receive_timeout();
 
-    System &_parent;
+    MAVLinkSystem &_parent;
     LockedQueue<Work> _work_queue {};
 
     void *_timeout_cookie = nullptr;

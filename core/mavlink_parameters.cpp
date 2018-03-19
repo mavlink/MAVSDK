@@ -1,9 +1,9 @@
 #include "mavlink_parameters.h"
-#include "system.h"
+#include "mavlink_system.h"
 
 namespace dronecore {
 
-MavlinkParameters::MavlinkParameters(System &parent) :
+MavlinkParameters::MavlinkParameters(MAVLinkSystem &parent) :
     _parent(parent)
 {
     _parent.register_mavlink_message_handler(
@@ -110,8 +110,8 @@ void MavlinkParameters::do_work()
             memcpy(&param_value_buf[0], &temp_to_copy, sizeof(float));
 
             // FIXME: extended currently always go to the camera component
-            mavlink_msg_param_ext_set_pack(ControlSystem::system_id,
-                                           ControlSystem::component_id,
+            mavlink_msg_param_ext_set_pack(ControllingSystem::system_id,
+                                           ControllingSystem::component_id,
                                            &message,
                                            _parent.get_system_id(),
                                            MAV_COMP_ID_CAMERA,
@@ -120,8 +120,8 @@ void MavlinkParameters::do_work()
                                            work.param_value.get_mav_param_type());
         } else {
             // Param set is intended for Autopilot only.
-            mavlink_msg_param_set_pack(ControlSystem::system_id,
-                                       ControlSystem::component_id,
+            mavlink_msg_param_set_pack(ControllingSystem::system_id,
+                                       ControllingSystem::component_id,
                                        &message,
                                        _parent.get_system_id(),
                                        _parent.get_autopilot_id(),
@@ -161,8 +161,8 @@ void MavlinkParameters::do_work()
 
         mavlink_message_t message = {};
         if (work.extended) {
-            mavlink_msg_param_ext_request_read_pack(ControlSystem::system_id,
-                                                    ControlSystem::component_id,
+            mavlink_msg_param_ext_request_read_pack(ControllingSystem::system_id,
+                                                    ControllingSystem::component_id,
                                                     &message,
                                                     _parent.get_system_id(),
                                                     MAV_COMP_ID_CAMERA,
@@ -171,14 +171,14 @@ void MavlinkParameters::do_work()
 
         } else {
             //LogDebug() << "request read: "
-            //    << (int)ControlSystem::system_id << ":"
-            //    << (int)ControlSystem::component_id <<
+            //    << (int)ControllingSystem::system_id << ":"
+            //    << (int)ControllingSystem::component_id <<
             //    " to "
             //    << (int)_parent.get_system_id() << ":"
             //    << (int)_parent.get_autopilot_id();
 
-            mavlink_msg_param_request_read_pack(ControlSystem::system_id,
-                                                ControlSystem::component_id,
+            mavlink_msg_param_request_read_pack(ControllingSystem::system_id,
+                                                ControllingSystem::component_id,
                                                 &message,
                                                 _parent.get_system_id(),
                                                 _parent.get_autopilot_id(),

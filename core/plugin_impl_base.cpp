@@ -6,6 +6,6 @@
 namespace dronecore {
 
 PluginImplBase::PluginImplBase(System &system) :
-    _parent(system) {}
+    _parent(system.mavlink_system()) {}
 
 } // namespace dronecore

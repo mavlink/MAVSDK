@@ -5,8 +5,8 @@
 #include <vector>
 
 #include "connection.h"
-#include "system.h"
 #include "dronecore.h"
+#include "system.h"
 #include "mavlink_include.h"
 
 namespace dronecore {
