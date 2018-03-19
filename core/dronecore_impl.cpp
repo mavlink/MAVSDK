@@ -6,6 +6,8 @@
 #include "global_include.h"
 #include "tcp_connection.h"
 #include "udp_connection.h"
+#include "system.h"
+#include "mavlink_system.h"
 
 #ifndef WINDOWS
 #include "serial_connection.h"
@@ -65,8 +67,7 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     if (!does_system_exist(message.sysid)) {
         make_system_with_component(message.sysid, message.compid);
     } else {
-        auto system = _systems.at(message.sysid);
-        system->add_new_component(message.compid);
+        _systems.at(message.sysid)->add_new_component(message.compid);
     }
 
     if (_should_exit) {
@@ -178,11 +179,11 @@ void DroneCoreImpl::add_connection(std::shared_ptr<Connection> new_connection)
 }
 
 ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
-                                                   const int remote_port)
+                                                   int remote_port)
 {
 
-    std::shared_ptr<Connection> new_conn = std::make_shared<TcpConnection>(*this, remote_ip,
-                                                                           remote_port);
+    std::shared_ptr<Connection> new_conn = std::make_shared<TcpConnection>(*this,
+                                                                           remote_ip, remote_port);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
@@ -214,7 +215,8 @@ std::vector<uint64_t> DroneCoreImpl::get_system_uuids() const
     std::vector<uint64_t> uuids = {};
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        uint64_t uuid = it->second->get_uuid();
+        auto mavlink_system = it->second->_mavlink_system;
+        uint64_t uuid = mavlink_system->get_uuid();
         if (uuid != 0) {
             uuids.push_back(uuid);
         }
@@ -310,8 +312,7 @@ void DroneCoreImpl::make_system_with_component(uint8_t system_id, uint8_t comp_i
     LogDebug() << "New: System ID: " << int(system_id)
                << " Comp ID: " << int(comp_id);
     // Make a system with its first component
-    auto new_system = std::make_shared<System>(*this, system_id);
-    new_system->add_new_component(comp_id);
+    auto new_system = std::make_shared<System>(*this, system_id, comp_id);
 
     _systems.insert(system_entry_t(system_id, new_system));
 }

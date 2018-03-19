@@ -5,6 +5,7 @@
 #include <mutex>
 
 #include "system.h"
+#include "mavlink_system.h"
 #include "mavlink_include.h"
 #include "mission.h"
 #include "plugin_impl_base.h"

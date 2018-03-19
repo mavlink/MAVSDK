@@ -1,6 +1,7 @@
 #pragma once
 
 #include "system.h"
+#include "mavlink_system.h"
 #include "gimbal.h"
 #include "plugin_impl_base.h"
 

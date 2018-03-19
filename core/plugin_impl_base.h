@@ -1,12 +1,15 @@
 #pragma once
+#include <memory>
 
 namespace dronecore {
 
 class System;
+class MAVLinkSystem;
 
 class PluginImplBase
 {
 public:
+
     explicit PluginImplBase(System &system);
     virtual ~PluginImplBase() = default;
 
@@ -56,7 +59,7 @@ public:
     const PluginImplBase &operator=(const PluginImplBase &) = delete;
 
 protected:
-    System &_parent;
+    std::shared_ptr<MAVLinkSystem> _parent;
 };
 
 } // namespace dronecore

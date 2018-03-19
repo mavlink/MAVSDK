@@ -1,5 +1,6 @@
 #include "info_impl.h"
 #include "system.h"
+#include "mavlink_system.h"
 #include "global_include.h"
 #include <functional>
 
@@ -10,30 +11,30 @@ InfoImpl::InfoImpl(System &system) :
     _version_mutex(),
     _version()
 {
-    _parent.register_plugin(this);
+    _parent->register_plugin(this);
 }
 
 InfoImpl::~InfoImpl()
 {
-    _parent.unregister_plugin(this);
+    _parent->unregister_plugin(this);
 }
 
 void InfoImpl::init()
 {
     using namespace std::placeholders; // for `_1`
 
-    _parent.register_mavlink_message_handler(
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&InfoImpl::process_heartbeat, this, _1), this);
 
-    _parent.register_mavlink_message_handler(
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&InfoImpl::process_autopilot_version, this, _1), this);
 }
 
 void InfoImpl::deinit()
 {
-    _parent.unregister_all_mavlink_message_handlers(this);
+    _parent->unregister_all_mavlink_message_handlers(this);
 }
 
 void InfoImpl::enable() {}
@@ -48,7 +49,7 @@ void InfoImpl::process_heartbeat(const mavlink_message_t &message)
         // We try to request more info if not all info is available.
         // We can't rely on System to request the autopilot_version,
         // so we do it here, anyway.
-        _parent.request_autopilot_version();
+        _parent->request_autopilot_version();
     }
 }
 
@@ -126,7 +127,7 @@ void InfoImpl::translate_binary_to_str(uint8_t *binary, unsigned binary_len,
 
 uint64_t InfoImpl::get_uuid() const
 {
-    return _parent.get_uuid();
+    return _parent->get_uuid();
 }
 
 bool InfoImpl::is_complete() const
