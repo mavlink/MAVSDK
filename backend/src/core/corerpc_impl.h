@@ -13,8 +13,8 @@ public:
     CoreServiceImpl(DroneCore &dc)
         : dc(dc) {}
 
-    Status SubscribeDevices(ServerContext *context,
-                            const rpc::core::SubscribeDevicesRequest *request,
+    Status SubscribeSystems(ServerContext *context,
+                            const rpc::core::SubscribeSystemsRequest *request,
                             ServerWriter<rpc::core::System> *writer) override
     {
         std::vector<uint64_t> list = dc.system_uuids();
