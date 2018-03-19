@@ -3,7 +3,6 @@
 #include "example.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
-#include "system.h"
 
 namespace dronecore {
 
