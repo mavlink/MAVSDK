@@ -48,7 +48,7 @@ int main(int /*argc*/, char ** /*argv*/)
     // If there were multiple, we could specify it with:
     // dc.system(uint64_t uuid);
     System &system = dc.system();
-    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(system);
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     // We want to listen to the altitude of the drone at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
@@ -74,7 +74,7 @@ int main(int /*argc*/, char ** /*argv*/)
         return 1;
     }
 
-    std::shared_ptr<Action> action = std::make_shared<Action>(system);
+    auto action = std::make_shared<Action>(system);
 
     // Arm vehicle
     std::cout << "Arming..." << std::endl;
