@@ -22,8 +22,9 @@ class DroneCoreImpl;
 class PluginImplBase;
 
 /**
- * @brief This class represents the MAVLink based Vehicle/Robot
- * or a stand-alone system whom DroneCore application want to interact with.
+ * @brief This class represents a system, made up of one or more components
+ * (e.g. autopilot, cameras, servos, gimbals, etc). Commonly System objects
+ * are used to interact with UAVs (including their components) and standalone cameras.
  */
 class System
 {
@@ -46,9 +47,9 @@ public:
     /**
      * @brief Checks whether the system has camera with the given camera ID.
      *
-     * A System may have atmost 6 cameras with ID ranging (1-6).
+     * A System may have several cameras with ID starting from 1.
      * When called without passing camera ID, it checks for the camera ID 1.
-     * @param camera_id ID of the camera in the range (1-6).
+     * @param camera_id ID of the camera starting from 1 onwards.
      * @return true if camera with the given camera ID is found, false otherwise.
      */
     bool has_camera(uint8_t camera_id = 1) const;

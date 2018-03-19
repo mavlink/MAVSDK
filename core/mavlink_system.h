@@ -21,19 +21,16 @@ class DroneCoreImpl;
 class PluginImplBase;
 
 
-/**
- * @brief This represents GCS DroneCore client.
- */
+// This represents DroneCore client application which is a GCS.
 struct ControllingSystem {
     static constexpr uint8_t system_id = 0;
     static constexpr uint8_t component_id = MAV_COMP_ID_SYSTEM_CONTROL;
     static constexpr MAV_TYPE type = MAV_TYPE_GCS;
 };
 
-/**
- * @brief This class represents the MAVLink based Vehicle/Robot
- * or a stand-alone system whom DroneCore application want to interact with.
- */
+// This class represents a MAVLink system, made up of one or more components
+// (e.g. autopilot, cameras, servos, gimbals, etc). Commonly MAVLinkSystem objects are
+// used to interact with UAVs (including their components) and standalone cameras.
 class MAVLinkSystem
 {
 public:
