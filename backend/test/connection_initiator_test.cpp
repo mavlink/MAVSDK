@@ -39,7 +39,7 @@ TEST(ConnectionInitiator, startAddsUDPConnection)
     initiator.start(dc, ARBITRARY_PORT);
 }
 
-TEST(ConnectionInitiator, startHangsUntilDeviceDiscovered)
+TEST(ConnectionInitiator, startHangsUntilSystemDiscovered)
 {
     ConnectionInitiator initiator;
     MockDroneCore dc;
