@@ -48,7 +48,7 @@ public:
     };
 
     explicit MAVLinkSystem(DroneCoreImpl &parent,
-                    uint8_t system_id, uint8_t component_id);
+                           uint8_t system_id, uint8_t component_id);
     ~MAVLinkSystem();
 
     void process_mavlink_message(const mavlink_message_t &message);
