@@ -87,9 +87,9 @@ int main(int argc, char **argv)
     // If there were multiple, we could specify it with:
     // dc.system(uint64_t uuid);
     System &system = dc.system();
-    std::shared_ptr<Action> action = std::make_shared<Action>(system);
-    std::shared_ptr<Mission> mission = std::make_shared<Mission>(system);
-    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(system);
+    auto action = std::make_shared<Action>(system);
+    auto mission = std::make_shared<Mission>(system);
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for system to be ready" << std::endl;

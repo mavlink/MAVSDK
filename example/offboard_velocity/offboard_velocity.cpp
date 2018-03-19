@@ -182,9 +182,9 @@ int main(int, char **)
 
     // System got discovered.
     System &system = dc.system();
-    std::shared_ptr<Action> action = std::make_shared<Action>(system);
-    std::shared_ptr<Offboard> offboard = std::make_shared<Offboard>(system);
-    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(system);
+    auto action = std::make_shared<Action>(system);
+    auto offboard = std::make_shared<Offboard>(system);
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     while (!telemetry->health_all_ok()) {
         std::cout << "Waiting for system to be ready" << std::endl;
