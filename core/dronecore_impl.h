@@ -3,6 +3,7 @@
 #include <map>
 #include <mutex>
 #include <vector>
+#include <atomic>
 
 #include "connection.h"
 #include "dronecore.h"
