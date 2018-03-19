@@ -16,7 +16,7 @@ namespace dronecore {
 using namespace std::placeholders; // for `_1`
 
 MAVLinkSystem::MAVLinkSystem(DroneCoreImpl &parent,
-               uint8_t system_id, uint8_t comp_id) :
+                             uint8_t system_id, uint8_t comp_id) :
     _system_id(system_id),
     _parent(parent),
     _params(*this),
@@ -62,8 +62,8 @@ bool MAVLinkSystem::is_connected() const
 }
 
 void MAVLinkSystem::register_mavlink_message_handler(uint16_t msg_id,
-                                              mavlink_message_handler_t callback,
-                                              const void *cookie)
+                                                     mavlink_message_handler_t callback,
+                                                     const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
 
@@ -89,8 +89,8 @@ void MAVLinkSystem::unregister_all_mavlink_message_handlers(const void *cookie)
 }
 
 void MAVLinkSystem::register_timeout_handler(std::function<void()> callback,
-                                      double duration_s,
-                                      void **cookie)
+                                             double duration_s,
+                                             void **cookie)
 {
     _timeout_handler.add(callback, duration_s, cookie);
 }
@@ -506,14 +506,16 @@ void MAVLinkSystem::set_param_int_async(const std::string &name, int32_t value, 
     _params.set_param_async(name, param_value, callback);
 }
 
-void MAVLinkSystem::set_param_ext_float_async(const std::string &name, float value, success_t callback)
+void MAVLinkSystem::set_param_ext_float_async(const std::string &name, float value,
+                                              success_t callback)
 {
     MavlinkParameters::ParamValue param_value;
     param_value.set_float(value);
     _params.set_param_async(name, param_value, callback, true);
 }
 
-void MAVLinkSystem::set_param_ext_int_async(const std::string &name, int32_t value, success_t callback)
+void MAVLinkSystem::set_param_ext_int_async(const std::string &name, int32_t value,
+                                            success_t callback)
 {
     MavlinkParameters::ParamValue param_value;
     param_value.set_int(value);
@@ -521,7 +523,7 @@ void MAVLinkSystem::set_param_ext_int_async(const std::string &name, int32_t val
 }
 
 void MAVLinkSystem::get_param_float_async(const std::string &name,
-                                   get_param_float_callback_t callback)
+                                          get_param_float_callback_t callback)
 {
     _params.get_param_async(name, std::bind(&MAVLinkSystem::receive_float_param, _1, _2,
                                             callback));
@@ -580,7 +582,8 @@ MavlinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
     return ret;
 }
 
-void MAVLinkSystem::set_flight_mode_async(FlightMode system_mode, command_result_callback_t callback)
+void MAVLinkSystem::set_flight_mode_async(FlightMode system_mode,
+                                          command_result_callback_t callback)
 {
     const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
     const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
@@ -635,28 +638,28 @@ void MAVLinkSystem::set_flight_mode_async(FlightMode system_mode, command_result
 }
 
 void MAVLinkSystem::get_param_int_async(const std::string &name,
-                                 get_param_int_callback_t callback)
+                                        get_param_int_callback_t callback)
 {
     _params.get_param_async(name, std::bind(&MAVLinkSystem::receive_int_param, _1, _2,
                                             callback));
 }
 
 void MAVLinkSystem::get_param_ext_float_async(const std::string &name,
-                                       get_param_float_callback_t callback)
+                                              get_param_float_callback_t callback)
 {
     _params.get_param_async(name, std::bind(&MAVLinkSystem::receive_float_param, _1, _2,
                                             callback), true);
 }
 
 void MAVLinkSystem::get_param_ext_int_async(const std::string &name,
-                                     get_param_int_callback_t callback)
+                                            get_param_int_callback_t callback)
 {
     _params.get_param_async(name, std::bind(&MAVLinkSystem::receive_int_param, _1, _2,
                                             callback), true);
 }
 
 void MAVLinkSystem::receive_float_param(bool success, MavlinkParameters::ParamValue value,
-                                 get_param_float_callback_t callback)
+                                        get_param_float_callback_t callback)
 {
     if (callback) {
         callback(success, value.get_float());
@@ -664,7 +667,7 @@ void MAVLinkSystem::receive_float_param(bool success, MavlinkParameters::ParamVa
 }
 
 void MAVLinkSystem::receive_int_param(bool success, MavlinkParameters::ParamValue value,
-                               get_param_int_callback_t callback)
+                                      get_param_int_callback_t callback)
 {
     if (callback) {
         callback(success, value.get_int());
@@ -716,9 +719,9 @@ MavlinkCommands::Result MAVLinkSystem::send_command_with_ack(
 }
 
 void MAVLinkSystem::send_command_with_ack_async(uint16_t command,
-                                         const MavlinkCommands::Params &params,
-                                         command_result_callback_t callback,
-                                         uint8_t component_id)
+                                                const MavlinkCommands::Params &params,
+                                                command_result_callback_t callback,
+                                                uint8_t component_id)
 {
     if (_system_id == 0 && _components.size() == 0) {
         if (callback) {
@@ -735,7 +738,7 @@ void MAVLinkSystem::send_command_with_ack_async(uint16_t command,
 }
 
 MavlinkCommands::Result MAVLinkSystem::set_msg_rate(uint16_t message_id, double rate_hz,
-                                             uint8_t component_id)
+                                                    uint8_t component_id)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
@@ -756,7 +759,7 @@ MavlinkCommands::Result MAVLinkSystem::set_msg_rate(uint16_t message_id, double 
 }
 
 void MAVLinkSystem::set_msg_rate_async(uint16_t message_id, double rate_hz,
-                                command_result_callback_t callback, uint8_t component_id)
+                                       command_result_callback_t callback, uint8_t component_id)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
