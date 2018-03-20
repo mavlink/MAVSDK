@@ -46,7 +46,7 @@ private:
     void receive_param_follow_distance(bool success, float distance);
     void receive_param_follow_direction(bool success, int32_t direction);
     void receive_param_responsiveness(bool success, float rsp);
-    FollowMe::Result to_follow_me_result(MavlinkCommands::Result result) const;
+    FollowMe::Result to_follow_me_result(MAVLinkCommands::Result result) const;
 
     bool is_target_location_set() const;
     void send_target_location();

@@ -121,9 +121,9 @@ private:
 
 
     static Telemetry::Result telemetry_result_from_command_result(
-        MavlinkCommands::Result command_result);
+        MAVLinkCommands::Result command_result);
 
-    static void command_result_callback(MavlinkCommands::Result command_result,
+    static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Telemetry::result_callback_t &callback);
 
     static Telemetry::FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);

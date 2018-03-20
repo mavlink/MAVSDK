@@ -100,7 +100,7 @@ bool OffboardImpl::is_active() const
     return (_mode != Mode::NOT_ACTIVE);
 }
 
-void OffboardImpl::receive_command_result(MavlinkCommands::Result result,
+void OffboardImpl::receive_command_result(MAVLinkCommands::Result result,
                                           const Offboard::result_callback_t &callback)
 {
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
@@ -295,20 +295,20 @@ void OffboardImpl::stop_sending_setpoints()
 }
 
 Offboard::Result
-OffboardImpl::offboard_result_from_command_result(MavlinkCommands::Result result)
+OffboardImpl::offboard_result_from_command_result(MAVLinkCommands::Result result)
 {
     switch (result) {
-        case MavlinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::SUCCESS:
             return Offboard::Result::SUCCESS;
-        case MavlinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NO_SYSTEM:
             return Offboard::Result::NO_SYSTEM;
-        case MavlinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::CONNECTION_ERROR:
             return Offboard::Result::CONNECTION_ERROR;
-        case MavlinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::BUSY:
             return Offboard::Result::BUSY;
-        case MavlinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::COMMAND_DENIED:
             return Offboard::Result::COMMAND_DENIED;
-        case MavlinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::TIMEOUT:
             return Offboard::Result::TIMEOUT;
         default:
             return Offboard::Result::UNKNOWN;

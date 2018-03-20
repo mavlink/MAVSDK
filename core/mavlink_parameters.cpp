@@ -3,28 +3,28 @@
 
 namespace dronecore {
 
-MavlinkParameters::MavlinkParameters(MAVLinkSystem &parent) :
+MAVLinkParameters::MAVLinkParameters(MAVLinkSystem &parent) :
     _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_VALUE,
-        std::bind(&MavlinkParameters::process_param_value, this, std::placeholders::_1), this);
+        std::bind(&MAVLinkParameters::process_param_value, this, std::placeholders::_1), this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_VALUE,
-        std::bind(&MavlinkParameters::process_param_ext_value, this, std::placeholders::_1), this);
+        std::bind(&MAVLinkParameters::process_param_ext_value, this, std::placeholders::_1), this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_ACK,
-        std::bind(&MavlinkParameters::process_param_ext_ack, this, std::placeholders::_1), this);
+        std::bind(&MAVLinkParameters::process_param_ext_ack, this, std::placeholders::_1), this);
 }
 
-MavlinkParameters::~MavlinkParameters()
+MAVLinkParameters::~MAVLinkParameters()
 {
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-void MavlinkParameters::set_param_async(const std::string &name,
+void MAVLinkParameters::set_param_async(const std::string &name,
                                         const ParamValue &value,
                                         set_param_callback_t callback,
                                         bool extended)
@@ -54,7 +54,7 @@ void MavlinkParameters::set_param_async(const std::string &name,
 }
 
 
-void MavlinkParameters::get_param_async(const std::string &name,
+void MAVLinkParameters::get_param_async(const std::string &name,
                                         get_param_callback_t callback,
                                         bool extended)
 {
@@ -77,13 +77,13 @@ void MavlinkParameters::get_param_async(const std::string &name,
     _get_param_queue.push_back(new_work);
 }
 
-//void MavlinkParameters::save_async()
+//void MAVLinkParameters::save_async()
 //{
 //    _parent.send_command(MAV_CMD_PREFLIGHT_STORAGE,
-//                          MavlinkCommands::Params {1.0f, 1.0f, 0.0f, NAN, NAN, NAN, NAN});
+//                          MAVLinkCommands::Params {1.0f, 1.0f, 0.0f, NAN, NAN, NAN, NAN});
 //}
 
-void MavlinkParameters::do_work()
+void MAVLinkParameters::do_work()
 {
     std::lock_guard<std::mutex> lock(_state_mutex);
 
@@ -142,7 +142,7 @@ void MavlinkParameters::do_work()
         // _last_request_time = _parent.get_time().steady_time();
 
         // We want to get notified if a timeout happens
-        _parent.register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
+        _parent.register_timeout_handler(std::bind(&MAVLinkParameters::receive_timeout, this),
                                          0.5,
                                          &_timeout_cookie);
 
@@ -199,13 +199,13 @@ void MavlinkParameters::do_work()
         // _last_request_time = _parent.get_time().steady_time();
 
         // We want to get notified if a timeout happens
-        _parent.register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
+        _parent.register_timeout_handler(std::bind(&MAVLinkParameters::receive_timeout, this),
                                          0.5,
                                          &_timeout_cookie);
     }
 }
 
-void MavlinkParameters::process_param_value(const mavlink_message_t &message)
+void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
 {
     // LogDebug() << "getting param value";
 
@@ -262,7 +262,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
     }
 }
 
-void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message)
+void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message)
 {
     // LogDebug() << "getting param ext value";
     mavlink_param_ext_value_t param_ext_value;
@@ -320,7 +320,7 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
 #endif
 }
 
-void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
+void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 {
     // LogDebug() << "getting param ext ack";
 
@@ -376,7 +376,7 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
     }
 }
 
-void MavlinkParameters::receive_timeout()
+void MAVLinkParameters::receive_timeout()
 {
     std::lock_guard<std::mutex> lock(_state_mutex);
 

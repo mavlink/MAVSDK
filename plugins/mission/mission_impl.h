@@ -75,7 +75,7 @@ private:
 
     void report_progress();
 
-    void receive_command_result(MavlinkCommands::Result result,
+    void receive_command_result(MAVLinkCommands::Result result,
                                 const Mission::result_callback_t &callback);
 
     void download_next_mission_item();

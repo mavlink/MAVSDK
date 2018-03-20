@@ -5,25 +5,25 @@
 
 namespace dronecore {
 
-class MavlinkChannels
+class MAVLinkChannels
 {
 public:
-    static MavlinkChannels &Instance()
+    static MAVLinkChannels &Instance()
     {
         // This should be thread-safe in C++11.
-        static MavlinkChannels instance;
+        static MAVLinkChannels instance;
 
         return instance;
     }
 
     // delete copy and move constructors and assign operators
-    MavlinkChannels(MavlinkChannels const &) = delete;            // Copy construct
-    MavlinkChannels(MavlinkChannels &&) = delete;                 // Move construct
-    MavlinkChannels &operator=(MavlinkChannels const &) = delete; // Copy assign
-    MavlinkChannels &operator=(MavlinkChannels &&) = delete;      // Move assign
+    MAVLinkChannels(MAVLinkChannels const &) = delete;            // Copy construct
+    MAVLinkChannels(MAVLinkChannels &&) = delete;                 // Move construct
+    MAVLinkChannels &operator=(MAVLinkChannels const &) = delete; // Copy assign
+    MAVLinkChannels &operator=(MAVLinkChannels &&) = delete;      // Move assign
 
-    MavlinkChannels();
-    ~MavlinkChannels();
+    MAVLinkChannels();
+    ~MAVLinkChannels();
 
     /**
      * Check out a free channel and mark it as used.

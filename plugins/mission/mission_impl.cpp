@@ -834,7 +834,7 @@ void MissionImpl::report_progress()
     _progress_callback(current_mission_item(), total_mission_items());
 }
 
-void MissionImpl::receive_command_result(MavlinkCommands::Result result,
+void MissionImpl::receive_command_result(MAVLinkCommands::Result result,
                                          const Mission::result_callback_t &callback)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -846,7 +846,7 @@ void MissionImpl::receive_command_result(MavlinkCommands::Result result,
     // We got a command back, so we can get rid of the timeout handler.
     _parent->unregister_timeout_handler(_timeout_cookie);
 
-    if (result == MavlinkCommands::Result::SUCCESS) {
+    if (result == MAVLinkCommands::Result::SUCCESS) {
         report_mission_result(callback, Mission::Result::SUCCESS);
     } else {
         report_mission_result(callback, Mission::Result::ERROR);
