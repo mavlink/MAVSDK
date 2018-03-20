@@ -30,9 +30,9 @@ private:
     void process_logging_data(const mavlink_message_t &message);
     void process_logging_data_acked(const mavlink_message_t &message);
 
-    static Logging::Result logging_result_from_command_result(MavlinkCommands::Result result);
+    static Logging::Result logging_result_from_command_result(MAVLinkCommands::Result result);
 
-    static void command_result_callback(MavlinkCommands::Result command_result,
+    static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Logging::result_callback_t &callback);
 };
 

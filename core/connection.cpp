@@ -18,11 +18,11 @@ Connection::~Connection()
 bool Connection::start_mavlink_receiver()
 {
     uint8_t channel;
-    if (!MavlinkChannels::Instance().checkout_free_channel(channel)) {
+    if (!MAVLinkChannels::Instance().checkout_free_channel(channel)) {
         return false;
     }
 
-    _mavlink_receiver.reset(new MavlinkReceiver(channel));
+    _mavlink_receiver.reset(new MAVLinkReceiver(channel));
     return true;
 }
 
@@ -33,7 +33,7 @@ void Connection::stop_mavlink_receiver()
         uint8_t used_channel = _mavlink_receiver->get_channel();
         // Destroy receiver before giving the channel back.
         _mavlink_receiver.reset();
-        MavlinkChannels::Instance().checkin_used_channel(used_channel);
+        MAVLinkChannels::Instance().checkin_used_channel(used_channel);
     }
 }
 

@@ -43,7 +43,7 @@ Logging::Result LoggingImpl::start_logging() const
     return logging_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_LOGGING_START,
-                   MavlinkCommands::Params {0.0f, // Format: ULog
+                   MAVLinkCommands::Params {0.0f, // Format: ULog
                                             0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}));
 }
 
@@ -52,14 +52,14 @@ Logging::Result LoggingImpl::stop_logging() const
     return logging_result_from_command_result(
                _parent->send_command_with_ack(
                    MAV_CMD_LOGGING_STOP,
-                   MavlinkCommands::Params {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}));
+                   MAVLinkCommands::Params {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}));
 }
 
 void LoggingImpl::start_logging_async(const Logging::result_callback_t &callback)
 {
     _parent->send_command_with_ack_async(
         MAV_CMD_LOGGING_START,
-        MavlinkCommands::Params {0.0f, // Format: ULog
+        MAVLinkCommands::Params {0.0f, // Format: ULog
                                  0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
         std::bind(&LoggingImpl::command_result_callback,
                   std::placeholders::_1,
@@ -70,7 +70,7 @@ void LoggingImpl::stop_logging_async(const Logging::result_callback_t &callback)
 {
     _parent->send_command_with_ack_async(
         MAV_CMD_LOGGING_STOP,
-        MavlinkCommands::Params {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+        MAVLinkCommands::Params {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
         std::bind(&LoggingImpl::command_result_callback,
                   std::placeholders::_1,
                   callback));
@@ -99,27 +99,27 @@ void LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
 }
 
 Logging::Result
-LoggingImpl::logging_result_from_command_result(MavlinkCommands::Result result)
+LoggingImpl::logging_result_from_command_result(MAVLinkCommands::Result result)
 {
     switch (result) {
-        case MavlinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::SUCCESS:
             return Logging::Result::SUCCESS;
-        case MavlinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NO_SYSTEM:
             return Logging::Result::NO_SYSTEM;
-        case MavlinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::CONNECTION_ERROR:
             return Logging::Result::CONNECTION_ERROR;
-        case MavlinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::BUSY:
             return Logging::Result::BUSY;
-        case MavlinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::COMMAND_DENIED:
             return Logging::Result::COMMAND_DENIED;
-        case MavlinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::TIMEOUT:
             return Logging::Result::TIMEOUT;
         default:
             return Logging::Result::UNKNOWN;
     }
 }
 
-void LoggingImpl::command_result_callback(MavlinkCommands::Result command_result,
+void LoggingImpl::command_result_callback(MAVLinkCommands::Result command_result,
                                           const Logging::result_callback_t &callback)
 {
     Logging::Result action_result = logging_result_from_command_result(command_result);

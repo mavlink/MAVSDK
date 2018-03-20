@@ -34,10 +34,10 @@ public:
     const GimbalImpl &operator=(const GimbalImpl &) = delete;
 
 private:
-    static Gimbal::Result gimbal_result_from_command_result(MavlinkCommands::Result
+    static Gimbal::Result gimbal_result_from_command_result(MAVLinkCommands::Result
                                                             command_result);
 
-    static void receive_command_result(MavlinkCommands::Result command_result,
+    static void receive_command_result(MAVLinkCommands::Result command_result,
                                        const Gimbal::result_callback_t &callback);
 };
 

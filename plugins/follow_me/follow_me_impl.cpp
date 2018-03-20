@@ -278,20 +278,20 @@ void FollowMeImpl::receive_param_responsiveness(bool success, float responsivene
 }
 
 FollowMe::Result
-FollowMeImpl::to_follow_me_result(MavlinkCommands::Result result) const
+FollowMeImpl::to_follow_me_result(MAVLinkCommands::Result result) const
 {
     switch (result) {
-        case MavlinkCommands::Result::SUCCESS:
+        case MAVLinkCommands::Result::SUCCESS:
             return FollowMe::Result::SUCCESS;
-        case MavlinkCommands::Result::NO_SYSTEM:
+        case MAVLinkCommands::Result::NO_SYSTEM:
             return FollowMe::Result::NO_SYSTEM;
-        case MavlinkCommands::Result::CONNECTION_ERROR:
+        case MAVLinkCommands::Result::CONNECTION_ERROR:
             return FollowMe::Result::CONNECTION_ERROR;
-        case MavlinkCommands::Result::BUSY:
+        case MAVLinkCommands::Result::BUSY:
             return FollowMe::Result::BUSY;
-        case MavlinkCommands::Result::COMMAND_DENIED:
+        case MAVLinkCommands::Result::COMMAND_DENIED:
             return FollowMe::Result::COMMAND_DENIED;
-        case MavlinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::TIMEOUT:
             return FollowMe::Result::TIMEOUT;
         default:
             return FollowMe::Result::UNKNOWN;

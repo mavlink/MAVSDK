@@ -7,7 +7,7 @@
 
 namespace dronecore {
 
-MavlinkReceiver::MavlinkReceiver(uint8_t channel) :
+MAVLinkReceiver::MAVLinkReceiver(uint8_t channel) :
     _channel(channel)
 #if DROP_DEBUG == 1
     , _last_time()
@@ -15,7 +15,7 @@ MavlinkReceiver::MavlinkReceiver(uint8_t channel) :
 {
 }
 
-void MavlinkReceiver::set_new_datagram(char *datagram, unsigned datagram_len)
+void MAVLinkReceiver::set_new_datagram(char *datagram, unsigned datagram_len)
 {
     _datagram = datagram;
     _datagram_len = datagram_len;
@@ -25,7 +25,7 @@ void MavlinkReceiver::set_new_datagram(char *datagram, unsigned datagram_len)
 #endif
 }
 
-bool MavlinkReceiver::parse_message()
+bool MAVLinkReceiver::parse_message()
 {
     // Note that one datagram can contain multiple mavlink messages.
     for (unsigned i = 0; i < _datagram_len; ++i) {
@@ -52,7 +52,7 @@ bool MavlinkReceiver::parse_message()
 }
 
 #if DROP_DEBUG == 1
-void MavlinkReceiver::debug_drop_rate()
+void MAVLinkReceiver::debug_drop_rate()
 {
     if (_last_message.msgid == MAVLINK_MSG_ID_SYS_STATUS) {
 
@@ -101,7 +101,7 @@ void MavlinkReceiver::debug_drop_rate()
     }
 }
 
-void MavlinkReceiver::print_line(const char *index, unsigned count, unsigned count_total,
+void MAVLinkReceiver::print_line(const char *index, unsigned count, unsigned count_total,
                                  unsigned overall_bytes, unsigned overall_bytes_total)
 {
     LogDebug() << "count "

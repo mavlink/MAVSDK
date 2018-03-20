@@ -70,16 +70,16 @@ public:
 
     bool send_message(const mavlink_message_t &message);
 
-    MavlinkCommands::Result send_command_with_ack(uint16_t command,
-                                                  const MavlinkCommands::Params &params,
+    MAVLinkCommands::Result send_command_with_ack(uint16_t command,
+                                                  const MAVLinkCommands::Params &params,
                                                   uint8_t component_id = 0);
 
-    typedef std::function<void(MavlinkCommands::Result, float)> command_result_callback_t;
-    void send_command_with_ack_async(uint16_t command, const MavlinkCommands::Params &params,
+    typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
+    void send_command_with_ack_async(uint16_t command, const MAVLinkCommands::Params &params,
                                      command_result_callback_t callback,
                                      uint8_t component_id = 0);
 
-    MavlinkCommands::Result set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id = 0);
+    MAVLinkCommands::Result set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id = 0);
 
     void set_msg_rate_async(uint16_t message_id, double rate_hz,
                             command_result_callback_t callback, uint8_t component_id = 0);
@@ -113,7 +113,7 @@ public:
     void set_param_int_async(const std::string &name, int32_t value, success_t callback);
     void set_param_ext_float_async(const std::string &name, float value, success_t callback);
     void set_param_ext_int_async(const std::string &name, int32_t value, success_t callback);
-    MavlinkCommands::Result set_flight_mode(FlightMode mode);
+    MAVLinkCommands::Result set_flight_mode(FlightMode mode);
     void set_flight_mode_async(FlightMode mode, command_result_callback_t callback);
 
     typedef std::function <void(bool success, float value)> get_param_float_callback_t;
@@ -155,19 +155,19 @@ private:
     static void system_thread(MAVLinkSystem *self);
     static void send_heartbeat(MAVLinkSystem &self);
 
-    static void receive_float_param(bool success, MavlinkParameters::ParamValue value,
+    static void receive_float_param(bool success, MAVLinkParameters::ParamValue value,
                                     get_param_float_callback_t callback);
-    static void receive_int_param(bool success, MavlinkParameters::ParamValue value,
+    static void receive_int_param(bool success, MAVLinkParameters::ParamValue value,
                                   get_param_int_callback_t callback);
 
-    struct MavlinkHandlerTableEntry {
+    struct MAVLinkHandlerTableEntry {
         uint16_t msg_id;
         mavlink_message_handler_t callback;
         const void *cookie; // This is the identification to unregister.
     };
 
     std::mutex _mavlink_handler_table_mutex {};
-    std::vector<MavlinkHandlerTableEntry> _mavlink_handler_table {};
+    std::vector<MAVLinkHandlerTableEntry> _mavlink_handler_table {};
 
     std::atomic<uint8_t> _system_id;
 
@@ -198,9 +198,9 @@ private:
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
-    MavlinkParameters _params;
+    MAVLinkParameters _params;
 
-    MavlinkCommands _commands;
+    MAVLinkCommands _commands;
 
     TimeoutHandler _timeout_handler;
     CallEveryHandler _call_every_handler;

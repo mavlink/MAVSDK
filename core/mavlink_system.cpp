@@ -67,7 +67,7 @@ void MAVLinkSystem::register_mavlink_message_handler(uint16_t msg_id,
 {
     std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
 
-    MavlinkHandlerTableEntry entry = {msg_id, callback, cookie};
+    MAVLinkHandlerTableEntry entry = {msg_id, callback, cookie};
     _mavlink_handler_table.push_back(entry);
 }
 
@@ -157,7 +157,7 @@ void MAVLinkSystem::process_heartbeat(const mavlink_message_t &message)
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
-    if (message.compid == MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
+    if (message.compid == MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
         _armed = ((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
         _hitl_enabled = ((heartbeat.base_mode & MAV_MODE_FLAG_HIL_ENABLED) ? true : false);
     }
@@ -177,7 +177,7 @@ void MAVLinkSystem::process_heartbeat(const mavlink_message_t &message)
 void MAVLinkSystem::process_autopilot_version(const mavlink_message_t &message)
 {
     // Ignore if they don't come from the autopilot component
-    if (message.compid != MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
+    if (message.compid != MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
         return;
     }
 
@@ -396,9 +396,9 @@ void MAVLinkSystem::request_autopilot_version()
     // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
     send_command_with_ack_async(
         MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-        MavlinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
+        MAVLinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
         nullptr,
-        MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT
+        MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT
     );
     ++_uuid_retries;
 
@@ -494,14 +494,14 @@ void MAVLinkSystem::set_system_id(uint8_t system_id)
 
 void MAVLinkSystem::set_param_float_async(const std::string &name, float value, success_t callback)
 {
-    MavlinkParameters::ParamValue param_value;
+    MAVLinkParameters::ParamValue param_value;
     param_value.set_float(value);
     _params.set_param_async(name, param_value, callback);
 }
 
 void MAVLinkSystem::set_param_int_async(const std::string &name, int32_t value, success_t callback)
 {
-    MavlinkParameters::ParamValue param_value;
+    MAVLinkParameters::ParamValue param_value;
     param_value.set_int(value);
     _params.set_param_async(name, param_value, callback);
 }
@@ -509,7 +509,7 @@ void MAVLinkSystem::set_param_int_async(const std::string &name, int32_t value, 
 void MAVLinkSystem::set_param_ext_float_async(const std::string &name, float value,
                                               success_t callback)
 {
-    MavlinkParameters::ParamValue param_value;
+    MAVLinkParameters::ParamValue param_value;
     param_value.set_float(value);
     _params.set_param_async(name, param_value, callback, true);
 }
@@ -517,7 +517,7 @@ void MAVLinkSystem::set_param_ext_float_async(const std::string &name, float val
 void MAVLinkSystem::set_param_ext_int_async(const std::string &name, int32_t value,
                                             success_t callback)
 {
-    MavlinkParameters::ParamValue param_value;
+    MAVLinkParameters::ParamValue param_value;
     param_value.set_int(value);
     _params.set_param_async(name, param_value, callback, true);
 }
@@ -529,7 +529,7 @@ void MAVLinkSystem::get_param_float_async(const std::string &name,
                                             callback));
 }
 
-MavlinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
+MAVLinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
 {
     const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
     const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
@@ -567,17 +567,17 @@ MavlinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
             break;
         default :
             LogErr() << "Unknown Flight mode.";
-            return MavlinkCommands::Result::ERROR;
+            return MAVLinkCommands::Result::ERROR;
 
     }
 
-    MavlinkCommands::Result ret = send_command_with_ack(
+    MAVLinkCommands::Result ret = send_command_with_ack(
                                       MAV_CMD_DO_SET_MODE,
-                                      MavlinkCommands::Params {float(mode),
+                                      MAVLinkCommands::Params {float(mode),
                                                                float(custom_mode),
                                                                float(custom_sub_mode),
                                                                NAN, NAN, NAN, NAN},
-                                      MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+                                      MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 
     return ret;
 }
@@ -622,19 +622,19 @@ void MAVLinkSystem::set_flight_mode_async(FlightMode system_mode,
         default :
             LogErr() << "Unknown flight mode.";
             if (callback) {
-                callback(MavlinkCommands::Result::ERROR, NAN);
+                callback(MAVLinkCommands::Result::ERROR, NAN);
             }
             return ;
     }
 
 
     send_command_with_ack_async(MAV_CMD_DO_SET_MODE,
-                                MavlinkCommands::Params {float(mode),
+                                MAVLinkCommands::Params {float(mode),
                                                          float(custom_mode),
                                                          float(custom_sub_mode),
                                                          NAN, NAN, NAN, NAN},
                                 callback,
-                                MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+                                MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
 void MAVLinkSystem::get_param_int_async(const std::string &name,
@@ -658,7 +658,7 @@ void MAVLinkSystem::get_param_ext_int_async(const std::string &name,
                                             callback), true);
 }
 
-void MAVLinkSystem::receive_float_param(bool success, MavlinkParameters::ParamValue value,
+void MAVLinkSystem::receive_float_param(bool success, MAVLinkParameters::ParamValue value,
                                         get_param_float_callback_t callback)
 {
     if (callback) {
@@ -666,7 +666,7 @@ void MAVLinkSystem::receive_float_param(bool success, MavlinkParameters::ParamVa
     }
 }
 
-void MAVLinkSystem::receive_int_param(bool success, MavlinkParameters::ParamValue value,
+void MAVLinkSystem::receive_int_param(bool success, MAVLinkParameters::ParamValue value,
                                       get_param_int_callback_t callback)
 {
     if (callback) {
@@ -677,7 +677,7 @@ void MAVLinkSystem::receive_int_param(bool success, MavlinkParameters::ParamValu
 uint8_t MAVLinkSystem::get_autopilot_id() const
 {
     for (auto compid : _components)
-        if (compid == MavlinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
+        if (compid == MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT) {
             return compid;
         }
     // FIXME: Not sure what should be returned if autopilot is not found
@@ -705,11 +705,11 @@ uint8_t MAVLinkSystem::get_gimbal_id() const
     return uint8_t(0);
 }
 
-MavlinkCommands::Result MAVLinkSystem::send_command_with_ack(
-    uint16_t command, const MavlinkCommands::Params &params, uint8_t component_id)
+MAVLinkCommands::Result MAVLinkSystem::send_command_with_ack(
+    uint16_t command, const MAVLinkCommands::Params &params, uint8_t component_id)
 {
     if (_system_id == 0 && _components.size() == 0) {
-        return MavlinkCommands::Result::NO_SYSTEM;
+        return MAVLinkCommands::Result::NO_SYSTEM;
     }
 
     const uint8_t component_id_to_use =
@@ -719,13 +719,13 @@ MavlinkCommands::Result MAVLinkSystem::send_command_with_ack(
 }
 
 void MAVLinkSystem::send_command_with_ack_async(uint16_t command,
-                                                const MavlinkCommands::Params &params,
+                                                const MAVLinkCommands::Params &params,
                                                 command_result_callback_t callback,
                                                 uint8_t component_id)
 {
     if (_system_id == 0 && _components.size() == 0) {
         if (callback) {
-            callback(MavlinkCommands::Result::NO_SYSTEM, NAN);
+            callback(MAVLinkCommands::Result::NO_SYSTEM, NAN);
         }
         return;
     }
@@ -737,7 +737,7 @@ void MAVLinkSystem::send_command_with_ack_async(uint16_t command,
                                   callback);
 }
 
-MavlinkCommands::Result MAVLinkSystem::set_msg_rate(uint16_t message_id, double rate_hz,
+MAVLinkCommands::Result MAVLinkSystem::set_msg_rate(uint16_t message_id, double rate_hz,
                                                     uint8_t component_id)
 {
     // If left at -1 it will stop the message stream.
@@ -749,12 +749,12 @@ MavlinkCommands::Result MAVLinkSystem::set_msg_rate(uint16_t message_id, double 
     if (component_id != 0) {
         return send_command_with_ack(
                    MAV_CMD_SET_MESSAGE_INTERVAL,
-                   MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+                   MAVLinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
                    component_id);
     } else {
         return send_command_with_ack(
                    MAV_CMD_SET_MESSAGE_INTERVAL,
-                   MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
+                   MAVLinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
     }
 }
 
@@ -770,13 +770,13 @@ void MAVLinkSystem::set_msg_rate_async(uint16_t message_id, double rate_hz,
     if (component_id != 0) {
         send_command_with_ack_async(
             MAV_CMD_SET_MESSAGE_INTERVAL,
-            MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+            MAVLinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
             callback,
             component_id);
     } else {
         send_command_with_ack_async(
             MAV_CMD_SET_MESSAGE_INTERVAL,
-            MavlinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
+            MAVLinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
             callback);
     }
 }

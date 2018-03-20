@@ -11,11 +11,11 @@ namespace dronecore {
 
 class MAVLinkSystem;
 
-class MavlinkCommands
+class MAVLinkCommands
 {
 public:
-    explicit MavlinkCommands(MAVLinkSystem &parent);
-    ~MavlinkCommands();
+    explicit MAVLinkCommands(MAVLinkSystem &parent);
+    ~MAVLinkCommands();
 
     enum class Result {
         SUCCESS = 0,
@@ -50,8 +50,8 @@ public:
     static const int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
 
     // Non-copyable
-    MavlinkCommands(const MavlinkCommands &) = delete;
-    const MavlinkCommands &operator=(const MavlinkCommands &) = delete;
+    MAVLinkCommands(const MAVLinkCommands &) = delete;
+    const MAVLinkCommands &operator=(const MAVLinkCommands &) = delete;
 
 private:
     enum class State {

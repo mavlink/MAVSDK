@@ -6,10 +6,10 @@
 
 namespace dronecore {
 
-class MavlinkReceiver
+class MAVLinkReceiver
 {
 public:
-    explicit MavlinkReceiver(uint8_t channel);
+    explicit MAVLinkReceiver(uint8_t channel);
 
     uint8_t get_channel()
     {
