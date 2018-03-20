@@ -14,7 +14,7 @@ namespace dronecore {
 enum class ActionResult {
     UNKNOWN, /**< @brief Unspecified error. */
     SUCCESS, /**< @brief Success. The action command was accepted by the vehicle. */
-    NO_DEVICE, /**< @brief No device is connected error. */
+    NO_SYSTEM, /**< @brief No device is connected error. */
     CONNECTION_ERROR, /**< @brief %Connection error. */
     BUSY, /**< @brief Vehicle busy error. */
     COMMAND_DENIED, /**< @brief Command refused by vehicle. */
@@ -36,8 +36,8 @@ inline const char *action_result_str(ActionResult result)
     switch (result) {
         case ActionResult::SUCCESS:
             return "Success";
-        case ActionResult::NO_DEVICE:
-            return "No device";
+        case ActionResult::NO_SYSTEM:
+            return "No system";
         case ActionResult::CONNECTION_ERROR:
             return "Connection error";
         case ActionResult::BUSY:

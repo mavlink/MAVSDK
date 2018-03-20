@@ -435,22 +435,22 @@ float ActionImpl::get_max_speed_m_s() const
     return _max_speed_m_s;
 }
 
-Action::Result
+ActionResult
 ActionImpl::action_result_from_command_result(MAVLinkCommands::Result result)
 {
     switch (result) {
         case MAVLinkCommands::Result::SUCCESS:
-            return Action::Result::SUCCESS;
+            return ActionResult::SUCCESS;
         case MAVLinkCommands::Result::NO_SYSTEM:
-            return Action::Result::NO_SYSTEM;
+            return ActionResult::NO_SYSTEM;
         case MAVLinkCommands::Result::CONNECTION_ERROR:
-            return Action::Result::CONNECTION_ERROR;
+            return ActionResult::CONNECTION_ERROR;
         case MAVLinkCommands::Result::BUSY:
-            return Action::Result::BUSY;
+            return ActionResult::BUSY;
         case MAVLinkCommands::Result::COMMAND_DENIED:
-            return Action::Result::COMMAND_DENIED;
+            return ActionResult::COMMAND_DENIED;
         case MAVLinkCommands::Result::TIMEOUT:
-            return Action::Result::TIMEOUT;
+            return ActionResult::TIMEOUT;
         default:
             return ActionResult::UNKNOWN;
     }
