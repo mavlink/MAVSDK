@@ -4,7 +4,7 @@
 
 #include "action.h"
 #include "action_result.h"
-#include "system.h"
+#include "mavlink_system.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 
@@ -65,7 +65,7 @@ private:
 
     void receive_takeoff_alt_param(bool success, float new_relative_altitude_m);
 
-    static Action::Result action_result_from_command_result(MAVLinkCommands::Result result);
+    static ActionResult action_result_from_command_result(MAVLinkCommands::Result result);
 
     static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Action::result_callback_t &callback);

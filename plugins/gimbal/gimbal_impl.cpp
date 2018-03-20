@@ -1,5 +1,5 @@
 #include "gimbal_impl.h"
-#include "system.h"
+#include "mavlink_system.h"
 #include "global_include.h"
 #include "mavlink_include.h"
 #include <functional>
@@ -53,7 +53,7 @@ Gimbal::Result GimbalImpl::set_roi_location(double latitude_deg, double longitud
                                             float altitude_m)
 {
     return gimbal_result_from_command_result(
-               _parent.send_command_with_ack(
+               _parent->send_command_with_ack(
                    MAV_CMD_DO_SET_ROI_LOCATION,
                    MAVLinkCommands::Params {NAN, NAN, NAN, NAN, (float)latitude_deg, (float)longitude_deg,
                                             altitude_m},
@@ -63,7 +63,7 @@ Gimbal::Result GimbalImpl::set_roi_location(double latitude_deg, double longitud
 void GimbalImpl::set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m,
                                         Gimbal::result_callback_t callback)
 {
-    _parent.send_command_with_ack_async(
+    _parent->send_command_with_ack_async(
         MAV_CMD_DO_SET_ROI_LOCATION,
         MAVLinkCommands::Params {NAN, NAN, NAN, NAN, (float)latitude_deg, (float)longitude_deg,
                                  altitude_m},
@@ -72,6 +72,7 @@ void GimbalImpl::set_roi_location_async(double latitude_deg, double longitude_de
 }
 
 void GimbalImpl::receive_command_result(MAVLinkCommands::Result command_result,
+                                       const Gimbal::result_callback_t &callback)
 {
     Gimbal::Result gimbal_result = gimbal_result_from_command_result(command_result);
 
