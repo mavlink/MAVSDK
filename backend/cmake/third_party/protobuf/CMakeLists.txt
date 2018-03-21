@@ -5,7 +5,7 @@ project(external-protobuf)
 include(ExternalProject)
 
 set(ARG_GIT_REPOSITORY https://github.com/google/protobuf.git)
-set(ARG_GIT_TAG master)
+set(ARG_GIT_TAG ab95b1bc1eb964ee5f1fb48297344c5d37d35191)
 
 if(ANDROID)
     message(STATUS "Preparing external project \"protobuf\" for Android...")
