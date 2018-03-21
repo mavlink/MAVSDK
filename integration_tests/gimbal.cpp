@@ -1,14 +1,16 @@
-#include <iostream>
-#include <functional>
-#include <memory>
 #include <atomic>
 #include <cmath>
-#include "integration_test_helper.h"
+#include <functional>
+#include <iostream>
+#include <memory>
+
 #include "dronecore.h"
-#include "plugins/telemetry/telemetry.h"
+#include "integration_test_helper.h"
 #include "plugins/action/action.h"
+#include "plugins/action/action_result.h"
 #include "plugins/gimbal/gimbal.h"
 #include "plugins/offboard/offboard.h"
+#include "plugins/telemetry/telemetry.h"
 
 using namespace dronecore;
 
@@ -66,11 +68,11 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    Action::Result action_result = action->arm();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    ActionResult action_result = action->arm();
+    EXPECT_EQ(action_result, ActionResult::SUCCESS);
 
     action_result = action->takeoff();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, ActionResult::SUCCESS);
 
     telemetry->set_rate_camera_attitude(10.0);
 
@@ -115,11 +117,11 @@ TEST_F(SitlTest, GimbalROIOffboard)
     send_gimbal_roi_location(gimbal, position.latitude_deg + latitude_offset_deg,
                              position.longitude_deg, position.absolute_altitude_m + 1.f);
 
-    Action::Result action_result = action->arm();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    ActionResult action_result = action->arm();
+    EXPECT_EQ(action_result, ActionResult::SUCCESS);
 
     action_result = action->takeoff();
-    EXPECT_EQ(action_result, Action::Result::SUCCESS);
+    EXPECT_EQ(action_result, ActionResult::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
