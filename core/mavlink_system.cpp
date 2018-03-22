@@ -352,9 +352,9 @@ bool MAVLinkSystem::has_gimbal() const
 void MAVLinkSystem::send_heartbeat(MAVLinkSystem &self)
 {
     mavlink_message_t message;
-    // ControllingSystem is not autopilot!; hence MAV_AUTOPILOT_INVALID.
-    mavlink_msg_heartbeat_pack(ControllingSystem::system_id,
-                               ControllingSystem::component_id,
+    // GCSClient is not autopilot!; hence MAV_AUTOPILOT_INVALID.
+    mavlink_msg_heartbeat_pack(GCSClient::system_id,
+                               GCSClient::component_id,
                                &message,
                                MAV_TYPE_GCS,
                                MAV_AUTOPILOT_INVALID,

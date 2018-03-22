@@ -83,11 +83,14 @@ int main(int argc, char **argv)
     });
 
 
+#if 0
     // Check if vehicle is ready to arm
     while (telemetry->health_all_ok() != true) {
         std::cout << "Vehicle is getting ready to arm" << std::endl;
         sleep_for(seconds(1));
     }
+#endif
+    sleep_for(seconds(5));
 
     // Arm vehicle
     std::cout << "Arming..." << std::endl;
@@ -98,6 +101,7 @@ int main(int argc, char **argv)
                       arm_result) << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
+	exit(0);
 
     // Take off
     std::cout << "Taking off..." << std::endl;

@@ -88,8 +88,8 @@ void LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
     mavlink_msg_logging_data_acked_decode(&message, &logging_data_acked);
 
     mavlink_message_t answer;
-    mavlink_msg_logging_ack_pack(ControllingSystem::system_id,
-                                 ControllingSystem::component_id,
+    mavlink_msg_logging_ack_pack(GCSClient::system_id,
+                                 GCSClient::component_id,
                                  &answer,
                                  _parent->get_system_id(),
                                  _parent->get_autopilot_id(),

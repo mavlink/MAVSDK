@@ -195,8 +195,8 @@ void OffboardImpl::send_velocity_ned()
     _mutex.unlock();
 
     mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(ControllingSystem::system_id,
-                                                   ControllingSystem::component_id,
+    mavlink_msg_set_position_target_local_ned_pack(GCSClient::system_id,
+                                                   GCSClient::component_id,
                                                    &message,
                                                    static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
                                                    _parent->get_system_id(),
@@ -242,8 +242,8 @@ void OffboardImpl::send_velocity_body()
     _mutex.unlock();
 
     mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(ControllingSystem::system_id,
-                                                   ControllingSystem::component_id,
+    mavlink_msg_set_position_target_local_ned_pack(GCSClient::system_id,
+                                                   GCSClient::component_id,
                                                    &message,
                                                    static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
                                                    _parent->get_system_id(),

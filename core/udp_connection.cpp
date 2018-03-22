@@ -26,7 +26,8 @@
 namespace dronecore {
 
 UdpConnection::UdpConnection(DroneCoreImpl &parent,
-                             int local_port_number) :
+                             int local_port_number,
+                             size_t no_of_clients) :
     Connection(parent),
     _local_port_number(local_port_number) {}
 
@@ -124,6 +125,28 @@ ConnectionResult UdpConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
+int UdpConnection::find_client(uint8_t sysid, uint8_t compid) const
+{
+    for (size_t i = 0; i < _clients.size(); i++) {
+        if (_clients[i].sysid == sysid
+            && _clients[i].compid == compid) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+bool UdpConnection::is_valid(const Client &client) const
+{
+    if (client.ip.empty()
+        || client.port == 0) {
+        LogErr() << "Remote IP/Port Unknown! IP: "
+                 << client.ip << " Port: " << client.port;
+        return false;
+    }
+    return true;
+}
+
 bool UdpConnection::send_message(const mavlink_message_t &message)
 {
     struct sockaddr_in dest_addr {};
@@ -131,21 +154,20 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     {
         std::lock_guard<std::mutex> lock(_remote_mutex);
 
-        if (_remote_ip.empty()) {
-            LogErr() << "Remote IP unknown";
+        int cli_index = find_client(message.sysid, message.compid);
+        if (cli_index < 0) {
+            LogErr() << "No such client with (SysId=," << message.sysid
+                     << " CompId=" << message.compid << ")......";
             return false;
-        }
-
-        if (_remote_port_number == 0) {
-            LogErr() << "Remote port unknown";
+        } else if (!is_valid(_clients[cli_index])) {
             return false;
         }
 
         dest_addr.sin_family = AF_INET;
 
-        inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
+        inet_pton(AF_INET, _clients[cli_index].ip.c_str(), &dest_addr.sin_addr.s_addr);
 
-        dest_addr.sin_port = htons(_remote_port_number);
+        dest_addr.sin_port = htons(_clients[cli_index].port);
     }
 
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
@@ -163,6 +185,37 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     }
 
     return true;
+}
+
+
+bool UdpConnection::is_new(const Client &client) const
+{
+    return (_clients.size() == 0		// No clients yet!
+            || is_new(client.ip) 		// New System!
+            || is_new(client.port));	// New component!
+}
+
+bool UdpConnection::is_new(const std::string &ip) const
+{
+    bool found = false;
+    for (auto client : _clients)
+        if (client.ip == ip) {
+            found = true;
+        }
+
+    return found;
+}
+
+bool UdpConnection::is_new(int port) const
+{
+    bool found = false;
+    for (auto client : _clients)
+        if (client.port == port) {
+            found = true;
+        }
+
+    return found;
+
 }
 
 void UdpConnection::receive(UdpConnection *parent)
@@ -190,40 +243,37 @@ void UdpConnection::receive(UdpConnection *parent)
             continue;
         }
 
+        uint8_t sysid, compid;
+        parent->_mavlink_receiver->set_new_datagram(buffer, recv_len);
+        // Parse a message to get sysid, compid of the sender.
+        if (parent->_mavlink_receiver->parse_message()) {
+            auto mavlink_msg = parent->_mavlink_receiver->get_last_message();
+            sysid = mavlink_msg.sysid;
+            compid = mavlink_msg.sysid;
+        }
+
         {
             std::lock_guard<std::mutex> lock(parent->_remote_mutex);
 
-            int new_remote_port_number = ntohs(src_addr.sin_port);
-            std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
+            Client client;
+            client.port = ntohs(src_addr.sin_port);
+            client.ip = inet_ntoa(src_addr.sin_addr);
+            client.sysid = sysid;
+            client.compid = compid;
 
-            if (parent->_remote_ip.empty() ||
-                parent->_remote_port_number == 0) {
-
+            if (parent->is_new(client)) {
+                LogInfo() << "New system on: " << client.ip
+                          << ":" << client.port;
                 // Set IP if we don't know it yet.
-                parent->_remote_ip = new_remote_ip;
-                parent->_remote_port_number = new_remote_port_number;
-
-                LogInfo() << "New system on: " << parent->_remote_ip
-                          << ":" << parent->_remote_port_number;
-
-            } else if (parent->_remote_ip.compare(new_remote_ip) != 0 ||
-                       parent->_remote_port_number != new_remote_port_number) {
-
-                // It is possible that wifi disconnects and a system might get a new
-                // IP and/or UDP port.
-                parent->_remote_ip = new_remote_ip;
-                parent->_remote_port_number = new_remote_port_number;
-
-                LogInfo() << "System changed to: " << new_remote_ip << ":" << new_remote_port_number;
+                parent->_clients.push_back(client);
             }
         }
 
-        parent->_mavlink_receiver->set_new_datagram(buffer, recv_len);
-
         // Parse all mavlink messages in one datagram. Once exhausted, we'll exit while.
-        while (parent->_mavlink_receiver->parse_message()) {
+        // We've already parsed a message above. So, lets process it before parsing next one.
+        do {
             parent->receive_message(parent->_mavlink_receiver->get_last_message());
-        }
+        } while (parent->_mavlink_receiver->parse_message());
     }
 }
 
