@@ -161,9 +161,10 @@ ConnectionResult DroneCoreImpl::add_link_connection(const std::string &protocol,
     }
 }
 
-ConnectionResult DroneCoreImpl::add_udp_connection(const int local_port_number)
+ConnectionResult DroneCoreImpl::add_udp_connection(const int local_port_number,
+                                                   size_t no_of_clients)
 {
-    std::shared_ptr<Connection> new_conn = std::make_shared<UdpConnection>(*this, local_port_number);
+    std::shared_ptr<Connection> new_conn = std::make_shared<UdpConnection>(*this, local_port_number, no_of_clients);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {

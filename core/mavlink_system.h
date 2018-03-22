@@ -22,7 +22,7 @@ class PluginImplBase;
 
 
 // This represents DroneCore client application which is a GCS.
-struct ControllingSystem {
+struct GCSClient {
     static constexpr uint8_t system_id = 0;
     static constexpr uint8_t component_id = MAV_COMP_ID_SYSTEM_CONTROL;
     static constexpr MAV_TYPE type = MAV_TYPE_GCS;
