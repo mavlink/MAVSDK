@@ -1,24 +1,25 @@
 #pragma once
 
-#include "dronecore.h"
-#include "connection.h"
 #include <string>
 #include <mutex>
 #include <thread>
 #include <atomic>
+#include "connection.h"
 
 namespace dronecore {
 
 class UdpConnection : public Connection
 {
 public:
-    explicit UdpConnection(DroneCoreImpl &parent, int local_port_number, size_t no_of_clients = 1);
+    explicit UdpConnection(DroneCoreImpl &parent, int local_port_number);
     ~UdpConnection();
     bool is_ok() const;
     ConnectionResult start();
     ConnectionResult stop();
 
-    bool send_message(const mavlink_message_t &message);
+    bool send_message(const mavlink_message_t &message,
+                      uint8_t target_sysid,
+                      uint8_t target_compid);
 
     // Non-copyable
     UdpConnection(const UdpConnection &) = delete;
@@ -32,10 +33,6 @@ private:
 
     int _local_port_number;
 
-    struct RemoteClient {
-        std::string ip = {};
-        int port = 0;
-    };
     std::mutex _remote_mutex = {};
     struct Client {
         uint8_t sysid = 0;

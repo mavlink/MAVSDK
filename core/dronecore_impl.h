@@ -19,14 +19,20 @@ public:
     ~DroneCoreImpl();
 
     void receive_message(const mavlink_message_t &message);
-    bool send_message(const mavlink_message_t &message);
+    bool send_message(const mavlink_message_t &message,
+                      uint8_t target_system_id,
+                      uint8_t target_component_id);
+
     ConnectionResult add_any_connection(const std::string &connection_url);
-    ConnectionResult add_link_connection(const std::string &protocol, const std::string &ip,
+    ConnectionResult add_link_connection(const std::string &protocol,
+                                         const std::string &ip,
                                          int port);
-    ConnectionResult add_udp_connection(int local_port_number, size_t no_of_clients = 1);
+    ConnectionResult add_udp_connection(int local_port_number);
     void add_connection(std::shared_ptr<Connection>);
-    ConnectionResult add_tcp_connection(const std::string &remote_ip, int remote_port);
-    ConnectionResult add_serial_connection(const std::string &dev_path, int baudrate);
+    ConnectionResult add_tcp_connection(const std::string &remote_ip,
+                                        int remote_port);
+    ConnectionResult add_serial_connection(const std::string &dev_path,
+                                           int baudrate);
 
     std::vector<uint64_t> get_system_uuids() const;
     System &get_system();

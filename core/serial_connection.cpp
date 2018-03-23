@@ -20,7 +20,7 @@
 
 namespace dronecore {
 
-SerialConnection::SerialConnection(DroneCoreImpl &parent, const std::string &path, int baudrate) :
+SerialConnection::SerialConnection(DroneCoreImpl &parent, const std::string &path, int baudrate):
     Connection(parent),
     _serial_node(path),
     _baudrate(baudrate)
@@ -126,7 +126,7 @@ ConnectionResult SerialConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool SerialConnection::send_message(const mavlink_message_t &message)
+bool SerialConnection::send_message(const mavlink_message_t &message, uint8_t, uint8_t)
 {
     if (_serial_node.empty()) {
         LogErr() << "Dev Path unknown";

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "dronecore.h"
-#include "dronecore_impl.h"
+#include <mutex>
+#include <atomic>
 #include "connection.h"
 #include <sys/types.h>
 #ifndef WINDOWS
@@ -18,13 +18,17 @@ namespace dronecore {
 class TcpConnection : public Connection
 {
 public:
-    explicit TcpConnection(DroneCoreImpl &parent, const std::string &ip, int port_number);
+    explicit TcpConnection(DroneCoreImpl &parent,
+                           const std::string &remote_ip,
+                           int remote_port);
     ~TcpConnection();
     bool is_ok() const;
     ConnectionResult start();
     ConnectionResult stop();
 
-    bool send_message(const mavlink_message_t &message);
+    bool send_message(const mavlink_message_t &message,
+                      uint8_t target_sysid,
+                      uint8_t target_compid);
 
     // Non-copyable
     TcpConnection(const TcpConnection &) = delete;
@@ -41,6 +45,7 @@ private:
 
     std::mutex _mutex = {};
     int _socket_fd = -1;
+
     std::thread *_recv_thread = nullptr;
     std::atomic_bool _should_exit;
     std::atomic_bool _is_ok {false};

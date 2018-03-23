@@ -18,7 +18,9 @@ public:
     virtual ConnectionResult stop() = 0;
     virtual bool is_ok() const = 0;
 
-    virtual bool send_message(const mavlink_message_t &message) = 0;
+    virtual bool send_message(const mavlink_message_t &message,
+                              uint8_t target_sysid = 0,
+                              uint8_t target_compid = MAV_COMP_ID_ALL) = 0;
 
     // Non-copyable
     Connection(const Connection &) = delete;

@@ -34,10 +34,10 @@ API consumers use the `DroneCore` class to discover and manage vehicles (`Device
 
 The links below take you to the respective header files:
 
-- [dronecore](include/dronecore.h): set up connection, discover systems
-- [system](include/system.h): a system providing access to modules below using ...
-- [system_plugin_container.h.in](include/system_plugin_container.h.in) which is auto-generated on build.
-- [info](plugins/info/info.h): general info about a system
+- [dronecore](include/dronecore.h): set up connection, discover devices
+- [device](include/device.h): a device providing access to modules below using ...
+- [device_plugin_container.h.in](include/device_plugin_container.h.in) which is auto-generated on build.
+- [info](plugins/info/info.h): general info about a device
 - [telemetry](plugins/telemetry/telemetry.h): to receive telemetry data
 - [action](plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
 - [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
