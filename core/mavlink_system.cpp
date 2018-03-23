@@ -166,9 +166,15 @@ void MAVLinkSystem::process_heartbeat(const mavlink_message_t &message)
 
     /* If the component is an autopilot and
      * we don't know its UUID, then try to find out. */
-    if (message.compid == MAV_COMP_ID_AUTOPILOT1
-        && _uuid == 0 && !_uuid_initialized) {
+    if (is_autopilot(message.compid) && !have_uuid()) {
         request_autopilot_version();
+
+    } else if (!is_autopilot(message.compid)
+               && !have_uuid() && ++_non_autopilot_heartbeats >= 2) {
+        // We've received consecutive heartbeats (atleast twice) from a
+        // non-autopilot system! Lets not delay for filling UUID anymore.
+        _uuid = message.sysid;
+        _uuid_initialized = true;
     }
 
     set_connected();
@@ -199,10 +205,10 @@ void MAVLinkSystem::process_autopilot_version(const mavlink_message_t &message)
         _uuid = _system_id;
 
     } else if (_uuid != autopilot_version.uid) {
-
         // TODO: this is bad, we should raise a flag to invalidate system.
         LogErr() << "Error: UUID changed";
     }
+
 
     _uuid_initialized = true;
     set_connected();
@@ -480,13 +486,6 @@ uint8_t MAVLinkSystem::get_system_id() const
 {
     return _system_id;
 }
-
-#if 0
-uint8_t MAVLinkSystem::get_component_id() const
-{
-    return _component_id;
-}
-#endif
 
 void MAVLinkSystem::set_system_id(uint8_t system_id)
 {
