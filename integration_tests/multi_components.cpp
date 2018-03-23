@@ -13,13 +13,15 @@ using namespace std::this_thread;
 using namespace std::chrono;
 
 /**
- * @brief Note: Steps to verify this test.
- * 0. Connect a V4L2 Camera on Ubuntu.
- * 1. Launch Camera Streaming Daemon on Ubuntu and configure UDP port 14550.
- * 2. Launch PX4 SITL.
- * 3. Run SitlTest.MultiComponentDiscovery test.
- *
- * Below test shall discover both Autopilot and Camera on the system.
+ * @brief This test detects ALL the components found across systems and tells
+ * whether each system is a standalone or the one with a system with componets
+ * such as autopilot with camera(s), etc. One way to run this test is as below:
+ * /////////////////////////////////////
+ * 1. Connect a V4L2 Camera on Ubuntu.
+ * 2. Launch Camera Streaming Daemon on Ubuntu and configure UDP port 14550.
+ * 3. Launch PX4 SITL.
+ * 4. Run SitlTest.MultiComponentDiscovery test.
+ * /////////////////////////////////////
  */
 TEST_F(SitlTest, MultiComponentDiscovery)
 {
@@ -56,7 +58,7 @@ TEST_F(SitlTest, MultiComponentDiscovery)
         if (is_autopilot && has_camera && !has_gimbal) {
             std::cout << "Its an Autopilot with a Camera." << '\n';
         } else if (is_standalone && has_camera) {
-            std::cout << "We found a standalone camera." << '\n';
+            std::cout << "We found a Standalone camera." << '\n';
         } else if (is_autopilot && !has_camera) {
             std::cout << "We found an Autopilot alone." << '\n';
         }
