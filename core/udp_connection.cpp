@@ -258,23 +258,18 @@ void UdpConnection::receive(UdpConnection *parent)
             continue;
         }
 
-        uint8_t sysid, compid;
         parent->_mavlink_receiver->set_new_datagram(buffer, recv_len);
         // Parse a message to get sysid, compid of the sender.
         if (parent->_mavlink_receiver->parse_message()) {
             auto mavlink_msg = parent->_mavlink_receiver->get_last_message();
-            sysid = mavlink_msg.sysid;
-            compid = mavlink_msg.sysid;
-        }
 
-        {
             std::lock_guard<std::mutex> lock(parent->_remote_mutex);
 
             Client client;
             client.port = ntohs(src_addr.sin_port);
             client.ip = inet_ntoa(src_addr.sin_addr);
-            client.sysid = sysid;
-            client.compid = compid;
+            client.sysid = mavlink_msg.sysid;
+            client.compid = mavlink_msg.compid;
 
             if (parent->is_new(client)) {
                 LogInfo() << "New system on: " << client.ip
