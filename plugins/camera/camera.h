@@ -62,16 +62,96 @@ public:
      */
     typedef std::function<void(Result)> result_callback_t;
 
+    /**
+     * @brief Take photo (synchronous).
+     *
+     * This takes one photo immediately.
+     *
+     * @return Result of request.
+     */
     Result take_photo();
+
+    /**
+     * @brief Start photo interval (synchronous).
+     *
+     * Starts a photo timelapse given an interval.
+     *
+     * @param interval_s The interval between photos in seconds.
+     * @return Result of request.
+     */
     Result start_photo_interval(float interval_s);
+
+    /**
+     * @brief Stop photo interval (synchronous).
+     *
+     * Stops a photo timelapse again.
+     *
+     * @return Result of request.
+     */
     Result stop_photo_interval();
+
+    /**
+     * @brief Start video capture (synchronous).
+     *
+     * This starts a video recording immediately.
+     *
+     * @return Result of request.
+     */
     Result start_video();
+
+    /**
+     * @brief Stop video capture (synchronous).
+     *
+     * This stops a video recording again.
+     *
+     * @return Result of request.
+     */
     Result stop_video();
 
+    /**
+     * @brief Take photo (asynchronous).
+     *
+     * This takes one photo immediately.
+     *
+     * @param callback Function to call with result of request.
+     */
     void take_photo_async(const result_callback_t &callback);
+
+    /**
+     * @brief Start photo interval (asynchronous).
+     *
+     * Starts a photo timelapse given an interval.
+     *
+     * @param interval_s The interval between photos in seconds.
+     * @param callback Function to call with result of request.
+     */
     void start_photo_interval_async(float interval_s, const result_callback_t &callback);
+
+    /**
+     * @brief Stop photo interval (asynchronous).
+     *
+     * Stops a photo timelapse again.
+     *
+     * @param callback Function to call with result of request.
+     */
     void stop_photo_interval_async(const result_callback_t &callback);
+
+    /**
+     * @brief Start video capture (asynchronous).
+     *
+     * This starts a video recording immediately.
+     *
+     * @param callback Function to call with result of request.
+     */
     void start_video_async(const result_callback_t &callback);
+
+    /**
+     * @brief Stop video capture (asynchronous).
+     *
+     * This stops a video recording again.
+     *
+     * @param callback Function to call with result of request.
+     */
     void stop_video_async(const result_callback_t &callback);
 
     /**
