@@ -72,7 +72,7 @@ void GimbalImpl::set_roi_location_async(double latitude_deg, double longitude_de
 }
 
 void GimbalImpl::receive_command_result(MAVLinkCommands::Result command_result,
-                                       const Gimbal::result_callback_t &callback)
+                                        const Gimbal::result_callback_t &callback)
 {
     Gimbal::Result gimbal_result = gimbal_result_from_command_result(command_result);
 
