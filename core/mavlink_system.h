@@ -144,6 +144,10 @@ public:
 
 private:
 
+    // Helper methods added to increase readablity
+    bool is_autopilot(uint8_t comp_id) const { return comp_id == MAV_COMP_ID_AUTOPILOT1; }
+    bool have_uuid() const { return _uuid != 0 && _uuid_initialized; }
+
     void process_heartbeat(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
     void process_statustext(const mavlink_message_t &message);
@@ -176,6 +180,8 @@ private:
 
     int _uuid_retries = 0;
     std::atomic<bool> _uuid_initialized {false};
+
+    uint8_t _non_autopilot_heartbeats = 0;
 
     bool _supports_mission_int {false};
     std::atomic<bool> _armed {false};
