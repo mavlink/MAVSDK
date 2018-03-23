@@ -95,7 +95,7 @@ void LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
                                  _parent->get_autopilot_id(),
                                  logging_data_acked.sequence);
 
-    _parent->send_message(answer);
+    _parent->send_message(answer, _parent->get_autopilot_id());
 }
 
 Logging::Result

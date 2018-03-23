@@ -68,7 +68,8 @@ public:
     void reset_call_every(const void *cookie);
     void remove_call_every(const void *cookie);
 
-    bool send_message(const mavlink_message_t &message);
+    bool send_message(const mavlink_message_t &message,
+                      uint8_t target_component_id = MAV_COMP_ID_ALL);
 
     MAVLinkCommands::Result send_command_with_ack(uint16_t command,
                                                   const MAVLinkCommands::Params &params,

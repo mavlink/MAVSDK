@@ -26,8 +26,7 @@
 namespace dronecore {
 
 UdpConnection::UdpConnection(DroneCoreImpl &parent,
-                             int local_port_number,
-                             size_t no_of_clients) :
+                             int local_port_number):
     Connection(parent),
     _local_port_number(local_port_number) {}
 
@@ -147,44 +146,61 @@ bool UdpConnection::is_valid(const Client &client) const
     return true;
 }
 
-bool UdpConnection::send_message(const mavlink_message_t &message)
+bool UdpConnection::send_message(const mavlink_message_t &message,
+                                 uint8_t target_sysid, uint8_t target_compid)
 {
-    struct sockaddr_in dest_addr {};
+    std::vector<struct sockaddr_in> destinations {};
+    // In point-to-point MAVLink message, target system ID and component ID exists.
+    bool point_to_point = target_sysid && target_compid;
 
     {
         std::lock_guard<std::mutex> lock(_remote_mutex);
 
-        int cli_index = find_client(message.sysid, message.compid);
-        if (cli_index < 0) {
-            LogErr() << "No such client with (SysId=," << message.sysid
-                     << " CompId=" << message.compid << ")......";
-            return false;
-        } else if (!is_valid(_clients[cli_index])) {
-            return false;
+        if (point_to_point) {
+            // send to a specific component
+            auto cli_idx = find_client(target_sysid, target_compid);
+            if (cli_idx < 0) {
+                LogErr() << "No such component (SysID: " << target_sysid
+                         << ", CompID: " << target_compid << ")";
+                return false;
+            }
+            struct sockaddr_in addr {};
+            addr.sin_family = AF_INET;
+            inet_pton(AF_INET, _clients[cli_idx].ip.c_str(), &addr.sin_addr.s_addr);
+            addr.sin_port = htons(_clients[cli_idx].port);
+            destinations.push_back(addr);
+        } else {
+            // broadcast
+            for (auto client : _clients) {
+                struct sockaddr_in addr {};
+                addr.sin_family = AF_INET;
+                inet_pton(AF_INET, client.ip.c_str(), &addr.sin_addr.s_addr);
+                addr.sin_port = htons(client.port);
+                destinations.push_back(addr);
+            }
         }
-
-        dest_addr.sin_family = AF_INET;
-
-        inet_pton(AF_INET, _clients[cli_index].ip.c_str(), &dest_addr.sin_addr.s_addr);
-
-        dest_addr.sin_port = htons(_clients[cli_index].port);
     }
 
-    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-    uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
+    if (destinations.size()) {
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
-    // TODO: remove this assert again
-    assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
+        // TODO: remove this assert again
+        assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, reinterpret_cast<char *>(buffer), buffer_len, 0,
-                          reinterpret_cast<const sockaddr *>(&dest_addr), sizeof(dest_addr));
+        for (auto dest : destinations) {
+            int send_len = sendto(_socket_fd, reinterpret_cast<char *>(buffer), buffer_len, 0,
+                                  reinterpret_cast<const sockaddr *>(&dest), sizeof(dest));
 
-    if (send_len != buffer_len) {
-        LogErr() << "sendto failure: " << GET_ERROR(errno);
+            if (send_len != buffer_len) {
+                LogErr() << "sendto failure: " << GET_ERROR(errno);
+                return false;
+            }
+        }
+        return true;
+    } else {
         return false;
     }
-
-    return true;
 }
 
 
@@ -203,7 +219,7 @@ bool UdpConnection::is_new(const std::string &ip) const
             found = true;
         }
 
-    return found;
+    return !found;
 }
 
 bool UdpConnection::is_new(int port) const
@@ -214,8 +230,7 @@ bool UdpConnection::is_new(int port) const
             found = true;
         }
 
-    return found;
-
+    return !found;
 }
 
 void UdpConnection::receive(UdpConnection *parent)

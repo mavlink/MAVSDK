@@ -65,8 +65,7 @@ public:
      * @param local_port_number The local UDP port to listen to (defaults to 14540, the same as mavros).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_udp_connection(int local_port_number = DEFAULT_UDP_PORT,
-                                        size_t no_of_clients = 1);
+    ConnectionResult add_udp_connection(int local_port_number = DEFAULT_UDP_PORT);
 
     /**
      * @brief Adds a TCP connection with a specific IP address and port number.

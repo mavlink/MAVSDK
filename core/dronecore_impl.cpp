@@ -85,12 +85,13 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     }
 }
 
-bool DroneCoreImpl::send_message(const mavlink_message_t &message)
+bool DroneCoreImpl::send_message(const mavlink_message_t &message,
+                                 uint8_t target_system_id, uint8_t target_component_id)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
-        if (!(**it).send_message(message)) {
+        if (!(**it).send_message(message, target_system_id, target_component_id)) {
             LogErr() << "send fail";
             return false;
         }
@@ -161,10 +162,10 @@ ConnectionResult DroneCoreImpl::add_link_connection(const std::string &protocol,
     }
 }
 
-ConnectionResult DroneCoreImpl::add_udp_connection(const int local_port_number,
-                                                   size_t no_of_clients)
+ConnectionResult DroneCoreImpl::add_udp_connection(int local_port_number)
 {
-    std::shared_ptr<Connection> new_conn = std::make_shared<UdpConnection>(*this, local_port_number, no_of_clients);
+    LogDebug();
+    std::shared_ptr<Connection> new_conn = std::make_shared<UdpConnection>(*this, local_port_number);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
@@ -194,7 +195,7 @@ ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
 }
 
 ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_path,
-                                                      const int baudrate)
+                                                      int baudrate)
 {
 #if !defined(WINDOWS) && !defined(APPLE)
     std::shared_ptr<Connection> new_conn = std::make_shared<SerialConnection>(*this,

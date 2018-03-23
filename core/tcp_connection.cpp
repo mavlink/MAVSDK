@@ -23,8 +23,9 @@
 namespace dronecore {
 
 /* change to remote_ip and remote_port */
-TcpConnection::TcpConnection(DroneCoreImpl &parent, const std::string &remote_ip, int remote_port) :
-    Connection(parent),
+TcpConnection::TcpConnection(DroneCoreImpl &parent,
+                             const std::string &remote_ip,
+                             int remote_port): Connection(parent),
     _remote_ip(remote_ip),
     _remote_port_number(remote_port),
     _should_exit(false) {}
@@ -34,7 +35,6 @@ TcpConnection::~TcpConnection()
     // If no one explicitly called stop before, we should at least do it.
     stop();
 }
-
 
 bool TcpConnection::is_ok() const
 {
@@ -129,7 +129,7 @@ ConnectionResult TcpConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool TcpConnection::send_message(const mavlink_message_t &message)
+bool TcpConnection::send_message(const mavlink_message_t &message, uint8_t, uint8_t)
 {
     if (_remote_ip.empty()) {
         LogErr() << "Remote IP unknown";

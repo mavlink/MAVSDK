@@ -15,7 +15,6 @@ set_target_properties(unit_tests_runner
 target_link_libraries(unit_tests_runner
     dronecore
     dronecore_mission
-    dronecore_camera
     gtest
     gtest_main
     gmock

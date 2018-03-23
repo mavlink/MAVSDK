@@ -25,8 +25,8 @@ TEST_F(SitlTest, MultiComponentDiscovery)
 {
     DroneCore dc;
 
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS); // autopilot
-    ASSERT_EQ(dc.add_udp_connection(14550), ConnectionResult::SUCCESS); // camera
+    // For both Autopilot and Camera
+    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
 
     // FIXME: As components send Heartbeats at 1Hz,
     // lets wait until atleast 2 of them gets discovered.
@@ -54,7 +54,7 @@ TEST_F(SitlTest, MultiComponentDiscovery)
         EXPECT_EQ(has_gimbal, false);
 
         if (is_autopilot && has_camera && !has_gimbal) {
-            std::cout << "Its an Autopilot with a Camera" << '\n';
+            std::cout << "Its an Autopilot with a Camera " << '\n';
         }
     }
 
