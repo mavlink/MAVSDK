@@ -34,17 +34,25 @@ public:
     void start_video_async(const Camera::result_callback_t &callback);
     void stop_video_async(const Camera::result_callback_t &callback);
 
+    void set_mode_async(Camera::Mode mode, const Camera::mode_callback_t &callback);
+    void get_mode_async(const Camera::mode_callback_t &callback);
+
     // Non-copyable
     CameraImpl(const CameraImpl &) = delete;
     const CameraImpl &operator=(const CameraImpl &) = delete;
 
 private:
+    void receive_set_mode_command_result(MavlinkCommands::Result command_result,
+                                         const Camera::mode_callback_t &callback,
+                                         Camera::Mode mode);
+
     static Camera::Result camera_result_from_command_result(
         MavlinkCommands::Result command_result);
 
+    static bool interval_valid(float interval_s);
+
     int _capture_sequence = 0;
 
-    static bool interval_valid(float interval_s);
 };
 
 

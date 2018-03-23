@@ -154,6 +154,37 @@ public:
      */
     void stop_video_async(const result_callback_t &callback);
 
+
+    /**
+     * @brief Camera mode type.
+     */
+    enum class Mode {
+        PHOTO,
+        PHOTO_SURVEY,
+        VIDEO,
+        UNKNOWN
+    };
+
+    /**
+     * @brief Callback type for asynchronous camera mode calls.
+     */
+    typedef std::function<void(Result, const Mode &)> mode_callback_t;
+
+    /**
+     * @brief Setter for camera mode (asynchronous).
+     *
+     * @param mode Camera mode to set.
+     * @param callback Function to call with result of request.
+     */
+    void set_mode_async(Mode mode, const mode_callback_t &callback);
+
+    /**
+     * @brief Getter for camera mode (asynchronous).
+     *
+     * @param callback Function to call with result of request.
+     */
+    void get_mode_async(const mode_callback_t &callback);
+
     /**
      * @brief Copy constructor (object is not copyable).
      */
