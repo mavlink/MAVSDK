@@ -164,8 +164,7 @@ ConnectionResult DroneCoreImpl::add_link_connection(const std::string &protocol,
 
 ConnectionResult DroneCoreImpl::add_udp_connection(int local_port_number)
 {
-    LogDebug();
-    std::shared_ptr<Connection> new_conn = std::make_shared<UdpConnection>(*this, local_port_number);
+    auto new_conn = std::make_shared<UdpConnection>(*this, local_port_number);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
@@ -183,9 +182,7 @@ void DroneCoreImpl::add_connection(std::shared_ptr<Connection> new_connection)
 ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
                                                    int remote_port)
 {
-
-    std::shared_ptr<Connection> new_conn = std::make_shared<TcpConnection>(*this,
-                                                                           remote_ip, remote_port);
+    auto new_conn = std::make_shared<TcpConnection>(*this, remote_ip, remote_port);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
@@ -198,8 +195,8 @@ ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_pat
                                                       int baudrate)
 {
 #if !defined(WINDOWS) && !defined(APPLE)
-    std::shared_ptr<Connection> new_conn = std::make_shared<SerialConnection>(*this,
-                                                                              dev_path, baudrate);
+    auto new_conn = std::make_shared<SerialConnection>(*this, dev_path, baudrate);
+
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
         add_connection(new_conn);
