@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 #include "dronecore.h"
+#include <thread>
 
 #if DROP_DEBUG != 1
 #error DROB_DEBUG needs to be set for this test to work
