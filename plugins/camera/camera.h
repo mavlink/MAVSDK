@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 #include "plugin_base.h"
 
 namespace dronecore {
