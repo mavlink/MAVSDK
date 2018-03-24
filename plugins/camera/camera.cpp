@@ -73,6 +73,16 @@ void Camera::get_mode_async(const mode_callback_t &callback)
     _impl->get_mode_async(callback);
 }
 
+void Camera::get_status_async(get_status_callback_t callback)
+{
+    _impl->get_status_async(callback);
+}
+
+void Camera::capture_info_async(capture_info_callback_t callback)
+{
+    _impl->capture_info_async(callback);
+}
+
 const char *Camera::result_str(Result result)
 {
     switch (result) {
