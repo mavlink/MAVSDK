@@ -119,7 +119,7 @@ void CameraImpl::take_photo_async(const Camera::result_callback_t &callback)
                                  1.0f, // take only one picture
                                  float(_capture_sequence++),
                                  NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, std::placeholders::_1, callback),
+        std::bind(&CameraImpl::receive_command_result, _1, callback),
         MAV_COMP_ID_CAMERA);
 
 }
@@ -141,7 +141,7 @@ void CameraImpl::start_photo_interval_async(float interval_s,
                                  0.0f, // unlimited photos
                                  float(_capture_sequence++),
                                  NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, std::placeholders::_1, callback),
+        std::bind(&CameraImpl::receive_command_result, _1, callback),
         MAV_COMP_ID_CAMERA);
 }
 
@@ -151,7 +151,7 @@ void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t &call
         MAV_CMD_IMAGE_STOP_CAPTURE,
         MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                  NAN, NAN, NAN, NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, std::placeholders::_1, callback),
+        std::bind(&CameraImpl::receive_command_result, _1, callback),
         MAV_COMP_ID_CAMERA);
 }
 
@@ -163,7 +163,7 @@ void CameraImpl::start_video_async(const Camera::result_callback_t &callback)
                                  NAN, // fps not set yet
                                  NAN, // resolution not set yet
                                  NAN, NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, std::placeholders::_1, callback),
+        std::bind(&CameraImpl::receive_command_result, _1, callback),
         MAV_COMP_ID_CAMERA);
 }
 
@@ -173,7 +173,7 @@ void CameraImpl::stop_video_async(const Camera::result_callback_t &callback)
         MAV_CMD_VIDEO_STOP_CAPTURE,
         MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                  NAN, NAN, NAN, NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, std::placeholders::_1, callback),
+        std::bind(&CameraImpl::receive_command_result, _1, callback),
         MAV_COMP_ID_CAMERA);
 }
 
@@ -224,7 +224,7 @@ void CameraImpl::set_mode_async(Camera::Mode mode, const Camera::mode_callback_t
                                  mavlink_mode,
                                  NAN, NAN, NAN, NAN, NAN // Reserved
                                 },
-        std::bind(&CameraImpl::receive_set_mode_command_result, this, std::placeholders::_1, callback,
+        std::bind(&CameraImpl::receive_set_mode_command_result, this, _1, callback,
                   mode),
         MAV_COMP_ID_CAMERA);
 }
