@@ -35,6 +35,7 @@ add_executable(integration_tests_runner
     camera_take_photo.cpp
     camera_take_photo_interval.cpp
     camera_mode.cpp
+    camera_status.cpp
     camera_test_helpers.cpp
 )
 
