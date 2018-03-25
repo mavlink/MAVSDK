@@ -1,7 +1,9 @@
 #include "camera_impl.h"
+#include "camera_definition.h"
 #include "device.h"
 #include "global_include.h"
 #include "mavlink_include.h"
+#include "http_loader.h"
 #include <functional>
 
 namespace dronecore {
@@ -40,10 +42,24 @@ void CameraImpl::init()
         MAVLINK_MSG_ID_CAMERA_SETTINGS,
         std::bind(&CameraImpl::process_camera_settings, this, _1),
         this);
+
+    _parent.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_CAMERA_INFORMATION,
+        std::bind(&CameraImpl::process_camera_information, this, _1),
+        this);
+
+    _parent.send_command_with_ack_async(
+        MAV_CMD_REQUEST_CAMERA_INFORMATION,
+        MavlinkCommands::Params {1.0f, // request it
+                                 NAN, NAN, NAN, NAN, NAN, NAN},
+        nullptr,
+        MAV_COMP_ID_CAMERA);
 }
 
 void CameraImpl::deinit()
 {
+    delete _camera_definition;
+
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
@@ -439,18 +455,26 @@ void CameraImpl::process_camera_settings(const mavlink_message_t &message)
     }
 
 
-    //if (_camera_definition) {
-    //    // This "parameter" needs to be manually set.
+    if (_camera_definition) {
+        // This "parameter" needs to be manually set.
 
-    //    CameraDefinition::ParameterValue value;
-    //    value.value.as_uint32 = camera_settings.mode_id;
-    //    _camera_definition->update_setting("CAM_MODE", value);
-    //}
+        CameraDefinition::ParameterValue value;
+        value.value.as_uint32 = camera_settings.mode_id;
+        _camera_definition->update_setting("CAM_MODE", value);
+    }
 
     _get_mode.callback(Camera::Result::SUCCESS, mode);
     _get_mode.callback = nullptr;
 
     _parent.unregister_timeout_handler(_get_mode.timeout_cookie);
+}
+
+void CameraImpl::process_camera_information(const mavlink_message_t &message)
+{
+    mavlink_camera_information_t camera_information;
+    mavlink_msg_camera_information_decode(&message, &camera_information);
+
+    load_definition_file(camera_information.cam_definition_uri);
 }
 
 void CameraImpl::check_status()
@@ -526,6 +550,16 @@ void CameraImpl::receive_set_mode_command_result(MavlinkCommands::Result command
     if (callback) {
         callback(camera_result, mode);
     }
+
+    if (command_result == MavlinkCommands::Result::SUCCESS && _camera_definition) {
+        // This "parameter" needs to be manually set.
+
+        CameraDefinition::ParameterValue value;
+        value.value.as_uint32 = (uint32_t)mode;
+
+        // LogDebug() << "received cam_mode: " << mode;
+        _camera_definition->update_setting("CAM_MODE", value);
+    }
 }
 
 void CameraImpl::receive_get_mode_command_result(MavlinkCommands::Result command_result)
@@ -557,5 +591,155 @@ void CameraImpl::get_mode_timeout_happened()
     }
 }
 
+void CameraImpl::receive_int_param(const std::string &name, bool success, int value)
+{
+    LogDebug() << "Got int param with value " << value
+               << ", success: " << (success ? "yes" : "no");
+
+    if (!success) {
+        return;
+    }
+
+    UNUSED(name);
+    UNUSED(value);
+    if (!_camera_definition) {
+        CameraDefinition::ParameterValue new_parameter_value;
+        new_parameter_value.value.as_uint32 = value;
+        _camera_definition->update_setting(name, new_parameter_value);
+    }
+}
+
+void CameraImpl::receive_float_param(const std::string &name, bool success, float value)
+{
+    LogDebug() << "Got float param with value " << value
+               << ", success: " << (success ? "yes" : "no");
+
+    if (!success) {
+        return;
+    }
+
+    UNUSED(name);
+    UNUSED(value);
+    if (!_camera_definition) {
+        CameraDefinition::ParameterValue new_parameter_value;
+        new_parameter_value.value.as_float = value;
+        _camera_definition->update_setting(name, new_parameter_value);
+    }
+}
+
+void CameraImpl::load_definition_file(const std::string &uri)
+{
+    HttpLoader http_loader;
+    std::string content;
+    LogInfo() << "Downloading camera definition from: " << uri;
+    if (!http_loader.download_text_sync(uri, content)) {
+        LogErr() << "Failed to download camera definition.";
+        return;
+    }
+
+    if (_camera_definition) {
+        delete _camera_definition;
+    }
+
+    _camera_definition = new CameraDefinition();
+    _camera_definition->load_string(content);
+
+    CameraDefinition::parameter_map_t parameters;
+    _camera_definition->get_parameters(parameters, false);
+
+    for (auto parameter : parameters) {
+        // LogDebug() << "parameter to request: " << parameter.first;
+        if (parameter.second->type == CameraDefinition::Type::UINT32) {
+            _parent.get_param_ext_int_async(parameter.first,
+                                            std::bind(&CameraImpl::receive_int_param, this, parameter.first, _1, _2));
+        } else if (parameter.second->type == CameraDefinition::Type::FLOAT) {
+            _parent.get_param_ext_float_async(parameter.first,
+                                              std::bind(&CameraImpl::receive_float_param, this, parameter.first, _1, _2));
+        }
+    }
+
+}
+
+bool CameraImpl::get_possible_settings(std::map<std::string, std::string> &settings)
+{
+    if (!_camera_definition) {
+        LogWarn() << "Error: no camera definition available yet";
+        return false;
+    }
+
+    CameraDefinition::parameter_map_t parameters;
+    _camera_definition->get_parameters(parameters, true);
+
+    for (auto &parameter : parameters) {
+        if (parameter.first.compare("CAM_MODE") == 0) {
+            // We ignore the mode param.
+            continue;
+        }
+
+        settings.insert(
+            std::pair<std::string, std::string>(
+                parameter.first, parameter.second->description));
+    }
+
+    return true;
+}
+
+bool CameraImpl::get_possible_options(const std::string &setting_name,
+                                      std::vector<std::string> &options)
+{
+    if (!_camera_definition) {
+        LogWarn() << "Error: no camera definition available yet";
+        return false;
+    }
+
+    CameraDefinition::parameter_map_t parameters;
+    _camera_definition->get_parameters(parameters, true);
+
+    auto it = parameters.find(setting_name);
+    if (it != parameters.end()) {
+        for (auto option : it->second->options) {
+            options.push_back(option->name);
+        }
+        return true;
+    } else {
+        LogErr() << "Error: setting name not found";
+        return false;
+    }
+}
+
+void CameraImpl::set_option_key_async(const std::string &setting_key,
+                                      const std::string &option_key,
+                                      const Camera::result_callback_t &callback)
+{
+    if (!_camera_definition) {
+        LogWarn() << "Error: no camera defnition available yet.";
+        if (callback) {
+            callback(Camera::Result::ERROR);
+        }
+    }
+
+    LogWarn() << "Setting an option not implemented yet";
+    if (callback) {
+        callback(Camera::Result::DENIED);
+    }
+}
+
+void CameraImpl::get_option_key_async(const std::string &setting_key,
+                                      const Camera::get_option_callback_t &callback)
+{
+    if (_camera_definition) {
+        LogWarn() << "Error: no camera defnition available yet.";
+        if (callback) {
+            callback(Camera::Result::ERROR, "");
+        }
+    }
+
+    LogWarn() << "Getting an option not implemented yet";
+    if (callback) {
+        callback(Camera::Result::DENIED, "");
+    }
+
+    UNUSED(setting_key);
+}
 
 } // namespace dronecore

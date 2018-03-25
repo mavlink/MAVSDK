@@ -3,6 +3,7 @@
 #include "device.h"
 #include "camera.h"
 #include "plugin_impl_base.h"
+#include "camera_definition.h"
 
 namespace dronecore {
 
@@ -38,6 +39,16 @@ public:
     void capture_info_async(Camera::capture_info_callback_t callback);
 
     void get_status_async(Camera::get_status_callback_t callback);
+
+    void set_option_key_async(const std::string &setting_key,
+                              const std::string &option_key,
+                              const Camera::result_callback_t &callback);
+
+    void get_option_key_async(const std::string &setting_key,
+                              const Camera::get_option_callback_t &callback);
+
+    bool get_possible_settings(std::map<std::string, std::string> &settings);
+    bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
 
     // Non-copyable
     CameraImpl(const CameraImpl &) = delete;
@@ -91,13 +102,20 @@ private:
     void process_storage_information(const mavlink_message_t &message);
     void process_camera_capture_status(const mavlink_message_t &message);
     void process_camera_settings(const mavlink_message_t &message);
-    void receive_storage_information_result(MavlinkCommands::Result result);
+    void process_camera_information(const mavlink_message_t &message);
 
+    void receive_storage_information_result(MavlinkCommands::Result result);
     void receive_camera_capture_status_result(MavlinkCommands::Result result);
 
     void check_status();
 
     void status_timeout_happened();
+
+    void load_definition_file(const std::string &uri);
+    void receive_int_param(const std::string &name, bool success, int value);
+    void receive_float_param(const std::string &name, bool success, float value);
+
+    CameraDefinition *_camera_definition = nullptr;
 };
 
 

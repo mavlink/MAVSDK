@@ -3,6 +3,8 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <vector>
+#include <map>
 #include "plugin_base.h"
 
 namespace dronecore {
@@ -264,6 +266,16 @@ public:
      * @param callback Function to call with camera status.
      */
     void get_status_async(get_status_callback_t callback);
+
+    bool get_possible_settings(std::map<std::string, std::string> &settings);
+    bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
+
+    typedef std::function<void(Result, const std::string &)> get_option_callback_t;
+    void get_option_key_async(const std::string &setting_key,
+                              const get_option_callback_t &callback);
+    void set_option_key_async(const std::string &setting_key,
+                              const std::string &option_key,
+                              const result_callback_t &callback);
 
     /**
      * @brief Copy constructor (object is not copyable).

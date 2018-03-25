@@ -37,6 +37,7 @@ add_executable(integration_tests_runner
     camera_mode.cpp
     camera_status.cpp
     camera_test_helpers.cpp
+    camera_settings.cpp
 )
 
 include_directories(
