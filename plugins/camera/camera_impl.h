@@ -27,10 +27,8 @@ public:
     Camera::Result stop_video();
 
     void take_photo_async(const Camera::result_callback_t &callback);
-
     void start_photo_interval_async(float interval_s, const Camera::result_callback_t &callback);
     void stop_photo_interval_async(const Camera::result_callback_t &callback);
-
     void start_video_async(const Camera::result_callback_t &callback);
     void stop_video_async(const Camera::result_callback_t &callback);
 
@@ -52,21 +50,34 @@ private:
         Camera::Status data {};
         bool received_camera_capture_status {false};
         bool received_storage_information {false};
-    } _last_status;
+        void *timeout_cookie {nullptr};
+    } _status;
+
+    static constexpr double DEFAULT_TIMEOUT_S = 3.0;
 
     struct {
         std::mutex mutex {};
         Camera::mode_callback_t callback {nullptr};
+        void *timeout_cookie {nullptr};
     } _get_mode;
+
+    struct {
+        std::mutex mutex {};
+        int sequence;
+    } _capture;
+
+    struct {
+        std::mutex mutex {};
+        Camera::capture_info_callback_t callback {nullptr};
+    } _capture_info;
 
     void receive_set_mode_command_result(MavlinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
                                          Camera::Mode mode);
 
-    void receive_get_mode_timeout();
+    void get_mode_timeout_happened();
 
-    void receive_get_mode_command_result(MavlinkCommands::Result command_result,
-                                         const Camera::mode_callback_t &callback);
+    void receive_get_mode_command_result(MavlinkCommands::Result command_result);
 
     static Camera::Result camera_result_from_command_result(
         MavlinkCommands::Result command_result);
@@ -84,17 +95,9 @@ private:
 
     void receive_camera_capture_status_result(MavlinkCommands::Result result);
 
-    void check_last_status();
+    void check_status();
 
     void status_timeout_happened();
-
-    static constexpr double DEFAULT_TIMEOUT_S = 3.0;
-
-    int _capture_sequence = 0;
-
-    Camera::capture_info_callback_t _capture_info_callback {nullptr};
-
-    void *_timeout_cookie = nullptr;
 };
 
 
