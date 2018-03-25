@@ -53,7 +53,7 @@ Camera::Result CameraImpl::take_photo()
     return camera_result_from_command_result(
                _parent.send_command_with_ack(
                    MAV_CMD_IMAGE_START_CAPTURE,
-                   MavlinkCommands::Params {0.0f, // all camera IDs
+                   MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                             0.0f, // only picture, no interval
                                             1.0f, // take only one picture
                                             float(_capture_sequence++),
@@ -70,7 +70,7 @@ Camera::Result CameraImpl::start_photo_interval(float interval_s)
     return camera_result_from_command_result(
                _parent.send_command_with_ack(
                    MAV_CMD_IMAGE_START_CAPTURE,
-                   MavlinkCommands::Params {0.0f, // all camera IDs
+                   MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                             interval_s,
                                             0, // unlimited photos
                                             float(_capture_sequence++),
@@ -83,7 +83,7 @@ Camera::Result CameraImpl::stop_photo_interval()
     return camera_result_from_command_result(
                _parent.send_command_with_ack(
                    MAV_CMD_IMAGE_STOP_CAPTURE,
-                   MavlinkCommands::Params {0.0f, // all camera IDs
+                   MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                             NAN, NAN, NAN, NAN, NAN, NAN},
                    MAV_COMP_ID_CAMERA));
 }
@@ -93,7 +93,7 @@ Camera::Result CameraImpl::start_video()
     return camera_result_from_command_result(
                _parent.send_command_with_ack(
                    MAV_CMD_VIDEO_START_CAPTURE,
-                   MavlinkCommands::Params {0.0f, // all camera IDs
+                   MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                             NAN, // fps not set yet
                                             NAN, // resolution not set yet
                                             NAN, NAN, NAN, NAN},
@@ -102,21 +102,19 @@ Camera::Result CameraImpl::start_video()
 
 Camera::Result CameraImpl::stop_video()
 {
-    // TODO: add camera ID
     return camera_result_from_command_result(
                _parent.send_command_with_ack(
                    MAV_CMD_VIDEO_STOP_CAPTURE,
-                   MavlinkCommands::Params {0.0f, // all camera IDs
+                   MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                             NAN, NAN, NAN, NAN, NAN, NAN},
                    MAV_COMP_ID_CAMERA));
 }
 
 void CameraImpl::take_photo_async(const Camera::result_callback_t &callback)
 {
-    // TODO: add camera ID
     _parent.send_command_with_ack_async(
         MAV_CMD_IMAGE_START_CAPTURE,
-        MavlinkCommands::Params {0.0f, // all camera IDs
+        MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                  0.0f, // no interval for one picture
                                  1.0f, // take only one picture
                                  float(_capture_sequence++),
@@ -136,10 +134,9 @@ void CameraImpl::start_photo_interval_async(float interval_s,
         return;
     }
 
-    // TODO: add camera ID
     _parent.send_command_with_ack_async(
         MAV_CMD_IMAGE_START_CAPTURE,
-        MavlinkCommands::Params {0.0f, // all camera IDs
+        MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                  interval_s,
                                  0.0f, // unlimited photos
                                  float(_capture_sequence++),
@@ -150,10 +147,9 @@ void CameraImpl::start_photo_interval_async(float interval_s,
 
 void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t &callback)
 {
-    // TODO: add camera ID
     _parent.send_command_with_ack_async(
         MAV_CMD_IMAGE_STOP_CAPTURE,
-        MavlinkCommands::Params {0.0f, // all camera IDs
+        MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                  NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&CameraImpl::receive_command_result, std::placeholders::_1, callback),
         MAV_COMP_ID_CAMERA);
@@ -163,7 +159,7 @@ void CameraImpl::start_video_async(const Camera::result_callback_t &callback)
 {
     _parent.send_command_with_ack_async(
         MAV_CMD_VIDEO_START_CAPTURE,
-        MavlinkCommands::Params {0.0f, // all camera IDs
+        MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                  NAN, // fps not set yet
                                  NAN, // resolution not set yet
                                  NAN, NAN, NAN, NAN},
@@ -175,7 +171,7 @@ void CameraImpl::stop_video_async(const Camera::result_callback_t &callback)
 {
     _parent.send_command_with_ack_async(
         MAV_CMD_VIDEO_STOP_CAPTURE,
-        MavlinkCommands::Params {0.0f, // all camera IDs
+        MavlinkCommands::Params {0.0f, // Reserved, set to 0
                                  NAN, NAN, NAN, NAN, NAN, NAN},
         std::bind(&CameraImpl::receive_command_result, std::placeholders::_1, callback),
         MAV_COMP_ID_CAMERA);
