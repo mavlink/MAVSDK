@@ -65,6 +65,9 @@ private:
 
     void receive_get_mode_timeout();
 
+    void receive_get_mode_command_result(MavlinkCommands::Result command_result,
+                                         const Camera::mode_callback_t &callback);
+
     static Camera::Result camera_result_from_command_result(
         MavlinkCommands::Result command_result);
 

@@ -246,7 +246,7 @@ void CameraImpl::get_mode_async(Camera::mode_callback_t callback)
         MavlinkCommands::Params {1.0, // Request it
                                  NAN, NAN, NAN, NAN, NAN, NAN // Reserved
                                 },
-        nullptr,
+        std::bind(&CameraImpl::receive_get_mode_command_result, this, _1, callback),
         MAV_COMP_ID_CAMERA);
 
     _parent.register_timeout_handler(
@@ -509,6 +509,23 @@ void CameraImpl::receive_set_mode_command_result(MavlinkCommands::Result command
 
     if (callback) {
         callback(camera_result, mode);
+    }
+}
+
+void CameraImpl::receive_get_mode_command_result(MavlinkCommands::Result command_result,
+                                                 const Camera::mode_callback_t &callback)
+{
+    Camera::Result camera_result = camera_result_from_command_result(command_result);
+    if (camera_result == Camera::Result::SUCCESS) {
+        // SUCESS is the normal case and means we keep waiting to receive the mode.
+        _parent.refresh_timeout_handler(this);
+        return;
+    } else {
+        if (callback) {
+            Camera::Mode mode = Camera::Mode::UNKNOWN;
+            callback(camera_result, mode);
+        }
+        _parent.unregister_timeout_handler(_timeout_cookie);
     }
 }
 
