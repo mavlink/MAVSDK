@@ -235,9 +235,6 @@ void CameraImpl::set_mode_async(Camera::Mode mode, const Camera::mode_callback_t
         case Camera::Mode::VIDEO:
             mavlink_mode = CAMERA_MODE_VIDEO;
             break;
-        case Camera::Mode::PHOTO_SURVEY:
-            mavlink_mode = CAMERA_MODE_IMAGE_SURVEY;
-            break;
         default:
         // FALLTHROUGH
         case Camera::Mode::UNKNOWN:
@@ -445,9 +442,6 @@ void CameraImpl::process_camera_settings(const mavlink_message_t &message)
             break;
         case CAMERA_MODE_VIDEO:
             mode = Camera::Mode::VIDEO;
-            break;
-        case CAMERA_MODE_IMAGE_SURVEY:
-            mode = Camera::Mode::PHOTO_SURVEY;
             break;
         default:
             mode = Camera::Mode::UNKNOWN;

@@ -163,7 +163,6 @@ public:
      */
     enum class Mode {
         PHOTO,
-        PHOTO_SURVEY,
         VIDEO,
         UNKNOWN
     };

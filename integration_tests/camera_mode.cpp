@@ -28,28 +28,28 @@ TEST(CameraTest, ChangeMode)
     EXPECT_EQ(new_mode, Camera::Mode::PHOTO);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    set_mode(camera, Camera::Mode::PHOTO_SURVEY);
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    new_mode = get_mode(camera);
-    EXPECT_EQ(new_mode, Camera::Mode::PHOTO_SURVEY);
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
     set_mode(camera, Camera::Mode::VIDEO);
     std::this_thread::sleep_for(std::chrono::seconds(2));
     new_mode = get_mode(camera);
     EXPECT_EQ(new_mode, Camera::Mode::VIDEO);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    set_mode(camera, Camera::Mode::PHOTO_SURVEY);
+    set_mode(camera, Camera::Mode::PHOTO);
     std::this_thread::sleep_for(std::chrono::seconds(2));
     new_mode = get_mode(camera);
-    EXPECT_EQ(new_mode, Camera::Mode::PHOTO_SURVEY);
+    EXPECT_EQ(new_mode, Camera::Mode::PHOTO);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     set_mode(camera, Camera::Mode::PHOTO);
     std::this_thread::sleep_for(std::chrono::seconds(2));
     new_mode = get_mode(camera);
     EXPECT_EQ(new_mode, Camera::Mode::PHOTO);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    set_mode(camera, Camera::Mode::VIDEO);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    new_mode = get_mode(camera);
+    EXPECT_EQ(new_mode, Camera::Mode::VIDEO);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     set_mode(camera, Camera::Mode::VIDEO);
