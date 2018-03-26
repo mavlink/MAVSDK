@@ -5,6 +5,7 @@
 #include <grpc++/server_builder.h>
 #include <grpc++/server_context.h>
 #include <grpc++/security/server_credentials.h>
+#include <memory>
 #include <mutex>
 
 #include "action/action.h"
@@ -14,7 +15,7 @@
 #include "dronecore.h"
 #include "log.h"
 #include "mission/missionrpc_impl.h"
-#include "telemetry/telemetryrpc_impl.h"
+#include "telemetry/telemetry_service_impl.h"
 
 namespace dronecore {
 namespace backend {
@@ -46,6 +47,7 @@ public:
 
         Telemetry telemetry(_dc.system());
         TelemetryServiceImpl telemetryService(telemetry);
+
         builder.RegisterService(&telemetryService);
 
         _server = builder.BuildAndStart();

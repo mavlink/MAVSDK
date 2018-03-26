@@ -1,4 +1,7 @@
 #include "telemetry.h"
+
+#include <limits>
+
 #include "telemetry_impl.h"
 
 namespace dronecore {
@@ -297,6 +300,21 @@ const char *Telemetry::result_str(Result result)
         default:
             return "Unknown";
     }
+}
+
+bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs)
+{
+    return abs(lhs.latitude_deg - rhs.latitude_deg) <= std::numeric_limits<double>::epsilon()
+           && abs(lhs.longitude_deg - rhs.longitude_deg) <= std::numeric_limits<double>::epsilon()
+           && abs(lhs.absolute_altitude_m - rhs.absolute_altitude_m) <= std::numeric_limits<float>::epsilon()
+           && abs(lhs.relative_altitude_m - rhs.relative_altitude_m) <= std::numeric_limits<float>::epsilon();
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position)
+{
+    return str << "[lat: " << position.latitude_deg << ", lon: " << position.longitude_deg
+           << ", abs_alt: " << position.absolute_altitude_m << ", rel_alt: " << position.relative_altitude_m
+           << "]";
 }
 
 } // namespace dronecore

@@ -4,6 +4,8 @@
 #include "connection_initiator.h"
 #include "mocks/dronecore_mock.h"
 
+namespace {
+
 using testing::_;
 using testing::NiceMock;
 
@@ -82,3 +84,5 @@ TEST(ConnectionInitiator, doesNotCrashIfDiscoverCallbackCalledMoreThanOnce)
     discover_callback(ARBITRARY_UUID);
     discover_callback(ARBITRARY_UUID);
 }
+
+} // namespace
