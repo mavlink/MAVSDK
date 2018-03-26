@@ -140,5 +140,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/core/timeout_handler_test.cpp
     ${CMAKE_SOURCE_DIR}/core/call_every_handler_test.cpp
     ${CMAKE_SOURCE_DIR}/core/curl_test.cpp
+    ${CMAKE_SOURCE_DIR}/core/any_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
