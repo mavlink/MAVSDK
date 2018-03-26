@@ -13,7 +13,11 @@ class CameraImpl;
 class Device;
 
 /**
- * @brief The Camera class allows to control generic mavlink cameras.
+ * @brief The Camera class can be used to manage cameras that implement the
+ * MAVLink Camera Protocol: https://mavlink.io/en/protocol/camera.html.
+ *
+ * The plugin needs to be instantiated multiple times for multiple cameras.
+ * However, this is not supported yet.
  *
  * Synchronous and asynchronous variants of the camera methods are supplied.
  */
