@@ -4,6 +4,7 @@
 #include "global_include.h"
 #include "mavlink_include.h"
 #include "locked_queue.h"
+#include "any.h"
 #include <cstdint>
 #include <string>
 #include <functional>
@@ -23,23 +24,7 @@ public:
     class ParamValue
     {
     public:
-        enum class Type {
-            UNKNOWN,
-            FLOAT,
-            INT
-        };
-
-        void set_float(float value)
-        {
-            _float_value = value;
-            _type = Type::FLOAT;
-        }
-
-        void set_int(int32_t value)
-        {
-            _int_value = value;
-            _type = Type::INT;
-        }
+        typedef char custom_type_t[128];
 
         void set_from_mavlink_param_value(mavlink_param_value_t mavlink_value)
         {
@@ -47,13 +32,15 @@ public:
                 case MAV_PARAM_TYPE_UINT32:
                 // FALLTHROUGH
                 case MAV_PARAM_TYPE_INT32: {
-                        int32_t temp_int;
-                        memcpy(&temp_int, &mavlink_value.param_value, sizeof(int32_t));
-                        set_int(temp_int);
+                        int32_t temp;
+                        memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
+                        _value = temp;
                     }
                     break;
                 case MAV_PARAM_TYPE_REAL32:
-                    set_float(mavlink_value.param_value);
+                    float temp;
+                    memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
+                    _value = temp;
                     break;
                 default:
                     // This would be worrying
@@ -65,27 +52,71 @@ public:
         void set_from_mavlink_param_ext_value(mavlink_param_ext_value_t mavlink_ext_value)
         {
             switch (mavlink_ext_value.param_type) {
-                // FIXME: the camera params are others but we treat them as INT32.
-                case MAV_PARAM_TYPE_UINT8:
-                // FALLTHROUGH
-                case MAV_PARAM_TYPE_INT8:
-                // FALLTHROUGH
-                case MAV_PARAM_TYPE_UINT16:
-                // FALLTHROUGH
-                case MAV_PARAM_TYPE_INT16:
-                // FALLTHROUGH
-                case MAV_PARAM_TYPE_UINT32:
-                // FALLTHROUGH
-                case MAV_PARAM_TYPE_INT32: {
-                        int32_t temp_int;
-                        memcpy(&temp_int, &mavlink_ext_value.param_value[0], sizeof(int32_t));
-                        set_int(temp_int);
+                case MAV_PARAM_EXT_TYPE_UINT8: {
+                        uint8_t temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
                     }
                     break;
-                case MAV_PARAM_TYPE_REAL32:
-                    float temp_float;
-                    memcpy(&temp_float, &mavlink_ext_value.param_value[0], sizeof(float));
-                    set_float(temp_float);
+                case MAV_PARAM_EXT_TYPE_INT8: {
+                        int8_t temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
+                    break;
+                case MAV_PARAM_EXT_TYPE_UINT16: {
+                        uint16_t temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
+                    break;
+                case MAV_PARAM_EXT_TYPE_INT16: {
+                        int16_t temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
+                    break;
+                case MAV_PARAM_EXT_TYPE_UINT32: {
+                        uint32_t temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
+                    break;
+                case MAV_PARAM_EXT_TYPE_INT32: {
+                        int32_t temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
+                    break;
+                case MAV_PARAM_EXT_TYPE_UINT64: {
+                        uint64_t temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
+                    break;
+                case MAV_PARAM_EXT_TYPE_INT64: {
+                        int64_t temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
+                    break;
+                case MAV_PARAM_EXT_TYPE_REAL32: {
+                        float temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
+                    break;
+                case MAV_PARAM_EXT_TYPE_REAL64: {
+                        double temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
+                    break;
+                case MAV_PARAM_EXT_TYPE_CUSTOM: {
+                        custom_type_t temp;
+                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                        _value = temp;
+                    }
                     break;
                 default:
                     // This would be worrying
@@ -95,49 +126,133 @@ public:
             }
         }
 
-        float get_float_casted_value() const
+        MAV_PARAM_TYPE get_mav_param_type() const
         {
-            switch (_type) {
-                case Type::FLOAT:
-                    return _float_value;
-                case Type::INT:
-                    return *(reinterpret_cast<const float *>(&_int_value));
-                default:
-                    return NAN;
+            if (_value.is<float>()) {
+                return MAV_PARAM_TYPE_REAL32;
+            } else if (_value.is<int32_t>()) {
+                return MAV_PARAM_TYPE_INT32;
+            } else {
+                return MAV_PARAM_TYPE_REAL32;
             }
         }
 
-        MAV_PARAM_TYPE get_mav_param_type() const
+        MAV_PARAM_EXT_TYPE get_mav_param_ext_type() const
         {
-            switch (_type) {
-                case Type::FLOAT:
-                    return MAV_PARAM_TYPE_REAL32;
-                case Type::INT:
-                    return MAV_PARAM_TYPE_INT32;
-                default:
-                    return MAV_PARAM_TYPE_REAL32;
+            if (_value.is<uint8_t>()) {
+                return MAV_PARAM_EXT_TYPE_UINT8;
+            } else if (_value.is<int8_t>()) {
+                return MAV_PARAM_EXT_TYPE_INT8;
+            } else if (_value.is<uint16_t>()) {
+                return MAV_PARAM_EXT_TYPE_UINT16;
+            } else if (_value.is<int16_t>()) {
+                return MAV_PARAM_EXT_TYPE_INT16;
+            } else if (_value.is<uint32_t>()) {
+                return MAV_PARAM_EXT_TYPE_UINT32;
+            } else if (_value.is<int32_t>()) {
+                return MAV_PARAM_EXT_TYPE_INT32;
+            } else if (_value.is<uint64_t>()) {
+                return MAV_PARAM_EXT_TYPE_UINT64;
+            } else if (_value.is<int64_t>()) {
+                return MAV_PARAM_EXT_TYPE_INT64;
+            } else if (_value.is<float>()) {
+                return MAV_PARAM_EXT_TYPE_REAL32;
+            } else if (_value.is<double>()) {
+                return MAV_PARAM_EXT_TYPE_REAL64;
+            } else if (_value.is<custom_type_t>()) {
+                return MAV_PARAM_EXT_TYPE_CUSTOM;
+            } else {
+                LogErr() << "Unknown data type for param.";
+                assert(false);
+            }
+        }
+
+        float get_4_float_bytes() const
+        {
+            if (_value.is<float>()) {
+                return _value.as<float>();
+            } else {
+                return *(reinterpret_cast<const float *>(&_value.as<int32_t>()));
+            }
+        }
+
+        void get_128_bytes(char *bytes) const
+        {
+            if (_value.is<uint8_t>()) {
+                memcpy(bytes, &_value.as<uint8_t>(), sizeof(uint8_t));
+            } else if (_value.is<int8_t>()) {
+                memcpy(bytes, &_value.as<int8_t>(), sizeof(int8_t));
+            } else if (_value.is<uint16_t>()) {
+                memcpy(bytes, &_value.as<uint16_t>(), sizeof(uint16_t));
+            } else if (_value.is<int16_t>()) {
+                memcpy(bytes, &_value.as<int16_t>(), sizeof(int16_t));
+            } else if (_value.is<uint32_t>()) {
+                memcpy(bytes, &_value.as<uint32_t>(), sizeof(uint32_t));
+            } else if (_value.is<int32_t>()) {
+                memcpy(bytes, &_value.as<int32_t>(), sizeof(int32_t));
+            } else if (_value.is<uint64_t>()) {
+                memcpy(bytes, &_value.as<uint64_t>(), sizeof(uint64_t));
+            } else if (_value.is<int64_t>()) {
+                memcpy(bytes, &_value.as<int64_t>(), sizeof(int64_t));
+            } else if (_value.is<float>()) {
+                memcpy(bytes, &_value.as<float>(), sizeof(float));
+            } else if (_value.is<double>()) {
+                memcpy(bytes, &_value.as<double>(), sizeof(double));
+            } else if (_value.is<custom_type_t>()) {
+                memcpy(bytes, &_value.as<custom_type_t>(), sizeof(custom_type_t));
+            } else {
+                LogErr() << "Unknown data type for param.";
+                assert(false);
             }
         }
 
         float get_float() const
         {
-            return _float_value;
+            return float(_value);
+        }
+
+        double get_double() const
+        {
+            return double(_value);
         }
 
         int32_t get_int() const
         {
-            return _int_value;
+            return int32_t(_value);
+        }
+
+        void set_float(float value)
+        {
+            _value = value;
+        }
+
+        void set_double(double value)
+        {
+            _value = value;
+        }
+
+        void set_int(int32_t value)
+        {
+            _value = value;
+        }
+
+        bool is_int() const
+        {
+            return (_value.is<int32_t>());
         }
 
         bool is_float() const
         {
-            return (_type == Type::FLOAT);
+            return (_value.is<float>());
+        }
+
+        bool is_double() const
+        {
+            return (_value.is<double>());
         }
 
     private:
-        float _float_value = NAN;
-        int32_t _int_value = 0;
-        Type _type = Type::UNKNOWN;
+        Any _value;
     };
 
     typedef std::function <void(bool success)> set_param_callback_t;
