@@ -201,6 +201,7 @@ public:
             } else {
                 LogErr() << "Unknown data type for param.";
                 assert(false);
+                return MAV_PARAM_EXT_TYPE_INT32;
             }
         }
 
