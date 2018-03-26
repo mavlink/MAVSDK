@@ -126,6 +126,43 @@ public:
             }
         }
 
+        void set_from_xml(const char *type_str, const char *value_str)
+        {
+            if (strcmp(type_str, "uint8") == 0) {
+                uint8_t temp = std::atoi(value_str);
+                _value = temp;
+            } else if (strcmp(type_str, "int8") == 0) {
+                int8_t temp = std::stoi(value_str);
+                _value = temp;
+            } else if (strcmp(type_str, "uint16") == 0) {
+                uint16_t temp = std::atoi(value_str);
+                _value = temp;
+            } else if (strcmp(type_str, "int16") == 0) {
+                int16_t temp = std::stoi(value_str);
+                _value = temp;
+            } else if (strcmp(type_str, "uint32") == 0) {
+                uint32_t temp = std::atol(value_str);
+                _value = temp;
+            } else if (strcmp(type_str, "int32") == 0) {
+                int32_t temp = std::stol(value_str);
+                _value = temp;
+            } else if (strcmp(type_str, "uint64") == 0) {
+                uint64_t temp = std::atoll(value_str);
+                _value = temp;
+            } else if (strcmp(type_str, "uint64") == 0) {
+                int64_t temp = std::stoll(value_str);
+                _value = temp;
+            } else if (strcmp(type_str, "float") == 0) {
+                float temp = std::stof(value_str);
+                _value = temp;
+            } else if (strcmp(type_str, "double") == 0) {
+                double temp = std::stod(value_str);
+                _value = temp;
+            } else {
+                LogErr() << "Unknown type: " << type_str;
+            }
+        }
+
         MAV_PARAM_TYPE get_mav_param_type() const
         {
             if (_value.is<float>()) {

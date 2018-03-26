@@ -452,9 +452,11 @@ void CameraImpl::process_camera_settings(const mavlink_message_t &message)
     if (_camera_definition) {
         // This "parameter" needs to be manually set.
 
+#if 0
         CameraDefinition::ParameterValue value;
         value.value.as_uint32 = camera_settings.mode_id;
         _camera_definition->update_setting("CAM_MODE", value);
+#endif
     }
 
     _get_mode.callback(Camera::Result::SUCCESS, mode);
@@ -548,11 +550,13 @@ void CameraImpl::receive_set_mode_command_result(MavlinkCommands::Result command
     if (command_result == MavlinkCommands::Result::SUCCESS && _camera_definition) {
         // This "parameter" needs to be manually set.
 
+#if 0
         CameraDefinition::ParameterValue value;
         value.value.as_uint32 = (uint32_t)mode;
 
         // LogDebug() << "received cam_mode: " << mode;
         _camera_definition->update_setting("CAM_MODE", value);
+#endif
     }
 }
 
@@ -597,9 +601,11 @@ void CameraImpl::receive_int_param(const std::string &name, bool success, int va
     UNUSED(name);
     UNUSED(value);
     if (!_camera_definition) {
+#if 0
         CameraDefinition::ParameterValue new_parameter_value;
         new_parameter_value.value.as_uint32 = value;
         _camera_definition->update_setting(name, new_parameter_value);
+#endif
     }
 }
 
@@ -615,9 +621,11 @@ void CameraImpl::receive_float_param(const std::string &name, bool success, floa
     UNUSED(name);
     UNUSED(value);
     if (!_camera_definition) {
+#if 0
         CameraDefinition::ParameterValue new_parameter_value;
         new_parameter_value.value.as_float = value;
         _camera_definition->update_setting(name, new_parameter_value);
+#endif
     }
 }
 
@@ -642,6 +650,7 @@ void CameraImpl::load_definition_file(const std::string &uri)
     _camera_definition->get_parameters(parameters, false);
 
     for (auto parameter : parameters) {
+#if 0
         // LogDebug() << "parameter to request: " << parameter.first;
         if (parameter.second->type == CameraDefinition::Type::UINT32) {
             _parent.get_param_ext_int_async(parameter.first,
@@ -650,6 +659,7 @@ void CameraImpl::load_definition_file(const std::string &uri)
             _parent.get_param_ext_float_async(parameter.first,
                                               std::bind(&CameraImpl::receive_float_param, this, parameter.first, _1, _2));
         }
+#endif
     }
 
 }
