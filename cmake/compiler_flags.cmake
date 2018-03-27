@@ -31,9 +31,11 @@ else()
     endif()
 endif()
 
-# We need a define if on APPLE
 if(APPLE)
+    # We need a define if on APPLE
     add_definitions("-DAPPLE")
+    # Otherwise tinyxml2 complains.
+    set(warnings "-Wno-old-style-cast")
 endif()
 
 # Add DEBUG define for Debug target
