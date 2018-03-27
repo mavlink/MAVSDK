@@ -100,6 +100,11 @@ bool CameraDefinition::get_parameters(parameter_map_t &parameters, bool filter_p
             return false;
         }
 
+        // Be definition custom types do not have control.
+        if (strcmp(type_str, "custom") == 0) {
+            is_control = false;
+        }
+
         auto e_description = e_parameter->FirstChildElement("description");
         if (!e_description) {
             return false;
@@ -113,6 +118,17 @@ bool CameraDefinition::get_parameters(parameter_map_t &parameters, bool filter_p
                    << ")";
 
         // TODO: parse default which is of param type.
+
+        auto e_updates = e_parameter->FirstChildElement("updates");
+        if (e_updates) {
+            for (auto e_update = e_updates->FirstChildElement("update");
+                 e_update != nullptr;
+                 e_update = e_update->NextSiblingElement("update")) {
+
+                LogDebug() << "Updates: " << e_update->GetText();
+            }
+        }
+
 
         auto e_options = e_parameter->FirstChildElement("options");
         if (!e_options) {
@@ -133,85 +149,40 @@ bool CameraDefinition::get_parameters(parameter_map_t &parameters, bool filter_p
             auto new_param = std::make_shared<MavlinkParameters::ParamValue>();
             new_param->set_from_xml(type_str, option_name);
 
+            LogDebug() << "Type: " << type_str << ", name: " << option_name;
+
+            auto e_exclusions = e_option->FirstChildElement("exclusions");
+            if (e_exclusions) {
+                for (auto e_exclude = e_exclusions->FirstChildElement("exclude");
+                     e_exclude != nullptr;
+                     e_exclude = e_exclude->NextSiblingElement("exclude")) {
+
+                    LogDebug() << "Exclude: " << e_exclude->GetText();
+                }
+            }
+
+            auto e_parameterranges = e_option->FirstChildElement("parameterranges");
+            if (e_parameterranges) {
+                for (auto e_parameterrange = e_parameterranges->FirstChildElement("parameterrange");
+                     e_parameterrange != nullptr;
+                     e_parameterrange = e_parameterrange->NextSiblingElement("parameterrange")) {
+
+                    for (auto e_roption = e_parameterrange->FirstChildElement("roption");
+                         e_roption != nullptr;
+                         e_roption = e_roption->NextSiblingElement("roption")) {
+
+                        LogDebug() << "range option: "
+                                   << e_roption->Attribute("name")
+                                   << " -> "
+                                   << e_roption->Attribute("value");
+                    }
+                }
+            }
+
             // TODO: do something smart here
         }
 
     }
-
-#if 0
-    auto new_param = std::make_shared<Parameter>();
-    const char *name = parameter_list->Attribute("name");
-    if (!name) {
-        LogErr() << "Could not find parameter name attribute";
-        return false;
-    }
-
-    const char *type_str = parameter_list->Attribute("type");
-    if (!name) {
-        LogErr() << "Could not find parameter type attribute";
-        return false;
-    }
-
-    //new_param->name = std::string(name);
-    new_param->description = std::string(description->GetText());
-    new_param->options = option_list_t();
-
-    auto option = std::make_shared<MalvinkParameters::ParamValue>();
-    option.set_from_xml(type_str,
-
-                        auto option = parameter_list->FirstChildElement("options")->
-                                      FirstChildElement("option");
-
-    while (option) {
-    auto new_option = std::make_shared<ParameterOption>();
-        if (new_param->type == Type::FLOAT) {
-            new_option->value.value.as_float = option->FloatAttribute("value");
-        } else if (new_param->type == Type::UINT32) {
-            new_option->value.value.as_uint32 = option->UnsignedAttribute("value");
-        }
-
-        const char *option_name = option->Attribute("name");
-        if (!option_name) {
-            LogErr() << "Could not find option name attribute";
-            return false;
-        }
-
-        new_option->name = std::string(option_name);
-        new_param->options.push_back(new_option);
-
-        if (filter_possible) {
-            auto exclusions = option->FirstChildElement("exclusions");
-            if (exclusions) {
-                auto exclude = exclusions->FirstChildElement("exclude");
-                while (exclude) {
-                    std::string exclude_param_name = exclude->GetText();
-
-                    // Check if param exists
-                    if (_current_settings.find(name) != _current_settings.end()) {
-                        if (_current_settings.find(name)->second.value.as_uint32 == new_option->value.value.as_uint32) {
-                            // LogDebug() << "found current setting: " << name << ": " << _current_settings.find(name)->second.value.as_uint32;
-                            exclusion_parameter_names.push_back(exclude_param_name);
-                        }
-                    }
-
-                    exclude = exclude->NextSiblingElement("exclude");
-                }
-            }
-        }
-
-        option = option->NextSiblingElement("option");
-    }
-
-    parameters.insert(std::pair<std::string, std::shared_ptr<Parameter>>(std::string(name), new_param));
-#endif
-
-#if 0
-    // Finally remove what should be excluded.
-    for (auto &excluded : exclusion_parameter_names) {
-    // LogDebug() << "excluded: " << excluded;
-    parameters.erase(excluded);
-    }
-#endif
 
     return true;
 }
