@@ -666,6 +666,8 @@ void CameraImpl::load_definition_file(const std::string &uri)
 
 bool CameraImpl::get_possible_settings(std::map<std::string, std::string> &settings)
 {
+    UNUSED(settings);
+#if 0
     if (!_camera_definition) {
         LogWarn() << "Error: no camera definition available yet";
         return false;
@@ -685,12 +687,16 @@ bool CameraImpl::get_possible_settings(std::map<std::string, std::string> &setti
                 parameter.first, parameter.second->description));
     }
 
+#endif
     return true;
 }
 
 bool CameraImpl::get_possible_options(const std::string &setting_name,
                                       std::vector<std::string> &options)
 {
+    UNUSED(setting_name);
+    UNUSED(options);
+#if 0
     if (!_camera_definition) {
         LogWarn() << "Error: no camera definition available yet";
         return false;
@@ -709,6 +715,8 @@ bool CameraImpl::get_possible_options(const std::string &setting_name,
         LogErr() << "Error: setting name not found";
         return false;
     }
+#endif
+    return true;
 }
 
 void CameraImpl::set_option_key_async(const std::string &setting_key,

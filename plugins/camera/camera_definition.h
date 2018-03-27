@@ -21,21 +21,33 @@ public:
     const char *get_vendor() const;
     const char *get_model() const;
 
-    struct ParameterOption {
+    typedef std::map<std::string, MavlinkParameters::ParamValue> roption_t;
+
+    typedef std::map<std::string, roption_t> parameter_range_t;
+
+    struct Option {
         std::string name;
         MavlinkParameters::ParamValue value;
+        std::vector<std::string> exclusions;
+        std::vector<parameter_range_t> parameter_ranges;
+        bool is_default;
     };
-
-    typedef std::vector<std::shared_ptr<ParameterOption>> option_list_t;
 
     struct Parameter {
         std::string description;
-        option_list_t options;
+        bool is_control;
+        bool is_readonly;
+        bool is_writeonly;
+        std::vector<std::string> updates;
+        std::vector<std::shared_ptr<Option>> options;
     };
+
+    typedef std::map<std::string, std::shared_ptr<Parameter>> parameter_map_t;
+
+    parameter_map_t _settings;
 
     void update_setting(const std::string &name, const MavlinkParameters::ParamValue &value);
 
-    typedef std::map<std::string, std::shared_ptr<Parameter>> parameter_map_t;
     bool get_parameters(parameter_map_t &parameters, bool filter_possible);
 
     // Non-copyable
@@ -43,7 +55,7 @@ public:
     const CameraDefinition &operator=(const CameraDefinition &) = delete;
 
 private:
-    tinyxml2::XMLDocument _doc;
+    tinyxml2::XMLDocument _doc {};
 
     std::map<std::string, MavlinkParameters::ParamValue> _current_settings = {};
 };
