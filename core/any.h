@@ -4,6 +4,7 @@
 #include <utility>
 #include <typeinfo>
 #include <cassert>
+#include "log.h"
 
 namespace dronecore {
 
@@ -39,8 +40,10 @@ struct Any {
 
         if (!derived) {
             // FIXME: We don't have exceptions, so this is commented out
-            //        and will segfault instead.
+            //        and we'll abort instead.
             //throw bad_cast();
+            LogErr() << "Need to abort because of a bad_cast";
+            abort();
         }
 
         return derived->value;
