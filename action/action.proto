@@ -88,7 +88,7 @@ message ActionResult {
     enum Result {
         UNKNOWN = 0;
         SUCCESS = 1;
-        NO_DEVICE = 2;
+        NO_SYSTEM = 2;
         CONNECTION_ERROR = 3;
         BUSY = 4;
         COMMAND_DENIED = 5;

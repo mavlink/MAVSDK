@@ -6,15 +6,15 @@ option java_package = "io.dronecore.discovery";
 option java_outer_classname = "DiscoveryProto";
 
 service DiscoveryService {
-    rpc SubscribeDiscoveredDevices(SubscribeDiscoveredDevicesRequest) returns(stream DiscoveredDeviceResponse) {}
+    rpc SubscribeDiscoveredSystems(SubscribeDiscoveredSystemsRequest) returns(stream DiscoveredSystemResponse) {}
 }
 
-message SubscribeDiscoveredDevicesRequest {}
-message DiscoveredDeviceResponse {
-    DeviceInfo device_info = 1;
+message SubscribeDiscoveredSystemsRequest {}
+message DiscoveredSystemResponse {
+    SystemInfo system_info = 1;
 }
 
-message DeviceInfo {
+message SystemInfo {
     uint64 uuid = 1;
     string address = 2;
     int32 port = 3;
