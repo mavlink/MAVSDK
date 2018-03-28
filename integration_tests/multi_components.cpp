@@ -34,8 +34,7 @@ TEST_F(SitlTest, MultiComponentDiscovery)
     // lets wait until atleast 2 of them gets discovered.
     // Without this wait, we MAY NOT get Hearbeat from second component.
     std::cout << "We've nothing to do until we've some system to talk to. Lets sleep!\n";
-    sleep_for(seconds(5));
-    std::cout << "Done with sleeping\n";
+    sleep_for(seconds(3));
 
     auto uuids = dc.system_uuids();
 
@@ -58,11 +57,9 @@ TEST_F(SitlTest, MultiComponentDiscovery)
         if (is_autopilot && has_camera && !has_gimbal) {
             std::cout << "Its an Autopilot with a Camera." << '\n';
         } else if (is_standalone && has_camera) {
-            std::cout << "We found a Standalone camera." << '\n';
+            std::cout << "Its a Standalone camera." << '\n';
         } else if (is_autopilot && !has_camera) {
-            std::cout << "We found an Autopilot alone." << '\n';
+            std::cout << "Its an Autopilot alone." << '\n';
         }
     }
-
-    std::cout << "Done" << '\n';
 }
