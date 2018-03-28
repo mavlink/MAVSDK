@@ -34,8 +34,6 @@ endif()
 if(APPLE)
     # We need a define if on APPLE
     add_definitions("-DAPPLE")
-    # Otherwise tinyxml2 complains.
-    set(warnings "-Wno-old-style-cast")
 endif()
 
 # Add DEBUG define for Debug target
@@ -44,3 +42,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage")
 set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_COVERAGE} --coverage")
 set(CMAKE_LINKER_FLAGS_COVERAGE "${CMAKE_LINKER_FLAGS_COVERAGE} --coverage")
+
+# Otherwise tinyxml2 complains.
+set(warnings "${warnings} -Wno-old-style-cast")
