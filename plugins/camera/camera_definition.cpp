@@ -8,14 +8,26 @@ CameraDefinition::CameraDefinition() {}
 
 CameraDefinition::~CameraDefinition() {}
 
-void CameraDefinition::load_file(const char *filename)
+bool CameraDefinition::load_file(const char *filename)
 {
-    _doc.LoadFile(filename);
+    tinyxml2::XMLError xml_error = _doc.LoadFile(filename);
+    if (xml_error == tinyxml2::XML_SUCCESS) {
+        return true;
+    } else {
+        LogErr() << "tinyxml2::LoadFile failed: " << _doc.ErrorStr();
+        return false;
+    }
 }
 
-void CameraDefinition::load_string(const std::string &content)
+bool CameraDefinition::load_string(const std::string &content)
 {
-    _doc.Parse(content.c_str());
+    tinyxml2::XMLError xml_error = _doc.Parse(content.c_str());
+    if (xml_error == tinyxml2::XML_SUCCESS) {
+        return true;
+    } else {
+        LogErr() << "tinyxml2::Parse failed: " << _doc.ErrorStr();
+        return false;
+    }
 }
 
 const char *CameraDefinition::get_model() const
@@ -37,13 +49,23 @@ bool CameraDefinition::get_parameters(parameter_map_t &parameters, bool filter_p
     // Reset input/output first.
     parameters.clear();
 
+
+    // TODO: actually update parameters of method call
+
+    return true;
+}
+
+bool CameraDefinition::parse_xml()
+{
     auto e_mavlinkcamera = _doc.FirstChildElement("mavlinkcamera");
     if (!e_mavlinkcamera) {
+        LogErr() << "Tag mavlinkcamera not found";
         return false;
     }
 
     auto e_parameters = e_mavlinkcamera->FirstChildElement("parameters");
     if (!e_parameters) {
+        LogErr() << "Tag parameters not found";
         return false;
     }
 
@@ -55,6 +77,7 @@ bool CameraDefinition::get_parameters(parameter_map_t &parameters, bool filter_p
 
         const char *param_name = e_parameter->Attribute("name");
         if (!param_name) {
+            LogErr() << "name attribute missing";
             return false;
         }
 
@@ -84,11 +107,13 @@ bool CameraDefinition::get_parameters(parameter_map_t &parameters, bool filter_p
         }
 
         if (new_parameter->is_readonly && new_parameter->is_writeonly) {
+            LogErr() << "parameter can't be readonly and writeonly";
             return false;
         }
 
         const char *type_str = e_parameter->Attribute("type");
         if (!type_str) {
+            LogErr() << "type attribute missing";
             return false;
         }
 
@@ -99,7 +124,7 @@ bool CameraDefinition::get_parameters(parameter_map_t &parameters, bool filter_p
 
         auto e_description = e_parameter->FirstChildElement("description");
         if (!e_description) {
-            LogErr() << "Description missing.";
+            LogErr() << "Description missing";
             return false;
         }
 
