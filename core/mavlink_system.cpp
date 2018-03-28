@@ -30,6 +30,8 @@ MAVLinkSystem::MAVLinkSystem(DroneCoreImpl &parent,
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&MAVLinkSystem::process_heartbeat, this, _1), this);
 
+    // We're registering for Autopilot version because it is a good time do so,
+    // regardless whether we deal with Autopilot.
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&MAVLinkSystem::process_autopilot_version, this, _1), this);
@@ -430,7 +432,7 @@ void MAVLinkSystem::set_connected()
 
         if (!_connected && _uuid_initialized) {
 
-            LogDebug() << "# of components: " << _components.size();
+            LogDebug() << "We have found " << _components.size() << " component(s).";
 
             _parent.notify_on_discover(_uuid);
             _connected = true;
