@@ -31,6 +31,41 @@ endif()
 set(dronecore_install_include_dir "include/dronecore")
 set(dronecore_install_lib_dir ${lib_path})
 
+# We need tinyxml2 for the camera definition parsing.
+add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
+link_directories(third_party/tinyxml2)
+include_directories(SYSTEM third_party/tinyxml2)
+set(TINYXML2_LIBRARY tinyxml2)
+
+if(APPLE AND NOT IOS)
+    # We install the tinyxml2 library manually for macOS and iOS.
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        # Need to remove that d again.
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.6.0.0.dylib
+            DESTINATION ${lib_path}
+            #RENAME libtinyxml2.dylib
+        )
+    else()
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2.6.0.0.dylib
+            DESTINATION ${lib_path}
+            #RENAME libtinyxml2.dylib
+        )
+    endif()
+elseif(ANDROID)
+    # We install the tinyxml2 library manually for Android.
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        # Need to remove that d again.
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.so
+            DESTINATION ${lib_path}
+            RENAME libtinyxml2.so
+        )
+    else()
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2.so
+            DESTINATION ${lib_path}
+        )
+    endif()
+endif()
+
 add_subdirectory(core)
 add_subdirectory(plugins)
 

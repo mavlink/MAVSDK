@@ -6,6 +6,7 @@ add_library(dronecore_camera ${PLUGIN_LIBRARY_TYPE}
 
 target_link_libraries(dronecore_camera
     dronecore
+    ${TINYXML2_LIBRARY}
 )
 
 install(FILES
@@ -22,3 +23,4 @@ list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/plugins/camera/camera_definition_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
+

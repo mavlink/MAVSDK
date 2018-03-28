@@ -8,7 +8,7 @@
 	path = core/third_party/curl-android-ios
 	url = https://github.com/dronecore/curl-android-ios.git
 [submodule "tinyxml2"]
-	path = core/third_party/tinyxml2
+	path = third_party/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
 [submodule "dronecore-proto"]
 	path = backend/proto
