@@ -11,37 +11,33 @@ CameraDefinition::~CameraDefinition() {}
 bool CameraDefinition::load_file(const char *filename)
 {
     tinyxml2::XMLError xml_error = _doc.LoadFile(filename);
-    if (xml_error == tinyxml2::XML_SUCCESS) {
-        return true;
-    } else {
+    if (xml_error != tinyxml2::XML_SUCCESS) {
         LogErr() << "tinyxml2::LoadFile failed: " << _doc.ErrorStr();
         return false;
     }
+
+    return parse_xml();
 }
 
 bool CameraDefinition::load_string(const std::string &content)
 {
     tinyxml2::XMLError xml_error = _doc.Parse(content.c_str());
-    if (xml_error == tinyxml2::XML_SUCCESS) {
-        return true;
-    } else {
+    if (xml_error != tinyxml2::XML_SUCCESS) {
         LogErr() << "tinyxml2::Parse failed: " << _doc.ErrorStr();
         return false;
     }
+
+    return parse_xml();
 }
 
-const char *CameraDefinition::get_model() const
+std::string CameraDefinition::get_model() const
 {
-    return _doc.FirstChildElement("mavlinkcamera")->
-           FirstChildElement("definition")->
-           FirstChildElement("model")->GetText();
+    return _model;
 }
 
-const char *CameraDefinition::get_vendor() const
+std::string CameraDefinition::get_vendor() const
 {
-    return _doc.FirstChildElement("mavlinkcamera")->
-           FirstChildElement("definition")->
-           FirstChildElement("vendor")->GetText();
+    return _vendor;
 }
 
 bool CameraDefinition::get_parameters(parameter_map_t &parameters, bool filter_possible)
@@ -62,6 +58,28 @@ bool CameraDefinition::parse_xml()
         LogErr() << "Tag mavlinkcamera not found";
         return false;
     }
+
+    auto e_definition = e_mavlinkcamera->FirstChildElement("definition");
+    if (!e_definition) {
+        LogErr() << "definition not found";
+        return false;
+    }
+
+    auto e_model = e_definition->FirstChildElement("model");
+    if (!e_model) {
+        LogErr() << "model not found";
+        return false;
+    }
+
+    _model = e_model->GetText();
+
+    auto e_vendor = e_definition->FirstChildElement("vendor");
+    if (!e_vendor) {
+        LogErr() << "vendor not found";
+        return false;
+    }
+
+    _vendor = e_vendor->GetText();
 
     auto e_parameters = e_mavlinkcamera->FirstChildElement("parameters");
     if (!e_parameters) {

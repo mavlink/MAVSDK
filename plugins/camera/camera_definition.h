@@ -18,10 +18,8 @@ public:
     bool load_file(const char *filename);
     bool load_string(const std::string &content);
 
-    bool parse_xml();
-
-    const char *get_vendor() const;
-    const char *get_model() const;
+    std::string get_vendor() const;
+    std::string get_model() const;
 
     typedef std::map<std::string, MavlinkParameters::ParamValue> roption_t;
 
@@ -55,10 +53,14 @@ public:
     const CameraDefinition &operator=(const CameraDefinition &) = delete;
 
 private:
+    bool parse_xml();
+
     tinyxml2::XMLDocument _doc {};
 
     // std::map<std::string, MavlinkParameters::ParamValue> _current_settings = {};
 
+    std::string _model;
+    std::string _vendor;
     parameter_map_t _settings;
 };
 

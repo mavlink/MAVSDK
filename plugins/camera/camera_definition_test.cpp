@@ -14,8 +14,8 @@ TEST(CameraDefinition, LoadE90InfoFile)
 {
     CameraDefinition cd;
     ASSERT_TRUE(cd.load_file(e90_unit_test_file));
-    EXPECT_STREQ(cd.get_vendor(), "Yuneec");
-    EXPECT_STREQ(cd.get_model(), "E90");
+    EXPECT_STREQ(cd.get_vendor().c_str(), "Yuneec");
+    EXPECT_STREQ(cd.get_model().c_str(), "E90");
 }
 
 TEST(CameraDefinition, LoadE90InfoString)
@@ -29,17 +29,15 @@ TEST(CameraDefinition, LoadE90InfoString)
 
     CameraDefinition cd;
     ASSERT_TRUE(cd.load_string(content));
-    EXPECT_STREQ(cd.get_vendor(), "Yuneec");
-    EXPECT_STREQ(cd.get_model(), "E90");
+    EXPECT_STREQ(cd.get_vendor().c_str(), "Yuneec");
+    EXPECT_STREQ(cd.get_model().c_str(), "E90");
 }
 
 TEST(CameraDefinition, LoadE90All)
 {
     // Run this from root.
     CameraDefinition cd;
-    EXPECT_TRUE(cd.load_file(e90_unit_test_file));
-
-    EXPECT_TRUE(cd.parse_xml());
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
 
     //auto before = steady_time();
 #if 0
