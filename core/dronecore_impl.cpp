@@ -85,13 +85,12 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     }
 }
 
-bool DroneCoreImpl::send_message(const mavlink_message_t &message,
-                                 uint8_t target_system_id, uint8_t target_component_id)
+bool DroneCoreImpl::send_message(const mavlink_message_t &message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
     for (auto it = _connections.begin(); it != _connections.end(); ++it) {
-        if (!(**it).send_message(message, target_system_id, target_component_id)) {
+        if (!(**it).send_message(message)) {
             LogErr() << "send fail";
             return false;
         }

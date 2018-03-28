@@ -130,7 +130,7 @@ void MAVLinkParameters::do_work()
                                        work.param_value.get_mav_param_type());
         }
 
-        if (!_parent.send_message(message, _parent.get_autopilot_id())) {
+        if (!_parent.send_message(message)) {
             LogErr() << "Error: Send message failed";
             if (work.callback) {
                 work.callback(false);

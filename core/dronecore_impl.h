@@ -19,9 +19,7 @@ public:
     ~DroneCoreImpl();
 
     void receive_message(const mavlink_message_t &message);
-    bool send_message(const mavlink_message_t &message,
-                      uint8_t target_system_id,
-                      uint8_t target_component_id);
+    bool send_message(const mavlink_message_t &message);
 
     ConnectionResult add_any_connection(const std::string &connection_url);
     ConnectionResult add_link_connection(const std::string &protocol,

@@ -26,9 +26,7 @@ public:
     ConnectionResult start();
     ConnectionResult stop();
 
-    bool send_message(const mavlink_message_t &message,
-                      uint8_t target_sysid,
-                      uint8_t target_compid);
+    bool send_message(const mavlink_message_t &message);
 
     // Non-copyable
     TcpConnection(const TcpConnection &) = delete;

@@ -45,14 +45,16 @@ public:
     };
 
     explicit MAVLinkSystem(DroneCoreImpl &parent,
-                           uint8_t system_id, uint8_t component_id);
+                           uint8_t system_id,
+                           uint8_t component_id);
     ~MAVLinkSystem();
 
     void process_mavlink_message(const mavlink_message_t &message);
 
     typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
 
-    void register_mavlink_message_handler(uint16_t msg_id, mavlink_message_handler_t callback,
+    void register_mavlink_message_handler(uint16_t msg_id,
+                                          mavlink_message_handler_t callback,
                                           const void *cookie);
 
     void unregister_all_mavlink_message_handlers(const void *cookie);
@@ -68,22 +70,26 @@ public:
     void reset_call_every(const void *cookie);
     void remove_call_every(const void *cookie);
 
-    bool send_message(const mavlink_message_t &message,
-                      uint8_t target_component_id = MAV_COMP_ID_ALL);
+    bool send_message(const mavlink_message_t &message);
 
     MAVLinkCommands::Result send_command_with_ack(uint16_t command,
                                                   const MAVLinkCommands::Params &params,
                                                   uint8_t component_id = 0);
 
     typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
-    void send_command_with_ack_async(uint16_t command, const MAVLinkCommands::Params &params,
+
+    void send_command_with_ack_async(uint16_t command,
+                                     const MAVLinkCommands::Params &params,
                                      command_result_callback_t callback,
                                      uint8_t component_id = 0);
 
-    MAVLinkCommands::Result set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id = 0);
+    MAVLinkCommands::Result set_msg_rate(uint16_t message_id,
+                                         double rate_hz,
+                                         uint8_t component_id = 0);
 
     void set_msg_rate_async(uint16_t message_id, double rate_hz,
-                            command_result_callback_t callback, uint8_t component_id = 0);
+                            command_result_callback_t callback,
+                            uint8_t component_id = 0);
 
     void request_autopilot_version();
 

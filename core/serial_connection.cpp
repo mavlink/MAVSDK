@@ -126,7 +126,7 @@ ConnectionResult SerialConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool SerialConnection::send_message(const mavlink_message_t &message, uint8_t, uint8_t)
+bool SerialConnection::send_message(const mavlink_message_t &message)
 {
     if (_serial_node.empty()) {
         LogErr() << "Dev Path unknown";

@@ -18,9 +18,8 @@ public:
     ConnectionResult stop();
     ~SerialConnection();
 
-    bool send_message(const mavlink_message_t &message,
-                      uint8_t target_sysid,
-                      uint8_t target_compid);
+    bool send_message(const mavlink_message_t &message);
+
     // Non-copyable
     SerialConnection(const SerialConnection &) = delete;
     const SerialConnection &operator=(const SerialConnection &) = delete;
