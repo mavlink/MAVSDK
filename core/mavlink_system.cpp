@@ -368,8 +368,7 @@ void MAVLinkSystem::send_heartbeat(MAVLinkSystem &self)
     self.send_message(message);
 }
 
-bool MAVLinkSystem::send_message(const mavlink_message_t &message,
-                                 uint8_t target_component_id)
+bool MAVLinkSystem::send_message(const mavlink_message_t &message)
 {
     if (_communication_locked) {
         return false;
@@ -378,7 +377,7 @@ bool MAVLinkSystem::send_message(const mavlink_message_t &message,
 #if MESSAGE_DEBUGGING==1
     LogDebug() << "Sending msg " << size_t(message.msgid);
 #endif
-    return _parent.send_message(message, get_system_id(), target_component_id);
+    return _parent.send_message(message);
 }
 
 void MAVLinkSystem::request_autopilot_version()

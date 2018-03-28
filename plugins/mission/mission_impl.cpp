@@ -78,7 +78,7 @@ void MissionImpl::process_mission_request(const mavlink_message_t &unused)
                                  MAV_MISSION_UNSUPPORTED,
                                  MAV_MISSION_TYPE_MISSION);
 
-    _parent->send_message(message, _parent->get_autopilot_id());
+    _parent->send_message(message);
 
     // Reset the timeout because we're still communicating.
     _parent->refresh_timeout_handler(_timeout_cookie);
@@ -236,7 +236,7 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
                                          MAV_MISSION_ACCEPTED,
                                          MAV_MISSION_TYPE_MISSION);
 
-            _parent->send_message(ack_message, _parent->get_autopilot_id());
+            _parent->send_message(ack_message);
 
             assemble_mission_items();
 
@@ -291,7 +291,7 @@ void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<Mission
                                    _mavlink_mission_item_messages.size(),
                                    MAV_MISSION_TYPE_MISSION);
 
-    if (!_parent->send_message(message, _parent->get_autopilot_id())) {
+    if (!_parent->send_message(message)) {
         report_mission_result(callback, Mission::Result::ERROR);
         return;
     }
@@ -323,7 +323,7 @@ void MissionImpl::download_mission_async(const Mission::mission_items_and_result
                                           _parent->get_autopilot_id(),
                                           MAV_MISSION_TYPE_MISSION);
 
-    if (!_parent->send_message(message, _parent->get_autopilot_id())) {
+    if (!_parent->send_message(message)) {
         report_mission_items_and_result(callback, Mission::Result::ERROR);
         return;
     }
@@ -692,7 +692,7 @@ void MissionImpl::download_next_mission_item()
 
     LogDebug() << "Requested mission item " << _next_mission_item_to_download;
 
-    _parent->send_message(message, _parent->get_autopilot_id());
+    _parent->send_message(message);
 }
 
 void MissionImpl::start_mission_async(const Mission::result_callback_t &callback)
@@ -767,7 +767,7 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
                                          _parent->get_autopilot_id(),
                                          mavlink_index);
 
-    if (!_parent->send_message(message, _parent->get_autopilot_id())) {
+    if (!_parent->send_message(message)) {
         report_mission_result(callback, Mission::Result::ERROR);
         return;
     }
@@ -784,7 +784,7 @@ void MissionImpl::upload_mission_item(uint16_t seq)
         return;
     }
 
-    _parent->send_message(*_mavlink_mission_item_messages.at(seq), _parent->get_autopilot_id());
+    _parent->send_message(*_mavlink_mission_item_messages.at(seq));
 }
 
 void MissionImpl::copy_mission_item_vector(const std::vector<std::shared_ptr<MissionItem>>

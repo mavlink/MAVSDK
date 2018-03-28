@@ -347,7 +347,7 @@ void FollowMeImpl::send_target_location()
                                    pos_std_dev,
                                    custom_state);
 
-    if (!_parent->send_message(msg, _parent->get_autopilot_id())) {
+    if (!_parent->send_message(msg)) {
         LogErr() << debug_str <<  "send_target_location() failed..";
     } else {
         std::lock_guard<std::mutex> lock(_mutex);

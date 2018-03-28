@@ -17,9 +17,7 @@ public:
     ConnectionResult start();
     ConnectionResult stop();
 
-    bool send_message(const mavlink_message_t &message,
-                      uint8_t target_sysid,
-                      uint8_t target_compid);
+    bool send_message(const mavlink_message_t &message);
 
     // Non-copyable
     UdpConnection(const UdpConnection &) = delete;
@@ -34,19 +32,8 @@ private:
     int _local_port_number;
 
     std::mutex _remote_mutex = {};
-    struct Client {
-        uint8_t sysid = 0;
-        uint8_t compid = 0;
-        std::string ip = {};
-        int port = 0;
-    };
-    std::vector<Client> _clients = {};
-
-    bool is_new(const Client &client) const;
-    bool is_new(const std::string &ip) const;
-    bool is_new(int port) const;
-    bool is_valid(const Client &client) const;
-    int find_client(uint8_t sysid, uint8_t compid) const;
+    std::string _remote_ip = {};
+    int _remote_port_number = 0;
 
     int _socket_fd = -1;
     std::thread *_recv_thread = nullptr;

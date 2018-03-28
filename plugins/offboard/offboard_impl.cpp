@@ -207,7 +207,7 @@ void OffboardImpl::send_velocity_ned()
                                                    IGNORE_YAW_RATE,
                                                    x, y, z, vx, vy, vz, afx, afy, afz,
                                                    yaw, yaw_rate);
-    _parent->send_message(message, _parent->get_autopilot_id());
+    _parent->send_message(message);
 }
 
 void OffboardImpl::send_velocity_body()
@@ -254,7 +254,7 @@ void OffboardImpl::send_velocity_body()
                                                    IGNORE_YAW,
                                                    x, y, z, vx, vy, vz, afx, afy, afz,
                                                    yaw, yaw_rate);
-    _parent->send_message(message, _parent->get_autopilot_id());
+    _parent->send_message(message);
 }
 
 void OffboardImpl::process_heartbeat(const mavlink_message_t &message)
