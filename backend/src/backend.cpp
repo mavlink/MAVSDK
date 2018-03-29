@@ -46,7 +46,7 @@ public:
         builder.RegisterService(&missionService);
 
         Telemetry telemetry(_dc.system());
-        TelemetryServiceImpl telemetryService(telemetry);
+        TelemetryServiceImpl<> telemetryService(telemetry);
         builder.RegisterService(&telemetryService);
 
         _server = builder.BuildAndStart();
