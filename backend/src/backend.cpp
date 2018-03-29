@@ -46,7 +46,7 @@ public:
         builder.RegisterService(&missionService);
 
         Telemetry telemetry(_dc.system());
-        TelemetryServiceImpl telemetryService(telemetry);
+        TelemetryServiceImpl<dronecore::Telemetry> telemetryService(telemetry);
 
         builder.RegisterService(&telemetryService);
 
