@@ -568,7 +568,7 @@ MAVLinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
             break;
         default :
             LogErr() << "Unknown Flight mode.";
-            return MAVLinkCommands::Result::ERROR;
+            return MAVLinkCommands::Result::UNKNOWN_ERROR;
 
     }
 
@@ -623,7 +623,7 @@ void MAVLinkSystem::set_flight_mode_async(FlightMode system_mode,
         default :
             LogErr() << "Unknown flight mode.";
             if (callback) {
-                callback(MAVLinkCommands::Result::ERROR, NAN);
+                callback(MAVLinkCommands::Result::UNKNOWN_ERROR, NAN);
             }
             return ;
     }
