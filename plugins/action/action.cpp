@@ -113,34 +113,4 @@ float Action::get_max_speed_m_s() const
     return _impl->get_max_speed_m_s();
 }
 
-const char *Action::result_str(Result result)
-{
-    switch (result) {
-        case Result::SUCCESS:
-            return "Success";
-        case Result::NO_SYSTEM:
-            return "No system";
-        case Result::CONNECTION_ERROR:
-            return "Connection error";
-        case Result::BUSY:
-            return "Busy";
-        case Result::COMMAND_DENIED:
-            return "Command denied";
-        case Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN:
-            return "Command denied, landed state is unknown";
-        case Result::COMMAND_DENIED_NOT_LANDED:
-            return "Command denied, not landed";
-        case Result::TIMEOUT:
-            return "Timeout";
-        case Result::VTOL_TRANSITION_SUPPORT_UNKNOWN:
-            return "VTOL transition unknown";
-        case Result::NO_VTOL_TRANSITION_SUPPORT:
-            return "No VTOL transition support";
-        case Result::UNKNOWN:
-        default:
-            return "Unknown";
-    }
-}
-
-
 } // namespace dronecore
