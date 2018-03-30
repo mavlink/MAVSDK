@@ -14,7 +14,6 @@
 #include "core/corerpc_impl.h"
 #include "dronecore.h"
 #include "log.h"
-#include "mission/mission.h"
 #include "mission/mission_service_impl.h"
 #include "telemetry/telemetry_service_impl.h"
 
