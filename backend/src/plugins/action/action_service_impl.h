@@ -4,7 +4,7 @@
 namespace dronecore {
 namespace backend {
 
-template <typename Action>
+template <typename Action = Action>
 class ActionServiceImpl final : public dronecore::rpc::action::ActionService::Service
 {
 public:
