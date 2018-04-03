@@ -14,8 +14,8 @@ public:
         : _dc(dc) {}
 
     // For now, the running plugins are hardcoded and we assume they are always started by the backend.
-    grpc::Status ListRunningPlugins(grpc::ServerContext* /* context */,
-                                    const rpc::core::ListRunningPluginsRequest* /* request */,
+    grpc::Status ListRunningPlugins(grpc::ServerContext * /* context */,
+                                    const rpc::core::ListRunningPluginsRequest * /* request */,
                                     dronecore::rpc::core::ListRunningPluginsResponse *response) override
     {
         std::string plugin_names[3] = { "action", "mission", "telemetry" };

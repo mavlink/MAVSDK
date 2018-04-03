@@ -14,6 +14,7 @@
 #include "core/core_service_impl.h"
 #include "dronecore.h"
 #include "log.h"
+#include "mission/mission.h"
 #include "mission/mission_service_impl.h"
 #include "telemetry/telemetry_service_impl.h"
 
@@ -38,18 +39,16 @@ public:
         builder.RegisterService(&core);
 
         Action action(_dc.system());
-        ActionServiceImpl<dronecore::Action> actionService(action);
-        builder.RegisterService(&actionService);
+        ActionServiceImpl<> action_service(action);
+        builder.RegisterService(&action_service);
 
         Mission mission(_dc.system());
-        MissionServiceImpl<dronecore::Mission> missionService(mission);
-
-        builder.RegisterService(&missionService);
+        MissionServiceImpl<> mission_service(mission);
+        builder.RegisterService(&mission_service);
 
         Telemetry telemetry(_dc.system());
-        TelemetryServiceImpl<> telemetryService(telemetry);
-
-        builder.RegisterService(&telemetryService);
+        TelemetryServiceImpl<> telemetry_service(telemetry);
+        builder.RegisterService(&telemetry_service);
 
         _server = builder.BuildAndStart();
         LogInfo() << "Server started";
