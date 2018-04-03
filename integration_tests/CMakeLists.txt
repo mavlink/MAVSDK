@@ -5,9 +5,6 @@ include_directories(
     SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
 )
 
-# These are consumed in ../CMakeLists.txt
-set(integration_tests_src ${integration_tests_src} PARENT_SCOPE)
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 
 # `make test` does not show output, but `make check` does
