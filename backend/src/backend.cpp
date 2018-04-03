@@ -11,7 +11,7 @@
 #include "action/action.h"
 #include "action/action_service_impl.h"
 #include "connection_initiator.h"
-#include "core/corerpc_impl.h"
+#include "core/core_service_impl.h"
 #include "dronecore.h"
 #include "log.h"
 #include "mission/mission_service_impl.h"
@@ -34,7 +34,7 @@ public:
         grpc::ServerBuilder builder;
         setup_port(builder);
 
-        CoreServiceImpl core(_dc);
+        CoreServiceImpl<> core(_dc);
         builder.RegisterService(&core);
 
         Action action(_dc.system());

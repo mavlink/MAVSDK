@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 add_executable(unit_tests_backend
     action_service_impl_test.cpp
     connection_initiator_test.cpp
+    core_service_impl_test.cpp
     mission_service_impl_test.cpp
     telemetry_service_impl_test.cpp
 )
@@ -15,6 +16,7 @@ target_include_directories(unit_tests_backend
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/plugins
     ${CMAKE_SOURCE_DIR}/plugins
     ${CMAKE_BINARY_DIR}/backend/src
+    ${CMAKE_SOURCE_DIR}
 )
 
 target_link_libraries(unit_tests_backend
