@@ -39,6 +39,9 @@ TEST(CameraDefinition, LoadE90All)
     CameraDefinition cd;
     ASSERT_TRUE(cd.load_file(e90_unit_test_file));
 
+    std::map<std::string, std::string> parameters {};
+    ASSERT_TRUE(cd.get_current_parameters(parameters));
+
     //auto before = steady_time();
 #if 0
     for (auto &parameter : parameters) {

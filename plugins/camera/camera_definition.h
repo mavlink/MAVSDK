@@ -21,6 +21,15 @@ public:
     std::string get_vendor() const;
     std::string get_model() const;
 
+    void update_setting(const std::string &name, const MavlinkParameters::ParamValue &value);
+
+    bool get_current_parameters(std::map<std::string, std::string> &parameters);
+
+    // Non-copyable
+    CameraDefinition(const CameraDefinition &) = delete;
+    const CameraDefinition &operator=(const CameraDefinition &) = delete;
+
+private:
     typedef std::map<std::string, MavlinkParameters::ParamValue> roption_t;
 
     typedef std::map<std::string, roption_t> parameter_range_t;
@@ -41,27 +50,14 @@ public:
         std::vector<std::string> updates;
         std::vector<std::shared_ptr<Option>> options;
     };
-
-    typedef std::map<std::string, std::shared_ptr<Parameter>> parameter_map_t;
-
-    void update_setting(const std::string &name, const MavlinkParameters::ParamValue &value);
-
-    bool get_parameters(parameter_map_t &parameters, bool filter_possible);
-
-    // Non-copyable
-    CameraDefinition(const CameraDefinition &) = delete;
-    const CameraDefinition &operator=(const CameraDefinition &) = delete;
-
-private:
     bool parse_xml();
 
     tinyxml2::XMLDocument _doc {};
 
-    // std::map<std::string, MavlinkParameters::ParamValue> _current_settings = {};
+    std::map<std::string, std::shared_ptr<Parameter>> _settings;
 
     std::string _model;
     std::string _vendor;
-    parameter_map_t _settings;
 };
 
 } // namespace dronecore

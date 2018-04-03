@@ -40,10 +40,15 @@ std::string CameraDefinition::get_vendor() const
     return _vendor;
 }
 
-bool CameraDefinition::get_parameters(parameter_map_t &parameters, bool filter_possible)
+bool CameraDefinition::get_current_parameters(std::map<std::string, std::string> &parameters)
 {
-    // Reset input/output first.
-    parameters.clear();
+    for (const auto &setting : _settings) {
+
+        for (const auto &option : setting.second->options) {
+
+            LogDebug() << setting.first << ": " << option->name;
+        }
+    }
 
 
     // TODO: actually update parameters of method call

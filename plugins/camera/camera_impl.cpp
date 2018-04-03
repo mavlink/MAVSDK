@@ -646,11 +646,11 @@ void CameraImpl::load_definition_file(const std::string &uri)
     _camera_definition = new CameraDefinition();
     _camera_definition->load_string(content);
 
+#if 0
     CameraDefinition::parameter_map_t parameters;
     _camera_definition->get_parameters(parameters, false);
 
     for (auto parameter : parameters) {
-#if 0
         // LogDebug() << "parameter to request: " << parameter.first;
         if (parameter.second->type == CameraDefinition::Type::UINT32) {
             _parent.get_param_ext_int_async(parameter.first,
@@ -659,8 +659,8 @@ void CameraImpl::load_definition_file(const std::string &uri)
             _parent.get_param_ext_float_async(parameter.first,
                                               std::bind(&CameraImpl::receive_float_param, this, parameter.first, _1, _2));
         }
-#endif
     }
+#endif
 
 }
 
