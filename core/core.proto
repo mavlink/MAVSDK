@@ -6,8 +6,18 @@ option java_package = "io.dronecore.core";
 option java_outer_classname = "CoreProto";
 
 service CoreService {
+    rpc SubscribeDiscover(SubscribeDiscoverRequest) returns(stream DiscoverResponse) {}
+    rpc SubscribeTimeout(SubscribeTimeoutRequest) returns(stream TimeoutResponse) {}
     rpc ListRunningPlugins(ListRunningPluginsRequest) returns(ListRunningPluginsResponse) {}
 }
+
+message SubscribeDiscoverRequest {}
+message DiscoverResponse {
+    uint64 uuid = 1;
+}
+
+message SubscribeTimeoutRequest {}
+message TimeoutResponse {}
 
 message ListRunningPluginsRequest {}
 message ListRunningPluginsResponse {
