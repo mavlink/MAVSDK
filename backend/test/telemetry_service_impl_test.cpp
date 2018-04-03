@@ -87,10 +87,10 @@ std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<P
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
         dronecore::rpc::telemetry::SubscribePositionRequest request;
-        auto responseReader = _stub->SubscribePosition(&context, request);
+        auto response_reader = _stub->SubscribePosition(&context, request);
 
         dronecore::rpc::telemetry::PositionResponse response;
-        while (responseReader->Read(&response)) {
+        while (response_reader->Read(&response)) {
             auto position_rpc = response.position();
 
             Position position;
@@ -102,7 +102,7 @@ std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<P
             positions.push_back(position);
         }
 
-        responseReader->Finish();
+        response_reader->Finish();
     });
 }
 
