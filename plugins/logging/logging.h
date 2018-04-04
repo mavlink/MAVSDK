@@ -7,7 +7,7 @@
 namespace dronecore {
 
 class LoggingImpl;
-class Device;
+class System;
 
 /**
  * @brief The Logging class allows log data using logger and log streaming from the vehicle.
@@ -18,17 +18,17 @@ class Logging : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto logging = std::make_shared<Logging>(device);
+     *     auto logging = std::make_shared<Logging>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit Logging(Device &device);
+    explicit Logging(System &system);
 
     /**
      * @brief Destructor (internal use only).
@@ -40,9 +40,9 @@ public:
      */
     enum class Result {
         SUCCESS = 0, /**< @brief %Request succeeded. */
-        NO_DEVICE, /**< @brief No device connected. */
+        NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
-        BUSY, /**< @brief %Device busy. */
+        BUSY, /**< @brief %System busy. */
         COMMAND_DENIED, /**< @brief Command denied. */
         TIMEOUT, /**< @brief Timeout. */
         UNKNOWN /**< @brief Unknown error. */

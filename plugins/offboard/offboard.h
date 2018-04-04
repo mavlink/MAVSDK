@@ -7,7 +7,7 @@
 namespace dronecore {
 
 class OffboardImpl;
-class Device;
+class System;
 
 
 /**
@@ -28,17 +28,17 @@ class Offboard : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto offboard = std::make_shared<Offboard>(device);
+     *     auto offboard = std::make_shared<Offboard>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit Offboard(Device &device);
+    explicit Offboard(System &system);
 
     /**
      * @brief Destructor (internal use only).
@@ -50,7 +50,7 @@ public:
      */
     enum class Result {
         SUCCESS = 0, /**< @brief %Request succeeded. */
-        NO_DEVICE, /**< @brief No device connected. */
+        NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
         BUSY, /**< @brief Vehicle busy. */
         COMMAND_DENIED, /**< @brief Command denied. */

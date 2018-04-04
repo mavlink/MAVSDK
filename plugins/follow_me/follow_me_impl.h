@@ -3,7 +3,8 @@
 #include "follow_me.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
-#include "device.h"
+#include "system.h"
+#include "mavlink_system.h"
 #include "timeout_handler.h"
 #include "global_include.h"
 #include "log.h"
@@ -13,7 +14,7 @@ namespace dronecore {
 class FollowMeImpl : public PluginImplBase
 {
 public:
-    FollowMeImpl(Device &device);
+    FollowMeImpl(System &system);
     ~FollowMeImpl();
 
     void init() override;
@@ -45,7 +46,7 @@ private:
     void receive_param_follow_distance(bool success, float distance);
     void receive_param_follow_direction(bool success, int32_t direction);
     void receive_param_responsiveness(bool success, float rsp);
-    FollowMe::Result to_follow_me_result(MavlinkCommands::Result result) const;
+    FollowMe::Result to_follow_me_result(MAVLinkCommands::Result result) const;
 
     bool is_target_location_set() const;
     void send_target_location();

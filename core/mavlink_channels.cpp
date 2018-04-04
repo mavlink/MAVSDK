@@ -2,17 +2,17 @@
 
 namespace dronecore {
 
-MavlinkChannels::MavlinkChannels() :
+MAVLinkChannels::MAVLinkChannels() :
     _channels_used{},
     _channels_used_mutex()
 {
 }
 
-MavlinkChannels::~MavlinkChannels()
+MAVLinkChannels::~MAVLinkChannels()
 {
 }
 
-bool MavlinkChannels::checkout_free_channel(uint8_t &new_channel)
+bool MAVLinkChannels::checkout_free_channel(uint8_t &new_channel)
 {
     std::lock_guard<std::mutex> lock(_channels_used_mutex);
 
@@ -26,7 +26,7 @@ bool MavlinkChannels::checkout_free_channel(uint8_t &new_channel)
     return false;
 }
 
-void MavlinkChannels::checkin_used_channel(uint8_t used_channel)
+void MAVLinkChannels::checkin_used_channel(uint8_t used_channel)
 {
     std::lock_guard<std::mutex> lock(_channels_used_mutex);
 

@@ -1,6 +1,6 @@
 #include "mission_impl.h"
 #include "mission_item_impl.h"
-#include "device.h"
+#include "system.h"
 #include "global_include.h"
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
@@ -8,46 +8,46 @@
 
 namespace dronecore {
 
-MissionImpl::MissionImpl(Device &device) :
-    PluginImplBase(device)
+MissionImpl::MissionImpl(System &system) :
+    PluginImplBase(system)
 {
-    _parent.register_plugin(this);
+    _parent->register_plugin(this);
 }
 
 MissionImpl::~MissionImpl()
 {
-    _parent.unregister_plugin(this);
+    _parent->unregister_plugin(this);
 }
 
 void MissionImpl::init()
 {
     using namespace std::placeholders; // for `_1`
 
-    _parent.register_mavlink_message_handler(
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_REQUEST,
         std::bind(&MissionImpl::process_mission_request, this, _1), this);
 
-    _parent.register_mavlink_message_handler(
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_REQUEST_INT,
         std::bind(&MissionImpl::process_mission_request_int, this, _1), this);
 
-    _parent.register_mavlink_message_handler(
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ACK,
         std::bind(&MissionImpl::process_mission_ack, this, _1), this);
 
-    _parent.register_mavlink_message_handler(
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_CURRENT,
         std::bind(&MissionImpl::process_mission_current, this, _1), this);
 
-    _parent.register_mavlink_message_handler(
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
         std::bind(&MissionImpl::process_mission_item_reached, this, _1), this);
 
-    _parent.register_mavlink_message_handler(
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_COUNT,
         std::bind(&MissionImpl::process_mission_count, this, _1), this);
 
-    _parent.register_mavlink_message_handler(
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_INT,
         std::bind(&MissionImpl::process_mission_item_int, this, _1), this);
 }
@@ -56,12 +56,12 @@ void MissionImpl::enable() {}
 
 void MissionImpl::disable()
 {
-    _parent.unregister_timeout_handler(_timeout_cookie);
+    _parent->unregister_timeout_handler(_timeout_cookie);
 }
 
 void MissionImpl::deinit()
 {
-    _parent.unregister_all_mavlink_message_handlers(this);
+    _parent->unregister_all_mavlink_message_handlers(this);
 }
 
 void MissionImpl::process_mission_request(const mavlink_message_t &unused)
@@ -70,18 +70,18 @@ void MissionImpl::process_mission_request(const mavlink_message_t &unused)
     UNUSED(unused);
 
     mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(_parent.get_own_system_id(),
-                                 _parent.get_own_component_id(),
+    mavlink_msg_mission_ack_pack(GCSClient::system_id,
+                                 GCSClient::component_id,
                                  &message,
-                                 _parent.get_target_system_id(),
-                                 _parent.get_target_component_id(),
+                                 _parent->get_system_id(),
+                                 _parent->get_autopilot_id(),
                                  MAV_MISSION_UNSUPPORTED,
                                  MAV_MISSION_TYPE_MISSION);
 
-    _parent.send_message(message);
+    _parent->send_message(message);
 
     // Reset the timeout because we're still communicating.
-    _parent.refresh_timeout_handler(_timeout_cookie);
+    _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
 void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
@@ -91,8 +91,8 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
     mavlink_mission_request_int_t mission_request_int;
     mavlink_msg_mission_request_int_decode(&message, &mission_request_int);
 
-    if (mission_request_int.target_system != _parent.get_own_system_id() &&
-        mission_request_int.target_component != _parent.get_own_component_id()) {
+    if (mission_request_int.target_system != GCSClient::system_id &&
+        mission_request_int.target_component != GCSClient::component_id) {
 
         LogWarn() << "Ignore mission request int that is not for us";
         return;
@@ -108,7 +108,7 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
 
 
     // Reset the timeout because we're still communicating.
-    _parent.refresh_timeout_handler(_timeout_cookie);
+    _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
 void MissionImpl::process_mission_ack(const mavlink_message_t &message)
@@ -123,15 +123,15 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
 
-    if (mission_ack.target_system != _parent.get_own_system_id() &&
-        mission_ack.target_component != _parent.get_own_component_id()) {
+    if (mission_ack.target_system != GCSClient::system_id &&
+        mission_ack.target_component != GCSClient::component_id) {
 
         LogWarn() << "Ignore mission ack that is not for us";
         return;
     }
 
     // We got some response, so it wasn't a timeout and we can remove it.
-    _parent.unregister_timeout_handler(_timeout_cookie);
+    _parent->unregister_timeout_handler(_timeout_cookie);
 
     if (mission_ack.type == MAV_MISSION_ACCEPTED) {
 
@@ -170,7 +170,7 @@ void MissionImpl::process_mission_current(const mavlink_message_t &message)
         _last_current_mavlink_mission_item == mission_current.seq) {
         report_mission_result(_result_callback, Mission::Result::SUCCESS);
         _last_current_mavlink_mission_item = -1;
-        _parent.unregister_timeout_handler(_timeout_cookie);
+        _parent->unregister_timeout_handler(_timeout_cookie);
         _activity = Activity::NONE;
     }
 }
@@ -202,10 +202,10 @@ void MissionImpl::process_mission_count(const mavlink_message_t &message)
     _num_mission_items_to_download = mission_count.count;
     _next_mission_item_to_download = 0;
     // We are now requesting mission items and use a lower timeout for this.
-    _parent.unregister_timeout_handler(_timeout_cookie);
+    _parent->unregister_timeout_handler(_timeout_cookie);
 
-    _parent.register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
-                                     RETRY_TIMEOUT_S, &_timeout_cookie);
+    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
+                                      RETRY_TIMEOUT_S, &_timeout_cookie);
     download_next_mission_item();
 }
 
@@ -225,25 +225,25 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
         if (_next_mission_item_to_download + 1 == _num_mission_items_to_download) {
 
             // Wrap things up if we're finished.
-            _parent.unregister_timeout_handler(_timeout_cookie);
+            _parent->unregister_timeout_handler(_timeout_cookie);
 
             mavlink_message_t ack_message;
-            mavlink_msg_mission_ack_pack(_parent.get_own_system_id(),
-                                         _parent.get_own_component_id(),
+            mavlink_msg_mission_ack_pack(GCSClient::system_id,
+                                         GCSClient::component_id,
                                          &ack_message,
-                                         _parent.get_target_system_id(),
-                                         _parent.get_target_component_id(),
+                                         _parent->get_system_id(),
+                                         _parent->get_autopilot_id(),
                                          MAV_MISSION_ACCEPTED,
                                          MAV_MISSION_TYPE_MISSION);
 
-            _parent.send_message(ack_message);
+            _parent->send_message(ack_message);
 
             assemble_mission_items();
 
         } else {
             // Otherwise keep going.
             ++_next_mission_item_to_download;
-            _parent.refresh_timeout_handler(_timeout_cookie);
+            _parent->refresh_timeout_handler(_timeout_cookie);
             download_next_mission_item();
         }
 
@@ -252,7 +252,7 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
                    << " instead of " << _next_mission_item_to_download << " (ignored)";
 
         // Refresh because we at least still seem to be active.
-        _parent.refresh_timeout_handler(_timeout_cookie);
+        _parent->refresh_timeout_handler(_timeout_cookie);
 
         // And request it again in case our request got lost.
         download_next_mission_item();
@@ -272,7 +272,7 @@ void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<Mission
         return;
     }
 
-    if (!_parent.target_supports_mission_int()) {
+    if (!_parent->does_support_mission_int()) {
         LogWarn() << "Mission int messages not supported";
         report_mission_result(callback, Mission::Result::ERROR);
         return;
@@ -283,23 +283,23 @@ void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<Mission
     assemble_mavlink_messages();
 
     mavlink_message_t message;
-    mavlink_msg_mission_count_pack(_parent.get_own_system_id(),
-                                   _parent.get_own_component_id(),
+    mavlink_msg_mission_count_pack(GCSClient::system_id,
+                                   GCSClient::component_id,
                                    &message,
-                                   _parent.get_target_system_id(),
-                                   _parent.get_target_component_id(),
+                                   _parent->get_system_id(),
+                                   _parent->get_autopilot_id(),
                                    _mavlink_mission_item_messages.size(),
                                    MAV_MISSION_TYPE_MISSION);
 
-    if (!_parent.send_message(message)) {
+    if (!_parent->send_message(message)) {
         report_mission_result(callback, Mission::Result::ERROR);
         return;
     }
 
     // We use the longer process timeout here because essentially the autopilot needs to pull
     // the items up.
-    _parent.register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
-                                     PROCESS_TIMEOUT_S, &_timeout_cookie);
+    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
+                                      PROCESS_TIMEOUT_S, &_timeout_cookie);
 
     _activity = Activity::SET_MISSION;
     _result_callback = callback;
@@ -316,21 +316,21 @@ void MissionImpl::download_mission_async(const Mission::mission_items_and_result
     }
 
     mavlink_message_t message;
-    mavlink_msg_mission_request_list_pack(_parent.get_own_system_id(),
-                                          _parent.get_own_component_id(),
+    mavlink_msg_mission_request_list_pack(GCSClient::system_id,
+                                          GCSClient::component_id,
                                           &message,
-                                          _parent.get_target_system_id(),
-                                          _parent.get_target_component_id(),
+                                          _parent->get_system_id(),
+                                          _parent->get_autopilot_id(),
                                           MAV_MISSION_TYPE_MISSION);
 
-    if (!_parent.send_message(message)) {
+    if (!_parent->send_message(message)) {
         report_mission_items_and_result(callback, Mission::Result::ERROR);
         return;
     }
 
     // We retry the list request and mission item request, so we use the lower timeout.
-    _parent.register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
-                                     RETRY_TIMEOUT_S, &_timeout_cookie);
+    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
+                                      RETRY_TIMEOUT_S, &_timeout_cookie);
 
     // Clear our internal cache and re-populate it.
     _mavlink_mission_items_downloaded.clear();
@@ -359,11 +359,11 @@ void MissionImpl::assemble_mavlink_messages()
             uint8_t current = ((_mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
             auto message = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(_parent.get_own_system_id(),
-                                              _parent.get_own_component_id(),
+            mavlink_msg_mission_item_int_pack(GCSClient::system_id,
+                                              GCSClient::component_id,
                                               message.get(),
-                                              _parent.get_target_system_id(),
-                                              _parent.get_target_component_id(),
+                                              _parent->get_system_id(),
+                                              _parent->get_autopilot_id(),
                                               _mavlink_mission_item_messages.size(),
                                               mission_item_impl.get_mavlink_frame(),
                                               mission_item_impl.get_mavlink_cmd(),
@@ -400,11 +400,11 @@ void MissionImpl::assemble_mavlink_messages()
             uint8_t autocontinue = 1;
 
             auto message_speed = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(_parent.get_own_system_id(),
-                                              _parent.get_own_component_id(),
+            mavlink_msg_mission_item_int_pack(GCSClient::system_id,
+                                              GCSClient::component_id,
                                               message_speed.get(),
-                                              _parent.get_target_system_id(),
-                                              _parent.get_target_component_id(),
+                                              _parent->get_system_id(),
+                                              _parent->get_autopilot_id(),
                                               _mavlink_mission_item_messages.size(),
                                               MAV_FRAME_MISSION,
                                               MAV_CMD_DO_CHANGE_SPEED,
@@ -435,11 +435,11 @@ void MissionImpl::assemble_mavlink_messages()
             uint8_t autocontinue = 1;
 
             auto message_gimbal = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(_parent.get_own_system_id(),
-                                              _parent.get_own_component_id(),
+            mavlink_msg_mission_item_int_pack(GCSClient::system_id,
+                                              GCSClient::component_id,
                                               message_gimbal.get(),
-                                              _parent.get_target_system_id(),
-                                              _parent.get_target_component_id(),
+                                              _parent->get_system_id(),
+                                              _parent->get_autopilot_id(),
                                               _mavlink_mission_item_messages.size(),
                                               MAV_FRAME_MISSION,
                                               MAV_CMD_DO_MOUNT_CONTROL,
@@ -477,11 +477,11 @@ void MissionImpl::assemble_mavlink_messages()
                 uint8_t autocontinue = 1;
 
                 std::shared_ptr<mavlink_message_t> message_delay(new mavlink_message_t());
-                mavlink_msg_mission_item_int_pack(_parent.get_own_system_id(),
-                                                  _parent.get_own_component_id(),
+                mavlink_msg_mission_item_int_pack(GCSClient::system_id,
+                                                  GCSClient::component_id,
                                                   message_delay.get(),
-                                                  _parent.get_target_system_id(),
-                                                  _parent.get_target_component_id(),
+                                                  _parent->get_system_id(),
+                                                  _parent->get_autopilot_id(),
                                                   _mavlink_mission_item_messages.size(),
                                                   last_frame,
                                                   MAV_CMD_NAV_LOITER_TIME,
@@ -546,11 +546,11 @@ void MissionImpl::assemble_mavlink_messages()
             }
 
             auto message_camera = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(_parent.get_own_system_id(),
-                                              _parent.get_own_component_id(),
+            mavlink_msg_mission_item_int_pack(GCSClient::system_id,
+                                              GCSClient::component_id,
                                               message_camera.get(),
-                                              _parent.get_target_system_id(),
-                                              _parent.get_target_component_id(),
+                                              _parent->get_system_id(),
+                                              _parent->get_autopilot_id(),
                                               _mavlink_mission_item_messages.size(),
                                               MAV_FRAME_MISSION,
                                               cmd,
@@ -682,17 +682,17 @@ void MissionImpl::assemble_mission_items()
 void MissionImpl::download_next_mission_item()
 {
     mavlink_message_t message;
-    mavlink_msg_mission_request_int_pack(_parent.get_own_system_id(),
-                                         _parent.get_own_component_id(),
+    mavlink_msg_mission_request_int_pack(GCSClient::system_id,
+                                         GCSClient::component_id,
                                          &message,
-                                         _parent.get_target_system_id(),
-                                         _parent.get_target_component_id(),
+                                         _parent->get_system_id(),
+                                         _parent->get_autopilot_id(),
                                          _next_mission_item_to_download,
                                          MAV_MISSION_TYPE_MISSION);
 
     LogDebug() << "Requested mission item " << _next_mission_item_to_download;
 
-    _parent.send_message(message);
+    _parent->send_message(message);
 }
 
 void MissionImpl::start_mission_async(const Mission::result_callback_t &callback)
@@ -706,8 +706,8 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
 
     _activity = Activity::SEND_COMMAND;
 
-    _parent.set_flight_mode_async(
-        Device::FlightMode::MISSION,
+    _parent->set_flight_mode_async(
+        MAVLinkSystem::FlightMode::MISSION,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
@@ -725,8 +725,8 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
 
     _activity = Activity::SEND_COMMAND;
 
-    _parent.set_flight_mode_async(
-        Device::FlightMode::HOLD,
+    _parent->set_flight_mode_async(
+        MAVLinkSystem::FlightMode::HOLD,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 
@@ -760,14 +760,14 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
     }
 
     mavlink_message_t message;
-    mavlink_msg_mission_set_current_pack(_parent.get_own_system_id(),
-                                         _parent.get_own_component_id(),
+    mavlink_msg_mission_set_current_pack(GCSClient::system_id,
+                                         GCSClient::component_id,
                                          &message,
-                                         _parent.get_target_system_id(),
-                                         _parent.get_target_component_id(),
+                                         _parent->get_system_id(),
+                                         _parent->get_autopilot_id(),
                                          mavlink_index);
 
-    if (!_parent.send_message(message)) {
+    if (!_parent->send_message(message)) {
         report_mission_result(callback, Mission::Result::ERROR);
         return;
     }
@@ -784,7 +784,7 @@ void MissionImpl::upload_mission_item(uint16_t seq)
         return;
     }
 
-    _parent.send_message(*_mavlink_mission_item_messages.at(seq));
+    _parent->send_message(*_mavlink_mission_item_messages.at(seq));
 }
 
 void MissionImpl::copy_mission_item_vector(const std::vector<std::shared_ptr<MissionItem>>
@@ -834,7 +834,7 @@ void MissionImpl::report_progress()
     _progress_callback(current_mission_item(), total_mission_items());
 }
 
-void MissionImpl::receive_command_result(MavlinkCommands::Result result,
+void MissionImpl::receive_command_result(MAVLinkCommands::Result result,
                                          const Mission::result_callback_t &callback)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -844,9 +844,9 @@ void MissionImpl::receive_command_result(MavlinkCommands::Result result,
     }
 
     // We got a command back, so we can get rid of the timeout handler.
-    _parent.unregister_timeout_handler(_timeout_cookie);
+    _parent->unregister_timeout_handler(_timeout_cookie);
 
-    if (result == MavlinkCommands::Result::SUCCESS) {
+    if (result == MAVLinkCommands::Result::SUCCESS) {
         report_mission_result(callback, Mission::Result::SUCCESS);
     } else {
         report_mission_result(callback, Mission::Result::ERROR);
@@ -925,8 +925,8 @@ void MissionImpl::process_timeout()
         } else {
             LogWarn() << "Retrying requesting mission item...";
             // We are retrying, so we use the lower timeout.
-            _parent.register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
-                                             RETRY_TIMEOUT_S, &_timeout_cookie);
+            _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
+                                              RETRY_TIMEOUT_S, &_timeout_cookie);
             download_next_mission_item();
         }
     } else {

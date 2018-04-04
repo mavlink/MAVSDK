@@ -26,7 +26,7 @@
 namespace dronecore {
 
 UdpConnection::UdpConnection(DroneCoreImpl &parent,
-                             int local_port_number) :
+                             int local_port_number):
     Connection(parent),
     _local_port_number(local_port_number) {}
 

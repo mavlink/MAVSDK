@@ -8,7 +8,7 @@
 
 namespace dronecore {
 
-class Device;
+class System;
 class ActionImpl;
 
 /**
@@ -27,17 +27,17 @@ class Action : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto action = std::make_shared<Action>(device);
+     *     auto action = std::make_shared<Action>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit Action(Device &device);
+    explicit Action(System &system);
 
     /**
      * @brief Destructor (internal use only).

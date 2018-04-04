@@ -1,30 +1,30 @@
 #include "mavlink_parameters.h"
-#include "device.h"
+#include "mavlink_system.h"
 
 namespace dronecore {
 
-MavlinkParameters::MavlinkParameters(Device &parent) :
+MAVLinkParameters::MAVLinkParameters(MAVLinkSystem &parent) :
     _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_VALUE,
-        std::bind(&MavlinkParameters::process_param_value, this, std::placeholders::_1), this);
+        std::bind(&MAVLinkParameters::process_param_value, this, std::placeholders::_1), this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_VALUE,
-        std::bind(&MavlinkParameters::process_param_ext_value, this, std::placeholders::_1), this);
+        std::bind(&MAVLinkParameters::process_param_ext_value, this, std::placeholders::_1), this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_ACK,
-        std::bind(&MavlinkParameters::process_param_ext_ack, this, std::placeholders::_1), this);
+        std::bind(&MAVLinkParameters::process_param_ext_ack, this, std::placeholders::_1), this);
 }
 
-MavlinkParameters::~MavlinkParameters()
+MAVLinkParameters::~MAVLinkParameters()
 {
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-void MavlinkParameters::set_param_async(const std::string &name,
+void MAVLinkParameters::set_param_async(const std::string &name,
                                         const ParamValue &value,
                                         set_param_callback_t callback,
                                         bool extended)
@@ -54,7 +54,7 @@ void MavlinkParameters::set_param_async(const std::string &name,
 }
 
 
-void MavlinkParameters::get_param_async(const std::string &name,
+void MAVLinkParameters::get_param_async(const std::string &name,
                                         get_param_callback_t callback,
                                         bool extended)
 {
@@ -77,13 +77,13 @@ void MavlinkParameters::get_param_async(const std::string &name,
     _get_param_queue.push_back(new_work);
 }
 
-//void MavlinkParameters::save_async()
+//void MAVLinkParameters::save_async()
 //{
 //    _parent.send_command(MAV_CMD_PREFLIGHT_STORAGE,
-//                          MavlinkCommands::Params {1.0f, 1.0f, 0.0f, NAN, NAN, NAN, NAN});
+//                          MAVLinkCommands::Params {1.0f, 1.0f, 0.0f, NAN, NAN, NAN, NAN});
 //}
 
-void MavlinkParameters::do_work()
+void MAVLinkParameters::do_work()
 {
     std::lock_guard<std::mutex> lock(_state_mutex);
 
@@ -110,20 +110,21 @@ void MavlinkParameters::do_work()
             memcpy(&param_value_buf[0], &temp_to_copy, sizeof(float));
 
             // FIXME: extended currently always go to the camera component
-            mavlink_msg_param_ext_set_pack(_parent.get_own_system_id(),
-                                           _parent.get_own_component_id(),
+            mavlink_msg_param_ext_set_pack(GCSClient::system_id,
+                                           GCSClient::component_id,
                                            &message,
-                                           _parent.get_target_system_id(),
+                                           _parent.get_system_id(),
                                            MAV_COMP_ID_CAMERA,
                                            param_id,
                                            param_value_buf,
                                            work.param_value.get_mav_param_type());
         } else {
-            mavlink_msg_param_set_pack(_parent.get_own_system_id(),
-                                       _parent.get_own_component_id(),
+            // Param set is intended for Autopilot only.
+            mavlink_msg_param_set_pack(GCSClient::system_id,
+                                       GCSClient::component_id,
                                        &message,
-                                       _parent.get_target_system_id(),
-                                       _parent.get_target_component_id(),
+                                       _parent.get_system_id(),
+                                       _parent.get_autopilot_id(),
                                        param_id,
                                        work.param_value.get_float_casted_value(),
                                        work.param_value.get_mav_param_type());
@@ -141,7 +142,7 @@ void MavlinkParameters::do_work()
         // _last_request_time = _parent.get_time().steady_time();
 
         // We want to get notified if a timeout happens
-        _parent.register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
+        _parent.register_timeout_handler(std::bind(&MAVLinkParameters::receive_timeout, this),
                                          0.5,
                                          &_timeout_cookie);
 
@@ -160,27 +161,27 @@ void MavlinkParameters::do_work()
 
         mavlink_message_t message = {};
         if (work.extended) {
-            mavlink_msg_param_ext_request_read_pack(_parent.get_own_system_id(),
-                                                    _parent.get_own_component_id(),
+            mavlink_msg_param_ext_request_read_pack(GCSClient::system_id,
+                                                    GCSClient::component_id,
                                                     &message,
-                                                    _parent.get_target_system_id(),
+                                                    _parent.get_system_id(),
                                                     MAV_COMP_ID_CAMERA,
                                                     param_id,
                                                     -1);
 
         } else {
             //LogDebug() << "request read: "
-            //    << (int)_parent.get_own_system_id() << ":"
-            //    << (int)_parent.get_own_component_id() <<
+            //    << (int)GCSClient::system_id << ":"
+            //    << (int)GCSClient::component_id <<
             //    " to "
-            //    << (int)_parent.get_target_system_id() << ":"
-            //    << (int)_parent.get_target_component_id();
+            //    << (int)_parent.get_system_id() << ":"
+            //    << (int)_parent.get_autopilot_id();
 
-            mavlink_msg_param_request_read_pack(_parent.get_own_system_id(),
-                                                _parent.get_own_component_id(),
+            mavlink_msg_param_request_read_pack(GCSClient::system_id,
+                                                GCSClient::component_id,
                                                 &message,
-                                                _parent.get_target_system_id(),
-                                                _parent.get_target_component_id(),
+                                                _parent.get_system_id(),
+                                                _parent.get_autopilot_id(),
                                                 param_id,
                                                 -1);
         }
@@ -198,13 +199,13 @@ void MavlinkParameters::do_work()
         // _last_request_time = _parent.get_time().steady_time();
 
         // We want to get notified if a timeout happens
-        _parent.register_timeout_handler(std::bind(&MavlinkParameters::receive_timeout, this),
+        _parent.register_timeout_handler(std::bind(&MAVLinkParameters::receive_timeout, this),
                                          0.5,
                                          &_timeout_cookie);
     }
 }
 
-void MavlinkParameters::process_param_value(const mavlink_message_t &message)
+void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
 {
     // LogDebug() << "getting param value";
 
@@ -261,7 +262,7 @@ void MavlinkParameters::process_param_value(const mavlink_message_t &message)
     }
 }
 
-void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message)
+void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message)
 {
     // LogDebug() << "getting param ext value";
     mavlink_param_ext_value_t param_ext_value;
@@ -319,7 +320,7 @@ void MavlinkParameters::process_param_ext_value(const mavlink_message_t &message
 #endif
 }
 
-void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
+void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 {
     // LogDebug() << "getting param ext ack";
 
@@ -375,7 +376,7 @@ void MavlinkParameters::process_param_ext_ack(const mavlink_message_t &message)
     }
 }
 
-void MavlinkParameters::receive_timeout()
+void MAVLinkParameters::receive_timeout()
 {
     std::lock_guard<std::mutex> lock(_state_mutex);
 

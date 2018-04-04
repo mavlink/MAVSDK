@@ -67,7 +67,8 @@ add_library(dronecore ${LIBRARY_TYPE}
     call_every_handler.cpp
     connection.cpp
     curl_wrapper.cpp
-    device.cpp
+    system.cpp
+    mavlink_system.cpp
     dronecore.cpp
     dronecore_impl.cpp
     global_include.cpp
@@ -123,7 +124,7 @@ install(TARGETS dronecore
 
 install(FILES
     connection_result.h
-    device.h
+    system.h
     dronecore.h
     plugin_base.h
     ${plugin_header_paths}

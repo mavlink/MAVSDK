@@ -17,9 +17,9 @@ public:
                             const rpc::core::SubscribeDevicesRequest *request,
                             ServerWriter<rpc::core::Device> *writer) override
     {
-        std::vector<uint64_t> list = dc.device_uuids();
+        std::vector<uint64_t> list = dc.system_uuids();
 
-        for (auto uuid : dc.device_uuids()) {
+        for (auto uuid : dc.system_uuids()) {
             auto *rpc_uuid = new rpc::core::UUID();
             rpc_uuid->set_value(uuid);
 

@@ -42,23 +42,23 @@ int main(int, char **)
     ConnectionResult conn_result = dc.add_udp_connection();
     connection_error_exit(conn_result, "Connection failed");
 
-    // Wait for the device to connect via heartbeat
+    // Wait for the system to connect via heartbeat
     while (!dc.is_connected()) {
-        std::cout << "Wait for device to connect via heartbeat" << std::endl;
+        std::cout << "Wait for system to connect via heartbeat" << std::endl;
         sleep_for(seconds(1));
     }
 
-    // Device got discovered.
-    Device &device = dc.device();
-    std::shared_ptr<Action> action = std::make_shared<Action>(device);
-    std::shared_ptr<FollowMe> follow_me = std::make_shared<FollowMe>(device);
-    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(device);
+    // System got discovered.
+    System &system = dc.system();
+    auto action = std::make_shared<Action>(system);
+    auto follow_me = std::make_shared<FollowMe>(system);
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "Waiting for device to be ready" << std::endl;
+        std::cout << "Waiting for system to be ready" << std::endl;
         sleep_for(seconds(1));
     }
-    std::cout << "Device is ready" << std::endl;
+    std::cout << "System is ready" << std::endl;
 
     // Arm
     ActionResult arm_result = action->arm();
@@ -93,7 +93,7 @@ int main(int, char **)
     boost::asio::io_service io; // for event loop
     std::unique_ptr<FakeLocationProvider> location_provider(new FakeLocationProvider(io));
     // Register for platform-specific Location provider. We're using FakeLocationProvider for the example.
-    location_provider->request_location_updates([&device, &follow_me](double lat, double lon) {
+    location_provider->request_location_updates([&system, &follow_me](double lat, double lon) {
         follow_me->set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
     });
     io.run(); // will run as long as location updates continue to happen.

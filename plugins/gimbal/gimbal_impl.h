@@ -1,6 +1,7 @@
 #pragma once
 
-#include "device.h"
+#include "system.h"
+#include "mavlink_system.h"
 #include "gimbal.h"
 #include "plugin_impl_base.h"
 
@@ -9,7 +10,7 @@ namespace dronecore {
 class GimbalImpl : public PluginImplBase
 {
 public:
-    GimbalImpl(Device &device);
+    GimbalImpl(System &system);
     ~GimbalImpl();
 
     void init() override;
@@ -33,10 +34,10 @@ public:
     const GimbalImpl &operator=(const GimbalImpl &) = delete;
 
 private:
-    static Gimbal::Result gimbal_result_from_command_result(MavlinkCommands::Result
+    static Gimbal::Result gimbal_result_from_command_result(MAVLinkCommands::Result
                                                             command_result);
 
-    static void receive_command_result(MavlinkCommands::Result command_result,
+    static void receive_command_result(MAVLinkCommands::Result command_result,
                                        const Gimbal::result_callback_t &callback);
 };
 

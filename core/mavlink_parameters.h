@@ -12,13 +12,13 @@
 
 namespace dronecore {
 
-class Device;
+class MAVLinkSystem;
 
-class MavlinkParameters
+class MAVLinkParameters
 {
 public:
-    explicit MavlinkParameters(Device &parent);
-    ~MavlinkParameters();
+    explicit MAVLinkParameters(MAVLinkSystem &parent);
+    ~MAVLinkParameters();
 
     class ParamValue
     {
@@ -151,15 +151,15 @@ public:
     void do_work();
 
     // Non-copyable
-    MavlinkParameters(const MavlinkParameters &) = delete;
-    const MavlinkParameters &operator=(const MavlinkParameters &) = delete;
+    MAVLinkParameters(const MAVLinkParameters &) = delete;
+    const MAVLinkParameters &operator=(const MAVLinkParameters &) = delete;
 private:
     void process_param_value(const mavlink_message_t &message);
     void process_param_ext_value(const mavlink_message_t &message);
     void process_param_ext_ack(const mavlink_message_t &message);
     void receive_timeout();
 
-    Device &_parent;
+    MAVLinkSystem &_parent;
 
     enum class State {
         NONE,

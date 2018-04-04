@@ -2,10 +2,8 @@
 include_directories(
     SYSTEM ${CMAKE_SOURCE_DIR}/third_party/gtest/googletest/include
     SYSTEM ${CMAKE_SOURCE_DIR}/third_party/gtest/googlemock/include
+    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
 )
-
-# These are consumed in ../CMakeLists.txt
-set(integration_tests_src ${integration_tests_src} PARENT_SCOPE)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 
@@ -33,6 +31,7 @@ add_executable(integration_tests_runner
     gimbal.cpp
     transition_multicopter_fixedwing.cpp
     follow_me.cpp
+    multi_components.cpp
 )
 
 include_directories(

@@ -6,27 +6,27 @@
 
 namespace dronecore {
 
-class Device;
+class System;
 class InfoImpl;
 
 /**
- * @brief The Info class provides basic infomation about the hardware and/or software of a device.
+ * @brief The Info class provides basic infomation about the hardware and/or software of a system.
  */
 class Info : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto info = std::make_shared<Info>(device);
+     *     auto info = std::make_shared<Info>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit Info(Device &device);
+    explicit Info(System &system);
 
     /**
      * @brief Destructor (internal use only).
@@ -41,7 +41,7 @@ public:
     static const unsigned GIT_HASH_STR_LEN = 17;
 
     /**
-     * @brief Type containing device version information.
+     * @brief Type containing system version information.
      */
     struct Version {
         int flight_sw_major; /**< @brief Flight software major version. */
@@ -58,7 +58,7 @@ public:
     };
 
     /**
-     * @brief Type containing device product information.
+     * @brief Type containing system product information.
      */
     struct Product {
         int vendor_id; /**< @brief ID of board vendor. */
@@ -68,32 +68,32 @@ public:
     };
 
     /**
-     * @brief Gets the UUID of the device.
+     * @brief Gets the UUID of the system.
      *
      * If possible this will be a unique identifier provided by hardware.
      *
-     * @return The UUID of the device.
+     * @return The UUID of the system.
      */
     uint64_t uuid() const;
 
     /**
      * @brief Tests if the Version and Product objects are fully populated from hardware.
      *
-     * @return `true` if Version and Product objects are fully populated from device.
+     * @return `true` if Version and Product objects are fully populated from system.
      */
     bool is_complete() const;
 
     /**
-     * @brief Get device version information.
+     * @brief Get system version information.
      *
-     * @return The version object for the device.
+     * @return The version object for the system.
      */
     Version get_version() const;
 
     /**
-     * @brief Get device product information.
+     * @brief Get system product information.
      *
-     * @return The product object for the device.
+     * @return The product object for the system.
      */
     Product get_product() const;
 

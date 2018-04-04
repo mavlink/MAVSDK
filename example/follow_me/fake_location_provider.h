@@ -16,7 +16,7 @@
 
 /**
  * @brief The FakeLocationProvider class
- * This class provides periodic reports on the fake location of the device.
+ * This class provides periodic reports on the fake location of the system.
  */
 class FakeLocationProvider
 {

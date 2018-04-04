@@ -1,5 +1,6 @@
 #include "tcp_connection.h"
 #include "global_include.h"
+#include "log.h"
 
 #ifndef WINDOWS
 #include <netinet/in.h>
@@ -22,8 +23,9 @@
 namespace dronecore {
 
 /* change to remote_ip and remote_port */
-TcpConnection::TcpConnection(DroneCoreImpl &parent, const std::string &remote_ip, int remote_port) :
-    Connection(parent),
+TcpConnection::TcpConnection(DroneCoreImpl &parent,
+                             const std::string &remote_ip,
+                             int remote_port): Connection(parent),
     _remote_ip(remote_ip),
     _remote_port_number(remote_port),
     _should_exit(false) {}
@@ -33,7 +35,6 @@ TcpConnection::~TcpConnection()
     // If no one explicitly called stop before, we should at least do it.
     stop();
 }
-
 
 bool TcpConnection::is_ok() const
 {

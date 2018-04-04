@@ -1,22 +1,25 @@
 #pragma once
+#include <memory>
 
 namespace dronecore {
 
-class Device;
+class System;
+class MAVLinkSystem;
 
 class PluginImplBase
 {
 public:
-    explicit PluginImplBase(Device &device);
+
+    explicit PluginImplBase(System &system);
     virtual ~PluginImplBase() = default;
 
     /*
      * The method `init()` is called when a plugin is instantiated which happens
-     * when a device is constructed. This does not mean that the device actually
-     * exists and is connected, it might just be an empty dummy device.
+     * when a system is constructed. This does not mean that the system actually
+     * exists and is connected, it might just be an empty dummy system.
      *
      * Plugins should do initialization steps with other parts of DroneCore
-     * at this state, e.g. set up callbacks with _parent (Device).
+     * at this state, e.g. set up callbacks with _parent (System).
      */
     virtual void init() = 0;
 
@@ -29,22 +32,22 @@ public:
     virtual void deinit() = 0;
 
     /*
-     * The method `enable()` is called when a device is discovered (is connected).
+     * The method `enable()` is called when a system is discovered (is connected).
      *
      * Plugins should do all initialization/configuration steps here that require a
-     * device to be connected such as setting/getting parameters.
+     * system to be connected such as setting/getting parameters.
      *
      * If any threads, call_every or timeouts are needed, they can be started now.
      */
     virtual void enable() = 0;
 
     /*
-     * The method `disable()` is called when a device has timed out. The method is also
-     * called before `deinit()` is called in case we destruct with a device still
+     * The method `disable()` is called when a system has timed out. The method is also
+     * called before `deinit()` is called in case we destruct with a system still
      * connected.
      *
      * Plugins should stop whatever they were doing in order to prevent warnings and
-     * errors because communication to the device no longer work, e.g. stop setting
+     * errors because communication to the system no longer work, e.g. stop setting
      * parameters or commands.
      *
      * If any threads, call_every, or timeouts are running, they should be stopped now.
@@ -56,7 +59,7 @@ public:
     const PluginImplBase &operator=(const PluginImplBase &) = delete;
 
 protected:
-    Device &_parent;
+    std::shared_ptr<MAVLinkSystem> _parent;
 };
 
 } // namespace dronecore

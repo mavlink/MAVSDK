@@ -3,9 +3,9 @@
 
 namespace dronecore {
 
-Gimbal::Gimbal(Device &device) :
+Gimbal::Gimbal(System &system) :
     PluginBase(),
-    _impl { new GimbalImpl(device) }
+    _impl { new GimbalImpl(system) }
 {
 }
 

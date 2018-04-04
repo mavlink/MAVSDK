@@ -3,9 +3,9 @@
 
 namespace dronecore {
 
-Logging::Logging(Device &device) :
+Logging::Logging(System &system) :
     PluginBase(),
-    _impl { new LoggingImpl(device) }
+    _impl { new LoggingImpl(system) }
 {
 }
 
@@ -38,8 +38,8 @@ const char *Logging::result_str(Result result)
     switch (result) {
         case Result::SUCCESS:
             return "Success";
-        case Result::NO_DEVICE:
-            return "No device";
+        case Result::NO_SYSTEM:
+            return "No system";
         case Result::CONNECTION_ERROR:
             return "Connection error";
         case Result::BUSY:

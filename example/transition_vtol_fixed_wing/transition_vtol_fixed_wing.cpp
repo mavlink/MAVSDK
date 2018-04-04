@@ -19,7 +19,7 @@ int main(int /*argc*/, char ** /*argv*/)
 {
     DroneCore dc;
 
-    bool discovered_device = false;
+    bool discovered_system = false;
 
     ConnectionResult connection_result = dc.add_udp_connection();
 
@@ -30,25 +30,25 @@ int main(int /*argc*/, char ** /*argv*/)
         return 1;
     }
 
-    std::cout << "Waiting to discover device..." << std::endl;
-    dc.register_on_discover([&discovered_device](uint64_t uuid) {
-        std::cout << "Discovered device with UUID: " << uuid << std::endl;
-        discovered_device = true;
+    std::cout << "Waiting to discover system..." << std::endl;
+    dc.register_on_discover([&discovered_system](uint64_t uuid) {
+        std::cout << "Discovered system with UUID: " << uuid << std::endl;
+        discovered_system = true;
     });
 
-    // We usually receive heartbeats at 1Hz, therefore we should find a device after around 2 seconds.
+    // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2 seconds.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    if (!discovered_device) {
-        std::cout << ERROR_CONSOLE_TEXT << "No device found, exiting." << NORMAL_CONSOLE_TEXT << std::endl;
+    if (!discovered_system) {
+        std::cout << ERROR_CONSOLE_TEXT << "No system found, exiting." << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
 
-    // We don't need to specify the UUID if it's only one device anyway.
+    // We don't need to specify the UUID if it's only one system anyway.
     // If there were multiple, we could specify it with:
-    // dc.device(uint64_t uuid);
-    Device &device = dc.device();
-    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(device);
+    // dc.system(uint64_t uuid);
+    System &system = dc.system();
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     // We want to listen to the altitude of the drone at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
@@ -74,7 +74,7 @@ int main(int /*argc*/, char ** /*argv*/)
         return 1;
     }
 
-    std::shared_ptr<Action> action = std::make_shared<Action>(device);
+    auto action = std::make_shared<Action>(system);
 
     // Arm vehicle
     std::cout << "Arming..." << std::endl;

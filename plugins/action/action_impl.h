@@ -4,7 +4,7 @@
 
 #include "action.h"
 #include "action_result.h"
-#include "device.h"
+#include "mavlink_system.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 
@@ -13,7 +13,7 @@ namespace dronecore {
 class ActionImpl : public PluginImplBase
 {
 public:
-    ActionImpl(Device &device);
+    ActionImpl(System &system);
     ~ActionImpl();
 
     void init() override;
@@ -50,9 +50,9 @@ private:
     void loiter_before_takeoff_async(const Action::result_callback_t &callback);
     void loiter_before_arm_async(const Action::result_callback_t &callback);
 
-    void takeoff_async_continued(MavlinkCommands::Result previous_result,
+    void takeoff_async_continued(MAVLinkCommands::Result previous_result,
                                  const Action::result_callback_t &callback);
-    void arm_async_continued(MavlinkCommands::Result previous_result,
+    void arm_async_continued(MAVLinkCommands::Result previous_result,
                              const Action::result_callback_t &callback);
 
     ActionResult arming_allowed() const;
@@ -65,9 +65,9 @@ private:
 
     void receive_takeoff_alt_param(bool success, float new_relative_altitude_m);
 
-    static ActionResult action_result_from_command_result(MavlinkCommands::Result result);
+    static ActionResult action_result_from_command_result(MAVLinkCommands::Result result);
 
-    static void command_result_callback(MavlinkCommands::Result command_result,
+    static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Action::result_callback_t &callback);
 
     std::atomic<bool> _in_air_state_known {false};

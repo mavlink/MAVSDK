@@ -4,7 +4,8 @@
 #include <map>
 #include <mutex>
 
-#include "device.h"
+#include "system.h"
+#include "mavlink_system.h"
 #include "mavlink_include.h"
 #include "mission.h"
 #include "plugin_impl_base.h"
@@ -17,7 +18,7 @@ namespace dronecore {
 class MissionImpl : public PluginImplBase
 {
 public:
-    MissionImpl(Device &device);
+    MissionImpl(System &system);
     ~MissionImpl();
 
     void init() override;
@@ -74,7 +75,7 @@ private:
 
     void report_progress();
 
-    void receive_command_result(MavlinkCommands::Result result,
+    void receive_command_result(MAVLinkCommands::Result result,
                                 const Mission::result_callback_t &callback);
 
     void download_next_mission_item();

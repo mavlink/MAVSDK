@@ -10,7 +10,7 @@
 namespace dronecore {
 
 class FollowMeImpl;
-class Device;
+class System;
 
 /**
  * @brief This class enables vehicle tracking of a specified target (typically a ground station carried by a user).
@@ -25,17 +25,17 @@ class FollowMe : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto follow_me = std::make_shared<FollowMe>(device);
+     *     auto follow_me = std::make_shared<FollowMe>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit FollowMe(Device &device);
+    explicit FollowMe(System &system);
 
     /**
      * @brief Destructor (internal use only).
@@ -48,7 +48,7 @@ public:
      */
     enum class Result {
         SUCCESS = 0, /**< @brief Request succeeded. */
-        NO_DEVICE, /**< @brief No device connected. */
+        NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
         BUSY, /**< @brief Vehicle busy. */
         COMMAND_DENIED, /**< @brief Command denied. */
@@ -104,7 +104,7 @@ public:
     const Config &get_config() const;
 
     /**
-     * @brief Applies FollowMe configuration by sending it to device.
+     * @brief Applies FollowMe configuration by sending it to system.
      * @param[in] config FollowMe configuration to be applied.
      * @return FollowMe::Result::SUCCESS if configuration is applied successfully,
      *         FollowMe::Result::SET_CONFIG_FAILED on failure.

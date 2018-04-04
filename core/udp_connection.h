@@ -1,11 +1,10 @@
 #pragma once
 
-#include "dronecore.h"
-#include "connection.h"
 #include <string>
 #include <mutex>
 #include <thread>
 #include <atomic>
+#include "connection.h"
 
 namespace dronecore {
 

@@ -174,23 +174,23 @@ int main(int, char **)
     ConnectionResult conn_result = dc.add_udp_connection();
     connection_error_exit(conn_result, "Connection failed");
 
-    // Wait for the device to connect via heartbeat
+    // Wait for the system to connect via heartbeat
     while (!dc.is_connected()) {
-        std::cout << "Wait for device to connect via heartbeat" << std::endl;
+        std::cout << "Wait for system to connect via heartbeat" << std::endl;
         sleep_for(seconds(1));
     }
 
-    // Device got discovered.
-    Device &device = dc.device();
-    std::shared_ptr<Action> action = std::make_shared<Action>(device);
-    std::shared_ptr<Offboard> offboard = std::make_shared<Offboard>(device);
-    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(device);
+    // System got discovered.
+    System &system = dc.system();
+    auto action = std::make_shared<Action>(system);
+    auto offboard = std::make_shared<Offboard>(system);
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "Waiting for device to be ready" << std::endl;
+        std::cout << "Waiting for system to be ready" << std::endl;
         sleep_for(seconds(1));
     }
-    std::cout << "Device is ready" << std::endl;
+    std::cout << "System is ready" << std::endl;
 
     ActionResult arm_result = action->arm();
     action_error_exit(arm_result, "Arming failed");

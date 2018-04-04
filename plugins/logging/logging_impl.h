@@ -2,7 +2,8 @@
 
 #include "plugin_impl_base.h"
 #include "mavlink_include.h"
-#include "device.h"
+#include "system.h"
+#include "mavlink_system.h"
 #include "logging.h"
 
 namespace dronecore {
@@ -10,7 +11,7 @@ namespace dronecore {
 class LoggingImpl : public PluginImplBase
 {
 public:
-    LoggingImpl(Device &device);
+    LoggingImpl(System &system);
     ~LoggingImpl();
 
     void init() override;
@@ -29,9 +30,9 @@ private:
     void process_logging_data(const mavlink_message_t &message);
     void process_logging_data_acked(const mavlink_message_t &message);
 
-    static Logging::Result logging_result_from_command_result(MavlinkCommands::Result result);
+    static Logging::Result logging_result_from_command_result(MAVLinkCommands::Result result);
 
-    static void command_result_callback(MavlinkCommands::Result command_result,
+    static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Logging::result_callback_t &callback);
 };
 

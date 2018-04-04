@@ -1,5 +1,5 @@
 #include "mavlink_commands.h"
-#include "device.h"
+#include "mavlink_system.h"
 #include <future>
 #include <memory>
 
@@ -17,22 +17,22 @@ namespace dronecore {
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
-MavlinkCommands::MavlinkCommands(Device &parent) :
+MAVLinkCommands::MAVLinkCommands(MAVLinkSystem &parent) :
     _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
-        std::bind(&MavlinkCommands::receive_command_ack,
+        std::bind(&MAVLinkCommands::receive_command_ack,
                   this, std::placeholders::_1), this);
 }
 
-MavlinkCommands::~MavlinkCommands()
+MAVLinkCommands::~MAVLinkCommands()
 {
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
-                                                      const MavlinkCommands::Params params,
+MAVLinkCommands::Result MAVLinkCommands::send_command(uint16_t command,
+                                                      const MAVLinkCommands::Params params,
                                                       uint8_t target_system_id,
                                                       uint8_t target_component_id)
 {
@@ -70,8 +70,8 @@ MavlinkCommands::Result MavlinkCommands::send_command(uint16_t command,
 }
 
 
-void MavlinkCommands::queue_command_async(uint16_t command,
-                                          const MavlinkCommands::Params params,
+void MAVLinkCommands::queue_command_async(uint16_t command,
+                                          const MAVLinkCommands::Params params,
                                           uint8_t target_system_id,
                                           uint8_t target_component_id,
                                           command_result_callback_t callback)
@@ -80,8 +80,8 @@ void MavlinkCommands::queue_command_async(uint16_t command,
     //         << (int)target_component_id;
 
     Work new_work {};
-    mavlink_msg_command_long_pack(_parent.get_own_system_id(),
-                                  _parent.get_own_component_id(),
+    mavlink_msg_command_long_pack(GCSClient::system_id,
+                                  GCSClient::component_id,
                                   &new_work.mavlink_message,
                                   target_system_id,
                                   target_component_id,
@@ -94,7 +94,7 @@ void MavlinkCommands::queue_command_async(uint16_t command,
     _work_queue.push_back(new_work);
 }
 
-void MavlinkCommands::receive_command_ack(mavlink_message_t message)
+void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 {
     // If nothing is in the queue, we ignore the message all together.
     if (_work_queue.size() == 0) {
@@ -173,13 +173,13 @@ void MavlinkCommands::receive_command_ack(mavlink_message_t message)
             // case where there is no progress update and we keep trying.
             _parent.unregister_timeout_handler(_timeout_cookie);
             _parent.register_timeout_handler(
-                std::bind(&MavlinkCommands::receive_timeout, this),
+                std::bind(&MAVLinkCommands::receive_timeout, this),
                 work.retries_to_do * work.timeout_s, &_timeout_cookie);
             break;
     }
 }
 
-void MavlinkCommands::receive_timeout()
+void MAVLinkCommands::receive_timeout()
 {
     // If nothing is in the queue, we ignore the timeout.
     if (_work_queue.size() == 0) {
@@ -206,7 +206,7 @@ void MavlinkCommands::receive_timeout()
             } else {
                 --work.retries_to_do;
                 _parent.register_timeout_handler(
-                    std::bind(&MavlinkCommands::receive_timeout, this),
+                    std::bind(&MAVLinkCommands::receive_timeout, this),
                     work.timeout_s, &_timeout_cookie);
             }
 
@@ -224,7 +224,7 @@ void MavlinkCommands::receive_timeout()
     }
 }
 
-void MavlinkCommands::do_work()
+void MAVLinkCommands::do_work()
 {
     std::lock_guard<std::mutex> lock(_state_mutex);
 
@@ -268,7 +268,7 @@ void MavlinkCommands::do_work()
             } else {
                 _state = State::WAITING;
                 _parent.register_timeout_handler(
-                    std::bind(&MavlinkCommands::receive_timeout, this),
+                    std::bind(&MAVLinkCommands::receive_timeout, this),
                     work.timeout_s, &_timeout_cookie);
             }
             break;

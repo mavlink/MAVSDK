@@ -10,7 +10,7 @@
 namespace dronecore {
 
 class DroneCoreImpl;
-class Device;
+class System;
 
 /**
  * @brief This is the main class of **%DroneCore MAVLink API Library** (for the Dronecode Platform).
@@ -88,69 +88,69 @@ public:
                                            int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
     /**
-     * @brief Get vector of device UUIDs.
+     * @brief Get vector of system UUIDs.
      *
-     * This returns a vector of the UUIDs of all devices that have been discovered.
-     * If a device doesn't have a UUID then DroneCore will instead use its MAVLink system ID (range: 0..255).
+     * This returns a vector of the UUIDs of all systems that have been discovered.
+     * If a system doesn't have a UUID then DroneCore will instead use its MAVLink system ID (range: 0..255).
      *
-     * @return A reference to the vector containing the UUIDs.
+     * @return A vector containing the UUIDs.
      */
-    const std::vector<uint64_t> &device_uuids() const;
+    std::vector<uint64_t> system_uuids() const;
 
     /**
-     * @brief Get the first discovered device.
+     * @brief Get the first discovered system.
      *
-     * This returns the first discovered device or a null device if no device has yet been found.
+     * This returns the first discovered system or a null system if no system has yet been found.
      *
-     * @return A reference to a device.
+     * @return A reference to a system.
      */
-    Device &device() const;
+    System &system() const;
 
     /**
-     * @brief Get the device with the specified UUID.
+     * @brief Get the system with the specified UUID.
      *
-     * This returns a device for a given UUID if such a device has been discovered and a null
-     * device otherwise.
+     * This returns a system for a given UUID if such a system has been discovered and a null
+     * system otherwise.
      *
-     * @param uuid UUID of device to get.
-     * @return A reference to the specified device.
+     * @param uuid UUID of system to get.
+     * @return A reference to the specified system.
      */
-    Device &device(uint64_t uuid) const;
+    System &system(uint64_t uuid) const;
 
     /**
      * @brief Callback type for discover and timeout notifications.
      *
-     * @param uuid UUID of device (or MAVLink system ID for devices that don't have a UUID).
+     * @param uuid UUID of system (or MAVLink system ID for systems that don't have a UUID).
      */
     typedef std::function<void(uint64_t uuid)> event_callback_t;
 
     /**
-     * @brief Returns `true` if exactly one device is currently connected.
+     * @brief Returns `true` if exactly one system is currently connected.
      *
-     * Connected means we are receiving heartbeats from this device.
+     * Connected means we are receiving heartbeats from this system.
      * It means the same as "discovered" and "not timed out".
      *
-     * If multiple devices have connected, this will return `false`.
+     * If multiple systems have connected, this will return `false`.
      *
-     * @return `true` if exactly one device is connected.
+     * @return `true` if exactly one system is connected.
      */
     bool is_connected() const;
 
     /**
-     * @brief Returns `true` if a device is currently connected.
+     * @brief Returns `true` if a system is currently connected.
      *
-     * Connected means we are receiving heartbeats from this device.
+     * Connected means we are receiving heartbeats from this system.
      * It means the same as "discovered" and "not timed out".
      *
-     * @param uuid UUID of device to check.
-     * @return `true` if device is connected.
+     * @param uuid UUID of system to check.
+     * @return `true` if system is connected.
      */
     bool is_connected(uint64_t uuid) const;
 
     /**
-     * @brief Register callback for device discovery.
+     * @brief Register callback for system discovery.
      *
-     * This sets a callback that will be notified if a new device is discovered.
+     * This sets a callback that will be notified if a new system is discovered.
      *
      * **Note** Only one callback can be registered at a time. If this function is called several
      * times, previous callbacks will be overwritten.
@@ -161,9 +161,9 @@ public:
     void register_on_discover(event_callback_t callback);
 
     /**
-     * @brief Register callback for device timeout.
+     * @brief Register callback for system timeout.
      *
-     * This sets a callback that will be notified if no heartbeat of the device has been received
+     * This sets a callback that will be notified if no heartbeat of the system has been received
      * in 3 seconds.
      *
      * **Note** Only one callback can be registered at a time. If this function is called several

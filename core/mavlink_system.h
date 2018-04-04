@@ -10,6 +10,7 @@
 #include <functional>
 #include <atomic>
 #include <vector>
+#include <unordered_set>
 #include <map>
 #include <thread>
 #include <mutex>
@@ -19,7 +20,19 @@ namespace dronecore {
 class DroneCoreImpl;
 class PluginImplBase;
 
-class Device
+
+// GCS: Ground Control Station
+// Type that represents DroneCore client application which is a GCS.
+struct GCSClient {
+    static constexpr uint8_t system_id = 0;
+    static constexpr uint8_t component_id = MAV_COMP_ID_SYSTEM_CONTROL;
+    static constexpr MAV_TYPE type = MAV_TYPE_GCS;
+};
+
+// This class represents a MAVLink system, made up of one or more components
+// (e.g. autopilot, cameras, servos, gimbals, etc). Commonly MAVLinkSystem objects are
+// used to interact with UAVs (including their components) and standalone cameras.
+class MAVLinkSystem
 {
 public:
     enum class FlightMode {
@@ -32,15 +45,17 @@ public:
         OFFBOARD,
     };
 
-    explicit Device(DroneCoreImpl &parent,
-                    uint8_t target_system_id);
-    ~Device();
+    explicit MAVLinkSystem(DroneCoreImpl &parent,
+                           uint8_t system_id,
+                           uint8_t component_id);
+    ~MAVLinkSystem();
 
     void process_mavlink_message(const mavlink_message_t &message);
 
     typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
 
-    void register_mavlink_message_handler(uint16_t msg_id, mavlink_message_handler_t callback,
+    void register_mavlink_message_handler(uint16_t msg_id,
+                                          mavlink_message_handler_t callback,
                                           const void *cookie);
 
     void unregister_all_mavlink_message_handlers(const void *cookie);
@@ -58,29 +73,46 @@ public:
 
     bool send_message(const mavlink_message_t &message);
 
-    MavlinkCommands::Result send_command_with_ack(uint16_t command,
-                                                  const MavlinkCommands::Params &params,
+    MAVLinkCommands::Result send_command_with_ack(uint16_t command,
+                                                  const MAVLinkCommands::Params &params,
                                                   uint8_t component_id = 0);
 
-    typedef std::function<void(MavlinkCommands::Result, float)> command_result_callback_t;
-    void send_command_with_ack_async(uint16_t command, const MavlinkCommands::Params &params,
+    typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
+
+    void send_command_with_ack_async(uint16_t command,
+                                     const MAVLinkCommands::Params &params,
                                      command_result_callback_t callback,
                                      uint8_t component_id = 0);
 
-    MavlinkCommands::Result set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id = 0);
+    MAVLinkCommands::Result set_msg_rate(uint16_t message_id,
+                                         double rate_hz,
+                                         uint8_t component_id = 0);
 
     void set_msg_rate_async(uint16_t message_id, double rate_hz,
-                            command_result_callback_t callback, uint8_t component_id = 0);
+                            command_result_callback_t callback,
+                            uint8_t component_id = 0);
 
     void request_autopilot_version();
 
-    uint64_t get_target_uuid() const;
-    uint8_t get_target_system_id() const;
-    uint8_t get_target_component_id() const;
+    // Adds unique component ids
+    void add_new_component(uint8_t component_id);
+    size_t total_components() const;
 
-    void set_target_system_id(uint8_t system_id);
+    uint8_t get_autopilot_id() const;
+    std::vector<uint8_t> get_camera_ids() const;
+    uint8_t get_gimbal_id() const;
 
-    bool target_supports_mission_int() const { return _target_supports_mission_int; }
+    bool is_standalone() const;
+    bool has_autopilot() const;
+    bool has_camera(int camera_id = -1) const;
+    bool has_gimbal() const;
+
+    uint64_t get_uuid() const;
+    uint8_t get_system_id() const;
+
+    void set_system_id(uint8_t system_id);
+
+    bool does_support_mission_int() const { return _supports_mission_int; }
 
     bool is_armed() const { return _armed; }
 
@@ -89,7 +121,7 @@ public:
     void set_param_int_async(const std::string &name, int32_t value, success_t callback);
     void set_param_ext_float_async(const std::string &name, float value, success_t callback);
     void set_param_ext_int_async(const std::string &name, int32_t value, success_t callback);
-    MavlinkCommands::Result set_flight_mode(FlightMode mode);
+    MAVLinkCommands::Result set_flight_mode(FlightMode mode);
     void set_flight_mode_async(FlightMode mode, command_result_callback_t callback);
 
     typedef std::function <void(bool success, float value)> get_param_float_callback_t;
@@ -99,9 +131,6 @@ public:
     void get_param_int_async(const std::string &name, get_param_int_callback_t callback);
     void get_param_ext_float_async(const std::string &name, get_param_float_callback_t callback);
     void get_param_ext_int_async(const std::string &name, get_param_int_callback_t callback);
-
-    static uint8_t get_own_system_id() { return _own_system_id; }
-    static uint8_t get_own_component_id() { return _own_component_id; }
 
     bool is_connected() const;
 
@@ -117,10 +146,16 @@ public:
     void unlock_communication();
 
     // Non-copyable
-    Device(const Device &) = delete;
-    const Device &operator=(const Device &) = delete;
+    MAVLinkSystem(const MAVLinkSystem &) = delete;
+    const MAVLinkSystem &operator=(const MAVLinkSystem &) = delete;
 
 private:
+
+    // Helper methods added to increase readablity
+    static bool is_autopilot(uint8_t comp_id);
+    static bool is_camera(uint8_t comp_id);
+
+    bool have_uuid() const { return _uuid != 0 && _uuid_initialized; }
 
     void process_heartbeat(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
@@ -129,33 +164,35 @@ private:
     void set_connected();
     void set_disconnected();
 
-    static void device_thread(Device *self);
-    static void send_heartbeat(Device &self);
+    static std::string component_name(uint8_t component_id);
 
-    static void receive_float_param(bool success, MavlinkParameters::ParamValue value,
+    static void system_thread(MAVLinkSystem *self);
+    static void send_heartbeat(MAVLinkSystem &self);
+
+    static void receive_float_param(bool success, MAVLinkParameters::ParamValue value,
                                     get_param_float_callback_t callback);
-    static void receive_int_param(bool success, MavlinkParameters::ParamValue value,
+    static void receive_int_param(bool success, MAVLinkParameters::ParamValue value,
                                   get_param_int_callback_t callback);
 
-    struct MavlinkHandlerTableEntry {
+    struct MAVLinkHandlerTableEntry {
         uint16_t msg_id;
         mavlink_message_handler_t callback;
         const void *cookie; // This is the identification to unregister.
     };
 
     std::mutex _mavlink_handler_table_mutex {};
-    std::vector<MavlinkHandlerTableEntry> _mavlink_handler_table {};
+    std::vector<MAVLinkHandlerTableEntry> _mavlink_handler_table {};
 
-    std::atomic<uint8_t> _target_system_id;
+    std::atomic<uint8_t> _system_id;
 
-    // The component ID is hardcoded for now.
-    uint8_t _target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    uint64_t _target_uuid {0};
+    uint64_t _uuid {0};
 
-    int _target_uuid_retries = 0;
-    std::atomic<bool> _target_uuid_initialized {false};
+    int _uuid_retries = 0;
+    std::atomic<bool> _uuid_initialized {false};
 
-    bool _target_supports_mission_int {false};
+    uint8_t _non_autopilot_heartbeats = 0;
+
+    bool _supports_mission_int {false};
     std::atomic<bool> _armed {false};
     std::atomic<bool> _hitl_enabled {false};
 
@@ -163,12 +200,8 @@ private:
 
     command_result_callback_t _command_result_callback {nullptr};
 
-    std::thread *_device_thread {nullptr};
+    std::thread *_system_thread {nullptr};
     std::atomic<bool> _should_exit {false};
-
-    // TODO: should our own system ID have some value?
-    static constexpr uint8_t _own_system_id = 0;
-    static constexpr uint8_t _own_component_id = MAV_COMP_ID_SYSTEM_CONTROL;
 
     static constexpr double _HEARTBEAT_TIMEOUT_S = 3.0;
 
@@ -181,9 +214,9 @@ private:
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
 
-    MavlinkParameters _params;
+    MAVLinkParameters _params;
 
-    MavlinkCommands _commands;
+    MAVLinkCommands _commands;
 
     TimeoutHandler _timeout_handler;
     CallEveryHandler _call_every_handler;
@@ -194,6 +227,9 @@ private:
 
     std::mutex _plugin_impls_mutex {};
     std::vector<PluginImplBase *> _plugin_impls {};
+
+    // We used set to maintain unique component ids
+    std::unordered_set<uint8_t> _components;
 };
 
 

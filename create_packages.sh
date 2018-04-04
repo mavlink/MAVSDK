@@ -18,7 +18,7 @@ common_args="--input-type dir  \
     --force"
 
 library_files="\
-    core/device.h=/usr/include/dronecore/device.h \
+    core/system.h=/usr/include/dronecore/system.h \
     core/dronecore.h=/usr/include/dronecore/dronecore.h \
     build/default/core/libdronecore.so=/usr/lib/libdronecore.so \
     plugins/action/action.h=/usr/include/dronecore/action.h \

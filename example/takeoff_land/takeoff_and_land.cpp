@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     std::string connection_url;
     ConnectionResult connection_result;
 
-    bool discovered_device = false;
+    bool discovered_system = false;
     if (argc == 1) {
         usage(argv[0]);
         connection_result = dc.add_any_connection();
@@ -43,27 +43,27 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    std::cout << "Waiting to discover device..." << std::endl;
-    dc.register_on_discover([&discovered_device](uint64_t uuid) {
-        std::cout << "Discovered device with UUID: " << uuid << std::endl;
-        discovered_device = true;
+    std::cout << "Waiting to discover system..." << std::endl;
+    dc.register_on_discover([&discovered_system](uint64_t uuid) {
+        std::cout << "Discovered system with UUID: " << uuid << std::endl;
+        discovered_system = true;
     });
 
-    // We usually receive heartbeats at 1Hz, therefore we should find a device after around 2 seconds.
+    // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2 seconds.
     sleep_for(seconds(2));
 
-    if (!discovered_device) {
-        std::cout << ERROR_CONSOLE_TEXT << "No device found, exiting." << NORMAL_CONSOLE_TEXT << std::endl;
+    if (!discovered_system) {
+        std::cout << ERROR_CONSOLE_TEXT << "No system found, exiting." << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
 
-    // We don't need to specify the UUID if it's only one device anyway.
+    // We don't need to specify the UUID if it's only one system anyway.
     // If there were multiple, we could specify it with:
-    // dc.device(uint64_t uuid);
-    Device &device = dc.device();
+    // dc.system(uint64_t uuid);
+    System &system = dc.system();
 
-    auto telemetry = std::make_shared<Telemetry>(device);
-    auto action = std::make_shared<Action>(device);
+    auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = std::make_shared<Action>(system);
 
     // We want to listen to the altitude of the drone at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
@@ -81,7 +81,6 @@ int main(int argc, char **argv)
                   << NORMAL_CONSOLE_TEXT // set to default color again
                   << std::endl;
     });
-
 
     // Check if vehicle is ready to arm
     while (telemetry->health_all_ok() != true) {

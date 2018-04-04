@@ -9,23 +9,23 @@
 
 namespace dronecore {
 
-class Device;
+class MAVLinkSystem;
 
-class MavlinkCommands
+class MAVLinkCommands
 {
 public:
-    explicit MavlinkCommands(Device &parent);
-    ~MavlinkCommands();
+    explicit MAVLinkCommands(MAVLinkSystem &parent);
+    ~MAVLinkCommands();
 
     enum class Result {
         SUCCESS = 0,
-        NO_DEVICE,
+        NO_SYSTEM,
         CONNECTION_ERROR,
         BUSY,
         COMMAND_DENIED,
         TIMEOUT,
         IN_PROGRESS,
-        ERROR
+        UNKNOWN_ERROR
     };
 
     typedef std::function<void(Result, float)> command_result_callback_t;
@@ -47,11 +47,11 @@ public:
 
     void do_work();
 
-    static const int DEFAULT_COMPONENT_ID_AUTOPILOT = 1;
+    static const int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
 
     // Non-copyable
-    MavlinkCommands(const MavlinkCommands &) = delete;
-    const MavlinkCommands &operator=(const MavlinkCommands &) = delete;
+    MAVLinkCommands(const MAVLinkCommands &) = delete;
+    const MAVLinkCommands &operator=(const MAVLinkCommands &) = delete;
 
 private:
     enum class State {
@@ -74,7 +74,7 @@ private:
     void receive_command_ack(mavlink_message_t message);
     void receive_timeout();
 
-    Device &_parent;
+    MAVLinkSystem &_parent;
     LockedQueue<Work> _work_queue {};
 
     void *_timeout_cookie = nullptr;

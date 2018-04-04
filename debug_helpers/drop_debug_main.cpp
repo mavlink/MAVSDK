@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 #include "dronecore.h"
+#include <thread>
 
 #if DROP_DEBUG != 1
 #error DROB_DEBUG needs to be set for this test to work
@@ -8,8 +9,8 @@
 
 #define UNUSED(x) (void)(x)
 
-bool _discovered_device = false;
-bool _timeouted_device = false;
+bool _discovered_system = false;
+bool _timeouted_system = false;
 
 void on_discover(uint64_t uuid);
 void on_timeout(uint64_t uuid);
@@ -31,8 +32,8 @@ int main(int argc, const char *argv[])
     dc.register_on_timeout(std::bind(&on_timeout, std::placeholders::_1));
 
     while (true) {
-        if (!_discovered_device) {
-            std::cout << "waiting for device to appear..." << std::endl;
+        if (!_discovered_system) {
+            std::cout << "waiting for system to appear..." << std::endl;
         }
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
@@ -42,13 +43,13 @@ int main(int argc, const char *argv[])
 
 void on_discover(uint64_t uuid)
 {
-    std::cout << "Found device with UUID: " << uuid << std::endl;
-    _discovered_device = true;
+    std::cout << "Found system with UUID: " << uuid << std::endl;
+    _discovered_system = true;
 }
 
 void on_timeout(uint64_t uuid)
 {
-    std::cout << "Lost device with UUID: " << uuid << std::endl;
-    _timeouted_device = true;
+    std::cout << "Lost system with UUID: " << uuid << std::endl;
+    _timeouted_system = true;
 }
 

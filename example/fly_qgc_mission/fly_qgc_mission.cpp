@@ -65,9 +65,9 @@ int main(int argc, char **argv)
         auto prom = std::make_shared<std::promise<void>>();
         auto future_result = prom->get_future();
 
-        std::cout << "Waiting to discover device..." << std::endl;
+        std::cout << "Waiting to discover system..." << std::endl;
         dc.register_on_discover([prom](uint64_t uuid) {
-            std::cout << "Discovered device with UUID: " << uuid << std::endl;
+            std::cout << "Discovered system with UUID: " << uuid << std::endl;
             prom->set_value();
         });
 
@@ -78,25 +78,25 @@ int main(int argc, char **argv)
     }
 
     dc.register_on_timeout([](uint64_t uuid) {
-        std::cout << "Device with UUID timed out: " << uuid << std::endl;
+        std::cout << "System with UUID timed out: " << uuid << std::endl;
         std::cout << "Exiting." << std::endl;
         exit(0);
     });
 
-    // We don't need to specify the UUID if it's only one device anyway.
+    // We don't need to specify the UUID if it's only one system anyway.
     // If there were multiple, we could specify it with:
-    // dc.device(uint64_t uuid);
-    Device &device = dc.device();
-    std::shared_ptr<Action> action = std::make_shared<Action>(device);
-    std::shared_ptr<Mission> mission = std::make_shared<Mission>(device);
-    std::shared_ptr<Telemetry> telemetry = std::make_shared<Telemetry>(device);
+    // dc.system(uint64_t uuid);
+    System &system = dc.system();
+    auto action = std::make_shared<Action>(system);
+    auto mission = std::make_shared<Mission>(system);
+    auto telemetry = std::make_shared<Telemetry>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "Waiting for device to be ready" << std::endl;
+        std::cout << "Waiting for system to be ready" << std::endl;
         sleep_for(seconds(1));
     }
 
-    std::cout << "Device ready" << std::endl;
+    std::cout << "System ready" << std::endl;
 
     // Import Mission items from QGC plan
     Mission::mission_items_t mission_items;

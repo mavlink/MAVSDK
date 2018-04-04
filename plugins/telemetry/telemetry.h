@@ -7,7 +7,7 @@
 namespace dronecore {
 
 class TelemetryImpl;
-class Device;
+class System;
 
 /**
  * @brief This class allows users to get vehicle telemetry and state information
@@ -17,17 +17,17 @@ class Telemetry : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto telemetry = std::make_shared<Telemetry>(device);
+     *     auto telemetry = std::make_shared<Telemetry>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit Telemetry(Device &device);
+    explicit Telemetry(System &system);
 
     /**
      * @brief Destructor (internal use only).
@@ -155,9 +155,9 @@ public:
      */
     enum class Result {
         SUCCESS = 0, /**< @brief %Request succeeded. */
-        NO_DEVICE, /**< @brief No device connected. */
+        NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
-        BUSY, /**< @brief Device busy. */
+        BUSY, /**< @brief System busy. */
         COMMAND_DENIED, /**< @brief Command denied. */
         TIMEOUT, /**< @brief %Request timeout. */
         UNKNOWN /**< @brief Unknown error. */

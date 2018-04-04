@@ -1,11 +1,12 @@
 #pragma once
 
-#include "telemetry.h"
-#include "plugin_impl_base.h"
-#include "device.h"
-#include "mavlink_include.h"
 #include <atomic>
 #include <mutex>
+#include "telemetry.h"
+#include "plugin_impl_base.h"
+#include "system.h"
+#include "mavlink_system.h"
+#include "mavlink_include.h"
 
 // Since not all vehicles support/require level calibration, this
 // is disabled for now.
@@ -13,12 +14,12 @@
 
 namespace dronecore {
 
-class Device;
+class System;
 
 class TelemetryImpl : public PluginImplBase
 {
 public:
-    TelemetryImpl(Device &device);
+    TelemetryImpl(System &system);
     ~TelemetryImpl();
 
     void init() override;
@@ -120,9 +121,9 @@ private:
 
 
     static Telemetry::Result telemetry_result_from_command_result(
-        MavlinkCommands::Result command_result);
+        MAVLinkCommands::Result command_result);
 
-    static void command_result_callback(MavlinkCommands::Result command_result,
+    static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Telemetry::result_callback_t &callback);
 
     static Telemetry::FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);

@@ -3,9 +3,9 @@
 
 namespace dronecore {
 
-Action::Action(Device &device) :
+Action::Action(System &system) :
     PluginBase(),
-    _impl { new ActionImpl(device) }
+    _impl { new ActionImpl(system) }
 {
 }
 
