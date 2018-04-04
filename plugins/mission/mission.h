@@ -39,7 +39,8 @@ public:
      * @brief Possible results returned for mission requests.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief %Request succeeded. */
+        UNKNOWN, /**< @brief Unknown error. */
+        SUCCESS, /**< @brief %Request succeeded. */
         ERROR, /**< @brief Error. */
         TOO_MANY_MISSION_ITEMS, /**< @brief Too many MissionItem objects in the mission. */
         BUSY, /**< @brief %Vehicle busy. */
@@ -49,8 +50,7 @@ public:
         NO_MISSION_AVAILABLE, /**< @brief No mission available on system. */
         FAILED_TO_OPEN_QGC_PLAN, /**< @brief Failed to open QGroundControl plan */
         FAILED_TO_PARSE_QGC_PLAN, /**< @brief Failed to parse QGroundControl plan */
-        UNSUPPORTED_MISSION_CMD, /**< @brief Unsupported mission command */
-        UNKNOWN /**< @brief Unknown error. */
+        UNSUPPORTED_MISSION_CMD /**< @brief Unsupported mission command */
     };
 
     /**
