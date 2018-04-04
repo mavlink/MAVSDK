@@ -14,7 +14,8 @@
 #include "core/corerpc_impl.h"
 #include "dronecore.h"
 #include "log.h"
-#include "mission/missionrpc_impl.h"
+#include "mission/mission.h"
+#include "mission/mission_service_impl.h"
 #include "telemetry/telemetry_service_impl.h"
 
 namespace dronecore {
@@ -42,11 +43,12 @@ public:
         builder.RegisterService(&actionService);
 
         Mission mission(_dc.system());
-        MissionServiceImpl missionService(mission);
+        MissionServiceImpl<dronecore::Mission> missionService(mission);
+
         builder.RegisterService(&missionService);
 
         Telemetry telemetry(_dc.system());
-        TelemetryServiceImpl<dronecore::Telemetry> telemetryService(telemetry);
+        TelemetryServiceImpl<> telemetryService(telemetry);
 
         builder.RegisterService(&telemetryService);
 
