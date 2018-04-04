@@ -104,7 +104,7 @@ public:
 
     bool is_standalone() const;
     bool has_autopilot() const;
-    bool has_camera(uint8_t camera_id = 0) const;
+    bool has_camera(int camera_id = -1) const;
     bool has_gimbal() const;
 
     uint64_t get_uuid() const;

@@ -38,7 +38,7 @@ bool System::has_autopilot() const
     return _mavlink_system->has_autopilot();
 }
 
-bool System::has_camera(uint8_t camera_id) const
+bool System::has_camera(int camera_id) const
 {
     return _mavlink_system->has_camera(camera_id);
 }

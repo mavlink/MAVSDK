@@ -35,13 +35,13 @@ public:
     /**
      * @brief Checks whether the system has a camera with the given camera ID.
      *
-     * A System may have several cameras with ID starting from 1.
+     * A System may have several cameras with ID starting from 0.
      * When called without passing camera ID, it checks whether the system has
      * any camera.
-     * @param camera_id ID of the camera starting from 1 onwards.
+     * @param camera_id ID of the camera starting from 0 onwards.
      * @return true if camera with the given camera ID is found, false otherwise.
      */
-    bool has_camera(uint8_t camera_id = 0) const;
+    bool has_camera(int camera_id = -1) const;
 
     /**
      * @brief Checks whether the system has a gimbal.

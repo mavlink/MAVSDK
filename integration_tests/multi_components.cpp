@@ -48,11 +48,11 @@ TEST_F(SitlTest, MultiComponentDiscovery)
         auto has_gimbal = system.has_gimbal();
 
         if (has_autopilot && has_camera && !has_gimbal) {
-            std::cout << "Its an Autopilot with a Camera." << '\n';
+            std::cout << "Its an autopilot with camera(s)." << '\n';
         } else if (is_standalone && has_camera) {
-            std::cout << "Its a Standalone camera." << '\n';
+            std::cout << "Its a standalone camera." << '\n';
         } else if (has_autopilot && !has_camera) {
-            std::cout << "Its an Autopilot alone." << '\n';
+            std::cout << "Its an autopilot alone." << '\n';
         }
     }
 }

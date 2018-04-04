@@ -353,12 +353,12 @@ bool MAVLinkSystem::is_camera(uint8_t comp_id)
            && (comp_id <= MAV_COMP_ID_CAMERA6);
 }
 
-bool MAVLinkSystem::has_camera(uint8_t camera_id) const
+bool MAVLinkSystem::has_camera(int camera_id) const
 {
-    uint8_t camera_comp_id = (camera_id == 0) ?
-                             camera_id : (MAV_COMP_ID_CAMERA + (camera_id - 1));
+    int camera_comp_id = (camera_id == -1) ?
+                         camera_id : (MAV_COMP_ID_CAMERA + camera_id);
 
-    if (camera_comp_id == 0) { // Check whether the system has any camera.
+    if (camera_comp_id == -1) { // Check whether the system has any camera.
         for (auto compid : _components) {
             if (is_camera(compid)) {
                 return true;
