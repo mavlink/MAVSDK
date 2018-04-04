@@ -10,7 +10,7 @@ using namespace dronecore;
 
 static const char *e90_unit_test_file = "plugins/camera/e90_unit_test.xml";
 
-TEST(CameraDefinition, LoadE90InfoFile)
+TEST(CameraDefinition, E90LoadInfoFile)
 {
     CameraDefinition cd;
     ASSERT_TRUE(cd.load_file(e90_unit_test_file));
@@ -18,7 +18,7 @@ TEST(CameraDefinition, LoadE90InfoFile)
     EXPECT_STREQ(cd.get_model().c_str(), "E90");
 }
 
-TEST(CameraDefinition, LoadE90InfoString)
+TEST(CameraDefinition, E90LoadInfoString)
 {
     std::ifstream file_stream(e90_unit_test_file);
     ASSERT_TRUE(file_stream.is_open());
@@ -33,17 +33,21 @@ TEST(CameraDefinition, LoadE90InfoString)
     EXPECT_STREQ(cd.get_model().c_str(), "E90");
 }
 
-TEST(CameraDefinition, LoadE90All)
+TEST(CameraDefinition, E90ShowDefaultSettings)
 {
     // Run this from root.
     CameraDefinition cd;
     ASSERT_TRUE(cd.load_file(e90_unit_test_file));
 
+    cd.assume_default_settings();
+
+    std::map<std::string, MavlinkParameters::ParamValue> settings {};
+    EXPECT_TRUE(cd.get_all_settings(settings));
+#if 0
     std::map<std::string, std::string> parameters {};
     ASSERT_TRUE(cd.get_current_parameters(parameters));
 
     //auto before = steady_time();
-#if 0
     for (auto &parameter : parameters) {
         LogDebug() << parameter.first << " => " << parameter.second->description;
         for (auto &option : parameter.second->options) {

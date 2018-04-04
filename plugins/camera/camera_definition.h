@@ -21,9 +21,17 @@ public:
     std::string get_vendor() const;
     std::string get_model() const;
 
-    void update_setting(const std::string &name, const MavlinkParameters::ParamValue &value);
+    void assume_default_settings();
 
-    bool get_current_parameters(std::map<std::string, std::string> &parameters);
+    struct Setting {
+        std::string name;
+        MavlinkParameters::ParamValue value;
+    };
+
+    bool set_setting(const std::string &name, const MavlinkParameters::ParamValue &value);
+    bool get_setting(const std::string &name, MavlinkParameters::ParamValue &value) const;
+
+    bool get_all_settings(std::map<std::string, MavlinkParameters::ParamValue> &settings) const;
 
     // Non-copyable
     CameraDefinition(const CameraDefinition &) = delete;
@@ -31,7 +39,6 @@ public:
 
 private:
     typedef std::map<std::string, MavlinkParameters::ParamValue> roption_t;
-
     typedef std::map<std::string, roption_t> parameter_range_t;
 
     struct Option {
@@ -54,7 +61,9 @@ private:
 
     tinyxml2::XMLDocument _doc {};
 
-    std::map<std::string, std::shared_ptr<Parameter>> _settings;
+    std::map<std::string, std::shared_ptr<Parameter>> _parameter_map;
+
+    std::map<std::string, MavlinkParameters::ParamValue> _current_settings;
 
     std::string _model;
     std::string _vendor;

@@ -836,7 +836,7 @@
                 </option>
             </options>
         </parameter>
-        <parameter name="CAM_VIDFMT" type="uint32" default="0">
+        <parameter name="CAM_VIDFMT" type="uint32" default="1">
             <description>Video Format</description>
             <updates>
                 <update>CAM_SHUTTERSPD</update>
@@ -880,7 +880,7 @@
                 </option>
             </options>
         </parameter>
-        <parameter name="CAM_PHOTORATIO" type="uint8" default="0">
+        <parameter name="CAM_PHOTORATIO" type="uint8" default="1">
             <description>Photo Aspect Ratio</description>
             <updates>
                 <update>CAM_ASPECTRATIO</update>

@@ -40,20 +40,23 @@ std::string CameraDefinition::get_vendor() const
     return _vendor;
 }
 
-bool CameraDefinition::get_current_parameters(std::map<std::string, std::string> &parameters)
+bool CameraDefinition::get_all_settings(std::map<std::string, MavlinkParameters::ParamValue>
+                                        &settings) const
 {
-    for (const auto &setting : _settings) {
+    settings.clear();
 
-        for (const auto &option : setting.second->options) {
+    bool added_parameters = false;
 
-            LogDebug() << setting.first << ": " << option->name;
+    for (const auto &parameter : _parameter_map) {
+        for (const auto &option : parameter.second->options) {
+            settings.insert(
+                std::pair<std::string, MavlinkParameters::ParamValue>(
+                    parameter.first, option->value));
+            added_parameters = true;
         }
     }
 
-
-    // TODO: actually update parameters of method call
-
-    return true;
+    return added_parameters;
 }
 
 bool CameraDefinition::parse_xml()
@@ -153,14 +156,12 @@ bool CameraDefinition::parse_xml()
 
         new_parameter->description = e_description->GetText();
 
-        //LogDebug() << "Found: " << new_parameter->description
-        //           << " (" << param_name
-        //           << ", control: " << (new_parameter->is_control ? "yes" : "no")
-        //           << ", readonly: " << (new_parameter->is_readonly ? "yes" : "no")
-        //           << ", writeonly: " << (new_parameter->is_writeonly ? "yes" : "no")
-        //           << ")";
-
-        // TODO: parse default which is of param type.
+        // LogDebug() << "Found: " << new_parameter->description
+        //            << " (" << param_name
+        //            << ", control: " << (new_parameter->is_control ? "yes" : "no")
+        //            << ", readonly: " << (new_parameter->is_readonly ? "yes" : "no")
+        //            << ", writeonly: " << (new_parameter->is_writeonly ? "yes" : "no")
+        //            << ")";
 
         auto e_updates = e_parameter->FirstChildElement("updates");
         if (e_updates) {
@@ -173,11 +174,19 @@ bool CameraDefinition::parse_xml()
             }
         }
 
-
         auto e_options = e_parameter->FirstChildElement("options");
         if (!e_options) {
             continue;
         }
+
+        // We only need a default if we have options.
+        const char *default_str = e_parameter->Attribute("default");
+        if (!default_str) {
+            LogErr() << "Default missing.";
+            return false;
+        }
+
+        bool found_default = false;
 
         for (auto e_option = e_options->FirstChildElement("option");
              e_option != nullptr;
@@ -189,11 +198,22 @@ bool CameraDefinition::parse_xml()
                 return false;
             }
 
+            const char *option_value = e_option->Attribute("value");
+            if (!option_value) {
+                LogErr() << "no option value given";
+                return false;
+            }
+
             auto new_option = std::make_shared<Option>();
 
             new_option->name = option_name;
 
-            new_option->value.set_from_xml(type_str, option_name);
+            new_option->value.set_from_xml(type_str, option_value);
+
+            if (std::strcmp(option_value, default_str) == 0) {
+                new_option->is_default = true;
+                found_default = true;
+            }
 
             // LogDebug() << "Type: " << type_str << ", name: " << option_name;
 
@@ -252,28 +272,59 @@ bool CameraDefinition::parse_xml()
             new_parameter->options.push_back(new_option);
         }
 
-        _settings.insert(std::pair<std::string, std::shared_ptr<Parameter>>(
-                             param_name, new_parameter));
+        if (!found_default) {
+            LogErr() << "Default not found.";
+            return false;
+        }
+
+        _parameter_map.insert(std::pair<std::string, std::shared_ptr<Parameter>>(
+                                  param_name, new_parameter));
     }
 
     return true;
 }
 
-void CameraDefinition::update_setting(const std::string &name,
-                                      const MavlinkParameters::ParamValue &value)
+void CameraDefinition::assume_default_settings()
 {
-    UNUSED(name);
-    UNUSED(value);
-#if 0
-    if (_current_settings.find(name) == _current_settings.end()) {
-        _current_settings.insert(
-            std::pair<std::string, ParameterValue>
-            (name, value));
-    } else {
-        _current_settings[name] = value;
+    _current_settings.clear();
+
+    for (const auto &parameter : _parameter_map) {
+        for (const auto &option : parameter.second->options) {
+
+            if (!option->is_default) {
+                continue;
+            }
+
+            _current_settings.insert(
+                std::pair<std::string, MavlinkParameters::ParamValue>(parameter.first,
+                                                                      option->value));
+        }
     }
-#endif
 }
 
+bool CameraDefinition::set_setting(const std::string &name,
+                                   const MavlinkParameters::ParamValue &value)
+{
+    if (_parameter_map.find(name) != _parameter_map.end()) {
+        LogErr() << "Unknown setting to set";
+        return false;
+    }
+
+    _current_settings.at(name) = value;
+    return true;
+}
+
+bool CameraDefinition::get_setting(const std::string &name,
+                                   MavlinkParameters::ParamValue &value) const
+{
+    if (_current_settings.find(name) != _current_settings.end()) {
+        LogErr() << "Unknown setting to get";
+        return false;
+    }
+
+    value = _current_settings.at(name);
+
+    return true;
+}
 
 } // namespace dronecore
