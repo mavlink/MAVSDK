@@ -21,7 +21,8 @@ class DroneCoreImpl;
 class PluginImplBase;
 
 
-// This represents DroneCore client application which is a GCS.
+// GCS: Ground Control Station
+// Type that represents DroneCore client application which is a GCS.
 struct GCSClient {
     static constexpr uint8_t system_id = 0;
     static constexpr uint8_t component_id = MAV_COMP_ID_SYSTEM_CONTROL;
@@ -102,8 +103,8 @@ public:
     uint8_t get_gimbal_id() const;
 
     bool is_standalone() const;
-    bool is_autopilot() const;
-    bool has_camera(uint8_t camera_id = 1) const;
+    bool has_autopilot() const;
+    bool has_camera(uint8_t camera_id = 0) const;
     bool has_gimbal() const;
 
     uint64_t get_uuid() const;
@@ -151,7 +152,9 @@ public:
 private:
 
     // Helper methods added to increase readablity
-    bool is_autopilot(uint8_t comp_id) const { return comp_id == MAV_COMP_ID_AUTOPILOT1; }
+    static bool is_autopilot(uint8_t comp_id);
+    static bool is_camera(uint8_t comp_id);
+
     bool have_uuid() const { return _uuid != 0 && _uuid_initialized; }
 
     void process_heartbeat(const mavlink_message_t &message);

@@ -334,20 +334,42 @@ size_t MAVLinkSystem::total_components() const
 
 bool MAVLinkSystem::is_standalone() const
 {
-    return !is_autopilot();
+    return !has_autopilot();
 }
 
-bool MAVLinkSystem::is_autopilot() const
+bool MAVLinkSystem::has_autopilot() const
 {
     return get_autopilot_id() != uint8_t(0);
 }
 
+bool MAVLinkSystem::is_autopilot(uint8_t comp_id)
+{
+    return comp_id == MAV_COMP_ID_AUTOPILOT1;
+}
+
+bool MAVLinkSystem::is_camera(uint8_t comp_id)
+{
+    return (comp_id >= MAV_COMP_ID_CAMERA)
+           && (comp_id <= MAV_COMP_ID_CAMERA6);
+}
+
 bool MAVLinkSystem::has_camera(uint8_t camera_id) const
 {
-    uint8_t camera_comp_id = MAV_COMP_ID_CAMERA + (camera_id - 1);
+    uint8_t camera_comp_id = (camera_id == 0) ?
+                             camera_id : (MAV_COMP_ID_CAMERA + (camera_id - 1));
 
-    for (auto compid : _components) {
-        return compid == camera_comp_id;
+    if (camera_comp_id == 0) { // Check whether the system has any camera.
+        for (auto compid : _components) {
+            if (is_camera(compid)) {
+                return true;
+            }
+        }
+    } else { // Look for the camera whose id is `camera_id`.
+        for (auto compid : _components) {
+            if (compid == camera_comp_id) {
+                return true;
+            }
+        }
     }
     return false;
 }
@@ -687,8 +709,7 @@ uint8_t MAVLinkSystem::get_autopilot_id() const
 
 std::vector<uint8_t> MAVLinkSystem::get_camera_ids() const
 {
-    std::vector<uint8_t> camera_ids;
-    camera_ids.clear();
+    std::vector<uint8_t> camera_ids {};
 
     for (auto compid : _components)
         if (compid >= MAV_COMP_ID_CAMERA && compid <= MAV_COMP_ID_CAMERA6) {

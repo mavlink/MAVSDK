@@ -42,23 +42,16 @@ TEST_F(SitlTest, MultiComponentDiscovery)
         std::cout << "We found a System with UUID: " << uuid << '\n';
         System &system = dc.system(uuid);
 
-        auto is_autopilot = system.is_autopilot();
-
+        auto has_autopilot = system.has_autopilot();
         auto is_standalone = system.is_standalone();
-
-        auto has_camera = system.has_camera(); // by default checks for camera 1
-        if (has_camera) {
-            has_camera = system.has_camera(1); // pass camera ID explcitly
-            EXPECT_EQ(has_camera, true);
-        }
-
+        auto has_camera = system.has_camera(); // Checks whether the system has any camera
         auto has_gimbal = system.has_gimbal();
 
-        if (is_autopilot && has_camera && !has_gimbal) {
+        if (has_autopilot && has_camera && !has_gimbal) {
             std::cout << "Its an Autopilot with a Camera." << '\n';
         } else if (is_standalone && has_camera) {
             std::cout << "Its a Standalone camera." << '\n';
-        } else if (is_autopilot && !has_camera) {
+        } else if (has_autopilot && !has_camera) {
             std::cout << "Its an Autopilot alone." << '\n';
         }
     }

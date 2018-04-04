@@ -20,7 +20,8 @@ System::System(DroneCoreImpl &parent,
                uint8_t component_id)
 {
     _mavlink_system = std::make_shared<MAVLinkSystem>(parent,
-                                                      system_id, component_id);
+                                                      system_id,
+                                                      component_id);
 }
 
 System::~System()
@@ -32,9 +33,9 @@ bool System::is_standalone() const
     return _mavlink_system->is_standalone();
 }
 
-bool System::is_autopilot() const
+bool System::has_autopilot() const
 {
-    return _mavlink_system->is_autopilot();
+    return _mavlink_system->has_autopilot();
 }
 
 bool System::has_camera(uint8_t camera_id) const

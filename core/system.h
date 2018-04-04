@@ -21,10 +21,10 @@ public:
     ~System();
 
     /**
-     * @brief Checks whether the system is an autopilot.
+     * @brief Checks whether the system has an autopilot.
      * @return true if its an autopilot, false otherwise.
      */
-    bool is_autopilot() const;
+    bool has_autopilot() const;
 
     /**
      * @brief Checks whether the system is a standalone (Non-autopilot).
@@ -33,23 +33,22 @@ public:
     bool is_standalone() const;
 
     /**
-     * @brief Checks whether the system has camera with the given camera ID.
+     * @brief Checks whether the system has a camera with the given camera ID.
      *
      * A System may have several cameras with ID starting from 1.
-     * When called without passing camera ID, it checks for the camera ID 1.
+     * When called without passing camera ID, it checks whether the system has
+     * any camera.
      * @param camera_id ID of the camera starting from 1 onwards.
      * @return true if camera with the given camera ID is found, false otherwise.
      */
-    bool has_camera(uint8_t camera_id = 1) const;
+    bool has_camera(uint8_t camera_id = 0) const;
 
     /**
-     * @brief Checks whether the system has gimbal.
+     * @brief Checks whether the system has a gimbal.
      * @return true if the system has gimbal, false otherwise.
      */
     bool has_gimbal() const;
 
-    friend class DroneCoreImpl;
-    friend class PluginImplBase;
 
     // Non-copyable
     System(const System &) = delete;
@@ -65,6 +64,14 @@ private:
     uint8_t get_system_id() const;
 
     std::shared_ptr<MAVLinkSystem> mavlink_system() { return _mavlink_system; };
+
+    /* TODO: Optimize this later.
+     * For now,
+     * - DroneCoreImpl wants to access private methods of System.
+     * - PluginImplBase requests System class to get instance of MAVLinkSystem class.
+    */
+    friend DroneCoreImpl;
+    friend PluginImplBase;
 
     std::shared_ptr<MAVLinkSystem> _mavlink_system;
 };
