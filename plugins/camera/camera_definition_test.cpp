@@ -33,7 +33,7 @@ TEST(CameraDefinition, E90LoadInfoString)
     EXPECT_STREQ(cd.get_model().c_str(), "E90");
 }
 
-TEST(CameraDefinition, E90ShowDefaultSettings)
+TEST(CameraDefinition, E90CheckDefaultSettings)
 {
     // Run this from root.
     CameraDefinition cd;
@@ -43,24 +43,94 @@ TEST(CameraDefinition, E90ShowDefaultSettings)
 
     std::map<std::string, MAVLinkParameters::ParamValue> settings {};
     EXPECT_TRUE(cd.get_all_settings(settings));
-#if 0
-    std::map<std::string, std::string> parameters {};
-    ASSERT_TRUE(cd.get_current_parameters(parameters));
 
-    //auto before = steady_time();
-    for (auto &parameter : parameters) {
-        LogDebug() << parameter.first << " => " << parameter.second->description;
-        for (auto &option : parameter.second->options) {
-            LogDebug() << option->name << ": "
-                       << ((option->value.type == CameraDefinition::ParameterValue::Type::FLOAT) ?
-                           option->value.value.as_float : option->value.value.as_uint32);
-        }
+    EXPECT_EQ(settings["CAM_MODE"].get_uint32(), 1);
+    EXPECT_EQ(settings["CAM_WBMODE"].get_uint32(), 0);
+    EXPECT_EQ(settings["CAM_EXPMODE"].get_uint32(), 0);
+    EXPECT_FLOAT_EQ(settings["CAM_SHUTTERSPD"].get_float(), 0.016666f);
+    EXPECT_EQ(settings["CAM_ISO"].get_uint32(), 100);
+    EXPECT_FLOAT_EQ(settings["CAM_EV"].get_float(), 0.0f);
+    EXPECT_EQ(settings["CAM_VIDRES"].get_uint32(), 0);
+    EXPECT_EQ(settings["CAM_VIDFMT"].get_uint32(), 1);
+    EXPECT_EQ(settings["CAM_PHOTORATIO"].get_uint8(), 1);
+    EXPECT_EQ(settings["CAM_METERING"].get_uint32(), 0);
+    EXPECT_EQ(settings["CAM_COLORMODE"].get_uint32(), 1);
+    EXPECT_EQ(settings["CAM_FLICKER"].get_uint32(), 0);
+    EXPECT_EQ(settings["CAM_PHOTOFMT"].get_uint32(), 0);
+    EXPECT_EQ(settings["CAM_PHOTOQUAL"].get_uint32(), 1);
+    EXPECT_EQ(settings["CAM_COLORENCODE"].get_uint32(), 0);
+}
+
+TEST(CameraDefinition, E90ChangeSettings)
+{
+    // Run this from root.
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
+
+    cd.assume_default_settings();
+
+    {
+        // Check default
+        MAVLinkParameters::ParamValue value;
+        EXPECT_TRUE(cd.get_setting("CAM_WBMODE", value));
+        EXPECT_EQ(value.get_uint32(), 0);
     }
 
-    EXPECT_EQ(parameters.size(), 12);
-    EXPECT_EQ(parameters["CAM_WBMODE"]->options.size(), 7);
-#endif
-    //LogDebug() << "Elapsed: " << elapsed_since_s(before) << " s";
+    {
+        // Set WBMODE to 1
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(1);
+        EXPECT_TRUE(cd.set_setting("CAM_WBMODE", value));
+    }
+
+    {
+        // Check if WBMODE was correctly set
+        MAVLinkParameters::ParamValue value;
+        EXPECT_TRUE(cd.get_setting("CAM_WBMODE", value));
+        EXPECT_EQ(value.get_uint32(), 1);
+    }
+
+    {
+        // Interleave COLORMODE, first check default
+        MAVLinkParameters::ParamValue value;
+        EXPECT_TRUE(cd.get_setting("CAM_COLORMODE", value));
+        EXPECT_EQ(value.get_uint32(), 1);
+    }
+
+    {
+        // Then set COLORMODE to 5
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(5);
+        EXPECT_TRUE(cd.set_setting("CAM_COLORMODE", value));
+    }
+
+    {
+        // COLORMODE should now be 5
+        MAVLinkParameters::ParamValue value;
+        EXPECT_TRUE(cd.get_setting("CAM_COLORMODE", value));
+        EXPECT_EQ(value.get_uint32(), 5);
+    }
+
+    {
+        // WBMODE should still be 1
+        MAVLinkParameters::ParamValue value;
+        EXPECT_TRUE(cd.get_setting("CAM_WBMODE", value));
+        EXPECT_EQ(value.get_uint32(), 1);
+    }
+
+    {
+        // Change WBMODE to 7
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(7);
+        EXPECT_TRUE(cd.set_setting("CAM_WBMODE", value));
+    }
+
+    {
+        // And check WBMODE again
+        MAVLinkParameters::ParamValue value;
+        EXPECT_TRUE(cd.get_setting("CAM_WBMODE", value));
+        EXPECT_EQ(value.get_uint32(), 7);
+    }
 }
 
 

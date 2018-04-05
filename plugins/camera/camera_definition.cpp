@@ -44,19 +44,9 @@ bool CameraDefinition::get_all_settings(std::map<std::string, MAVLinkParameters:
                                         &settings) const
 {
     settings.clear();
+    settings = _current_settings;
 
-    bool added_parameters = false;
-
-    for (const auto &parameter : _parameter_map) {
-        for (const auto &option : parameter.second->options) {
-            settings.insert(
-                std::pair<std::string, MAVLinkParameters::ParamValue>(
-                    parameter.first, option->value));
-            added_parameters = true;
-        }
-    }
-
-    return added_parameters;
+    return (_current_settings.size() > 0);
 }
 
 bool CameraDefinition::parse_xml()
@@ -292,8 +282,10 @@ void CameraDefinition::assume_default_settings()
         for (const auto &option : parameter.second->options) {
 
             if (!option->is_default) {
+                // LogDebug() << option->name << " not default";
                 continue;
             }
+            // LogDebug() << option->name << " default value: " << option->value;
 
             _current_settings.insert(
                 std::pair<std::string, MAVLinkParameters::ParamValue>(parameter.first,
@@ -305,7 +297,7 @@ void CameraDefinition::assume_default_settings()
 bool CameraDefinition::set_setting(const std::string &name,
                                    const MAVLinkParameters::ParamValue &value)
 {
-    if (_parameter_map.find(name) != _parameter_map.end()) {
+    if (_parameter_map.find(name) == _parameter_map.end()) {
         LogErr() << "Unknown setting to set";
         return false;
     }
@@ -317,7 +309,7 @@ bool CameraDefinition::set_setting(const std::string &name,
 bool CameraDefinition::get_setting(const std::string &name,
                                    MAVLinkParameters::ParamValue &value) const
 {
-    if (_current_settings.find(name) != _current_settings.end()) {
+    if (_current_settings.find(name) == _current_settings.end()) {
         LogErr() << "Unknown setting to get";
         return false;
     }

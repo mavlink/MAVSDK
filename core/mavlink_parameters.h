@@ -244,6 +244,36 @@ public:
             }
         }
 
+        std::string get_string() const
+        {
+            if (_value.is<uint8_t>()) {
+                return std::to_string(_value.as<uint8_t>());
+            } else if (_value.is<int8_t>()) {
+                return std::to_string(_value.as<int8_t>());
+            } else if (_value.is<uint16_t>()) {
+                return std::to_string(_value.as<uint16_t>());
+            } else if (_value.is<int16_t>()) {
+                return std::to_string(_value.as<int16_t>());
+            } else if (_value.is<uint32_t>()) {
+                return std::to_string(_value.as<uint32_t>());
+            } else if (_value.is<int32_t>()) {
+                return std::to_string(_value.as<int32_t>());
+            } else if (_value.is<uint64_t>()) {
+                return std::to_string(_value.as<uint64_t>());
+            } else if (_value.is<int64_t>()) {
+                return std::to_string(_value.as<int64_t>());
+            } else if (_value.is<float>()) {
+                return std::to_string(_value.as<float>());
+            } else if (_value.is<double>()) {
+                return std::to_string(_value.as<double>());
+            } else if (_value.is<custom_type_t>()) {
+                return std::string("(custom type)");
+            } else {
+                LogErr() << "Unknown data type for param.";
+                assert(false);
+                return std::string("(unknown)");
+            }
+        }
         float get_float() const
         {
             return float(_value);
@@ -254,9 +284,24 @@ public:
             return double(_value);
         }
 
-        int32_t get_int() const
+        int8_t get_int8() const
+        {
+            return int8_t(_value);
+        }
+
+        uint8_t get_uint8() const
+        {
+            return uint8_t(_value);
+        }
+
+        int32_t get_int32() const
         {
             return int32_t(_value);
+        }
+
+        uint32_t get_uint32() const
+        {
+            return uint32_t(_value);
         }
 
         void set_float(float value)
@@ -269,7 +314,42 @@ public:
             _value = value;
         }
 
-        void set_int(int32_t value)
+        void set_int8(int8_t value)
+        {
+            _value = value;
+        }
+
+        void set_uint8(uint8_t value)
+        {
+            _value = value;
+        }
+
+        void set_int16(int16_t value)
+        {
+            _value = value;
+        }
+
+        void set_uint16(uint16_t value)
+        {
+            _value = value;
+        }
+
+        void set_int32(int32_t value)
+        {
+            _value = value;
+        }
+
+        void set_uint32(uint32_t value)
+        {
+            _value = value;
+        }
+
+        void set_int64(int64_t value)
+        {
+            _value = value;
+        }
+
+        void set_uint64(uint64_t value)
         {
             _value = value;
         }
@@ -302,6 +382,8 @@ public:
 
     //void save_async();
     void do_work();
+
+    friend std::ostream &operator<<(std::ostream &, const ParamValue &);
 
     // Non-copyable
     MAVLinkParameters(const MAVLinkParameters &) = delete;

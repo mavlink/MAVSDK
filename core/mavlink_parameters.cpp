@@ -420,4 +420,10 @@ void MAVLinkParameters::receive_timeout()
     }
 }
 
+std::ostream &operator<<(std::ostream &strm, const MAVLinkParameters::ParamValue &obj)
+{
+    strm << obj.get_string();
+    return strm;
+}
+
 } // namespace dronecore
