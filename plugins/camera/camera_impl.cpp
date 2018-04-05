@@ -741,6 +741,7 @@ void CameraImpl::set_option_key_async(const std::string &setting_key,
         LogWarn() << "Error: no camera defnition available yet.";
         if (callback) {
             callback(Camera::Result::ERROR);
+            return;
         }
     }
 
