@@ -954,6 +954,9 @@ MissionImpl::import_qgroundcontrol_mission(Mission::mission_items_t &mission_ite
         return Mission::Result::FAILED_TO_PARSE_QGC_PLAN;
     }
 
+    // Clear old mission items
+    mission_items.clear();
+
     // Import mission items
     return import_mission_items(mission_items, parsed_plan);
 }
