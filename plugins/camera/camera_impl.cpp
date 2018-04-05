@@ -69,6 +69,8 @@ void CameraImpl::disable() {}
 
 Camera::Result CameraImpl::take_photo()
 {
+    // TODO: check whether we are in photo mode.
+
     std::lock_guard<std::mutex> lock(_capture.mutex);
 
     return camera_result_from_command_result(
@@ -87,6 +89,8 @@ Camera::Result CameraImpl::start_photo_interval(float interval_s)
     if (!interval_valid(interval_s)) {
         return Camera::Result::WRONG_ARGUMENT;
     }
+
+    // TODO: check whether we are in photo mode.
 
     std::lock_guard<std::mutex> lock(_capture.mutex);
 
@@ -113,6 +117,9 @@ Camera::Result CameraImpl::stop_photo_interval()
 
 Camera::Result CameraImpl::start_video()
 {
+    // TODO: check whether video capture is already in progress.
+    // TODO: check whether we are in video mode.
+
     return camera_result_from_command_result(
                _parent.send_command_with_ack(
                    MAV_CMD_VIDEO_START_CAPTURE,
@@ -135,6 +142,8 @@ Camera::Result CameraImpl::stop_video()
 
 void CameraImpl::take_photo_async(const Camera::result_callback_t &callback)
 {
+    // TODO: check whether we are in photo mode.
+
     std::lock_guard<std::mutex> lock(_capture.mutex);
 
     _parent.send_command_with_ack_async(
@@ -158,6 +167,8 @@ void CameraImpl::start_photo_interval_async(float interval_s,
         }
         return;
     }
+
+    // TODO: check whether we are in photo mode.
 
     std::lock_guard<std::mutex> lock(_capture.mutex);
 
@@ -184,6 +195,9 @@ void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t &call
 
 void CameraImpl::start_video_async(const Camera::result_callback_t &callback)
 {
+    // TODO: check whether video capture is already in progress.
+    // TODO: check whether we are in video mode.
+
     _parent.send_command_with_ack_async(
         MAV_CMD_VIDEO_START_CAPTURE,
         MavlinkCommands::Params {0.0f, // Reserved, set to 0
