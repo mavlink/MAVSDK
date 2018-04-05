@@ -1,16 +1,17 @@
 #pragma once
 
-#include "device.h"
+#include "system.h"
 #include "camera.h"
 #include "plugin_impl_base.h"
 #include "camera_definition.h"
+#include "mavlink_system.h"
 
 namespace dronecore {
 
 class CameraImpl : public PluginImplBase
 {
 public:
-    CameraImpl(Device &device);
+    CameraImpl(System &system);
     ~CameraImpl();
 
     void init() override;
@@ -82,18 +83,18 @@ private:
         Camera::capture_info_callback_t callback {nullptr};
     } _capture_info;
 
-    void receive_set_mode_command_result(MavlinkCommands::Result command_result,
+    void receive_set_mode_command_result(MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
                                          Camera::Mode mode);
 
     void get_mode_timeout_happened();
 
-    void receive_get_mode_command_result(MavlinkCommands::Result command_result);
+    void receive_get_mode_command_result(MAVLinkCommands::Result command_result);
 
     static Camera::Result camera_result_from_command_result(
-        MavlinkCommands::Result command_result);
+        MAVLinkCommands::Result command_result);
 
-    static void receive_command_result(MavlinkCommands::Result command_result,
+    static void receive_command_result(MAVLinkCommands::Result command_result,
                                        const Camera::result_callback_t &callback);
 
     static bool interval_valid(float interval_s);
@@ -104,8 +105,8 @@ private:
     void process_camera_settings(const mavlink_message_t &message);
     void process_camera_information(const mavlink_message_t &message);
 
-    void receive_storage_information_result(MavlinkCommands::Result result);
-    void receive_camera_capture_status_result(MavlinkCommands::Result result);
+    void receive_storage_information_result(MAVLinkCommands::Result result);
+    void receive_camera_capture_status_result(MAVLinkCommands::Result result);
 
     void check_status();
 
@@ -115,7 +116,7 @@ private:
     void receive_int_param(const std::string &name, bool success, int value);
     void receive_float_param(const std::string &name, bool success, float value);
 
-    CameraDefinition *_camera_definition = nullptr;
+    std::unique_ptr<CameraDefinition> _camera_definition {};
 };
 
 

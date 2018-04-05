@@ -3,9 +3,9 @@
 
 namespace dronecore {
 
-Camera::Camera(Device &device) :
+Camera::Camera(System &system) :
     PluginBase(),
-    _impl { new CameraImpl(device) }
+    _impl { new CameraImpl(system) }
 {
 }
 

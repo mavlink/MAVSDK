@@ -41,7 +41,7 @@ TEST(CameraDefinition, E90ShowDefaultSettings)
 
     cd.assume_default_settings();
 
-    std::map<std::string, MavlinkParameters::ParamValue> settings {};
+    std::map<std::string, MAVLinkParameters::ParamValue> settings {};
     EXPECT_TRUE(cd.get_all_settings(settings));
 #if 0
     std::map<std::string, std::string> parameters {};

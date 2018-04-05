@@ -10,7 +10,7 @@
 namespace dronecore {
 
 class CameraImpl;
-class Device;
+class System;
 
 /**
  * @brief The Camera class can be used to manage cameras that implement the
@@ -25,17 +25,17 @@ class Camera : public PluginBase
 {
 public:
     /**
-     * @brief Constructor. Creates the plugin for a specific Device.
+     * @brief Constructor. Creates the plugin for a specific System.
      *
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto camera = std::make_shared<Camera>(device);
+     *     auto camera = std::make_shared<Camera>(system);
      *     ```
      *
-     * @param device The specific device associated with this plugin.
+     * @param system The specific system associated with this plugin.
      */
-    explicit Camera(Device &device);
+    explicit Camera(System &system);
 
     /**
      * @brief Destructor (internal use only).

@@ -40,7 +40,7 @@ std::string CameraDefinition::get_vendor() const
     return _vendor;
 }
 
-bool CameraDefinition::get_all_settings(std::map<std::string, MavlinkParameters::ParamValue>
+bool CameraDefinition::get_all_settings(std::map<std::string, MAVLinkParameters::ParamValue>
                                         &settings) const
 {
     settings.clear();
@@ -50,7 +50,7 @@ bool CameraDefinition::get_all_settings(std::map<std::string, MavlinkParameters:
     for (const auto &parameter : _parameter_map) {
         for (const auto &option : parameter.second->options) {
             settings.insert(
-                std::pair<std::string, MavlinkParameters::ParamValue>(
+                std::pair<std::string, MAVLinkParameters::ParamValue>(
                     parameter.first, option->value));
             added_parameters = true;
         }
@@ -253,10 +253,10 @@ bool CameraDefinition::parse_xml()
                             return false;
                         }
 
-                        MavlinkParameters::ParamValue new_param_value;
+                        MAVLinkParameters::ParamValue new_param_value;
                         new_param_value.set_from_xml(type_str, roption_value_str);
                         roption_t new_roption;
-                        new_roption.insert(std::pair<std::string, MavlinkParameters::ParamValue>(
+                        new_roption.insert(std::pair<std::string, MAVLinkParameters::ParamValue>(
                                                roption_name_str, new_param_value));
 
                         // LogDebug() << "range option: "
@@ -296,14 +296,14 @@ void CameraDefinition::assume_default_settings()
             }
 
             _current_settings.insert(
-                std::pair<std::string, MavlinkParameters::ParamValue>(parameter.first,
+                std::pair<std::string, MAVLinkParameters::ParamValue>(parameter.first,
                                                                       option->value));
         }
     }
 }
 
 bool CameraDefinition::set_setting(const std::string &name,
-                                   const MavlinkParameters::ParamValue &value)
+                                   const MAVLinkParameters::ParamValue &value)
 {
     if (_parameter_map.find(name) != _parameter_map.end()) {
         LogErr() << "Unknown setting to set";
@@ -315,7 +315,7 @@ bool CameraDefinition::set_setting(const std::string &name,
 }
 
 bool CameraDefinition::get_setting(const std::string &name,
-                                   MavlinkParameters::ParamValue &value) const
+                                   MAVLinkParameters::ParamValue &value) const
 {
     if (_current_settings.find(name) != _current_settings.end()) {
         LogErr() << "Unknown setting to get";

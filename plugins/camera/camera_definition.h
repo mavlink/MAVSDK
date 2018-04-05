@@ -25,25 +25,25 @@ public:
 
     struct Setting {
         std::string name;
-        MavlinkParameters::ParamValue value;
+        MAVLinkParameters::ParamValue value;
     };
 
-    bool set_setting(const std::string &name, const MavlinkParameters::ParamValue &value);
-    bool get_setting(const std::string &name, MavlinkParameters::ParamValue &value) const;
+    bool set_setting(const std::string &name, const MAVLinkParameters::ParamValue &value);
+    bool get_setting(const std::string &name, MAVLinkParameters::ParamValue &value) const;
 
-    bool get_all_settings(std::map<std::string, MavlinkParameters::ParamValue> &settings) const;
+    bool get_all_settings(std::map<std::string, MAVLinkParameters::ParamValue> &settings) const;
 
     // Non-copyable
     CameraDefinition(const CameraDefinition &) = delete;
     const CameraDefinition &operator=(const CameraDefinition &) = delete;
 
 private:
-    typedef std::map<std::string, MavlinkParameters::ParamValue> roption_t;
+    typedef std::map<std::string, MAVLinkParameters::ParamValue> roption_t;
     typedef std::map<std::string, roption_t> parameter_range_t;
 
     struct Option {
         std::string name;
-        MavlinkParameters::ParamValue value;
+        MAVLinkParameters::ParamValue value;
         std::vector<std::string> exclusions;
         std::vector<parameter_range_t> parameter_ranges;
         bool is_default;
@@ -63,7 +63,7 @@ private:
 
     std::map<std::string, std::shared_ptr<Parameter>> _parameter_map;
 
-    std::map<std::string, MavlinkParameters::ParamValue> _current_settings;
+    std::map<std::string, MAVLinkParameters::ParamValue> _current_settings;
 
     std::string _model;
     std::string _vendor;

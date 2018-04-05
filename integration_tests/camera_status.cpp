@@ -22,11 +22,11 @@ TEST(CameraTest, Status)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
-    // Wait for device to connect via heartbeat.
+    // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    Device &device = dc.device();
-    auto camera = std::make_shared<Camera>(device);
+    System &system = dc.system();
+    auto camera = std::make_shared<Camera>(system);
 
     camera->get_status_async(std::bind(&receive_camera_status, _1, _2));
     std::this_thread::sleep_for(std::chrono::seconds(5));
