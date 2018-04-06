@@ -1,8 +1,11 @@
+#pragma once
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-__attribute__((visibility("default"))) int runBackend(int mavlink_listen_port);
+__attribute__((visibility("default"))) void runBackend(int mavlink_listen_port,
+                                                       void (*onServerStarted)(void *), void *context);
 
 #ifdef __cplusplus
 }

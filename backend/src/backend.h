@@ -1,3 +1,5 @@
+#pragma once
+
 #include <memory>
 
 namespace dronecore {
@@ -11,7 +13,9 @@ public:
     DroneCoreBackend(DroneCoreBackend &&) = delete;
     DroneCoreBackend &operator=(DroneCoreBackend &&) = delete;
 
-    bool run(const int mavlink_listen_port = 14540);
+    void startGRPCServer();
+    void connect(const int mavlink_listen_port = 14540);
+    void wait();
 
 private:
     class Impl;

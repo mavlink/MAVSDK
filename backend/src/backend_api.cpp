@@ -2,14 +2,15 @@
 
 #include "backend.h"
 
-int runBackend(const int mavlink_listen_port)
+void runBackend(const int mavlink_listen_port, void (*onServerStarted)(void *), void *context)
 {
     dronecore::backend::DroneCoreBackend backend;
-    bool had_error = backend.run(mavlink_listen_port);
+    backend.connect(mavlink_listen_port);
+    backend.startGRPCServer();
 
-    if (had_error) {
-        return 1;
-    } else {
-        return 0;
+    if (onServerStarted != nullptr) {
+        onServerStarted(context);
     }
+
+    backend.wait();
 }
