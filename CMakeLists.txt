@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 11)
 
 list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR}/third_party)
 
+cmake_policy(SET CMP0025 NEW)
+
 project(dronecore)
 
 option(BUILD_TESTS "Build tests" ON)

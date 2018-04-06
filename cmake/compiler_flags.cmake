@@ -24,8 +24,10 @@ else()
         endif()
 
         set(warnings "${warnings} -Wlogical-op")
-    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         set(warnings "${warnings} -Wno-missing-braces")
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+        set(warnings "${warnings} -Wno-missing-braces -Wno-unused-parameter")
     endif()
 endif()
 
