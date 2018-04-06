@@ -319,4 +319,39 @@ bool CameraDefinition::get_setting(const std::string &name,
     return true;
 }
 
+
+bool CameraDefinition::get_all_options(const std::string &name,
+                                       std::vector<MAVLinkParameters::ParamValue> &values)
+{
+    values.clear();
+
+    if (_parameter_map.find(name) == _parameter_map.end()) {
+        LogErr() << "Unknown parameter to get all options";
+        return false;
+    }
+
+    for (const auto &option : _parameter_map[name]->options) {
+        values.push_back(option->value);
+    }
+
+    return true;
+}
+
+bool CameraDefinition::get_possible_options(const std::string &name,
+                                            std::vector<MAVLinkParameters::ParamValue> &values)
+{
+    values.clear();
+
+    if (_parameter_map.find(name) == _parameter_map.end()) {
+        LogErr() << "Unknown parameter to get possible options";
+        return false;
+    }
+
+    for (const auto &option : _parameter_map[name]->options) {
+        values.push_back(option->value);
+    }
+
+    return true;
+}
+
 } // namespace dronecore

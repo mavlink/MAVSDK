@@ -44,6 +44,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     std::map<std::string, MAVLinkParameters::ParamValue> settings {};
     EXPECT_TRUE(cd.get_all_settings(settings));
 
+    EXPECT_EQ(settings.size(), 16);
     EXPECT_EQ(settings["CAM_MODE"].get_uint32(), 1);
     EXPECT_EQ(settings["CAM_WBMODE"].get_uint32(), 0);
     EXPECT_EQ(settings["CAM_EXPMODE"].get_uint32(), 0);
@@ -58,7 +59,11 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     EXPECT_EQ(settings["CAM_FLICKER"].get_uint32(), 0);
     EXPECT_EQ(settings["CAM_PHOTOFMT"].get_uint32(), 0);
     EXPECT_EQ(settings["CAM_PHOTOQUAL"].get_uint32(), 1);
+    EXPECT_EQ(settings["CAM_IMAGEDEWARP"].get_uint8(), 0);
     EXPECT_EQ(settings["CAM_COLORENCODE"].get_uint32(), 0);
+
+
+    // TODO: Check possible settings
 }
 
 TEST(CameraDefinition, E90ChangeSettings)
@@ -133,6 +138,28 @@ TEST(CameraDefinition, E90ChangeSettings)
     }
 }
 
+TEST(CameraDefinition, E90ShowOptions)
+{
+    // Run this from root.
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
+
+    cd.assume_default_settings();
+
+    {
+        std::vector<MAVLinkParameters::ParamValue> values;
+        EXPECT_TRUE(cd.get_all_options("CAM_WBMODE", values));
+        EXPECT_EQ(values.size(), 8);
+    }
+
+    {
+        std::vector<MAVLinkParameters::ParamValue> values;
+        EXPECT_TRUE(cd.get_possible_options("CAM_WBMODE", values));
+        EXPECT_EQ(values.size(), 8);
+    }
+
+    // TODO: check parameterranges
+}
 
 #if 0
 TEST(CameraDefinition, LoadE90Exclude)

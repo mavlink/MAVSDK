@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <mavlinkcamera>
-    <definition version="13">
+    <definition version="15">
         <model>E90</model>
         <vendor>Yuneec</vendor>
     </definition>
@@ -15,7 +15,6 @@
                 <update>CAM_VIDRES</update>
                 <update>CAM_ASPECTRATIO</update>
                 <update>CAM_PHOTORATIO</update>
-                <update>CAM_CUSTOMWB</update>
             </updates>
             <options>
                 <option name="Photo" value="0">
@@ -23,7 +22,6 @@
                     <exclusions>
                         <exclude>CAM_VIDRES</exclude>
                         <exclude>CAM_VIDFMT</exclude>
-                        <exclude>CAM_COLORENCODE</exclude>
                     </exclusions>
                 </option>
                 <option name="Video" value="1">
@@ -52,54 +50,18 @@
         </parameter>
         <parameter name="CAM_WBMODE" type="uint32" default="0">
             <description>White Balance Mode</description>
-            <updates>
-                <update>CAM_CUSTOMWB</update>
-            </updates>
             <options>
-                <option name="Auto" value="0">
-                    <exclusions>
-                        <exclude>CAM_CUSTOMWB</exclude>
-                    </exclusions>
-                </option>
-                <option name="Incandescent" value="1">
-                    <exclusions>
-                        <exclude>CAM_CUSTOMWB</exclude>
-                    </exclusions>
-                </option>
-                <option name="Sunrise" value="2">
-                    <exclusions>
-                        <exclude>CAM_CUSTOMWB</exclude>
-                    </exclusions>
-                </option>
-                <option name="Sunset" value="3">
-                    <exclusions>
-                        <exclude>CAM_CUSTOMWB</exclude>
-                    </exclusions>
-                </option>
-                <option name="Sunny" value="4">
-                    <exclusions>
-                        <exclude>CAM_CUSTOMWB</exclude>
-                    </exclusions>
-                </option>
-                <option name="Cloudy" value="5">
-                    <exclusions>
-                        <exclude>CAM_CUSTOMWB</exclude>
-                    </exclusions>
-                </option>
-                <option name="Fluorescent" value="7">
-                    <exclusions>
-                        <exclude>CAM_CUSTOMWB</exclude>
-                    </exclusions>
-                </option>
-                <option name="Lock" value="99">
-                    <exclusions>
-                        <exclude>CAM_CUSTOMWB</exclude>
-                    </exclusions>
-                </option>
-                <option name="Custom" value="100" />
+                <option name="Auto" value="0" />
+                <option name="Incandescent" value="1" />
+                <option name="Sunrise" value="2" />
+                <option name="Sunset" value="3" />
+                <option name="Sunny" value="4" />
+                <option name="Cloudy" value="5" />
+                <option name="Fluorescent" value="7" />
+                <option name="Lock" value="99" />
             </options>
         </parameter>
-        <parameter name="CAM_CUSTOMWB" type="uint16" min="3000" max="8000" default="5500">
+        <parameter name="CAM_CUSTOMWB" type="uint16" min="3000" max="8000" default="5500" control="0">
             <description>Custom White Balance (K)</description>
         </parameter>
         <parameter name="CAM_EXPMODE" type="uint32" default="0">
@@ -118,7 +80,6 @@
                 <option name="Manual" value="1">
                     <exclusions>
                         <exclude>CAM_EV</exclude>
-                        <exclude>CAM_FLICKER</exclude>
                         <exclude>CAM_METERING</exclude>
                     </exclusions>
                 </option>
@@ -909,7 +870,10 @@
                 <option name="Unprocessed" value="2" />
             </options>
         </parameter>
-        <parameter name="CAM_FLICKER" type="uint32" default="0">
+        <!--
+            DataPilot does not use this
+        -->
+        <parameter name="CAM_FLICKER" type="uint32" default="0" control="0">
             <description>Flickering Mode</description>
             <options>
                 <option name="Auto" value="0" />
@@ -933,7 +897,17 @@
                 <option name="Ultra" value="3" />
             </options>
         </parameter>
-        <parameter name="CAM_COLORENCODE" type="uint32" default="0">
+        <parameter name="CAM_IMAGEDEWARP" type="uint8" default="0">
+            <description>Distortion Correction</description>
+            <options>
+                <option name="Off" value="0" />
+                <option name="On"  value="1" />
+            </options>
+        </parameter>
+        <!--
+            DataPilot does not use this
+        -->
+        <parameter name="CAM_COLORENCODE" type="uint32" default="0" control="0">
             <description>Color Encoding System</description>
             <options>
                 <option name="NTSC" value="0" />
