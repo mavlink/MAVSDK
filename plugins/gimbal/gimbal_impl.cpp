@@ -63,9 +63,9 @@ Gimbal::Result GimbalImpl::set_roi_location(double latitude_deg, double longitud
     MAVLinkCommands::CommandInt cmd {};
 
     cmd.command = MAV_CMD_DO_SET_ROI_LOCATION;
-    cmd.params.lat_deg = int32_t(latitude_deg * 1e7);
-    cmd.params.lon_deg = int32_t(longitude_deg * 1e7);
-    cmd.params.alt_m = altitude_m;
+    cmd.params.x = int32_t(latitude_deg * 1e7);
+    cmd.params.y = int32_t(longitude_deg * 1e7);
+    cmd.params.z = altitude_m;
     cmd.target_component_id = _parent->get_autopilot_id();
 
     return gimbal_result_from_command_result(_parent->send_command(cmd));
@@ -77,9 +77,9 @@ void GimbalImpl::set_roi_location_async(double latitude_deg, double longitude_de
     MAVLinkCommands::CommandInt cmd {};
 
     cmd.command = MAV_CMD_DO_SET_ROI_LOCATION;
-    cmd.params.lat_deg = int32_t(latitude_deg * 1e7);
-    cmd.params.lon_deg = int32_t(longitude_deg * 1e7);
-    cmd.params.alt_m = altitude_m;
+    cmd.params.x = int32_t(latitude_deg * 1e7);
+    cmd.params.y = int32_t(longitude_deg * 1e7);
+    cmd.params.z = altitude_m;
     cmd.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(cmd, std::bind(&GimbalImpl::receive_command_result,

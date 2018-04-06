@@ -43,19 +43,20 @@ public:
             float param2 = NAN;
             float param3 = NAN;
             float param4 = NAN;
-            int32_t lat_deg = 0;
-            int32_t lon_deg = 0;
-            float alt_m = NAN;
+            int32_t x = 0;
+            int32_t y = 0;
+            float z = NAN;
         } params;
+
         static void set_as_reserved(Params &params)
         {
             params.param1 = 0.f;
             params.param2 = 0.f;
             params.param3 = 0.f;
             params.param4 = 0.f;
-            params.lat_deg = 0;
-            params.lon_deg = 0;
-            params.alt_m = 0.f;
+            params.x = 0;
+            params.y = 0;
+            params.z = 0.f;
         }
     };
 
@@ -73,6 +74,7 @@ public:
             float param6 = NAN;
             float param7 = NAN;
         } params;
+
         static void set_as_reserved(Params &params)
         {
             params.param1 = 0.f;

@@ -126,9 +126,9 @@ MAVLinkCommands::queue_command_async(CommandInt &cmd,
                                  cmd.params.param2,
                                  cmd.params.param3,
                                  cmd.params.param4,
-                                 cmd.params.lat_deg,
-                                 cmd.params.lon_deg,
-                                 cmd.params.alt_m);
+                                 cmd.params.x,
+                                 cmd.params.y,
+                                 cmd.params.z);
 
     new_work.callback = callback;
     new_work.mavlink_command = cmd.command;
