@@ -6,7 +6,6 @@
 #include <string>
 #include <functional>
 #include <mutex>
-#include <memory>
 
 namespace dronecore {
 
@@ -38,6 +37,7 @@ public:
         uint16_t command;
         bool current = 0;
         bool autocontinue = false;
+        // Most of the "Reserved" values in MAVLink spec are NAN.
         struct Params {
             float param1 = NAN;
             float param2 = NAN;
@@ -48,15 +48,18 @@ public:
             float z = NAN;
         } params;
 
-        static void set_as_reserved(Params &params)
+        // In some cases "Reserved" value could be "0".
+        // This utility method can be used in such case.
+        static
+        void set_as_reserved(Params &params, float reserve_val = NAN)
         {
-            params.param1 = 0.f;
-            params.param2 = 0.f;
-            params.param3 = 0.f;
-            params.param4 = 0.f;
+            params.param1 = reserve_val;
+            params.param2 = reserve_val;
+            params.param3 = reserve_val;
+            params.param4 = reserve_val;
             params.x = 0;
             params.y = 0;
-            params.z = 0.f;
+            params.z = reserve_val;
         }
     };
 
@@ -75,15 +78,16 @@ public:
             float param7 = NAN;
         } params;
 
-        static void set_as_reserved(Params &params)
+        static
+        void set_as_reserved(Params &params, float reserve_val = NAN)
         {
-            params.param1 = 0.f;
-            params.param2 = 0.f;
-            params.param3 = 0.f;
-            params.param4 = 0.f;
-            params.param5 = 0.f;
-            params.param6 = 0.f;
-            params.param7 = 0.f;
+            params.param1 = reserve_val;
+            params.param2 = reserve_val;
+            params.param3 = reserve_val;
+            params.param4 = reserve_val;
+            params.param5 = reserve_val;
+            params.param6 = reserve_val;
+            params.param7 = reserve_val;
         }
     };
 
