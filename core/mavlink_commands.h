@@ -6,6 +6,7 @@
 #include <string>
 #include <functional>
 #include <mutex>
+#include <memory>
 
 namespace dronecore {
 
@@ -30,20 +31,65 @@ public:
 
     typedef std::function<void(Result, float)> command_result_callback_t;
 
-    struct Params {
-        float v[7];
+    struct CmdInt {
+        uint8_t target_system_id;
+        uint8_t target_component_id;
+        MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+        uint16_t command;
+        bool current = 0;
+        bool autocontinue = false;
+        struct Params {
+            float param1 = NAN;
+            float param2 = NAN;
+            float param3 = NAN;
+            float param4 = NAN;
+            int32_t lat_deg = 0;
+            int32_t lon_deg = 0;
+            float alt_m = NAN;
+        } params;
+        static void set_as_reserved(Params &params)
+        {
+            params.param1 = 0.f;
+            params.param2 = 0.f;
+            params.param3 = 0.f;
+            params.param4 = 0.f;
+            params.lat_deg = 0;
+            params.lon_deg = 0;
+            params.alt_m = 0.f;
+        }
     };
 
-    Result send_command(uint16_t command,
-                        const Params params,
-                        uint8_t target_system_id,
-                        uint8_t target_component_id);
+    struct CmdLong {
+        uint8_t target_system_id;
+        uint8_t target_component_id;
+        uint16_t command;
+        uint8_t confirmation = 0;
+        struct Params {
+            float param1 = NAN;
+            float param2 = NAN;
+            float param3 = NAN;
+            float param4 = NAN;
+            float param5 = NAN;
+            float param6 = NAN;
+            float param7 = NAN;
+        } params;
+        static void set_as_reserved(Params &params)
+        {
+            params.param1 = 0.f;
+            params.param2 = 0.f;
+            params.param3 = 0.f;
+            params.param4 = 0.f;
+            params.param5 = 0.f;
+            params.param6 = 0.f;
+            params.param7 = 0.f;
+        }
+    };
 
-    void queue_command_async(uint16_t command,
-                             const Params params,
-                             uint8_t target_system_id,
-                             uint8_t target_component_id,
-                             command_result_callback_t callback);
+    Result send_command(CmdInt &cmd);
+    Result send_command(CmdLong &cmd);
+
+    void queue_command_async(CmdInt &cmd, command_result_callback_t callback);
+    void queue_command_async(CmdLong &cmd, command_result_callback_t callback);
 
     void do_work();
 

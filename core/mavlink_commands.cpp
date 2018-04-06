@@ -31,10 +31,8 @@ MAVLinkCommands::~MAVLinkCommands()
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-MAVLinkCommands::Result MAVLinkCommands::send_command(uint16_t command,
-                                                      const MAVLinkCommands::Params params,
-                                                      uint8_t target_system_id,
-                                                      uint8_t target_component_id)
+MAVLinkCommands::Result
+MAVLinkCommands::send_command(MAVLinkCommands::CmdInt &cmd)
 {
     struct PromiseResult {
         Result result;
@@ -45,14 +43,50 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(uint16_t command,
     std::shared_ptr<std::promise<PromiseResult>> prom =
                                                   std::make_shared<std::promise<PromiseResult>>();
 
-    queue_command_async(command, params, target_system_id, target_component_id,
+    queue_command_async(cmd,
     [prom](Result result, float progress) {
         PromiseResult promise_result {};
         promise_result.result = result;
         promise_result.progress = progress;
         prom->set_value(promise_result);
+    });
+
+    std::future<PromiseResult> res = prom->get_future();
+    while (true) {
+        // Block now to wait for result.
+        res.wait();
+
+        PromiseResult promise_result = res.get();
+
+        if (promise_result.result == Result::IN_PROGRESS) {
+            LogInfo() << "In progress: " << promise_result.progress;
+            continue;
+        }
+        return promise_result.result;
     }
-                       );
+}
+
+MAVLinkCommands::Result
+MAVLinkCommands::send_command(MAVLinkCommands::CmdLong &cmd)
+{
+    struct PromiseResult {
+        Result result;
+        float progress;
+    };
+
+    // We wrap the async call with a promise and future.
+    std::shared_ptr<std::promise<PromiseResult>> prom =
+                                                  std::make_shared<std::promise<PromiseResult>>();
+
+    cmd.target_system_id = _parent.get_system_id();
+
+    queue_command_async(cmd,
+    [prom](Result result, float progress) {
+        PromiseResult promise_result {};
+        promise_result.result = result;
+        promise_result.progress = progress;
+        prom->set_value(promise_result);
+    });
 
     std::future<PromiseResult> res = prom->get_future();
     while (true) {
@@ -70,27 +104,62 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(uint16_t command,
 }
 
 
-void MAVLinkCommands::queue_command_async(uint16_t command,
-                                          const MAVLinkCommands::Params params,
-                                          uint8_t target_system_id,
-                                          uint8_t target_component_id,
-                                          command_result_callback_t callback)
+
+void
+MAVLinkCommands::queue_command_async(CmdInt &cmd,
+                                     command_result_callback_t callback)
 {
-    // LogDebug() << "Command " << (int)command << " to send to " << (int)target_system_id << ", "
-    //         << (int)target_component_id;
+    // LogDebug() << "Command " << (int)(cmd.command) << " to send to "
+    //  << (int)(cmd.target_system_id)<< ", " << (int)(cmd.target_component_id;
+
+    Work new_work {};
+    mavlink_msg_command_int_pack(GCSClient::system_id,
+                                 GCSClient::component_id,
+                                 &new_work.mavlink_message,
+                                 cmd.target_system_id,
+                                 cmd.target_component_id,
+                                 cmd.frame,
+                                 cmd.command,
+                                 cmd.current,
+                                 cmd.autocontinue,
+                                 cmd.params.param1,
+                                 cmd.params.param2,
+                                 cmd.params.param3,
+                                 cmd.params.param4,
+                                 cmd.params.lat_deg,
+                                 cmd.params.lon_deg,
+                                 cmd.params.alt_m);
+
+    new_work.callback = callback;
+    new_work.mavlink_command = cmd.command;
+    _work_queue.push_back(new_work);
+}
+
+void
+MAVLinkCommands::queue_command_async(CmdLong &cmd,
+                                     command_result_callback_t callback)
+{
+    // LogDebug() << "Command " << (int)(cmd.command) << " to send to "
+    //  << (int)(cmd.target_system_id)<< ", " << (int)(cmd.target_component_id;
 
     Work new_work {};
     mavlink_msg_command_long_pack(GCSClient::system_id,
                                   GCSClient::component_id,
                                   &new_work.mavlink_message,
-                                  target_system_id,
-                                  target_component_id,
-                                  command,
-                                  0,
-                                  params.v[0], params.v[1], params.v[2], params.v[3],
-                                  params.v[4], params.v[5], params.v[6]);
+                                  cmd.target_system_id,
+                                  cmd.target_component_id,
+                                  cmd.command,
+                                  cmd.confirmation,
+                                  cmd.params.param1,
+                                  cmd.params.param2,
+                                  cmd.params.param3,
+                                  cmd.params.param4,
+                                  cmd.params.param5,
+                                  cmd.params.param6,
+                                  cmd.params.param7);
+
     new_work.callback = callback;
-    new_work.mavlink_command = command;
+    new_work.mavlink_command = cmd.command;
     _work_queue.push_back(new_work);
 }
 

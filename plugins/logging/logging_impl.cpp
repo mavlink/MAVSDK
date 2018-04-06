@@ -40,40 +40,50 @@ void LoggingImpl::disable() {}
 
 Logging::Result LoggingImpl::start_logging() const
 {
-    return logging_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_LOGGING_START,
-                   MAVLinkCommands::Params {0.0f, // Format: ULog
-                                            0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}));
+    MAVLinkCommands::CmdLong cmd {};
+
+    cmd.command = MAV_CMD_LOGGING_START;
+    MAVLinkCommands::CmdLong::set_as_reserved(cmd.params);
+    cmd.target_component_id = _parent->get_autopilot_id();
+
+    return logging_result_from_command_result(_parent->send_command(cmd));
 }
 
 Logging::Result LoggingImpl::stop_logging() const
 {
-    return logging_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_LOGGING_STOP,
-                   MAVLinkCommands::Params {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}));
+    MAVLinkCommands::CmdLong cmd {};
+
+    cmd.command = MAV_CMD_LOGGING_STOP;
+    MAVLinkCommands::CmdLong::set_as_reserved(cmd.params);
+    cmd.target_component_id = _parent->get_autopilot_id();
+
+    return logging_result_from_command_result(_parent->send_command(cmd));
 }
 
 void LoggingImpl::start_logging_async(const Logging::result_callback_t &callback)
 {
-    _parent->send_command_with_ack_async(
-        MAV_CMD_LOGGING_START,
-        MAVLinkCommands::Params {0.0f, // Format: ULog
-                                 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-        std::bind(&LoggingImpl::command_result_callback,
-                  std::placeholders::_1,
-                  callback));
+    MAVLinkCommands::CmdLong cmd {};
+
+    cmd.command = MAV_CMD_LOGGING_START;
+    MAVLinkCommands::CmdLong::set_as_reserved(cmd.params);
+    cmd.target_component_id = _parent->get_autopilot_id();
+
+    _parent->send_command_async(cmd, std::bind(&LoggingImpl::command_result_callback,
+                                               std::placeholders::_1,
+                                               callback));
 }
 
 void LoggingImpl::stop_logging_async(const Logging::result_callback_t &callback)
 {
-    _parent->send_command_with_ack_async(
-        MAV_CMD_LOGGING_STOP,
-        MAVLinkCommands::Params {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-        std::bind(&LoggingImpl::command_result_callback,
-                  std::placeholders::_1,
-                  callback));
+    MAVLinkCommands::CmdLong cmd {};
+
+    cmd.command = MAV_CMD_LOGGING_STOP;
+    MAVLinkCommands::CmdLong::set_as_reserved(cmd.params);
+    cmd.target_component_id = _parent->get_autopilot_id();
+
+    _parent->send_command_async(cmd, std::bind(&LoggingImpl::command_result_callback,
+                                               std::placeholders::_1,
+                                               callback));
 }
 
 void LoggingImpl::process_logging_data(const mavlink_message_t &message)

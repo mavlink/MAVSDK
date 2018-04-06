@@ -424,12 +424,13 @@ void MAVLinkSystem::request_autopilot_version()
     _autopilot_version_pending = true;
 
     // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
-    send_command_with_ack_async(
-        MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-        MAVLinkCommands::Params {1.0f, NAN, NAN, NAN, NAN, NAN, NAN},
-        nullptr,
-        MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT
-    );
+    MAVLinkCommands::CmdLong cmd {};
+
+    cmd.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
+    cmd.params.param1 = 1.0f;
+    cmd.target_component_id = get_autopilot_id();
+
+    send_command_async(cmd, nullptr);
     ++_uuid_retries;
 
     // We set a timeout to stay "pending" for half a second. This way, we don't give up too
@@ -594,15 +595,15 @@ MAVLinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
 
     }
 
-    MAVLinkCommands::Result ret = send_command_with_ack(
-                                      MAV_CMD_DO_SET_MODE,
-                                      MAVLinkCommands::Params {float(mode),
-                                                               float(custom_mode),
-                                                               float(custom_sub_mode),
-                                                               NAN, NAN, NAN, NAN},
-                                      MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+    MAVLinkCommands::CmdLong cmd {};
 
-    return ret;
+    cmd.command = MAV_CMD_DO_SET_MODE;
+    cmd.params.param1 = float(mode);
+    cmd.params.param2 = float(custom_mode);
+    cmd.params.param3 = float(custom_sub_mode);
+    cmd.target_component_id = get_autopilot_id();
+
+    return send_command(cmd);
 }
 
 void MAVLinkSystem::set_flight_mode_async(FlightMode system_mode,
@@ -650,14 +651,15 @@ void MAVLinkSystem::set_flight_mode_async(FlightMode system_mode,
             return ;
     }
 
+    MAVLinkCommands::CmdLong cmd {};
 
-    send_command_with_ack_async(MAV_CMD_DO_SET_MODE,
-                                MAVLinkCommands::Params {float(mode),
-                                                         float(custom_mode),
-                                                         float(custom_sub_mode),
-                                                         NAN, NAN, NAN, NAN},
-                                callback,
-                                MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
+    cmd.command = MAV_CMD_DO_SET_MODE;
+    cmd.params.param1 = float(mode);
+    cmd.params.param2 = float(custom_mode);
+    cmd.params.param3 = float(custom_sub_mode);
+    cmd.target_component_id = get_autopilot_id();
+
+    send_command_async(cmd, callback);
 }
 
 void MAVLinkSystem::get_param_int_async(const std::string &name,
@@ -727,23 +729,28 @@ uint8_t MAVLinkSystem::get_gimbal_id() const
     return uint8_t(0);
 }
 
-MAVLinkCommands::Result MAVLinkSystem::send_command_with_ack(
-    uint16_t command, const MAVLinkCommands::Params &params, uint8_t component_id)
+MAVLinkCommands::Result
+MAVLinkSystem::send_command(MAVLinkCommands::CmdLong &cmd)
 {
     if (_system_id == 0 && _components.size() == 0) {
         return MAVLinkCommands::Result::NO_SYSTEM;
     }
-
-    const uint8_t component_id_to_use =
-        ((component_id != 0) ? component_id : get_autopilot_id());
-
-    return _commands.send_command(command, params, _system_id, component_id_to_use);
+    cmd.target_system_id = get_system_id();
+    return _commands.send_command(cmd);
 }
 
-void MAVLinkSystem::send_command_with_ack_async(uint16_t command,
-                                                const MAVLinkCommands::Params &params,
-                                                command_result_callback_t callback,
-                                                uint8_t component_id)
+MAVLinkCommands::Result
+MAVLinkSystem::send_command(MAVLinkCommands::CmdInt &cmd)
+{
+    if (_system_id == 0 && _components.size() == 0) {
+        return MAVLinkCommands::Result::NO_SYSTEM;
+    }
+    cmd.target_system_id = get_system_id();
+    return _commands.send_command(cmd);
+}
+
+void MAVLinkSystem::send_command_async(MAVLinkCommands::CmdLong &cmd,
+                                       command_result_callback_t callback)
 {
     if (_system_id == 0 && _components.size() == 0) {
         if (callback) {
@@ -751,12 +758,23 @@ void MAVLinkSystem::send_command_with_ack_async(uint16_t command,
         }
         return;
     }
+    cmd.target_system_id = get_system_id();
 
-    const uint8_t component_id_to_use =
-        ((component_id != 0) ? component_id : _components.size() == 0);
+    _commands.queue_command_async(cmd, callback);
+}
 
-    _commands.queue_command_async(command, params, _system_id, component_id_to_use,
-                                  callback);
+void MAVLinkSystem::send_command_async(MAVLinkCommands::CmdInt &cmd,
+                                       command_result_callback_t callback)
+{
+    if (_system_id == 0 && _components.size() == 0) {
+        if (callback) {
+            callback(MAVLinkCommands::Result::NO_SYSTEM, NAN);
+        }
+        return;
+    }
+    cmd.target_system_id = get_system_id();
+
+    _commands.queue_command_async(cmd, callback);
 }
 
 MAVLinkCommands::Result MAVLinkSystem::set_msg_rate(uint16_t message_id, double rate_hz,
@@ -768,16 +786,18 @@ MAVLinkCommands::Result MAVLinkSystem::set_msg_rate(uint16_t message_id, double 
         interval_us = 1e6f / static_cast<float>(rate_hz);
     }
 
-    if (component_id != 0) {
-        return send_command_with_ack(
-                   MAV_CMD_SET_MESSAGE_INTERVAL,
-                   MAVLinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
-                   component_id);
+    MAVLinkCommands::CmdLong cmd {};
+
+    cmd.command = MAV_CMD_SET_MESSAGE_INTERVAL;
+    cmd.params.param1 = float(message_id);
+    cmd.params.param2 = interval_us;
+    if (component_id) {
+        cmd.target_component_id = component_id;
     } else {
-        return send_command_with_ack(
-                   MAV_CMD_SET_MESSAGE_INTERVAL,
-                   MAVLinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN});
+        cmd.target_component_id = get_autopilot_id();
     }
+
+    return send_command(cmd);
 }
 
 void MAVLinkSystem::set_msg_rate_async(uint16_t message_id, double rate_hz,
@@ -789,18 +809,18 @@ void MAVLinkSystem::set_msg_rate_async(uint16_t message_id, double rate_hz,
         interval_us = 1e6f / static_cast<float>(rate_hz);
     }
 
-    if (component_id != 0) {
-        send_command_with_ack_async(
-            MAV_CMD_SET_MESSAGE_INTERVAL,
-            MAVLinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
-            callback,
-            component_id);
+    MAVLinkCommands::CmdLong cmd {};
+
+    cmd.command = MAV_CMD_SET_MESSAGE_INTERVAL;
+    cmd.params.param1 = float(message_id);
+    cmd.params.param2 = interval_us;
+    if (component_id) {
+        cmd.target_component_id = component_id;
     } else {
-        send_command_with_ack_async(
-            MAV_CMD_SET_MESSAGE_INTERVAL,
-            MAVLinkCommands::Params {float(message_id), interval_us, NAN, NAN, NAN, NAN, NAN},
-            callback);
+        cmd.target_component_id = get_autopilot_id();
     }
+
+    send_command_async(cmd, callback);
 }
 
 void MAVLinkSystem::register_plugin(PluginImplBase *plugin_impl)
