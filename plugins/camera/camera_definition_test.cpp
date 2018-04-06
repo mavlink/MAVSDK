@@ -41,27 +41,41 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
 
     cd.assume_default_settings();
 
-    std::map<std::string, MAVLinkParameters::ParamValue> settings {};
-    EXPECT_TRUE(cd.get_all_settings(settings));
+    {
+        std::map<std::string, MAVLinkParameters::ParamValue> settings {};
+        EXPECT_TRUE(cd.get_all_settings(settings));
+        EXPECT_EQ(settings.size(), 16);
 
-    EXPECT_EQ(settings.size(), 16);
-    EXPECT_EQ(settings["CAM_MODE"].get_uint32(), 1);
-    EXPECT_EQ(settings["CAM_WBMODE"].get_uint32(), 0);
-    EXPECT_EQ(settings["CAM_EXPMODE"].get_uint32(), 0);
-    EXPECT_FLOAT_EQ(settings["CAM_SHUTTERSPD"].get_float(), 0.016666f);
-    EXPECT_EQ(settings["CAM_ISO"].get_uint32(), 100);
-    EXPECT_FLOAT_EQ(settings["CAM_EV"].get_float(), 0.0f);
-    EXPECT_EQ(settings["CAM_VIDRES"].get_uint32(), 0);
-    EXPECT_EQ(settings["CAM_VIDFMT"].get_uint32(), 1);
-    EXPECT_EQ(settings["CAM_PHOTORATIO"].get_uint8(), 1);
-    EXPECT_EQ(settings["CAM_METERING"].get_uint32(), 0);
-    EXPECT_EQ(settings["CAM_COLORMODE"].get_uint32(), 1);
-    EXPECT_EQ(settings["CAM_FLICKER"].get_uint32(), 0);
-    EXPECT_EQ(settings["CAM_PHOTOFMT"].get_uint32(), 0);
-    EXPECT_EQ(settings["CAM_PHOTOQUAL"].get_uint32(), 1);
-    EXPECT_EQ(settings["CAM_IMAGEDEWARP"].get_uint8(), 0);
-    EXPECT_EQ(settings["CAM_COLORENCODE"].get_uint32(), 0);
+        EXPECT_EQ(settings["CAM_MODE"].get_uint32(), 1);
+        EXPECT_EQ(settings["CAM_WBMODE"].get_uint32(), 0);
+        EXPECT_EQ(settings["CAM_EXPMODE"].get_uint32(), 0);
+        EXPECT_FLOAT_EQ(settings["CAM_SHUTTERSPD"].get_float(), 0.016666f);
+        EXPECT_EQ(settings["CAM_ISO"].get_uint32(), 100);
+        EXPECT_FLOAT_EQ(settings["CAM_EV"].get_float(), 0.0f);
+        EXPECT_EQ(settings["CAM_VIDRES"].get_uint32(), 0);
+        EXPECT_EQ(settings["CAM_VIDFMT"].get_uint32(), 1);
+        EXPECT_EQ(settings["CAM_PHOTORATIO"].get_uint8(), 1);
+        EXPECT_EQ(settings["CAM_METERING"].get_uint32(), 0);
+        EXPECT_EQ(settings["CAM_COLORMODE"].get_uint32(), 1);
+        EXPECT_EQ(settings["CAM_FLICKER"].get_uint32(), 0);
+        EXPECT_EQ(settings["CAM_PHOTOFMT"].get_uint32(), 0);
+        EXPECT_EQ(settings["CAM_PHOTOQUAL"].get_uint32(), 1);
+        EXPECT_EQ(settings["CAM_IMAGEDEWARP"].get_uint8(), 0);
+        EXPECT_EQ(settings["CAM_COLORENCODE"].get_uint32(), 0);
+    }
 
+    // Get only settings for video mode.
+    {
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(1);
+        EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
+    }
+
+    {
+        std::map<std::string, MAVLinkParameters::ParamValue> settings {};
+        EXPECT_TRUE(cd.get_possible_settings(settings));
+        EXPECT_EQ(settings.size(), 12);
+    }
 
     // TODO: Check possible settings
 }

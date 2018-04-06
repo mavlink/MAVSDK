@@ -40,15 +40,6 @@ std::string CameraDefinition::get_vendor() const
     return _vendor;
 }
 
-bool CameraDefinition::get_all_settings(std::map<std::string, MAVLinkParameters::ParamValue>
-                                        &settings) const
-{
-    settings.clear();
-    settings = _current_settings;
-
-    return (_current_settings.size() > 0);
-}
-
 bool CameraDefinition::parse_xml()
 {
     auto e_mavlinkcamera = _doc.FirstChildElement("mavlinkcamera");
@@ -294,6 +285,32 @@ void CameraDefinition::assume_default_settings()
     }
 }
 
+bool CameraDefinition::get_all_settings(std::map<std::string, MAVLinkParameters::ParamValue>
+                                        &settings)
+{
+    settings.clear();
+    settings = _current_settings;
+
+    return (_current_settings.size() > 0);
+}
+
+bool CameraDefinition::get_possible_settings(
+    std::map<std::string, MAVLinkParameters::ParamValue> &settings)
+{
+    settings.clear();
+    std::vector<std::string> exclusions {};
+    for (const auto &parameter : _parameter_map) {
+        // TODO: Find all exclusions
+    }
+
+    for (const auto &setting : _current_settings) {
+        // TODO: copy over if not excluded
+        settings[setting.first] = setting.second;
+    }
+
+    return (settings.size() > 0);
+}
+
 bool CameraDefinition::set_setting(const std::string &name,
                                    const MAVLinkParameters::ParamValue &value)
 {
@@ -307,7 +324,7 @@ bool CameraDefinition::set_setting(const std::string &name,
 }
 
 bool CameraDefinition::get_setting(const std::string &name,
-                                   MAVLinkParameters::ParamValue &value) const
+                                   MAVLinkParameters::ParamValue &value)
 {
     if (_current_settings.find(name) == _current_settings.end()) {
         LogErr() << "Unknown setting to get";
@@ -320,8 +337,8 @@ bool CameraDefinition::get_setting(const std::string &name,
 }
 
 
-bool CameraDefinition::get_all_options(const std::string &name,
-                                       std::vector<MAVLinkParameters::ParamValue> &values)
+bool CameraDefinition::get_all_options(
+    const std::string &name, std::vector<MAVLinkParameters::ParamValue> &values)
 {
     values.clear();
 
@@ -337,8 +354,8 @@ bool CameraDefinition::get_all_options(const std::string &name,
     return true;
 }
 
-bool CameraDefinition::get_possible_options(const std::string &name,
-                                            std::vector<MAVLinkParameters::ParamValue> &values)
+bool CameraDefinition::get_possible_options(
+    const std::string &name, std::vector<MAVLinkParameters::ParamValue> &values)
 {
     values.clear();
 
