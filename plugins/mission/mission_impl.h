@@ -85,7 +85,7 @@ private:
     import_mission_items(Mission::mission_items_t &mission_items,
                          const Json &mission_json);
     static Mission::Result
-    build_mission_items(MAV_CMD cmd, std::vector<double> params,
+    build_mission_items(MAV_CMD command, std::vector<double> params,
                         std::shared_ptr<MissionItem> &new_mission_item,
                         Mission::mission_items_t &all_mission_items);
 

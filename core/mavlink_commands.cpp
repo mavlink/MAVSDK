@@ -32,7 +32,7 @@ MAVLinkCommands::~MAVLinkCommands()
 }
 
 MAVLinkCommands::Result
-MAVLinkCommands::send_command(MAVLinkCommands::CommandInt &cmd)
+MAVLinkCommands::send_command(MAVLinkCommands::CommandInt &command)
 {
     struct PromiseResult {
         Result result;
@@ -43,7 +43,7 @@ MAVLinkCommands::send_command(MAVLinkCommands::CommandInt &cmd)
     std::shared_ptr<std::promise<PromiseResult>> prom =
                                                   std::make_shared<std::promise<PromiseResult>>();
 
-    queue_command_async(cmd,
+    queue_command_async(command,
     [prom](Result result, float progress) {
         PromiseResult promise_result {};
         promise_result.result = result;
@@ -67,7 +67,7 @@ MAVLinkCommands::send_command(MAVLinkCommands::CommandInt &cmd)
 }
 
 MAVLinkCommands::Result
-MAVLinkCommands::send_command(MAVLinkCommands::CommandLong &cmd)
+MAVLinkCommands::send_command(MAVLinkCommands::CommandLong &command)
 {
     struct PromiseResult {
         Result result;
@@ -78,9 +78,9 @@ MAVLinkCommands::send_command(MAVLinkCommands::CommandLong &cmd)
     std::shared_ptr<std::promise<PromiseResult>> prom =
                                                   std::make_shared<std::promise<PromiseResult>>();
 
-    cmd.target_system_id = _parent.get_system_id();
+    command.target_system_id = _parent.get_system_id();
 
-    queue_command_async(cmd,
+    queue_command_async(command,
     [prom](Result result, float progress) {
         PromiseResult promise_result {};
         promise_result.result = result;
@@ -106,60 +106,60 @@ MAVLinkCommands::send_command(MAVLinkCommands::CommandLong &cmd)
 
 
 void
-MAVLinkCommands::queue_command_async(CommandInt &cmd,
+MAVLinkCommands::queue_command_async(CommandInt &command,
                                      command_result_callback_t callback)
 {
-    // LogDebug() << "Command " << (int)(cmd.command) << " to send to "
-    //  << (int)(cmd.target_system_id)<< ", " << (int)(cmd.target_component_id;
+    // LogDebug() << "Command " << (int)(command.command) << " to send to "
+    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
 
     Work new_work {};
     mavlink_msg_command_int_pack(GCSClient::system_id,
                                  GCSClient::component_id,
                                  &new_work.mavlink_message,
-                                 cmd.target_system_id,
-                                 cmd.target_component_id,
-                                 cmd.frame,
-                                 cmd.command,
-                                 cmd.current,
-                                 cmd.autocontinue,
-                                 cmd.params.param1,
-                                 cmd.params.param2,
-                                 cmd.params.param3,
-                                 cmd.params.param4,
-                                 cmd.params.x,
-                                 cmd.params.y,
-                                 cmd.params.z);
+                                 command.target_system_id,
+                                 command.target_component_id,
+                                 command.frame,
+                                 command.command,
+                                 command.current,
+                                 command.autocontinue,
+                                 command.params.param1,
+                                 command.params.param2,
+                                 command.params.param3,
+                                 command.params.param4,
+                                 command.params.x,
+                                 command.params.y,
+                                 command.params.z);
 
     new_work.callback = callback;
-    new_work.mavlink_command = cmd.command;
+    new_work.mavlink_command = command.command;
     _work_queue.push_back(new_work);
 }
 
 void
-MAVLinkCommands::queue_command_async(CommandLong &cmd,
+MAVLinkCommands::queue_command_async(CommandLong &command,
                                      command_result_callback_t callback)
 {
-    // LogDebug() << "Command " << (int)(cmd.command) << " to send to "
-    //  << (int)(cmd.target_system_id)<< ", " << (int)(cmd.target_component_id;
+    // LogDebug() << "Command " << (int)(command.command) << " to send to "
+    //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
 
     Work new_work {};
     mavlink_msg_command_long_pack(GCSClient::system_id,
                                   GCSClient::component_id,
                                   &new_work.mavlink_message,
-                                  cmd.target_system_id,
-                                  cmd.target_component_id,
-                                  cmd.command,
-                                  cmd.confirmation,
-                                  cmd.params.param1,
-                                  cmd.params.param2,
-                                  cmd.params.param3,
-                                  cmd.params.param4,
-                                  cmd.params.param5,
-                                  cmd.params.param6,
-                                  cmd.params.param7);
+                                  command.target_system_id,
+                                  command.target_component_id,
+                                  command.command,
+                                  command.confirmation,
+                                  command.params.param1,
+                                  command.params.param2,
+                                  command.params.param3,
+                                  command.params.param4,
+                                  command.params.param5,
+                                  command.params.param6,
+                                  command.params.param7);
 
     new_work.callback = callback;
-    new_work.mavlink_command = cmd.command;
+    new_work.mavlink_command = command.command;
     _work_queue.push_back(new_work);
 }
 

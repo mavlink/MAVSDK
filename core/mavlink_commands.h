@@ -51,15 +51,15 @@ public:
         // In some cases "Reserved" value could be "0".
         // This utility method can be used in such case.
         static
-        void set_as_reserved(Params &params, float reserve_val = NAN)
+        void set_as_reserved(Params &params, float reserved_value = NAN)
         {
-            params.param1 = reserve_val;
-            params.param2 = reserve_val;
-            params.param3 = reserve_val;
-            params.param4 = reserve_val;
+            params.param1 = reserved_value;
+            params.param2 = reserved_value;
+            params.param3 = reserved_value;
+            params.param4 = reserved_value;
             params.x = 0;
             params.y = 0;
-            params.z = reserve_val;
+            params.z = reserved_value;
         }
     };
 
@@ -79,23 +79,23 @@ public:
         } params;
 
         static
-        void set_as_reserved(Params &params, float reserve_val = NAN)
+        void set_as_reserved(Params &params, float reserved_value = NAN)
         {
-            params.param1 = reserve_val;
-            params.param2 = reserve_val;
-            params.param3 = reserve_val;
-            params.param4 = reserve_val;
-            params.param5 = reserve_val;
-            params.param6 = reserve_val;
-            params.param7 = reserve_val;
+            params.param1 = reserved_value;
+            params.param2 = reserved_value;
+            params.param3 = reserved_value;
+            params.param4 = reserved_value;
+            params.param5 = reserved_value;
+            params.param6 = reserved_value;
+            params.param7 = reserved_value;
         }
     };
 
-    Result send_command(CommandInt &cmd);
-    Result send_command(CommandLong &cmd);
+    Result send_command(CommandInt &command);
+    Result send_command(CommandLong &command);
 
-    void queue_command_async(CommandInt &cmd, command_result_callback_t callback);
-    void queue_command_async(CommandLong &cmd, command_result_callback_t callback);
+    void queue_command_async(CommandInt &command, command_result_callback_t callback);
+    void queue_command_async(CommandLong &command, command_result_callback_t callback);
 
     void do_work();
 

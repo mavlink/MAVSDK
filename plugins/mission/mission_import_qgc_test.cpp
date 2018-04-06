@@ -21,11 +21,11 @@ const std::string SLASH = "/";
 using namespace dronecore;
 
 struct QGCMissionItem {
-    MAV_CMD cmd;
+    MAV_CMD command;
     std::vector<double> params;
 };
 
-Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
+Mission::Result compose_mission_items(MAV_CMD command, std::vector<double> params,
                                       std::shared_ptr<MissionItem> &new_mission_item,
                                       Mission::mission_items_t &mission_items);
 
@@ -61,9 +61,9 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     Mission::Result result = Mission::Result::SUCCESS;
 
     for (auto &qgc_it : items_test) {
-        auto cmd = qgc_it.cmd;
+        auto command = qgc_it.command;
         auto params = qgc_it.params;
-        result = compose_mission_items(cmd, params, new_mission_item, mission_items_local);
+        result = compose_mission_items(command, params, new_mission_item, mission_items_local);
         EXPECT_EQ(result, Mission::Result::SUCCESS);
     }
     mission_items_local.push_back(new_mission_item);
@@ -87,7 +87,7 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     }
 }
 
-Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
+Mission::Result compose_mission_items(MAV_CMD command, std::vector<double> params,
                                       std::shared_ptr<MissionItem> &new_mission_item,
                                       Mission::mission_items_t &mission_items)
 {
@@ -95,14 +95,14 @@ Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
 
     // Choosen "Do - While(0)" loop for the convenience of using `break` statement.
     do {
-        if (cmd == MAV_CMD_NAV_WAYPOINT ||
-            cmd == MAV_CMD_NAV_TAKEOFF ||
-            cmd == MAV_CMD_NAV_LAND) {
+        if (command == MAV_CMD_NAV_WAYPOINT ||
+            command == MAV_CMD_NAV_TAKEOFF ||
+            command == MAV_CMD_NAV_LAND) {
             if (new_mission_item->has_position_set()) {
                 mission_items.push_back(new_mission_item);
                 new_mission_item = std::make_shared<MissionItem>();
             }
-            if (cmd == MAV_CMD_NAV_WAYPOINT) {
+            if (command == MAV_CMD_NAV_WAYPOINT) {
                 auto is_fly_thru = !(int(params[0]) > 0);
                 new_mission_item->set_fly_through(is_fly_thru);
             }
@@ -112,15 +112,15 @@ Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
             auto rel_alt = float(params[6]);
             new_mission_item->set_relative_altitude(rel_alt);
 
-        } else if (cmd == MAV_CMD_DO_MOUNT_CONTROL) {
+        } else if (command == MAV_CMD_DO_MOUNT_CONTROL) {
             auto pitch = float(params[0]), yaw = float(params[2]);
             new_mission_item->set_gimbal_pitch_and_yaw(pitch, yaw);
 
-        } else if (cmd == MAV_CMD_NAV_LOITER_TIME) {
+        } else if (command == MAV_CMD_NAV_LOITER_TIME) {
             auto loiter_time_s = float(params[0]);
             new_mission_item->set_loiter_time(loiter_time_s);
 
-        } else if (cmd == MAV_CMD_IMAGE_START_CAPTURE) {
+        } else if (command == MAV_CMD_IMAGE_START_CAPTURE) {
             auto photo_interval = int(params[1]),  photo_count = int(params[2]);
 
             if (photo_interval > 0 && photo_count == 0) {
@@ -134,16 +134,16 @@ Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
                 break;
             }
 
-        } else if (cmd == MAV_CMD_IMAGE_STOP_CAPTURE) {
+        } else if (command == MAV_CMD_IMAGE_STOP_CAPTURE) {
             new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_PHOTO_INTERVAL);
 
-        } else if (cmd == MAV_CMD_VIDEO_START_CAPTURE) {
+        } else if (command == MAV_CMD_VIDEO_START_CAPTURE) {
             new_mission_item->set_camera_action(MissionItem::CameraAction::START_VIDEO);
 
-        } else if (cmd == MAV_CMD_VIDEO_STOP_CAPTURE) {
+        } else if (command == MAV_CMD_VIDEO_STOP_CAPTURE) {
             new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_VIDEO);
 
-        } else if (cmd == MAV_CMD_DO_CHANGE_SPEED) {
+        } else if (command == MAV_CMD_DO_CHANGE_SPEED) {
             enum { AirSpeed, GroundSpeed };
             auto speed_type = int(params[0]);
             auto speed_m_s = float(params[1]);
@@ -153,12 +153,12 @@ Mission::Result compose_mission_items(MAV_CMD cmd, std::vector<double> params,
             if (speed_type == int(GroundSpeed) && throttle < 0 && is_absolute) {
                 new_mission_item->set_speed(speed_m_s);
             } else {
-                LogErr() << cmd << "Mission item DO_CHANGE_SPEED params unsupported";
+                LogErr() << command << "Mission item DO_CHANGE_SPEED params unsupported";
                 result = Mission::Result::UNSUPPORTED;
                 break;
             }
         } else {
-            LogWarn() << "UNSUPPORTED mission item command(" << cmd << ")";
+            LogWarn() << "UNSUPPORTED mission item command(" << command << ")";
         }
     } while (false); // Executed once per method invokation.
 

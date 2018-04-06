@@ -28,62 +28,62 @@ void GimbalImpl::disable() {}
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     const float roll_deg = 0.0f;
-    MAVLinkCommands::CommandLong cmd {};
+    MAVLinkCommands::CommandLong command {};
 
-    cmd.command = MAV_CMD_DO_MOUNT_CONTROL;
-    cmd.params.param1 = pitch_deg;
-    cmd.params.param2 = roll_deg;
-    cmd.params.param3 = yaw_deg;
-    cmd.params.param7 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING);
-    cmd.target_component_id = _parent->get_autopilot_id();
+    command.command = MAV_CMD_DO_MOUNT_CONTROL;
+    command.params.param1 = pitch_deg;
+    command.params.param2 = roll_deg;
+    command.params.param3 = yaw_deg;
+    command.params.param7 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING);
+    command.target_component_id = _parent->get_autopilot_id();
 
-    return gimbal_result_from_command_result(_parent->send_command(cmd));
+    return gimbal_result_from_command_result(_parent->send_command(command));
 }
 
 void GimbalImpl::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg,
                                          Gimbal::result_callback_t callback)
 {
     const float roll_deg = 0.0f;
-    MAVLinkCommands::CommandLong cmd {};
+    MAVLinkCommands::CommandLong command {};
 
-    cmd.command = MAV_CMD_DO_MOUNT_CONTROL;
-    cmd.params.param1 = pitch_deg;
-    cmd.params.param2 = roll_deg;
-    cmd.params.param3 = yaw_deg;
-    cmd.params.param7 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING);
-    cmd.target_component_id = _parent->get_autopilot_id();
+    command.command = MAV_CMD_DO_MOUNT_CONTROL;
+    command.params.param1 = pitch_deg;
+    command.params.param2 = roll_deg;
+    command.params.param3 = yaw_deg;
+    command.params.param7 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING);
+    command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(cmd, std::bind(&GimbalImpl::receive_command_result,
-                                               std::placeholders::_1, callback));
+    _parent->send_command_async(command, std::bind(&GimbalImpl::receive_command_result,
+                                                   std::placeholders::_1, callback));
 }
 
 Gimbal::Result GimbalImpl::set_roi_location(double latitude_deg, double longitude_deg,
                                             float altitude_m)
 {
-    MAVLinkCommands::CommandInt cmd {};
+    MAVLinkCommands::CommandInt command {};
 
-    cmd.command = MAV_CMD_DO_SET_ROI_LOCATION;
-    cmd.params.x = int32_t(latitude_deg * 1e7);
-    cmd.params.y = int32_t(longitude_deg * 1e7);
-    cmd.params.z = altitude_m;
-    cmd.target_component_id = _parent->get_autopilot_id();
+    command.command = MAV_CMD_DO_SET_ROI_LOCATION;
+    command.params.x = int32_t(latitude_deg * 1e7);
+    command.params.y = int32_t(longitude_deg * 1e7);
+    command.params.z = altitude_m;
+    command.target_component_id = _parent->get_autopilot_id();
 
-    return gimbal_result_from_command_result(_parent->send_command(cmd));
+    return gimbal_result_from_command_result(_parent->send_command(command));
 }
 
 void GimbalImpl::set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m,
                                         Gimbal::result_callback_t callback)
 {
-    MAVLinkCommands::CommandInt cmd {};
+    MAVLinkCommands::CommandInt command {};
 
-    cmd.command = MAV_CMD_DO_SET_ROI_LOCATION;
-    cmd.params.x = int32_t(latitude_deg * 1e7);
-    cmd.params.y = int32_t(longitude_deg * 1e7);
-    cmd.params.z = altitude_m;
-    cmd.target_component_id = _parent->get_autopilot_id();
+    command.command = MAV_CMD_DO_SET_ROI_LOCATION;
+    command.params.x = int32_t(latitude_deg * 1e7);
+    command.params.y = int32_t(longitude_deg * 1e7);
+    command.params.z = altitude_m;
+    command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(cmd, std::bind(&GimbalImpl::receive_command_result,
-                                               std::placeholders::_1, callback));
+    _parent->send_command_async(command, std::bind(&GimbalImpl::receive_command_result,
+                                                   std::placeholders::_1, callback));
 }
 
 void GimbalImpl::receive_command_result(MAVLinkCommands::Result command_result,
