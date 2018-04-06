@@ -77,14 +77,14 @@ public:
 
     // FIXME: I tried to use templates for these;
     // but I get undefined reference. Need to dig it later.
-    MAVLinkCommands::Result send_command(MAVLinkCommands::CmdLong &cmd);
-    MAVLinkCommands::Result send_command(MAVLinkCommands::CmdInt &cmd);
+    MAVLinkCommands::Result send_command(MAVLinkCommands::CommandLong &cmd);
+    MAVLinkCommands::Result send_command(MAVLinkCommands::CommandInt &cmd);
 
     // FIXME: I tried to use templates for these;
     // but I get undefined reference. Need to dig it later.
-    void send_command_async(MAVLinkCommands::CmdLong &cmd,
+    void send_command_async(MAVLinkCommands::CommandLong &cmd,
                             command_result_callback_t callback);
-    void send_command_async(MAVLinkCommands::CmdInt &cmd,
+    void send_command_async(MAVLinkCommands::CommandInt &cmd,
                             command_result_callback_t callback);
 
     MAVLinkCommands::Result set_msg_rate(uint16_t message_id,

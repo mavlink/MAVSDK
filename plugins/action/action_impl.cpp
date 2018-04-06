@@ -58,7 +58,7 @@ ActionResult ActionImpl::arm() const
         return ret;
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_COMPONENT_ARM_DISARM;
     cmd.params.param1 = 1.0f; // arm
@@ -74,7 +74,7 @@ ActionResult ActionImpl::disarm() const
         return ret;
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_COMPONENT_ARM_DISARM;
     cmd.params.param1 = 0.0f; // disarm
@@ -85,7 +85,7 @@ ActionResult ActionImpl::disarm() const
 
 ActionResult ActionImpl::kill() const
 {
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_COMPONENT_ARM_DISARM;
     cmd.params.param1 = 0.0f; // kill
@@ -105,7 +105,7 @@ ActionResult ActionImpl::takeoff() const
     ret = action_result_from_command_result(
               _parent->set_flight_mode(MAVLinkSystem::FlightMode::HOLD));
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_NAV_TAKEOFF;
     cmd.params.param7 = _relative_takeoff_altitude_m;
@@ -116,7 +116,7 @@ ActionResult ActionImpl::takeoff() const
 
 ActionResult ActionImpl::land() const
 {
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_NAV_LAND;
     cmd.target_component_id = _parent->get_autopilot_id();
@@ -140,7 +140,7 @@ ActionResult ActionImpl::transition_to_fixedwing() const
         return ActionResult::NO_VTOL_TRANSITION_SUPPORT;
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_DO_VTOL_TRANSITION;
     cmd.params.param1 = float(MAV_VTOL_STATE_FW);
@@ -165,7 +165,7 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &
         return;
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_DO_VTOL_TRANSITION;
     cmd.params.param1 = float(MAV_VTOL_STATE_FW);
@@ -185,7 +185,7 @@ ActionResult ActionImpl::transition_to_multicopter() const
         return ActionResult::NO_VTOL_TRANSITION_SUPPORT;
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_DO_VTOL_TRANSITION;
     cmd.params.param1 = float(MAV_VTOL_STATE_MC);
@@ -209,7 +209,7 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
         }
         return;
     }
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_DO_VTOL_TRANSITION;
     cmd.params.param1 = float(MAV_VTOL_STATE_MC);
@@ -241,7 +241,7 @@ void ActionImpl::arm_async_continued(MAVLinkCommands::Result previous_result,
         return;
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_COMPONENT_ARM_DISARM;
     cmd.params.param1 = 1.0f; // arm
@@ -260,7 +260,7 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
         }
         return;
     }
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_COMPONENT_ARM_DISARM;
     cmd.params.param1 = 0.0f; // disarm
@@ -272,7 +272,7 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
 
 void ActionImpl::kill_async(const Action::result_callback_t &callback)
 {
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_COMPONENT_ARM_DISARM;
     cmd.params.param1 = 0.0f; // kill
@@ -303,7 +303,7 @@ void ActionImpl::takeoff_async_continued(MAVLinkCommands::Result previous_result
         return;
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_NAV_TAKEOFF;
     cmd.params.param7 = _relative_takeoff_altitude_m;
@@ -315,7 +315,7 @@ void ActionImpl::takeoff_async_continued(MAVLinkCommands::Result previous_result
 
 void ActionImpl::land_async(const Action::result_callback_t &callback)
 {
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_NAV_LAND;
     cmd.target_component_id = _parent->get_autopilot_id();

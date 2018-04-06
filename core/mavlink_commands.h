@@ -31,7 +31,7 @@ public:
 
     typedef std::function<void(Result, float)> command_result_callback_t;
 
-    struct CmdInt {
+    struct CommandInt {
         uint8_t target_system_id;
         uint8_t target_component_id;
         MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
@@ -59,7 +59,7 @@ public:
         }
     };
 
-    struct CmdLong {
+    struct CommandLong {
         uint8_t target_system_id;
         uint8_t target_component_id;
         uint16_t command;
@@ -85,11 +85,11 @@ public:
         }
     };
 
-    Result send_command(CmdInt &cmd);
-    Result send_command(CmdLong &cmd);
+    Result send_command(CommandInt &cmd);
+    Result send_command(CommandLong &cmd);
 
-    void queue_command_async(CmdInt &cmd, command_result_callback_t callback);
-    void queue_command_async(CmdLong &cmd, command_result_callback_t callback);
+    void queue_command_async(CommandInt &cmd, command_result_callback_t callback);
+    void queue_command_async(CommandLong &cmd, command_result_callback_t callback);
 
     void do_work();
 

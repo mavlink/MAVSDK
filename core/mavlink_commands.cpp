@@ -32,7 +32,7 @@ MAVLinkCommands::~MAVLinkCommands()
 }
 
 MAVLinkCommands::Result
-MAVLinkCommands::send_command(MAVLinkCommands::CmdInt &cmd)
+MAVLinkCommands::send_command(MAVLinkCommands::CommandInt &cmd)
 {
     struct PromiseResult {
         Result result;
@@ -67,7 +67,7 @@ MAVLinkCommands::send_command(MAVLinkCommands::CmdInt &cmd)
 }
 
 MAVLinkCommands::Result
-MAVLinkCommands::send_command(MAVLinkCommands::CmdLong &cmd)
+MAVLinkCommands::send_command(MAVLinkCommands::CommandLong &cmd)
 {
     struct PromiseResult {
         Result result;
@@ -106,7 +106,7 @@ MAVLinkCommands::send_command(MAVLinkCommands::CmdLong &cmd)
 
 
 void
-MAVLinkCommands::queue_command_async(CmdInt &cmd,
+MAVLinkCommands::queue_command_async(CommandInt &cmd,
                                      command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(cmd.command) << " to send to "
@@ -136,7 +136,7 @@ MAVLinkCommands::queue_command_async(CmdInt &cmd,
 }
 
 void
-MAVLinkCommands::queue_command_async(CmdLong &cmd,
+MAVLinkCommands::queue_command_async(CommandLong &cmd,
                                      command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(cmd.command) << " to send to "

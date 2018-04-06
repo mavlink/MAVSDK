@@ -424,7 +424,7 @@ void MAVLinkSystem::request_autopilot_version()
     _autopilot_version_pending = true;
 
     // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
     cmd.params.param1 = 1.0f;
@@ -595,7 +595,7 @@ MAVLinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
 
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_DO_SET_MODE;
     cmd.params.param1 = float(mode);
@@ -651,7 +651,7 @@ void MAVLinkSystem::set_flight_mode_async(FlightMode system_mode,
             return ;
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_DO_SET_MODE;
     cmd.params.param1 = float(mode);
@@ -730,7 +730,7 @@ uint8_t MAVLinkSystem::get_gimbal_id() const
 }
 
 MAVLinkCommands::Result
-MAVLinkSystem::send_command(MAVLinkCommands::CmdLong &cmd)
+MAVLinkSystem::send_command(MAVLinkCommands::CommandLong &cmd)
 {
     if (_system_id == 0 && _components.size() == 0) {
         return MAVLinkCommands::Result::NO_SYSTEM;
@@ -740,7 +740,7 @@ MAVLinkSystem::send_command(MAVLinkCommands::CmdLong &cmd)
 }
 
 MAVLinkCommands::Result
-MAVLinkSystem::send_command(MAVLinkCommands::CmdInt &cmd)
+MAVLinkSystem::send_command(MAVLinkCommands::CommandInt &cmd)
 {
     if (_system_id == 0 && _components.size() == 0) {
         return MAVLinkCommands::Result::NO_SYSTEM;
@@ -749,7 +749,7 @@ MAVLinkSystem::send_command(MAVLinkCommands::CmdInt &cmd)
     return _commands.send_command(cmd);
 }
 
-void MAVLinkSystem::send_command_async(MAVLinkCommands::CmdLong &cmd,
+void MAVLinkSystem::send_command_async(MAVLinkCommands::CommandLong &cmd,
                                        command_result_callback_t callback)
 {
     if (_system_id == 0 && _components.size() == 0) {
@@ -763,7 +763,7 @@ void MAVLinkSystem::send_command_async(MAVLinkCommands::CmdLong &cmd,
     _commands.queue_command_async(cmd, callback);
 }
 
-void MAVLinkSystem::send_command_async(MAVLinkCommands::CmdInt &cmd,
+void MAVLinkSystem::send_command_async(MAVLinkCommands::CommandInt &cmd,
                                        command_result_callback_t callback)
 {
     if (_system_id == 0 && _components.size() == 0) {
@@ -786,7 +786,7 @@ MAVLinkCommands::Result MAVLinkSystem::set_msg_rate(uint16_t message_id, double 
         interval_us = 1e6f / static_cast<float>(rate_hz);
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_SET_MESSAGE_INTERVAL;
     cmd.params.param1 = float(message_id);
@@ -809,7 +809,7 @@ void MAVLinkSystem::set_msg_rate_async(uint16_t message_id, double rate_hz,
         interval_us = 1e6f / static_cast<float>(rate_hz);
     }
 
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_SET_MESSAGE_INTERVAL;
     cmd.params.param1 = float(message_id);

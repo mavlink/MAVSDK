@@ -40,10 +40,10 @@ void LoggingImpl::disable() {}
 
 Logging::Result LoggingImpl::start_logging() const
 {
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_LOGGING_START;
-    MAVLinkCommands::CmdLong::set_as_reserved(cmd.params);
+    MAVLinkCommands::CommandLong::set_as_reserved(cmd.params);
     cmd.target_component_id = _parent->get_autopilot_id();
 
     return logging_result_from_command_result(_parent->send_command(cmd));
@@ -51,10 +51,10 @@ Logging::Result LoggingImpl::start_logging() const
 
 Logging::Result LoggingImpl::stop_logging() const
 {
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_LOGGING_STOP;
-    MAVLinkCommands::CmdLong::set_as_reserved(cmd.params);
+    MAVLinkCommands::CommandLong::set_as_reserved(cmd.params);
     cmd.target_component_id = _parent->get_autopilot_id();
 
     return logging_result_from_command_result(_parent->send_command(cmd));
@@ -62,10 +62,10 @@ Logging::Result LoggingImpl::stop_logging() const
 
 void LoggingImpl::start_logging_async(const Logging::result_callback_t &callback)
 {
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_LOGGING_START;
-    MAVLinkCommands::CmdLong::set_as_reserved(cmd.params);
+    MAVLinkCommands::CommandLong::set_as_reserved(cmd.params);
     cmd.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(cmd, std::bind(&LoggingImpl::command_result_callback,
@@ -75,10 +75,10 @@ void LoggingImpl::start_logging_async(const Logging::result_callback_t &callback
 
 void LoggingImpl::stop_logging_async(const Logging::result_callback_t &callback)
 {
-    MAVLinkCommands::CmdLong cmd {};
+    MAVLinkCommands::CommandLong cmd {};
 
     cmd.command = MAV_CMD_LOGGING_STOP;
-    MAVLinkCommands::CmdLong::set_as_reserved(cmd.params);
+    MAVLinkCommands::CommandLong::set_as_reserved(cmd.params);
     cmd.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(cmd, std::bind(&LoggingImpl::command_result_callback,
