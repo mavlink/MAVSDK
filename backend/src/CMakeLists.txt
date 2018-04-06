@@ -16,6 +16,7 @@ set(BACKEND_SOURCES
     backend_api.h
     backend_api.cpp
     backend.cpp
+    grpc_server.cpp
     ${GRPC_COMPILED_SOURCES}
     ${PB_COMPILED_SOURCES}
 )
