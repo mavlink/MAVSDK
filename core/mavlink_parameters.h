@@ -126,37 +126,37 @@ public:
             }
         }
 
-        void set_from_xml(const char *type_str, const char *value_str)
+        void set_from_xml(const std::string &type_str, const std::string &value_str)
         {
-            if (strcmp(type_str, "uint8") == 0) {
-                uint8_t temp = std::atoi(value_str);
+            if (strcmp(type_str.c_str(), "uint8") == 0) {
+                uint8_t temp = std::atoi(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str, "int8") == 0) {
-                int8_t temp = std::stoi(value_str);
+            } else if (strcmp(type_str.c_str(), "int8") == 0) {
+                int8_t temp = std::stoi(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str, "uint16") == 0) {
-                uint16_t temp = std::atoi(value_str);
+            } else if (strcmp(type_str.c_str(), "uint16") == 0) {
+                uint16_t temp = std::atoi(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str, "int16") == 0) {
-                int16_t temp = std::stoi(value_str);
+            } else if (strcmp(type_str.c_str(), "int16") == 0) {
+                int16_t temp = std::stoi(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str, "uint32") == 0) {
-                uint32_t temp = std::atol(value_str);
+            } else if (strcmp(type_str.c_str(), "uint32") == 0) {
+                uint32_t temp = std::atol(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str, "int32") == 0) {
-                int32_t temp = std::stol(value_str);
+            } else if (strcmp(type_str.c_str(), "int32") == 0) {
+                int32_t temp = std::stol(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str, "uint64") == 0) {
-                uint64_t temp = std::atoll(value_str);
+            } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+                uint64_t temp = std::atoll(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str, "uint64") == 0) {
-                int64_t temp = std::stoll(value_str);
+            } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+                int64_t temp = std::stoll(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str, "float") == 0) {
-                float temp = std::stof(value_str);
+            } else if (strcmp(type_str.c_str(), "float") == 0) {
+                float temp = std::stof(value_str.c_str());
                 _value = temp;
-            } else if (strcmp(type_str, "double") == 0) {
-                double temp = std::stod(value_str);
+            } else if (strcmp(type_str.c_str(), "double") == 0) {
+                double temp = std::stod(value_str.c_str());
                 _value = temp;
             } else {
                 LogErr() << "Unknown type: " << type_str;
@@ -369,8 +369,66 @@ public:
             return (_value.is<double>());
         }
 
+        bool operator==(const ParamValue &rhs) const
+        {
+            // LogDebug() << "Compare " << typestr() << " and " << rhs.typestr();
+            if (_value.is<uint8_t>()) {
+                return _value.as<uint8_t>() == rhs._value.as<uint8_t>();
+            } else if (_value.is<int8_t>()) {
+                return _value.as<int8_t>() == rhs._value.as<int8_t>();
+            } else if (_value.is<uint16_t>()) {
+                return _value.as<uint16_t>() == rhs._value.as<uint16_t>();
+            } else if (_value.is<int16_t>()) {
+                return _value.as<int16_t>() == rhs._value.as<int16_t>();
+            } else if (_value.is<uint32_t>()) {
+                return _value.as<uint32_t>() == rhs._value.as<uint32_t>();
+            } else if (_value.is<int32_t>()) {
+                return _value.as<int32_t>() == rhs._value.as<int32_t>();
+            } else if (_value.is<uint64_t>()) {
+                return _value.as<uint64_t>() == rhs._value.as<uint64_t>();
+            } else if (_value.is<int64_t>()) {
+                return _value.as<int64_t>() == rhs._value.as<int64_t>();
+            } else if (_value.is<float>()) {
+                return _value.as<float>() == rhs._value.as<float>();
+            } else if (_value.is<double>()) {
+                return _value.as<double>() == rhs._value.as<double>();
+            } else if (_value.is<custom_type_t>()) {
+                // FIXME: not clear how to handle this
+                return false;
+            }
+        }
+
+        std::string typestr() const
+        {
+            if (_value.is<uint8_t>()) {
+                return "uint8_t";
+            } else if (_value.is<int8_t>()) {
+                return "int8_t";
+            } else if (_value.is<uint16_t>()) {
+                return "uint16_t";
+            } else if (_value.is<int16_t>()) {
+                return "int16_t";
+            } else if (_value.is<uint32_t>()) {
+                return "uint32_t";
+            } else if (_value.is<int32_t>()) {
+                return "int32_t";
+            } else if (_value.is<uint64_t>()) {
+                return "uint64_t";
+            } else if (_value.is<int64_t>()) {
+                return "int64_t";
+            } else if (_value.is<float>()) {
+                return "float";
+            } else if (_value.is<double>()) {
+                return "double";
+            } else if (_value.is<custom_type_t>()) {
+                // FIXME: not clear how to handle this
+                return "unknown";
+            }
+        }
+
     private:
         Any _value;
+
     };
 
     typedef std::function <void(bool success)> set_param_callback_t;

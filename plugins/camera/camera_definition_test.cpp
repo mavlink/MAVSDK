@@ -74,10 +74,21 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     {
         std::map<std::string, MAVLinkParameters::ParamValue> settings {};
         EXPECT_TRUE(cd.get_possible_settings(settings));
-        EXPECT_EQ(settings.size(), 12);
+        EXPECT_EQ(settings.size(), 9);
     }
 
-    // TODO: Check possible settings
+    // Get only settings for photo mode.
+    {
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(0);
+        EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
+    }
+
+    {
+        std::map<std::string, MAVLinkParameters::ParamValue> settings {};
+        EXPECT_TRUE(cd.get_possible_settings(settings));
+        EXPECT_EQ(settings.size(), 12);
+    }
 }
 
 TEST(CameraDefinition, E90ChangeSettings)
@@ -168,37 +179,14 @@ TEST(CameraDefinition, E90ShowOptions)
 
     {
         std::vector<MAVLinkParameters::ParamValue> values;
-        EXPECT_TRUE(cd.get_possible_options("CAM_WBMODE", values));
-        EXPECT_EQ(values.size(), 8);
+        EXPECT_TRUE(cd.get_all_options("CAM_SHUTTERSPD", values));
+        EXPECT_EQ(values.size(), 19);
     }
 
-    // TODO: check parameterranges
-}
-
-#if 0
-TEST(CameraDefinition, LoadE90Exclude)
-{
-    // Run this from root.
-    CameraDefinition cd;
-    cd.load_file(e90_unit_test_file);
-
-    CameraDefinition::ParameterValue value;
-    value.value.as_uint32 = 1;
-    cd.update_setting("CAM_MODE", value);
-
-    CameraDefinition::parameter_map_t parameters;
-    EXPECT_TRUE(cd.get_parameters(parameters, true));
-
-    for (auto &parameter : parameters) {
-        LogDebug() << parameter.first << " => " << parameter.second->description;
-        for (auto &option : parameter.second->options) {
-            LogDebug() << option->name << ": "
-                       << ((option->value.type == CameraDefinition::ParameterValue::Type::FLOAT) ?
-                           option->value.value.as_float : option->value.value.as_uint32);
-        }
+    {
+        std::vector<MAVLinkParameters::ParamValue> values;
+        EXPECT_TRUE(cd.get_possible_options("CAM_SHUTTERSPD", values));
+        EXPECT_EQ(values.size(), 12);
     }
-
-    // In video mode, this param shoud not be available.
-    EXPECT_FALSE(parameters.find("CAM_PHOTOFMT") != parameters.end());
 }
-#endif
+

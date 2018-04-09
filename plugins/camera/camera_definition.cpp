@@ -76,6 +76,27 @@ bool CameraDefinition::parse_xml()
         return false;
     }
 
+    std::map<std::string, std::string> type_map {};
+    // We need all types first.
+    for (auto e_parameter = e_parameters->FirstChildElement("parameter");
+         e_parameter != nullptr;
+         e_parameter = e_parameter->NextSiblingElement("parameter")) {
+
+        const char *param_name = e_parameter->Attribute("name");
+        if (!param_name) {
+            LogErr() << "name attribute missing";
+            return false;
+        }
+
+        const char *type_str = e_parameter->Attribute("type");
+        if (!type_str) {
+            LogErr() << "type attribute missing";
+            return false;
+        }
+
+        type_map.insert(std::pair<std::string, std::string>(param_name, type_str));
+    }
+
     for (auto e_parameter = e_parameters->FirstChildElement("parameter");
          e_parameter != nullptr;
          e_parameter = e_parameter->NextSiblingElement("parameter")) {
@@ -118,14 +139,8 @@ bool CameraDefinition::parse_xml()
             return false;
         }
 
-        const char *type_str = e_parameter->Attribute("type");
-        if (!type_str) {
-            LogErr() << "type attribute missing";
-            return false;
-        }
-
         // Be definition custom types do not have control.
-        if (strcmp(type_str, "custom") == 0) {
+        if (strcmp(type_map[param_name].c_str(), "custom") == 0) {
             new_parameter->is_control = false;
         }
 
@@ -189,14 +204,14 @@ bool CameraDefinition::parse_xml()
 
             new_option->name = option_name;
 
-            new_option->value.set_from_xml(type_str, option_value);
+            new_option->value.set_from_xml(type_map[param_name], option_value);
 
             if (std::strcmp(option_value, default_str) == 0) {
                 new_option->is_default = true;
                 found_default = true;
             }
 
-            // LogDebug() << "Type: " << type_str << ", name: " << option_name;
+            // LogDebug() << "Type: " << type_map[param_name] << ", name: " << option_name;
 
             auto e_exclusions = e_option->FirstChildElement("exclusions");
             if (e_exclusions) {
@@ -216,6 +231,12 @@ bool CameraDefinition::parse_xml()
                      e_parameterrange != nullptr;
                      e_parameterrange = e_parameterrange->NextSiblingElement("parameterrange")) {
 
+                    const char *roption_parameter_str = e_parameterrange->Attribute("parameter");
+                    if (!roption_parameter_str) {
+                        LogErr() << "missing roption parameter name";
+                        return false;
+                    }
+
                     parameter_range_t new_parameter_range;
 
                     for (auto e_roption = e_parameterrange->FirstChildElement("roption");
@@ -234,19 +255,30 @@ bool CameraDefinition::parse_xml()
                             return false;
                         }
 
+                        if (type_map.find(roption_parameter_str) == type_map.end()) {
+                            LogErr() << "unknown roption type";
+                            return false;
+                        }
+
                         MAVLinkParameters::ParamValue new_param_value;
-                        new_param_value.set_from_xml(type_str, roption_value_str);
-                        roption_t new_roption;
-                        new_roption.insert(std::pair<std::string, MAVLinkParameters::ParamValue>(
-                                               roption_name_str, new_param_value));
+                        new_param_value.set_from_xml(
+                            type_map[roption_parameter_str], roption_value_str);
+                        new_parameter_range.insert(
+                            std::pair<std::string, MAVLinkParameters::ParamValue>(
+                                roption_name_str, new_param_value));
 
                         // LogDebug() << "range option: "
                         //            << roption_name_str
                         //            << " -> "
-                        //            << roption_value_str;
+                        //            << new_param_value
+                        //            << " (" << new_param_value.typestr() << ")";
                     }
 
-                    new_option->parameter_ranges.push_back(new_parameter_range);
+                    new_option->parameter_ranges.insert(
+                        std::pair<std::string, parameter_range_t>(
+                            roption_parameter_str, new_parameter_range));
+
+                    // LogDebug() << "adding to: " << roption_parameter_str;
                 }
             }
 
@@ -298,14 +330,32 @@ bool CameraDefinition::get_possible_settings(
     std::map<std::string, MAVLinkParameters::ParamValue> &settings)
 {
     settings.clear();
+
+    // Find all exclusions
+    // TODO: use set instead of vector
     std::vector<std::string> exclusions {};
+
     for (const auto &parameter : _parameter_map) {
-        // TODO: Find all exclusions
+        for (const auto &option : parameter.second->options) {
+            if (_current_settings[parameter.first] == option->value) {
+                for (const auto &exclusion : option->exclusions) {
+                    // LogDebug() << "found exclusion: " << exclusion;
+                    exclusions.push_back(exclusion);
+                }
+            }
+        }
     }
 
     for (const auto &setting : _current_settings) {
-        // TODO: copy over if not excluded
-        settings[setting.first] = setting.second;
+        bool excluded = false;
+        for (const auto &exclusion : exclusions) {
+            if (setting.first == exclusion) {
+                excluded = true;
+            }
+        }
+        if (!excluded) {
+            settings.insert(setting);
+        }
     }
 
     return (settings.size() > 0);
@@ -364,8 +414,38 @@ bool CameraDefinition::get_possible_options(
         return false;
     }
 
+    // TODO: use set instead of vector for this
+    std::vector<MAVLinkParameters::ParamValue> allowed_ranges {};
+
+    // Check allowed ranges.
+    for (const auto &parameter : _parameter_map) {
+        for (const auto &option : parameter.second->options) {
+            // Only look at current set option.
+            if (_current_settings[parameter.first] == option->value) {
+                // Go through parameter ranges but only concerning the parameter that
+                // we're interested in..
+                if (option->parameter_ranges.find(name)
+                    != option->parameter_ranges.end()) {
+
+                    for (const auto &range : option->parameter_ranges[name]) {
+                        allowed_ranges.push_back(range.second);
+                    }
+                }
+            }
+        }
+    }
+
+    // Intersect
     for (const auto &option : _parameter_map[name]->options) {
-        values.push_back(option->value);
+        bool option_allowed = false;
+        for (const auto &allowed_range : allowed_ranges) {
+            if (option->value == allowed_range) {
+                option_allowed = true;
+            }
+        }
+        if (option_allowed) {
+            values.push_back(option->value);
+        }
     }
 
     return true;

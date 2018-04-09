@@ -43,14 +43,13 @@ public:
     const CameraDefinition &operator=(const CameraDefinition &) = delete;
 
 private:
-    typedef std::map<std::string, MAVLinkParameters::ParamValue> roption_t;
-    typedef std::map<std::string, roption_t> parameter_range_t;
+    typedef std::map<std::string, MAVLinkParameters::ParamValue> parameter_range_t;
 
     struct Option {
         std::string name;
         MAVLinkParameters::ParamValue value;
         std::vector<std::string> exclusions;
-        std::vector<parameter_range_t> parameter_ranges;
+        std::map<std::string, parameter_range_t> parameter_ranges;
         bool is_default;
     };
 
