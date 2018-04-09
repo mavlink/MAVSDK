@@ -73,16 +73,19 @@ public:
 
     bool send_message(const mavlink_message_t &message);
 
-    MAVLinkCommands::Result send_command_with_ack(uint16_t command,
-                                                  const MAVLinkCommands::Params &params,
-                                                  uint8_t component_id = 0);
-
     typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
 
-    void send_command_with_ack_async(uint16_t command,
-                                     const MAVLinkCommands::Params &params,
-                                     command_result_callback_t callback,
-                                     uint8_t component_id = 0);
+    // FIXME: I tried to use templates for these;
+    // but I get undefined reference. Need to dig it later.
+    MAVLinkCommands::Result send_command(MAVLinkCommands::CommandLong &command);
+    MAVLinkCommands::Result send_command(MAVLinkCommands::CommandInt &command);
+
+    // FIXME: I tried to use templates for these;
+    // but I get undefined reference. Need to dig it later.
+    void send_command_async(MAVLinkCommands::CommandLong &command,
+                            command_result_callback_t callback);
+    void send_command_async(MAVLinkCommands::CommandInt &command,
+                            command_result_callback_t callback);
 
     MAVLinkCommands::Result set_msg_rate(uint16_t message_id,
                                          double rate_hz,

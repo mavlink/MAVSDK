@@ -30,20 +30,72 @@ public:
 
     typedef std::function<void(Result, float)> command_result_callback_t;
 
-    struct Params {
-        float v[7];
+    struct CommandInt {
+        uint8_t target_system_id;
+        uint8_t target_component_id;
+        MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+        uint16_t command;
+        bool current = 0;
+        bool autocontinue = false;
+        // Most of the "Reserved" values in MAVLink spec are NAN.
+        struct Params {
+            float param1 = NAN;
+            float param2 = NAN;
+            float param3 = NAN;
+            float param4 = NAN;
+            int32_t x = 0;
+            int32_t y = 0;
+            float z = NAN;
+        } params;
+
+        // In some cases "Reserved" value could be "0".
+        // This utility method can be used in such case.
+        static
+        void set_as_reserved(Params &params, float reserved_value = NAN)
+        {
+            params.param1 = reserved_value;
+            params.param2 = reserved_value;
+            params.param3 = reserved_value;
+            params.param4 = reserved_value;
+            params.x = 0;
+            params.y = 0;
+            params.z = reserved_value;
+        }
     };
 
-    Result send_command(uint16_t command,
-                        const Params params,
-                        uint8_t target_system_id,
-                        uint8_t target_component_id);
+    struct CommandLong {
+        uint8_t target_system_id;
+        uint8_t target_component_id;
+        uint16_t command;
+        uint8_t confirmation = 0;
+        struct Params {
+            float param1 = NAN;
+            float param2 = NAN;
+            float param3 = NAN;
+            float param4 = NAN;
+            float param5 = NAN;
+            float param6 = NAN;
+            float param7 = NAN;
+        } params;
 
-    void queue_command_async(uint16_t command,
-                             const Params params,
-                             uint8_t target_system_id,
-                             uint8_t target_component_id,
-                             command_result_callback_t callback);
+        static
+        void set_as_reserved(Params &params, float reserved_value = NAN)
+        {
+            params.param1 = reserved_value;
+            params.param2 = reserved_value;
+            params.param3 = reserved_value;
+            params.param4 = reserved_value;
+            params.param5 = reserved_value;
+            params.param6 = reserved_value;
+            params.param7 = reserved_value;
+        }
+    };
+
+    Result send_command(CommandInt &command);
+    Result send_command(CommandLong &command);
+
+    void queue_command_async(CommandInt &command, command_result_callback_t callback);
+    void queue_command_async(CommandLong &command, command_result_callback_t callback);
 
     void do_work();
 
