@@ -32,7 +32,7 @@ MAVLinkCommands::~MAVLinkCommands()
 }
 
 MAVLinkCommands::Result
-MAVLinkCommands::send_command(MAVLinkCommands::CommandInt &command)
+MAVLinkCommands::send_command(const MAVLinkCommands::CommandInt &command)
 {
     struct PromiseResult {
         Result result;
@@ -67,7 +67,7 @@ MAVLinkCommands::send_command(MAVLinkCommands::CommandInt &command)
 }
 
 MAVLinkCommands::Result
-MAVLinkCommands::send_command(MAVLinkCommands::CommandLong &command)
+MAVLinkCommands::send_command(const MAVLinkCommands::CommandLong &command)
 {
     struct PromiseResult {
         Result result;
@@ -77,8 +77,6 @@ MAVLinkCommands::send_command(MAVLinkCommands::CommandLong &command)
     // We wrap the async call with a promise and future.
     std::shared_ptr<std::promise<PromiseResult>> prom =
                                                   std::make_shared<std::promise<PromiseResult>>();
-
-    command.target_system_id = _parent.get_system_id();
 
     queue_command_async(command,
     [prom](Result result, float progress) {
@@ -103,10 +101,8 @@ MAVLinkCommands::send_command(MAVLinkCommands::CommandLong &command)
     }
 }
 
-
-
 void
-MAVLinkCommands::queue_command_async(CommandInt &command,
+MAVLinkCommands::queue_command_async(const CommandInt &command,
                                      command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
@@ -136,7 +132,7 @@ MAVLinkCommands::queue_command_async(CommandInt &command,
 }
 
 void
-MAVLinkCommands::queue_command_async(CommandLong &command,
+MAVLinkCommands::queue_command_async(const CommandLong &command,
                                      command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
