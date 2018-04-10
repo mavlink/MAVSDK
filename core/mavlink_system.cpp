@@ -455,8 +455,9 @@ void MAVLinkSystem::set_connected()
 
         if (!_connected && _uuid_initialized) {
 
-            LogDebug() << "We have found " << _components.size() << " component(s).";
+            LogDebug() << "Found " << _components.size() << " component(s).";
 
+            LogDebug() << "Discovered " << _uuid;
             _parent.notify_on_discover(_uuid);
             _connected = true;
 

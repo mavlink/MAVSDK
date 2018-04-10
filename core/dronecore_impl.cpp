@@ -328,7 +328,6 @@ bool DroneCoreImpl::does_system_exist(uint8_t system_id)
 
 void DroneCoreImpl::notify_on_discover(const uint64_t uuid)
 {
-    LogDebug() << "Discovered " << uuid;
     if (_on_discover_callback != nullptr) {
         _on_discover_callback(uuid);
     }
@@ -344,6 +343,12 @@ void DroneCoreImpl::notify_on_timeout(const uint64_t uuid)
 
 void DroneCoreImpl::register_on_discover(const DroneCore::event_callback_t callback)
 {
+    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+
+    for (auto const &connected_system : _systems) {
+        callback(connected_system.second->get_uuid());
+    }
+
     _on_discover_callback = callback;
 }
 
