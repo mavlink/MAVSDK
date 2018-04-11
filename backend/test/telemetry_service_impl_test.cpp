@@ -4,6 +4,7 @@
 #include <grpc++/server.h>
 #include <grpc++/server_builder.h>
 #include <memory>
+#include <random>
 #include <vector>
 
 #include "telemetry/mocks/telemetry_mock.h"
@@ -21,6 +22,9 @@ using TelemetryService = dronecore::rpc::telemetry::TelemetryService;
 using PositionResponse = dronecore::rpc::telemetry::PositionResponse;
 using Position = dronecore::Telemetry::Position;
 
+using HealthResponse = dronecore::rpc::telemetry::HealthResponse;
+using Health = dronecore::Telemetry::Health;
+
 class TelemetryServiceImplTest : public ::testing::Test
 {
 protected:
@@ -36,6 +40,8 @@ protected:
         grpc::ChannelArguments channel_args;
         auto channel = _server->InProcessChannel(channel_args);
         _stub = TelemetryService::NewStub(channel);
+
+        initRandomGenerator();
     }
 
     virtual void TearDown()
@@ -46,12 +52,32 @@ protected:
     std::future<void> subscribePositionAsync(std::vector<Position> &positions);
     Position createPosition(const double lat, const double lng, const float abs_alt,
                             const float rel_alt) const;
+    void checkSendsPositions(const std::vector<Position> &positions);
+
+    std::future<void> subscribeHealthAsync(std::vector<Health> &healths);
+    void checkSendsHealths(const std::vector<Health> &healths);
+    Health createRandomHealth();
+    std::vector<Health> generateRandomHealthsVector(const int size);
+    bool generateRandomBool();
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
     std::unique_ptr<MockTelemetry> _telemetry;
     std::unique_ptr<TelemetryServiceImpl> _telemetry_service;
+
+private:
+    void initRandomGenerator();
+
+    std::random_device _random_device;
+    std::mt19937 _generator;
+    std::uniform_int_distribution<> _uniform_int_distribution;
 };
+
+void TelemetryServiceImplTest::initRandomGenerator()
+{
+    _generator = std::mt19937(_random_device());
+    _uniform_int_distribution = std::uniform_int_distribution<>(0, 1);
+}
 
 ACTION_P2(SaveCallback, callback, callback_promise)
 {
@@ -69,17 +95,6 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionAsync)
 
     _telemetry_service->stop();
     position_stream_future.wait();
-}
-
-TEST_F(TelemetryServiceImplTest, doesNotSendPositionIfCallbackNotCalled)
-{
-    std::vector<Position> positions;
-    auto position_stream_future = subscribePositionAsync(positions);
-
-    _telemetry_service->stop();
-    position_stream_future.wait();
-
-    EXPECT_EQ(0, positions.size());
 }
 
 std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<Position> &positions)
@@ -106,24 +121,46 @@ std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<P
     });
 }
 
+TEST_F(TelemetryServiceImplTest, doesNotSendPositionIfCallbackNotCalled)
+{
+    std::vector<Position> positions;
+    auto position_stream_future = subscribePositionAsync(positions);
+
+    _telemetry_service->stop();
+    position_stream_future.wait();
+
+    EXPECT_EQ(0, positions.size());
+}
+
 TEST_F(TelemetryServiceImplTest, sendsOnePosition)
 {
-    auto expected_position = createPosition(41.848695, 75.132751, 3002.1f, 50.3f);
+    std::vector<Position> positions;
+    positions.push_back(createPosition(41.848695, 75.132751, 3002.1f, 50.3f));
+
+    checkSendsPositions(positions);
+}
+
+void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position> &positions)
+{
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::testing::position_callback_t position_callback;
     EXPECT_CALL(*_telemetry, position_async(_))
     .WillOnce(SaveCallback(&position_callback, &subscription_promise));
 
-    std::vector<Position> positions;
-    auto position_stream_future = subscribePositionAsync(positions);
+    std::vector<Position> received_positions;
+    auto position_stream_future = subscribePositionAsync(received_positions);
     subscription_future.wait();
-    position_callback(expected_position);
+    for (const auto position : positions) {
+        position_callback(position);
+    }
     _telemetry_service->stop();
     position_stream_future.wait();
 
-    EXPECT_EQ(1, positions.size());
-    EXPECT_EQ(expected_position, positions.at(0));
+    ASSERT_EQ(positions.size(), received_positions.size());
+    for (size_t i = 0; i < positions.size(); i++) {
+        EXPECT_EQ(positions.at(i), received_positions.at(i));
+    }
 }
 
 Position TelemetryServiceImplTest::createPosition(const double lat, const double lng,
@@ -141,28 +178,128 @@ Position TelemetryServiceImplTest::createPosition(const double lat, const double
 
 TEST_F(TelemetryServiceImplTest, sendsMultiplePositions)
 {
-    auto position0 = createPosition(41.848695, 75.132751, 3002.1f, 50.3f);
-    auto position1 = createPosition(46.522626, 6.635356, 542.2f, 79.8f);
-    auto position2 = createPosition(-50.995944711358824, -72.99892046835936, 1217.12f, 2.52f);
+    std::vector<Position> positions;
+    positions.push_back(createPosition(41.848695, 75.132751, 3002.1f, 50.3f));
+    positions.push_back(createPosition(46.522626, 6.635356, 542.2f, 79.8f));
+    positions.push_back(createPosition(-50.995944711358824, -72.99892046835936, 1217.12f, 2.52f));
+
+    checkSendsPositions(positions);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryHealthAsync)
+{
+    EXPECT_CALL(*_telemetry, health_async(_))
+    .Times(1);
+
+    std::vector<Health> healths;
+    auto health_stream_future = subscribeHealthAsync(healths);
+
+    _telemetry_service->stop();
+    health_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Health> &healths)
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeHealthRequest request;
+        auto response_reader = _stub->SubscribeHealth(&context, request);
+
+        dronecore::rpc::telemetry::HealthResponse response;
+        while (response_reader->Read(&response)) {
+            auto health_rpc = response.health();
+
+            Health health;
+            health.gyrometer_calibration_ok = health_rpc.is_gyrometer_calibration_ok();
+            health.accelerometer_calibration_ok = health_rpc.is_accelerometer_calibration_ok();
+            health.magnetometer_calibration_ok = health_rpc.is_magnetometer_calibration_ok();
+            health.level_calibration_ok = health_rpc.is_level_calibration_ok();
+            health.local_position_ok = health_rpc.is_local_position_ok();
+            health.global_position_ok = health_rpc.is_global_position_ok();
+            health.home_position_ok = health_rpc.is_home_position_ok();
+
+            healths.push_back(health);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendHealthIfCallbackNotCalled)
+{
+    std::vector<Health> healths;
+    auto health_stream_future = subscribeHealthAsync(healths);
+
+    _telemetry_service->stop();
+    health_stream_future.wait();
+
+    EXPECT_EQ(0, healths.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneHealth)
+{
+    const auto health = generateRandomHealthsVector(1);
+    checkSendsHealths(health);
+}
+
+std::vector<Health> TelemetryServiceImplTest::generateRandomHealthsVector(const int size)
+{
+    std::vector<Health> healths;
+    for (int i = 0; i < size; i++) {
+        healths.push_back(createRandomHealth());
+    }
+
+    return healths;
+}
+
+void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &healths)
+{
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecore::testing::position_callback_t position_callback;
-    EXPECT_CALL(*_telemetry, position_async(_))
-    .WillOnce(SaveCallback(&position_callback, &subscription_promise));
+    dronecore::testing::health_callback_t health_callback;
+    EXPECT_CALL(*_telemetry, health_async(_))
+    .WillOnce(SaveCallback(&health_callback, &subscription_promise));
 
-    std::vector<Position> positions;
-    auto position_stream_future = subscribePositionAsync(positions);
+    std::vector<Health> received_healths;
+    auto health_stream_future = subscribeHealthAsync(received_healths);
     subscription_future.wait();
-    position_callback(position0);
-    position_callback(position1);
-    position_callback(position2);
+    for (const auto health : healths) {
+        health_callback(health);
+    }
     _telemetry_service->stop();
-    position_stream_future.wait();
+    health_stream_future.wait();
 
-    EXPECT_EQ(3, positions.size());
-    EXPECT_EQ(position0, positions.at(0));
-    EXPECT_EQ(position1, positions.at(1));
-    EXPECT_EQ(position2, positions.at(2));
+    ASSERT_EQ(healths.size(), received_healths.size());
+    for (size_t i = 0; i < healths.size(); i++) {
+        EXPECT_EQ(healths.at(i), received_healths.at(i));
+    }
+
+}
+
+Health TelemetryServiceImplTest::createRandomHealth()
+{
+    dronecore::Telemetry::Health health;
+
+    health.gyrometer_calibration_ok = generateRandomBool();
+    health.accelerometer_calibration_ok = generateRandomBool();
+    health.magnetometer_calibration_ok = generateRandomBool();
+    health.level_calibration_ok = generateRandomBool();
+    health.local_position_ok = generateRandomBool();
+    health.global_position_ok = generateRandomBool();
+    health.home_position_ok = generateRandomBool();
+
+    return health;
+}
+
+bool TelemetryServiceImplTest::generateRandomBool()
+{
+    return _uniform_int_distribution(_generator) == 0;
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleHealths)
+{
+    const auto health = generateRandomHealthsVector(10);
+    checkSendsHealths(health);
 }
 
 } // namespace
