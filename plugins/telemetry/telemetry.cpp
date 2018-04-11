@@ -317,4 +317,25 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position)
            << "]";
 }
 
+bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs)
+{
+    return lhs.gyrometer_calibration_ok == rhs.gyrometer_calibration_ok
+           && lhs.accelerometer_calibration_ok == rhs.accelerometer_calibration_ok
+           && lhs.magnetometer_calibration_ok == rhs.magnetometer_calibration_ok
+           && lhs.level_calibration_ok == rhs.level_calibration_ok
+           && lhs.local_position_ok == rhs.local_position_ok
+           && lhs.global_position_ok == rhs.global_position_ok
+           && lhs.home_position_ok == rhs.home_position_ok;
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health)
+{
+    return str << "[gyrometer_calibration_ok: " << health.gyrometer_calibration_ok <<
+           ", accelerometer_calibration_ok: " << health.accelerometer_calibration_ok <<
+           ", magnetometer_calibration_ok: " << health.magnetometer_calibration_ok <<
+           ", level_calibration_ok: " << health.level_calibration_ok << ", local_position_ok: " <<
+           health.local_position_ok << ", global_position_ok: " << health.global_position_ok <<
+           ", home_position_ok: " << health.home_position_ok << "]";
+}
+
 } // namespace dronecore
