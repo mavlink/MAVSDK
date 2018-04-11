@@ -292,6 +292,10 @@ bool CameraDefinition::parse_xml()
 
         _parameter_map.insert(std::pair<std::string, std::shared_ptr<Parameter>>(
                                   param_name, new_parameter));
+
+        InternalCurrentSetting empty_setting {};
+        empty_setting.needs_updating = true;
+        _current_settings[param_name] = empty_setting;
     }
 
     return true;
@@ -310,9 +314,7 @@ void CameraDefinition::assume_default_settings()
             }
             // LogDebug() << option->name << " default value: " << option->value;
 
-            _current_settings.insert(
-                std::pair<std::string, MAVLinkParameters::ParamValue>(parameter.first,
-                                                                      option->value));
+            _current_settings[parameter.first] = InternalCurrentSetting {option->value, false};
         }
     }
 }
@@ -321,9 +323,11 @@ bool CameraDefinition::get_all_settings(std::map<std::string, MAVLinkParameters:
                                         &settings)
 {
     settings.clear();
-    settings = _current_settings;
+    for (const auto &current_setting : _current_settings) {
+        settings[current_setting.first] = current_setting.second.value;
+    }
 
-    return (_current_settings.size() > 0);
+    return (settings.size() > 0);
 }
 
 bool CameraDefinition::get_possible_settings(
@@ -337,7 +341,7 @@ bool CameraDefinition::get_possible_settings(
 
     for (const auto &parameter : _parameter_map) {
         for (const auto &option : parameter.second->options) {
-            if (_current_settings[parameter.first] == option->value) {
+            if (_current_settings[parameter.first].value == option->value) {
                 for (const auto &exclusion : option->exclusions) {
                     // LogDebug() << "found exclusion: " << exclusion;
                     exclusions.push_back(exclusion);
@@ -354,7 +358,7 @@ bool CameraDefinition::get_possible_settings(
             }
         }
         if (!excluded) {
-            settings.insert(setting);
+            settings[setting.first] = setting.second.value;
         }
     }
 
@@ -369,7 +373,8 @@ bool CameraDefinition::set_setting(const std::string &name,
         return false;
     }
 
-    _current_settings.at(name) = value;
+    _current_settings[name].value = value;
+    _current_settings[name].needs_updating = false;
     return true;
 }
 
@@ -381,7 +386,7 @@ bool CameraDefinition::get_setting(const std::string &name,
         return false;
     }
 
-    value = _current_settings.at(name);
+    value = _current_settings.at(name).value;
 
     return true;
 }
@@ -421,7 +426,7 @@ bool CameraDefinition::get_possible_options(
     for (const auto &parameter : _parameter_map) {
         for (const auto &option : parameter.second->options) {
             // Only look at current set option.
-            if (_current_settings[parameter.first] == option->value) {
+            if (_current_settings[parameter.first].value == option->value) {
                 // Go through parameter ranges but only concerning the parameter that
                 // we're interested in..
                 if (option->parameter_ranges.find(name)
@@ -448,6 +453,18 @@ bool CameraDefinition::get_possible_options(
         }
     }
 
+    return true;
+}
+
+bool CameraDefinition::get_unknown_params(std::vector<std::string> &params)
+{
+    params.clear();
+
+    for (const auto &parameter : _parameter_map) {
+        if (_current_settings[parameter.first].needs_updating) {
+            params.push_back(parameter.first);
+        }
+    }
     return true;
 }
 

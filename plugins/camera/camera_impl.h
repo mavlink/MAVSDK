@@ -113,8 +113,7 @@ private:
     void status_timeout_happened();
 
     void load_definition_file(const std::string &uri);
-    void receive_int_param(const std::string &name, bool success, int value);
-    void receive_float_param(const std::string &name, bool success, float value);
+    void receive_param(const std::string &name, bool success, MAVLinkParameters::ParamValue value);
 
     std::unique_ptr<CameraDefinition> _camera_definition {};
 };

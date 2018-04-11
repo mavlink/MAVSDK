@@ -190,3 +190,31 @@ TEST(CameraDefinition, E90ShowOptions)
     }
 }
 
+TEST(CameraDefinition, UnknownSettings)
+{
+    // Run this from root.
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
+
+    {
+        std::vector<std::string> params;
+        EXPECT_TRUE(cd.get_unknown_params(params));
+        EXPECT_EQ(params.size(), 16);
+        for (const auto &param : params) {
+            LogInfo() << param;
+        }
+    }
+
+    {
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(1);
+        EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
+    }
+
+    // Now that we set one param it should be less that we need to fetch.
+    {
+        std::vector<std::string> params;
+        EXPECT_TRUE(cd.get_unknown_params(params));
+        EXPECT_EQ(params.size(), 15);
+    }
+}

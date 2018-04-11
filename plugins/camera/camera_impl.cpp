@@ -460,15 +460,11 @@ void CameraImpl::process_camera_settings(const mavlink_message_t &message)
             break;
     }
 
-
     if (_camera_definition) {
         // This "parameter" needs to be manually set.
-
-#if 0
-        CameraDefinition::ParameterValue value;
-        value.value.as_uint32 = camera_settings.mode_id;
-        _camera_definition->update_setting("CAM_MODE", value);
-#endif
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(camera_settings.mode_id);
+        _camera_definition->set_setting("CAM_MODE", value);
     }
 
     _get_mode.callback(Camera::Result::SUCCESS, mode);
@@ -562,13 +558,24 @@ void CameraImpl::receive_set_mode_command_result(MAVLinkCommands::Result command
     if (command_result == MAVLinkCommands::Result::SUCCESS && _camera_definition) {
         // This "parameter" needs to be manually set.
 
-#if 0
-        CameraDefinition::ParameterValue value;
-        value.value.as_uint32 = (uint32_t)mode;
+        uint32_t mavlink_mode;
+        switch (mode) {
+            case Camera::Mode::PHOTO:
+                mavlink_mode = CAMERA_MODE_IMAGE;
+                break;
+            case Camera::Mode::VIDEO:
+                mavlink_mode = CAMERA_MODE_VIDEO;
+                break;
+            default:
+            // FALLTHROUGH
+            case Camera::Mode::UNKNOWN:
+                LogWarn() << "Unknown camera mode";
+                return;
+        }
 
-        // LogDebug() << "received cam_mode: " << mode;
-        _camera_definition->update_setting("CAM_MODE", value);
-#endif
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(mavlink_mode);
+        _camera_definition->set_setting("CAM_MODE", value);
     }
 }
 
@@ -601,43 +608,15 @@ void CameraImpl::get_mode_timeout_happened()
     }
 }
 
-void CameraImpl::receive_int_param(const std::string &name, bool success, int value)
+void CameraImpl::receive_param(const std::string &name, bool success,
+                               MAVLinkParameters::ParamValue value)
 {
-    LogDebug() << "Got int param with value " << value
-               << ", success: " << (success ? "yes" : "no");
+    LogDebug() << "Got param '" << name
+               << "': " << value
+               << "(" << (success ? "success" : "fail") << ")";
 
-    if (!success) {
-        return;
-    }
-
-    UNUSED(name);
-    UNUSED(value);
-    if (!_camera_definition) {
-#if 0
-        CameraDefinition::ParameterValue new_parameter_value;
-        new_parameter_value.value.as_uint32 = value;
-        _camera_definition->update_setting(name, new_parameter_value);
-#endif
-    }
-}
-
-void CameraImpl::receive_float_param(const std::string &name, bool success, float value)
-{
-    LogDebug() << "Got float param with value " << value
-               << ", success: " << (success ? "yes" : "no");
-
-    if (!success) {
-        return;
-    }
-
-    UNUSED(name);
-    UNUSED(value);
-    if (!_camera_definition) {
-#if 0
-        CameraDefinition::ParameterValue new_parameter_value;
-        new_parameter_value.value.as_float = value;
-        _camera_definition->update_setting(name, new_parameter_value);
-#endif
+    if (success && _camera_definition) {
+        _camera_definition->set_setting(name, value);
     }
 }
 
@@ -654,26 +633,15 @@ void CameraImpl::load_definition_file(const std::string &uri)
     _camera_definition.reset(new CameraDefinition());
     _camera_definition->load_string(content);
 
-#if 0
-    CameraDefinition::parameter_map_t parameters;
-    _camera_definition->get_parameters(parameters, false);
-
-    for (auto parameter : parameters) {
-        // LogDebug() << "parameter to request: " << parameter.first;
-        if (parameter.second->type == CameraDefinition::Type::UINT32) {
-            _parent->get_param_ext_int_async(parameter.first,
-                                             std::bind(&CameraImpl::receive_int_param, this, parameter.first, _1, _2));
-        } else if (parameter.second->type == CameraDefinition::Type::FLOAT) {
-            _parent->get_param_ext_float_async(parameter.first,
-                                               std::bind(&CameraImpl::receive_float_param, this, parameter.first, _1, _2));
-        }
-    }
-#endif
-
+    std::vector<std::string> params {};
+    // TODO: make queue for all params to get.
+    // _camera_definition->unknown_params(params);
+    UNUSED(params);
 }
 
 bool CameraImpl::get_possible_settings(std::map<std::string, std::string> &settings)
 {
+    // TODO: impelement, get names of settings.
     UNUSED(settings);
 #if 0
     if (!_camera_definition) {
@@ -702,6 +670,7 @@ bool CameraImpl::get_possible_settings(std::map<std::string, std::string> &setti
 bool CameraImpl::get_possible_options(const std::string &setting_name,
                                       std::vector<std::string> &options)
 {
+    // TODO: implement, get names of options
     UNUSED(setting_name);
     UNUSED(options);
 #if 0

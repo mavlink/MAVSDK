@@ -38,6 +38,8 @@ public:
     bool get_possible_options(const std::string &name,
                               std::vector<MAVLinkParameters::ParamValue> &values);
 
+    bool get_unknown_params(std::vector<std::string> &params);
+
     // Non-copyable
     CameraDefinition(const CameraDefinition &) = delete;
     const CameraDefinition &operator=(const CameraDefinition &) = delete;
@@ -67,7 +69,12 @@ private:
 
     std::map<std::string, std::shared_ptr<Parameter>> _parameter_map;
 
-    std::map<std::string, MAVLinkParameters::ParamValue> _current_settings;
+    struct InternalCurrentSetting {
+        MAVLinkParameters::ParamValue value;
+        bool needs_updating;
+    };
+
+    std::map<std::string, InternalCurrentSetting> _current_settings;
 
     std::string _model;
     std::string _vendor;
