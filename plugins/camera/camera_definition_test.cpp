@@ -190,7 +190,7 @@ TEST(CameraDefinition, E90ShowOptions)
     }
 }
 
-TEST(CameraDefinition, UnknownSettings)
+TEST(CameraDefinition, E90SettingsToUpdate)
 {
     // Run this from root.
     CameraDefinition cd;
@@ -216,5 +216,68 @@ TEST(CameraDefinition, UnknownSettings)
         std::vector<std::string> params;
         EXPECT_TRUE(cd.get_unknown_params(params));
         EXPECT_EQ(params.size(), 15);
+    }
+}
+
+TEST(CameraDefinition, E90SettingsCauseUpdates)
+{
+    // Run this from root.
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
+
+    cd.assume_default_settings();
+
+    {
+        std::vector<std::string> params;
+        EXPECT_TRUE(cd.get_unknown_params(params));
+        EXPECT_EQ(params.size(), 0);
+        for (const auto &param : params) {
+            LogInfo() << param;
+        }
+    }
+
+    {
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(0);
+        EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
+    }
+
+    // Now that we set one param it should be less that we need to fetch.
+    {
+        std::vector<std::string> params;
+        EXPECT_TRUE(cd.get_unknown_params(params));
+        EXPECT_EQ(params.size(), 4);
+
+        // TODO: improve the poor man's vector search.
+        bool found_shutterspd = false;
+        bool found_iso = false;
+        bool found_vidres = false;
+        //bool found_aspectratio = false;
+        bool found_photoratio = false;
+
+        for (const auto &param : params) {
+            if (strcmp("CAM_SHUTTERSPD", param.c_str()) == 0) {
+                found_shutterspd = true;
+            }
+            if (strcmp("CAM_ISO", param.c_str()) == 0) {
+                found_iso = true;
+            }
+            if (strcmp("CAM_VIDRES", param.c_str()) == 0) {
+                found_vidres = true;
+            }
+            // We don't yet handle ASPECTRATIO
+            //if (strcmp("CAM_ASPECTRATIO", param.c_str()) == 0) {
+            //    found_aspectratio = true;
+            //}
+            if (strcmp("CAM_PHOTORATIO", param.c_str()) == 0) {
+                found_photoratio = true;
+            }
+        }
+
+        EXPECT_TRUE(found_shutterspd);
+        EXPECT_TRUE(found_iso);
+        EXPECT_TRUE(found_vidres);
+        //EXPECT_TRUE(found_aspectratio);
+        EXPECT_TRUE(found_photoratio);
     }
 }

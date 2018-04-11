@@ -375,6 +375,18 @@ bool CameraDefinition::set_setting(const std::string &name,
 
     _current_settings[name].value = value;
     _current_settings[name].needs_updating = false;
+
+    // Some param changes cause other params to change, so they need to be updated.
+    // The camera definition just keeps track of these params but the actual param fetching
+    // needs to happen outside of this class.
+    for (const auto &update : _parameter_map[name]->updates) {
+        if (_current_settings.find(update) == _current_settings.end()) {
+            LogWarn() << "Update to '" << update << "' not understood.";
+            continue;
+        }
+        _current_settings[update].needs_updating = true;
+    }
+
     return true;
 }
 
