@@ -94,7 +94,7 @@ bool CameraDefinition::parse_xml()
             return false;
         }
 
-        type_map.insert(std::pair<std::string, std::string>(param_name, type_str));
+        type_map[param_name] = type_str;
     }
 
     for (auto e_parameter = e_parameters->FirstChildElement("parameter");
@@ -263,9 +263,7 @@ bool CameraDefinition::parse_xml()
                         MAVLinkParameters::ParamValue new_param_value;
                         new_param_value.set_from_xml(
                             type_map[roption_parameter_str], roption_value_str);
-                        new_parameter_range.insert(
-                            std::pair<std::string, MAVLinkParameters::ParamValue>(
-                                roption_name_str, new_param_value));
+                        new_parameter_range[roption_name_str] = new_param_value;
 
                         // LogDebug() << "range option: "
                         //            << roption_name_str
@@ -274,9 +272,7 @@ bool CameraDefinition::parse_xml()
                         //            << " (" << new_param_value.typestr() << ")";
                     }
 
-                    new_option->parameter_ranges.insert(
-                        std::pair<std::string, parameter_range_t>(
-                            roption_parameter_str, new_parameter_range));
+                    new_option->parameter_ranges[roption_parameter_str] = new_parameter_range;
 
                     // LogDebug() << "adding to: " << roption_parameter_str;
                 }
@@ -290,8 +286,7 @@ bool CameraDefinition::parse_xml()
             return false;
         }
 
-        _parameter_map.insert(std::pair<std::string, std::shared_ptr<Parameter>>(
-                                  param_name, new_parameter));
+        _parameter_map[param_name] = new_parameter;
 
         InternalCurrentSetting empty_setting {};
         empty_setting.needs_updating = true;
