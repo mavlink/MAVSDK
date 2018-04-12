@@ -1,7 +1,5 @@
 #include "telemetry_structs.h"
 
-#include <cmath>
-
 namespace dronecore {
 
 std::string flight_mode_str(FlightMode flight_mode)
@@ -31,16 +29,18 @@ std::string flight_mode_str(FlightMode flight_mode)
 
 bool operator==(const Position &lhs, const Position &rhs)
 {
-    return std::abs(lhs.latitude_deg - rhs.latitude_deg) <= std::numeric_limits<double>::epsilon()
-           && std::abs(lhs.longitude_deg - rhs.longitude_deg) <= std::numeric_limits<double>::epsilon()
-           && std::abs(lhs.absolute_altitude_m - rhs.absolute_altitude_m) <= std::numeric_limits<float>::epsilon()
-           && std::abs(lhs.relative_altitude_m - rhs.relative_altitude_m) <= std::numeric_limits<float>::epsilon();
+    return lhs.latitude_deg == rhs.latitude_deg
+           && lhs.longitude_deg == rhs.longitude_deg
+           && lhs.absolute_altitude_m == rhs.absolute_altitude_m
+           && lhs.relative_altitude_m == rhs.relative_altitude_m;
 }
 
 std::ostream &operator<<(std::ostream &str, Position const &position)
 {
-    return str << "[lat: " << position.latitude_deg << ", lon: " << position.longitude_deg
-           << ", abs_alt: " << position.absolute_altitude_m << ", rel_alt: " << position.relative_altitude_m
+    return str << "[lat: " << position.latitude_deg
+           << ", lon: " << position.longitude_deg
+           << ", abs_alt: " << position.absolute_altitude_m
+           << ", rel_alt: " << position.relative_altitude_m
            << "]";
 }
 
@@ -57,12 +57,13 @@ bool operator==(const Health &lhs, const Health &rhs)
 
 std::ostream &operator<<(std::ostream &str, Health const &health)
 {
-    return str << "[gyrometer_calibration_ok: " << health.gyrometer_calibration_ok <<
-           ", accelerometer_calibration_ok: " << health.accelerometer_calibration_ok <<
-           ", magnetometer_calibration_ok: " << health.magnetometer_calibration_ok <<
-           ", level_calibration_ok: " << health.level_calibration_ok << ", local_position_ok: " <<
-           health.local_position_ok << ", global_position_ok: " << health.global_position_ok <<
-           ", home_position_ok: " << health.home_position_ok << "]";
+    return str << "[gyrometer_calibration_ok: " << health.gyrometer_calibration_ok
+           << ", accelerometer_calibration_ok: " << health.accelerometer_calibration_ok
+           << ", magnetometer_calibration_ok: " << health.magnetometer_calibration_ok
+           << ", level_calibration_ok: " << health.level_calibration_ok
+           << ", local_position_ok: " << health.local_position_ok
+           << ", global_position_ok: " << health.global_position_ok
+           << ", home_position_ok: " << health.home_position_ok << "]";
 }
 
 } // namespace dronecore
