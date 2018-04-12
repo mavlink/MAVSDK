@@ -11,8 +11,8 @@ class PluginImplBase;
 
 /**
  * @brief This class represents a system, made up of one or more components
- * (e.g. autopilot, cameras, servos, gimbals, etc). 
- * 
+ * (e.g. autopilot, cameras, servos, gimbals, etc).
+ *
  * System objects are used to interact with UAVs (including their components) and standalone cameras.
  * They are not created directly by application code, but are returned by the DroneCore class.
  */
@@ -21,9 +21,9 @@ class System
 public:
     /**
      * @brief Constructor.
-     * 
+     *
      * This constructor is not (and should not be) directly called by application code.
-     * 
+     *
      * @param system_id %System id.
      * @param comp_id Component id.
      */
