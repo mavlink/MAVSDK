@@ -9,6 +9,7 @@
 #include "dronecore.h"
 #include "mission/mission.h"
 #include "mission/mission_service_impl.h"
+#include "telemetry/telemetry.h"
 #include "telemetry/telemetry_service_impl.h"
 
 namespace dronecore {

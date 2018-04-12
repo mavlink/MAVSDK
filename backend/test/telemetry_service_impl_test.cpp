@@ -9,6 +9,7 @@
 
 #include "telemetry/mocks/telemetry_mock.h"
 #include "telemetry/telemetry_service_impl.h"
+#include "telemetry/telemetry_structs.h"
 
 namespace {
 
@@ -20,10 +21,10 @@ using TelemetryServiceImpl = dronecore::backend::TelemetryServiceImpl<MockTeleme
 using TelemetryService = dronecore::rpc::telemetry::TelemetryService;
 
 using PositionResponse = dronecore::rpc::telemetry::PositionResponse;
-using Position = dronecore::Telemetry::Position;
+using Position = dronecore::Position;
 
 using HealthResponse = dronecore::rpc::telemetry::HealthResponse;
-using Health = dronecore::Telemetry::Health;
+using Health = dronecore::Health;
 
 class TelemetryServiceImplTest : public ::testing::Test
 {
@@ -166,7 +167,7 @@ void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position> &
 Position TelemetryServiceImplTest::createPosition(const double lat, const double lng,
                                                   const float abs_alt, const float rel_alt) const
 {
-    dronecore::Telemetry::Position expected_position;
+    dronecore::Position expected_position;
 
     expected_position.latitude_deg = lat;
     expected_position.longitude_deg = lng;
@@ -278,7 +279,7 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &heal
 
 Health TelemetryServiceImplTest::createRandomHealth()
 {
-    dronecore::Telemetry::Health health;
+    dronecore::Health health;
 
     health.gyrometer_calibration_ok = generateRandomBool();
     health.accelerometer_calibration_ok = generateRandomBool();

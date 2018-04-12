@@ -15,6 +15,7 @@
 #include <dronecore/dronecore.h>
 #include <dronecore/follow_me.h>
 #include <dronecore/telemetry.h>
+#include <dronecore/telemetry_structs.h>
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -67,9 +68,9 @@ int main(int, char **)
 
     // Subscribe to receive updates on flight mode. You can find out whether FollowMe is active.
     telemetry->flight_mode_async(
-    std::bind([&](Telemetry::FlightMode flight_mode) {
+    std::bind([&](FlightMode flight_mode) {
         const FollowMe::TargetLocation last_location = follow_me->get_last_location();
-        std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+        std::cout << "[FlightMode: " << flight_mode_str(flight_mode)
                   << "] Vehicle is at: " << last_location.latitude_deg << ", "
                   << last_location.longitude_deg << " degrees." << std::endl;
     }, std::placeholders::_1));

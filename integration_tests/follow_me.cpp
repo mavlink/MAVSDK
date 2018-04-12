@@ -1,14 +1,16 @@
-#include <iostream>
-#include <cmath>
-#include <thread>
-#include <chrono>
 #include <array>
-#include "integration_test_helper.h"
-#include "global_include.h"
+#include <chrono>
+#include <cmath>
+#include <iostream>
+#include <thread>
+
 #include "dronecore.h"
-#include "plugins/telemetry/telemetry.h"
+#include "global_include.h"
+#include "integration_test_helper.h"
 #include "plugins/action/action.h"
 #include "plugins/follow_me/follow_me.h"
+#include "plugins/telemetry/telemetry.h"
+#include "plugins/telemetry/telemetry_structs.h"
 
 using namespace dronecore;
 using namespace std::chrono;
@@ -44,10 +46,10 @@ TEST_F(SitlTest, FollowMeOneLocation)
     ASSERT_EQ(ActionResult::SUCCESS, action_ret);
 
     telemetry->flight_mode_async(
-    std::bind([&](Telemetry::FlightMode flight_mode) {
+    std::bind([&](FlightMode flight_mode) {
         const FollowMe::TargetLocation last_location = follow_me->get_last_location();
 
-        std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+        std::cout << "[FlightMode: " << flight_mode_str(flight_mode)
                   << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
                   "Lon: " << last_location.longitude_deg << " deg." << std::endl;
     }, std::placeholders::_1));
@@ -104,10 +106,10 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     ASSERT_EQ(ActionResult::SUCCESS, action_ret);
 
     telemetry->flight_mode_async(
-    std::bind([&](Telemetry::FlightMode flight_mode) {
+    std::bind([&](FlightMode flight_mode) {
         const FollowMe::TargetLocation last_location = follow_me->get_last_location();
 
-        std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+        std::cout << "[FlightMode: " << flight_mode_str(flight_mode)
                   << "] Vehicle is at Lat: " << last_location.latitude_deg << " deg, "  <<
                   "Lon: " << last_location.longitude_deg << " deg." << std::endl;
 

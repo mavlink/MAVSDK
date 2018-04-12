@@ -1,11 +1,13 @@
 #include <iostream>
-#include "integration_test_helper.h"
+
 #include "dronecore.h"
+#include "integration_test_helper.h"
 #include "plugins/telemetry/telemetry.h"
+#include "plugins/telemetry/telemetry_structs.h"
 
 using namespace dronecore;
 
-void print_health(Telemetry::Health health);
+void print_health(Health health);
 
 TEST_F(SitlTest, TelemetryHealth)
 {
@@ -23,7 +25,7 @@ TEST_F(SitlTest, TelemetryHealth)
     std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
-void print_health(Telemetry::Health health)
+void print_health(Health health)
 {
     std::cout << "Got health: " << std::endl;
 
