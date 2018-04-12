@@ -17,41 +17,56 @@ class PluginImplBase;
 class System
 {
 public:
+    /**
+     * @brief Constructor.
+     * @param system_id MAVLink system id.
+     * @param comp_id MAVLink component id.
+     */
     explicit System(DroneCoreImpl &parent, uint8_t system_id, uint8_t comp_id);
+    /**
+     * @brief Destructor.
+     */
     ~System();
 
     /**
      * @brief Checks whether the system has an autopilot.
-     * @return true if its an autopilot, false otherwise.
+     * @return `true` if it has an autopilot, `false` otherwise.
      */
     bool has_autopilot() const;
 
     /**
-     * @brief Checks whether the system is a standalone (Non-autopilot).
-     * @return true if stand alone, false otherwise.
+     * @brief Checks whether the system is a standalone (non-autopilot).
+     * @return `true` if stand alone, `false` otherwise.
      */
     bool is_standalone() const;
 
     /**
      * @brief Checks whether the system has a camera with the given camera ID.
      *
-     * A System may have several cameras with ID starting from 0.
-     * When called without passing camera ID, it checks whether the system has
+     * A System may have several cameras, with IDs starting from 0.
+     * When called without passing a camera ID, it checks whether the system has
      * any camera.
      * @param camera_id ID of the camera starting from 0 onwards.
-     * @return true if camera with the given camera ID is found, false otherwise.
+     * @return `true` if camera with the given camera ID is found, `false` otherwise.
      */
     bool has_camera(int camera_id = -1) const;
 
     /**
      * @brief Checks whether the system has a gimbal.
-     * @return true if the system has gimbal, false otherwise.
+     * @return `true` if the system has a gimbal, false otherwise.
      */
     bool has_gimbal() const;
 
 
     // Non-copyable
+    /**
+     * @brief Copy constructor (object is not copyable).
+     */
     System(const System &) = delete;
+
+    /**
+     * @brief Equality operator (object is not copyable).
+     */
     const System &operator=(const System &) = delete;
 
 private:
