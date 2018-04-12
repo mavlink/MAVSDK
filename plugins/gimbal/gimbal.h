@@ -10,7 +10,7 @@ class GimbalImpl;
 class System;
 
 /**
- * @brief The Gimbal class enables to control a gimbal.
+ * @brief The Gimbal class provides control over a gimbal.
  *
  * Synchronous and asynchronous variants of the gimbal methods are supplied.
  */

@@ -14,7 +14,7 @@ namespace dronecore {
 enum class ActionResult {
     UNKNOWN, /**< @brief Unspecified error. */
     SUCCESS, /**< @brief Success. The action command was accepted by the vehicle. */
-    NO_SYSTEM, /**< @brief No device is connected error. */
+    NO_SYSTEM, /**< @brief No system is connected error. */
     CONNECTION_ERROR, /**< @brief %Connection error. */
     BUSY, /**< @brief Vehicle busy error. */
     COMMAND_DENIED, /**< @brief Command refused by vehicle. */
