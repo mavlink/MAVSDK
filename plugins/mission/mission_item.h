@@ -1,6 +1,8 @@
 #pragma once
-#include <string>
+
 #include <memory>
+#include <ostream>
+#include <string>
 
 namespace dronecore {
 
@@ -214,5 +216,9 @@ private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<MissionItemImpl> _impl;
 };
+
+bool operator==(const MissionItem &lhs, const MissionItem &rhs);
+std::ostream &operator<<(std::ostream &str, MissionItem const &mission_item);
+std::ostream &operator<<(std::ostream &str, MissionItem::CameraAction const &camera_action);
 
 } // namespace dronecore
