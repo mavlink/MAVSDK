@@ -8,13 +8,13 @@
 namespace dronecore {
 namespace testing {
 
-typedef std::function<void(Mission::Result)> result_callback_t;
+typedef std::function<void(Mission::Result)> mission_result_callback_t;
 
 class MockMission
 {
 public:
     MOCK_CONST_METHOD2(upload_mission_async, void(const std::vector<std::shared_ptr<MissionItem>> &,
-                                                  result_callback_t));
+                                                  mission_result_callback_t));
 };
 
 } // namespace testing
