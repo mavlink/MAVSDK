@@ -119,6 +119,7 @@ private:
     MAVLinkCommands::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
     MAVLinkCommands::CommandLong make_command_stop_photo();
 
+    MAVLinkCommands::CommandLong make_command_request_camera_info();
     MAVLinkCommands::CommandLong make_command_set_camera_mode(float mavlink_mode);
     MAVLinkCommands::CommandLong make_command_request_camera_settings();
     MAVLinkCommands::CommandLong make_command_request_camera_capture_status();

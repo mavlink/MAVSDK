@@ -48,10 +48,7 @@ void CameraImpl::init()
         std::bind(&CameraImpl::process_camera_information, this, _1),
         this);
 
-    MAVLinkCommands::CommandLong command_camera_info {};
-    command_camera_info.command = MAV_CMD_REQUEST_CAMERA_INFORMATION;
-    command_camera_info.params.param1 = 1.0f; // Request it
-    command_camera_info.target_component_id = MAV_COMP_ID_CAMERA;
+    auto command_camera_info = make_command_request_camera_info();
 
     _parent->send_command_async(command_camera_info, nullptr);
 }
@@ -64,6 +61,17 @@ void CameraImpl::deinit()
 void CameraImpl::enable() {}
 
 void CameraImpl::disable() {}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_request_camera_info()
+{
+    MAVLinkCommands::CommandLong command_camera_info {};
+    command_camera_info.command = MAV_CMD_REQUEST_CAMERA_INFORMATION;
+    command_camera_info.params.param1 = 1.0f; // Request it
+    command_camera_info.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return command_camera_info;
+}
 
 MAVLinkCommands::CommandLong
 CameraImpl::make_command_take_photo(float interval_s, float no_of_photos)
