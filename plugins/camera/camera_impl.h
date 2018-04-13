@@ -34,6 +34,12 @@ public:
     void start_video_async(const Camera::result_callback_t &callback);
     void stop_video_async(const Camera::result_callback_t &callback);
 
+    void set_video_stream_settings(const Camera::VideoStreamSettings &settings);
+    Camera::Result get_video_stream_info(Camera::VideoStreamInfo &info);
+
+    Camera::Result start_video_streaming();
+    Camera::Result stop_video_streaming();
+
     void set_mode_async(Camera::Mode mode, const Camera::mode_callback_t &callback);
     void get_mode_async(Camera::mode_callback_t callback);
 
@@ -83,6 +89,17 @@ private:
         Camera::capture_info_callback_t callback {nullptr};
     } _capture_info;
 
+    struct {
+        std::mutex mutex {};
+        Camera::VideoStreamInfo info;
+        bool available = false;
+        void reset()
+        {
+            info = Camera::VideoStreamInfo();
+            available = false;
+        }
+    } _video_stream_info;
+
     void receive_set_mode_command_result(MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
                                          Camera::Mode mode);
@@ -104,6 +121,7 @@ private:
     void process_camera_capture_status(const mavlink_message_t &message);
     void process_camera_settings(const mavlink_message_t &message);
     void process_camera_information(const mavlink_message_t &message);
+    void process_video_information(const mavlink_message_t &message);
 
     void receive_storage_information_result(MAVLinkCommands::Result result);
     void receive_camera_capture_status_result(MAVLinkCommands::Result result);
@@ -127,6 +145,15 @@ private:
 
     MAVLinkCommands::CommandLong make_command_start_video(float capture_status_rate_hz);
     MAVLinkCommands::CommandLong make_command_stop_video();
+
+    MAVLinkCommands::CommandLong make_command_start_video_streaming();
+    MAVLinkCommands::CommandLong make_command_stop_video_streaming();
+
+    mavlink_message_t
+    make_message_set_video_stream_settings(const Camera::VideoStreamSettings &settings);
+
+    MAVLinkCommands::CommandLong make_command_request_video_stream_info();
+
 
     std::unique_ptr<CameraDefinition> _camera_definition {};
 };

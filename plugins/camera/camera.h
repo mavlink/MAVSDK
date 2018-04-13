@@ -229,6 +229,85 @@ public:
     };
 
     /**
+     * @brief Type for video stream settings.
+     *
+     * Application may call set_video_stream_settings() before starting
+     * video streaming to tell Camera server to use these settings during video streaming.
+     *
+     * @sa set_video_stream_settings(), get_video_stream_info(), start_video_streaming().
+     */
+    struct VideoStreamSettings {
+        float frame_rate_hz = 0.f; /**< @brief Frames per second. */
+        uint16_t resolution_h_pix = 0u; /**< @brief Resolution horizontal in pixels. */
+        uint16_t resolution_v_pix = 0u; /**< @brief Resolution verticle in pixels. */
+        uint32_t bit_rate_b_s = 0u; /**< @brief Bit rate in bits per second. */
+        uint16_t rotation_deg = 0u; /**< @brief Video image rotation clockwise (0-359 degrees) */
+        std::string uri = nullptr; /**< @brief Video stream URI */
+
+        void set_highest()
+        {
+            frame_rate_hz = FRAME_RATE_HIGHEST;
+            resolution_h_pix = RESOLUTION_H_HIGHEST;
+            resolution_v_pix = RESOLUTION_V_HIGHEST;
+            // FIXME: Should bit_rate_b_s be part of set_highest() ?
+            bit_rate_b_s = BIT_RATE_AUTO;
+        }
+
+        constexpr static const float FRAME_RATE_HIGHEST = -1.0f;
+        constexpr static const uint16_t RESOLUTION_H_HIGHEST = UINT16_MAX;
+        constexpr static const uint16_t RESOLUTION_V_HIGHEST = UINT16_MAX;
+        constexpr static const uint32_t BIT_RATE_AUTO = UINT32_MAX;
+    };
+
+    /**
+     * @brief Sets video stream settings.
+     *
+     * @param settings Reference to custom video stream settings which include resolution,
+     * framerate, bitrate, etc.
+     */
+    void set_video_stream_settings(const VideoStreamSettings &settings);
+
+    /**
+     * @brief Information about video stream.
+     */
+    struct VideoStreamInfo {
+        VideoStreamSettings settings; /**< @brief Video stream settings. */
+        enum class Status {
+            NOT_RUNNING = 0, IN_PROGRESS
+        } status; /**< @brief Current status of video streaming. */
+    };
+
+    /**
+     * @brief Request video stream information (synchronous).
+     * @param info Video stream information will be filled.
+     *
+     * @return SUCCESS if video stream info is received, error otherwise.
+     */
+    Result get_video_stream_info(VideoStreamInfo &info);
+
+    /**
+     * @brief Starts video streaming (synchronous).
+     *
+     * Sends a request to start video streaming.
+     *
+     * @sa stop_video_streaming()
+     *
+     * @return SUCCESS if video streaming is started, error otherwise.
+     */
+    Result start_video_streaming();
+
+    /**
+     * @brief Stop the current video streaming (synchronous).
+     *
+     * Sends a request to stop ongoing video streaming.
+     *
+     * @sa start_video_streaming()
+     *
+     * @return SUCCESS if video streaming is stopped, error otherwise.
+     */
+    Result stop_video_streaming();
+
+    /**
      * @brief Callback type for capture info updates.
      */
     typedef std::function<void(CaptureInfo)> capture_info_callback_t;

@@ -48,6 +48,11 @@ void CameraImpl::init()
         std::bind(&CameraImpl::process_camera_information, this, _1),
         this);
 
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_SET_VIDEO_STREAM_SETTINGS,
+        std::bind(&CameraImpl::process_video_information, this, _1),
+        this);
+
     auto command_camera_info = make_command_request_camera_info();
 
     _parent->send_command_async(command_camera_info, nullptr);
@@ -66,6 +71,7 @@ MAVLinkCommands::CommandLong
 CameraImpl::make_command_request_camera_info()
 {
     MAVLinkCommands::CommandLong command_camera_info {};
+
     command_camera_info.command = MAV_CMD_REQUEST_CAMERA_INFORMATION;
     command_camera_info.params.param1 = 1.0f; // Request it
     command_camera_info.target_component_id = MAV_COMP_ID_CAMERA;
@@ -77,6 +83,7 @@ MAVLinkCommands::CommandLong
 CameraImpl::make_command_take_photo(float interval_s, float no_of_photos)
 {
     MAVLinkCommands::CommandLong cmd_take_photo {};
+
     cmd_take_photo.command = MAV_CMD_IMAGE_START_CAPTURE;
     cmd_take_photo.params.param1 = 0.0f; // Reserved, set to 0
     cmd_take_photo.params.param2 = interval_s;
@@ -91,6 +98,7 @@ MAVLinkCommands::CommandLong
 CameraImpl::make_command_stop_photo()
 {
     MAVLinkCommands::CommandLong cmd_stop_photo {};
+
     cmd_stop_photo.command = MAV_CMD_IMAGE_STOP_CAPTURE;
     cmd_stop_photo.target_component_id = MAV_COMP_ID_CAMERA;
 
@@ -101,6 +109,7 @@ MAVLinkCommands::CommandLong
 CameraImpl::make_command_start_video(float capture_status_rate_hz)
 {
     MAVLinkCommands::CommandLong cmd_start_video {};
+
     cmd_start_video.command = MAV_CMD_VIDEO_START_CAPTURE;
     cmd_start_video.params.param1 = 0.f; // Reserved, set to 0
     cmd_start_video.params.param2 = capture_status_rate_hz;
@@ -113,6 +122,7 @@ MAVLinkCommands::CommandLong
 CameraImpl::make_command_stop_video()
 {
     MAVLinkCommands::CommandLong cmd_stop_video {};
+
     cmd_stop_video.command = MAV_CMD_VIDEO_STOP_CAPTURE;
     cmd_stop_video.params.param1 = 0.f; // Reserved, set to 0
     cmd_stop_video.target_component_id = MAV_COMP_ID_CAMERA;
@@ -163,8 +173,65 @@ CameraImpl::make_command_request_storage_info()
     cmd_req_storage_info.command = MAV_CMD_REQUEST_STORAGE_INFORMATION;
     cmd_req_storage_info.params.param1 = 0.f; // Reserved, set to 0
     cmd_req_storage_info.params.param2 = 1.f; // Request it
+    cmd_req_storage_info.target_component_id = MAV_COMP_ID_CAMERA;
 
     return cmd_req_storage_info;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_start_video_streaming()
+{
+    MAVLinkCommands::CommandLong cmd_start_video_streaming {};
+
+    cmd_start_video_streaming.command = MAV_CMD_VIDEO_START_STREAMING;
+    cmd_start_video_streaming.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return  cmd_start_video_streaming;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_stop_video_streaming()
+{
+    MAVLinkCommands::CommandLong cmd_stop_video_streaming {};
+
+    cmd_stop_video_streaming.command = MAV_CMD_VIDEO_STOP_STREAMING;
+    cmd_stop_video_streaming.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return  cmd_stop_video_streaming;
+
+}
+
+mavlink_message_t
+CameraImpl::make_message_set_video_stream_settings(const Camera::VideoStreamSettings &settings)
+{
+    mavlink_message_t msg;
+
+    mavlink_msg_set_video_stream_settings_pack(GCSClient::system_id,
+                                               GCSClient::component_id,
+                                               &msg,
+                                               _parent->get_system_id(),
+                                               MAV_COMP_ID_CAMERA,
+                                               MAV_COMP_ID_CAMERA, // Is it right ?
+                                               settings.frame_rate_hz,
+                                               settings.resolution_h_pix,
+                                               settings.resolution_v_pix,
+                                               settings.bit_rate_b_s,
+                                               settings.rotation_deg,
+                                               settings.uri.c_str());
+
+    return  msg;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_request_video_stream_info()
+{
+    MAVLinkCommands::CommandLong cmd_req_video_stream_info {};
+
+    cmd_req_video_stream_info.command = MAV_CMD_REQUEST_VIDEO_STREAM_INFORMATION;
+    cmd_req_video_stream_info.params.param2 = 1.0f;
+    cmd_req_video_stream_info.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return cmd_req_video_stream_info;
 }
 
 Camera::Result CameraImpl::take_photo()
@@ -283,8 +350,78 @@ void CameraImpl::stop_video_async(const Camera::result_callback_t &callback)
                                 std::bind(&CameraImpl::receive_command_result, _1, callback));
 }
 
-Camera::Result CameraImpl::camera_result_from_command_result(MAVLinkCommands::Result
-                                                             command_result)
+void CameraImpl::set_video_stream_settings(const Camera::VideoStreamSettings &settings)
+{
+    auto msg = make_message_set_video_stream_settings(settings);
+
+    if (!_parent->send_message(msg)) {
+        LogErr() << "Failed to set Video stream settings";
+    }
+}
+
+Camera::Result CameraImpl::start_video_streaming()
+{
+    if (_video_stream_info.available &&
+        _video_stream_info.info.status == Camera::VideoStreamInfo::Status::IN_PROGRESS) {
+        return Camera::Result::IN_PROGRESS;
+    }
+
+    // TODO Check whether we're in video mode
+    auto command = make_command_start_video_streaming();
+
+    auto result = camera_result_from_command_result(_parent->send_command(command));
+    if (result == Camera::Result::SUCCESS) {
+        // Cache video stream info; app may query immediately next.
+        _video_stream_info.reset();
+        get_video_stream_info(_video_stream_info.info);
+    }
+    return result;
+}
+
+Camera::Result CameraImpl::stop_video_streaming()
+{
+    // TODO I think we need to maintain current state, whether we issued
+    // video capture request or video streaming request, etc.We shouldn't
+    // send stop video streaming if we've not started it!
+    auto command = make_command_stop_video_streaming();
+
+    auto result = camera_result_from_command_result(_parent->send_command(command));
+    {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        _video_stream_info.reset();
+    }
+    return result;
+}
+
+Camera::Result
+CameraImpl::get_video_stream_info(Camera::VideoStreamInfo &info)
+{
+    Camera::Result result = Camera::Result::SUCCESS;
+    {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+
+        do {
+            if (!_video_stream_info.available) { // Request if not available
+                auto command = make_command_request_video_stream_info();
+                result = camera_result_from_command_result(_parent->send_command(command));
+                if (result != Camera::Result::SUCCESS) {
+                    LogErr() << "Failed to request video stream info";
+                    break;
+                }
+                while (!_video_stream_info.available) { // Wait for video stream info
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                }
+            }
+            // Copy to application, once video stream info is available.
+            info = _video_stream_info.info;
+        } while (false);
+    }
+
+    return result;;
+}
+
+Camera::Result
+CameraImpl::camera_result_from_command_result(MAVLinkCommands::Result command_result)
 {
     switch (command_result) {
         case MAVLinkCommands::Result::SUCCESS:
@@ -534,6 +671,27 @@ void CameraImpl::process_camera_information(const mavlink_message_t &message)
     mavlink_msg_camera_information_decode(&message, &camera_information);
 
     load_definition_file(camera_information.cam_definition_uri);
+}
+
+void CameraImpl::process_video_information(const mavlink_message_t &message)
+{
+    mavlink_video_stream_information_t received_video_info;
+    mavlink_msg_video_stream_information_decode(&message, &received_video_info);
+
+    {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        _video_stream_info.info.status = \
+                                         static_cast<Camera::VideoStreamInfo::Status>(received_video_info.status);
+        auto &video_stream_info = _video_stream_info.info.settings;
+        video_stream_info.frame_rate_hz = received_video_info.framerate;
+        video_stream_info.resolution_h_pix = received_video_info.resolution_h;
+        video_stream_info.resolution_v_pix = received_video_info.resolution_v;
+        video_stream_info.bit_rate_b_s = received_video_info.bitrate;
+        video_stream_info.rotation_deg = received_video_info.rotation;
+        video_stream_info.uri = received_video_info.uri;
+
+        _video_stream_info.available = true;
+    }
 }
 
 void CameraImpl::check_status()
