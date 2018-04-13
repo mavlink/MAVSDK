@@ -49,7 +49,7 @@ void CameraImpl::init()
         this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_SET_VIDEO_STREAM_SETTINGS,
+        MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION,
         std::bind(&CameraImpl::process_video_information, this, _1),
         this);
 

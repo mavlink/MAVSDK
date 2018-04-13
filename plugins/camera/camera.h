@@ -278,7 +278,11 @@ public:
     };
 
     /**
-     * @brief Request video stream information (synchronous).
+     * @brief Get video stream information (synchronous).
+     *
+     * Application may use media player like VLC and feed `uri`
+     * to play the ongoing video streaming.
+     *
      * @param info Video stream information will be filled.
      *
      * @return SUCCESS if video stream info is received, error otherwise.
