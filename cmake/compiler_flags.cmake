@@ -29,6 +29,9 @@ else()
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         set(warnings "${warnings} -Wno-missing-braces -Wno-unused-parameter")
     endif()
+
+    # Otherwise tinyxml2 complains.
+    set(warnings "${warnings} -Wno-old-style-cast")
 endif()
 
 if(APPLE)
@@ -42,6 +45,3 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage")
 set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_COVERAGE} --coverage")
 set(CMAKE_LINKER_FLAGS_COVERAGE "${CMAKE_LINKER_FLAGS_COVERAGE} --coverage")
-
-# Otherwise tinyxml2 complains.
-set(warnings "${warnings} -Wno-old-style-cast")
