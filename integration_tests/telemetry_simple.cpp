@@ -1,7 +1,9 @@
 #include <iostream>
-#include "integration_test_helper.h"
+
 #include "dronecore.h"
+#include "integration_test_helper.h"
 #include "plugins/telemetry/telemetry.h"
+#include "plugins/telemetry/telemetry_structs.h"
 
 using namespace dronecore;
 
@@ -40,7 +42,7 @@ TEST_F(SitlTest, TelemetrySimple)
     // Print 3s of telemetry.
     for (unsigned i = 0; i < 50; ++i) {
 
-        const Telemetry::Position &position = telemetry->position();
+        const Position &position = telemetry->position();
         std::cout << "Position: " << std::endl
                   << "Absolute altitude: " << position.absolute_altitude_m << " m" << std::endl
                   << "Relative altitude: " << position.relative_altitude_m << " m" << std::endl
@@ -49,7 +51,7 @@ TEST_F(SitlTest, TelemetrySimple)
                   << ", longitude: "
                   << position.longitude_deg << " deg" << std::endl;
 
-        const Telemetry::Position &home_position = telemetry->home_position();
+        const Position &home_position = telemetry->home_position();
         std::cout << "Home position: " << std::endl
                   << "Absolute altitude: " << home_position.absolute_altitude_m
                   << " m" << std::endl
@@ -63,7 +65,7 @@ TEST_F(SitlTest, TelemetrySimple)
         std::cout << (telemetry->in_air() ? "In-air" : "On-ground")
                   << std::endl;
 
-        const Telemetry::Quaternion &quaternion
+        const Quaternion &quaternion
             = telemetry->attitude_quaternion();
         std::cout << "Quaternion: ("
                   << quaternion.w << ", "
@@ -71,23 +73,23 @@ TEST_F(SitlTest, TelemetrySimple)
                   << quaternion.y << ","
                   << quaternion.z << ")" << std::endl;
 
-        const Telemetry::EulerAngle &euler_angle
+        const EulerAngle &euler_angle
             = telemetry->attitude_euler_angle();
         std::cout << "Euler: (" << euler_angle.roll_deg << " deg, "
                   << euler_angle.pitch_deg << " deg,"
                   << euler_angle.yaw_deg << " deg)" << std::endl;
 
-        const Telemetry::GroundSpeedNED &ground_speed_ned
+        const GroundSpeedNED &ground_speed_ned
             = telemetry->ground_speed_ned();
         std::cout << "Speed: (" << ground_speed_ned.velocity_north_m_s << " m/s, "
                   << ground_speed_ned.velocity_east_m_s << " m/s,"
                   << ground_speed_ned.velocity_down_m_s << " m/s)" << std::endl;
 
-        const Telemetry::GPSInfo &gps_info = telemetry->gps_info();
+        const GPSInfo &gps_info = telemetry->gps_info();
         std::cout << "GPS sats: " << gps_info.num_satellites
                   << ", fix type: " << gps_info.fix_type << std::endl;
 
-        const Telemetry::Battery &battery = telemetry->battery();
+        const Battery &battery = telemetry->battery();
         std::cout << "Battery voltage: " << battery.voltage_v << " v, "
                   << "remaining: " << battery.remaining_percent * 100.0f << " %" << std::endl;
 

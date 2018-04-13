@@ -1,6 +1,7 @@
 add_library(dronecore_telemetry ${PLUGIN_LIBRARY_TYPE}
     telemetry.cpp
     telemetry_impl.cpp
+    telemetry_structs.cpp
     math_conversions.cpp
 )
 
@@ -10,6 +11,7 @@ target_link_libraries(dronecore_telemetry
 
 install(FILES
     telemetry.h
+    telemetry_structs.h
     DESTINATION ${dronecore_install_include_dir}
 )
 

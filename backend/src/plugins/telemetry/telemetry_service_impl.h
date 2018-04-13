@@ -1,7 +1,8 @@
 #include <future>
 
-#include "telemetry/telemetry.h" // TODO: remove this include now that it is templated
+#include "telemetry/telemetry.h"
 #include "telemetry/telemetry.grpc.pb.h"
+#include "telemetry/telemetry_structs.h"
 
 namespace dronecore {
 namespace backend {
@@ -19,7 +20,7 @@ public:
                                    const dronecore::rpc::telemetry::SubscribePositionRequest * /* request */,
                                    grpc::ServerWriter<rpc::telemetry::PositionResponse> *writer) override
     {
-        _telemetry.position_async([&writer](dronecore::Telemetry::Position position) {
+        _telemetry.position_async([&writer](Position position) {
             auto rpc_position = new dronecore::rpc::telemetry::Position();
             rpc_position->set_latitude_deg(position.latitude_deg);
             rpc_position->set_longitude_deg(position.longitude_deg);
@@ -39,7 +40,7 @@ public:
                                  const dronecore::rpc::telemetry::SubscribeHealthRequest * /* request */,
                                  grpc::ServerWriter<rpc::telemetry::HealthResponse> *writer) override
     {
-        _telemetry.health_async([&writer](dronecore::Telemetry::Health health) {
+        _telemetry.health_async([&writer](Health health) {
             auto rpc_health = new dronecore::rpc::telemetry::Health();
             rpc_health->set_is_gyrometer_calibration_ok(health.gyrometer_calibration_ok);
             rpc_health->set_is_accelerometer_calibration_ok(health.accelerometer_calibration_ok);

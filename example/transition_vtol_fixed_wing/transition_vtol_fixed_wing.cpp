@@ -4,6 +4,7 @@
 #include <dronecore/action.h>
 #include <dronecore/dronecore.h>
 #include <dronecore/telemetry.h>
+#include <dronecore/telemetry_structs.h>
 #include <iostream>
 #include <thread>
 
@@ -60,7 +61,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
 
     // Set up callback to monitor altitude while the vehicle is in flight
-    telemetry->position_async([](Telemetry::Position position) {
+    telemetry->position_async([](Position position) {
         std::cout << TELEMETRY_CONSOLE_TEXT // set to blue
                   << "Altitude: " << position.relative_altitude_m << " m"
                   << NORMAL_CONSOLE_TEXT // set to default color again

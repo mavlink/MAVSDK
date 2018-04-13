@@ -105,12 +105,12 @@ void Telemetry::set_rate_rc_status_async(double rate_hz, result_callback_t callb
     _impl->set_rate_rc_status_async(rate_hz, callback);
 }
 
-Telemetry::Position Telemetry::position() const
+Position Telemetry::position() const
 {
     return _impl->get_position();
 }
 
-Telemetry::Position Telemetry::home_position() const
+Position Telemetry::home_position() const
 {
     return _impl->get_home_position();
 }
@@ -125,47 +125,47 @@ bool Telemetry::armed() const
     return _impl->armed();
 }
 
-Telemetry::Quaternion Telemetry::attitude_quaternion() const
+Quaternion Telemetry::attitude_quaternion() const
 {
     return _impl->get_attitude_quaternion();
 }
 
-Telemetry::EulerAngle Telemetry::attitude_euler_angle() const
+EulerAngle Telemetry::attitude_euler_angle() const
 {
     return _impl->get_attitude_euler_angle();
 }
 
-Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
+Quaternion Telemetry::camera_attitude_quaternion() const
 {
     return _impl->get_camera_attitude_quaternion();
 }
 
-Telemetry::EulerAngle Telemetry::camera_attitude_euler_angle() const
+EulerAngle Telemetry::camera_attitude_euler_angle() const
 {
     return _impl->get_camera_attitude_euler_angle();
 }
 
-Telemetry::GroundSpeedNED Telemetry::ground_speed_ned() const
+GroundSpeedNED Telemetry::ground_speed_ned() const
 {
     return _impl->get_ground_speed_ned();
 }
 
-Telemetry::GPSInfo Telemetry::gps_info() const
+GPSInfo Telemetry::gps_info() const
 {
     return _impl->get_gps_info();
 }
 
-Telemetry::Battery Telemetry::battery() const
+Battery Telemetry::battery() const
 {
     return _impl->get_battery();
 }
 
-Telemetry::FlightMode Telemetry::flight_mode() const
+FlightMode Telemetry::flight_mode() const
 {
     return _impl->get_flight_mode();
 }
 
-Telemetry::Health Telemetry::health() const
+Health Telemetry::health() const
 {
     return _impl->get_health();
 }
@@ -175,7 +175,7 @@ bool Telemetry::health_all_ok() const
     return _impl->get_health_all_ok();
 }
 
-Telemetry::RCStatus Telemetry::rc_status() const
+RCStatus Telemetry::rc_status() const
 {
     return _impl->get_rc_status();
 }
@@ -240,32 +240,6 @@ void Telemetry::flight_mode_async(flight_mode_callback_t callback)
     return _impl->flight_mode_async(callback);
 }
 
-std::string Telemetry::flight_mode_str(FlightMode flight_mode)
-{
-    switch (flight_mode) {
-        case FlightMode::READY:
-            return "Ready";
-        case FlightMode::TAKEOFF:
-            return "Takeoff";
-        case FlightMode::HOLD:
-            return "Hold";
-        case FlightMode::MISSION:
-            return "Mission";
-        case FlightMode::RETURN_TO_LAUNCH:
-            return "Return to launch";
-        case FlightMode::LAND:
-            return "Land";
-        case FlightMode::OFFBOARD:
-            return "Offboard";
-        case FlightMode::FOLLOW_ME:
-            return "FollowMe";
-        case FlightMode::UNKNOWN:
-        default:
-            return "Unknown";
-    }
-
-}
-
 void Telemetry::health_async(health_callback_t callback)
 {
     return _impl->health_async(callback);
@@ -300,42 +274,6 @@ const char *Telemetry::result_str(Result result)
         default:
             return "Unknown";
     }
-}
-
-bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs)
-{
-    return abs(lhs.latitude_deg - rhs.latitude_deg) <= std::numeric_limits<double>::epsilon()
-           && abs(lhs.longitude_deg - rhs.longitude_deg) <= std::numeric_limits<double>::epsilon()
-           && abs(lhs.absolute_altitude_m - rhs.absolute_altitude_m) <= std::numeric_limits<float>::epsilon()
-           && abs(lhs.relative_altitude_m - rhs.relative_altitude_m) <= std::numeric_limits<float>::epsilon();
-}
-
-std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position)
-{
-    return str << "[lat: " << position.latitude_deg << ", lon: " << position.longitude_deg
-           << ", abs_alt: " << position.absolute_altitude_m << ", rel_alt: " << position.relative_altitude_m
-           << "]";
-}
-
-bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs)
-{
-    return lhs.gyrometer_calibration_ok == rhs.gyrometer_calibration_ok
-           && lhs.accelerometer_calibration_ok == rhs.accelerometer_calibration_ok
-           && lhs.magnetometer_calibration_ok == rhs.magnetometer_calibration_ok
-           && lhs.level_calibration_ok == rhs.level_calibration_ok
-           && lhs.local_position_ok == rhs.local_position_ok
-           && lhs.global_position_ok == rhs.global_position_ok
-           && lhs.home_position_ok == rhs.home_position_ok;
-}
-
-std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health)
-{
-    return str << "[gyrometer_calibration_ok: " << health.gyrometer_calibration_ok <<
-           ", accelerometer_calibration_ok: " << health.accelerometer_calibration_ok <<
-           ", magnetometer_calibration_ok: " << health.magnetometer_calibration_ok <<
-           ", level_calibration_ok: " << health.level_calibration_ok << ", local_position_ok: " <<
-           health.local_position_ok << ", global_position_ok: " << health.global_position_ok <<
-           ", home_position_ok: " << health.home_position_ok << "]";
 }
 
 } // namespace dronecore

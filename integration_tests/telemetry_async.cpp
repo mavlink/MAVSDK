@@ -1,29 +1,30 @@
 #include <iostream>
-#include "integration_test_helper.h"
+
 #include "dronecore.h"
+#include "integration_test_helper.h"
 #include "plugins/telemetry/telemetry.h"
+#include "plugins/telemetry/telemetry_structs.h"
 
 #define CAMERA_AVAILABLE 0 // Set to 1 if camera is available and should be tested.
 
 using namespace std::placeholders; // for `_1`
 using namespace dronecore;
 
-
 static void receive_result(Telemetry::Result result);
-static void print_position(Telemetry::Position position);
-static void print_home_position(Telemetry::Position home_position);
+static void print_position(Position position);
+static void print_home_position(Position home_position);
 static void print_in_air(bool in_air);
 static void print_armed(bool armed);
-static void print_quaternion(Telemetry::Quaternion quaternion);
-static void print_euler_angle(Telemetry::EulerAngle euler_angle);
+static void print_quaternion(Quaternion quaternion);
+static void print_euler_angle(EulerAngle euler_angle);
 #if CAMERA_AVAILABLE==1
-static void print_camera_quaternion(Telemetry::Quaternion quaternion);
-static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
+static void print_camera_quaternion(Quaternion quaternion);
+static void print_camera_euler_angle(EulerAngle euler_angle);
 #endif
-static void print_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
-static void print_gps_info(Telemetry::GPSInfo gps_info);
-static void print_battery(Telemetry::Battery battery);
-static void print_rc_status(Telemetry::RCStatus rc_status);
+static void print_ground_speed_ned(GroundSpeedNED ground_speed_ned);
+static void print_gps_info(GPSInfo gps_info);
+static void print_battery(Battery battery);
+static void print_rc_status(RCStatus rc_status);
 
 static bool _set_rate_error = false;
 static bool _received_position = false;
@@ -40,7 +41,6 @@ static bool _received_ground_speed = false;
 static bool _received_gps_info = false;
 static bool _received_battery = false;
 static bool _received_rc_status = false;
-
 
 TEST_F(SitlTest, TelemetryAsync)
 {
@@ -141,7 +141,7 @@ void receive_result(Telemetry::Result result)
     }
 }
 
-void print_position(Telemetry::Position position)
+void print_position(Position position)
 {
     std::cout << "Got position, lat: " << position.latitude_deg << " deg, "
               << "lon: " << position.longitude_deg << " deg, "
@@ -149,7 +149,7 @@ void print_position(Telemetry::Position position)
     _received_position = true;
 }
 
-void print_home_position(Telemetry::Position home_position)
+void print_home_position(Position home_position)
 {
     std::cout << "Got home position, lat: " << home_position.latitude_deg << " deg, "
               << "lon: " << home_position.longitude_deg << " deg, "
@@ -169,7 +169,7 @@ void print_armed(bool armed)
     _received_armed = true;
 }
 
-void print_quaternion(Telemetry::Quaternion quaternion)
+void print_quaternion(Quaternion quaternion)
 {
     std::cout << "Quaternion: [ "
               << quaternion.w << ", "
@@ -180,7 +180,7 @@ void print_quaternion(Telemetry::Quaternion quaternion)
     _received_quaternion = true;
 }
 
-void print_euler_angle(Telemetry::EulerAngle euler_angle)
+void print_euler_angle(EulerAngle euler_angle)
 {
     std::cout << "Euler angle: [ " << euler_angle.roll_deg << ", "
               << euler_angle.pitch_deg << ", "
@@ -190,7 +190,7 @@ void print_euler_angle(Telemetry::EulerAngle euler_angle)
 }
 
 #if CAMERA_AVAILABLE==1
-void print_camera_quaternion(Telemetry::Quaternion quaternion)
+void print_camera_quaternion(Quaternion quaternion)
 {
     std::cout << "Camera Quaternion: [ "
               << quaternion.w << ", "
@@ -201,7 +201,7 @@ void print_camera_quaternion(Telemetry::Quaternion quaternion)
     _received_camera_quaternion = true;
 }
 
-void print_camera_euler_angle(Telemetry::EulerAngle euler_angle)
+void print_camera_euler_angle(EulerAngle euler_angle)
 {
     std::cout << "Camera Euler angle: [ " << euler_angle.roll_deg << ", "
               << euler_angle.pitch_deg << ", "
@@ -211,7 +211,7 @@ void print_camera_euler_angle(Telemetry::EulerAngle euler_angle)
 }
 #endif
 
-void print_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned)
+void print_ground_speed_ned(GroundSpeedNED ground_speed_ned)
 {
     std::cout << "Ground speed NED: [ " << ground_speed_ned.velocity_north_m_s << ", "
               << ground_speed_ned.velocity_east_m_s << ", "
@@ -221,7 +221,7 @@ void print_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned)
 }
 
 
-void print_gps_info(Telemetry::GPSInfo gps_info)
+void print_gps_info(GPSInfo gps_info)
 {
     std::cout << "GPS, num satellites: " << gps_info.num_satellites << ", "
               << "fix type: " << gps_info.fix_type << std::endl;
@@ -229,7 +229,7 @@ void print_gps_info(Telemetry::GPSInfo gps_info)
     _received_gps_info = true;
 }
 
-void print_battery(Telemetry::Battery battery)
+void print_battery(Battery battery)
 {
     std::cout << "Battery: " << battery.voltage_v << " v,"
               << "remaining: " << int(battery.remaining_percent * 1e2f) << " %" << std::endl;
@@ -237,7 +237,7 @@ void print_battery(Telemetry::Battery battery)
     _received_battery = true;
 }
 
-void print_rc_status(Telemetry::RCStatus rc_status)
+void print_rc_status(RCStatus rc_status)
 {
     std::cout << "RC status [ RSSI: " << rc_status.signal_strength_percent * 100 << "]" << std::endl;
     _received_rc_status = true;

@@ -1,13 +1,12 @@
 #include <gmock/gmock.h>
 
-// TODO remove this include!
-#include "telemetry/telemetry.h"
+#include "telemetry/telemetry_structs.h"
 
 namespace dronecore {
 namespace testing {
 
-typedef std::function<void(Telemetry::Position)> position_callback_t;
-typedef std::function<void(Telemetry::Health health)> health_callback_t;
+typedef std::function<void(Position)> position_callback_t;
+typedef std::function<void(Health health)> health_callback_t;
 
 class MockTelemetry
 {

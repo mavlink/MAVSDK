@@ -1,37 +1,39 @@
 #include "telemetry_impl.h"
-#include "system.h"
-#include "math_conversions.h"
-#include "global_include.h"
-#include "px4_custom_mode.h"
+
 #include <cmath>
 #include <functional>
+
+#include "global_include.h"
+#include "math_conversions.h"
+#include "px4_custom_mode.h"
+#include "system.h"
 
 namespace dronecore {
 
 TelemetryImpl::TelemetryImpl(System &system) :
     PluginImplBase(system),
     _position_mutex(),
-    _position(Telemetry::Position {double(NAN), double(NAN), NAN, NAN}),
+    _position(Position {double(NAN), double(NAN), NAN, NAN}),
     _home_position_mutex(),
-    _home_position(Telemetry::Position {double(NAN), double(NAN), NAN, NAN}),
+    _home_position(Position {double(NAN), double(NAN), NAN, NAN}),
     _in_air(false),
     _armed(false),
     _attitude_quaternion_mutex(),
-    _attitude_quaternion(Telemetry::Quaternion {NAN, NAN, NAN, NAN}),
+    _attitude_quaternion(Quaternion {NAN, NAN, NAN, NAN}),
     _camera_attitude_euler_angle_mutex(),
-    _camera_attitude_euler_angle(Telemetry::EulerAngle {NAN, NAN, NAN}),
+    _camera_attitude_euler_angle(EulerAngle {NAN, NAN, NAN}),
     _ground_speed_ned_mutex(),
-    _ground_speed_ned(Telemetry::GroundSpeedNED {NAN, NAN, NAN}),
+    _ground_speed_ned(GroundSpeedNED {NAN, NAN, NAN}),
     _gps_info_mutex(),
-    _gps_info(Telemetry::GPSInfo {0, 0}),
+    _gps_info(GPSInfo {0, 0}),
     _battery_mutex(),
-    _battery(Telemetry::Battery {NAN, NAN}),
+    _battery(Battery {NAN, NAN}),
     _flight_mode_mutex(),
-    _flight_mode(Telemetry::FlightMode::UNKNOWN),
+    _flight_mode(FlightMode::UNKNOWN),
     _health_mutex(),
-    _health(Telemetry::Health {false, false, false, false, false, false, false}),
+    _health(Health {false, false, false, false, false, false, false}),
     _rc_status_mutex(),
-    _rc_status(Telemetry::RCStatus {false, false, 0.0f}),
+    _rc_status(RCStatus {false, false, 0.0f}),
     _position_subscription(nullptr),
     _home_position_subscription(nullptr),
     _in_air_subscription(nullptr),
@@ -323,11 +325,11 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t &message
 {
     mavlink_global_position_int_t global_position_int;
     mavlink_msg_global_position_int_decode(&message, &global_position_int);
-    set_position(Telemetry::Position({global_position_int.lat * 1e-7,
-                                      global_position_int.lon * 1e-7,
-                                      global_position_int.alt * 1e-3f,
-                                      global_position_int.relative_alt * 1e-3f
-                                     }));
+    set_position(Position({global_position_int.lat * 1e-7,
+                           global_position_int.lon * 1e-7,
+                           global_position_int.alt * 1e-3f,
+                           global_position_int.relative_alt * 1e-3f
+                          }));
     set_ground_speed_ned({global_position_int.vx * 1e-2f,
                           global_position_int.vy * 1e-2f,
                           global_position_int.vz * 1e-2f
@@ -346,12 +348,12 @@ void TelemetryImpl::process_home_position(const mavlink_message_t &message)
 {
     mavlink_home_position_t home_position;
     mavlink_msg_home_position_decode(&message, &home_position);
-    set_home_position(Telemetry::Position({home_position.latitude * 1e-7,
-                                           home_position.longitude * 1e-7,
-                                           home_position.altitude * 1e-3f,
-                                           // the relative altitude of home is 0 by definition.
-                                           0.0f
-                                          }));
+    set_home_position(Position({home_position.latitude * 1e-7,
+                                home_position.longitude * 1e-7,
+                                home_position.altitude * 1e-3f,
+                                // the relative altitude of home is 0 by definition.
+                                0.0f
+                               }));
 
     set_health_home_position(true);
 
@@ -365,7 +367,7 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t &message
     mavlink_attitude_quaternion_t attitude_quaternion;
     mavlink_msg_attitude_quaternion_decode(&message, &attitude_quaternion);
 
-    Telemetry::Quaternion quaternion {
+    Quaternion quaternion {
         attitude_quaternion.q1,
         attitude_quaternion.q2,
         attitude_quaternion.q3,
@@ -388,7 +390,7 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t &message)
     mavlink_mount_orientation_t mount_orientation;
     mavlink_msg_mount_orientation_decode(&message, &mount_orientation);
 
-    Telemetry::EulerAngle euler_angle {
+    EulerAngle euler_angle {
         mount_orientation.roll,
         mount_orientation.pitch,
         mount_orientation.yaw_absolute
@@ -449,10 +451,9 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t &message)
 {
     mavlink_sys_status_t sys_status;
     mavlink_msg_sys_status_decode(&message, &sys_status);
-    set_battery(Telemetry::Battery({sys_status.voltage_battery * 1e-3f,
-                                    // FIXME: it is strange calling it percent when the range goes from 0 to 1.
-                                    sys_status.battery_remaining * 1e-2f
-                                   }));
+    set_battery(Battery({sys_status.voltage_battery * 1e-3f,
+                         sys_status.battery_remaining * 1e-2f
+                        }));
 
     if (_battery_subscription) {
         _battery_subscription(get_battery());
@@ -472,7 +473,7 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
 
     if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
 
-        Telemetry::FlightMode flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
+        FlightMode flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
         set_flight_mode(flight_mode);
 
         if (_flight_mode_subscription) {
@@ -503,35 +504,35 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t &message)
     _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
-Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
+FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
 {
     px4::px4_custom_mode px4_custom_mode;
     px4_custom_mode.data = custom_mode;
 
     switch (px4_custom_mode.main_mode) {
         case px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD:
-            return Telemetry::FlightMode::OFFBOARD;
+            return FlightMode::OFFBOARD;
         case px4::PX4_CUSTOM_MAIN_MODE_AUTO:
             switch (px4_custom_mode.sub_mode) {
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_READY:
-                    return Telemetry::FlightMode::READY;
+                    return FlightMode::READY;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF:
-                    return Telemetry::FlightMode::TAKEOFF;
+                    return FlightMode::TAKEOFF;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER:
-                    return Telemetry::FlightMode::HOLD;
+                    return FlightMode::HOLD;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION:
-                    return Telemetry::FlightMode::MISSION;
+                    return FlightMode::MISSION;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL:
-                    return Telemetry::FlightMode::RETURN_TO_LAUNCH;
+                    return FlightMode::RETURN_TO_LAUNCH;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND:
-                    return Telemetry::FlightMode::LAND;
+                    return FlightMode::LAND;
                 case px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET:
-                    return Telemetry::FlightMode::FOLLOW_ME;
+                    return FlightMode::FOLLOW_ME;
                 default:
-                    return Telemetry::FlightMode::UNKNOWN;
+                    return FlightMode::UNKNOWN;
             }
         default:
-            return Telemetry::FlightMode::UNKNOWN;
+            return FlightMode::UNKNOWN;
     }
 }
 
@@ -587,25 +588,25 @@ void TelemetryImpl::receive_rc_channels_timeout()
     set_rc_status(rc_ok, 0.0f);
 }
 
-Telemetry::Position TelemetryImpl::get_position() const
+Position TelemetryImpl::get_position() const
 {
     std::lock_guard<std::mutex> lock(_position_mutex);
     return _position;
 }
 
-void TelemetryImpl::set_position(Telemetry::Position position)
+void TelemetryImpl::set_position(Position position)
 {
     std::lock_guard<std::mutex> lock(_position_mutex);
     _position = position;
 }
 
-Telemetry::Position TelemetryImpl::get_home_position() const
+Position TelemetryImpl::get_home_position() const
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
     return _home_position;
 }
 
-void TelemetryImpl::set_home_position(Telemetry::Position home_position)
+void TelemetryImpl::set_home_position(Position home_position)
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
     _home_position = home_position;
@@ -631,97 +632,97 @@ void TelemetryImpl::set_armed(bool armed_new)
     _armed = armed_new;
 }
 
-Telemetry::Quaternion TelemetryImpl::get_attitude_quaternion() const
+Quaternion TelemetryImpl::get_attitude_quaternion() const
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
     return _attitude_quaternion;
 }
 
-Telemetry::EulerAngle TelemetryImpl::get_attitude_euler_angle() const
+EulerAngle TelemetryImpl::get_attitude_euler_angle() const
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
-    Telemetry::EulerAngle euler = to_euler_angle_from_quaternion(_attitude_quaternion);
+    EulerAngle euler = to_euler_angle_from_quaternion(_attitude_quaternion);
 
     return euler;
 }
 
-void TelemetryImpl::set_attitude_quaternion(Telemetry::Quaternion quaternion)
+void TelemetryImpl::set_attitude_quaternion(Quaternion quaternion)
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
     _attitude_quaternion = quaternion;
 }
 
-Telemetry::Quaternion TelemetryImpl::get_camera_attitude_quaternion() const
+Quaternion TelemetryImpl::get_camera_attitude_quaternion() const
 {
     std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
-    Telemetry::Quaternion quaternion
+    Quaternion quaternion
         = to_quaternion_from_euler_angle(_camera_attitude_euler_angle);
 
     return quaternion;
 }
 
-Telemetry::EulerAngle TelemetryImpl::get_camera_attitude_euler_angle() const
+EulerAngle TelemetryImpl::get_camera_attitude_euler_angle() const
 {
     std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
 
     return _camera_attitude_euler_angle;
 }
 
-void TelemetryImpl::set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle)
+void TelemetryImpl::set_camera_attitude_euler_angle(EulerAngle euler_angle)
 {
     std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
     _camera_attitude_euler_angle = euler_angle;
 }
 
-Telemetry::GroundSpeedNED TelemetryImpl::get_ground_speed_ned() const
+GroundSpeedNED TelemetryImpl::get_ground_speed_ned() const
 {
     std::lock_guard<std::mutex> lock(_ground_speed_ned_mutex);
     return _ground_speed_ned;
 }
 
-void TelemetryImpl::set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned)
+void TelemetryImpl::set_ground_speed_ned(GroundSpeedNED ground_speed_ned)
 {
     std::lock_guard<std::mutex> lock(_ground_speed_ned_mutex);
     _ground_speed_ned = ground_speed_ned;
 }
 
-Telemetry::GPSInfo TelemetryImpl::get_gps_info() const
+GPSInfo TelemetryImpl::get_gps_info() const
 {
     std::lock_guard<std::mutex> lock(_gps_info_mutex);
     return _gps_info;
 }
 
-void TelemetryImpl::set_gps_info(Telemetry::GPSInfo gps_info)
+void TelemetryImpl::set_gps_info(GPSInfo gps_info)
 {
     std::lock_guard<std::mutex> lock(_gps_info_mutex);
     _gps_info = gps_info;
 }
 
-Telemetry::Battery TelemetryImpl::get_battery() const
+Battery TelemetryImpl::get_battery() const
 {
     std::lock_guard<std::mutex> lock(_battery_mutex);
     return _battery;
 }
 
-void TelemetryImpl::set_battery(Telemetry::Battery battery)
+void TelemetryImpl::set_battery(Battery battery)
 {
     std::lock_guard<std::mutex> lock(_battery_mutex);
     _battery = battery;
 }
 
-Telemetry::FlightMode TelemetryImpl::get_flight_mode() const
+FlightMode TelemetryImpl::get_flight_mode() const
 {
     std::lock_guard<std::mutex> lock(_flight_mode_mutex);
     return _flight_mode;
 }
 
-void TelemetryImpl::set_flight_mode(Telemetry::FlightMode flight_mode)
+void TelemetryImpl::set_flight_mode(FlightMode flight_mode)
 {
     std::lock_guard<std::mutex> lock(_flight_mode_mutex);
     _flight_mode = flight_mode;
 }
 
-Telemetry::Health TelemetryImpl::get_health() const
+Health TelemetryImpl::get_health() const
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
     return _health;
@@ -743,7 +744,7 @@ bool TelemetryImpl::get_health_all_ok() const
     }
 }
 
-Telemetry::RCStatus TelemetryImpl::get_rc_status() const
+RCStatus TelemetryImpl::get_rc_status() const
 {
     std::lock_guard<std::mutex> lock(_rc_status_mutex);
     return _rc_status;

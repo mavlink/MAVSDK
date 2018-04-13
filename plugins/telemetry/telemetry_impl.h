@@ -2,11 +2,13 @@
 
 #include <atomic>
 #include <mutex>
-#include "telemetry.h"
+
+#include "mavlink_include.h"
+#include "mavlink_system.h"
 #include "plugin_impl_base.h"
 #include "system.h"
-#include "mavlink_system.h"
-#include "mavlink_include.h"
+#include "telemetry.h"
+#include "telemetry_structs.h"
 
 // Since not all vehicles support/require level calibration, this
 // is disabled for now.
@@ -48,21 +50,21 @@ public:
     void set_rate_battery_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_rc_status_async(double rate_hz, Telemetry::result_callback_t callback);
 
-    Telemetry::Position get_position() const;
-    Telemetry::Position get_home_position() const;
+    Position get_position() const;
+    Position get_home_position() const;
     bool in_air() const;
     bool armed() const;
-    Telemetry::EulerAngle get_attitude_euler_angle() const;
-    Telemetry::Quaternion get_attitude_quaternion() const;
-    Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
-    Telemetry::Quaternion get_camera_attitude_quaternion() const;
-    Telemetry::GroundSpeedNED get_ground_speed_ned() const;
-    Telemetry::GPSInfo get_gps_info() const;
-    Telemetry::Battery get_battery() const;
-    Telemetry::FlightMode get_flight_mode() const;
-    Telemetry::Health get_health() const;
+    EulerAngle get_attitude_euler_angle() const;
+    Quaternion get_attitude_quaternion() const;
+    EulerAngle get_camera_attitude_euler_angle() const;
+    Quaternion get_camera_attitude_quaternion() const;
+    GroundSpeedNED get_ground_speed_ned() const;
+    GPSInfo get_gps_info() const;
+    Battery get_battery() const;
+    FlightMode get_flight_mode() const;
+    Health get_health() const;
     bool get_health_all_ok() const;
-    Telemetry::RCStatus get_rc_status() const;
+    RCStatus get_rc_status() const;
 
     void position_async(Telemetry::position_callback_t &callback);
     void home_position_async(Telemetry::position_callback_t &callback);
@@ -81,16 +83,16 @@ public:
     void rc_status_async(Telemetry::rc_status_callback_t &callback);
 
 private:
-    void set_position(Telemetry::Position position);
-    void set_home_position(Telemetry::Position home_position);
+    void set_position(Position position);
+    void set_home_position(Position home_position);
     void set_in_air(bool in_air);
     void set_armed(bool armed);
-    void set_attitude_quaternion(Telemetry::Quaternion quaternion);
-    void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
-    void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
-    void set_gps_info(Telemetry::GPSInfo gps_info);
-    void set_battery(Telemetry::Battery battery);
-    void set_flight_mode(Telemetry::FlightMode flight_mode);
+    void set_attitude_quaternion(Quaternion quaternion);
+    void set_camera_attitude_euler_angle(EulerAngle euler_angle);
+    void set_ground_speed_ned(GroundSpeedNED ground_speed_ned);
+    void set_gps_info(GPSInfo gps_info);
+    void set_battery(Battery battery);
+    void set_flight_mode(FlightMode flight_mode);
     void set_health_local_position(bool ok);
     void set_health_global_position(bool ok);
     void set_health_home_position(bool ok);
@@ -126,44 +128,44 @@ private:
     static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Telemetry::result_callback_t &callback);
 
-    static Telemetry::FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
+    static FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
     // Make all fields thread-safe using mutexs
     // The mutexs are mutable so that the lock can get aqcuired in
     // methods marked const.
     mutable std::mutex _position_mutex;
-    Telemetry::Position _position;
+    Position _position;
 
     mutable std::mutex _home_position_mutex;
-    Telemetry::Position _home_position;
+    Position _home_position;
 
     // If possible, just use atomic instead of a mutex.
     std::atomic_bool _in_air;
     std::atomic_bool _armed;
 
     mutable std::mutex _attitude_quaternion_mutex;
-    Telemetry::Quaternion _attitude_quaternion;
+    Quaternion _attitude_quaternion;
 
     mutable std::mutex _camera_attitude_euler_angle_mutex;
-    Telemetry::EulerAngle _camera_attitude_euler_angle;
+    EulerAngle _camera_attitude_euler_angle;
 
     mutable std::mutex _ground_speed_ned_mutex;
-    Telemetry::GroundSpeedNED _ground_speed_ned;
+    GroundSpeedNED _ground_speed_ned;
 
     mutable std::mutex _gps_info_mutex;
-    Telemetry::GPSInfo _gps_info;
+    GPSInfo _gps_info;
 
     mutable std::mutex _battery_mutex;
-    Telemetry::Battery _battery;
+    Battery _battery;
 
     mutable std::mutex _flight_mode_mutex;
-    Telemetry::FlightMode _flight_mode;
+    FlightMode _flight_mode;
 
     mutable std::mutex _health_mutex;
-    Telemetry::Health _health;
+    Health _health;
 
     mutable std::mutex _rc_status_mutex;
-    Telemetry::RCStatus _rc_status;
+    RCStatus _rc_status;
 
     Telemetry::position_callback_t _position_subscription;
     Telemetry::position_callback_t _home_position_subscription;

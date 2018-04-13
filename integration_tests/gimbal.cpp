@@ -11,16 +11,15 @@
 #include "plugins/gimbal/gimbal.h"
 #include "plugins/offboard/offboard.h"
 #include "plugins/telemetry/telemetry.h"
+#include "plugins/telemetry/telemetry_structs.h"
 
 using namespace dronecore;
-
 
 void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i);
 void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal, double latitude_deg,
                               double longitude_deg, float altitude_m);
 void receive_gimbal_result(Gimbal::Result result);
-void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
-
+void receive_gimbal_attitude_euler_angles(EulerAngle euler_angle);
 
 TEST_F(SitlTest, GimbalMove)
 {
@@ -110,7 +109,7 @@ TEST_F(SitlTest, GimbalROIOffboard)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    const Telemetry::Position &position = telemetry->position();
+    const Position &position = telemetry->position();
 
     // set the ROI location: a bit to the north of the vehicle's location
     const double latitude_offset_deg = 3. / 111111.; // this is about 3 m
@@ -185,7 +184,7 @@ void receive_gimbal_result(Gimbal::Result result)
     EXPECT_EQ(result, Gimbal::Result::SUCCESS);
 }
 
-void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle)
+void receive_gimbal_attitude_euler_angles(EulerAngle euler_angle)
 {
     LogInfo() << "Received gimbal attitude: "
               << euler_angle.roll_deg << ", "
