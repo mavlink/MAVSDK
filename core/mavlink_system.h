@@ -177,7 +177,6 @@ private:
     static void system_thread(MAVLinkSystem *self);
     static void send_heartbeat(MAVLinkSystem &self);
 
-    // FIXME: Is the method name OK ? OR Should it be make_command_for_flight_mode(...) ?
     // Last argument will hold Flight mode command.
     MAVLinkCommands::Result
     make_command_flight_mode(FlightMode mode,
