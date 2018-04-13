@@ -115,6 +115,18 @@ private:
     void load_definition_file(const std::string &uri);
     void receive_param(const std::string &name, bool success, MAVLinkParameters::ParamValue value);
 
+    // Utility methods for convenience
+    MAVLinkCommands::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
+    MAVLinkCommands::CommandLong make_command_stop_photo();
+
+    MAVLinkCommands::CommandLong make_command_set_camera_mode(float mavlink_mode);
+    MAVLinkCommands::CommandLong make_command_request_camera_settings();
+    MAVLinkCommands::CommandLong make_command_request_camera_capture_status();
+    MAVLinkCommands::CommandLong make_command_request_storage_info();
+
+    MAVLinkCommands::CommandLong make_command_start_video(float capture_status_rate_hz);
+    MAVLinkCommands::CommandLong make_command_stop_video();
+
     std::unique_ptr<CameraDefinition> _camera_definition {};
 };
 

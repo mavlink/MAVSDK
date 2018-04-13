@@ -48,12 +48,12 @@ void CameraImpl::init()
         std::bind(&CameraImpl::process_camera_information, this, _1),
         this);
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_REQUEST_CAMERA_INFORMATION,
-        MAVLinkCommands::Params {1.0f, // request it
-                                 NAN, NAN, NAN, NAN, NAN, NAN},
-        nullptr,
-        MAV_COMP_ID_CAMERA);
+    MAVLinkCommands::CommandLong command_camera_info {};
+    command_camera_info.command = MAV_CMD_REQUEST_CAMERA_INFORMATION;
+    command_camera_info.params.param1 = 1.0f; // Request it
+    command_camera_info.target_component_id = MAV_COMP_ID_CAMERA;
+
+    _parent->send_command_async(command_camera_info, nullptr);
 }
 
 void CameraImpl::deinit()
@@ -65,21 +65,110 @@ void CameraImpl::enable() {}
 
 void CameraImpl::disable() {}
 
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_take_photo(float interval_s, float no_of_photos)
+{
+    MAVLinkCommands::CommandLong cmd_take_photo {};
+    cmd_take_photo.command = MAV_CMD_IMAGE_START_CAPTURE;
+    cmd_take_photo.params.param1 = 0.0f; // Reserved, set to 0
+    cmd_take_photo.params.param2 = interval_s;
+    cmd_take_photo.params.param3 = no_of_photos;
+    cmd_take_photo.params.param4 = float(_capture.sequence++);
+    cmd_take_photo.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return cmd_take_photo;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_stop_photo()
+{
+    MAVLinkCommands::CommandLong cmd_stop_photo {};
+    cmd_stop_photo.command = MAV_CMD_IMAGE_STOP_CAPTURE;
+    cmd_stop_photo.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return cmd_stop_photo;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_start_video(float capture_status_rate_hz)
+{
+    MAVLinkCommands::CommandLong cmd_start_video {};
+    cmd_start_video.command = MAV_CMD_VIDEO_START_CAPTURE;
+    cmd_start_video.params.param1 = 0.f; // Reserved, set to 0
+    cmd_start_video.params.param2 = capture_status_rate_hz;
+    cmd_start_video.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return cmd_start_video;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_stop_video()
+{
+    MAVLinkCommands::CommandLong cmd_stop_video {};
+    cmd_stop_video.command = MAV_CMD_VIDEO_STOP_CAPTURE;
+    cmd_stop_video.params.param1 = 0.f; // Reserved, set to 0
+    cmd_stop_video.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return cmd_stop_video;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_set_camera_mode(float mavlink_mode)
+{
+    MAVLinkCommands::CommandLong cmd_set_camera_mode {};
+
+    cmd_set_camera_mode.command = MAV_CMD_SET_CAMERA_MODE;
+    cmd_set_camera_mode.params.param1 = mavlink_mode;
+    cmd_set_camera_mode.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return  cmd_set_camera_mode;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_request_camera_settings()
+{
+    MAVLinkCommands::CommandLong cmd_req_camera_settings {};
+
+    cmd_req_camera_settings.command = MAV_CMD_REQUEST_CAMERA_SETTINGS;
+    cmd_req_camera_settings.params.param1 = 1.f; // Request it
+    cmd_req_camera_settings.target_component_id = MAV_COMP_ID_CAMERA;
+
+    return cmd_req_camera_settings;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_request_camera_capture_status()
+{
+    MAVLinkCommands::CommandLong cmd_req_camera_cap_stat {};
+
+    cmd_req_camera_cap_stat.command = MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS;
+    cmd_req_camera_cap_stat.params.param1 = 1.0f; // Request it
+
+    return cmd_req_camera_cap_stat;
+}
+
+MAVLinkCommands::CommandLong
+CameraImpl::make_command_request_storage_info()
+{
+    MAVLinkCommands::CommandLong cmd_req_storage_info {};
+
+    cmd_req_storage_info.command = MAV_CMD_REQUEST_STORAGE_INFORMATION;
+    cmd_req_storage_info.params.param1 = 0.f; // Reserved, set to 0
+    cmd_req_storage_info.params.param2 = 1.f; // Request it
+
+    return cmd_req_storage_info;
+}
+
 Camera::Result CameraImpl::take_photo()
 {
     // TODO: check whether we are in photo mode.
 
     std::lock_guard<std::mutex> lock(_capture.mutex);
 
-    return camera_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_IMAGE_START_CAPTURE,
-                   MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                            0.0f, // only picture, no interval
-                                            1.0f, // take only one picture
-                                            float(_capture.sequence++),
-                                            NAN, NAN, NAN},
-                   MAV_COMP_ID_CAMERA));
+    // Take 1 photo only with no interval
+    auto cmd_take_photo = make_command_take_photo(0.f, 1.0f);
+
+    return camera_result_from_command_result(_parent->send_command(cmd_take_photo));
 }
 
 Camera::Result CameraImpl::start_photo_interval(float interval_s)
@@ -92,25 +181,18 @@ Camera::Result CameraImpl::start_photo_interval(float interval_s)
 
     std::lock_guard<std::mutex> lock(_capture.mutex);
 
+    auto cmd_take_photo_time_lapse = make_command_take_photo(interval_s, 0.f);
+
     return camera_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_IMAGE_START_CAPTURE,
-                   MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                            interval_s,
-                                            0, // unlimited photos
-                                            float(_capture.sequence++),
-                                            NAN, NAN, NAN},
-                   MAV_COMP_ID_CAMERA));
+               _parent->send_command(cmd_take_photo_time_lapse));
 }
 
 Camera::Result CameraImpl::stop_photo_interval()
 {
+    auto cmd_stop_photo_interval = make_command_stop_photo();
+
     return camera_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_IMAGE_STOP_CAPTURE,
-                   MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                            NAN, NAN, NAN, NAN, NAN, NAN},
-                   MAV_COMP_ID_CAMERA));
+               _parent->send_command(cmd_stop_photo_interval));
 }
 
 Camera::Result CameraImpl::start_video()
@@ -118,24 +200,17 @@ Camera::Result CameraImpl::start_video()
     // TODO: check whether video capture is already in progress.
     // TODO: check whether we are in video mode.
 
-    return camera_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_VIDEO_START_CAPTURE,
-                   MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                            NAN, // fps not set yet
-                                            NAN, // resolution not set yet
-                                            NAN, NAN, NAN, NAN},
-                   MAV_COMP_ID_CAMERA));
+    // Capture status rate is not set
+    auto cmd_start_video = make_command_start_video(0.f);
+
+    return camera_result_from_command_result(_parent->send_command(cmd_start_video));
 }
 
 Camera::Result CameraImpl::stop_video()
 {
-    return camera_result_from_command_result(
-               _parent->send_command_with_ack(
-                   MAV_CMD_VIDEO_STOP_CAPTURE,
-                   MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                            NAN, NAN, NAN, NAN, NAN, NAN},
-                   MAV_COMP_ID_CAMERA));
+    auto cmd_stop_video = make_command_stop_video();
+
+    return camera_result_from_command_result(_parent->send_command(cmd_stop_video));
 }
 
 void CameraImpl::take_photo_async(const Camera::result_callback_t &callback)
@@ -144,15 +219,11 @@ void CameraImpl::take_photo_async(const Camera::result_callback_t &callback)
 
     std::lock_guard<std::mutex> lock(_capture.mutex);
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_IMAGE_START_CAPTURE,
-        MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                 0.0f, // no interval for one picture
-                                 1.0f, // take only one picture
-                                 float(_capture.sequence++),
-                                 NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, _1, callback),
-        MAV_COMP_ID_CAMERA);
+    // Take 1 photo only with no interval
+    auto cmd_take_photo = make_command_take_photo(0.f, 1.0f);
+
+    _parent->send_command_async(cmd_take_photo,
+                                std::bind(&CameraImpl::receive_command_result, _1, callback));
 
 }
 
@@ -170,25 +241,18 @@ void CameraImpl::start_photo_interval_async(float interval_s,
 
     std::lock_guard<std::mutex> lock(_capture.mutex);
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_IMAGE_START_CAPTURE,
-        MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                 interval_s,
-                                 0.0f, // unlimited photos
-                                 float(_capture.sequence++),
-                                 NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, _1, callback),
-        MAV_COMP_ID_CAMERA);
+    auto cmd_take_photo_time_lapse = make_command_take_photo(interval_s, 0.f);
+
+    _parent->send_command_async(cmd_take_photo_time_lapse,
+                                std::bind(&CameraImpl::receive_command_result, _1, callback));
 }
 
 void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t &callback)
 {
-    _parent->send_command_with_ack_async(
-        MAV_CMD_IMAGE_STOP_CAPTURE,
-        MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                 NAN, NAN, NAN, NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, _1, callback),
-        MAV_COMP_ID_CAMERA);
+    auto cmd_stop_photo_interval = make_command_stop_photo();
+
+    _parent->send_command_async(cmd_stop_photo_interval,
+                                std::bind(&CameraImpl::receive_command_result, _1, callback));
 }
 
 void CameraImpl::start_video_async(const Camera::result_callback_t &callback)
@@ -196,24 +260,19 @@ void CameraImpl::start_video_async(const Camera::result_callback_t &callback)
     // TODO: check whether video capture is already in progress.
     // TODO: check whether we are in video mode.
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_VIDEO_START_CAPTURE,
-        MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                 NAN, // fps not set yet
-                                 NAN, // resolution not set yet
-                                 NAN, NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, _1, callback),
-        MAV_COMP_ID_CAMERA);
+    // Capture status rate is not set
+    auto cmd_start_video = make_command_start_video(0.f);
+
+    _parent->send_command_async(cmd_start_video,
+                                std::bind(&CameraImpl::receive_command_result, _1, callback));
 }
 
 void CameraImpl::stop_video_async(const Camera::result_callback_t &callback)
 {
-    _parent->send_command_with_ack_async(
-        MAV_CMD_VIDEO_STOP_CAPTURE,
-        MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                 NAN, NAN, NAN, NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_command_result, _1, callback),
-        MAV_COMP_ID_CAMERA);
+    auto cmd_stop_video = make_command_stop_video();
+
+    _parent->send_command_async(cmd_stop_video,
+                                std::bind(&CameraImpl::receive_command_result, _1, callback));
 }
 
 Camera::Result CameraImpl::camera_result_from_command_result(MAVLinkCommands::Result
@@ -254,15 +313,11 @@ void CameraImpl::set_mode_async(Camera::Mode mode, const Camera::mode_callback_t
             break;
     }
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_SET_CAMERA_MODE,
-        MAVLinkCommands::Params {0.0f, // Reserved, set to 0
-                                 mavlink_mode,
-                                 NAN, NAN, NAN, NAN, NAN // Reserved
-                                },
-        std::bind(&CameraImpl::receive_set_mode_command_result, this, _1, callback,
-                  mode),
-        MAV_COMP_ID_CAMERA);
+    auto cmd_set_camera_mode = make_command_set_camera_mode(mavlink_mode);
+
+    _parent->send_command_async(cmd_set_camera_mode,
+                                std::bind(&CameraImpl::receive_set_mode_command_result,
+                                          this, _1, callback, mode));
 }
 
 void CameraImpl::get_mode_async(Camera::mode_callback_t callback)
@@ -276,16 +331,15 @@ void CameraImpl::get_mode_async(Camera::mode_callback_t callback)
     }
     _get_mode.callback = callback;
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_REQUEST_CAMERA_SETTINGS,
-        MAVLinkCommands::Params {1.0, // Request it
-                                 NAN, NAN, NAN, NAN, NAN, NAN // Reserved
-                                },
-        std::bind(&CameraImpl::receive_get_mode_command_result, this, _1),
-        MAV_COMP_ID_CAMERA);
+    auto cmd_req_camera_settings = make_command_request_camera_settings();
 
+    _parent->send_command_async(cmd_req_camera_settings,
+                                std::bind(&CameraImpl::receive_get_mode_command_result,
+                                          this, _1));
     _parent->register_timeout_handler(
-        std::bind(&CameraImpl::get_mode_timeout_happened, this), 1.0, &_get_mode.timeout_cookie);
+        std::bind(&CameraImpl::get_mode_timeout_happened, this),
+        1.0,
+        &_get_mode.timeout_cookie);
 }
 
 bool CameraImpl::interval_valid(float interval_s)
@@ -321,20 +375,13 @@ void CameraImpl::get_status_async(Camera::get_status_callback_t callback)
         _status.callback = callback;
     }
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS,
-        MAVLinkCommands::Params {1.0f, // request it
-                                 NAN, NAN, NAN, NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_camera_capture_status_result, this, _1),
-        MAV_COMP_ID_CAMERA);
+    auto cmd_req_camera_capture_stat = make_command_request_camera_capture_status();
+    _parent->send_command_async(cmd_req_camera_capture_stat,
+                                std::bind(&CameraImpl::receive_camera_capture_status_result, this, _1));
 
-    _parent->send_command_with_ack_async(
-        MAV_CMD_REQUEST_STORAGE_INFORMATION,
-        MAVLinkCommands::Params {0.0f, // Reserved
-                                 1.0f, // request it
-                                 NAN, NAN, NAN, NAN, NAN},
-        std::bind(&CameraImpl::receive_storage_information_result, this, _1),
-        MAV_COMP_ID_CAMERA);
+    auto cmd_req_storage_info = make_command_request_storage_info();
+    _parent->send_command_async(cmd_req_storage_info,
+                                std::bind(&CameraImpl::receive_storage_information_result, this, _1));
 
     _parent->register_timeout_handler(std::bind(&CameraImpl::status_timeout_happened, this),
                                       DEFAULT_TIMEOUT_S, &_status.timeout_cookie);
