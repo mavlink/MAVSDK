@@ -242,7 +242,7 @@ public:
         uint16_t resolution_v_pix = 0u; /**< @brief Resolution verticle in pixels. */
         uint32_t bit_rate_b_s = 0u; /**< @brief Bit rate in bits per second. */
         uint16_t rotation_deg = 0u; /**< @brief Video image rotation clockwise (0-359 degrees) */
-        std::string uri = nullptr; /**< @brief Video stream URI */
+        std::string uri {}; /**< @brief Video stream URI */
 
         void set_highest()
         {
