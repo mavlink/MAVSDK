@@ -396,6 +396,8 @@ public:
                 // FIXME: not clear how to handle this
                 return false;
             }
+            // FIXME: Added to fix CI error (control reading end of non-void function)
+            return false;
         }
 
         std::string typestr() const
@@ -424,6 +426,8 @@ public:
                 // FIXME: not clear how to handle this
                 return "unknown";
             }
+            // FIXME: Added to fix CI error (control reading end of non-void function)
+            return "unknown";
         }
 
     private:
