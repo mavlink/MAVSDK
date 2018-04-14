@@ -105,5 +105,8 @@ message MissionResult {
         INVALID_ARGUMENT = 6;
         UNSUPPORTED = 7;
         NO_MISSION_AVAILABLE = 8;
+        FAILED_TO_OPEN_QGC_PLAN = 9;
+        FAILED_TO_PARSE_QGC_PLAN = 10;
+        UNSUPPORTED_MISSION_CMD = 11;
     }
 }
