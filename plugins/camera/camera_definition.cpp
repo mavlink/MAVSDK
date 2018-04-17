@@ -283,7 +283,9 @@ bool CameraDefinition::parse_xml()
 
         if (!found_default) {
             LogErr() << "Default not found.";
-            return false;
+            // TODO: in the future we should fail completely here
+            // return false;
+            continue;
         }
 
         _parameter_map[param_name] = new_parameter;
