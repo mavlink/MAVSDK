@@ -136,7 +136,8 @@ CameraImpl::make_command_set_camera_mode(float mavlink_mode)
     MAVLinkCommands::CommandLong cmd_set_camera_mode {};
 
     cmd_set_camera_mode.command = MAV_CMD_SET_CAMERA_MODE;
-    cmd_set_camera_mode.params.param1 = mavlink_mode;
+    cmd_set_camera_mode.params.param1 = 0.0f; // Reserved, set to 0
+    cmd_set_camera_mode.params.param2 = mavlink_mode;
     cmd_set_camera_mode.target_component_id = MAV_COMP_ID_CAMERA;
 
     return  cmd_set_camera_mode;
