@@ -3,6 +3,7 @@
 #include "integration_test_helper.h"
 #include "global_include.h"
 #include "dronecore.h"
+#include "system.h"
 #include "camera_test_helpers.h"
 
 
@@ -20,6 +21,7 @@ TEST(CameraTest, ChangeMode)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     System &system = dc.system();
+    ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     set_mode(camera, Camera::Mode::PHOTO);
