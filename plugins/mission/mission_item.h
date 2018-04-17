@@ -158,6 +158,20 @@ public:
     float get_speed_m_s() const;
 
     /**
+     * @brief Get the gimbal pitch of a mission item.
+     *
+     * @return Gimbal pitch in degrees.
+     */
+    float get_gimbal_pitch_deg() const;
+
+    /**
+     * @brief Get the gimbal yaw of a mission item.
+     *
+     * @return Gimbal yaw in degrees.
+     */
+    float get_gimbal_yaw_deg() const;
+
+    /**
      * @brief Get loiter time in seconds.
      *
      * @return Loiter time in seconds.

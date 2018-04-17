@@ -84,6 +84,16 @@ float MissionItem::get_speed_m_s() const
     return _impl->get_speed_m_s();
 }
 
+float MissionItem::get_gimbal_pitch_deg() const
+{
+    return _impl->get_gimbal_pitch_deg();
+}
+
+float MissionItem::get_gimbal_yaw_deg() const
+{
+    return _impl->get_gimbal_yaw_deg();
+}
+
 float MissionItem::get_loiter_time_s() const
 {
     return _impl->get_loiter_time_s();
