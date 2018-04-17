@@ -81,7 +81,7 @@ private:
 
     struct {
         std::mutex mutex {};
-        int sequence = 0; // TODO: maybe we need to start with 1, pending mavlink specs
+        int sequence = 1; // The MAVLink spec says the sequence starts at 1.
     } _capture;
 
     struct {
