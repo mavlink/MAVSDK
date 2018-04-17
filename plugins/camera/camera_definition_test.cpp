@@ -281,3 +281,28 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
         EXPECT_TRUE(found_photoratio);
     }
 }
+
+TEST(CameraDefinition, E90SettingNames)
+{
+    // Run this from root.
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
+    EXPECT_STREQ(cd.get_setting_str("CAM_SHUTTERSPD").c_str(), "Shutter Speed");
+    EXPECT_STREQ(cd.get_setting_str("CAM_ISO").c_str(), "ISO");
+    EXPECT_STREQ(cd.get_setting_str("CAM_EV").c_str(), "Exposure Compensation");
+}
+
+
+TEST(CameraDefinition, E90OptionNames)
+{
+    // Run this from root.
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
+    EXPECT_STREQ(cd.get_option_str("CAM_SHUTTERSPD", "0.02").c_str(), "1/50");
+    EXPECT_STREQ(cd.get_option_str("CAM_SHUTTERSPD", "2").c_str(), "2");
+    EXPECT_STREQ(cd.get_option_str("CAM_ISO", "100").c_str(), "100");
+    EXPECT_STREQ(cd.get_option_str("CAM_ISO", "200").c_str(), "200");
+    EXPECT_STREQ(cd.get_option_str("CAM_EV", "-2.5").c_str(), "-2.5");
+    EXPECT_STREQ(cd.get_option_str("CAM_EV", "1").c_str(), "+1");
+}
+

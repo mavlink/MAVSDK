@@ -129,25 +129,25 @@ public:
         void set_from_xml(const std::string &type_str, const std::string &value_str)
         {
             if (strcmp(type_str.c_str(), "uint8") == 0) {
-                uint8_t temp = std::atoi(value_str.c_str());
+                uint8_t temp = std::stoi(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "int8") == 0) {
                 int8_t temp = std::stoi(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "uint16") == 0) {
-                uint16_t temp = std::atoi(value_str.c_str());
+                uint16_t temp = std::stoi(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "int16") == 0) {
                 int16_t temp = std::stoi(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "uint32") == 0) {
-                uint32_t temp = std::atol(value_str.c_str());
+                uint32_t temp = std::stol(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "int32") == 0) {
                 int32_t temp = std::stol(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "uint64") == 0) {
-                uint64_t temp = std::atoll(value_str.c_str());
+                uint64_t temp = std::stoll(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "uint64") == 0) {
                 int64_t temp = std::stoll(value_str.c_str());
@@ -398,6 +398,35 @@ public:
             }
             // FIXME: Added to fix CI error (control reading end of non-void function)
             return false;
+        }
+
+        bool operator==(const std::string &value_str) const
+        {
+            // LogDebug() << "Compare " << typestr() << " and " << rhs.typestr();
+            if (_value.is<uint8_t>()) {
+                return _value.as<uint8_t>() == std::stoi(value_str.c_str());
+            } else if (_value.is<int8_t>()) {
+                return _value.as<int8_t>() == std::stoi(value_str.c_str());
+            } else if (_value.is<uint16_t>()) {
+                return _value.as<uint16_t>() == std::stoi(value_str.c_str());
+            } else if (_value.is<int16_t>()) {
+                return _value.as<int16_t>() == std::stoi(value_str.c_str());
+            } else if (_value.is<uint32_t>()) {
+                return _value.as<uint32_t>() == std::stol(value_str.c_str());
+            } else if (_value.is<int32_t>()) {
+                return _value.as<int32_t>() == std::stol(value_str.c_str());
+            } else if (_value.is<uint64_t>()) {
+                return _value.as<uint64_t>() == std::stoull(value_str.c_str());
+            } else if (_value.is<int64_t>()) {
+                return _value.as<int64_t>() == std::stoll(value_str.c_str());
+            } else if (_value.is<float>()) {
+                return _value.as<float>() == std::stof(value_str.c_str());
+            } else if (_value.is<double>()) {
+                return _value.as<double>() == std::stod(value_str.c_str());
+            } else if (_value.is<custom_type_t>()) {
+                // FIXME: not clear how to handle this
+                return false;
+            }
         }
 
         std::string typestr() const

@@ -360,6 +360,15 @@ bool CameraDefinition::get_possible_settings(
     return (settings.size() > 0);
 }
 
+std::string CameraDefinition::get_setting_str(const std::string &param_name)
+{
+    if (_parameter_map.find(param_name) == _parameter_map.end()) {
+        LogErr() << "Unknown setting to provide string";
+        return "Unknown";
+    }
+    return _parameter_map[param_name]->description;
+}
+
 bool CameraDefinition::set_setting(const std::string &name,
                                    const MAVLinkParameters::ParamValue &value)
 {
@@ -398,6 +407,25 @@ bool CameraDefinition::get_setting(const std::string &name,
     return true;
 }
 
+std::string CameraDefinition::get_option_str(const std::string &param_name,
+                                             const std::string &option_value)
+{
+    if (_parameter_map.find(param_name) == _parameter_map.end()) {
+        LogErr() << "Unknown setting to provide option string";
+        return "Unknown";
+    }
+
+    for (const auto &option : _parameter_map[param_name]->options) {
+        std::stringstream value_ss {};
+        value_ss << option->value;
+        if (option->value == option_value) {
+            return option->name;
+        }
+    }
+
+    LogErr() << "Unknown option string";
+    return "Unknown";
+}
 
 bool CameraDefinition::get_all_options(
     const std::string &name, std::vector<MAVLinkParameters::ParamValue> &values)
