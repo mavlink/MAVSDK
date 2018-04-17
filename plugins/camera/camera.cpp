@@ -116,7 +116,7 @@ void Camera::get_option_key_async(const std::string &setting_key,
     _impl->get_option_key_async(setting_key, callback);
 }
 
-bool Camera::get_possible_settings(std::map<std::string, std::string> &settings)
+bool Camera::get_possible_settings(std::vector<std::string> &settings)
 {
     return _impl->get_possible_settings(settings);
 }

@@ -10,7 +10,7 @@
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 
-TEST(CameraTest, ShowSettings)
+TEST(CameraTest, ShowSettingsAndOptions)
 {
     DroneCore dc;
 
@@ -30,33 +30,59 @@ TEST(CameraTest, ShowSettings)
     // Set to photo mode
     set_mode(camera, Camera::Mode::PHOTO);
 
-    std::map<std::string, std::string> settings;
+    std::vector<std::string> settings;
     EXPECT_TRUE(camera->get_possible_settings(settings));
 
     LogDebug() << "Possible settings in photo mode: ";
     for (auto setting : settings) {
-        LogDebug() << "- " << setting.second;
+        LogDebug() << "-" << setting;
     }
-    EXPECT_EQ(settings.size(), 8);
+    EXPECT_EQ(settings.size(), 12);
 
-    // Set to video mode now
     set_mode(camera, Camera::Mode::VIDEO);
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     EXPECT_TRUE(camera->get_possible_settings(settings));
 
     LogDebug() << "Possible settings in video mode: ";
     for (auto setting : settings) {
-        LogDebug() << "- " << setting.second;
+        LogDebug() << "-" << setting;
     }
-    EXPECT_EQ(settings.size(), 9);
+    EXPECT_EQ(settings.size(), 10);
 
     std::vector<std::string> options;
     EXPECT_TRUE(camera->get_possible_options("CAM_ISO", options));
+    EXPECT_EQ(options.size(), 9);
 
-    // TODO: this should eventually be 9, not 10 in video mode if the parameter ranges
-    // are correct.
+    // Try something that is specific to the camera mode.
+    EXPECT_TRUE(camera->get_possible_options("CAM_VIDRES", options));
+    EXPECT_EQ(options.size(), 32);
+
+    // This param is not applicable, so we should get an empty vector back.
+    EXPECT_FALSE(camera->get_possible_options("CAM_PHOTOQUAL", options));
+    EXPECT_EQ(options.size(), 0);
+
+    // The same should happen with a param that does not exist at all.
+    EXPECT_FALSE(camera->get_possible_options("CAM_BLABLA", options));
+    EXPECT_EQ(options.size(), 0);
+
+    set_mode(camera, Camera::Mode::PHOTO);
+
+    EXPECT_TRUE(camera->get_possible_options("CAM_ISO", options));
     EXPECT_EQ(options.size(), 10);
 
+    // Try something that is specific to the camera mode.
+    EXPECT_TRUE(camera->get_possible_options("CAM_PHOTOQUAL", options));
+    EXPECT_EQ(options.size(), 4);
+
+    // This param is not applicable, so we should get an empty vector back.
+    EXPECT_FALSE(camera->get_possible_options("CAM_VIDRES", options));
+    EXPECT_EQ(options.size(), 0);
+
+    // The same should happen with a param that does not exist at all.
+    EXPECT_FALSE(camera->get_possible_options("CAM_BLABLA", options));
+    EXPECT_EQ(options.size(), 0);
 }
 
 TEST(CameraTest, SettingsAnySetting)

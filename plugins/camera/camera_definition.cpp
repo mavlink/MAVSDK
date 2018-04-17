@@ -456,6 +456,15 @@ bool CameraDefinition::get_possible_options(
         return false;
     }
 
+    std::map<std::string, MAVLinkParameters::ParamValue> settings;
+    if (!get_possible_settings(settings)) {
+        return false;
+    }
+    if (settings.find(name) == settings.end()) {
+        LogErr() << "Setting currently not applicable";
+        return false;
+    }
+
     // TODO: use set instead of vector for this
     std::vector<MAVLinkParameters::ParamValue> allowed_ranges {};
 
@@ -485,7 +494,7 @@ bool CameraDefinition::get_possible_options(
                 option_allowed = true;
             }
         }
-        if (option_allowed) {
+        if (option_allowed || allowed_ranges.size() == 0) {
             values.push_back(option->value);
         }
     }

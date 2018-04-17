@@ -62,4 +62,7 @@ void set_mode(std::shared_ptr<Camera> camera, Camera::Mode mode)
     if (status == std::future_status::ready) {
         ret.get();
     }
+
+    // FIXME: this should not be required.
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }

@@ -353,7 +353,7 @@ public:
      */
     void get_status_async(get_status_callback_t callback);
 
-    bool get_possible_settings(std::map<std::string, std::string> &settings);
+    bool get_possible_settings(std::vector<std::string> &settings);
     bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
 
     typedef std::function<void(Result, const std::string &)> get_option_callback_t;

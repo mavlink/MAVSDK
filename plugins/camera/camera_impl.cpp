@@ -853,61 +853,52 @@ void CameraImpl::load_definition_file(const std::string &uri)
     UNUSED(params);
 }
 
-bool CameraImpl::get_possible_settings(std::map<std::string, std::string> &settings)
+bool CameraImpl::get_possible_settings(std::vector<std::string> &settings)
 {
-    // TODO: impelement, get names of settings.
-    UNUSED(settings);
-#if 0
+    settings.clear();
+
     if (!_camera_definition) {
         LogWarn() << "Error: no camera definition available yet";
         return false;
     }
 
-    CameraDefinition::parameter_map_t parameters;
-    _camera_definition->get_parameters(parameters, true);
+    std::map<std::string, MAVLinkParameters::ParamValue> cd_settings {};
+    _camera_definition->get_possible_settings(cd_settings);
 
-    for (auto &parameter : parameters) {
-        if (parameter.first.compare("CAM_MODE") == 0) {
+    for (const auto &cd_setting : cd_settings) {
+        if (cd_setting.first.compare("CAM_MODE") == 0) {
             // We ignore the mode param.
             continue;
         }
 
-        settings.insert(
-            std::pair<std::string, std::string>(
-                parameter.first, parameter.second->description));
+        settings.push_back(cd_setting.first);
     }
 
-#endif
-    return true;
+    return settings.size() > 0;
 }
 
 bool CameraImpl::get_possible_options(const std::string &setting_name,
                                       std::vector<std::string> &options)
 {
-    // TODO: implement, get names of options
-    UNUSED(setting_name);
-    UNUSED(options);
-#if 0
+    options.clear();
+
     if (!_camera_definition) {
         LogWarn() << "Error: no camera definition available yet";
         return false;
     }
 
-    CameraDefinition::parameter_map_t parameters;
-    _camera_definition->get_parameters(parameters, true);
-
-    auto it = parameters.find(setting_name);
-    if (it != parameters.end()) {
-        for (auto option : it->second->options) {
-            options.push_back(option->name);
-        }
-        return true;
-    } else {
-        LogErr() << "Error: setting name not found";
+    std::vector<MAVLinkParameters::ParamValue> values;
+    if (!_camera_definition->get_possible_options(setting_name, values)) {
         return false;
     }
-#endif
-    return true;
+
+    for (const auto &value : values) {
+        std::stringstream ss {};
+        ss << value;
+        options.push_back(ss.str());
+    }
+
+    return options.size() > 0;
 }
 
 void CameraImpl::set_option_key_async(const std::string &setting_key,

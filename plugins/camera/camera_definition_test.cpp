@@ -184,9 +184,40 @@ TEST(CameraDefinition, E90ShowOptions)
     }
 
     {
+        // Currently not applicable because exposure mode is in Auto.
+        std::vector<MAVLinkParameters::ParamValue> values;
+        EXPECT_FALSE(cd.get_possible_options("CAM_SHUTTERSPD", values));
+        EXPECT_EQ(values.size(), 0);
+    }
+
+    {
+        // Set exposure mode to manual
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(1);
+        EXPECT_TRUE(cd.set_setting("CAM_EXPMODE", value));
+
+        // Currently not applicable because exposure mode is in Auto.
         std::vector<MAVLinkParameters::ParamValue> values;
         EXPECT_TRUE(cd.get_possible_options("CAM_SHUTTERSPD", values));
         EXPECT_EQ(values.size(), 12);
+    }
+
+    {
+        // Test VIDRES without range restrictions in h.264.
+        std::vector<MAVLinkParameters::ParamValue> values;
+        EXPECT_TRUE(cd.get_possible_options("CAM_VIDRES", values));
+        EXPECT_EQ(values.size(), 32);
+    }
+
+    {
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(3);
+        EXPECT_TRUE(cd.set_setting("CAM_VIDFMT", value));
+
+        // Test VIDRES with range restrictions in HEVC.
+        std::vector<MAVLinkParameters::ParamValue> values;
+        EXPECT_TRUE(cd.get_possible_options("CAM_VIDRES", values));
+        EXPECT_EQ(values.size(), 26);
     }
 }
 

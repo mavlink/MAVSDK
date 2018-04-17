@@ -54,7 +54,7 @@ public:
     void get_option_key_async(const std::string &setting_key,
                               const Camera::get_option_callback_t &callback);
 
-    bool get_possible_settings(std::map<std::string, std::string> &settings);
+    bool get_possible_settings(std::vector<std::string> &settings);
     bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
 
     // Non-copyable
