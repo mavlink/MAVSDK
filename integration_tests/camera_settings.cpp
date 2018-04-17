@@ -3,6 +3,7 @@
 #include <atomic>
 #include <future>
 #include "dronecore.h"
+#include "system.h"
 #include "integration_test_helper.h"
 #include "camera_test_helpers.h"
 
@@ -20,6 +21,7 @@ TEST(CameraTest, ShowSettings)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     System &system = dc.system();
+    ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     // Wait for download to happen.
@@ -68,6 +70,7 @@ TEST(CameraTest, SettingsAnySetting)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     System &system = dc.system();
+    ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
     // FIXME: we need to wait for the camera definition to be ready
