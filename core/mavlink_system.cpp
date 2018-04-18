@@ -554,6 +554,12 @@ void MAVLinkSystem::get_param_float_async(const std::string &name,
                                             callback));
 }
 
+void MAVLinkSystem::get_param_async(const std::string &name, get_param_callback_t callback,
+                                    bool extended)
+{
+    _params.get_param_async(name, callback, extended);
+}
+
 MAVLinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
 {
     const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
