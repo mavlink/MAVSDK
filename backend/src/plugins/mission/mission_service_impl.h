@@ -31,6 +31,27 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status StartMission(grpc::ServerContext * /* context */,
+                              const rpc::mission::StartMissionRequest * /* request */,
+                              rpc::mission::StartMissionResponse *response) override
+    {
+        std::promise<void> result_promise;
+        const auto result_future = result_promise.get_future();
+
+        _mission.start_mission_async([this, response,
+              &result_promise](const dronecore::Mission::Result result) {
+            if (response != nullptr) {
+                auto rpc_mission_result = generateRPCMissionResult(result);
+                response->set_allocated_mission_result(rpc_mission_result);
+            }
+
+            result_promise.set_value();
+        });
+
+        result_future.wait();
+        return grpc::Status::OK;
+    }
+
 private:
     std::vector<std::shared_ptr<MissionItem>> extractMissionItems(const
                                                                   rpc::mission::UploadMissionRequest *request) const
@@ -71,20 +92,26 @@ private:
                             rpc::mission::UploadMissionResponse *response,
                             std::promise<void> &result_promise) const
     {
-        _mission.upload_mission_async(mission_items, [response,
-        &result_promise](const dronecore::Mission::Result result) {
+        _mission.upload_mission_async(mission_items, [this, response,
+              &result_promise](const dronecore::Mission::Result result) {
             if (response != nullptr) {
-                auto rpc_result = static_cast<rpc::mission::MissionResult::Result>(result);
-
-                auto rpc_mission_result = new rpc::mission::MissionResult();
-                rpc_mission_result->set_result(rpc_result);
-                rpc_mission_result->set_result_str(dronecore::Mission::result_str(result));
-
+                auto rpc_mission_result = generateRPCMissionResult(result);
                 response->set_allocated_mission_result(rpc_mission_result);
             }
 
             result_promise.set_value();
         });
+    }
+
+    rpc::mission::MissionResult *generateRPCMissionResult(const dronecore::Mission::Result result) const
+    {
+        auto rpc_result = static_cast<rpc::mission::MissionResult::Result>(result);
+
+        auto rpc_mission_result = new rpc::mission::MissionResult();
+        rpc_mission_result->set_result(rpc_result);
+        rpc_mission_result->set_result_str(dronecore::Mission::result_str(result));
+
+        return rpc_mission_result;
     }
 
     Mission &_mission;
