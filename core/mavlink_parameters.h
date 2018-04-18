@@ -360,9 +360,44 @@ public:
             _value = value;
         }
 
-        bool is_int() const
+        bool is_uint8() const
+        {
+            return (_value.is<uint8_t>());
+        }
+
+        bool is_int8() const
+        {
+            return (_value.is<int8_t>());
+        }
+
+        bool is_uint16() const
+        {
+            return (_value.is<uint16_t>());
+        }
+
+        bool is_int16() const
+        {
+            return (_value.is<int16_t>());
+        }
+
+        bool is_uint32() const
+        {
+            return (_value.is<uint32_t>());
+        }
+
+        bool is_int32() const
         {
             return (_value.is<int32_t>());
+        }
+
+        bool is_uint64() const
+        {
+            return (_value.is<uint64_t>());
+        }
+
+        bool is_int64() const
+        {
+            return (_value.is<int64_t>());
         }
 
         bool is_float() const
