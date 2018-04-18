@@ -429,6 +429,26 @@ std::string CameraDefinition::get_option_str(const std::string &param_name,
     return "Unknown";
 }
 
+bool CameraDefinition::get_option(const std::string &param_name,
+                                  const std::string &option_value,
+                                  MAVLinkParameters::ParamValue &value)
+{
+    if (_parameter_map.find(param_name) == _parameter_map.end()) {
+        LogErr() << "Unknown parameter to get option";
+        return false;
+    }
+
+    for (const auto &option : _parameter_map[param_name]->options) {
+        if (option->value == option_value) {
+            value = option->value;
+            return true;
+        }
+    }
+
+
+    return false;
+}
+
 bool CameraDefinition::get_all_options(
     const std::string &name, std::vector<MAVLinkParameters::ParamValue> &values)
 {

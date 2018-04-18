@@ -337,3 +337,46 @@ TEST(CameraDefinition, E90OptionNames)
     EXPECT_STREQ(cd.get_option_str("CAM_EV", "1").c_str(), "+1");
 }
 
+TEST(CameraDefinition, E90OptionValues)
+{
+    // Run this from root.
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
+
+    MAVLinkParameters::ParamValue value1;
+    value1.set_float(0.02f);
+
+    MAVLinkParameters::ParamValue value2;
+
+    // First try the invalid case.
+    EXPECT_FALSE(cd.get_option("CAM_BLABLA", "0.02", value2));
+
+    EXPECT_TRUE(cd.get_option("CAM_SHUTTERSPD", "0.02", value2));
+    EXPECT_TRUE(value1 == value2);
+
+    value1.set_float(2.f);
+    EXPECT_TRUE(cd.get_option("CAM_SHUTTERSPD", "2", value2));
+    EXPECT_TRUE(value1 == value2);
+
+    // Try an invalid shutter speed
+    EXPECT_FALSE(cd.get_option("CAM_SHUTTERSPD", "100", value2));
+
+    value1.set_uint32(100);
+    EXPECT_TRUE(cd.get_option("CAM_ISO", "100", value2));
+    EXPECT_TRUE(value1 == value2);
+
+    value1.set_uint32(200);
+    EXPECT_TRUE(cd.get_option("CAM_ISO", "200", value2));
+    EXPECT_TRUE(value1 == value2);
+
+    value1.set_float(-2.5f);
+    EXPECT_TRUE(cd.get_option("CAM_EV", "-2.5", value2));
+    EXPECT_TRUE(value1 == value2);
+
+    value1.set_float(1);
+    EXPECT_TRUE(cd.get_option("CAM_EV", "1", value2));
+    EXPECT_TRUE(value1 == value2);
+
+    // Try an invalid EV
+    EXPECT_FALSE(cd.get_option("CAM_EV", "-42.0", value2));
+}
