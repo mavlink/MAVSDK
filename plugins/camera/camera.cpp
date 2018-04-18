@@ -103,17 +103,17 @@ void Camera::capture_info_async(capture_info_callback_t callback)
     _impl->capture_info_async(callback);
 }
 
-void Camera::set_option_key_async(const std::string &setting_key,
-                                  const std::string &option_key,
-                                  const result_callback_t &callback)
+void Camera::set_option_async(const std::string &setting,
+                              const std::string &option,
+                              const result_callback_t &callback)
 {
-    _impl->set_option_key_async(setting_key, option_key, callback);
+    _impl->set_option_async(setting, option, callback);
 }
 
-void Camera::get_option_key_async(const std::string &setting_key,
-                                  const get_option_callback_t &callback)
+void Camera::get_option_async(const std::string &setting,
+                              const get_option_callback_t &callback)
 {
-    _impl->get_option_key_async(setting_key, callback);
+    _impl->get_option_async(setting, callback);
 }
 
 bool Camera::get_possible_settings(std::vector<std::string> &settings)

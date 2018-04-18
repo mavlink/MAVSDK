@@ -357,11 +357,11 @@ public:
     bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
 
     typedef std::function<void(Result, const std::string &)> get_option_callback_t;
-    void get_option_key_async(const std::string &setting_key,
-                              const get_option_callback_t &callback);
-    void set_option_key_async(const std::string &setting_key,
-                              const std::string &option_key,
-                              const result_callback_t &callback);
+    void get_option_async(const std::string &setting,
+                          const get_option_callback_t &callback);
+    void set_option_async(const std::string &setting,
+                          const std::string &option,
+                          const result_callback_t &callback);
 
     /**
      * @brief Copy constructor (object is not copyable).

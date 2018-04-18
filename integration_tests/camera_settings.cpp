@@ -107,7 +107,7 @@ TEST(CameraTest, SettingsAnySetting)
     auto ret = prom->get_future();
 
     // TODO: use a valid setting here
-    camera->set_option_key_async("FOO", "BAR",
+    camera->set_option_async("FOO", "BAR",
     [prom](Camera::Result result) {
         prom->set_value(result);
     });

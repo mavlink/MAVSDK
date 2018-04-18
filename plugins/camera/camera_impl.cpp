@@ -901,9 +901,9 @@ bool CameraImpl::get_possible_options(const std::string &setting_name,
     return options.size() > 0;
 }
 
-void CameraImpl::set_option_key_async(const std::string &setting_key,
-                                      const std::string &option_key,
-                                      const Camera::result_callback_t &callback)
+void CameraImpl::set_option_async(const std::string &setting,
+                                  const std::string &option,
+                                  const Camera::result_callback_t &callback)
 {
     if (!_camera_definition) {
         LogWarn() << "Error: no camera defnition available yet.";
@@ -913,14 +913,18 @@ void CameraImpl::set_option_key_async(const std::string &setting_key,
         }
     }
 
-    LogWarn() << "Setting an option not implemented yet";
-    if (callback) {
-        callback(Camera::Result::DENIED);
-    }
+#if 0
+    // We get it first so that we have the type of the param value.
+    MAVLinkParameters::ParamValue value;
+    _camera_definition->get_setting_type(setting, value);
+    // TODO: set value from string
+    // TODO: do this later once the param is set on th drone
+    _camera_definition->set_setting(setting, value);
+#endif
 }
 
-void CameraImpl::get_option_key_async(const std::string &setting_key,
-                                      const Camera::get_option_callback_t &callback)
+void CameraImpl::get_option_async(const std::string &setting,
+                                  const Camera::get_option_callback_t &callback)
 {
     if (_camera_definition) {
         LogWarn() << "Error: no camera defnition available yet.";
