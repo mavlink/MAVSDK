@@ -35,15 +35,16 @@ public:
     bool get_possible_settings(std::map<std::string, MAVLinkParameters::ParamValue> &settings);
 
     std::string get_option_str(const std::string &param_name, const std::string &option_value);
-    bool get_option(const std::string &param_name,
-                    const std::string &option_value,
-                    MAVLinkParameters::ParamValue &value);
+    bool get_option_value(const std::string &param_name,
+                          const std::string &option_value,
+                          MAVLinkParameters::ParamValue &value);
     bool get_all_options(const std::string &name,
                          std::vector<MAVLinkParameters::ParamValue> &values);
     bool get_possible_options(const std::string &name,
                               std::vector<MAVLinkParameters::ParamValue> &values);
 
     bool get_unknown_params(std::vector<std::string> &params);
+    void set_all_params_unknown();
 
     // Non-copyable
     CameraDefinition(const CameraDefinition &) = delete;

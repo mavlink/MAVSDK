@@ -131,7 +131,9 @@ private:
     void status_timeout_happened();
 
     void load_definition_file(const std::string &uri);
-    void receive_param(const std::string &name, bool success, MAVLinkParameters::ParamValue value);
+
+    void refresh_params();
+    void invalidate_params();
 
     // Utility methods for convenience
     MAVLinkCommands::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
@@ -153,7 +155,6 @@ private:
     make_message_set_video_stream_settings(const Camera::VideoStreamSettings &settings);
 
     MAVLinkCommands::CommandLong make_command_request_video_stream_info();
-
 
     std::unique_ptr<CameraDefinition> _camera_definition {};
 };

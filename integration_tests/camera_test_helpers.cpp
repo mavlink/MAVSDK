@@ -66,3 +66,61 @@ void set_mode(std::shared_ptr<Camera> camera, Camera::Mode mode)
     // FIXME: this should not be required.
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
+
+
+Camera::Result set_setting(std::shared_ptr<Camera> camera,
+                           const std::string &setting,
+                           const std::string &option)
+{
+    auto prom = std::make_shared<std::promise<Camera::Result>>();
+    auto ret = prom->get_future();
+
+    camera->set_option_async(setting, option,
+    [prom](Camera::Result result) {
+        prom->set_value(result);
+    });
+
+    // Block now to wait for result but only for a second, we're in a hurry.
+    auto status = ret.wait_for(std::chrono::seconds(1));
+
+    EXPECT_EQ(status, std::future_status::ready);
+
+    if (status == std::future_status::ready) {
+        return ret.get();
+    }
+    return Camera::Result::TIMEOUT;
+}
+
+dronecore::Camera::Result get_setting(std::shared_ptr<dronecore::Camera> camera,
+                                      const std::string &setting,
+                                      std::string &option)
+{
+    struct PromiseResult {
+        Camera::Result result;
+        std::string value;
+    };
+
+    auto prom = std::make_shared<std::promise<PromiseResult>>();
+    auto ret = prom->get_future();
+
+    camera->get_option_async(setting,
+    [prom](Camera::Result result, const std::string & value) {
+        PromiseResult promise_result;
+        promise_result.result = result;
+        promise_result.value = value;
+        prom->set_value(promise_result);
+    });
+
+    // Block now to wait for result but only for a second, we're in a hurry.
+    auto status = ret.wait_for(std::chrono::seconds(1));
+
+    EXPECT_EQ(status, std::future_status::ready);
+
+    if (status == std::future_status::ready) {
+        PromiseResult promise_result = ret.get();
+        option = promise_result.value;
+        return promise_result.result;
+    }
+    return Camera::Result::TIMEOUT;
+
+}

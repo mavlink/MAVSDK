@@ -178,7 +178,7 @@ bool CameraDefinition::parse_xml()
         // We only need a default if we have options.
         const char *default_str = e_parameter->Attribute("default");
         if (!default_str) {
-            LogErr() << "Default missing.";
+            LogErr() << "Default missing for " << param_name;
             return false;
         }
 
@@ -282,7 +282,7 @@ bool CameraDefinition::parse_xml()
         }
 
         if (!found_default) {
-            LogErr() << "Default not found.";
+            LogErr() << "Default not found for " << param_name;
             // TODO: in the future we should fail completely here
             // return false;
             continue;
@@ -309,7 +309,7 @@ void CameraDefinition::assume_default_settings()
                 // LogDebug() << option->name << " not default";
                 continue;
             }
-            // LogDebug() << option->name << " default value: " << option->value;
+            // LogDebug() << option->name << " default value: " << option->value << " (type: " << option->value.typestr() << ")";
 
             _current_settings[parameter.first] = InternalCurrentSetting {option->value, false};
         }
@@ -340,7 +340,8 @@ bool CameraDefinition::get_possible_settings(
         for (const auto &option : parameter.second->options) {
             if (_current_settings[parameter.first].value == option->value) {
                 for (const auto &exclusion : option->exclusions) {
-                    // LogDebug() << "found exclusion: " << exclusion;
+                    // LogDebug() << "found exclusion for " << parameter.first
+                    //            << "(" << option->value << "): " << exclusion;
                     exclusions.push_back(exclusion);
                 }
             }
@@ -379,7 +380,26 @@ bool CameraDefinition::set_setting(const std::string &name,
         return false;
     }
 
-    _current_settings[name].value = value;
+    // FIXME: this is a hack because some params have the wrong type
+    //        when they come from the camera.
+    MAVLinkParameters::ParamValue changed_value = value;
+    if (name.compare("CAM_COLORMODE") == 0 ||
+        name.compare("CAM_EXPMODE") == 0 ||
+        name.compare("CAM_METERING") == 0 ||
+        name.compare("CAM_PHOTOFMT") == 0 ||
+        name.compare("CAM_PHOTOQUAL") == 0 ||
+        name.compare("CAM_VIDRES") == 0 ||
+        name.compare("CAM_WBMODE") == 0 ||
+        name.compare("CAM_COLORENCODE") == 0 ||
+        name.compare("CAM_FLICKER") == 0) {
+        if (changed_value.is_uint8()) {
+            uint8_t temp = changed_value.get_uint8();
+            changed_value.set_uint32(uint32_t(temp));
+        }
+    }
+
+    // LogDebug() << "Setting " << name << " of type: " << changed_value.typestr();
+    _current_settings[name].value = changed_value;
     _current_settings[name].needs_updating = false;
 
     // Some param changes cause other params to change, so they need to be updated.
@@ -404,9 +424,12 @@ bool CameraDefinition::get_setting(const std::string &name,
         return false;
     }
 
-    value = _current_settings.at(name).value;
-
-    return true;
+    if (!_current_settings.at(name).needs_updating) {
+        value = _current_settings.at(name).value;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 std::string CameraDefinition::get_option_str(const std::string &param_name,
@@ -429,9 +452,9 @@ std::string CameraDefinition::get_option_str(const std::string &param_name,
     return "Unknown";
 }
 
-bool CameraDefinition::get_option(const std::string &param_name,
-                                  const std::string &option_value,
-                                  MAVLinkParameters::ParamValue &value)
+bool CameraDefinition::get_option_value(const std::string &param_name,
+                                        const std::string &option_value,
+                                        MAVLinkParameters::ParamValue &value)
 {
     if (_parameter_map.find(param_name) == _parameter_map.end()) {
         LogErr() << "Unknown parameter to get option";
@@ -485,12 +508,46 @@ bool CameraDefinition::get_possible_options(
         return false;
     }
 
+    // Find all exclusions because excluded parameters need to be neglected for range
+    // check below.
+    // TODO: use set instead of vector
+    std::vector<std::string> exclusions {};
+
+    for (const auto &parameter : _parameter_map) {
+        for (const auto &option : parameter.second->options) {
+            if (_current_settings[parameter.first].value == option->value) {
+                for (const auto &exclusion : option->exclusions) {
+                    // LogDebug() << "found exclusion for " << parameter.first
+                    //            << "(" << option->value << "): " << exclusion;
+                    exclusions.push_back(exclusion);
+                }
+            }
+        }
+    }
+
     // TODO: use set instead of vector for this
     std::vector<MAVLinkParameters::ParamValue> allowed_ranges {};
 
     // Check allowed ranges.
     for (const auto &parameter : _parameter_map) {
+
+        if (!parameter.second->is_control) {
+            continue;
+        }
+
+        bool excluded = false;
+        for (const auto &exclusion : exclusions) {
+            if (parameter.first == exclusion) {
+                excluded = true;
+            }
+        }
+        if (excluded) {
+            continue;
+        }
+
         for (const auto &option : parameter.second->options) {
+
+
             // Only look at current set option.
             if (_current_settings[parameter.first].value == option->value) {
                 // Go through parameter ranges but only concerning the parameter that
@@ -532,6 +589,13 @@ bool CameraDefinition::get_unknown_params(std::vector<std::string> &params)
         }
     }
     return true;
+}
+
+void CameraDefinition::set_all_params_unknown()
+{
+    for (auto &parameter : _parameter_map) {
+        _current_settings[parameter.first].needs_updating = true;
+    }
 }
 
 } // namespace dronecore

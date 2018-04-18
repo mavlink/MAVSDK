@@ -63,9 +63,15 @@ void CameraImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void CameraImpl::enable() {}
+void CameraImpl::enable()
+{
+    refresh_params();
+}
 
-void CameraImpl::disable() {}
+void CameraImpl::disable()
+{
+    invalidate_params();
+}
 
 MAVLinkCommands::CommandLong
 CameraImpl::make_command_request_camera_info()
@@ -658,6 +664,7 @@ void CameraImpl::process_camera_settings(const mavlink_message_t &message)
         MAVLinkParameters::ParamValue value;
         value.set_uint32(camera_settings.mode_id);
         _camera_definition->set_setting("CAM_MODE", value);
+        refresh_params();
     }
 
     _get_mode.callback(Camera::Result::SUCCESS, mode);
@@ -790,6 +797,7 @@ void CameraImpl::receive_set_mode_command_result(MAVLinkCommands::Result command
         MAVLinkParameters::ParamValue value;
         value.set_uint32(mavlink_mode);
         _camera_definition->set_setting("CAM_MODE", value);
+        refresh_params();
     }
 }
 
@@ -822,18 +830,6 @@ void CameraImpl::get_mode_timeout_happened()
     }
 }
 
-void CameraImpl::receive_param(const std::string &name, bool success,
-                               MAVLinkParameters::ParamValue value)
-{
-    LogDebug() << "Got param '" << name
-               << "': " << value
-               << "(" << (success ? "success" : "fail") << ")";
-
-    if (success && _camera_definition) {
-        _camera_definition->set_setting(name, value);
-    }
-}
-
 void CameraImpl::load_definition_file(const std::string &uri)
 {
     HttpLoader http_loader;
@@ -847,10 +843,7 @@ void CameraImpl::load_definition_file(const std::string &uri)
     _camera_definition.reset(new CameraDefinition());
     _camera_definition->load_string(content);
 
-    std::vector<std::string> params {};
-    // TODO: make queue for all params to get.
-    // _camera_definition->unknown_params(params);
-    UNUSED(params);
+    refresh_params();
 }
 
 bool CameraImpl::get_possible_settings(std::vector<std::string> &settings)
@@ -909,36 +902,113 @@ void CameraImpl::set_option_async(const std::string &setting,
         LogWarn() << "Error: no camera defnition available yet.";
         if (callback) {
             callback(Camera::Result::ERROR);
-            return;
         }
+        return;
     }
 
-#if 0
     // We get it first so that we have the type of the param value.
     MAVLinkParameters::ParamValue value;
-    _camera_definition->get_setting_type(setting, value);
-    // TODO: set value from string
-    // TODO: do this later once the param is set on th drone
-    _camera_definition->set_setting(setting, value);
-#endif
+    if (!_camera_definition->get_option_value(setting, option, value)) {
+        if (callback) {
+            callback(Camera::Result::ERROR);
+        }
+        return;
+    }
+
+    _parent->set_param_async(setting, value,
+    [this, callback, setting, value](bool success) {
+        if (success) {
+            if (this->_camera_definition) {
+
+                _camera_definition->set_setting(setting, value);
+                refresh_params();
+            }
+            if (callback) {
+                callback(Camera::Result::SUCCESS);
+            }
+        } else {
+            if (callback) {
+                callback(Camera::Result::ERROR);
+            }
+        }
+    },
+    true);
+
 }
 
 void CameraImpl::get_option_async(const std::string &setting,
                                   const Camera::get_option_callback_t &callback)
 {
-    if (_camera_definition) {
+    if (!_camera_definition) {
         LogWarn() << "Error: no camera defnition available yet.";
         if (callback) {
             callback(Camera::Result::ERROR, "");
         }
+        return;
     }
 
-    LogWarn() << "Getting an option not implemented yet";
-    if (callback) {
-        callback(Camera::Result::DENIED, "");
+    MAVLinkParameters::ParamValue value;
+    // We should have this cached and don't need to get the param.
+    if (_camera_definition->get_setting(setting, value)) {
+        if (callback) {
+            callback(Camera::Result::SUCCESS, value.get_string());
+        }
+    } else {
+        // If this still happens, we request the param, but also complain.
+        LogWarn() << "The param was probably outdated, trying to fetch it";
+        _parent->get_param_async(setting,
+        [setting, this](bool success, MAVLinkParameters::ParamValue value) {
+            if (!success) {
+                LogWarn() << "Fetching the param failed";
+                return;
+            }
+            // We need to check again by the time this callback runs
+            if (!this->_camera_definition) {
+                return;
+            }
+            this->_camera_definition->set_setting(setting, value);
+        }, true);
+
+        // At this point it might be a good idea to refresh but it's a bit scary
+        // as the stack keeps growing at this point.
+        //refresh_params();
+    }
+}
+
+void CameraImpl::refresh_params()
+{
+    if (!_camera_definition) {
+        return;
     }
 
-    UNUSED(setting_key);
+    std::vector<std::string> params {};
+    if (!_camera_definition->get_unknown_params(params)) {
+        return;
+    }
+
+    for (const auto &param : params) {
+        std::string param_name = param;
+        _parent->get_param_async(param_name,
+        [param_name, this](bool success, MAVLinkParameters::ParamValue value) {
+            if (!success) {
+                return;
+            }
+            // We need to check again by the time this callback runs
+            if (!this->_camera_definition) {
+                return;
+            }
+            this->_camera_definition->set_setting(param_name, value);
+        }, true);
+    }
+}
+
+void CameraImpl::invalidate_params()
+{
+    if (!_camera_definition) {
+        return;
+    }
+
+    _camera_definition->set_all_params_unknown();
 }
 
 } // namespace dronecore

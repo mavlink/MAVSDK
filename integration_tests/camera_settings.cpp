@@ -24,6 +24,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
+
     // Wait for download to happen.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
@@ -37,7 +38,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
     for (auto setting : settings) {
         LogDebug() << "-" << setting;
     }
-    EXPECT_EQ(settings.size(), 12);
+    EXPECT_EQ(settings.size(), 10);
 
     set_mode(camera, Camera::Mode::VIDEO);
 
@@ -49,11 +50,9 @@ TEST(CameraTest, ShowSettingsAndOptions)
     for (auto setting : settings) {
         LogDebug() << "-" << setting;
     }
-    EXPECT_EQ(settings.size(), 10);
+    EXPECT_EQ(settings.size(), 8);
 
     std::vector<std::string> options;
-    EXPECT_TRUE(camera->get_possible_options("CAM_ISO", options));
-    EXPECT_EQ(options.size(), 9);
 
     // Try something that is specific to the camera mode.
     EXPECT_TRUE(camera->get_possible_options("CAM_VIDRES", options));
@@ -69,9 +68,6 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
     set_mode(camera, Camera::Mode::PHOTO);
 
-    EXPECT_TRUE(camera->get_possible_options("CAM_ISO", options));
-    EXPECT_EQ(options.size(), 10);
-
     // Try something that is specific to the camera mode.
     EXPECT_TRUE(camera->get_possible_options("CAM_PHOTOQUAL", options));
     EXPECT_EQ(options.size(), 4);
@@ -85,7 +81,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
     EXPECT_EQ(options.size(), 0);
 }
 
-TEST(CameraTest, SettingsAnySetting)
+TEST(CameraTest, SetSettings)
 {
     DroneCore dc;
 
@@ -99,28 +95,100 @@ TEST(CameraTest, SettingsAnySetting)
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
-    // FIXME: we need to wait for the camera definition to be ready
+    // We need to wait for the camera definition to be ready
     // because we don't have a check yet.
-    std::this_thread::sleep_for(std::chrono::seconds(3));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    auto prom = std::make_shared<std::promise<Camera::Result>>();
-    auto ret = prom->get_future();
+    set_mode(camera, Camera::Mode::PHOTO);
 
-    // TODO: use a valid setting here
-    camera->set_option_async("FOO", "BAR",
-    [prom](Camera::Result result) {
-        prom->set_value(result);
-    });
+    // Try setting garbage first
+    EXPECT_EQ(set_setting(camera, "DOES_NOT", "EXIST"), Camera::Result::ERROR);
 
-    // Block now to wait for result but only for a second, we're in a hurry.
-    auto status = ret.wait_for(std::chrono::seconds(1));
+    std::string value_set;
+    EXPECT_EQ(set_setting(camera, "CAM_PHOTOQUAL", "1"), Camera::Result::SUCCESS);
+    EXPECT_EQ(get_setting(camera, "CAM_PHOTOQUAL", value_set), Camera::Result::SUCCESS);
+    EXPECT_STREQ("1", value_set.c_str());
 
-    EXPECT_EQ(status, std::future_status::ready);
+    EXPECT_EQ(set_setting(camera, "CAM_COLORMODE", "5"), Camera::Result::SUCCESS);
+    EXPECT_EQ(get_setting(camera, "CAM_COLORMODE", value_set), Camera::Result::SUCCESS);
+    EXPECT_STREQ("5", value_set.c_str());
 
-    if (status == std::future_status::ready) {
-        Camera::Result new_ret = ret.get();
-        // FIXME: this is not implemented, so it returns ERROR
-        //EXPECT_EQ(new_ret, Camera::Result::SUCCESS);
-        UNUSED(new_ret);
-    }
+
+    // Let's check the manual exposure mode first.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);
+    EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
+    EXPECT_STREQ("1", value_set.c_str());
+
+    // We should now be able to set shutter speed and ISO.
+    std::vector<std::string> options;
+    // Try something that is specific to the camera mode.
+    EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
+    EXPECT_EQ(options.size(), 19);
+    EXPECT_TRUE(camera->get_possible_options("CAM_ISO", options));
+    EXPECT_EQ(options.size(), 10);
+
+    // But not EV and metering
+    EXPECT_FALSE(camera->get_possible_options("CAM_EV", options));
+    EXPECT_EQ(options.size(), 0);
+    EXPECT_FALSE(camera->get_possible_options("CAM_METERING", options));
+    EXPECT_EQ(options.size(), 0);
+
+    // Now we'll try the same for Auto exposure mode
+    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
+    EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
+    EXPECT_STREQ("0", value_set.c_str());
+
+    // Shutter speed and ISO don't have options in Auto mode.
+    EXPECT_FALSE(camera->get_possible_options("CAM_SHUTTERSPD", options));
+    EXPECT_EQ(options.size(), 0);
+    EXPECT_FALSE(camera->get_possible_options("CAM_ISO", options));
+    EXPECT_EQ(options.size(), 0);
+
+    // But not EV and metering
+    EXPECT_TRUE(camera->get_possible_options("CAM_EV", options));
+    EXPECT_EQ(options.size(), 13);
+    EXPECT_TRUE(camera->get_possible_options("CAM_METERING", options));
+    EXPECT_EQ(options.size(), 3);
+
+    set_mode(camera, Camera::Mode::VIDEO);
+
+    // This should fail in video mode.
+    EXPECT_EQ(set_setting(camera, "CAM_PHOTOQUAL", "1"), Camera::Result::ERROR);
+
+    // Let's check the manual exposure mode first.
+
+    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);
+    EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
+    EXPECT_STREQ("1", value_set.c_str());
+
+    // FIXME: otherwise the camera is too slow
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    // But a video setting should work
+    EXPECT_EQ(set_setting(camera, "CAM_VIDRES", "30"), Camera::Result::SUCCESS);
+    EXPECT_EQ(get_setting(camera, "CAM_VIDRES", value_set), Camera::Result::SUCCESS);
+    EXPECT_STREQ("30", value_set.c_str());
+
+    // Shutter speed and ISO don't have options in Auto mode.
+    EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
+    EXPECT_EQ(options.size(), 15);
+
+    // FIXME: otherwise the camera is too slow
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    // But a video setting should work
+    EXPECT_EQ(set_setting(camera, "CAM_VIDRES", "0"), Camera::Result::SUCCESS);
+    EXPECT_EQ(get_setting(camera, "CAM_VIDRES", value_set), Camera::Result::SUCCESS);
+    EXPECT_STREQ("0", value_set.c_str());
+
+    // Shutter speed and ISO don't have options in Auto mode.
+    EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
+    EXPECT_EQ(options.size(), 12);
+
+    // Back to auto exposure mode
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
+    EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
+    EXPECT_STREQ("0", value_set.c_str());
 }

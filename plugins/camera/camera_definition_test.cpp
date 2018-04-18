@@ -74,6 +74,10 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     {
         std::map<std::string, MAVLinkParameters::ParamValue> settings {};
         EXPECT_TRUE(cd.get_possible_settings(settings));
+        LogDebug() << "Found settings:";
+        for (const auto &setting : settings) {
+            LogDebug() << " - " << setting.first;
+        }
         EXPECT_EQ(settings.size(), 9);
     }
 
@@ -248,6 +252,15 @@ TEST(CameraDefinition, E90SettingsToUpdate)
         EXPECT_TRUE(cd.get_unknown_params(params));
         EXPECT_EQ(params.size(), 15);
     }
+
+    cd.set_all_params_unknown();
+
+    {
+        std::vector<std::string> params;
+        EXPECT_TRUE(cd.get_unknown_params(params));
+        EXPECT_EQ(params.size(), 16);
+    }
+
 }
 
 TEST(CameraDefinition, E90SettingsCauseUpdates)
@@ -349,34 +362,34 @@ TEST(CameraDefinition, E90OptionValues)
     MAVLinkParameters::ParamValue value2;
 
     // First try the invalid case.
-    EXPECT_FALSE(cd.get_option("CAM_BLABLA", "0.02", value2));
+    EXPECT_FALSE(cd.get_option_value("CAM_BLABLA", "0.02", value2));
 
-    EXPECT_TRUE(cd.get_option("CAM_SHUTTERSPD", "0.02", value2));
+    EXPECT_TRUE(cd.get_option_value("CAM_SHUTTERSPD", "0.02", value2));
     EXPECT_TRUE(value1 == value2);
 
     value1.set_float(2.f);
-    EXPECT_TRUE(cd.get_option("CAM_SHUTTERSPD", "2", value2));
+    EXPECT_TRUE(cd.get_option_value("CAM_SHUTTERSPD", "2", value2));
     EXPECT_TRUE(value1 == value2);
 
     // Try an invalid shutter speed
-    EXPECT_FALSE(cd.get_option("CAM_SHUTTERSPD", "100", value2));
+    EXPECT_FALSE(cd.get_option_value("CAM_SHUTTERSPD", "100", value2));
 
     value1.set_uint32(100);
-    EXPECT_TRUE(cd.get_option("CAM_ISO", "100", value2));
+    EXPECT_TRUE(cd.get_option_value("CAM_ISO", "100", value2));
     EXPECT_TRUE(value1 == value2);
 
     value1.set_uint32(200);
-    EXPECT_TRUE(cd.get_option("CAM_ISO", "200", value2));
+    EXPECT_TRUE(cd.get_option_value("CAM_ISO", "200", value2));
     EXPECT_TRUE(value1 == value2);
 
     value1.set_float(-2.5f);
-    EXPECT_TRUE(cd.get_option("CAM_EV", "-2.5", value2));
+    EXPECT_TRUE(cd.get_option_value("CAM_EV", "-2.5", value2));
     EXPECT_TRUE(value1 == value2);
 
     value1.set_float(1);
-    EXPECT_TRUE(cd.get_option("CAM_EV", "1", value2));
+    EXPECT_TRUE(cd.get_option_value("CAM_EV", "1", value2));
     EXPECT_TRUE(value1 == value2);
 
     // Try an invalid EV
-    EXPECT_FALSE(cd.get_option("CAM_EV", "-42.0", value2));
+    EXPECT_FALSE(cd.get_option_value("CAM_EV", "-42.0", value2));
 }
