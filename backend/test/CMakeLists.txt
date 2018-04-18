@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 add_executable(unit_tests_backend
     action_service_impl_test.cpp
+    backend_main.cpp
     connection_initiator_test.cpp
     core_service_impl_test.cpp
     mission_service_impl_test.cpp
