@@ -423,8 +423,8 @@ public:
                 return _value.as<float>() == std::stof(value_str.c_str());
             } else if (_value.is<double>()) {
                 return _value.as<double>() == std::stod(value_str.c_str());
-            } else if (_value.is<custom_type_t>()) {
-                // FIXME: not clear how to handle this
+            } else {
+                // This also covers custom_type_t
                 return false;
             }
         }
