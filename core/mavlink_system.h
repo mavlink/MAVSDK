@@ -138,6 +138,10 @@ public:
     typedef std::function <void(bool success, MAVLinkParameters::ParamValue value)>
     get_param_callback_t;
 
+    void set_param_async(const std::string &name,
+                         MAVLinkParameters::ParamValue value,
+                         success_t callback,
+                         bool extended = false);
     void get_param_async(const std::string &name, get_param_callback_t callback,
                          bool extended = false);
 

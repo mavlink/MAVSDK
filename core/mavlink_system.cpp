@@ -554,6 +554,14 @@ void MAVLinkSystem::get_param_float_async(const std::string &name,
                                             callback));
 }
 
+void MAVLinkSystem::set_param_async(const std::string &name,
+                                    MAVLinkParameters::ParamValue value,
+                                    success_t callback,
+                                    bool extended)
+{
+    _params.set_param_async(name, value, callback, extended);
+}
+
 void MAVLinkSystem::get_param_async(const std::string &name, get_param_callback_t callback,
                                     bool extended)
 {
