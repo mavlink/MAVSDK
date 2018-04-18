@@ -31,15 +31,34 @@ using StartMissionResponse = dc::rpc::mission::StartMissionResponse;
 
 std::vector<InputPair> generateInputPairs();
 
-class MissionServiceImplUploadTest : public ::testing::TestWithParam<InputPair>
+class MissionServiceImplTestBase : public ::testing::TestWithParam<InputPair>
 {
 protected:
-    MissionServiceImplUploadTest()
+    MissionServiceImplTestBase()
         : _mission_service(_mission)
     {
         _callback_saved_future = _callback_saved_promise.get_future();
     }
 
+    /* The mocked mission module. */
+    MockMission _mission;
+
+    /* The mission service that is actually being tested here. */
+    MissionServiceImpl _mission_service;
+
+    /* StartMission returns its result through a callback, which is saved in _result_callback. */
+    dc::testing::mission_result_callback_t _result_callback;
+
+    /* The tests need to make sure that _result_callback has been set before calling it, hence the promise. */
+    std::promise<void> _callback_saved_promise;
+
+    /* The tests need to make sure that _result_callback has been set before calling it, hence the future. */
+    std::future<void> _callback_saved_future;
+};
+
+class MissionServiceImplUploadTest : public MissionServiceImplTestBase
+{
+protected:
     /**
      * Uploads the mission and saves the result callback together with the actual list of items
      * that are sent to dronecore. The result callback is saved in _result_callback, and the
@@ -67,23 +86,8 @@ protected:
     /* Generate a list of multiple mission items. */
     std::vector<std::shared_ptr<dc::MissionItem>> generateListOfMultipleItems();
 
-    /* The mocked mission module. */
-    MockMission _mission;
-
-    /* The mission service that is actually being tested here. */
-    MissionServiceImpl _mission_service;
-
     /* Captures the actual mission sent to dronecore by the backend. */
     std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission;
-
-    /* UploadMission returns its result through a callback, which is saved in _result_callback. */
-    dc::testing::mission_result_callback_t _result_callback;
-
-    /* The tests need to make sure that _result_callback has been set before calling it, hence the promise. */
-    std::promise<void> _callback_saved_promise;
-
-    /* The tests need to make sure that _result_callback has been set before calling it, hence the future. */
-    std::future<void> _callback_saved_future;
 };
 
 INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
@@ -280,31 +284,10 @@ std::vector<std::shared_ptr<dc::MissionItem>>
     return mission_items;
 }
 
-class MissionServiceImplStartTest : public ::testing::TestWithParam<InputPair>
+class MissionServiceImplStartTest : public MissionServiceImplTestBase
 {
 protected:
-    MissionServiceImplStartTest()
-        : _mission_service(_mission)
-    {
-        _callback_saved_future = _callback_saved_promise.get_future();
-    }
-
     std::future<void> startMissionAndSaveParams(std::shared_ptr<StartMissionResponse> response);
-
-    /* The mocked mission module. */
-    MockMission _mission;
-
-    /* The mission service that is actually being tested here. */
-    MissionServiceImpl _mission_service;
-
-    /* StartMission returns its result through a callback, which is saved in _result_callback. */
-    dc::testing::mission_result_callback_t _result_callback;
-
-    /* The tests need to make sure that _result_callback has been set before calling it, hence the promise. */
-    std::promise<void> _callback_saved_promise;
-
-    /* The tests need to make sure that _result_callback has been set before calling it, hence the future. */
-    std::future<void> _callback_saved_future;
 };
 
 INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
