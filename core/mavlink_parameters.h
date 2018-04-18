@@ -26,6 +26,12 @@ public:
     public:
         typedef char custom_type_t[128];
 
+        ParamValue &operator= (ParamValue value)
+        {
+            _value = value._value;
+            return *this;
+        }
+
         void set_from_mavlink_param_value(mavlink_param_value_t mavlink_value)
         {
             switch (mavlink_value.param_type) {
