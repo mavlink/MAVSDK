@@ -44,3 +44,19 @@ TEST(Any, Casts)
     // We can't actually cast using `as`.
     ASSERT_FLOAT_EQ(float(n.as<int>()), float(some_number));
 }
+
+TEST(Any, Copys)
+{
+    const float some_float = 0.7f;
+
+    Any n1;
+    Any n2;
+    ASSERT_TRUE(n1.is_null());
+    ASSERT_TRUE(n2.is_null());
+
+    n1 = some_float;
+    n2 = n1;
+    ASSERT_TRUE(n1.is<float>());
+    ASSERT_TRUE(n2.is<float>());
+    ASSERT_TRUE(n1.as<float>() == n2.as<float>());
+}
