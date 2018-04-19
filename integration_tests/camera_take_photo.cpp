@@ -34,6 +34,8 @@ TEST(CameraTest, TakePhoto)
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
     // We want to take the picture in photo mode.
     set_mode(camera, Camera::Mode::PHOTO);
 
@@ -42,8 +44,7 @@ TEST(CameraTest, TakePhoto)
     camera->capture_info_async(std::bind(&receive_capture_info, _1));
 
     camera->take_photo_async(std::bind(&receive_camera_result, _1));
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
+    std::this_thread::sleep_for(std::chrono::seconds(3));
     EXPECT_TRUE(_received_capture_info);
 }
 
@@ -73,7 +74,7 @@ TEST(CameraTest, TakeMultiplePhotos)
     for (unsigned i = 0; i < num_photos_to_take; ++i) {
         camera->take_photo_async(std::bind(&receive_camera_result, _1));
         LogDebug() << "taking picture: " << i;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        std::this_thread::sleep_for(std::chrono::seconds(3));
         EXPECT_TRUE(_received_capture_info);
         _received_capture_info = false;
     }
