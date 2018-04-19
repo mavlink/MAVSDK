@@ -338,6 +338,9 @@ bool CameraDefinition::get_possible_settings(
 
     for (const auto &parameter : _parameter_map) {
         for (const auto &option : parameter.second->options) {
+            if (_current_settings[parameter.first].needs_updating) {
+                continue;
+            }
             if (_current_settings[parameter.first].value == option->value) {
                 for (const auto &exclusion : option->exclusions) {
                     // LogDebug() << "found exclusion for " << parameter.first
@@ -355,6 +358,10 @@ bool CameraDefinition::get_possible_settings(
                 excluded = true;
             }
         }
+        if (!_parameter_map[setting.first]->is_control) {
+            continue;
+        }
+
         if (!excluded) {
             settings[setting.first] = setting.second.value;
         }
@@ -383,7 +390,8 @@ bool CameraDefinition::set_setting(const std::string &name,
     // FIXME: this is a hack because some params have the wrong type
     //        when they come from the camera.
     MAVLinkParameters::ParamValue changed_value = value;
-    if (name.compare("CAM_COLORMODE") == 0 ||
+    if (name.compare("CAM_MODE") == 0 ||
+        name.compare("CAM_COLORMODE") == 0 ||
         name.compare("CAM_EXPMODE") == 0 ||
         name.compare("CAM_METERING") == 0 ||
         name.compare("CAM_PHOTOFMT") == 0 ||
@@ -515,6 +523,10 @@ bool CameraDefinition::get_possible_options(
 
     for (const auto &parameter : _parameter_map) {
         for (const auto &option : parameter.second->options) {
+            if (_current_settings[parameter.first].needs_updating) {
+                // LogWarn() << parameter.first << " needs updating";
+                continue;
+            }
             if (_current_settings[parameter.first].value == option->value) {
                 for (const auto &exclusion : option->exclusions) {
                     // LogDebug() << "found exclusion for " << parameter.first
@@ -546,8 +558,10 @@ bool CameraDefinition::get_possible_options(
         }
 
         for (const auto &option : parameter.second->options) {
-
-
+            if (_current_settings[parameter.first].needs_updating) {
+                // LogWarn() << parameter.first << " needs updating";
+                continue;
+            }
             // Only look at current set option.
             if (_current_settings[parameter.first].value == option->value) {
                 // Go through parameter ranges but only concerning the parameter that

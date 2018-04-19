@@ -111,6 +111,13 @@ TEST(CameraDefinition, E90ChangeSettings)
     }
 
     {
+        // We can only set CAM_COLORMODE in photo mode
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(0);
+        EXPECT_TRUE(cd.set_setting("CAM_MODE", value));
+    }
+
+    {
         // Set WBMODE to 1
         MAVLinkParameters::ParamValue value;
         value.set_uint32(1);
@@ -214,14 +221,52 @@ TEST(CameraDefinition, E90ShowOptions)
     }
 
     {
+        // Set it to one that is allowed.
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(3);
+        EXPECT_TRUE(cd.set_setting("CAM_VIDRES", value));
+    }
+
+    {
+        // Now switch to HEVC
         MAVLinkParameters::ParamValue value;
         value.set_uint32(3);
         EXPECT_TRUE(cd.set_setting("CAM_VIDFMT", value));
+    }
 
+    {
         // Test VIDRES with range restrictions in HEVC.
         std::vector<MAVLinkParameters::ParamValue> values;
         EXPECT_TRUE(cd.get_possible_options("CAM_VIDRES", values));
         EXPECT_EQ(values.size(), 26);
+    }
+
+    {
+        // Then one that is allowed.
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(5);
+        EXPECT_TRUE(cd.set_setting("CAM_VIDRES", value));
+    }
+
+    {
+        // Back to h.264
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(1);
+        EXPECT_TRUE(cd.set_setting("CAM_VIDFMT", value));
+    }
+
+    {
+        // Test VIDRES without range restrictions in h.264.
+        std::vector<MAVLinkParameters::ParamValue> values;
+        EXPECT_TRUE(cd.get_possible_options("CAM_VIDRES", values));
+        EXPECT_EQ(values.size(), 32);
+    }
+
+    {
+        // And 4K 60 Hz is now allowed again.
+        MAVLinkParameters::ParamValue value;
+        value.set_uint32(0);
+        EXPECT_TRUE(cd.set_setting("CAM_VIDRES", value));
     }
 }
 

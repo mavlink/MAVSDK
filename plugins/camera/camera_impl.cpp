@@ -915,6 +915,22 @@ void CameraImpl::set_option_async(const std::string &setting,
         return;
     }
 
+    std::vector<MAVLinkParameters::ParamValue> possible_values;
+    _camera_definition->get_possible_options(setting, possible_values);
+    bool allowed = false;
+    for (const auto &possible_value : possible_values) {
+        if (value == possible_value) {
+            allowed = true;
+        }
+    }
+    if (!allowed) {
+        LogErr() << "Setting " << setting << "(" << option << ") not allowed";
+        if (callback) {
+            callback(Camera::Result::ERROR);
+        }
+        return;
+    }
+
     _parent->set_param_async(setting, value,
     [this, callback, setting, value](bool success) {
         if (success) {

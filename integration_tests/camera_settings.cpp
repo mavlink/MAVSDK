@@ -38,7 +38,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
     for (auto setting : settings) {
         LogDebug() << "-" << setting;
     }
-    EXPECT_EQ(settings.size(), 10);
+    EXPECT_EQ(settings.size(), 8);
 
     set_mode(camera, Camera::Mode::VIDEO);
 
@@ -50,7 +50,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
     for (auto setting : settings) {
         LogDebug() << "-" << setting;
     }
-    EXPECT_EQ(settings.size(), 8);
+    EXPECT_EQ(settings.size(), 6);
 
     std::vector<std::string> options;
 
