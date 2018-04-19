@@ -282,7 +282,7 @@ bool CameraDefinition::parse_xml()
         }
 
         if (!found_default) {
-            LogErr() << "Default not found for " << param_name;
+            LogWarn() << "Default not found for " << param_name;
             // TODO: in the future we should fail completely here
             // return false;
             continue;
@@ -415,7 +415,7 @@ bool CameraDefinition::set_setting(const std::string &name,
     // needs to happen outside of this class.
     for (const auto &update : _parameter_map[name]->updates) {
         if (_current_settings.find(update) == _current_settings.end()) {
-            LogWarn() << "Update to '" << update << "' not understood.";
+            // LogDebug() << "Update to '" << update << "' not understood.";
             continue;
         }
         _current_settings[update].needs_updating = true;
@@ -512,7 +512,7 @@ bool CameraDefinition::get_possible_options(
         return false;
     }
     if (settings.find(name) == settings.end()) {
-        LogErr() << "Setting currently not applicable";
+        LogErr() << "Setting " << name << " currently not applicable";
         return false;
     }
 

@@ -74,11 +74,11 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     {
         std::map<std::string, MAVLinkParameters::ParamValue> settings {};
         EXPECT_TRUE(cd.get_possible_settings(settings));
-        LogDebug() << "Found settings:";
-        for (const auto &setting : settings) {
-            LogDebug() << " - " << setting.first;
-        }
-        EXPECT_EQ(settings.size(), 9);
+        EXPECT_EQ(settings.size(), 7);
+        // LogDebug() << "Found settings:";
+        // for (const auto &setting : settings) {
+        //     LogDebug() << " - " << setting.first;
+        // }
     }
 
     // Get only settings for photo mode.
@@ -91,7 +91,11 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     {
         std::map<std::string, MAVLinkParameters::ParamValue> settings {};
         EXPECT_TRUE(cd.get_possible_settings(settings));
-        EXPECT_EQ(settings.size(), 12);
+        EXPECT_EQ(settings.size(), 9);
+        // LogDebug() << "Found settings:";
+        // for (const auto &setting : settings) {
+        //     LogDebug() << " - " << setting.first;
+        // }
     }
 }
 
