@@ -410,9 +410,32 @@ public:
             return (_value.is<double>());
         }
 
+        bool is_same_type(const ParamValue &rhs) const
+        {
+            if ((_value.is<uint8_t>() && rhs._value.is<uint8_t>()) ||
+                (_value.is<int8_t>() && rhs._value.is<int8_t>()) ||
+                (_value.is<uint16_t>() && rhs._value.is<uint16_t>()) ||
+                (_value.is<int16_t>() && rhs._value.is<int16_t>()) ||
+                (_value.is<uint32_t>() && rhs._value.is<uint32_t>()) ||
+                (_value.is<int32_t>() && rhs._value.is<int32_t>()) ||
+                (_value.is<uint64_t>() && rhs._value.is<uint64_t>()) ||
+                (_value.is<int64_t>() && rhs._value.is<int64_t>()) ||
+                (_value.is<float>() && rhs._value.is<float>()) ||
+                (_value.is<double>() && rhs._value.is<double>()) ||
+                (_value.is<custom_type_t>() && rhs._value.is<custom_type_t>())) {
+                return true;
+            } else {
+                LogWarn() << "Comparison type mismatch between " << typestr()
+                          << " and " << rhs.typestr();
+                return false;
+            }
+        }
+
         bool operator==(const ParamValue &rhs) const
         {
-            // LogDebug() << "Compare " << typestr() << " and " << rhs.typestr();
+            if (!is_same_type(rhs)) {
+                return false;
+            }
             if (_value.is<uint8_t>()) {
                 return _value.as<uint8_t>() == rhs._value.as<uint8_t>();
             } else if (_value.is<int8_t>()) {
