@@ -7,6 +7,11 @@ add_library(dronecore_camera ${PLUGIN_LIBRARY_TYPE}
 target_link_libraries(dronecore_camera
     dronecore
     ${TINYXML2_LIBRARY}
+    ${CURL_LIBRARY}
+)
+
+include_directories(
+    ${CURL_INCLUDE_DIRS}
 )
 
 install(FILES
