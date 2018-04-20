@@ -10,6 +10,9 @@
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 
+// To run specific tests for Yuneec cameras.
+const static bool is_e90 = false;
+
 TEST(CameraTest, ShowSettingsAndOptions)
 {
     DroneCore dc;
@@ -38,7 +41,10 @@ TEST(CameraTest, ShowSettingsAndOptions)
     for (auto setting : settings) {
         LogDebug() << "-" << setting;
     }
-    EXPECT_EQ(settings.size(), 9);
+
+    if (is_e90) {
+        EXPECT_EQ(settings.size(), 9);
+    }
 
     set_mode(camera, Camera::Mode::VIDEO);
 
@@ -50,35 +56,40 @@ TEST(CameraTest, ShowSettingsAndOptions)
     for (auto setting : settings) {
         LogDebug() << "-" << setting;
     }
-    EXPECT_EQ(settings.size(), 6);
 
-    std::vector<std::string> options;
+    if (is_e90) {
+        EXPECT_EQ(settings.size(), 6);
+    }
 
-    // Try something that is specific to the camera mode.
-    EXPECT_TRUE(camera->get_possible_options("CAM_VIDRES", options));
-    EXPECT_EQ(options.size(), 32);
+    if (is_e90) {
+        std::vector<std::string> options;
 
-    // This param is not applicable, so we should get an empty vector back.
-    EXPECT_FALSE(camera->get_possible_options("CAM_PHOTOQUAL", options));
-    EXPECT_EQ(options.size(), 0);
+        // Try something that is specific to the camera mode.
+        EXPECT_TRUE(camera->get_possible_options("CAM_VIDRES", options));
+        EXPECT_EQ(options.size(), 32);
 
-    // The same should happen with a param that does not exist at all.
-    EXPECT_FALSE(camera->get_possible_options("CAM_BLABLA", options));
-    EXPECT_EQ(options.size(), 0);
+        // This param is not applicable, so we should get an empty vector back.
+        EXPECT_FALSE(camera->get_possible_options("CAM_PHOTOQUAL", options));
+        EXPECT_EQ(options.size(), 0);
 
-    set_mode(camera, Camera::Mode::PHOTO);
+        // The same should happen with a param that does not exist at all.
+        EXPECT_FALSE(camera->get_possible_options("CAM_BLABLA", options));
+        EXPECT_EQ(options.size(), 0);
 
-    // Try something that is specific to the camera mode.
-    EXPECT_TRUE(camera->get_possible_options("CAM_PHOTOQUAL", options));
-    EXPECT_EQ(options.size(), 4);
+        set_mode(camera, Camera::Mode::PHOTO);
 
-    // This param is not applicable, so we should get an empty vector back.
-    EXPECT_FALSE(camera->get_possible_options("CAM_VIDRES", options));
-    EXPECT_EQ(options.size(), 0);
+        // Try something that is specific to the camera mode.
+        EXPECT_TRUE(camera->get_possible_options("CAM_PHOTOQUAL", options));
+        EXPECT_EQ(options.size(), 4);
 
-    // The same should happen with a param that does not exist at all.
-    EXPECT_FALSE(camera->get_possible_options("CAM_BLABLA", options));
-    EXPECT_EQ(options.size(), 0);
+        // This param is not applicable, so we should get an empty vector back.
+        EXPECT_FALSE(camera->get_possible_options("CAM_VIDRES", options));
+        EXPECT_EQ(options.size(), 0);
+
+        // The same should happen with a param that does not exist at all.
+        EXPECT_FALSE(camera->get_possible_options("CAM_BLABLA", options));
+        EXPECT_EQ(options.size(), 0);
+    }
 }
 
 TEST(CameraTest, SetSettings)
@@ -104,102 +115,104 @@ TEST(CameraTest, SetSettings)
     // Try setting garbage first
     EXPECT_EQ(set_setting(camera, "DOES_NOT", "EXIST"), Camera::Result::ERROR);
 
-    std::string value_set;
-    EXPECT_EQ(set_setting(camera, "CAM_PHOTOQUAL", "1"), Camera::Result::SUCCESS);
-    EXPECT_EQ(get_setting(camera, "CAM_PHOTOQUAL", value_set), Camera::Result::SUCCESS);
-    EXPECT_STREQ("1", value_set.c_str());
+    if (is_e90) {
+        std::string value_set;
+        EXPECT_EQ(set_setting(camera, "CAM_PHOTOQUAL", "1"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_PHOTOQUAL", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("1", value_set.c_str());
 
-    EXPECT_EQ(set_setting(camera, "CAM_COLORMODE", "5"), Camera::Result::SUCCESS);
-    EXPECT_EQ(get_setting(camera, "CAM_COLORMODE", value_set), Camera::Result::SUCCESS);
-    EXPECT_STREQ("5", value_set.c_str());
+        EXPECT_EQ(set_setting(camera, "CAM_COLORMODE", "5"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_COLORMODE", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("5", value_set.c_str());
 
 
-    // Let's check the manual exposure mode first.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);
-    EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
-    EXPECT_STREQ("1", value_set.c_str());
+        // Let's check the manual exposure mode first.
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("1", value_set.c_str());
 
-    // We should now be able to set shutter speed and ISO.
-    std::vector<std::string> options;
-    // Try something that is specific to the camera mode.
-    EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
-    EXPECT_EQ(options.size(), 19);
-    EXPECT_TRUE(camera->get_possible_options("CAM_ISO", options));
-    EXPECT_EQ(options.size(), 10);
+        // We should now be able to set shutter speed and ISO.
+        std::vector<std::string> options;
+        // Try something that is specific to the camera mode.
+        EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
+        EXPECT_EQ(options.size(), 19);
+        EXPECT_TRUE(camera->get_possible_options("CAM_ISO", options));
+        EXPECT_EQ(options.size(), 10);
 
-    // But not EV and metering
-    EXPECT_FALSE(camera->get_possible_options("CAM_EV", options));
-    EXPECT_EQ(options.size(), 0);
-    EXPECT_FALSE(camera->get_possible_options("CAM_METERING", options));
-    EXPECT_EQ(options.size(), 0);
+        // But not EV and metering
+        EXPECT_FALSE(camera->get_possible_options("CAM_EV", options));
+        EXPECT_EQ(options.size(), 0);
+        EXPECT_FALSE(camera->get_possible_options("CAM_METERING", options));
+        EXPECT_EQ(options.size(), 0);
 
-    // Now we'll try the same for Auto exposure mode
-    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
-    EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
-    EXPECT_STREQ("0", value_set.c_str());
+        // Now we'll try the same for Auto exposure mode
+        EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("0", value_set.c_str());
 
-    // Shutter speed and ISO don't have options in Auto mode.
-    EXPECT_FALSE(camera->get_possible_options("CAM_SHUTTERSPD", options));
-    EXPECT_EQ(options.size(), 0);
-    EXPECT_FALSE(camera->get_possible_options("CAM_ISO", options));
-    EXPECT_EQ(options.size(), 0);
+        // Shutter speed and ISO don't have options in Auto mode.
+        EXPECT_FALSE(camera->get_possible_options("CAM_SHUTTERSPD", options));
+        EXPECT_EQ(options.size(), 0);
+        EXPECT_FALSE(camera->get_possible_options("CAM_ISO", options));
+        EXPECT_EQ(options.size(), 0);
 
-    // But not EV and metering
-    EXPECT_TRUE(camera->get_possible_options("CAM_EV", options));
-    EXPECT_EQ(options.size(), 13);
-    EXPECT_TRUE(camera->get_possible_options("CAM_METERING", options));
-    EXPECT_EQ(options.size(), 3);
+        // But not EV and metering
+        EXPECT_TRUE(camera->get_possible_options("CAM_EV", options));
+        EXPECT_EQ(options.size(), 13);
+        EXPECT_TRUE(camera->get_possible_options("CAM_METERING", options));
+        EXPECT_EQ(options.size(), 3);
 
-    set_mode(camera, Camera::Mode::VIDEO);
+        set_mode(camera, Camera::Mode::VIDEO);
 
-    // This should fail in video mode.
-    EXPECT_EQ(set_setting(camera, "CAM_PHOTOQUAL", "1"), Camera::Result::ERROR);
+        // This should fail in video mode.
+        EXPECT_EQ(set_setting(camera, "CAM_PHOTOQUAL", "1"), Camera::Result::ERROR);
 
-    // Let's check the manual exposure mode first.
+        // Let's check the manual exposure mode first.
 
-    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);
-    EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
-    EXPECT_STREQ("1", value_set.c_str());
+        EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("1", value_set.c_str());
 
-    // FIXME: otherwise the camera is too slow
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+        // FIXME: otherwise the camera is too slow
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    // But a video setting should work
-    EXPECT_EQ(set_setting(camera, "CAM_VIDRES", "30"), Camera::Result::SUCCESS);
-    EXPECT_EQ(get_setting(camera, "CAM_VIDRES", value_set), Camera::Result::SUCCESS);
-    EXPECT_STREQ("30", value_set.c_str());
+        // But a video setting should work
+        EXPECT_EQ(set_setting(camera, "CAM_VIDRES", "30"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_VIDRES", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("30", value_set.c_str());
 
-    // Shutter speed and ISO don't have options in Auto mode.
-    EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
-    EXPECT_EQ(options.size(), 15);
+        // Shutter speed and ISO don't have options in Auto mode.
+        EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
+        EXPECT_EQ(options.size(), 15);
 
-    // FIXME: otherwise the camera is too slow
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+        // FIXME: otherwise the camera is too slow
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    // But a video setting should work
-    EXPECT_EQ(set_setting(camera, "CAM_VIDRES", "0"), Camera::Result::SUCCESS);
-    EXPECT_EQ(get_setting(camera, "CAM_VIDRES", value_set), Camera::Result::SUCCESS);
-    EXPECT_STREQ("0", value_set.c_str());
+        // But a video setting should work
+        EXPECT_EQ(set_setting(camera, "CAM_VIDRES", "0"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_VIDRES", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("0", value_set.c_str());
 
-    // Shutter speed and ISO don't have options in Auto mode.
-    EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
-    EXPECT_EQ(options.size(), 12);
+        // Shutter speed and ISO don't have options in Auto mode.
+        EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
+        EXPECT_EQ(options.size(), 12);
 
-    // Back to auto exposure mode
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
-    EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
-    EXPECT_STREQ("0", value_set.c_str());
+        // Back to auto exposure mode
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("0", value_set.c_str());
 
-    // Check human readable strings too.
-    std::string description;
-    EXPECT_FALSE(camera->get_setting_str("BLABLIBLU", description));
-    EXPECT_STREQ(description.c_str(), "");
+        // Check human readable strings too.
+        std::string description;
+        EXPECT_FALSE(camera->get_setting_str("BLABLIBLU", description));
+        EXPECT_STREQ(description.c_str(), "");
 
-    EXPECT_TRUE(camera->get_setting_str("CAM_EXPMODE", description));
-    EXPECT_STREQ(description.c_str(), "Exposure Mode");
+        EXPECT_TRUE(camera->get_setting_str("CAM_EXPMODE", description));
+        EXPECT_STREQ(description.c_str(), "Exposure Mode");
 
-    EXPECT_TRUE(camera->get_setting_str("CAM_SHUTTERSPD", description));
-    EXPECT_STREQ(description.c_str(), "Shutter Speed");
+        EXPECT_TRUE(camera->get_setting_str("CAM_SHUTTERSPD", description));
+        EXPECT_STREQ(description.c_str(), "Shutter Speed");
+    }
 }
