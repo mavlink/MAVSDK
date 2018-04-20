@@ -375,16 +375,6 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
     }
 }
 
-TEST(CameraDefinition, E90SettingNames)
-{
-    // Run this from root.
-    CameraDefinition cd;
-    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
-    EXPECT_STREQ(cd.get_setting_str("CAM_SHUTTERSPD").c_str(), "Shutter Speed");
-    EXPECT_STREQ(cd.get_setting_str("CAM_ISO").c_str(), "ISO");
-    EXPECT_STREQ(cd.get_setting_str("CAM_EV").c_str(), "Exposure Compensation");
-}
-
 TEST(CameraDefinition, E90OptionValues)
 {
     // Run this from root.
@@ -438,6 +428,9 @@ TEST(CameraDefinition, E90SettingHumanReadable)
     std::string description {};
     EXPECT_TRUE(cd.get_setting_str("CAM_SHUTTERSPD", description));
     EXPECT_STREQ(description.c_str(), "Shutter Speed");
+
+    EXPECT_TRUE(cd.get_setting_str("CAM_ISO", description));
+    EXPECT_STREQ(description.c_str(), "ISO");
 
     EXPECT_TRUE(cd.get_setting_str("CAM_EV", description));
     EXPECT_STREQ(description.c_str(), "Exposure Compensation");

@@ -127,7 +127,20 @@ bool Camera::get_possible_options(const std::string &setting_name,
     return _impl->get_possible_options(setting_name, options);
 }
 
-const char *Camera::result_str(Result result)
+bool Camera::get_setting_str(const std::string &setting_name,
+                             std::string &description)
+{
+    return _impl->get_setting_str(setting_name, description);
+}
+
+bool Camera::get_option_str(const std::string &setting_name,
+                            const std::string &option_name,
+                            std::string &description)
+{
+    return _impl->get_option_str(setting_name, option_name, description);
+}
+
+std::string Camera::result_str(Result result)
 {
     switch (result) {
         case Result::SUCCESS:

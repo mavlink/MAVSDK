@@ -57,6 +57,12 @@ public:
     bool get_possible_settings(std::vector<std::string> &settings);
     bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
 
+    bool get_setting_str(const std::string &setting_name,
+                         std::string &description);
+    bool get_option_str(const std::string &setting_name,
+                        const std::string &option_name,
+                        std::string &description);
+
     // Non-copyable
     CameraImpl(const CameraImpl &) = delete;
     const CameraImpl &operator=(const CameraImpl &) = delete;

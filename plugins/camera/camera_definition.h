@@ -28,7 +28,6 @@ public:
         MAVLinkParameters::ParamValue value;
     };
 
-    std::string get_setting_str(const std::string &param_name);
     bool set_setting(const std::string &name, const MAVLinkParameters::ParamValue &value);
     bool get_setting(const std::string &name, MAVLinkParameters::ParamValue &value);
     bool get_all_settings(std::map<std::string, MAVLinkParameters::ParamValue> &settings);
@@ -42,7 +41,8 @@ public:
     bool get_possible_options(const std::string &name,
                               std::vector<MAVLinkParameters::ParamValue> &values);
 
-    bool get_setting_str(const std::string &name, std::string &description);
+    bool get_setting_str(const std::string &setting_name,
+                         std::string &description);
     bool get_option_str(const std::string &setting_name,
                         const std::string &option_name,
                         std::string &description);

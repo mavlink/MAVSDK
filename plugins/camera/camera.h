@@ -406,6 +406,27 @@ public:
     void set_option_async(const std::string &setting,
                           const std::string &option,
                           const result_callback_t &callback);
+    /**
+     * @brief Get the human readable string of a setting.
+     *
+     * @param setting_name The machine readable setting name.
+     * @param description The human readable string of the setting to get.
+     * @return true if call was successful and the description has been set.
+     */
+    bool get_setting_str(const std::string &setting_name,
+                         std::string &description);
+
+    /**
+     * @brief Get the human readable string of an option.
+     *
+     * @param setting_name The machine readable setting name.
+     * @param option_name The machine readable option value.
+     * @param description The human readable string of the option to get.
+     * @return true if call was successful and the description has been set.
+     */
+    bool get_option_str(const std::string &setting_name,
+                        const std::string &option_name,
+                        std::string &description);
 
     /**
      * @brief Copy constructor (object is not copyable).

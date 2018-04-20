@@ -1026,4 +1026,25 @@ void CameraImpl::invalidate_params()
     _camera_definition->set_all_params_unknown();
 }
 
+bool CameraImpl::get_setting_str(const std::string &setting_name,
+                                 std::string &description)
+{
+    if (!_camera_definition) {
+        return false;
+    }
+
+    return _camera_definition->get_setting_str(setting_name, description);
+}
+
+bool CameraImpl::get_option_str(const std::string &setting_name,
+                                const std::string &option_name,
+                                std::string &description)
+{
+    if (!_camera_definition) {
+        return false;
+    }
+
+    return _camera_definition->get_option_str(setting_name, option_name, description);
+}
+
 } // namespace dronecore

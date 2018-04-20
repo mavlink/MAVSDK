@@ -191,4 +191,15 @@ TEST(CameraTest, SetSettings)
     EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
     EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
     EXPECT_STREQ("0", value_set.c_str());
+
+    // Check human readable strings too.
+    std::string description;
+    EXPECT_FALSE(camera->get_setting_str("BLABLIBLU", description));
+    EXPECT_STREQ(description.c_str(), "");
+
+    EXPECT_TRUE(camera->get_setting_str("CAM_EXPMODE", description));
+    EXPECT_STREQ(description.c_str(), "Exposure Mode");
+
+    EXPECT_TRUE(camera->get_setting_str("CAM_SHUTTERSPD", description));
+    EXPECT_STREQ(description.c_str(), "Shutter Speed");
 }
