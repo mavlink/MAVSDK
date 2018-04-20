@@ -149,6 +149,7 @@ test_script:
       copy build\plugins\mission\Debug\dronecore_mission.dll build\Debug\ &&
       copy build\plugins\mission\third_party\json11\Debug\json11.dll build\Debug\ &&
       copy build\plugins\camera\Debug\dronecore_camera.dll build\Debug\ &&
+      copy build\third_party\tinyxml2\Debug\tinyxml2d.dll build\Debug\ &&
       build\Debug\unit_tests_runner.exe
     ) else (
       copy build\third_party\gtest\googlemock\gtest\Release\gtest.dll build\Release\ &&
@@ -157,5 +158,6 @@ test_script:
       copy build\plugins\mission\Release\dronecore_mission.dll build\Release\ &&
       copy build\plugins\mission\third_party\json11\Release\json11.dll build\Release\ &&
       copy build\plugins\camera\Release\dronecore_camera.dll build\Release\ &&
+      copy build\third_party\tinyxml2\Release\tinyxml2.dll build\Release\ &&
       build\Release\unit_tests_runner.exe
     )
