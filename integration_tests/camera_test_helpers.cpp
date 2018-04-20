@@ -38,14 +38,8 @@ Camera::Mode get_mode(std::shared_ptr<Camera> camera)
 
 void set_mode(std::shared_ptr<Camera> camera, Camera::Mode mode)
 {
-    Camera::Mode mode_already_set = get_mode(camera);
-
-    // FIXME: this should not be required.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
-    if (mode == mode_already_set) {
-        return;
-    }
+    //// FIXME: this should not be required.
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     auto prom = std::make_shared<std::promise<void>>();
     auto ret = prom->get_future();
