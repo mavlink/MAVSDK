@@ -12,6 +12,8 @@ using namespace std::placeholders; // for `_1`
 
 // To run specific tests for Yuneec cameras.
 const static bool is_e90 = false;
+const static bool is_e50 = false;
+const static bool is_et = false;
 
 TEST(CameraTest, ShowSettingsAndOptions)
 {
@@ -27,50 +29,65 @@ TEST(CameraTest, ShowSettingsAndOptions)
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
-
     // Wait for download to happen.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    // Set to photo mode
-    set_mode(camera, Camera::Mode::PHOTO);
+    if (is_e90 || is_e50 || is_et) {
+        // Set to photo mode
+        set_mode(camera, Camera::Mode::PHOTO);
 
-    std::vector<std::string> settings;
-    EXPECT_TRUE(camera->get_possible_settings(settings));
+        std::vector<std::string> settings;
+        EXPECT_TRUE(camera->get_possible_settings(settings));
 
-    LogDebug() << "Possible settings in photo mode: ";
-    for (auto setting : settings) {
-        LogDebug() << "-" << setting;
-    }
+        LogDebug() << "Possible settings in photo mode: ";
+        for (auto setting : settings) {
+            LogDebug() << "-" << setting;
+        }
 
-    if (is_e90) {
-        EXPECT_EQ(settings.size(), 9);
-    }
+        if (is_e90) {
+            EXPECT_EQ(settings.size(), 9);
+        } else if (is_e50) {
+            EXPECT_EQ(settings.size(), 6);
+        } else if (is_et) {
+            EXPECT_EQ(settings.size(), 5);
+        }
 
-    set_mode(camera, Camera::Mode::VIDEO);
+        set_mode(camera, Camera::Mode::VIDEO);
 
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+        std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    EXPECT_TRUE(camera->get_possible_settings(settings));
+        EXPECT_TRUE(camera->get_possible_settings(settings));
 
-    LogDebug() << "Possible settings in video mode: ";
-    for (auto setting : settings) {
-        LogDebug() << "-" << setting;
-    }
+        LogDebug() << "Possible settings in video mode: ";
+        for (auto setting : settings) {
+            LogDebug() << "-" << setting;
+        }
 
-    if (is_e90) {
-        EXPECT_EQ(settings.size(), 6);
-    }
+        if (is_e90) {
+            EXPECT_EQ(settings.size(), 6);
+        } else if (is_e50) {
+            EXPECT_EQ(settings.size(), 5);
+        } else if (is_et) {
+            EXPECT_EQ(settings.size(), 5);
+        }
 
-    if (is_e90) {
         std::vector<std::string> options;
 
-        // Try something that is specific to the camera mode.
-        EXPECT_TRUE(camera->get_possible_options("CAM_VIDRES", options));
-        EXPECT_EQ(options.size(), 32);
+        if (is_e90) {
+            // Try something that is specific to the camera mode.
+            EXPECT_TRUE(camera->get_possible_options("CAM_VIDRES", options));
+            EXPECT_EQ(options.size(), 32);
+        } else if (is_e50) {
+            // Try something that is specific to the camera mode.
+            EXPECT_TRUE(camera->get_possible_options("CAM_VIDRES", options));
+            EXPECT_EQ(options.size(), 12);
+        }
 
-        // This param is not applicable, so we should get an empty vector back.
-        EXPECT_FALSE(camera->get_possible_options("CAM_PHOTOQUAL", options));
-        EXPECT_EQ(options.size(), 0);
+        if (is_e90) {
+            // This param is not applicable, so we should get an empty vector back.
+            EXPECT_FALSE(camera->get_possible_options("CAM_PHOTOQUAL", options));
+            EXPECT_EQ(options.size(), 0);
+        }
 
         // The same should happen with a param that does not exist at all.
         EXPECT_FALSE(camera->get_possible_options("CAM_BLABLA", options));
@@ -78,9 +95,11 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
         set_mode(camera, Camera::Mode::PHOTO);
 
-        // Try something that is specific to the camera mode.
-        EXPECT_TRUE(camera->get_possible_options("CAM_PHOTOQUAL", options));
-        EXPECT_EQ(options.size(), 4);
+        if (is_e90) {
+            // Try something that is specific to the camera mode.
+            EXPECT_TRUE(camera->get_possible_options("CAM_PHOTOQUAL", options));
+            EXPECT_EQ(options.size(), 4);
+        }
 
         // This param is not applicable, so we should get an empty vector back.
         EXPECT_FALSE(camera->get_possible_options("CAM_VIDRES", options));
