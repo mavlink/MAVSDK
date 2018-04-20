@@ -220,8 +220,8 @@ CameraImpl::make_message_set_video_stream_settings(const Camera::VideoStreamSett
                                                MAV_COMP_ID_CAMERA,
                                                MAV_COMP_ID_CAMERA, // Is it right ?
                                                settings.frame_rate_hz,
-                                               settings.resolution_h_pix,
-                                               settings.resolution_v_pix,
+                                               settings.horizontal_resolution_pix,
+                                               settings.vertical_resolution_pix,
                                                settings.bit_rate_b_s,
                                                settings.rotation_deg,
                                                settings.uri.c_str());
@@ -368,8 +368,7 @@ void CameraImpl::set_video_stream_settings(const Camera::VideoStreamSettings &se
 
 Camera::Result CameraImpl::start_video_streaming()
 {
-    if (_video_stream_info.available &&
-        _video_stream_info.info.status == Camera::VideoStreamInfo::Status::IN_PROGRESS) {
+    if (_video_stream_info.available && _video_stream_info.in_progress()) {
         return Camera::Result::IN_PROGRESS;
     }
 
@@ -692,8 +691,8 @@ void CameraImpl::process_video_information(const mavlink_message_t &message)
                                          static_cast<Camera::VideoStreamInfo::Status>(received_video_info.status);
         auto &video_stream_info = _video_stream_info.info.settings;
         video_stream_info.frame_rate_hz = received_video_info.framerate;
-        video_stream_info.resolution_h_pix = received_video_info.resolution_h;
-        video_stream_info.resolution_v_pix = received_video_info.resolution_v;
+        video_stream_info.horizontal_resolution_pix = received_video_info.resolution_h;
+        video_stream_info.vertical_resolution_pix = received_video_info.resolution_v;
         video_stream_info.bit_rate_b_s = received_video_info.bitrate;
         video_stream_info.rotation_deg = received_video_info.rotation;
         video_stream_info.uri = received_video_info.uri;

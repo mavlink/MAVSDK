@@ -238,17 +238,17 @@ public:
      */
     struct VideoStreamSettings {
         float frame_rate_hz = 0.f; /**< @brief Frames per second. */
-        uint16_t resolution_h_pix = 0u; /**< @brief Resolution horizontal in pixels. */
-        uint16_t resolution_v_pix = 0u; /**< @brief Resolution verticle in pixels. */
+        uint16_t horizontal_resolution_pix = 0u; /**< @brief Resolution horizontal in pixels. */
+        uint16_t vertical_resolution_pix = 0u; /**< @brief Resolution vertical in pixels. */
         uint32_t bit_rate_b_s = 0u; /**< @brief Bit rate in bits per second. */
-        uint16_t rotation_deg = 0u; /**< @brief Video image rotation clockwise (0-359 degrees) */
-        std::string uri {}; /**< @brief Video stream URI */
+        uint16_t rotation_deg = 0u; /**< @brief Video image rotation clockwise (0-359 degrees). */
+        std::string uri {}; /**< @brief Video stream URI. */
 
         void set_highest()
         {
             frame_rate_hz = FRAME_RATE_HIGHEST;
-            resolution_h_pix = RESOLUTION_H_HIGHEST;
-            resolution_v_pix = RESOLUTION_V_HIGHEST;
+            horizontal_resolution_pix = RESOLUTION_H_HIGHEST;
+            vertical_resolution_pix = RESOLUTION_V_HIGHEST;
             // FIXME: Should bit_rate_b_s be part of set_highest() ?
             bit_rate_b_s = BIT_RATE_AUTO;
         }
@@ -273,7 +273,8 @@ public:
     struct VideoStreamInfo {
         VideoStreamSettings settings; /**< @brief Video stream settings. */
         enum class Status {
-            NOT_RUNNING = 0, IN_PROGRESS
+            NOT_RUNNING = 0, /**< @brief Video stream is not ongoing. */
+            IN_PROGRESS /**< @brief Video stream in progress. */
         } status; /**< @brief Current status of video streaming. */
     };
 

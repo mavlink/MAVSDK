@@ -98,7 +98,13 @@ private:
             info = Camera::VideoStreamInfo();
             available = false;
         }
+
+        bool in_progress() const
+        {
+            return info.status == Camera::VideoStreamInfo::Status::IN_PROGRESS;
+        }
     } _video_stream_info;
+
 
     void receive_set_mode_command_result(MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
@@ -155,6 +161,7 @@ private:
     make_message_set_video_stream_settings(const Camera::VideoStreamSettings &settings);
 
     MAVLinkCommands::CommandLong make_command_request_video_stream_info();
+
 
     std::unique_ptr<CameraDefinition> _camera_definition {};
 };
