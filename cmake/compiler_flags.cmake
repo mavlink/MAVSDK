@@ -35,11 +35,10 @@ else()
 endif()
 
 if(APPLE)
-    # We need a define if on APPLE
     add_definitions("-DAPPLE")
 endif()
 
-# Add DEBUG define for Debug target
+# Add DEBUG define for Debug target because that is not done automatically.
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage")
