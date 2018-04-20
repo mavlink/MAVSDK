@@ -91,11 +91,13 @@ public:
         }
     };
 
-    Result send_command(CommandInt &command);
-    Result send_command(CommandLong &command);
+    Result send_command(const CommandInt &command);
+    Result send_command(const CommandLong &command);
 
-    void queue_command_async(CommandInt &command, command_result_callback_t callback);
-    void queue_command_async(CommandLong &command, command_result_callback_t callback);
+    void queue_command_async(const CommandInt &command,
+                             command_result_callback_t callback);
+    void queue_command_async(const CommandLong &command,
+                             command_result_callback_t callback);
 
     void do_work();
 

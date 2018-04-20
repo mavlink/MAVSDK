@@ -87,13 +87,13 @@ public:
     void send_command_async(MAVLinkCommands::CommandInt &command,
                             command_result_callback_t callback);
 
-    MAVLinkCommands::Result set_msg_rate(uint16_t message_id,
-                                         double rate_hz,
-                                         uint8_t component_id = 0);
+    MAVLinkCommands::Result
+    set_msg_rate(uint16_t message_id, double rate_hz,
+                 uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     void set_msg_rate_async(uint16_t message_id, double rate_hz,
                             command_result_callback_t callback,
-                            uint8_t component_id = 0);
+                            uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     void request_autopilot_version();
 
@@ -124,8 +124,13 @@ public:
     void set_param_int_async(const std::string &name, int32_t value, success_t callback);
     void set_param_ext_float_async(const std::string &name, float value, success_t callback);
     void set_param_ext_int_async(const std::string &name, int32_t value, success_t callback);
-    MAVLinkCommands::Result set_flight_mode(FlightMode mode);
-    void set_flight_mode_async(FlightMode mode, command_result_callback_t callback);
+
+    MAVLinkCommands::Result
+    set_flight_mode(FlightMode mode, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+
+    void set_flight_mode_async(FlightMode mode,
+                               command_result_callback_t callback,
+                               uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     typedef std::function <void(bool success, float value)> get_param_float_callback_t;
     typedef std::function <void(bool success, int32_t value)> get_param_int_callback_t;
@@ -181,6 +186,19 @@ private:
 
     static void system_thread(MAVLinkSystem *self);
     static void send_heartbeat(MAVLinkSystem &self);
+
+    // Last argument will hold Flight mode command.
+    MAVLinkCommands::Result
+    make_command_flight_mode(FlightMode mode,
+                             uint8_t component_id,
+                             MAVLinkCommands::CommandLong &command);
+
+    // Last argument will hold Set message rate command.
+    MAVLinkCommands::Result
+    make_command_msg_rate(uint16_t message_id,
+                          double rate_hz,
+                          uint8_t component_id,
+                          MAVLinkCommands::CommandLong &command);
 
     static void receive_float_param(bool success, MAVLinkParameters::ParamValue value,
                                     get_param_float_callback_t callback);

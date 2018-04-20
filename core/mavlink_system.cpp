@@ -568,7 +568,10 @@ void MAVLinkSystem::get_param_async(const std::string &name, get_param_callback_
     _params.get_param_async(name, callback, extended);
 }
 
-MAVLinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
+MAVLinkCommands::Result
+MAVLinkSystem::make_command_flight_mode(FlightMode flight_mode,
+                                        uint8_t component_id,
+                                        MAVLinkCommands::CommandLong &command)
 {
     const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
     const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
@@ -582,7 +585,7 @@ MAVLinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
     uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
     uint8_t custom_sub_mode = 0;
 
-    switch (system_mode) {
+    switch (flight_mode) {
         case FlightMode::HOLD:
             custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
             break;
@@ -610,69 +613,43 @@ MAVLinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode)
 
     }
 
-    MAVLinkCommands::CommandLong command {};
+    command = MAVLinkCommands::CommandLong(); // wipe off caller's data, if any.
 
     command.command = MAV_CMD_DO_SET_MODE;
     command.params.param1 = float(mode);
     command.params.param2 = float(custom_mode);
     command.params.param3 = float(custom_sub_mode);
-    command.target_component_id = get_autopilot_id();
+    command.target_component_id = component_id;
+
+    return MAVLinkCommands::Result::SUCCESS;
+}
+
+MAVLinkCommands::Result MAVLinkSystem::set_flight_mode(FlightMode system_mode,
+                                                       uint8_t component_id)
+{
+    MAVLinkCommands::CommandLong command {};
+
+    auto result = make_command_flight_mode(system_mode, component_id, command);
+    if (result != MAVLinkCommands::Result::SUCCESS) {
+        return result;
+    }
 
     return send_command(command);
 }
 
 void MAVLinkSystem::set_flight_mode_async(FlightMode system_mode,
-                                          command_result_callback_t callback)
+                                          command_result_callback_t callback,
+                                          uint8_t component_id)
 {
-    const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
-    const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
-
-    const uint8_t mode = MAV_MODE_FLAG_CUSTOM_MODE_ENABLED
-                         | flag_safety_armed
-                         | flag_hitl_enabled;
-
-    // Note: the safety flag is not needed in future versions of the PX4 Firmware
-    //       but want to be rather safe than sorry.
-    uint8_t custom_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
-    uint8_t custom_sub_mode = 0;
-
-    switch (system_mode) {
-        case FlightMode::HOLD:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
-            break;
-        case FlightMode::RETURN_TO_LAUNCH:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
-            break;
-        case FlightMode::TAKEOFF:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
-            break;
-        case FlightMode::LAND:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
-            break;
-        case FlightMode::MISSION:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
-            break;
-        case FlightMode::FOLLOW_ME:
-            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
-            break;
-        case FlightMode::OFFBOARD:
-            custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
-            break;
-        default :
-            LogErr() << "Unknown flight mode.";
-            if (callback) {
-                callback(MAVLinkCommands::Result::UNKNOWN_ERROR, NAN);
-            }
-            return ;
-    }
-
     MAVLinkCommands::CommandLong command {};
 
-    command.command = MAV_CMD_DO_SET_MODE;
-    command.params.param1 = float(mode);
-    command.params.param2 = float(custom_mode);
-    command.params.param3 = float(custom_sub_mode);
-    command.target_component_id = get_autopilot_id();
+    auto result = make_command_flight_mode(system_mode, component_id, command);
+    if (result != MAVLinkCommands::Result::SUCCESS) {
+        if (callback) {
+            callback(MAVLinkCommands::Result::UNKNOWN_ERROR, NAN);
+        }
+        return;
+    }
 
     send_command_async(command, callback);
 }
@@ -792,50 +769,64 @@ void MAVLinkSystem::send_command_async(MAVLinkCommands::CommandInt &command,
     _commands.queue_command_async(command, callback);
 }
 
-MAVLinkCommands::Result MAVLinkSystem::set_msg_rate(uint16_t message_id, double rate_hz,
-                                                    uint8_t component_id)
+
+MAVLinkCommands::Result
+MAVLinkSystem::set_msg_rate(uint16_t message_id,
+                            double rate_hz,
+                            uint8_t component_id)
 {
-    // If left at -1 it will stop the message stream.
-    float interval_us = -1.0f;
-    if (rate_hz > 0) {
-        interval_us = 1e6f / static_cast<float>(rate_hz);
+    MAVLinkCommands::CommandLong command_msg_rate {};
+
+    auto result = make_command_msg_rate(message_id,
+                                        rate_hz,
+                                        component_id,
+                                        command_msg_rate);
+    if (result == MAVLinkCommands::Result::SUCCESS) {
+        result = send_command(command_msg_rate);
     }
 
-    MAVLinkCommands::CommandLong command {};
-
-    command.command = MAV_CMD_SET_MESSAGE_INTERVAL;
-    command.params.param1 = float(message_id);
-    command.params.param2 = interval_us;
-    if (component_id) {
-        command.target_component_id = component_id;
-    } else {
-        command.target_component_id = get_autopilot_id();
-    }
-
-    return send_command(command);
+    return result;
 }
 
-void MAVLinkSystem::set_msg_rate_async(uint16_t message_id, double rate_hz,
-                                       command_result_callback_t callback, uint8_t component_id)
+void MAVLinkSystem::set_msg_rate_async(uint16_t message_id,
+                                       double rate_hz,
+                                       command_result_callback_t callback,
+                                       uint8_t component_id)
+{
+    MAVLinkCommands::CommandLong command_msg_rate {};
+
+    auto result = make_command_msg_rate(message_id,
+                                        rate_hz,
+                                        component_id,
+                                        command_msg_rate);
+    if (result == MAVLinkCommands::Result::SUCCESS) {
+        send_command_async(command_msg_rate, callback);
+    }
+}
+
+MAVLinkCommands::Result
+MAVLinkSystem::make_command_msg_rate(uint16_t message_id,
+                                     double rate_hz,
+                                     uint8_t component_id,
+                                     MAVLinkCommands::CommandLong &command)
 {
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
     if (rate_hz > 0) {
         interval_us = 1e6f / static_cast<float>(rate_hz);
+    } else {
+        LogErr() << "Rate(Hz) is invalid: %f" << rate_hz;
+        return  MAVLinkCommands::Result::UNKNOWN_ERROR;
     }
 
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command_msg_rate {};
 
     command.command = MAV_CMD_SET_MESSAGE_INTERVAL;
     command.params.param1 = float(message_id);
     command.params.param2 = interval_us;
-    if (component_id) {
-        command.target_component_id = component_id;
-    } else {
-        command.target_component_id = get_autopilot_id();
-    }
+    command.target_component_id = component_id;
 
-    send_command_async(command, callback);
+    return MAVLinkCommands::Result::SUCCESS;
 }
 
 void MAVLinkSystem::register_plugin(PluginImplBase *plugin_impl)
