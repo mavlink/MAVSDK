@@ -385,20 +385,6 @@ TEST(CameraDefinition, E90SettingNames)
     EXPECT_STREQ(cd.get_setting_str("CAM_EV").c_str(), "Exposure Compensation");
 }
 
-
-TEST(CameraDefinition, E90OptionNames)
-{
-    // Run this from root.
-    CameraDefinition cd;
-    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
-    EXPECT_STREQ(cd.get_option_str("CAM_SHUTTERSPD", "0.02").c_str(), "1/50");
-    EXPECT_STREQ(cd.get_option_str("CAM_SHUTTERSPD", "2").c_str(), "2");
-    EXPECT_STREQ(cd.get_option_str("CAM_ISO", "100").c_str(), "100");
-    EXPECT_STREQ(cd.get_option_str("CAM_ISO", "200").c_str(), "200");
-    EXPECT_STREQ(cd.get_option_str("CAM_EV", "-2.5").c_str(), "-2.5");
-    EXPECT_STREQ(cd.get_option_str("CAM_EV", "1").c_str(), "+1");
-}
-
 TEST(CameraDefinition, E90OptionValues)
 {
     // Run this from root.
@@ -441,4 +427,69 @@ TEST(CameraDefinition, E90OptionValues)
 
     // Try an invalid EV
     EXPECT_FALSE(cd.get_option_value("CAM_EV", "-42.0", value2));
+}
+
+TEST(CameraDefinition, E90SettingHumanReadable)
+{
+    // Run this from root.
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
+
+    std::string description {};
+    EXPECT_TRUE(cd.get_setting_str("CAM_SHUTTERSPD", description));
+    EXPECT_STREQ(description.c_str(), "Shutter Speed");
+
+    EXPECT_TRUE(cd.get_setting_str("CAM_EV", description));
+    EXPECT_STREQ(description.c_str(), "Exposure Compensation");
+
+    EXPECT_TRUE(cd.get_setting_str("CAM_VIDRES", description));
+    EXPECT_STREQ(description.c_str(), "Video Resolution");
+
+    // Try something that doesn't exist as well.
+    EXPECT_FALSE(cd.get_setting_str("PIPAPO", description));
+    EXPECT_STREQ(description.c_str(), "");
+
+    EXPECT_TRUE(cd.get_setting_str("CAM_VIDRES", description));
+    EXPECT_STREQ(description.c_str(), "Video Resolution");
+}
+
+TEST(CameraDefinition, E90OptionHumanReadable)
+{
+    // Run this from root.
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file(e90_unit_test_file));
+
+    std::string description {};
+    EXPECT_TRUE(cd.get_option_str("CAM_SHUTTERSPD", "0.0025", description));
+    EXPECT_STREQ(description.c_str(), "1/400");
+
+    EXPECT_TRUE(cd.get_option_str("CAM_SHUTTERSPD", "0.004", description));
+    EXPECT_STREQ(description.c_str(), "1/250");
+
+    EXPECT_TRUE(cd.get_option_str("CAM_SHUTTERSPD", "4", description));
+    EXPECT_STREQ(description.c_str(), "4");
+
+    EXPECT_FALSE(cd.get_option_str("CAM_SHUTTERSPD", "0.0", description));
+    EXPECT_STREQ(description.c_str(), "");
+
+    EXPECT_TRUE(cd.get_option_str("CAM_ISO", "100", description));
+    EXPECT_STREQ(description.c_str(), "100");
+
+    EXPECT_TRUE(cd.get_option_str("CAM_ISO", "200", description));
+    EXPECT_STREQ(description.c_str(), "200");
+
+    EXPECT_TRUE(cd.get_option_str("CAM_EV", "-2.5", description));
+    EXPECT_STREQ(description.c_str(), "-2.5");
+
+    EXPECT_TRUE(cd.get_option_str("CAM_EV", "1", description));
+    EXPECT_STREQ(description.c_str(), "+1");
+
+    EXPECT_TRUE(cd.get_option_str("CAM_WBMODE", "2", description));
+    EXPECT_STREQ(description.c_str(), "Sunrise");
+
+    EXPECT_TRUE(cd.get_option_str("CAM_WBMODE", "5", description));
+    EXPECT_STREQ(description.c_str(), "Cloudy");
+
+    EXPECT_FALSE(cd.get_option_str("PIPAPO", "123", description));
+    EXPECT_STREQ(description.c_str(), "");
 }

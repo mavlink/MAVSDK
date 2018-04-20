@@ -440,26 +440,6 @@ bool CameraDefinition::get_setting(const std::string &name,
     }
 }
 
-std::string CameraDefinition::get_option_str(const std::string &param_name,
-                                             const std::string &option_value)
-{
-    if (_parameter_map.find(param_name) == _parameter_map.end()) {
-        LogErr() << "Unknown setting to provide option string";
-        return "Unknown";
-    }
-
-    for (const auto &option : _parameter_map[param_name]->options) {
-        std::stringstream value_ss {};
-        value_ss << option->value;
-        if (option->value == option_value) {
-            return option->name;
-        }
-    }
-
-    LogErr() << "Unknown option string";
-    return "Unknown";
-}
-
 bool CameraDefinition::get_option_value(const std::string &param_name,
                                         const std::string &option_value,
                                         MAVLinkParameters::ParamValue &value)
@@ -610,6 +590,42 @@ void CameraDefinition::set_all_params_unknown()
     for (auto &parameter : _parameter_map) {
         _current_settings[parameter.first].needs_updating = true;
     }
+}
+
+bool CameraDefinition::get_setting_str(const std::string &name, std::string &description)
+{
+    description.clear();
+
+    if (_parameter_map.find(name) == _parameter_map.end()) {
+        LogWarn() << "Setting " << name << " not found.";
+        return false;
+    }
+
+    description = _parameter_map[name]->description;
+    return true;
+}
+
+bool CameraDefinition::get_option_str(const std::string &setting_name,
+                                      const std::string &option_name,
+                                      std::string &description)
+{
+    description.clear();
+
+    if (_parameter_map.find(setting_name) == _parameter_map.end()) {
+        LogWarn() << "Setting " << setting_name << " not found.";
+        return false;
+    }
+
+    for (const auto &option : _parameter_map[setting_name]->options) {
+        std::stringstream value_ss {};
+        value_ss << option->value;
+        if (option->value == option_name) {
+            description = option->name;
+            return true;
+        }
+    }
+    LogWarn() << "Option " << option_name << " not found";
+    return false;
 }
 
 } // namespace dronecore
