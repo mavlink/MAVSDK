@@ -15,7 +15,6 @@ Camera::Mode get_mode(std::shared_ptr<Camera> camera)
     auto prom = std::make_shared<std::promise<PromiseResult>>();
     auto ret = prom->get_future();
 
-    // Let's get the mode first
     camera->get_mode_async([prom](Camera::Result result, Camera::Mode mode) {
         PromiseResult pr {};
         pr.result = result;
@@ -23,7 +22,6 @@ Camera::Mode get_mode(std::shared_ptr<Camera> camera)
         prom->set_value(pr);
     });
 
-    // Block now for a while to wait for result.
     auto status = ret.wait_for(std::chrono::seconds(7));
 
     EXPECT_EQ(status, std::future_status::ready);
@@ -52,7 +50,6 @@ void set_mode(std::shared_ptr<Camera> camera, Camera::Mode mode)
     auto prom = std::make_shared<std::promise<void>>();
     auto ret = prom->get_future();
 
-    // Let's get the mode first
     camera->set_mode_async(mode, [mode, prom](Camera::Result result,
     Camera::Mode mode_got) {
         EXPECT_EQ(result, Camera::Result::SUCCESS);
@@ -60,7 +57,6 @@ void set_mode(std::shared_ptr<Camera> camera, Camera::Mode mode)
         prom->set_value();
     });
 
-    // Block now for a while to wait for result.
     auto status = ret.wait_for(std::chrono::seconds(10));
 
     EXPECT_EQ(status, std::future_status::ready);
@@ -86,7 +82,6 @@ Camera::Result set_setting(std::shared_ptr<Camera> camera,
         prom->set_value(result);
     });
 
-    // Block now to wait for result but only for a second, we're in a hurry.
     auto status = ret.wait_for(std::chrono::seconds(1));
 
     EXPECT_EQ(status, std::future_status::ready);
@@ -117,7 +112,6 @@ dronecore::Camera::Result get_setting(std::shared_ptr<dronecore::Camera> camera,
         prom->set_value(promise_result);
     });
 
-    // Block now to wait for result but only for a second, we're in a hurry.
     auto status = ret.wait_for(std::chrono::seconds(1));
 
     EXPECT_EQ(status, std::future_status::ready);
