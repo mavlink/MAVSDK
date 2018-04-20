@@ -38,7 +38,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
     for (auto setting : settings) {
         LogDebug() << "-" << setting;
     }
-    EXPECT_EQ(settings.size(), 8);
+    EXPECT_EQ(settings.size(), 9);
 
     set_mode(camera, Camera::Mode::VIDEO);
 
