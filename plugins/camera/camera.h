@@ -16,8 +16,9 @@ class System;
  * @brief The Camera class can be used to manage cameras that implement the
  * MAVLink Camera Protocol: https://mavlink.io/en/protocol/camera.html.
  *
- * The plugin needs to be instantiated multiple times for multiple cameras.
- * However, this is not supported yet.
+ * Currently only a single camera is supported.
+ * When multiple cameras are supported the plugin will need to instantiated
+ * separately for every camera.
  *
  * Synchronous and asynchronous variants of the camera methods are supplied.
  */
@@ -46,14 +47,14 @@ public:
      * @brief Possible results returned for camera commands.
      */
     enum class Result {
-        SUCCESS = 0,
-        IN_PROGRESS,
-        BUSY,
-        DENIED,
-        ERROR,
-        TIMEOUT,
-        WRONG_ARGUMENT,
-        UNKNOWN
+        SUCCESS = 0, /**< @brief Camera command executed successfully. */
+        IN_PROGRESS, /**< @brief Camera command is in progress. */
+        BUSY, /**< @brief Camera is busy and rejected command. */
+        DENIED, /**< @brief Camera has denied the command. */
+        ERROR, /**< @brief An error has occurred while executing the command. */
+        TIMEOUT, /**< @brief Camera has not responded in time and the command has timed out. */
+        WRONG_ARGUMENT, /**< @brief The command has wrong arguments. */
+        UNKNOWN /**< @brief The result is unknown. */
     };
 
     /**
@@ -72,7 +73,7 @@ public:
     /**
      * @brief Take photo (synchronous).
      *
-     * This takes one photo immediately.
+     * This takes one photo.
      *
      * @return Result of request.
      */
@@ -81,7 +82,7 @@ public:
     /**
      * @brief Start photo interval (synchronous).
      *
-     * Starts a photo timelapse given an interval.
+     * Starts a photo timelapse with a given interval.
      *
      * @param interval_s The interval between photos in seconds.
      * @return Result of request.
@@ -91,7 +92,7 @@ public:
     /**
      * @brief Stop photo interval (synchronous).
      *
-     * Stops a photo timelapse again.
+     * Stops a photo timelapse, previously started with `start_photo_interval`.
      *
      * @return Result of request.
      */
@@ -100,7 +101,7 @@ public:
     /**
      * @brief Start video capture (synchronous).
      *
-     * This starts a video recording immediately.
+     * This starts a video recording.
      *
      * @return Result of request.
      */
@@ -109,7 +110,7 @@ public:
     /**
      * @brief Stop video capture (synchronous).
      *
-     * This stops a video recording again.
+     * This stops a video recording, previously started with `start_video`.
      *
      * @return Result of request.
      */
@@ -118,7 +119,7 @@ public:
     /**
      * @brief Take photo (asynchronous).
      *
-     * This takes one photo immediately.
+     * This takes one photo.
      *
      * @param callback Function to call with result of request.
      */
@@ -127,7 +128,7 @@ public:
     /**
      * @brief Start photo interval (asynchronous).
      *
-     * Starts a photo timelapse given an interval.
+     * Starts a photo timelapse with a given interval.
      *
      * @param interval_s The interval between photos in seconds.
      * @param callback Function to call with result of request.
@@ -137,7 +138,7 @@ public:
     /**
      * @brief Stop photo interval (asynchronous).
      *
-     * Stops a photo timelapse again.
+     * Stops a photo timelapse, previously started with `start_photo_interval_async`.
      *
      * @param callback Function to call with result of request.
      */
@@ -146,7 +147,7 @@ public:
     /**
      * @brief Start video capture (asynchronous).
      *
-     * This starts a video recording immediately.
+     * This starts a video recording.
      *
      * @param callback Function to call with result of request.
      */
@@ -155,7 +156,7 @@ public:
     /**
      * @brief Stop video capture (asynchronous).
      *
-     * This stops a video recording again.
+     * This stops a video recording, previously started with `start_video_async`.
      *
      * @param callback Function to call with result of request.
      */
@@ -166,9 +167,9 @@ public:
      * @brief Camera mode type.
      */
     enum class Mode {
-        PHOTO,
-        VIDEO,
-        UNKNOWN
+        PHOTO, /**< @brief Photo mode. */
+        VIDEO, /**< @brief Video mode. */
+        UNKNOWN /**< @brief Unknown mode. */
     };
 
     /**
@@ -238,8 +239,8 @@ public:
      */
     struct VideoStreamSettings {
         float frame_rate_hz = 0.f; /**< @brief Frames per second. */
-        uint16_t horizontal_resolution_pix = 0u; /**< @brief Resolution horizontal in pixels. */
-        uint16_t vertical_resolution_pix = 0u; /**< @brief Resolution vertical in pixels. */
+        uint16_t horizontal_resolution_pix = 0u; /**< @brief Horizontal resolution in pixels. */
+        uint16_t vertical_resolution_pix = 0u; /**< @brief Vertical resolution in pixels. */
         uint32_t bit_rate_b_s = 0u; /**< @brief Bit rate in bits per second. */
         uint16_t rotation_deg = 0u; /**< @brief Video image rotation clockwise (0-359 degrees). */
         std::string uri {}; /**< @brief Video stream URI. */
@@ -328,17 +329,17 @@ public:
      * @brief Information about camera status.
      */
     struct Status {
-        bool video_on;
-        bool photo_interval_on;
+        bool video_on; /**< @brief true if video capture is currently running. */
+        bool photo_interval_on; /**< @brief true if video timelapse is currently active. */
 
         enum class StorageStatus {
-            NOT_AVAILABLE,
-            UNFORMATTED,
-            FORMATTED
-        } storage_status;
-        float used_storage_mib;
-        float available_storage_mib;
-        float total_storage_mib;
+            NOT_AVAILABLE, /**< @brief Storage status not available. */
+            UNFORMATTED, /**< @brief Storage is not formatted (has no recognized file system). */
+            FORMATTED /**< @brief Storage is formatted (has recognized a file system). */
+        } storage_status; /**< @brief Storage status. */
+        float used_storage_mib; /**< @brief Used storage in MiB. */
+        float available_storage_mib; /**< @brief Available storage in MiB. */
+        float total_storage_mib; /**< @brief Total storage in MiB. */
     };
 
     /**
@@ -354,12 +355,54 @@ public:
      */
     void get_status_async(get_status_callback_t callback);
 
+    /**
+     * @brief Get settings that can be changed.
+     *
+     * The list of settings consists of machine readable parameters,
+     * for a human readable desription of the setting use `get_setting_str`.
+     *
+     * @sa `get_setting_str`
+     *
+     * @param settings List of settings that can be changed.
+     * @return true request was successful.
+     */
     bool get_possible_settings(std::vector<std::string> &settings);
+
+    /**
+     * @brief Get possible options for a setting that can be selected.
+     *
+     * The list of options consists of machine readable option values,
+     * for a human readable description of the option use `get_option_str`.
+     *
+     * @sa `get_option_str`
+     *
+     * @param setting_name Name of setting (machine readable)
+     * @param options List of options to select from.
+     * @return true if request was successful.
+     */
     bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
 
+    /**
+     * @brief Callback type to get an option.
+     */
     typedef std::function<void(Result, const std::string &)> get_option_callback_t;
+
+    /**
+     * @brief Get an option of a setting (asynchronous).
+     *
+     * @param setting The machine readable name of the setting.
+     * @param callback The callback to get the result and selected option.
+     */
     void get_option_async(const std::string &setting,
                           const get_option_callback_t &callback);
+
+    /**
+     * @brief Set an option of a setting (asynchronous).
+     *
+     * @param setting The machine readable name of the setting.
+     * @param option The machine readable name of the option value.
+     * @param callback The callback to get the result.
+     */
     void set_option_async(const std::string &setting,
                           const std::string &option,
                           const result_callback_t &callback);
