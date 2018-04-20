@@ -15,7 +15,7 @@ public:
     CameraDefinition();
     ~CameraDefinition();
 
-    bool load_file(const char *filename);
+    bool load_file(const std::string &filepath);
     bool load_string(const std::string &content);
 
     std::string get_vendor() const;

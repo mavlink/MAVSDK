@@ -8,9 +8,9 @@ CameraDefinition::CameraDefinition() {}
 
 CameraDefinition::~CameraDefinition() {}
 
-bool CameraDefinition::load_file(const char *filename)
+bool CameraDefinition::load_file(const std::string &filepath)
 {
-    tinyxml2::XMLError xml_error = _doc.LoadFile(filename);
+    tinyxml2::XMLError xml_error = _doc.LoadFile(filepath.c_str());
     if (xml_error != tinyxml2::XML_SUCCESS) {
         LogErr() << "tinyxml2::LoadFile failed: " << _doc.ErrorStr();
         return false;

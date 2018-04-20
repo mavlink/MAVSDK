@@ -8,7 +8,7 @@
 
 using namespace dronecore;
 
-static const char *e90_unit_test_file = "plugins/camera/e90_unit_test.xml";
+static const std::string e90_unit_test_file = "plugins/camera/e90_unit_test.xml";
 
 TEST(CameraDefinition, E90LoadInfoFile)
 {

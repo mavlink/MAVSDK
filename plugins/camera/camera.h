@@ -63,7 +63,7 @@ public:
      * @param result The enum value for which a human readable string is required.
      * @return Human readable string for the Camera::Result.
      */
-    static const char *result_str(Result result);
+    static std::string result_str(Result result);
 
     /**
      * @brief Callback type for asynchronous Camera calls.
