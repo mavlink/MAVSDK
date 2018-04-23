@@ -60,6 +60,9 @@ protected:
     std::vector<Health> generateRandomHealthsVector(const int size);
     bool generateRandomBool();
 
+    void checkSendsHomePositions(const std::vector<Position> &home_positions);
+    std::future<void> subscribeHomeAsync(std::vector<Position> &home_positions);
+
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
     std::unique_ptr<MockTelemetry> _telemetry;
@@ -144,7 +147,7 @@ void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position> &
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecore::testing::position_callback_t position_callback;
+    dronecore::Telemetry::position_callback_t position_callback;
     EXPECT_CALL(*_telemetry, position_async(_))
     .WillOnce(SaveCallback(&position_callback, &subscription_promise));
 
@@ -256,7 +259,7 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &heal
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecore::testing::health_callback_t health_callback;
+    dronecore::Telemetry::health_callback_t health_callback;
     EXPECT_CALL(*_telemetry, health_async(_))
     .WillOnce(SaveCallback(&health_callback, &subscription_promise));
 
@@ -273,7 +276,6 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &heal
     for (size_t i = 0; i < healths.size(); i++) {
         EXPECT_EQ(healths.at(i), received_healths.at(i));
     }
-
 }
 
 Health TelemetryServiceImplTest::createRandomHealth()
@@ -300,6 +302,95 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleHealths)
 {
     const auto health = generateRandomHealthsVector(10);
     checkSendsHealths(health);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryHomeAsync)
+{
+    EXPECT_CALL(*_telemetry, home_position_async(_))
+    .Times(1);
+
+    std::vector<Position> home_positions;
+    auto home_stream_future = subscribeHomeAsync(home_positions);
+
+    _telemetry_service->stop();
+    home_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position>
+                                                               &home_positions)
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeHomeRequest request;
+        auto response_reader = _stub->SubscribeHome(&context, request);
+
+        dronecore::rpc::telemetry::HomeResponse response;
+        while (response_reader->Read(&response)) {
+            auto home_rpc = response.home();
+
+            Position home;
+            home.latitude_deg = home_rpc.latitude_deg();
+            home.longitude_deg = home_rpc.longitude_deg();
+            home.absolute_altitude_m = home_rpc.absolute_altitude_m();
+            home.relative_altitude_m = home_rpc.relative_altitude_m();
+
+            home_positions.push_back(home);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendHomeIfCallbackNotCalled)
+{
+    std::vector<Position> home_positions;
+    auto home_stream_future = subscribeHomeAsync(home_positions);
+
+    _telemetry_service->stop();
+    home_stream_future.wait();
+
+    EXPECT_EQ(0, home_positions.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneHome)
+{
+    std::vector<Position> home_positions;
+    home_positions.push_back(createPosition(41.848695, 75.132751, 3002.1f, 50.3f));
+
+    checkSendsHomePositions(home_positions);
+}
+
+void TelemetryServiceImplTest::checkSendsHomePositions(const std::vector<Position> &home_positions)
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::position_callback_t home_callback;
+    EXPECT_CALL(*_telemetry, home_position_async(_))
+    .WillOnce(SaveCallback(&home_callback, &subscription_promise));
+
+    std::vector<Position> received_home_positions;
+    auto home_stream_future = subscribeHomeAsync(received_home_positions);
+    subscription_future.wait();
+    for (const auto home_position : home_positions) {
+        home_callback(home_position);
+    }
+    _telemetry_service->stop();
+    home_stream_future.wait();
+
+    ASSERT_EQ(home_positions.size(), received_home_positions.size());
+    for (size_t i = 0; i < home_positions.size(); i++) {
+        EXPECT_EQ(home_positions.at(i), received_home_positions.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleHomePositions)
+{
+    std::vector<Position> home_positions;
+    home_positions.push_back(createPosition(41.848695, 75.132751, 3002.1f, 50.3f));
+    home_positions.push_back(createPosition(46.522626, 6.635356, 542.2f, 79.8f));
+    home_positions.push_back(createPosition(-50.995944711358824, -72.99892046835936, 1217.12f, 2.52f));
+
+    checkSendsHomePositions(home_positions);
 }
 
 } // namespace
