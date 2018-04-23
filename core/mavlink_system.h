@@ -140,6 +140,16 @@ public:
     void get_param_ext_float_async(const std::string &name, get_param_float_callback_t callback);
     void get_param_ext_int_async(const std::string &name, get_param_int_callback_t callback);
 
+    typedef std::function <void(bool success, MAVLinkParameters::ParamValue value)>
+    get_param_callback_t;
+
+    void set_param_async(const std::string &name,
+                         MAVLinkParameters::ParamValue value,
+                         success_t callback,
+                         bool extended = false);
+    void get_param_async(const std::string &name, get_param_callback_t callback,
+                         bool extended = false);
+
     bool is_connected() const;
 
     Time &get_time() { return _time; };

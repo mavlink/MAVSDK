@@ -57,6 +57,7 @@ void CallEveryHandler::remove(const void *cookie)
     auto it = _entries.find(const_cast<void *>(cookie));
     if (it != _entries.end()) {
         _entries.erase(const_cast<void *>(cookie));
+        _iterator_invalidated = true;
     }
 }
 
@@ -80,6 +81,13 @@ void CallEveryHandler::run_once()
                 callback();
                 _entries_mutex.lock();
             }
+        }
+
+        // We leave the loop.
+        // FIXME: there should be a nicer way to do this.
+        if (_iterator_invalidated) {
+            _iterator_invalidated = false;
+            break;
         }
     }
     _entries_mutex.unlock();

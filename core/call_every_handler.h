@@ -36,6 +36,7 @@ private:
 
     std::map<void *, std::shared_ptr<Entry>> _entries {};
     std::mutex _entries_mutex {};
+    bool _iterator_invalidated {false};
 
     Time &_time;
 };

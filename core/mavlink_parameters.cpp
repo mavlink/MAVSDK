@@ -106,8 +106,7 @@ void MAVLinkParameters::do_work()
         if (work.extended) {
 
             char param_value_buf[128] = {};
-            const float temp_to_copy = work.param_value.get_float_casted_value();
-            memcpy(&param_value_buf[0], &temp_to_copy, sizeof(float));
+            work.param_value.get_128_bytes(param_value_buf);
 
             // FIXME: extended currently always go to the camera component
             mavlink_msg_param_ext_set_pack(GCSClient::system_id,
@@ -117,7 +116,7 @@ void MAVLinkParameters::do_work()
                                            MAV_COMP_ID_CAMERA,
                                            param_id,
                                            param_value_buf,
-                                           work.param_value.get_mav_param_type());
+                                           work.param_value.get_mav_param_ext_type());
         } else {
             // Param set is intended for Autopilot only.
             mavlink_msg_param_set_pack(GCSClient::system_id,
@@ -126,7 +125,7 @@ void MAVLinkParameters::do_work()
                                        _parent.get_system_id(),
                                        _parent.get_autopilot_id(),
                                        param_id,
-                                       work.param_value.get_float_casted_value(),
+                                       work.param_value.get_4_float_bytes(),
                                        work.param_value.get_mav_param_type());
         }
 
@@ -419,6 +418,12 @@ void MAVLinkParameters::receive_timeout()
             _set_param_queue.pop_front();
         }
     }
+}
+
+std::ostream &operator<<(std::ostream &strm, const MAVLinkParameters::ParamValue &obj)
+{
+    strm << obj.get_string();
+    return strm;
 }
 
 } // namespace dronecore

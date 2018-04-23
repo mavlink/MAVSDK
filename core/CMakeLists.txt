@@ -12,57 +12,6 @@ else()
     set(LIBRARY_TYPE "SHARED")
 endif()
 
-# We need tinyxml2 for the camera definition parsing.
-if(APPLE)
-    if(NOT IOS)
-        # We install the tinyxml2 library manually for macOS and iOS.
-        if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-            # Need to remove that d again.
-            install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.5.0.1.dylib
-                DESTINATION ${lib_path}
-                #RENAME libtinyxml2.dylib
-            )
-        else()
-            install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2.5.0.1.dylib
-                DESTINATION ${lib_path}
-                #RENAME libtinyxml2.dylib
-            )
-        endif()
-
-        add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
-        include_directories(SYSTEM third_party/tinyxml2)
-        link_directories(third_party/tinyxml2)
-        set(TINYXML2_LIBRARY tinyxml2)
-    endif()
-elseif(ANDROID)
-    # We install the tinyxml2 library manually for Android.
-    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        # Need to remove that d again.
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2d.so
-            DESTINATION ${lib_path}
-            RENAME libtinyxml2.so
-        )
-    else()
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/tinyxml2/libtinyxml2.so
-            DESTINATION ${lib_path}
-        )
-    endif()
-
-    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
-    include_directories(SYSTEM third_party/tinyxml2)
-    link_directories(third_party/tinyxml2)
-    set(TINYXML2_LIBRARY tinyxml2)
-elseif(MSVC)
-    add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
-    include_directories(SYSTEM third_party/tinyxml2)
-    link_directories(third_party/tinyxml2)
-    set(TINYXML2_LIBRARY tinyxml2)
-else()
-    # For Linux for now we use the system tinyxml2, otherwise the unit test crashes
-    # miraculously.
-    set(TINYXML2_LIBRARY tinyxml2)
-endif()
-
 add_library(dronecore ${LIBRARY_TYPE}
     call_every_handler.cpp
     connection.cpp
@@ -140,5 +89,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/core/timeout_handler_test.cpp
     ${CMAKE_SOURCE_DIR}/core/call_every_handler_test.cpp
     ${CMAKE_SOURCE_DIR}/core/curl_test.cpp
+    ${CMAKE_SOURCE_DIR}/core/any_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

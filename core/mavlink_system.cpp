@@ -527,7 +527,7 @@ void MAVLinkSystem::set_param_float_async(const std::string &name, float value, 
 void MAVLinkSystem::set_param_int_async(const std::string &name, int32_t value, success_t callback)
 {
     MAVLinkParameters::ParamValue param_value;
-    param_value.set_int(value);
+    param_value.set_int32(value);
     _params.set_param_async(name, param_value, callback);
 }
 
@@ -543,7 +543,7 @@ void MAVLinkSystem::set_param_ext_int_async(const std::string &name, int32_t val
                                             success_t callback)
 {
     MAVLinkParameters::ParamValue param_value;
-    param_value.set_int(value);
+    param_value.set_int32(value);
     _params.set_param_async(name, param_value, callback, true);
 }
 
@@ -552,6 +552,20 @@ void MAVLinkSystem::get_param_float_async(const std::string &name,
 {
     _params.get_param_async(name, std::bind(&MAVLinkSystem::receive_float_param, _1, _2,
                                             callback));
+}
+
+void MAVLinkSystem::set_param_async(const std::string &name,
+                                    MAVLinkParameters::ParamValue value,
+                                    success_t callback,
+                                    bool extended)
+{
+    _params.set_param_async(name, value, callback, extended);
+}
+
+void MAVLinkSystem::get_param_async(const std::string &name, get_param_callback_t callback,
+                                    bool extended)
+{
+    _params.get_param_async(name, callback, extended);
 }
 
 MAVLinkCommands::Result
@@ -673,7 +687,7 @@ void MAVLinkSystem::receive_int_param(bool success, MAVLinkParameters::ParamValu
                                       get_param_int_callback_t callback)
 {
     if (callback) {
-        callback(success, value.get_int());
+        callback(success, value.get_int32());
     }
 }
 

@@ -46,7 +46,7 @@ public:
             int32_t x = 0;
             int32_t y = 0;
             float z = NAN;
-        } params;
+        } params {};
 
         // In some cases "Reserved" value could be "0".
         // This utility method can be used in such case.
@@ -76,7 +76,7 @@ public:
             float param5 = NAN;
             float param6 = NAN;
             float param7 = NAN;
-        } params;
+        } params {};
 
         static
         void set_as_reserved(Params &params, float reserved_value = NAN)

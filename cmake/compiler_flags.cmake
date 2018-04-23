@@ -29,14 +29,16 @@ else()
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         set(warnings "${warnings} -Wno-missing-braces -Wno-unused-parameter")
     endif()
+
+    # Otherwise tinyxml2 complains.
+    set(warnings "${warnings} -Wno-old-style-cast")
 endif()
 
-# We need a define if on APPLE
 if(APPLE)
     add_definitions("-DAPPLE")
 endif()
 
-# Add DEBUG define for Debug target
+# Add DEBUG define for Debug target because that is not done automatically.
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage")
