@@ -17,8 +17,8 @@ class System;
  * MAVLink Camera Protocol: https://mavlink.io/en/protocol/camera.html.
  *
  * Currently only a single camera is supported.
- * When multiple cameras are supported the plugin will need to instantiated
- * separately for every camera.
+ * When multiple cameras are supported the plugin will need to be
+ * instantiated separately for every camera.
  *
  * Synchronous and asynchronous variants of the camera methods are supplied.
  */
@@ -83,7 +83,7 @@ public:
      * @brief Start photo interval (synchronous).
      *
      * Starts a photo timelapse with a given interval.
-     *
+     * @sa stop_photo_interval()
      * @param interval_s The interval between photos in seconds.
      * @return Result of request.
      */
@@ -92,7 +92,7 @@ public:
     /**
      * @brief Stop photo interval (synchronous).
      *
-     * Stops a photo timelapse, previously started with `start_photo_interval`.
+     * Stops a photo timelapse, previously started with start_photo_interval().
      *
      * @return Result of request.
      */
@@ -110,7 +110,7 @@ public:
     /**
      * @brief Stop video capture (synchronous).
      *
-     * This stops a video recording, previously started with `start_video`.
+     * This stops a video recording, previously started with start_video().
      *
      * @return Result of request.
      */
@@ -130,6 +130,7 @@ public:
      *
      * Starts a photo timelapse with a given interval.
      *
+     * @sa stop_photo_interval_async
      * @param interval_s The interval between photos in seconds.
      * @param callback Function to call with result of request.
      */
@@ -138,7 +139,7 @@ public:
     /**
      * @brief Stop photo interval (asynchronous).
      *
-     * Stops a photo timelapse, previously started with `start_photo_interval_async`.
+     * Stops a photo timelapse, previously started with start_photo_interval_async().
      *
      * @param callback Function to call with result of request.
      */
@@ -156,7 +157,7 @@ public:
     /**
      * @brief Stop video capture (asynchronous).
      *
-     * This stops a video recording, previously started with `start_video_async`.
+     * This stops a video recording, previously started with start_video_async().
      *
      * @param callback Function to call with result of request.
      */
@@ -200,10 +201,10 @@ public:
          * @brief Position type.
          */
         struct Position {
-            double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90) */
-            double longitude_deg; /**< @brief Longitude in degrees (range: -180 to 180) */
-            float absolute_altitude_m; /**< @brief Altitude AMSL (above mean sea level) in metres */
-            float relative_altitude_m; /**< @brief Altitude relative to takeoff altitude in metres */
+            double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90). */
+            double longitude_deg; /**< @brief Longitude in degrees (range: -180 to 180). */
+            float absolute_altitude_m; /**< @brief Altitude AMSL (above mean sea level) in metres. */
+            float relative_altitude_m; /**< @brief Altitude relative to takeoff altitude in metres. */
         } position; /**< @brief Position of drone/camera when image was captured. */
 
         /**
@@ -223,10 +224,10 @@ public:
             float z; /**< @brief Quaternion entry 3 also denoted as d. */
         } quaternion; /**< @brief Quaternion of camera orientation. */
 
-        uint64_t time_utc_us; /**< @brief timestamp in UTC (since UNIX epoch) in microseconds. */
+        uint64_t time_utc_us; /**< @brief Timestamp in UTC (since UNIX epoch) in microseconds. */
         bool success; /**< @brief True if capture was successful. */
         int index; /**< @brief Zero-based index of this image since armed. */
-        std::string file_url; /**< URL of image taken to download. */
+        std::string file_url; /**< Download URL for captured image. */
     };
 
     /**
@@ -349,7 +350,7 @@ public:
 
 
     /**
-     * @brief Get camera status.
+     * @brief Get camera status (asynchronous).
      *
      * @param callback Function to call with camera status.
      */
@@ -359,7 +360,7 @@ public:
      * @brief Get settings that can be changed.
      *
      * The list of settings consists of machine readable parameters,
-     * for a human readable desription of the setting use `get_setting_str`.
+     * for a human readable desription of the setting use get_setting_str().
      *
      * @sa `get_setting_str`
      *
@@ -372,11 +373,11 @@ public:
      * @brief Get possible options for a setting that can be selected.
      *
      * The list of options consists of machine readable option values,
-     * for a human readable description of the option use `get_option_str`.
+     * for a human readable description of the option use get_option_str().
      *
      * @sa `get_option_str`
      *
-     * @param setting_name Name of setting (machine readable)
+     * @param setting_name Name of setting (machine readable).
      * @param options List of options to select from.
      * @return true if request was successful.
      */
