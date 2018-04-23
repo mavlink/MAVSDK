@@ -1,6 +1,6 @@
 #include <future>
 
-#include "telemetry/telemetry.h" // TODO: remove this include now that it is templated
+#include "telemetry/telemetry.h"
 #include "telemetry/telemetry.grpc.pb.h"
 
 namespace dronecore {
@@ -52,6 +52,26 @@ public:
             dronecore::rpc::telemetry::HealthResponse rpc_health_response;
             rpc_health_response.set_allocated_health(rpc_health);
             writer->Write(rpc_health_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeHome(grpc::ServerContext * /* context */,
+                               const dronecore::rpc::telemetry::SubscribeHomeRequest * /* request */,
+                               grpc::ServerWriter<rpc::telemetry::HomeResponse> *writer) override
+    {
+        _telemetry.home_position_async([&writer](dronecore::Telemetry::Position position) {
+            auto rpc_position = new dronecore::rpc::telemetry::Position();
+            rpc_position->set_latitude_deg(position.latitude_deg);
+            rpc_position->set_longitude_deg(position.longitude_deg);
+            rpc_position->set_relative_altitude_m(position.relative_altitude_m);
+            rpc_position->set_absolute_altitude_m(position.absolute_altitude_m);
+
+            dronecore::rpc::telemetry::HomeResponse rpc_home_response;
+            rpc_home_response.set_allocated_home(rpc_position);
+            writer->Write(rpc_home_response);
         });
 
         _stop_future.wait();
