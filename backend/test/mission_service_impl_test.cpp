@@ -29,6 +29,8 @@ using RPCCameraAction = dc::rpc::mission::MissionItem::CameraAction;
 using StartMissionRequest = dc::rpc::mission::StartMissionRequest;
 using StartMissionResponse = dc::rpc::mission::StartMissionResponse;
 
+static constexpr auto ARBITRARY_RESULT = dc::Mission::Result::UNKNOWN;
+
 std::vector<InputPair> generateInputPairs();
 
 class MissionServiceImplTestBase : public ::testing::TestWithParam<InputPair>
@@ -47,7 +49,7 @@ protected:
     MissionServiceImpl _mission_service;
 
     /* StartMission returns its result through a callback, which is saved in _result_callback. */
-    dc::testing::mission_result_callback_t _result_callback;
+    dc::Mission::result_callback_t _result_callback;
 
     /* The tests need to make sure that _result_callback has been set before calling it, hence the promise. */
     std::promise<void> _callback_saved_promise;
@@ -104,7 +106,7 @@ ACTION_P3(SaveUploadParams, mission, callback, callback_saved_promise)
 TEST_F(MissionServiceImplUploadTest, doesNotFailWhenArgsAreNull)
 {
     auto upload_handle = uploadMissionAndSaveParams(nullptr, nullptr);
-    _result_callback(dc::Mission::Result::UNKNOWN);
+    _result_callback(ARBITRARY_RESULT);
 }
 
 TEST_P(MissionServiceImplUploadTest, uploadResultIsTranslatedCorrectly)
@@ -170,7 +172,7 @@ TEST_F(MissionServiceImplUploadTest, uploadsEmptyMissionWhenNullRequest)
 {
     auto upload_handle = uploadMissionAndSaveParams(nullptr, nullptr);
 
-    _result_callback(dc::Mission::Result::UNKNOWN);
+    _result_callback(ARBITRARY_RESULT);
     upload_handle.wait();
 
     EXPECT_EQ(0, _uploaded_mission.size());
@@ -188,10 +190,10 @@ std::vector<std::shared_ptr<dc::MissionItem>> MissionServiceImplUploadTest::gene
 
     auto mission_item = std::make_shared<dc::MissionItem>();
     mission_item->set_position(41.848695, 75.132751);
-    mission_item->set_relative_altitude(50.4);
-    mission_item->set_speed(8.3);
+    mission_item->set_relative_altitude(50.4f);
+    mission_item->set_speed(8.3f);
     mission_item->set_fly_through(false);
-    mission_item->set_gimbal_pitch_and_yaw(45.2, 90.3);
+    mission_item->set_gimbal_pitch_and_yaw(45.2f, 90.3f);
     mission_item->set_camera_action(CameraAction::NONE);
 
     mission_items.push_back(mission_item);
@@ -205,7 +207,7 @@ void MissionServiceImplUploadTest::checkItemsAreUploadedCorrectly(
     auto request = generateUploadRequest(mission_items);
 
     auto upload_handle = uploadMissionAndSaveParams(request, nullptr);
-    _result_callback(dc::Mission::Result::UNKNOWN);
+    _result_callback(ARBITRARY_RESULT);
     upload_handle.wait();
 
     ASSERT_EQ(mission_items.size(), _uploaded_mission.size());
@@ -228,50 +230,50 @@ std::vector<std::shared_ptr<dc::MissionItem>>
 
     auto mission_item0 = std::make_shared<dc::MissionItem>();
     mission_item0->set_position(41.848695, 75.132751);
-    mission_item0->set_relative_altitude(50.4);
-    mission_item0->set_speed(8.3);
+    mission_item0->set_relative_altitude(50.4f);
+    mission_item0->set_speed(8.3f);
     mission_item0->set_fly_through(false);
-    mission_item0->set_gimbal_pitch_and_yaw(45.2, 90.3);
+    mission_item0->set_gimbal_pitch_and_yaw(45.2f, 90.3f);
     mission_item0->set_camera_action(CameraAction::NONE);
 
     auto mission_item1 = std::make_shared<dc::MissionItem>();
     mission_item1->set_position(46.522626, 6.635356);
-    mission_item1->set_relative_altitude(76.2);
-    mission_item1->set_speed(6);
+    mission_item1->set_relative_altitude(76.2f);
+    mission_item1->set_speed(6.0f);
     mission_item1->set_fly_through(true);
-    mission_item1->set_gimbal_pitch_and_yaw(41.2, 70.3);
+    mission_item1->set_gimbal_pitch_and_yaw(41.2f, 70.3f);
     mission_item1->set_camera_action(CameraAction::TAKE_PHOTO);
 
     auto mission_item2 = std::make_shared<dc::MissionItem>();
     mission_item2->set_position(-50.995944711358824, -72.99892046835936);
-    mission_item2->set_relative_altitude(24);
-    mission_item2->set_speed(4.2);
+    mission_item2->set_relative_altitude(24.0f);
+    mission_item2->set_speed(4.2f);
     mission_item2->set_fly_through(false);
-    mission_item2->set_gimbal_pitch_and_yaw(55, 68.8);
+    mission_item2->set_gimbal_pitch_and_yaw(55.0f, 68.8f);
     mission_item2->set_camera_action(CameraAction::START_PHOTO_INTERVAL);
 
     auto mission_item3 = std::make_shared<dc::MissionItem>();
     mission_item3->set_position(46.522652, 6.621356);
-    mission_item3->set_relative_altitude(71.2);
-    mission_item3->set_speed(7.1);
+    mission_item3->set_relative_altitude(71.2f);
+    mission_item3->set_speed(7.1f);
     mission_item3->set_fly_through(false);
-    mission_item3->set_gimbal_pitch_and_yaw(11.2, 20.3);
+    mission_item3->set_gimbal_pitch_and_yaw(11.2f, 20.3f);
     mission_item3->set_camera_action(CameraAction::STOP_PHOTO_INTERVAL);
 
     auto mission_item4 = std::make_shared<dc::MissionItem>();
     mission_item4->set_position(48.142652, 3.626236);
-    mission_item4->set_relative_altitude(56.9);
-    mission_item4->set_speed(5.4);
+    mission_item4->set_relative_altitude(56.9f);
+    mission_item4->set_speed(5.4f);
     mission_item4->set_fly_through(false);
-    mission_item4->set_gimbal_pitch_and_yaw(14.6, 31.5);
+    mission_item4->set_gimbal_pitch_and_yaw(14.6f, 31.5f);
     mission_item4->set_camera_action(CameraAction::START_VIDEO);
 
     auto mission_item5 = std::make_shared<dc::MissionItem>();
     mission_item5->set_position(11.142334, 4.622234);
-    mission_item5->set_relative_altitude(65.3);
-    mission_item5->set_speed(5.7);
+    mission_item5->set_relative_altitude(65.3f);
+    mission_item5->set_speed(5.7f);
     mission_item5->set_fly_through(true);
-    mission_item5->set_gimbal_pitch_and_yaw(17.2, 90);
+    mission_item5->set_gimbal_pitch_and_yaw(17.2f, 90.0f);
     mission_item5->set_camera_action(CameraAction::STOP_VIDEO);
 
     mission_items.push_back(mission_item0);
@@ -303,7 +305,7 @@ ACTION_P2(SaveResult, callback, callback_saved_promise)
 TEST_F(MissionServiceImplStartTest, doesNotFailWhenArgsAreNull)
 {
     auto start_handle = startMissionAndSaveParams(nullptr);
-    _result_callback(dc::Mission::Result::UNKNOWN);
+    _result_callback(ARBITRARY_RESULT);
 }
 
 std::future<void> MissionServiceImplStartTest::startMissionAndSaveParams(
