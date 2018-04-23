@@ -74,7 +74,7 @@ message Mission {
 message MissionItem {
     double latitude_deg = 1;
     double longitude_deg = 2;
-    double relative_altitude_m = 3;
+    float relative_altitude_m = 3;
     float speed_m_s = 4;
     bool is_fly_through = 5;
     float gimbal_pitch_deg = 6;
