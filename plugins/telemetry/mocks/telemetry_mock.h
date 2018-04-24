@@ -11,6 +11,7 @@ public:
     MOCK_CONST_METHOD1(position_async, void(Telemetry::position_callback_t));
     MOCK_CONST_METHOD1(health_async, void(Telemetry::health_callback_t));
     MOCK_CONST_METHOD1(home_position_async, void(Telemetry::position_callback_t));
+    MOCK_CONST_METHOD1(in_air_async, void(Telemetry::in_air_callback_t));
 };
 
 } // namespace testing

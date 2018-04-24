@@ -60,8 +60,11 @@ protected:
     std::vector<Health> generateRandomHealthsVector(const int size);
     bool generateRandomBool();
 
-    void checkSendsHomePositions(const std::vector<Position> &home_positions);
-    std::future<void> subscribeHomeAsync(std::vector<Position> &home_positions);
+    void checkSendsHomePositions(const std::vector<Position> &home_positions) const;
+    std::future<void> subscribeHomeAsync(std::vector<Position> &home_positions) const;
+
+    void checkSendsInAirEvents(const std::vector<bool> &in_air_events) const;
+    std::future<void> subscribeInAirAsync(std::vector<bool> &in_air_events) const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
@@ -317,7 +320,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryHomeAsync)
 }
 
 std::future<void> TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position>
-                                                               &home_positions)
+                                                               &home_positions) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -360,7 +363,7 @@ TEST_F(TelemetryServiceImplTest, sendsOneHome)
     checkSendsHomePositions(home_positions);
 }
 
-void TelemetryServiceImplTest::checkSendsHomePositions(const std::vector<Position> &home_positions)
+void TelemetryServiceImplTest::checkSendsHomePositions(const std::vector<Position> &home_positions) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -391,6 +394,88 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleHomePositions)
     home_positions.push_back(createPosition(-50.995944711358824, -72.99892046835936, 1217.12f, 2.52f));
 
     checkSendsHomePositions(home_positions);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryInAirAsync)
+{
+    EXPECT_CALL(*_telemetry, in_air_async(_))
+    .Times(1);
+
+    std::vector<bool> in_air_events;
+    auto in_air_stream_future = subscribeInAirAsync(in_air_events);
+
+    _telemetry_service->stop();
+    in_air_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeInAirAsync(std::vector<bool> &in_air_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeInAirRequest request;
+        auto response_reader = _stub->SubscribeInAir(&context, request);
+
+        dronecore::rpc::telemetry::InAirResponse response;
+        while (response_reader->Read(&response)) {
+            auto is_in_air = response.is_in_air();
+            in_air_events.push_back(is_in_air);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendInAirIfCallbackNotCalled)
+{
+    std::vector<bool> in_air_events;
+    auto in_air_stream_future = subscribeInAirAsync(in_air_events);
+
+    _telemetry_service->stop();
+    in_air_stream_future.wait();
+
+    EXPECT_EQ(0, in_air_events.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneInAirEvent)
+{
+    std::vector<bool> in_air_events;
+    in_air_events.push_back(generateRandomBool());
+
+    checkSendsInAirEvents(in_air_events);
+}
+
+void TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool> &in_air_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::in_air_callback_t in_air_callback;
+    EXPECT_CALL(*_telemetry, in_air_async(_))
+    .WillOnce(SaveCallback(&in_air_callback, &subscription_promise));
+
+    std::vector<bool> received_in_air_events;
+    auto in_air_stream_future = subscribeInAirAsync(received_in_air_events);
+    subscription_future.wait();
+    for (const auto is_in_air : in_air_events) {
+        in_air_callback(is_in_air);
+    }
+    _telemetry_service->stop();
+    in_air_stream_future.wait();
+
+    ASSERT_EQ(in_air_events.size(), received_in_air_events.size());
+    for (size_t i = 0; i < in_air_events.size(); i++) {
+        EXPECT_EQ(in_air_events.at(i), received_in_air_events.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleInAirEvents)
+{
+    std::vector<bool> in_air_events;
+
+    for (int i = 0; i < 10; i++) {
+        in_air_events.push_back(generateRandomBool());
+    }
+
+    checkSendsInAirEvents(in_air_events);
 }
 
 } // namespace
