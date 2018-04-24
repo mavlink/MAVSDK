@@ -92,6 +92,20 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeArmed(grpc::ServerContext * /* context */,
+                                const dronecore::rpc::telemetry::SubscribeArmedRequest * /* request */,
+                                grpc::ServerWriter<rpc::telemetry::ArmedResponse> *writer) override
+    {
+        _telemetry.armed_async([&writer](bool is_armed) {
+            dronecore::rpc::telemetry::ArmedResponse rpc_armed_response;
+            rpc_armed_response.set_is_armed(is_armed);
+            writer->Write(rpc_armed_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stop_promise.set_value();

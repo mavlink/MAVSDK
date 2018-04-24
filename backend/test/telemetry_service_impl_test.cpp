@@ -66,6 +66,9 @@ protected:
     void checkSendsInAirEvents(const std::vector<bool> &in_air_events) const;
     std::future<void> subscribeInAirAsync(std::vector<bool> &in_air_events) const;
 
+    void checkSendsArmedEvents(const std::vector<bool> &armed_events) const;
+    std::future<void> subscribeArmedAsync(std::vector<bool> &armed_events) const;
+
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
     std::unique_ptr<MockTelemetry> _telemetry;
@@ -363,7 +366,8 @@ TEST_F(TelemetryServiceImplTest, sendsOneHome)
     checkSendsHomePositions(home_positions);
 }
 
-void TelemetryServiceImplTest::checkSendsHomePositions(const std::vector<Position> &home_positions) const
+void TelemetryServiceImplTest::checkSendsHomePositions(const std::vector<Position> &home_positions)
+const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -408,7 +412,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryInAirAsync)
     in_air_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeInAirAsync(std::vector<bool> &in_air_events) const
+std::future<void> TelemetryServiceImplTest::subscribeInAirAsync(std::vector<bool> &in_air_events)
+const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -476,6 +481,89 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleInAirEvents)
     }
 
     checkSendsInAirEvents(in_air_events);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryArmedAsync)
+{
+    EXPECT_CALL(*_telemetry, armed_async(_))
+    .Times(1);
+
+    std::vector<bool> armed_events;
+    auto armed_stream_future = subscribeArmedAsync(armed_events);
+
+    _telemetry_service->stop();
+    armed_stream_future.wait();
+}
+
+std::future<void>
+TelemetryServiceImplTest::subscribeArmedAsync(std::vector<bool> &armed_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeArmedRequest request;
+        auto response_reader = _stub->SubscribeArmed(&context, request);
+
+        dronecore::rpc::telemetry::ArmedResponse response;
+        while (response_reader->Read(&response)) {
+            auto is_armed = response.is_armed();
+            armed_events.push_back(is_armed);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendArmedIfCallbackNotCalled)
+{
+    std::vector<bool> armed_events;
+    auto armed_stream_future = subscribeArmedAsync(armed_events);
+
+    _telemetry_service->stop();
+    armed_stream_future.wait();
+
+    EXPECT_EQ(0, armed_events.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneArmedEvent)
+{
+    std::vector<bool> armed_events;
+    armed_events.push_back(generateRandomBool());
+
+    checkSendsInAirEvents(armed_events);
+}
+
+void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool> &armed_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::armed_callback_t armed_callback;
+    EXPECT_CALL(*_telemetry, armed_async(_))
+    .WillOnce(SaveCallback(&armed_callback, &subscription_promise));
+
+    std::vector<bool> received_armed_events;
+    auto armed_stream_future = subscribeArmedAsync(received_armed_events);
+    subscription_future.wait();
+    for (const auto is_armed : armed_events) {
+        armed_callback(is_armed);
+    }
+    _telemetry_service->stop();
+    armed_stream_future.wait();
+
+    ASSERT_EQ(armed_events.size(), received_armed_events.size());
+    for (size_t i = 0; i < armed_events.size(); i++) {
+        EXPECT_EQ(armed_events.at(i), received_armed_events.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleArmedEvents)
+{
+    std::vector<bool> armed_events;
+
+    for (int i = 0; i < 10; i++) {
+        armed_events.push_back(generateRandomBool());
+    }
+
+    checkSendsArmedEvents(armed_events);
 }
 
 } // namespace
