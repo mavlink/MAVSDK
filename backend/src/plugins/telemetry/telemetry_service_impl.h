@@ -78,6 +78,20 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeInAir(grpc::ServerContext * /* context */,
+                                const dronecore::rpc::telemetry::SubscribeInAirRequest * /* request */,
+                                grpc::ServerWriter<rpc::telemetry::InAirResponse> *writer) override
+    {
+        _telemetry.in_air_async([&writer](bool is_in_air) {
+            dronecore::rpc::telemetry::InAirResponse rpc_in_air_response;
+            rpc_in_air_response.set_is_in_air(is_in_air);
+            writer->Write(rpc_in_air_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stop_promise.set_value();
