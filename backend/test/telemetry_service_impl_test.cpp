@@ -25,6 +25,9 @@ using Position = dronecore::Telemetry::Position;
 using HealthResponse = dronecore::rpc::telemetry::HealthResponse;
 using Health = dronecore::Telemetry::Health;
 
+using GPSInfo = dronecore::Telemetry::GPSInfo;
+using FixType = dronecore::rpc::telemetry::FixType;
+
 class TelemetryServiceImplTest : public ::testing::Test
 {
 protected:
@@ -68,6 +71,11 @@ protected:
 
     void checkSendsArmedEvents(const std::vector<bool> &armed_events) const;
     std::future<void> subscribeArmedAsync(std::vector<bool> &armed_events) const;
+
+    GPSInfo createGPSInfo(const int num_satellites, const int fix_type) const;
+    void checkSendsGPSInfoEvents(const std::vector<GPSInfo> &gps_info_events) const;
+    std::future<void> subscribeGPSInfoAsync(std::vector<GPSInfo> &gps_info_events) const;
+    int translateRPCGPSFixType(const FixType rpc_fix_type) const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
@@ -564,6 +572,129 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleArmedEvents)
     }
 
     checkSendsArmedEvents(armed_events);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryGPSInfoAsync)
+{
+    EXPECT_CALL(*_telemetry, gps_info_async(_))
+    .Times(1);
+
+    std::vector<GPSInfo> gps_info_events;
+    auto gps_info_stream_future = subscribeGPSInfoAsync(gps_info_events);
+
+    _telemetry_service->stop();
+    gps_info_stream_future.wait();
+}
+
+std::future<void>
+TelemetryServiceImplTest::subscribeGPSInfoAsync(std::vector<GPSInfo> &gps_info_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeGPSInfoRequest request;
+        auto response_reader = _stub->SubscribeGPSInfo(&context, request);
+
+        dronecore::rpc::telemetry::GPSInfoResponse response;
+        while (response_reader->Read(&response)) {
+            auto gps_info_rpc = response.gps_info();
+
+            GPSInfo gps_info;
+            gps_info.num_satellites = gps_info_rpc.num_satellites();
+            gps_info.fix_type = translateRPCGPSFixType(gps_info_rpc.fix_type());
+
+            gps_info_events.push_back(gps_info);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+int TelemetryServiceImplTest::translateRPCGPSFixType(const FixType rpc_fix_type) const
+{
+    switch (rpc_fix_type) {
+        default:
+        case FixType::NO_GPS:
+            return 0;
+        case FixType::NO_FIX:
+            return 1;
+        case FixType::FIX_2D:
+            return 2;
+        case FixType::FIX_3D:
+            return 3;
+        case FixType::FIX_DGPS:
+            return 4;
+        case FixType::RTK_FLOAT:
+            return 5;
+        case FixType::RTK_FIXED:
+            return 6;
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendGPSInfoIfCallbackNotCalled)
+{
+    std::vector<GPSInfo> gps_info_events;
+    auto gps_info_stream_future = subscribeGPSInfoAsync(gps_info_events);
+
+    _telemetry_service->stop();
+    gps_info_stream_future.wait();
+
+    EXPECT_EQ(0, gps_info_events.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneGPSInfoEvent)
+{
+    std::vector<GPSInfo> gps_info_events;
+    gps_info_events.push_back(createGPSInfo(10, 3));
+
+    checkSendsGPSInfoEvents(gps_info_events);
+}
+
+void TelemetryServiceImplTest::checkSendsGPSInfoEvents(const std::vector<GPSInfo> &gps_info_events)
+const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::gps_info_callback_t gps_info_callback;
+    EXPECT_CALL(*_telemetry, gps_info_async(_))
+    .WillOnce(SaveCallback(&gps_info_callback, &subscription_promise));
+
+    std::vector<GPSInfo> received_gps_info_events;
+    auto gps_info_stream_future = subscribeGPSInfoAsync(received_gps_info_events);
+    subscription_future.wait();
+    for (const auto gps_info : gps_info_events) {
+        gps_info_callback(gps_info);
+    }
+    _telemetry_service->stop();
+    gps_info_stream_future.wait();
+
+    ASSERT_EQ(gps_info_events.size(), received_gps_info_events.size());
+    for (size_t i = 0; i < gps_info_events.size(); i++) {
+        EXPECT_EQ(gps_info_events.at(i), received_gps_info_events.at(i));
+    }
+}
+
+GPSInfo TelemetryServiceImplTest::createGPSInfo(const int num_satellites, const int fix_type) const
+{
+    GPSInfo expected_gps_info;
+
+    expected_gps_info.num_satellites = num_satellites;
+    expected_gps_info.fix_type = fix_type;
+
+    return expected_gps_info;
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleGPSInfoEvents)
+{
+    std::vector<GPSInfo> gps_info_events;
+    gps_info_events.push_back(createGPSInfo(5, 0));
+    gps_info_events.push_back(createGPSInfo(0, 1));
+    gps_info_events.push_back(createGPSInfo(10, 2));
+    gps_info_events.push_back(createGPSInfo(8, 3));
+    gps_info_events.push_back(createGPSInfo(22, 4));
+    gps_info_events.push_back(createGPSInfo(13, 5));
+    gps_info_events.push_back(createGPSInfo(7, 6));
+
+    checkSendsGPSInfoEvents(gps_info_events);
 }
 
 } // namespace

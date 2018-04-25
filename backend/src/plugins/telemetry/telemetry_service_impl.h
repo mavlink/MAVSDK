@@ -106,6 +106,45 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeGPSInfo(grpc::ServerContext * /* context */,
+                                  const dronecore::rpc::telemetry::SubscribeGPSInfoRequest * /* request */,
+                                  grpc::ServerWriter<rpc::telemetry::GPSInfoResponse> *writer) override
+    {
+        _telemetry.gps_info_async([this, &writer](dronecore::Telemetry::GPSInfo gps_info) {
+            auto rpc_gps_info = new dronecore::rpc::telemetry::GPSInfo();
+            rpc_gps_info->set_num_satellites(gps_info.num_satellites);
+            rpc_gps_info->set_fix_type(translateGPSFixType(gps_info.fix_type));
+
+            dronecore::rpc::telemetry::GPSInfoResponse rpc_gps_info_response;
+            rpc_gps_info_response.set_allocated_gps_info(rpc_gps_info);
+            writer->Write(rpc_gps_info_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
+    dronecore::rpc::telemetry::FixType translateGPSFixType(const int fix_type) const
+    {
+        switch (fix_type) {
+            default:
+            case 0:
+                return dronecore::rpc::telemetry::FixType::NO_GPS;
+            case 1:
+                return dronecore::rpc::telemetry::FixType::NO_FIX;
+            case 2:
+                return dronecore::rpc::telemetry::FixType::FIX_2D;
+            case 3:
+                return dronecore::rpc::telemetry::FixType::FIX_3D;
+            case 4:
+                return dronecore::rpc::telemetry::FixType::FIX_DGPS;
+            case 5:
+                return dronecore::rpc::telemetry::FixType::RTK_FLOAT;
+            case 6:
+                return dronecore::rpc::telemetry::FixType::RTK_FIXED;
+        }
+    }
+
     void stop()
     {
         _stop_promise.set_value();
