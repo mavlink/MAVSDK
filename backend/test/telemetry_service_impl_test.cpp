@@ -28,6 +28,8 @@ using Health = dronecore::Telemetry::Health;
 using GPSInfo = dronecore::Telemetry::GPSInfo;
 using FixType = dronecore::rpc::telemetry::FixType;
 
+using Battery = dronecore::Telemetry::Battery;
+
 class TelemetryServiceImplTest : public ::testing::Test
 {
 protected:
@@ -76,6 +78,10 @@ protected:
     void checkSendsGPSInfoEvents(const std::vector<GPSInfo> &gps_info_events) const;
     std::future<void> subscribeGPSInfoAsync(std::vector<GPSInfo> &gps_info_events) const;
     int translateRPCGPSFixType(const FixType rpc_fix_type) const;
+
+    void checkSendsBatteryEvents(const std::vector<Battery> &battery_events) const;
+    Battery createBattery(const float voltage_v, const float remaining_percent) const;
+    std::future<void> subscribeBatteryAsync(std::vector<Battery> &battery_events) const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
@@ -537,7 +543,7 @@ TEST_F(TelemetryServiceImplTest, sendsOneArmedEvent)
     std::vector<bool> armed_events;
     armed_events.push_back(generateRandomBool());
 
-    checkSendsInAirEvents(armed_events);
+    checkSendsArmedEvents(armed_events);
 }
 
 void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool> &armed_events) const
@@ -695,6 +701,106 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleGPSInfoEvents)
     gps_info_events.push_back(createGPSInfo(7, 6));
 
     checkSendsGPSInfoEvents(gps_info_events);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryBatteryAsync)
+{
+    EXPECT_CALL(*_telemetry, battery_async(_))
+    .Times(1);
+
+    std::vector<Battery> battery_events;
+    auto battery_stream_future = subscribeBatteryAsync(battery_events);
+
+    _telemetry_service->stop();
+    battery_stream_future.wait();
+}
+
+std::future<void>
+TelemetryServiceImplTest::subscribeBatteryAsync(std::vector<Battery> &battery_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeBatteryRequest request;
+        auto response_reader = _stub->SubscribeBattery(&context, request);
+
+        dronecore::rpc::telemetry::BatteryResponse response;
+        while (response_reader->Read(&response)) {
+            auto battery_rpc = response.battery();
+
+            Battery battery;
+            battery.voltage_v = battery_rpc.voltage_v();
+            battery.remaining_percent = battery_rpc.remaining_percent();
+
+            battery_events.push_back(battery);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendBatteryIfCallbackNotCalled)
+{
+    std::vector<Battery> battery_events;
+    auto battery_stream_future = subscribeBatteryAsync(battery_events);
+
+    _telemetry_service->stop();
+    battery_stream_future.wait();
+
+    EXPECT_EQ(0, battery_events.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneBatteryEvent)
+{
+    std::vector<Battery> battery_events;
+    battery_events.push_back(createBattery(4.2f, 0.63f));
+
+    checkSendsBatteryEvents(battery_events);
+}
+
+Battery TelemetryServiceImplTest::createBattery(const float voltage_v,
+                                                const float remaining_percent) const
+{
+    Battery battery;
+    battery.voltage_v = voltage_v;
+    battery.remaining_percent = remaining_percent;
+
+    return battery;
+}
+
+void TelemetryServiceImplTest::checkSendsBatteryEvents(const std::vector<Battery> &battery_events)
+const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::battery_callback_t battery_callback;
+    EXPECT_CALL(*_telemetry, battery_async(_))
+    .WillOnce(SaveCallback(&battery_callback, &subscription_promise));
+
+    std::vector<Battery> received_battery_events;
+    auto battery_stream_future = subscribeBatteryAsync(received_battery_events);
+    subscription_future.wait();
+    for (const auto battery : battery_events) {
+        battery_callback(battery);
+    }
+    _telemetry_service->stop();
+    battery_stream_future.wait();
+
+    ASSERT_EQ(battery_events.size(), received_battery_events.size());
+    for (size_t i = 0; i < battery_events.size(); i++) {
+        EXPECT_EQ(battery_events.at(i), received_battery_events.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleBatteryEvents)
+{
+    std::vector<Battery> battery_events;
+
+    battery_events.push_back(createBattery(4.1f, 0.34f));
+    battery_events.push_back(createBattery(5.1f, 0.12f));
+    battery_events.push_back(createBattery(2.4f, 0.99f));
+    battery_events.push_back(createBattery(5.7f, 1.0f));
+
+    checkSendsBatteryEvents(battery_events);
 }
 
 } // namespace

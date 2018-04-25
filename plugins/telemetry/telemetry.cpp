@@ -350,4 +350,16 @@ std::ostream &operator<<(std::ostream &str, Telemetry::GPSInfo const &gps_info)
            << ", fix_type: " << gps_info.fix_type << "]";
 }
 
+bool operator==(const Telemetry::Battery &lhs, const Telemetry::Battery &rhs)
+{
+    return lhs.voltage_v == rhs.voltage_v
+           && lhs.remaining_percent == rhs.remaining_percent;
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::Battery const &battery)
+{
+    return str << "[voltage_v: " << battery.voltage_v
+           << ", remaining_percent: " << battery.remaining_percent << "]";
+}
+
 } // namespace dronecore
