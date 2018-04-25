@@ -145,6 +145,24 @@ public:
         }
     }
 
+    grpc::Status SubscribeBattery(grpc::ServerContext * /* context */,
+                                  const dronecore::rpc::telemetry::SubscribeBatteryRequest * /* request */,
+                                  grpc::ServerWriter<rpc::telemetry::BatteryResponse> *writer) override
+    {
+        _telemetry.battery_async([this, &writer](dronecore::Telemetry::Battery battery) {
+            auto rpc_battery = new dronecore::rpc::telemetry::Battery();
+            rpc_battery->set_voltage_v(battery.voltage_v);
+            rpc_battery->set_remaining_percent(battery.remaining_percent);
+
+            dronecore::rpc::telemetry::BatteryResponse rpc_battery_response;
+            rpc_battery_response.set_allocated_battery(rpc_battery);
+            writer->Write(rpc_battery_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stop_promise.set_value();
