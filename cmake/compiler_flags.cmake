@@ -38,7 +38,7 @@ if(APPLE)
     add_definitions("-DAPPLE")
 endif()
 
-if(LINUX)
+if(UNIX AND NOT APPLE)
     add_definitions("-DLINUX")
 endif()
 
