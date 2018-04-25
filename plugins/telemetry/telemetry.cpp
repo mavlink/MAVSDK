@@ -338,4 +338,16 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health)
            ", home_position_ok: " << health.home_position_ok << "]";
 }
 
+bool operator==(const Telemetry::GPSInfo &lhs, const Telemetry::GPSInfo &rhs)
+{
+    return lhs.num_satellites == rhs.num_satellites
+           && lhs.fix_type == rhs.fix_type;
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::GPSInfo const &gps_info)
+{
+    return str << "[num_sat: " << gps_info.num_satellites
+           << ", fix_type: " << gps_info.fix_type << "]";
+}
+
 } // namespace dronecore

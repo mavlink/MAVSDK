@@ -643,4 +643,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position)
 bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs);
 std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health);
 
+bool operator==(const Telemetry::GPSInfo &lhs, const Telemetry::GPSInfo &rhs);
+std::ostream &operator<<(std::ostream &str, Telemetry::GPSInfo const &gps_info);
+
 } // namespace dronecore
