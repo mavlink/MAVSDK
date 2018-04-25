@@ -19,4 +19,5 @@ target_link_libraries(fly_mission
     dronecore_action
     dronecore_mission
     dronecore_telemetry
+    json11
 )
