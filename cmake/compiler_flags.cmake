@@ -38,6 +38,10 @@ if(APPLE)
     add_definitions("-DAPPLE")
 endif()
 
+if(LINUX)
+    add_definitions("-DLINUX")
+endif()
+
 # Add DEBUG define for Debug target because that is not done automatically.
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
