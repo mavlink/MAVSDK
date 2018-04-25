@@ -48,7 +48,9 @@ static std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
                                                       float gimbal_yaw_deg,
                                                       MissionItem::CameraAction camera_action);
 
-int main(int /*argc*/, char ** /*argv*/)
+void usage(std::string arg);
+
+int main(int argc, char **argv)
 {
     DroneCore dc;
 
@@ -62,8 +64,23 @@ int main(int /*argc*/, char ** /*argv*/)
             prom->set_value();
         });
 
-        ConnectionResult connection_result = dc.add_udp_connection();
-        handle_connection_err_exit(connection_result, "Connection failed: ");
+        std::string connection_url;
+        ConnectionResult connection_result;
+
+        if (argc == 1) {
+            usage(argv[0]);
+            connection_result = dc.add_any_connection();
+        } else {
+            connection_url = argv[1];
+            connection_result = dc.add_any_connection(connection_url);
+        }
+
+        if (connection_result != ConnectionResult::SUCCESS) {
+            std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
+                      << connection_result_str(connection_result)
+                      << NORMAL_CONSOLE_TEXT << std::endl;
+            return 1;
+        }
 
         future_result.get();
     }
@@ -300,4 +317,14 @@ inline void handle_connection_err_exit(ConnectionResult result,
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
+}
+
+void usage(std::string arg)
+{
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg << " [connection_url]" << std::endl
+              << "Connection URL format should be :" << std::endl
+              << " For TCP : tcp://[server_host][:server_port]" << std::endl
+              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl;
+    std::cout << "Default connection URL is udp://:14540" << std::endl;
 }
