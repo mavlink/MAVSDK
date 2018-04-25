@@ -1,17 +1,21 @@
-#if !defined(WINDOWS) && !defined(APPLE)
+#if !defined(WINDOWS)
 #include "serial_connection.h"
 #include "global_include.h"
 #include "log.h"
-
-#ifndef WINDOWS
-#include <asm/termbits.h>
-#include <fcntl.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <cassert>
+
+#ifdef LINUX
+#include <asm/termbits.h>
 #include <sys/ioctl.h>
 #endif
 
-#include <cassert>
+#ifdef APPLE
+#include <termios.h>
+#endif
 
+// FIXME: this macro is not needed unless we actually support Windows.
 #ifndef WINDOWS
 #define GET_ERROR(_x) strerror(_x)
 #else
@@ -63,30 +67,60 @@ ConnectionResult SerialConnection::start()
 
 ConnectionResult SerialConnection::setup_port()
 {
-    struct termios2 tc;
-
-    bzero(&tc, sizeof(tc));
-
+#if defined(LINUX)
     _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY);
     if (_fd == -1) {
+        LogErr() << "open failed: " << GET_ERROR(errno);
         return ConnectionResult::CONNECTION_ERROR;
     }
+#elif defined(APPLE)
+    // open() hangs on macOS unless you give it O_NONBLOCK
+    _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
+    if (_fd == -1) {
+        LogErr() << "open failed: " << GET_ERROR(errno);
+        return ConnectionResult::CONNECTION_ERROR;
+    }
+    // We need to clear the O_NONBLOCK again because we can block while reading
+    // as we do it in a separate thread.
+    if (fcntl(_fd, F_SETFL, 0) == -1) {
+        LogErr() << "fcntl failed: " << GET_ERROR(errno);
+        return ConnectionResult::CONNECTION_ERROR;
+    }
+#endif
+
+#if defined(LINUX)
+    struct termios2 tc;
+    bzero(&tc, sizeof(tc));
+
     if (ioctl(_fd, TCGETS2, &tc) == -1) {
         LogErr() << "Could not get termios2 " << GET_ERROR(errno);
         close(_fd);
         return ConnectionResult::CONNECTION_ERROR;
     }
+#elif defined(APPLE)
+    struct termios tc;
+    bzero(&tc, sizeof(tc));
+
+    if (tcgetattr(_fd, &tc) != 0) {
+        LogErr() << "tcgetattr failed: " << GET_ERROR(errno);
+        close(_fd);
+        return ConnectionResult::CONNECTION_ERROR;
+    }
+#endif
 
     tc.c_iflag &= ~(IGNBRK | BRKINT | ICRNL | INLCR | PARMRK | INPCK | ISTRIP | IXON);
     tc.c_oflag &= ~(OCRNL | ONLCR | ONLRET | ONOCR | OFILL | OPOST);
     tc.c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN | ISIG | TOSTOP);
-    tc.c_cflag &= ~(CSIZE | PARENB | CBAUD | CRTSCTS);
-    tc.c_cflag |= CS8 | BOTHER;
+    tc.c_cflag &= ~(CSIZE | PARENB | CRTSCTS);
+    tc.c_cflag |= CS8;
 
     tc.c_cc[VMIN] = 1; // We want at least 1 byte to be available.
     tc.c_cc[VTIME] = 0; // We don't timeout but wait indefinitely.
-    tc.c_ispeed = _baudrate;
-    tc.c_ospeed = _baudrate;
+
+#if defined(LINUX)
+    // CBAUD and BOTHER don't seem to be available for macOS with termios.
+    tc.c_cflag &= ~(CBAUD);
+    tc.c_cflag |= BOTHER;
 
     if (ioctl(_fd, TCSETS2, &tc) == -1) {
         LogErr() << "Could not set terminal attributes " << GET_ERROR(errno);
@@ -94,11 +128,25 @@ ConnectionResult SerialConnection::setup_port()
         return ConnectionResult::CONNECTION_ERROR;
     }
 
+
     if (ioctl(_fd, TCFLSH, TCIOFLUSH) == -1) {
         LogErr() << "Could not flush terminal " << GET_ERROR(errno);
         close(_fd);
         return ConnectionResult::CONNECTION_ERROR;
     }
+#elif defined(APPLE)
+    tc.c_cflag |= CLOCAL; // Without this a write() blocks indefinitely.
+
+    cfsetispeed(&tc, _baudrate);
+    cfsetospeed(&tc, _baudrate);
+
+    if (tcsetattr(_fd, TCSANOW, &tc) != 0) {
+        LogErr() << "tcsetattr failed: " << GET_ERROR(errno);
+        close(_fd);
+        return ConnectionResult::CONNECTION_ERROR;
+    }
+#endif
+
     return ConnectionResult::SUCCESS;
 }
 

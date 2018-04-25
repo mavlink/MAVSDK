@@ -193,7 +193,7 @@ ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
 ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_path,
                                                       int baudrate)
 {
-#if !defined(WINDOWS) && !defined(APPLE)
+#if !defined(WINDOWS)
     auto new_conn = std::make_shared<SerialConnection>(*this, dev_path, baudrate);
 
     ConnectionResult ret = new_conn->start();

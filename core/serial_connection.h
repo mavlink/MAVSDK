@@ -1,5 +1,5 @@
 #pragma once
-#if !defined(WINDOWS) && !defined(APPLE)
+#if !defined(WINDOWS)
 
 #include <mutex>
 #include <atomic>
