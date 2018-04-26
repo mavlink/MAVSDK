@@ -54,7 +54,7 @@ public:
      * Default URL : udp://:14540.
      * - Default Bind host IP is localhost(127.0.0.1)
      *
-     * @warning Serial connections are not supported on Windows (they are supported on Linux and macOS).
+     * Warning: serial connections are not supported on Windows (they are supported on Linux and macOS).
      *
      * @param connection_url connection URL string.
      * @return The result of adding the connection.
@@ -83,7 +83,7 @@ public:
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as specified.
      *
      *
-     * @warning This method is not supported on Windows (it is supported on Linux and macOS).
+     * Warning: this method is not supported on Windows (it is supported on Linux and macOS).
      *
      * @param dev_path COM or UART dev node name/path (defaults to "/dev/ttyS0").
      * @param baudrate Baudrate of the serial port (defaults to 57600).
