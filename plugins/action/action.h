@@ -47,7 +47,7 @@ public:
     /**
      * @brief Send command to *arm* the drone (synchronous).
      *
-     * **Note** Arming a drone normally causes motors to spin at idle.
+     * @note Arming a drone normally causes motors to spin at idle.
      * Before arming take all safety precautions and stand clear of the drone!
      *
      * @return ActionResult of request.

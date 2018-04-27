@@ -8,7 +8,7 @@ namespace dronecore {
 /**
  * @brief Possible results returned for commanded actions.
  *
- * **Note**: DroneCore does not throw exceptions. Instead a result of this type will be
+ * @note DroneCore does not throw exceptions. Instead a result of this type will be
  * returned when you execute actions.
  */
 enum class ActionResult {

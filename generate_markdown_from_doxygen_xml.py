@@ -96,9 +96,9 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             if child.attrib['kind']=='return':
                 pass # simplesect contains return info for function. We parse it specifically in other code so here we make sure it this tag doesn't get processed.
             elif child.attrib['kind']=='see':
-                pass #Prevent further handling of "see" children.  
-            elif child.attrib['kind']=='note':
-                pass #Prevent further handling of "note" children.  
+                pass #Prevent further handling of "see" children.
+            elif child.attrib['kind']=='warning' or child.attrib['kind']=='note' or child.attrib['kind']=='since' or child.attrib['kind']=='attention' or child.attrib['kind']=='remark': #Pass 'note' types to specific handling
+                child_text += markdown_any_tag(child,html=html,para=para) #.strip() //Handle warnings individually
             else:
                 #Just in case there is a different type of simplesect, this tells us we need to think about it.
                 print('Unhanded kind in simplesect tag in markdown_any_tag:kind: %s' % child.attrib['kind'])
@@ -158,7 +158,7 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
             tag_text=lead_text+child_text+tail_text
     elif aTag.tag=='itemizedlist':
         if html:
-            tag_text='\n<ul>'+lead_text+child_text+'</ul>'+tail_text
+            tag_text='\n<ul>\n'+lead_text.strip()+child_text.strip()+'\n</ul>'+tail_text
         else:
             tag_text='\n'+lead_text+child_text+tail_text+'\n' #single level implementation.
     elif aTag.tag=='listitem':
@@ -200,38 +200,30 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
         tag_text=lead_text+tail_text #note, child text included in the URL text above. There won't be any though.
         #print('tag_text: %s' % tag_text)
 
+
     elif aTag.tag=='detaileddescription':
-        #Strip out note tags from detailed description (so it can be agreggated under Notes section)
-        note_tags=aTag.findall(".//simplesect[@kind='note']")
-        note_text=''
-        if note_tags:
-            for item in note_tags:
-                note_text+='\n%s' % markdown_any_tag(item).strip()
-
-            note_text='\n\n**Notes:**\n\n%s\n\n' % note_text
-            #print('debug:tag:note_text: %s' % note_text)
-
-        #Strip out seealso tags from detailed description (so it can be agreggated under Seealso section)
-        """
-        seealso_tags=aTag.findall(".//simplesect[@kind='see']")
-        seealso_text=''
-        if seealso_tags:
-            for item in seealso_tags:
-                seealso_text+='\n- %s' % markdown_any_tag(item).strip()
-
-            seealso_text='\n\n**See Also:**%s\n\n' % seealso_text
-            #print('debug:tag:seealso_text: %s' % seealso_text)
-        """
-
-        tag_text=lead_text+child_text+note_text+tail_text
+        tag_text=lead_text+child_text+tail_text
 
 
     elif aTag.tag=='simplesect':
-        if aTag.attrib['kind']=='note' or aTag.attrib['kind']=='see' or aTag.attrib['kind']=='return':
+        if aTag.attrib['kind']=='see' or aTag.attrib['kind']=='return':
             #Handle @note (note) and @sa (see) tags.
             # Note we should ONLY see this via the detaileddescription handling 
             # Because children that are simplesect are not parsed.
             tag_text=lead_text+child_text+tail_text
+
+        #Convert "note" types     
+        if aTag.attrib['kind']=='warning' or aTag.attrib['kind']=='note' or aTag.attrib['kind']=='attention':
+            #print('Debug: kind %s' % aTag.attrib['kind'])  
+            noteTypeText=aTag.attrib['kind'].capitalize()            
+            if para:
+                 if html:
+                     tag_text='<p>'+lead_text+'<b>'+noteTypeText+': </b> '+child_text+'</p>'+tail_text
+                 else: # ONLY THIS PATH TESTED (others should not occur, but leaving in as standard.
+                     tag_text='\n\n> **'+noteTypeText+'** '+lead_text.strip()+child_text.strip()+'\n\n'+tail_text.strip()
+            else: #para disabled, render without them.
+                tag_text='\n\n> **'+noteTypeText+'** '+ lead_text.strip()+child_text.strip()+tail_text.strip()        
+
 
     elif aTag.tag=='verbatim':
         tag_text='\n\n'+lead_text+child_text+'\n\n'+tail_text

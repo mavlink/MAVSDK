@@ -54,7 +54,7 @@ public:
      * Default URL : udp://:14540.
      * - Default Bind host IP is localhost(127.0.0.1)
      *
-     * Warning: serial connections are not supported on Windows (they are supported on Linux and macOS).
+     * @warning Serial connections are not supported on Windows (they are supported on Linux and macOS).
      *
      * @param connection_url connection URL string.
      * @return The result of adding the connection.
@@ -83,7 +83,7 @@ public:
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as specified.
      *
      *
-     * Warning: this method is not supported on Windows (it is supported on Linux and macOS).
+     * @warning This method is not supported on Windows (it is supported on Linux and macOS).
      *
      * @param dev_path COM or UART dev node name/path (defaults to "/dev/ttyS0").
      * @param baudrate Baudrate of the serial port (defaults to 57600).
@@ -160,7 +160,7 @@ public:
      * If systems have been discovered before this callback is registered, they will be notified
      * at the time this callback is registered.
      *
-     * **Note** Only one callback can be registered at a time. If this function is called several
+     * @note Only one callback can be registered at a time. If this function is called several
      * times, previous callbacks will be overwritten.
      *
      * @param callback Callback to register.
@@ -174,7 +174,7 @@ public:
      * This sets a callback that will be notified if no heartbeat of the system has been received
      * in 3 seconds.
      *
-     * **Note** Only one callback can be registered at a time. If this function is called several
+     * @note Only one callback can be registered at a time. If this function is called several
      * times, previous callbacks will be overwritten.
      *
      * @param callback Callback to register.
