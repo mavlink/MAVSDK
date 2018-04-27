@@ -1,0 +1,196 @@
+syntax = "proto3";
+
+package dronecore.rpc.camera;
+
+option java_package = "io.dronecore.camera";
+option java_outer_classname = "CameraProto";
+
+service CameraService {
+    rpc TakePhoto(TakePhotoRequest) returns(TakePhotoResponse) {}
+    rpc StartPhotoInterval(StartPhotoIntervalRequest) returns(StartPhotoIntervalResponse) {}
+    rpc StopPhotoInterval(StopPhotoIntervalRequest) returns(StopPhotoIntervalResponse) {}
+    rpc StartVideo(StartVideoRequest) returns(StartVideoResponse) {}
+    rpc StopVideo(StopVideoRequest) returns(StopVideoResponse) {}
+    rpc StartVideoStreaming(StartVideoStreamingRequest) returns(StartVideoStreamingResponse) {}
+    rpc StopVideoStreaming(StopVideoStreamingRequest) returns(StopVideoStreamingResponse) {}
+    rpc SetMode(SetModeRequest) returns(SetModeResponse) {}
+    rpc SubscribeMode(SubscribeModeRequest) returns(stream ModeResponse) {}
+    rpc SetVideoStreamSettings(SetVideoStreamSettingsRequest) returns(SetVideoStreamSettingsResponse) {}
+    rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) {}
+    rpc SubscribeCaptureInfo(SubscribeCaptureInfoRequest) returns(stream CaptureInfoResponse) {}
+    rpc GetPossibleSettings(GetPossibleSettingsRequest) returns(GetPossibleSettingsResponse) {}
+    rpc SetOption(SetOptionRequest) returns(SetOptionResponse) {}
+}
+
+message TakePhotoRequest {}
+message TakePhotoResponse {
+    CameraResult camera_result = 1;
+}
+
+message StartPhotoIntervalRequest {
+    float interval_s = 1;
+}
+message StartPhotoIntervalResponse {
+    CameraResult camera_result = 1;
+}
+
+message StopPhotoIntervalRequest {}
+message StopPhotoIntervalResponse {
+    CameraResult camera_result = 1;
+}
+
+message StartVideoRequest {}
+message StartVideoResponse {
+    CameraResult camera_result = 1;
+}
+
+message StopVideoRequest {}
+message StopVideoResponse {
+    CameraResult camera_result = 1;
+}
+
+message StartVideoStreamingRequest {}
+message StartVideoStreamingResponse {
+    CameraResult camera_result = 1;
+}
+
+message StopVideoStreamingRequest {}
+message StopVideoStreamingResponse {
+    CameraResult camera_result = 1;
+}
+
+message SetModeRequest {
+    CameraMode camera_mode = 1;
+}
+message SetModeResponse {
+    CameraResult camera_result = 1;
+}
+
+message SubscribeModeRequest {}
+message ModeResponse {
+    CameraMode camera_mode = 1;
+}
+
+message SetVideoStreamSettingsRequest {
+    VideoStreamSettings video_stream_settings = 1;
+}
+message SetVideoStreamSettingsResponse {}
+
+message SubscribeVideoStreamInfoRequest {}
+message VideoStreamInfoResponse {
+    VideoStreamInfo video_stream_info = 1;
+}
+
+message SubscribeCaptureInfoRequest {}
+message CaptureInfoResponse {
+    CaptureInfo capture_info = 1;
+}
+
+message SubscribeStatusRequest {}
+message StatusResponse {
+    Status status = 1;
+}
+
+message GetPossibleSettingsRequest {}
+message GetPossibleSettingsResponse {
+    repeated Setting setting = 1;
+}
+
+message SetOptionRequest {
+    string setting_id = 1;
+    string option_id = 2;
+}
+message SetOptionResponse {
+    CameraResult camera_result = 1;
+}
+
+message CameraResult {
+    enum Result {
+        UNKNOWN = 0;
+        SUCCESS = 1;
+        IN_PROGRESS = 2;
+        BUSY = 3;
+        DENIED = 4;
+        ERROR = 5;
+        TIMEOUT = 6;
+        WRONG_ARGUMENT = 7;
+    }
+
+    Result result = 1;
+    string result_str = 2;
+}
+
+enum CameraMode {
+    UNKNOWN = 0;
+    PHOTO = 1;
+    VIDEO = 2;
+}
+
+message CaptureInfo {
+    Position position = 1;
+    Quaternion quaternion = 2;
+    uint64 time_utc_us = 3;
+    bool is_success = 4;
+    int32 index = 5;
+    string file_url = 6;
+}
+
+message Position {
+    double latitude_deg = 1;
+    double longitude_deg = 2;
+    float absolute_altitude_m = 3;
+    float relative_altitude_m = 4;
+}
+
+message Quaternion {
+    float w = 1;
+    float x = 2;
+    float y = 3;
+    float z = 4;
+}
+
+message VideoStreamSettings {
+    float frame_rate_hz = 1;
+    uint32 horizontal_resolution_pix = 2;
+    uint32 vertical_resolution_pix = 3;
+    uint32 bit_rate_b_s = 4;
+    uint32 rotation_deg = 5;
+    string uri = 6;
+}
+
+message VideoStreamInfo {
+    enum Status {
+        NOT_RUNNING = 0;
+        IN_PROGRESS = 1;
+    }
+
+    VideoStreamSettings video_stream_settings = 1;
+    Status status = 2;
+}
+
+message Status {
+    enum StorageStatus {
+        NOT_AVAILABLE = 0;
+        UNFORMATTED = 1;
+        FORMATTED = 2;
+    }
+
+    bool video_on = 1;
+    bool photo_interval_on = 2;
+
+    float used_storage_mib = 3;
+    float available_storage_mib = 4;
+    float total_storage_mib = 5;
+}
+
+message Setting {
+    string id = 1;
+    string description = 2;
+    repeated Option option = 3;
+}
+
+message Option {
+    string id = 1;
+    string description = 2;
+    repeated string possible_value = 3;
+}
