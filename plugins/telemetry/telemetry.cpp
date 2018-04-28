@@ -378,4 +378,18 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Quaternion const &quatern
            << ", z: " << quaternion.z << "]";
 }
 
+bool operator==(const Telemetry::EulerAngle &lhs, const Telemetry::EulerAngle &rhs)
+{
+    return lhs.roll_deg == rhs.roll_deg
+           && lhs.pitch_deg == rhs.pitch_deg
+           && lhs.yaw_deg == rhs.yaw_deg;
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::EulerAngle const &euler_angle)
+{
+    return str << "[roll_deg: " << euler_angle.roll_deg
+           << ", pitch_deg: " << euler_angle.pitch_deg
+           << ", yaw_deg: " << euler_angle.yaw_deg << "]";
+}
+
 } // namespace dronecore
