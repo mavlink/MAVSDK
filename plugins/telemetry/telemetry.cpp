@@ -362,4 +362,20 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Battery const &battery)
            << ", remaining_percent: " << battery.remaining_percent << "]";
 }
 
+bool operator==(const Telemetry::Quaternion &lhs, const Telemetry::Quaternion &rhs)
+{
+    return lhs.w == rhs.w
+           && lhs.x == rhs.x
+           && lhs.y == rhs.y
+           && lhs.z == rhs.z;
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::Quaternion const &quaternion)
+{
+    return str << "[w: " << quaternion.w
+           << ", x: " << quaternion.x
+           << ", y: " << quaternion.y
+           << ", z: " << quaternion.z << "]";
+}
+
 } // namespace dronecore
