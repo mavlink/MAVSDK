@@ -22,7 +22,6 @@ function(compile_proto_grpc COMPONENT_NAME GRPC_COMPILED_SOURCES)
             -I ${PROTO_DIR}
             --grpc_out=.
             --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN_BINARY}
-            --cpp_out=.
             ${PROTO_DIR}/${COMPONENT_NAME}/${COMPONENT_NAME}.proto
     )
 
