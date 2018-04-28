@@ -35,6 +35,8 @@ using RPCFlightMode = dronecore::rpc::telemetry::FlightMode;
 
 using Quaternion = dronecore::Telemetry::Quaternion;
 
+using EulerAngle = dronecore::Telemetry::EulerAngle;
+
 class TelemetryServiceImplTest : public ::testing::Test
 {
 protected:
@@ -95,6 +97,10 @@ protected:
     void checkSendsAttitudeQuaternions(const std::vector<Quaternion> &quaternions) const;
     Quaternion createQuaternion(const float w, const float x, const float y, const float z) const;
     std::future<void> subscribeAttitudeQuaternionAsync(std::vector<Quaternion> &quaternions) const;
+
+    void checkSendsAttitudeEulerAngles(const std::vector<EulerAngle> &euler_angles) const;
+    EulerAngle createEulerAngle(const float roll_deg, const float pitch_deg, const float yaw_deg) const;
+    std::future<void> subscribeAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const;
 
     void checkSendsCameraAttitudeQuaternions(const std::vector<Quaternion> &quaternions) const;
     std::future<void>
@@ -1037,6 +1043,106 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeQuaternions)
     quaternions.push_back(createQuaternion(5.2f, 5.9f, 1.1f, 0.8f));
 
     checkSendsAttitudeQuaternions(quaternions);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeEulerAsync)
+{
+    EXPECT_CALL(*_telemetry, attitude_euler_angle_async(_))
+    .Times(1);
+
+    std::vector<EulerAngle> euler_angles;
+    auto euler_angle_stream_future = subscribeAttitudeEulerAsync(euler_angles);
+
+    _telemetry_service->stop();
+    euler_angle_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeAttitudeEulerAsync(
+    std::vector<EulerAngle> &euler_angles) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeAttitudeEulerRequest request;
+        auto response_reader = _stub->SubscribeAttitudeEuler(&context, request);
+
+        dronecore::rpc::telemetry::AttitudeEulerResponse response;
+        while (response_reader->Read(&response)) {
+            auto euler_angle_rpc = response.attitude_euler();
+
+            EulerAngle euler_angle;
+            euler_angle.roll_deg = euler_angle_rpc.roll_deg();
+            euler_angle.pitch_deg = euler_angle_rpc.pitch_deg();
+            euler_angle.yaw_deg = euler_angle_rpc.yaw_deg();
+
+            euler_angles.push_back(euler_angle);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendAttitudeEulerIfCallbackNotCalled)
+{
+    std::vector<EulerAngle> euler_angles;
+    auto euler_angle_stream_future = subscribeAttitudeEulerAsync(euler_angles);
+
+    _telemetry_service->stop();
+    euler_angle_stream_future.wait();
+
+    EXPECT_EQ(0, euler_angles.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneAttitudeEuler)
+{
+    std::vector<EulerAngle> euler_angles;
+    euler_angles.push_back(createEulerAngle(23.4f, 90.2f, 7.8f));
+
+    checkSendsAttitudeEulerAngles(euler_angles);
+}
+
+EulerAngle TelemetryServiceImplTest::createEulerAngle(const float roll_deg, const float pitch_deg,
+                                                      const float yaw_deg) const
+{
+    EulerAngle euler_angle;
+    euler_angle.roll_deg = roll_deg;
+    euler_angle.pitch_deg = pitch_deg;
+    euler_angle.yaw_deg = yaw_deg;
+
+    return euler_angle;
+}
+
+void TelemetryServiceImplTest::checkSendsAttitudeEulerAngles(const std::vector<EulerAngle>
+                                                             &euler_angles) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
+    EXPECT_CALL(*_telemetry, attitude_euler_angle_async(_))
+    .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
+
+    std::vector<EulerAngle> received_euler_angles;
+    auto euler_angle_stream_future = subscribeAttitudeEulerAsync(received_euler_angles);
+    subscription_future.wait();
+    for (const auto euler_angle : euler_angles) {
+        attitude_euler_angle_callback(euler_angle);
+    }
+    _telemetry_service->stop();
+    euler_angle_stream_future.wait();
+
+    ASSERT_EQ(euler_angles.size(), received_euler_angles.size());
+    for (size_t i = 0; i < euler_angles.size(); i++) {
+        EXPECT_EQ(euler_angles.at(i), received_euler_angles.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeEuler)
+{
+    std::vector<EulerAngle> euler_angles;
+    euler_angles.push_back(createEulerAngle(12.2f, 11.8f, -54.2f));
+    euler_angles.push_back(createEulerAngle(18.3f, 37.4f, -61.7f));
+    euler_angles.push_back(createEulerAngle(6.3f, 34.11f, -36.5f));
+
+    checkSendsAttitudeEulerAngles(euler_angles);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeQuaternionAsync)
