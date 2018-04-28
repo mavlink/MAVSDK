@@ -30,6 +30,9 @@ using FixType = dronecore::rpc::telemetry::FixType;
 
 using Battery = dronecore::Telemetry::Battery;
 
+using FlightMode = dronecore::Telemetry::FlightMode;
+using RPCFlightMode = dronecore::rpc::telemetry::FlightMode;
+
 class TelemetryServiceImplTest : public ::testing::Test
 {
 protected:
@@ -82,6 +85,10 @@ protected:
     void checkSendsBatteryEvents(const std::vector<Battery> &battery_events) const;
     Battery createBattery(const float voltage_v, const float remaining_percent) const;
     std::future<void> subscribeBatteryAsync(std::vector<Battery> &battery_events) const;
+
+    void checkSendsFlightModeEvents(const std::vector<FlightMode> &flight_mode_events) const;
+    FlightMode translateRPCFlightMode(const RPCFlightMode rpc_flight_mode) const;
+    std::future<void> subscribeFlightModeAsync(std::vector<FlightMode> &flight_mode_events) const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
@@ -801,6 +808,122 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleBatteryEvents)
     battery_events.push_back(createBattery(5.7f, 1.0f));
 
     checkSendsBatteryEvents(battery_events);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryFlightModeAsync)
+{
+    EXPECT_CALL(*_telemetry, flight_mode_async(_))
+    .Times(1);
+
+    std::vector<FlightMode> flight_mode_events;
+    auto flight_mode_stream_future = subscribeFlightModeAsync(flight_mode_events);
+
+    _telemetry_service->stop();
+    flight_mode_stream_future.wait();
+}
+
+std::future<void>
+TelemetryServiceImplTest::subscribeFlightModeAsync(std::vector<FlightMode> &flight_mode_events)
+const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeFlightModeRequest request;
+        auto response_reader = _stub->SubscribeFlightMode(&context, request);
+
+        dronecore::rpc::telemetry::FlightModeResponse response;
+        while (response_reader->Read(&response)) {
+            FlightMode flight_mode = translateRPCFlightMode(response.flight_mode());
+            flight_mode_events.push_back(flight_mode);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+FlightMode
+TelemetryServiceImplTest::translateRPCFlightMode(const RPCFlightMode rpc_flight_mode) const
+{
+    switch (rpc_flight_mode) {
+        default:
+        case RPCFlightMode::UNKNOWN:
+            return FlightMode::UNKNOWN;
+        case RPCFlightMode::READY:
+            return FlightMode::READY;
+        case RPCFlightMode::TAKEOFF:
+            return FlightMode::TAKEOFF;
+        case RPCFlightMode::HOLD:
+            return FlightMode::HOLD;
+        case RPCFlightMode::MISSION:
+            return FlightMode::MISSION;
+        case RPCFlightMode::RETURN_TO_LAUNCH:
+            return FlightMode::RETURN_TO_LAUNCH;
+        case RPCFlightMode::LAND:
+            return FlightMode::LAND;
+        case RPCFlightMode::OFFBOARD:
+            return FlightMode::OFFBOARD;
+        case RPCFlightMode::FOLLOW_ME:
+            return FlightMode::FOLLOW_ME;
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendFlightModeInfoIfCallbackNotCalled)
+{
+    std::vector<FlightMode> flight_mode_events;
+    auto flight_mode_stream_future = subscribeFlightModeAsync(flight_mode_events);
+
+    _telemetry_service->stop();
+    flight_mode_stream_future.wait();
+
+    EXPECT_EQ(0, flight_mode_events.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneFlightModeEvent)
+{
+    std::vector<FlightMode> flight_mode_events;
+    flight_mode_events.push_back(FlightMode::UNKNOWN);
+
+    checkSendsFlightModeEvents(flight_mode_events);
+}
+
+void TelemetryServiceImplTest::checkSendsFlightModeEvents(const std::vector<FlightMode>
+                                                          &flight_mode_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::flight_mode_callback_t flight_mode_callback;
+    EXPECT_CALL(*_telemetry, flight_mode_async(_))
+    .WillOnce(SaveCallback(&flight_mode_callback, &subscription_promise));
+
+    std::vector<FlightMode> received_flight_mode_events;
+    auto flight_mode_stream_future = subscribeFlightModeAsync(received_flight_mode_events);
+    subscription_future.wait();
+    for (const auto flight_mode : flight_mode_events) {
+        flight_mode_callback(flight_mode);
+    }
+    _telemetry_service->stop();
+    flight_mode_stream_future.wait();
+
+    ASSERT_EQ(flight_mode_events.size(), received_flight_mode_events.size());
+    for (size_t i = 0; i < flight_mode_events.size(); i++) {
+        EXPECT_EQ(flight_mode_events.at(i), received_flight_mode_events.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleFlightModeEvents)
+{
+    std::vector<FlightMode> flight_mode_events;
+    flight_mode_events.push_back(FlightMode::UNKNOWN);
+    flight_mode_events.push_back(FlightMode::READY);
+    flight_mode_events.push_back(FlightMode::TAKEOFF);
+    flight_mode_events.push_back(FlightMode::HOLD);
+    flight_mode_events.push_back(FlightMode::MISSION);
+    flight_mode_events.push_back(FlightMode::RETURN_TO_LAUNCH);
+    flight_mode_events.push_back(FlightMode::LAND);
+    flight_mode_events.push_back(FlightMode::OFFBOARD);
+    flight_mode_events.push_back(FlightMode::FOLLOW_ME);
+
+    checkSendsFlightModeEvents(flight_mode_events);
 }
 
 } // namespace

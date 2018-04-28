@@ -163,6 +163,48 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeFlightMode(grpc::ServerContext * /* context */,
+                                     const dronecore::rpc::telemetry::SubscribeFlightModeRequest * /* request */,
+                                     grpc::ServerWriter<rpc::telemetry::FlightModeResponse> *writer) override
+    {
+        _telemetry.flight_mode_async([this, &writer](dronecore::Telemetry::FlightMode flight_mode) {
+            auto rpc_flight_mode = translateFlightMode(flight_mode);
+
+            dronecore::rpc::telemetry::FlightModeResponse rpc_flight_mode_response;
+            rpc_flight_mode_response.set_flight_mode(rpc_flight_mode);
+            writer->Write(rpc_flight_mode_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
+    rpc::telemetry::FlightMode
+    translateFlightMode(const dronecore::Telemetry::FlightMode flight_mode) const
+    {
+        switch (flight_mode) {
+            default:
+            case dronecore::Telemetry::FlightMode::UNKNOWN:
+                return rpc::telemetry::FlightMode::UNKNOWN;
+            case dronecore::Telemetry::FlightMode::READY:
+                return rpc::telemetry::FlightMode::READY;
+            case dronecore::Telemetry::FlightMode::TAKEOFF:
+                return rpc::telemetry::FlightMode::TAKEOFF;
+            case dronecore::Telemetry::FlightMode::HOLD:
+                return rpc::telemetry::FlightMode::HOLD;
+            case dronecore::Telemetry::FlightMode::MISSION:
+                return rpc::telemetry::FlightMode::MISSION;
+            case dronecore::Telemetry::FlightMode::RETURN_TO_LAUNCH:
+                return rpc::telemetry::FlightMode::RETURN_TO_LAUNCH;
+            case dronecore::Telemetry::FlightMode::LAND:
+                return rpc::telemetry::FlightMode::LAND;
+            case dronecore::Telemetry::FlightMode::OFFBOARD:
+                return rpc::telemetry::FlightMode::OFFBOARD;
+            case dronecore::Telemetry::FlightMode::FOLLOW_ME:
+                return rpc::telemetry::FlightMode::FOLLOW_ME;
+        }
+    }
+
     void stop()
     {
         _stop_promise.set_value();
