@@ -33,6 +33,8 @@ using Battery = dronecore::Telemetry::Battery;
 using FlightMode = dronecore::Telemetry::FlightMode;
 using RPCFlightMode = dronecore::rpc::telemetry::FlightMode;
 
+using Quaternion = dronecore::Telemetry::Quaternion;
+
 class TelemetryServiceImplTest : public ::testing::Test
 {
 protected:
@@ -89,6 +91,10 @@ protected:
     void checkSendsFlightModeEvents(const std::vector<FlightMode> &flight_mode_events) const;
     FlightMode translateRPCFlightMode(const RPCFlightMode rpc_flight_mode) const;
     std::future<void> subscribeFlightModeAsync(std::vector<FlightMode> &flight_mode_events) const;
+
+    void checkSendsAttitudeQuaternions(const std::vector<Quaternion> &quaternions) const;
+    Quaternion createQuaternion(const float w, const float x, const float y, const float z) const;
+    std::future<void> subscribeAttitudeQuaternionAsync(std::vector<Quaternion> &quaternions) const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
@@ -924,6 +930,109 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleFlightModeEvents)
     flight_mode_events.push_back(FlightMode::FOLLOW_ME);
 
     checkSendsFlightModeEvents(flight_mode_events);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeQuaternionAsync)
+{
+    EXPECT_CALL(*_telemetry, attitude_quaternion_async(_))
+    .Times(1);
+
+    std::vector<Quaternion> quaternions;
+    auto quaternion_stream_future = subscribeAttitudeQuaternionAsync(quaternions);
+
+    _telemetry_service->stop();
+    quaternion_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeAttitudeQuaternionAsync(
+    std::vector<Quaternion> &quaternions) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeAttitudeQuaternionRequest request;
+        auto response_reader = _stub->SubscribeAttitudeQuaternion(&context, request);
+
+        dronecore::rpc::telemetry::AttitudeQuaternionResponse response;
+        while (response_reader->Read(&response)) {
+            auto quaternion_rpc = response.attitude_quaternion();
+
+            Quaternion quaternion;
+            quaternion.w = quaternion_rpc.w();
+            quaternion.x = quaternion_rpc.x();
+            quaternion.y = quaternion_rpc.y();
+            quaternion.z = quaternion_rpc.z();
+
+            quaternions.push_back(quaternion);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendAttitudeQuaternionIfCallbackNotCalled)
+{
+    std::vector<Quaternion> quaternions;
+    auto quaternion_stream_future = subscribeAttitudeQuaternionAsync(quaternions);
+
+    _telemetry_service->stop();
+    quaternion_stream_future.wait();
+
+    EXPECT_EQ(0, quaternions.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneAttitudeQuaternion)
+{
+    std::vector<Quaternion> quaternions;
+    quaternions.push_back(createQuaternion(0.1f, 0.2f, 0.3f, 0.4f));
+
+    checkSendsAttitudeQuaternions(quaternions);
+}
+
+Quaternion TelemetryServiceImplTest::createQuaternion(const float w, const float x, const float y,
+                                                      const float z) const
+{
+    dronecore::Telemetry::Quaternion quaternion;
+
+    quaternion.w = w;
+    quaternion.x = x;
+    quaternion.y = y;
+    quaternion.z = z;
+
+    return quaternion;
+}
+
+void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(const std::vector<Quaternion>
+                                                             &quaternions) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
+    EXPECT_CALL(*_telemetry, attitude_quaternion_async(_))
+    .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
+
+    std::vector<Quaternion> received_quaternions;
+    auto quaternion_stream_future = subscribeAttitudeQuaternionAsync(received_quaternions);
+    subscription_future.wait();
+    for (const auto quaternion : quaternions) {
+        attitude_quaternion_callback(quaternion);
+    }
+    _telemetry_service->stop();
+    quaternion_stream_future.wait();
+
+    ASSERT_EQ(quaternions.size(), received_quaternions.size());
+    for (size_t i = 0; i < quaternions.size(); i++) {
+        EXPECT_EQ(quaternions.at(i), received_quaternions.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeQuaternions)
+{
+    std::vector<Quaternion> quaternions;
+    quaternions.push_back(createQuaternion(0.1f, 0.2f, 0.3f, 0.4f));
+    quaternions.push_back(createQuaternion(2.1f, 0.4f, -2.2f, 0.3f));
+    quaternions.push_back(createQuaternion(5.2f, 5.9f, 1.1f, 0.8f));
+
+    checkSendsAttitudeQuaternions(quaternions);
 }
 
 } // namespace
