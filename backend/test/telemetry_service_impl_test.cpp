@@ -96,6 +96,10 @@ protected:
     Quaternion createQuaternion(const float w, const float x, const float y, const float z) const;
     std::future<void> subscribeAttitudeQuaternionAsync(std::vector<Quaternion> &quaternions) const;
 
+    void checkSendsCameraAttitudeQuaternions(const std::vector<Quaternion> &quaternions) const;
+    std::future<void>
+    subscribeCameraAttitudeQuaternionAsync(std::vector<Quaternion> &quaternions) const;
+
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
     std::unique_ptr<MockTelemetry> _telemetry;
@@ -1033,6 +1037,96 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeQuaternions)
     quaternions.push_back(createQuaternion(5.2f, 5.9f, 1.1f, 0.8f));
 
     checkSendsAttitudeQuaternions(quaternions);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeQuaternionAsync)
+{
+    EXPECT_CALL(*_telemetry, camera_attitude_quaternion_async(_))
+    .Times(1);
+
+    std::vector<Quaternion> quaternions;
+    auto quaternion_stream_future = subscribeCameraAttitudeQuaternionAsync(quaternions);
+
+    _telemetry_service->stop();
+    quaternion_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeCameraAttitudeQuaternionAsync(
+    std::vector<Quaternion> &quaternions) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest request;
+        auto response_reader = _stub->SubscribeCameraAttitudeQuaternion(&context, request);
+
+        dronecore::rpc::telemetry::CameraAttitudeQuaternionResponse response;
+        while (response_reader->Read(&response)) {
+            auto quaternion_rpc = response.attitude_quaternion();
+
+            Quaternion quaternion;
+            quaternion.w = quaternion_rpc.w();
+            quaternion.x = quaternion_rpc.x();
+            quaternion.y = quaternion_rpc.y();
+            quaternion.z = quaternion_rpc.z();
+
+            quaternions.push_back(quaternion);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendCameraAttitudeQuaternionIfCallbackNotCalled)
+{
+    std::vector<Quaternion> quaternions;
+    auto quaternion_stream_future = subscribeCameraAttitudeQuaternionAsync(quaternions);
+
+    _telemetry_service->stop();
+    quaternion_stream_future.wait();
+
+    EXPECT_EQ(0, quaternions.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneCameraAttitudeQuaternion)
+{
+    std::vector<Quaternion> quaternions;
+    quaternions.push_back(createQuaternion(0.1f, 0.2f, 0.3f, 0.4f));
+
+    checkSendsCameraAttitudeQuaternions(quaternions);
+}
+
+void TelemetryServiceImplTest::checkSendsCameraAttitudeQuaternions(const std::vector<Quaternion>
+                                                                   &quaternions) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
+    EXPECT_CALL(*_telemetry, camera_attitude_quaternion_async(_))
+    .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
+
+    std::vector<Quaternion> received_quaternions;
+    auto quaternion_stream_future = subscribeCameraAttitudeQuaternionAsync(received_quaternions);
+    subscription_future.wait();
+    for (const auto quaternion : quaternions) {
+        attitude_quaternion_callback(quaternion);
+    }
+    _telemetry_service->stop();
+    quaternion_stream_future.wait();
+
+    ASSERT_EQ(quaternions.size(), received_quaternions.size());
+    for (size_t i = 0; i < quaternions.size(); i++) {
+        EXPECT_EQ(quaternions.at(i), received_quaternions.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeQuaternions)
+{
+    std::vector<Quaternion> quaternions;
+    quaternions.push_back(createQuaternion(0.1f, 0.2f, 0.3f, 0.4f));
+    quaternions.push_back(createQuaternion(2.1f, 0.4f, -2.2f, 0.3f));
+    quaternions.push_back(createQuaternion(5.2f, 5.9f, 1.1f, 0.8f));
+
+    checkSendsCameraAttitudeQuaternions(quaternions);
 }
 
 } // namespace
