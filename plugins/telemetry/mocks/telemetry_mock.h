@@ -17,6 +17,8 @@ public:
     MOCK_CONST_METHOD1(battery_async, void(Telemetry::battery_callback_t));
     MOCK_CONST_METHOD1(flight_mode_async, void(Telemetry::flight_mode_callback_t));
     MOCK_CONST_METHOD1(attitude_quaternion_async, void(Telemetry::attitude_quaternion_callback_t));
+    MOCK_CONST_METHOD1(camera_attitude_quaternion_async,
+                       void(Telemetry::attitude_quaternion_callback_t));
 };
 
 } // namespace testing

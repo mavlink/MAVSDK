@@ -225,6 +225,26 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeCameraAttitudeQuaternion(grpc::ServerContext * /* context */,
+                                                   const dronecore::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest * /* request */,
+                                                   grpc::ServerWriter<rpc::telemetry::CameraAttitudeQuaternionResponse> *writer) override
+    {
+        _telemetry.camera_attitude_quaternion_async([&writer](dronecore::Telemetry::Quaternion quaternion) {
+            auto rpc_quaternion = new dronecore::rpc::telemetry::Quaternion();
+            rpc_quaternion->set_w(quaternion.w);
+            rpc_quaternion->set_x(quaternion.x);
+            rpc_quaternion->set_y(quaternion.y);
+            rpc_quaternion->set_z(quaternion.z);
+
+            dronecore::rpc::telemetry::CameraAttitudeQuaternionResponse rpc_quaternion_response;
+            rpc_quaternion_response.set_allocated_attitude_quaternion(rpc_quaternion);
+            writer->Write(rpc_quaternion_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stop_promise.set_value();
