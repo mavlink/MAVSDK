@@ -98,12 +98,12 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
             LogDebug() << debug_str <<  "Waiting for the system confirmation of the new configuration..";
             sleep_for(milliseconds(10));
         }
-        LogInfo() << debug_str <<  "Configured: " << ANSI_COLOR_BLUE << "Min height: " <<
+        LogInfo() << debug_str <<  "Configured: " << "Min height: " <<
                   _config.min_height_m <<
                   " meters, Follow distance: " <<
                   _config.follow_distance_m << " meters, Follow direction: " <<
                   FollowMe::Config::to_str(_config.follow_direction) << ", Responsiveness: " <<
-                  _config.responsiveness << ANSI_COLOR_RESET;
+                  _config.responsiveness ;
     }
 
     return FollowMe::Result::SUCCESS;
