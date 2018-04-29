@@ -1,25 +1,53 @@
-#if !defined(WINDOWS)
 #include "serial_connection.h"
 #include "global_include.h"
 #include "log.h"
+
+
+#if defined(LINUX)
 #include <unistd.h>
 #include <fcntl.h>
-#include <cassert>
-
-#ifdef LINUX
 #include <asm/termbits.h>
 #include <sys/ioctl.h>
-#endif
 
-#ifdef APPLE
+#elif defined(APPLE)
+#include <unistd.h>
+#include <fcntl.h>
 #include <termios.h>
 #endif
 
-// FIXME: this macro is not needed unless we actually support Windows.
 #ifndef WINDOWS
-#define GET_ERROR(_x) strerror(_x)
+#define GET_ERROR() strerror(errno)
 #else
-#define GET_ERROR(_x) WSAGetLastError()
+#define GET_ERROR() GetLastErrorStdStr()
+// Taken from:
+// https://coolcowstudio.wordpress.com/2012/10/19/getlasterror-as-stdstring/
+std::string GetLastErrorStdStr()
+{
+    DWORD error = GetLastError();
+    if (error)
+    {
+        LPVOID lpMsgBuf;
+        DWORD bufLen = FormatMessage(
+            FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+            FORMAT_MESSAGE_FROM_SYSTEM |
+            FORMAT_MESSAGE_IGNORE_INSERTS,
+            NULL,
+            error,
+            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+            (LPTSTR) &lpMsgBuf,
+            0, NULL );
+        if (bufLen)
+        {
+            LPCSTR lpMsgStr = (LPCSTR)lpMsgBuf;
+            std::string result(lpMsgStr, lpMsgStr+bufLen);
+
+            LocalFree(lpMsgBuf);
+
+            return result;
+        }
+    }
+    return std::string();
+}
 #endif
 
 namespace dronecore {
@@ -86,6 +114,20 @@ ConnectionResult SerialConnection::setup_port()
         LogErr() << "fcntl failed: " << GET_ERROR(errno);
         return ConnectionResult::CONNECTION_ERROR;
     }
+#elif defined(WINDOWS)
+    _handle = CreateFile( _serial_node.c_str(),
+                      GENERIC_READ | GENERIC_WRITE,
+                      0,      // exclusive-access
+                      NULL,   //  default security attributes
+                      OPEN_EXISTING, 
+                      0,      //  not overlapped I/O
+                      NULL ); //  hTemplate must be NULL for comm devices
+
+   if (_handle == INVALID_HANDLE_VALUE) 
+   {
+       LogErr() << "CreateFile failed with: " << GET_ERROR();
+       return ConnectionResult::CONNECTION_ERROR;
+   }
 #endif
 
 #if defined(LINUX)
@@ -102,12 +144,13 @@ ConnectionResult SerialConnection::setup_port()
     bzero(&tc, sizeof(tc));
 
     if (tcgetattr(_fd, &tc) != 0) {
-        LogErr() << "tcgetattr failed: " << GET_ERROR(errno);
+        LogErr() << "tcgetattr failed: " << GET_ERROR();
         close(_fd);
         return ConnectionResult::CONNECTION_ERROR;
     }
 #endif
 
+#if defined(LINUX) || defined(APPLE)
     tc.c_iflag &= ~(IGNBRK | BRKINT | ICRNL | INLCR | PARMRK | INPCK | ISTRIP | IXON);
     tc.c_oflag &= ~(OCRNL | ONLCR | ONLRET | ONOCR | OFILL | OPOST);
     tc.c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN | ISIG | TOSTOP);
@@ -116,6 +159,7 @@ ConnectionResult SerialConnection::setup_port()
 
     tc.c_cc[VMIN] = 1; // We want at least 1 byte to be available.
     tc.c_cc[VTIME] = 0; // We don't timeout but wait indefinitely.
+#endif
 
 #if defined(LINUX)
     // CBAUD and BOTHER don't seem to be available for macOS with termios.
@@ -123,14 +167,14 @@ ConnectionResult SerialConnection::setup_port()
     tc.c_cflag |= BOTHER;
 
     if (ioctl(_fd, TCSETS2, &tc) == -1) {
-        LogErr() << "Could not set terminal attributes " << GET_ERROR(errno);
+        LogErr() << "Could not set terminal attributes " << GET_ERROR();
         close(_fd);
         return ConnectionResult::CONNECTION_ERROR;
     }
 
 
     if (ioctl(_fd, TCFLSH, TCIOFLUSH) == -1) {
-        LogErr() << "Could not flush terminal " << GET_ERROR(errno);
+        LogErr() << "Could not flush terminal " << GET_ERROR();
         close(_fd);
         return ConnectionResult::CONNECTION_ERROR;
     }
@@ -141,10 +185,55 @@ ConnectionResult SerialConnection::setup_port()
     cfsetospeed(&tc, _baudrate);
 
     if (tcsetattr(_fd, TCSANOW, &tc) != 0) {
-        LogErr() << "tcsetattr failed: " << GET_ERROR(errno);
+        LogErr() << "tcsetattr failed: " << GET_ERROR();
         close(_fd);
         return ConnectionResult::CONNECTION_ERROR;
     }
+#endif
+
+#if defined(WINDOWS)
+   DCB dcb;
+   SecureZeroMemory(&dcb, sizeof(DCB));
+   dcb.DCBlength = sizeof(DCB);
+
+   if (!GetCommState(_handle, &dcb)) 
+   {
+      LogErr() << "GetCommState failed with error: " << GET_ERROR();
+      return ConnectionResult::CONNECTION_ERROR;
+   }
+
+   dcb.BaudRate = _baudrate;
+   dcb.ByteSize = 8;
+   dcb.Parity   = NOPARITY;
+   dcb.StopBits = ONESTOPBIT;
+   dcb.fDtrControl = DTR_CONTROL_DISABLE;
+   dcb.fRtsControl = RTS_CONTROL_DISABLE;
+   dcb.fOutX = FALSE;
+   dcb.fInX = FALSE;
+   dcb.fBinary = TRUE;
+   dcb.fNull = FALSE;
+   dcb.fDsrSensitivity = FALSE;
+
+
+   if (!SetCommState(_handle, &dcb)) 
+   {
+      LogErr() << "SetCommState failed with error: " <<  GET_ERROR();
+      return ConnectionResult::CONNECTION_ERROR;
+   }
+
+   COMMTIMEOUTS timeout = { 0 };
+   timeout.ReadIntervalTimeout = 1;
+   timeout.ReadTotalTimeoutConstant = 1;
+   timeout.ReadTotalTimeoutMultiplier = 1;
+   timeout.WriteTotalTimeoutConstant = 1;
+   timeout.WriteTotalTimeoutMultiplier = 1;
+   SetCommTimeouts(_handle, &timeout);
+
+   if (!SetCommTimeouts(_handle, &timeout)) {
+      LogErr() << "SetCommTimeouts failed with error: " <<  GET_ERROR();
+      return ConnectionResult::CONNECTION_ERROR;
+   }
+
 #endif
 
     return ConnectionResult::SUCCESS;
@@ -158,8 +247,11 @@ void SerialConnection::start_recv_thread()
 ConnectionResult SerialConnection::stop()
 {
     _should_exit = true;
-    //TODO for windows
+#if defined(LINUX) || defined(APPLE)
     close(_fd);
+#elif defined(WINDOWS)
+    CloseHandle(_handle);
+#endif
 
     if (_recv_thread) {
         _recv_thread->join();
@@ -189,10 +281,18 @@ bool SerialConnection::send_message(const mavlink_message_t &message)
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
-    int send_len =  write(_fd, buffer, buffer_len);
+    int send_len;
+#if defined(LINUX) || defined(APPLE)
+     send_len =  write(_fd, buffer, buffer_len);
+#else
+     if (!WriteFile(_handle, buffer, buffer_len, LPDWORD(&send_len), NULL)) {
+         LogErr() << "WriteFile failure: " << GET_ERROR();
+         return false;
+     }
+#endif
 
     if (send_len != buffer_len) {
-        LogErr() << "write failure: " << GET_ERROR(errno);
+        LogErr() << "write failure: " << GET_ERROR();
         return false;
     }
 
@@ -205,10 +305,18 @@ void SerialConnection::receive(SerialConnection *parent)
     char buffer[2048];
 
     while (!parent->_should_exit) {
-        int recv_len = read(parent->_fd, buffer, sizeof(buffer));
+        int recv_len;
+#if defined(LINUX) || defined(APPLE)
+        recv_len = read(parent->_fd, buffer, sizeof(buffer));
         if (recv_len < -1) {
-            LogErr() << "read failure: " << GET_ERROR(errno);
+            LogErr() << "read failure: " << GET_ERROR();
         }
+#else
+        if(!ReadFile(parent->_handle, buffer, sizeof(buffer), LPDWORD(&recv_len), NULL)) {
+            LogErr() << "ReadFile failure: " << GET_ERROR();
+            continue;
+        }
+#endif
         if (recv_len > static_cast<int>(sizeof(buffer)) || recv_len == 0) {
             continue;
         }
@@ -220,4 +328,3 @@ void SerialConnection::receive(SerialConnection *parent)
     }
 }
 } // namespace dronecore
-#endif

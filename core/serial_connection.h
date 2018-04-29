@@ -1,9 +1,12 @@
 #pragma once
-#if !defined(WINDOWS)
 
 #include <mutex>
 #include <atomic>
 #include "connection.h"
+
+#if defined(WINDOWS)
+#include <windows.h>
+#endif
 
 namespace dronecore {
 
@@ -35,10 +38,13 @@ private:
     int _baudrate = DEFAULT_SERIAL_BAUDRATE;
 
     std::mutex _mutex = {};
+#if !defined(WINDOWS)
     int _fd = -1;
+#else
+    HANDLE _handle;
+#endif
     std::thread *_recv_thread = nullptr;
     std::atomic_bool _should_exit{false};
 };
 
 } // namespace dronecore
-#endif

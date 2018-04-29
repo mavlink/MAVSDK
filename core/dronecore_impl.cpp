@@ -8,10 +8,7 @@
 #include "udp_connection.h"
 #include "system.h"
 #include "mavlink_system.h"
-
-#ifndef WINDOWS
 #include "serial_connection.h"
-#endif
 
 namespace dronecore {
 
@@ -193,7 +190,6 @@ ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
 ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_path,
                                                       int baudrate)
 {
-#if !defined(WINDOWS)
     auto new_conn = std::make_shared<SerialConnection>(*this, dev_path, baudrate);
 
     ConnectionResult ret = new_conn->start();
@@ -201,11 +197,6 @@ ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_pat
         add_connection(new_conn);
     }
     return ret;
-#else
-    UNUSED(dev_path);
-    UNUSED(baudrate);
-    return ConnectionResult::NOT_IMPLEMENTED;
-#endif
 }
 
 std::vector<uint64_t> DroneCoreImpl::get_system_uuids() const
