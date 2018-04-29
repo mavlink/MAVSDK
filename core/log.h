@@ -9,13 +9,6 @@
 #include <ctime>
 #endif
 
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_GRAY    "\x1b[37m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
-
 #ifndef WINDOWS
 // Remove path and extract only filename.
 #define __FILENAME__ (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
@@ -49,6 +42,18 @@ public:
 
 
 namespace dronecore {
+
+enum class Color {
+    RED,
+    GREEN,
+    YELLOW,
+    BLUE,
+    GRAY,
+    RESET
+};
+
+void set_color(Color color);
+
 
 class LogDetailed
 {
@@ -89,16 +94,16 @@ public:
 
         switch (_log_level) {
             case LogLevel::Debug:
-                std::cout << ANSI_COLOR_GREEN;
+                set_color(Color::GREEN);
                 break;
             case LogLevel::Info:
-                std::cout << ANSI_COLOR_BLUE;
+                set_color(Color::BLUE);
                 break;
             case LogLevel::Warn:
-                std::cout << ANSI_COLOR_YELLOW;
+                set_color(Color::YELLOW);
                 break;
             case LogLevel::Err:
-                std::cout << ANSI_COLOR_RED;
+                set_color(Color::RED);
                 break;
         }
 
@@ -126,7 +131,7 @@ public:
                 break;
         }
 
-        std::cout << ANSI_COLOR_RESET;
+        set_color(Color::RESET);
 
         std::cout << _s.str();
         std::cout << " (" << _caller_filename << ":" << _caller_filenumber << ")";

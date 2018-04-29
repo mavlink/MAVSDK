@@ -32,6 +32,7 @@ add_library(dronecore ${LIBRARY_TYPE}
     tcp_connection.cpp
     timeout_handler.cpp
     udp_connection.cpp
+    log.cpp
 )
 
 target_link_libraries(dronecore
