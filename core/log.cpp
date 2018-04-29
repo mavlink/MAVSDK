@@ -20,7 +20,8 @@
 namespace dronecore {
 
 
-void set_color(Color color) {
+void set_color(Color color)
+{
 #if defined(WINDOWS)
     HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
     switch (color) {

@@ -24,22 +24,20 @@
 std::string GetLastErrorStdStr()
 {
     DWORD error = GetLastError();
-    if (error)
-    {
+    if (error) {
         LPVOID lpMsgBuf;
         DWORD bufLen = FormatMessage(
-            FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-            FORMAT_MESSAGE_FROM_SYSTEM |
-            FORMAT_MESSAGE_IGNORE_INSERTS,
-            NULL,
-            error,
-            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-            (LPTSTR) &lpMsgBuf,
-            0, NULL );
-        if (bufLen)
-        {
+                           FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                           FORMAT_MESSAGE_FROM_SYSTEM |
+                           FORMAT_MESSAGE_IGNORE_INSERTS,
+                           NULL,
+                           error,
+                           MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                           (LPTSTR) &lpMsgBuf,
+                           0, NULL);
+        if (bufLen) {
             LPCSTR lpMsgStr = (LPCSTR)lpMsgBuf;
-            std::string result(lpMsgStr, lpMsgStr+bufLen);
+            std::string result(lpMsgStr, lpMsgStr + bufLen);
 
             LocalFree(lpMsgBuf);
 
@@ -115,19 +113,18 @@ ConnectionResult SerialConnection::setup_port()
         return ConnectionResult::CONNECTION_ERROR;
     }
 #elif defined(WINDOWS)
-    _handle = CreateFile( _serial_node.c_str(),
-                      GENERIC_READ | GENERIC_WRITE,
-                      0,      // exclusive-access
-                      NULL,   //  default security attributes
-                      OPEN_EXISTING, 
-                      0,      //  not overlapped I/O
-                      NULL ); //  hTemplate must be NULL for comm devices
+    _handle = CreateFile(_serial_node.c_str(),
+                         GENERIC_READ | GENERIC_WRITE,
+                         0,      // exclusive-access
+                         NULL,   //  default security attributes
+                         OPEN_EXISTING,
+                         0,      //  not overlapped I/O
+                         NULL);  //  hTemplate must be NULL for comm devices
 
-   if (_handle == INVALID_HANDLE_VALUE) 
-   {
-       LogErr() << "CreateFile failed with: " << GET_ERROR();
-       return ConnectionResult::CONNECTION_ERROR;
-   }
+    if (_handle == INVALID_HANDLE_VALUE) {
+        LogErr() << "CreateFile failed with: " << GET_ERROR();
+        return ConnectionResult::CONNECTION_ERROR;
+    }
 #endif
 
 #if defined(LINUX)
@@ -192,47 +189,45 @@ ConnectionResult SerialConnection::setup_port()
 #endif
 
 #if defined(WINDOWS)
-   DCB dcb;
-   SecureZeroMemory(&dcb, sizeof(DCB));
-   dcb.DCBlength = sizeof(DCB);
+    DCB dcb;
+    SecureZeroMemory(&dcb, sizeof(DCB));
+    dcb.DCBlength = sizeof(DCB);
 
-   if (!GetCommState(_handle, &dcb)) 
-   {
-      LogErr() << "GetCommState failed with error: " << GET_ERROR();
-      return ConnectionResult::CONNECTION_ERROR;
-   }
+    if (!GetCommState(_handle, &dcb)) {
+        LogErr() << "GetCommState failed with error: " << GET_ERROR();
+        return ConnectionResult::CONNECTION_ERROR;
+    }
 
-   dcb.BaudRate = _baudrate;
-   dcb.ByteSize = 8;
-   dcb.Parity   = NOPARITY;
-   dcb.StopBits = ONESTOPBIT;
-   dcb.fDtrControl = DTR_CONTROL_DISABLE;
-   dcb.fRtsControl = RTS_CONTROL_DISABLE;
-   dcb.fOutX = FALSE;
-   dcb.fInX = FALSE;
-   dcb.fBinary = TRUE;
-   dcb.fNull = FALSE;
-   dcb.fDsrSensitivity = FALSE;
+    dcb.BaudRate = _baudrate;
+    dcb.ByteSize = 8;
+    dcb.Parity   = NOPARITY;
+    dcb.StopBits = ONESTOPBIT;
+    dcb.fDtrControl = DTR_CONTROL_DISABLE;
+    dcb.fRtsControl = RTS_CONTROL_DISABLE;
+    dcb.fOutX = FALSE;
+    dcb.fInX = FALSE;
+    dcb.fBinary = TRUE;
+    dcb.fNull = FALSE;
+    dcb.fDsrSensitivity = FALSE;
 
 
-   if (!SetCommState(_handle, &dcb)) 
-   {
-      LogErr() << "SetCommState failed with error: " <<  GET_ERROR();
-      return ConnectionResult::CONNECTION_ERROR;
-   }
+    if (!SetCommState(_handle, &dcb)) {
+        LogErr() << "SetCommState failed with error: " <<  GET_ERROR();
+        return ConnectionResult::CONNECTION_ERROR;
+    }
 
-   COMMTIMEOUTS timeout = { 0 };
-   timeout.ReadIntervalTimeout = 1;
-   timeout.ReadTotalTimeoutConstant = 1;
-   timeout.ReadTotalTimeoutMultiplier = 1;
-   timeout.WriteTotalTimeoutConstant = 1;
-   timeout.WriteTotalTimeoutMultiplier = 1;
-   SetCommTimeouts(_handle, &timeout);
+    COMMTIMEOUTS timeout = { 0 };
+    timeout.ReadIntervalTimeout = 1;
+    timeout.ReadTotalTimeoutConstant = 1;
+    timeout.ReadTotalTimeoutMultiplier = 1;
+    timeout.WriteTotalTimeoutConstant = 1;
+    timeout.WriteTotalTimeoutMultiplier = 1;
+    SetCommTimeouts(_handle, &timeout);
 
-   if (!SetCommTimeouts(_handle, &timeout)) {
-      LogErr() << "SetCommTimeouts failed with error: " <<  GET_ERROR();
-      return ConnectionResult::CONNECTION_ERROR;
-   }
+    if (!SetCommTimeouts(_handle, &timeout)) {
+        LogErr() << "SetCommTimeouts failed with error: " <<  GET_ERROR();
+        return ConnectionResult::CONNECTION_ERROR;
+    }
 
 #endif
 
@@ -283,12 +278,12 @@ bool SerialConnection::send_message(const mavlink_message_t &message)
 
     int send_len;
 #if defined(LINUX) || defined(APPLE)
-     send_len =  write(_fd, buffer, buffer_len);
+    send_len =  write(_fd, buffer, buffer_len);
 #else
-     if (!WriteFile(_handle, buffer, buffer_len, LPDWORD(&send_len), NULL)) {
-         LogErr() << "WriteFile failure: " << GET_ERROR();
-         return false;
-     }
+    if (!WriteFile(_handle, buffer, buffer_len, LPDWORD(&send_len), NULL)) {
+        LogErr() << "WriteFile failure: " << GET_ERROR();
+        return false;
+    }
 #endif
 
     if (send_len != buffer_len) {
@@ -312,7 +307,7 @@ void SerialConnection::receive(SerialConnection *parent)
             LogErr() << "read failure: " << GET_ERROR();
         }
 #else
-        if(!ReadFile(parent->_handle, buffer, sizeof(buffer), LPDWORD(&recv_len), NULL)) {
+        if (!ReadFile(parent->_handle, buffer, sizeof(buffer), LPDWORD(&recv_len), NULL)) {
             LogErr() << "ReadFile failure: " << GET_ERROR();
             continue;
         }
