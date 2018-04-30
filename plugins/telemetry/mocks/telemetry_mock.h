@@ -20,6 +20,8 @@ public:
     MOCK_CONST_METHOD1(attitude_euler_angle_async, void(Telemetry::attitude_euler_angle_callback_t));
     MOCK_CONST_METHOD1(camera_attitude_quaternion_async,
                        void(Telemetry::attitude_quaternion_callback_t));
+    MOCK_CONST_METHOD1(camera_attitude_euler_angle_async,
+                       void(Telemetry::attitude_euler_angle_callback_t));
 };
 
 } // namespace testing
