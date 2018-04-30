@@ -13,7 +13,7 @@ public:
 
     grpc::Status Arm(grpc::ServerContext * /* context */,
                      const dronecore::rpc::action::ArmRequest * /* request */,
-                     dronecore::rpc::action::ArmResponse *response)
+                     dronecore::rpc::action::ArmResponse *response) override
     {
         auto action_result = _action.arm();
 
@@ -38,7 +38,7 @@ public:
 
     grpc::Status Disarm(grpc::ServerContext * /* context */,
                         const dronecore::rpc::action::DisarmRequest * /* request */,
-                        dronecore::rpc::action::DisarmResponse *response)
+                        dronecore::rpc::action::DisarmResponse *response) override
     {
         auto action_result = _action.disarm();
 
@@ -51,7 +51,7 @@ public:
 
     grpc::Status Takeoff(grpc::ServerContext * /* context */,
                          const dronecore::rpc::action::TakeoffRequest * /* request */,
-                         dronecore::rpc::action::TakeoffResponse *response)
+                         dronecore::rpc::action::TakeoffResponse *response) override
     {
         auto action_result = _action.takeoff();
 
@@ -64,7 +64,7 @@ public:
 
     grpc::Status Land(grpc::ServerContext * /* context */,
                       const dronecore::rpc::action::LandRequest * /* request */,
-                      dronecore::rpc::action::LandResponse *response)
+                      dronecore::rpc::action::LandResponse *response) override
     {
         auto action_result = _action.land();
 
@@ -77,7 +77,7 @@ public:
 
     grpc::Status Kill(grpc::ServerContext * /* context */,
                       const dronecore::rpc::action::KillRequest * /* request */,
-                      dronecore::rpc::action::KillResponse *response)
+                      dronecore::rpc::action::KillResponse *response) override
     {
         auto action_result = _action.kill();
 
