@@ -303,6 +303,25 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeRCStatus(grpc::ServerContext * /* context */,
+                                   const dronecore::rpc::telemetry::SubscribeRCStatusRequest * /* request */,
+                                   grpc::ServerWriter<rpc::telemetry::RCStatusResponse> *writer) override
+    {
+        _telemetry.rc_status_async([&writer](dronecore::Telemetry::RCStatus rc_status) {
+            auto rpc_rc_status = new dronecore::rpc::telemetry::RCStatus();
+            rpc_rc_status->set_was_available_once(rc_status.available_once);
+            rpc_rc_status->set_is_available(rc_status.available);
+            rpc_rc_status->set_signal_strength_percent(rc_status.signal_strength_percent);
+
+            dronecore::rpc::telemetry::RCStatusResponse rpc_rc_status_response;
+            rpc_rc_status_response.set_allocated_rc_status(rpc_rc_status);
+            writer->Write(rpc_rc_status_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stop_promise.set_value();

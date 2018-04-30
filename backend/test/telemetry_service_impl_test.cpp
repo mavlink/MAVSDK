@@ -39,6 +39,8 @@ using EulerAngle = dronecore::Telemetry::EulerAngle;
 
 using GroundSpeedNED = dronecore::Telemetry::GroundSpeedNED;
 
+using RCStatus = dronecore::Telemetry::RCStatus;
+
 class TelemetryServiceImplTest : public ::testing::Test
 {
 protected:
@@ -116,6 +118,11 @@ protected:
                                         const float vel_down) const;
     std::future<void> subscribeGroundSpeedNEDAsync(std::vector<GroundSpeedNED> &ground_speed_events)
     const;
+
+    void checkSendsRCStatusEvents(const std::vector<RCStatus> &rc_status_events) const;
+    RCStatus createRCStatus(const bool was_available_once, const bool is_available,
+                            const float signal_strength_percent) const;
+    std::future<void> subscribeRCStatusAsync(std::vector<RCStatus> &rc_status_events) const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
@@ -1434,6 +1441,107 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleGroundSpeedEvents)
     ground_speed_events.push_back(createGroundSpeedNED(-4.12f, -3.1f, 8.23f));
 
     checkSendsGroundSpeedEvents(ground_speed_events);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryRCStatusAsync)
+{
+    EXPECT_CALL(*_telemetry, rc_status_async(_))
+    .Times(1);
+
+    std::vector<RCStatus> rc_status_events;
+    auto rc_status_stream_future = subscribeRCStatusAsync(rc_status_events);
+
+    _telemetry_service->stop();
+    rc_status_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeRCStatusAsync(std::vector<RCStatus>
+                                                                   &rc_status_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeRCStatusRequest request;
+        auto response_reader = _stub->SubscribeRCStatus(&context, request);
+
+        dronecore::rpc::telemetry::RCStatusResponse response;
+        while (response_reader->Read(&response)) {
+            auto rc_status_rpc = response.rc_status();
+
+            RCStatus rc_status;
+            rc_status.available_once = rc_status_rpc.was_available_once();
+            rc_status.available = rc_status_rpc.is_available();
+            rc_status.signal_strength_percent = rc_status_rpc.signal_strength_percent();
+
+            rc_status_events.push_back(rc_status);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendRCStatusIfCallbackNotCalled)
+{
+    std::vector<RCStatus> rc_status_events;
+    auto rc_status_stream_future = subscribeRCStatusAsync(rc_status_events);
+
+    _telemetry_service->stop();
+    rc_status_stream_future.wait();
+
+    EXPECT_EQ(0, rc_status_events.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneRCStatusEvent)
+{
+    std::vector<RCStatus> rc_status_events;
+    rc_status_events.push_back(createRCStatus(true, false, 33.0f));
+
+    checkSendsRCStatusEvents(rc_status_events);
+}
+
+RCStatus TelemetryServiceImplTest::createRCStatus(const bool was_available_once,
+                                                  const bool is_available, const float signal_strength_percent) const
+{
+    RCStatus rc_status;
+
+    rc_status.available_once = was_available_once;
+    rc_status.available = is_available;
+    rc_status.signal_strength_percent = signal_strength_percent;
+
+    return rc_status;
+}
+
+void TelemetryServiceImplTest::checkSendsRCStatusEvents(const std::vector<RCStatus>
+                                                        &rc_status_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::rc_status_callback_t rc_status_callback;
+    EXPECT_CALL(*_telemetry, rc_status_async(_))
+    .WillOnce(SaveCallback(&rc_status_callback, &subscription_promise));
+
+    std::vector<RCStatus> received_rc_status_events;
+    auto rc_status_stream_future = subscribeRCStatusAsync(received_rc_status_events);
+    subscription_future.wait();
+    for (const auto rc_status : rc_status_events) {
+        rc_status_callback(rc_status);
+    }
+    _telemetry_service->stop();
+    rc_status_stream_future.wait();
+
+    ASSERT_EQ(rc_status_events.size(), received_rc_status_events.size());
+    for (size_t i = 0; i < rc_status_events.size(); i++) {
+        EXPECT_EQ(rc_status_events.at(i), received_rc_status_events.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleRCStatusEvents)
+{
+    std::vector<RCStatus> rc_status_events;
+    rc_status_events.push_back(createRCStatus(false, false, 0.0f));
+    rc_status_events.push_back(createRCStatus(false, true, 54.2f));
+    rc_status_events.push_back(createRCStatus(true, true, 89.12));
+
+    checkSendsRCStatusEvents(rc_status_events);
 }
 
 } // namespace
