@@ -106,6 +106,9 @@ protected:
     std::future<void>
     subscribeCameraAttitudeQuaternionAsync(std::vector<Quaternion> &quaternions) const;
 
+    void checkSendsCameraAttitudeEulerAngles(const std::vector<EulerAngle> &euler_angles) const;
+    std::future<void> subscribeCameraAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const;
+
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
     std::unique_ptr<MockTelemetry> _telemetry;
@@ -1233,6 +1236,95 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeQuaternions)
     quaternions.push_back(createQuaternion(5.2f, 5.9f, 1.1f, 0.8f));
 
     checkSendsCameraAttitudeQuaternions(quaternions);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeEulerAsync)
+{
+    EXPECT_CALL(*_telemetry, camera_attitude_euler_angle_async(_))
+    .Times(1);
+
+    std::vector<EulerAngle> euler_angles;
+    auto euler_angle_stream_future = subscribeCameraAttitudeEulerAsync(euler_angles);
+
+    _telemetry_service->stop();
+    euler_angle_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeCameraAttitudeEulerAsync(
+    std::vector<EulerAngle> &euler_angles) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeCameraAttitudeEulerRequest request;
+        auto response_reader = _stub->SubscribeCameraAttitudeEuler(&context, request);
+
+        dronecore::rpc::telemetry::CameraAttitudeEulerResponse response;
+        while (response_reader->Read(&response)) {
+            auto euler_angle_rpc = response.attitude_euler();
+
+            EulerAngle euler_angle;
+            euler_angle.roll_deg = euler_angle_rpc.roll_deg();
+            euler_angle.pitch_deg = euler_angle_rpc.pitch_deg();
+            euler_angle.yaw_deg = euler_angle_rpc.yaw_deg();
+
+            euler_angles.push_back(euler_angle);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendCameraAttitudeEulerIfCallbackNotCalled)
+{
+    std::vector<EulerAngle> euler_angles;
+    auto euler_angle_stream_future = subscribeCameraAttitudeEulerAsync(euler_angles);
+
+    _telemetry_service->stop();
+    euler_angle_stream_future.wait();
+
+    EXPECT_EQ(0, euler_angles.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneCameraAttitudeEuler)
+{
+    std::vector<EulerAngle> euler_angles;
+    euler_angles.push_back(createEulerAngle(23.4f, 90.2f, 7.8f));
+
+    checkSendsCameraAttitudeEulerAngles(euler_angles);
+}
+
+void TelemetryServiceImplTest::checkSendsCameraAttitudeEulerAngles(const std::vector<EulerAngle>
+                                                                   &euler_angles) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
+    EXPECT_CALL(*_telemetry, camera_attitude_euler_angle_async(_))
+    .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
+
+    std::vector<EulerAngle> received_euler_angles;
+    auto euler_angle_stream_future = subscribeCameraAttitudeEulerAsync(received_euler_angles);
+    subscription_future.wait();
+    for (const auto euler_angle : euler_angles) {
+        attitude_euler_angle_callback(euler_angle);
+    }
+    _telemetry_service->stop();
+    euler_angle_stream_future.wait();
+
+    ASSERT_EQ(euler_angles.size(), received_euler_angles.size());
+    for (size_t i = 0; i < euler_angles.size(); i++) {
+        EXPECT_EQ(euler_angles.at(i), received_euler_angles.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeEuler)
+{
+    std::vector<EulerAngle> euler_angles;
+    euler_angles.push_back(createEulerAngle(12.2f, 11.8f, -54.2f));
+    euler_angles.push_back(createEulerAngle(18.3f, 37.4f, -61.7f));
+    euler_angles.push_back(createEulerAngle(6.3f, 34.11f, -36.5f));
+
+    checkSendsCameraAttitudeEulerAngles(euler_angles);
 }
 
 } // namespace

@@ -264,6 +264,26 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeCameraAttitudeEuler(grpc::ServerContext * /* context */,
+                                              const dronecore::rpc::telemetry::SubscribeCameraAttitudeEulerRequest * /* request */,
+                                              grpc::ServerWriter<rpc::telemetry::CameraAttitudeEulerResponse> *writer) override
+    {
+        _telemetry.camera_attitude_euler_angle_async([&writer](dronecore::Telemetry::EulerAngle
+        euler_angle) {
+            auto rpc_euler_angle = new dronecore::rpc::telemetry::EulerAngle();
+            rpc_euler_angle->set_roll_deg(euler_angle.roll_deg);
+            rpc_euler_angle->set_pitch_deg(euler_angle.pitch_deg);
+            rpc_euler_angle->set_yaw_deg(euler_angle.yaw_deg);
+
+            dronecore::rpc::telemetry::CameraAttitudeEulerResponse rpc_euler_response;
+            rpc_euler_response.set_allocated_attitude_euler(rpc_euler_angle);
+            writer->Write(rpc_euler_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stop_promise.set_value();
