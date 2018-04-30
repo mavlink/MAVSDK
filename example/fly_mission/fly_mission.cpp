@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 
         if (argc == 1) {
             usage(argv[0]);
-            connection_result = dc.add_any_connection();
+            return 1;
         } else {
             connection_url = argv[1];
             connection_result = dc.add_any_connection(connection_url);
