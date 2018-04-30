@@ -406,4 +406,18 @@ std::ostream &operator<<(std::ostream &str, Telemetry::GroundSpeedNED const &gro
            << ", velocity_down_m_s: " << ground_speed.velocity_down_m_s << "]";
 }
 
+bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs)
+{
+    return lhs.available_once == rhs.available_once
+           && lhs.available == rhs.available
+           && lhs.signal_strength_percent == rhs.signal_strength_percent;
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status)
+{
+    return str << "[was_available_once: " << rc_status.available_once
+           << ", is_available: " << rc_status.available
+           << ", signal_strength_percent: " << rc_status.signal_strength_percent << "]";
+}
+
 } // namespace dronecore
