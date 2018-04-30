@@ -26,8 +26,10 @@
 namespace dronecore {
 
 UdpConnection::UdpConnection(DroneCoreImpl &parent,
+                             const std::string &local_ip,
                              int local_port_number):
     Connection(parent),
+    _local_ip(local_ip),
     _local_port_number(local_port_number) {}
 
 UdpConnection::~UdpConnection()
@@ -77,8 +79,8 @@ ConnectionResult UdpConnection::setup_port()
 
     struct sockaddr_in addr {};
     addr.sin_family = AF_INET;
+    inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr));
     addr.sin_port = htons(_local_port_number);
-    addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     if (bind(_socket_fd, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);

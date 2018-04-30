@@ -25,8 +25,8 @@ public:
     ConnectionResult add_link_connection(const std::string &protocol,
                                          const std::string &ip,
                                          int port);
-    ConnectionResult add_udp_connection(int local_port_number);
-    void add_connection(std::shared_ptr<Connection>);
+    ConnectionResult add_udp_connection(const std::string &local_ip,
+                                        int local_port_number);
     ConnectionResult add_tcp_connection(const std::string &remote_ip,
                                         int remote_port);
     ConnectionResult add_serial_connection(const std::string &dev_path,
@@ -46,6 +46,7 @@ public:
     void notify_on_timeout(uint64_t uuid);
 
 private:
+    void add_connection(std::shared_ptr<Connection>);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
     bool does_system_exist(uint8_t system_id);
 

@@ -23,11 +23,10 @@ class System;
 class DroneCore
 {
 public:
-    static constexpr auto DEFAULT_UDP_CONNECTION_URL = "udp://:14540";
+    static constexpr auto DEFAULT_UDP_BIND_IP = "0.0.0.0";
     static constexpr int DEFAULT_UDP_PORT = 14540;
     static constexpr auto DEFAULT_TCP_REMOTE_IP = "127.0.0.1";
     static constexpr int DEFAULT_TCP_REMOTE_PORT = 5760;
-    static constexpr auto DEFAULT_SERIAL_DEV_PATH = "/dev/ttyS0";
     static constexpr int DEFAULT_SERIAL_BAUDRATE = 57600;
 
     /**
@@ -48,26 +47,45 @@ public:
      * Supports connection: Serial, TCP or UDP.
      * Connection URL format should be:
      * - UDP - udp://[Bind_host][:Bind_port]
-     * - TCP - tcp://[Server_host][:Server_port]
-     * - Serial - serial://[Dev_Node][:Baudrate]
+     * - TCP - tcp://[Remote_host][:Remote_port]
+     * - Serial - serial://Dev_Node[:Baudrate]
      *
-     * Default URL : udp://:14540.
-     * - Default Bind host IP is localhost(127.0.0.1)
-     *
-     * @warning Serial connections are not supported on Windows (they are supported on Linux and macOS).
+     * Default URL : udp://0.0.0.0:14540.
+     * - Default Bind host IP is any local interface (0.0.0.0)
      *
      * @param connection_url connection URL string.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_any_connection(const std::string &connection_url = DEFAULT_UDP_CONNECTION_URL);
+    ConnectionResult add_any_connection(const std::string &connection_url);
 
     /**
-     * @brief Adds a UDP connection to the specified port number.
+     * @brief Adds a UDP connection to the specified port number on 0.0.0.0 on any local interface.
      *
-     * @param local_port_number The local UDP port to listen to (defaults to 14540, the same as mavros).
+     * @param local_port The local UDP port to listen to (defaults to 14540, the same as mavros).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_udp_connection(int local_port_number = DEFAULT_UDP_PORT);
+    ConnectionResult add_udp_connection(int local_port = DEFAULT_UDP_PORT);
+
+    /**
+     * @brief Adds a UDP connection to the specified port number and local interface.
+     *
+     * To accept only connections local connections of the machine, use 127.0.0.1, for any
+     * incoming connections, use 0.0.0.0.
+     *
+     * @param local_bind_ip The local UDP ip to listen to.
+     * @param local_port The local UDP port to listen to (defaults to 14540, the same as mavros).
+     * @return The result of adding the connection.
+     */
+    ConnectionResult add_udp_connection(const std::string &local_ip,
+                                        int local_port = DEFAULT_UDP_PORT);
+
+    /**
+     * @brief Adds a TCP connection with a specific port number on localhost.
+     *
+     * @param remote_port The TCP port to connect to (defaults to 5760).
+     * @return The result of adding the connection.
+     */
+    ConnectionResult add_tcp_connection(int remote_port = DEFAULT_TCP_REMOTE_PORT);
 
     /**
      * @brief Adds a TCP connection with a specific IP address and port number.
@@ -83,13 +101,11 @@ public:
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as specified.
      *
      *
-     * @warning This method is not supported on Windows (it is supported on Linux and macOS).
-     *
-     * @param dev_path COM or UART dev node name/path (defaults to "/dev/ttyS0").
+     * @param dev_path COM or UART dev node name/path (e.g. "/dev/ttyS0", or "COM3" on Windows).
      * @param baudrate Baudrate of the serial port (defaults to 57600).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_serial_connection(const std::string &dev_path = DEFAULT_SERIAL_DEV_PATH,
+    ConnectionResult add_serial_connection(const std::string &dev_path,
                                            int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
     /**
@@ -188,10 +204,6 @@ private:
     // Non-copyable
     DroneCore(const DroneCore &) = delete;
     const DroneCore &operator=(const DroneCore &) = delete;
-
-    /* Adds a connection for Network protocol*/
-    ConnectionResult add_link_connection(const std::string &protocol, const std::string &ip,
-                                         const int port);
 };
 
 } // namespace dronecore

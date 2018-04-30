@@ -19,16 +19,15 @@ ConnectionResult DroneCore::add_any_connection(const std::string &connection_url
     return _impl->add_any_connection(connection_url);
 }
 
-ConnectionResult DroneCore::add_link_connection(const std::string &protocol,
-                                                const std::string &ip,
-                                                const int port)
+ConnectionResult DroneCore::add_udp_connection(int local_port)
 {
-    return _impl->add_link_connection(protocol, ip, port);
+    return DroneCore::add_udp_connection(DEFAULT_UDP_BIND_IP, local_port);
 }
 
-ConnectionResult DroneCore::add_udp_connection(const int local_port_number)
+ConnectionResult DroneCore::add_udp_connection(const std::string &local_bind_ip,
+                                               const int local_port)
 {
-    return _impl->add_udp_connection(local_port_number);
+    return _impl->add_udp_connection(local_bind_ip, local_port);
 }
 
 ConnectionResult DroneCore::add_tcp_connection(const std::string &remote_ip,
