@@ -25,7 +25,7 @@ public:
     }
 
     template <typename ResponseType>
-    void fillResponseWithResult(ResponseType* response, ActionResult &action_result) const
+    void fillResponseWithResult(ResponseType *response, ActionResult &action_result) const
     {
         auto rpc_result = static_cast<dronecore::rpc::action::ActionResult::Result>(action_result);
 
@@ -80,6 +80,19 @@ public:
                       dronecore::rpc::action::KillResponse *response)
     {
         auto action_result = _action.kill();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, action_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status ReturnToLaunch(grpc::ServerContext * /* context */,
+                                const dronecore::rpc::action::ReturnToLaunchRequest * /* request */,
+                                dronecore::rpc::action::ReturnToLaunchResponse *response) override
+    {
+        auto action_result = _action.return_to_launch();
 
         if (response != nullptr) {
             fillResponseWithResult(response, action_result);
