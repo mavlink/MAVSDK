@@ -37,6 +37,8 @@ using Quaternion = dronecore::Telemetry::Quaternion;
 
 using EulerAngle = dronecore::Telemetry::EulerAngle;
 
+using GroundSpeedNED = dronecore::Telemetry::GroundSpeedNED;
+
 class TelemetryServiceImplTest : public ::testing::Test
 {
 protected:
@@ -108,6 +110,12 @@ protected:
 
     void checkSendsCameraAttitudeEulerAngles(const std::vector<EulerAngle> &euler_angles) const;
     std::future<void> subscribeCameraAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const;
+
+    void checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNED> &ground_speed_events) const;
+    GroundSpeedNED createGroundSpeedNED(const float vel_north, const float vel_east,
+                                        const float vel_down) const;
+    std::future<void> subscribeGroundSpeedNEDAsync(std::vector<GroundSpeedNED> &ground_speed_events)
+    const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
@@ -1325,6 +1333,107 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeEuler)
     euler_angles.push_back(createEulerAngle(6.3f, 34.11f, -36.5f));
 
     checkSendsCameraAttitudeEulerAngles(euler_angles);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryGroundSpeedNEDAsync)
+{
+    EXPECT_CALL(*_telemetry, ground_speed_ned_async(_))
+    .Times(1);
+
+    std::vector<GroundSpeedNED> ground_speed_events;
+    auto ground_speed_stream_future = subscribeGroundSpeedNEDAsync(ground_speed_events);
+
+    _telemetry_service->stop();
+    ground_speed_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeGroundSpeedNEDAsync(
+    std::vector<GroundSpeedNED> &ground_speed_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::telemetry::SubscribeGroundSpeedNEDRequest request;
+        auto response_reader = _stub->SubscribeGroundSpeedNED(&context, request);
+
+        dronecore::rpc::telemetry::GroundSpeedNEDResponse response;
+        while (response_reader->Read(&response)) {
+            auto ground_speed_rpc = response.ground_speed_ned();
+
+            GroundSpeedNED ground_speed;
+            ground_speed.velocity_north_m_s = ground_speed_rpc.velocity_north_m_s();
+            ground_speed.velocity_east_m_s = ground_speed_rpc.velocity_east_m_s();
+            ground_speed.velocity_down_m_s = ground_speed_rpc.velocity_down_m_s();
+
+            ground_speed_events.push_back(ground_speed);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendGroundSpeedNEDIfCallbackNotCalled)
+{
+    std::vector<GroundSpeedNED> ground_speed_events;
+    auto ground_speed_stream_future = subscribeGroundSpeedNEDAsync(ground_speed_events);
+
+    _telemetry_service->stop();
+    ground_speed_stream_future.wait();
+
+    EXPECT_EQ(0, ground_speed_events.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneGroundSpeedEvent)
+{
+    std::vector<GroundSpeedNED> ground_speed_events;
+    ground_speed_events.push_back(createGroundSpeedNED(12.3f, 1.2f, -0.2f));
+
+    checkSendsGroundSpeedEvents(ground_speed_events);
+}
+
+GroundSpeedNED TelemetryServiceImplTest::createGroundSpeedNED(const float vel_north,
+                                                              const float vel_east, const float vel_down) const
+{
+    GroundSpeedNED ground_speed;
+
+    ground_speed.velocity_north_m_s = vel_north;
+    ground_speed.velocity_east_m_s = vel_east;
+    ground_speed.velocity_down_m_s = vel_down;
+
+    return ground_speed;
+}
+
+void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNED>
+                                                           &ground_speed_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Telemetry::ground_speed_ned_callback_t ground_speed_ned_callback;
+    EXPECT_CALL(*_telemetry, ground_speed_ned_async(_))
+    .WillOnce(SaveCallback(&ground_speed_ned_callback, &subscription_promise));
+
+    std::vector<GroundSpeedNED> received_ground_speed_events;
+    auto ground_speed_stream_future = subscribeGroundSpeedNEDAsync(received_ground_speed_events);
+    subscription_future.wait();
+    for (const auto ground_speed : ground_speed_events) {
+        ground_speed_ned_callback(ground_speed);
+    }
+    _telemetry_service->stop();
+    ground_speed_stream_future.wait();
+
+    ASSERT_EQ(ground_speed_events.size(), received_ground_speed_events.size());
+    for (size_t i = 0; i < ground_speed_events.size(); i++) {
+        EXPECT_EQ(ground_speed_events.at(i), received_ground_speed_events.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleGroundSpeedEvents)
+{
+    std::vector<GroundSpeedNED> ground_speed_events;
+    ground_speed_events.push_back(createGroundSpeedNED(2.3f, 22.1f, 1.1f));
+    ground_speed_events.push_back(createGroundSpeedNED(5.23f, 1.2f, 4.0f));
+    ground_speed_events.push_back(createGroundSpeedNED(-4.12f, -3.1f, 8.23f));
+
+    checkSendsGroundSpeedEvents(ground_speed_events);
 }
 
 } // namespace

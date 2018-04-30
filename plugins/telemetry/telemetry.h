@@ -655,4 +655,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Quaternion const &quatern
 bool operator==(const Telemetry::EulerAngle &lhs, const Telemetry::EulerAngle &rhs);
 std::ostream &operator<<(std::ostream &str, Telemetry::EulerAngle const &euler_angle);
 
+bool operator==(const Telemetry::GroundSpeedNED &lhs, const Telemetry::GroundSpeedNED &rhs);
+std::ostream &operator<<(std::ostream &str, Telemetry::GroundSpeedNED const &ground_speed);
+
 } // namespace dronecore

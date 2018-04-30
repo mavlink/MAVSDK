@@ -392,4 +392,18 @@ std::ostream &operator<<(std::ostream &str, Telemetry::EulerAngle const &euler_a
            << ", yaw_deg: " << euler_angle.yaw_deg << "]";
 }
 
+bool operator==(const Telemetry::GroundSpeedNED &lhs, const Telemetry::GroundSpeedNED &rhs)
+{
+    return lhs.velocity_north_m_s == rhs.velocity_north_m_s
+           && lhs.velocity_east_m_s == rhs.velocity_east_m_s
+           && lhs.velocity_down_m_s == rhs.velocity_down_m_s;
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::GroundSpeedNED const &ground_speed)
+{
+    return str << "[velocity_north_m_s: " << ground_speed.velocity_north_m_s
+           << ", velocity_east_m_s: " << ground_speed.velocity_east_m_s
+           << ", velocity_down_m_s: " << ground_speed.velocity_down_m_s << "]";
+}
+
 } // namespace dronecore
