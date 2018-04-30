@@ -24,6 +24,10 @@ std::string takeoffAndGetTranslatedResult(dronecore::ActionResult takeoff_result
 std::string landAndGetTranslatedResult(dronecore::ActionResult land_result);
 std::string killAndGetTranslatedResult(dronecore::ActionResult kill_result);
 std::string returnToLaunchAndGetTranslatedResult(dronecore::ActionResult rtl_result);
+std::string transitionToFWAndGetTranslatedResult(const dronecore::ActionResult
+                                                 transition_to_fw_result);
+std::string transitionToMCAndGetTranslatedResult(const dronecore::ActionResult
+                                                 transition_to_fw_result);
 
 class ActionServiceImplTest : public ::testing::TestWithParam<InputPair> {};
 
@@ -199,6 +203,66 @@ TEST_F(ActionServiceImplTest, rtlsEvenWhenArgsAreNull)
     .Times(1);
 
     actionService.ReturnToLaunch(nullptr, nullptr, nullptr);
+}
+
+TEST_P(ActionServiceImplTest, transition2fwResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = transitionToFWAndGetTranslatedResult(GetParam().second);
+    EXPECT_EQ(rpc_result, GetParam().first);
+}
+
+std::string transitionToFWAndGetTranslatedResult(const dronecore::ActionResult
+                                                 transition_to_fw_result)
+{
+    MockAction action;
+    ON_CALL(action, transition_to_fixedwing())
+    .WillByDefault(Return(transition_to_fw_result));
+    ActionServiceImpl actionService(action);
+    dronecore::rpc::action::TransitionToFixedWingsResponse response;
+
+    actionService.TransitionToFixedWings(nullptr, nullptr, &response);
+
+    return ActionResult::Result_Name(response.action_result().result());
+}
+
+TEST_F(ActionServiceImplTest, transitions2fwEvenWhenArgsAreNull)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, transition_to_fixedwing())
+    .Times(1);
+
+    actionService.TransitionToFixedWings(nullptr, nullptr, nullptr);
+}
+
+TEST_P(ActionServiceImplTest, transition2mcResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = transitionToMCAndGetTranslatedResult(GetParam().second);
+    EXPECT_EQ(rpc_result, GetParam().first);
+}
+
+std::string transitionToMCAndGetTranslatedResult(const dronecore::ActionResult
+                                                 transition_to_mc_result)
+{
+    MockAction action;
+    ON_CALL(action, transition_to_multicopter())
+    .WillByDefault(Return(transition_to_mc_result));
+    ActionServiceImpl actionService(action);
+    dronecore::rpc::action::TransitionToMulticopterResponse response;
+
+    actionService.TransitionToMulticopter(nullptr, nullptr, &response);
+
+    return ActionResult::Result_Name(response.action_result().result());
+}
+
+TEST_F(ActionServiceImplTest, transitions2mcEvenWhenArgsAreNull)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, transition_to_multicopter())
+    .Times(1);
+
+    actionService.TransitionToMulticopter(nullptr, nullptr, nullptr);
 }
 
 INSTANTIATE_TEST_CASE_P(ActionResultCorrespondences,

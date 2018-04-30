@@ -101,6 +101,32 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status TransitionToFixedWings(grpc::ServerContext * /* context */,
+                                        const dronecore::rpc::action::TransitionToFixedWingsRequest * /* request */,
+                                        dronecore::rpc::action::TransitionToFixedWingsResponse *response) override
+    {
+        auto action_result = _action.transition_to_fixedwing();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, action_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status TransitionToMulticopter(grpc::ServerContext * /* context */,
+                                         const dronecore::rpc::action::TransitionToMulticopterRequest * /* request */,
+                                         dronecore::rpc::action::TransitionToMulticopterResponse *response) override
+    {
+        auto action_result = _action.transition_to_multicopter();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, action_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
 private:
     const Action &_action;
 };
