@@ -22,6 +22,7 @@ public:
                        void(Telemetry::attitude_quaternion_callback_t));
     MOCK_CONST_METHOD1(camera_attitude_euler_angle_async,
                        void(Telemetry::attitude_euler_angle_callback_t));
+    MOCK_CONST_METHOD1(ground_speed_ned_async, void(Telemetry::ground_speed_ned_callback_t));
 };
 
 } // namespace testing

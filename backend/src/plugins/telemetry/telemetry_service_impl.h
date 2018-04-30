@@ -284,6 +284,25 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeGroundSpeedNED(grpc::ServerContext * /* context */,
+                                         const dronecore::rpc::telemetry::SubscribeGroundSpeedNEDRequest * /* request */,
+                                         grpc::ServerWriter<rpc::telemetry::GroundSpeedNEDResponse> *writer) override
+    {
+        _telemetry.ground_speed_ned_async([&writer](dronecore::Telemetry::GroundSpeedNED ground_speed) {
+            auto rpc_ground_speed = new dronecore::rpc::telemetry::SpeedNED();
+            rpc_ground_speed->set_velocity_north_m_s(ground_speed.velocity_north_m_s);
+            rpc_ground_speed->set_velocity_east_m_s(ground_speed.velocity_east_m_s);
+            rpc_ground_speed->set_velocity_down_m_s(ground_speed.velocity_down_m_s);
+
+            dronecore::rpc::telemetry::GroundSpeedNEDResponse rpc_ground_speed_response;
+            rpc_ground_speed_response.set_allocated_ground_speed_ned(rpc_ground_speed);
+            writer->Write(rpc_ground_speed_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stop_promise.set_value();
