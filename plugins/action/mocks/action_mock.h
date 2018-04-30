@@ -18,6 +18,8 @@ public:
     MOCK_CONST_METHOD0(transition_to_multicopter, ActionResult());
     MOCK_CONST_METHOD0(get_takeoff_altitude_m, float());
     MOCK_CONST_METHOD1(set_takeoff_altitude, void(float));
+    MOCK_CONST_METHOD0(get_max_speed_m_s, float());
+    MOCK_CONST_METHOD1(set_max_speed, void(float));
 };
 
 } // namespace testing

@@ -151,6 +151,30 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status GetMaximumSpeed(grpc::ServerContext * /* context */,
+                                 const dronecore::rpc::action::GetMaximumSpeedRequest * /* request */,
+                                 dronecore::rpc::action::GetMaximumSpeedResponse *response) override
+    {
+        if (response != nullptr) {
+            auto max_speed = _action.get_max_speed_m_s();
+            response->set_speed_m_s(max_speed);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetMaximumSpeed(grpc::ServerContext * /* context */,
+                                 const dronecore::rpc::action::SetMaximumSpeedRequest *request,
+                                 dronecore::rpc::action::SetMaximumSpeedResponse * /* response */) override
+    {
+        if (request != nullptr) {
+            const auto requested_speed = request->speed_m_s();
+            _action.set_max_speed(requested_speed);
+        }
+
+        return grpc::Status::OK;
+    }
+
 private:
     Action &_action;
 };

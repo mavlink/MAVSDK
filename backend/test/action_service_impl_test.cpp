@@ -19,6 +19,7 @@ using ActionResult = dronecore::rpc::action::ActionResult;
 using InputPair = std::pair<std::string, dronecore::ActionResult>;
 
 static constexpr auto ARBITRARY_ALTITUDE = 42.42f;
+static constexpr auto ARBITRARY_SPEED = 8.24f;
 
 std::vector<InputPair> generateInputPairs();
 std::string armAndGetTranslatedResult(dronecore::ActionResult arm_result);
@@ -331,6 +332,71 @@ TEST_F(ActionServiceImplTest, setTakeoffAltitudeSetsRightValue)
     request.set_altitude_m(expected_altitude);
 
     actionService.SetTakeoffAltitude(nullptr, &request, nullptr);
+}
+
+TEST_F(ActionServiceImplTest, getMaxSpeedDoesNotCrashWithNullResponse)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+
+    actionService.GetMaximumSpeed(nullptr, nullptr, nullptr);
+}
+
+TEST_F(ActionServiceImplTest, getMaxSpeedCallsGetter)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, get_max_speed_m_s())
+    .Times(1);
+    dronecore::rpc::action::GetMaximumSpeedResponse response;
+
+    actionService.GetMaximumSpeed(nullptr, nullptr, &response);
+}
+
+TEST_F(ActionServiceImplTest, getMaxSpeedGetsRightValue)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    const auto expected_max_speed = ARBITRARY_SPEED;
+    ON_CALL(action, get_max_speed_m_s())
+    .WillByDefault(Return(expected_max_speed));
+    dronecore::rpc::action::GetMaximumSpeedResponse response;
+
+    actionService.GetMaximumSpeed(nullptr, nullptr, &response);
+
+    EXPECT_EQ(expected_max_speed, response.speed_m_s());
+}
+
+TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullRequest)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+
+    actionService.SetMaximumSpeed(nullptr, nullptr, nullptr);
+}
+
+TEST_F(ActionServiceImplTest, setMaxSpeedCallsSetter)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, set_max_speed(_))
+    .Times(1);
+    dronecore::rpc::action::SetMaximumSpeedRequest request;
+
+    actionService.SetMaximumSpeed(nullptr, &request, nullptr);
+}
+
+TEST_F(ActionServiceImplTest, setMaxSpeedSetsRightValue)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    const auto expected_speed = ARBITRARY_SPEED;
+    EXPECT_CALL(action, set_max_speed(expected_speed))
+    .Times(1);
+    dronecore::rpc::action::SetMaximumSpeedRequest request;
+    request.set_speed_m_s(expected_speed);
+
+    actionService.SetMaximumSpeed(nullptr, &request, nullptr);
 }
 
 INSTANTIATE_TEST_CASE_P(ActionResultCorrespondences,
