@@ -8,6 +8,7 @@
 
 namespace {
 
+using testing::_;
 using testing::NiceMock;
 using testing::Return;
 
@@ -16,6 +17,8 @@ using ActionServiceImpl = dronecore::backend::ActionServiceImpl<MockAction>;
 
 using ActionResult = dronecore::rpc::action::ActionResult;
 using InputPair = std::pair<std::string, dronecore::ActionResult>;
+
+static constexpr auto ARBITRARY_ALTITUDE = 42.42f;
 
 std::vector<InputPair> generateInputPairs();
 std::string armAndGetTranslatedResult(dronecore::ActionResult arm_result);
@@ -263,6 +266,71 @@ TEST_F(ActionServiceImplTest, transitions2mcEvenWhenArgsAreNull)
     .Times(1);
 
     actionService.TransitionToMulticopter(nullptr, nullptr, nullptr);
+}
+
+TEST_F(ActionServiceImplTest, getTakeoffAltitudeCallsGetter)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, get_takeoff_altitude_m())
+    .Times(1);
+    dronecore::rpc::action::GetTakeoffAltitudeResponse response;
+
+    actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
+}
+
+TEST_F(ActionServiceImplTest, getsCorrectTakeoffAltitude)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    const float expected_altitude = ARBITRARY_ALTITUDE;
+    ON_CALL(action, get_takeoff_altitude_m())
+    .WillByDefault(Return(expected_altitude));
+    dronecore::rpc::action::GetTakeoffAltitudeResponse response;
+
+    actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
+
+    EXPECT_EQ(expected_altitude, response.altitude_m());
+}
+
+TEST_F(ActionServiceImplTest, getTakeoffAltitudeDoesNotCrashWithNullResponse)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+
+    actionService.GetTakeoffAltitude(nullptr, nullptr, nullptr);
+}
+
+TEST_F(ActionServiceImplTest, setTakeoffAltitudeDoesNotCrashWithNullRequest)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+
+    actionService.SetTakeoffAltitude(nullptr, nullptr, nullptr);
+}
+
+TEST_F(ActionServiceImplTest, setTakeoffAltitudeCallsSetter)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, set_takeoff_altitude(_))
+    .Times(1);
+    dronecore::rpc::action::SetTakeoffAltitudeRequest request;
+
+    actionService.SetTakeoffAltitude(nullptr, &request, nullptr);
+}
+
+TEST_F(ActionServiceImplTest, setTakeoffAltitudeSetsRightValue)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    float expected_altitude = ARBITRARY_ALTITUDE;
+    EXPECT_CALL(action, set_takeoff_altitude(expected_altitude))
+    .Times(1);
+    dronecore::rpc::action::SetTakeoffAltitudeRequest request;
+    request.set_altitude_m(expected_altitude);
+
+    actionService.SetTakeoffAltitude(nullptr, &request, nullptr);
 }
 
 INSTANTIATE_TEST_CASE_P(ActionResultCorrespondences,

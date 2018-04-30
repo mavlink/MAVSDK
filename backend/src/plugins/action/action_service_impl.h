@@ -8,7 +8,7 @@ template <typename Action = Action>
 class ActionServiceImpl final : public dronecore::rpc::action::ActionService::Service
 {
 public:
-    ActionServiceImpl(const Action &action)
+    ActionServiceImpl(Action &action)
         : _action(action) {}
 
     grpc::Status Arm(grpc::ServerContext * /* context */,
@@ -127,8 +127,32 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status GetTakeoffAltitude(grpc::ServerContext * /* context */,
+                                    const dronecore::rpc::action::GetTakeoffAltitudeRequest * /* request */,
+                                    dronecore::rpc::action::GetTakeoffAltitudeResponse *response) override
+    {
+        if (response != nullptr) {
+            auto takeoff_altitude = _action.get_takeoff_altitude_m();
+            response->set_altitude_m(takeoff_altitude);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetTakeoffAltitude(grpc::ServerContext * /* context */,
+                                    const dronecore::rpc::action::SetTakeoffAltitudeRequest *request,
+                                    dronecore::rpc::action::SetTakeoffAltitudeResponse * /* response */) override
+    {
+        if (request != nullptr) {
+            const auto requested_altitude = request->altitude_m();
+            _action.set_takeoff_altitude(requested_altitude);
+        }
+
+        return grpc::Status::OK;
+    }
+
 private:
-    const Action &_action;
+    Action &_action;
 };
 
 } // namespace backend
