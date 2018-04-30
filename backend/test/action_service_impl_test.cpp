@@ -19,8 +19,10 @@ using InputPair = std::pair<std::string, dronecore::ActionResult>;
 
 std::vector<InputPair> generateInputPairs();
 std::string armAndGetTranslatedResult(dronecore::ActionResult arm_result);
+std::string disarmAndGetTranslatedResult(dronecore::ActionResult disarm_result);
 std::string takeoffAndGetTranslatedResult(dronecore::ActionResult takeoff_result);
 std::string landAndGetTranslatedResult(dronecore::ActionResult land_result);
+std::string killAndGetTranslatedResult(dronecore::ActionResult kill_result);
 
 class ActionServiceImplTest : public ::testing::TestWithParam<InputPair> {};
 
@@ -43,6 +45,45 @@ std::string armAndGetTranslatedResult(const dronecore::ActionResult arm_result)
     return ActionResult::Result_Name(response.action_result().result());
 }
 
+TEST_F(ActionServiceImplTest, armsEvenWhenArgsAreNull)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, arm())
+    .Times(1);
+
+    actionService.Arm(nullptr, nullptr, nullptr);
+}
+
+TEST_P(ActionServiceImplTest, disarmResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = disarmAndGetTranslatedResult(GetParam().second);
+    EXPECT_EQ(rpc_result, GetParam().first);
+}
+
+std::string disarmAndGetTranslatedResult(dronecore::ActionResult disarm_result)
+{
+    MockAction action;
+    ON_CALL(action, disarm())
+        .WillByDefault(Return(disarm_result));
+    ActionServiceImpl actionService(action);
+    dronecore::rpc::action::DisarmResponse response;
+
+    actionService.Disarm(nullptr, nullptr, &response);
+
+    return ActionResult::Result_Name(response.action_result().result());
+}
+
+TEST_F(ActionServiceImplTest, disarmsEvenWhenArgsAreNull)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, disarm())
+    .Times(1);
+
+    actionService.Disarm(nullptr, nullptr, nullptr);
+}
+
 TEST_P(ActionServiceImplTest, takeoffResultIsTranslatedCorrectly)
 {
     const auto rpc_result = takeoffAndGetTranslatedResult(GetParam().second);
@@ -60,6 +101,16 @@ std::string takeoffAndGetTranslatedResult(const dronecore::ActionResult takeoff_
     actionService.Takeoff(nullptr, nullptr, &response);
 
     return ActionResult::Result_Name(response.action_result().result());
+}
+
+TEST_F(ActionServiceImplTest, takeoffEvenWhenArgsAreNull)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, takeoff())
+    .Times(1);
+
+    actionService.Takeoff(nullptr, nullptr, nullptr);
 }
 
 TEST_P(ActionServiceImplTest, landResultIsTranslatedCorrectly)
@@ -81,6 +132,44 @@ std::string landAndGetTranslatedResult(const dronecore::ActionResult land_result
     return ActionResult::Result_Name(response.action_result().result());
 }
 
+TEST_F(ActionServiceImplTest, landsEvenWhenArgsAreNull)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, land())
+    .Times(1);
+
+    actionService.Land(nullptr, nullptr, nullptr);
+}
+
+TEST_P(ActionServiceImplTest, killResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = killAndGetTranslatedResult(GetParam().second);
+    EXPECT_EQ(rpc_result, GetParam().first);
+}
+
+std::string killAndGetTranslatedResult(const dronecore::ActionResult kill_result)
+{
+    MockAction action;
+    ON_CALL(action, kill())
+    .WillByDefault(Return(kill_result));
+    ActionServiceImpl actionService(action);
+    dronecore::rpc::action::KillResponse response;
+
+    actionService.Kill(nullptr, nullptr, &response);
+
+    return ActionResult::Result_Name(response.action_result().result());
+}
+
+TEST_F(ActionServiceImplTest, killsEvenWhenArgsAreNull)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, kill())
+    .Times(1);
+
+    actionService.Kill(nullptr, nullptr, nullptr);
+}
 
 INSTANTIATE_TEST_CASE_P(ActionResultCorrespondences,
                         ActionServiceImplTest,

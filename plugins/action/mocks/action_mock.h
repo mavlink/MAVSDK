@@ -9,8 +9,10 @@ class MockAction
 {
 public:
     MOCK_CONST_METHOD0(arm, ActionResult());
+    MOCK_CONST_METHOD0(disarm, ActionResult());
     MOCK_CONST_METHOD0(takeoff, ActionResult());
     MOCK_CONST_METHOD0(land, ActionResult());
+    MOCK_CONST_METHOD0(kill, ActionResult());
 };
 
 } // namespace testing

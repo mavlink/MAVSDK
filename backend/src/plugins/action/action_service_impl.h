@@ -16,6 +16,17 @@ public:
                      dronecore::rpc::action::ArmResponse *response)
     {
         auto action_result = _action.arm();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, action_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    template <typename ResponseType>
+    void fillResponseWithResult(ResponseType* response, ActionResult &action_result) const
+    {
         auto rpc_result = static_cast<dronecore::rpc::action::ActionResult::Result>(action_result);
 
         auto *rpc_action_result = new dronecore::rpc::action::ActionResult();
@@ -23,6 +34,17 @@ public:
         rpc_action_result->set_result_str(dronecore::action_result_str(action_result));
 
         response->set_allocated_action_result(rpc_action_result);
+    }
+
+    grpc::Status Disarm(grpc::ServerContext * /* context */,
+                        const dronecore::rpc::action::DisarmRequest * /* request */,
+                        dronecore::rpc::action::DisarmResponse *response)
+    {
+        auto action_result = _action.disarm();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, action_result);
+        }
 
         return grpc::Status::OK;
     }
@@ -32,13 +54,10 @@ public:
                          dronecore::rpc::action::TakeoffResponse *response)
     {
         auto action_result = _action.takeoff();
-        auto rpc_result = static_cast<dronecore::rpc::action::ActionResult::Result>(action_result);
 
-        auto *rpc_action_result = new dronecore::rpc::action::ActionResult();
-        rpc_action_result->set_result(rpc_result);
-        rpc_action_result->set_result_str(dronecore::action_result_str(action_result));
-
-        response->set_allocated_action_result(rpc_action_result);
+        if (response != nullptr) {
+            fillResponseWithResult(response, action_result);
+        }
 
         return grpc::Status::OK;
     }
@@ -48,16 +67,27 @@ public:
                       dronecore::rpc::action::LandResponse *response)
     {
         auto action_result = _action.land();
-        auto rpc_result = static_cast<dronecore::rpc::action::ActionResult::Result>(action_result);
 
-        auto *rpc_action_result = new dronecore::rpc::action::ActionResult();
-        rpc_action_result->set_result(rpc_result);
-        rpc_action_result->set_result_str(dronecore::action_result_str(action_result));
-
-        response->set_allocated_action_result(rpc_action_result);
+        if (response != nullptr) {
+            fillResponseWithResult(response, action_result);
+        }
 
         return grpc::Status::OK;
     }
+
+    grpc::Status Kill(grpc::ServerContext * /* context */,
+                      const dronecore::rpc::action::KillRequest * /* request */,
+                      dronecore::rpc::action::KillResponse *response)
+    {
+        auto action_result = _action.kill();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, action_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
 private:
     const Action &_action;
 };
