@@ -8,10 +8,8 @@
 #include "udp_connection.h"
 #include "system.h"
 #include "mavlink_system.h"
-
-#ifndef WINDOWS
 #include "serial_connection.h"
-#endif
+#include "cli_arg.h"
 
 namespace dronecore {
 
@@ -101,81 +99,59 @@ bool DroneCoreImpl::send_message(const mavlink_message_t &message)
 
 ConnectionResult DroneCoreImpl::add_any_connection(const std::string &connection_url)
 {
-    std::string delimiter = "://";
-    std::string conn_url(connection_url);
-    std::vector<std::string> connection_str;
-    size_t pos = 0;
-    /*Parse the connection url to get Protocol, IP or Serial dev node
-      and port number or baudrate as per the URL definition
-    */
-    for (int i = 0; i < 2; i++) {
-        pos = conn_url.find(delimiter);
-        if (pos != std::string::npos) {
-            connection_str.push_back(conn_url.substr(0, pos));
-            // Erase the string which is parsed already
-            conn_url.erase(0, pos + delimiter.length());
-            if (conn_url == "") {
-                break;
+    CliArg cli_arg;
+    if (!cli_arg.parse(connection_url)) {
+        return ConnectionResult::CONNECTION_URL_INVALID;
+    }
+
+    switch (cli_arg.get_protocol()) {
+        case CliArg::Protocol::UDP: {
+                std::string path = DroneCore::DEFAULT_UDP_BIND_IP;
+                int port = DroneCore::DEFAULT_UDP_PORT;
+                if (!cli_arg.get_path().empty()) {
+                    path = cli_arg.get_path();
+                }
+                if (cli_arg.get_port()) {
+                    port = cli_arg.get_port();
+                }
+                return add_udp_connection(path, port);
             }
-            delimiter = ":";
-        }
-    }
-    connection_str.push_back(conn_url);
-    /* check if the protocol is Network protocol or Serial */
-    if (connection_str.at(0) != "serial") {
-        int port = 0;
-        if (connection_str.at(2) != "") {
-            port = std::stoi(connection_str.at(2));
-        }
-        return add_link_connection(connection_str.at(0), connection_str.at(1),
-                                   port);
-    } else {
-        if (connection_str.at(1) == "") {
-            return add_serial_connection(DroneCore::DEFAULT_SERIAL_DEV_PATH,
-                                         DroneCore::DEFAULT_SERIAL_BAUDRATE);
-        } else {
-            return add_serial_connection(connection_str.at(1), std::stoi(connection_str.at(2)));
-        }
+
+        case CliArg::Protocol::TCP: {
+                std::string path = DroneCore::DEFAULT_TCP_REMOTE_IP;
+                int port = DroneCore::DEFAULT_TCP_REMOTE_PORT;
+                if (!cli_arg.get_path().empty()) {
+                    path = cli_arg.get_path();
+                }
+                if (cli_arg.get_port()) {
+                    port = cli_arg.get_port();
+                }
+                return add_tcp_connection(path, port);
+            }
+
+        case CliArg::Protocol::SERIAL: {
+                int baudrate = DroneCore::DEFAULT_SERIAL_BAUDRATE;
+                if (cli_arg.get_baudrate()) {
+                    baudrate = cli_arg.get_baudrate();
+                }
+                return add_serial_connection(cli_arg.get_path(), baudrate);
+            }
+
+        default:
+            return ConnectionResult::CONNECTION_ERROR;
     }
 }
 
-ConnectionResult DroneCoreImpl::add_link_connection(const std::string &protocol,
-                                                    const std::string &ip, const int port)
+ConnectionResult DroneCoreImpl::add_udp_connection(const std::string &local_ip,
+                                                   const int local_port)
 {
-    int local_port_number = 0;
-    std::string local_ip = ip;
-    if (port == 0) {
-        if (ip != "") {
-            local_port_number = std::stoi(ip);
-            /* default ip for tcp if only port number is specified */
-            local_ip = "127.0.0.1";
-        }
-    } else {
-        local_port_number = port;
-    }
-
-    if (protocol == "udp") {
-        return add_udp_connection(local_port_number);
-    } else { //TCP connection
-        return add_tcp_connection(local_ip, local_port_number);
-    }
-}
-
-ConnectionResult DroneCoreImpl::add_udp_connection(int local_port_number)
-{
-    auto new_conn = std::make_shared<UdpConnection>(*this, local_port_number);
+    auto new_conn = std::make_shared<UdpConnection>(*this, local_ip, local_port);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
         add_connection(new_conn);
     }
     return ret;
-}
-
-void DroneCoreImpl::add_connection(std::shared_ptr<Connection> new_connection)
-{
-    std::lock_guard<std::mutex> lock(_connections_mutex);
-    _connections.push_back(new_connection);
 }
 
 ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
@@ -193,7 +169,6 @@ ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
 ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_path,
                                                       int baudrate)
 {
-#if !defined(WINDOWS)
     auto new_conn = std::make_shared<SerialConnection>(*this, dev_path, baudrate);
 
     ConnectionResult ret = new_conn->start();
@@ -201,11 +176,12 @@ ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_pat
         add_connection(new_conn);
     }
     return ret;
-#else
-    UNUSED(dev_path);
-    UNUSED(baudrate);
-    return ConnectionResult::NOT_IMPLEMENTED;
-#endif
+}
+
+void DroneCoreImpl::add_connection(std::shared_ptr<Connection> new_connection)
+{
+    std::lock_guard<std::mutex> lock(_connections_mutex);
+    _connections.push_back(new_connection);
 }
 
 std::vector<uint64_t> DroneCoreImpl::get_system_uuids() const
