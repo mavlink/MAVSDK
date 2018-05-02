@@ -12,7 +12,7 @@ service ActionService {
     rpc Land(LandRequest) returns(LandResponse) {}
     rpc Kill(KillRequest) returns(KillResponse) {}
     rpc ReturnToLaunch(ReturnToLaunchRequest) returns(ReturnToLaunchResponse) {}
-    rpc TransitionToFixedWings(TransitionToFixedWingsRequest) returns(TransitionToFixedWingsResponse) {}
+    rpc TransitionToFixedWing(TransitionToFixedWingRequest) returns(TransitionToFixedWingResponse) {}
     rpc TransitionToMulticopter(TransitionToMulticopterRequest) returns(TransitionToMulticopterResponse) {}
     rpc GetTakeoffAltitude(GetTakeoffAltitudeRequest) returns(GetTakeoffAltitudeResponse) {}
     rpc SetTakeoffAltitude(SetTakeoffAltitudeRequest) returns(SetTakeoffAltitudeResponse) {}
@@ -50,8 +50,8 @@ message ReturnToLaunchResponse {
     ActionResult action_result = 1;
 }
 
-message TransitionToFixedWingsRequest {}
-message TransitionToFixedWingsResponse {
+message TransitionToFixedWingRequest {}
+message TransitionToFixedWingResponse {
     ActionResult action_result = 1;
 }
 
