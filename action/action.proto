@@ -68,9 +68,7 @@ message GetTakeoffAltitudeResponse {
 message SetTakeoffAltitudeRequest {
     float altitude_m = 1;
 }
-message SetTakeoffAltitudeResponse {
-    ActionResult action_result = 1;
-}
+message SetTakeoffAltitudeResponse {}
 
 message GetMaximumSpeedRequest {}
 message GetMaximumSpeedResponse {
@@ -80,9 +78,7 @@ message GetMaximumSpeedResponse {
 message SetMaximumSpeedRequest {
     float speed_m_s = 1;
 }
-message SetMaximumSpeedResponse {
-    ActionResult action_result = 1;
-}
+message SetMaximumSpeedResponse {}
 
 message ActionResult {
     enum Result {
