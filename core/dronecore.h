@@ -59,9 +59,11 @@ public:
     ConnectionResult add_any_connection(const std::string &connection_url);
 
     /**
-     * @brief Adds a UDP connection to the specified port number on 0.0.0.0 on any local interface.
+     * @brief Adds a UDP connection to the specified port number.
      *
-     * @param local_port The local UDP port to listen to (defaults to 14540, the same as mavros).
+     * Any incoming connections are accepted (0.0.0.0).
+     *
+     * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
      * @return The result of adding the connection.
      */
     ConnectionResult add_udp_connection(int local_port = DEFAULT_UDP_PORT);
@@ -69,11 +71,11 @@ public:
     /**
      * @brief Adds a UDP connection to the specified port number and local interface.
      *
-     * To accept only connections local connections of the machine, use 127.0.0.1, for any
-     * incoming connections, use 0.0.0.0.
+     * To accept only local connections of the machine, use 127.0.0.1.
+     * For any incoming connections, use 0.0.0.0.
      *
      * @param local_bind_ip The local UDP ip to listen to.
-     * @param local_port The local UDP port to listen to (defaults to 14540, the same as mavros).
+     * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
      * @return The result of adding the connection.
      */
     ConnectionResult add_udp_connection(const std::string &local_ip,
