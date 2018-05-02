@@ -149,7 +149,7 @@ public:
                                   const dronecore::rpc::telemetry::SubscribeBatteryRequest * /* request */,
                                   grpc::ServerWriter<rpc::telemetry::BatteryResponse> *writer) override
     {
-        _telemetry.battery_async([this, &writer](dronecore::Telemetry::Battery battery) {
+        _telemetry.battery_async([&writer](dronecore::Telemetry::Battery battery) {
             auto rpc_battery = new dronecore::rpc::telemetry::Battery();
             rpc_battery->set_voltage_v(battery.voltage_v);
             rpc_battery->set_remaining_percent(battery.remaining_percent);
