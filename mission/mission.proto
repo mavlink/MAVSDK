@@ -26,7 +26,8 @@ message UploadMissionResponse {
 
 message DownloadMissionRequest {}
 message DownloadMissionResponse {
-    Mission mission = 1;
+    MissionResult mission_result = 1;
+    Mission mission = 2;
 }
 
 message StartMissionRequest {}
