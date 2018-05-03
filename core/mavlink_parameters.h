@@ -476,7 +476,7 @@ public:
             } else if (_value.is<int16_t>()) {
                 return _value.as<int16_t>() == std::stoi(value_str.c_str());
             } else if (_value.is<uint32_t>()) {
-                return _value.as<uint32_t>() == std::stol(value_str.c_str());
+                return _value.as<uint32_t>() == std::stoul(value_str.c_str());
             } else if (_value.is<int32_t>()) {
                 return _value.as<int32_t>() == std::stol(value_str.c_str());
             } else if (_value.is<uint64_t>()) {
