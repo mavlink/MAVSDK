@@ -679,7 +679,11 @@ void MAVLinkSystem::receive_float_param(bool success, MAVLinkParameters::ParamVa
                                         get_param_float_callback_t callback)
 {
     if (callback) {
-        callback(success, value.get_float());
+        if (success) {
+            callback(success, value.get_float());
+        } else {
+            callback(success, NAN);
+        }
     }
 }
 
@@ -687,7 +691,11 @@ void MAVLinkSystem::receive_int_param(bool success, MAVLinkParameters::ParamValu
                                       get_param_int_callback_t callback)
 {
     if (callback) {
-        callback(success, value.get_int32());
+        if (success) {
+            callback(success, value.get_int32());
+        } else {
+            callback(success, 0);
+        }
     }
 }
 
