@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(COMPONENTS_LIST core action mission telemetry)
+set(COMPONENTS_LIST core action camera mission telemetry)
 
 include(cmake/compile_proto.cmake)
 
@@ -37,6 +37,7 @@ endif()
 target_link_libraries(backend
     dronecore
     dronecore_action
+    dronecore_camera
     dronecore_mission
     dronecore_telemetry
     gRPC::grpc++

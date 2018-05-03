@@ -5,6 +5,8 @@
 
 #include "action/action.h"
 #include "action/action_service_impl.h"
+#include "camera/camera.h"
+#include "camera/camera_service_impl.h"
 #include "core/core_service_impl.h"
 #include "dronecore.h"
 #include "mission/mission.h"
@@ -22,6 +24,8 @@ public:
           _core(_dc),
           _action(_dc.system()),
           _action_service(_action),
+          _camera(_dc.system()),
+          _camera_service(_camera),
           _mission(_dc.system()),
           _mission_service(_mission),
           _telemetry(_dc.system()),
@@ -41,6 +45,8 @@ private:
     CoreServiceImpl<> _core;
     Action _action;
     ActionServiceImpl<> _action_service;
+    Camera _camera;
+    CameraServiceImpl<> _camera_service;
     Mission _mission;
     MissionServiceImpl<> _mission_service;
     Telemetry _telemetry;

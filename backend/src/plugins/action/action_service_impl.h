@@ -101,9 +101,9 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status TransitionToFixedWings(grpc::ServerContext * /* context */,
-                                        const rpc::action::TransitionToFixedWingsRequest * /* request */,
-                                        rpc::action::TransitionToFixedWingsResponse *response) override
+    grpc::Status TransitionToFixedWing(grpc::ServerContext * /* context */,
+                                       const rpc::action::TransitionToFixedWingRequest * /* request */,
+                                       rpc::action::TransitionToFixedWingResponse *response) override
     {
         auto action_result = _action.transition_to_fixedwing();
 

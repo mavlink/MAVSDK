@@ -47,14 +47,14 @@ public:
      * @brief Possible results returned for camera commands.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief Camera command executed successfully. */
+        UNKNOWN, /**< @brief The result is unknown. */
+        SUCCESS, /**< @brief Camera command executed successfully. */
         IN_PROGRESS, /**< @brief Camera command is in progress. */
         BUSY, /**< @brief Camera is busy and rejected command. */
         DENIED, /**< @brief Camera has denied the command. */
         ERROR, /**< @brief An error has occurred while executing the command. */
         TIMEOUT, /**< @brief Camera has not responded in time and the command has timed out. */
-        WRONG_ARGUMENT, /**< @brief The command has wrong arguments. */
-        UNKNOWN /**< @brief The result is unknown. */
+        WRONG_ARGUMENT /**< @brief The command has wrong arguments. */
     };
 
     /**
