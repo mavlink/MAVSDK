@@ -222,9 +222,9 @@ std::string transitionToFWAndGetTranslatedResult(const dronecore::ActionResult
     ON_CALL(action, transition_to_fixedwing())
     .WillByDefault(Return(transition_to_fw_result));
     ActionServiceImpl actionService(action);
-    dronecore::rpc::action::TransitionToFixedWingsResponse response;
+    dronecore::rpc::action::TransitionToFixedWingResponse response;
 
-    actionService.TransitionToFixedWings(nullptr, nullptr, &response);
+    actionService.TransitionToFixedWing(nullptr, nullptr, &response);
 
     return ActionResult::Result_Name(response.action_result().result());
 }
@@ -236,7 +236,7 @@ TEST_F(ActionServiceImplTest, transitions2fwEvenWhenArgsAreNull)
     EXPECT_CALL(action, transition_to_fixedwing())
     .Times(1);
 
-    actionService.TransitionToFixedWings(nullptr, nullptr, nullptr);
+    actionService.TransitionToFixedWing(nullptr, nullptr, nullptr);
 }
 
 TEST_P(ActionServiceImplTest, transition2mcResultIsTranslatedCorrectly)
