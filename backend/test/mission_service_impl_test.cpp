@@ -165,7 +165,21 @@ MissionServiceImplUploadTest::generateUploadRequest(const
 RPCCameraAction MissionServiceImplUploadTest::translateCameraAction(const CameraAction
                                                                     camera_action) const
 {
-    return static_cast<RPCCameraAction>(camera_action);
+    switch (camera_action) {
+        case CameraAction::TAKE_PHOTO:
+            return RPCCameraAction::MissionItem_CameraAction_TAKE_PHOTO;
+        case CameraAction::START_PHOTO_INTERVAL:
+            return RPCCameraAction::MissionItem_CameraAction_START_PHOTO_INTERVAL;
+        case CameraAction::STOP_PHOTO_INTERVAL:
+            return RPCCameraAction::MissionItem_CameraAction_STOP_PHOTO_INTERVAL;
+        case CameraAction::START_VIDEO:
+            return RPCCameraAction::MissionItem_CameraAction_START_VIDEO;
+        case CameraAction::STOP_VIDEO:
+            return RPCCameraAction::MissionItem_CameraAction_STOP_VIDEO;
+        case CameraAction::NONE:
+        default:
+            return RPCCameraAction::MissionItem_CameraAction_NONE;
+    }
 }
 
 TEST_F(MissionServiceImplUploadTest, uploadsEmptyMissionWhenNullRequest)

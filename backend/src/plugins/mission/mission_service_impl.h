@@ -85,7 +85,21 @@ private:
     MissionItem::CameraAction
     translateRPCCameraAction(const rpc::mission::MissionItem::CameraAction rpc_camera_action) const
     {
-        return static_cast<MissionItem::CameraAction>(rpc_camera_action);
+        switch (rpc_camera_action) {
+            case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_TAKE_PHOTO:
+                return MissionItem::CameraAction::TAKE_PHOTO;
+            case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_START_PHOTO_INTERVAL:
+                return MissionItem::CameraAction::START_PHOTO_INTERVAL;
+            case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_STOP_PHOTO_INTERVAL:
+                return MissionItem::CameraAction::STOP_PHOTO_INTERVAL;
+            case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_START_VIDEO:
+                return MissionItem::CameraAction::START_VIDEO;
+            case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_STOP_VIDEO:
+                return MissionItem::CameraAction::STOP_VIDEO;
+            case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_NONE:
+            default:
+                return MissionItem::CameraAction::NONE;
+        }
     }
 
     void uploadMissionItems(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
