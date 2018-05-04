@@ -26,8 +26,12 @@ static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
 static void compare_mission_items(const std::shared_ptr<MissionItem> original,
                                   const std::shared_ptr<MissionItem> downloaded);
 
+static void pause_and_resume(std::shared_ptr<Mission> mission);
+
 // Set to 50 to test with about 1200 mission items.
 static constexpr int test_with_many_items = 1;
+
+static bool pause_already_done = false;
 
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
@@ -47,7 +51,11 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         ConnectionResult ret = dc.add_udp_connection();
         ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
+        auto status = future_result.wait_for(std::chrono::seconds(2));
+        ASSERT_EQ(status, std::future_status::ready);
         future_result.get();
+        // FIXME: This hack is to prevent that the promise is set twice.
+        dc.register_on_discover(nullptr);
     }
 
 
@@ -129,6 +137,8 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
             LogInfo() << "Mission uploaded.";
         });
 
+        auto status = future_result.wait_for(std::chrono::seconds(2));
+        ASSERT_EQ(status, std::future_status::ready);
         future_result.get();
     }
 
@@ -156,6 +166,8 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
             }
         });
 
+        auto status = future_result.wait_for(std::chrono::seconds(2));
+        ASSERT_EQ(status, std::future_status::ready);
         future_result.get();
 
     }
@@ -166,16 +178,13 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     LogInfo() << "Armed.";
 
 
-    std::atomic<bool> want_to_pause {false};
-
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
     mission->subscribe_progress(
-    [&want_to_pause](int current, int total) {
+    [&mission](int current, int total) {
         LogInfo() << "Mission status update: " << current << " / " << total;
-        if (current >= 2) {
-            // We can only set a flag here. If we do more request inside the callback,
-            // we risk blocking the system.
-            want_to_pause = true;
+        if (current >= 2 && !pause_already_done) {
+            pause_already_done = true;
+            pause_and_resume(mission);
         }
     });
 
@@ -190,44 +199,9 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
             LogInfo() << "Started mission.";
         });
 
+        auto status = future_result.wait_for(std::chrono::seconds(2));
+        ASSERT_EQ(status, std::future_status::ready);
         future_result.get();
-    }
-
-
-    while (!want_to_pause) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-
-    {
-        auto prom = std::make_shared<std::promise<void>>();
-        auto future_result = prom->get_future();
-        LogInfo() << "Pausing mission...";
-        mission->pause_mission_async(
-        [prom](Mission::Result result) {
-            EXPECT_EQ(result, Mission::Result::SUCCESS);
-            prom->set_value();
-        });
-
-        future_result.get();
-        LogInfo() << "Mission paused.";
-    }
-
-    // Pause for 5 seconds.
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-
-    // Then continue.
-    {
-        auto prom = std::make_shared<std::promise<void>>();
-        auto future_result = prom->get_future();
-        LogInfo() << "Resuming mission...";
-        mission->start_mission_async(
-        [prom](Mission::Result result) {
-            EXPECT_EQ(result, Mission::Result::SUCCESS);
-            prom->set_value();
-        });
-
-        future_result.get();
-        LogInfo() << "Mission resumed.";
     }
 
     while (!mission->mission_finished()) {
@@ -305,5 +279,43 @@ void compare_mission_items(const std::shared_ptr<MissionItem> original,
     if (std::isfinite(original->get_loiter_time_s())) {
         EXPECT_FLOAT_EQ(original->get_loiter_time_s(),
                         downloaded->get_loiter_time_s());
+    }
+}
+
+void pause_and_resume(std::shared_ptr<Mission> mission)
+{
+    {
+        // We pause inside the callback and hope not to get blocked.
+        auto prom = std::make_shared<std::promise<void>>();
+        auto future_result = prom->get_future();
+        mission->pause_mission_async([prom](Mission::Result result) {
+            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            prom->set_value();
+            LogInfo() << "Mission paused.";
+        });
+
+        auto status = future_result.wait_for(std::chrono::seconds(2));
+        ASSERT_EQ(status, std::future_status::ready);
+        future_result.get();
+    }
+
+    // Pause for 5 seconds.
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    // Then continue.
+    {
+        auto prom = std::make_shared<std::promise<void>>();
+        auto future_result = prom->get_future();
+        LogInfo() << "Resuming mission...";
+        mission->start_mission_async(
+        [prom](Mission::Result result) {
+            EXPECT_EQ(result, Mission::Result::SUCCESS);
+            prom->set_value();
+        });
+
+        auto status = future_result.wait_for(std::chrono::seconds(2));
+        ASSERT_EQ(status, std::future_status::ready);
+        future_result.get();
+        LogInfo() << "Mission resumed.";
     }
 }
