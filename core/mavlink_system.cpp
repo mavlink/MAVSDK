@@ -875,6 +875,19 @@ void MAVLinkSystem::unregister_plugin(PluginImplBase *plugin_impl)
     }
 }
 
+void MAVLinkSystem::call_user_callback(const std::function<void()> &func)
+{
+    // Maybe we should be using a thread pool but for now, let's try
+    // if std::async is good enough and not much overhead.
+
+    // std::async returns a future, in order to destruct it we need to do a blocking wait
+    // that we don't want to do here, therefore we stash it away and clean it up later.
+    auto some_future = std::async(std::launch::async | std::launch::deferred, func);
+
+    // FIXME: we need to clean up this vector every now and then.
+    _pending_futures.push_back(std::move(some_future));
+}
+
 void MAVLinkSystem::lock_communication()
 {
     _communication_locked = true;
