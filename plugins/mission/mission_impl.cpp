@@ -139,32 +139,35 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     // We got some response, so it wasn't a timeout and we can remove it.
     _parent->unregister_timeout_handler(_timeout_cookie);
 
+    Mission::result_callback_t result_callback;
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        Mission::result_callback_t result_callback;
         result_callback = _mission_data.result_callback;
+    }
 
-        if (mission_ack.type == MAV_MISSION_ACCEPTED) {
-            // Reset current and reached; we don't want to get confused
-            // from earlier messages.
+    if (mission_ack.type == MAV_MISSION_ACCEPTED) {
+        // Reset current and reached; we don't want to get confused
+        // from earlier messages.
+        {
+            std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
             _mission_data.last_current_mavlink_mission_item = -1;
             _mission_data.last_reached_mavlink_mission_item = -1;
-            {
-                std::lock_guard<std::mutex> lock(_activity.mutex);
-                _activity.state = Activity::State::NONE;
-            }
-
-            report_mission_result(result_callback, Mission::Result::SUCCESS);
-            LogInfo() << "Mission accepted";
-
-        } else if (mission_ack.type == MAV_MISSION_NO_SPACE) {
-            LogErr() << "Error: too many waypoints: " << int(mission_ack.type);
-            report_mission_result(result_callback, Mission::Result::TOO_MANY_MISSION_ITEMS);
-
-        } else {
-            LogErr() << "Error: unknown mission ack: " << int(mission_ack.type);
-            report_mission_result(result_callback, Mission::Result::ERROR);
         }
+        {
+            std::lock_guard<std::mutex> lock(_activity.mutex);
+            _activity.state = Activity::State::NONE;
+        }
+
+        report_mission_result(result_callback, Mission::Result::SUCCESS);
+        LogInfo() << "Mission accepted";
+
+    } else if (mission_ack.type == MAV_MISSION_NO_SPACE) {
+        LogErr() << "Error: too many waypoints: " << int(mission_ack.type);
+        report_mission_result(result_callback, Mission::Result::TOO_MANY_MISSION_ITEMS);
+
+    } else {
+        LogErr() << "Error: unknown mission ack: " << int(mission_ack.type);
+        report_mission_result(result_callback, Mission::Result::ERROR);
     }
 }
 
