@@ -113,7 +113,7 @@ void MAVLinkSystem::process_mavlink_message(const mavlink_message_t &message)
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
+    _mavlink_handler_table_mutex.lock();
 
 #if MESSAGE_DEBUGGING==1
     bool forwarded = false;
@@ -124,9 +124,13 @@ void MAVLinkSystem::process_mavlink_message(const mavlink_message_t &message)
             LogDebug() << "Forwarding msg " << int(message.msgid) << " to " << size_t(it->cookie);
             forwarded = true;
 #endif
+            _mavlink_handler_table_mutex.unlock();
             it->callback(message);
+            _mavlink_handler_table_mutex.lock();
         }
     }
+    _mavlink_handler_table_mutex.unlock();
+
 #if MESSAGE_DEBUGGING==1
     if (!forwarded) {
         LogDebug() << "Ignoring msg " << int(message.msgid);
