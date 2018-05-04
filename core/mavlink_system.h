@@ -14,6 +14,7 @@
 #include <map>
 #include <thread>
 #include <mutex>
+#include <future>
 
 namespace dronecore {
 
@@ -163,6 +164,8 @@ public:
     void lock_communication();
     void unlock_communication();
 
+    void call_user_callback(const std::function<void()> &func);
+
     // Non-copyable
     MAVLinkSystem(const MAVLinkSystem &) = delete;
     const MAVLinkSystem &operator=(const MAVLinkSystem &) = delete;
@@ -261,6 +264,8 @@ private:
 
     // We used set to maintain unique component ids
     std::unordered_set<uint8_t> _components;
+
+    std::vector<std::future<void>> _pending_futures;
 };
 
 

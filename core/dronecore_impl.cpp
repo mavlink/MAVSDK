@@ -321,8 +321,10 @@ void DroneCoreImpl::register_on_discover(const DroneCore::event_callback_t callb
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
-    for (auto const &connected_system : _systems) {
-        callback(connected_system.second->get_uuid());
+    if (callback) {
+        for (auto const &connected_system : _systems) {
+            callback(connected_system.second->get_uuid());
+        }
     }
 
     _on_discover_callback = callback;

@@ -67,8 +67,8 @@ private:
 
     void assemble_mavlink_messages();
 
-    static void report_mission_result(const Mission::result_callback_t &callback,
-                                      Mission::Result result);
+    void report_mission_result(const Mission::result_callback_t &callback,
+                               Mission::Result result);
 
     void report_mission_items_and_result(const Mission::mission_items_and_result_callback_t &callback,
                                          Mission::Result result);
@@ -76,7 +76,7 @@ private:
     void report_progress();
 
     void receive_command_result(MAVLinkCommands::Result result,
-                                const Mission::result_callback_t &callback);
+                                const Mission::result_callback_t callback);
 
     void download_next_mission_item();
     void assemble_mission_items();
@@ -89,30 +89,36 @@ private:
                         std::shared_ptr<MissionItem> &new_mission_item,
                         Mission::mission_items_t &all_mission_items);
 
-    std::mutex _mutex {};
-    Mission::result_callback_t _result_callback = nullptr;
-    Mission::mission_items_and_result_callback_t _mission_items_and_result_callback = nullptr;
+    struct Activity {
+        mutable std::mutex mutex {};
+        enum class State {
+            NONE,
+            SET_CURRENT,
+            SET_MISSION,
+            GET_MISSION,
+            SEND_COMMAND
+        } state {Activity::State::NONE};
+    } _activity {};
 
-    enum class Activity {
-        NONE,
-        SET_CURRENT,
-        SET_MISSION,
-        GET_MISSION,
-        SEND_COMMAND
-    } _activity = Activity::NONE;
+    struct MissionData {
+        mutable std::recursive_mutex mutex {};
+        unsigned retries = 0;
+        int last_current_mavlink_mission_item {-1};
+        int last_reached_mavlink_mission_item {-1};
+        std::vector<std::shared_ptr<MissionItem>> mission_items {};
+        std::vector<std::shared_ptr<mavlink_message_t>> mavlink_mission_item_messages {};
+        std::map<int, int> mavlink_mission_item_to_mission_item_indices {};
+        int num_mission_items_to_download {-1};
+        int next_mission_item_to_download {-1};
+        std::vector<std::shared_ptr<mavlink_mission_item_int_t>> mavlink_mission_items_downloaded {};
+        Mission::result_callback_t result_callback {nullptr};
+        Mission::mission_items_and_result_callback_t mission_items_and_result_callback {nullptr};
+        Mission::progress_callback_t progress_callback {nullptr};
+    } _mission_data {};
 
-    unsigned _retries = 0;
+    void *_timeout_cookie {nullptr};
+
     static constexpr unsigned MAX_RETRIES = 3;
-
-    int _last_current_mavlink_mission_item = -1;
-    int _last_reached_mavlink_mission_item = -1;
-
-    std::vector<std::shared_ptr<MissionItem>> _mission_items {};
-    std::vector<std::shared_ptr<mavlink_message_t>> _mavlink_mission_item_messages {};
-
-    std::map<int, int> _mavlink_mission_item_to_mission_item_indices {};
-
-    Mission::progress_callback_t _progress_callback = nullptr;
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 
@@ -123,13 +129,8 @@ private:
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_LOITER = 3;
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_MISSION = 4;
 
-    int _num_mission_items_to_download = -1;
-    int _next_mission_item_to_download = -1;
-    std::vector<std::shared_ptr<mavlink_mission_item_int_t>> _mavlink_mission_items_downloaded {};
-
     static constexpr double RETRY_TIMEOUT_S = 0.250;
     static constexpr double PROCESS_TIMEOUT_S = 1.5;
-    void *_timeout_cookie = nullptr;
 };
 
 } // namespace dronecore
