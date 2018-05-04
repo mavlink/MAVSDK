@@ -958,11 +958,9 @@ void MissionImpl::report_progress()
         return;
     }
 
-    LogWarn() << "Progress callback calling";
     _parent->call_user_callback([this]() {
         _mission_data.progress_callback(current_mission_item(), total_mission_items());
     });
-    LogWarn() << "Progress callback called";
 }
 
 void MissionImpl::receive_command_result(MAVLinkCommands::Result result,
