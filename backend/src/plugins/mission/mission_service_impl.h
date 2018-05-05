@@ -164,6 +164,28 @@ private:
         return rpc_mission_result;
     }
 
+    grpc::Status SubscribeMissionProgress(grpc::ServerContext * /* context */,
+                                          const dronecore::rpc::mission::SubscribeMissionProgressRequest * /* request */,
+                                          grpc::ServerWriter<rpc::mission::MissionProgressResponse> *writer) override
+    {
+        std::promise<void> mission_finished_promise;
+        auto mission_finished_future = mission_finished_promise.get_future();
+
+        _mission.subscribe_progress([&writer, &mission_finished_promise](int current, int total) {
+            dronecore::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
+            rpc_mission_progress_response.set_current_item_index(current);
+            rpc_mission_progress_response.set_mission_count(total);
+            writer->Write(rpc_mission_progress_response);
+
+            if (current == total - 1) {
+                mission_finished_promise.set_value();
+            }
+        });
+
+        mission_finished_future.wait();
+        return grpc::Status::OK;
+    }
+
     Mission &_mission;
 };
 

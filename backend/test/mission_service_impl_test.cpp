@@ -1,5 +1,8 @@
 #include <future>
 #include <gmock/gmock.h>
+#include <grpc++/grpc++.h>
+#include <grpc++/server.h>
+#include <grpc++/server_builder.h>
 #include <utility>
 #include <vector>
 
@@ -18,6 +21,7 @@ using testing::Return;
 
 using MockMission = NiceMock<dc::testing::MockMission>;
 using MissionServiceImpl = dc::backend::MissionServiceImpl<MockMission>;
+using MissionService = dc::rpc::mission::MissionService;
 using InputPair = std::pair<std::string, dc::Mission::Result>;
 
 using UploadMissionRequest = dc::rpc::mission::UploadMissionRequest;
@@ -33,6 +37,7 @@ using PauseMissionRequest = dc::rpc::mission::PauseMissionRequest;
 using PauseMissionResponse = dc::rpc::mission::PauseMissionResponse;
 
 static constexpr auto ARBITRARY_RESULT = dc::Mission::Result::UNKNOWN;
+static constexpr auto ARBITRARY_SMALL_INT = 12;
 
 std::vector<InputPair> generateInputPairs();
 
@@ -49,7 +54,7 @@ protected:
     /* The mission service that is actually being tested here. */
     MissionServiceImpl _mission_service;
 
-    /* StartMission returns its result through a callback, which is saved in _result_callback. */
+    /* The mission returns its result through a callback, which is saved in _result_callback. */
     dc::Mission::result_callback_t _result_callback;
 
     /* The tests need to make sure that _result_callback has been set before calling it, hence the
@@ -424,6 +429,84 @@ TEST_P(MissionServiceImplPauseTest, pauseResultIsTranslatedCorrectly)
 
     EXPECT_EQ(GetParam().first,
               rpc::MissionResult::Result_Name(response->mission_result().result()));
+}
+
+class MissionServiceImplProgressTest : public MissionServiceImplTestBase
+{
+protected:
+    virtual void SetUp()
+    {
+        grpc::ServerBuilder builder;
+        builder.RegisterService(&_mission_service);
+        _server = builder.BuildAndStart();
+
+        grpc::ChannelArguments channel_args;
+        auto channel = _server->InProcessChannel(channel_args);
+        _stub = MissionService::NewStub(channel);
+    }
+
+    std::future<void> subscribeMissionProgressAsync(std::vector<std::pair<int, int>> &progress_events)
+    const;
+
+    std::unique_ptr<grpc::Server> _server;
+    std::unique_ptr<MissionService::Stub> _stub;
+};
+
+TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)
+{
+    dc::Mission::progress_callback_t progress_callback;
+    EXPECT_CALL(_mission, subscribe_progress(_))
+    .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
+    std::vector<std::pair<int, int>> progress_events;
+
+    auto progress_events_future = subscribeMissionProgressAsync(progress_events);
+    _callback_saved_future.wait();
+    progress_callback(0, 1);
+    progress_events_future.wait();
+}
+
+std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
+    std::vector<std::pair<int, int>> &progress_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::mission::SubscribeMissionProgressRequest request;
+        auto response_reader = _stub->SubscribeMissionProgress(&context, request);
+
+        dronecore::rpc::mission::MissionProgressResponse response;
+        while (response_reader->Read(&response)) {
+            auto progress_event = std::make_pair(response.current_item_index(), response.mission_count());
+
+            progress_events.push_back(progress_event);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(MissionServiceImplProgressTest, SendsMultipleMissionProgressEvents)
+{
+    dc::Mission::progress_callback_t progress_callback;
+    EXPECT_CALL(_mission, subscribe_progress(_))
+    .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
+
+    auto expected_mission_count = ARBITRARY_SMALL_INT;
+    std::vector<std::pair<int, int>> expected_progress_events;
+    for (int i = 0; i < expected_mission_count; i++) {
+        expected_progress_events.push_back(std::make_pair(i, expected_mission_count));
+    }
+    std::vector<std::pair<int, int>> received_progress_events;
+
+    auto progress_events_future = subscribeMissionProgressAsync(received_progress_events);
+    _callback_saved_future.wait();
+
+    for (const auto progress_event : expected_progress_events) {
+        progress_callback(progress_event.first, progress_event.second);
+    }
+    progress_events_future.wait();
+
+    ASSERT_EQ(expected_mission_count, received_progress_events.size());
+    EXPECT_EQ(expected_progress_events, received_progress_events);
 }
 
 std::vector<InputPair> generateInputPairs()
