@@ -1,6 +1,7 @@
 if(MSVC)
     add_definitions(-DWINDOWS)
     set(warnings "-WX -W2")
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
     # We need this so Windows links to e.g. dronecore_telemetry.dll.
     # Without this option it will look for dronecore_telemetry.lib and fail.
