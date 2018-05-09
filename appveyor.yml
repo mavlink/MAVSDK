@@ -143,19 +143,17 @@ test: on
 test_script:
   - cd %dronecore_dir%
   - if "%configuration%"=="Debug" (
-      copy build\third_party\gtest\googlemock\gtest\Debug\gtestd.dll build\Debug\ &&
-      copy build\third_party\gtest\googlemock\gtest\Debug\gtest_maind.dll build\Debug\ &&
-      copy build\third_party\gtest\googlemock\Debug\gmockd.dll build\Debug\ &&
+      copy build\third_party\gtest\googlemock\gtest\Debug\gtestd.lib build\Debug\ &&
+      copy build\third_party\gtest\googlemock\gtest\Debug\gtest_maind.lib build\Debug\ &&
+      copy build\third_party\gtest\googlemock\Debug\gmockd.lib build\Debug\ &&
       copy build\plugins\mission\Debug\dronecore_mission.dll build\Debug\ &&
       copy build\plugins\camera\Debug\dronecore_camera.dll build\Debug\ &&
-      copy build\third_party\tinyxml2\Debug\tinyxml2d.dll build\Debug\ &&
       build\Debug\unit_tests_runner.exe
     ) else (
-      copy build\third_party\gtest\googlemock\gtest\Release\gtest.dll build\Release\ &&
-      copy build\third_party\gtest\googlemock\gtest\Release\gtest_main.dll build\Release\ &&
-      copy build\third_party\gtest\googlemock\Release\gmock.dll build\Release\ &&
+      copy build\third_party\gtest\googlemock\gtest\Release\gtest.lib build\Release\ &&
+      copy build\third_party\gtest\googlemock\gtest\Release\gtest_main.lib build\Release\ &&
+      copy build\third_party\gtest\googlemock\Release\gmock.lib build\Release\ &&
       copy build\plugins\mission\Release\dronecore_mission.dll build\Release\ &&
       copy build\plugins\camera\Release\dronecore_camera.dll build\Release\ &&
-      copy build\third_party\tinyxml2\Release\tinyxml2.dll build\Release\ &&
       build\Release\unit_tests_runner.exe
     )
