@@ -43,19 +43,18 @@ MAVLinkCommands::send_command(const MAVLinkCommands::CommandInt &command)
     std::shared_ptr<std::promise<PromiseResult>> prom =
                                                   std::make_shared<std::promise<PromiseResult>>();
 
+    std::future<PromiseResult> res = prom->get_future();
+
     queue_command_async(command,
-    [prom](Result result, float progress) {
+    [&prom](Result result, float progress) {
         PromiseResult promise_result {};
         promise_result.result = result;
         promise_result.progress = progress;
         prom->set_value(promise_result);
     });
 
-    std::future<PromiseResult> res = prom->get_future();
     while (true) {
         // Block now to wait for result.
-        res.wait();
-
         PromiseResult promise_result = res.get();
 
         if (promise_result.result == Result::IN_PROGRESS) {
@@ -78,19 +77,18 @@ MAVLinkCommands::send_command(const MAVLinkCommands::CommandLong &command)
     std::shared_ptr<std::promise<PromiseResult>> prom =
                                                   std::make_shared<std::promise<PromiseResult>>();
 
+    std::future<PromiseResult> res = prom->get_future();
+
     queue_command_async(command,
-    [prom](Result result, float progress) {
+    [&prom](Result result, float progress) {
         PromiseResult promise_result {};
         promise_result.result = result;
         promise_result.progress = progress;
         prom->set_value(promise_result);
     });
 
-    std::future<PromiseResult> res = prom->get_future();
     while (true) {
         // Block now to wait for result.
-        res.wait();
-
         PromiseResult promise_result = res.get();
 
         if (promise_result.result == Result::IN_PROGRESS) {
@@ -186,6 +184,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             if (work.callback) {
                 work.callback(Result::SUCCESS, 1.0f);
             }
+            _work_queue.pop_front();
             break;
 
         case MAV_RESULT_DENIED:
@@ -194,6 +193,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             if (work.callback) {
                 work.callback(Result::COMMAND_DENIED, NAN);
             }
+            _work_queue.pop_front();
             break;
 
         case MAV_RESULT_UNSUPPORTED:
@@ -202,6 +202,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             if (work.callback) {
                 work.callback(Result::COMMAND_DENIED, NAN);
             }
+            _work_queue.pop_front();
             break;
 
         case MAV_RESULT_TEMPORARILY_REJECTED:
@@ -210,6 +211,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             if (work.callback) {
                 work.callback(Result::COMMAND_DENIED, NAN);
             }
+            _work_queue.pop_front();
             break;
 
         case MAV_RESULT_FAILED:
@@ -218,6 +220,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             if (work.callback) {
                 work.callback(Result::COMMAND_DENIED, NAN);
             }
+            _work_queue.pop_front();
             break;
 
         case MAV_RESULT_IN_PROGRESS:
@@ -285,6 +288,7 @@ void MAVLinkCommands::receive_timeout()
                 }
             }
             _state = State::FAILED;
+            _work_queue.pop_front();
         }
     }
 }
@@ -305,7 +309,6 @@ void MAVLinkCommands::do_work()
         // FALLTHROUGH
         case State::FAILED:
             _parent.unregister_timeout_handler(_timeout_cookie);
-            _work_queue.pop_front();
             _state = State::NONE;
             break;
     }
@@ -344,6 +347,8 @@ void MAVLinkCommands::do_work()
         case State::DONE:
         // FALLTHROUGH
         case State::FAILED:
+            _work_queue.pop_front();
+            _state = State::NONE;
             break;
     }
 }
