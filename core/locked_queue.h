@@ -35,6 +35,9 @@ public:
     // This allows to return a borrowed queue.
     void return_front()
     {
+        // We don't know if the mutex is locked and Windows doesn't let us
+        // unlock an unowned mutex.
+        _mutex.try_lock();
         _mutex.unlock();
     }
 
