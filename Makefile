@@ -94,13 +94,6 @@ android_x86_64: android_curl
 		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=x86_64)
 
-android_armeabi: android_curl
-	$(call cmake-build, \
-		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
-		-DANDROID_STL:STRING=c++_static \
-		-DANDROID_ABI=armeabi \
-		-DANDROID_PLATFORM=android-16)
-
 android_armeabi-v7a: android_curl
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
@@ -128,7 +121,6 @@ ios_curl:
 android: \
     android_x86 \
     android_x86_64 \
-    android_armeabi \
     android_armeabi-v7a \
     android_arm64-v8a
 
