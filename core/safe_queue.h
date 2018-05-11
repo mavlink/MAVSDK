@@ -16,11 +16,7 @@ template <class T>
 class SafeQueue
 {
 public:
-    SafeQueue() :
-        _queue(),
-        _mutex(),
-        _condition_var()
-    {}
+    SafeQueue() {}
     ~SafeQueue() {}
 
     void enqueue(T item)
@@ -55,10 +51,10 @@ public:
     }
 
 private:
-    std::queue<T> _queue;
-    mutable std::mutex _mutex;
-    std::condition_variable _condition_var;
-    bool _should_exit = false;
+    std::queue<T> _queue {};
+    mutable std::mutex _mutex {};
+    std::condition_variable _condition_var {};
+    bool _should_exit {false};
 };
 
 } // namespace dronecore
