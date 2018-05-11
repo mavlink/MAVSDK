@@ -97,6 +97,6 @@ TEST(LockedQueue, ConcurrantAccess)
 
     locked_queue.return_front();
 
-    status = fut.wait_for(std::chrono::milliseconds(10));
+    status = fut.wait_for(std::chrono::milliseconds(100));
     EXPECT_EQ(status, std::future_status::ready);
 }
