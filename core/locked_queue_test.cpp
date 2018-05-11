@@ -82,7 +82,7 @@ TEST(LockedQueue, ConcurrantAccess)
     auto prom = std::make_shared<std::promise<void>>();
     auto fut = prom->get_future();
 
-    auto some_future = std::async(std::launch::async | std::launch::deferred,
+    auto some_future = std::async(std::launch::async,
     [&prom, &locked_queue]() {
         // This will wait in the lock until the first item is returned.
         auto second_borrowed_item = locked_queue.borrow_front();
@@ -96,7 +96,6 @@ TEST(LockedQueue, ConcurrantAccess)
     EXPECT_EQ(status, std::future_status::timeout);
 
     locked_queue.return_front();
-
-    status = fut.wait_for(std::chrono::milliseconds(100));
+    status = fut.wait_for(std::chrono::milliseconds(10));
     EXPECT_EQ(status, std::future_status::ready);
 }
