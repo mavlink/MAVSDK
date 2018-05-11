@@ -83,7 +83,7 @@ TEST(LockedQueue, ConcurrantAccess)
     auto fut = prom->get_future();
 
     auto some_future = std::async(std::launch::async | std::launch::deferred,
-            [&prom, &locked_queue]() {
+    [&prom, &locked_queue]() {
         // This will wait in the lock until the first item is returned.
         auto second_borrowed_item = locked_queue.borrow_front();
         locked_queue.return_front();
