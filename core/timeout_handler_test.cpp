@@ -148,3 +148,23 @@ TEST(TimeoutHandler, TimeoutRemovedDuringCallback)
     th.run_once();
     EXPECT_TRUE(timeout_happened);
 }
+
+TEST(TimeoutHandler, NextTimeoutRemovedDuringCallback)
+{
+    Time time {};
+    TimeoutHandler th(time);
+
+    void *cookie1 = nullptr;
+    void *cookie2 = nullptr;
+
+    th.add([&th, &cookie2]() {
+        // This is evil but can potentially happen. We remove the other timer while
+        // being called. This triggers that the iterator is invalid and causes a segfault.
+        th.remove(cookie2);
+    }, 0.5, &cookie1);
+
+    th.add([]() {}, 0.5, &cookie2);
+
+    time.sleep_for(std::chrono::milliseconds(1000));
+    th.run_once();
+}
