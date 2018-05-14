@@ -159,7 +159,8 @@ TEST(TimeoutHandler, NextTimeoutRemovedDuringCallback)
 
     th.add([&th, &cookie2]() {
         // This is evil but can potentially happen. We remove the other timer while
-        // being called. This triggers that the iterator is invalid and causes a segfault.
+        // being called. This triggers that the iterator is invalid and causes a segfault
+        // if not handled properly.
         th.remove(cookie2);
     }, 0.5, &cookie1);
 
