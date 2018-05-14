@@ -35,6 +35,7 @@ private:
 
     std::map<void *, std::shared_ptr<Timeout>> _timeouts {};
     std::mutex _timeouts_mutex {};
+    bool _iterator_invalidated {false};
 
     Time &_time;
 };

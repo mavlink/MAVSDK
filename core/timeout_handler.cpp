@@ -48,6 +48,7 @@ void TimeoutHandler::remove(const void *cookie)
     auto it = _timeouts.find(const_cast<void *>(cookie));
     if (it != _timeouts.end()) {
         _timeouts.erase(const_cast<void *>(cookie));
+        _iterator_invalidated = true;
     }
 }
 
@@ -79,6 +80,13 @@ void TimeoutHandler::run_once()
 
         } else {
             ++it;
+        }
+
+        // We leave the loop if anyone has messed with this while we called the callback.
+        // FIXME: there should be a nicer way to do this.
+        if (_iterator_invalidated) {
+            _iterator_invalidated = false;
+            break;
         }
     }
     _timeouts_mutex.unlock();
