@@ -82,11 +82,10 @@ void TimeoutHandler::run_once()
             ++it;
         }
 
-        // We leave the loop if anyone has messed with this while we called the callback.
-        // FIXME: there should be a nicer way to do this.
+        // We start over if anyone has messed with this while we called the callback.
         if (_iterator_invalidated) {
             _iterator_invalidated = false;
-            break;
+            it = _timeouts.begin();
         }
     }
     _timeouts_mutex.unlock();
