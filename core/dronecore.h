@@ -50,9 +50,6 @@ public:
      * - TCP - tcp://[Remote_host][:Remote_port]
      * - Serial - serial://Dev_Node[:Baudrate]
      *
-     * Default URL : udp://0.0.0.0:14540.
-     * - Default Bind host IP is any local interface (0.0.0.0)
-     *
      * @param connection_url connection URL string.
      * @return The result of adding the connection.
      */
