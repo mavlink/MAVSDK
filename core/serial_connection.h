@@ -32,10 +32,8 @@ private:
     void start_recv_thread();
     static void receive(SerialConnection *parent);
 
-    static constexpr int DEFAULT_SERIAL_BAUDRATE = 9600;
-    static constexpr auto DEFAULT_SERIAL_DEV_PATH = "/dev/ttyS0";
-    std::string _serial_node = {};
-    int _baudrate = DEFAULT_SERIAL_BAUDRATE;
+    std::string _serial_node;
+    int _baudrate;
 
     std::mutex _mutex = {};
 #if !defined(WINDOWS)
