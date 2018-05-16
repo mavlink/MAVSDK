@@ -111,16 +111,14 @@ private:
     enum class State {
         NONE,
         WAITING,
-        IN_PROGRESS,
-        DONE,
-        FAILED
-    } _state = State::NONE;
+        IN_PROGRESS
+    } _state {State::NONE};
     std::mutex _state_mutex {};
 
     struct Work {
-        int retries_to_do = 3;
-        double timeout_s = 0.5;
-        uint16_t mavlink_command = 0;
+        int retries_to_do {3};
+        double timeout_s {0.5};
+        uint16_t mavlink_command {0};
         mavlink_message_t mavlink_message {};
         command_result_callback_t callback {};
     };

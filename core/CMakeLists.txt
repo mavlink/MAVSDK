@@ -93,5 +93,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/core/curl_test.cpp
     ${CMAKE_SOURCE_DIR}/core/any_test.cpp
     ${CMAKE_SOURCE_DIR}/core/cli_arg_test.cpp
+    ${CMAKE_SOURCE_DIR}/core/locked_queue_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
