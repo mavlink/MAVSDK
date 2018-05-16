@@ -53,15 +53,7 @@ namespace dronecore {
 SerialConnection::SerialConnection(DroneCoreImpl &parent, const std::string &path, int baudrate):
     Connection(parent),
     _serial_node(path),
-    _baudrate(baudrate)
-{
-    if (baudrate == 0) {
-        _baudrate = DEFAULT_SERIAL_BAUDRATE;
-    }
-    if (path == "") {
-        _serial_node = DEFAULT_SERIAL_DEV_PATH;
-    }
-}
+    _baudrate(baudrate) {}
 
 SerialConnection::~SerialConnection()
 {
