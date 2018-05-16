@@ -94,11 +94,11 @@ public:
     /**
      * @brief Adds a TCP connection with a specific IP address and port number.
      *
-     * @param remote_ip Remote IP address to connect to (defaults to 127.0.0.1).
+     * @param remote_ip Remote IP address to connect to.
      * @param remote_port The TCP port to connect to (defaults to 5760).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_tcp_connection(const std::string &remote_ip = DEFAULT_TCP_REMOTE_IP,
+    ConnectionResult add_tcp_connection(const std::string &remote_ip,
                                         int remote_port = DEFAULT_TCP_REMOTE_PORT);
 
     /**
