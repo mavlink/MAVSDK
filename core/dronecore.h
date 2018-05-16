@@ -23,10 +23,15 @@ class System;
 class DroneCore
 {
 public:
+    /** @brief Default UDP bind IP (accepts any incoming connections). */
     static constexpr auto DEFAULT_UDP_BIND_IP = "0.0.0.0";
+    /** @brief Default UDP bind port (same port as used by MAVROS). */
     static constexpr int DEFAULT_UDP_PORT = 14540;
+    /** @brief Default TCP remote IP (localhost). */
     static constexpr auto DEFAULT_TCP_REMOTE_IP = "127.0.0.1";
+    /**< @brief Default TCP remote port. */
     static constexpr int DEFAULT_TCP_REMOTE_PORT = 5760;
+    /**< @brief Default serial baudrate. */
     static constexpr int DEFAULT_SERIAL_BAUDRATE = 57600;
 
     /**
