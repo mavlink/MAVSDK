@@ -222,6 +222,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             _parent.register_timeout_handler(
                 std::bind(&MAVLinkCommands::receive_timeout, this),
                 work->retries_to_do * work->timeout_s, &_timeout_cookie);
+            _work_queue.return_front();
             break;
     }
 }
