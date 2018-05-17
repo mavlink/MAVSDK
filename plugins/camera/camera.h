@@ -351,7 +351,7 @@ public:
     /**
      * @brief Callback type to get status.
      */
-    typedef std::function<void(Result, const Status &)> get_status_callback_t;
+    typedef std::function<void(Result, Status)> get_status_callback_t;
 
 
     /**
