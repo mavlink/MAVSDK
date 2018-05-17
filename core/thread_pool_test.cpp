@@ -67,7 +67,7 @@ TEST(ThreadPool, LambdaWithArgs)
     int second = 10;
     const int sum = first + second;
 
-    tp.enqueue([&second]() {
+    tp.enqueue([first, &second]() {
         second += first;
     });
 
