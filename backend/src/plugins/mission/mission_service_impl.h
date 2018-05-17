@@ -64,6 +64,27 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status PauseMission(grpc::ServerContext * /* context */,
+                              const rpc::mission::PauseMissionRequest * /* request */,
+                              rpc::mission::PauseMissionResponse *response) override
+    {
+        std::promise<void> result_promise;
+        const auto result_future = result_promise.get_future();
+
+        _mission.pause_mission_async([this, response,
+              &result_promise](const dronecore::Mission::Result result) {
+            if (response != nullptr) {
+                auto rpc_mission_result = generateRPCMissionResult(result);
+                response->set_allocated_mission_result(rpc_mission_result);
+            }
+
+            result_promise.set_value();
+        });
+
+        result_future.wait();
+        return grpc::Status::OK;
+    }
+
 private:
     std::vector<std::shared_ptr<MissionItem>> extractMissionItems(const
                                                                   rpc::mission::UploadMissionRequest *request) const
