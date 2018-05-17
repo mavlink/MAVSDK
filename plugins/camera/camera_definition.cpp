@@ -436,7 +436,7 @@ bool CameraDefinition::get_option_value(const std::string &param_name,
                                         MAVLinkParameters::ParamValue &value)
 {
     if (_parameter_map.find(param_name) == _parameter_map.end()) {
-        LogErr() << "Unknown parameter to get option";
+        LogErr() << "Unknown parameter to get option: " << param_name;
         return false;
     }
 
