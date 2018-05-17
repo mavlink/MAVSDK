@@ -34,6 +34,7 @@ add_library(dronecore ${LIBRARY_TYPE}
     udp_connection.cpp
     log.cpp
     cli_arg.cpp
+    thread_pool.cpp
 )
 
 target_link_libraries(dronecore
@@ -94,5 +95,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/core/any_test.cpp
     ${CMAKE_SOURCE_DIR}/core/cli_arg_test.cpp
     ${CMAKE_SOURCE_DIR}/core/locked_queue_test.cpp
+    ${CMAKE_SOURCE_DIR}/core/thread_pool_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
