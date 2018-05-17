@@ -14,6 +14,7 @@ public:
     MOCK_CONST_METHOD2(upload_mission_async, void(const std::vector<std::shared_ptr<MissionItem>> &,
                                                   Mission::result_callback_t));
     MOCK_CONST_METHOD1(start_mission_async, void(Mission::result_callback_t));
+    MOCK_CONST_METHOD0(mission_finished, bool());
 };
 
 } // namespace testing
