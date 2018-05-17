@@ -18,6 +18,5 @@ target_link_libraries(fly_qgc_mission
     dronecore
     dronecore_action
     dronecore_mission
-    json11 # Needed by dronecore_mission for QGC mission plan import
     dronecore_telemetry
 )
