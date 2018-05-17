@@ -348,6 +348,44 @@ TEST_P(MissionServiceImplStartTest, startResultIsTranslatedCorrectly)
     EXPECT_EQ(GetParam().first, rpc::MissionResult::Result_Name(response->mission_result().result()));
 }
 
+class MissionServiceImplIsFinishedTest : public MissionServiceImplTestBase
+{
+protected:
+    void checkReturnsCorrectFinishedStatus(const bool expected_finished_status);
+};
+
+TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedCallsGetter)
+{
+    EXPECT_CALL(_mission, mission_finished())
+    .Times(1);
+    dronecore::rpc::mission::IsMissionFinishedResponse response;
+
+    _mission_service.IsMissionFinished(nullptr, nullptr, &response);
+}
+
+TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedgetsCorrectValue)
+{
+    checkReturnsCorrectFinishedStatus(false);
+    checkReturnsCorrectFinishedStatus(true);
+}
+
+void MissionServiceImplIsFinishedTest::checkReturnsCorrectFinishedStatus(
+    const bool expected_finished_status)
+{
+    ON_CALL(_mission, mission_finished())
+    .WillByDefault(Return(expected_finished_status));
+    dronecore::rpc::mission::IsMissionFinishedResponse response;
+
+    _mission_service.IsMissionFinished(nullptr, nullptr, &response);
+
+    EXPECT_EQ(expected_finished_status, response.is_finished());
+}
+
+TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedDoesNotCrashWithNullResponse)
+{
+    _mission_service.IsMissionFinished(nullptr, nullptr, nullptr);
+}
+
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;

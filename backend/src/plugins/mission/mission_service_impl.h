@@ -52,6 +52,18 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status IsMissionFinished(grpc::ServerContext * /* context */,
+                                   const rpc::mission::IsMissionFinishedRequest * /* request */,
+                                   rpc::mission::IsMissionFinishedResponse *response) override
+    {
+        if (response != nullptr) {
+            auto is_mission_finished = _mission.mission_finished();
+            response->set_is_finished(is_mission_finished);
+        }
+
+        return grpc::Status::OK;
+    }
+
 private:
     std::vector<std::shared_ptr<MissionItem>> extractMissionItems(const
                                                                   rpc::mission::UploadMissionRequest *request) const
