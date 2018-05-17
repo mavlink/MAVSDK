@@ -22,7 +22,8 @@ MAVLinkSystem::MAVLinkSystem(DroneCoreImpl &parent,
     _params(*this),
     _commands(*this),
     _timeout_handler(_time),
-    _call_every_handler(_time)
+    _call_every_handler(_time),
+    _thread_pool(3)
 {
     _system_thread = new std::thread(system_thread, this);
 
@@ -41,6 +42,11 @@ MAVLinkSystem::MAVLinkSystem(DroneCoreImpl &parent,
         std::bind(&MAVLinkSystem::process_statustext, this, _1), this);
 
     add_new_component(comp_id);
+
+    // FIXME: It would be better to do things like this in a method and not
+    //        in the constructor where we can't fail gracefully because we
+    //        don't have exceptions.
+    _thread_pool.start();
 }
 
 MAVLinkSystem::~MAVLinkSystem()
@@ -50,6 +56,8 @@ MAVLinkSystem::~MAVLinkSystem()
 
     unregister_timeout_handler(_autopilot_version_timed_out_cookie);
     unregister_timeout_handler(_heartbeat_timeout_cookie);
+
+    _thread_pool.stop();
 
     if (_system_thread != nullptr) {
         _system_thread->join();
@@ -877,15 +885,7 @@ void MAVLinkSystem::unregister_plugin(PluginImplBase *plugin_impl)
 
 void MAVLinkSystem::call_user_callback(const std::function<void()> &func)
 {
-    // Maybe we should be using a thread pool but for now, let's try
-    // if std::async is good enough and not much overhead.
-
-    // std::async returns a future, in order to destruct it we need to do a blocking wait
-    // that we don't want to do here, therefore we stash it away and clean it up later.
-    auto some_future = std::async(std::launch::async | std::launch::deferred, func);
-
-    // FIXME: we need to clean up this vector every now and then.
-    _pending_futures.push_back(std::move(some_future));
+    _thread_pool.enqueue(func);
 }
 
 void MAVLinkSystem::lock_communication()

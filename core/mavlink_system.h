@@ -6,6 +6,7 @@
 #include "mavlink_commands.h"
 #include "timeout_handler.h"
 #include "call_every_handler.h"
+#include "thread_pool.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -266,7 +267,7 @@ private:
     // We used set to maintain unique component ids
     std::unordered_set<uint8_t> _components;
 
-    std::vector<std::future<void>> _pending_futures;
+    ThreadPool _thread_pool;
 };
 
 
