@@ -68,11 +68,10 @@ int main(int /*argc*/, char ** /*argv*/)
                   << std::endl;
     });
 
-
-    // Check if vehicle is ready to arm
-    if (telemetry->health_all_ok() != true) {
+    // Wait until vehicle is ready to arm.
+    while (telemetry->health_all_ok() != true) {
         std::cout << ERROR_CONSOLE_TEXT << "Vehicle not ready to arm" << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
+        sleep_for(std::chrono::seconds(1));
     }
 
     // Arm vehicle
