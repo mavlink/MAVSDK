@@ -183,6 +183,8 @@ std::ostream &operator<<(std::ostream &str, MissionItem::CameraAction const &cam
             return str << "CameraAction::STOP_VIDEO";
         case MissionItem::CameraAction::NONE:
             return str << "CameraAction::NONE";
+        default:
+            return str << "Unknown";
     }
 }
 
