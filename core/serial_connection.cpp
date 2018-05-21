@@ -228,7 +228,7 @@ ConnectionResult SerialConnection::setup_port()
 
 void SerialConnection::start_recv_thread()
 {
-    _recv_thread = new std::thread(receive, this);
+    _recv_thread = new std::thread(&SerialConnection::receive, this);
 }
 
 ConnectionResult SerialConnection::stop()
@@ -286,20 +286,20 @@ bool SerialConnection::send_message(const mavlink_message_t &message)
     return true;
 }
 
-void SerialConnection::receive(SerialConnection *parent)
+void SerialConnection::receive()
 {
     // Enough for MTU 1500 bytes.
     char buffer[2048];
 
-    while (!parent->_should_exit) {
+    while (!_should_exit) {
         int recv_len;
 #if defined(LINUX) || defined(APPLE)
-        recv_len = read(parent->_fd, buffer, sizeof(buffer));
+        recv_len = read(_fd, buffer, sizeof(buffer));
         if (recv_len < -1) {
             LogErr() << "read failure: " << GET_ERROR();
         }
 #else
-        if (!ReadFile(parent->_handle, buffer, sizeof(buffer), LPDWORD(&recv_len), NULL)) {
+        if (!ReadFile(_handle, buffer, sizeof(buffer), LPDWORD(&recv_len), NULL)) {
             LogErr() << "ReadFile failure: " << GET_ERROR();
             continue;
         }
@@ -307,10 +307,10 @@ void SerialConnection::receive(SerialConnection *parent)
         if (recv_len > static_cast<int>(sizeof(buffer)) || recv_len == 0) {
             continue;
         }
-        parent->_mavlink_receiver->set_new_datagram(buffer, recv_len);
+        _mavlink_receiver->set_new_datagram(buffer, recv_len);
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
-        while (parent->_mavlink_receiver->parse_message()) {
-            parent->receive_message(parent->_mavlink_receiver->get_last_message());
+        while (_mavlink_receiver->parse_message()) {
+            receive_message(_mavlink_receiver->get_last_message());
         }
     }
 }

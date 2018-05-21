@@ -95,7 +95,7 @@ ConnectionResult TcpConnection::setup_port()
 
 void TcpConnection::start_recv_thread()
 {
-    _recv_thread = new std::thread(receive, this);
+    _recv_thread = new std::thread(&TcpConnection::receive, this);
 }
 
 ConnectionResult TcpConnection::stop()
@@ -165,25 +165,25 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
     return true;
 }
 
-void TcpConnection::receive(TcpConnection *parent)
+void TcpConnection::receive()
 {
     // Enough for MTU 1500 bytes.
     char buffer[2048];
 
-    while (!parent->_should_exit) {
+    while (!_should_exit) {
 
-        if (!parent->_is_ok) {
+        if (!_is_ok) {
             LogErr() << "TCP receive error, trying to reconnect...";
             std::this_thread::sleep_for(std::chrono::seconds(1));
-            parent->setup_port();
+            setup_port();
         }
 
-        int recv_len = recv(parent->_socket_fd, buffer, sizeof(buffer), 0);
+        int recv_len = recv(_socket_fd, buffer, sizeof(buffer), 0);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
             // therefore we check _should_exit again.
-            parent->_is_ok = false;
+            _is_ok = false;
             continue;
         }
 
@@ -192,15 +192,15 @@ void TcpConnection::receive(TcpConnection *parent)
             // therefore be quiet.
             //LogErr() << "recvfrom error: " << GET_ERROR(errno);
             // Something went wrong, we should try to re-connect in next iteration.
-            parent->_is_ok = false;
+            _is_ok = false;
             continue;
         }
 
-        parent->_mavlink_receiver->set_new_datagram(buffer, recv_len);
+        _mavlink_receiver->set_new_datagram(buffer, recv_len);
 
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
-        while (parent->_mavlink_receiver->parse_message()) {
-            parent->receive_message(parent->_mavlink_receiver->get_last_message());
+        while (_mavlink_receiver->parse_message()) {
+            receive_message(_mavlink_receiver->get_last_message());
         }
     }
 }

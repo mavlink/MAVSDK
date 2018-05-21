@@ -36,7 +36,7 @@ private:
     ConnectionResult setup_port();
     void start_recv_thread();
     int resolve_address(const std::string &ip_address, int port, struct sockaddr_in *addr);
-    static void receive(TcpConnection *parent);
+    void receive();
 
     std::string _remote_ip = {};
     int _remote_port_number;

@@ -30,7 +30,7 @@ public:
 private:
     ConnectionResult setup_port();
     void start_recv_thread();
-    static void receive(SerialConnection *parent);
+    void receive();
 
     std::string _serial_node;
     int _baudrate;

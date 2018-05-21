@@ -27,7 +27,7 @@ private:
     ConnectionResult setup_port();
     void start_recv_thread();
 
-    static void receive(UdpConnection *parent);
+    void receive();
 
     std::string _local_ip;
     int _local_port_number;
