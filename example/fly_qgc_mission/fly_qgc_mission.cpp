@@ -48,9 +48,9 @@ inline void handle_connection_err_exit(ConnectionResult result,
 
 
 
-void usage(std::string arg)
+void usage(std::string bin_name)
 {
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg <<
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name <<
               " <connection_url> [path of QGC Mission plan]" << std::endl
               << "Connection URL format should be :" << std::endl
               << " For TCP : tcp://[server_host][:server_port]" << std::endl

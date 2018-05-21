@@ -16,9 +16,9 @@ using namespace dronecore;
 #define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
 
 
-void usage(std::string arg)
+void usage(std::string bin_name)
 {
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg << " <connection_url>" << std::endl
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
               << "Connection URL format should be :" << std::endl
               << " For TCP : tcp://[server_host][:server_port]" << std::endl
               << " For UDP : udp://[bind_host][:bind_port]" << std::endl
