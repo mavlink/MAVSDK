@@ -38,11 +38,6 @@ UdpConnection::~UdpConnection()
     stop();
 }
 
-bool UdpConnection::is_ok() const
-{
-    return true;
-}
-
 ConnectionResult UdpConnection::start()
 {
     if (!start_mavlink_receiver()) {

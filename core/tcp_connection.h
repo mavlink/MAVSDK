@@ -22,7 +22,6 @@ public:
                            const std::string &remote_ip,
                            int remote_port);
     ~TcpConnection();
-    bool is_ok() const;
     ConnectionResult start();
     ConnectionResult stop();
 

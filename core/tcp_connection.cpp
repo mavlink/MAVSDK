@@ -36,11 +36,6 @@ TcpConnection::~TcpConnection()
     stop();
 }
 
-bool TcpConnection::is_ok() const
-{
-    return _is_ok;
-}
-
 ConnectionResult TcpConnection::start()
 {
     if (!start_mavlink_receiver()) {

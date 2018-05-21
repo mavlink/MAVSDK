@@ -61,12 +61,6 @@ SerialConnection::~SerialConnection()
     stop();
 }
 
-
-bool SerialConnection::is_ok() const
-{
-    return true;
-}
-
 ConnectionResult SerialConnection::start()
 {
     if (!start_mavlink_receiver()) {

@@ -13,7 +13,6 @@ class UdpConnection : public Connection
 public:
     explicit UdpConnection(DroneCoreImpl &parent, const std::string &local_ip, int local_port);
     ~UdpConnection();
-    bool is_ok() const;
     ConnectionResult start();
     ConnectionResult stop();
 
