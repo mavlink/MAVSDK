@@ -27,3 +27,8 @@ install(FILES
 install(TARGETS dronecode_sdk_action
     DESTINATION ${dronecode_sdk_install_lib_dir}
 )
+
+list(APPEND UNIT_TEST_SOURCES
+    ${CMAKE_SOURCE_DIR}/plugins/action/action_test.cpp
+)
+set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

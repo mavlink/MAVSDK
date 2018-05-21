@@ -1,5 +1,7 @@
 #pragma once
 
+#include "system.h"
+
 namespace dronecore {
 
 class FakeSystem
