@@ -46,20 +46,42 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string &m
 inline void handle_connection_err_exit(ConnectionResult result,
                                        const std::string &message);
 
+
+
+void usage(std::string arg)
+{
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg << " <connection_url> [path of QGC Mission plan]" << std::endl
+              << "Connection URL format should be :" << std::endl
+              << " For TCP : tcp://[server_host][:server_port]" << std::endl
+              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl;
+    std::cout << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
+}
+
+
 int main(int argc, char **argv)
 {
+    DroneCore dc;
+    std::string connection_url;
+    ConnectionResult connection_result;
+
+
     // Locate path of QGC Sample plan
     std::string qgc_plan = "../../../plugins/mission/qgroundcontrol_sample.plan";
 
-    if (argc != 2) {
-        std::cout << "Usage: " << argv[0] << " <path of QGC Mission plan>\n";
-        std::cout << "Importing mission from Default mission plan: " << qgc_plan << std::endl;
-    } else if (argc == 2) {
-        std::cout << "Importing mission from mission plan: " << qgc_plan << std::endl;
-        qgc_plan = argv[1];
+    if (argc == 1) {
+        usage(argv[0]);
+        return 1;
+    } 
+    if (argc >= 2) {
+        connection_url = argv[1];
     }
+    if (argc >= 3) { 
+        qgc_plan = argv[2];
+    }
+    std::cout << "Connection URL: " << connection_url << std::endl;
+    std::cout << "Importing mission from mission plan: " << qgc_plan << std::endl;
 
-    DroneCore dc;
 
     {
         auto prom = std::make_shared<std::promise<void>>();
@@ -71,7 +93,7 @@ int main(int argc, char **argv)
             prom->set_value();
         });
 
-        ConnectionResult connection_result = dc.add_udp_connection();
+        connection_result = dc.add_any_connection(connection_url);
         handle_connection_err_exit(connection_result, "Connection failed: ");
 
         future_result.get();

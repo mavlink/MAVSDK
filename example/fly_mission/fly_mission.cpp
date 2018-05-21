@@ -48,7 +48,16 @@ static std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
                                                       float gimbal_yaw_deg,
                                                       MissionItem::CameraAction camera_action);
 
-void usage(std::string arg);
+void usage(std::string arg)
+{
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg << " <connection_url>" << std::endl
+              << "Connection URL format should be :" << std::endl
+              << " For TCP : tcp://[server_host][:server_port]" << std::endl
+              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl;
+    std::cout << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
+}
+
 
 int main(int argc, char **argv)
 {
@@ -319,12 +328,4 @@ inline void handle_connection_err_exit(ConnectionResult result,
     }
 }
 
-void usage(std::string arg)
-{
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg << " [connection_url]" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl;
-    std::cout << "Default connection URL is udp://:14540" << std::endl;
-}
+

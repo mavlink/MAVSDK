@@ -19,7 +19,16 @@ using namespace std::chrono;
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
 
-void usage(std::string arg);
+void usage(std::string arg)
+{
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg << " <connection_url>" << std::endl
+              << "Connection URL format should be :" << std::endl
+              << " For TCP : tcp://[server_host][:server_port]" << std::endl
+              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl;
+    std::cout << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
+}
+
 
 int main(int argc, char **argv)
 {
@@ -124,12 +133,3 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void usage(std::string arg)
-{
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg << " [connection_url]" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl;
-    std::cout << "Default connection URL is udp://:14540" << std::endl;
-}
