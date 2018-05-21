@@ -70,16 +70,16 @@ int main(int argc, char **argv)
     // Locate path of QGC Sample plan
     std::string qgc_plan = "../../../plugins/mission/qgroundcontrol_sample.plan";
 
-    if (argc == 1) {
+    if (argc != 2 && argc != 3) {
         usage(argv[0]);
         return 1;
     }
-    if (argc >= 2) {
-        connection_url = argv[1];
-    }
-    if (argc >= 3) {
+
+    connection_url = argv[1];
+    if (argc == 3) {
         qgc_plan = argv[2];
     }
+
     std::cout << "Connection URL: " << connection_url << std::endl;
     std::cout << "Importing mission from mission plan: " << qgc_plan << std::endl;
 

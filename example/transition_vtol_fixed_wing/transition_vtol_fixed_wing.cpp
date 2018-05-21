@@ -34,12 +34,13 @@ int main(int argc, char **argv)
     ConnectionResult connection_result;
 
     bool discovered_system = false;
-    if (argc == 1) {
-        usage(argv[0]);
-        return 1;
-    } else {
+
+    if (argc == 2) {
         connection_url = argv[1];
         connection_result = dc.add_any_connection(connection_url);
+    } else {
+        usage(argv[0]);
+        return 1;
     }
 
     if (connection_result != ConnectionResult::SUCCESS) {
