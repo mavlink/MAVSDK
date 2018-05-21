@@ -25,10 +25,10 @@
 
 namespace dronecore {
 
-UdpConnection::UdpConnection(DroneCoreImpl &parent,
+UdpConnection::UdpConnection(Connection::receiver_callback_t receiver_callback,
                              const std::string &local_ip,
                              int local_port_number):
-    Connection(parent),
+    Connection(receiver_callback),
     _local_ip(local_ip),
     _local_port_number(local_port_number) {}
 

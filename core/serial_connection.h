@@ -13,7 +13,7 @@ namespace dronecore {
 class SerialConnection : public Connection
 {
 public:
-    explicit SerialConnection(DroneCoreImpl &parent,
+    explicit SerialConnection(Connection::receiver_callback_t receiver_callback,
                               const std::string &path,
                               int baudrate);
     ConnectionResult start();

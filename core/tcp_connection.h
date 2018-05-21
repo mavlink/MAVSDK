@@ -18,7 +18,8 @@ namespace dronecore {
 class TcpConnection : public Connection
 {
 public:
-    explicit TcpConnection(DroneCoreImpl &parent,
+
+    explicit TcpConnection(Connection::receiver_callback_t receiver_callback,
                            const std::string &remote_ip,
                            int remote_port);
     ~TcpConnection();

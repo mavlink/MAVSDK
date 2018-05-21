@@ -50,8 +50,9 @@ std::string GetLastErrorStdStr()
 
 namespace dronecore {
 
-SerialConnection::SerialConnection(DroneCoreImpl &parent, const std::string &path, int baudrate):
-    Connection(parent),
+SerialConnection::SerialConnection(Connection::receiver_callback_t receiver_callback,
+                                   const std::string &path, int baudrate):
+    Connection(receiver_callback),
     _serial_node(path),
     _baudrate(baudrate) {}
 
