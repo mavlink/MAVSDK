@@ -50,7 +50,8 @@ inline void handle_connection_err_exit(ConnectionResult result,
 
 void usage(std::string arg)
 {
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg << " <connection_url> [path of QGC Mission plan]" << std::endl
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << arg <<
+              " <connection_url> [path of QGC Mission plan]" << std::endl
               << "Connection URL format should be :" << std::endl
               << " For TCP : tcp://[server_host][:server_port]" << std::endl
               << " For UDP : udp://[bind_host][:bind_port]" << std::endl
@@ -72,11 +73,11 @@ int main(int argc, char **argv)
     if (argc == 1) {
         usage(argv[0]);
         return 1;
-    } 
+    }
     if (argc >= 2) {
         connection_url = argv[1];
     }
-    if (argc >= 3) { 
+    if (argc >= 3) {
         qgc_plan = argv[2];
     }
     std::cout << "Connection URL: " << connection_url << std::endl;
