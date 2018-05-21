@@ -49,6 +49,7 @@ int main(int /*argc*/, char ** /*argv*/)
     // dc.system(uint64_t uuid);
     System &system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
+    auto action = std::make_shared<Action>(system);
 
     // We want to listen to the altitude of the drone at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
@@ -73,8 +74,6 @@ int main(int /*argc*/, char ** /*argv*/)
         std::cout << ERROR_CONSOLE_TEXT << "Vehicle not ready to arm" << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
-
-    auto action = std::make_shared<Action>(system);
 
     // Arm vehicle
     std::cout << "Arming..." << std::endl;
