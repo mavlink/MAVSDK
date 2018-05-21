@@ -34,6 +34,7 @@ add_library(dronecode_sdk ${LIBRARY_TYPE}
     log.cpp
     cli_arg.cpp
     thread_pool.cpp
+    fake_system.cpp
 )
 
 target_link_libraries(dronecode_sdk
