@@ -91,6 +91,7 @@ void MAVLinkSystem::unregister_all_mavlink_message_handlers(const void *cookie)
 
         if (it->cookie == cookie) {
             it = _mavlink_handler_table.erase(it);
+            _iterator_invalidated = true;
         } else {
             ++it;
         }
@@ -126,7 +127,7 @@ void MAVLinkSystem::process_mavlink_message(const mavlink_message_t &message)
 #if MESSAGE_DEBUGGING==1
     bool forwarded = false;
 #endif
-    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end(); ++it) {
+    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end(); /* ++it */) {
         if (it->msg_id == message.msgid) {
 #if MESSAGE_DEBUGGING==1
             LogDebug() << "Forwarding msg " << int(message.msgid) << " to " << size_t(it->cookie);
@@ -135,6 +136,16 @@ void MAVLinkSystem::process_mavlink_message(const mavlink_message_t &message)
             _mavlink_handler_table_mutex.unlock();
             it->callback(message);
             _mavlink_handler_table_mutex.lock();
+        }
+
+        if (_iterator_invalidated) {
+            // Someone messed with the map while we were doing the callback.
+            // We need to start over. This means that we might call something twice but that's
+            // probably better than to drop the message.
+            it = _mavlink_handler_table.begin();
+            _iterator_invalidated = false;
+        } else {
+            ++it;
         }
     }
     _mavlink_handler_table_mutex.unlock();

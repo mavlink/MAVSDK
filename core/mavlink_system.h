@@ -268,6 +268,8 @@ private:
     std::unordered_set<uint8_t> _components;
 
     ThreadPool _thread_pool;
+
+    bool _iterator_invalidated {false};
 };
 
 
