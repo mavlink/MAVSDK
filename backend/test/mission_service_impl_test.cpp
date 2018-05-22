@@ -29,6 +29,9 @@ using RPCCameraAction = dc::rpc::mission::MissionItem::CameraAction;
 using StartMissionRequest = dc::rpc::mission::StartMissionRequest;
 using StartMissionResponse = dc::rpc::mission::StartMissionResponse;
 
+using PauseMissionRequest = dc::rpc::mission::PauseMissionRequest;
+using PauseMissionResponse = dc::rpc::mission::PauseMissionResponse;
+
 static constexpr auto ARBITRARY_RESULT = dc::Mission::Result::UNKNOWN;
 
 std::vector<InputPair> generateInputPairs();
@@ -384,6 +387,47 @@ void MissionServiceImplIsFinishedTest::checkReturnsCorrectFinishedStatus(
 TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedDoesNotCrashWithNullResponse)
 {
     _mission_service.IsMissionFinished(nullptr, nullptr, nullptr);
+}
+
+class MissionServiceImplPauseTest : public MissionServiceImplTestBase
+{
+protected:
+    std::future<void> pauseMissionAndSaveParams(std::shared_ptr<PauseMissionResponse> response);
+};
+
+INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
+                        MissionServiceImplPauseTest,
+                        ::testing::ValuesIn(generateInputPairs()));
+
+TEST_F(MissionServiceImplPauseTest, doesNotFailWhenArgsAreNull)
+{
+    auto start_handle = pauseMissionAndSaveParams(nullptr);
+    _result_callback(ARBITRARY_RESULT);
+}
+
+std::future<void> MissionServiceImplPauseTest::pauseMissionAndSaveParams(
+    std::shared_ptr<PauseMissionResponse> response)
+{
+    EXPECT_CALL(_mission, pause_mission_async(_))
+    .WillOnce(SaveResult(&_result_callback, &_callback_saved_promise));
+
+    auto start_handle = std::async(std::launch::async, [this, response]() {
+        _mission_service.PauseMission(nullptr, nullptr, response.get());
+    });
+
+    _callback_saved_future.wait();
+    return start_handle;
+}
+
+TEST_P(MissionServiceImplPauseTest, pauseResultIsTranslatedCorrectly)
+{
+    auto response = std::make_shared<PauseMissionResponse>();
+    auto pause_handle = pauseMissionAndSaveParams(response);
+
+    _result_callback(GetParam().second);
+    pause_handle.wait();
+
+    EXPECT_EQ(GetParam().first, rpc::MissionResult::Result_Name(response->mission_result().result()));
 }
 
 std::vector<InputPair> generateInputPairs()
