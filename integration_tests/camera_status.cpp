@@ -9,7 +9,7 @@ using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 
 
-static void receive_camera_status(Camera::Result result, const Camera::Status &status);
+static void receive_camera_status(Camera::Result result, const Camera::Status status);
 
 static std::atomic<bool> _received_status {false};
 
@@ -34,7 +34,7 @@ TEST(CameraTest, Status)
 }
 
 
-static void receive_camera_status(Camera::Result result, const Camera::Status &status)
+static void receive_camera_status(Camera::Result result, const Camera::Status status)
 {
     EXPECT_EQ(result, Camera::Result::SUCCESS);
     _received_status = true;

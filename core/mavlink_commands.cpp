@@ -137,7 +137,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
 
-    LogDebug() << "We got an ack: " << command_ack.command;
+    // LogDebug() << "We got an ack: " << command_ack.command;
 
     auto work = _work_queue.borrow_front();
     if (!work) {
@@ -222,6 +222,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             _parent.register_timeout_handler(
                 std::bind(&MAVLinkCommands::receive_timeout, this),
                 work->retries_to_do * work->timeout_s, &_timeout_cookie);
+            _work_queue.return_front();
             break;
     }
 }
