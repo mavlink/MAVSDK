@@ -167,12 +167,39 @@ bool offb_ctrl_body(std::shared_ptr<dronecore::Offboard> offboard)
     return true;
 }
 
-int main(int, char **)
+
+void usage(std::string bin_name)
+{
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
+              << "Connection URL format should be :" << std::endl
+              << " For TCP : tcp://[server_host][:server_port]" << std::endl
+              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
+              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
+              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
+}
+
+
+int main(int argc, char **argv)
 {
     DroneCore dc;
+    std::string connection_url;
+    ConnectionResult connection_result;
 
-    ConnectionResult conn_result = dc.add_udp_connection();
-    connection_error_exit(conn_result, "Connection failed");
+    if (argc == 2) {
+        connection_url = argv[1];
+        connection_result = dc.add_any_connection(connection_url);
+    } else {
+        usage(argv[0]);
+        return 1;
+    }
+
+    if (connection_result != ConnectionResult::SUCCESS) {
+        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
+                  << connection_result_str(connection_result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
+        return 1;
+    }
+
 
     // Wait for the system to connect via heartbeat
     while (!dc.is_connected()) {
