@@ -25,7 +25,7 @@ SystemImpl::SystemImpl(DroneCoreImpl &parent,
     _call_every_handler(_time),
     _thread_pool(3)
 {
-    _system_thread = new std::thread(system_thread, this);
+    _system_thread = new std::thread(&SystemImpl::system_thread, this);
 
     register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
@@ -292,23 +292,23 @@ void SystemImpl::heartbeats_timed_out()
     set_disconnected();
 }
 
-void SystemImpl::system_thread(SystemImpl *self)
+void SystemImpl::system_thread()
 {
     dl_time_t last_time {};
 
-    while (!self->_should_exit) {
+    while (!_should_exit) {
 
-        if (self->_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
-            send_heartbeat(*self);
-            last_time = self->_time.steady_time();
+        if (_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
+            send_heartbeat();
+            last_time = _time.steady_time();
         }
 
-        self->_call_every_handler.run_once();
-        self->_timeout_handler.run_once();
-        self->_params.do_work();
-        self->_commands.do_work();
+        _call_every_handler.run_once();
+        _timeout_handler.run_once();
+        _params.do_work();
+        _commands.do_work();
 
-        if (self->_connected) {
+        if (_connected) {
             // Work fairly fast if we're connected.
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         } else {
@@ -402,7 +402,7 @@ bool SystemImpl::has_gimbal() const
     return get_gimbal_id() == MAV_COMP_ID_GIMBAL;
 }
 
-void SystemImpl::send_heartbeat(SystemImpl &self)
+void SystemImpl::send_heartbeat()
 {
     mavlink_message_t message;
     // GCSClient is not autopilot!; hence MAV_AUTOPILOT_INVALID.
@@ -412,7 +412,7 @@ void SystemImpl::send_heartbeat(SystemImpl &self)
                                MAV_TYPE_GCS,
                                MAV_AUTOPILOT_INVALID,
                                0, 0, 0);
-    self.send_message(message);
+    send_message(message);
 }
 
 bool SystemImpl::send_message(const mavlink_message_t &message)

@@ -188,8 +188,8 @@ private:
 
     static std::string component_name(uint8_t component_id);
 
-    static void system_thread(SystemImpl *self);
-    static void send_heartbeat(SystemImpl &self);
+    void system_thread();
+    void send_heartbeat();
 
     // Last argument will hold Flight mode command.
     MAVLinkCommands::Result
