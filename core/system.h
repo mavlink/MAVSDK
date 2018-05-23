@@ -62,6 +62,20 @@ public:
      */
     bool has_gimbal() const;
 
+    /**
+     * @brief Checks if the system is connected.
+     *
+     * A system is connected when heartbeats are arriving (discovered and not timed out).
+     * @return `true` if the system is connected.
+     */
+    bool is_connected() const;
+
+    /**
+     * @brief Get the UUID of the system.
+     *
+     * @return UUID of system.
+     */
+    uint64_t get_uuid() const;
 
     // Non-copyable
     /**
@@ -79,8 +93,6 @@ private:
     void add_new_component(uint8_t component_id);
     void process_mavlink_message(const mavlink_message_t &message);
     void set_system_id(uint8_t system_id);
-    bool is_connected() const;
-    uint64_t get_uuid() const;
     uint8_t get_system_id() const;
 
     std::shared_ptr<MAVLinkSystem> mavlink_system() { return _mavlink_system; };
@@ -89,7 +101,7 @@ private:
      * For now,
      * - DroneCoreImpl wants to access private methods of System.
      * - PluginImplBase requests System class to get instance of MAVLinkSystem class.
-    */
+     */
     friend DroneCoreImpl;
     friend PluginImplBase;
 
