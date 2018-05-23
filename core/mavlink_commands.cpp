@@ -1,5 +1,5 @@
 #include "mavlink_commands.h"
-#include "mavlink_system.h"
+#include "system_impl.h"
 #include <future>
 #include <memory>
 
@@ -17,7 +17,7 @@ namespace dronecore {
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
-MAVLinkCommands::MAVLinkCommands(MAVLinkSystem &parent) :
+MAVLinkCommands::MAVLinkCommands(SystemImpl &parent) :
     _parent(parent)
 {
     _parent.register_mavlink_message_handler(

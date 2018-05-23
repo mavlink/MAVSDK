@@ -1,5 +1,4 @@
 #include "example_impl.h"
-#include "mavlink_system.h"
 #include "global_include.h"
 #include <functional>
 

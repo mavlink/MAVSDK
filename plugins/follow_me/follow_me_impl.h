@@ -4,7 +4,6 @@
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 #include "system.h"
-#include "mavlink_system.h"
 #include "timeout_handler.h"
 #include "global_include.h"
 #include "log.h"

@@ -811,7 +811,7 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
     }
 
     _parent->set_flight_mode_async(
-        MAVLinkSystem::FlightMode::MISSION,
+        SystemImpl::FlightMode::MISSION,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }
@@ -835,7 +835,7 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
     }
 
     _parent->set_flight_mode_async(
-        MAVLinkSystem::FlightMode::HOLD,
+        SystemImpl::FlightMode::HOLD,
         std::bind(&MissionImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }

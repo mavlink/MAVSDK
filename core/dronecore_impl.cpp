@@ -7,7 +7,7 @@
 #include "tcp_connection.h"
 #include "udp_connection.h"
 #include "system.h"
-#include "mavlink_system.h"
+#include "system_impl.h"
 #include "serial_connection.h"
 #include "cli_arg.h"
 
@@ -195,8 +195,8 @@ std::vector<uint64_t> DroneCoreImpl::get_system_uuids() const
     std::vector<uint64_t> uuids = {};
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        auto mavlink_system = it->second->_mavlink_system;
-        uint64_t uuid = mavlink_system->get_uuid();
+        auto system_impl = it->second->_system_impl;
+        uint64_t uuid = system_impl->get_uuid();
         if (uuid != 0) {
             uuids.push_back(uuid);
         }

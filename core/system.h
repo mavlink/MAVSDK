@@ -5,7 +5,7 @@
 
 namespace dronecore {
 
-class MAVLinkSystem;
+class SystemImpl;
 class DroneCoreImpl;
 class PluginImplBase;
 
@@ -95,17 +95,17 @@ private:
     void set_system_id(uint8_t system_id);
     uint8_t get_system_id() const;
 
-    std::shared_ptr<MAVLinkSystem> mavlink_system() { return _mavlink_system; };
+    std::shared_ptr<SystemImpl> system_impl() { return _system_impl; };
 
     /* TODO: Optimize this later.
      * For now,
      * - DroneCoreImpl wants to access private methods of System.
-     * - PluginImplBase requests System class to get instance of MAVLinkSystem class.
+     * - PluginImplBase requests System class to get instance of SystemImpl class.
      */
     friend DroneCoreImpl;
     friend PluginImplBase;
 
-    std::shared_ptr<MAVLinkSystem> _mavlink_system;
+    std::shared_ptr<SystemImpl> _system_impl;
 };
 
 

@@ -4,7 +4,6 @@
 #include "camera.h"
 #include "plugin_impl_base.h"
 #include "camera_definition.h"
-#include "mavlink_system.h"
 
 namespace dronecore {
 

@@ -1,9 +1,9 @@
 #include "mavlink_parameters.h"
-#include "mavlink_system.h"
+#include "system_impl.h"
 
 namespace dronecore {
 
-MAVLinkParameters::MAVLinkParameters(MAVLinkSystem &parent) :
+MAVLinkParameters::MAVLinkParameters(SystemImpl &parent) :
     _parent(parent)
 {
     _parent.register_mavlink_message_handler(
