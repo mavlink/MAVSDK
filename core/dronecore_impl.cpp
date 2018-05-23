@@ -58,14 +58,14 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     if (_systems.find(0) != _systems.end()) {
         auto null_system = _systems[0];
         _systems.erase(0);
-        null_system->set_system_id(message.sysid);
+        null_system->system_impl()->set_system_id(message.sysid);
         _systems.insert(system_entry_t(message.sysid, null_system));
     }
 
     if (!does_system_exist(message.sysid)) {
         make_system_with_component(message.sysid, message.compid);
     } else {
-        _systems.at(message.sysid)->add_new_component(message.compid);
+        _systems.at(message.sysid)->system_impl()->add_new_component(message.compid);
     }
 
     if (_should_exit) {
@@ -79,7 +79,7 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     }
 
     if (_systems.find(message.sysid) != _systems.end()) {
-        _systems.at(message.sysid)->process_mavlink_message(message);
+        _systems.at(message.sysid)->system_impl()->process_mavlink_message(message);
     }
 }
 
@@ -195,8 +195,7 @@ std::vector<uint64_t> DroneCoreImpl::get_system_uuids() const
     std::vector<uint64_t> uuids = {};
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        auto system_impl = it->second->_system_impl;
-        uint64_t uuid = system_impl->get_uuid();
+        uint64_t uuid = it->second->_system_impl->get_uuid();
         if (uuid != 0) {
             uuids.push_back(uuid);
         }

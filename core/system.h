@@ -89,18 +89,12 @@ public:
     const System &operator=(const System &) = delete;
 
 private:
-
-    void add_new_component(uint8_t component_id);
-    void process_mavlink_message(const mavlink_message_t &message);
-    void set_system_id(uint8_t system_id);
-    uint8_t get_system_id() const;
-
     std::shared_ptr<SystemImpl> system_impl() { return _system_impl; };
 
-    /* TODO: Optimize this later.
-     * For now,
-     * - DroneCoreImpl wants to access private methods of System.
-     * - PluginImplBase requests System class to get instance of SystemImpl class.
+    /*
+     * DroneCoreImpl and PluginImplBase need access to SystemImpl class.
+     * This is not pretty but it's not easy to hide the methods from library
+     * users if not like that (or with an ugly reinterpret_cast).
      */
     friend DroneCoreImpl;
     friend PluginImplBase;
