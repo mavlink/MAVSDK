@@ -5,6 +5,7 @@
 
 namespace {
 
+using testing::_;
 using testing::NiceMock;
 using testing::Return;
 
@@ -13,6 +14,8 @@ using CameraServiceImpl = dronecore::backend::CameraServiceImpl<MockCamera>;
 
 using CameraResult = dronecore::rpc::camera::CameraResult;
 using InputPair = std::pair<std::string, dronecore::Camera::Result>;
+
+static constexpr auto ARBITRARY_FLOAT = 24.2f;
 
 std::vector<InputPair> generateInputPairs();
 
@@ -43,6 +46,49 @@ TEST_F(CameraServiceImplTest, takesPhotoEvenWhenArgsAreNull)
     .Times(1);
 
     _camera_service.TakePhoto(nullptr, nullptr, nullptr);
+}
+
+TEST_P(CameraServiceImplTest, startPhotoIntervalResultIsTranslatedCorrectly)
+{
+    ON_CALL(_camera, start_photo_interval(_))
+    .WillByDefault(Return(GetParam().second));
+    dronecore::rpc::camera::StartPhotoIntervalRequest request;
+    request.set_interval_s(ARBITRARY_FLOAT);
+    dronecore::rpc::camera::StartPhotoIntervalResponse response;
+
+    _camera_service.StartPhotoInterval(nullptr, &request, &response);
+
+    EXPECT_EQ(GetParam().first, CameraResult::Result_Name(response.camera_result().result()));
+}
+
+TEST_F(CameraServiceImplTest, startsPhotoIntervalEvenWhenContextAndResponseAreNull)
+{
+    EXPECT_CALL(_camera, start_photo_interval(_))
+    .Times(1);
+    dronecore::rpc::camera::StartPhotoIntervalRequest request;
+    request.set_interval_s(ARBITRARY_FLOAT);
+
+    _camera_service.StartPhotoInterval(nullptr, &request, nullptr);
+}
+
+TEST_F(CameraServiceImplTest, startsPhotoIntervalWithRightParameter)
+{
+    auto expected_interval = ARBITRARY_FLOAT;
+    EXPECT_CALL(_camera, start_photo_interval(expected_interval))
+    .Times(1);
+    dronecore::rpc::camera::StartPhotoIntervalRequest request;
+    request.set_interval_s(expected_interval);
+
+    _camera_service.StartPhotoInterval(nullptr, &request, nullptr);
+}
+
+TEST_F(CameraServiceImplTest, startPhotoIntervalReturnsWrongArgumentErrorIfRequestIsNull)
+{
+    dronecore::rpc::camera::StartPhotoIntervalResponse response;
+
+    _camera_service.StartPhotoInterval(nullptr, nullptr, &response);
+
+    EXPECT_EQ("WRONG_ARGUMENT", CameraResult::Result_Name(response.camera_result().result()));
 }
 
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,
