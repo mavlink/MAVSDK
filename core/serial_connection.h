@@ -10,12 +10,9 @@
 
 namespace dronecore {
 
-class SerialConnection : public Connection
-{
-public:
-    explicit SerialConnection(DroneCoreImpl &parent,
-                              const std::string &path,
-                              int baudrate);
+class SerialConnection : public Connection {
+    public:
+    explicit SerialConnection(DroneCoreImpl &parent, const std::string &path, int baudrate);
     bool is_ok() const;
     ConnectionResult start();
     ConnectionResult stop();
@@ -27,7 +24,7 @@ public:
     SerialConnection(const SerialConnection &) = delete;
     const SerialConnection &operator=(const SerialConnection &) = delete;
 
-private:
+    private:
     ConnectionResult setup_port();
     void start_recv_thread();
     static void receive(SerialConnection *parent);
@@ -45,4 +42,4 @@ private:
     std::atomic_bool _should_exit{false};
 };
 
-} // namespace dronecore
+}// namespace dronecore

@@ -21,13 +21,12 @@ TEST_F(SitlTest, Logging)
     if (log_ret == Logging::Result::COMMAND_DENIED) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         logging->stop_logging();
-        //ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
+        // ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         log_ret = logging->start_logging();
     }
 
     ASSERT_EQ(log_ret, Logging::Result::SUCCESS);
-
 
     for (unsigned i = 0; i < 10; ++i) {
         std::this_thread::sleep_for(std::chrono::seconds(1));

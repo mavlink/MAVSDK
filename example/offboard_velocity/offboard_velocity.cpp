@@ -21,43 +21,46 @@ using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
 using std::chrono::seconds;
 
-#define ERROR_CONSOLE_TEXT "\033[31m" //Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
+#define ERROR_CONSOLE_TEXT "\033[31m"// Turn text on console red
+#define TELEMETRY_CONSOLE_TEXT "\033[34m"// Turn text on console blue
+#define NORMAL_CONSOLE_TEXT "\033[0m"// Restore normal console colour
 
 // Handles Action's result
-inline void action_error_exit(ActionResult result, const std::string &message)
+inline void
+action_error_exit(ActionResult result, const std::string &message)
 {
     if (result != ActionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(
-                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
 // Handles Offboard's result
-inline void offboard_error_exit(Offboard::Result result, const std::string &message)
+inline void
+offboard_error_exit(Offboard::Result result, const std::string &message)
 {
     if (result != Offboard::Result::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Offboard::result_str(
-                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << Offboard::result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
 // Handles connection result
-inline void connection_error_exit(ConnectionResult result, const std::string &message)
+inline void
+connection_error_exit(ConnectionResult result, const std::string &message)
 {
     if (result != ConnectionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message
-                  << connection_result_str(result)
+        std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
 // Logs during Offboard control
-inline void offboard_log(const std::string &offb_mode, const std::string msg)
+inline void
+offboard_log(const std::string &offb_mode, const std::string msg)
 {
     std::cout << "[" << offb_mode << "] " << msg << std::endl;
 }
@@ -67,7 +70,8 @@ inline void offboard_log(const std::string &offb_mode, const std::string msg)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_ned(std::shared_ptr<dronecore::Offboard> offboard)
+bool
+offb_ctrl_ned(std::shared_ptr<dronecore::Offboard> offboard)
 {
     const std::string offb_mode = "NED";
     // Send it once before starting offboard, otherwise it will be rejected.
@@ -77,16 +81,16 @@ bool offb_ctrl_ned(std::shared_ptr<dronecore::Offboard> offboard)
     offboard_error_exit(offboard_result, "Offboard start failed");
     offboard_log(offb_mode, "Offboard started");
 
-    offboard_log(offb_mode,  "Turn to face East");
+    offboard_log(offb_mode, "Turn to face East");
     offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 90.0f});
-    sleep_for(seconds(1)); // Let yaw settle.
+    sleep_for(seconds(1));// Let yaw settle.
 
     {
         const float step_size = 0.01f;
         const float one_cycle = 2.0f * (float)M_PI;
         const unsigned steps = 2 * unsigned(one_cycle / step_size);
 
-        offboard_log(offb_mode,  "Go North and back South");
+        offboard_log(offb_mode, "Go North and back South");
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
             offboard->set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
@@ -94,16 +98,15 @@ bool offb_ctrl_ned(std::shared_ptr<dronecore::Offboard> offboard)
         }
     }
 
-    offboard_log(offb_mode,  "Turn to face West");
+    offboard_log(offb_mode, "Turn to face West");
     offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 270.0f});
     sleep_for(seconds(2));
-
 
     offboard_log(offb_mode, "Go up 2 m/s, turn to face South");
     offboard->set_velocity_ned({0.0f, 0.0f, -2.0f, 180.0f});
     sleep_for(seconds(4));
 
-    offboard_log(offb_mode,  "Go down 1 m/s, turn to face North");
+    offboard_log(offb_mode, "Go down 1 m/s, turn to face North");
     offboard->set_velocity_ned({0.0f, 0.0f, 1.0f, 0.0f});
     sleep_for(seconds(4));
 
@@ -120,9 +123,9 @@ bool offb_ctrl_ned(std::shared_ptr<dronecore::Offboard> offboard)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_body(std::shared_ptr<dronecore::Offboard> offboard)
+bool
+offb_ctrl_body(std::shared_ptr<dronecore::Offboard> offboard)
 {
-
     const std::string offb_mode = "BODY";
 
     // Send it once before starting offboard, otherwise it will be rejected.
@@ -167,8 +170,8 @@ bool offb_ctrl_body(std::shared_ptr<dronecore::Offboard> offboard)
     return true;
 }
 
-
-void usage(std::string bin_name)
+void
+usage(std::string bin_name)
 {
     std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
               << "Connection URL format should be :" << std::endl
@@ -178,8 +181,8 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
     DroneCore dc;
     std::string connection_url;
@@ -194,12 +197,11 @@ int main(int argc, char **argv)
     }
 
     if (connection_result != ConnectionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
-                  << connection_result_str(connection_result)
+        std::cout << ERROR_CONSOLE_TEXT
+                  << "Connection failed: " << connection_result_str(connection_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
-
 
     // Wait for the system to connect via heartbeat
     while (!dc.is_connected()) {
@@ -227,7 +229,6 @@ int main(int argc, char **argv)
     action_error_exit(takeoff_result, "Takeoff failed");
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5));
-
 
     //  using local NED co-ordinates
     bool ret = offb_ctrl_ned(offboard);

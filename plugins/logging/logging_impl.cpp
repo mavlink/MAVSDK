@@ -5,8 +5,7 @@
 
 namespace dronecore {
 
-LoggingImpl::LoggingImpl(System &system) :
-    PluginImplBase(system)
+LoggingImpl::LoggingImpl(System &system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -16,31 +15,38 @@ LoggingImpl::~LoggingImpl()
     _parent->unregister_plugin(this);
 }
 
-void LoggingImpl::init()
+void
+LoggingImpl::init()
 {
-    using namespace std::placeholders; // for `_1`
+    using namespace std::placeholders;// for `_1`
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_LOGGING_DATA,
-        std::bind(&LoggingImpl::process_logging_data, this, _1), this);
+        MAVLINK_MSG_ID_LOGGING_DATA, std::bind(&LoggingImpl::process_logging_data, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_LOGGING_DATA_ACKED,
-        std::bind(&LoggingImpl::process_logging_data_acked, this, _1), this);
+        std::bind(&LoggingImpl::process_logging_data_acked, this, _1),
+        this);
 }
 
-void LoggingImpl::deinit()
+void
+LoggingImpl::deinit()
 {
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void LoggingImpl::enable() {}
+void
+LoggingImpl::enable()
+{}
 
-void LoggingImpl::disable() {}
+void
+LoggingImpl::disable()
+{}
 
-Logging::Result LoggingImpl::start_logging() const
+Logging::Result
+LoggingImpl::start_logging() const
 {
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_LOGGING_START;
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.f);
@@ -49,9 +55,10 @@ Logging::Result LoggingImpl::start_logging() const
     return logging_result_from_command_result(_parent->send_command(command));
 }
 
-Logging::Result LoggingImpl::stop_logging() const
+Logging::Result
+LoggingImpl::stop_logging() const
 {
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_LOGGING_STOP;
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.f);
@@ -60,39 +67,41 @@ Logging::Result LoggingImpl::stop_logging() const
     return logging_result_from_command_result(_parent->send_command(command));
 }
 
-void LoggingImpl::start_logging_async(const Logging::result_callback_t &callback)
+void
+LoggingImpl::start_logging_async(const Logging::result_callback_t &callback)
 {
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_LOGGING_START;
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.f);
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, std::bind(&LoggingImpl::command_result_callback,
-                                                   std::placeholders::_1,
-                                                   callback));
+    _parent->send_command_async(
+        command, std::bind(&LoggingImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void LoggingImpl::stop_logging_async(const Logging::result_callback_t &callback)
+void
+LoggingImpl::stop_logging_async(const Logging::result_callback_t &callback)
 {
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_LOGGING_STOP;
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.f);
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, std::bind(&LoggingImpl::command_result_callback,
-                                                   std::placeholders::_1,
-                                                   callback));
+    _parent->send_command_async(
+        command, std::bind(&LoggingImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void LoggingImpl::process_logging_data(const mavlink_message_t &message)
+void
+LoggingImpl::process_logging_data(const mavlink_message_t &message)
 {
     mavlink_logging_data_t logging_data;
     mavlink_msg_logging_data_decode(&message, &logging_data);
 }
 
-void LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
+void
+LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
 {
     mavlink_logging_data_acked_t logging_data_acked;
     mavlink_msg_logging_data_acked_decode(&message, &logging_data_acked);
@@ -129,13 +138,13 @@ LoggingImpl::logging_result_from_command_result(MAVLinkCommands::Result result)
     }
 }
 
-void LoggingImpl::command_result_callback(MAVLinkCommands::Result command_result,
-                                          const Logging::result_callback_t &callback)
+void
+LoggingImpl::command_result_callback(MAVLinkCommands::Result command_result,
+                                     const Logging::result_callback_t &callback)
 {
     Logging::Result action_result = logging_result_from_command_result(command_result);
 
     callback(action_result);
 }
 
-
-} // namespace dronecore
+}// namespace dronecore

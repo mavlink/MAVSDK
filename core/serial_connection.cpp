@@ -2,7 +2,6 @@
 #include "global_include.h"
 #include "log.h"
 
-
 #if defined(LINUX)
 #include <unistd.h>
 #include <fcntl.h>
@@ -21,20 +20,20 @@
 #define GET_ERROR() GetLastErrorStdStr()
 // Taken from:
 // https://coolcowstudio.wordpress.com/2012/10/19/getlasterror-as-stdstring/
-std::string GetLastErrorStdStr()
+std::string
+GetLastErrorStdStr()
 {
     DWORD error = GetLastError();
     if (error) {
         LPVOID lpMsgBuf;
-        DWORD bufLen = FormatMessage(
-                           FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                           FORMAT_MESSAGE_FROM_SYSTEM |
-                           FORMAT_MESSAGE_IGNORE_INSERTS,
-                           NULL,
-                           error,
-                           MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                           (LPTSTR) &lpMsgBuf,
-                           0, NULL);
+        DWORD bufLen = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM
+                                         | FORMAT_MESSAGE_IGNORE_INSERTS,
+                                     NULL,
+                                     error,
+                                     MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                                     (LPTSTR)&lpMsgBuf,
+                                     0,
+                                     NULL);
         if (bufLen) {
             LPCSTR lpMsgStr = (LPCSTR)lpMsgBuf;
             std::string result(lpMsgStr, lpMsgStr + bufLen);
@@ -50,10 +49,9 @@ std::string GetLastErrorStdStr()
 
 namespace dronecore {
 
-SerialConnection::SerialConnection(DroneCoreImpl &parent, const std::string &path, int baudrate):
-    Connection(parent),
-    _serial_node(path),
-    _baudrate(baudrate) {}
+SerialConnection::SerialConnection(DroneCoreImpl &parent, const std::string &path, int baudrate)
+    : Connection(parent), _serial_node(path), _baudrate(baudrate)
+{}
 
 SerialConnection::~SerialConnection()
 {
@@ -61,13 +59,14 @@ SerialConnection::~SerialConnection()
     stop();
 }
 
-
-bool SerialConnection::is_ok() const
+bool
+SerialConnection::is_ok() const
 {
     return true;
 }
 
-ConnectionResult SerialConnection::start()
+ConnectionResult
+SerialConnection::start()
 {
     if (!start_mavlink_receiver()) {
         return ConnectionResult::CONNECTIONS_EXHAUSTED;
@@ -83,7 +82,8 @@ ConnectionResult SerialConnection::start()
     return ConnectionResult::SUCCESS;
 }
 
-ConnectionResult SerialConnection::setup_port()
+ConnectionResult
+SerialConnection::setup_port()
 {
 #if defined(LINUX)
     _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY);
@@ -107,11 +107,11 @@ ConnectionResult SerialConnection::setup_port()
 #elif defined(WINDOWS)
     _handle = CreateFile(_serial_node.c_str(),
                          GENERIC_READ | GENERIC_WRITE,
-                         0,      // exclusive-access
-                         NULL,   //  default security attributes
+                         0,// exclusive-access
+                         NULL,//  default security attributes
                          OPEN_EXISTING,
-                         0,      //  not overlapped I/O
-                         NULL);  //  hTemplate must be NULL for comm devices
+                         0,//  not overlapped I/O
+                         NULL);//  hTemplate must be NULL for comm devices
 
     if (_handle == INVALID_HANDLE_VALUE) {
         LogErr() << "CreateFile failed with: " << GET_ERROR();
@@ -146,8 +146,8 @@ ConnectionResult SerialConnection::setup_port()
     tc.c_cflag &= ~(CSIZE | PARENB | CRTSCTS);
     tc.c_cflag |= CS8;
 
-    tc.c_cc[VMIN] = 1; // We want at least 1 byte to be available.
-    tc.c_cc[VTIME] = 0; // We don't timeout but wait indefinitely.
+    tc.c_cc[VMIN] = 1;// We want at least 1 byte to be available.
+    tc.c_cc[VTIME] = 0;// We don't timeout but wait indefinitely.
 #endif
 
 #if defined(LINUX)
@@ -161,14 +161,13 @@ ConnectionResult SerialConnection::setup_port()
         return ConnectionResult::CONNECTION_ERROR;
     }
 
-
     if (ioctl(_fd, TCFLSH, TCIOFLUSH) == -1) {
         LogErr() << "Could not flush terminal " << GET_ERROR();
         close(_fd);
         return ConnectionResult::CONNECTION_ERROR;
     }
 #elif defined(APPLE)
-    tc.c_cflag |= CLOCAL; // Without this a write() blocks indefinitely.
+    tc.c_cflag |= CLOCAL;// Without this a write() blocks indefinitely.
 
     cfsetispeed(&tc, _baudrate);
     cfsetospeed(&tc, _baudrate);
@@ -192,7 +191,7 @@ ConnectionResult SerialConnection::setup_port()
 
     dcb.BaudRate = _baudrate;
     dcb.ByteSize = 8;
-    dcb.Parity   = NOPARITY;
+    dcb.Parity = NOPARITY;
     dcb.StopBits = ONESTOPBIT;
     dcb.fDtrControl = DTR_CONTROL_DISABLE;
     dcb.fRtsControl = RTS_CONTROL_DISABLE;
@@ -202,13 +201,12 @@ ConnectionResult SerialConnection::setup_port()
     dcb.fNull = FALSE;
     dcb.fDsrSensitivity = FALSE;
 
-
     if (!SetCommState(_handle, &dcb)) {
-        LogErr() << "SetCommState failed with error: " <<  GET_ERROR();
+        LogErr() << "SetCommState failed with error: " << GET_ERROR();
         return ConnectionResult::CONNECTION_ERROR;
     }
 
-    COMMTIMEOUTS timeout = { 0 };
+    COMMTIMEOUTS timeout = {0};
     timeout.ReadIntervalTimeout = 1;
     timeout.ReadTotalTimeoutConstant = 1;
     timeout.ReadTotalTimeoutMultiplier = 1;
@@ -217,7 +215,7 @@ ConnectionResult SerialConnection::setup_port()
     SetCommTimeouts(_handle, &timeout);
 
     if (!SetCommTimeouts(_handle, &timeout)) {
-        LogErr() << "SetCommTimeouts failed with error: " <<  GET_ERROR();
+        LogErr() << "SetCommTimeouts failed with error: " << GET_ERROR();
         return ConnectionResult::CONNECTION_ERROR;
     }
 
@@ -226,12 +224,14 @@ ConnectionResult SerialConnection::setup_port()
     return ConnectionResult::SUCCESS;
 }
 
-void SerialConnection::start_recv_thread()
+void
+SerialConnection::start_recv_thread()
 {
     _recv_thread = new std::thread(receive, this);
 }
 
-ConnectionResult SerialConnection::stop()
+ConnectionResult
+SerialConnection::stop()
 {
     _should_exit = true;
 #if defined(LINUX) || defined(APPLE)
@@ -253,7 +253,8 @@ ConnectionResult SerialConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool SerialConnection::send_message(const mavlink_message_t &message)
+bool
+SerialConnection::send_message(const mavlink_message_t &message)
 {
     if (_serial_node.empty()) {
         LogErr() << "Dev Path unknown";
@@ -270,7 +271,7 @@ bool SerialConnection::send_message(const mavlink_message_t &message)
 
     int send_len;
 #if defined(LINUX) || defined(APPLE)
-    send_len =  write(_fd, buffer, buffer_len);
+    send_len = write(_fd, buffer, buffer_len);
 #else
     if (!WriteFile(_handle, buffer, buffer_len, LPDWORD(&send_len), NULL)) {
         LogErr() << "WriteFile failure: " << GET_ERROR();
@@ -286,7 +287,8 @@ bool SerialConnection::send_message(const mavlink_message_t &message)
     return true;
 }
 
-void SerialConnection::receive(SerialConnection *parent)
+void
+SerialConnection::receive(SerialConnection *parent)
 {
     // Enough for MTU 1500 bytes.
     char buffer[2048];
@@ -314,4 +316,4 @@ void SerialConnection::receive(SerialConnection *parent)
         }
     }
 }
-} // namespace dronecore
+}// namespace dronecore

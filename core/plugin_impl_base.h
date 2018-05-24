@@ -6,10 +6,8 @@ namespace dronecore {
 class System;
 class MAVLinkSystem;
 
-class PluginImplBase
-{
-public:
-
+class PluginImplBase {
+    public:
     explicit PluginImplBase(System &system);
     virtual ~PluginImplBase() = default;
 
@@ -58,8 +56,8 @@ public:
     PluginImplBase(const PluginImplBase &) = delete;
     const PluginImplBase &operator=(const PluginImplBase &) = delete;
 
-protected:
+    protected:
     std::shared_ptr<MAVLinkSystem> _parent;
 };
 
-} // namespace dronecore
+}// namespace dronecore

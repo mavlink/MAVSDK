@@ -10,4 +10,4 @@ TEST(ExampleImpl, NoTest)
     ASSERT_TRUE(true);
 }
 
-} // namespace dronecore
+}// namespace dronecore

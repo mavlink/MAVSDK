@@ -2,16 +2,12 @@
 
 namespace dronecore {
 
-CallEveryHandler::CallEveryHandler(Time &time) :
-    _time(time)
-{
-}
+CallEveryHandler::CallEveryHandler(Time &time) : _time(time) {}
 
-CallEveryHandler::~CallEveryHandler()
-{
-}
+CallEveryHandler::~CallEveryHandler() {}
 
-void CallEveryHandler::add(std::function<void()> callback, float interval_s, void **cookie)
+void
+CallEveryHandler::add(std::function<void()> callback, float interval_s, void **cookie)
 {
     auto new_entry = std::make_shared<Entry>();
     new_entry->callback = callback;
@@ -30,7 +26,8 @@ void CallEveryHandler::add(std::function<void()> callback, float interval_s, voi
     }
 }
 
-void CallEveryHandler::change(float interval_s, const void *cookie)
+void
+CallEveryHandler::change(float interval_s, const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
@@ -40,7 +37,8 @@ void CallEveryHandler::change(float interval_s, const void *cookie)
     }
 }
 
-void CallEveryHandler::reset(const void *cookie)
+void
+CallEveryHandler::reset(const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
@@ -50,7 +48,8 @@ void CallEveryHandler::reset(const void *cookie)
     }
 }
 
-void CallEveryHandler::remove(const void *cookie)
+void
+CallEveryHandler::remove(const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
@@ -61,18 +60,16 @@ void CallEveryHandler::remove(const void *cookie)
     }
 }
 
-void CallEveryHandler::run_once()
+void
+CallEveryHandler::run_once()
 {
     _entries_mutex.lock();
 
     for (auto it = _entries.begin(); it != _entries.end(); ++it) {
-
         if (_time.elapsed_since_s(it->second->last_time) > double(it->second->interval_s)) {
-
             _time.shift_steady_time_by(it->second->last_time, double(it->second->interval_s));
 
             if (it->second->callback) {
-
                 // Get a copy for the callback because we unlock.
                 std::function<void()> callback = it->second->callback;
 
@@ -93,4 +90,4 @@ void CallEveryHandler::run_once()
     _entries_mutex.unlock();
 }
 
-} // namespace dronecore
+}// namespace dronecore

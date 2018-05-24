@@ -5,9 +5,8 @@
 
 namespace dronecore {
 
-class MAVLinkChannels
-{
-public:
+class MAVLinkChannels {
+    public:
     static MAVLinkChannels &Instance()
     {
         // This should be thread-safe in C++11.
@@ -17,10 +16,10 @@ public:
     }
 
     // delete copy and move constructors and assign operators
-    MAVLinkChannels(MAVLinkChannels const &) = delete;            // Copy construct
-    MAVLinkChannels(MAVLinkChannels &&) = delete;                 // Move construct
-    MAVLinkChannels &operator=(MAVLinkChannels const &) = delete; // Copy assign
-    MAVLinkChannels &operator=(MAVLinkChannels &&) = delete;      // Move assign
+    MAVLinkChannels(MAVLinkChannels const &) = delete;// Copy construct
+    MAVLinkChannels(MAVLinkChannels &&) = delete;// Move construct
+    MAVLinkChannels &operator=(MAVLinkChannels const &) = delete;// Copy assign
+    MAVLinkChannels &operator=(MAVLinkChannels &&) = delete;// Move assign
 
     MAVLinkChannels();
     ~MAVLinkChannels();
@@ -42,7 +41,7 @@ public:
 
     uint8_t get_max_channels() { return MAX_CHANNELS; }
 
-private:
+    private:
     // It is not clear what the limit of the number of channels is, except UINT8_MAX.
     static constexpr uint8_t MAX_CHANNELS = 32;
 
@@ -50,4 +49,4 @@ private:
     std::mutex _channels_used_mutex;
 };
 
-} // namespace dronecore
+}// namespace dronecore

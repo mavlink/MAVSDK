@@ -16,9 +16,8 @@ namespace dronecore {
 
 class System;
 
-class TelemetryImpl : public PluginImplBase
-{
-public:
+class TelemetryImpl : public PluginImplBase {
+    public:
     TelemetryImpl(System &system);
     ~TelemetryImpl();
 
@@ -80,7 +79,7 @@ public:
     void health_all_ok_async(Telemetry::health_all_ok_callback_t &callback);
     void rc_status_async(Telemetry::rc_status_callback_t &callback);
 
-private:
+    private:
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
@@ -119,9 +118,8 @@ private:
 
     void receive_rc_channels_timeout();
 
-
-    static Telemetry::Result telemetry_result_from_command_result(
-        MAVLinkCommands::Result command_result);
+    static Telemetry::Result
+    telemetry_result_from_command_result(MAVLinkCommands::Result command_result);
 
     static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Telemetry::result_callback_t &callback);
@@ -189,4 +187,4 @@ private:
     void *_timeout_cookie = nullptr;
 };
 
-} // namespace dronecore
+}// namespace dronecore

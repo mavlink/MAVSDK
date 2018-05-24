@@ -7,12 +7,12 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#include <unistd.h> // for close()
+#include <unistd.h>// for close()
 #else
 #include <winsock2.h>
-#include <Ws2tcpip.h> // For InetPton
-#undef SOCKET_ERROR // conflicts with ConnectionResult::SOCKET_ERROR
-#pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
+#include <Ws2tcpip.h>// For InetPton
+#undef SOCKET_ERROR// conflicts with ConnectionResult::SOCKET_ERROR
+#pragma comment(lib, "Ws2_32.lib")// Without this, Ws2_32.lib is not included in static library.
 #endif
 
 #include <cassert>
@@ -27,10 +27,9 @@ namespace dronecore {
 
 UdpConnection::UdpConnection(DroneCoreImpl &parent,
                              const std::string &local_ip,
-                             int local_port_number):
-    Connection(parent),
-    _local_ip(local_ip),
-    _local_port_number(local_port_number) {}
+                             int local_port_number)
+    : Connection(parent), _local_ip(local_ip), _local_port_number(local_port_number)
+{}
 
 UdpConnection::~UdpConnection()
 {
@@ -38,12 +37,14 @@ UdpConnection::~UdpConnection()
     stop();
 }
 
-bool UdpConnection::is_ok() const
+bool
+UdpConnection::is_ok() const
 {
     return true;
 }
 
-ConnectionResult UdpConnection::start()
+ConnectionResult
+UdpConnection::start()
 {
     if (!start_mavlink_receiver()) {
         return ConnectionResult::CONNECTIONS_EXHAUSTED;
@@ -59,9 +60,9 @@ ConnectionResult UdpConnection::start()
     return ConnectionResult::SUCCESS;
 }
 
-ConnectionResult UdpConnection::setup_port()
+ConnectionResult
+UdpConnection::setup_port()
 {
-
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
@@ -90,12 +91,14 @@ ConnectionResult UdpConnection::setup_port()
     return ConnectionResult::SUCCESS;
 }
 
-void UdpConnection::start_recv_thread()
+void
+UdpConnection::start_recv_thread()
 {
     _recv_thread = new std::thread(receive, this);
 }
 
-ConnectionResult UdpConnection::stop()
+ConnectionResult
+UdpConnection::stop()
 {
     _should_exit = true;
 
@@ -126,7 +129,8 @@ ConnectionResult UdpConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool UdpConnection::send_message(const mavlink_message_t &message)
+bool
+UdpConnection::send_message(const mavlink_message_t &message)
 {
     struct sockaddr_in dest_addr {};
 
@@ -156,8 +160,12 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, reinterpret_cast<char *>(buffer), buffer_len, 0,
-                          reinterpret_cast<const sockaddr *>(&dest_addr), sizeof(dest_addr));
+    int send_len = sendto(_socket_fd,
+                          reinterpret_cast<char *>(buffer),
+                          buffer_len,
+                          0,
+                          reinterpret_cast<const sockaddr *>(&dest_addr),
+                          sizeof(dest_addr));
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -167,17 +175,21 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     return true;
 }
 
-void UdpConnection::receive(UdpConnection *parent)
+void
+UdpConnection::receive(UdpConnection *parent)
 {
     // Enough for MTU 1500 bytes.
     char buffer[2048];
 
     while (!parent->_should_exit) {
-
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
-        int recv_len = recvfrom(parent->_socket_fd, buffer, sizeof(buffer), 0,
-                                reinterpret_cast<struct sockaddr *>(&src_addr), &src_addr_len);
+        int recv_len = recvfrom(parent->_socket_fd,
+                                buffer,
+                                sizeof(buffer),
+                                0,
+                                reinterpret_cast<struct sockaddr *>(&src_addr),
+                                &src_addr_len);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
@@ -188,7 +200,7 @@ void UdpConnection::receive(UdpConnection *parent)
         if (recv_len < 0) {
             // This happens on desctruction when close(_socket_fd) is called,
             // therefore be quiet.
-            //LogErr() << "recvfrom error: " << GET_ERROR(errno);
+            // LogErr() << "recvfrom error: " << GET_ERROR(errno);
             continue;
         }
 
@@ -198,25 +210,23 @@ void UdpConnection::receive(UdpConnection *parent)
             int new_remote_port_number = ntohs(src_addr.sin_port);
             std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
 
-            if (parent->_remote_ip.empty() ||
-                parent->_remote_port_number == 0) {
-
+            if (parent->_remote_ip.empty() || parent->_remote_port_number == 0) {
                 // Set IP if we don't know it yet.
                 parent->_remote_ip = new_remote_ip;
                 parent->_remote_port_number = new_remote_port_number;
 
-                LogInfo() << "New device on: " << parent->_remote_ip
-                          << ":" << parent->_remote_port_number;
+                LogInfo() << "New device on: " << parent->_remote_ip << ":"
+                          << parent->_remote_port_number;
 
-            } else if (parent->_remote_ip.compare(new_remote_ip) != 0 ||
-                       parent->_remote_port_number != new_remote_port_number) {
-
+            } else if (parent->_remote_ip.compare(new_remote_ip) != 0
+                       || parent->_remote_port_number != new_remote_port_number) {
                 // It is possible that wifi disconnects and a device might get a new
                 // IP and/or UDP port.
                 parent->_remote_ip = new_remote_ip;
                 parent->_remote_port_number = new_remote_port_number;
 
-                LogInfo() << "Device changed to: " << new_remote_ip << ":" << new_remote_port_number;
+                LogInfo() << "Device changed to: " << new_remote_ip << ":"
+                          << new_remote_port_number;
             }
         }
 
@@ -229,5 +239,4 @@ void UdpConnection::receive(UdpConnection *parent)
     }
 }
 
-
-} // namespace dronecore
+}// namespace dronecore

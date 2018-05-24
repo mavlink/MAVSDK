@@ -6,19 +6,18 @@
 
 using namespace dronecore;
 
-
-//static void connect(DroneCore);
+// static void connect(DroneCore);
 static void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);
 static void takeoff_and_transition_to_fixedwing();
 static void land_and_disarm(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);
-
 
 TEST_F(SitlTest, ActionSimpleTransition)
 {
     takeoff_and_transition_to_fixedwing();
 }
 
-void takeoff_and_transition_to_fixedwing()
+void
+takeoff_and_transition_to_fixedwing()
 {
     // Init & connect
     DroneCore dc;
@@ -57,7 +56,8 @@ void takeoff_and_transition_to_fixedwing()
     land_and_disarm(action, telemetry);
 }
 
-void land_and_disarm(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry)
+void
+land_and_disarm(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry)
 {
     action->return_to_launch();
 
@@ -68,7 +68,8 @@ void land_and_disarm(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> 
     LogInfo() << "Disarmed, exiting.";
 }
 
-void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry)
+void
+takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry)
 {
     while (!telemetry->health_all_ok()) {
         std::cout << "waiting for system to be ready" << std::endl;
@@ -87,8 +88,6 @@ void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetr
     const int wait_time_s = 10;
     std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
 
-
     EXPECT_GT(telemetry->position().relative_altitude_m, altitude_m - 0.25f);
     EXPECT_LT(telemetry->position().relative_altitude_m, altitude_m + 0.25f);
 }
-

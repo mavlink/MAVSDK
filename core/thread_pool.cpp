@@ -2,17 +2,15 @@
 
 namespace dronecore {
 
-ThreadPool::ThreadPool(unsigned num_threads) :
-    _num_threads(num_threads)
-{
-}
+ThreadPool::ThreadPool(unsigned num_threads) : _num_threads(num_threads) {}
 
 ThreadPool::~ThreadPool()
 {
     stop();
 }
 
-bool ThreadPool::start()
+bool
+ThreadPool::start()
 {
     _should_stop = false;
 
@@ -24,7 +22,8 @@ bool ThreadPool::start()
     return true;
 }
 
-bool ThreadPool::stop()
+bool
+ThreadPool::stop()
 {
     _work_queue.stop();
     _should_stop = true;
@@ -35,12 +34,14 @@ bool ThreadPool::stop()
     return true;
 }
 
-void ThreadPool::enqueue(std::function<void()> func)
+void
+ThreadPool::enqueue(std::function<void()> func)
 {
     _work_queue.enqueue(std::move(func));
 }
 
-void ThreadPool::worker()
+void
+ThreadPool::worker()
 {
     while (!_should_stop) {
         auto func = _work_queue.dequeue();
@@ -50,5 +51,4 @@ void ThreadPool::worker()
     }
 }
 
-
-} // namespace dronecore
+}// namespace dronecore

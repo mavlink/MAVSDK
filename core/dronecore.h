@@ -20,9 +20,8 @@ class System;
  * An instance of this class must be created (first) in order to use the library.
  * The instance must be destroyed after use in order to break connections and release all resources.
  */
-class DroneCore
-{
-public:
+class DroneCore {
+    public:
     /** @brief Default UDP bind IP (accepts any incoming connections). */
     static constexpr auto DEFAULT_UDP_BIND_IP = "0.0.0.0";
     /** @brief Default UDP bind port (same port as used by MAVROS). */
@@ -102,7 +101,8 @@ public:
                                         int remote_port = DEFAULT_TCP_REMOTE_PORT);
 
     /**
-     * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as specified.
+     * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as
+     * specified.
      *
      *
      * @param dev_path COM or UART dev node name/path (e.g. "/dev/ttyS0", or "COM3" on Windows).
@@ -116,7 +116,8 @@ public:
      * @brief Get vector of system UUIDs.
      *
      * This returns a vector of the UUIDs of all systems that have been discovered.
-     * If a system doesn't have a UUID then DroneCore will instead use its MAVLink system ID (range: 0..255).
+     * If a system doesn't have a UUID then DroneCore will instead use its MAVLink system ID (range:
+     * 0..255).
      *
      * @return A vector containing the UUIDs.
      */
@@ -201,7 +202,7 @@ public:
      */
     void register_on_timeout(event_callback_t callback);
 
-private:
+    private:
     /* @private. */
     std::unique_ptr<DroneCoreImpl> _impl;
 
@@ -210,4 +211,4 @@ private:
     const DroneCore &operator=(const DroneCore &) = delete;
 };
 
-} // namespace dronecore
+}// namespace dronecore

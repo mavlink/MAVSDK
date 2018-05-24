@@ -3,7 +3,6 @@
 
 namespace dronecore {
 
-
 #ifdef TESTING
 HttpLoader::HttpLoader(const std::shared_ptr<ICurlWrapper> &curl_wrapper)
     : _curl_wrapper(curl_wrapper)
@@ -23,13 +22,15 @@ HttpLoader::~HttpLoader()
     stop();
 }
 
-void HttpLoader::start()
+void
+HttpLoader::start()
 {
     _should_exit = false;
     _work_thread = new std::thread(work_thread, this);
 }
 
-void HttpLoader::stop()
+void
+HttpLoader::stop()
 {
     _should_exit = true;
     _work_queue.stop();
@@ -40,35 +41,42 @@ void HttpLoader::stop()
     }
 }
 
-bool HttpLoader::download_sync(const std::string &url, const std::string &local_path)
+bool
+HttpLoader::download_sync(const std::string &url, const std::string &local_path)
 {
     auto work_item = std::make_shared<DownloadItem>(url, local_path, nullptr);
     bool success = do_download(work_item, _curl_wrapper);
     return success;
 }
 
-void HttpLoader::download_async(const std::string &url, const std::string &local_path,
-                                const progress_callback_t &progress_callback)
+void
+HttpLoader::download_async(const std::string &url,
+                           const std::string &local_path,
+                           const progress_callback_t &progress_callback)
 {
     auto work_item = std::make_shared<DownloadItem>(url, local_path, progress_callback);
     _work_queue.enqueue(work_item);
 }
 
-bool HttpLoader::upload_sync(const std::string &target_url, const std::string &local_path)
+bool
+HttpLoader::upload_sync(const std::string &target_url, const std::string &local_path)
 {
     auto work_item = std::make_shared<UploadItem>(target_url, local_path, nullptr);
     bool success = do_upload(work_item, _curl_wrapper);
     return success;
 }
 
-void HttpLoader::upload_async(const std::string &target_url, const std::string &local_path,
-                              const progress_callback_t &progress_callback)
+void
+HttpLoader::upload_async(const std::string &target_url,
+                         const std::string &local_path,
+                         const progress_callback_t &progress_callback)
 {
     auto work_item = std::make_shared<UploadItem>(target_url, local_path, progress_callback);
     _work_queue.enqueue(work_item);
 }
 
-void HttpLoader::work_thread(HttpLoader *self)
+void
+HttpLoader::work_thread(HttpLoader *self)
 {
     while (!self->_should_exit) {
         auto item = self->_work_queue.dequeue();
@@ -80,8 +88,9 @@ void HttpLoader::work_thread(HttpLoader *self)
     }
 }
 
-void HttpLoader::do_item(const std::shared_ptr<WorkItem> &item,
-                         const std::shared_ptr<ICurlWrapper> &curl_wrapper)
+void
+HttpLoader::do_item(const std::shared_ptr<WorkItem> &item,
+                    const std::shared_ptr<ICurlWrapper> &curl_wrapper)
 {
     auto download_item = std::dynamic_pointer_cast<DownloadItem>(item);
     if (nullptr != download_item) {
@@ -96,29 +105,29 @@ void HttpLoader::do_item(const std::shared_ptr<WorkItem> &item,
     }
 }
 
-bool HttpLoader::do_download(const std::shared_ptr<DownloadItem> &item,
-                             const std::shared_ptr<ICurlWrapper> &curl_wrapper)
+bool
+HttpLoader::do_download(const std::shared_ptr<DownloadItem> &item,
+                        const std::shared_ptr<ICurlWrapper> &curl_wrapper)
 {
-    bool success = curl_wrapper->download_file_to_path(item->get_url(), item->get_local_path(),
-                                                       item->get_progress_callback());
+    bool success = curl_wrapper->download_file_to_path(
+        item->get_url(), item->get_local_path(), item->get_progress_callback());
     return success;
 }
 
-bool HttpLoader::do_upload(const std::shared_ptr<UploadItem> &item,
-                           const std::shared_ptr<ICurlWrapper> &curl_wrapper)
+bool
+HttpLoader::do_upload(const std::shared_ptr<UploadItem> &item,
+                      const std::shared_ptr<ICurlWrapper> &curl_wrapper)
 {
-    bool success = curl_wrapper->upload_file(item->get_target_url(), item->get_local_path(),
-                                             item->get_progress_callback());
+    bool success = curl_wrapper->upload_file(
+        item->get_target_url(), item->get_local_path(), item->get_progress_callback());
     return success;
 }
 
-bool HttpLoader::download_text_sync(const std::string &url, std::string &content)
+bool
+HttpLoader::download_text_sync(const std::string &url, std::string &content)
 {
     bool success = _curl_wrapper->download_text(url, content);
     return success;
 }
 
-
-} // namespace dronecore
-
-
+}// namespace dronecore

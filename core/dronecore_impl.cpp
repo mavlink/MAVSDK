@@ -13,13 +13,9 @@
 
 namespace dronecore {
 
-DroneCoreImpl::DroneCoreImpl() :
-    _connections_mutex(),
-    _connections(),
-    _systems_mutex(),
-    _systems(),
-    _on_discover_callback(nullptr),
-    _on_timeout_callback(nullptr)
+DroneCoreImpl::DroneCoreImpl()
+    : _connections_mutex(), _connections(), _systems_mutex(), _systems(),
+      _on_discover_callback(nullptr), _on_timeout_callback(nullptr)
 {}
 
 DroneCoreImpl::~DroneCoreImpl()
@@ -37,7 +33,8 @@ DroneCoreImpl::~DroneCoreImpl()
     }
 }
 
-void DroneCoreImpl::receive_message(const mavlink_message_t &message)
+void
+DroneCoreImpl::receive_message(const mavlink_message_t &message)
 {
     // Don't ever create a system with sysid 0.
     if (message.sysid == 0) {
@@ -83,7 +80,8 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     }
 }
 
-bool DroneCoreImpl::send_message(const mavlink_message_t &message)
+bool
+DroneCoreImpl::send_message(const mavlink_message_t &message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
@@ -97,7 +95,8 @@ bool DroneCoreImpl::send_message(const mavlink_message_t &message)
     return true;
 }
 
-ConnectionResult DroneCoreImpl::add_any_connection(const std::string &connection_url)
+ConnectionResult
+DroneCoreImpl::add_any_connection(const std::string &connection_url)
 {
     CliArg cli_arg;
     if (!cli_arg.parse(connection_url)) {
@@ -106,44 +105,44 @@ ConnectionResult DroneCoreImpl::add_any_connection(const std::string &connection
 
     switch (cli_arg.get_protocol()) {
         case CliArg::Protocol::UDP: {
-                std::string path = DroneCore::DEFAULT_UDP_BIND_IP;
-                int port = DroneCore::DEFAULT_UDP_PORT;
-                if (!cli_arg.get_path().empty()) {
-                    path = cli_arg.get_path();
-                }
-                if (cli_arg.get_port()) {
-                    port = cli_arg.get_port();
-                }
-                return add_udp_connection(path, port);
+            std::string path = DroneCore::DEFAULT_UDP_BIND_IP;
+            int port = DroneCore::DEFAULT_UDP_PORT;
+            if (!cli_arg.get_path().empty()) {
+                path = cli_arg.get_path();
             }
+            if (cli_arg.get_port()) {
+                port = cli_arg.get_port();
+            }
+            return add_udp_connection(path, port);
+        }
 
         case CliArg::Protocol::TCP: {
-                std::string path = DroneCore::DEFAULT_TCP_REMOTE_IP;
-                int port = DroneCore::DEFAULT_TCP_REMOTE_PORT;
-                if (!cli_arg.get_path().empty()) {
-                    path = cli_arg.get_path();
-                }
-                if (cli_arg.get_port()) {
-                    port = cli_arg.get_port();
-                }
-                return add_tcp_connection(path, port);
+            std::string path = DroneCore::DEFAULT_TCP_REMOTE_IP;
+            int port = DroneCore::DEFAULT_TCP_REMOTE_PORT;
+            if (!cli_arg.get_path().empty()) {
+                path = cli_arg.get_path();
             }
+            if (cli_arg.get_port()) {
+                port = cli_arg.get_port();
+            }
+            return add_tcp_connection(path, port);
+        }
 
         case CliArg::Protocol::SERIAL: {
-                int baudrate = DroneCore::DEFAULT_SERIAL_BAUDRATE;
-                if (cli_arg.get_baudrate()) {
-                    baudrate = cli_arg.get_baudrate();
-                }
-                return add_serial_connection(cli_arg.get_path(), baudrate);
+            int baudrate = DroneCore::DEFAULT_SERIAL_BAUDRATE;
+            if (cli_arg.get_baudrate()) {
+                baudrate = cli_arg.get_baudrate();
             }
+            return add_serial_connection(cli_arg.get_path(), baudrate);
+        }
 
         default:
             return ConnectionResult::CONNECTION_ERROR;
     }
 }
 
-ConnectionResult DroneCoreImpl::add_udp_connection(const std::string &local_ip,
-                                                   const int local_port)
+ConnectionResult
+DroneCoreImpl::add_udp_connection(const std::string &local_ip, const int local_port)
 {
     auto new_conn = std::make_shared<UdpConnection>(*this, local_ip, local_port);
 
@@ -154,8 +153,8 @@ ConnectionResult DroneCoreImpl::add_udp_connection(const std::string &local_ip,
     return ret;
 }
 
-ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
-                                                   int remote_port)
+ConnectionResult
+DroneCoreImpl::add_tcp_connection(const std::string &remote_ip, int remote_port)
 {
     auto new_conn = std::make_shared<TcpConnection>(*this, remote_ip, remote_port);
 
@@ -166,8 +165,8 @@ ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
     return ret;
 }
 
-ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_path,
-                                                      int baudrate)
+ConnectionResult
+DroneCoreImpl::add_serial_connection(const std::string &dev_path, int baudrate)
 {
     auto new_conn = std::make_shared<SerialConnection>(*this, dev_path, baudrate);
 
@@ -178,13 +177,15 @@ ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_pat
     return ret;
 }
 
-void DroneCoreImpl::add_connection(std::shared_ptr<Connection> new_connection)
+void
+DroneCoreImpl::add_connection(std::shared_ptr<Connection> new_connection)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
     _connections.push_back(new_connection);
 }
 
-std::vector<uint64_t> DroneCoreImpl::get_system_uuids() const
+std::vector<uint64_t>
+DroneCoreImpl::get_system_uuids() const
 {
     std::vector<uint64_t> uuids = {};
 
@@ -199,7 +200,8 @@ std::vector<uint64_t> DroneCoreImpl::get_system_uuids() const
     return uuids;
 }
 
-System &DroneCoreImpl::get_system()
+System &
+DroneCoreImpl::get_system()
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
@@ -229,7 +231,8 @@ System &DroneCoreImpl::get_system()
     }
 }
 
-System &DroneCoreImpl::get_system(const uint64_t uuid)
+System &
+DroneCoreImpl::get_system(const uint64_t uuid)
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
@@ -252,7 +255,8 @@ System &DroneCoreImpl::get_system(const uint64_t uuid)
     return *_systems[system_id];
 }
 
-bool DroneCoreImpl::is_connected() const
+bool
+DroneCoreImpl::is_connected() const
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -262,7 +266,8 @@ bool DroneCoreImpl::is_connected() const
     return false;
 }
 
-bool DroneCoreImpl::is_connected(const uint64_t uuid) const
+bool
+DroneCoreImpl::is_connected(const uint64_t uuid) const
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -274,7 +279,8 @@ bool DroneCoreImpl::is_connected(const uint64_t uuid) const
     return false;
 }
 
-void DroneCoreImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
+void
+DroneCoreImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -283,15 +289,15 @@ void DroneCoreImpl::make_system_with_component(uint8_t system_id, uint8_t comp_i
         return;
     }
 
-    LogDebug() << "New: System ID: " << int(system_id)
-               << " Comp ID: " << int(comp_id);
+    LogDebug() << "New: System ID: " << int(system_id) << " Comp ID: " << int(comp_id);
     // Make a system with its first component
     auto new_system = std::make_shared<System>(*this, system_id, comp_id);
 
     _systems.insert(system_entry_t(system_id, new_system));
 }
 
-bool DroneCoreImpl::does_system_exist(uint8_t system_id)
+bool
+DroneCoreImpl::does_system_exist(uint8_t system_id)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -302,14 +308,16 @@ bool DroneCoreImpl::does_system_exist(uint8_t system_id)
     return false;
 }
 
-void DroneCoreImpl::notify_on_discover(const uint64_t uuid)
+void
+DroneCoreImpl::notify_on_discover(const uint64_t uuid)
 {
     if (_on_discover_callback != nullptr) {
         _on_discover_callback(uuid);
     }
 }
 
-void DroneCoreImpl::notify_on_timeout(const uint64_t uuid)
+void
+DroneCoreImpl::notify_on_timeout(const uint64_t uuid)
 {
     LogDebug() << "Lost " << uuid;
     if (_on_timeout_callback != nullptr) {
@@ -317,7 +325,8 @@ void DroneCoreImpl::notify_on_timeout(const uint64_t uuid)
     }
 }
 
-void DroneCoreImpl::register_on_discover(const DroneCore::event_callback_t callback)
+void
+DroneCoreImpl::register_on_discover(const DroneCore::event_callback_t callback)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -330,9 +339,10 @@ void DroneCoreImpl::register_on_discover(const DroneCore::event_callback_t callb
     _on_discover_callback = callback;
 }
 
-void DroneCoreImpl::register_on_timeout(const DroneCore::event_callback_t callback)
+void
+DroneCoreImpl::register_on_timeout(const DroneCore::event_callback_t callback)
 {
     _on_timeout_callback = callback;
 }
 
-} // namespace dronecore
+}// namespace dronecore

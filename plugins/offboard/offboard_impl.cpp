@@ -5,8 +5,7 @@
 
 namespace dronecore {
 
-OffboardImpl::OffboardImpl(System &system) :
-    PluginImplBase(system)
+OffboardImpl::OffboardImpl(System &system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -16,7 +15,8 @@ OffboardImpl::~OffboardImpl()
     _parent->unregister_plugin(this);
 }
 
-void OffboardImpl::init()
+void
+OffboardImpl::init()
 {
     // We need the system state.
     _parent->register_mavlink_message_handler(
@@ -25,16 +25,22 @@ void OffboardImpl::init()
         this);
 }
 
-void OffboardImpl::deinit()
+void
+OffboardImpl::deinit()
 {
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void OffboardImpl::enable() {}
+void
+OffboardImpl::enable()
+{}
 
-void OffboardImpl::disable() {}
+void
+OffboardImpl::disable()
+{}
 
-Offboard::Result OffboardImpl::start()
+Offboard::Result
+OffboardImpl::start()
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -44,10 +50,11 @@ Offboard::Result OffboardImpl::start()
     }
 
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(MAVLinkSystem::FlightMode::OFFBOARD));
+        _parent->set_flight_mode(MAVLinkSystem::FlightMode::OFFBOARD));
 }
 
-Offboard::Result OffboardImpl::stop()
+Offboard::Result
+OffboardImpl::stop()
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -57,10 +64,11 @@ Offboard::Result OffboardImpl::stop()
     }
 
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(MAVLinkSystem::FlightMode::HOLD));
+        _parent->set_flight_mode(MAVLinkSystem::FlightMode::HOLD));
 }
 
-void OffboardImpl::start_async(Offboard::result_callback_t callback)
+void
+OffboardImpl::start_async(Offboard::result_callback_t callback)
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -75,11 +83,11 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
 
     _parent->set_flight_mode_async(
         MAVLinkSystem::FlightMode::OFFBOARD,
-        std::bind(&OffboardImpl::receive_command_result, this,
-                  std::placeholders::_1, callback));
+        std::bind(&OffboardImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
-void OffboardImpl::stop_async(Offboard::result_callback_t callback)
+void
+OffboardImpl::stop_async(Offboard::result_callback_t callback)
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -90,18 +98,19 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
 
     _parent->set_flight_mode_async(
         MAVLinkSystem::FlightMode::HOLD,
-        std::bind(&OffboardImpl::receive_command_result, this,
-                  std::placeholders::_1, callback));
+        std::bind(&OffboardImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
-bool OffboardImpl::is_active() const
+bool
+OffboardImpl::is_active() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
     return (_mode != Mode::NOT_ACTIVE);
 }
 
-void OffboardImpl::receive_command_result(MAVLinkCommands::Result result,
-                                          const Offboard::result_callback_t &callback)
+void
+OffboardImpl::receive_command_result(MAVLinkCommands::Result result,
+                                     const Offboard::result_callback_t &callback)
 {
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
     if (callback) {
@@ -109,7 +118,8 @@ void OffboardImpl::receive_command_result(MAVLinkCommands::Result result,
     }
 }
 
-void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
+void
+OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
 {
     _mutex.lock();
     _velocity_ned_yaw = velocity_ned_yaw;
@@ -121,9 +131,8 @@ void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
             _call_every_cookie = nullptr;
         }
         // We automatically send NED setpoints from now on.
-        _parent->add_call_every([this]() { send_velocity_ned(); },
-        SEND_INTERVAL_S,
-        &_call_every_cookie);
+        _parent->add_call_every(
+            [this]() { send_velocity_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
         _mode = Mode::VELOCITY_NED;
     } else {
@@ -137,7 +146,8 @@ void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
     send_velocity_ned();
 }
 
-void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed)
+void
+OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed)
 {
     _mutex.lock();
     _velocity_body_yawspeed = velocity_body_yawspeed;
@@ -149,9 +159,8 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
             _call_every_cookie = nullptr;
         }
         // We automatically send body setpoints from now on.
-        _parent->add_call_every([this]() { send_velocity_body(); },
-        SEND_INTERVAL_S,
-        &_call_every_cookie);
+        _parent->add_call_every(
+            [this]() { send_velocity_body(); }, SEND_INTERVAL_S, &_call_every_cookie);
 
         _mode = Mode::VELOCITY_BODY;
     } else {
@@ -165,19 +174,20 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
     send_velocity_body();
 }
 
-void OffboardImpl::send_velocity_ned()
+void
+OffboardImpl::send_velocity_ned()
 {
     const static uint16_t IGNORE_X = (1 << 0);
     const static uint16_t IGNORE_Y = (1 << 1);
     const static uint16_t IGNORE_Z = (1 << 2);
-    //const static uint16_t IGNORE_VX = (1 << 3);
-    //const static uint16_t IGNORE_VY = (1 << 4);
-    //const static uint16_t IGNORE_VZ = (1 << 5);
+    // const static uint16_t IGNORE_VX = (1 << 3);
+    // const static uint16_t IGNORE_VY = (1 << 4);
+    // const static uint16_t IGNORE_VZ = (1 << 5);
     const static uint16_t IGNORE_AX = (1 << 6);
     const static uint16_t IGNORE_AY = (1 << 7);
     const static uint16_t IGNORE_AZ = (1 << 8);
-    //const static uint16_t IS_FORCE = (1 << 9);
-    //const static uint16_t IGNORE_YAW = (1 << 10);
+    // const static uint16_t IS_FORCE = (1 << 9);
+    // const static uint16_t IGNORE_YAW = (1 << 10);
     const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
     _mutex.lock();
@@ -195,37 +205,44 @@ void OffboardImpl::send_velocity_ned()
     _mutex.unlock();
 
     mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(GCSClient::system_id,
-                                                   GCSClient::component_id,
-                                                   &message,
-                                                   static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
-                                                   _parent->get_system_id(),
-                                                   _parent->get_autopilot_id(),
-                                                   MAV_FRAME_LOCAL_NED,
-                                                   IGNORE_X | IGNORE_Y | IGNORE_Z |
-                                                   IGNORE_AX | IGNORE_AY | IGNORE_AZ |
-                                                   IGNORE_YAW_RATE,
-                                                   x, y, z, vx, vy, vz, afx, afy, afz,
-                                                   yaw, yaw_rate);
+    mavlink_msg_set_position_target_local_ned_pack(
+        GCSClient::system_id,
+        GCSClient::component_id,
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_FRAME_LOCAL_NED,
+        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+        x,
+        y,
+        z,
+        vx,
+        vy,
+        vz,
+        afx,
+        afy,
+        afz,
+        yaw,
+        yaw_rate);
     _parent->send_message(message);
 }
 
-void OffboardImpl::send_velocity_body()
+void
+OffboardImpl::send_velocity_body()
 {
-
     const static uint16_t IGNORE_X = (1 << 0);
     const static uint16_t IGNORE_Y = (1 << 1);
     const static uint16_t IGNORE_Z = (1 << 2);
-    //const static uint16_t IGNORE_VX = (1 << 3);
-    //const static uint16_t IGNORE_VY = (1 << 4);
-    //const static uint16_t IGNORE_VZ = (1 << 5);
+    // const static uint16_t IGNORE_VX = (1 << 3);
+    // const static uint16_t IGNORE_VY = (1 << 4);
+    // const static uint16_t IGNORE_VZ = (1 << 5);
     const static uint16_t IGNORE_AX = (1 << 6);
     const static uint16_t IGNORE_AY = (1 << 7);
     const static uint16_t IGNORE_AZ = (1 << 8);
-    //const static uint16_t IS_FORCE = (1 << 9);
+    // const static uint16_t IS_FORCE = (1 << 9);
     const static uint16_t IGNORE_YAW = (1 << 10);
-    //const static uint16_t IGNORE_YAW_RATE = (1 << 11);
-
+    // const static uint16_t IGNORE_YAW_RATE = (1 << 11);
 
     _mutex.lock();
     const float yaw = 0.0f;
@@ -242,29 +259,37 @@ void OffboardImpl::send_velocity_body()
     _mutex.unlock();
 
     mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_pack(GCSClient::system_id,
-                                                   GCSClient::component_id,
-                                                   &message,
-                                                   static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
-                                                   _parent->get_system_id(),
-                                                   _parent->get_autopilot_id(),
-                                                   MAV_FRAME_BODY_NED,
-                                                   IGNORE_X | IGNORE_Y | IGNORE_Z |
-                                                   IGNORE_AX | IGNORE_AY | IGNORE_AZ |
-                                                   IGNORE_YAW,
-                                                   x, y, z, vx, vy, vz, afx, afy, afz,
-                                                   yaw, yaw_rate);
+    mavlink_msg_set_position_target_local_ned_pack(
+        GCSClient::system_id,
+        GCSClient::component_id,
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_FRAME_BODY_NED,
+        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW,
+        x,
+        y,
+        z,
+        vx,
+        vy,
+        vz,
+        afx,
+        afy,
+        afz,
+        yaw,
+        yaw_rate);
     _parent->send_message(message);
 }
 
-void OffboardImpl::process_heartbeat(const mavlink_message_t &message)
+void
+OffboardImpl::process_heartbeat(const mavlink_message_t &message)
 {
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
     bool offboard_mode_active = false;
     if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
-
         px4::px4_custom_mode px4_custom_mode;
         px4_custom_mode.data = heartbeat.custom_mode;
 
@@ -283,7 +308,8 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t &message)
     }
 }
 
-void OffboardImpl::stop_sending_setpoints()
+void
+OffboardImpl::stop_sending_setpoints()
 {
     // We assume that we already acquired the mutex in this function.
 
@@ -315,5 +341,4 @@ OffboardImpl::offboard_result_from_command_result(MAVLinkCommands::Result result
     }
 }
 
-
-} // namespace dronecore
+}// namespace dronecore

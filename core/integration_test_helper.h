@@ -6,9 +6,8 @@
 
 // Autostarting SITL is not supported on Windows
 
-class SitlTest : public testing::Test
-{
-protected:
+class SitlTest : public testing::Test {
+    protected:
     virtual void SetUp() override
     {
 #ifndef WINDOWS

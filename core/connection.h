@@ -8,9 +8,8 @@ namespace dronecore {
 
 class DroneCoreImpl;
 
-class Connection
-{
-public:
+class Connection {
+    public:
     Connection(DroneCoreImpl &parent);
     virtual ~Connection();
 
@@ -24,14 +23,14 @@ public:
     Connection(const Connection &) = delete;
     const Connection &operator=(const Connection &) = delete;
 
-protected:
+    protected:
     bool start_mavlink_receiver();
     void stop_mavlink_receiver();
     void receive_message(const mavlink_message_t &message);
     DroneCoreImpl &_parent;
     std::unique_ptr<MAVLinkReceiver> _mavlink_receiver;
 
-    //void received_mavlink_message(mavlink_message_t &);
+    // void received_mavlink_message(mavlink_message_t &);
 };
 
-} // namespace dronecore
+}// namespace dronecore

@@ -9,18 +9,15 @@
 #include <netinet/in.h>
 #else
 #include <winsock2.h>
-#include <Ws2tcpip.h> // For InetPton
+#include <Ws2tcpip.h>// For InetPton
 #undef SOCKET_ERROR
 #endif
 
 namespace dronecore {
 
-class TcpConnection : public Connection
-{
-public:
-    explicit TcpConnection(DroneCoreImpl &parent,
-                           const std::string &remote_ip,
-                           int remote_port);
+class TcpConnection : public Connection {
+    public:
+    explicit TcpConnection(DroneCoreImpl &parent, const std::string &remote_ip, int remote_port);
     ~TcpConnection();
     bool is_ok() const;
     ConnectionResult start();
@@ -32,7 +29,7 @@ public:
     TcpConnection(const TcpConnection &) = delete;
     const TcpConnection &operator=(const TcpConnection &) = delete;
 
-private:
+    private:
     ConnectionResult setup_port();
     void start_recv_thread();
     int resolve_address(const std::string &ip_address, int port, struct sockaddr_in *addr);
@@ -46,7 +43,7 @@ private:
 
     std::thread *_recv_thread = nullptr;
     std::atomic_bool _should_exit;
-    std::atomic_bool _is_ok {false};
+    std::atomic_bool _is_ok{false};
 };
 
-} // namespace dronecore
+}// namespace dronecore

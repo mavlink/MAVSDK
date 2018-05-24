@@ -9,9 +9,8 @@
 
 namespace dronecore {
 
-class CameraDefinition
-{
-public:
+class CameraDefinition {
+    public:
     CameraDefinition();
     ~CameraDefinition();
 
@@ -41,8 +40,7 @@ public:
     bool get_possible_options(const std::string &name,
                               std::vector<MAVLinkParameters::ParamValue> &values);
 
-    bool get_setting_str(const std::string &setting_name,
-                         std::string &description);
+    bool get_setting_str(const std::string &setting_name, std::string &description);
     bool get_option_str(const std::string &setting_name,
                         const std::string &option_name,
                         std::string &description);
@@ -54,7 +52,7 @@ public:
     CameraDefinition(const CameraDefinition &) = delete;
     const CameraDefinition &operator=(const CameraDefinition &) = delete;
 
-private:
+    private:
     typedef std::map<std::string, MAVLinkParameters::ParamValue> parameter_range_t;
 
     struct Option {
@@ -75,7 +73,7 @@ private:
     };
     bool parse_xml();
 
-    tinyxml2::XMLDocument _doc {};
+    tinyxml2::XMLDocument _doc{};
 
     std::map<std::string, std::shared_ptr<Parameter>> _parameter_map;
 
@@ -90,4 +88,4 @@ private:
     std::string _vendor;
 };
 
-} // namespace dronecore
+}// namespace dronecore

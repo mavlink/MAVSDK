@@ -5,11 +5,10 @@
 namespace dronecore {
 namespace testing {
 
-class MockCamera
-{
-public:
+class MockCamera {
+    public:
     MOCK_CONST_METHOD0(take_photo, Camera::Result());
 };
 
-} // namespace testing
-} // namespace dronecore
+}// namespace testing
+}// namespace dronecore

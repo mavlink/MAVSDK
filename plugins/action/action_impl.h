@@ -10,9 +10,8 @@
 
 namespace dronecore {
 
-class ActionImpl : public PluginImplBase
-{
-public:
+class ActionImpl : public PluginImplBase {
+    public:
     ActionImpl(System &system);
     ~ActionImpl();
 
@@ -46,7 +45,7 @@ public:
     void set_max_speed(float speed_m_s);
     float get_max_speed_m_s() const;
 
-private:
+    private:
     void loiter_before_takeoff_async(const Action::result_callback_t &callback);
     void loiter_before_arm_async(const Action::result_callback_t &callback);
 
@@ -70,11 +69,11 @@ private:
     static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Action::result_callback_t &callback);
 
-    std::atomic<bool> _in_air_state_known {false};
-    std::atomic<bool> _in_air {false};
+    std::atomic<bool> _in_air_state_known{false};
+    std::atomic<bool> _in_air{false};
 
-    std::atomic<bool>_vtol_transition_support_known {false};
-    std::atomic<bool> _vtol_transition_possible {false};
+    std::atomic<bool> _vtol_transition_support_known{false};
+    std::atomic<bool> _vtol_transition_possible{false};
 
     float _relative_takeoff_altitude_m = 2.5f;
 
@@ -83,4 +82,4 @@ private:
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 };
 
-} // namespace dronecore
+}// namespace dronecore

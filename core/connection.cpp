@@ -5,9 +5,7 @@
 
 namespace dronecore {
 
-Connection::Connection(DroneCoreImpl &parent) :
-    _parent(parent),
-    _mavlink_receiver() {}
+Connection::Connection(DroneCoreImpl &parent) : _parent(parent), _mavlink_receiver() {}
 
 Connection::~Connection()
 {
@@ -15,7 +13,8 @@ Connection::~Connection()
     stop_mavlink_receiver();
 }
 
-bool Connection::start_mavlink_receiver()
+bool
+Connection::start_mavlink_receiver()
 {
     uint8_t channel;
     if (!MAVLinkChannels::Instance().checkout_free_channel(channel)) {
@@ -26,10 +25,10 @@ bool Connection::start_mavlink_receiver()
     return true;
 }
 
-void Connection::stop_mavlink_receiver()
+void
+Connection::stop_mavlink_receiver()
 {
     if (_mavlink_receiver) {
-
         uint8_t used_channel = _mavlink_receiver->get_channel();
         // Destroy receiver before giving the channel back.
         _mavlink_receiver.reset();
@@ -37,9 +36,10 @@ void Connection::stop_mavlink_receiver()
     }
 }
 
-void Connection::receive_message(const mavlink_message_t &message)
+void
+Connection::receive_message(const mavlink_message_t &message)
 {
     _parent.receive_message(message);
 }
 
-} // namespace dronecore
+}// namespace dronecore

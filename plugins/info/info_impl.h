@@ -7,9 +7,8 @@
 
 namespace dronecore {
 
-class InfoImpl : public PluginImplBase
-{
-public:
+class InfoImpl : public PluginImplBase {
+    public:
     InfoImpl(System &system);
     ~InfoImpl();
 
@@ -24,7 +23,7 @@ public:
     Info::Version get_version() const;
     Info::Product get_product() const;
 
-private:
+    private:
     void set_version(Info::Version version);
     void set_product(Info::Product product);
 
@@ -40,8 +39,8 @@ private:
     static const char *vendor_id_str(uint16_t vendor_id);
     static const char *product_id_str(uint16_t product_id);
 
-    static void translate_binary_to_str(uint8_t *binary, unsigned binary_len,
-                                        char *str, unsigned str_len);
+    static void
+    translate_binary_to_str(uint8_t *binary, unsigned binary_len, char *str, unsigned str_len);
 };
 
-} // namespace dronecore
+}// namespace dronecore

@@ -16,20 +16,12 @@
 namespace dronecore {
 namespace backend {
 
-class GRPCServer
-{
-public:
+class GRPCServer {
+    public:
     GRPCServer(DroneCore &dc)
-        : _dc(dc),
-          _core(_dc),
-          _action(_dc.system()),
-          _action_service(_action),
-          _camera(_dc.system()),
-          _camera_service(_camera),
-          _mission(_dc.system()),
-          _mission_service(_mission),
-          _telemetry(_dc.system()),
-          _telemetry_service(_telemetry)
+        : _dc(dc), _core(_dc), _action(_dc.system()), _action_service(_action),
+          _camera(_dc.system()), _camera_service(_camera), _mission(_dc.system()),
+          _mission_service(_mission), _telemetry(_dc.system()), _telemetry_service(_telemetry)
     {
         assert(_dc.system_uuids().size() >= 1);
     }
@@ -37,7 +29,7 @@ public:
     void run();
     void wait();
 
-private:
+    private:
     void setup_port(grpc::ServerBuilder &builder);
 
     DroneCore &_dc;
@@ -55,5 +47,5 @@ private:
     std::unique_ptr<grpc::Server> _server;
 };
 
-} // namespace backend
-} // namespace dronecore
+}// namespace backend
+}// namespace dronecore

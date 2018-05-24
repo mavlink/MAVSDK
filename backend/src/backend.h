@@ -5,9 +5,8 @@
 namespace dronecore {
 namespace backend {
 
-class DroneCoreBackend
-{
-public:
+class DroneCoreBackend {
+    public:
     DroneCoreBackend();
     ~DroneCoreBackend();
     DroneCoreBackend(DroneCoreBackend &&) = delete;
@@ -17,10 +16,10 @@ public:
     void connect(const int mavlink_listen_port = 14540);
     void wait();
 
-private:
+    private:
     class Impl;
     std::unique_ptr<Impl> _impl;
 };
 
-} // namespace backend
-} // namespace dronecore
+}// namespace backend
+}// namespace dronecore

@@ -9,9 +9,8 @@
 
 namespace dronecore {
 
-class OffboardImpl : public PluginImplBase
-{
-public:
+class OffboardImpl : public PluginImplBase {
+    public:
     OffboardImpl(System &system);
     ~OffboardImpl();
 
@@ -32,7 +31,7 @@ public:
     void set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw);
     void set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
 
-private:
+    private:
     void send_velocity_ned();
     void send_velocity_body();
 
@@ -40,23 +39,23 @@ private:
     void receive_command_result(MAVLinkCommands::Result result,
                                 const Offboard::result_callback_t &callback);
 
-    static Offboard::Result offboard_result_from_command_result(
-        MAVLinkCommands::Result result);
+    static Offboard::Result offboard_result_from_command_result(MAVLinkCommands::Result result);
 
     void stop_sending_setpoints();
 
-    mutable std::mutex _mutex {};
-    enum class Mode {
+    mutable std::mutex _mutex{};
+    enum class Mode
+    {
         NOT_ACTIVE,
         VELOCITY_NED,
         VELOCITY_BODY
     } _mode = Mode::NOT_ACTIVE;
-    Offboard::VelocityNEDYaw _velocity_ned_yaw {};
-    Offboard::VelocityBodyYawspeed _velocity_body_yawspeed {};
+    Offboard::VelocityNEDYaw _velocity_ned_yaw{};
+    Offboard::VelocityBodyYawspeed _velocity_body_yawspeed{};
 
     void *_call_every_cookie = nullptr;
 
     const float SEND_INTERVAL_S = 0.1f;
 };
 
-} // namespace dronecore
+}// namespace dronecore

@@ -2,16 +2,12 @@
 
 namespace dronecore {
 
-TimeoutHandler::TimeoutHandler(Time &time) :
-    _time(time)
-{
-}
+TimeoutHandler::TimeoutHandler(Time &time) : _time(time) {}
 
-TimeoutHandler::~TimeoutHandler()
-{
-}
+TimeoutHandler::~TimeoutHandler() {}
 
-void TimeoutHandler::add(std::function<void()> callback, double duration_s, void **cookie)
+void
+TimeoutHandler::add(std::function<void()> callback, double duration_s, void **cookie)
 {
     auto new_timeout = std::make_shared<Timeout>();
     new_timeout->callback = callback;
@@ -30,7 +26,8 @@ void TimeoutHandler::add(std::function<void()> callback, double duration_s, void
     }
 }
 
-void TimeoutHandler::refresh(const void *cookie)
+void
+TimeoutHandler::refresh(const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
@@ -41,7 +38,8 @@ void TimeoutHandler::refresh(const void *cookie)
     }
 }
 
-void TimeoutHandler::remove(const void *cookie)
+void
+TimeoutHandler::remove(const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
@@ -52,19 +50,17 @@ void TimeoutHandler::remove(const void *cookie)
     }
 }
 
-void TimeoutHandler::run_once()
+void
+TimeoutHandler::run_once()
 {
     _timeouts_mutex.lock();
 
     dl_time_t now = _time.steady_time();
 
     for (auto it = _timeouts.begin(); it != _timeouts.end(); /* no ++it */) {
-
         // If time is passed, call timeout callback.
         if (it->second->time < now) {
-
             if (it->second->callback) {
-
                 // Get a copy for the callback because we will remove it.
                 std::function<void()> callback = it->second->callback;
 
@@ -76,7 +72,6 @@ void TimeoutHandler::run_once()
                 callback();
                 _timeouts_mutex.lock();
             }
-
 
         } else {
             ++it;
@@ -91,4 +86,4 @@ void TimeoutHandler::run_once()
     _timeouts_mutex.unlock();
 }
 
-} // namespace dronecore
+}// namespace dronecore

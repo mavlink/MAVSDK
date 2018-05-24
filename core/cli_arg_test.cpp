@@ -57,7 +57,7 @@ TEST(CliArg, UDPConnections)
     EXPECT_FALSE(ca.parse("udp:localhost:99"));
     EXPECT_FALSE(ca.parse("udp//localhost:99"));
     EXPECT_FALSE(ca.parse("ud://localhost:99"));
-    EXPECT_FALSE(ca.parse("udp://0.0.0.0:100000")); // highest is 65535
+    EXPECT_FALSE(ca.parse("udp://0.0.0.0:100000"));// highest is 65535
     EXPECT_FALSE(ca.parse("udp://0.0.0.0:-5"));
 }
 
@@ -109,7 +109,7 @@ TEST(CliArg, TCPConnections)
     EXPECT_FALSE(ca.parse("tcp:localhost:99"));
     EXPECT_FALSE(ca.parse("tcp//localhost:99"));
     EXPECT_FALSE(ca.parse("tc://localhost:99"));
-    EXPECT_FALSE(ca.parse("tcp://127.0.0.1:100000")); // highest is 65535
+    EXPECT_FALSE(ca.parse("tcp://127.0.0.1:100000"));// highest is 65535
     EXPECT_FALSE(ca.parse("tcp://127.0.0.1:-5"));
 }
 
@@ -154,4 +154,3 @@ TEST(CliArg, SerialConnections)
     EXPECT_FALSE(ca.parse("serial://SOM3:57600"));
     EXPECT_FALSE(ca.parse("serial://COM3:-1"));
 }
-

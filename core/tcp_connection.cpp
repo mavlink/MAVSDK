@@ -7,9 +7,9 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#include <unistd.h> // for close()
+#include <unistd.h>// for close()
 #else
-#pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
+#pragma comment(lib, "Ws2_32.lib")// Without this, Ws2_32.lib is not included in static library.
 #endif
 
 #include <cassert>
@@ -23,12 +23,10 @@
 namespace dronecore {
 
 /* change to remote_ip and remote_port */
-TcpConnection::TcpConnection(DroneCoreImpl &parent,
-                             const std::string &remote_ip,
-                             int remote_port): Connection(parent),
-    _remote_ip(remote_ip),
-    _remote_port_number(remote_port),
-    _should_exit(false) {}
+TcpConnection::TcpConnection(DroneCoreImpl &parent, const std::string &remote_ip, int remote_port)
+    : Connection(parent), _remote_ip(remote_ip), _remote_port_number(remote_port),
+      _should_exit(false)
+{}
 
 TcpConnection::~TcpConnection()
 {
@@ -36,12 +34,14 @@ TcpConnection::~TcpConnection()
     stop();
 }
 
-bool TcpConnection::is_ok() const
+bool
+TcpConnection::is_ok() const
 {
     return _is_ok;
 }
 
-ConnectionResult TcpConnection::start()
+ConnectionResult
+TcpConnection::start()
 {
     if (!start_mavlink_receiver()) {
         return ConnectionResult::CONNECTIONS_EXHAUSTED;
@@ -57,9 +57,9 @@ ConnectionResult TcpConnection::start()
     return ConnectionResult::SUCCESS;
 }
 
-ConnectionResult TcpConnection::setup_port()
+ConnectionResult
+TcpConnection::setup_port()
 {
-
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
@@ -82,8 +82,8 @@ ConnectionResult TcpConnection::setup_port()
     remote_addr.sin_port = htons(_remote_port_number);
     remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());
 
-    if (connect(_socket_fd, reinterpret_cast<sockaddr *>(&remote_addr),
-                sizeof(struct sockaddr_in)) < 0) {
+    if (connect(_socket_fd, reinterpret_cast<sockaddr *>(&remote_addr), sizeof(struct sockaddr_in))
+        < 0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         _is_ok = false;
         return ConnectionResult::SOCKET_CONNECTION_ERROR;
@@ -93,12 +93,14 @@ ConnectionResult TcpConnection::setup_port()
     return ConnectionResult::SUCCESS;
 }
 
-void TcpConnection::start_recv_thread()
+void
+TcpConnection::start_recv_thread()
 {
     _recv_thread = new std::thread(receive, this);
 }
 
-ConnectionResult TcpConnection::stop()
+ConnectionResult
+TcpConnection::stop()
 {
     _should_exit = true;
 
@@ -129,7 +131,8 @@ ConnectionResult TcpConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool TcpConnection::send_message(const mavlink_message_t &message)
+bool
+TcpConnection::send_message(const mavlink_message_t &message)
 {
     if (_remote_ip.empty()) {
         LogErr() << "Remote IP unknown";
@@ -154,8 +157,12 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, reinterpret_cast<char *>(buffer), buffer_len, 0,
-                          reinterpret_cast<const sockaddr *>(&dest_addr), sizeof(dest_addr));
+    int send_len = sendto(_socket_fd,
+                          reinterpret_cast<char *>(buffer),
+                          buffer_len,
+                          0,
+                          reinterpret_cast<const sockaddr *>(&dest_addr),
+                          sizeof(dest_addr));
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -165,13 +172,13 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
     return true;
 }
 
-void TcpConnection::receive(TcpConnection *parent)
+void
+TcpConnection::receive(TcpConnection *parent)
 {
     // Enough for MTU 1500 bytes.
     char buffer[2048];
 
     while (!parent->_should_exit) {
-
         if (!parent->_is_ok) {
             LogErr() << "TCP receive error, trying to reconnect...";
             std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -190,7 +197,7 @@ void TcpConnection::receive(TcpConnection *parent)
         if (recv_len < 0) {
             // This happens on desctruction when close(_socket_fd) is called,
             // therefore be quiet.
-            //LogErr() << "recvfrom error: " << GET_ERROR(errno);
+            // LogErr() << "recvfrom error: " << GET_ERROR(errno);
             // Something went wrong, we should try to re-connect in next iteration.
             parent->_is_ok = false;
             continue;
@@ -205,4 +212,4 @@ void TcpConnection::receive(TcpConnection *parent)
     }
 }
 
-} // namespace dronecore
+}// namespace dronecore

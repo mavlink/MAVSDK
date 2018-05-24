@@ -9,7 +9,6 @@ namespace dronecore {
 class OffboardImpl;
 class System;
 
-
 /**
  * @brief This class is used to control a drone with velocity commands.
  *
@@ -24,9 +23,8 @@ class System;
  * **Attention:** this is work in progress, use with caution!
  */
 
-class Offboard : public PluginBase
-{
-public:
+class Offboard : public PluginBase {
+    public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -48,7 +46,8 @@ public:
     /**
      * @brief Results for offboard requests.
      */
-    enum class Result {
+    enum class Result
+    {
         SUCCESS = 0, /**< @brief %Request succeeded. */
         NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
@@ -79,18 +78,20 @@ public:
         float north_m_s; /**< @brief Velocity North in metres/second. */
         float east_m_s; /**< @brief Velocity East in metres/second. */
         float down_m_s; /**< @brief Velocity Down in metres/second. */
-        float yaw_deg; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from above). */
+        float yaw_deg; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
+                          above). */
     };
 
     /**
-     * @brief Type for velocity commands in body coordinates (forward, right, down and yaw angular rate).
+     * @brief Type for velocity commands in body coordinates (forward, right, down and yaw angular
+     * rate).
      */
     struct VelocityBodyYawspeed {
         float forward_m_s; /**< @brief Velocity forward in metres/second. */
         float right_m_s; /**< @brief Velocity right in metres/secon.d */
         float down_m_s; /**< @brief Velocity down in metres/second. */
-        float yawspeed_deg_s; /**< @brief Yaw angular rate in degrees/second (positive for clock-wise
-                                   looking from above). */
+        float yawspeed_deg_s; /**< @brief Yaw angular rate in degrees/second (positive for
+                                 clock-wise looking from above). */
     };
 
     /**
@@ -162,9 +163,9 @@ public:
      */
     const Offboard &operator=(const Offboard &) = delete;
 
-private:
+    private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<OffboardImpl> _impl;
 };
 
-} // namespace dronecore
+}// namespace dronecore

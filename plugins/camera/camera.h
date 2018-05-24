@@ -22,9 +22,8 @@ class System;
  *
  * Synchronous and asynchronous variants of the camera methods are supplied.
  */
-class Camera : public PluginBase
-{
-public:
+class Camera : public PluginBase {
+    public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -46,7 +45,8 @@ public:
     /**
      * @brief Possible results returned for camera commands.
      */
-    enum class Result {
+    enum class Result
+    {
         UNKNOWN, /**< @brief The result is unknown. */
         SUCCESS, /**< @brief Camera command executed successfully. */
         IN_PROGRESS, /**< @brief Camera command is in progress. */
@@ -163,11 +163,11 @@ public:
      */
     void stop_video_async(const result_callback_t &callback);
 
-
     /**
      * @brief Camera mode type.
      */
-    enum class Mode {
+    enum class Mode
+    {
         PHOTO, /**< @brief Photo mode. */
         VIDEO, /**< @brief Video mode. */
         UNKNOWN /**< @brief Unknown mode. */
@@ -203,8 +203,10 @@ public:
         struct Position {
             double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90). */
             double longitude_deg; /**< @brief Longitude in degrees (range: -180 to 180). */
-            float absolute_altitude_m; /**< @brief Altitude AMSL (above mean sea level) in metres. */
-            float relative_altitude_m; /**< @brief Altitude relative to takeoff altitude in metres. */
+            float
+                absolute_altitude_m; /**< @brief Altitude AMSL (above mean sea level) in metres. */
+            float
+                relative_altitude_m; /**< @brief Altitude relative to takeoff altitude in metres. */
         } position; /**< @brief Position of drone/camera when image was captured. */
 
         /**
@@ -244,7 +246,7 @@ public:
         uint16_t vertical_resolution_pix = 0u; /**< @brief Vertical resolution in pixels. */
         uint32_t bit_rate_b_s = 0u; /**< @brief Bit rate in bits per second. */
         uint16_t rotation_deg = 0u; /**< @brief Video image rotation clockwise (0-359 degrees). */
-        std::string uri {}; /**< @brief Video stream URI. */
+        std::string uri{}; /**< @brief Video stream URI. */
 
         /**
          * @brief Sets to highest possible settings for Resolution, framerate.
@@ -258,12 +260,14 @@ public:
             bit_rate_b_s = BIT_RATE_AUTO;
         }
 
-        constexpr static const float FRAME_RATE_HIGHEST = -1.0f; /**< @brief Highest possible framerate. */
+        constexpr static const float FRAME_RATE_HIGHEST =
+            -1.0f; /**< @brief Highest possible framerate. */
         constexpr static const uint16_t RESOLUTION_H_HIGHEST =
             UINT16_MAX; /**< @brief Highest possible horizontal resolution. */
         constexpr static const uint16_t RESOLUTION_V_HIGHEST =
             UINT16_MAX; /**< @brief Highest possible vertical resolution. */
-        constexpr static const uint32_t BIT_RATE_AUTO = 0; /**< @brief Auto settings for Bit rate. */
+        constexpr static const uint32_t BIT_RATE_AUTO =
+            0; /**< @brief Auto settings for Bit rate. */
     };
 
     /**
@@ -279,7 +283,8 @@ public:
      */
     struct VideoStreamInfo {
         VideoStreamSettings settings; /**< @brief Video stream settings. */
-        enum class Status {
+        enum class Status
+        {
             NOT_RUNNING = 0, /**< @brief Video stream is not ongoing. */
             IN_PROGRESS /**< @brief Video stream in progress. */
         } status; /**< @brief Current status of video streaming. */
@@ -338,7 +343,8 @@ public:
         bool video_on; /**< @brief true if video capture is currently running. */
         bool photo_interval_on; /**< @brief true if video timelapse is currently active. */
 
-        enum class StorageStatus {
+        enum class StorageStatus
+        {
             NOT_AVAILABLE, /**< @brief Storage status not available. */
             UNFORMATTED, /**< @brief Storage is not formatted (has no recognized file system). */
             FORMATTED /**< @brief Storage is formatted (has recognized a file system). */
@@ -352,7 +358,6 @@ public:
      * @brief Callback type to get status.
      */
     typedef std::function<void(Result, Status)> get_status_callback_t;
-
 
     /**
      * @brief Get camera status (asynchronous).
@@ -399,8 +404,7 @@ public:
      * @param setting The machine readable name of the setting.
      * @param callback The callback to get the result and selected option.
      */
-    void get_option_async(const std::string &setting,
-                          const get_option_callback_t &callback);
+    void get_option_async(const std::string &setting, const get_option_callback_t &callback);
 
     /**
      * @brief Set an option of a setting (asynchronous).
@@ -419,8 +423,7 @@ public:
      * @param description The human readable string of the setting to get.
      * @return true if call was successful and the description has been set.
      */
-    bool get_setting_str(const std::string &setting_name,
-                         std::string &description);
+    bool get_setting_str(const std::string &setting_name, std::string &description);
 
     /**
      * @brief Get the human readable string of an option.
@@ -444,9 +447,9 @@ public:
      */
     const Camera &operator=(const Camera &) = delete;
 
-private:
+    private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<CameraImpl> _impl;
 };
 
-} // namespace dronecore
+}// namespace dronecore

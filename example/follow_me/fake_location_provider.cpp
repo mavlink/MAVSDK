@@ -1,12 +1,13 @@
 
 #include "fake_location_provider.h"
-#include <chrono> // for seonds()
-#include <thread> // for sleep_for()
+#include <chrono>// for seonds()
+#include <thread>// for sleep_for()
 
 using std::this_thread::sleep_for;
 using std::chrono::seconds;
 
-void FakeLocationProvider::request_location_updates(location_callback_t callback)
+void
+FakeLocationProvider::request_location_updates(location_callback_t callback)
 {
     location_callback_ = callback;
     timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
@@ -14,7 +15,8 @@ void FakeLocationProvider::request_location_updates(location_callback_t callback
 
 // Rudimentary location provider whose successive lat, lon combination
 // makes Drone revolve in a semi-circular path.
-void FakeLocationProvider::compute_next_location()
+void
+FakeLocationProvider::compute_next_location()
 {
     if (count_++ < 10) {
         location_callback_(latitude_deg_, longitude_deg_);

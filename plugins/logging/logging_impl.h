@@ -8,9 +8,8 @@
 
 namespace dronecore {
 
-class LoggingImpl : public PluginImplBase
-{
-public:
+class LoggingImpl : public PluginImplBase {
+    public:
     LoggingImpl(System &system);
     ~LoggingImpl();
 
@@ -26,7 +25,7 @@ public:
     void start_logging_async(const Logging::result_callback_t &callback);
     void stop_logging_async(const Logging::result_callback_t &callback);
 
-private:
+    private:
     void process_logging_data(const mavlink_message_t &message);
     void process_logging_data_acked(const mavlink_message_t &message);
 
@@ -36,4 +35,4 @@ private:
                                         const Logging::result_callback_t &callback);
 };
 
-} // namespace dronecore
+}// namespace dronecore

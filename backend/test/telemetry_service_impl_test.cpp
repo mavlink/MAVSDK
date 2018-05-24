@@ -41,13 +41,13 @@ using GroundSpeedNED = dronecore::Telemetry::GroundSpeedNED;
 
 using RCStatus = dronecore::Telemetry::RCStatus;
 
-class TelemetryServiceImplTest : public ::testing::Test
-{
-protected:
+class TelemetryServiceImplTest : public ::testing::Test {
+    protected:
     virtual void SetUp()
     {
         _telemetry = std::unique_ptr<MockTelemetry>(new MockTelemetry());
-        _telemetry_service = std::unique_ptr<TelemetryServiceImpl>(new TelemetryServiceImpl(*_telemetry));
+        _telemetry_service =
+            std::unique_ptr<TelemetryServiceImpl>(new TelemetryServiceImpl(*_telemetry));
 
         grpc::ServerBuilder builder;
         builder.RegisterService(_telemetry_service.get());
@@ -60,13 +60,12 @@ protected:
         initRandomGenerator();
     }
 
-    virtual void TearDown()
-    {
-        _server->Shutdown();
-    }
+    virtual void TearDown() { _server->Shutdown(); }
 
     std::future<void> subscribePositionAsync(std::vector<Position> &positions);
-    Position createPosition(const double lat, const double lng, const float abs_alt,
+    Position createPosition(const double lat,
+                            const double lng,
+                            const float abs_alt,
                             const float rel_alt) const;
     void checkSendsPositions(const std::vector<Position> &positions);
 
@@ -103,7 +102,8 @@ protected:
     std::future<void> subscribeAttitudeQuaternionAsync(std::vector<Quaternion> &quaternions) const;
 
     void checkSendsAttitudeEulerAngles(const std::vector<EulerAngle> &euler_angles) const;
-    EulerAngle createEulerAngle(const float roll_deg, const float pitch_deg, const float yaw_deg) const;
+    EulerAngle
+    createEulerAngle(const float roll_deg, const float pitch_deg, const float yaw_deg) const;
     std::future<void> subscribeAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const;
 
     void checkSendsCameraAttitudeQuaternions(const std::vector<Quaternion> &quaternions) const;
@@ -111,16 +111,18 @@ protected:
     subscribeCameraAttitudeQuaternionAsync(std::vector<Quaternion> &quaternions) const;
 
     void checkSendsCameraAttitudeEulerAngles(const std::vector<EulerAngle> &euler_angles) const;
-    std::future<void> subscribeCameraAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const;
+    std::future<void>
+    subscribeCameraAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const;
 
     void checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNED> &ground_speed_events) const;
-    GroundSpeedNED createGroundSpeedNED(const float vel_north, const float vel_east,
-                                        const float vel_down) const;
-    std::future<void> subscribeGroundSpeedNEDAsync(std::vector<GroundSpeedNED> &ground_speed_events)
-    const;
+    GroundSpeedNED
+    createGroundSpeedNED(const float vel_north, const float vel_east, const float vel_down) const;
+    std::future<void>
+    subscribeGroundSpeedNEDAsync(std::vector<GroundSpeedNED> &ground_speed_events) const;
 
     void checkSendsRCStatusEvents(const std::vector<RCStatus> &rc_status_events) const;
-    RCStatus createRCStatus(const bool was_available_once, const bool is_available,
+    RCStatus createRCStatus(const bool was_available_once,
+                            const bool is_available,
                             const float signal_strength_percent) const;
     std::future<void> subscribeRCStatusAsync(std::vector<RCStatus> &rc_status_events) const;
 
@@ -129,7 +131,7 @@ protected:
     std::unique_ptr<MockTelemetry> _telemetry;
     std::unique_ptr<TelemetryServiceImpl> _telemetry_service;
 
-private:
+    private:
     void initRandomGenerator();
 
     std::random_device _random_device;
@@ -137,7 +139,8 @@ private:
     std::uniform_int_distribution<> _uniform_int_distribution;
 };
 
-void TelemetryServiceImplTest::initRandomGenerator()
+void
+TelemetryServiceImplTest::initRandomGenerator()
 {
     _generator = std::mt19937(_random_device());
     _uniform_int_distribution = std::uniform_int_distribution<>(0, 1);
@@ -151,8 +154,7 @@ ACTION_P2(SaveCallback, callback, callback_promise)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionAsync)
 {
-    EXPECT_CALL(*_telemetry, position_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, position_async(_)).Times(1);
 
     std::vector<Position> positions;
     auto position_stream_future = subscribePositionAsync(positions);
@@ -161,7 +163,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionAsync)
     position_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<Position> &positions)
+std::future<void>
+TelemetryServiceImplTest::subscribePositionAsync(std::vector<Position> &positions)
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -204,13 +207,14 @@ TEST_F(TelemetryServiceImplTest, sendsOnePosition)
     checkSendsPositions(positions);
 }
 
-void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position> &positions)
+void
+TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position> &positions)
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::position_callback_t position_callback;
     EXPECT_CALL(*_telemetry, position_async(_))
-    .WillOnce(SaveCallback(&position_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&position_callback, &subscription_promise));
 
     std::vector<Position> received_positions;
     auto position_stream_future = subscribePositionAsync(received_positions);
@@ -227,8 +231,11 @@ void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position> &
     }
 }
 
-Position TelemetryServiceImplTest::createPosition(const double lat, const double lng,
-                                                  const float abs_alt, const float rel_alt) const
+Position
+TelemetryServiceImplTest::createPosition(const double lat,
+                                         const double lng,
+                                         const float abs_alt,
+                                         const float rel_alt) const
 {
     dronecore::Telemetry::Position expected_position;
 
@@ -252,8 +259,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultiplePositions)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryHealthAsync)
 {
-    EXPECT_CALL(*_telemetry, health_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, health_async(_)).Times(1);
 
     std::vector<Health> healths;
     auto health_stream_future = subscribeHealthAsync(healths);
@@ -262,7 +268,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryHealthAsync)
     health_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Health> &healths)
+std::future<void>
+TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Health> &healths)
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -306,7 +313,8 @@ TEST_F(TelemetryServiceImplTest, sendsOneHealth)
     checkSendsHealths(health);
 }
 
-std::vector<Health> TelemetryServiceImplTest::generateRandomHealthsVector(const int size)
+std::vector<Health>
+TelemetryServiceImplTest::generateRandomHealthsVector(const int size)
 {
     std::vector<Health> healths;
     for (int i = 0; i < size; i++) {
@@ -316,13 +324,14 @@ std::vector<Health> TelemetryServiceImplTest::generateRandomHealthsVector(const 
     return healths;
 }
 
-void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &healths)
+void
+TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &healths)
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::health_callback_t health_callback;
     EXPECT_CALL(*_telemetry, health_async(_))
-    .WillOnce(SaveCallback(&health_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&health_callback, &subscription_promise));
 
     std::vector<Health> received_healths;
     auto health_stream_future = subscribeHealthAsync(received_healths);
@@ -339,7 +348,8 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &heal
     }
 }
 
-Health TelemetryServiceImplTest::createRandomHealth()
+Health
+TelemetryServiceImplTest::createRandomHealth()
 {
     dronecore::Telemetry::Health health;
 
@@ -354,7 +364,8 @@ Health TelemetryServiceImplTest::createRandomHealth()
     return health;
 }
 
-bool TelemetryServiceImplTest::generateRandomBool()
+bool
+TelemetryServiceImplTest::generateRandomBool()
 {
     return _uniform_int_distribution(_generator) == 0;
 }
@@ -367,8 +378,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleHealths)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryHomeAsync)
 {
-    EXPECT_CALL(*_telemetry, home_position_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, home_position_async(_)).Times(1);
 
     std::vector<Position> home_positions;
     auto home_stream_future = subscribeHomeAsync(home_positions);
@@ -377,8 +387,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryHomeAsync)
     home_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position>
-                                                               &home_positions) const
+std::future<void>
+TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position> &home_positions) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -421,14 +431,14 @@ TEST_F(TelemetryServiceImplTest, sendsOneHome)
     checkSendsHomePositions(home_positions);
 }
 
-void TelemetryServiceImplTest::checkSendsHomePositions(const std::vector<Position> &home_positions)
-const
+void
+TelemetryServiceImplTest::checkSendsHomePositions(const std::vector<Position> &home_positions) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::position_callback_t home_callback;
     EXPECT_CALL(*_telemetry, home_position_async(_))
-    .WillOnce(SaveCallback(&home_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&home_callback, &subscription_promise));
 
     std::vector<Position> received_home_positions;
     auto home_stream_future = subscribeHomeAsync(received_home_positions);
@@ -450,15 +460,15 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleHomePositions)
     std::vector<Position> home_positions;
     home_positions.push_back(createPosition(41.848695, 75.132751, 3002.1f, 50.3f));
     home_positions.push_back(createPosition(46.522626, 6.635356, 542.2f, 79.8f));
-    home_positions.push_back(createPosition(-50.995944711358824, -72.99892046835936, 1217.12f, 2.52f));
+    home_positions.push_back(
+        createPosition(-50.995944711358824, -72.99892046835936, 1217.12f, 2.52f));
 
     checkSendsHomePositions(home_positions);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryInAirAsync)
 {
-    EXPECT_CALL(*_telemetry, in_air_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, in_air_async(_)).Times(1);
 
     std::vector<bool> in_air_events;
     auto in_air_stream_future = subscribeInAirAsync(in_air_events);
@@ -467,8 +477,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryInAirAsync)
     in_air_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeInAirAsync(std::vector<bool> &in_air_events)
-const
+std::future<void>
+TelemetryServiceImplTest::subscribeInAirAsync(std::vector<bool> &in_air_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -504,13 +514,14 @@ TEST_F(TelemetryServiceImplTest, sendsOneInAirEvent)
     checkSendsInAirEvents(in_air_events);
 }
 
-void TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool> &in_air_events) const
+void
+TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool> &in_air_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::in_air_callback_t in_air_callback;
     EXPECT_CALL(*_telemetry, in_air_async(_))
-    .WillOnce(SaveCallback(&in_air_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&in_air_callback, &subscription_promise));
 
     std::vector<bool> received_in_air_events;
     auto in_air_stream_future = subscribeInAirAsync(received_in_air_events);
@@ -540,8 +551,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleInAirEvents)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryArmedAsync)
 {
-    EXPECT_CALL(*_telemetry, armed_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, armed_async(_)).Times(1);
 
     std::vector<bool> armed_events;
     auto armed_stream_future = subscribeArmedAsync(armed_events);
@@ -587,13 +597,14 @@ TEST_F(TelemetryServiceImplTest, sendsOneArmedEvent)
     checkSendsArmedEvents(armed_events);
 }
 
-void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool> &armed_events) const
+void
+TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool> &armed_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::armed_callback_t armed_callback;
     EXPECT_CALL(*_telemetry, armed_async(_))
-    .WillOnce(SaveCallback(&armed_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&armed_callback, &subscription_promise));
 
     std::vector<bool> received_armed_events;
     auto armed_stream_future = subscribeArmedAsync(received_armed_events);
@@ -623,8 +634,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleArmedEvents)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryGPSInfoAsync)
 {
-    EXPECT_CALL(*_telemetry, gps_info_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, gps_info_async(_)).Times(1);
 
     std::vector<GPSInfo> gps_info_events;
     auto gps_info_stream_future = subscribeGPSInfoAsync(gps_info_events);
@@ -656,7 +666,8 @@ TelemetryServiceImplTest::subscribeGPSInfoAsync(std::vector<GPSInfo> &gps_info_e
     });
 }
 
-int TelemetryServiceImplTest::translateRPCGPSFixType(const FixType rpc_fix_type) const
+int
+TelemetryServiceImplTest::translateRPCGPSFixType(const FixType rpc_fix_type) const
 {
     switch (rpc_fix_type) {
         default:
@@ -696,14 +707,14 @@ TEST_F(TelemetryServiceImplTest, sendsOneGPSInfoEvent)
     checkSendsGPSInfoEvents(gps_info_events);
 }
 
-void TelemetryServiceImplTest::checkSendsGPSInfoEvents(const std::vector<GPSInfo> &gps_info_events)
-const
+void
+TelemetryServiceImplTest::checkSendsGPSInfoEvents(const std::vector<GPSInfo> &gps_info_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::gps_info_callback_t gps_info_callback;
     EXPECT_CALL(*_telemetry, gps_info_async(_))
-    .WillOnce(SaveCallback(&gps_info_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&gps_info_callback, &subscription_promise));
 
     std::vector<GPSInfo> received_gps_info_events;
     auto gps_info_stream_future = subscribeGPSInfoAsync(received_gps_info_events);
@@ -720,7 +731,8 @@ const
     }
 }
 
-GPSInfo TelemetryServiceImplTest::createGPSInfo(const int num_satellites, const int fix_type) const
+GPSInfo
+TelemetryServiceImplTest::createGPSInfo(const int num_satellites, const int fix_type) const
 {
     GPSInfo expected_gps_info;
 
@@ -746,8 +758,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleGPSInfoEvents)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryBatteryAsync)
 {
-    EXPECT_CALL(*_telemetry, battery_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, battery_async(_)).Times(1);
 
     std::vector<Battery> battery_events;
     auto battery_stream_future = subscribeBatteryAsync(battery_events);
@@ -798,8 +809,8 @@ TEST_F(TelemetryServiceImplTest, sendsOneBatteryEvent)
     checkSendsBatteryEvents(battery_events);
 }
 
-Battery TelemetryServiceImplTest::createBattery(const float voltage_v,
-                                                const float remaining_percent) const
+Battery
+TelemetryServiceImplTest::createBattery(const float voltage_v, const float remaining_percent) const
 {
     Battery battery;
     battery.voltage_v = voltage_v;
@@ -808,14 +819,14 @@ Battery TelemetryServiceImplTest::createBattery(const float voltage_v,
     return battery;
 }
 
-void TelemetryServiceImplTest::checkSendsBatteryEvents(const std::vector<Battery> &battery_events)
-const
+void
+TelemetryServiceImplTest::checkSendsBatteryEvents(const std::vector<Battery> &battery_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::battery_callback_t battery_callback;
     EXPECT_CALL(*_telemetry, battery_async(_))
-    .WillOnce(SaveCallback(&battery_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&battery_callback, &subscription_promise));
 
     std::vector<Battery> received_battery_events;
     auto battery_stream_future = subscribeBatteryAsync(received_battery_events);
@@ -846,8 +857,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleBatteryEvents)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryFlightModeAsync)
 {
-    EXPECT_CALL(*_telemetry, flight_mode_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, flight_mode_async(_)).Times(1);
 
     std::vector<FlightMode> flight_mode_events;
     auto flight_mode_stream_future = subscribeFlightModeAsync(flight_mode_events);
@@ -857,8 +867,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryFlightModeAsync)
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeFlightModeAsync(std::vector<FlightMode> &flight_mode_events)
-const
+TelemetryServiceImplTest::subscribeFlightModeAsync(
+    std::vector<FlightMode> &flight_mode_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -920,14 +930,15 @@ TEST_F(TelemetryServiceImplTest, sendsOneFlightModeEvent)
     checkSendsFlightModeEvents(flight_mode_events);
 }
 
-void TelemetryServiceImplTest::checkSendsFlightModeEvents(const std::vector<FlightMode>
-                                                          &flight_mode_events) const
+void
+TelemetryServiceImplTest::checkSendsFlightModeEvents(
+    const std::vector<FlightMode> &flight_mode_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::flight_mode_callback_t flight_mode_callback;
     EXPECT_CALL(*_telemetry, flight_mode_async(_))
-    .WillOnce(SaveCallback(&flight_mode_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&flight_mode_callback, &subscription_promise));
 
     std::vector<FlightMode> received_flight_mode_events;
     auto flight_mode_stream_future = subscribeFlightModeAsync(received_flight_mode_events);
@@ -962,8 +973,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleFlightModeEvents)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeQuaternionAsync)
 {
-    EXPECT_CALL(*_telemetry, attitude_quaternion_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, attitude_quaternion_async(_)).Times(1);
 
     std::vector<Quaternion> quaternions;
     auto quaternion_stream_future = subscribeAttitudeQuaternionAsync(quaternions);
@@ -972,7 +982,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeQuaternionAsync)
     quaternion_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeAttitudeQuaternionAsync(
+std::future<void>
+TelemetryServiceImplTest::subscribeAttitudeQuaternionAsync(
     std::vector<Quaternion> &quaternions) const
 {
     return std::async(std::launch::async, [&]() {
@@ -1016,8 +1027,11 @@ TEST_F(TelemetryServiceImplTest, sendsOneAttitudeQuaternion)
     checkSendsAttitudeQuaternions(quaternions);
 }
 
-Quaternion TelemetryServiceImplTest::createQuaternion(const float w, const float x, const float y,
-                                                      const float z) const
+Quaternion
+TelemetryServiceImplTest::createQuaternion(const float w,
+                                           const float x,
+                                           const float y,
+                                           const float z) const
 {
     dronecore::Telemetry::Quaternion quaternion;
 
@@ -1029,14 +1043,15 @@ Quaternion TelemetryServiceImplTest::createQuaternion(const float w, const float
     return quaternion;
 }
 
-void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(const std::vector<Quaternion>
-                                                             &quaternions) const
+void
+TelemetryServiceImplTest::checkSendsAttitudeQuaternions(
+    const std::vector<Quaternion> &quaternions) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
     EXPECT_CALL(*_telemetry, attitude_quaternion_async(_))
-    .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
 
     std::vector<Quaternion> received_quaternions;
     auto quaternion_stream_future = subscribeAttitudeQuaternionAsync(received_quaternions);
@@ -1065,8 +1080,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeQuaternions)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeEulerAsync)
 {
-    EXPECT_CALL(*_telemetry, attitude_euler_angle_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, attitude_euler_angle_async(_)).Times(1);
 
     std::vector<EulerAngle> euler_angles;
     auto euler_angle_stream_future = subscribeAttitudeEulerAsync(euler_angles);
@@ -1075,8 +1089,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeEulerAsync)
     euler_angle_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeAttitudeEulerAsync(
-    std::vector<EulerAngle> &euler_angles) const
+std::future<void>
+TelemetryServiceImplTest::subscribeAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -1118,8 +1132,10 @@ TEST_F(TelemetryServiceImplTest, sendsOneAttitudeEuler)
     checkSendsAttitudeEulerAngles(euler_angles);
 }
 
-EulerAngle TelemetryServiceImplTest::createEulerAngle(const float roll_deg, const float pitch_deg,
-                                                      const float yaw_deg) const
+EulerAngle
+TelemetryServiceImplTest::createEulerAngle(const float roll_deg,
+                                           const float pitch_deg,
+                                           const float yaw_deg) const
 {
     EulerAngle euler_angle;
     euler_angle.roll_deg = roll_deg;
@@ -1129,14 +1145,15 @@ EulerAngle TelemetryServiceImplTest::createEulerAngle(const float roll_deg, cons
     return euler_angle;
 }
 
-void TelemetryServiceImplTest::checkSendsAttitudeEulerAngles(const std::vector<EulerAngle>
-                                                             &euler_angles) const
+void
+TelemetryServiceImplTest::checkSendsAttitudeEulerAngles(
+    const std::vector<EulerAngle> &euler_angles) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
     EXPECT_CALL(*_telemetry, attitude_euler_angle_async(_))
-    .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
 
     std::vector<EulerAngle> received_euler_angles;
     auto euler_angle_stream_future = subscribeAttitudeEulerAsync(received_euler_angles);
@@ -1165,8 +1182,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeEuler)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeQuaternionAsync)
 {
-    EXPECT_CALL(*_telemetry, camera_attitude_quaternion_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, camera_attitude_quaternion_async(_)).Times(1);
 
     std::vector<Quaternion> quaternions;
     auto quaternion_stream_future = subscribeCameraAttitudeQuaternionAsync(quaternions);
@@ -1175,7 +1191,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeQuaternionAsy
     quaternion_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeCameraAttitudeQuaternionAsync(
+std::future<void>
+TelemetryServiceImplTest::subscribeCameraAttitudeQuaternionAsync(
     std::vector<Quaternion> &quaternions) const
 {
     return std::async(std::launch::async, [&]() {
@@ -1219,14 +1236,15 @@ TEST_F(TelemetryServiceImplTest, sendsOneCameraAttitudeQuaternion)
     checkSendsCameraAttitudeQuaternions(quaternions);
 }
 
-void TelemetryServiceImplTest::checkSendsCameraAttitudeQuaternions(const std::vector<Quaternion>
-                                                                   &quaternions) const
+void
+TelemetryServiceImplTest::checkSendsCameraAttitudeQuaternions(
+    const std::vector<Quaternion> &quaternions) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
     EXPECT_CALL(*_telemetry, camera_attitude_quaternion_async(_))
-    .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
 
     std::vector<Quaternion> received_quaternions;
     auto quaternion_stream_future = subscribeCameraAttitudeQuaternionAsync(received_quaternions);
@@ -1255,8 +1273,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeQuaternions)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeEulerAsync)
 {
-    EXPECT_CALL(*_telemetry, camera_attitude_euler_angle_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, camera_attitude_euler_angle_async(_)).Times(1);
 
     std::vector<EulerAngle> euler_angles;
     auto euler_angle_stream_future = subscribeCameraAttitudeEulerAsync(euler_angles);
@@ -1265,7 +1282,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeEulerAsync)
     euler_angle_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeCameraAttitudeEulerAsync(
+std::future<void>
+TelemetryServiceImplTest::subscribeCameraAttitudeEulerAsync(
     std::vector<EulerAngle> &euler_angles) const
 {
     return std::async(std::launch::async, [&]() {
@@ -1308,14 +1326,15 @@ TEST_F(TelemetryServiceImplTest, sendsOneCameraAttitudeEuler)
     checkSendsCameraAttitudeEulerAngles(euler_angles);
 }
 
-void TelemetryServiceImplTest::checkSendsCameraAttitudeEulerAngles(const std::vector<EulerAngle>
-                                                                   &euler_angles) const
+void
+TelemetryServiceImplTest::checkSendsCameraAttitudeEulerAngles(
+    const std::vector<EulerAngle> &euler_angles) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
     EXPECT_CALL(*_telemetry, camera_attitude_euler_angle_async(_))
-    .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
 
     std::vector<EulerAngle> received_euler_angles;
     auto euler_angle_stream_future = subscribeCameraAttitudeEulerAsync(received_euler_angles);
@@ -1344,8 +1363,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeEuler)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryGroundSpeedNEDAsync)
 {
-    EXPECT_CALL(*_telemetry, ground_speed_ned_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, ground_speed_ned_async(_)).Times(1);
 
     std::vector<GroundSpeedNED> ground_speed_events;
     auto ground_speed_stream_future = subscribeGroundSpeedNEDAsync(ground_speed_events);
@@ -1354,7 +1372,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryGroundSpeedNEDAsync)
     ground_speed_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeGroundSpeedNEDAsync(
+std::future<void>
+TelemetryServiceImplTest::subscribeGroundSpeedNEDAsync(
     std::vector<GroundSpeedNED> &ground_speed_events) const
 {
     return std::async(std::launch::async, [&]() {
@@ -1397,8 +1416,10 @@ TEST_F(TelemetryServiceImplTest, sendsOneGroundSpeedEvent)
     checkSendsGroundSpeedEvents(ground_speed_events);
 }
 
-GroundSpeedNED TelemetryServiceImplTest::createGroundSpeedNED(const float vel_north,
-                                                              const float vel_east, const float vel_down) const
+GroundSpeedNED
+TelemetryServiceImplTest::createGroundSpeedNED(const float vel_north,
+                                               const float vel_east,
+                                               const float vel_down) const
 {
     GroundSpeedNED ground_speed;
 
@@ -1409,14 +1430,15 @@ GroundSpeedNED TelemetryServiceImplTest::createGroundSpeedNED(const float vel_no
     return ground_speed;
 }
 
-void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNED>
-                                                           &ground_speed_events) const
+void
+TelemetryServiceImplTest::checkSendsGroundSpeedEvents(
+    const std::vector<GroundSpeedNED> &ground_speed_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::ground_speed_ned_callback_t ground_speed_ned_callback;
     EXPECT_CALL(*_telemetry, ground_speed_ned_async(_))
-    .WillOnce(SaveCallback(&ground_speed_ned_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&ground_speed_ned_callback, &subscription_promise));
 
     std::vector<GroundSpeedNED> received_ground_speed_events;
     auto ground_speed_stream_future = subscribeGroundSpeedNEDAsync(received_ground_speed_events);
@@ -1445,8 +1467,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleGroundSpeedEvents)
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryRCStatusAsync)
 {
-    EXPECT_CALL(*_telemetry, rc_status_async(_))
-    .Times(1);
+    EXPECT_CALL(*_telemetry, rc_status_async(_)).Times(1);
 
     std::vector<RCStatus> rc_status_events;
     auto rc_status_stream_future = subscribeRCStatusAsync(rc_status_events);
@@ -1455,8 +1476,8 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryRCStatusAsync)
     rc_status_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeRCStatusAsync(std::vector<RCStatus>
-                                                                   &rc_status_events) const
+std::future<void>
+TelemetryServiceImplTest::subscribeRCStatusAsync(std::vector<RCStatus> &rc_status_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -1498,8 +1519,10 @@ TEST_F(TelemetryServiceImplTest, sendsOneRCStatusEvent)
     checkSendsRCStatusEvents(rc_status_events);
 }
 
-RCStatus TelemetryServiceImplTest::createRCStatus(const bool was_available_once,
-                                                  const bool is_available, const float signal_strength_percent) const
+RCStatus
+TelemetryServiceImplTest::createRCStatus(const bool was_available_once,
+                                         const bool is_available,
+                                         const float signal_strength_percent) const
 {
     RCStatus rc_status;
 
@@ -1510,14 +1533,15 @@ RCStatus TelemetryServiceImplTest::createRCStatus(const bool was_available_once,
     return rc_status;
 }
 
-void TelemetryServiceImplTest::checkSendsRCStatusEvents(const std::vector<RCStatus>
-                                                        &rc_status_events) const
+void
+TelemetryServiceImplTest::checkSendsRCStatusEvents(
+    const std::vector<RCStatus> &rc_status_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
     dronecore::Telemetry::rc_status_callback_t rc_status_callback;
     EXPECT_CALL(*_telemetry, rc_status_async(_))
-    .WillOnce(SaveCallback(&rc_status_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&rc_status_callback, &subscription_promise));
 
     std::vector<RCStatus> received_rc_status_events;
     auto rc_status_stream_future = subscribeRCStatusAsync(received_rc_status_events);
@@ -1544,4 +1568,4 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleRCStatusEvents)
     checkSendsRCStatusEvents(rc_status_events);
 }
 
-} // namespace
+}// namespace

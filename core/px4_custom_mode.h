@@ -47,7 +47,8 @@
 
 namespace px4 {
 
-enum PX4_CUSTOM_MAIN_MODE {
+enum PX4_CUSTOM_MAIN_MODE
+{
     PX4_CUSTOM_MAIN_MODE_MANUAL = 1,
     PX4_CUSTOM_MAIN_MODE_ALTCTL,
     PX4_CUSTOM_MAIN_MODE_POSCTL,
@@ -58,7 +59,8 @@ enum PX4_CUSTOM_MAIN_MODE {
     PX4_CUSTOM_MAIN_MODE_RATTITUDE
 };
 
-enum PX4_CUSTOM_SUB_MODE_AUTO {
+enum PX4_CUSTOM_SUB_MODE_AUTO
+{
     PX4_CUSTOM_SUB_MODE_AUTO_READY = 1,
     PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF,
     PX4_CUSTOM_SUB_MODE_AUTO_LOITER,
@@ -79,4 +81,4 @@ union px4_custom_mode {
     float data_float;
 };
 
-} // namespace px4
+}// namespace px4

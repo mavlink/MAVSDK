@@ -11,7 +11,8 @@ namespace dronecore {
  * **Note**: DroneCore does not throw exceptions. Instead a result of this type will be
  * returned when you add a connection: add_udp_connection().
  */
-enum class ConnectionResult {
+enum class ConnectionResult
+{
     SUCCESS = 0, /**< @brief %Connection succeeded. */
     TIMEOUT, /**< @brief %Connection timed out. */
     SOCKET_ERROR, /**< @brief Socket error. */
@@ -33,7 +34,8 @@ enum class ConnectionResult {
  * @param result The enum value for which a human readable string is required.
  * @return Human readable string for the ConnectionResult.
  */
-inline const char *connection_result_str(const ConnectionResult result)
+inline const char *
+connection_result_str(const ConnectionResult result)
 {
     switch (result) {
         case ConnectionResult::SUCCESS:
@@ -67,4 +69,4 @@ inline const char *connection_result_str(const ConnectionResult result)
     }
 }
 
-} // dronecore
+}// namespace dronecore

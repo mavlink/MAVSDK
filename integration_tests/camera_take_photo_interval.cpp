@@ -10,14 +10,13 @@
 #include "camera_test_helpers.h"
 
 using namespace dronecore;
-using namespace std::placeholders; // for `_1`
+using namespace std::placeholders;// for `_1`
 
 static void receive_camera_result(Camera::Result result);
 
 static void check_interval_on(std::shared_ptr<Camera> camera, bool on);
 
-static std::atomic<bool> _received_result {false};
-
+static std::atomic<bool> _received_result{false};
 
 TEST(CameraTest, TakePhotoInterval)
 {
@@ -61,14 +60,15 @@ TEST(CameraTest, TakePhotoInterval)
     EXPECT_TRUE(_received_result);
 }
 
-void receive_camera_result(Camera::Result result)
+void
+receive_camera_result(Camera::Result result)
 {
     _received_result = true;
     EXPECT_EQ(result, Camera::Result::SUCCESS);
 }
 
-
-void check_interval_on(std::shared_ptr<Camera> camera, bool on)
+void
+check_interval_on(std::shared_ptr<Camera> camera, bool on)
 {
     auto prom = std::make_shared<std::promise<void>>();
     auto ret = prom->get_future();

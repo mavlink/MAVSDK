@@ -3,42 +3,42 @@
 
 namespace dronecore {
 
-FollowMe::FollowMe(System &system) :
-    PluginBase(),
-    _impl { new FollowMeImpl(system) }
-{
-}
+FollowMe::FollowMe(System &system) : PluginBase(), _impl{new FollowMeImpl(system)} {}
 
-FollowMe::~FollowMe()
-{
-}
+FollowMe::~FollowMe() {}
 
-const FollowMe::Config &FollowMe::get_config() const
+const FollowMe::Config &
+FollowMe::get_config() const
 {
     return _impl->get_config();
 }
 
-FollowMe::Result FollowMe::set_config(const FollowMe::Config &config)
+FollowMe::Result
+FollowMe::set_config(const FollowMe::Config &config)
 {
     return _impl->set_config(config);
 }
 
-bool FollowMe::is_active() const
+bool
+FollowMe::is_active() const
 {
     return _impl->is_active();
 }
 
-void FollowMe::set_target_location(const TargetLocation &target_location)
+void
+FollowMe::set_target_location(const TargetLocation &target_location)
 {
     return _impl->set_target_location(target_location);
 }
 
-const FollowMe::TargetLocation &FollowMe::get_last_location() const
+const FollowMe::TargetLocation &
+FollowMe::get_last_location() const
 {
     return _impl->get_last_location();
 }
 
-std::string FollowMe::Config::to_str(FollowMe::Config::FollowDirection direction)
+std::string
+FollowMe::Config::to_str(FollowMe::Config::FollowDirection direction)
 {
     switch (direction) {
         case FollowMe::Config::FollowDirection::FRONT_RIGHT:
@@ -54,17 +54,20 @@ std::string FollowMe::Config::to_str(FollowMe::Config::FollowDirection direction
     }
 }
 
-FollowMe::Result FollowMe::start() const
+FollowMe::Result
+FollowMe::start() const
 {
     return _impl->start();
 }
 
-FollowMe::Result FollowMe::stop() const
+FollowMe::Result
+FollowMe::stop() const
 {
     return _impl->stop();
 }
 
-std::string FollowMe::result_str(Result result)
+std::string
+FollowMe::result_str(Result result)
 {
     switch (result) {
         case Result::SUCCESS:
@@ -90,4 +93,4 @@ std::string FollowMe::result_str(Result result)
     }
 }
 
-} // namespace dronecore
+}// namespace dronecore

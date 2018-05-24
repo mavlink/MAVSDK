@@ -11,9 +11,8 @@
 
 namespace dronecore {
 
-class FollowMeImpl : public PluginImplBase
-{
-public:
+class FollowMeImpl : public PluginImplBase {
+    public:
     FollowMeImpl(System &system);
     ~FollowMeImpl();
 
@@ -34,7 +33,7 @@ public:
     FollowMe::Result start();
     FollowMe::Result stop();
 
-private:
+    private:
     typedef unsigned int config_val_t;
     void process_heartbeat(const mavlink_message_t &message);
 
@@ -52,17 +51,20 @@ private:
     void send_target_location();
     void stop_sending_target_location();
 
-    enum class EstimationCapabilites {
+    enum class EstimationCapabilites
+    {
         POS,
         VEL
     };
 
-    enum class Mode {
+    enum class Mode
+    {
         NOT_ACTIVE,
         ACTIVE
     } _mode = Mode::NOT_ACTIVE;
 
-    enum class ConfigParameter {
+    enum class ConfigParameter
+    {
         NONE = 0,
         FOLLOW_DIRECTION = 1 << 0,
         MIN_HEIGHT = 1 << 1,
@@ -70,40 +72,37 @@ private:
         RESPONSIVENESS = 1 << 3
     };
 
-    friend config_val_t operator ~(ConfigParameter cfgp)
-    {
-        return ~static_cast<config_val_t>(cfgp);
-    }
-    friend config_val_t operator |(config_val_t config_val, ConfigParameter cfgp)
+    friend config_val_t operator~(ConfigParameter cfgp) { return ~static_cast<config_val_t>(cfgp); }
+    friend config_val_t operator|(config_val_t config_val, ConfigParameter cfgp)
     {
         return (config_val) | static_cast<config_val_t>(cfgp);
     }
-    friend config_val_t operator |=(config_val_t &config_val, ConfigParameter cfgp)
+    friend config_val_t operator|=(config_val_t &config_val, ConfigParameter cfgp)
     {
         return config_val = config_val | static_cast<config_val_t>(cfgp);
     }
-    friend bool operator !=(config_val_t config_val, ConfigParameter cfgp)
+    friend bool operator!=(config_val_t config_val, ConfigParameter cfgp)
     {
         return config_val != static_cast<config_val_t>(cfgp);
     }
-    friend bool operator ==(config_val_t config_val, ConfigParameter cfgp)
+    friend bool operator==(config_val_t config_val, ConfigParameter cfgp)
     {
         return config_val == static_cast<config_val_t>(cfgp);
     }
 
-    mutable std::mutex _mutex {};
-    FollowMe::TargetLocation _target_location; // sent to vehicle
-    FollowMe::TargetLocation _last_location; // sent to vehicle
+    mutable std::mutex _mutex{};
+    FollowMe::TargetLocation _target_location;// sent to vehicle
+    FollowMe::TargetLocation _last_location;// sent to vehicle
     void *_target_location_cookie = nullptr;
 
-    Time _time {};
-    uint8_t _estimatation_capabilities = 0; // sent to vehicle
-    FollowMe::Config _config {}; // has FollowMe configuration settings
+    Time _time{};
+    uint8_t _estimatation_capabilities = 0;// sent to vehicle
+    FollowMe::Config _config{};// has FollowMe configuration settings
     config_val_t _config_change_requested = 0;
 
-    const float SENDER_RATE = 1.0f; // send location updates once in a second
+    const float SENDER_RATE = 1.0f;// send location updates once in a second
 
     std::string debug_str = "FollowMe: ";
 };
 
-} // namespace dronecore
+}// namespace dronecore

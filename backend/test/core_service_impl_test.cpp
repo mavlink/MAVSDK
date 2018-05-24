@@ -27,9 +27,8 @@ static constexpr auto DEFAULT_BACKEND_ADDRESS = "localhost";
 static constexpr uint64_t ARBITRARY_UINT64_T = 42;
 static constexpr uint64_t ARBITRARY_SMALL_INT = 11;
 
-class CoreServiceImplTest : public ::testing::Test
-{
-protected:
+class CoreServiceImplTest : public ::testing::Test {
+    protected:
     virtual void SetUp()
     {
         _dc = std::unique_ptr<MockDroneCore>(new MockDroneCore());
@@ -44,10 +43,7 @@ protected:
         _stub = CoreService::NewStub(channel);
     }
 
-    virtual void TearDown()
-    {
-        _server->Shutdown();
-    }
+    virtual void TearDown() { _server->Shutdown(); }
 
     void checkPluginIsRunning(const std::string plugin_name);
     std::future<void> subscribeDiscoverAsync(std::vector<uint64_t> &uuids);
@@ -70,7 +66,8 @@ TEST_F(CoreServiceImplTest, actionPluginIsRunning)
     checkPluginIsRunning("action");
 }
 
-void CoreServiceImplTest::checkPluginIsRunning(const std::string plugin_name)
+void
+CoreServiceImplTest::checkPluginIsRunning(const std::string plugin_name)
 {
     dronecore::rpc::core::ListRunningPluginsResponse response;
 
@@ -120,8 +117,7 @@ TEST_F(CoreServiceImplTest, portIsDefaultInPluginInfos)
 
 TEST_F(CoreServiceImplTest, subscribeDiscoverActuallySubscribes)
 {
-    EXPECT_CALL(*_dc, register_on_discover(_))
-    .Times(1);
+    EXPECT_CALL(*_dc, register_on_discover(_)).Times(1);
     grpc::ClientContext context;
     dronecore::rpc::core::SubscribeDiscoverRequest request;
 
@@ -140,7 +136,8 @@ TEST_F(CoreServiceImplTest, discoverStreamEmptyIfCallbackNotCalled)
     EXPECT_EQ(0, uuids.size());
 }
 
-std::future<void> CoreServiceImplTest::subscribeDiscoverAsync(std::vector<uint64_t> &uuids)
+std::future<void>
+CoreServiceImplTest::subscribeDiscoverAsync(std::vector<uint64_t> &uuids)
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -161,7 +158,7 @@ TEST_F(CoreServiceImplTest, discoverSendsOneUUID)
     auto subscription_future = subscription_promise.get_future();
     dronecore::testing::event_callback_t event_callback;
     EXPECT_CALL(*_dc, register_on_discover(_))
-    .WillOnce(SaveCallback(&event_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&event_callback, &subscription_promise));
 
     std::vector<uint64_t> uuids;
     auto uuids_stream_future = subscribeDiscoverAsync(uuids);
@@ -183,7 +180,7 @@ TEST_F(CoreServiceImplTest, discoverSendsMultipleUUIDs)
     auto subscription_future = subscription_promise.get_future();
     dronecore::testing::event_callback_t event_callback;
     EXPECT_CALL(*_dc, register_on_discover(_))
-    .WillOnce(SaveCallback(&event_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&event_callback, &subscription_promise));
 
     std::vector<uint64_t> uuids;
     auto uuids_stream_future = subscribeDiscoverAsync(uuids);
@@ -202,8 +199,7 @@ TEST_F(CoreServiceImplTest, discoverSendsMultipleUUIDs)
 
 TEST_F(CoreServiceImplTest, subscribeTimeoutActuallySubscribes)
 {
-    EXPECT_CALL(*_dc, register_on_timeout(_))
-    .Times(1);
+    EXPECT_CALL(*_dc, register_on_timeout(_)).Times(1);
     grpc::ClientContext context;
     dronecore::rpc::core::SubscribeTimeoutRequest request;
 
@@ -222,7 +218,8 @@ TEST_F(CoreServiceImplTest, timeoutStreamEmptyIfCallbackNotCalled)
     EXPECT_EQ(0, count);
 }
 
-std::future<void> CoreServiceImplTest::subscribeTimeoutAsync(int *stream_count)
+std::future<void>
+CoreServiceImplTest::subscribeTimeoutAsync(int *stream_count)
 {
     return std::async(std::launch::async, [this, stream_count]() {
         grpc::ClientContext context;
@@ -242,7 +239,7 @@ TEST_F(CoreServiceImplTest, timeoutIsCalledOnce)
     auto subscription_future = subscription_promise.get_future();
     dronecore::testing::event_callback_t event_callback;
     EXPECT_CALL(*_dc, register_on_timeout(_))
-    .WillOnce(SaveCallback(&event_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&event_callback, &subscription_promise));
 
     int count = 0;
     auto timeout_stream_future = subscribeTimeoutAsync(&count);
@@ -261,7 +258,7 @@ TEST_F(CoreServiceImplTest, timeoutIsCalledMultipleTimes)
     auto subscription_future = subscription_promise.get_future();
     dronecore::testing::event_callback_t event_callback;
     EXPECT_CALL(*_dc, register_on_timeout(_))
-    .WillOnce(SaveCallback(&event_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&event_callback, &subscription_promise));
 
     int count = 0;
     auto timeout_stream_future = subscribeTimeoutAsync(&count);
@@ -275,4 +272,4 @@ TEST_F(CoreServiceImplTest, timeoutIsCalledMultipleTimes)
     EXPECT_EQ(expected_count, count);
 }
 
-} // namespace
+}// namespace

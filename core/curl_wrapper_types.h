@@ -4,7 +4,8 @@
 
 namespace dronecore {
 
-enum class Status {
+enum class Status
+{
     Idle = 0,
     Downloading = 1,
     Uploading = 2,
@@ -19,4 +20,4 @@ struct dl_up_progress {
     progress_callback_t progress_callback;
 };
 
-} // namespace dronecore
+}// namespace dronecore

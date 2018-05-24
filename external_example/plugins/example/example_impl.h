@@ -7,9 +7,8 @@
 
 namespace dronecore {
 
-class ExampleImpl : public PluginImplBase
-{
-public:
+class ExampleImpl : public PluginImplBase {
+    public:
     ExampleImpl(System &system);
     ~ExampleImpl();
 
@@ -21,8 +20,8 @@ public:
     void enable() override;
     void disable() override;
 
-private:
+    private:
     void process_heartbeat(const mavlink_message_t &message);
 };
 
-} // namespace dronecore
+}// namespace dronecore

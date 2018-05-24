@@ -5,9 +5,8 @@
 namespace dronecore {
 namespace testing {
 
-class MockAction
-{
-public:
+class MockAction {
+    public:
     MOCK_CONST_METHOD0(arm, ActionResult());
     MOCK_CONST_METHOD0(disarm, ActionResult());
     MOCK_CONST_METHOD0(takeoff, ActionResult());
@@ -22,5 +21,5 @@ public:
     MOCK_CONST_METHOD1(set_max_speed, void(float));
 };
 
-} // namespace testing
-} // namespace dronecore
+}// namespace testing
+}// namespace dronecore

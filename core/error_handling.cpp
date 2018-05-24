@@ -2,7 +2,8 @@
 
 namespace dronecore {
 
-const char *result_str(Result res)
+const char *
+result_str(Result res)
 {
     switch (res) {
         case Result::SUCCESS:
@@ -28,4 +29,4 @@ const char *result_str(Result res)
     }
 }
 
-} // namespace dronecore
+}// namespace dronecore

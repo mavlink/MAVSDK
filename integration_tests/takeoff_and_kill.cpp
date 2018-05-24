@@ -4,7 +4,7 @@
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace std::placeholders; // for _1
+using namespace std::placeholders;// for _1
 using namespace dronecore;
 
 static bool _discovered_system = false;
@@ -19,26 +19,29 @@ static void receive_arm_result(ActionResult result);
 static void receive_takeoff_result(ActionResult result);
 static void receive_kill_result(ActionResult result);
 
-void receive_arm_result(ActionResult result)
+void
+receive_arm_result(ActionResult result)
 {
     ASSERT_EQ(result, ActionResult::SUCCESS);
     _received_arm_result = true;
 }
 
-void receive_takeoff_result(ActionResult result)
+void
+receive_takeoff_result(ActionResult result)
 {
     ASSERT_EQ(result, ActionResult::SUCCESS);
     _received_takeoff_result = true;
 }
 
-void receive_kill_result(ActionResult result)
+void
+receive_kill_result(ActionResult result)
 {
     ASSERT_EQ(result, ActionResult::SUCCESS);
     _received_kill_result = true;
 }
 
-
-void on_discover(uint64_t uuid)
+void
+on_discover(uint64_t uuid)
 {
     std::cout << "Found system with UUID: " << uuid << std::endl;
     _uuid = uuid;

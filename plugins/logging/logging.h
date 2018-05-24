@@ -14,9 +14,8 @@ class System;
  *
  * **This feature is not yet implemented**.
  */
-class Logging : public PluginBase
-{
-public:
+class Logging : public PluginBase {
+    public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -38,7 +37,8 @@ public:
     /**
      * @brief Results for logging requests.
      */
-    enum class Result {
+    enum class Result
+    {
         SUCCESS = 0, /**< @brief %Request succeeded. */
         NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
@@ -103,13 +103,13 @@ public:
      */
     Logging(const Logging &) = delete;
     /**
-    * @brief Equality operator (object is not copyable).
-    */
+     * @brief Equality operator (object is not copyable).
+     */
     const Logging &operator=(const Logging &) = delete;
 
-private:
+    private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<LoggingImpl> _impl;
 };
 
-} // namespace dronecore
+}// namespace dronecore

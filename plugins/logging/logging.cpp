@@ -3,37 +3,36 @@
 
 namespace dronecore {
 
-Logging::Logging(System &system) :
-    PluginBase(),
-    _impl { new LoggingImpl(system) }
-{
-}
+Logging::Logging(System &system) : PluginBase(), _impl{new LoggingImpl(system)} {}
 
-Logging::~Logging()
-{
-}
+Logging::~Logging() {}
 
-Logging::Result Logging::start_logging() const
+Logging::Result
+Logging::start_logging() const
 {
     return _impl->start_logging();
 }
 
-Logging::Result Logging::stop_logging() const
+Logging::Result
+Logging::stop_logging() const
 {
     return _impl->stop_logging();
 }
 
-void Logging::start_logging_async(result_callback_t callback)
+void
+Logging::start_logging_async(result_callback_t callback)
 {
     _impl->start_logging_async(callback);
 }
 
-void Logging::stop_logging_async(result_callback_t callback)
+void
+Logging::stop_logging_async(result_callback_t callback)
 {
     _impl->stop_logging_async(callback);
 }
 
-const char *Logging::result_str(Result result)
+const char *
+Logging::result_str(Result result)
 {
     switch (result) {
         case Result::SUCCESS:
@@ -54,5 +53,4 @@ const char *Logging::result_str(Result result)
     }
 }
 
-
-} // namespace dronecore
+}// namespace dronecore

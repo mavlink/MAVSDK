@@ -14,9 +14,8 @@ class System;
  *
  * Synchronous and asynchronous variants of the gimbal methods are supplied.
  */
-class Gimbal : public PluginBase
-{
-public:
+class Gimbal : public PluginBase {
+    public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -38,7 +37,8 @@ public:
     /**
      * @brief Possible results returned for gimbal commands.
      */
-    enum class Result {
+    enum class Result
+    {
         SUCCESS = 0, /**< @brief Success. The gimbal command was accepted. */
         ERROR, /**< @brief Error. An error occured sending the command. */
         TIMEOUT, /**< @brief Timeout. A timeout occured sending the command. */
@@ -84,7 +84,6 @@ public:
      */
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, result_callback_t callback);
 
-
     /**
      * @brief Set gimbal region of interest (ROI).
      *
@@ -115,7 +114,9 @@ public:
      * @param altitude_m Altitude in meters (ASML).
      * @param callback Function to call with result of request.
      */
-    void set_roi_location_async(double latitude_deg, double longitude_deg, float altitude_m,
+    void set_roi_location_async(double latitude_deg,
+                                double longitude_deg,
+                                float altitude_m,
                                 result_callback_t callback);
 
     /**
@@ -128,9 +129,9 @@ public:
      */
     const Gimbal &operator=(const Gimbal &) = delete;
 
-private:
+    private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<GimbalImpl> _impl;
 };
 
-} // namespace dronecore
+}// namespace dronecore

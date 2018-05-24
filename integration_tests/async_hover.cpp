@@ -6,7 +6,7 @@
 #include "plugins/telemetry/telemetry.h"
 
 using namespace dronecore;
-using namespace std::placeholders; // for `_1`
+using namespace std::placeholders;// for `_1`
 
 void receive_result(ActionResult result);
 void receive_health_all_ok(bool all_ok);
@@ -58,14 +58,15 @@ TEST_F(SitlTest, ActionAsyncHover)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-
-void receive_result(ActionResult result)
+void
+receive_result(ActionResult result)
 {
     LogDebug() << "got result: " << unsigned(result);
     EXPECT_EQ(result, ActionResult::SUCCESS);
 }
 
-void receive_health_all_ok(bool all_ok)
+void
+receive_health_all_ok(bool all_ok)
 {
     if (all_ok && !_all_ok) {
         LogDebug() << "we're ready, let's go";
@@ -73,7 +74,8 @@ void receive_health_all_ok(bool all_ok)
     }
 }
 
-void receive_in_air(bool in_air)
+void
+receive_in_air(bool in_air)
 {
     _in_air = in_air;
 }

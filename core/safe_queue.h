@@ -12,10 +12,8 @@ namespace dronecore {
  * http://stackoverflow.com/questions/15278343/c11-thread-safe-queue#answer-16075550
  */
 
-template <class T>
-class SafeQueue
-{
-public:
+template<class T> class SafeQueue {
+    public:
     SafeQueue() {}
     ~SafeQueue() {}
 
@@ -50,11 +48,11 @@ public:
         _condition_var.notify_all();
     }
 
-private:
-    std::queue<T> _queue {};
-    mutable std::mutex _mutex {};
-    std::condition_variable _condition_var {};
-    bool _should_exit {false};
+    private:
+    std::queue<T> _queue{};
+    mutable std::mutex _mutex{};
+    std::condition_variable _condition_var{};
+    bool _should_exit{false};
 };
 
-} // namespace dronecore
+}// namespace dronecore

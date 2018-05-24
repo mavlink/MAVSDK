@@ -15,7 +15,8 @@ bool _timeouted_system = false;
 void on_discover(uint64_t uuid);
 void on_timeout(uint64_t uuid);
 
-int main(int argc, const char *argv[])
+int
+main(int argc, const char *argv[])
 {
     UNUSED(argc);
     UNUSED(argv);
@@ -41,15 +42,16 @@ int main(int argc, const char *argv[])
     return 0;
 }
 
-void on_discover(uint64_t uuid)
+void
+on_discover(uint64_t uuid)
 {
     std::cout << "Found system with UUID: " << uuid << std::endl;
     _discovered_system = true;
 }
 
-void on_timeout(uint64_t uuid)
+void
+on_timeout(uint64_t uuid)
 {
     std::cout << "Lost system with UUID: " << uuid << std::endl;
     _timeouted_system = true;
 }
-

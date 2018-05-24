@@ -28,14 +28,12 @@
 #define M_PI_F float(M_PI)
 #endif
 
-
 namespace dronecore {
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
 
-class Time
-{
-public:
+class Time {
+    public:
     Time();
     virtual ~Time();
 
@@ -53,9 +51,8 @@ public:
     virtual void sleep_for(std::chrono::nanoseconds ns);
 };
 
-class FakeTime : public Time
-{
-public:
+class FakeTime : public Time {
+    public:
     FakeTime();
 
     virtual ~FakeTime();
@@ -67,8 +64,8 @@ public:
     virtual void sleep_for(std::chrono::microseconds us) override;
     virtual void sleep_for(std::chrono::nanoseconds ns) override;
 
-private:
-    std::chrono::time_point<std::chrono::steady_clock, std::chrono::nanoseconds> _current {};
+    private:
+    std::chrono::time_point<std::chrono::steady_clock, std::chrono::nanoseconds> _current{};
     void add_overhead();
 };
 
@@ -81,4 +78,4 @@ float to_deg_from_rad(float rad);
 bool are_equal(float one, float two);
 bool are_equal(double one, double two);
 
-} // namespace dronecore
+}// namespace dronecore

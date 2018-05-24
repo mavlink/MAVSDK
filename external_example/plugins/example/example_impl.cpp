@@ -5,8 +5,7 @@
 
 namespace dronecore {
 
-ExampleImpl::ExampleImpl(System &system) :
-    PluginImplBase(system)
+ExampleImpl::ExampleImpl(System &system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -16,34 +15,41 @@ ExampleImpl::~ExampleImpl()
     _parent->register_plugin(this);
 }
 
-void ExampleImpl::init()
+void
+ExampleImpl::init()
 {
-    using namespace std::placeholders; // for `_1`
+    using namespace std::placeholders;// for `_1`
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&ExampleImpl::process_heartbeat, this, _1), this);
+        MAVLINK_MSG_ID_HEARTBEAT, std::bind(&ExampleImpl::process_heartbeat, this, _1), this);
 }
 
-void ExampleImpl::deinit()
+void
+ExampleImpl::deinit()
 {
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void ExampleImpl::enable() {}
+void
+ExampleImpl::enable()
+{}
 
-void ExampleImpl::disable() {}
+void
+ExampleImpl::disable()
+{}
 
-void ExampleImpl::say_hello() const
+void
+ExampleImpl::say_hello() const
 {
     LogInfo() << "Hello world, I'm a new plugin.";
 }
 
-void ExampleImpl::process_heartbeat(const mavlink_message_t &message)
+void
+ExampleImpl::process_heartbeat(const mavlink_message_t &message)
 {
     UNUSED(message);
 
     LogDebug() << "I received a heartbeat";
 }
 
-} // namespace dronecore
+}// namespace dronecore

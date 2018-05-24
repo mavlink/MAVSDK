@@ -44,7 +44,7 @@ TEST_F(SitlTest, MultiComponentDiscovery)
 
         auto has_autopilot = system.has_autopilot();
         auto is_standalone = system.is_standalone();
-        auto has_camera = system.has_camera(); // Checks whether the system has any camera
+        auto has_camera = system.has_camera();// Checks whether the system has any camera
         auto has_gimbal = system.has_gimbal();
 
         if (has_autopilot && has_camera && !has_gimbal) {

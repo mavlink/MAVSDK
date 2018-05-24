@@ -4,7 +4,7 @@
 #include "dronecore.h"
 
 using namespace dronecore;
-using namespace std::placeholders; // for _1
+using namespace std::placeholders;// for _1
 
 static bool _discovered_system = false;
 static bool _timeouted_system = false;
@@ -39,7 +39,8 @@ TEST_F(SitlTest, AsyncConnect)
     }
 }
 
-void on_discover(uint64_t uuid)
+void
+on_discover(uint64_t uuid)
 {
     std::cout << "Found system with UUID: " << uuid << std::endl;
     _discovered_system = true;
@@ -48,7 +49,8 @@ void on_discover(uint64_t uuid)
     EXPECT_NE(_uuid, 0);
 }
 
-void on_timeout(uint64_t uuid)
+void
+on_timeout(uint64_t uuid)
 {
     std::cout << "Lost system with UUID: " << uuid << std::endl;
     _timeouted_system = true;

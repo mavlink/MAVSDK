@@ -5,9 +5,8 @@
 
 namespace dronecore {
 
-class MissionItemImpl
-{
-public:
+class MissionItemImpl {
+    public:
     MissionItemImpl();
     ~MissionItemImpl();
 
@@ -21,7 +20,7 @@ public:
     void set_camera_photo_interval(double interval_s);
 
     double get_latitude_deg() const { return _latitude_deg; }
-    double get_longitude_deg() const {return _longitude_deg; }
+    double get_longitude_deg() const { return _longitude_deg; }
     float get_relative_altitude_m() const { return _relative_altitude_m; }
     float get_speed_m_s() const { return _speed_m_s; }
     bool get_fly_through() const { return _fly_through; };
@@ -43,7 +42,7 @@ public:
     float get_mavlink_z() const;
     bool is_position_finite() const;
 
-private:
+    private:
     double _latitude_deg = double(NAN);
     double _longitude_deg = double(NAN);
     float _relative_altitude_m = NAN;
@@ -52,8 +51,8 @@ private:
     float _gimbal_pitch_deg = NAN;
     float _gimbal_yaw_deg = NAN;
     float _loiter_time_s = NAN;
-    MissionItem::CameraAction _camera_action {MissionItem::CameraAction::NONE};
+    MissionItem::CameraAction _camera_action{MissionItem::CameraAction::NONE};
     double _camera_photo_interval_s = 1.0;
 };
 
-} // namespace dronecore
+}// namespace dronecore

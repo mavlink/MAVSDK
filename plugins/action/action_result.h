@@ -11,17 +11,20 @@ namespace dronecore {
  * @note DroneCore does not throw exceptions. Instead a result of this type will be
  * returned when you execute actions.
  */
-enum class ActionResult {
+enum class ActionResult
+{
     UNKNOWN, /**< @brief Unspecified error. */
     SUCCESS, /**< @brief Success. The action command was accepted by the vehicle. */
     NO_SYSTEM, /**< @brief No system is connected error. */
     CONNECTION_ERROR, /**< @brief %Connection error. */
     BUSY, /**< @brief Vehicle busy error. */
     COMMAND_DENIED, /**< @brief Command refused by vehicle. */
-    COMMAND_DENIED_LANDED_STATE_UNKNOWN, /**< @brief Command refused because landed state is unknown. */
+    COMMAND_DENIED_LANDED_STATE_UNKNOWN, /**< @brief Command refused because landed state is
+                                            unknown. */
     COMMAND_DENIED_NOT_LANDED, /**< @brief Command refused because vehicle not landed. */
     TIMEOUT, /**< @brief Timeout waiting for command acknowledgement from vehicle. */
-    VTOL_TRANSITION_SUPPORT_UNKNOWN, /**< @brief hybrid/VTOL transition refused because VTOL support is unknown. */
+    VTOL_TRANSITION_SUPPORT_UNKNOWN, /**< @brief hybrid/VTOL transition refused because VTOL support
+                                        is unknown. */
     NO_VTOL_TRANSITION_SUPPORT /**< @brief Vehicle does not support hybrid/VTOL transitions. */
 };
 
@@ -31,7 +34,8 @@ enum class ActionResult {
  * @param result The enum value for which a human readable string is required.
  * @return Human readable string for the ActionResult.
  */
-inline const char *action_result_str(ActionResult result)
+inline const char *
+action_result_str(ActionResult result)
 {
     switch (result) {
         case ActionResult::SUCCESS:
@@ -60,4 +64,4 @@ inline const char *action_result_str(ActionResult result)
     }
 }
 
-} // namespace dronecore
+}// namespace dronecore

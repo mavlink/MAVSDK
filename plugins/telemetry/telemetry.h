@@ -13,9 +13,8 @@ class System;
  * @brief This class allows users to get vehicle telemetry and state information
  * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
  */
-class Telemetry : public PluginBase
-{
-public:
+class Telemetry : public PluginBase {
+    public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -100,7 +99,8 @@ public:
      */
     struct Battery {
         float voltage_v; /**< @brief Voltage in volts. */
-        float remaining_percent; /**< @brief Estimated battery percentage remaining (range: 0.0 to 1.0). */
+        float remaining_percent; /**< @brief Estimated battery percentage remaining (range: 0.0
+                                    to 1.0). */
     };
 
     /**
@@ -109,7 +109,8 @@ public:
      * For more information about flight modes, check out
      * https://docs.px4.io/en/config/flight_mode.html.
      */
-    enum class FlightMode {
+    enum class FlightMode
+    {
         READY, /**< @brief Armed and ready to take off. */
         TAKEOFF, /**< @brief Taking off. */
         HOLD, /**< @brief Hold mode (hovering in place (or circling for fixed-wing vehicles). */
@@ -134,11 +135,12 @@ public:
         bool accelerometer_calibration_ok; /**< @brief true if the accelerometer is calibrated. */
         bool magnetometer_calibration_ok; /**< @brief true if the magnetometer is calibrated. */
         bool level_calibration_ok; /**< @brief true if the vehicle has a valid level calibration. */
-        bool local_position_ok; /**< @brief true if the local position estimate is good enough to fly in
-                                     a position control mode. */
-        bool global_position_ok; /**< @brief true if the global position estimate is good enough to fly
-                                      in a position controlled mode. */
-        bool home_position_ok; /**< @brief true if the home position has been initialized properly. */
+        bool local_position_ok; /**< @brief true if the local position estimate is good enough to
+                                   fly in a position control mode. */
+        bool global_position_ok; /**< @brief true if the global position estimate is good enough to
+                                    fly in a position controlled mode. */
+        bool home_position_ok; /**< @brief true if the home position has been initialized properly.
+                                */
     };
 
     /**
@@ -147,13 +149,15 @@ public:
     struct RCStatus {
         bool available_once; /**< @brief true if an RC signal has been available once. */
         bool available; /**< @brief true if the RC signal is available now. */
-        float signal_strength_percent; /**< @brief Signal strength as a percentage (range: 0 to 100). */
+        float signal_strength_percent; /**< @brief Signal strength as a percentage (range: 0 to
+                                          100). */
     };
 
     /**
      * @brief Results enum for telemetry requests.
      */
-    enum class Result {
+    enum class Result
+    {
         SUCCESS = 0, /**< @brief %Request succeeded. */
         NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
@@ -632,7 +636,7 @@ public:
      */
     const Telemetry &operator=(const Telemetry &) = delete;
 
-private:
+    private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<TelemetryImpl> _impl;
 };
@@ -661,4 +665,4 @@ std::ostream &operator<<(std::ostream &str, Telemetry::GroundSpeedNED const &gro
 bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs);
 std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status);
 
-} // namespace dronecore
+}// namespace dronecore

@@ -3,34 +3,32 @@
 
 namespace dronecore {
 
-Info::Info(System &system) :
-    PluginBase(),
-    _impl { new InfoImpl(system) }
-{
-}
+Info::Info(System &system) : PluginBase(), _impl{new InfoImpl(system)} {}
 
-Info::~Info()
-{
-}
+Info::~Info() {}
 
-uint64_t Info::uuid() const
+uint64_t
+Info::uuid() const
 {
     return _impl->get_uuid();
 }
 
-bool Info::is_complete() const
+bool
+Info::is_complete() const
 {
     return _impl->is_complete();
 }
 
-Info::Version Info::get_version() const
+Info::Version
+Info::get_version() const
 {
     return _impl->get_version();
 }
 
-Info::Product Info::get_product() const
+Info::Product
+Info::get_product() const
 {
     return _impl->get_product();
 }
 
-} // namespace dronecore
+}// namespace dronecore

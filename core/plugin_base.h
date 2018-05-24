@@ -2,9 +2,8 @@
 
 namespace dronecore {
 
-class PluginBase
-{
-public:
+class PluginBase {
+    public:
     PluginBase();
     virtual ~PluginBase() = default;
 
@@ -13,4 +12,4 @@ public:
     const PluginBase &operator=(const PluginBase &) = delete;
 };
 
-} // namespace dronecore
+}// namespace dronecore

@@ -13,12 +13,12 @@ class PluginImplBase;
  * @brief This class represents a system, made up of one or more components
  * (e.g. autopilot, cameras, servos, gimbals, etc).
  *
- * System objects are used to interact with UAVs (including their components) and standalone cameras.
- * They are not created directly by application code, but are returned by the DroneCore class.
+ * System objects are used to interact with UAVs (including their components) and standalone
+ * cameras. They are not created directly by application code, but are returned by the DroneCore
+ * class.
  */
-class System
-{
-public:
+class System {
+    public:
     /**
      * @brief Constructor.
      *
@@ -62,7 +62,6 @@ public:
      */
     bool has_gimbal() const;
 
-
     // Non-copyable
     /**
      * @brief Copy constructor (object is not copyable).
@@ -74,8 +73,7 @@ public:
      */
     const System &operator=(const System &) = delete;
 
-private:
-
+    private:
     void add_new_component(uint8_t component_id);
     void process_mavlink_message(const mavlink_message_t &message);
     void set_system_id(uint8_t system_id);
@@ -89,12 +87,11 @@ private:
      * For now,
      * - DroneCoreImpl wants to access private methods of System.
      * - PluginImplBase requests System class to get instance of MAVLinkSystem class.
-    */
+     */
     friend DroneCoreImpl;
     friend PluginImplBase;
 
     std::shared_ptr<MAVLinkSystem> _mavlink_system;
 };
 
-
-} // namespace dronecore
+}// namespace dronecore

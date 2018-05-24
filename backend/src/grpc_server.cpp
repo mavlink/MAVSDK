@@ -8,7 +8,8 @@
 namespace dronecore {
 namespace backend {
 
-void GRPCServer::run()
+void
+GRPCServer::run()
 {
     grpc::ServerBuilder builder;
     setup_port(builder);
@@ -23,7 +24,8 @@ void GRPCServer::run()
     LogInfo() << "Server started";
 }
 
-void GRPCServer::wait()
+void
+GRPCServer::wait()
 {
     if (_server != nullptr) {
         _server->Wait();
@@ -32,12 +34,13 @@ void GRPCServer::wait()
     }
 }
 
-void GRPCServer::setup_port(grpc::ServerBuilder &builder)
+void
+GRPCServer::setup_port(grpc::ServerBuilder &builder)
 {
     std::string server_address("0.0.0.0:50051");
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
     LogInfo() << "Server set to listen on " << server_address;
 }
 
-} // namespace backend
-} // namespace dronecore
+}// namespace backend
+}// namespace dronecore

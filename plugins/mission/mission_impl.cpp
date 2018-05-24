@@ -2,17 +2,15 @@
 #include "mission_item_impl.h"
 #include "system.h"
 #include "global_include.h"
-#include <fstream> // for `std::ifstream`
-#include <sstream> // for `std::stringstream`
+#include <fstream>// for `std::ifstream`
+#include <sstream>// for `std::stringstream`
 #include <cmath>
 
 namespace dronecore {
 
-using namespace std::placeholders; // for `_1`
+using namespace std::placeholders;// for `_1`
 
-
-MissionImpl::MissionImpl(System &system) :
-    PluginImplBase(system)
+MissionImpl::MissionImpl(System &system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -22,50 +20,61 @@ MissionImpl::~MissionImpl()
     _parent->unregister_plugin(this);
 }
 
-void MissionImpl::init()
+void
+MissionImpl::init()
 {
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_REQUEST,
-        std::bind(&MissionImpl::process_mission_request, this, _1), this);
+        std::bind(&MissionImpl::process_mission_request, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_REQUEST_INT,
-        std::bind(&MissionImpl::process_mission_request_int, this, _1), this);
+        std::bind(&MissionImpl::process_mission_request_int, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_MISSION_ACK,
-        std::bind(&MissionImpl::process_mission_ack, this, _1), this);
+        MAVLINK_MSG_ID_MISSION_ACK, std::bind(&MissionImpl::process_mission_ack, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_CURRENT,
-        std::bind(&MissionImpl::process_mission_current, this, _1), this);
+        std::bind(&MissionImpl::process_mission_current, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
-        std::bind(&MissionImpl::process_mission_item_reached, this, _1), this);
+        std::bind(&MissionImpl::process_mission_item_reached, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_COUNT,
-        std::bind(&MissionImpl::process_mission_count, this, _1), this);
+        std::bind(&MissionImpl::process_mission_count, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MISSION_ITEM_INT,
-        std::bind(&MissionImpl::process_mission_item_int, this, _1), this);
+        std::bind(&MissionImpl::process_mission_item_int, this, _1),
+        this);
 }
 
-void MissionImpl::enable() {}
+void
+MissionImpl::enable()
+{}
 
-void MissionImpl::disable()
+void
+MissionImpl::disable()
 {
     _parent->unregister_timeout_handler(_timeout_cookie);
 }
 
-void MissionImpl::deinit()
+void
+MissionImpl::deinit()
 {
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void MissionImpl::process_mission_request(const mavlink_message_t &unused)
+void
+MissionImpl::process_mission_request(const mavlink_message_t &unused)
 {
     // We only support int, so we nack this and thus tell the autopilot to use int.
     UNUSED(unused);
@@ -85,14 +94,14 @@ void MissionImpl::process_mission_request(const mavlink_message_t &unused)
     _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
-void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
+void
+MissionImpl::process_mission_request_int(const mavlink_message_t &message)
 {
     mavlink_mission_request_int_t mission_request_int;
     mavlink_msg_mission_request_int_decode(&message, &mission_request_int);
 
-    if (mission_request_int.target_system != GCSClient::system_id &&
-        mission_request_int.target_component != GCSClient::component_id) {
-
+    if (mission_request_int.target_system != GCSClient::system_id
+        && mission_request_int.target_component != GCSClient::component_id) {
         LogWarn() << "Ignore mission request int that is not for us";
         return;
     }
@@ -116,7 +125,8 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
     _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
-void MissionImpl::process_mission_ack(const mavlink_message_t &message)
+void
+MissionImpl::process_mission_ack(const mavlink_message_t &message)
 {
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
@@ -129,9 +139,8 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
 
-    if (mission_ack.target_system != GCSClient::system_id &&
-        mission_ack.target_component != GCSClient::component_id) {
-
+    if (mission_ack.target_system != GCSClient::system_id
+        && mission_ack.target_component != GCSClient::component_id) {
         LogWarn() << "Ignore mission ack that is not for us";
         return;
     }
@@ -171,7 +180,8 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     }
 }
 
-void MissionImpl::process_mission_current(const mavlink_message_t &message)
+void
+MissionImpl::process_mission_current(const mavlink_message_t &message)
 {
     mavlink_mission_current_t mission_current;
     mavlink_msg_mission_current_decode(&message, &mission_current);
@@ -216,7 +226,8 @@ void MissionImpl::process_mission_current(const mavlink_message_t &message)
     }
 }
 
-void MissionImpl::process_mission_item_reached(const mavlink_message_t &message)
+void
+MissionImpl::process_mission_item_reached(const mavlink_message_t &message)
 {
     mavlink_mission_item_reached_t mission_item_reached;
     mavlink_msg_mission_item_reached_decode(&message, &mission_item_reached);
@@ -232,7 +243,8 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t &message)
     }
 }
 
-void MissionImpl::process_mission_count(const mavlink_message_t &message)
+void
+MissionImpl::process_mission_count(const mavlink_message_t &message)
 {
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
@@ -253,12 +265,13 @@ void MissionImpl::process_mission_count(const mavlink_message_t &message)
     // We are now requesting mission items and use a lower timeout for this.
     _parent->unregister_timeout_handler(_timeout_cookie);
 
-    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
-                                      RETRY_TIMEOUT_S, &_timeout_cookie);
+    _parent->register_timeout_handler(
+        std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
     download_next_mission_item();
 }
 
-void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
+void
+MissionImpl::process_mission_item_int(const mavlink_message_t &message)
 {
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
@@ -278,9 +291,8 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
             _mission_data.mavlink_mission_items_downloaded.push_back(mission_item_int_ptr);
             _mission_data.retries = 0;
 
-            if (_mission_data.next_mission_item_to_download + 1 ==
-                _mission_data.num_mission_items_to_download) {
-
+            if (_mission_data.next_mission_item_to_download + 1
+                == _mission_data.num_mission_items_to_download) {
                 // Wrap things up if we're finished.
                 _parent->unregister_timeout_handler(_timeout_cookie);
 
@@ -306,7 +318,8 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
 
         } else {
             LogDebug() << "Received mission item " << int(mission_item_int_ptr->seq)
-                       << " instead of " << _mission_data.next_mission_item_to_download << " (ignored)";
+                       << " instead of " << _mission_data.next_mission_item_to_download
+                       << " (ignored)";
 
             // Refresh because we at least still seem to be active.
             _parent->refresh_timeout_handler(_timeout_cookie);
@@ -318,9 +331,9 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
     }
 }
 
-void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<MissionItem>>
-                                       &mission_items,
-                                       const Mission::result_callback_t &callback)
+void
+MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
+                                  const Mission::result_callback_t &callback)
 {
     bool should_report_mission_result = false;
     {
@@ -361,8 +374,8 @@ void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<Mission
 
     // We use the longer process timeout here because essentially the autopilot needs to pull
     // the items up.
-    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
-                                      PROCESS_TIMEOUT_S, &_timeout_cookie);
+    _parent->register_timeout_handler(
+        std::bind(&MissionImpl::process_timeout, this), PROCESS_TIMEOUT_S, &_timeout_cookie);
 
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
@@ -374,8 +387,8 @@ void MissionImpl::upload_mission_async(const std::vector<std::shared_ptr<Mission
     }
 }
 
-void MissionImpl::download_mission_async(const Mission::mission_items_and_result_callback_t
-                                         &callback)
+void
+MissionImpl::download_mission_async(const Mission::mission_items_and_result_callback_t &callback)
 {
     bool should_report_mission_items_and_result = false;
     {
@@ -404,14 +417,13 @@ void MissionImpl::download_mission_async(const Mission::mission_items_and_result
     }
 
     // We retry the list request and mission item request, so we use the lower timeout.
-    _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
-                                      RETRY_TIMEOUT_S, &_timeout_cookie);
+    _parent->register_timeout_handler(
+        std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
 
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
         _activity.state = Activity::State::GET_MISSION;
     }
-
 
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
@@ -422,12 +434,13 @@ void MissionImpl::download_mission_async(const Mission::mission_items_and_result
     }
 }
 
-void MissionImpl::assemble_mavlink_messages()
+void
+MissionImpl::assemble_mavlink_messages()
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     _mission_data.mavlink_mission_item_messages.clear();
 
-    bool last_position_valid = false; // This flag is to protect us from using an invalid x/y.
+    bool last_position_valid = false;// This flag is to protect us from using an invalid x/y.
     MAV_FRAME last_frame;
     int32_t last_x;
     int32_t last_y;
@@ -435,7 +448,6 @@ void MissionImpl::assemble_mavlink_messages()
 
     unsigned item_i = 0;
     for (auto item : _mission_data.mission_items) {
-
         MissionItemImpl &mission_item_impl = (*(item)->_impl);
 
         if (mission_item_impl.is_position_finite()) {
@@ -462,20 +474,18 @@ void MissionImpl::assemble_mavlink_messages()
                                               mission_item_impl.get_mavlink_z(),
                                               MAV_MISSION_TYPE_MISSION);
 
-            last_position_valid = true; // because we checked is_position_finite
+            last_position_valid = true;// because we checked is_position_finite
             last_x = mission_item_impl.get_mavlink_x();
             last_y = mission_item_impl.get_mavlink_y();
             last_z = mission_item_impl.get_mavlink_z();
             last_frame = mission_item_impl.get_mavlink_frame();
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair <int, int>
-            {static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
             _mission_data.mavlink_mission_item_messages.push_back(message);
         }
 
         if (std::isfinite(mission_item_impl.get_speed_m_s())) {
-
             // The speed has changed, we need to add a speed command.
 
             // Current is the 0th waypoint
@@ -494,23 +504,22 @@ void MissionImpl::assemble_mavlink_messages()
                                               MAV_CMD_DO_CHANGE_SPEED,
                                               current,
                                               autocontinue,
-                                              1.0f, // ground speed
+                                              1.0f,// ground speed
                                               mission_item_impl.get_speed_m_s(),
-                                              -1.0f, // no throttle change
-                                              0.0f, // absolute
+                                              -1.0f,// no throttle change
+                                              0.0f,// absolute
                                               0,
                                               0,
                                               NAN,
                                               MAV_MISSION_TYPE_MISSION);
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair <int, int>
-            {static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
             _mission_data.mavlink_mission_item_messages.push_back(message_speed);
         }
 
-        if (std::isfinite(mission_item_impl.get_gimbal_yaw_deg()) ||
-            std::isfinite(mission_item_impl.get_gimbal_pitch_deg())) {
+        if (std::isfinite(mission_item_impl.get_gimbal_yaw_deg())
+            || std::isfinite(mission_item_impl.get_gimbal_pitch_deg())) {
             // The gimbal has changed, we need to add a gimbal command.
 
             // Current is the 0th waypoint
@@ -529,18 +538,17 @@ void MissionImpl::assemble_mavlink_messages()
                                               MAV_CMD_DO_MOUNT_CONTROL,
                                               current,
                                               autocontinue,
-                                              mission_item_impl.get_gimbal_pitch_deg(), // pitch
-                                              0.0f, // roll (yes it is a weird order)
-                                              mission_item_impl.get_gimbal_yaw_deg(), // yaw
+                                              mission_item_impl.get_gimbal_pitch_deg(),// pitch
+                                              0.0f,// roll (yes it is a weird order)
+                                              mission_item_impl.get_gimbal_yaw_deg(),// yaw
                                               NAN,
                                               0,
                                               0,
                                               MAV_MOUNT_MODE_MAVLINK_TARGETING,
                                               MAV_MISSION_TYPE_MISSION);
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair <int, int>
-            {static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
             _mission_data.mavlink_mission_item_messages.push_back(message_gimbal);
         }
 
@@ -554,35 +562,37 @@ void MissionImpl::assemble_mavlink_messages()
                 LogErr() << "Can't set camera action delay without previous position set.";
 
             } else {
-
                 // Current is the 0th waypoint
-                uint8_t current = ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+                uint8_t current =
+                    ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
                 uint8_t autocontinue = 1;
 
                 std::shared_ptr<mavlink_message_t> message_delay(new mavlink_message_t());
-                mavlink_msg_mission_item_int_pack(GCSClient::system_id,
-                                                  GCSClient::component_id,
-                                                  message_delay.get(),
-                                                  _parent->get_system_id(),
-                                                  _parent->get_autopilot_id(),
-                                                  _mission_data.mavlink_mission_item_messages.size(),
-                                                  last_frame,
-                                                  MAV_CMD_NAV_LOITER_TIME,
-                                                  current,
-                                                  autocontinue,
-                                                  mission_item_impl.get_loiter_time_s(), // loiter time in seconds
-                                                  NAN, // empty
-                                                  0.0f, // radius around waypoint in meters ?
-                                                  0.0f, // loiter at center of waypoint
-                                                  last_x,
-                                                  last_y,
-                                                  last_z,
-                                                  MAV_MISSION_TYPE_MISSION);
+                mavlink_msg_mission_item_int_pack(
+                    GCSClient::system_id,
+                    GCSClient::component_id,
+                    message_delay.get(),
+                    _parent->get_system_id(),
+                    _parent->get_autopilot_id(),
+                    _mission_data.mavlink_mission_item_messages.size(),
+                    last_frame,
+                    MAV_CMD_NAV_LOITER_TIME,
+                    current,
+                    autocontinue,
+                    mission_item_impl.get_loiter_time_s(),// loiter time in seconds
+                    NAN,// empty
+                    0.0f,// radius around waypoint in meters ?
+                    0.0f,// loiter at center of waypoint
+                    last_x,
+                    last_y,
+                    last_z,
+                    MAV_MISSION_TYPE_MISSION);
 
                 _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                    std::pair <int, int>
-                {static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+                    std::pair<int, int>{
+                        static_cast<int>(_mission_data.mavlink_mission_item_messages.size()),
+                        item_i});
                 _mission_data.mavlink_mission_item_messages.push_back(message_delay);
             }
         }
@@ -602,27 +612,27 @@ void MissionImpl::assemble_mavlink_messages()
             switch (mission_item_impl.get_camera_action()) {
                 case MissionItem::CameraAction::TAKE_PHOTO:
                     command = MAV_CMD_IMAGE_START_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
-                    param2 = 0.0f; // no duration, take only one picture
-                    param3 = 1.0f; // only take one picture
+                    param1 = 0.0f;// all camera IDs
+                    param2 = 0.0f;// no duration, take only one picture
+                    param3 = 1.0f;// only take one picture
                     break;
                 case MissionItem::CameraAction::START_PHOTO_INTERVAL:
                     command = MAV_CMD_IMAGE_START_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
+                    param1 = 0.0f;// all camera IDs
                     param2 = mission_item_impl.get_camera_photo_interval_s();
-                    param3 = 0.0f; // unlimited photos
+                    param3 = 0.0f;// unlimited photos
                     break;
                 case MissionItem::CameraAction::STOP_PHOTO_INTERVAL:
                     command = MAV_CMD_IMAGE_STOP_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
+                    param1 = 0.0f;// all camera IDs
                     break;
                 case MissionItem::CameraAction::START_VIDEO:
                     command = MAV_CMD_VIDEO_START_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
+                    param1 = 0.0f;// all camera IDs
                     break;
                 case MissionItem::CameraAction::STOP_VIDEO:
                     command = MAV_CMD_VIDEO_STOP_CAPTURE;
-                    param1 = 0.0f; // all camera IDs
+                    param1 = 0.0f;// all camera IDs
                     break;
                 default:
                     LogErr() << "Error: camera action not supported";
@@ -649,9 +659,8 @@ void MissionImpl::assemble_mavlink_messages()
                                               NAN,
                                               MAV_MISSION_TYPE_MISSION);
 
-            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
-                std::pair <int, int>
-            {static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
             _mission_data.mavlink_mission_item_messages.push_back(message_camera);
         }
 
@@ -659,7 +668,8 @@ void MissionImpl::assemble_mavlink_messages()
     }
 }
 
-void MissionImpl::assemble_mission_items()
+void
+MissionImpl::assemble_mission_items()
 {
     Mission::Result result = Mission::Result::SUCCESS;
     Mission::mission_items_and_result_callback_t callback;
@@ -667,13 +677,13 @@ void MissionImpl::assemble_mission_items()
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _mission_data.mission_items.clear();
 
-
         auto new_mission_item = std::make_shared<MissionItem>();
         bool have_set_position = false;
 
         if (_mission_data.mavlink_mission_items_downloaded.size() > 0) {
             // The first mission item needs to be a waypoint with position.
-            if (_mission_data.mavlink_mission_items_downloaded.at(0)->command != MAV_CMD_NAV_WAYPOINT) {
+            if (_mission_data.mavlink_mission_items_downloaded.at(0)->command
+                != MAV_CMD_NAV_WAYPOINT) {
                 LogErr() << "First mission item is not a waypoint";
                 result = Mission::Result::UNSUPPORTED;
                 return;
@@ -688,7 +698,6 @@ void MissionImpl::assemble_mission_items()
 
         for (auto &it : _mission_data.mavlink_mission_items_downloaded) {
             LogDebug() << "Assembling Message: " << int(it->seq);
-
 
             if (it->command == MAV_CMD_NAV_WAYPOINT) {
                 if (it->frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
@@ -722,7 +731,8 @@ void MissionImpl::assemble_mission_items()
 
             } else if (it->command == MAV_CMD_IMAGE_START_CAPTURE) {
                 if (it->param2 > 0 && int(it->param3) == 0) {
-                    new_mission_item->set_camera_action(MissionItem::CameraAction::START_PHOTO_INTERVAL);
+                    new_mission_item->set_camera_action(
+                        MissionItem::CameraAction::START_PHOTO_INTERVAL);
                     new_mission_item->set_camera_photo_interval(double(it->param2));
                 } else if (int(it->param2) == 0 && int(it->param3) == 1) {
                     new_mission_item->set_camera_action(MissionItem::CameraAction::TAKE_PHOTO);
@@ -774,7 +784,8 @@ void MissionImpl::assemble_mission_items()
     }
 }
 
-void MissionImpl::download_next_mission_item()
+void
+MissionImpl::download_next_mission_item()
 {
     mavlink_message_t message;
     {
@@ -793,7 +804,8 @@ void MissionImpl::download_next_mission_item()
     _parent->send_message(message);
 }
 
-void MissionImpl::start_mission_async(const Mission::result_callback_t &callback)
+void
+MissionImpl::start_mission_async(const Mission::result_callback_t &callback)
 {
     bool should_report_mission_result = false;
     {
@@ -812,11 +824,11 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
 
     _parent->set_flight_mode_async(
         MAVLinkSystem::FlightMode::MISSION,
-        std::bind(&MissionImpl::receive_command_result, this,
-                  std::placeholders::_1, callback));
+        std::bind(&MissionImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
-void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback)
+void
+MissionImpl::pause_mission_async(const Mission::result_callback_t &callback)
 {
     bool should_report_mission_result = false;
     {
@@ -836,11 +848,11 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
 
     _parent->set_flight_mode_async(
         MAVLinkSystem::FlightMode::HOLD,
-        std::bind(&MissionImpl::receive_command_result, this,
-                  std::placeholders::_1, callback));
+        std::bind(&MissionImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
-void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t &callback)
+void
+MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t &callback)
 {
     bool should_report_mission_result = false;
     {
@@ -898,7 +910,8 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
     }
 }
 
-void MissionImpl::upload_mission_item(uint16_t seq)
+void
+MissionImpl::upload_mission_item(uint16_t seq)
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     LogDebug() << "Send mission item " << int(seq);
@@ -910,8 +923,9 @@ void MissionImpl::upload_mission_item(uint16_t seq)
     _parent->send_message(*_mission_data.mavlink_mission_item_messages.at(seq));
 }
 
-void MissionImpl::copy_mission_item_vector(const std::vector<std::shared_ptr<MissionItem>>
-                                           &mission_items)
+void
+MissionImpl::copy_mission_item_vector(
+    const std::vector<std::shared_ptr<MissionItem>> &mission_items)
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     _mission_data.mission_items.clear();
@@ -922,22 +936,22 @@ void MissionImpl::copy_mission_item_vector(const std::vector<std::shared_ptr<Mis
     }
 }
 
-void MissionImpl::report_mission_result(const Mission::result_callback_t &callback,
-                                        Mission::Result result)
+void
+MissionImpl::report_mission_result(const Mission::result_callback_t &callback,
+                                   Mission::Result result)
 {
     if (callback == nullptr) {
         LogWarn() << "Callback is not set";
         return;
     }
 
-    _parent->call_user_callback([callback, result]() {
-        callback(result);
-    });
+    _parent->call_user_callback([callback, result]() { callback(result); });
 }
 
-void MissionImpl::report_mission_items_and_result(const Mission::mission_items_and_result_callback_t
-                                                  &callback,
-                                                  Mission::Result result)
+void
+MissionImpl::report_mission_items_and_result(
+    const Mission::mission_items_and_result_callback_t &callback,
+    Mission::Result result)
 {
     if (callback == nullptr) {
         LogWarn() << "Callback is not set";
@@ -955,7 +969,8 @@ void MissionImpl::report_mission_items_and_result(const Mission::mission_items_a
     });
 }
 
-void MissionImpl::report_progress()
+void
+MissionImpl::report_progress()
 {
     if (_mission_data.progress_callback == nullptr) {
         return;
@@ -966,8 +981,9 @@ void MissionImpl::report_progress()
     });
 }
 
-void MissionImpl::receive_command_result(MAVLinkCommands::Result result,
-                                         const Mission::result_callback_t callback)
+void
+MissionImpl::receive_command_result(MAVLinkCommands::Result result,
+                                    const Mission::result_callback_t callback)
 {
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
@@ -986,7 +1002,8 @@ void MissionImpl::receive_command_result(MAVLinkCommands::Result result,
     }
 }
 
-bool MissionImpl::is_mission_finished() const
+bool
+MissionImpl::is_mission_finished() const
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
 
@@ -1009,7 +1026,8 @@ bool MissionImpl::is_mission_finished() const
             == _mission_data.mavlink_mission_item_messages.size());
 }
 
-int MissionImpl::current_mission_item() const
+int
+MissionImpl::current_mission_item() const
 {
     // If the mission is finished, let's return the total as the current
     // to signal this.
@@ -1022,7 +1040,7 @@ int MissionImpl::current_mission_item() const
     // We want to return the current mission item and not the underlying
     // mavlink mission item. Therefore we check the index map.
     auto entry = _mission_data.mavlink_mission_item_to_mission_item_indices.find(
-                     _mission_data.last_current_mavlink_mission_item);
+        _mission_data.last_current_mavlink_mission_item);
 
     if (entry != _mission_data.mavlink_mission_item_to_mission_item_indices.end()) {
         return entry->second;
@@ -1033,19 +1051,22 @@ int MissionImpl::current_mission_item() const
     }
 }
 
-int MissionImpl::total_mission_items() const
+int
+MissionImpl::total_mission_items() const
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     return _mission_data.mission_items.size();
 }
 
-void MissionImpl::subscribe_progress(Mission::progress_callback_t callback)
+void
+MissionImpl::subscribe_progress(Mission::progress_callback_t callback)
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     _mission_data.progress_callback = callback;
 }
 
-void MissionImpl::process_timeout()
+void
+MissionImpl::process_timeout()
 {
     bool should_retry = false;
     {
@@ -1083,11 +1104,10 @@ void MissionImpl::process_timeout()
 
             LogWarn() << "Retrying requesting mission item...";
             // We are retrying, so we use the lower timeout.
-            _parent->register_timeout_handler(std::bind(&MissionImpl::process_timeout, this),
-                                              RETRY_TIMEOUT_S, &_timeout_cookie);
+            _parent->register_timeout_handler(
+                std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
             download_next_mission_item();
         }
-
     }
 }
 
@@ -1096,7 +1116,7 @@ MissionImpl::import_qgroundcontrol_mission(Mission::mission_items_t &mission_ite
                                            const std::string &qgc_plan_file)
 {
     std::ifstream file(qgc_plan_file);
-    if (!file) { // File open error
+    if (!file) {// File open error
         return Mission::Result::FAILED_TO_OPEN_QGC_PLAN;
     }
 
@@ -1106,8 +1126,8 @@ MissionImpl::import_qgroundcontrol_mission(Mission::mission_items_t &mission_ite
     file.close();
 
     std::string err;
-    const auto parsed_plan = Json::parse(ss.str(), err); // parse QGC plan
-    if (!err.empty()) { // Parse error
+    const auto parsed_plan = Json::parse(ss.str(), err);// parse QGC plan
+    if (!err.empty()) {// Parse error
         return Mission::Result::FAILED_TO_PARSE_QGC_PLAN;
     }
 
@@ -1120,7 +1140,8 @@ MissionImpl::import_qgroundcontrol_mission(Mission::mission_items_t &mission_ite
 
 // Build a mission item out of command, params and add them to the mission vector.
 Mission::Result
-MissionImpl::build_mission_items(MAV_CMD command, std::vector<double> params,
+MissionImpl::build_mission_items(MAV_CMD command,
+                                 std::vector<double> params,
                                  std::shared_ptr<MissionItem> &new_mission_item,
                                  Mission::mission_items_t &all_mission_items)
 {
@@ -1128,9 +1149,8 @@ MissionImpl::build_mission_items(MAV_CMD command, std::vector<double> params,
 
     // Choosen "Do-While(0)" loop for the convenience of using `break` statement.
     do {
-        if (command == MAV_CMD_NAV_WAYPOINT ||
-            command == MAV_CMD_NAV_TAKEOFF ||
-            command == MAV_CMD_NAV_LAND) {
+        if (command == MAV_CMD_NAV_WAYPOINT || command == MAV_CMD_NAV_TAKEOFF
+            || command == MAV_CMD_NAV_LAND) {
             if (new_mission_item->has_position_set()) {
                 all_mission_items.push_back(new_mission_item);
                 new_mission_item = std::make_shared<MissionItem>();
@@ -1155,10 +1175,11 @@ MissionImpl::build_mission_items(MAV_CMD command, std::vector<double> params,
             new_mission_item->set_loiter_time(loiter_time_s);
 
         } else if (command == MAV_CMD_IMAGE_START_CAPTURE) {
-            auto photo_interval = int(params[1]),  photo_count = int(params[2]);
+            auto photo_interval = int(params[1]), photo_count = int(params[2]);
 
             if (photo_interval > 0 && photo_count == 0) {
-                new_mission_item->set_camera_action(MissionItem::CameraAction::START_PHOTO_INTERVAL);
+                new_mission_item->set_camera_action(
+                    MissionItem::CameraAction::START_PHOTO_INTERVAL);
                 new_mission_item->set_camera_photo_interval(photo_interval);
             } else if (photo_interval == 0 && photo_count == 1) {
                 new_mission_item->set_camera_action(MissionItem::CameraAction::TAKE_PHOTO);
@@ -1178,7 +1199,11 @@ MissionImpl::build_mission_items(MAV_CMD command, std::vector<double> params,
             new_mission_item->set_camera_action(MissionItem::CameraAction::STOP_VIDEO);
 
         } else if (command == MAV_CMD_DO_CHANGE_SPEED) {
-            enum { AirSpeed = 0, GroundSpeed = 1 };
+            enum
+            {
+                AirSpeed = 0,
+                GroundSpeed = 1
+            };
             auto speed_type = int(params[0]);
             auto speed_m_s = float(params[1]);
             auto throttle = params[2];
@@ -1194,7 +1219,7 @@ MissionImpl::build_mission_items(MAV_CMD command, std::vector<double> params,
         } else {
             LogWarn() << "UNSUPPORTED mission item command (" << command << ")";
         }
-    } while (false); // Executed once per method invokation.
+    } while (false);// Executed once per method invokation.
 
     return result;
 }
@@ -1218,9 +1243,7 @@ MissionImpl::import_mission_items(Mission::mission_items_t &all_mission_items,
             params.push_back(p.number_value());
         }
 
-        result = build_mission_items(command, params,
-                                     new_mission_item,
-                                     all_mission_items);
+        result = build_mission_items(command, params, new_mission_item, all_mission_items);
         if (result != Mission::Result::SUCCESS) {
             break;
         }
@@ -1230,4 +1253,4 @@ MissionImpl::import_mission_items(Mission::mission_items_t &all_mission_items,
     return result;
 }
 
-} // namespace dronecore
+}// namespace dronecore

@@ -7,7 +7,8 @@
 
 namespace dronecore {
 
-void CliArg::reset()
+void
+CliArg::reset()
 {
     _protocol = Protocol::NONE;
     _path.clear();
@@ -15,7 +16,8 @@ void CliArg::reset()
     _port = 0;
 }
 
-bool CliArg::parse(const std::string &uri)
+bool
+CliArg::parse(const std::string &uri)
 {
     reset();
 
@@ -41,7 +43,8 @@ bool CliArg::parse(const std::string &uri)
     return true;
 }
 
-bool CliArg::find_protocol(std::string &rest)
+bool
+CliArg::find_protocol(std::string &rest)
 {
     const std::string udp = "udp";
     const std::string tcp = "tcp";
@@ -66,7 +69,8 @@ bool CliArg::find_protocol(std::string &rest)
     }
 }
 
-bool CliArg::find_path(std::string &rest)
+bool
+CliArg::find_path(std::string &rest)
 {
     if (rest.length() == 0) {
         if (_protocol == Protocol::UDP || _protocol == Protocol::TCP) {
@@ -115,7 +119,8 @@ bool CliArg::find_path(std::string &rest)
     return true;
 }
 
-bool CliArg::find_port(std::string &rest)
+bool
+CliArg::find_port(std::string &rest)
 {
     if (rest.length() == 0) {
         _port = 0;
@@ -131,7 +136,7 @@ bool CliArg::find_port(std::string &rest)
     _port = std::stoi(rest);
     if (_port < 0) {
         LogWarn() << "Port can't be negative.";
-        _port  = 0;
+        _port = 0;
         return false;
     } else if (_port > UINT16_MAX) {
         LogWarn() << "Port number to big.";
@@ -141,7 +146,8 @@ bool CliArg::find_port(std::string &rest)
     return true;
 }
 
-bool CliArg::find_baudrate(std::string &rest)
+bool
+CliArg::find_baudrate(std::string &rest)
 {
     if (rest.length() == 0) {
         _port = 0;
@@ -158,4 +164,4 @@ bool CliArg::find_baudrate(std::string &rest)
     return true;
 }
 
-} // namespace dronecore
+}// namespace dronecore

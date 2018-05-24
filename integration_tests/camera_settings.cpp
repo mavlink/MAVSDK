@@ -8,7 +8,7 @@
 #include "camera_test_helpers.h"
 
 using namespace dronecore;
-using namespace std::placeholders; // for `_1`
+using namespace std::placeholders;// for `_1`
 
 // To run specific tests for Yuneec cameras.
 const static bool is_e90 = false;
@@ -143,7 +143,6 @@ TEST(CameraTest, SetSettings)
         EXPECT_EQ(set_setting(camera, "CAM_COLORMODE", "5"), Camera::Result::SUCCESS);
         EXPECT_EQ(get_setting(camera, "CAM_COLORMODE", value_set), Camera::Result::SUCCESS);
         EXPECT_STREQ("5", value_set.c_str());
-
 
         // Let's check the manual exposure mode first.
         std::this_thread::sleep_for(std::chrono::seconds(2));

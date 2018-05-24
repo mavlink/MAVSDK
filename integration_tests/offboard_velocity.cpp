@@ -9,7 +9,6 @@
 
 using namespace dronecore;
 
-
 TEST_F(SitlTest, OffboardVelocityNED)
 {
     DroneCore dc;
@@ -56,7 +55,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
         for (unsigned i = 0; i < steps; ++i) {
             float vx = 5.0f * sinf(i * step_size);
-            //std::cout << "vx: " << vx << std::endl;
+            // std::cout << "vx: " << vx << std::endl;
             offboard->set_velocity_ned({vx, 0.0f, 0.0f, 90.0f});
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
@@ -105,7 +104,6 @@ TEST_F(SitlTest, OffboardVelocityNED)
     action_ret = action->land();
     EXPECT_EQ(action_ret, ActionResult::SUCCESS);
 }
-
 
 TEST_F(SitlTest, OffboardVelocityBody)
 {
