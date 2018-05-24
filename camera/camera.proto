@@ -18,6 +18,7 @@ service CameraService {
     rpc SetVideoStreamSettings(SetVideoStreamSettingsRequest) returns(SetVideoStreamSettingsResponse) {}
     rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) {}
     rpc SubscribeCaptureInfo(SubscribeCaptureInfoRequest) returns(stream CaptureInfoResponse) {}
+    rpc SubscribeCameraStatus(SubscribeCameraStatusRequest) returns(stream CameraStatusResponse) {}
     rpc GetPossibleSettings(GetPossibleSettingsRequest) returns(GetPossibleSettingsResponse) {}
     rpc SetOption(SetOptionRequest) returns(SetOptionResponse) {}
 }
@@ -86,9 +87,9 @@ message CaptureInfoResponse {
     CaptureInfo capture_info = 1;
 }
 
-message SubscribeStatusRequest {}
-message StatusResponse {
-    Status status = 1;
+message SubscribeCameraStatusRequest {}
+message CameraStatusResponse {
+    CameraStatus camera_status = 1;
 }
 
 message GetPossibleSettingsRequest {}
@@ -159,13 +160,13 @@ message VideoStreamSettings {
 }
 
 message VideoStreamInfo {
-    enum Status {
+    enum VideoStreamStatus {
         NOT_RUNNING = 0;
         IN_PROGRESS = 1;
     }
 
     VideoStreamSettings video_stream_settings = 1;
-    Status status = 2;
+    VideoStreamStatus video_stream_status = 2;
 }
 
 message Status {
