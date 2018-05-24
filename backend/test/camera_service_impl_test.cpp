@@ -91,6 +91,30 @@ TEST_F(CameraServiceImplTest, startPhotoIntervalReturnsWrongArgumentErrorIfReque
     EXPECT_EQ("WRONG_ARGUMENT", CameraResult::Result_Name(response.camera_result().result()));
 }
 
+TEST_F(CameraServiceImplTest, startPhotoIntervalDoesNotCrashWhenArgsAreNull)
+{
+    _camera_service.StartPhotoInterval(nullptr, nullptr, nullptr);
+}
+
+TEST_P(CameraServiceImplTest, stopPhotoIntervalResultIsTranslatedCorrectly)
+{
+    ON_CALL(_camera, stop_photo_interval())
+    .WillByDefault(Return(GetParam().second));
+    dronecore::rpc::camera::StopPhotoIntervalResponse response;
+
+    _camera_service.StopPhotoInterval(nullptr, nullptr, &response);
+
+    EXPECT_EQ(GetParam().first, CameraResult::Result_Name(response.camera_result().result()));
+}
+
+TEST_F(CameraServiceImplTest, stopsPhotoIntervalEvenWhenArgsAreNull)
+{
+    EXPECT_CALL(_camera, stop_photo_interval())
+    .Times(1);
+
+    _camera_service.StopPhotoInterval(nullptr, nullptr, nullptr);
+}
+
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,
                         CameraServiceImplTest,
                         ::testing::ValuesIn(generateInputPairs()));
