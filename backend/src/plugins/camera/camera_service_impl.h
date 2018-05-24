@@ -25,7 +25,7 @@ public:
     }
 
     template <typename ResponseType>
-    void fillResponseWithResult(ResponseType *response, dronecore::Camera::Result &camera_result) const
+    void fillResponseWithResult(ResponseType *response, dronecore::Camera::Result camera_result) const
     {
         auto rpc_result = static_cast<rpc::camera::CameraResult::Result>(camera_result);
 
@@ -34,6 +34,23 @@ public:
         rpc_camera_result->set_result_str(dronecore::Camera::result_str(camera_result));
 
         response->set_allocated_camera_result(rpc_camera_result);
+    }
+
+    grpc::Status StartPhotoInterval(grpc::ServerContext * /* context */,
+                                    const rpc::camera::StartPhotoIntervalRequest *request,
+                                    rpc::camera::StartPhotoIntervalResponse *response) override
+    {
+        if (request == nullptr && response != nullptr) {
+            fillResponseWithResult(response, dronecore::Camera::Result::WRONG_ARGUMENT);
+        } else {
+            auto camera_result = _camera.start_photo_interval(request->interval_s());
+
+            if (response != nullptr) {
+                fillResponseWithResult(response, camera_result);
+            }
+        }
+
+        return grpc::Status::OK;
     }
 
 private:
