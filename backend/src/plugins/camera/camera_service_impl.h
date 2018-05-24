@@ -83,6 +83,19 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status StopVideo(grpc::ServerContext * /* context */,
+                           const rpc::camera::StopVideoRequest * /* request */,
+                           rpc::camera::StopVideoResponse *response) override
+    {
+        auto camera_result = _camera.stop_video();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, camera_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
 private:
     Camera &_camera;
 };
