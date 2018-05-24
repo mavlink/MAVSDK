@@ -1,39 +1,34 @@
 #!/bin/bash
 
-# This script runs astyle and complains about lines that are too long
-# over all files ending in .h, .c, .cpp listed by git in the given
-# directory.
+# This script runs clang-format over all files ending in .h, .c, .cpp listed
+# by git in the given directory.
 
-# Check for the latest astyle version
-ASTYLE_VER_REQUIRED_1="Artistic Style Version 2.05.1"
-ASTYLE_VER_REQUIRED_2="Artistic Style Version 2.06"
-ASTYLE_VER_REQUIRED_3="Artistic Style Version 3.0"
-ASTYLE_VER_REQUIRED_4="Artistic Style Version 3.0.1"
-ASTYLE_VER_REQUIRED_5="Artistic Style Version 3.1"
+# Check for the clang-format version
+version_required_major="6"
 
-astyle_ver() {
-    echo "At least ${ASTYLE_VER_REQUIRED_1} is required"
-    echo "You can get the correct version here: https://sourceforge.net/projects/astyle/files/astyle/astyle%202.06/"
+clang_format_version() {
+    echo "At least ${version_required} is required"
 }
 
-# check if astyle is installed
-condition=$(which astyle 2>/dev/null | grep -v "not found" | wc -l)
+# check if clang-format is installed
+condition=$(which clang-format 2>/dev/null | grep -v "not found" | wc -l)
 if [ $condition -eq 0 ]; then
-    echo "astyle is not installed"
-    astyle_ver
+    echo "clang-format is not installed"
+    clang_format_version
     exit 1
 else
 
-    ASTYLE_VER=`astyle --version`
+    version=$(clang-format --version)
+    semver_regex="(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)"
+    if [[ $version =~ $semver_regex ]]; then
+        version_major=${BASH_REMATCH[1]}
+        if [ "$version_required_major" -gt "$version_major" ]; then
+            echo "Clang version $version_major too old (required >= $version_required_major)"
+            exit 1
+        fi
 
-    if [ "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_1" -a \
-         "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_2" -a \
-         "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_3" -a \
-         "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_4" -a \
-         "$ASTYLE_VER" != "$ASTYLE_VER_REQUIRED_5" ];
-    then
-        echo "Error: you're using ${ASTYLE_VER}"
-        echo "but should be using ${ASTYLE_VER_REQUIRED} instead"
+    else
+        echo "Could not determine clang-format version"
         exit 1
     fi
 fi
@@ -55,9 +50,7 @@ fi
 # Ignore files listed in style-ignore.txt
 style_ignore="style-ignore.txt"
 
-# Find the directory of this script because the file astylerc should be
-# next to it.
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Keep track of errors for the exit value
 error_found=false
@@ -80,43 +73,30 @@ while IFS= read file; do
     # We want to check if the file is in the list to ignore.
     # We do this in a brute force way by looping through every
     # line the ignore file and compare it against the filename.
-    if [[ -f $SCRIPT_DIR/$style_ignore ]]; then
+    if [[ -f $script_dir/$style_ignore ]]; then
         need_to_ignore=false
         while IFS= read ignore; do
             if [[ `echo $1/$file | grep "$ignore"` ]]; then
                 need_to_ignore=true
             fi
-        done < "$SCRIPT_DIR/$style_ignore"
+        done < "$script_dir/$style_ignore"
     fi
 
     if [ "$need_to_ignore" = true ]; then
-        # Don't do the astyle and file length checks,
-        # go to next file.
+        # Don't do the style  checks, go to next file.
         continue
     fi
 
-    # Run astyle with given astylerc
-    astyle_result=`astyle --options=$SCRIPT_DIR/astylerc $file | grep "Formatted"`
+    cp $file $file.orig
+    result=`clang-format -style=file -i $file`
 
-    if [[ $astyle_result ]]; then
-        echo "Formatted $file:"
-        $diff_cmd $file $file.orig
-        rm $file.orig
+    if ! cmp $file $file.orig >/dev/null 2>&1; then
+        echo "Changed $file:"
+        $diff_cmd $file.orig $file
         error_found=true
     fi
 
-    # TODO: this is disabled for now
-    ## Go line by line
-    #count=0
-    #while IFS= read -r line; do
-    #    # Check for lines too long
-    #    len=${#line}
-    #    if [ $len -gt 100 ]; then
-    #        echo "Line $count too long"
-    #        error_found=true
-    #    fi
-    #    (( count++ ))
-    #done < "$file"
+    rm $file.orig
 
 # We need to use this clunky way because otherwise
 # we lose the value of error_found.
