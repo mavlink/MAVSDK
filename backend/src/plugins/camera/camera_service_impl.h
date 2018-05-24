@@ -96,6 +96,19 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status StartVideoStreaming(grpc::ServerContext * /* context */,
+                                     const rpc::camera::StartVideoStreamingRequest * /* request */,
+                                     rpc::camera::StartVideoStreamingResponse *response) override
+    {
+        auto camera_result = _camera.start_video_streaming();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, camera_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
 private:
     Camera &_camera;
 };
