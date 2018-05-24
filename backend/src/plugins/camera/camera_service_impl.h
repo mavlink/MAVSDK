@@ -40,14 +40,31 @@ public:
                                     const rpc::camera::StartPhotoIntervalRequest *request,
                                     rpc::camera::StartPhotoIntervalResponse *response) override
     {
-        if (request == nullptr && response != nullptr) {
-            fillResponseWithResult(response, dronecore::Camera::Result::WRONG_ARGUMENT);
-        } else {
-            auto camera_result = _camera.start_photo_interval(request->interval_s());
-
+        if (request == nullptr) {
             if (response != nullptr) {
-                fillResponseWithResult(response, camera_result);
+                fillResponseWithResult(response, dronecore::Camera::Result::WRONG_ARGUMENT);
             }
+
+            return grpc::Status::OK;
+        }
+
+        auto camera_result = _camera.start_photo_interval(request->interval_s());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, camera_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status StopPhotoInterval(grpc::ServerContext * /* context */,
+                                   const rpc::camera::StopPhotoIntervalRequest * /* request */,
+                                   rpc::camera::StopPhotoIntervalResponse *response) override
+    {
+        auto camera_result = _camera.stop_photo_interval();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, camera_result);
         }
 
         return grpc::Status::OK;
