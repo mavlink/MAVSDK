@@ -115,6 +115,25 @@ TEST_F(CameraServiceImplTest, stopsPhotoIntervalEvenWhenArgsAreNull)
     _camera_service.StopPhotoInterval(nullptr, nullptr, nullptr);
 }
 
+TEST_P(CameraServiceImplTest, startVideoResultIsTranslatedCorrectly)
+{
+    ON_CALL(_camera, start_video())
+    .WillByDefault(Return(GetParam().second));
+    dronecore::rpc::camera::StartVideoResponse response;
+
+    _camera_service.StartVideo(nullptr, nullptr, &response);
+
+    EXPECT_EQ(GetParam().first, CameraResult::Result_Name(response.camera_result().result()));
+}
+
+TEST_F(CameraServiceImplTest, startsVideoEvenWhenArgsAreNull)
+{
+    EXPECT_CALL(_camera, start_video())
+    .Times(1);
+
+    _camera_service.StartVideo(nullptr, nullptr, nullptr);
+}
+
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,
                         CameraServiceImplTest,
                         ::testing::ValuesIn(generateInputPairs()));
