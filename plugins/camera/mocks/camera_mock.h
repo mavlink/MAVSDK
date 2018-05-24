@@ -13,6 +13,7 @@ public:
     MOCK_CONST_METHOD0(stop_photo_interval, Camera::Result());
     MOCK_CONST_METHOD0(start_video, Camera::Result());
     MOCK_CONST_METHOD0(stop_video, Camera::Result());
+    MOCK_CONST_METHOD0(start_video_streaming, Camera::Result());
 };
 
 } // namespace testing
