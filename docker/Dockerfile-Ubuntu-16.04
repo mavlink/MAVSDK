@@ -11,24 +11,23 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
     && apt-get -y --quiet --no-install-recommends install \
-        cmake \
-        build-essential \
-        colordiff \
-        git \
-        libcurl4-openssl-dev \
-        doxygen \
-        autoconf \
-        libtool \
-        wget \
-        ca-certificates \
         autoconf \
         automake \
-        python \
         autotools-dev \
+        build-essential \
+        ca-certificates \
+        colordiff \
+        cmake \
+        doxygen \
+        git \
+        libcurl4-openssl-dev \
         libltdl-dev \
-        python-pip \
         libtinyxml2-dev \
+        libtool \
+        python \
+        python-pip \
         ruby-dev \
+        wget \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
