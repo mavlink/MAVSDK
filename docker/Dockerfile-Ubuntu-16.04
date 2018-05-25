@@ -33,11 +33,6 @@ RUN apt-get update \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
-# We need the latest astyle version
-RUN wget http://archive.ubuntu.com/ubuntu/pool/universe/a/astyle/astyle_3.0.1-1ubuntu1_amd64.deb \
-    && dpkg -i astyle_3.0.1-1ubuntu1_amd64.deb \
-    && rm astyle_3.0.1-1ubuntu1_amd64.deb
-
 RUN gem install --no-ri --no-rdoc fpm;
 
 CMD ["/bin/bash"]
