@@ -9,24 +9,24 @@ FROM fedora:27
 MAINTAINER Julian Oes <julian@oes.ch>
 
 RUN dnf -y install \
-    gcc \
-    gcc-c++ \
-    cmake \
-    git \
-    colordiff \
-    tinyxml2-devel \
-    libcurl-devel \
-    rubygems \
-    ruby-devel \
-    redhat-rpm-config \
-    rpm-build \
     autoconf \
     automake \
-    libtool \
-    which \
     astyle \
+    colordiff \
+    cmake \
     doxygen \
+    gcc \
+    gcc-c++ \
+    git \
+    libcurl-devel \
+    libtool \
     python \
+    tinyxml2-devel \
+    redhat-rpm-config \
+    rpm-build \
+    ruby-devel \
+    rubygems \
+    which \
     && dnf clean all
 
 RUN gem install --no-ri --no-rdoc fpm;
