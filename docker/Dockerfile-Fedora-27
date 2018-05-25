@@ -11,7 +11,7 @@ MAINTAINER Julian Oes <julian@oes.ch>
 RUN dnf -y install \
     autoconf \
     automake \
-    astyle \
+    clang-format \
     colordiff \
     cmake \
     doxygen \
