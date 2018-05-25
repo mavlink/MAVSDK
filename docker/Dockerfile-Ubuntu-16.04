@@ -16,6 +16,7 @@ RUN apt-get update \
         autotools-dev \
         build-essential \
         ca-certificates \
+        clang-format \
         colordiff \
         cmake \
         doxygen \
