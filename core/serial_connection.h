@@ -13,10 +13,9 @@ namespace dronecore {
 class SerialConnection : public Connection
 {
 public:
-    explicit SerialConnection(DroneCoreImpl &parent,
+    explicit SerialConnection(Connection::receiver_callback_t receiver_callback,
                               const std::string &path,
                               int baudrate);
-    bool is_ok() const;
     ConnectionResult start();
     ConnectionResult stop();
     ~SerialConnection();
@@ -30,7 +29,7 @@ public:
 private:
     ConnectionResult setup_port();
     void start_recv_thread();
-    static void receive(SerialConnection *parent);
+    void receive();
 
     std::string _serial_node;
     int _baudrate;

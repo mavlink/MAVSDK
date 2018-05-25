@@ -17,7 +17,7 @@ add_library(dronecore ${LIBRARY_TYPE}
     connection.cpp
     curl_wrapper.cpp
     system.cpp
-    mavlink_system.cpp
+    system_impl.cpp
     dronecore.cpp
     dronecore_impl.cpp
     global_include.cpp

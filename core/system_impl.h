@@ -32,10 +32,9 @@ struct GCSClient {
     static constexpr MAV_TYPE type = MAV_TYPE_GCS;
 };
 
-// This class represents a MAVLink system, made up of one or more components
-// (e.g. autopilot, cameras, servos, gimbals, etc). Commonly MAVLinkSystem objects are
-// used to interact with UAVs (including their components) and standalone cameras.
-class MAVLinkSystem
+// This class is the pimpl of System. This is to hide the private methods
+// and functionality from the public library API.
+class SystemImpl
 {
 public:
     enum class FlightMode {
@@ -48,10 +47,10 @@ public:
         OFFBOARD,
     };
 
-    explicit MAVLinkSystem(DroneCoreImpl &parent,
-                           uint8_t system_id,
-                           uint8_t component_id);
-    ~MAVLinkSystem();
+    explicit SystemImpl(DroneCoreImpl &parent,
+                        uint8_t system_id,
+                        uint8_t component_id);
+    ~SystemImpl();
 
     void process_mavlink_message(const mavlink_message_t &message);
 
@@ -169,8 +168,8 @@ public:
     void call_user_callback(const std::function<void()> &func);
 
     // Non-copyable
-    MAVLinkSystem(const MAVLinkSystem &) = delete;
-    const MAVLinkSystem &operator=(const MAVLinkSystem &) = delete;
+    SystemImpl(const SystemImpl &) = delete;
+    const SystemImpl &operator=(const SystemImpl &) = delete;
 
 private:
 
@@ -189,8 +188,8 @@ private:
 
     static std::string component_name(uint8_t component_id);
 
-    static void system_thread(MAVLinkSystem *self);
-    static void send_heartbeat(MAVLinkSystem &self);
+    void system_thread();
+    void send_heartbeat();
 
     // Last argument will hold Flight mode command.
     MAVLinkCommands::Result

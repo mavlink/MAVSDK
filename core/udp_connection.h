@@ -11,9 +11,9 @@ namespace dronecore {
 class UdpConnection : public Connection
 {
 public:
-    explicit UdpConnection(DroneCoreImpl &parent, const std::string &local_ip, int local_port);
+    explicit UdpConnection(Connection::receiver_callback_t receiver_callback,
+                           const std::string &local_ip, int local_port);
     ~UdpConnection();
-    bool is_ok() const;
     ConnectionResult start();
     ConnectionResult stop();
 
@@ -27,7 +27,7 @@ private:
     ConnectionResult setup_port();
     void start_recv_thread();
 
-    static void receive(UdpConnection *parent);
+    void receive();
 
     std::string _local_ip;
     int _local_port_number;

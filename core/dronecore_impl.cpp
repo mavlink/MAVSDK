@@ -7,7 +7,7 @@
 #include "tcp_connection.h"
 #include "udp_connection.h"
 #include "system.h"
-#include "mavlink_system.h"
+#include "system_impl.h"
 #include "serial_connection.h"
 #include "cli_arg.h"
 
@@ -58,14 +58,14 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     if (_systems.find(0) != _systems.end()) {
         auto null_system = _systems[0];
         _systems.erase(0);
-        null_system->set_system_id(message.sysid);
+        null_system->system_impl()->set_system_id(message.sysid);
         _systems.insert(system_entry_t(message.sysid, null_system));
     }
 
     if (!does_system_exist(message.sysid)) {
         make_system_with_component(message.sysid, message.compid);
     } else {
-        _systems.at(message.sysid)->add_new_component(message.compid);
+        _systems.at(message.sysid)->system_impl()->add_new_component(message.compid);
     }
 
     if (_should_exit) {
@@ -79,7 +79,7 @@ void DroneCoreImpl::receive_message(const mavlink_message_t &message)
     }
 
     if (_systems.find(message.sysid) != _systems.end()) {
-        _systems.at(message.sysid)->process_mavlink_message(message);
+        _systems.at(message.sysid)->system_impl()->process_mavlink_message(message);
     }
 }
 
@@ -145,7 +145,9 @@ ConnectionResult DroneCoreImpl::add_any_connection(const std::string &connection
 ConnectionResult DroneCoreImpl::add_udp_connection(const std::string &local_ip,
                                                    const int local_port)
 {
-    auto new_conn = std::make_shared<UdpConnection>(*this, local_ip, local_port);
+    auto new_conn = std::make_shared<UdpConnection>(
+                        std::bind(&DroneCoreImpl::receive_message, this, std::placeholders::_1),
+                        local_ip, local_port);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
@@ -157,7 +159,9 @@ ConnectionResult DroneCoreImpl::add_udp_connection(const std::string &local_ip,
 ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
                                                    int remote_port)
 {
-    auto new_conn = std::make_shared<TcpConnection>(*this, remote_ip, remote_port);
+    auto new_conn = std::make_shared<TcpConnection>(
+                        std::bind(&DroneCoreImpl::receive_message, this, std::placeholders::_1),
+                        remote_ip, remote_port);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
@@ -169,7 +173,9 @@ ConnectionResult DroneCoreImpl::add_tcp_connection(const std::string &remote_ip,
 ConnectionResult DroneCoreImpl::add_serial_connection(const std::string &dev_path,
                                                       int baudrate)
 {
-    auto new_conn = std::make_shared<SerialConnection>(*this, dev_path, baudrate);
+    auto new_conn = std::make_shared<SerialConnection>(
+                        std::bind(&DroneCoreImpl::receive_message, this, std::placeholders::_1),
+                        dev_path, baudrate);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
@@ -189,8 +195,7 @@ std::vector<uint64_t> DroneCoreImpl::get_system_uuids() const
     std::vector<uint64_t> uuids = {};
 
     for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-        auto mavlink_system = it->second->_mavlink_system;
-        uint64_t uuid = mavlink_system->get_uuid();
+        uint64_t uuid = it->second->_system_impl->get_uuid();
         if (uuid != 0) {
             uuids.push_back(uuid);
         }

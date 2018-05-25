@@ -152,7 +152,7 @@ FollowMe::Result FollowMeImpl::start()
 {
     FollowMe::Result result = to_follow_me_result(
                                   _parent->set_flight_mode(
-                                      MAVLinkSystem::FlightMode::FOLLOW_ME));
+                                      SystemImpl::FlightMode::FOLLOW_ME));
 
     if (result == FollowMe::Result::SUCCESS) {
         // If location was set before, lets send it to vehicle
@@ -177,7 +177,7 @@ FollowMe::Result FollowMeImpl::stop()
     }
     return to_follow_me_result(
                _parent->set_flight_mode(
-                   MAVLinkSystem::FlightMode::HOLD));
+                   SystemImpl::FlightMode::HOLD));
 }
 
 // Applies default FollowMe configuration to the system

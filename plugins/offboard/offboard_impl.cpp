@@ -44,7 +44,7 @@ Offboard::Result OffboardImpl::start()
     }
 
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(MAVLinkSystem::FlightMode::OFFBOARD));
+               _parent->set_flight_mode(SystemImpl::FlightMode::OFFBOARD));
 }
 
 Offboard::Result OffboardImpl::stop()
@@ -57,7 +57,7 @@ Offboard::Result OffboardImpl::stop()
     }
 
     return offboard_result_from_command_result(
-               _parent->set_flight_mode(MAVLinkSystem::FlightMode::HOLD));
+               _parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
 }
 
 void OffboardImpl::start_async(Offboard::result_callback_t callback)
@@ -74,7 +74,7 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
     }
 
     _parent->set_flight_mode_async(
-        MAVLinkSystem::FlightMode::OFFBOARD,
+        SystemImpl::FlightMode::OFFBOARD,
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }
@@ -89,7 +89,7 @@ void OffboardImpl::stop_async(Offboard::result_callback_t callback)
     }
 
     _parent->set_flight_mode_async(
-        MAVLinkSystem::FlightMode::HOLD,
+        SystemImpl::FlightMode::HOLD,
         std::bind(&OffboardImpl::receive_command_result, this,
                   std::placeholders::_1, callback));
 }

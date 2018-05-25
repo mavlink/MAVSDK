@@ -25,10 +25,10 @@
 
 namespace dronecore {
 
-UdpConnection::UdpConnection(DroneCoreImpl &parent,
+UdpConnection::UdpConnection(Connection::receiver_callback_t receiver_callback,
                              const std::string &local_ip,
                              int local_port_number):
-    Connection(parent),
+    Connection(receiver_callback),
     _local_ip(local_ip),
     _local_port_number(local_port_number) {}
 
@@ -36,11 +36,6 @@ UdpConnection::~UdpConnection()
 {
     // If no one explicitly called stop before, we should at least do it.
     stop();
-}
-
-bool UdpConnection::is_ok() const
-{
-    return true;
 }
 
 ConnectionResult UdpConnection::start()
@@ -92,7 +87,7 @@ ConnectionResult UdpConnection::setup_port()
 
 void UdpConnection::start_recv_thread()
 {
-    _recv_thread = new std::thread(receive, this);
+    _recv_thread = new std::thread(&UdpConnection::receive, this);
 }
 
 ConnectionResult UdpConnection::stop()
@@ -167,16 +162,16 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     return true;
 }
 
-void UdpConnection::receive(UdpConnection *parent)
+void UdpConnection::receive()
 {
     // Enough for MTU 1500 bytes.
     char buffer[2048];
 
-    while (!parent->_should_exit) {
+    while (!_should_exit) {
 
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
-        int recv_len = recvfrom(parent->_socket_fd, buffer, sizeof(buffer), 0,
+        int recv_len = recvfrom(_socket_fd, buffer, sizeof(buffer), 0,
                                 reinterpret_cast<struct sockaddr *>(&src_addr), &src_addr_len);
 
         if (recv_len == 0) {
@@ -193,38 +188,38 @@ void UdpConnection::receive(UdpConnection *parent)
         }
 
         {
-            std::lock_guard<std::mutex> lock(parent->_remote_mutex);
+            std::lock_guard<std::mutex> lock(_remote_mutex);
 
             int new_remote_port_number = ntohs(src_addr.sin_port);
             std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
 
-            if (parent->_remote_ip.empty() ||
-                parent->_remote_port_number == 0) {
+            if (_remote_ip.empty() ||
+                _remote_port_number == 0) {
 
                 // Set IP if we don't know it yet.
-                parent->_remote_ip = new_remote_ip;
-                parent->_remote_port_number = new_remote_port_number;
+                _remote_ip = new_remote_ip;
+                _remote_port_number = new_remote_port_number;
 
-                LogInfo() << "New device on: " << parent->_remote_ip
-                          << ":" << parent->_remote_port_number;
+                LogInfo() << "New device on: " << _remote_ip
+                          << ":" << _remote_port_number;
 
-            } else if (parent->_remote_ip.compare(new_remote_ip) != 0 ||
-                       parent->_remote_port_number != new_remote_port_number) {
+            } else if (_remote_ip.compare(new_remote_ip) != 0 ||
+                       _remote_port_number != new_remote_port_number) {
 
                 // It is possible that wifi disconnects and a device might get a new
                 // IP and/or UDP port.
-                parent->_remote_ip = new_remote_ip;
-                parent->_remote_port_number = new_remote_port_number;
+                _remote_ip = new_remote_ip;
+                _remote_port_number = new_remote_port_number;
 
                 LogInfo() << "Device changed to: " << new_remote_ip << ":" << new_remote_port_number;
             }
         }
 
-        parent->_mavlink_receiver->set_new_datagram(buffer, recv_len);
+        _mavlink_receiver->set_new_datagram(buffer, recv_len);
 
         // Parse all mavlink messages in one datagram. Once exhausted, we'll exit while.
-        while (parent->_mavlink_receiver->parse_message()) {
-            parent->receive_message(parent->_mavlink_receiver->get_last_message());
+        while (_mavlink_receiver->parse_message()) {
+            receive_message(_mavlink_receiver->get_last_message());
         }
     }
 }
