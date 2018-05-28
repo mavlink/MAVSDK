@@ -19,8 +19,9 @@ service CameraService {
     rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) {}
     rpc SubscribeCaptureInfo(SubscribeCaptureInfoRequest) returns(stream CaptureInfoResponse) {}
     rpc SubscribeCameraStatus(SubscribeCameraStatusRequest) returns(stream CameraStatusResponse) {}
-    rpc GetPossibleSettings(GetPossibleSettingsRequest) returns(GetPossibleSettingsResponse) {}
-    rpc SetOption(SetOptionRequest) returns(SetOptionResponse) {}
+    rpc SubscribeCurrentSetting(SubscribeCurrentSettingRequest) returns(stream CurrentSettingResponse) {}
+    rpc SubscribePossibleSettings(SubscribePossibleSettingsRequest) returns(stream PossibleSettingsResponse) {}
+    rpc SetSetting(SetSettingRequest) returns(SetSettingResponse) {}
 }
 
 message TakePhotoRequest {}
@@ -92,16 +93,22 @@ message CameraStatusResponse {
     CameraStatus camera_status = 1;
 }
 
-message GetPossibleSettingsRequest {}
-message GetPossibleSettingsResponse {
-    repeated Setting setting = 1;
+message SubscribeCurrentSettingRequest {}
+message CurrentSettingResponse {
+    Setting current_setting = 1;
 }
 
-message SetOptionRequest {
+message SubscribePossibleSettingsRequest {}
+message PossibleSettingsResponse {
     string setting_id = 1;
-    string option_id = 2;
+    string setting_description = 2;
+    repeated Option option = 3;
 }
-message SetOptionResponse {
+
+message SetSettingRequest {
+    Setting setting = 1;
+}
+message SetSettingResponse {
     CameraResult camera_result = 1;
 }
 
@@ -169,7 +176,7 @@ message VideoStreamInfo {
     VideoStreamStatus video_stream_status = 2;
 }
 
-message Status {
+message CameraStatus {
     enum StorageStatus {
         NOT_AVAILABLE = 0;
         UNFORMATTED = 1;
@@ -185,13 +192,11 @@ message Status {
 }
 
 message Setting {
-    string id = 1;
-    string description = 2;
-    repeated Option option = 3;
+    string setting_id = 1;
+    string option_id = 2;
 }
 
 message Option {
-    string id = 1;
-    string description = 2;
-    repeated string possible_value = 3;
+    string option_id = 1;
+    string option_description = 2;
 }
