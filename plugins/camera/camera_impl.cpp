@@ -482,6 +482,7 @@ void CameraImpl::get_mode_async(Camera::mode_callback_t callback)
     if (_get_mode.callback != nullptr) {
         if (callback) {
             callback(Camera::Result::BUSY, Camera::Mode::UNKNOWN);
+            return;
         }
     }
     _get_mode.callback = callback;
