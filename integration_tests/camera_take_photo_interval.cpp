@@ -33,7 +33,7 @@ TEST(CameraTest, TakePhotoInterval)
     auto camera = std::make_shared<Camera>(system);
 
     // We want to take the pictures in photo mode.
-    set_mode(camera, Camera::Mode::PHOTO);
+    set_mode_async(camera, Camera::Mode::PHOTO);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     check_interval_on(camera, false);

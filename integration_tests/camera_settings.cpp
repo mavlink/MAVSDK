@@ -34,7 +34,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
     if (is_e90 || is_e50 || is_et) {
         // Set to photo mode
-        set_mode(camera, Camera::Mode::PHOTO);
+        set_mode_async(camera, Camera::Mode::PHOTO);
 
         std::vector<std::string> settings;
         EXPECT_TRUE(camera->get_possible_settings(settings));
@@ -52,7 +52,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
             EXPECT_EQ(settings.size(), 5);
         }
 
-        set_mode(camera, Camera::Mode::VIDEO);
+        set_mode_async(camera, Camera::Mode::VIDEO);
 
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
@@ -93,7 +93,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
         EXPECT_FALSE(camera->get_possible_options("CAM_BLABLA", options));
         EXPECT_EQ(options.size(), 0);
 
-        set_mode(camera, Camera::Mode::PHOTO);
+        set_mode_async(camera, Camera::Mode::PHOTO);
 
         if (is_e90) {
             // Try something that is specific to the camera mode.
@@ -129,7 +129,7 @@ TEST(CameraTest, SetSettings)
     // because we don't have a check yet.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    set_mode(camera, Camera::Mode::PHOTO);
+    set_mode_async(camera, Camera::Mode::PHOTO);
 
     // Try setting garbage first
     EXPECT_EQ(set_setting(camera, "DOES_NOT", "EXIST"), Camera::Result::ERROR);
@@ -181,7 +181,7 @@ TEST(CameraTest, SetSettings)
         EXPECT_TRUE(camera->get_possible_options("CAM_METERING", options));
         EXPECT_EQ(options.size(), 3);
 
-        set_mode(camera, Camera::Mode::VIDEO);
+        set_mode_async(camera, Camera::Mode::VIDEO);
 
         // This should fail in video mode.
         EXPECT_EQ(set_setting(camera, "CAM_PHOTOQUAL", "1"), Camera::Result::ERROR);
