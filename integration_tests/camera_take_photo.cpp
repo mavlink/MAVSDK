@@ -36,7 +36,7 @@ TEST(CameraTest, TakePhoto)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     // We want to take the picture in photo mode.
-    set_mode(camera, Camera::Mode::PHOTO);
+    set_mode_async(camera, Camera::Mode::PHOTO);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -64,7 +64,7 @@ TEST(CameraTest, TakeMultiplePhotos)
     auto camera = std::make_shared<Camera>(system);
 
     // We want to take the picture in photo mode.
-    set_mode(camera, Camera::Mode::PHOTO);
+    set_mode_async(camera, Camera::Mode::PHOTO);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 

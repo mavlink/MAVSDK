@@ -36,7 +36,7 @@ Camera::Mode get_mode(std::shared_ptr<Camera> camera)
     }
 }
 
-void set_mode(std::shared_ptr<Camera> camera, Camera::Mode mode)
+void set_mode_async(std::shared_ptr<Camera> camera, Camera::Mode mode)
 {
     //// FIXME: this should not be required.
     std::this_thread::sleep_for(std::chrono::seconds(1));
