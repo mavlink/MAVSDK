@@ -1,0 +1,43 @@
+#
+# Development environment for DroneCore
+#
+# Author: Julian Oes <julian@oes.ch>
+#
+
+FROM ubuntu:18.04
+MAINTAINER Julian Oes <julian@oes.ch>
+
+ENV DEBIAN_FRONTEND noninteractive
+
+
+RUN apt-get update \
+    && apt-get -y --quiet --no-install-recommends install \
+        software-properties-common \
+        autoconf \
+        automake \
+        autotools-dev \
+        build-essential \
+        ca-certificates \
+        clang-format \
+        colordiff \
+        cmake \
+        doxygen \
+        git \
+        libcurl4-openssl-dev \
+        libltdl-dev \
+        libtinyxml2-dev \
+        libtool \
+        python \
+        python-pip \
+        ruby-dev \
+    && apt-get -y autoremove \
+    && apt-get clean autoclean \
+    && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+RUN update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-6.0 1000
+
+RUN gem install --no-ri --no-rdoc fpm;
+
+CMD ["/bin/bash"]
+
+WORKDIR "/root/DroneCore"
