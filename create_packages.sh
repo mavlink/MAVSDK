@@ -22,6 +22,7 @@ library_files="\
     core/dronecore.h=/usr/include/dronecore/dronecore.h \
     build/default/core/libdronecore.so=/usr/lib/libdronecore.so \
     plugins/action/action.h=/usr/include/dronecore/action.h \
+    plugins/camera/camera.h=/usr/include/dronecore/camera.h \
     plugins/follow_me/follow_me.h=/usr/include/dronecore/follow_me.h \
     plugins/gimbal/gimbal.h=/usr/include/dronecore/gimbal.h \
     plugins/info/info.h=/usr/include/dronecore/info.h \
