@@ -49,13 +49,25 @@ matrix:
       services:
         - docker
       env:
-      - MATRIX_EVAL="BUILD_TARGET=docker_build_ubuntu"
+      - MATRIX_EVAL="BUILD_TARGET=docker_build_ubuntu_16.04"
     - os: linux
       sudo: true
       services:
         - docker
       env:
-      - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora"
+      - MATRIX_EVAL="BUILD_TARGET=docker_build_ubuntu_18.04"
+    - os: linux
+      sudo: true
+      services:
+        - docker
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora_27"
+    - os: linux
+      sudo: true
+      services:
+        - docker
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora_28"
     - os: osx
       osx_image: xcode9.2
       env:
@@ -66,11 +78,17 @@ before_install:
 
 install:
 - set -e
-- if [[ "${BUILD_TARGET}" = "docker_build_ubuntu" ]]; then
+- if [[ "${BUILD_TARGET}" = "docker_build_ubuntu_16.04" ]]; then
     docker pull dronecore/dronecore-ubuntu-16.04;
   fi
-- if [[ "${BUILD_TARGET}" = "docker_build_fedora" ]]; then
+- if [[ "${BUILD_TARGET}" = "docker_build_ubuntu_18.04" ]]; then
+    docker pull dronecore/dronecore-ubuntu-18.04;
+  fi
+- if [[ "${BUILD_TARGET}" = "docker_build_fedora_27" ]]; then
     docker pull dronecore/dronecore-fedora-27;
+  fi
+- if [[ "${BUILD_TARGET}" = "docker_build_fedora_28" ]]; then
+    docker pull dronecore/dronecore-fedora-28;
   fi
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     pip install --user cpp-coveralls;
@@ -86,13 +104,21 @@ script:
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     make BUILD_TYPE=Coverage run_unit_tests -j4;
   fi
-- if [[ "${BUILD_TARGET}" = "docker_build_ubuntu" ]]; then
+- if [[ "${BUILD_TARGET}" = "docker_build_ubuntu_16.04" ]]; then
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-ubuntu-16.04 ./travis-docker-build.sh;
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-ubuntu-16.04 ./create_packages.sh;
   fi
-- if [[ "${BUILD_TARGET}" = "docker_build_fedora" ]]; then
+- if [[ "${BUILD_TARGET}" = "docker_build_ubuntu_18.04" ]]; then
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-ubuntu-18.04 ./travis-docker-build.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-ubuntu-18.04 ./create_packages.sh;
+  fi
+- if [[ "${BUILD_TARGET}" = "docker_build_fedora_27" ]]; then
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-fedora-27 ./travis-docker-build.sh;
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-fedora-27 ./create_packages.sh;
+  fi
+- if [[ "${BUILD_TARGET}" = "docker_build_fedora_28" ]]; then
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-fedora-28 ./travis-docker-build.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecore/dronecore-fedora-28 ./create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     make;
