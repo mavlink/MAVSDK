@@ -1,0 +1,37 @@
+#
+# Development environment for DroneCore based on Fedora 28.
+#
+# Author: Julian Oes <julian@oes.ch>
+#
+
+FROM fedora:28
+
+MAINTAINER Julian Oes <julian@oes.ch>
+
+RUN dnf -y install \
+    autoconf \
+    automake \
+    clang \
+    colordiff \
+    cmake \
+    doxygen \
+    gcc \
+    gcc-c++ \
+    git \
+    libcurl-devel \
+    libtool \
+    make \
+    python \
+    tinyxml2-devel \
+    redhat-rpm-config \
+    rpm-build \
+    ruby-devel \
+    rubygems \
+    which \
+    && dnf clean all
+
+RUN gem install --no-ri --no-rdoc fpm;
+
+CMD ["/bin/bash"]
+
+WORKDIR "/root/DroneCore"
