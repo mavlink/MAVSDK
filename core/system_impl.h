@@ -79,9 +79,9 @@ public:
     // FIXME: I tried to use templates for these;
     // but I get undefined reference. Need to dig it later.
     void send_command_async(MAVLinkCommands::CommandLong &command,
-                            command_result_callback_t callback);
+                            const command_result_callback_t callback);
     void send_command_async(MAVLinkCommands::CommandInt &command,
-                            command_result_callback_t callback);
+                            const command_result_callback_t callback);
 
     MAVLinkCommands::Result set_msg_rate(uint16_t message_id,
                                          double rate_hz,

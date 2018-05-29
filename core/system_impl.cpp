@@ -747,7 +747,7 @@ MAVLinkCommands::Result SystemImpl::send_command(MAVLinkCommands::CommandInt &co
 }
 
 void SystemImpl::send_command_async(MAVLinkCommands::CommandLong &command,
-                                    command_result_callback_t callback)
+                                    const command_result_callback_t callback)
 {
     if (_system_id == 0 && _components.size() == 0) {
         if (callback) {
@@ -761,7 +761,7 @@ void SystemImpl::send_command_async(MAVLinkCommands::CommandLong &command,
 }
 
 void SystemImpl::send_command_async(MAVLinkCommands::CommandInt &command,
-                                    command_result_callback_t callback)
+                                    const command_result_callback_t callback)
 {
     if (_system_id == 0 && _components.size() == 0) {
         if (callback) {

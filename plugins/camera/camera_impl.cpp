@@ -410,7 +410,7 @@ Camera::Result CameraImpl::get_video_stream_info(Camera::VideoStreamInfo &info)
     ;
 }
 
-Camera::Result CameraImpl::camera_result_from_command_result(MAVLinkCommands::Result command_result)
+Camera::Result CameraImpl::camera_result_from_command_result(const MAVLinkCommands::Result command_result)
 {
     switch (command_result) {
         case MAVLinkCommands::Result::SUCCESS:
@@ -430,23 +430,44 @@ Camera::Result CameraImpl::camera_result_from_command_result(MAVLinkCommands::Re
     }
 }
 
-void CameraImpl::set_mode_async(Camera::Mode mode, const Camera::mode_callback_t &callback)
+Camera::Result CameraImpl::set_mode(const Camera::Mode mode)
 {
-    float mavlink_mode;
-    switch (mode) {
-        case Camera::Mode::PHOTO:
-            mavlink_mode = CAMERA_MODE_IMAGE;
-            break;
-        case Camera::Mode::VIDEO:
-            mavlink_mode = CAMERA_MODE_VIDEO;
-            break;
-        default:
-        // FALLTHROUGH
-        case Camera::Mode::UNKNOWN:
-            mavlink_mode = NAN;
-            break;
+    const float mavlink_mode = to_mavlink_camera_mode(mode);
+    auto cmd_set_camera_mode = make_command_set_camera_mode(mavlink_mode);
+    const auto command_result = _parent->send_command(cmd_set_camera_mode);
+    const auto camera_result = camera_result_from_command_result(command_result);
+
+    if (camera_result == Camera::Result::SUCCESS && _camera_definition != nullptr) {
+        save_camera_mode(mavlink_mode);
     }
 
+    return camera_result;
+}
+
+void CameraImpl::save_camera_mode(const float mavlink_camera_mode)
+{
+    MAVLinkParameters::ParamValue value;
+    value.set_uint32(mavlink_camera_mode);
+    _camera_definition->set_setting("CAM_MODE", value);
+    refresh_params();
+}
+
+float CameraImpl::to_mavlink_camera_mode(const Camera::Mode mode) const
+{
+    switch (mode) {
+        case Camera::Mode::PHOTO:
+            return CAMERA_MODE_IMAGE;
+        case Camera::Mode::VIDEO:
+            return CAMERA_MODE_VIDEO;
+        default:
+        case Camera::Mode::UNKNOWN:
+            return NAN;
+    }
+}
+
+void CameraImpl::set_mode_async(const Camera::Mode mode, const Camera::mode_callback_t &callback)
+{
+    const auto mavlink_mode = to_mavlink_camera_mode(mode);
     auto cmd_set_camera_mode = make_command_set_camera_mode(mavlink_mode);
 
     _parent->send_command_async(
@@ -627,31 +648,29 @@ void CameraImpl::process_camera_settings(const mavlink_message_t &message)
     mavlink_camera_settings_t camera_settings;
     mavlink_msg_camera_settings_decode(&message, &camera_settings);
 
-    Camera::Mode mode;
-    switch (camera_settings.mode_id) {
-        case CAMERA_MODE_IMAGE:
-            mode = Camera::Mode::PHOTO;
-            break;
-        case CAMERA_MODE_VIDEO:
-            mode = Camera::Mode::VIDEO;
-            break;
-        default:
-            mode = Camera::Mode::UNKNOWN;
-            break;
-    }
+    const auto mode = to_camera_mode(camera_settings.mode_id);
 
     if (_camera_definition) {
         // This "parameter" needs to be manually set.
-        MAVLinkParameters::ParamValue value;
-        value.set_uint32(camera_settings.mode_id);
-        _camera_definition->set_setting("CAM_MODE", value);
-        refresh_params();
+        save_camera_mode(camera_settings.mode_id);
     }
 
     _get_mode.callback(Camera::Result::SUCCESS, mode);
     _get_mode.callback = nullptr;
 
     _parent->unregister_timeout_handler(_get_mode.timeout_cookie);
+}
+
+Camera::Mode CameraImpl::to_camera_mode(const uint8_t mavlink_camera_mode) const
+{
+    switch (mavlink_camera_mode) {
+        case CAMERA_MODE_IMAGE:
+            return Camera::Mode::PHOTO;
+        case CAMERA_MODE_VIDEO:
+            return Camera::Mode::VIDEO;
+        default:
+            return Camera::Mode::UNKNOWN;
+    }
 }
 
 void CameraImpl::process_camera_information(const mavlink_message_t &message)
@@ -744,9 +763,9 @@ void CameraImpl::receive_storage_information_result(MAVLinkCommands::Result resu
     _parent->refresh_timeout_handler(_status.timeout_cookie);
 }
 
-void CameraImpl::receive_set_mode_command_result(MAVLinkCommands::Result command_result,
+void CameraImpl::receive_set_mode_command_result(const MAVLinkCommands::Result command_result,
                                                  const Camera::mode_callback_t &callback,
-                                                 Camera::Mode mode)
+                                                 const Camera::Mode mode)
 {
     Camera::Result camera_result = camera_result_from_command_result(command_result);
 
@@ -757,25 +776,14 @@ void CameraImpl::receive_set_mode_command_result(MAVLinkCommands::Result command
     if (command_result == MAVLinkCommands::Result::SUCCESS && _camera_definition) {
         // This "parameter" needs to be manually set.
 
-        uint32_t mavlink_mode;
-        switch (mode) {
-            case Camera::Mode::PHOTO:
-                mavlink_mode = CAMERA_MODE_IMAGE;
-                break;
-            case Camera::Mode::VIDEO:
-                mavlink_mode = CAMERA_MODE_VIDEO;
-                break;
-            default:
-            // FALLTHROUGH
-            case Camera::Mode::UNKNOWN:
-                LogWarn() << "Unknown camera mode";
-                return;
+        const auto mavlink_mode = to_mavlink_camera_mode(mode);
+
+        if (std::isnan(mavlink_mode)) {
+            LogWarn() << "Unknown camera mode";
+            return;
         }
 
-        MAVLinkParameters::ParamValue value;
-        value.set_uint32(mavlink_mode);
-        _camera_definition->set_setting("CAM_MODE", value);
-        refresh_params();
+        save_camera_mode(mavlink_mode);
     }
 }
 
@@ -837,7 +845,7 @@ bool CameraImpl::get_possible_settings(std::vector<std::string> &settings)
     _camera_definition->get_possible_settings(cd_settings);
 
     for (const auto &cd_setting : cd_settings) {
-        if (cd_setting.first.compare("CAM_MODE") == 0) {
+        if (cd_setting.first == "CAM_MODE") {
             // We ignore the mode param.
             continue;
         }

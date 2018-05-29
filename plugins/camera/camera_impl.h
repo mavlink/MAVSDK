@@ -38,7 +38,8 @@ public:
     Camera::Result start_video_streaming();
     Camera::Result stop_video_streaming();
 
-    void set_mode_async(Camera::Mode mode, const Camera::mode_callback_t &callback);
+    Camera::Result set_mode(const Camera::Mode mode);
+    void set_mode_async(const Camera::Mode mode, const Camera::mode_callback_t &callback);
     void get_mode_async(Camera::mode_callback_t callback);
 
     void capture_info_async(Camera::capture_info_callback_t callback);
@@ -108,15 +109,15 @@ private:
         }
     } _video_stream_info;
 
-    void receive_set_mode_command_result(MAVLinkCommands::Result command_result,
+    void receive_set_mode_command_result(const MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
-                                         Camera::Mode mode);
+                                         const Camera::Mode mode);
 
     void get_mode_timeout_happened();
 
     void receive_get_mode_command_result(MAVLinkCommands::Result command_result);
 
-    static Camera::Result camera_result_from_command_result(MAVLinkCommands::Result command_result);
+    static Camera::Result camera_result_from_command_result(const MAVLinkCommands::Result command_result);
 
     static void receive_command_result(MAVLinkCommands::Result command_result,
                                        const Camera::result_callback_t &callback);
@@ -141,6 +142,10 @@ private:
 
     void refresh_params();
     void invalidate_params();
+
+    void save_camera_mode(const float mavlink_camera_mode);
+    float to_mavlink_camera_mode(const Camera::Mode mode) const;
+    Camera::Mode to_camera_mode(const uint8_t mavlink_camera_mode) const;
 
     // Utility methods for convenience
     MAVLinkCommands::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
