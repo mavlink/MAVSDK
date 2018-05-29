@@ -77,7 +77,12 @@ void Camera::stop_video_async(const result_callback_t &callback)
     _impl->stop_video_async(callback);
 }
 
-void Camera::set_mode_async(Mode mode, const mode_callback_t &callback)
+Camera::Result Camera::set_mode(const Mode mode)
+{
+    return _impl->set_mode(mode);
+}
+
+void Camera::set_mode_async(const Mode mode, const mode_callback_t &callback)
 {
     _impl->set_mode_async(mode, callback);
 }

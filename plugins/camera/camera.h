@@ -177,12 +177,21 @@ public:
     typedef std::function<void(Result, const Mode &)> mode_callback_t;
 
     /**
+     * @brief Setter for camera mode (synchronous).
+     *
+     * @param mode Camera mode to set
+     *
+     * @return SUCCESS if mode is set, error otherwise.
+     */
+    Result set_mode(const Mode mode);
+
+    /**
      * @brief Setter for camera mode (asynchronous).
      *
      * @param mode Camera mode to set.
      * @param callback Function to call with result of request.
      */
-    void set_mode_async(Mode mode, const mode_callback_t &callback);
+    void set_mode_async(const Mode mode, const mode_callback_t &callback);
 
     /**
      * @brief Getter for camera mode (asynchronous).
