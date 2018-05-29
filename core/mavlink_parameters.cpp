@@ -108,7 +108,7 @@ void MAVLinkParameters::do_work()
         _state = State::SET_PARAM_BUSY;
 
         char param_id[PARAM_ID_LEN] = {};
-        STRNCPY(param_id, set_param_work->param_name.c_str(), sizeof(param_id));
+        STRNCPY(param_id, set_param_work->param_name.c_str(), sizeof(param_id) - 1);
 
         mavlink_message_t message = {};
         if (set_param_work->extended) {
@@ -165,7 +165,7 @@ void MAVLinkParameters::do_work()
         _state = State::GET_PARAM_BUSY;
 
         char param_id[PARAM_ID_LEN] = {};
-        STRNCPY(param_id, get_param_work->param_name.c_str(), sizeof(param_id));
+        STRNCPY(param_id, get_param_work->param_name.c_str(), sizeof(param_id) - 1);
 
         // LogDebug() << "now getting: " << get_param_work->param_name;
 
