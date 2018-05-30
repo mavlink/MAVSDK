@@ -108,6 +108,33 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status
+    SetCurrentMissionItemIndex(grpc::ServerContext * /* context */,
+                               const rpc::mission::SetCurrentMissionItemIndexRequest *request,
+                               rpc::mission::SetCurrentMissionItemIndexResponse *response) override
+    {
+        if (request == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        std::promise<void> result_promise;
+        const auto result_future = result_promise.get_future();
+
+        _mission.set_current_mission_item_async(
+            request->index(),
+            [this, response, &result_promise](const dronecore::Mission::Result result) {
+                if (response != nullptr) {
+                    auto rpc_mission_result = generateRPCMissionResult(result);
+                    response->set_allocated_mission_result(rpc_mission_result);
+                }
+
+                result_promise.set_value();
+            });
+
+        result_future.wait();
+        return grpc::Status::OK;
+    }
+
     static void translateMissionItem(const std::shared_ptr<MissionItem> mission_item,
                                      rpc::mission::MissionItem *rpc_mission_item)
     {

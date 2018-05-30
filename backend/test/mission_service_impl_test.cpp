@@ -39,6 +39,7 @@ using PauseMissionRequest = dc::rpc::mission::PauseMissionRequest;
 using PauseMissionResponse = dc::rpc::mission::PauseMissionResponse;
 
 static constexpr auto ARBITRARY_RESULT = dc::Mission::Result::UNKNOWN;
+static constexpr auto ARBITRARY_INDEX = 42;
 static constexpr auto ARBITRARY_SMALL_INT = 12;
 
 std::vector<InputPair> generateInputPairs();
@@ -472,6 +473,61 @@ TEST_P(MissionServiceImplPauseTest, pauseResultIsTranslatedCorrectly)
 
     EXPECT_EQ(GetParam().first,
               rpc::MissionResult::Result_Name(response->mission_result().result()));
+}
+
+class MissionServiceImplSetCurrentTest : public MissionServiceImplTestBase {};
+
+INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
+                        MissionServiceImplSetCurrentTest,
+                        ::testing::ValuesIn(generateInputPairs()));
+
+ACTION_P2(SaveSetItemCallback, callback, callback_saved_promise)
+{
+    *callback = arg1;
+    callback_saved_promise->set_value();
+}
+
+TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemDoesNotCrashWithNullRequest)
+{
+    _mission_service.SetCurrentMissionItemIndex(nullptr, nullptr, nullptr);
+}
+
+TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemSetsRightValue)
+{
+    const int expected_item_index = ARBITRARY_INDEX;
+    EXPECT_CALL(_mission, set_current_mission_item_async(expected_item_index, _))
+        .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
+    dronecore::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    request.set_index(expected_item_index);
+
+    auto set_current_item_handle = std::async(std::launch::async, [this, &request]() {
+        _mission_service.SetCurrentMissionItemIndex(nullptr, &request, nullptr);
+    });
+
+    _callback_saved_future.wait();
+    _result_callback(dronecore::Mission::Result::SUCCESS);
+    set_current_item_handle.wait();
+}
+
+TEST_P(MissionServiceImplSetCurrentTest, setCurrentItemResultIsTranslatedCorrectly)
+{
+    dronecore::rpc::mission::SetCurrentMissionItemIndexResponse response;
+    dronecore::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    request.set_index(ARBITRARY_INDEX);
+    EXPECT_CALL(_mission, set_current_mission_item_async(_, _))
+        .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
+
+    auto set_current_item_handle = std::async(std::launch::async, [this, &request, &response]() {
+        _mission_service.SetCurrentMissionItemIndex(nullptr, &request, &response);
+    });
+
+    _callback_saved_future.wait();
+
+    _result_callback(GetParam().second);
+    set_current_item_handle.wait();
+
+    EXPECT_EQ(GetParam().first,
+              rpc::MissionResult::Result_Name(response.mission_result().result()));
 }
 
 class MissionServiceImplProgressTest : public MissionServiceImplTestBase
