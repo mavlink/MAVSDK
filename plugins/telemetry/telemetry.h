@@ -624,11 +624,11 @@ public:
      */
     void rc_status_async(rc_status_callback_t callback);
 
-    // Non-copyable
     /**
      * @brief Copy constructor (object is not copyable).
      */
     Telemetry(const Telemetry &) = delete;
+
     /**
      * @brief Equality operator (object is not copyable).
      */
@@ -639,28 +639,116 @@ private:
     std::unique_ptr<TelemetryImpl> _impl;
 };
 
+/**
+ * @brief Equal operator to compare two `Telemetry::Position` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs);
+
+/**
+ * @brief Stream operator to print infos about a `Telemetry::Position`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position);
 
+/**
+ * @brief Equal operator to compare two `Telemetry::Health` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs);
+
+/**
+ * @brief Stream operator to print infos about a `Telemetry::Health`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health);
 
+/**
+ * @brief Equal operator to compare two `Telemetry::GPSInfo` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const Telemetry::GPSInfo &lhs, const Telemetry::GPSInfo &rhs);
+
+/**
+ * @brief Stream operator to print infos about a `Telemetry::GPSInfo`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, Telemetry::GPSInfo const &gps_info);
 
+/**
+ * @brief Equal operator to compare two `Telemetry::Battery` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const Telemetry::Battery &lhs, const Telemetry::Battery &rhs);
+
+/**
+ * @brief Stream operator to print infos about a `Telemetry::Battery`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, Telemetry::Battery const &battery);
 
+/**
+ * @brief Equal operator to compare two `Telemetry::Quaternion` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const Telemetry::Quaternion &lhs, const Telemetry::Quaternion &rhs);
+
+/**
+ * @brief Stream operator to print infos about a `Telemetry::Quaternion`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, Telemetry::Quaternion const &quaternion);
 
+/**
+ * @brief Equal operator to compare two `Telemetry::EulerAngle` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const Telemetry::EulerAngle &lhs, const Telemetry::EulerAngle &rhs);
+
+/**
+ * @brief Stream operator to print infos about a `Telemetry::EulerAngle`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, Telemetry::EulerAngle const &euler_angle);
 
+/**
+ * @brief Equal operator to compare two `Telemetry::GroundSpeedNED` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const Telemetry::GroundSpeedNED &lhs, const Telemetry::GroundSpeedNED &rhs);
+
+/**
+ * @brief Stream operator to print infos about a `Telemetry::GroundSpeedNED`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, Telemetry::GroundSpeedNED const &ground_speed);
 
+/**
+ * @brief Equal operator to compare two `Telemetry::RCStatus` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs);
+
+/**
+ * @brief Stream operator to print infos about a `Telemetry::RCStatus`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status);
 
 } // namespace dronecore
