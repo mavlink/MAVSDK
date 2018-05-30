@@ -203,11 +203,11 @@ public:
      */
     friend MissionImpl;
 
-    // Non-copyable
     /**
      * @brief Copy constructor (object is not copyable).
      */
     MissionItem(const MissionItem &) = delete;
+
     /**
      * @brief Equality operator (object is not copyable).
      */
@@ -218,8 +218,25 @@ private:
     std::unique_ptr<MissionItemImpl> _impl;
 };
 
+/**
+ * @brief Equal operator to compare two `MissionItem` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const MissionItem &lhs, const MissionItem &rhs);
+
+/**
+ * @brief Stream operator to print infos about a `MissionItem`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, MissionItem const &mission_item);
+
+/**
+ * @brief Stream operator to print infos about a `MissionItem::CameraAction`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, MissionItem::CameraAction const &camera_action);
 
 } // namespace dronecore
