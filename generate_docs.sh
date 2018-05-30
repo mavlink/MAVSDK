@@ -40,7 +40,7 @@ pushd $install_prefix/include/dronecore
 doxygen_output_file=".doxygen_output.tmp"
 doxygen $source_dir/.doxygen &> $doxygen_output_file
 cat $doxygen_output_file
-if cat $doxygen_output_file | grep warning
+if cat $doxygen_output_file | grep "warning" | grep -v "ignoring unsupported tag"
 then
     return_result=1
     echo "Please check doxygen warnings."
