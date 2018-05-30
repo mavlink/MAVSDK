@@ -26,9 +26,9 @@ else()
 
         set(warnings "${warnings} -Wlogical-op")
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        set(warnings "${warnings} -Wno-missing-braces")
+        set(warnings "${warnings} -Wno-missing-braces -Wno-unused-lambda-capture")
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-        set(warnings "${warnings} -Wno-missing-braces -Wno-unused-parameter")
+        set(warnings "${warnings} -Wno-missing-braces -Wno-unused-parameter -Wno-unused-lambda-capture")
     endif()
 
     # Otherwise tinyxml2 complains.
