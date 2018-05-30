@@ -18,12 +18,12 @@ class PluginImplBase;
  */
 class System {
 public:
-    /**
-     * @brief Constructor.
+    /** @private Constructor, used internally
      *
      * This constructor is not (and should not be) directly called by application code.
      *
-     * @param system_id %System id.
+     * @param parent `DroneCoreImpl` dependency.
+     * @param system_id System id.
      * @param comp_id Component id.
      */
     explicit System(DroneCoreImpl &parent, uint8_t system_id, uint8_t comp_id);
@@ -76,7 +76,6 @@ public:
      */
     uint64_t get_uuid() const;
 
-    // Non-copyable
     /**
      * @brief Copy constructor (object is not copyable).
      */
