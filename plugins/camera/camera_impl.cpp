@@ -410,7 +410,8 @@ Camera::Result CameraImpl::get_video_stream_info(Camera::VideoStreamInfo &info)
     ;
 }
 
-Camera::Result CameraImpl::camera_result_from_command_result(const MAVLinkCommands::Result command_result)
+Camera::Result
+CameraImpl::camera_result_from_command_result(const MAVLinkCommands::Result command_result)
 {
     switch (command_result) {
         case MAVLinkCommands::Result::SUCCESS:
