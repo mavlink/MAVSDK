@@ -32,9 +32,20 @@ fi
 # Build and install locally.
 make INSTALL_PREFIX=$install_prefix default install
 
+return_result=0
 # Doxygen likes to run where the source is (because INPUT in .doxygen is empty),
 # so we cd there.
 pushd $install_prefix/include/dronecore
-doxygen $source_dir/.doxygen
+# If any warnings are thrown, we should not flag this as a success.
+doxygen_output_file=".doxygen_output.tmp"
+doxygen $source_dir/.doxygen &> $doxygen_output_file
+cat $doxygen_output_file
+if cat $doxygen_output_file | grep warning
+then
+    return_result=1
+    echo "Please check doxygen warnings."
+fi
 $source_dir/generate_markdown_from_doxygen_xml.py $install_prefix/docs $install_prefix/docs
 popd
+
+exit $return_result
