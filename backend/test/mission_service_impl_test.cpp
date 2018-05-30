@@ -530,8 +530,7 @@ TEST_P(MissionServiceImplSetCurrentTest, setCurrentItemResultIsTranslatedCorrect
               rpc::MissionResult::Result_Name(response.mission_result().result()));
 }
 
-class MissionServiceImplProgressTest : public MissionServiceImplTestBase
-{
+class MissionServiceImplProgressTest : public MissionServiceImplTestBase {
 protected:
     virtual void SetUp()
     {
@@ -544,8 +543,8 @@ protected:
         _stub = MissionService::NewStub(channel);
     }
 
-    std::future<void> subscribeMissionProgressAsync(std::vector<std::pair<int, int>> &progress_events)
-    const;
+    std::future<void>
+    subscribeMissionProgressAsync(std::vector<std::pair<int, int>> &progress_events) const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<MissionService::Stub> _stub;
@@ -555,7 +554,7 @@ TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)
 {
     dc::Mission::progress_callback_t progress_callback;
     EXPECT_CALL(_mission, subscribe_progress(_))
-    .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
+        .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
     std::vector<std::pair<int, int>> progress_events;
 
     auto progress_events_future = subscribeMissionProgressAsync(progress_events);
@@ -574,7 +573,8 @@ std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
 
         dronecore::rpc::mission::MissionProgressResponse response;
         while (response_reader->Read(&response)) {
-            auto progress_event = std::make_pair(response.current_item_index(), response.mission_count());
+            auto progress_event =
+                std::make_pair(response.current_item_index(), response.mission_count());
 
             progress_events.push_back(progress_event);
         }
@@ -587,7 +587,7 @@ TEST_F(MissionServiceImplProgressTest, SendsMultipleMissionProgressEvents)
 {
     dc::Mission::progress_callback_t progress_callback;
     EXPECT_CALL(_mission, subscribe_progress(_))
-    .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
+        .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
 
     auto expected_mission_count = ARBITRARY_SMALL_INT;
     std::vector<std::pair<int, int>> expected_progress_events;

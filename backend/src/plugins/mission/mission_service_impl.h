@@ -250,9 +250,10 @@ private:
         return rpc_mission_result;
     }
 
-    grpc::Status SubscribeMissionProgress(grpc::ServerContext * /* context */,
-                                          const dronecore::rpc::mission::SubscribeMissionProgressRequest * /* request */,
-                                          grpc::ServerWriter<rpc::mission::MissionProgressResponse> *writer) override
+    grpc::Status SubscribeMissionProgress(
+        grpc::ServerContext * /* context */,
+        const dronecore::rpc::mission::SubscribeMissionProgressRequest * /* request */,
+        grpc::ServerWriter<rpc::mission::MissionProgressResponse> *writer) override
     {
         std::promise<void> mission_finished_promise;
         auto mission_finished_future = mission_finished_promise.get_future();
