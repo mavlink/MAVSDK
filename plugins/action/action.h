@@ -23,8 +23,7 @@ class ActionImpl;
  * error.
  * If the command is accepted, the vehicle will then start to perform the associated action.
  */
-class Action : public PluginBase
-{
+class Action : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -111,8 +110,8 @@ public:
      * @brief Send command to transition the drone to fixedwing.
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the
-     * command will fail with an ActionResult). The command will succeed if called when the vehicle is
-     * already in fixedwing mode.
+     * command will fail with an ActionResult). The command will succeed if called when the vehicle
+     * is already in fixedwing mode.
      *
      * @return ActionResult of request.
      */
@@ -122,8 +121,8 @@ public:
      * @brief Send command to transition the drone to multicopter.
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the
-     * command will fail with an ActionResult). The command will succeed if called when the vehicle is
-     * already in multicopter mode.
+     * command will fail with an ActionResult). The command will succeed if called when the vehicle
+     * is already in multicopter mode.
      *
      * @return ActionResult of request.
      */
@@ -201,8 +200,8 @@ public:
      * @brief Send command to transition the drone to fixedwing (asynchronous).
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the
-     * command will fail with an ActionResult). The command will succeed if called when the vehicle is
-     * already in fixedwing mode.
+     * command will fail with an ActionResult). The command will succeed if called when the vehicle
+     * is already in fixedwing mode.
      *
      * @param callback Function to call with result of request.
      */
@@ -212,8 +211,8 @@ public:
      * @brief Send command to transition the drone to multicopter (asynchronous).
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the
-     * command will fail with an ActionResult). The command will succeed if called when the vehicle is
-     * already in multicopter mode.
+     * command will fail with an ActionResult). The command will succeed if called when the vehicle
+     * is already in multicopter mode.
      *
      * @param callback Function to call with result of request.
      */

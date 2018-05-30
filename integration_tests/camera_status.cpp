@@ -8,12 +8,9 @@
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 
-
 static void receive_camera_status(Camera::Result result, const Camera::Status status);
 
-static std::atomic<bool> _received_status {false};
-
-
+static std::atomic<bool> _received_status{false};
 
 TEST(CameraTest, Status)
 {
@@ -32,7 +29,6 @@ TEST(CameraTest, Status)
     std::this_thread::sleep_for(std::chrono::seconds(5));
     EXPECT_TRUE(_received_status);
 }
-
 
 static void receive_camera_status(Camera::Result result, const Camera::Status status)
 {

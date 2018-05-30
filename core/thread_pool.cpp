@@ -2,10 +2,7 @@
 
 namespace dronecore {
 
-ThreadPool::ThreadPool(unsigned num_threads) :
-    _num_threads(num_threads)
-{
-}
+ThreadPool::ThreadPool(unsigned num_threads) : _num_threads(num_threads) {}
 
 ThreadPool::~ThreadPool()
 {
@@ -49,6 +46,5 @@ void ThreadPool::worker()
         }
     }
 }
-
 
 } // namespace dronecore

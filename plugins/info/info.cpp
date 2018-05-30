@@ -3,15 +3,9 @@
 
 namespace dronecore {
 
-Info::Info(System &system) :
-    PluginBase(),
-    _impl { new InfoImpl(system) }
-{
-}
+Info::Info(System &system) : PluginBase(), _impl{new InfoImpl(system)} {}
 
-Info::~Info()
-{
-}
+Info::~Info() {}
 
 uint64_t Info::uuid() const
 {

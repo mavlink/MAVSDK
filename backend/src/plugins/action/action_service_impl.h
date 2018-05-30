@@ -4,12 +4,10 @@
 namespace dronecore {
 namespace backend {
 
-template <typename Action = Action>
-class ActionServiceImpl final : public rpc::action::ActionService::Service
-{
+template<typename Action = Action>
+class ActionServiceImpl final : public rpc::action::ActionService::Service {
 public:
-    ActionServiceImpl(Action &action)
-        : _action(action) {}
+    ActionServiceImpl(Action &action) : _action(action) {}
 
     grpc::Status Arm(grpc::ServerContext * /* context */,
                      const rpc::action::ArmRequest * /* request */,
@@ -24,7 +22,7 @@ public:
         return grpc::Status::OK;
     }
 
-    template <typename ResponseType>
+    template<typename ResponseType>
     void fillResponseWithResult(ResponseType *response, ActionResult &action_result) const
     {
         auto rpc_result = static_cast<rpc::action::ActionResult::Result>(action_result);
@@ -101,9 +99,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status TransitionToFixedWing(grpc::ServerContext * /* context */,
-                                       const rpc::action::TransitionToFixedWingRequest * /* request */,
-                                       rpc::action::TransitionToFixedWingResponse *response) override
+    grpc::Status
+    TransitionToFixedWing(grpc::ServerContext * /* context */,
+                          const rpc::action::TransitionToFixedWingRequest * /* request */,
+                          rpc::action::TransitionToFixedWingResponse *response) override
     {
         auto action_result = _action.transition_to_fixedwing();
 
@@ -114,9 +113,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status TransitionToMulticopter(grpc::ServerContext * /* context */,
-                                         const rpc::action::TransitionToMulticopterRequest * /* request */,
-                                         rpc::action::TransitionToMulticopterResponse *response) override
+    grpc::Status
+    TransitionToMulticopter(grpc::ServerContext * /* context */,
+                            const rpc::action::TransitionToMulticopterRequest * /* request */,
+                            rpc::action::TransitionToMulticopterResponse *response) override
     {
         auto action_result = _action.transition_to_multicopter();
 
@@ -139,9 +139,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetTakeoffAltitude(grpc::ServerContext * /* context */,
-                                    const rpc::action::SetTakeoffAltitudeRequest *request,
-                                    rpc::action::SetTakeoffAltitudeResponse * /* response */) override
+    grpc::Status
+    SetTakeoffAltitude(grpc::ServerContext * /* context */,
+                       const rpc::action::SetTakeoffAltitudeRequest *request,
+                       rpc::action::SetTakeoffAltitudeResponse * /* response */) override
     {
         if (request != nullptr) {
             const auto requested_altitude = request->altitude_m();

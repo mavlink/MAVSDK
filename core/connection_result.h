@@ -67,4 +67,4 @@ inline const char *connection_result_str(const ConnectionResult result)
     }
 }
 
-} // dronecore
+} // namespace dronecore

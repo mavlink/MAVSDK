@@ -7,14 +7,14 @@
 namespace dronecore {
 namespace backend {
 
-template <typename DroneCore = DroneCore>
-class CoreServiceImpl final: public dronecore::rpc::core::CoreService::Service
-{
+template<typename DroneCore = DroneCore>
+class CoreServiceImpl final : public dronecore::rpc::core::CoreService::Service {
 public:
-    CoreServiceImpl(DroneCore &dc)
-        : _dc(dc),
-          _stop_promise(std::promise<void>()),
-          _stop_future(_stop_promise.get_future()) {}
+    CoreServiceImpl(DroneCore &dc) :
+        _dc(dc),
+        _stop_promise(std::promise<void>()),
+        _stop_future(_stop_promise.get_future())
+    {}
 
     grpc::Status SubscribeDiscover(grpc::ServerContext * /* context */,
                                    const rpc::core::SubscribeDiscoverRequest * /* request */,
@@ -43,12 +43,14 @@ public:
         return grpc::Status::OK;
     }
 
-    // For now, the running plugins are hardcoded and we assume they are always started by the backend.
-    grpc::Status ListRunningPlugins(grpc::ServerContext * /* context */,
-                                    const rpc::core::ListRunningPluginsRequest * /* request */,
-                                    dronecore::rpc::core::ListRunningPluginsResponse *response) override
+    // For now, the running plugins are hardcoded and we assume they are always started by the
+    // backend.
+    grpc::Status
+    ListRunningPlugins(grpc::ServerContext * /* context */,
+                       const rpc::core::ListRunningPluginsRequest * /* request */,
+                       dronecore::rpc::core::ListRunningPluginsResponse *response) override
     {
-        std::string plugin_names[3] = { "action", "mission", "telemetry" };
+        std::string plugin_names[3] = {"action", "mission", "telemetry"};
 
         for (const auto plugin_name : plugin_names) {
             auto plugin_info = response->add_plugin_info();
@@ -60,10 +62,7 @@ public:
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
-        _stop_promise.set_value();
-    }
+    void stop() { _stop_promise.set_value(); }
 
 private:
     DroneCore &_dc;

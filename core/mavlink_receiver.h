@@ -6,25 +6,15 @@
 
 namespace dronecore {
 
-class MAVLinkReceiver
-{
+class MAVLinkReceiver {
 public:
     explicit MAVLinkReceiver(uint8_t channel);
 
-    uint8_t get_channel()
-    {
-        return _channel;
-    }
+    uint8_t get_channel() { return _channel; }
 
-    mavlink_message_t &get_last_message()
-    {
-        return _last_message;
-    }
+    mavlink_message_t &get_last_message() { return _last_message; }
 
-    mavlink_status_t &get_status()
-    {
-        return _status;
-    }
+    mavlink_status_t &get_status() { return _status; }
 
     void set_new_datagram(char *datagram, unsigned datagram_len);
 
@@ -32,8 +22,11 @@ public:
 
 #if DROP_DEBUG == 1
     void debug_drop_rate();
-    void print_line(const char *index, unsigned count, unsigned count_total,
-                    unsigned overall_bytes, unsigned overall_bytes_total);
+    void print_line(const char *index,
+                    unsigned count,
+                    unsigned count_total,
+                    unsigned overall_bytes,
+                    unsigned overall_bytes_total);
 #endif
 
 private:
@@ -47,7 +40,7 @@ private:
     unsigned _bytes_received = 0;
 
     unsigned _bytes_sent_overall = 0;
-    //unsigned _bytes_at_gimbal_overall = 0;
+    // unsigned _bytes_at_gimbal_overall = 0;
     unsigned _bytes_at_camera_overall = 0;
     unsigned _bytes_at_sdk_overall = 0;
 

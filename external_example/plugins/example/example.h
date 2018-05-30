@@ -7,8 +7,7 @@ namespace dronecore {
 class System;
 class ExampleImpl;
 
-class Example : public PluginBase
-{
+class Example : public PluginBase {
 public:
     explicit Example(System &system);
     ~Example();

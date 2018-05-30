@@ -13,7 +13,7 @@ TEST(LockedQueue, FillAndEmpty)
     int two = 2;
     int three = 3;
 
-    LockedQueue<int> locked_queue {};
+    LockedQueue<int> locked_queue{};
 
     locked_queue.push_back(one);
     EXPECT_EQ(locked_queue.size(), 1);
@@ -38,7 +38,7 @@ TEST(LockedQueue, BorrowAndReturn)
     int two = 2;
     int three = 3;
 
-    LockedQueue<int> locked_queue {};
+    LockedQueue<int> locked_queue{};
 
     locked_queue.push_back(one);
     locked_queue.push_back(two);
@@ -71,7 +71,7 @@ TEST(LockedQueue, ConcurrantAccess)
     int one = 1;
     int two = 2;
 
-    LockedQueue<int> locked_queue {};
+    LockedQueue<int> locked_queue{};
 
     locked_queue.push_back(one);
     locked_queue.push_back(two);
@@ -82,8 +82,7 @@ TEST(LockedQueue, ConcurrantAccess)
     auto prom = std::make_shared<std::promise<void>>();
     auto fut = prom->get_future();
 
-    auto some_future = std::async(std::launch::async,
-    [&prom, &locked_queue]() {
+    auto some_future = std::async(std::launch::async, [&prom, &locked_queue]() {
         // This will wait in the lock until the first item is returned.
         auto second_borrowed_item = locked_queue.borrow_front();
         locked_queue.return_front();

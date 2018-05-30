@@ -15,8 +15,7 @@ namespace dronecore {
 
 class System;
 
-class TelemetryImpl : public PluginImplBase
-{
+class TelemetryImpl : public PluginImplBase {
 public:
     TelemetryImpl(System &system);
     ~TelemetryImpl();
@@ -118,9 +117,8 @@ private:
 
     void receive_rc_channels_timeout();
 
-
-    static Telemetry::Result telemetry_result_from_command_result(
-        MAVLinkCommands::Result command_result);
+    static Telemetry::Result
+    telemetry_result_from_command_result(MAVLinkCommands::Result command_result);
 
     static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Telemetry::result_callback_t &callback);

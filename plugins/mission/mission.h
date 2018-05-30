@@ -14,8 +14,7 @@ class System;
 /**
  * @brief The Mission class enables waypoint missions.
  */
-class Mission : public PluginBase
-{
+class Mission : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -81,7 +80,8 @@ public:
      *
      * @param[out] mission_items Vector of mission items imported from QGC plan.
      * @param qgc_plan_file File path of the QGC plan.
-     * @sa [QGroundControl Plan file format](https://dev.qgroundcontrol.com/en/file_formats/plan.html) (QGroundControl Dev Guide)
+     * @sa [QGroundControl Plan file
+     * format](https://dev.qgroundcontrol.com/en/file_formats/plan.html) (QGroundControl Dev Guide)
      * @return Result::SUCCESS if successful in importing QGC mission items.
      *     Otherwise one of the error codes: Result::FAILED_TO_OPEN_QGC_PLAN,
      *     Result::FAILED_TO_PARSE_QGC_PLAN, Result::UNSUPPORTED_MISSION_CMD.
@@ -105,7 +105,7 @@ public:
      * @brief Callback type for `download_mission_async()` call to get mission items and result.
      */
     typedef std::function<void(Result, std::vector<std::shared_ptr<MissionItem>>)>
-    mission_items_and_result_callback_t;
+        mission_items_and_result_callback_t;
 
     /**
      * @brief Downloads a vector of mission items from the system (asynchronous).
@@ -200,8 +200,8 @@ public:
      */
     Mission(const Mission &) = delete;
     /**
-    * @brief Equality operator (object is not copyable).
-    */
+     * @brief Equality operator (object is not copyable).
+     */
     const Mission &operator=(const Mission &) = delete;
 
 private:

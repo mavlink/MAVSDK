@@ -11,17 +11,16 @@
 
 #ifndef WINDOWS
 // Remove path and extract only filename.
-#define __FILENAME__ (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
+#define __FILENAME__ \
+    (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
 #else
-#define __FILENAME__  __FILE__
+#define __FILENAME__ __FILE__
 #endif
 
 // For release builds, don't show debug printfs, and just discard it into the NullStream.
-class NullStream
-{
+class NullStream {
 public:
-    template<typename TPrintable>
-    NullStream &operator<<(TPrintable const &)
+    template<typename TPrintable> NullStream &operator<<(TPrintable const &)
     {
         /* no-op */
         static NullStream nothing;
@@ -35,36 +34,25 @@ public:
 #define LogDebug() NullStream()
 #endif
 
-
 #define LogInfo() LogInfoDetailed(__FILENAME__, __LINE__)
 #define LogWarn() LogWarnDetailed(__FILENAME__, __LINE__)
 #define LogErr() LogErrDetailed(__FILENAME__, __LINE__)
 
-
 namespace dronecore {
 
-enum class Color {
-    RED,
-    GREEN,
-    YELLOW,
-    BLUE,
-    GRAY,
-    RESET
-};
+enum class Color { RED, GREEN, YELLOW, BLUE, GRAY, RESET };
 
 void set_color(Color color);
 
-
-class LogDetailed
-{
+class LogDetailed {
 public:
-    LogDetailed(const char *filename, int filenumber) : _s(),
+    LogDetailed(const char *filename, int filenumber) :
+        _s(),
         _caller_filename(filename),
         _caller_filenumber(filenumber)
     {}
 
-    template <typename T>
-    LogDetailed &operator << (const T &x)
+    template<typename T> LogDetailed &operator<<(const T &x)
     {
         _s << x;
         return *this;
@@ -112,7 +100,7 @@ public:
         time_t rawtime;
         time(&rawtime);
         struct tm *timeinfo = localtime(&rawtime);
-        char time_buffer[10] {}; // We need 8 characters + \0
+        char time_buffer[10]{}; // We need 8 characters + \0
         strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S", timeinfo);
         std::cout << "[" << time_buffer;
 
@@ -141,12 +129,7 @@ public:
     }
 
 protected:
-    enum LogLevel {
-        Debug,
-        Info,
-        Warn,
-        Err
-    } _log_level;
+    enum LogLevel { Debug, Info, Warn, Err } _log_level;
 
 private:
     std::stringstream _s;
@@ -154,41 +137,33 @@ private:
     int _caller_filenumber;
 };
 
-class LogDebugDetailed : public LogDetailed
-{
+class LogDebugDetailed : public LogDetailed {
 public:
-    LogDebugDetailed(const char *filename, int filenumber) :
-        LogDetailed(filename, filenumber)
+    LogDebugDetailed(const char *filename, int filenumber) : LogDetailed(filename, filenumber)
     {
         _log_level = LogLevel::Debug;
     }
 };
 
-class LogInfoDetailed : public LogDetailed
-{
+class LogInfoDetailed : public LogDetailed {
 public:
-    LogInfoDetailed(const char *filename, int filenumber) :
-        LogDetailed(filename, filenumber)
+    LogInfoDetailed(const char *filename, int filenumber) : LogDetailed(filename, filenumber)
     {
         _log_level = LogLevel::Info;
     }
 };
 
-class LogWarnDetailed : public LogDetailed
-{
+class LogWarnDetailed : public LogDetailed {
 public:
-    LogWarnDetailed(const char *filename, int filenumber) :
-        LogDetailed(filename, filenumber)
+    LogWarnDetailed(const char *filename, int filenumber) : LogDetailed(filename, filenumber)
     {
         _log_level = LogLevel::Warn;
     }
 };
 
-class LogErrDetailed : public LogDetailed
-{
+class LogErrDetailed : public LogDetailed {
 public:
-    LogErrDetailed(const char *filename, int filenumber) :
-        LogDetailed(filename, filenumber)
+    LogErrDetailed(const char *filename, int filenumber) : LogDetailed(filename, filenumber)
     {
         _log_level = LogLevel::Err;
     }

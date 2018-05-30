@@ -1,17 +1,17 @@
 /**
-* @file fly_mission.cpp
-*
-* @brief Demonstrates how to Add & Fly Waypoint missions using DroneCore.
-* The example is summarised below:
-* 1. Adds mission items.
-* 2. Starts mission from first mission item.
-* 3. Illustrates Pause/Resume mission item.
-* 4. Exits after the mission is accomplished.
-*
-* @author Julian Oes <julian@oes.ch>,
-*         Shakthi Prashanth M <shakthi.prashanth.m@intel.com>
-* @date 2017-09-06
-*/
+ * @file fly_mission.cpp
+ *
+ * @brief Demonstrates how to Add & Fly Waypoint missions using DroneCore.
+ * The example is summarised below:
+ * 1. Adds mission items.
+ * 2. Starts mission from first mission item.
+ * 3. Illustrates Pause/Resume mission item.
+ * 4. Exits after the mission is accomplished.
+ *
+ * @author Julian Oes <julian@oes.ch>,
+ *         Shakthi Prashanth M <shakthi.prashanth.m@intel.com>
+ * @date 2017-09-06
+ */
 
 #include <dronecore/action.h>
 #include <dronecore/dronecore.h>
@@ -22,9 +22,9 @@
 #include <iostream>
 #include <memory>
 
-#define ERROR_CONSOLE_TEXT "\033[31m" //Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
+#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
+#define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
+#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
@@ -36,8 +36,7 @@ inline void handle_action_err_exit(ActionResult result, const std::string &messa
 // Handles Mission's result
 inline void handle_mission_err_exit(Mission::Result result, const std::string &message);
 // Handles Connection result
-inline void handle_connection_err_exit(ConnectionResult result,
-                                       const std::string &message);
+inline void handle_connection_err_exit(ConnectionResult result, const std::string &message);
 
 static std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
                                                       double longitude_deg,
@@ -57,7 +56,6 @@ void usage(std::string bin_name)
               << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
-
 
 int main(int argc, char **argv)
 {
@@ -85,8 +83,8 @@ int main(int argc, char **argv)
         }
 
         if (connection_result != ConnectionResult::SUCCESS) {
-            std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
-                      << connection_result_str(connection_result)
+            std::cout << ERROR_CONSOLE_TEXT
+                      << "Connection failed: " << connection_result_str(connection_result)
                       << NORMAL_CONSOLE_TEXT << std::endl;
             return 1;
         }
@@ -118,46 +116,59 @@ int main(int argc, char **argv)
 
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
-    mission_items.push_back(
-        make_mission_item(47.398170327054473,
-                          8.5456490218639658,
-                          10.0f, 5.0f, false,
-                          20.0f, 60.0f,
-                          MissionItem::CameraAction::NONE));
+    mission_items.push_back(make_mission_item(47.398170327054473,
+                                              8.5456490218639658,
+                                              10.0f,
+                                              5.0f,
+                                              false,
+                                              20.0f,
+                                              60.0f,
+                                              MissionItem::CameraAction::NONE));
 
-    mission_items.push_back(
-        make_mission_item(47.398241338125118,
-                          8.5455360114574432,
-                          10.0f, 2.0f, true,
-                          0.0f, -60.0f,
-                          MissionItem::CameraAction::TAKE_PHOTO));
+    mission_items.push_back(make_mission_item(47.398241338125118,
+                                              8.5455360114574432,
+                                              10.0f,
+                                              2.0f,
+                                              true,
+                                              0.0f,
+                                              -60.0f,
+                                              MissionItem::CameraAction::TAKE_PHOTO));
 
-    mission_items.push_back(
-        make_mission_item(47.398139363821485, 8.5453846156597137,
-                          10.0f, 5.0f, true,
-                          -45.0f, 0.0f,
-                          MissionItem::CameraAction::START_VIDEO));
+    mission_items.push_back(make_mission_item(47.398139363821485,
+                                              8.5453846156597137,
+                                              10.0f,
+                                              5.0f,
+                                              true,
+                                              -45.0f,
+                                              0.0f,
+                                              MissionItem::CameraAction::START_VIDEO));
 
-    mission_items.push_back(
-        make_mission_item(47.398058617228855,
-                          8.5454618036746979,
-                          10.0f, 2.0f, false,
-                          -90.0f, 30.0f,
-                          MissionItem::CameraAction::STOP_VIDEO));
+    mission_items.push_back(make_mission_item(47.398058617228855,
+                                              8.5454618036746979,
+                                              10.0f,
+                                              2.0f,
+                                              false,
+                                              -90.0f,
+                                              30.0f,
+                                              MissionItem::CameraAction::STOP_VIDEO));
 
-    mission_items.push_back(
-        make_mission_item(47.398100366082858,
-                          8.5456969141960144,
-                          10.0f, 5.0f, false,
-                          -45.0f, -30.0f,
-                          MissionItem::CameraAction::START_PHOTO_INTERVAL));
+    mission_items.push_back(make_mission_item(47.398100366082858,
+                                              8.5456969141960144,
+                                              10.0f,
+                                              5.0f,
+                                              false,
+                                              -45.0f,
+                                              -30.0f,
+                                              MissionItem::CameraAction::START_PHOTO_INTERVAL));
 
-    mission_items.push_back(
-        make_mission_item(47.398001890458097,
-                          8.5455576181411743,
-                          10.0f, 5.0f, false,
-                          0.0f, 0.0f,
-                          MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
+    mission_items.push_back(make_mission_item(47.398001890458097,
+                                              8.5455576181411743,
+                                              10.0f,
+                                              5.0f,
+                                              false,
+                                              0.0f,
+                                              0.0f,
+                                              MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
 
     {
         std::cout << "Uploading mission..." << std::endl;
@@ -165,14 +176,13 @@ int main(int argc, char **argv)
         // std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(
-        mission_items, [prom](Mission::Result result) {
-            prom->set_value(result);
-        });
+        mission->upload_mission_async(mission_items,
+                                      [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::SUCCESS) {
-            std::cout << "Mission upload failed (" << Mission::result_str(result) << "), exiting." << std::endl;
+            std::cout << "Mission upload failed (" << Mission::result_str(result) << "), exiting."
+                      << std::endl;
             return 1;
         }
         std::cout << "Mission uploaded." << std::endl;
@@ -183,10 +193,9 @@ int main(int argc, char **argv)
     handle_action_err_exit(arm_result, "Arm failed: ");
     std::cout << "Armed." << std::endl;
 
-    std::atomic<bool> want_to_pause {false};
+    std::atomic<bool> want_to_pause{false};
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
-    mission->subscribe_progress(
-    [&want_to_pause](int current, int total) {
+    mission->subscribe_progress([&want_to_pause](int current, int total) {
         std::cout << "Mission status update: " << current << " / " << total << std::endl;
 
         if (current >= 2) {
@@ -200,8 +209,7 @@ int main(int argc, char **argv)
         std::cout << "Starting mission." << std::endl;
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->start_mission_async(
-        [prom](Mission::Result result) {
+        mission->start_mission_async([prom](Mission::Result result) {
             prom->set_value(result);
             std::cout << "Started mission." << std::endl;
         });
@@ -219,14 +227,12 @@ int main(int argc, char **argv)
         auto future_result = prom->get_future();
 
         std::cout << "Pausing mission..." << std::endl;
-        mission->pause_mission_async(
-        [prom](Mission::Result result) {
-            prom->set_value(result);
-        });
+        mission->pause_mission_async([prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::SUCCESS) {
-            std::cout << "Failed to pause mission (" << Mission::result_str(result) << ")" << std::endl;
+            std::cout << "Failed to pause mission (" << Mission::result_str(result) << ")"
+                      << std::endl;
         } else {
             std::cout << "Mission paused." << std::endl;
         }
@@ -241,14 +247,12 @@ int main(int argc, char **argv)
         auto future_result = prom->get_future();
 
         std::cout << "Resuming mission..." << std::endl;
-        mission->start_mission_async(
-        [prom](Mission::Result result) {
-            prom->set_value(result);
-        });
+        mission->start_mission_async([prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::SUCCESS) {
-            std::cout << "Failed to resume mission (" << Mission::result_str(result) << ")" << std::endl;
+            std::cout << "Failed to resume mission (" << Mission::result_str(result) << ")"
+                      << std::endl;
         } else {
             std::cout << "Resumed mission." << std::endl;
         }
@@ -301,8 +305,8 @@ std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
 inline void handle_action_err_exit(ActionResult result, const std::string &message)
 {
     if (result != ActionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(
-                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -310,22 +314,18 @@ inline void handle_action_err_exit(ActionResult result, const std::string &messa
 inline void handle_mission_err_exit(Mission::Result result, const std::string &message)
 {
     if (result != Mission::Result::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(
-                      result) << NORMAL_CONSOLE_TEXT << std::endl;
-        exit(EXIT_FAILURE);
-    }
-}
-
-// Handles connection result
-inline void handle_connection_err_exit(ConnectionResult result,
-                                       const std::string &message)
-{
-    if (result != ConnectionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message
-                  << connection_result_str(result)
+        std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
-
+// Handles connection result
+inline void handle_connection_err_exit(ConnectionResult result, const std::string &message)
+{
+    if (result != ConnectionResult::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}

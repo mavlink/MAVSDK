@@ -11,7 +11,7 @@
 using namespace dronecore;
 using namespace std::placeholders;
 
-static std::atomic<bool> task_one_ran {false};
+static std::atomic<bool> task_one_ran{false};
 
 static Time our_time;
 
@@ -37,13 +37,11 @@ TEST(ThreadPool, SimpleTask)
 
 static void add_first_to_second(int arg1, int &arg2)
 {
-
     arg2 += arg1;
 }
 
 TEST(ThreadPool, SimpleTaskWithArgs)
 {
-
     ThreadPool tp(3);
     ASSERT_TRUE(tp.start());
 
@@ -59,7 +57,6 @@ TEST(ThreadPool, SimpleTaskWithArgs)
 
 TEST(ThreadPool, LambdaWithArgs)
 {
-
     ThreadPool tp(3);
     ASSERT_TRUE(tp.start());
 
@@ -67,9 +64,7 @@ TEST(ThreadPool, LambdaWithArgs)
     int second = 10;
     const int sum = first + second;
 
-    tp.enqueue([first, &second]() {
-        second += first;
-    });
+    tp.enqueue([first, &second]() { second += first; });
 
     our_time.sleep_for(std::chrono::milliseconds(250));
     EXPECT_EQ(second, sum);
@@ -77,17 +72,14 @@ TEST(ThreadPool, LambdaWithArgs)
 
 TEST(ThreadPool, ManyTasks)
 {
-
     ThreadPool tp(3);
     ASSERT_TRUE(tp.start());
 
     const int tasks_num = 100;
-    int tasks[tasks_num] {};
+    int tasks[tasks_num]{};
 
     for (int i = 0; i < tasks_num; ++i) {
-        tp.enqueue([&tasks, i]() {
-            tasks[i] = i;
-        });
+        tp.enqueue([&tasks, i]() { tasks[i] = i; });
     }
 
     our_time.sleep_for(std::chrono::milliseconds(250));

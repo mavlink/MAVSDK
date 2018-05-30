@@ -2,7 +2,6 @@
 #include "global_include.h"
 #include "log.h"
 
-
 #if defined(LINUX)
 #include <unistd.h>
 #include <fcntl.h>
@@ -26,15 +25,14 @@ std::string GetLastErrorStdStr()
     DWORD error = GetLastError();
     if (error) {
         LPVOID lpMsgBuf;
-        DWORD bufLen = FormatMessage(
-                           FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                           FORMAT_MESSAGE_FROM_SYSTEM |
-                           FORMAT_MESSAGE_IGNORE_INSERTS,
-                           NULL,
-                           error,
-                           MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                           (LPTSTR) &lpMsgBuf,
-                           0, NULL);
+        DWORD bufLen = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
+                                         FORMAT_MESSAGE_IGNORE_INSERTS,
+                                     NULL,
+                                     error,
+                                     MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                                     (LPTSTR)&lpMsgBuf,
+                                     0,
+                                     NULL);
         if (bufLen) {
             LPCSTR lpMsgStr = (LPCSTR)lpMsgBuf;
             std::string result(lpMsgStr, lpMsgStr + bufLen);
@@ -51,10 +49,12 @@ std::string GetLastErrorStdStr()
 namespace dronecore {
 
 SerialConnection::SerialConnection(Connection::receiver_callback_t receiver_callback,
-                                   const std::string &path, int baudrate):
+                                   const std::string &path,
+                                   int baudrate) :
     Connection(receiver_callback),
     _serial_node(path),
-    _baudrate(baudrate) {}
+    _baudrate(baudrate)
+{}
 
 SerialConnection::~SerialConnection()
 {
@@ -102,11 +102,11 @@ ConnectionResult SerialConnection::setup_port()
 #elif defined(WINDOWS)
     _handle = CreateFile(_serial_node.c_str(),
                          GENERIC_READ | GENERIC_WRITE,
-                         0,      // exclusive-access
-                         NULL,   //  default security attributes
+                         0, // exclusive-access
+                         NULL, //  default security attributes
                          OPEN_EXISTING,
-                         0,      //  not overlapped I/O
-                         NULL);  //  hTemplate must be NULL for comm devices
+                         0, //  not overlapped I/O
+                         NULL); //  hTemplate must be NULL for comm devices
 
     if (_handle == INVALID_HANDLE_VALUE) {
         LogErr() << "CreateFile failed with: " << GET_ERROR();
@@ -156,7 +156,6 @@ ConnectionResult SerialConnection::setup_port()
         return ConnectionResult::CONNECTION_ERROR;
     }
 
-
     if (ioctl(_fd, TCFLSH, TCIOFLUSH) == -1) {
         LogErr() << "Could not flush terminal " << GET_ERROR();
         close(_fd);
@@ -187,7 +186,7 @@ ConnectionResult SerialConnection::setup_port()
 
     dcb.BaudRate = _baudrate;
     dcb.ByteSize = 8;
-    dcb.Parity   = NOPARITY;
+    dcb.Parity = NOPARITY;
     dcb.StopBits = ONESTOPBIT;
     dcb.fDtrControl = DTR_CONTROL_DISABLE;
     dcb.fRtsControl = RTS_CONTROL_DISABLE;
@@ -197,13 +196,12 @@ ConnectionResult SerialConnection::setup_port()
     dcb.fNull = FALSE;
     dcb.fDsrSensitivity = FALSE;
 
-
     if (!SetCommState(_handle, &dcb)) {
-        LogErr() << "SetCommState failed with error: " <<  GET_ERROR();
+        LogErr() << "SetCommState failed with error: " << GET_ERROR();
         return ConnectionResult::CONNECTION_ERROR;
     }
 
-    COMMTIMEOUTS timeout = { 0 };
+    COMMTIMEOUTS timeout = {0};
     timeout.ReadIntervalTimeout = 1;
     timeout.ReadTotalTimeoutConstant = 1;
     timeout.ReadTotalTimeoutMultiplier = 1;
@@ -212,7 +210,7 @@ ConnectionResult SerialConnection::setup_port()
     SetCommTimeouts(_handle, &timeout);
 
     if (!SetCommTimeouts(_handle, &timeout)) {
-        LogErr() << "SetCommTimeouts failed with error: " <<  GET_ERROR();
+        LogErr() << "SetCommTimeouts failed with error: " << GET_ERROR();
         return ConnectionResult::CONNECTION_ERROR;
     }
 
@@ -265,7 +263,7 @@ bool SerialConnection::send_message(const mavlink_message_t &message)
 
     int send_len;
 #if defined(LINUX) || defined(APPLE)
-    send_len =  write(_fd, buffer, buffer_len);
+    send_len = write(_fd, buffer, buffer_len);
 #else
     if (!WriteFile(_handle, buffer, buffer_len, LPDWORD(&send_len), NULL)) {
         LogErr() << "WriteFile failure: " << GET_ERROR();

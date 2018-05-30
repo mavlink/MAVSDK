@@ -3,20 +3,22 @@
 
 namespace dronecore {
 
-MAVLinkParameters::MAVLinkParameters(SystemImpl &parent) :
-    _parent(parent)
+MAVLinkParameters::MAVLinkParameters(SystemImpl &parent) : _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_VALUE,
-        std::bind(&MAVLinkParameters::process_param_value, this, std::placeholders::_1), this);
+        std::bind(&MAVLinkParameters::process_param_value, this, std::placeholders::_1),
+        this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_VALUE,
-        std::bind(&MAVLinkParameters::process_param_ext_value, this, std::placeholders::_1), this);
+        std::bind(&MAVLinkParameters::process_param_ext_value, this, std::placeholders::_1),
+        this);
 
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_EXT_ACK,
-        std::bind(&MAVLinkParameters::process_param_ext_ack, this, std::placeholders::_1), this);
+        std::bind(&MAVLinkParameters::process_param_ext_ack, this, std::placeholders::_1),
+        this);
 }
 
 MAVLinkParameters::~MAVLinkParameters()
@@ -50,9 +52,7 @@ void MAVLinkParameters::set_param_async(const std::string &name,
     new_work.extended = extended;
 
     _set_param_queue.push_back(new_work);
-
 }
-
 
 void MAVLinkParameters::get_param_async(const std::string &name,
                                         get_param_callback_t callback,
@@ -77,7 +77,7 @@ void MAVLinkParameters::get_param_async(const std::string &name,
     _get_param_queue.push_back(new_work);
 }
 
-//void MAVLinkParameters::save_async()
+// void MAVLinkParameters::save_async()
 //{
 //    _parent.send_command(MAV_CMD_PREFLIGHT_STORAGE,
 //                          MAVLinkCommands::Params {1.0f, 1.0f, 0.0f, NAN, NAN, NAN, NAN});
@@ -112,7 +112,6 @@ void MAVLinkParameters::do_work()
 
         mavlink_message_t message = {};
         if (set_param_work->extended) {
-
             char param_value_buf[128] = {};
             set_param_work->param_value.get_128_bytes(param_value_buf);
 
@@ -150,14 +149,12 @@ void MAVLinkParameters::do_work()
         // _last_request_time = _parent.get_time().steady_time();
 
         // We want to get notified if a timeout happens
-        _parent.register_timeout_handler(std::bind(&MAVLinkParameters::receive_timeout, this),
-                                         0.5,
-                                         &_timeout_cookie);
+        _parent.register_timeout_handler(
+            std::bind(&MAVLinkParameters::receive_timeout, this), 0.5, &_timeout_cookie);
 
         _set_param_queue.return_front();
 
     } else {
-
         _set_param_queue.return_front();
 
         // The busy flag gets reset when the param comes in
@@ -180,7 +177,7 @@ void MAVLinkParameters::do_work()
                                                     -1);
 
         } else {
-            //LogDebug() << "request read: "
+            // LogDebug() << "request read: "
             //    << (int)GCSClient::system_id << ":"
             //    << (int)GCSClient::component_id <<
             //    " to "
@@ -210,9 +207,8 @@ void MAVLinkParameters::do_work()
         // _last_request_time = _parent.get_time().steady_time();
 
         // We want to get notified if a timeout happens
-        _parent.register_timeout_handler(std::bind(&MAVLinkParameters::receive_timeout, this),
-                                         0.5,
-                                         &_timeout_cookie);
+        _parent.register_timeout_handler(
+            std::bind(&MAVLinkParameters::receive_timeout, this), 0.5, &_timeout_cookie);
 
         _get_param_queue.return_front();
     }
@@ -232,11 +228,9 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
     }
 
     if (_state == State::GET_PARAM_BUSY) {
-
         auto work = _get_param_queue.borrow_front();
         if (work) {
             if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) == 0) {
-
                 if (work->callback) {
                     ParamValue value;
                     value.set_from_mavlink_param_value(param_value);
@@ -244,7 +238,8 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
                 }
                 _state = State::NONE;
                 _parent.unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << _parent.get_time().elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " <<
+                // _parent.get_time().elapsed_since_s(_last_request_time);
                 _get_param_queue.pop_front();
             } else {
                 // No match, let's just return the borrowed work item.
@@ -254,12 +249,10 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
     }
 
     else if (_state == State::SET_PARAM_BUSY) {
-
         auto work = _set_param_queue.borrow_front();
         if (work) {
             // Now it still needs to match the param name
             if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) == 0) {
-
                 // We are done, inform caller and go back to idle
                 if (work->callback) {
                     work->callback(true);
@@ -267,7 +260,8 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
 
                 _state = State::NONE;
                 _parent.unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << _parent.get_time().elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " <<
+                // _parent.get_time().elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
             } else {
                 _set_param_queue.return_front();
@@ -289,11 +283,9 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
     }
 
     if (_state == State::GET_PARAM_BUSY) {
-
         auto work = _get_param_queue.borrow_front();
         if (work) {
             if (strncmp(work->param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) == 0) {
-
                 if (work->callback) {
                     ParamValue value;
                     value.set_from_mavlink_param_ext_value(param_ext_value);
@@ -301,7 +293,8 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
                 }
                 _state = State::NONE;
                 _parent.unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << _parent.get_time().elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " <<
+                // _parent.get_time().elapsed_since_s(_last_request_time);
                 _get_param_queue.pop_front();
             } else {
                 _get_param_queue.return_front();
@@ -351,7 +344,6 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
     if (work) {
         // Now it still needs to match the param name
         if (strncmp(work->param_name.c_str(), param_ext_ack.param_id, PARAM_ID_LEN) == 0) {
-
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
                 // We are done, inform caller and go back to idle
                 if (work->callback) {
@@ -360,18 +352,18 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 
                 _state = State::NONE;
                 _parent.unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << _parent.get_time().elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " <<
+                // _parent.get_time().elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
 
             } else if (param_ext_ack.param_result == PARAM_ACK_IN_PROGRESS) {
-
                 // Reset timeout and wait again.
                 _parent.refresh_timeout_handler(_timeout_cookie);
                 _set_param_queue.return_front();
 
             } else {
-
-                LogErr() << "Somehow we did not get an ack, we got: " << int(param_ext_ack.param_result);
+                LogErr() << "Somehow we did not get an ack, we got: "
+                         << int(param_ext_ack.param_result);
 
                 // We are done but unsuccessful
                 // TODO: we need better error feedback
@@ -381,7 +373,8 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 
                 _state = State::NONE;
                 _parent.unregister_timeout_handler(_timeout_cookie);
-                // LogDebug() << "time taken: " << _parent.get_time().elapsed_since_s(_last_request_time);
+                // LogDebug() << "time taken: " <<
+                // _parent.get_time().elapsed_since_s(_last_request_time);
                 _set_param_queue.pop_front();
             }
         } else {
@@ -400,14 +393,14 @@ void MAVLinkParameters::receive_timeout()
     }
 
     if (_state == State::GET_PARAM_BUSY) {
-
         auto work = _get_param_queue.borrow_front();
         if (work) {
             if (work->callback) {
                 ParamValue empty_value;
                 // Notify about timeout
                 LogErr() << "Error: get param busy timeout: " << work->param_name;
-                // LogErr() << "Got it after: " << _parent.get_time().elapsed_since_s(_last_request_time);
+                // LogErr() << "Got it after: " <<
+                // _parent.get_time().elapsed_since_s(_last_request_time);
                 work->callback(false, empty_value);
             }
             _state = State::NONE;
@@ -416,7 +409,6 @@ void MAVLinkParameters::receive_timeout()
     }
 
     else if (_state == State::SET_PARAM_BUSY) {
-
         // This means work has been going on that we should try again
         if (_set_param_queue.size() > 0) {
             auto work = _set_param_queue.borrow_front();
@@ -424,7 +416,8 @@ void MAVLinkParameters::receive_timeout()
             if (work->callback) {
                 // Notify about timeout
                 LogErr() << "Error: set param busy timeout: " << work->param_name;
-                // LogErr() << "Got it after: " << _parent.get_time().elapsed_since_s(_last_request_time);
+                // LogErr() << "Got it after: " <<
+                // _parent.get_time().elapsed_since_s(_last_request_time);
                 work->callback(false);
             }
             _state = State::NONE;

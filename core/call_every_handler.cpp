@@ -2,14 +2,9 @@
 
 namespace dronecore {
 
-CallEveryHandler::CallEveryHandler(Time &time) :
-    _time(time)
-{
-}
+CallEveryHandler::CallEveryHandler(Time &time) : _time(time) {}
 
-CallEveryHandler::~CallEveryHandler()
-{
-}
+CallEveryHandler::~CallEveryHandler() {}
 
 void CallEveryHandler::add(std::function<void()> callback, float interval_s, void **cookie)
 {
@@ -66,13 +61,10 @@ void CallEveryHandler::run_once()
     _entries_mutex.lock();
 
     for (auto it = _entries.begin(); it != _entries.end(); ++it) {
-
         if (_time.elapsed_since_s(it->second->last_time) > double(it->second->interval_s)) {
-
             _time.shift_steady_time_by(it->second->last_time, double(it->second->interval_s));
 
             if (it->second->callback) {
-
                 // Get a copy for the callback because we unlock.
                 std::function<void()> callback = it->second->callback;
 

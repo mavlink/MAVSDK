@@ -16,8 +16,7 @@ static void receive_camera_result(Camera::Result result);
 
 static void check_interval_on(std::shared_ptr<Camera> camera, bool on);
 
-static std::atomic<bool> _received_result {false};
-
+static std::atomic<bool> _received_result{false};
 
 TEST(CameraTest, TakePhotoInterval)
 {
@@ -66,7 +65,6 @@ void receive_camera_result(Camera::Result result)
     _received_result = true;
     EXPECT_EQ(result, Camera::Result::SUCCESS);
 }
-
 
 void check_interval_on(std::shared_ptr<Camera> camera, bool on)
 {

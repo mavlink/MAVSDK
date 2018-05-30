@@ -15,18 +15,12 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-System::System(DroneCoreImpl &parent,
-               uint8_t system_id,
-               uint8_t component_id)
+System::System(DroneCoreImpl &parent, uint8_t system_id, uint8_t component_id)
 {
-    _system_impl = std::make_shared<SystemImpl>(parent,
-                                                system_id,
-                                                component_id);
+    _system_impl = std::make_shared<SystemImpl>(parent, system_id, component_id);
 }
 
-System::~System()
-{
-}
+System::~System() {}
 
 bool System::is_standalone() const
 {

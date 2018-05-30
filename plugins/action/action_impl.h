@@ -9,8 +9,7 @@
 
 namespace dronecore {
 
-class ActionImpl : public PluginImplBase
-{
+class ActionImpl : public PluginImplBase {
 public:
     ActionImpl(System &system);
     ~ActionImpl();
@@ -69,11 +68,11 @@ private:
     static void command_result_callback(MAVLinkCommands::Result command_result,
                                         const Action::result_callback_t &callback);
 
-    std::atomic<bool> _in_air_state_known {false};
-    std::atomic<bool> _in_air {false};
+    std::atomic<bool> _in_air_state_known{false};
+    std::atomic<bool> _in_air{false};
 
-    std::atomic<bool>_vtol_transition_support_known {false};
-    std::atomic<bool> _vtol_transition_possible {false};
+    std::atomic<bool> _vtol_transition_support_known{false};
+    std::atomic<bool> _vtol_transition_possible{false};
 
     float _relative_takeoff_altitude_m = 2.5f;
 

@@ -5,14 +5,9 @@
 
 namespace dronecore {
 
-DroneCore::DroneCore() :
-    _impl { new DroneCoreImpl() }
-{
-}
+DroneCore::DroneCore() : _impl{new DroneCoreImpl()} {}
 
-DroneCore::~DroneCore()
-{
-}
+DroneCore::~DroneCore() {}
 
 ConnectionResult DroneCore::add_any_connection(const std::string &connection_url)
 {
@@ -30,14 +25,12 @@ ConnectionResult DroneCore::add_udp_connection(const std::string &local_bind_ip,
     return _impl->add_udp_connection(local_bind_ip, local_port);
 }
 
-ConnectionResult DroneCore::add_tcp_connection(const std::string &remote_ip,
-                                               const int remote_port)
+ConnectionResult DroneCore::add_tcp_connection(const std::string &remote_ip, const int remote_port)
 {
     return _impl->add_tcp_connection(remote_ip, remote_port);
 }
 
-ConnectionResult DroneCore::add_serial_connection(const std::string &dev_path,
-                                                  const int baudrate)
+ConnectionResult DroneCore::add_serial_connection(const std::string &dev_path, const int baudrate)
 {
     return _impl->add_serial_connection(dev_path, baudrate);
 }

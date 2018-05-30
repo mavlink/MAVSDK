@@ -5,8 +5,7 @@
 namespace dronecore {
 namespace backend {
 
-class DroneCoreBackend
-{
+class DroneCoreBackend {
 public:
     DroneCoreBackend();
     ~DroneCoreBackend();

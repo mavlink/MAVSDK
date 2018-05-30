@@ -3,15 +3,9 @@
 
 namespace dronecore {
 
-Action::Action(System &system) :
-    PluginBase(),
-    _impl { new ActionImpl(system) }
-{
-}
+Action::Action(System &system) : PluginBase(), _impl{new ActionImpl(system)} {}
 
-Action::~Action()
-{
-}
+Action::~Action() {}
 
 ActionResult Action::arm() const
 {

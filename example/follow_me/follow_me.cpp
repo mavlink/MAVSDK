@@ -1,14 +1,14 @@
 /**
-* @file follow_me.cpp
-*
-* @brief Example that demonstrates the usage of Follow Me plugin.
-* The example registers with FakeLocationProvider for location updates
-* and sends them to the Follow Me plugin which are sent to drone. You can observe
-* drone following you. We print last location of the drone in flight mode callback.
-*
-* @author Shakthi Prashanth <shakthi.prashanth.m@intel.com>
-* @date 2018-01-03
-*/
+ * @file follow_me.cpp
+ *
+ * @brief Example that demonstrates the usage of Follow Me plugin.
+ * The example registers with FakeLocationProvider for location updates
+ * and sends them to the Follow Me plugin which are sent to drone. You can observe
+ * drone following you. We print last location of the drone in flight mode callback.
+ *
+ * @author Shakthi Prashanth <shakthi.prashanth.m@intel.com>
+ * @date 2018-01-03
+ */
 
 #include <chrono>
 #include <dronecore/action.h>
@@ -24,12 +24,12 @@
 using namespace dronecore;
 using namespace std::placeholders; // for `_1`
 using namespace std::chrono; // for seconds(), milliseconds(), etc
-using namespace std::this_thread;  // for sleep_for()
+using namespace std::this_thread; // for sleep_for()
 
 // For coloring output
-#define ERROR_CONSOLE_TEXT "\033[31m" //Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
+#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
+#define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
+#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
 inline void action_error_exit(ActionResult result, const std::string &message);
 inline void follow_me_error_exit(FollowMe::Result result, const std::string &message);
@@ -44,7 +44,6 @@ void usage(std::string bin_name)
               << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
-
 
 int main(int argc, char **argv)
 {
@@ -61,12 +60,11 @@ int main(int argc, char **argv)
     }
 
     if (connection_result != ConnectionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
-                  << connection_result_str(connection_result)
+        std::cout << ERROR_CONSOLE_TEXT
+                  << "Connection failed: " << connection_result_str(connection_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
-
 
     // Wait for the system to connect via heartbeat
     while (!dc.is_connected()) {
@@ -92,13 +90,14 @@ int main(int argc, char **argv)
     std::cout << "Armed" << std::endl;
 
     // Subscribe to receive updates on flight mode. You can find out whether FollowMe is active.
-    telemetry->flight_mode_async(
-    std::bind([&](Telemetry::FlightMode flight_mode) {
-        const FollowMe::TargetLocation last_location = follow_me->get_last_location();
-        std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
-                  << "] Vehicle is at: " << last_location.latitude_deg << ", "
-                  << last_location.longitude_deg << " degrees." << std::endl;
-    }, std::placeholders::_1));
+    telemetry->flight_mode_async(std::bind(
+        [&](Telemetry::FlightMode flight_mode) {
+            const FollowMe::TargetLocation last_location = follow_me->get_last_location();
+            std::cout << "[FlightMode: " << Telemetry::flight_mode_str(flight_mode)
+                      << "] Vehicle is at: " << last_location.latitude_deg << ", "
+                      << last_location.longitude_deg << " degrees." << std::endl;
+        },
+        std::placeholders::_1));
 
     // Takeoff
     ActionResult takeoff_result = action->takeoff();
@@ -106,7 +105,8 @@ int main(int argc, char **argv)
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5)); // Wait for drone to reach takeoff altitude
 
-    // Configure Min height of the drone to be "20 meters" above home & Follow direction as "Front right".
+    // Configure Min height of the drone to be "20 meters" above home & Follow direction as "Front
+    // right".
     FollowMe::Config config;
     config.min_height_m = 20.0;
     config.follow_direction = FollowMe::Config::FollowDirection::FRONT_RIGHT;
@@ -118,7 +118,8 @@ int main(int argc, char **argv)
 
     boost::asio::io_service io; // for event loop
     std::unique_ptr<FakeLocationProvider> location_provider(new FakeLocationProvider(io));
-    // Register for platform-specific Location provider. We're using FakeLocationProvider for the example.
+    // Register for platform-specific Location provider. We're using FakeLocationProvider for the
+    // example.
     location_provider->request_location_updates([&system, &follow_me](double lat, double lon) {
         follow_me->set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
     });
@@ -146,8 +147,8 @@ int main(int argc, char **argv)
 inline void action_error_exit(ActionResult result, const std::string &message)
 {
     if (result != ActionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(
-                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -155,8 +156,8 @@ inline void action_error_exit(ActionResult result, const std::string &message)
 inline void follow_me_error_exit(FollowMe::Result result, const std::string &message)
 {
     if (result != FollowMe::Result::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << FollowMe::result_str(
-                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << FollowMe::result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -164,11 +165,8 @@ inline void follow_me_error_exit(FollowMe::Result result, const std::string &mes
 inline void connection_error_exit(ConnectionResult result, const std::string &message)
 {
     if (result != ConnectionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message
-                  << connection_result_str(result)
+        std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
-
-

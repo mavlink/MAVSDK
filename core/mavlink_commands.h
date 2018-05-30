@@ -11,8 +11,7 @@ namespace dronecore {
 
 class SystemImpl;
 
-class MAVLinkCommands
-{
+class MAVLinkCommands {
 public:
     explicit MAVLinkCommands(SystemImpl &parent);
     ~MAVLinkCommands();
@@ -46,12 +45,11 @@ public:
             int32_t x = 0;
             int32_t y = 0;
             float z = NAN;
-        } params {};
+        } params{};
 
         // In some cases "Reserved" value could be "0".
         // This utility method can be used in such case.
-        static
-        void set_as_reserved(Params &params, float reserved_value = NAN)
+        static void set_as_reserved(Params &params, float reserved_value = NAN)
         {
             params.param1 = reserved_value;
             params.param2 = reserved_value;
@@ -76,10 +74,9 @@ public:
             float param5 = NAN;
             float param6 = NAN;
             float param7 = NAN;
-        } params {};
+        } params{};
 
-        static
-        void set_as_reserved(Params &params, float reserved_value = NAN)
+        static void set_as_reserved(Params &params, float reserved_value = NAN)
         {
             params.param1 = reserved_value;
             params.param2 = reserved_value;
@@ -94,10 +91,8 @@ public:
     Result send_command(const CommandInt &command);
     Result send_command(const CommandLong &command);
 
-    void queue_command_async(const CommandInt &command,
-                             command_result_callback_t callback);
-    void queue_command_async(const CommandLong &command,
-                             command_result_callback_t callback);
+    void queue_command_async(const CommandInt &command, command_result_callback_t callback);
+    void queue_command_async(const CommandLong &command, command_result_callback_t callback);
 
     void do_work();
 
@@ -108,26 +103,22 @@ public:
     const MAVLinkCommands &operator=(const MAVLinkCommands &) = delete;
 
 private:
-    enum class State {
-        NONE,
-        WAITING,
-        IN_PROGRESS
-    } _state {State::NONE};
-    std::mutex _state_mutex {};
+    enum class State { NONE, WAITING, IN_PROGRESS } _state{State::NONE};
+    std::mutex _state_mutex{};
 
     struct Work {
-        int retries_to_do {3};
-        double timeout_s {0.5};
-        uint16_t mavlink_command {0};
-        mavlink_message_t mavlink_message {};
-        command_result_callback_t callback {};
+        int retries_to_do{3};
+        double timeout_s{0.5};
+        uint16_t mavlink_command{0};
+        mavlink_message_t mavlink_message{};
+        command_result_callback_t callback{};
     };
 
     void receive_command_ack(mavlink_message_t message);
     void receive_timeout();
 
     SystemImpl &_parent;
-    LockedQueue<Work> _work_queue {};
+    LockedQueue<Work> _work_queue{};
 
     void *_timeout_cookie = nullptr;
 };

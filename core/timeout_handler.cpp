@@ -2,14 +2,9 @@
 
 namespace dronecore {
 
-TimeoutHandler::TimeoutHandler(Time &time) :
-    _time(time)
-{
-}
+TimeoutHandler::TimeoutHandler(Time &time) : _time(time) {}
 
-TimeoutHandler::~TimeoutHandler()
-{
-}
+TimeoutHandler::~TimeoutHandler() {}
 
 void TimeoutHandler::add(std::function<void()> callback, double duration_s, void **cookie)
 {
@@ -59,12 +54,9 @@ void TimeoutHandler::run_once()
     dl_time_t now = _time.steady_time();
 
     for (auto it = _timeouts.begin(); it != _timeouts.end(); /* no ++it */) {
-
         // If time is passed, call timeout callback.
         if (it->second->time < now) {
-
             if (it->second->callback) {
-
                 // Get a copy for the callback because we will remove it.
                 std::function<void()> callback = it->second->callback;
 
@@ -76,7 +68,6 @@ void TimeoutHandler::run_once()
                 callback();
                 _timeouts_mutex.lock();
             }
-
 
         } else {
             ++it;

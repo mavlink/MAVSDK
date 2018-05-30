@@ -2,15 +2,9 @@
 
 namespace dronecore {
 
-MAVLinkChannels::MAVLinkChannels() :
-    _channels_used{},
-    _channels_used_mutex()
-{
-}
+MAVLinkChannels::MAVLinkChannels() : _channels_used{}, _channels_used_mutex() {}
 
-MAVLinkChannels::~MAVLinkChannels()
-{
-}
+MAVLinkChannels::~MAVLinkChannels() {}
 
 bool MAVLinkChannels::checkout_free_channel(uint8_t &new_channel)
 {

@@ -35,11 +35,8 @@ void print_health(Telemetry::Health health)
               << std::endl;
     std::cout << "Level calibration: " << (health.level_calibration_ok ? "ok" : "not ok")
               << std::endl;
-    std::cout << "Local position:    " << (health.local_position_ok ? "ok" : "not ok")
-              << std::endl;
+    std::cout << "Local position:    " << (health.local_position_ok ? "ok" : "not ok") << std::endl;
     std::cout << "Global position:   " << (health.global_position_ok ? "ok" : "not ok")
               << std::endl;
-    std::cout << "Home position:     " << (health.home_position_ok ? "ok" : "not ok")
-              << std::endl;
+    std::cout << "Home position:     " << (health.home_position_ok ? "ok" : "not ok") << std::endl;
 }
-

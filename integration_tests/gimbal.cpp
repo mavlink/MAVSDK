@@ -14,13 +14,13 @@
 
 using namespace dronecore;
 
-
 void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i);
-void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal, double latitude_deg,
-                              double longitude_deg, float altitude_m);
+void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal,
+                              double latitude_deg,
+                              double longitude_deg,
+                              float altitude_m);
 void receive_gimbal_result(Gimbal::Result result);
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
-
 
 TEST_F(SitlTest, GimbalMove)
 {
@@ -38,11 +38,9 @@ TEST_F(SitlTest, GimbalMove)
 
     telemetry->set_rate_camera_attitude(10.0);
 
-    telemetry->camera_attitude_euler_angle_async(
-        &receive_gimbal_attitude_euler_angles);
+    telemetry->camera_attitude_euler_angle_async(&receive_gimbal_attitude_euler_angles);
 
     for (int i = 0; i < 500; i += 1) {
-
         send_new_gimbal_command(gimbal, i);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
@@ -76,11 +74,9 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
 
     telemetry->set_rate_camera_attitude(10.0);
 
-    telemetry->camera_attitude_euler_angle_async(
-        &receive_gimbal_attitude_euler_angles);
+    telemetry->camera_attitude_euler_angle_async(&receive_gimbal_attitude_euler_angles);
 
     for (int i = 0; i < 500; i += 1) {
-
         send_new_gimbal_command(gimbal, i);
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
@@ -114,8 +110,10 @@ TEST_F(SitlTest, GimbalROIOffboard)
 
     // set the ROI location: a bit to the north of the vehicle's location
     const double latitude_offset_deg = 3. / 111111.; // this is about 3 m
-    send_gimbal_roi_location(gimbal, position.latitude_deg + latitude_offset_deg,
-                             position.longitude_deg, position.absolute_altitude_m + 1.f);
+    send_gimbal_roi_location(gimbal,
+                             position.latitude_deg + latitude_offset_deg,
+                             position.longitude_deg,
+                             position.absolute_altitude_m + 1.f);
 
     ActionResult action_result = action->arm();
     EXPECT_EQ(action_result, ActionResult::SUCCESS);
@@ -127,8 +125,7 @@ TEST_F(SitlTest, GimbalROIOffboard)
 
     telemetry->set_rate_camera_attitude(10.0);
 
-    telemetry->camera_attitude_euler_angle_async(
-        &receive_gimbal_attitude_euler_angles);
+    telemetry->camera_attitude_euler_angle_async(&receive_gimbal_attitude_euler_angles);
 
     // Send it once before starting offboard, otherwise it will be rejected.
     offboard->set_velocity_ned({0.0f, 0.0f, 0.0f, 0.0f});
@@ -173,11 +170,12 @@ void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i)
     gimbal->set_pitch_and_yaw_async(pitch_deg, yaw_deg, &receive_gimbal_result);
 }
 
-void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal, double latitude_deg,
-                              double longitude_deg, float altitude_m)
+void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal,
+                              double latitude_deg,
+                              double longitude_deg,
+                              float altitude_m)
 {
-    gimbal->set_roi_location_async(latitude_deg, longitude_deg, altitude_m,
-                                   &receive_gimbal_result);
+    gimbal->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, &receive_gimbal_result);
 }
 
 void receive_gimbal_result(Gimbal::Result result)
@@ -187,9 +185,6 @@ void receive_gimbal_result(Gimbal::Result result)
 
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle)
 {
-    LogInfo() << "Received gimbal attitude: "
-              << euler_angle.roll_deg << ", "
-              << euler_angle.pitch_deg << ", "
-              << euler_angle.yaw_deg;
+    LogInfo() << "Received gimbal attitude: " << euler_angle.roll_deg << ", "
+              << euler_angle.pitch_deg << ", " << euler_angle.yaw_deg;
 }
-

@@ -144,7 +144,6 @@ TEST(CameraTest, SetSettings)
         EXPECT_EQ(get_setting(camera, "CAM_COLORMODE", value_set), Camera::Result::SUCCESS);
         EXPECT_STREQ("5", value_set.c_str());
 
-
         // Let's check the manual exposure mode first.
         std::this_thread::sleep_for(std::chrono::seconds(2));
         EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);

@@ -17,14 +17,14 @@ static void receive_start_mission_result(Mission::Result result);
 static void receive_mission_progress(int current, int total);
 
 std::shared_ptr<MissionItem> only_set_speed(float speed_m_s);
-std::shared_ptr<MissionItem> add_waypoint(double latitude_deg, double longitude_deg,
-                                          float relative_altitude_m, float speed_m_s);
+std::shared_ptr<MissionItem>
+add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_m, float speed_m_s);
 
 float current_speed(std::shared_ptr<Telemetry> &telemetry);
 
-static std::atomic<bool> _mission_sent_ok {false};
-static std::atomic<bool> _mission_started_ok {false};
-static std::atomic<int> _current_item {0};
+static std::atomic<bool> _mission_sent_ok{false};
+static std::atomic<bool> _mission_started_ok{false};
+static std::atomic<int> _current_item{0};
 
 const static float speeds[4] = {10.0f, 3.0f, 8.0f, 5.0f};
 
@@ -59,8 +59,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     mission_items.push_back(add_waypoint(47.39824201089737, 8.5447561722784542, 10, speeds[2]));
     mission_items.push_back(add_waypoint(47.397733642793433, 8.5447776308767516, 10, speeds[3]));
 
-    mission->upload_mission_async(mission_items,
-                                  std::bind(&receive_upload_mission_result, _1));
+    mission->upload_mission_async(mission_items, std::bind(&receive_upload_mission_result, _1));
     std::this_thread::sleep_for(std::chrono::seconds(1));
     ASSERT_TRUE(_mission_sent_ok);
 
@@ -75,7 +74,6 @@ TEST_F(SitlTest, MissionChangeSpeed)
 
     int last_item = -1;
     while (_current_item < static_cast<int>(mission_items.size())) {
-
         if (last_item != _current_item) {
             // Don't check the first because it's just a speed command and neither the second
             // because we're still taking off.
@@ -134,8 +132,7 @@ void receive_start_mission_result(Mission::Result result)
     }
 }
 
-std::shared_ptr<MissionItem>
-only_set_speed(float speed_m_s)
+std::shared_ptr<MissionItem> only_set_speed(float speed_m_s)
 {
     auto new_item = std::make_shared<MissionItem>();
     new_item->set_speed(speed_m_s);
@@ -155,9 +152,9 @@ add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_
 float current_speed(std::shared_ptr<Telemetry> &telemetry)
 {
     return std::sqrt(telemetry->ground_speed_ned().velocity_north_m_s *
-                     telemetry->ground_speed_ned().velocity_north_m_s +
+                         telemetry->ground_speed_ned().velocity_north_m_s +
                      telemetry->ground_speed_ned().velocity_east_m_s *
-                     telemetry->ground_speed_ned().velocity_east_m_s);
+                         telemetry->ground_speed_ned().velocity_east_m_s);
 }
 
 void receive_mission_progress(int current, int total)

@@ -11,27 +11,27 @@ namespace dronecore {
 TelemetryImpl::TelemetryImpl(System &system) :
     PluginImplBase(system),
     _position_mutex(),
-    _position(Telemetry::Position {double(NAN), double(NAN), NAN, NAN}),
+    _position(Telemetry::Position{double(NAN), double(NAN), NAN, NAN}),
     _home_position_mutex(),
-    _home_position(Telemetry::Position {double(NAN), double(NAN), NAN, NAN}),
+    _home_position(Telemetry::Position{double(NAN), double(NAN), NAN, NAN}),
     _in_air(false),
     _armed(false),
     _attitude_quaternion_mutex(),
-    _attitude_quaternion(Telemetry::Quaternion {NAN, NAN, NAN, NAN}),
+    _attitude_quaternion(Telemetry::Quaternion{NAN, NAN, NAN, NAN}),
     _camera_attitude_euler_angle_mutex(),
-    _camera_attitude_euler_angle(Telemetry::EulerAngle {NAN, NAN, NAN}),
+    _camera_attitude_euler_angle(Telemetry::EulerAngle{NAN, NAN, NAN}),
     _ground_speed_ned_mutex(),
-    _ground_speed_ned(Telemetry::GroundSpeedNED {NAN, NAN, NAN}),
+    _ground_speed_ned(Telemetry::GroundSpeedNED{NAN, NAN, NAN}),
     _gps_info_mutex(),
-    _gps_info(Telemetry::GPSInfo {0, 0}),
+    _gps_info(Telemetry::GPSInfo{0, 0}),
     _battery_mutex(),
-    _battery(Telemetry::Battery {NAN, NAN}),
+    _battery(Telemetry::Battery{NAN, NAN}),
     _flight_mode_mutex(),
     _flight_mode(Telemetry::FlightMode::UNKNOWN),
     _health_mutex(),
-    _health(Telemetry::Health {false, false, false, false, false, false, false}),
+    _health(Telemetry::Health{false, false, false, false, false, false, false}),
     _rc_status_mutex(),
-    _rc_status(Telemetry::RCStatus {false, false, 0.0f}),
+    _rc_status(Telemetry::RCStatus{false, false, 0.0f}),
     _position_subscription(nullptr),
     _home_position_subscription(nullptr),
     _in_air_subscription(nullptr),
@@ -64,39 +64,40 @@ void TelemetryImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
-        std::bind(&TelemetryImpl::process_global_position_int, this, _1), this);
+        std::bind(&TelemetryImpl::process_global_position_int, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HOME_POSITION,
-        std::bind(&TelemetryImpl::process_home_position, this, _1), this);
+        std::bind(&TelemetryImpl::process_home_position, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ATTITUDE_QUATERNION,
-        std::bind(&TelemetryImpl::process_attitude_quaternion, this, _1), this);
+        std::bind(&TelemetryImpl::process_attitude_quaternion, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_MOUNT_ORIENTATION,
-        std::bind(&TelemetryImpl::process_mount_orientation, this, _1), this);
+        std::bind(&TelemetryImpl::process_mount_orientation, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_GPS_RAW_INT,
-        std::bind(&TelemetryImpl::process_gps_raw_int, this, _1), this);
+        MAVLINK_MSG_ID_GPS_RAW_INT, std::bind(&TelemetryImpl::process_gps_raw_int, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
-        std::bind(&TelemetryImpl::process_extended_sys_state, this, _1), this);
+        std::bind(&TelemetryImpl::process_extended_sys_state, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_SYS_STATUS,
-        std::bind(&TelemetryImpl::process_sys_status, this, _1), this);
+        MAVLINK_MSG_ID_SYS_STATUS, std::bind(&TelemetryImpl::process_sys_status, this, _1), this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&TelemetryImpl::process_heartbeat, this, _1), this);
+        MAVLINK_MSG_ID_HEARTBEAT, std::bind(&TelemetryImpl::process_heartbeat, this, _1), this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_RC_CHANNELS,
-        std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
+        MAVLINK_MSG_ID_RC_CHANNELS, std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
 }
 
 void TelemetryImpl::deinit()
@@ -106,7 +107,6 @@ void TelemetryImpl::deinit()
 
 void TelemetryImpl::enable()
 {
-
     _parent->register_timeout_handler(
         std::bind(&TelemetryImpl::receive_rc_channels_timeout, this), 1.0, &_timeout_cookie);
 
@@ -154,31 +154,31 @@ Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)
     double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
 
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_home_position(double rate_hz)
 {
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_HOME_POSITION, rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_HOME_POSITION, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_in_air(double rate_hz)
 {
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_attitude(double rate_hz)
 {
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE_QUATERNION, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_camera_attitude(double rate_hz)
 {
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_ORIENTATION, rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_MOUNT_ORIENTATION, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_ground_speed_ned(double rate_hz)
@@ -187,25 +187,25 @@ Telemetry::Result TelemetryImpl::set_rate_ground_speed_ned(double rate_hz)
     double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
 
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_gps_info(double rate_hz)
 {
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
 {
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
 {
     return telemetry_result_from_command_result(
-               _parent->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz));
+        _parent->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz));
 }
 
 void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback)
@@ -217,7 +217,6 @@ void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::result_ca
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
         max_rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
-
 }
 
 void TelemetryImpl::set_rate_home_position_async(double rate_hz,
@@ -290,8 +289,8 @@ void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::result_c
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-Telemetry::Result TelemetryImpl::telemetry_result_from_command_result(
-    MAVLinkCommands::Result command_result)
+Telemetry::Result
+TelemetryImpl::telemetry_result_from_command_result(MAVLinkCommands::Result command_result)
 {
     switch (command_result) {
         case MAVLinkCommands::Result::SUCCESS:
@@ -326,12 +325,10 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t &message
     set_position(Telemetry::Position({global_position_int.lat * 1e-7,
                                       global_position_int.lon * 1e-7,
                                       global_position_int.alt * 1e-3f,
-                                      global_position_int.relative_alt * 1e-3f
-                                     }));
+                                      global_position_int.relative_alt * 1e-3f}));
     set_ground_speed_ned({global_position_int.vx * 1e-2f,
                           global_position_int.vy * 1e-2f,
-                          global_position_int.vz * 1e-2f
-                         });
+                          global_position_int.vz * 1e-2f});
 
     if (_position_subscription) {
         _position_subscription(get_position());
@@ -350,8 +347,7 @@ void TelemetryImpl::process_home_position(const mavlink_message_t &message)
                                            home_position.longitude * 1e-7,
                                            home_position.altitude * 1e-3f,
                                            // the relative altitude of home is 0 by definition.
-                                           0.0f
-                                          }));
+                                           0.0f}));
 
     set_health_home_position(true);
 
@@ -365,12 +361,10 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t &message
     mavlink_attitude_quaternion_t attitude_quaternion;
     mavlink_msg_attitude_quaternion_decode(&message, &attitude_quaternion);
 
-    Telemetry::Quaternion quaternion {
-        attitude_quaternion.q1,
-        attitude_quaternion.q2,
-        attitude_quaternion.q3,
-        attitude_quaternion.q4
-    };
+    Telemetry::Quaternion quaternion{attitude_quaternion.q1,
+                                     attitude_quaternion.q2,
+                                     attitude_quaternion.q3,
+                                     attitude_quaternion.q4};
 
     set_attitude_quaternion(quaternion);
 
@@ -388,11 +382,8 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t &message)
     mavlink_mount_orientation_t mount_orientation;
     mavlink_msg_mount_orientation_decode(&message, &mount_orientation);
 
-    Telemetry::EulerAngle euler_angle {
-        mount_orientation.roll,
-        mount_orientation.pitch,
-        mount_orientation.yaw_absolute
-    };
+    Telemetry::EulerAngle euler_angle{
+        mount_orientation.roll, mount_orientation.pitch, mount_orientation.yaw_absolute};
 
     set_camera_attitude_euler_angle(euler_angle);
 
@@ -409,9 +400,7 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t &message)
 {
     mavlink_gps_raw_int_t gps_raw_int;
     mavlink_msg_gps_raw_int_decode(&message, &gps_raw_int);
-    set_gps_info({gps_raw_int.satellites_visible,
-                  gps_raw_int.fix_type
-                 });
+    set_gps_info({gps_raw_int.satellites_visible, gps_raw_int.fix_type});
 
     // TODO: This is just an interim hack, we will have to look at
     //       estimator flags in order to decide if the position
@@ -442,17 +431,16 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t &message)
     if (_in_air_subscription) {
         _in_air_subscription(in_air());
     }
-
 }
 
 void TelemetryImpl::process_sys_status(const mavlink_message_t &message)
 {
     mavlink_sys_status_t sys_status;
     mavlink_msg_sys_status_decode(&message, &sys_status);
-    set_battery(Telemetry::Battery({sys_status.voltage_battery * 1e-3f,
-                                    // FIXME: it is strange calling it percent when the range goes from 0 to 1.
-                                    sys_status.battery_remaining * 1e-2f
-                                   }));
+    set_battery(Telemetry::Battery(
+        {sys_status.voltage_battery * 1e-3f,
+         // FIXME: it is strange calling it percent when the range goes from 0 to 1.
+         sys_status.battery_remaining * 1e-2f}));
 
     if (_battery_subscription) {
         _battery_subscription(get_battery());
@@ -471,7 +459,6 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
     }
 
     if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
-
         Telemetry::FlightMode flight_mode = to_flight_mode_from_custom_mode(heartbeat.custom_mode);
         set_flight_mode(flight_mode);
 
@@ -654,8 +641,7 @@ void TelemetryImpl::set_attitude_quaternion(Telemetry::Quaternion quaternion)
 Telemetry::Quaternion TelemetryImpl::get_camera_attitude_quaternion() const
 {
     std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
-    Telemetry::Quaternion quaternion
-        = to_quaternion_from_euler_angle(_camera_attitude_euler_angle);
+    Telemetry::Quaternion quaternion = to_quaternion_from_euler_angle(_camera_attitude_euler_angle);
 
     return quaternion;
 }
@@ -730,13 +716,9 @@ Telemetry::Health TelemetryImpl::get_health() const
 bool TelemetryImpl::get_health_all_ok() const
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
-    if (_health.gyrometer_calibration_ok &&
-        _health.accelerometer_calibration_ok &&
-        _health.magnetometer_calibration_ok &&
-        _health.level_calibration_ok &&
-        _health.local_position_ok &&
-        _health.global_position_ok &&
-        _health.home_position_ok) {
+    if (_health.gyrometer_calibration_ok && _health.accelerometer_calibration_ok &&
+        _health.magnetometer_calibration_ok && _health.level_calibration_ok &&
+        _health.local_position_ok && _health.global_position_ok && _health.home_position_ok) {
         return true;
     } else {
         return false;
@@ -803,7 +785,6 @@ void TelemetryImpl::set_rc_status(bool available, float signal_strength_percent)
     }
 
     _rc_status.available = available;
-
 }
 
 void TelemetryImpl::position_async(Telemetry::position_callback_t &callback)
@@ -831,20 +812,19 @@ void TelemetryImpl::attitude_quaternion_async(Telemetry::attitude_quaternion_cal
     _attitude_quaternion_subscription = callback;
 }
 
-void TelemetryImpl::attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t
-                                               &callback)
+void TelemetryImpl::attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t &callback)
 {
     _attitude_euler_angle_subscription = callback;
 }
 
-void TelemetryImpl::camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t
-                                                     &callback)
+void TelemetryImpl::camera_attitude_quaternion_async(
+    Telemetry::attitude_quaternion_callback_t &callback)
 {
     _camera_attitude_quaternion_subscription = callback;
 }
 
-void TelemetryImpl::camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t
-                                                      &callback)
+void TelemetryImpl::camera_attitude_euler_angle_async(
+    Telemetry::attitude_euler_angle_callback_t &callback)
 {
     _camera_attitude_euler_angle_subscription = callback;
 }

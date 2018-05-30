@@ -12,11 +12,11 @@ class PluginImplBase;
  * @brief This class represents a system, made up of one or more components
  * (e.g. autopilot, cameras, servos, gimbals, etc).
  *
- * System objects are used to interact with UAVs (including their components) and standalone cameras.
- * They are not created directly by application code, but are returned by the DroneCore class.
+ * System objects are used to interact with UAVs (including their components) and standalone
+ * cameras. They are not created directly by application code, but are returned by the DroneCore
+ * class.
  */
-class System
-{
+class System {
 public:
     /**
      * @brief Constructor.
@@ -100,6 +100,5 @@ private:
 
     std::shared_ptr<SystemImpl> _system_impl;
 };
-
 
 } // namespace dronecore

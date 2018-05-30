@@ -7,10 +7,8 @@ namespace dronecore {
 class System;
 class SystemImpl;
 
-class PluginImplBase
-{
+class PluginImplBase {
 public:
-
     explicit PluginImplBase(System &system);
     virtual ~PluginImplBase() = default;
 

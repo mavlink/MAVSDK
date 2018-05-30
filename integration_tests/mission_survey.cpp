@@ -29,7 +29,7 @@ enum class MissionState : unsigned {
 
 static MissionState _mission_state = MissionState::INIT;
 
-//Mission::mission_result_t receive_mission_result;
+// Mission::mission_result_t receive_mission_result;
 static void receive_upload_mission_result(Mission::Result result);
 static void receive_start_mission_result(Mission::Result result);
 static void receive_mission_progress(int current, int total);
@@ -45,7 +45,6 @@ static std::shared_ptr<MissionItem> add_waypoint(double latitude_deg,
                                                  float gimbal_pitch_deg,
                                                  float gimbal_yaw_deg,
                                                  bool take_photo);
-
 
 TEST_F(SitlTest, MissionSurvey)
 {
@@ -141,9 +140,7 @@ TEST_F(SitlTest, MissionSurvey)
         }
         switch (_mission_state) {
             case MissionState::INIT:
-                mission->upload_mission_async(
-                    mis,
-                    std::bind(&receive_upload_mission_result, _1));
+                mission->upload_mission_async(mis, std::bind(&receive_upload_mission_result, _1));
                 _mission_state = MissionState::UPLOADING;
                 break;
             case MissionState::UPLOADING:
@@ -162,8 +159,7 @@ TEST_F(SitlTest, MissionSurvey)
                 // the message DO_SET_MODE. Once it ignores it as in the spec, this is not
                 // needed anymore.
                 std::this_thread::sleep_for(std::chrono::seconds(2));
-                mission->start_mission_async(
-                    std::bind(&receive_start_mission_result, _1));
+                mission->start_mission_async(std::bind(&receive_start_mission_result, _1));
                 _mission_state = MissionState::STARTING;
                 break;
             case MissionState::STARTING:
@@ -171,14 +167,12 @@ TEST_F(SitlTest, MissionSurvey)
             case MissionState::STARTING_DONE:
                 _mission_state = MissionState::MISSION;
 
-                mission->subscribe_progress(
-                    std::bind(&receive_mission_progress, _1, _2));
+                mission->subscribe_progress(std::bind(&receive_mission_progress, _1, _2));
                 break;
             case MissionState::MISSION:
                 break;
             case MissionState::MISSION_DONE:
-                action->return_to_launch_async(
-                    std::bind(&receive_return_to_launch_result, _1));
+                action->return_to_launch_async(std::bind(&receive_return_to_launch_result, _1));
                 _mission_state = MissionState::RETURN;
                 break;
             case MissionState::RETURN:
@@ -196,7 +190,6 @@ TEST_F(SitlTest, MissionSurvey)
             case MissionState::ERROR:
                 finished = true;
                 break;
-
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -260,7 +253,6 @@ void receive_return_to_launch_result(ActionResult result)
         _mission_state = MissionState::ERROR;
     }
 }
-
 
 void receive_disarm_result(ActionResult result)
 {

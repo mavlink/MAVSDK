@@ -14,8 +14,7 @@ class System;
  *
  * **This feature is not yet implemented**.
  */
-class Logging : public PluginBase
-{
+class Logging : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -103,8 +102,8 @@ public:
      */
     Logging(const Logging &) = delete;
     /**
-    * @brief Equality operator (object is not copyable).
-    */
+     * @brief Equality operator (object is not copyable).
+     */
     const Logging &operator=(const Logging &) = delete;
 
 private:

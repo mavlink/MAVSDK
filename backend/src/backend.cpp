@@ -9,8 +9,7 @@
 namespace dronecore {
 namespace backend {
 
-class DroneCoreBackend::Impl
-{
+class DroneCoreBackend::Impl {
 public:
     Impl() {}
     ~Impl() {}
@@ -27,10 +26,7 @@ public:
         _server->run();
     }
 
-    void wait()
-    {
-        _server->wait();
-    }
+    void wait() { _server->wait(); }
 
 private:
     DroneCore _dc;
@@ -41,9 +37,18 @@ private:
 DroneCoreBackend::DroneCoreBackend() : _impl(new Impl()) {}
 DroneCoreBackend::~DroneCoreBackend() = default;
 
-void DroneCoreBackend::startGRPCServer() { _impl->startGRPCServer(); }
-void DroneCoreBackend::connect(const int mavlink_listen_port) { return _impl->connect(mavlink_listen_port); }
-void DroneCoreBackend::wait() { _impl->wait(); }
+void DroneCoreBackend::startGRPCServer()
+{
+    _impl->startGRPCServer();
+}
+void DroneCoreBackend::connect(const int mavlink_listen_port)
+{
+    return _impl->connect(mavlink_listen_port);
+}
+void DroneCoreBackend::wait()
+{
+    _impl->wait();
+}
 
 } // namespace backend
 } // namespace dronecore

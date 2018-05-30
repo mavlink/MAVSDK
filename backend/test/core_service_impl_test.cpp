@@ -27,8 +27,7 @@ static constexpr auto DEFAULT_BACKEND_ADDRESS = "localhost";
 static constexpr uint64_t ARBITRARY_UINT64_T = 42;
 static constexpr uint64_t ARBITRARY_SMALL_INT = 11;
 
-class CoreServiceImplTest : public ::testing::Test
-{
+class CoreServiceImplTest : public ::testing::Test {
 protected:
     virtual void SetUp()
     {
@@ -44,10 +43,7 @@ protected:
         _stub = CoreService::NewStub(channel);
     }
 
-    virtual void TearDown()
-    {
-        _server->Shutdown();
-    }
+    virtual void TearDown() { _server->Shutdown(); }
 
     void checkPluginIsRunning(const std::string plugin_name);
     std::future<void> subscribeDiscoverAsync(std::vector<uint64_t> &uuids);
@@ -120,8 +116,7 @@ TEST_F(CoreServiceImplTest, portIsDefaultInPluginInfos)
 
 TEST_F(CoreServiceImplTest, subscribeDiscoverActuallySubscribes)
 {
-    EXPECT_CALL(*_dc, register_on_discover(_))
-    .Times(1);
+    EXPECT_CALL(*_dc, register_on_discover(_)).Times(1);
     grpc::ClientContext context;
     dronecore::rpc::core::SubscribeDiscoverRequest request;
 
@@ -161,7 +156,7 @@ TEST_F(CoreServiceImplTest, discoverSendsOneUUID)
     auto subscription_future = subscription_promise.get_future();
     dronecore::testing::event_callback_t event_callback;
     EXPECT_CALL(*_dc, register_on_discover(_))
-    .WillOnce(SaveCallback(&event_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&event_callback, &subscription_promise));
 
     std::vector<uint64_t> uuids;
     auto uuids_stream_future = subscribeDiscoverAsync(uuids);
@@ -183,7 +178,7 @@ TEST_F(CoreServiceImplTest, discoverSendsMultipleUUIDs)
     auto subscription_future = subscription_promise.get_future();
     dronecore::testing::event_callback_t event_callback;
     EXPECT_CALL(*_dc, register_on_discover(_))
-    .WillOnce(SaveCallback(&event_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&event_callback, &subscription_promise));
 
     std::vector<uint64_t> uuids;
     auto uuids_stream_future = subscribeDiscoverAsync(uuids);
@@ -202,8 +197,7 @@ TEST_F(CoreServiceImplTest, discoverSendsMultipleUUIDs)
 
 TEST_F(CoreServiceImplTest, subscribeTimeoutActuallySubscribes)
 {
-    EXPECT_CALL(*_dc, register_on_timeout(_))
-    .Times(1);
+    EXPECT_CALL(*_dc, register_on_timeout(_)).Times(1);
     grpc::ClientContext context;
     dronecore::rpc::core::SubscribeTimeoutRequest request;
 
@@ -242,7 +236,7 @@ TEST_F(CoreServiceImplTest, timeoutIsCalledOnce)
     auto subscription_future = subscription_promise.get_future();
     dronecore::testing::event_callback_t event_callback;
     EXPECT_CALL(*_dc, register_on_timeout(_))
-    .WillOnce(SaveCallback(&event_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&event_callback, &subscription_promise));
 
     int count = 0;
     auto timeout_stream_future = subscribeTimeoutAsync(&count);
@@ -261,7 +255,7 @@ TEST_F(CoreServiceImplTest, timeoutIsCalledMultipleTimes)
     auto subscription_future = subscription_promise.get_future();
     dronecore::testing::event_callback_t event_callback;
     EXPECT_CALL(*_dc, register_on_timeout(_))
-    .WillOnce(SaveCallback(&event_callback, &subscription_promise));
+        .WillOnce(SaveCallback(&event_callback, &subscription_promise));
 
     int count = 0;
     auto timeout_stream_future = subscribeTimeoutAsync(&count);

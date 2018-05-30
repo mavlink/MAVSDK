@@ -5,16 +5,9 @@
 
 namespace dronecore {
 
-Mission::Mission(System &system) :
-    PluginBase(),
-    _impl { new MissionImpl(system) }
-{
-}
+Mission::Mission(System &system) : PluginBase(), _impl{new MissionImpl(system)} {}
 
-Mission::~Mission()
-{
-}
-
+Mission::~Mission() {}
 
 void Mission::upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
                                    result_callback_t callback)
@@ -97,4 +90,4 @@ Mission::Result Mission::import_qgroundcontrol_mission(Mission::mission_items_t 
     return MissionImpl::import_qgroundcontrol_mission(mission_items, qgc_plan_file);
 }
 
-} // namespace dronelin
+} // namespace dronecore

@@ -1,25 +1,28 @@
 /**
-* @file fly_qgc_mission.cpp
-*
-* @brief Demonstrates how to import mission items from QGroundControl plan,
-* and fly them using DroneCore.
-*
-* Steps to run this example:
-* 1. (a) Create a Mission in QGroundControl and save them to a file (.plan) (OR)
-*    (b) Use a pre-created sample mission plan in "plugins/mission/qgroundcontrol_sample.plan".
-*    Click [here](https://user-images.githubusercontent.com/26615772/31763673-972c5bb6-b4dc-11e7-8ff0-f8b39b6b88c3.png) to see what sample mission plan in QGroundControl looks like.
-* 2. Run the example by passing path of the QGC mission plan as argument (By default, sample mission plan is imported).
-*
-* Example description:
-* 1. Imports QGC mission items from .plan file.
-* 2. Uploads mission items to vehicle.
-* 3. Starts mission from first mission item.
-* 4. Commands RTL once QGC Mission is accomplished.
-*
-* @author Shakthi Prashanth M <shakthi.prashanth.m@intel.com>,
-*         Julian Oes <julian@oes.ch>
-* @date 2018-02-04
-*/
+ * @file fly_qgc_mission.cpp
+ *
+ * @brief Demonstrates how to import mission items from QGroundControl plan,
+ * and fly them using DroneCore.
+ *
+ * Steps to run this example:
+ * 1. (a) Create a Mission in QGroundControl and save them to a file (.plan) (OR)
+ *    (b) Use a pre-created sample mission plan in "plugins/mission/qgroundcontrol_sample.plan".
+ *    Click
+ * [here](https://user-images.githubusercontent.com/26615772/31763673-972c5bb6-b4dc-11e7-8ff0-f8b39b6b88c3.png)
+ * to see what sample mission plan in QGroundControl looks like.
+ * 2. Run the example by passing path of the QGC mission plan as argument (By default, sample
+ * mission plan is imported).
+ *
+ * Example description:
+ * 1. Imports QGC mission items from .plan file.
+ * 2. Uploads mission items to vehicle.
+ * 3. Starts mission from first mission item.
+ * 4. Commands RTL once QGC Mission is accomplished.
+ *
+ * @author Shakthi Prashanth M <shakthi.prashanth.m@intel.com>,
+ *         Julian Oes <julian@oes.ch>
+ * @date 2018-02-04
+ */
 
 #include <dronecore/action.h>
 #include <dronecore/dronecore.h>
@@ -30,9 +33,9 @@
 #include <iostream>
 #include <memory>
 
-#define ERROR_CONSOLE_TEXT "\033[31m" //Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
+#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
+#define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
+#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
 using namespace dronecore;
 using namespace std::chrono; // for seconds(), milliseconds()
@@ -43,15 +46,12 @@ inline void handle_action_err_exit(ActionResult result, const std::string &messa
 // Handles Mission's result
 inline void handle_mission_err_exit(Mission::Result result, const std::string &message);
 // Handles Connection result
-inline void handle_connection_err_exit(ConnectionResult result,
-                                       const std::string &message);
-
-
+inline void handle_connection_err_exit(ConnectionResult result, const std::string &message);
 
 void usage(std::string bin_name)
 {
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name <<
-              " <connection_url> [path of QGC Mission plan]" << std::endl
+    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name
+              << " <connection_url> [path of QGC Mission plan]" << std::endl
               << "Connection URL format should be :" << std::endl
               << " For TCP : tcp://[server_host][:server_port]" << std::endl
               << " For UDP : udp://[bind_host][:bind_port]" << std::endl
@@ -59,13 +59,11 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-
 int main(int argc, char **argv)
 {
     DroneCore dc;
     std::string connection_url;
     ConnectionResult connection_result;
-
 
     // Locate path of QGC Sample plan
     std::string qgc_plan = "../../../plugins/mission/qgroundcontrol_sample.plan";
@@ -82,7 +80,6 @@ int main(int argc, char **argv)
 
     std::cout << "Connection URL: " << connection_url << std::endl;
     std::cout << "Importing mission from mission plan: " << qgc_plan << std::endl;
-
 
     {
         auto prom = std::make_shared<std::promise<void>>();
@@ -130,18 +127,16 @@ int main(int argc, char **argv)
         std::cerr << "No missions! Exiting..." << std::endl;
         exit(EXIT_FAILURE);
     }
-    std::cout << "Found " << mission_items.size() << " mission items in the given QGC plan." <<
-              std::endl;
+    std::cout << "Found " << mission_items.size() << " mission items in the given QGC plan."
+              << std::endl;
 
     {
         std::cout << "Uploading mission..." << std::endl;
         // Wrap the asynchronous upload_mission function using std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(
-        mission_items, [prom](Mission::Result result) {
-            prom->set_value(result);
-        });
+        mission->upload_mission_async(mission_items,
+                                      [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         handle_mission_err_exit(result, "Mission upload failed: ");
@@ -154,8 +149,7 @@ int main(int argc, char **argv)
     std::cout << "Armed." << std::endl;
 
     // Before starting the mission subscribe to the mission progress.
-    mission->subscribe_progress(
-    [](int current, int total) {
+    mission->subscribe_progress([](int current, int total) {
         std::cout << "Mission status update: " << current << " / " << total << std::endl;
     });
 
@@ -163,8 +157,7 @@ int main(int argc, char **argv)
         std::cout << "Starting mission." << std::endl;
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->start_mission_async(
-        [prom](Mission::Result result) {
+        mission->start_mission_async([prom](Mission::Result result) {
             prom->set_value(result);
             std::cout << "Started mission." << std::endl;
         });
@@ -197,8 +190,8 @@ int main(int argc, char **argv)
 inline void handle_action_err_exit(ActionResult result, const std::string &message)
 {
     if (result != ActionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(
-                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -206,19 +199,17 @@ inline void handle_action_err_exit(ActionResult result, const std::string &messa
 inline void handle_mission_err_exit(Mission::Result result, const std::string &message)
 {
     if (result != Mission::Result::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(
-                      result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
 // Handles connection result
-inline void handle_connection_err_exit(ConnectionResult result,
-                                       const std::string &message)
+inline void handle_connection_err_exit(ConnectionResult result, const std::string &message)
 {
     if (result != ConnectionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message
-                  << connection_result_str(result)
+        std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }

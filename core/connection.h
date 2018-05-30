@@ -6,8 +6,7 @@
 
 namespace dronecore {
 
-class Connection
-{
+class Connection {
 public:
     typedef std::function<void(const mavlink_message_t &message)> receiver_callback_t;
 
@@ -28,10 +27,10 @@ protected:
     void stop_mavlink_receiver();
     void receive_message(const mavlink_message_t &message);
 
-    receiver_callback_t _receiver_callback {};
+    receiver_callback_t _receiver_callback{};
     std::unique_ptr<MAVLinkReceiver> _mavlink_receiver;
 
-    //void received_mavlink_message(mavlink_message_t &);
+    // void received_mavlink_message(mavlink_message_t &);
 };
 
 } // namespace dronecore

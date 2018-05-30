@@ -28,13 +28,11 @@
 #define M_PI_F float(M_PI)
 #endif
 
-
 namespace dronecore {
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
 
-class Time
-{
+class Time {
 public:
     Time();
     virtual ~Time();
@@ -53,8 +51,7 @@ public:
     virtual void sleep_for(std::chrono::nanoseconds ns);
 };
 
-class FakeTime : public Time
-{
+class FakeTime : public Time {
 public:
     FakeTime();
 
@@ -68,7 +65,7 @@ public:
     virtual void sleep_for(std::chrono::nanoseconds ns) override;
 
 private:
-    std::chrono::time_point<std::chrono::steady_clock, std::chrono::nanoseconds> _current {};
+    std::chrono::time_point<std::chrono::steady_clock, std::chrono::nanoseconds> _current{};
     void add_overhead();
 };
 

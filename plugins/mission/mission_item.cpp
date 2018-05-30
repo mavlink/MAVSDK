@@ -8,15 +8,9 @@
 
 namespace dronecore {
 
-MissionItem::MissionItem() :
-    _impl { new MissionItemImpl() }
-{
-}
+MissionItem::MissionItem() : _impl{new MissionItemImpl()} {}
 
-MissionItem::~MissionItem()
-{
-}
-
+MissionItem::~MissionItem() {}
 
 void MissionItem::set_position(double latitude_deg, double longitude_deg)
 {
@@ -133,39 +127,42 @@ std::string MissionItem::to_str(MissionItem::CameraAction camera_action)
 
 bool operator==(const MissionItem &lhs, const MissionItem &rhs)
 {
-    return (lhs.get_latitude_deg() == rhs.get_latitude_deg()
-            || (isnan(lhs.get_latitude_deg()) && isnan(rhs.get_latitude_deg())))
-           && (lhs.get_longitude_deg() == rhs.get_longitude_deg()
-               || (isnan(lhs.get_longitude_deg()) && isnan(rhs.get_longitude_deg())))
-           && (lhs.get_relative_altitude_m() == rhs.get_relative_altitude_m()
-               || (isnan(lhs.get_relative_altitude_m()) && isnan(rhs.get_relative_altitude_m())))
-           && lhs.get_fly_through() == rhs.get_fly_through()
-           && (lhs.get_speed_m_s() == rhs.get_speed_m_s()
-               || (isnan(lhs.get_speed_m_s()) && isnan(rhs.get_speed_m_s())))
-           && (lhs.get_gimbal_pitch_deg() == rhs.get_gimbal_pitch_deg()
-               || (isnan(lhs.get_gimbal_pitch_deg()) && isnan(rhs.get_gimbal_pitch_deg())))
-           && (lhs.get_gimbal_yaw_deg() == rhs.get_gimbal_yaw_deg()
-               || (isnan(lhs.get_gimbal_yaw_deg()) && isnan(rhs.get_gimbal_yaw_deg())))
-           && (lhs.get_loiter_time_s() == rhs.get_loiter_time_s()
-               || (isnan(lhs.get_loiter_time_s()) && isnan(rhs.get_loiter_time_s())))
-           && lhs.get_camera_action() == rhs.get_camera_action()
-           && lhs.get_camera_photo_interval_s() == rhs.get_camera_photo_interval_s();
+    return (lhs.get_latitude_deg() == rhs.get_latitude_deg() ||
+            (isnan(lhs.get_latitude_deg()) && isnan(rhs.get_latitude_deg()))) &&
+           (lhs.get_longitude_deg() == rhs.get_longitude_deg() ||
+            (isnan(lhs.get_longitude_deg()) && isnan(rhs.get_longitude_deg()))) &&
+           (lhs.get_relative_altitude_m() == rhs.get_relative_altitude_m() ||
+            (isnan(lhs.get_relative_altitude_m()) && isnan(rhs.get_relative_altitude_m()))) &&
+           lhs.get_fly_through() == rhs.get_fly_through() &&
+           (lhs.get_speed_m_s() == rhs.get_speed_m_s() ||
+            (isnan(lhs.get_speed_m_s()) && isnan(rhs.get_speed_m_s()))) &&
+           (lhs.get_gimbal_pitch_deg() == rhs.get_gimbal_pitch_deg() ||
+            (isnan(lhs.get_gimbal_pitch_deg()) && isnan(rhs.get_gimbal_pitch_deg()))) &&
+           (lhs.get_gimbal_yaw_deg() == rhs.get_gimbal_yaw_deg() ||
+            (isnan(lhs.get_gimbal_yaw_deg()) && isnan(rhs.get_gimbal_yaw_deg()))) &&
+           (lhs.get_loiter_time_s() == rhs.get_loiter_time_s() ||
+            (isnan(lhs.get_loiter_time_s()) && isnan(rhs.get_loiter_time_s()))) &&
+           lhs.get_camera_action() == rhs.get_camera_action() &&
+           lhs.get_camera_photo_interval_s() == rhs.get_camera_photo_interval_s();
 }
 
 std::ostream &operator<<(std::ostream &str, MissionItem const &mission_item)
 {
-    return str << std::endl << "[" << std::endl << std::setprecision(10)
-           << "\tlat: " << mission_item.get_latitude_deg() << std::endl
-           << "\tlon: " << mission_item.get_longitude_deg() << std::endl
-           << "\trel_alt: " << mission_item.get_relative_altitude_m() << std::endl
-           << "\tis_fly_through: " << (mission_item.get_fly_through() ? "true" : "false") << std::endl
-           << "\tspeed: " << mission_item.get_speed_m_s() << std::endl
-           << "\tgimbal_pitch: " << mission_item.get_gimbal_pitch_deg() << std::endl
-           << "\tgimbal_yaw: " << mission_item.get_gimbal_yaw_deg() << std::endl
-           << "\tloiter_time: " << mission_item.get_loiter_time_s() << std::endl
-           << "\tcamera_action: " << mission_item.get_camera_action() << std::endl
-           << "\tcamera_photo_interval: " << mission_item.get_camera_photo_interval_s()
-           << std::endl << "]" << std::endl;
+    return str << std::endl
+               << "[" << std::endl
+               << std::setprecision(10) << "\tlat: " << mission_item.get_latitude_deg() << std::endl
+               << "\tlon: " << mission_item.get_longitude_deg() << std::endl
+               << "\trel_alt: " << mission_item.get_relative_altitude_m() << std::endl
+               << "\tis_fly_through: " << (mission_item.get_fly_through() ? "true" : "false")
+               << std::endl
+               << "\tspeed: " << mission_item.get_speed_m_s() << std::endl
+               << "\tgimbal_pitch: " << mission_item.get_gimbal_pitch_deg() << std::endl
+               << "\tgimbal_yaw: " << mission_item.get_gimbal_yaw_deg() << std::endl
+               << "\tloiter_time: " << mission_item.get_loiter_time_s() << std::endl
+               << "\tcamera_action: " << mission_item.get_camera_action() << std::endl
+               << "\tcamera_photo_interval: " << mission_item.get_camera_photo_interval_s()
+               << std::endl
+               << "]" << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &str, MissionItem::CameraAction const &camera_action)
@@ -188,4 +185,4 @@ std::ostream &operator<<(std::ostream &str, MissionItem::CameraAction const &cam
     }
 }
 
-} // namespace dronelin
+} // namespace dronecore

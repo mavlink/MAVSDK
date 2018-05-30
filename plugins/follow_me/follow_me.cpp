@@ -3,15 +3,9 @@
 
 namespace dronecore {
 
-FollowMe::FollowMe(System &system) :
-    PluginBase(),
-    _impl { new FollowMeImpl(system) }
-{
-}
+FollowMe::FollowMe(System &system) : PluginBase(), _impl{new FollowMeImpl(system)} {}
 
-FollowMe::~FollowMe()
-{
-}
+FollowMe::~FollowMe() {}
 
 const FollowMe::Config &FollowMe::get_config() const
 {

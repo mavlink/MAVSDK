@@ -7,7 +7,6 @@ TEST(MAVLinkChannels, MaxChannelsSanity)
 {
     ASSERT_TRUE(MAVLinkChannels::Instance().get_max_channels() < UINT8_MAX);
     ASSERT_TRUE(MAVLinkChannels::Instance().get_max_channels() > 0);
-
 }
 
 TEST(MAVLinkChannels, TryAll)

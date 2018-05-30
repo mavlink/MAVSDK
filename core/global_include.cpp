@@ -73,9 +73,7 @@ void Time::sleep_for(std::chrono::nanoseconds ns)
     std::this_thread::sleep_for(ns);
 }
 
-
-FakeTime::FakeTime() :
-    Time()
+FakeTime::FakeTime() : Time()
 {
     // Start with current time so we don't start from 0.
     _current = steady_clock::now();
@@ -129,7 +127,6 @@ void FakeTime::add_overhead()
     _current += std::chrono::microseconds(50);
 }
 
-
 double to_rad_from_deg(double deg)
 {
     return deg / 180.0 * M_PI;
@@ -161,4 +158,3 @@ bool are_equal(double one, double two)
 }
 
 } // namespace dronecore
-
