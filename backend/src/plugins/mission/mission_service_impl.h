@@ -29,6 +29,31 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status DownloadMission(grpc::ServerContext * /* context */,
+                                 const rpc::mission::DownloadMissionRequest * /* request */,
+                                 rpc::mission::DownloadMissionResponse *response) override
+    {
+        _mission.download_mission_async(
+            [this, response](const dronecore::Mission::Result result,
+                             const std::vector<std::shared_ptr<MissionItem>> mission_items) {
+                if (response != nullptr) {
+                    auto rpc_mission_result = generateRPCMissionResult(result);
+                    response->set_allocated_mission_result(rpc_mission_result);
+
+                    auto rpc_mission = new rpc::mission::Mission();
+
+                    for (const auto mission_item : mission_items) {
+                        auto rpc_mission_item = rpc_mission->add_mission_item();
+                        translateMissionItem(mission_item, rpc_mission_item);
+                    }
+
+                    response->set_allocated_mission(rpc_mission);
+                }
+            });
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status StartMission(grpc::ServerContext * /* context */,
                               const rpc::mission::StartMissionRequest * /* request */,
                               rpc::mission::StartMissionResponse *response) override
@@ -83,23 +108,42 @@ public:
         return grpc::Status::OK;
     }
 
-private:
-    std::vector<std::shared_ptr<MissionItem>>
-    extractMissionItems(const rpc::mission::UploadMissionRequest *request) const
+    static void translateMissionItem(const std::shared_ptr<MissionItem> mission_item,
+                                     rpc::mission::MissionItem *rpc_mission_item)
     {
-        std::vector<std::shared_ptr<MissionItem>> mission_items;
-
-        if (request != nullptr) {
-            for (auto rpc_mission_item : request->mission().mission_item()) {
-                mission_items.push_back(translateRPCMissionItem(rpc_mission_item));
-            }
-        }
-
-        return mission_items;
+        rpc_mission_item->set_latitude_deg(mission_item->get_latitude_deg());
+        rpc_mission_item->set_longitude_deg(mission_item->get_longitude_deg());
+        rpc_mission_item->set_relative_altitude_m(mission_item->get_relative_altitude_m());
+        rpc_mission_item->set_speed_m_s(mission_item->get_speed_m_s());
+        rpc_mission_item->set_is_fly_through(mission_item->get_fly_through());
+        rpc_mission_item->set_gimbal_pitch_deg(mission_item->get_gimbal_pitch_deg());
+        rpc_mission_item->set_gimbal_yaw_deg(mission_item->get_gimbal_yaw_deg());
+        rpc_mission_item->set_camera_action(
+            translateCameraAction(mission_item->get_camera_action()));
     }
 
-    std::shared_ptr<MissionItem>
-    translateRPCMissionItem(const rpc::mission::MissionItem &rpc_mission_item) const
+    static rpc::mission::MissionItem::CameraAction
+    translateCameraAction(const MissionItem::CameraAction camera_action)
+    {
+        switch (camera_action) {
+            case MissionItem::CameraAction::TAKE_PHOTO:
+                return rpc::mission::MissionItem_CameraAction_TAKE_PHOTO;
+            case MissionItem::CameraAction::START_PHOTO_INTERVAL:
+                return rpc::mission::MissionItem_CameraAction_START_PHOTO_INTERVAL;
+            case MissionItem::CameraAction::STOP_PHOTO_INTERVAL:
+                return rpc::mission::MissionItem_CameraAction_STOP_PHOTO_INTERVAL;
+            case MissionItem::CameraAction::START_VIDEO:
+                return rpc::mission::MissionItem_CameraAction_START_VIDEO;
+            case MissionItem::CameraAction::STOP_VIDEO:
+                return rpc::mission::MissionItem_CameraAction_STOP_VIDEO;
+            case MissionItem::CameraAction::NONE:
+            default:
+                return rpc::mission::MissionItem_CameraAction_NONE;
+        }
+    }
+
+    static std::shared_ptr<MissionItem>
+    translateRPCMissionItem(const rpc::mission::MissionItem &rpc_mission_item)
     {
         auto mission_item = std::make_shared<MissionItem>();
         mission_item->set_position(rpc_mission_item.latitude_deg(),
@@ -114,8 +158,8 @@ private:
         return mission_item;
     }
 
-    MissionItem::CameraAction
-    translateRPCCameraAction(const rpc::mission::MissionItem::CameraAction rpc_camera_action) const
+    static MissionItem::CameraAction
+    translateRPCCameraAction(const rpc::mission::MissionItem::CameraAction rpc_camera_action)
     {
         switch (rpc_camera_action) {
             case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_TAKE_PHOTO:
@@ -134,6 +178,21 @@ private:
             default:
                 return MissionItem::CameraAction::NONE;
         }
+    }
+
+private:
+    std::vector<std::shared_ptr<MissionItem>>
+    extractMissionItems(const rpc::mission::UploadMissionRequest *request) const
+    {
+        std::vector<std::shared_ptr<MissionItem>> mission_items;
+
+        if (request != nullptr) {
+            for (auto rpc_mission_item : request->mission().mission_item()) {
+                mission_items.push_back(translateRPCMissionItem(rpc_mission_item));
+            }
+        }
+
+        return mission_items;
     }
 
     void uploadMissionItems(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
