@@ -26,7 +26,6 @@ add_library(dronecore ${LIBRARY_TYPE}
     mavlink_commands.cpp
     mavlink_channels.cpp
     mavlink_receiver.cpp
-    plugin_base.cpp
     plugin_impl_base.cpp
     serial_connection.cpp
     tcp_connection.cpp
