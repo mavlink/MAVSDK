@@ -15,18 +15,16 @@ namespace dronecore {
 
 class SystemImpl;
 
-class MAVLinkParameters
-{
+class MAVLinkParameters {
 public:
     explicit MAVLinkParameters(SystemImpl &parent);
     ~MAVLinkParameters();
 
-    class ParamValue
-    {
+    class ParamValue {
     public:
         typedef char custom_type_t[128];
 
-        ParamValue &operator= (ParamValue value)
+        ParamValue &operator=(ParamValue value)
         {
             _value = value._value;
             return *this;
@@ -38,11 +36,10 @@ public:
                 case MAV_PARAM_TYPE_UINT32:
                 // FALLTHROUGH
                 case MAV_PARAM_TYPE_INT32: {
-                        int32_t temp;
-                        memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    int32_t temp;
+                    memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_TYPE_REAL32:
                     float temp;
                     memcpy(&temp, &mavlink_value.param_value, sizeof(temp));
@@ -59,71 +56,60 @@ public:
         {
             switch (mavlink_ext_value.param_type) {
                 case MAV_PARAM_EXT_TYPE_UINT8: {
-                        uint8_t temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    uint8_t temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_INT8: {
-                        int8_t temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    int8_t temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_UINT16: {
-                        uint16_t temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    uint16_t temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_INT16: {
-                        int16_t temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    int16_t temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_UINT32: {
-                        uint32_t temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    uint32_t temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_INT32: {
-                        int32_t temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    int32_t temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_UINT64: {
-                        uint64_t temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    uint64_t temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_INT64: {
-                        int64_t temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    int64_t temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_REAL32: {
-                        float temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    float temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_REAL64: {
-                        double temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    double temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 case MAV_PARAM_EXT_TYPE_CUSTOM: {
-                        custom_type_t temp;
-                        memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
-                        _value = temp;
-                    }
-                    break;
+                    custom_type_t temp;
+                    memcpy(&temp, &mavlink_ext_value.param_value[0], sizeof(temp));
+                    _value = temp;
+                } break;
                 default:
                     // This would be worrying
                     LogErr() << "Error: unknown mavlink ext param type";
@@ -280,135 +266,57 @@ public:
                 return std::string("(unknown)");
             }
         }
-        float get_float() const
-        {
-            return float(_value);
-        }
+        float get_float() const { return float(_value); }
 
-        double get_double() const
-        {
-            return double(_value);
-        }
+        double get_double() const { return double(_value); }
 
-        int8_t get_int8() const
-        {
-            return int8_t(_value);
-        }
+        int8_t get_int8() const { return int8_t(_value); }
 
-        uint8_t get_uint8() const
-        {
-            return uint8_t(_value);
-        }
+        uint8_t get_uint8() const { return uint8_t(_value); }
 
-        int32_t get_int32() const
-        {
-            return int32_t(_value);
-        }
+        int32_t get_int32() const { return int32_t(_value); }
 
-        uint32_t get_uint32() const
-        {
-            return uint32_t(_value);
-        }
+        uint32_t get_uint32() const { return uint32_t(_value); }
 
-        void set_float(float value)
-        {
-            _value = value;
-        }
+        void set_float(float value) { _value = value; }
 
-        void set_double(double value)
-        {
-            _value = value;
-        }
+        void set_double(double value) { _value = value; }
 
-        void set_int8(int8_t value)
-        {
-            _value = value;
-        }
+        void set_int8(int8_t value) { _value = value; }
 
-        void set_uint8(uint8_t value)
-        {
-            _value = value;
-        }
+        void set_uint8(uint8_t value) { _value = value; }
 
-        void set_int16(int16_t value)
-        {
-            _value = value;
-        }
+        void set_int16(int16_t value) { _value = value; }
 
-        void set_uint16(uint16_t value)
-        {
-            _value = value;
-        }
+        void set_uint16(uint16_t value) { _value = value; }
 
-        void set_int32(int32_t value)
-        {
-            _value = value;
-        }
+        void set_int32(int32_t value) { _value = value; }
 
-        void set_uint32(uint32_t value)
-        {
-            _value = value;
-        }
+        void set_uint32(uint32_t value) { _value = value; }
 
-        void set_int64(int64_t value)
-        {
-            _value = value;
-        }
+        void set_int64(int64_t value) { _value = value; }
 
-        void set_uint64(uint64_t value)
-        {
-            _value = value;
-        }
+        void set_uint64(uint64_t value) { _value = value; }
 
-        bool is_uint8() const
-        {
-            return (_value.is<uint8_t>());
-        }
+        bool is_uint8() const { return (_value.is<uint8_t>()); }
 
-        bool is_int8() const
-        {
-            return (_value.is<int8_t>());
-        }
+        bool is_int8() const { return (_value.is<int8_t>()); }
 
-        bool is_uint16() const
-        {
-            return (_value.is<uint16_t>());
-        }
+        bool is_uint16() const { return (_value.is<uint16_t>()); }
 
-        bool is_int16() const
-        {
-            return (_value.is<int16_t>());
-        }
+        bool is_int16() const { return (_value.is<int16_t>()); }
 
-        bool is_uint32() const
-        {
-            return (_value.is<uint32_t>());
-        }
+        bool is_uint32() const { return (_value.is<uint32_t>()); }
 
-        bool is_int32() const
-        {
-            return (_value.is<int32_t>());
-        }
+        bool is_int32() const { return (_value.is<int32_t>()); }
 
-        bool is_uint64() const
-        {
-            return (_value.is<uint64_t>());
-        }
+        bool is_uint64() const { return (_value.is<uint64_t>()); }
 
-        bool is_int64() const
-        {
-            return (_value.is<int64_t>());
-        }
+        bool is_int64() const { return (_value.is<int64_t>()); }
 
-        bool is_float() const
-        {
-            return (_value.is<float>());
-        }
+        bool is_float() const { return (_value.is<float>()); }
 
-        bool is_double() const
-        {
-            return (_value.is<double>());
-        }
+        bool is_double() const { return (_value.is<double>()); }
 
         bool is_same_type(const ParamValue &rhs) const
         {
@@ -425,8 +333,8 @@ public:
                 (_value.is<custom_type_t>() && rhs._value.is<custom_type_t>())) {
                 return true;
             } else {
-                LogWarn() << "Comparison type mismatch between " << typestr()
-                          << " and " << rhs.typestr();
+                LogWarn() << "Comparison type mismatch between " << typestr() << " and "
+                          << rhs.typestr();
                 return false;
             }
         }
@@ -525,17 +433,19 @@ public:
 
     private:
         Any _value;
-
     };
 
-    typedef std::function <void(bool success)> set_param_callback_t;
-    void set_param_async(const std::string &name, const ParamValue &value,
-                         set_param_callback_t callback, bool extended = false);
+    typedef std::function<void(bool success)> set_param_callback_t;
+    void set_param_async(const std::string &name,
+                         const ParamValue &value,
+                         set_param_callback_t callback,
+                         bool extended = false);
 
-    typedef std::function <void(bool success, ParamValue value)> get_param_callback_t;
-    void get_param_async(const std::string &name, get_param_callback_t callback, bool extended = false);
+    typedef std::function<void(bool success, ParamValue value)> get_param_callback_t;
+    void
+    get_param_async(const std::string &name, get_param_callback_t callback, bool extended = false);
 
-    //void save_async();
+    // void save_async();
     void do_work();
 
     friend std::ostream &operator<<(std::ostream &, const ParamValue &);
@@ -543,6 +453,7 @@ public:
     // Non-copyable
     MAVLinkParameters(const MAVLinkParameters &) = delete;
     const MAVLinkParameters &operator=(const MAVLinkParameters &) = delete;
+
 private:
     void process_param_value(const mavlink_message_t &message);
     void process_param_ext_value(const mavlink_message_t &message);
@@ -551,12 +462,8 @@ private:
 
     SystemImpl &_parent;
 
-    enum class State {
-        NONE,
-        SET_PARAM_BUSY,
-        GET_PARAM_BUSY
-    } _state = State::NONE;
-    std::mutex _state_mutex {};
+    enum class State { NONE, SET_PARAM_BUSY, GET_PARAM_BUSY } _state = State::NONE;
+    std::mutex _state_mutex{};
 
     // Params can be up to 16 chars and without 0-termination.
     // Therefore we add a 0 here for storing.
@@ -564,21 +471,21 @@ private:
 
     struct SetParamWork {
         set_param_callback_t callback = nullptr;
-        std::string param_name {};
-        ParamValue param_value {};
+        std::string param_name{};
+        ParamValue param_value{};
         bool extended = false;
         int retries_done = 0;
     };
 
-    LockedQueue<SetParamWork> _set_param_queue {};
+    LockedQueue<SetParamWork> _set_param_queue{};
 
     struct GetParamWork {
         get_param_callback_t callback = nullptr;
-        std::string param_name {};
+        std::string param_name{};
         bool extended = false;
         int retries_done = 0;
     };
-    LockedQueue<GetParamWork> _get_param_queue {};
+    LockedQueue<GetParamWork> _get_param_queue{};
 
     void *_timeout_cookie = nullptr;
 

@@ -22,33 +22,26 @@ TEST_F(SitlTest, Info)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-
     System &system = dc.system();
     auto info = std::make_shared<Info>(system);
 
     for (unsigned i = 0; i < 3; ++i) {
         Info::Version version = info->get_version();
 
-        std::cout << "Flight version: "
-                  << version.flight_sw_major << "."
-                  << version.flight_sw_minor << "."
-                  << version.flight_sw_patch << " ("
+        std::cout << "Flight version: " << version.flight_sw_major << "." << version.flight_sw_minor
+                  << "." << version.flight_sw_patch << " ("
                   << std::string(version.flight_sw_git_hash) << ")" << std::endl;
-        std::cout << "Flight vendor version: "
-                  << version.flight_sw_vendor_major << "."
-                  << version.flight_sw_vendor_minor << "."
-                  << version.flight_sw_vendor_patch << std::endl;
-        std::cout << "OS version: "
-                  << version.os_sw_major << "."
-                  << version.os_sw_minor << "."
-                  << version.os_sw_patch << " ("
-                  << std::string(version.os_sw_git_hash) << ")" << std::endl;
+        std::cout << "Flight vendor version: " << version.flight_sw_vendor_major << "."
+                  << version.flight_sw_vendor_minor << "." << version.flight_sw_vendor_patch
+                  << std::endl;
+        std::cout << "OS version: " << version.os_sw_major << "." << version.os_sw_minor << "."
+                  << version.os_sw_patch << " (" << std::string(version.os_sw_git_hash) << ")"
+                  << std::endl;
 
         EXPECT_NE(version.flight_sw_major, 0);
 
         // FIXME: This is currently 0.
-        //EXPECT_NE(version.os_sw_major, 0);
-
+        // EXPECT_NE(version.os_sw_major, 0);
 
         Info::Product product = info->get_product();
 

@@ -12,41 +12,46 @@ using namespace testing;
 
 namespace dronecore {
 
-class ICurlWrapper
-{
+class ICurlWrapper {
 public:
     virtual bool download_text(const std::string &url, std::string &content) = 0;
-    virtual bool download_file_to_path(const std::string &url, const std::string &path,
+    virtual bool download_file_to_path(const std::string &url,
+                                       const std::string &path,
                                        const progress_callback_t &progress_callback) = 0;
-    virtual bool upload_file(const std::string &url, const std::string &path, const
-                             progress_callback_t &progress_callback) = 0;
+    virtual bool upload_file(const std::string &url,
+                             const std::string &path,
+                             const progress_callback_t &progress_callback) = 0;
 
     virtual ~ICurlWrapper() {}
 };
 
-class CurlWrapper : public ICurlWrapper
-{
+class CurlWrapper : public ICurlWrapper {
 public:
     CurlWrapper();
     ~CurlWrapper();
 
     // ICurlWrapper
     bool download_text(const std::string &url, std::string &content) override;
-    bool download_file_to_path(const std::string &url, const std::string &path,
+    bool download_file_to_path(const std::string &url,
+                               const std::string &path,
                                const progress_callback_t &progress_callback) override;
-    bool upload_file(const std::string &url, const std::string &path,
+    bool upload_file(const std::string &url,
+                     const std::string &path,
                      const progress_callback_t &progress_callback) override;
 };
 
 #ifdef TESTING
-class CurlWrapperMock : public ICurlWrapper
-{
+class CurlWrapperMock : public ICurlWrapper {
 public:
     MOCK_METHOD2(download_text, bool(const std::string &url, std::string &content));
-    MOCK_METHOD3(download_file_to_path, bool(const std::string &url, const std::string &path,
-                                             const progress_callback_t &progress_callback));
-    MOCK_METHOD3(upload_file, bool(const std::string &url, const std::string &path, const
-                                   progress_callback_t &progress_callback));
+    MOCK_METHOD3(download_file_to_path,
+                 bool(const std::string &url,
+                      const std::string &path,
+                      const progress_callback_t &progress_callback));
+    MOCK_METHOD3(upload_file,
+                 bool(const std::string &url,
+                      const std::string &path,
+                      const progress_callback_t &progress_callback));
 };
 #endif // TESTING
 

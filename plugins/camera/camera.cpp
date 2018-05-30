@@ -3,15 +3,9 @@
 
 namespace dronecore {
 
-Camera::Camera(System &system) :
-    PluginBase(),
-    _impl { new CameraImpl(system) }
-{
-}
+Camera::Camera(System &system) : PluginBase(), _impl{new CameraImpl(system)} {}
 
-Camera::~Camera()
-{
-}
+Camera::~Camera() {}
 
 Camera::Result Camera::take_photo()
 {
@@ -75,7 +69,7 @@ void Camera::set_video_stream_settings(const VideoStreamSettings &settings)
 
 Camera::Result Camera::get_video_stream_info(VideoStreamInfo &info)
 {
-    return  _impl->get_video_stream_info(info);
+    return _impl->get_video_stream_info(info);
 }
 
 void Camera::stop_video_async(const result_callback_t &callback)
@@ -110,8 +104,7 @@ void Camera::set_option_async(const std::string &setting,
     _impl->set_option_async(setting, option, callback);
 }
 
-void Camera::get_option_async(const std::string &setting,
-                              const get_option_callback_t &callback)
+void Camera::get_option_async(const std::string &setting, const get_option_callback_t &callback)
 {
     _impl->get_option_async(setting, callback);
 }
@@ -127,8 +120,7 @@ bool Camera::get_possible_options(const std::string &setting_name,
     return _impl->get_possible_options(setting_name, options);
 }
 
-bool Camera::get_setting_str(const std::string &setting_name,
-                             std::string &description)
+bool Camera::get_setting_str(const std::string &setting_name, std::string &description)
 {
     return _impl->get_setting_str(setting_name, description);
 }

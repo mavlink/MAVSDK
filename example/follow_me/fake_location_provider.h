@@ -18,22 +18,17 @@
  * @brief The FakeLocationProvider class
  * This class provides periodic reports on the fake location of the system.
  */
-class FakeLocationProvider
-{
+class FakeLocationProvider {
 public:
     typedef std::function<void(double lat, double lon)> location_callback_t;
 
-    FakeLocationProvider(boost::asio::io_service &io)
-        : timer_(io, boost::posix_time::seconds(1))
-    {}
+    FakeLocationProvider(boost::asio::io_service &io) : timer_(io, boost::posix_time::seconds(1)) {}
 
-    ~FakeLocationProvider()
-    {}
+    ~FakeLocationProvider() {}
 
     void request_location_updates(location_callback_t callback);
 
 private:
-
     void compute_next_location();
 
     boost::asio::deadline_timer timer_;

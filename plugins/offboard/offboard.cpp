@@ -3,15 +3,9 @@
 
 namespace dronecore {
 
-Offboard::Offboard(System &system) :
-    PluginBase(),
-    _impl { new OffboardImpl(system) }
-{
-}
+Offboard::Offboard(System &system) : PluginBase(), _impl{new OffboardImpl(system)} {}
 
-Offboard::~Offboard()
-{
-}
+Offboard::~Offboard() {}
 
 Offboard::Result Offboard::start()
 {

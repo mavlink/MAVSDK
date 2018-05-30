@@ -42,7 +42,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     cd.assume_default_settings();
 
     {
-        std::map<std::string, MAVLinkParameters::ParamValue> settings {};
+        std::map<std::string, MAVLinkParameters::ParamValue> settings{};
         EXPECT_TRUE(cd.get_all_settings(settings));
         EXPECT_EQ(settings.size(), 16);
 
@@ -72,7 +72,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     }
 
     {
-        std::map<std::string, MAVLinkParameters::ParamValue> settings {};
+        std::map<std::string, MAVLinkParameters::ParamValue> settings{};
         EXPECT_TRUE(cd.get_possible_settings(settings));
         EXPECT_EQ(settings.size(), 7);
         // LogDebug() << "Found settings:";
@@ -89,7 +89,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     }
 
     {
-        std::map<std::string, MAVLinkParameters::ParamValue> settings {};
+        std::map<std::string, MAVLinkParameters::ParamValue> settings{};
         EXPECT_TRUE(cd.get_possible_settings(settings));
         EXPECT_EQ(settings.size(), 9);
         // LogDebug() << "Found settings:";
@@ -309,7 +309,6 @@ TEST(CameraDefinition, E90SettingsToUpdate)
         EXPECT_TRUE(cd.get_unknown_params(params));
         EXPECT_EQ(params.size(), 16);
     }
-
 }
 
 TEST(CameraDefinition, E90SettingsCauseUpdates)
@@ -345,7 +344,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
         bool found_shutterspd = false;
         bool found_iso = false;
         bool found_vidres = false;
-        //bool found_aspectratio = false;
+        // bool found_aspectratio = false;
         bool found_photoratio = false;
 
         for (const auto &param : params) {
@@ -359,7 +358,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
                 found_vidres = true;
             }
             // We don't yet handle ASPECTRATIO
-            //if (strcmp("CAM_ASPECTRATIO", param.c_str()) == 0) {
+            // if (strcmp("CAM_ASPECTRATIO", param.c_str()) == 0) {
             //    found_aspectratio = true;
             //}
             if (strcmp("CAM_PHOTORATIO", param.c_str()) == 0) {
@@ -370,7 +369,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
         EXPECT_TRUE(found_shutterspd);
         EXPECT_TRUE(found_iso);
         EXPECT_TRUE(found_vidres);
-        //EXPECT_TRUE(found_aspectratio);
+        // EXPECT_TRUE(found_aspectratio);
         EXPECT_TRUE(found_photoratio);
     }
 }
@@ -425,7 +424,7 @@ TEST(CameraDefinition, E90SettingHumanReadable)
     CameraDefinition cd;
     ASSERT_TRUE(cd.load_file(e90_unit_test_file));
 
-    std::string description {};
+    std::string description{};
     EXPECT_TRUE(cd.get_setting_str("CAM_SHUTTERSPD", description));
     EXPECT_STREQ(description.c_str(), "Shutter Speed");
 
@@ -452,7 +451,7 @@ TEST(CameraDefinition, E90OptionHumanReadable)
     CameraDefinition cd;
     ASSERT_TRUE(cd.load_file(e90_unit_test_file));
 
-    std::string description {};
+    std::string description{};
     EXPECT_TRUE(cd.get_option_str("CAM_SHUTTERSPD", "0.0025", description));
     EXPECT_STREQ(description.c_str(), "1/400");
 

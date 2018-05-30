@@ -1,10 +1,10 @@
 #
-# Development environment for DroneCore based on Fedora 27.
+# Development environment for DroneCore based on Fedora 28.
 #
 # Author: Julian Oes <julian@oes.ch>
 #
 
-FROM fedora:27
+FROM fedora:28
 
 MAINTAINER Julian Oes <julian@oes.ch>
 
@@ -20,20 +20,15 @@ RUN dnf -y install \
     git \
     libcurl-devel \
     libtool \
+    make \
     python \
     tinyxml2-devel \
     redhat-rpm-config \
     rpm-build \
     ruby-devel \
     rubygems \
-    wget \
     which \
     && dnf clean all
-
-RUN wget http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-Fedora27.tar.xz \
-    && tar xvfJ clang+llvm-6.0.0-x86_64-linux-gnu-Fedora27.tar.xz \
-    && cp clang+llvm-6.0.0-x86_64-linux-gnu-Fedora27/bin/clang-format /usr/local/bin/ \
-    && rm -rf clang+llvm-6.0.0-x86_64-linux-gnu-Fedora27.tar.xz clang+llvm-6.0.0-x86_64-linux-gnu-Fedora27
 
 RUN gem install --no-ri --no-rdoc fpm;
 

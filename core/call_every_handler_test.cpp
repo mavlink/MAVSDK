@@ -11,7 +11,7 @@ using namespace dronecore;
 
 TEST(CallEveryHandler, Single)
 {
-    Time time {};
+    Time time{};
 
     CallEveryHandler ceh(time);
 
@@ -31,7 +31,7 @@ TEST(CallEveryHandler, Single)
 
 TEST(CallEveryHandler, Multiple)
 {
-    Time time {};
+    Time time{};
     CallEveryHandler ceh(time);
 
     int num_called = 0;
@@ -64,7 +64,7 @@ TEST(CallEveryHandler, Multiple)
 
 TEST(CallEveryHandler, InParallel)
 {
-    Time time {};
+    Time time{};
     CallEveryHandler ceh(time);
 
     int num_called1 = 0;
@@ -100,7 +100,7 @@ TEST(CallEveryHandler, InParallel)
 
 TEST(CallEveryHandler, Reset)
 {
-    Time time {};
+    Time time{};
     CallEveryHandler ceh(time);
 
     int num_called = 0;

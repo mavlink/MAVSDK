@@ -10,12 +10,10 @@
 namespace dronecore {
 namespace backend {
 
-template <typename Mission = Mission>
-class MissionServiceImpl final : public dronecore::rpc::mission::MissionService::Service
-{
+template<typename Mission = Mission>
+class MissionServiceImpl final : public dronecore::rpc::mission::MissionService::Service {
 public:
-    MissionServiceImpl(Mission &mission)
-        : _mission(mission) {}
+    MissionServiceImpl(Mission &mission) : _mission(mission) {}
 
     grpc::Status UploadMission(grpc::ServerContext * /* context */,
                                const rpc::mission::UploadMissionRequest *request,
@@ -38,15 +36,15 @@ public:
         std::promise<void> result_promise;
         const auto result_future = result_promise.get_future();
 
-        _mission.start_mission_async([this, response,
-              &result_promise](const dronecore::Mission::Result result) {
-            if (response != nullptr) {
-                auto rpc_mission_result = generateRPCMissionResult(result);
-                response->set_allocated_mission_result(rpc_mission_result);
-            }
+        _mission.start_mission_async(
+            [this, response, &result_promise](const dronecore::Mission::Result result) {
+                if (response != nullptr) {
+                    auto rpc_mission_result = generateRPCMissionResult(result);
+                    response->set_allocated_mission_result(rpc_mission_result);
+                }
 
-            result_promise.set_value();
-        });
+                result_promise.set_value();
+            });
 
         result_future.wait();
         return grpc::Status::OK;
@@ -71,23 +69,23 @@ public:
         std::promise<void> result_promise;
         const auto result_future = result_promise.get_future();
 
-        _mission.pause_mission_async([this, response,
-              &result_promise](const dronecore::Mission::Result result) {
-            if (response != nullptr) {
-                auto rpc_mission_result = generateRPCMissionResult(result);
-                response->set_allocated_mission_result(rpc_mission_result);
-            }
+        _mission.pause_mission_async(
+            [this, response, &result_promise](const dronecore::Mission::Result result) {
+                if (response != nullptr) {
+                    auto rpc_mission_result = generateRPCMissionResult(result);
+                    response->set_allocated_mission_result(rpc_mission_result);
+                }
 
-            result_promise.set_value();
-        });
+                result_promise.set_value();
+            });
 
         result_future.wait();
         return grpc::Status::OK;
     }
 
 private:
-    std::vector<std::shared_ptr<MissionItem>> extractMissionItems(const
-                                                                  rpc::mission::UploadMissionRequest *request) const
+    std::vector<std::shared_ptr<MissionItem>>
+    extractMissionItems(const rpc::mission::UploadMissionRequest *request) const
     {
         std::vector<std::shared_ptr<MissionItem>> mission_items;
 
@@ -104,7 +102,8 @@ private:
     translateRPCMissionItem(const rpc::mission::MissionItem &rpc_mission_item) const
     {
         auto mission_item = std::make_shared<MissionItem>();
-        mission_item->set_position(rpc_mission_item.latitude_deg(), rpc_mission_item.longitude_deg());
+        mission_item->set_position(rpc_mission_item.latitude_deg(),
+                                   rpc_mission_item.longitude_deg());
         mission_item->set_relative_altitude(rpc_mission_item.relative_altitude_m());
         mission_item->set_speed(rpc_mission_item.speed_m_s());
         mission_item->set_fly_through(rpc_mission_item.is_fly_through());
@@ -121,9 +120,11 @@ private:
         switch (rpc_camera_action) {
             case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_TAKE_PHOTO:
                 return MissionItem::CameraAction::TAKE_PHOTO;
-            case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_START_PHOTO_INTERVAL:
+            case rpc::mission::MissionItem::CameraAction::
+                MissionItem_CameraAction_START_PHOTO_INTERVAL:
                 return MissionItem::CameraAction::START_PHOTO_INTERVAL;
-            case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_STOP_PHOTO_INTERVAL:
+            case rpc::mission::MissionItem::CameraAction::
+                MissionItem_CameraAction_STOP_PHOTO_INTERVAL:
                 return MissionItem::CameraAction::STOP_PHOTO_INTERVAL;
             case rpc::mission::MissionItem::CameraAction::MissionItem_CameraAction_START_VIDEO:
                 return MissionItem::CameraAction::START_VIDEO;
@@ -139,18 +140,20 @@ private:
                             rpc::mission::UploadMissionResponse *response,
                             std::promise<void> &result_promise) const
     {
-        _mission.upload_mission_async(mission_items, [this, response,
-              &result_promise](const dronecore::Mission::Result result) {
-            if (response != nullptr) {
-                auto rpc_mission_result = generateRPCMissionResult(result);
-                response->set_allocated_mission_result(rpc_mission_result);
-            }
+        _mission.upload_mission_async(
+            mission_items,
+            [this, response, &result_promise](const dronecore::Mission::Result result) {
+                if (response != nullptr) {
+                    auto rpc_mission_result = generateRPCMissionResult(result);
+                    response->set_allocated_mission_result(rpc_mission_result);
+                }
 
-            result_promise.set_value();
-        });
+                result_promise.set_value();
+            });
     }
 
-    rpc::mission::MissionResult *generateRPCMissionResult(const dronecore::Mission::Result result) const
+    rpc::mission::MissionResult *
+    generateRPCMissionResult(const dronecore::Mission::Result result) const
     {
         auto rpc_result = static_cast<rpc::mission::MissionResult::Result>(result);
 

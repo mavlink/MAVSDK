@@ -8,9 +8,7 @@
 namespace dronecore {
 namespace backend {
 
-template <typename DroneCore>
-class ConnectionInitiator
-{
+template<typename DroneCore> class ConnectionInitiator {
 public:
     ConnectionInitiator() {}
     ~ConnectionInitiator() {}
@@ -29,22 +27,15 @@ public:
         return true;
     }
 
-    void wait()
-    {
-        _discovery_future.wait();
-    }
+    void wait() { _discovery_future.wait(); }
 
 private:
-    void init_mutex()
-    {
-        _discovery_promise = std::make_shared<std::promise<uint64_t>>();
-    }
+    void init_mutex() { _discovery_promise = std::make_shared<std::promise<uint64_t>>(); }
 
     void init_timeout_logging(DroneCore &dc) const
     {
-        dc.register_on_timeout([](uint64_t uuid) {
-            LogInfo() << "System timed out [UUID: " << uuid << "]";
-        });
+        dc.register_on_timeout(
+            [](uint64_t uuid) { LogInfo() << "System timed out [UUID: " << uuid << "]"; });
     }
 
     bool add_udp_connection(DroneCore &dc, const int port)
@@ -80,5 +71,5 @@ private:
     std::future<uint64_t> _discovery_future;
 };
 
-} // backend
-} // dronecore
+} // namespace backend
+} // namespace dronecore

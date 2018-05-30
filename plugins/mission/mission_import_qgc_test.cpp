@@ -25,7 +25,8 @@ struct QGCMissionItem {
     std::vector<double> params;
 };
 
-Mission::Result compose_mission_items(MAV_CMD command, std::vector<double> params,
+Mission::Result compose_mission_items(MAV_CMD command,
+                                      std::vector<double> params,
                                       std::shared_ptr<MissionItem> &new_mission_item,
                                       Mission::mission_items_t &mission_items);
 
@@ -37,22 +38,32 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     // These mission items are meant to match those in
     // file:://plugins/mission/qgroundcontrol_sample.plan
     QGCMissionItem items_test[] = {
-        { MAV_CMD_NAV_TAKEOFF, { 0., 0., 0., 0., 47.39781011, 8.54553801, 15. } },
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779921, 8.54546693, 15. } },
-        { MAV_CMD_DO_MOUNT_CONTROL, { 25.0, 0., 50.0 } }, // Gimbal pitch & yaw in deg
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39773658, 8.54543743, 15. } },
-        { MAV_CMD_IMAGE_START_CAPTURE, { 0., 0., 1., } }, // Take 1 photo
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39768937, 8.54548034, 15. } },
-        { MAV_CMD_IMAGE_START_CAPTURE, { 0, 1., 0., } }, // Start image capture
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39768029, 8.54561177, 15. } },
-        { MAV_CMD_DO_CHANGE_SPEED, { 1., 100., -1., 0 } },
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779649, 8.54566005, 15. } },
-        { MAV_CMD_NAV_LOITER_TIME, { 30. } }, // Loiter for 30 seconds
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39779468, 8.54561445, 15. } },
-        { MAV_CMD_VIDEO_START_CAPTURE, {} }, // Start video capture
-        { MAV_CMD_NAV_WAYPOINT, { 0., 0., 0., 0., 47.39784279, 8.54553533, 15. } },
-        { MAV_CMD_IMAGE_STOP_CAPTURE, {} }, // Stop image capture
-        { MAV_CMD_VIDEO_STOP_CAPTURE, {} }, // Stop video capture
+        {MAV_CMD_NAV_TAKEOFF, {0., 0., 0., 0., 47.39781011, 8.54553801, 15.}},
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39779921, 8.54546693, 15.}},
+        {MAV_CMD_DO_MOUNT_CONTROL, {25.0, 0., 50.0}}, // Gimbal pitch & yaw in deg
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39773658, 8.54543743, 15.}},
+        {MAV_CMD_IMAGE_START_CAPTURE,
+         {
+             0.,
+             0.,
+             1.,
+         }}, // Take 1 photo
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39768937, 8.54548034, 15.}},
+        {MAV_CMD_IMAGE_START_CAPTURE,
+         {
+             0,
+             1.,
+             0.,
+         }}, // Start image capture
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39768029, 8.54561177, 15.}},
+        {MAV_CMD_DO_CHANGE_SPEED, {1., 100., -1., 0}},
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39779649, 8.54566005, 15.}},
+        {MAV_CMD_NAV_LOITER_TIME, {30.}}, // Loiter for 30 seconds
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39779468, 8.54561445, 15.}},
+        {MAV_CMD_VIDEO_START_CAPTURE, {}}, // Start video capture
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39784279, 8.54553533, 15.}},
+        {MAV_CMD_IMAGE_STOP_CAPTURE, {}}, // Stop image capture
+        {MAV_CMD_VIDEO_STOP_CAPTURE, {}}, // Stop video capture
     };
 
     // Build mission items for comparison
@@ -75,8 +86,8 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
 
     // Import Mission items from QGC plan
     Mission::mission_items_t mission_items_imported;
-    Mission::Result import_result = Mission::import_qgroundcontrol_mission(mission_items_imported,
-                                                                           QGC_SAMPLE_PLAN);
+    Mission::Result import_result =
+        Mission::import_qgroundcontrol_mission(mission_items_imported, QGC_SAMPLE_PLAN);
     ASSERT_EQ(import_result, Mission::Result::SUCCESS);
     EXPECT_NE(mission_items_imported.size(), 0);
 
@@ -87,7 +98,8 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     }
 }
 
-Mission::Result compose_mission_items(MAV_CMD command, std::vector<double> params,
+Mission::Result compose_mission_items(MAV_CMD command,
+                                      std::vector<double> params,
                                       std::shared_ptr<MissionItem> &new_mission_item,
                                       Mission::mission_items_t &mission_items)
 {
@@ -95,8 +107,7 @@ Mission::Result compose_mission_items(MAV_CMD command, std::vector<double> param
 
     // Choosen "Do - While(0)" loop for the convenience of using `break` statement.
     do {
-        if (command == MAV_CMD_NAV_WAYPOINT ||
-            command == MAV_CMD_NAV_TAKEOFF ||
+        if (command == MAV_CMD_NAV_WAYPOINT || command == MAV_CMD_NAV_TAKEOFF ||
             command == MAV_CMD_NAV_LAND) {
             if (new_mission_item->has_position_set()) {
                 mission_items.push_back(new_mission_item);
@@ -121,10 +132,11 @@ Mission::Result compose_mission_items(MAV_CMD command, std::vector<double> param
             new_mission_item->set_loiter_time(loiter_time_s);
 
         } else if (command == MAV_CMD_IMAGE_START_CAPTURE) {
-            auto photo_interval = int(params[1]),  photo_count = int(params[2]);
+            auto photo_interval = int(params[1]), photo_count = int(params[2]);
 
             if (photo_interval > 0 && photo_count == 0) {
-                new_mission_item->set_camera_action(MissionItem::CameraAction::START_PHOTO_INTERVAL);
+                new_mission_item->set_camera_action(
+                    MissionItem::CameraAction::START_PHOTO_INTERVAL);
                 new_mission_item->set_camera_photo_interval(photo_interval);
             } else if (photo_interval == 0 && photo_count == 1) {
                 new_mission_item->set_camera_action(MissionItem::CameraAction::TAKE_PHOTO);
@@ -165,8 +177,7 @@ Mission::Result compose_mission_items(MAV_CMD command, std::vector<double> param
     return result;
 }
 
-void compare(const std::shared_ptr<MissionItem> local,
-             const std::shared_ptr<MissionItem> imported)
+void compare(const std::shared_ptr<MissionItem> local, const std::shared_ptr<MissionItem> imported)
 {
     if (local->get_camera_action() == MissionItem::CameraAction::NONE) {
         // Non-Camera commands
@@ -177,8 +188,7 @@ void compare(const std::shared_ptr<MissionItem> local,
             EXPECT_NEAR(local->get_longitude_deg(), imported->get_longitude_deg(), 1e-6);
         }
         if (std::isfinite(local->get_relative_altitude_m())) {
-            EXPECT_FLOAT_EQ(local->get_relative_altitude_m(),
-                            imported->get_relative_altitude_m());
+            EXPECT_FLOAT_EQ(local->get_relative_altitude_m(), imported->get_relative_altitude_m());
         }
 
         EXPECT_EQ(local->get_fly_through(), imported->get_fly_through());
@@ -192,13 +202,11 @@ void compare(const std::shared_ptr<MissionItem> local,
     if (local->get_camera_action() == MissionItem::CameraAction::START_PHOTO_INTERVAL &&
         // Camera commands
         std::isfinite(local->get_camera_photo_interval_s())) {
-
         EXPECT_DOUBLE_EQ(local->get_camera_photo_interval_s(),
                          imported->get_camera_photo_interval_s());
     }
 
     if (std::isfinite(local->get_loiter_time_s())) {
-        EXPECT_FLOAT_EQ(local->get_loiter_time_s(),
-                        imported->get_loiter_time_s());
+        EXPECT_FLOAT_EQ(local->get_loiter_time_s(), imported->get_loiter_time_s());
     }
 }

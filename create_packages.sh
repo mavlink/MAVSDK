@@ -22,6 +22,7 @@ library_files="\
     core/dronecore.h=/usr/include/dronecore/dronecore.h \
     build/default/core/libdronecore.so=/usr/lib/libdronecore.so \
     plugins/action/action.h=/usr/include/dronecore/action.h \
+    plugins/camera/camera.h=/usr/include/dronecore/camera.h \
     plugins/follow_me/follow_me.h=/usr/include/dronecore/follow_me.h \
     plugins/gimbal/gimbal.h=/usr/include/dronecore/gimbal.h \
     plugins/info/info.h=/usr/include/dronecore/info.h \
@@ -34,7 +35,7 @@ library_files="\
 echo "#!/bin/sh" > run_ldconfig
 echo "/sbin/ldconfig" >> run_ldconfig
 
-if cat /etc/os-release | grep -q 'Ubuntu\|Debian'
+if cat /etc/os-release | grep 'Ubuntu'
 then
     echo "Building DEB package"
     fpm $common_args \
@@ -48,7 +49,14 @@ then
         --after-remove run_ldconfig \
         $library_files
 
-elif cat /etc/os-release | grep -q 'Fedora\|RedHat'
+    dist_version=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9.]*//g')
+
+    for file in *_amd64.deb
+    do
+        mv -v "$file" "${file%_amd64.deb}_ubuntu${dist_version}_amd64.deb"
+    done
+
+elif cat /etc/os-release | grep 'Fedora'
 then
     echo "Building RPM package"
     fpm $common_args \
@@ -60,6 +68,13 @@ then
         --after-install run_ldconfig \
         --after-remove run_ldconfig \
         $library_files
+
+    dist_version=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9]*//g')
+
+    for file in *.x86_64.rpm
+    do
+        mv -v "$file" "${file%.x86_64.rpm}.fc${dist_version}-x86_64.rpm"
+    done
 fi
 
 rm run_ldconfig

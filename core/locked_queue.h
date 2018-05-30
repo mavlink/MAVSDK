@@ -6,12 +6,10 @@
 
 namespace dronecore {
 
-template <class T>
-class LockedQueue
-{
+template<class T> class LockedQueue {
 public:
-    LockedQueue() {};
-    ~LockedQueue() {};
+    LockedQueue(){};
+    ~LockedQueue(){};
 
     void push_back(T item)
     {
@@ -60,8 +58,8 @@ public:
     }
 
 private:
-    std::deque<T> _queue {};
-    std::mutex _mutex {};
+    std::deque<T> _queue{};
+    std::mutex _mutex{};
 };
 
 } // namespace dronecore

@@ -12,8 +12,7 @@ class InfoImpl;
 /**
  * @brief The Info class provides basic infomation about the hardware and/or software of a system.
  */
-class Info : public PluginBase
-{
+class Info : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -50,11 +49,13 @@ public:
         int flight_sw_vendor_major; /**< @brief Flight software vendor major version. */
         int flight_sw_vendor_minor; /**< @brief Flight software vendor minor version. */
         int flight_sw_vendor_patch; /**< @brief Flight software vendor patch version. */
-        char flight_sw_git_hash[GIT_HASH_STR_LEN]; /**< @brief Flight software git hash as string. */
+        char
+            flight_sw_git_hash[GIT_HASH_STR_LEN]; /**< @brief Flight software git hash as string. */
         int os_sw_major; /**< @brief Operating system software major version. */
         int os_sw_minor; /**< @brief Operating system software minor version. */
         int os_sw_patch; /**< @brief Operating system software patch version. */
-        char os_sw_git_hash[GIT_HASH_STR_LEN];/**< @brief Operating system software git hash as string. */
+        char os_sw_git_hash[GIT_HASH_STR_LEN]; /**< @brief Operating system software git hash as
+                                                  string. */
     };
 
     /**

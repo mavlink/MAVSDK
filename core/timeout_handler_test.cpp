@@ -16,9 +16,7 @@ TEST(TimeoutHandler, Timeout)
     bool timeout_happened = false;
 
     void *cookie = nullptr;
-    th.add([&timeout_happened]() {
-        timeout_happened = true;
-    }, 0.5, &cookie);
+    th.add([&timeout_happened]() { timeout_happened = true; }, 0.5, &cookie);
 
     time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
@@ -38,9 +36,7 @@ TEST(TimeoutHandler, TimeoutNoCookie)
     bool timeout_happened = false;
 
     // This time we supply nullptr and don't want a cookie.
-    th.add([&timeout_happened]() {
-        timeout_happened = true;
-    }, 0.5, nullptr);
+    th.add([&timeout_happened]() { timeout_happened = true; }, 0.5, nullptr);
 
     time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
@@ -59,14 +55,16 @@ TEST(TimeoutHandler, CallTimeoutInTimeoutCallback)
 
     void *cookie1 = nullptr;
     void *cookie2 = nullptr;
-    th.add([&th, &timeout_happened, &cookie2]() {
-        timeout_happened = true;
-        // This tests the case where we want to set yet another timeout when we
-        // are called because of a timeout. This tests if there are no locking
-        // issues.
-        th.add([]() {
-        }, 5.0, &cookie2);
-    }, 0.5, &cookie1);
+    th.add(
+        [&th, &timeout_happened, &cookie2]() {
+            timeout_happened = true;
+            // This tests the case where we want to set yet another timeout when we
+            // are called because of a timeout. This tests if there are no locking
+            // issues.
+            th.add([]() {}, 5.0, &cookie2);
+        },
+        0.5,
+        &cookie1);
 
     time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
@@ -81,15 +79,13 @@ TEST(TimeoutHandler, CallTimeoutInTimeoutCallback)
 
 TEST(TimeoutHandler, TimeoutRefreshed)
 {
-    Time time {};
+    Time time{};
     TimeoutHandler th(time);
 
     bool timeout_happened = false;
 
     void *cookie = nullptr;
-    th.add([&timeout_happened]() {
-        timeout_happened = true;
-    }, 0.5, &cookie);
+    th.add([&timeout_happened]() { timeout_happened = true; }, 0.5, &cookie);
 
     time.sleep_for(std::chrono::milliseconds(400));
     th.run_once();
@@ -107,15 +103,13 @@ TEST(TimeoutHandler, TimeoutRefreshed)
 
 TEST(TimeoutHandler, TimeoutRemoved)
 {
-    Time time {};
+    Time time{};
     TimeoutHandler th(time);
 
     bool timeout_happened = false;
 
     void *cookie = nullptr;
-    th.add([&timeout_happened]() {
-        timeout_happened = true;
-    }, 0.5, &cookie);
+    th.add([&timeout_happened]() { timeout_happened = true; }, 0.5, &cookie);
 
     time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
@@ -128,18 +122,21 @@ TEST(TimeoutHandler, TimeoutRemoved)
 
 TEST(TimeoutHandler, TimeoutRemovedDuringCallback)
 {
-    Time time {};
+    Time time{};
     TimeoutHandler th(time);
 
     bool timeout_happened = false;
 
     void *cookie = nullptr;
-    th.add([&th, &cookie, &timeout_happened]() {
-        // This is evil but can potentially happen. We remove our own timeout while
-        // being called.
-        th.remove(cookie);
-        timeout_happened = true;
-    }, 0.5, &cookie);
+    th.add(
+        [&th, &cookie, &timeout_happened]() {
+            // This is evil but can potentially happen. We remove our own timeout while
+            // being called.
+            th.remove(cookie);
+            timeout_happened = true;
+        },
+        0.5,
+        &cookie);
 
     time.sleep_for(std::chrono::milliseconds(250));
     th.run_once();
@@ -151,18 +148,21 @@ TEST(TimeoutHandler, TimeoutRemovedDuringCallback)
 
 TEST(TimeoutHandler, NextTimeoutRemovedDuringCallback)
 {
-    Time time {};
+    Time time{};
     TimeoutHandler th(time);
 
     void *cookie1 = nullptr;
     void *cookie2 = nullptr;
 
-    th.add([&th, &cookie2]() {
-        // This is evil but can potentially happen. We remove the other timer while
-        // being called. This triggers that the iterator is invalid and causes a segfault
-        // if not handled properly.
-        th.remove(cookie2);
-    }, 0.5, &cookie1);
+    th.add(
+        [&th, &cookie2]() {
+            // This is evil but can potentially happen. We remove the other timer while
+            // being called. This triggers that the iterator is invalid and causes a segfault
+            // if not handled properly.
+            th.remove(cookie2);
+        },
+        0.5,
+        &cookie1);
 
     th.add([]() {}, 0.5, &cookie2);
 

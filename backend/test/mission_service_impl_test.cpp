@@ -36,11 +36,9 @@ static constexpr auto ARBITRARY_RESULT = dc::Mission::Result::UNKNOWN;
 
 std::vector<InputPair> generateInputPairs();
 
-class MissionServiceImplTestBase : public ::testing::TestWithParam<InputPair>
-{
+class MissionServiceImplTestBase : public ::testing::TestWithParam<InputPair> {
 protected:
-    MissionServiceImplTestBase()
-        : _mission_service(_mission)
+    MissionServiceImplTestBase() : _mission_service(_mission)
     {
         _callback_saved_future = _callback_saved_promise.get_future();
     }
@@ -54,15 +52,16 @@ protected:
     /* StartMission returns its result through a callback, which is saved in _result_callback. */
     dc::Mission::result_callback_t _result_callback;
 
-    /* The tests need to make sure that _result_callback has been set before calling it, hence the promise. */
+    /* The tests need to make sure that _result_callback has been set before calling it, hence the
+     * promise. */
     std::promise<void> _callback_saved_promise;
 
-    /* The tests need to make sure that _result_callback has been set before calling it, hence the future. */
+    /* The tests need to make sure that _result_callback has been set before calling it, hence the
+     * future. */
     std::future<void> _callback_saved_future;
 };
 
-class MissionServiceImplUploadTest : public MissionServiceImplTestBase
-{
+class MissionServiceImplUploadTest : public MissionServiceImplTestBase {
 protected:
     /**
      * Uploads the mission and saves the result callback together with the actual list of items
@@ -83,7 +82,8 @@ protected:
      * Upload a list of items through gRPC, catch the list that is actually sent by
      * the backend, and verify that it has been sent correctly over gRPC.
      */
-    void checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
+    void
+    checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
 
     /* Generate a list of one mission item. */
     std::vector<std::shared_ptr<dc::MissionItem>> generateListOfOneItem();
@@ -122,15 +122,16 @@ TEST_P(MissionServiceImplUploadTest, uploadResultIsTranslatedCorrectly)
     _result_callback(GetParam().second);
     upload_handle.wait();
 
-    EXPECT_EQ(GetParam().first, rpc::MissionResult::Result_Name(response->mission_result().result()));
+    EXPECT_EQ(GetParam().first,
+              rpc::MissionResult::Result_Name(response->mission_result().result()));
 }
 
 std::future<void> MissionServiceImplUploadTest::uploadMissionAndSaveParams(
-    std::shared_ptr<UploadMissionRequest> request,
-    std::shared_ptr<UploadMissionResponse> response)
+    std::shared_ptr<UploadMissionRequest> request, std::shared_ptr<UploadMissionResponse> response)
 {
     EXPECT_CALL(_mission, upload_mission_async(_, _))
-    .WillOnce(SaveUploadParams(&_uploaded_mission, &_result_callback, &_callback_saved_promise));
+        .WillOnce(
+            SaveUploadParams(&_uploaded_mission, &_result_callback, &_callback_saved_promise));
 
     auto upload_handle = std::async(std::launch::async, [this, request, response]() {
         _mission_service.UploadMission(nullptr, request.get(), response.get());
@@ -140,10 +141,8 @@ std::future<void> MissionServiceImplUploadTest::uploadMissionAndSaveParams(
     return upload_handle;
 }
 
-std::shared_ptr<UploadMissionRequest>
-MissionServiceImplUploadTest::generateUploadRequest(const
-                                                    std::vector<std::shared_ptr<dc::MissionItem>>
-                                                    &mission_items) const
+std::shared_ptr<UploadMissionRequest> MissionServiceImplUploadTest::generateUploadRequest(
+    const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const
 {
     auto request = std::make_shared<UploadMissionRequest>();
     auto rpc_mission = new dc::rpc::mission::Mission();
@@ -157,7 +156,8 @@ MissionServiceImplUploadTest::generateUploadRequest(const
         rpc_mission_item->set_is_fly_through(mission_item->get_fly_through());
         rpc_mission_item->set_gimbal_pitch_deg(mission_item->get_gimbal_pitch_deg());
         rpc_mission_item->set_gimbal_yaw_deg(mission_item->get_gimbal_yaw_deg());
-        rpc_mission_item->set_camera_action(translateCameraAction(mission_item->get_camera_action()));
+        rpc_mission_item->set_camera_action(
+            translateCameraAction(mission_item->get_camera_action()));
     }
 
     request->set_allocated_mission(rpc_mission);
@@ -165,8 +165,8 @@ MissionServiceImplUploadTest::generateUploadRequest(const
     return request;
 }
 
-RPCCameraAction MissionServiceImplUploadTest::translateCameraAction(const CameraAction
-                                                                    camera_action) const
+RPCCameraAction
+MissionServiceImplUploadTest::translateCameraAction(const CameraAction camera_action) const
 {
     switch (camera_action) {
         case CameraAction::TAKE_PHOTO:
@@ -218,8 +218,7 @@ std::vector<std::shared_ptr<dc::MissionItem>> MissionServiceImplUploadTest::gene
 }
 
 void MissionServiceImplUploadTest::checkItemsAreUploadedCorrectly(
-    std::vector<std::shared_ptr<dc::MissionItem>>
-    &mission_items)
+    std::vector<std::shared_ptr<dc::MissionItem>> &mission_items)
 {
     auto request = generateUploadRequest(mission_items);
 
@@ -241,7 +240,7 @@ TEST_F(MissionServiceImplUploadTest, uploadMultipleItemsMission)
 }
 
 std::vector<std::shared_ptr<dc::MissionItem>>
-                                           MissionServiceImplUploadTest::generateListOfMultipleItems()
+MissionServiceImplUploadTest::generateListOfMultipleItems()
 {
     std::vector<std::shared_ptr<dc::MissionItem>> mission_items;
 
@@ -303,8 +302,7 @@ std::vector<std::shared_ptr<dc::MissionItem>>
     return mission_items;
 }
 
-class MissionServiceImplStartTest : public MissionServiceImplTestBase
-{
+class MissionServiceImplStartTest : public MissionServiceImplTestBase {
 protected:
     std::future<void> startMissionAndSaveParams(std::shared_ptr<StartMissionResponse> response);
 };
@@ -329,7 +327,7 @@ std::future<void> MissionServiceImplStartTest::startMissionAndSaveParams(
     std::shared_ptr<StartMissionResponse> response)
 {
     EXPECT_CALL(_mission, start_mission_async(_))
-    .WillOnce(SaveResult(&_result_callback, &_callback_saved_promise));
+        .WillOnce(SaveResult(&_result_callback, &_callback_saved_promise));
 
     auto start_handle = std::async(std::launch::async, [this, response]() {
         _mission_service.StartMission(nullptr, nullptr, response.get());
@@ -348,19 +346,18 @@ TEST_P(MissionServiceImplStartTest, startResultIsTranslatedCorrectly)
     _result_callback(GetParam().second);
     start_handle.wait();
 
-    EXPECT_EQ(GetParam().first, rpc::MissionResult::Result_Name(response->mission_result().result()));
+    EXPECT_EQ(GetParam().first,
+              rpc::MissionResult::Result_Name(response->mission_result().result()));
 }
 
-class MissionServiceImplIsFinishedTest : public MissionServiceImplTestBase
-{
+class MissionServiceImplIsFinishedTest : public MissionServiceImplTestBase {
 protected:
     void checkReturnsCorrectFinishedStatus(const bool expected_finished_status);
 };
 
 TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedCallsGetter)
 {
-    EXPECT_CALL(_mission, mission_finished())
-    .Times(1);
+    EXPECT_CALL(_mission, mission_finished()).Times(1);
     dronecore::rpc::mission::IsMissionFinishedResponse response;
 
     _mission_service.IsMissionFinished(nullptr, nullptr, &response);
@@ -375,8 +372,7 @@ TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedgetsCorrectValue)
 void MissionServiceImplIsFinishedTest::checkReturnsCorrectFinishedStatus(
     const bool expected_finished_status)
 {
-    ON_CALL(_mission, mission_finished())
-    .WillByDefault(Return(expected_finished_status));
+    ON_CALL(_mission, mission_finished()).WillByDefault(Return(expected_finished_status));
     dronecore::rpc::mission::IsMissionFinishedResponse response;
 
     _mission_service.IsMissionFinished(nullptr, nullptr, &response);
@@ -389,8 +385,7 @@ TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedDoesNotCrashWithNullRe
     _mission_service.IsMissionFinished(nullptr, nullptr, nullptr);
 }
 
-class MissionServiceImplPauseTest : public MissionServiceImplTestBase
-{
+class MissionServiceImplPauseTest : public MissionServiceImplTestBase {
 protected:
     std::future<void> pauseMissionAndSaveParams(std::shared_ptr<PauseMissionResponse> response);
 };
@@ -409,7 +404,7 @@ std::future<void> MissionServiceImplPauseTest::pauseMissionAndSaveParams(
     std::shared_ptr<PauseMissionResponse> response)
 {
     EXPECT_CALL(_mission, pause_mission_async(_))
-    .WillOnce(SaveResult(&_result_callback, &_callback_saved_promise));
+        .WillOnce(SaveResult(&_result_callback, &_callback_saved_promise));
 
     auto start_handle = std::async(std::launch::async, [this, response]() {
         _mission_service.PauseMission(nullptr, nullptr, response.get());
@@ -427,7 +422,8 @@ TEST_P(MissionServiceImplPauseTest, pauseResultIsTranslatedCorrectly)
     _result_callback(GetParam().second);
     pause_handle.wait();
 
-    EXPECT_EQ(GetParam().first, rpc::MissionResult::Result_Name(response->mission_result().result()));
+    EXPECT_EQ(GetParam().first,
+              rpc::MissionResult::Result_Name(response->mission_result().result()));
 }
 
 std::vector<InputPair> generateInputPairs()
@@ -436,21 +432,21 @@ std::vector<InputPair> generateInputPairs()
     input_pairs.push_back(std::make_pair("UNKNOWN", dc::Mission::Result::UNKNOWN));
     input_pairs.push_back(std::make_pair("SUCCESS", dc::Mission::Result::SUCCESS));
     input_pairs.push_back(std::make_pair("ERROR", dc::Mission::Result::ERROR));
-    input_pairs.push_back(std::make_pair("TOO_MANY_MISSION_ITEMS",
-                                         dc::Mission::Result::TOO_MANY_MISSION_ITEMS));
+    input_pairs.push_back(
+        std::make_pair("TOO_MANY_MISSION_ITEMS", dc::Mission::Result::TOO_MANY_MISSION_ITEMS));
     input_pairs.push_back(std::make_pair("BUSY", dc::Mission::Result::BUSY));
     input_pairs.push_back(std::make_pair("TIMEOUT", dc::Mission::Result::TIMEOUT));
-    input_pairs.push_back(std::make_pair("INVALID_ARGUMENT",
-                                         dc::Mission::Result::INVALID_ARGUMENT));
+    input_pairs.push_back(
+        std::make_pair("INVALID_ARGUMENT", dc::Mission::Result::INVALID_ARGUMENT));
     input_pairs.push_back(std::make_pair("UNSUPPORTED", dc::Mission::Result::UNSUPPORTED));
-    input_pairs.push_back(std::make_pair("NO_MISSION_AVAILABLE",
-                                         dc::Mission::Result::NO_MISSION_AVAILABLE));
-    input_pairs.push_back(std::make_pair("FAILED_TO_OPEN_QGC_PLAN",
-                                         dc::Mission::Result::FAILED_TO_OPEN_QGC_PLAN));
-    input_pairs.push_back(std::make_pair("FAILED_TO_PARSE_QGC_PLAN",
-                                         dc::Mission::Result::FAILED_TO_PARSE_QGC_PLAN));
-    input_pairs.push_back(std::make_pair("UNSUPPORTED_MISSION_CMD",
-                                         dc::Mission::Result::UNSUPPORTED_MISSION_CMD));
+    input_pairs.push_back(
+        std::make_pair("NO_MISSION_AVAILABLE", dc::Mission::Result::NO_MISSION_AVAILABLE));
+    input_pairs.push_back(
+        std::make_pair("FAILED_TO_OPEN_QGC_PLAN", dc::Mission::Result::FAILED_TO_OPEN_QGC_PLAN));
+    input_pairs.push_back(
+        std::make_pair("FAILED_TO_PARSE_QGC_PLAN", dc::Mission::Result::FAILED_TO_PARSE_QGC_PLAN));
+    input_pairs.push_back(
+        std::make_pair("UNSUPPORTED_MISSION_CMD", dc::Mission::Result::UNSUPPORTED_MISSION_CMD));
 
     return input_pairs;
 }

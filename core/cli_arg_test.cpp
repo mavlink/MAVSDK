@@ -154,4 +154,3 @@ TEST(CliArg, SerialConnections)
     EXPECT_FALSE(ca.parse("serial://SOM3:57600"));
     EXPECT_FALSE(ca.parse("serial://COM3:-1"));
 }
-

@@ -29,6 +29,32 @@ pipeline {
             sh 'make BUILD_TYPE=Release'
           }
         }
+        stage('Ubuntu 18.04 Debug') {
+          agent {
+            docker {
+              image 'dronecore/dronecore-ubuntu-18.04'
+            }
+          }
+          steps {
+            sh 'git submodule deinit -f .'
+            sh 'git clean -ff -x -d .'
+            sh 'git submodule update --init --recursive --force'
+            sh 'make BUILD_TYPE=Debug'
+          }
+        }
+        stage('Ubuntu 18.04 Release') {
+          agent {
+            docker {
+              image 'dronecore/dronecore-ubuntu-18.04'
+            }
+          }
+          steps {
+            sh 'git submodule deinit -f .'
+            sh 'git clean -ff -x -d .'
+            sh 'git submodule update --init --recursive --force'
+            sh 'make BUILD_TYPE=Release'
+          }
+        }
         stage('Fedora 27 Debug') {
           agent {
             docker {
@@ -46,6 +72,32 @@ pipeline {
           agent {
             docker {
               image 'dronecore/dronecore-fedora-27'
+            }
+          }
+          steps {
+            sh 'git submodule deinit -f .'
+            sh 'git clean -ff -x -d .'
+            sh 'git submodule update --init --recursive --force'
+            sh 'make BUILD_TYPE=Release'
+          }
+        }
+        stage('Fedora 28 Debug') {
+          agent {
+            docker {
+              image 'dronecore/dronecore-fedora-28'
+            }
+          }
+          steps {
+            sh 'git submodule deinit -f .'
+            sh 'git clean -ff -x -d .'
+            sh 'git submodule update --init --recursive --force'
+            sh 'make BUILD_TYPE=Debug'
+          }
+        }
+        stage('Fedora 28 Release') {
+          agent {
+            docker {
+              image 'dronecore/dronecore-fedora-28'
             }
           }
           steps {

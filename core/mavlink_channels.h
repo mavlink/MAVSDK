@@ -5,8 +5,7 @@
 
 namespace dronecore {
 
-class MAVLinkChannels
-{
+class MAVLinkChannels {
 public:
     static MAVLinkChannels &Instance()
     {
@@ -17,10 +16,10 @@ public:
     }
 
     // delete copy and move constructors and assign operators
-    MAVLinkChannels(MAVLinkChannels const &) = delete;            // Copy construct
-    MAVLinkChannels(MAVLinkChannels &&) = delete;                 // Move construct
+    MAVLinkChannels(MAVLinkChannels const &) = delete; // Copy construct
+    MAVLinkChannels(MAVLinkChannels &&) = delete; // Move construct
     MAVLinkChannels &operator=(MAVLinkChannels const &) = delete; // Copy assign
-    MAVLinkChannels &operator=(MAVLinkChannels &&) = delete;      // Move assign
+    MAVLinkChannels &operator=(MAVLinkChannels &&) = delete; // Move assign
 
     MAVLinkChannels();
     ~MAVLinkChannels();

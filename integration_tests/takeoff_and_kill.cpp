@@ -37,7 +37,6 @@ void receive_kill_result(ActionResult result)
     _received_kill_result = true;
 }
 
-
 void on_discover(uint64_t uuid)
 {
     std::cout << "Found system with UUID: " << uuid << std::endl;

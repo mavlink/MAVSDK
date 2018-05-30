@@ -4,12 +4,10 @@
 namespace dronecore {
 namespace backend {
 
-template <typename Camera = Camera>
-class CameraServiceImpl final : public rpc::camera::CameraService::Service
-{
+template<typename Camera = Camera>
+class CameraServiceImpl final : public rpc::camera::CameraService::Service {
 public:
-    CameraServiceImpl(Camera &camera)
-        : _camera(camera) {}
+    CameraServiceImpl(Camera &camera) : _camera(camera) {}
 
     grpc::Status TakePhoto(grpc::ServerContext * /* context */,
                            const rpc::camera::TakePhotoRequest * /* request */,
@@ -24,8 +22,9 @@ public:
         return grpc::Status::OK;
     }
 
-    template <typename ResponseType>
-    void fillResponseWithResult(ResponseType *response, dronecore::Camera::Result camera_result) const
+    template<typename ResponseType>
+    void fillResponseWithResult(ResponseType *response,
+                                dronecore::Camera::Result camera_result) const
     {
         auto rpc_result = static_cast<rpc::camera::CameraResult::Result>(camera_result);
 

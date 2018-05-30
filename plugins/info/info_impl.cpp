@@ -5,10 +5,7 @@
 
 namespace dronecore {
 
-InfoImpl::InfoImpl(System &system) :
-    PluginImplBase(system),
-    _version_mutex(),
-    _version()
+InfoImpl::InfoImpl(System &system) : PluginImplBase(system), _version_mutex(), _version()
 {
     _parent->register_plugin(this);
 }
@@ -23,12 +20,12 @@ void InfoImpl::init()
     using namespace std::placeholders; // for `_1`
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_HEARTBEAT,
-        std::bind(&InfoImpl::process_heartbeat, this, _1), this);
+        MAVLINK_MSG_ID_HEARTBEAT, std::bind(&InfoImpl::process_heartbeat, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        std::bind(&InfoImpl::process_autopilot_version, this, _1), this);
+        std::bind(&InfoImpl::process_autopilot_version, this, _1),
+        this);
 }
 
 void InfoImpl::deinit()
@@ -58,7 +55,7 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
 
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
-    Info::Version version {};
+    Info::Version version{};
 
     version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
     version.flight_sw_minor = (autopilot_version.flight_sw_version >> (8 * 2)) & 0xFF;
@@ -99,7 +96,7 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
 
     set_version(version);
 
-    Info::Product product {};
+    Info::Product product{};
 
     product.vendor_id = autopilot_version.vendor_id;
     const char *vendor_name = vendor_id_str(autopilot_version.vendor_id);
@@ -112,15 +109,15 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
     set_product(product);
 }
 
-void InfoImpl::translate_binary_to_str(uint8_t *binary, unsigned binary_len,
-                                       char *str, unsigned str_len)
+void InfoImpl::translate_binary_to_str(uint8_t *binary,
+                                       unsigned binary_len,
+                                       char *str,
+                                       unsigned str_len)
 {
     for (unsigned i = 0; i < binary_len; ++i) {
         // One hex number occupies 2 chars.
         // The binary is in little endian, therefore we need to swap the bytes for us to read.
-        snprintf(&str[i * 2], str_len - i * 2,
-                 "%02x",
-                 binary[binary_len - 1 - i]);
+        snprintf(&str[i * 2], str_len - i * 2, "%02x", binary[binary_len - 1 - i]);
     }
 }
 
@@ -135,7 +132,7 @@ bool InfoImpl::is_complete() const
         std::lock_guard<std::mutex> lock(_version_mutex);
 
         // TODO: check OS version, it's currently just 0 for SITL
-        if (_version.flight_sw_major == 0/* || _version.os_sw_major == 0*/) {
+        if (_version.flight_sw_major == 0 /* || _version.os_sw_major == 0*/) {
             return false;
         }
     }
@@ -186,7 +183,5 @@ const char *InfoImpl::product_id_str(uint16_t product_id)
             return "undefined";
     }
 }
-
-
 
 } // namespace dronecore

@@ -11,10 +11,9 @@ using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
 using namespace dronecore;
 
-#define ERROR_CONSOLE_TEXT "\033[31m" //Turn text on console red
-#define TELEMETRY_CONSOLE_TEXT "\033[34m" //Turn text on console blue
-#define NORMAL_CONSOLE_TEXT "\033[0m"  //Restore normal console colour
-
+#define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
+#define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
+#define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
 void usage(std::string bin_name)
 {
@@ -25,7 +24,6 @@ void usage(std::string bin_name)
               << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
-
 
 int main(int argc, char **argv)
 {
@@ -44,8 +42,8 @@ int main(int argc, char **argv)
     }
 
     if (connection_result != ConnectionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Connection failed: "
-                  << connection_result_str(connection_result)
+        std::cout << ERROR_CONSOLE_TEXT
+                  << "Connection failed: " << connection_result_str(connection_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
@@ -56,12 +54,13 @@ int main(int argc, char **argv)
         discovered_system = true;
     });
 
-    // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2 seconds.
+    // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2
+    // seconds.
     sleep_for(std::chrono::seconds(2));
 
-
     if (!discovered_system) {
-        std::cout << ERROR_CONSOLE_TEXT << "No system found, exiting." << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << ERROR_CONSOLE_TEXT << "No system found, exiting." << NORMAL_CONSOLE_TEXT
+                  << std::endl;
         return 1;
     }
 
@@ -75,11 +74,11 @@ int main(int argc, char **argv)
     // We want to listen to the altitude of the drone at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Setting rate failed:" << Telemetry::result_str(
-                      set_rate_result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << ERROR_CONSOLE_TEXT
+                  << "Setting rate failed:" << Telemetry::result_str(set_rate_result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
-
 
     // Set up callback to monitor altitude while the vehicle is in flight
     telemetry->position_async([](Telemetry::Position position) {
@@ -91,7 +90,8 @@ int main(int argc, char **argv)
 
     // Wait until vehicle is ready to arm.
     while (telemetry->health_all_ok() != true) {
-        std::cout << ERROR_CONSOLE_TEXT << "Vehicle not ready to arm" << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << ERROR_CONSOLE_TEXT << "Vehicle not ready to arm" << NORMAL_CONSOLE_TEXT
+                  << std::endl;
         sleep_for(std::chrono::seconds(1));
     }
 
@@ -100,8 +100,8 @@ int main(int argc, char **argv)
     const ActionResult arm_result = action->arm();
 
     if (arm_result != ActionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << action_result_str(
-                      arm_result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << action_result_str(arm_result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
 
@@ -109,8 +109,8 @@ int main(int argc, char **argv)
     std::cout << "Taking off..." << std::endl;
     const ActionResult takeoff_result = action->takeoff();
     if (takeoff_result != ActionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << action_result_str(
-                      takeoff_result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << action_result_str(takeoff_result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
 
@@ -121,9 +121,10 @@ int main(int argc, char **argv)
     const ActionResult fw_result = action->transition_to_fixedwing();
 
     if (fw_result != ActionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Transition to fixed wing failed: " << action_result_str(
-                      fw_result) << NORMAL_CONSOLE_TEXT << std::endl;
-        //return 1;
+        std::cout << ERROR_CONSOLE_TEXT
+                  << "Transition to fixed wing failed: " << action_result_str(fw_result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
+        // return 1;
     }
 
     // Wait
@@ -132,8 +133,9 @@ int main(int argc, char **argv)
     std::cout << "Transition back to multicopter..." << std::endl;
     const ActionResult mc_result = action->transition_to_multicopter();
     if (mc_result != ActionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Transition to multi copter failed:" << action_result_str(
-                      mc_result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << ERROR_CONSOLE_TEXT
+                  << "Transition to multi copter failed:" << action_result_str(mc_result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         //    return 1;
     }
 
@@ -144,8 +146,9 @@ int main(int argc, char **argv)
     std::cout << "Return to launch..." << std::endl;
     const ActionResult rtl_result = action->return_to_launch();
     if (rtl_result != ActionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Returning to launch failed:" << action_result_str(
-                      rtl_result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << ERROR_CONSOLE_TEXT
+                  << "Returning to launch failed:" << action_result_str(rtl_result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         //    return 1;
     }
 
@@ -156,8 +159,8 @@ int main(int argc, char **argv)
     std::cout << "Landing..." << std::endl;
     const ActionResult land_result = action->land();
     if (land_result != ActionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << action_result_str(
-                      land_result) << NORMAL_CONSOLE_TEXT << std::endl;
+        std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << action_result_str(land_result)
+                  << NORMAL_CONSOLE_TEXT << std::endl;
         //    return 1;
     }
 

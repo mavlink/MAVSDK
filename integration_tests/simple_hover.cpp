@@ -6,9 +6,7 @@
 
 using namespace dronecore;
 
-
 static void takeoff_and_hover_at_altitude(float altitude_m = NAN);
-
 
 TEST_F(SitlTest, ActionSimpleHoverDefault)
 {
@@ -24,7 +22,6 @@ TEST_F(SitlTest, ActionSimpleHoverLower)
 {
     takeoff_and_hover_at_altitude(1.0f);
 }
-
 
 void takeoff_and_hover_at_altitude(float altitude_m)
 {
@@ -65,7 +62,6 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     // We wait 1.5s / m plus a margin of 3s.
     const int wait_time_s = static_cast<int>(altitude_m * 1.5f + 3.0f);
     std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
-
 
     EXPECT_GT(telemetry->position().relative_altitude_m, altitude_m - 0.25f);
     EXPECT_LT(telemetry->position().relative_altitude_m, altitude_m + 0.25f);

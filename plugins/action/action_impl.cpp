@@ -7,8 +7,7 @@ namespace dronecore {
 
 using namespace std::placeholders; // for `_1`
 
-ActionImpl::ActionImpl(System &system) :
-    PluginImplBase(system)
+ActionImpl::ActionImpl(System &system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -23,7 +22,8 @@ void ActionImpl::init()
     // We need the system state.
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
-        std::bind(&ActionImpl::process_extended_sys_state, this, _1), this);
+        std::bind(&ActionImpl::process_extended_sys_state, this, _1),
+        this);
 }
 
 void ActionImpl::deinit()
@@ -37,7 +37,9 @@ void ActionImpl::enable()
     // We use the async call here because we should not block in the init call because
     // we won't receive an answer anyway in init because the receive loop is not
     // called while we are being created here.
-    _parent->set_msg_rate_async(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, 1.0, nullptr,
+    _parent->set_msg_rate_async(MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
+                                1.0,
+                                nullptr,
                                 MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 }
 
@@ -51,14 +53,13 @@ ActionResult ActionImpl::arm() const
     }
 
     // Go to LOITER mode first.
-    ret = action_result_from_command_result(
-              _parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
+    ret = action_result_from_command_result(_parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
 
     if (ret != ActionResult::SUCCESS) {
         return ret;
     }
 
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 1.0f; // arm
@@ -74,7 +75,7 @@ ActionResult ActionImpl::disarm() const
         return ret;
     }
 
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 0.0f; // disarm
@@ -85,7 +86,7 @@ ActionResult ActionImpl::disarm() const
 
 ActionResult ActionImpl::kill() const
 {
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 0.0f; // kill
@@ -102,10 +103,9 @@ ActionResult ActionImpl::takeoff() const
     }
 
     // Go to LOITER mode first.
-    ret = action_result_from_command_result(
-              _parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
+    ret = action_result_from_command_result(_parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
 
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_TAKEOFF;
     command.params.param7 = _relative_takeoff_altitude_m;
@@ -116,7 +116,7 @@ ActionResult ActionImpl::takeoff() const
 
 ActionResult ActionImpl::land() const
 {
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_LAND;
     command.target_component_id = _parent->get_autopilot_id();
@@ -127,7 +127,7 @@ ActionResult ActionImpl::land() const
 ActionResult ActionImpl::return_to_launch() const
 {
     return action_result_from_command_result(
-               _parent->set_flight_mode(SystemImpl::FlightMode::RETURN_TO_LAUNCH));
+        _parent->set_flight_mode(SystemImpl::FlightMode::RETURN_TO_LAUNCH));
 }
 
 ActionResult ActionImpl::transition_to_fixedwing() const
@@ -140,7 +140,7 @@ ActionResult ActionImpl::transition_to_fixedwing() const
         return ActionResult::NO_VTOL_TRANSITION_SUPPORT;
     }
 
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_DO_VTOL_TRANSITION;
     command.params.param1 = float(MAV_VTOL_STATE_FW);
@@ -165,14 +165,14 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &
         return;
     }
 
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_DO_VTOL_TRANSITION;
     command.params.param1 = float(MAV_VTOL_STATE_FW);
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, std::bind(&ActionImpl::command_result_callback,
-                                                   _1, callback));
+    _parent->send_command_async(command,
+                                std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
 ActionResult ActionImpl::transition_to_multicopter() const
@@ -185,7 +185,7 @@ ActionResult ActionImpl::transition_to_multicopter() const
         return ActionResult::NO_VTOL_TRANSITION_SUPPORT;
     }
 
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_DO_VTOL_TRANSITION;
     command.params.param1 = float(MAV_VTOL_STATE_MC);
@@ -209,14 +209,14 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
         }
         return;
     }
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_DO_VTOL_TRANSITION;
     command.params.param1 = float(MAV_VTOL_STATE_MC);
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, std::bind(&ActionImpl::command_result_callback,
-                                                   _1, callback));
+    _parent->send_command_async(command,
+                                std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
 void ActionImpl::arm_async(const Action::result_callback_t &callback)
@@ -230,7 +230,6 @@ void ActionImpl::arm_async(const Action::result_callback_t &callback)
     }
 
     loiter_before_arm_async(callback);
-
 }
 
 void ActionImpl::arm_async_continued(MAVLinkCommands::Result previous_result,
@@ -241,14 +240,14 @@ void ActionImpl::arm_async_continued(MAVLinkCommands::Result previous_result,
         return;
     }
 
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 1.0f; // arm
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, std::bind(&ActionImpl::command_result_callback,
-                                                   _1, callback));
+    _parent->send_command_async(command,
+                                std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
 void ActionImpl::disarm_async(const Action::result_callback_t &callback)
@@ -260,26 +259,26 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
         }
         return;
     }
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 0.0f; // disarm
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, std::bind(&ActionImpl::command_result_callback,
-                                                   _1, callback));
+    _parent->send_command_async(command,
+                                std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
 void ActionImpl::kill_async(const Action::result_callback_t &callback)
 {
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 0.0f; // kill
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, std::bind(&ActionImpl::command_result_callback,
-                                                   _1, callback));
+    _parent->send_command_async(command,
+                                std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
 void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
@@ -303,32 +302,31 @@ void ActionImpl::takeoff_async_continued(MAVLinkCommands::Result previous_result
         return;
     }
 
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_TAKEOFF;
     command.params.param7 = _relative_takeoff_altitude_m;
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, std::bind(&ActionImpl::command_result_callback,
-                                                   _1, callback));
+    _parent->send_command_async(command,
+                                std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
 void ActionImpl::land_async(const Action::result_callback_t &callback)
 {
-    MAVLinkCommands::CommandLong command {};
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_LAND;
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command, std::bind(&ActionImpl::command_result_callback,
-                                                   _1, callback));
+    _parent->send_command_async(command,
+                                std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
 void ActionImpl::return_to_launch_async(const Action::result_callback_t &callback)
 {
-    _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::RETURN_TO_LAUNCH,
-        std::bind(&ActionImpl::command_result_callback, _1, callback));
+    _parent->set_flight_mode_async(SystemImpl::FlightMode::RETURN_TO_LAUNCH,
+                                   std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
 ActionResult ActionImpl::arming_allowed() const
@@ -398,18 +396,16 @@ void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &ca
 
 void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callback)
 {
-    _parent->set_flight_mode_async(
-        SystemImpl::FlightMode::HOLD,
-        std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
+    _parent->set_flight_mode_async(SystemImpl::FlightMode::HOLD,
+                                   std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
 }
-
 
 void ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
-    _parent->set_param_float_async("MIS_TAKEOFF_ALT", relative_altitude_m,
-                                   std::bind(&ActionImpl::receive_takeoff_alt_param,
-                                             this, _1, relative_altitude_m));
-
+    _parent->set_param_float_async(
+        "MIS_TAKEOFF_ALT",
+        relative_altitude_m,
+        std::bind(&ActionImpl::receive_takeoff_alt_param, this, _1, relative_altitude_m));
 }
 
 void ActionImpl::receive_takeoff_alt_param(bool success, float new_relative_altitude_m)
@@ -429,10 +425,11 @@ float ActionImpl::get_takeoff_altitude_m() const
 void ActionImpl::set_max_speed(float speed_m_s)
 {
     // TODO: add retries
-    //const int retries = 3;
-    _parent->set_param_float_async("MPC_XY_CRUISE", speed_m_s,
-                                   std::bind(&ActionImpl::receive_max_speed_result, this, _1,
-                                             speed_m_s));
+    // const int retries = 3;
+    _parent->set_param_float_async(
+        "MPC_XY_CRUISE",
+        speed_m_s,
+        std::bind(&ActionImpl::receive_max_speed_result, this, _1, speed_m_s));
 }
 
 void ActionImpl::receive_max_speed_result(bool success, float new_speed_m_s)
@@ -449,8 +446,7 @@ float ActionImpl::get_max_speed_m_s() const
     return _max_speed_m_s;
 }
 
-ActionResult
-ActionImpl::action_result_from_command_result(MAVLinkCommands::Result result)
+ActionResult ActionImpl::action_result_from_command_result(MAVLinkCommands::Result result)
 {
     switch (result) {
         case MAVLinkCommands::Result::SUCCESS:
@@ -479,6 +475,5 @@ void ActionImpl::command_result_callback(MAVLinkCommands::Result command_result,
         callback(action_result);
     }
 }
-
 
 } // namespace dronecore

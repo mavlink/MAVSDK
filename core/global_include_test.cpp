@@ -12,7 +12,7 @@ using namespace dronecore;
 
 TEST(GlobalInclude, SteadyTimeIncreasing)
 {
-    Time time {};
+    Time time{};
 
     dl_time_t time_before = time.steady_time();
     time.sleep_for(std::chrono::milliseconds(100));
@@ -23,7 +23,7 @@ TEST(GlobalInclude, SteadyTimeIncreasing)
 
 TEST(GlobalInclude, ElapsedSinceAboutRight)
 {
-    Time time {};
+    Time time{};
     dl_time_t time_before = time.steady_time();
     time.sleep_for(std::chrono::milliseconds(100));
     double seconds_elapsed = time.elapsed_since_s(time_before);
@@ -34,7 +34,7 @@ TEST(GlobalInclude, ElapsedSinceAboutRight)
 
 TEST(GlobalInclude, SteadyTimeInFuture)
 {
-    Time time {};
+    Time time{};
     dl_time_t in_future = time.steady_time_in_future(0.1);
     time.sleep_for(std::chrono::milliseconds(80));
     dl_time_t now = time.steady_time();
@@ -46,7 +46,7 @@ TEST(GlobalInclude, SteadyTimeInFuture)
 
 TEST(GlobalInclude, ElapsedIncreasing)
 {
-    Time time {};
+    Time time{};
     double before = time.elapsed_s();
     time.sleep_for(std::chrono::milliseconds(10));
     double now = time.elapsed_s();

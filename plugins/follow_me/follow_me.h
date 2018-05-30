@@ -13,16 +13,17 @@ class FollowMeImpl;
 class System;
 
 /**
- * @brief This class enables vehicle tracking of a specified target (typically a ground station carried by a user).
+ * @brief This class enables vehicle tracking of a specified target (typically a ground station
+ * carried by a user).
  *
- * The API is used to supply both the position(s) for the target and the relative follow position of the vehicle.
- * Applications must get target position information from the underlying platform (or some other source).
+ * The API is used to supply both the position(s) for the target and the relative follow position of
+ * the vehicle. Applications must get target position information from the underlying platform (or
+ * some other source).
  *
  * @sa [Follow Me Mode](https://docs.px4.io/en/flight_modes/follow_me.html) (PX4 User Guide)
  *
  */
-class FollowMe : public PluginBase
-{
+class FollowMe : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -61,7 +62,9 @@ public:
     /**
      * @brief FollowMe Configuration.
      * @sa get_config(), set_config()
-     * @sa [Parameter Reference](https://docs.px4.io/en/advanced_config/parameter_reference.html#follow-target) (PX4 User Guide)
+     * @sa [Parameter
+     * Reference](https://docs.px4.io/en/advanced_config/parameter_reference.html#follow-target)
+     * (PX4 User Guide)
      */
     struct Config {
         /**
@@ -76,14 +79,16 @@ public:
             NONE
         };
 
-        constexpr static const float MIN_HEIGHT_M = 8.0f; /**< @brief Min follow height, in meters. */
+        constexpr static const float MIN_HEIGHT_M =
+            8.0f; /**< @brief Min follow height, in meters. */
         constexpr static const float MIN_FOLLOW_DIST_M =
             1.0f; /**< @brief Min follow distance, in meters. */
         constexpr static const float MIN_RESPONSIVENESS = 0.f; /**< @brief Min responsiveness. */
         constexpr static const float MAX_RESPONSIVENESS = 1.0f; /**< @brief Max responsiveness. */
 
         float min_height_m = 8.0f; /**< @brief Min follow height, in meters. */
-        float follow_distance_m = 8.0f; /**< @brief Horizontal follow distance to target, in meters. */
+        float follow_distance_m =
+            8.0f; /**< @brief Horizontal follow distance to target, in meters. */
         FollowDirection follow_direction =
             FollowDirection::BEHIND; /**< @brief Relative position of the following vehicle. */
         float responsiveness = 0.5f; /**< @brief Responsiveness, Range (0.0-1.0) */
@@ -135,7 +140,8 @@ public:
     /**
      * @brief Sets location of the moving target.
      *
-     * An app can obtain the location of the moving target from Location framework of the underlying platform.
+     * An app can obtain the location of the moving target from Location framework of the underlying
+     * platform.
      *
      * @note
      * The following links provide information about location services on different platforms:
@@ -171,10 +177,10 @@ public:
 
     /**
      * @brief Stops FollowMe mode.
-     * @return FollowMe::Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for error codes.
+     * @return FollowMe::Result::SUCCESS if succeeded, error otherwise. See FollowMe::Result for
+     * error codes.
      */
     FollowMe::Result stop() const;
-
 
     // Non-copyable
     /**

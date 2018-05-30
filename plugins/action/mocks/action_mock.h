@@ -5,8 +5,7 @@
 namespace dronecore {
 namespace testing {
 
-class MockAction
-{
+class MockAction {
 public:
     MOCK_CONST_METHOD0(arm, ActionResult());
     MOCK_CONST_METHOD0(disarm, ActionResult());

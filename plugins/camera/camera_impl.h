@@ -7,8 +7,7 @@
 
 namespace dronecore {
 
-class CameraImpl : public PluginImplBase
-{
+class CameraImpl : public PluginImplBase {
 public:
     CameraImpl(System &system);
     ~CameraImpl();
@@ -56,8 +55,7 @@ public:
     bool get_possible_settings(std::vector<std::string> &settings);
     bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
 
-    bool get_setting_str(const std::string &setting_name,
-                         std::string &description);
+    bool get_setting_str(const std::string &setting_name, std::string &description);
     bool get_option_str(const std::string &setting_name,
                         const std::string &option_name,
                         std::string &description);
@@ -68,34 +66,34 @@ public:
 
 private:
     struct {
-        std::mutex mutex {};
-        Camera::get_status_callback_t callback {nullptr};
-        Camera::Status data {};
-        bool received_camera_capture_status {false};
-        bool received_storage_information {false};
-        void *timeout_cookie {nullptr};
+        std::mutex mutex{};
+        Camera::get_status_callback_t callback{nullptr};
+        Camera::Status data{};
+        bool received_camera_capture_status{false};
+        bool received_storage_information{false};
+        void *timeout_cookie{nullptr};
     } _status;
 
     static constexpr double DEFAULT_TIMEOUT_S = 3.0;
 
     struct {
-        std::mutex mutex {};
-        Camera::mode_callback_t callback {nullptr};
-        void *timeout_cookie {nullptr};
+        std::mutex mutex{};
+        Camera::mode_callback_t callback{nullptr};
+        void *timeout_cookie{nullptr};
     } _get_mode;
 
     struct {
-        std::mutex mutex {};
+        std::mutex mutex{};
         int sequence = 1; // The MAVLink spec says the sequence starts at 1.
     } _capture;
 
     struct {
-        std::mutex mutex {};
-        Camera::capture_info_callback_t callback {nullptr};
+        std::mutex mutex{};
+        Camera::capture_info_callback_t callback{nullptr};
     } _capture_info;
 
     struct {
-        std::mutex mutex {};
+        std::mutex mutex{};
         Camera::VideoStreamInfo info;
         bool available = false;
         void reset()
@@ -110,7 +108,6 @@ private:
         }
     } _video_stream_info;
 
-
     void receive_set_mode_command_result(MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
                                          Camera::Mode mode);
@@ -119,8 +116,7 @@ private:
 
     void receive_get_mode_command_result(MAVLinkCommands::Result command_result);
 
-    static Camera::Result camera_result_from_command_result(
-        MAVLinkCommands::Result command_result);
+    static Camera::Result camera_result_from_command_result(MAVLinkCommands::Result command_result);
 
     static void receive_command_result(MAVLinkCommands::Result command_result,
                                        const Camera::result_callback_t &callback);
@@ -167,9 +163,7 @@ private:
 
     MAVLinkCommands::CommandLong make_command_request_video_stream_info();
 
-
-    std::unique_ptr<CameraDefinition> _camera_definition {};
+    std::unique_ptr<CameraDefinition> _camera_definition{};
 };
-
 
 } // namespace dronecore

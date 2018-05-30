@@ -2,8 +2,7 @@
 
 namespace dronecore {
 
-class PluginBase
-{
+class PluginBase {
 public:
     PluginBase();
     virtual ~PluginBase() = default;

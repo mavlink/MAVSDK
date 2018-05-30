@@ -6,15 +6,9 @@
 
 namespace dronecore {
 
-Telemetry::Telemetry(System &system) :
-    PluginBase(),
-    _impl { new TelemetryImpl(system) }
-{
-}
+Telemetry::Telemetry(System &system) : PluginBase(), _impl{new TelemetryImpl(system)} {}
 
-Telemetry::~Telemetry()
-{
-}
+Telemetry::~Telemetry() {}
 
 Telemetry::Result Telemetry::set_rate_position(double rate_hz)
 {
@@ -263,7 +257,6 @@ std::string Telemetry::flight_mode_str(FlightMode flight_mode)
         default:
             return "Unknown";
     }
-
 }
 
 void Telemetry::health_async(health_callback_t callback)
@@ -304,120 +297,113 @@ const char *Telemetry::result_str(Result result)
 
 bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs)
 {
-    return abs(lhs.latitude_deg - rhs.latitude_deg) <= std::numeric_limits<double>::epsilon()
-           && abs(lhs.longitude_deg - rhs.longitude_deg) <= std::numeric_limits<double>::epsilon()
-           && abs(lhs.absolute_altitude_m - rhs.absolute_altitude_m) <= std::numeric_limits<float>::epsilon()
-           && abs(lhs.relative_altitude_m - rhs.relative_altitude_m) <= std::numeric_limits<float>::epsilon();
+    return abs(lhs.latitude_deg - rhs.latitude_deg) <= std::numeric_limits<double>::epsilon() &&
+           abs(lhs.longitude_deg - rhs.longitude_deg) <= std::numeric_limits<double>::epsilon() &&
+           abs(lhs.absolute_altitude_m - rhs.absolute_altitude_m) <=
+               std::numeric_limits<float>::epsilon() &&
+           abs(lhs.relative_altitude_m - rhs.relative_altitude_m) <=
+               std::numeric_limits<float>::epsilon();
 }
 
 std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position)
 {
     return str << "[lat: " << position.latitude_deg << ", lon: " << position.longitude_deg
-           << ", abs_alt: " << position.absolute_altitude_m << ", rel_alt: " << position.relative_altitude_m
-           << "]";
+               << ", abs_alt: " << position.absolute_altitude_m
+               << ", rel_alt: " << position.relative_altitude_m << "]";
 }
 
 bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs)
 {
-    return lhs.gyrometer_calibration_ok == rhs.gyrometer_calibration_ok
-           && lhs.accelerometer_calibration_ok == rhs.accelerometer_calibration_ok
-           && lhs.magnetometer_calibration_ok == rhs.magnetometer_calibration_ok
-           && lhs.level_calibration_ok == rhs.level_calibration_ok
-           && lhs.local_position_ok == rhs.local_position_ok
-           && lhs.global_position_ok == rhs.global_position_ok
-           && lhs.home_position_ok == rhs.home_position_ok;
+    return lhs.gyrometer_calibration_ok == rhs.gyrometer_calibration_ok &&
+           lhs.accelerometer_calibration_ok == rhs.accelerometer_calibration_ok &&
+           lhs.magnetometer_calibration_ok == rhs.magnetometer_calibration_ok &&
+           lhs.level_calibration_ok == rhs.level_calibration_ok &&
+           lhs.local_position_ok == rhs.local_position_ok &&
+           lhs.global_position_ok == rhs.global_position_ok &&
+           lhs.home_position_ok == rhs.home_position_ok;
 }
 
 std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health)
 {
-    return str << "[gyrometer_calibration_ok: " << health.gyrometer_calibration_ok <<
-           ", accelerometer_calibration_ok: " << health.accelerometer_calibration_ok <<
-           ", magnetometer_calibration_ok: " << health.magnetometer_calibration_ok <<
-           ", level_calibration_ok: " << health.level_calibration_ok << ", local_position_ok: " <<
-           health.local_position_ok << ", global_position_ok: " << health.global_position_ok <<
-           ", home_position_ok: " << health.home_position_ok << "]";
+    return str << "[gyrometer_calibration_ok: " << health.gyrometer_calibration_ok
+               << ", accelerometer_calibration_ok: " << health.accelerometer_calibration_ok
+               << ", magnetometer_calibration_ok: " << health.magnetometer_calibration_ok
+               << ", level_calibration_ok: " << health.level_calibration_ok
+               << ", local_position_ok: " << health.local_position_ok
+               << ", global_position_ok: " << health.global_position_ok
+               << ", home_position_ok: " << health.home_position_ok << "]";
 }
 
 bool operator==(const Telemetry::GPSInfo &lhs, const Telemetry::GPSInfo &rhs)
 {
-    return lhs.num_satellites == rhs.num_satellites
-           && lhs.fix_type == rhs.fix_type;
+    return lhs.num_satellites == rhs.num_satellites && lhs.fix_type == rhs.fix_type;
 }
 
 std::ostream &operator<<(std::ostream &str, Telemetry::GPSInfo const &gps_info)
 {
-    return str << "[num_sat: " << gps_info.num_satellites
-           << ", fix_type: " << gps_info.fix_type << "]";
+    return str << "[num_sat: " << gps_info.num_satellites << ", fix_type: " << gps_info.fix_type
+               << "]";
 }
 
 bool operator==(const Telemetry::Battery &lhs, const Telemetry::Battery &rhs)
 {
-    return lhs.voltage_v == rhs.voltage_v
-           && lhs.remaining_percent == rhs.remaining_percent;
+    return lhs.voltage_v == rhs.voltage_v && lhs.remaining_percent == rhs.remaining_percent;
 }
 
 std::ostream &operator<<(std::ostream &str, Telemetry::Battery const &battery)
 {
     return str << "[voltage_v: " << battery.voltage_v
-           << ", remaining_percent: " << battery.remaining_percent << "]";
+               << ", remaining_percent: " << battery.remaining_percent << "]";
 }
 
 bool operator==(const Telemetry::Quaternion &lhs, const Telemetry::Quaternion &rhs)
 {
-    return lhs.w == rhs.w
-           && lhs.x == rhs.x
-           && lhs.y == rhs.y
-           && lhs.z == rhs.z;
+    return lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
 }
 
 std::ostream &operator<<(std::ostream &str, Telemetry::Quaternion const &quaternion)
 {
-    return str << "[w: " << quaternion.w
-           << ", x: " << quaternion.x
-           << ", y: " << quaternion.y
-           << ", z: " << quaternion.z << "]";
+    return str << "[w: " << quaternion.w << ", x: " << quaternion.x << ", y: " << quaternion.y
+               << ", z: " << quaternion.z << "]";
 }
 
 bool operator==(const Telemetry::EulerAngle &lhs, const Telemetry::EulerAngle &rhs)
 {
-    return lhs.roll_deg == rhs.roll_deg
-           && lhs.pitch_deg == rhs.pitch_deg
-           && lhs.yaw_deg == rhs.yaw_deg;
+    return lhs.roll_deg == rhs.roll_deg && lhs.pitch_deg == rhs.pitch_deg &&
+           lhs.yaw_deg == rhs.yaw_deg;
 }
 
 std::ostream &operator<<(std::ostream &str, Telemetry::EulerAngle const &euler_angle)
 {
-    return str << "[roll_deg: " << euler_angle.roll_deg
-           << ", pitch_deg: " << euler_angle.pitch_deg
-           << ", yaw_deg: " << euler_angle.yaw_deg << "]";
+    return str << "[roll_deg: " << euler_angle.roll_deg << ", pitch_deg: " << euler_angle.pitch_deg
+               << ", yaw_deg: " << euler_angle.yaw_deg << "]";
 }
 
 bool operator==(const Telemetry::GroundSpeedNED &lhs, const Telemetry::GroundSpeedNED &rhs)
 {
-    return lhs.velocity_north_m_s == rhs.velocity_north_m_s
-           && lhs.velocity_east_m_s == rhs.velocity_east_m_s
-           && lhs.velocity_down_m_s == rhs.velocity_down_m_s;
+    return lhs.velocity_north_m_s == rhs.velocity_north_m_s &&
+           lhs.velocity_east_m_s == rhs.velocity_east_m_s &&
+           lhs.velocity_down_m_s == rhs.velocity_down_m_s;
 }
 
 std::ostream &operator<<(std::ostream &str, Telemetry::GroundSpeedNED const &ground_speed)
 {
     return str << "[velocity_north_m_s: " << ground_speed.velocity_north_m_s
-           << ", velocity_east_m_s: " << ground_speed.velocity_east_m_s
-           << ", velocity_down_m_s: " << ground_speed.velocity_down_m_s << "]";
+               << ", velocity_east_m_s: " << ground_speed.velocity_east_m_s
+               << ", velocity_down_m_s: " << ground_speed.velocity_down_m_s << "]";
 }
 
 bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs)
 {
-    return lhs.available_once == rhs.available_once
-           && lhs.available == rhs.available
-           && lhs.signal_strength_percent == rhs.signal_strength_percent;
+    return lhs.available_once == rhs.available_once && lhs.available == rhs.available &&
+           lhs.signal_strength_percent == rhs.signal_strength_percent;
 }
 
 std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status)
 {
     return str << "[was_available_once: " << rc_status.available_once
-           << ", is_available: " << rc_status.available
-           << ", signal_strength_percent: " << rc_status.signal_strength_percent << "]";
+               << ", is_available: " << rc_status.available
+               << ", signal_strength_percent: " << rc_status.signal_strength_percent << "]";
 }
 
 } // namespace dronecore

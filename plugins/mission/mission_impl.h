@@ -14,8 +14,7 @@ using namespace json11;
 
 namespace dronecore {
 
-class MissionImpl : public PluginImplBase
-{
+class MissionImpl : public PluginImplBase {
 public:
     MissionImpl(System &system);
     ~MissionImpl();
@@ -66,11 +65,11 @@ private:
 
     void assemble_mavlink_messages();
 
-    void report_mission_result(const Mission::result_callback_t &callback,
-                               Mission::Result result);
+    void report_mission_result(const Mission::result_callback_t &callback, Mission::Result result);
 
-    void report_mission_items_and_result(const Mission::mission_items_and_result_callback_t &callback,
-                                         Mission::Result result);
+    void
+    report_mission_items_and_result(const Mission::mission_items_and_result_callback_t &callback,
+                                    Mission::Result result);
 
     void report_progress();
 
@@ -80,42 +79,41 @@ private:
     void download_next_mission_item();
     void assemble_mission_items();
 
-    static Mission::Result
-    import_mission_items(Mission::mission_items_t &mission_items,
-                         const Json &mission_json);
-    static Mission::Result
-    build_mission_items(MAV_CMD command, std::vector<double> params,
-                        std::shared_ptr<MissionItem> &new_mission_item,
-                        Mission::mission_items_t &all_mission_items);
+    static Mission::Result import_mission_items(Mission::mission_items_t &mission_items,
+                                                const Json &mission_json);
+    static Mission::Result build_mission_items(MAV_CMD command,
+                                               std::vector<double> params,
+                                               std::shared_ptr<MissionItem> &new_mission_item,
+                                               Mission::mission_items_t &all_mission_items);
 
     struct Activity {
-        mutable std::mutex mutex {};
+        mutable std::mutex mutex{};
         enum class State {
             NONE,
             SET_CURRENT,
             SET_MISSION,
             GET_MISSION,
             SEND_COMMAND
-        } state {Activity::State::NONE};
-    } _activity {};
+        } state{Activity::State::NONE};
+    } _activity{};
 
     struct MissionData {
-        mutable std::recursive_mutex mutex {};
+        mutable std::recursive_mutex mutex{};
         unsigned retries = 0;
-        int last_current_mavlink_mission_item {-1};
-        int last_reached_mavlink_mission_item {-1};
-        std::vector<std::shared_ptr<MissionItem>> mission_items {};
-        std::vector<std::shared_ptr<mavlink_message_t>> mavlink_mission_item_messages {};
-        std::map<int, int> mavlink_mission_item_to_mission_item_indices {};
-        int num_mission_items_to_download {-1};
-        int next_mission_item_to_download {-1};
-        std::vector<std::shared_ptr<mavlink_mission_item_int_t>> mavlink_mission_items_downloaded {};
-        Mission::result_callback_t result_callback {nullptr};
-        Mission::mission_items_and_result_callback_t mission_items_and_result_callback {nullptr};
-        Mission::progress_callback_t progress_callback {nullptr};
-    } _mission_data {};
+        int last_current_mavlink_mission_item{-1};
+        int last_reached_mavlink_mission_item{-1};
+        std::vector<std::shared_ptr<MissionItem>> mission_items{};
+        std::vector<std::shared_ptr<mavlink_message_t>> mavlink_mission_item_messages{};
+        std::map<int, int> mavlink_mission_item_to_mission_item_indices{};
+        int num_mission_items_to_download{-1};
+        int next_mission_item_to_download{-1};
+        std::vector<std::shared_ptr<mavlink_mission_item_int_t>> mavlink_mission_items_downloaded{};
+        Mission::result_callback_t result_callback{nullptr};
+        Mission::mission_items_and_result_callback_t mission_items_and_result_callback{nullptr};
+        Mission::progress_callback_t progress_callback{nullptr};
+    } _mission_data{};
 
-    void *_timeout_cookie {nullptr};
+    void *_timeout_cookie{nullptr};
 
     static constexpr unsigned MAX_RETRIES = 3;
 

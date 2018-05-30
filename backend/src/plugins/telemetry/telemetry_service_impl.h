@@ -6,18 +6,19 @@
 namespace dronecore {
 namespace backend {
 
-template <typename Telemetry = Telemetry>
-class TelemetryServiceImpl final : public dronecore::rpc::telemetry::TelemetryService::Service
-{
+template<typename Telemetry = Telemetry>
+class TelemetryServiceImpl final : public dronecore::rpc::telemetry::TelemetryService::Service {
 public:
-    TelemetryServiceImpl(Telemetry &telemetry)
-        : _telemetry(telemetry),
-          _stop_promise(std::promise<void>()),
-          _stop_future(_stop_promise.get_future()) {}
+    TelemetryServiceImpl(Telemetry &telemetry) :
+        _telemetry(telemetry),
+        _stop_promise(std::promise<void>()),
+        _stop_future(_stop_promise.get_future())
+    {}
 
-    grpc::Status SubscribePosition(grpc::ServerContext * /* context */,
-                                   const dronecore::rpc::telemetry::SubscribePositionRequest * /* request */,
-                                   grpc::ServerWriter<rpc::telemetry::PositionResponse> *writer) override
+    grpc::Status
+    SubscribePosition(grpc::ServerContext * /* context */,
+                      const dronecore::rpc::telemetry::SubscribePositionRequest * /* request */,
+                      grpc::ServerWriter<rpc::telemetry::PositionResponse> *writer) override
     {
         _telemetry.position_async([&writer](dronecore::Telemetry::Position position) {
             auto rpc_position = new dronecore::rpc::telemetry::Position();
@@ -35,9 +36,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeHealth(grpc::ServerContext * /* context */,
-                                 const dronecore::rpc::telemetry::SubscribeHealthRequest * /* request */,
-                                 grpc::ServerWriter<rpc::telemetry::HealthResponse> *writer) override
+    grpc::Status
+    SubscribeHealth(grpc::ServerContext * /* context */,
+                    const dronecore::rpc::telemetry::SubscribeHealthRequest * /* request */,
+                    grpc::ServerWriter<rpc::telemetry::HealthResponse> *writer) override
     {
         _telemetry.health_async([&writer](dronecore::Telemetry::Health health) {
             auto rpc_health = new dronecore::rpc::telemetry::Health();
@@ -58,9 +60,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeHome(grpc::ServerContext * /* context */,
-                               const dronecore::rpc::telemetry::SubscribeHomeRequest * /* request */,
-                               grpc::ServerWriter<rpc::telemetry::HomeResponse> *writer) override
+    grpc::Status
+    SubscribeHome(grpc::ServerContext * /* context */,
+                  const dronecore::rpc::telemetry::SubscribeHomeRequest * /* request */,
+                  grpc::ServerWriter<rpc::telemetry::HomeResponse> *writer) override
     {
         _telemetry.home_position_async([&writer](dronecore::Telemetry::Position position) {
             auto rpc_position = new dronecore::rpc::telemetry::Position();
@@ -78,9 +81,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeInAir(grpc::ServerContext * /* context */,
-                                const dronecore::rpc::telemetry::SubscribeInAirRequest * /* request */,
-                                grpc::ServerWriter<rpc::telemetry::InAirResponse> *writer) override
+    grpc::Status
+    SubscribeInAir(grpc::ServerContext * /* context */,
+                   const dronecore::rpc::telemetry::SubscribeInAirRequest * /* request */,
+                   grpc::ServerWriter<rpc::telemetry::InAirResponse> *writer) override
     {
         _telemetry.in_air_async([&writer](bool is_in_air) {
             dronecore::rpc::telemetry::InAirResponse rpc_in_air_response;
@@ -92,9 +96,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeArmed(grpc::ServerContext * /* context */,
-                                const dronecore::rpc::telemetry::SubscribeArmedRequest * /* request */,
-                                grpc::ServerWriter<rpc::telemetry::ArmedResponse> *writer) override
+    grpc::Status
+    SubscribeArmed(grpc::ServerContext * /* context */,
+                   const dronecore::rpc::telemetry::SubscribeArmedRequest * /* request */,
+                   grpc::ServerWriter<rpc::telemetry::ArmedResponse> *writer) override
     {
         _telemetry.armed_async([&writer](bool is_armed) {
             dronecore::rpc::telemetry::ArmedResponse rpc_armed_response;
@@ -106,9 +111,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeGPSInfo(grpc::ServerContext * /* context */,
-                                  const dronecore::rpc::telemetry::SubscribeGPSInfoRequest * /* request */,
-                                  grpc::ServerWriter<rpc::telemetry::GPSInfoResponse> *writer) override
+    grpc::Status
+    SubscribeGPSInfo(grpc::ServerContext * /* context */,
+                     const dronecore::rpc::telemetry::SubscribeGPSInfoRequest * /* request */,
+                     grpc::ServerWriter<rpc::telemetry::GPSInfoResponse> *writer) override
     {
         _telemetry.gps_info_async([this, &writer](dronecore::Telemetry::GPSInfo gps_info) {
             auto rpc_gps_info = new dronecore::rpc::telemetry::GPSInfo();
@@ -145,9 +151,10 @@ public:
         }
     }
 
-    grpc::Status SubscribeBattery(grpc::ServerContext * /* context */,
-                                  const dronecore::rpc::telemetry::SubscribeBatteryRequest * /* request */,
-                                  grpc::ServerWriter<rpc::telemetry::BatteryResponse> *writer) override
+    grpc::Status
+    SubscribeBattery(grpc::ServerContext * /* context */,
+                     const dronecore::rpc::telemetry::SubscribeBatteryRequest * /* request */,
+                     grpc::ServerWriter<rpc::telemetry::BatteryResponse> *writer) override
     {
         _telemetry.battery_async([&writer](dronecore::Telemetry::Battery battery) {
             auto rpc_battery = new dronecore::rpc::telemetry::Battery();
@@ -163,9 +170,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeFlightMode(grpc::ServerContext * /* context */,
-                                     const dronecore::rpc::telemetry::SubscribeFlightModeRequest * /* request */,
-                                     grpc::ServerWriter<rpc::telemetry::FlightModeResponse> *writer) override
+    grpc::Status
+    SubscribeFlightMode(grpc::ServerContext * /* context */,
+                        const dronecore::rpc::telemetry::SubscribeFlightModeRequest * /* request */,
+                        grpc::ServerWriter<rpc::telemetry::FlightModeResponse> *writer) override
     {
         _telemetry.flight_mode_async([this, &writer](dronecore::Telemetry::FlightMode flight_mode) {
             auto rpc_flight_mode = translateFlightMode(flight_mode);
@@ -205,107 +213,117 @@ public:
         }
     }
 
-    grpc::Status SubscribeAttitudeQuaternion(grpc::ServerContext * /* context */,
-                                             const dronecore::rpc::telemetry::SubscribeAttitudeQuaternionRequest * /* request */,
-                                             grpc::ServerWriter<rpc::telemetry::AttitudeQuaternionResponse> *writer) override
+    grpc::Status SubscribeAttitudeQuaternion(
+        grpc::ServerContext * /* context */,
+        const dronecore::rpc::telemetry::SubscribeAttitudeQuaternionRequest * /* request */,
+        grpc::ServerWriter<rpc::telemetry::AttitudeQuaternionResponse> *writer) override
     {
-        _telemetry.attitude_quaternion_async([&writer](dronecore::Telemetry::Quaternion quaternion) {
-            auto rpc_quaternion = new dronecore::rpc::telemetry::Quaternion();
-            rpc_quaternion->set_w(quaternion.w);
-            rpc_quaternion->set_x(quaternion.x);
-            rpc_quaternion->set_y(quaternion.y);
-            rpc_quaternion->set_z(quaternion.z);
+        _telemetry.attitude_quaternion_async(
+            [&writer](dronecore::Telemetry::Quaternion quaternion) {
+                auto rpc_quaternion = new dronecore::rpc::telemetry::Quaternion();
+                rpc_quaternion->set_w(quaternion.w);
+                rpc_quaternion->set_x(quaternion.x);
+                rpc_quaternion->set_y(quaternion.y);
+                rpc_quaternion->set_z(quaternion.z);
 
-            dronecore::rpc::telemetry::AttitudeQuaternionResponse rpc_quaternion_response;
-            rpc_quaternion_response.set_allocated_attitude_quaternion(rpc_quaternion);
-            writer->Write(rpc_quaternion_response);
-        });
+                dronecore::rpc::telemetry::AttitudeQuaternionResponse rpc_quaternion_response;
+                rpc_quaternion_response.set_allocated_attitude_quaternion(rpc_quaternion);
+                writer->Write(rpc_quaternion_response);
+            });
 
         _stop_future.wait();
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeAttitudeEuler(grpc::ServerContext * /* context */,
-                                        const dronecore::rpc::telemetry::SubscribeAttitudeEulerRequest * /* request */,
-                                        grpc::ServerWriter<rpc::telemetry::AttitudeEulerResponse> *writer) override
+    grpc::Status SubscribeAttitudeEuler(
+        grpc::ServerContext * /* context */,
+        const dronecore::rpc::telemetry::SubscribeAttitudeEulerRequest * /* request */,
+        grpc::ServerWriter<rpc::telemetry::AttitudeEulerResponse> *writer) override
     {
-        _telemetry.attitude_euler_angle_async([&writer](dronecore::Telemetry::EulerAngle euler_angle) {
-            auto rpc_euler_angle = new dronecore::rpc::telemetry::EulerAngle();
-            rpc_euler_angle->set_roll_deg(euler_angle.roll_deg);
-            rpc_euler_angle->set_pitch_deg(euler_angle.pitch_deg);
-            rpc_euler_angle->set_yaw_deg(euler_angle.yaw_deg);
+        _telemetry.attitude_euler_angle_async(
+            [&writer](dronecore::Telemetry::EulerAngle euler_angle) {
+                auto rpc_euler_angle = new dronecore::rpc::telemetry::EulerAngle();
+                rpc_euler_angle->set_roll_deg(euler_angle.roll_deg);
+                rpc_euler_angle->set_pitch_deg(euler_angle.pitch_deg);
+                rpc_euler_angle->set_yaw_deg(euler_angle.yaw_deg);
 
-            dronecore::rpc::telemetry::AttitudeEulerResponse rpc_euler_response;
-            rpc_euler_response.set_allocated_attitude_euler(rpc_euler_angle);
-            writer->Write(rpc_euler_response);
-        });
+                dronecore::rpc::telemetry::AttitudeEulerResponse rpc_euler_response;
+                rpc_euler_response.set_allocated_attitude_euler(rpc_euler_angle);
+                writer->Write(rpc_euler_response);
+            });
 
         _stop_future.wait();
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCameraAttitudeQuaternion(grpc::ServerContext * /* context */,
-                                                   const dronecore::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest * /* request */,
-                                                   grpc::ServerWriter<rpc::telemetry::CameraAttitudeQuaternionResponse> *writer) override
+    grpc::Status SubscribeCameraAttitudeQuaternion(
+        grpc::ServerContext * /* context */,
+        const dronecore::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest * /* request */,
+        grpc::ServerWriter<rpc::telemetry::CameraAttitudeQuaternionResponse> *writer) override
     {
-        _telemetry.camera_attitude_quaternion_async([&writer](dronecore::Telemetry::Quaternion quaternion) {
-            auto rpc_quaternion = new dronecore::rpc::telemetry::Quaternion();
-            rpc_quaternion->set_w(quaternion.w);
-            rpc_quaternion->set_x(quaternion.x);
-            rpc_quaternion->set_y(quaternion.y);
-            rpc_quaternion->set_z(quaternion.z);
+        _telemetry.camera_attitude_quaternion_async(
+            [&writer](dronecore::Telemetry::Quaternion quaternion) {
+                auto rpc_quaternion = new dronecore::rpc::telemetry::Quaternion();
+                rpc_quaternion->set_w(quaternion.w);
+                rpc_quaternion->set_x(quaternion.x);
+                rpc_quaternion->set_y(quaternion.y);
+                rpc_quaternion->set_z(quaternion.z);
 
-            dronecore::rpc::telemetry::CameraAttitudeQuaternionResponse rpc_quaternion_response;
-            rpc_quaternion_response.set_allocated_attitude_quaternion(rpc_quaternion);
-            writer->Write(rpc_quaternion_response);
-        });
+                dronecore::rpc::telemetry::CameraAttitudeQuaternionResponse rpc_quaternion_response;
+                rpc_quaternion_response.set_allocated_attitude_quaternion(rpc_quaternion);
+                writer->Write(rpc_quaternion_response);
+            });
 
         _stop_future.wait();
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCameraAttitudeEuler(grpc::ServerContext * /* context */,
-                                              const dronecore::rpc::telemetry::SubscribeCameraAttitudeEulerRequest * /* request */,
-                                              grpc::ServerWriter<rpc::telemetry::CameraAttitudeEulerResponse> *writer) override
+    grpc::Status SubscribeCameraAttitudeEuler(
+        grpc::ServerContext * /* context */,
+        const dronecore::rpc::telemetry::SubscribeCameraAttitudeEulerRequest * /* request */,
+        grpc::ServerWriter<rpc::telemetry::CameraAttitudeEulerResponse> *writer) override
     {
-        _telemetry.camera_attitude_euler_angle_async([&writer](dronecore::Telemetry::EulerAngle
-        euler_angle) {
-            auto rpc_euler_angle = new dronecore::rpc::telemetry::EulerAngle();
-            rpc_euler_angle->set_roll_deg(euler_angle.roll_deg);
-            rpc_euler_angle->set_pitch_deg(euler_angle.pitch_deg);
-            rpc_euler_angle->set_yaw_deg(euler_angle.yaw_deg);
+        _telemetry.camera_attitude_euler_angle_async(
+            [&writer](dronecore::Telemetry::EulerAngle euler_angle) {
+                auto rpc_euler_angle = new dronecore::rpc::telemetry::EulerAngle();
+                rpc_euler_angle->set_roll_deg(euler_angle.roll_deg);
+                rpc_euler_angle->set_pitch_deg(euler_angle.pitch_deg);
+                rpc_euler_angle->set_yaw_deg(euler_angle.yaw_deg);
 
-            dronecore::rpc::telemetry::CameraAttitudeEulerResponse rpc_euler_response;
-            rpc_euler_response.set_allocated_attitude_euler(rpc_euler_angle);
-            writer->Write(rpc_euler_response);
-        });
+                dronecore::rpc::telemetry::CameraAttitudeEulerResponse rpc_euler_response;
+                rpc_euler_response.set_allocated_attitude_euler(rpc_euler_angle);
+                writer->Write(rpc_euler_response);
+            });
 
         _stop_future.wait();
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeGroundSpeedNED(grpc::ServerContext * /* context */,
-                                         const dronecore::rpc::telemetry::SubscribeGroundSpeedNEDRequest * /* request */,
-                                         grpc::ServerWriter<rpc::telemetry::GroundSpeedNEDResponse> *writer) override
+    grpc::Status SubscribeGroundSpeedNED(
+        grpc::ServerContext * /* context */,
+        const dronecore::rpc::telemetry::SubscribeGroundSpeedNEDRequest * /* request */,
+        grpc::ServerWriter<rpc::telemetry::GroundSpeedNEDResponse> *writer) override
     {
-        _telemetry.ground_speed_ned_async([&writer](dronecore::Telemetry::GroundSpeedNED ground_speed) {
-            auto rpc_ground_speed = new dronecore::rpc::telemetry::SpeedNED();
-            rpc_ground_speed->set_velocity_north_m_s(ground_speed.velocity_north_m_s);
-            rpc_ground_speed->set_velocity_east_m_s(ground_speed.velocity_east_m_s);
-            rpc_ground_speed->set_velocity_down_m_s(ground_speed.velocity_down_m_s);
+        _telemetry.ground_speed_ned_async(
+            [&writer](dronecore::Telemetry::GroundSpeedNED ground_speed) {
+                auto rpc_ground_speed = new dronecore::rpc::telemetry::SpeedNED();
+                rpc_ground_speed->set_velocity_north_m_s(ground_speed.velocity_north_m_s);
+                rpc_ground_speed->set_velocity_east_m_s(ground_speed.velocity_east_m_s);
+                rpc_ground_speed->set_velocity_down_m_s(ground_speed.velocity_down_m_s);
 
-            dronecore::rpc::telemetry::GroundSpeedNEDResponse rpc_ground_speed_response;
-            rpc_ground_speed_response.set_allocated_ground_speed_ned(rpc_ground_speed);
-            writer->Write(rpc_ground_speed_response);
-        });
+                dronecore::rpc::telemetry::GroundSpeedNEDResponse rpc_ground_speed_response;
+                rpc_ground_speed_response.set_allocated_ground_speed_ned(rpc_ground_speed);
+                writer->Write(rpc_ground_speed_response);
+            });
 
         _stop_future.wait();
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeRCStatus(grpc::ServerContext * /* context */,
-                                   const dronecore::rpc::telemetry::SubscribeRCStatusRequest * /* request */,
-                                   grpc::ServerWriter<rpc::telemetry::RCStatusResponse> *writer) override
+    grpc::Status
+    SubscribeRCStatus(grpc::ServerContext * /* context */,
+                      const dronecore::rpc::telemetry::SubscribeRCStatusRequest * /* request */,
+                      grpc::ServerWriter<rpc::telemetry::RCStatusResponse> *writer) override
     {
         _telemetry.rc_status_async([&writer](dronecore::Telemetry::RCStatus rc_status) {
             auto rpc_rc_status = new dronecore::rpc::telemetry::RCStatus();
@@ -322,10 +340,7 @@ public:
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
-        _stop_promise.set_value();
-    }
+    void stop() { _stop_promise.set_value(); }
 
 private:
     Telemetry &_telemetry;

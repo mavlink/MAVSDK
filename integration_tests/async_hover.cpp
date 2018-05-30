@@ -58,7 +58,6 @@ TEST_F(SitlTest, ActionAsyncHover)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-
 void receive_result(ActionResult result)
 {
     LogDebug() << "got result: " << unsigned(result);

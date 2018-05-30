@@ -12,8 +12,7 @@
 
 namespace dronecore {
 
-class DroneCoreImpl
-{
+class DroneCoreImpl {
 public:
     DroneCoreImpl();
     ~DroneCoreImpl();
@@ -22,15 +21,11 @@ public:
     bool send_message(const mavlink_message_t &message);
 
     ConnectionResult add_any_connection(const std::string &connection_url);
-    ConnectionResult add_link_connection(const std::string &protocol,
-                                         const std::string &ip,
-                                         int port);
-    ConnectionResult add_udp_connection(const std::string &local_ip,
-                                        int local_port_number);
-    ConnectionResult add_tcp_connection(const std::string &remote_ip,
-                                        int remote_port);
-    ConnectionResult add_serial_connection(const std::string &dev_path,
-                                           int baudrate);
+    ConnectionResult
+    add_link_connection(const std::string &protocol, const std::string &ip, int port);
+    ConnectionResult add_udp_connection(const std::string &local_ip, int local_port_number);
+    ConnectionResult add_tcp_connection(const std::string &remote_ip, int remote_port);
+    ConnectionResult add_serial_connection(const std::string &dev_path, int baudrate);
 
     std::vector<uint64_t> get_system_uuids() const;
     System &get_system();

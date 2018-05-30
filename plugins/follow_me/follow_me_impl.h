@@ -10,8 +10,7 @@
 
 namespace dronecore {
 
-class FollowMeImpl : public PluginImplBase
-{
+class FollowMeImpl : public PluginImplBase {
 public:
     FollowMeImpl(System &system);
     ~FollowMeImpl();
@@ -51,15 +50,9 @@ private:
     void send_target_location();
     void stop_sending_target_location();
 
-    enum class EstimationCapabilites {
-        POS,
-        VEL
-    };
+    enum class EstimationCapabilites { POS, VEL };
 
-    enum class Mode {
-        NOT_ACTIVE,
-        ACTIVE
-    } _mode = Mode::NOT_ACTIVE;
+    enum class Mode { NOT_ACTIVE, ACTIVE } _mode = Mode::NOT_ACTIVE;
 
     enum class ConfigParameter {
         NONE = 0,
@@ -69,35 +62,32 @@ private:
         RESPONSIVENESS = 1 << 3
     };
 
-    friend config_val_t operator ~(ConfigParameter cfgp)
-    {
-        return ~static_cast<config_val_t>(cfgp);
-    }
-    friend config_val_t operator |(config_val_t config_val, ConfigParameter cfgp)
+    friend config_val_t operator~(ConfigParameter cfgp) { return ~static_cast<config_val_t>(cfgp); }
+    friend config_val_t operator|(config_val_t config_val, ConfigParameter cfgp)
     {
         return (config_val) | static_cast<config_val_t>(cfgp);
     }
-    friend config_val_t operator |=(config_val_t &config_val, ConfigParameter cfgp)
+    friend config_val_t operator|=(config_val_t &config_val, ConfigParameter cfgp)
     {
         return config_val = config_val | static_cast<config_val_t>(cfgp);
     }
-    friend bool operator !=(config_val_t config_val, ConfigParameter cfgp)
+    friend bool operator!=(config_val_t config_val, ConfigParameter cfgp)
     {
         return config_val != static_cast<config_val_t>(cfgp);
     }
-    friend bool operator ==(config_val_t config_val, ConfigParameter cfgp)
+    friend bool operator==(config_val_t config_val, ConfigParameter cfgp)
     {
         return config_val == static_cast<config_val_t>(cfgp);
     }
 
-    mutable std::mutex _mutex {};
+    mutable std::mutex _mutex{};
     FollowMe::TargetLocation _target_location; // sent to vehicle
     FollowMe::TargetLocation _last_location; // sent to vehicle
     void *_target_location_cookie = nullptr;
 
-    Time _time {};
+    Time _time{};
     uint8_t _estimatation_capabilities = 0; // sent to vehicle
-    FollowMe::Config _config {}; // has FollowMe configuration settings
+    FollowMe::Config _config{}; // has FollowMe configuration settings
     config_val_t _config_change_requested = 0;
 
     const float SENDER_RATE = 1.0f; // send location updates once in a second

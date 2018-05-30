@@ -7,8 +7,7 @@
 
 namespace dronecore {
 
-class LoggingImpl : public PluginImplBase
-{
+class LoggingImpl : public PluginImplBase {
 public:
     LoggingImpl(System &system);
     ~LoggingImpl();

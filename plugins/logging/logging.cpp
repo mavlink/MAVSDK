@@ -3,15 +3,9 @@
 
 namespace dronecore {
 
-Logging::Logging(System &system) :
-    PluginBase(),
-    _impl { new LoggingImpl(system) }
-{
-}
+Logging::Logging(System &system) : PluginBase(), _impl{new LoggingImpl(system)} {}
 
-Logging::~Logging()
-{
-}
+Logging::~Logging() {}
 
 Logging::Result Logging::start_logging() const
 {
@@ -53,6 +47,5 @@ const char *Logging::result_str(Result result)
             return "Unknown";
     }
 }
-
 
 } // namespace dronecore

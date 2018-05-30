@@ -5,8 +5,7 @@
 namespace dronecore {
 namespace testing {
 
-class MockCamera
-{
+class MockCamera {
 public:
     MOCK_CONST_METHOD0(take_photo, Camera::Result());
     MOCK_CONST_METHOD1(start_photo_interval, Camera::Result(float));

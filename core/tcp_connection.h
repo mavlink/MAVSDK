@@ -15,10 +15,8 @@
 
 namespace dronecore {
 
-class TcpConnection : public Connection
-{
+class TcpConnection : public Connection {
 public:
-
     explicit TcpConnection(Connection::receiver_callback_t receiver_callback,
                            const std::string &remote_ip,
                            int remote_port);
@@ -46,7 +44,7 @@ private:
 
     std::thread *_recv_thread = nullptr;
     std::atomic_bool _should_exit;
-    std::atomic_bool _is_ok {false};
+    std::atomic_bool _is_ok{false};
 };
 
 } // namespace dronecore

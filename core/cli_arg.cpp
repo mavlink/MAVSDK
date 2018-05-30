@@ -131,7 +131,7 @@ bool CliArg::find_port(std::string &rest)
     _port = std::stoi(rest);
     if (_port < 0) {
         LogWarn() << "Port can't be negative.";
-        _port  = 0;
+        _port = 0;
         return false;
     } else if (_port > UINT16_MAX) {
         LogWarn() << "Port number to big.";

@@ -52,4 +52,3 @@ void on_timeout(uint64_t uuid)
     std::cout << "Lost system with UUID: " << uuid << std::endl;
     _timeouted_system = true;
 }
-

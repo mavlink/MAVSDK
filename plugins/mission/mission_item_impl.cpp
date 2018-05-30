@@ -5,13 +5,9 @@
 
 namespace dronecore {
 
-MissionItemImpl::MissionItemImpl()
-{
-}
+MissionItemImpl::MissionItemImpl() {}
 
-MissionItemImpl::~MissionItemImpl()
-{
-}
+MissionItemImpl::~MissionItemImpl() {}
 
 void MissionItemImpl::set_position(double latitude_deg, double longitude_deg)
 {
@@ -88,7 +84,6 @@ float MissionItemImpl::get_mavlink_param1() const
 
 float MissionItemImpl::get_mavlink_param2() const
 {
-
     float acceptance_radius_m;
     if (_fly_through) {
         acceptance_radius_m = 3.0f;
@@ -127,9 +122,8 @@ float MissionItemImpl::get_mavlink_z() const
 
 bool MissionItemImpl::is_position_finite() const
 {
-    return std::isfinite(_latitude_deg)
-           && std::isfinite(_longitude_deg)
-           && std::isfinite(_relative_altitude_m);
+    return std::isfinite(_latitude_deg) && std::isfinite(_longitude_deg) &&
+           std::isfinite(_relative_altitude_m);
 }
 
 } // namespace dronecore

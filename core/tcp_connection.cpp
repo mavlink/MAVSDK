@@ -25,10 +25,12 @@ namespace dronecore {
 /* change to remote_ip and remote_port */
 TcpConnection::TcpConnection(Connection::receiver_callback_t receiver_callback,
                              const std::string &remote_ip,
-                             int remote_port): Connection(receiver_callback),
+                             int remote_port) :
+    Connection(receiver_callback),
     _remote_ip(remote_ip),
     _remote_port_number(remote_port),
-    _should_exit(false) {}
+    _should_exit(false)
+{}
 
 TcpConnection::~TcpConnection()
 {
@@ -54,7 +56,6 @@ ConnectionResult TcpConnection::start()
 
 ConnectionResult TcpConnection::setup_port()
 {
-
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
@@ -77,7 +78,8 @@ ConnectionResult TcpConnection::setup_port()
     remote_addr.sin_port = htons(_remote_port_number);
     remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());
 
-    if (connect(_socket_fd, reinterpret_cast<sockaddr *>(&remote_addr),
+    if (connect(_socket_fd,
+                reinterpret_cast<sockaddr *>(&remote_addr),
                 sizeof(struct sockaddr_in)) < 0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         _is_ok = false;
@@ -149,8 +151,12 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, reinterpret_cast<char *>(buffer), buffer_len, 0,
-                          reinterpret_cast<const sockaddr *>(&dest_addr), sizeof(dest_addr));
+    int send_len = sendto(_socket_fd,
+                          reinterpret_cast<char *>(buffer),
+                          buffer_len,
+                          0,
+                          reinterpret_cast<const sockaddr *>(&dest_addr),
+                          sizeof(dest_addr));
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -166,7 +172,6 @@ void TcpConnection::receive()
     char buffer[2048];
 
     while (!_should_exit) {
-
         if (!_is_ok) {
             LogErr() << "TCP receive error, trying to reconnect...";
             std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -185,7 +190,7 @@ void TcpConnection::receive()
         if (recv_len < 0) {
             // This happens on desctruction when close(_socket_fd) is called,
             // therefore be quiet.
-            //LogErr() << "recvfrom error: " << GET_ERROR(errno);
+            // LogErr() << "recvfrom error: " << GET_ERROR(errno);
             // Something went wrong, we should try to re-connect in next iteration.
             _is_ok = false;
             continue;

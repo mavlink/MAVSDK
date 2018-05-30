@@ -8,8 +8,7 @@
 
 using namespace dronecore;
 
-class CurlTest : public testing::Test
-{
+class CurlTest : public testing::Test {
 protected:
     std::string _file_url_existing_http;
     std::string _file_url_existing_https;
@@ -27,15 +26,9 @@ protected:
         _local_path = "testfile.txt";
     }
 
-    virtual void TearDown()
-    {
-        clean();
-    }
+    virtual void TearDown() { clean(); }
 
-    void clean()
-    {
-        remove(_local_path.c_str());
-    }
+    void clean() { remove(_local_path.c_str()); }
 
     bool check_file_exists(const std::string &file_path)
     {
@@ -82,7 +75,8 @@ TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_Success)
 {
     CurlWrapper curl_wrapper;
 
-    bool success = curl_wrapper.download_file_to_path(_file_url_existing_https, _local_path, nullptr);
+    bool success =
+        curl_wrapper.download_file_to_path(_file_url_existing_https, _local_path, nullptr);
     EXPECT_EQ(success, true);
 
     bool file_exists = check_file_exists(_local_path);
@@ -106,8 +100,8 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
     Status last_status;
     CURLcode last_curl_code;
 
-    auto progress = [&last_progress, &last_status, &last_curl_code]
-    (int got_progress, Status status, CURLcode curl_code) -> int {
+    auto progress = [&last_progress, &last_status, &last_curl_code](
+                        int got_progress, Status status, CURLcode curl_code) -> int {
         last_progress = got_progress;
         last_status = status;
         last_curl_code = curl_code;
@@ -116,7 +110,8 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
 
     CurlWrapper curl_wrapper;
 
-    bool success = curl_wrapper.download_file_to_path(_file_url_existing_https, _local_path, progress);
+    bool success =
+        curl_wrapper.download_file_to_path(_file_url_existing_https, _local_path, progress);
     EXPECT_EQ(success, true);
     EXPECT_EQ(last_progress, 100);
     EXPECT_EQ(last_status, Status::Finished);
@@ -132,8 +127,8 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_COULDNT_RESOLVE_HOST)
     Status last_status;
     CURLcode last_curl_code;
 
-    auto progress = [&last_progress, &last_status, &last_curl_code]
-    (int got_progress, Status status, CURLcode curl_code) -> int {
+    auto progress = [&last_progress, &last_status, &last_curl_code](
+                        int got_progress, Status status, CURLcode curl_code) -> int {
         last_progress = got_progress;
         last_status = status;
         last_curl_code = curl_code;
@@ -142,7 +137,8 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_COULDNT_RESOLVE_HOST)
 
     CurlWrapper curl_wrapper;
 
-    bool success = curl_wrapper.download_file_to_path(_file_url_not_existing, _local_path, progress);
+    bool success =
+        curl_wrapper.download_file_to_path(_file_url_not_existing, _local_path, progress);
     EXPECT_EQ(success, false);
     EXPECT_EQ(last_progress, 0);
     EXPECT_EQ(last_status, Status::Error);

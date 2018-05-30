@@ -27,10 +27,11 @@ namespace dronecore {
 
 UdpConnection::UdpConnection(Connection::receiver_callback_t receiver_callback,
                              const std::string &local_ip,
-                             int local_port_number):
+                             int local_port_number) :
     Connection(receiver_callback),
     _local_ip(local_ip),
-    _local_port_number(local_port_number) {}
+    _local_port_number(local_port_number)
+{}
 
 UdpConnection::~UdpConnection()
 {
@@ -56,7 +57,6 @@ ConnectionResult UdpConnection::start()
 
 ConnectionResult UdpConnection::setup_port()
 {
-
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
@@ -151,8 +151,12 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd, reinterpret_cast<char *>(buffer), buffer_len, 0,
-                          reinterpret_cast<const sockaddr *>(&dest_addr), sizeof(dest_addr));
+    int send_len = sendto(_socket_fd,
+                          reinterpret_cast<char *>(buffer),
+                          buffer_len,
+                          0,
+                          reinterpret_cast<const sockaddr *>(&dest_addr),
+                          sizeof(dest_addr));
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -168,11 +172,14 @@ void UdpConnection::receive()
     char buffer[2048];
 
     while (!_should_exit) {
-
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
-        int recv_len = recvfrom(_socket_fd, buffer, sizeof(buffer), 0,
-                                reinterpret_cast<struct sockaddr *>(&src_addr), &src_addr_len);
+        int recv_len = recvfrom(_socket_fd,
+                                buffer,
+                                sizeof(buffer),
+                                0,
+                                reinterpret_cast<struct sockaddr *>(&src_addr),
+                                &src_addr_len);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
@@ -183,7 +190,7 @@ void UdpConnection::receive()
         if (recv_len < 0) {
             // This happens on desctruction when close(_socket_fd) is called,
             // therefore be quiet.
-            //LogErr() << "recvfrom error: " << GET_ERROR(errno);
+            // LogErr() << "recvfrom error: " << GET_ERROR(errno);
             continue;
         }
 
@@ -193,25 +200,22 @@ void UdpConnection::receive()
             int new_remote_port_number = ntohs(src_addr.sin_port);
             std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
 
-            if (_remote_ip.empty() ||
-                _remote_port_number == 0) {
-
+            if (_remote_ip.empty() || _remote_port_number == 0) {
                 // Set IP if we don't know it yet.
                 _remote_ip = new_remote_ip;
                 _remote_port_number = new_remote_port_number;
 
-                LogInfo() << "New device on: " << _remote_ip
-                          << ":" << _remote_port_number;
+                LogInfo() << "New device on: " << _remote_ip << ":" << _remote_port_number;
 
             } else if (_remote_ip.compare(new_remote_ip) != 0 ||
                        _remote_port_number != new_remote_port_number) {
-
                 // It is possible that wifi disconnects and a device might get a new
                 // IP and/or UDP port.
                 _remote_ip = new_remote_ip;
                 _remote_port_number = new_remote_port_number;
 
-                LogInfo() << "Device changed to: " << new_remote_ip << ":" << new_remote_port_number;
+                LogInfo() << "Device changed to: " << new_remote_ip << ":"
+                          << new_remote_port_number;
             }
         }
 
@@ -223,6 +227,5 @@ void UdpConnection::receive()
         }
     }
 }
-
 
 } // namespace dronecore

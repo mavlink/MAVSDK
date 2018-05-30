@@ -25,8 +25,7 @@ TEST(ConnectionInitiator, registerDiscoverIsCalledExactlyOnce)
 {
     ConnectionInitiator initiator;
     MockDroneCore dc;
-    EXPECT_CALL(dc, register_on_discover(_))
-    .Times(1);
+    EXPECT_CALL(dc, register_on_discover(_)).Times(1);
 
     initiator.start(dc, ARBITRARY_PORT);
 }
@@ -46,16 +45,16 @@ TEST(ConnectionInitiator, startHangsUntilSystemDiscovered)
     ConnectionInitiator initiator;
     MockDroneCore dc;
     event_callback_t discover_callback;
-    EXPECT_CALL(dc, register_on_discover(_))
-    .WillOnce(SaveCallback(&discover_callback));
+    EXPECT_CALL(dc, register_on_discover(_)).WillOnce(SaveCallback(&discover_callback));
 
     auto async_future = std::async(std::launch::async, [&initiator, &dc]() {
         initiator.start(dc, ARBITRARY_PORT);
         initiator.wait();
     });
 
-    EXPECT_TRUE(async_future.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) <<
-            "Call to 'start(...)' should hang until 'discover_callback(...)' is actually called!";
+    EXPECT_TRUE(async_future.wait_for(std::chrono::milliseconds(100)) ==
+                std::future_status::timeout)
+        << "Call to 'start(...)' should hang until 'discover_callback(...)' is actually called!";
     discover_callback(ARBITRARY_UUID);
 }
 
@@ -64,8 +63,7 @@ TEST(ConnectionInitiator, connectionDetectedIfDiscoverCallbackCalledBeforeWait)
     ConnectionInitiator initiator;
     MockDroneCore dc;
     event_callback_t discover_callback;
-    EXPECT_CALL(dc, register_on_discover(_))
-    .WillOnce(SaveCallback(&discover_callback));
+    EXPECT_CALL(dc, register_on_discover(_)).WillOnce(SaveCallback(&discover_callback));
 
     initiator.start(dc, ARBITRARY_PORT);
     discover_callback(ARBITRARY_UUID);
@@ -77,8 +75,7 @@ TEST(ConnectionInitiator, doesNotCrashIfDiscoverCallbackCalledMoreThanOnce)
     ConnectionInitiator initiator;
     MockDroneCore dc;
     event_callback_t discover_callback;
-    EXPECT_CALL(dc, register_on_discover(_))
-    .WillOnce(SaveCallback(&discover_callback));
+    EXPECT_CALL(dc, register_on_discover(_)).WillOnce(SaveCallback(&discover_callback));
 
     initiator.start(dc, ARBITRARY_PORT);
     discover_callback(ARBITRARY_UUID);

@@ -8,17 +8,16 @@
 
 namespace dronecore {
 
-class CallEveryHandler
-{
+class CallEveryHandler {
 public:
     CallEveryHandler(Time &time);
     ~CallEveryHandler();
 
     // delete copy and move constructors and assign operators
-    CallEveryHandler(CallEveryHandler const &) = delete;            // Copy construct
-    CallEveryHandler(CallEveryHandler &&) = delete;                 // Move construct
+    CallEveryHandler(CallEveryHandler const &) = delete; // Copy construct
+    CallEveryHandler(CallEveryHandler &&) = delete; // Move construct
     CallEveryHandler &operator=(CallEveryHandler const &) = delete; // Copy assign
-    CallEveryHandler &operator=(CallEveryHandler &&) = delete;      // Move assign
+    CallEveryHandler &operator=(CallEveryHandler &&) = delete; // Move assign
 
     void add(std::function<void()> callback, float interval_s, void **cookie);
     void change(float interval_s, const void *cookie);
@@ -34,9 +33,9 @@ private:
         float interval_s;
     };
 
-    std::map<void *, std::shared_ptr<Entry>> _entries {};
-    std::mutex _entries_mutex {};
-    bool _iterator_invalidated {false};
+    std::map<void *, std::shared_ptr<Entry>> _entries{};
+    std::mutex _entries_mutex{};
+    bool _iterator_invalidated{false};
 
     Time &_time;
 };

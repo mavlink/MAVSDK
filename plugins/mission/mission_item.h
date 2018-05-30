@@ -16,8 +16,7 @@ class MissionImpl;
  * Mission items are just building blocks to assemble a mission,
  * which can be sent to (or received from) a system. They cannot be used independently.
  */
-class MissionItem
-{
+class MissionItem {
 public:
     /**
      * @brief Constructor (internal use only).
@@ -48,7 +47,8 @@ public:
      * @brief Set the fly-through property of a mission item.
      *
      * @param fly_through If `true` the drone will fly through the waypoint without stopping.
-     *                    If `false` the drone will come to a stop at the waypoint before continuing.
+     *                    If `false` the drone will come to a stop at the waypoint before
+     * continuing.
      */
     void set_fly_through(bool fly_through);
 
@@ -86,7 +86,8 @@ public:
      */
     enum class CameraAction {
         TAKE_PHOTO, /**< @brief Take single photo. */
-        START_PHOTO_INTERVAL, /**< @brief Start capturing photos at regular intervals - see set_camera_photo_interval(). */
+        START_PHOTO_INTERVAL, /**< @brief Start capturing photos at regular intervals - see
+                                 set_camera_photo_interval(). */
         STOP_PHOTO_INTERVAL, /**< @brief Stop capturing photos at regular intervals. */
         START_VIDEO, /**< @brief Start capturing video. */
         STOP_VIDEO, /**< @brief Stop capturing video. */
@@ -208,8 +209,8 @@ public:
      */
     MissionItem(const MissionItem &) = delete;
     /**
-    * @brief Equality operator (object is not copyable).
-    */
+     * @brief Equality operator (object is not copyable).
+     */
     const MissionItem &operator=(const MissionItem &) = delete;
 
 private:

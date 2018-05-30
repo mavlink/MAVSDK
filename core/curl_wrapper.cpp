@@ -9,20 +9,17 @@
 
 namespace dronecore {
 
+CurlWrapper::CurlWrapper() {}
 
-CurlWrapper::CurlWrapper()
-{
-}
-
-CurlWrapper::~CurlWrapper()
-{
-}
+CurlWrapper::~CurlWrapper() {}
 
 // converts curl output to string
-// taken from https://stackoverflow.com/questions/9786150/save-curl-content-result-into-a-string-in-c
+// taken from
+// https://stackoverflow.com/questions/9786150/save-curl-content-result-into-a-string-in-c
 static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp)
 {
-    reinterpret_cast<std::string *>(userp)->append(reinterpret_cast<char *>(contents), size * nmemb);
+    reinterpret_cast<std::string *>(userp)->append(reinterpret_cast<char *>(contents),
+                                                   size * nmemb);
     return size * nmemb;
 }
 
@@ -44,7 +41,8 @@ bool CurlWrapper::download_text(const std::string &url, std::string &content)
         if (res == CURLcode::CURLE_OK) {
             return true;
         } else {
-            LogErr() << "Error while downloading text, curl error code: " << curl_easy_strerror(res);
+            LogErr() << "Error while downloading text, curl error code: "
+                     << curl_easy_strerror(res);
             return false;
         }
     } else {
@@ -53,8 +51,8 @@ bool CurlWrapper::download_text(const std::string &url, std::string &content)
     }
 }
 
-static int upload_progress_update(void *p, double dltotal, double dlnow, double ultotal,
-                                  double ulnow)
+static int
+upload_progress_update(void *p, double dltotal, double dlnow, double ultotal, double ulnow)
 {
     UNUSED(dltotal);
     UNUSED(dlnow);
@@ -90,15 +88,15 @@ size_t get_file_size(const std::string &path)
     return ((end - begin) > 0) ? (end - begin) : 0;
 }
 
-template <typename T>
-std::string to_string(T value)
+template<typename T> std::string to_string(T value)
 {
     std::ostringstream os;
     os << value;
     return os.str();
 }
 
-bool CurlWrapper::upload_file(const std::string &url, const std::string &path,
+bool CurlWrapper::upload_file(const std::string &url,
+                              const std::string &path,
                               const progress_callback_t &progress_callback)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
@@ -123,10 +121,8 @@ bool CurlWrapper::upload_file(const std::string &url, const std::string &path,
         std::string filesize_header = "File-Size: " + to_string(get_file_size(path));
         chunk = curl_slist_append(chunk, filesize_header.c_str());
 
-        curl_formadd(&post, &last,
-                     CURLFORM_COPYNAME, "file",
-                     CURLFORM_FILE, path.c_str(),
-                     CURLFORM_END);
+        curl_formadd(
+            &post, &last, CURLFORM_COPYNAME, "file", CURLFORM_FILE, path.c_str(), CURLFORM_END);
 
         curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSFUNCTION, upload_progress_update);
@@ -160,8 +156,8 @@ bool CurlWrapper::upload_file(const std::string &url, const std::string &path,
     }
 }
 
-static int download_progress_update(void *p, double dltotal, double dlnow, double ultotal,
-                                    double ulnow)
+static int
+download_progress_update(void *p, double dltotal, double dlnow, double ultotal, double ulnow)
 {
     UNUSED(ultotal);
     UNUSED(ulnow);
@@ -186,8 +182,9 @@ static int download_progress_update(void *p, double dltotal, double dlnow, doubl
     return 0;
 }
 
-bool CurlWrapper::download_file_to_path(const std::string &url, const std::string &path, const
-                                        progress_callback_t &progress_callback)
+bool CurlWrapper::download_file_to_path(const std::string &url,
+                                        const std::string &path,
+                                        const progress_callback_t &progress_callback)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     FILE *fp;
@@ -218,7 +215,8 @@ bool CurlWrapper::download_file_to_path(const std::string &url, const std::strin
                 progress_callback(0, Status::Error, res);
             }
             remove(path.c_str());
-            LogErr() << "Error while downloading file, curl error code: " << curl_easy_strerror(res);
+            LogErr() << "Error while downloading file, curl error code: "
+                     << curl_easy_strerror(res);
             return false;
         }
     } else {
