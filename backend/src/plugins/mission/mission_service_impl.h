@@ -147,6 +147,17 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status GetMissionCount(grpc::ServerContext * /* context */,
+                                 const rpc::mission::GetMissionCountRequest * /* request */,
+                                 rpc::mission::GetMissionCountResponse *response) override
+    {
+        if (response != nullptr) {
+            response->set_count(_mission.total_mission_items());
+        }
+
+        return grpc::Status::OK;
+    }
+
     static void translateMissionItem(const std::shared_ptr<MissionItem> mission_item,
                                      rpc::mission::MissionItem *rpc_mission_item)
     {

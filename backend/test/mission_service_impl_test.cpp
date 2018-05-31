@@ -547,6 +547,23 @@ TEST_F(MissionServiceImplGetCurrentTest, getCurrentReturnsCorrectIndex)
     EXPECT_EQ(expected_index, response.index());
 }
 
+class MissionServiceImplGetCountTest : public MissionServiceImplTestBase {};
+
+TEST_F(MissionServiceImplGetCountTest, getCountDoesNotCrashWithNullResponse)
+{
+    _mission_service.GetMissionCount(nullptr, nullptr, nullptr);
+}
+
+TEST_F(MissionServiceImplGetCountTest, getCountReturnsCorrectIndex)
+{
+    const auto expected_index = ARBITRARY_INDEX;
+    dronecore::rpc::mission::GetMissionCountResponse response;
+    ON_CALL(_mission, total_mission_items()).WillByDefault(Return(expected_index));
+
+    _mission_service.GetMissionCount(nullptr, nullptr, &response);
+    EXPECT_EQ(expected_index, response.count());
+}
+
 class MissionServiceImplProgressTest : public MissionServiceImplTestBase {
 protected:
     virtual void SetUp()
