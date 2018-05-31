@@ -135,6 +135,18 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status GetCurrentMissionItemIndex(
+        grpc::ServerContext * /* context */,
+        const rpc::mission::GetCurrentMissionItemIndexRequest * /* request */,
+        rpc::mission::GetCurrentMissionItemIndexResponse *response) override
+    {
+        if (response != nullptr) {
+            response->set_index(_mission.current_mission_item());
+        }
+
+        return grpc::Status::OK;
+    }
+
     static void translateMissionItem(const std::shared_ptr<MissionItem> mission_item,
                                      rpc::mission::MissionItem *rpc_mission_item)
     {

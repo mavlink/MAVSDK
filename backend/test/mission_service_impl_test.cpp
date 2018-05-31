@@ -530,6 +530,23 @@ TEST_P(MissionServiceImplSetCurrentTest, setCurrentItemResultIsTranslatedCorrect
               rpc::MissionResult::Result_Name(response.mission_result().result()));
 }
 
+class MissionServiceImplGetCurrentTest : public MissionServiceImplTestBase {};
+
+TEST_F(MissionServiceImplGetCurrentTest, getCurrentDoesNotCrashWithNullResponse)
+{
+    _mission_service.GetCurrentMissionItemIndex(nullptr, nullptr, nullptr);
+}
+
+TEST_F(MissionServiceImplGetCurrentTest, getCurrentReturnsCorrectIndex)
+{
+    const auto expected_index = ARBITRARY_INDEX;
+    dronecore::rpc::mission::GetCurrentMissionItemIndexResponse response;
+    ON_CALL(_mission, current_mission_item()).WillByDefault(Return(expected_index));
+
+    _mission_service.GetCurrentMissionItemIndex(nullptr, nullptr, &response);
+    EXPECT_EQ(expected_index, response.index());
+}
+
 class MissionServiceImplProgressTest : public MissionServiceImplTestBase {
 protected:
     virtual void SetUp()
