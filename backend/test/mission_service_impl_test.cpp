@@ -1,5 +1,8 @@
 #include <future>
 #include <gmock/gmock.h>
+#include <grpc++/grpc++.h>
+#include <grpc++/server.h>
+#include <grpc++/server_builder.h>
 #include <utility>
 #include <vector>
 
@@ -18,6 +21,7 @@ using testing::Return;
 
 using MockMission = NiceMock<dc::testing::MockMission>;
 using MissionServiceImpl = dc::backend::MissionServiceImpl<MockMission>;
+using MissionService = dc::rpc::mission::MissionService;
 using InputPair = std::pair<std::string, dc::Mission::Result>;
 
 using UploadMissionRequest = dc::rpc::mission::UploadMissionRequest;
@@ -26,6 +30,8 @@ using UploadMissionResponse = dc::rpc::mission::UploadMissionResponse;
 using CameraAction = dc::MissionItem::CameraAction;
 using RPCCameraAction = dc::rpc::mission::MissionItem::CameraAction;
 
+using DownloadMissionResponse = dc::rpc::mission::DownloadMissionResponse;
+
 using StartMissionRequest = dc::rpc::mission::StartMissionRequest;
 using StartMissionResponse = dc::rpc::mission::StartMissionResponse;
 
@@ -33,175 +39,12 @@ using PauseMissionRequest = dc::rpc::mission::PauseMissionRequest;
 using PauseMissionResponse = dc::rpc::mission::PauseMissionResponse;
 
 static constexpr auto ARBITRARY_RESULT = dc::Mission::Result::UNKNOWN;
+static constexpr auto ARBITRARY_INDEX = 42;
+static constexpr auto ARBITRARY_SMALL_INT = 12;
 
 std::vector<InputPair> generateInputPairs();
 
-class MissionServiceImplTestBase : public ::testing::TestWithParam<InputPair> {
-protected:
-    MissionServiceImplTestBase() : _mission_service(_mission)
-    {
-        _callback_saved_future = _callback_saved_promise.get_future();
-    }
-
-    /* The mocked mission module. */
-    MockMission _mission;
-
-    /* The mission service that is actually being tested here. */
-    MissionServiceImpl _mission_service;
-
-    /* StartMission returns its result through a callback, which is saved in _result_callback. */
-    dc::Mission::result_callback_t _result_callback;
-
-    /* The tests need to make sure that _result_callback has been set before calling it, hence the
-     * promise. */
-    std::promise<void> _callback_saved_promise;
-
-    /* The tests need to make sure that _result_callback has been set before calling it, hence the
-     * future. */
-    std::future<void> _callback_saved_future;
-};
-
-class MissionServiceImplUploadTest : public MissionServiceImplTestBase {
-protected:
-    /**
-     * Uploads the mission and saves the result callback together with the actual list of items
-     * that are sent to dronecore. The result callback is saved in _result_callback, and the
-     * mission items are saved in _uploaded_mission.
-     */
-    std::future<void> uploadMissionAndSaveParams(std::shared_ptr<UploadMissionRequest> request,
-                                                 std::shared_ptr<UploadMissionResponse> response);
-
-    /* Generate an UploadMissionRequest from a list of mission items. */
-    std::shared_ptr<UploadMissionRequest>
-    generateUploadRequest(const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const;
-
-    /* Translate a CameraAction into an RPCCameraAction */
-    RPCCameraAction translateCameraAction(const CameraAction camera_action) const;
-
-    /**
-     * Upload a list of items through gRPC, catch the list that is actually sent by
-     * the backend, and verify that it has been sent correctly over gRPC.
-     */
-    void
-    checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
-
-    /* Generate a list of one mission item. */
-    std::vector<std::shared_ptr<dc::MissionItem>> generateListOfOneItem();
-
-    /* Generate a list of multiple mission items. */
-    std::vector<std::shared_ptr<dc::MissionItem>> generateListOfMultipleItems();
-
-    /* Captures the actual mission sent to dronecore by the backend. */
-    std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission;
-};
-
-INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
-                        MissionServiceImplUploadTest,
-                        ::testing::ValuesIn(generateInputPairs()));
-
-ACTION_P3(SaveUploadParams, mission, callback, callback_saved_promise)
-{
-    *mission = arg0;
-    *callback = arg1;
-    callback_saved_promise->set_value();
-}
-
-TEST_F(MissionServiceImplUploadTest, doesNotFailWhenArgsAreNull)
-{
-    auto upload_handle = uploadMissionAndSaveParams(nullptr, nullptr);
-    _result_callback(ARBITRARY_RESULT);
-}
-
-TEST_P(MissionServiceImplUploadTest, uploadResultIsTranslatedCorrectly)
-{
-    auto response = std::make_shared<UploadMissionResponse>();
-    std::vector<std::shared_ptr<dc::MissionItem>> mission_items;
-    auto request = generateUploadRequest(mission_items);
-    auto upload_handle = uploadMissionAndSaveParams(request, response);
-
-    _result_callback(GetParam().second);
-    upload_handle.wait();
-
-    EXPECT_EQ(GetParam().first,
-              rpc::MissionResult::Result_Name(response->mission_result().result()));
-}
-
-std::future<void> MissionServiceImplUploadTest::uploadMissionAndSaveParams(
-    std::shared_ptr<UploadMissionRequest> request, std::shared_ptr<UploadMissionResponse> response)
-{
-    EXPECT_CALL(_mission, upload_mission_async(_, _))
-        .WillOnce(
-            SaveUploadParams(&_uploaded_mission, &_result_callback, &_callback_saved_promise));
-
-    auto upload_handle = std::async(std::launch::async, [this, request, response]() {
-        _mission_service.UploadMission(nullptr, request.get(), response.get());
-    });
-
-    _callback_saved_future.wait();
-    return upload_handle;
-}
-
-std::shared_ptr<UploadMissionRequest> MissionServiceImplUploadTest::generateUploadRequest(
-    const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const
-{
-    auto request = std::make_shared<UploadMissionRequest>();
-    auto rpc_mission = new dc::rpc::mission::Mission();
-
-    for (const auto &mission_item : mission_items) {
-        auto rpc_mission_item = rpc_mission->add_mission_item();
-        rpc_mission_item->set_latitude_deg(mission_item->get_latitude_deg());
-        rpc_mission_item->set_longitude_deg(mission_item->get_longitude_deg());
-        rpc_mission_item->set_relative_altitude_m(mission_item->get_relative_altitude_m());
-        rpc_mission_item->set_speed_m_s(mission_item->get_speed_m_s());
-        rpc_mission_item->set_is_fly_through(mission_item->get_fly_through());
-        rpc_mission_item->set_gimbal_pitch_deg(mission_item->get_gimbal_pitch_deg());
-        rpc_mission_item->set_gimbal_yaw_deg(mission_item->get_gimbal_yaw_deg());
-        rpc_mission_item->set_camera_action(
-            translateCameraAction(mission_item->get_camera_action()));
-    }
-
-    request->set_allocated_mission(rpc_mission);
-
-    return request;
-}
-
-RPCCameraAction
-MissionServiceImplUploadTest::translateCameraAction(const CameraAction camera_action) const
-{
-    switch (camera_action) {
-        case CameraAction::TAKE_PHOTO:
-            return RPCCameraAction::MissionItem_CameraAction_TAKE_PHOTO;
-        case CameraAction::START_PHOTO_INTERVAL:
-            return RPCCameraAction::MissionItem_CameraAction_START_PHOTO_INTERVAL;
-        case CameraAction::STOP_PHOTO_INTERVAL:
-            return RPCCameraAction::MissionItem_CameraAction_STOP_PHOTO_INTERVAL;
-        case CameraAction::START_VIDEO:
-            return RPCCameraAction::MissionItem_CameraAction_START_VIDEO;
-        case CameraAction::STOP_VIDEO:
-            return RPCCameraAction::MissionItem_CameraAction_STOP_VIDEO;
-        case CameraAction::NONE:
-        default:
-            return RPCCameraAction::MissionItem_CameraAction_NONE;
-    }
-}
-
-TEST_F(MissionServiceImplUploadTest, uploadsEmptyMissionWhenNullRequest)
-{
-    auto upload_handle = uploadMissionAndSaveParams(nullptr, nullptr);
-
-    _result_callback(ARBITRARY_RESULT);
-    upload_handle.wait();
-
-    EXPECT_EQ(0, _uploaded_mission.size());
-}
-
-TEST_F(MissionServiceImplUploadTest, uploadsOneItemMission)
-{
-    auto mission_items = generateListOfOneItem();
-    checkItemsAreUploadedCorrectly(mission_items);
-}
-
-std::vector<std::shared_ptr<dc::MissionItem>> MissionServiceImplUploadTest::generateListOfOneItem()
+std::vector<std::shared_ptr<dc::MissionItem>> generateListOfOneItem()
 {
     std::vector<std::shared_ptr<dc::MissionItem>> mission_items;
 
@@ -217,30 +60,7 @@ std::vector<std::shared_ptr<dc::MissionItem>> MissionServiceImplUploadTest::gene
     return mission_items;
 }
 
-void MissionServiceImplUploadTest::checkItemsAreUploadedCorrectly(
-    std::vector<std::shared_ptr<dc::MissionItem>> &mission_items)
-{
-    auto request = generateUploadRequest(mission_items);
-
-    auto upload_handle = uploadMissionAndSaveParams(request, nullptr);
-    _result_callback(ARBITRARY_RESULT);
-    upload_handle.wait();
-
-    ASSERT_EQ(mission_items.size(), _uploaded_mission.size());
-
-    for (size_t i = 0; i < mission_items.size(); i++) {
-        EXPECT_EQ(*mission_items.at(i), *_uploaded_mission.at(i));
-    }
-}
-
-TEST_F(MissionServiceImplUploadTest, uploadMultipleItemsMission)
-{
-    auto mission_items = generateListOfMultipleItems();
-    checkItemsAreUploadedCorrectly(mission_items);
-}
-
-std::vector<std::shared_ptr<dc::MissionItem>>
-MissionServiceImplUploadTest::generateListOfMultipleItems()
+std::vector<std::shared_ptr<dc::MissionItem>> generateListOfMultipleItems()
 {
     std::vector<std::shared_ptr<dc::MissionItem>> mission_items;
 
@@ -302,6 +122,241 @@ MissionServiceImplUploadTest::generateListOfMultipleItems()
     return mission_items;
 }
 
+class MissionServiceImplTestBase : public ::testing::TestWithParam<InputPair> {
+protected:
+    MissionServiceImplTestBase() : _mission_service(_mission)
+    {
+        _callback_saved_future = _callback_saved_promise.get_future();
+    }
+
+    /* The mocked mission module. */
+    MockMission _mission;
+
+    /* The mission service that is actually being tested here. */
+    MissionServiceImpl _mission_service;
+
+    /* The mission returns its result through a callback, which is saved in _result_callback. */
+    dc::Mission::result_callback_t _result_callback;
+
+    /* The tests need to make sure that _result_callback has been set before calling it, hence the
+     * promise. */
+    std::promise<void> _callback_saved_promise;
+
+    /* The tests need to make sure that _result_callback has been set before calling it, hence the
+     * future. */
+    std::future<void> _callback_saved_future;
+};
+
+class MissionServiceImplUploadTest : public MissionServiceImplTestBase {
+protected:
+    /**
+     * Uploads the mission and saves the result callback together with the actual list of items
+     * that are sent to dronecore. The result callback is saved in _result_callback, and the
+     * mission items are saved in _uploaded_mission.
+     */
+    std::future<void> uploadMissionAndSaveParams(std::shared_ptr<UploadMissionRequest> request,
+                                                 std::shared_ptr<UploadMissionResponse> response);
+
+    /* Generate an UploadMissionRequest from a list of mission items. */
+    std::shared_ptr<UploadMissionRequest>
+    generateUploadRequest(const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const;
+
+    /**
+     * Upload a list of items through gRPC, catch the list that is actually sent by
+     * the backend, and verify that it has been sent correctly over gRPC.
+     */
+    void
+    checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
+
+    /* Captures the actual mission sent to dronecore by the backend. */
+    std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission;
+};
+
+INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
+                        MissionServiceImplUploadTest,
+                        ::testing::ValuesIn(generateInputPairs()));
+
+ACTION_P3(SaveUploadParams, mission, callback, callback_saved_promise)
+{
+    *mission = arg0;
+    *callback = arg1;
+    callback_saved_promise->set_value();
+}
+
+TEST_F(MissionServiceImplUploadTest, doesNotFailWhenArgsAreNull)
+{
+    auto upload_handle = uploadMissionAndSaveParams(nullptr, nullptr);
+    _result_callback(ARBITRARY_RESULT);
+}
+
+std::future<void> MissionServiceImplUploadTest::uploadMissionAndSaveParams(
+    std::shared_ptr<UploadMissionRequest> request, std::shared_ptr<UploadMissionResponse> response)
+{
+    EXPECT_CALL(_mission, upload_mission_async(_, _))
+        .WillOnce(
+            SaveUploadParams(&_uploaded_mission, &_result_callback, &_callback_saved_promise));
+
+    auto upload_handle = std::async(std::launch::async, [this, request, response]() {
+        _mission_service.UploadMission(nullptr, request.get(), response.get());
+    });
+
+    _callback_saved_future.wait();
+    return upload_handle;
+}
+
+TEST_P(MissionServiceImplUploadTest, uploadResultIsTranslatedCorrectly)
+{
+    auto response = std::make_shared<UploadMissionResponse>();
+    std::vector<std::shared_ptr<dc::MissionItem>> mission_items;
+    auto request = generateUploadRequest(mission_items);
+    auto upload_handle = uploadMissionAndSaveParams(request, response);
+
+    _result_callback(GetParam().second);
+    upload_handle.wait();
+
+    EXPECT_EQ(GetParam().first,
+              rpc::MissionResult::Result_Name(response->mission_result().result()));
+}
+
+std::shared_ptr<UploadMissionRequest> MissionServiceImplUploadTest::generateUploadRequest(
+    const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const
+{
+    auto request = std::make_shared<UploadMissionRequest>();
+    auto rpc_mission = new dc::rpc::mission::Mission();
+
+    for (const auto &mission_item : mission_items) {
+        auto rpc_mission_item = rpc_mission->add_mission_item();
+        MissionServiceImpl::translateMissionItem(mission_item, rpc_mission_item);
+    }
+
+    request->set_allocated_mission(rpc_mission);
+
+    return request;
+}
+
+TEST_F(MissionServiceImplUploadTest, uploadsEmptyMissionWhenNullRequest)
+{
+    auto upload_handle = uploadMissionAndSaveParams(nullptr, nullptr);
+
+    _result_callback(ARBITRARY_RESULT);
+    upload_handle.wait();
+
+    EXPECT_EQ(0, _uploaded_mission.size());
+}
+
+TEST_F(MissionServiceImplUploadTest, uploadsOneItemMission)
+{
+    auto mission_items = generateListOfOneItem();
+    checkItemsAreUploadedCorrectly(mission_items);
+}
+
+void MissionServiceImplUploadTest::checkItemsAreUploadedCorrectly(
+    std::vector<std::shared_ptr<dc::MissionItem>> &mission_items)
+{
+    auto request = generateUploadRequest(mission_items);
+
+    auto upload_handle = uploadMissionAndSaveParams(request, nullptr);
+    _result_callback(ARBITRARY_RESULT);
+    upload_handle.wait();
+
+    ASSERT_EQ(mission_items.size(), _uploaded_mission.size());
+
+    for (size_t i = 0; i < mission_items.size(); i++) {
+        EXPECT_EQ(*mission_items.at(i), *_uploaded_mission.at(i));
+    }
+}
+
+TEST_F(MissionServiceImplUploadTest, uploadMultipleItemsMission)
+{
+    auto mission_items = generateListOfMultipleItems();
+    checkItemsAreUploadedCorrectly(mission_items);
+}
+
+class MissionServiceImplDownloadTest : public MissionServiceImplTestBase {
+protected:
+    std::future<void>
+    downloadMissionAndSaveParams(std::shared_ptr<DownloadMissionResponse> response);
+    void
+    checkItemsAreDownloadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
+
+    dc::Mission::mission_items_and_result_callback_t _download_callback;
+};
+
+INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
+                        MissionServiceImplDownloadTest,
+                        ::testing::ValuesIn(generateInputPairs()));
+
+ACTION_P2(SaveResult, callback, callback_saved_promise)
+{
+    *callback = arg0;
+    callback_saved_promise->set_value();
+}
+
+TEST_F(MissionServiceImplDownloadTest, doesNotFailWhenArgsAreNull)
+{
+    auto download_handle = downloadMissionAndSaveParams(nullptr);
+    std::vector<std::shared_ptr<dronecore::MissionItem>> arbitrary_mission;
+
+    _download_callback(ARBITRARY_RESULT, arbitrary_mission);
+}
+
+std::future<void> MissionServiceImplDownloadTest::downloadMissionAndSaveParams(
+    std::shared_ptr<DownloadMissionResponse> response)
+{
+    EXPECT_CALL(_mission, download_mission_async(_))
+        .WillOnce(SaveResult(&_download_callback, &_callback_saved_promise));
+
+    auto download_handle = std::async(std::launch::async, [this, response]() {
+        _mission_service.DownloadMission(nullptr, nullptr, response.get());
+    });
+
+    _callback_saved_future.wait();
+    return download_handle;
+}
+
+TEST_P(MissionServiceImplDownloadTest, downloadResultIsTranslatedCorrectly)
+{
+    auto response = std::make_shared<DownloadMissionResponse>();
+    std::vector<std::shared_ptr<dc::MissionItem>> mission_items;
+    auto download_handle = downloadMissionAndSaveParams(response);
+    std::vector<std::shared_ptr<dronecore::MissionItem>> arbitrary_mission;
+
+    _download_callback(GetParam().second, arbitrary_mission);
+    download_handle.wait();
+
+    EXPECT_EQ(GetParam().first,
+              rpc::MissionResult::Result_Name(response->mission_result().result()));
+}
+
+TEST_F(MissionServiceImplDownloadTest, downloadsOneItemMission)
+{
+    auto mission_items = generateListOfOneItem();
+    checkItemsAreDownloadedCorrectly(mission_items);
+}
+
+void MissionServiceImplDownloadTest::checkItemsAreDownloadedCorrectly(
+    std::vector<std::shared_ptr<dc::MissionItem>> &mission_items)
+{
+    auto response = std::make_shared<DownloadMissionResponse>();
+    auto download_handle = downloadMissionAndSaveParams(response);
+    _download_callback(ARBITRARY_RESULT, mission_items);
+    download_handle.wait();
+
+    ASSERT_EQ(mission_items.size(), response->mission().mission_item().size());
+
+    for (size_t i = 0; i < mission_items.size(); i++) {
+        EXPECT_EQ(*mission_items.at(i),
+                  *MissionServiceImpl::translateRPCMissionItem(
+                      response->mission().mission_item().Get(i)));
+    }
+}
+
+TEST_F(MissionServiceImplDownloadTest, downloadsMultipleItemsMission)
+{
+    auto mission_items = generateListOfMultipleItems();
+    checkItemsAreDownloadedCorrectly(mission_items);
+}
+
 class MissionServiceImplStartTest : public MissionServiceImplTestBase {
 protected:
     std::future<void> startMissionAndSaveParams(std::shared_ptr<StartMissionResponse> response);
@@ -310,12 +365,6 @@ protected:
 INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
                         MissionServiceImplStartTest,
                         ::testing::ValuesIn(generateInputPairs()));
-
-ACTION_P2(SaveResult, callback, callback_saved_promise)
-{
-    *callback = arg0;
-    callback_saved_promise->set_value();
-}
 
 TEST_F(MissionServiceImplStartTest, doesNotFailWhenArgsAreNull)
 {
@@ -424,6 +473,173 @@ TEST_P(MissionServiceImplPauseTest, pauseResultIsTranslatedCorrectly)
 
     EXPECT_EQ(GetParam().first,
               rpc::MissionResult::Result_Name(response->mission_result().result()));
+}
+
+class MissionServiceImplSetCurrentTest : public MissionServiceImplTestBase {};
+
+INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
+                        MissionServiceImplSetCurrentTest,
+                        ::testing::ValuesIn(generateInputPairs()));
+
+ACTION_P2(SaveSetItemCallback, callback, callback_saved_promise)
+{
+    *callback = arg1;
+    callback_saved_promise->set_value();
+}
+
+TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemDoesNotCrashWithNullRequest)
+{
+    _mission_service.SetCurrentMissionItemIndex(nullptr, nullptr, nullptr);
+}
+
+TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemSetsRightValue)
+{
+    const int expected_item_index = ARBITRARY_INDEX;
+    EXPECT_CALL(_mission, set_current_mission_item_async(expected_item_index, _))
+        .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
+    dronecore::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    request.set_index(expected_item_index);
+
+    auto set_current_item_handle = std::async(std::launch::async, [this, &request]() {
+        _mission_service.SetCurrentMissionItemIndex(nullptr, &request, nullptr);
+    });
+
+    _callback_saved_future.wait();
+    _result_callback(dronecore::Mission::Result::SUCCESS);
+    set_current_item_handle.wait();
+}
+
+TEST_P(MissionServiceImplSetCurrentTest, setCurrentItemResultIsTranslatedCorrectly)
+{
+    dronecore::rpc::mission::SetCurrentMissionItemIndexResponse response;
+    dronecore::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    request.set_index(ARBITRARY_INDEX);
+    EXPECT_CALL(_mission, set_current_mission_item_async(_, _))
+        .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
+
+    auto set_current_item_handle = std::async(std::launch::async, [this, &request, &response]() {
+        _mission_service.SetCurrentMissionItemIndex(nullptr, &request, &response);
+    });
+
+    _callback_saved_future.wait();
+
+    _result_callback(GetParam().second);
+    set_current_item_handle.wait();
+
+    EXPECT_EQ(GetParam().first,
+              rpc::MissionResult::Result_Name(response.mission_result().result()));
+}
+
+class MissionServiceImplGetCurrentTest : public MissionServiceImplTestBase {};
+
+TEST_F(MissionServiceImplGetCurrentTest, getCurrentDoesNotCrashWithNullResponse)
+{
+    _mission_service.GetCurrentMissionItemIndex(nullptr, nullptr, nullptr);
+}
+
+TEST_F(MissionServiceImplGetCurrentTest, getCurrentReturnsCorrectIndex)
+{
+    const auto expected_index = ARBITRARY_INDEX;
+    dronecore::rpc::mission::GetCurrentMissionItemIndexResponse response;
+    ON_CALL(_mission, current_mission_item()).WillByDefault(Return(expected_index));
+
+    _mission_service.GetCurrentMissionItemIndex(nullptr, nullptr, &response);
+    EXPECT_EQ(expected_index, response.index());
+}
+
+class MissionServiceImplGetCountTest : public MissionServiceImplTestBase {};
+
+TEST_F(MissionServiceImplGetCountTest, getCountDoesNotCrashWithNullResponse)
+{
+    _mission_service.GetMissionCount(nullptr, nullptr, nullptr);
+}
+
+TEST_F(MissionServiceImplGetCountTest, getCountReturnsCorrectIndex)
+{
+    const auto expected_index = ARBITRARY_INDEX;
+    dronecore::rpc::mission::GetMissionCountResponse response;
+    ON_CALL(_mission, total_mission_items()).WillByDefault(Return(expected_index));
+
+    _mission_service.GetMissionCount(nullptr, nullptr, &response);
+    EXPECT_EQ(expected_index, response.count());
+}
+
+class MissionServiceImplProgressTest : public MissionServiceImplTestBase {
+protected:
+    virtual void SetUp()
+    {
+        grpc::ServerBuilder builder;
+        builder.RegisterService(&_mission_service);
+        _server = builder.BuildAndStart();
+
+        grpc::ChannelArguments channel_args;
+        auto channel = _server->InProcessChannel(channel_args);
+        _stub = MissionService::NewStub(channel);
+    }
+
+    std::future<void>
+    subscribeMissionProgressAsync(std::vector<std::pair<int, int>> &progress_events) const;
+
+    std::unique_ptr<grpc::Server> _server;
+    std::unique_ptr<MissionService::Stub> _stub;
+};
+
+TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)
+{
+    dc::Mission::progress_callback_t progress_callback;
+    EXPECT_CALL(_mission, subscribe_progress(_))
+        .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
+    std::vector<std::pair<int, int>> progress_events;
+
+    auto progress_events_future = subscribeMissionProgressAsync(progress_events);
+    _callback_saved_future.wait();
+    progress_callback(0, 1);
+    progress_events_future.wait();
+}
+
+std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
+    std::vector<std::pair<int, int>> &progress_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        dronecore::rpc::mission::SubscribeMissionProgressRequest request;
+        auto response_reader = _stub->SubscribeMissionProgress(&context, request);
+
+        dronecore::rpc::mission::MissionProgressResponse response;
+        while (response_reader->Read(&response)) {
+            auto progress_event =
+                std::make_pair(response.current_item_index(), response.mission_count());
+
+            progress_events.push_back(progress_event);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(MissionServiceImplProgressTest, SendsMultipleMissionProgressEvents)
+{
+    dc::Mission::progress_callback_t progress_callback;
+    EXPECT_CALL(_mission, subscribe_progress(_))
+        .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
+
+    auto expected_mission_count = ARBITRARY_SMALL_INT;
+    std::vector<std::pair<int, int>> expected_progress_events;
+    for (int i = 0; i < expected_mission_count; i++) {
+        expected_progress_events.push_back(std::make_pair(i, expected_mission_count));
+    }
+    std::vector<std::pair<int, int>> received_progress_events;
+
+    auto progress_events_future = subscribeMissionProgressAsync(received_progress_events);
+    _callback_saved_future.wait();
+
+    for (const auto progress_event : expected_progress_events) {
+        progress_callback(progress_event.first, progress_event.second);
+    }
+    progress_events_future.wait();
+
+    ASSERT_EQ(expected_mission_count, received_progress_events.size());
+    EXPECT_EQ(expected_progress_events, received_progress_events);
 }
 
 std::vector<InputPair> generateInputPairs()
