@@ -75,7 +75,7 @@ public:
      * To accept only local connections of the machine, use 127.0.0.1.
      * For any incoming connections, use 0.0.0.0.
      *
-     * @param local_ip The local UDP ip to listen to.
+     * @param local_ip The local UDP IP address to listen to.
      * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
      * @return The result of adding the connection.
      */
