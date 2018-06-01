@@ -647,7 +647,7 @@ private:
 bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs);
 
 /**
- * @brief Stream operator to print infos about a `Telemetry::Position`.
+ * @brief Stream operator to print information about a `Telemetry::Position`.
  *
  * @return A reference to the stream.
  */
@@ -661,7 +661,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position)
 bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs);
 
 /**
- * @brief Stream operator to print infos about a `Telemetry::Health`.
+ * @brief Stream operator to print information about a `Telemetry::Health`.
  *
  * @return A reference to the stream.
  */
@@ -675,7 +675,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health);
 bool operator==(const Telemetry::GPSInfo &lhs, const Telemetry::GPSInfo &rhs);
 
 /**
- * @brief Stream operator to print infos about a `Telemetry::GPSInfo`.
+ * @brief Stream operator to print information about a `Telemetry::GPSInfo`.
  *
  * @return A reference to the stream.
  */
@@ -689,7 +689,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::GPSInfo const &gps_info);
 bool operator==(const Telemetry::Battery &lhs, const Telemetry::Battery &rhs);
 
 /**
- * @brief Stream operator to print infos about a `Telemetry::Battery`.
+ * @brief Stream operator to print information about a `Telemetry::Battery`.
  *
  * @return A reference to the stream.
  */
@@ -703,7 +703,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Battery const &battery);
 bool operator==(const Telemetry::Quaternion &lhs, const Telemetry::Quaternion &rhs);
 
 /**
- * @brief Stream operator to print infos about a `Telemetry::Quaternion`.
+ * @brief Stream operator to print information about a `Telemetry::Quaternion`.
  *
  * @return A reference to the stream.
  */
@@ -717,7 +717,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Quaternion const &quatern
 bool operator==(const Telemetry::EulerAngle &lhs, const Telemetry::EulerAngle &rhs);
 
 /**
- * @brief Stream operator to print infos about a `Telemetry::EulerAngle`.
+ * @brief Stream operator to print information about a `Telemetry::EulerAngle`.
  *
  * @return A reference to the stream.
  */
@@ -731,7 +731,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::EulerAngle const &euler_a
 bool operator==(const Telemetry::GroundSpeedNED &lhs, const Telemetry::GroundSpeedNED &rhs);
 
 /**
- * @brief Stream operator to print infos about a `Telemetry::GroundSpeedNED`.
+ * @brief Stream operator to print information about a `Telemetry::GroundSpeedNED`.
  *
  * @return A reference to the stream.
  */
@@ -745,7 +745,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::GroundSpeedNED const &gro
 bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs);
 
 /**
- * @brief Stream operator to print infos about a `Telemetry::RCStatus`.
+ * @brief Stream operator to print information about a `Telemetry::RCStatus`.
  *
  * @return A reference to the stream.
  */
