@@ -290,6 +290,9 @@ public:
      */
     struct VideoStreamInfo {
         VideoStreamSettings settings; /**< @brief Video stream settings. */
+        /**
+         * @brief Status type.
+         */
         enum class Status {
             NOT_RUNNING = 0, /**< @brief Video stream is not ongoing. */
             IN_PROGRESS /**< @brief Video stream in progress. */
@@ -348,7 +351,9 @@ public:
     struct Status {
         bool video_on; /**< @brief true if video capture is currently running. */
         bool photo_interval_on; /**< @brief true if video timelapse is currently active. */
-
+        /**
+         * @brief Storage status type.
+         */
         enum class StorageStatus {
             NOT_AVAILABLE, /**< @brief Storage status not available. */
             UNFORMATTED, /**< @brief Storage is not formatted (has no recognized file system). */
