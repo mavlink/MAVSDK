@@ -213,6 +213,12 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
                                              &_timeout_cookie);
             _work_queue.return_front();
             break;
+
+        default:
+            LogWarn() << "Received unknown ack.";
+            _state_mutex.unlock();
+            _work_queue.return_front();
+            break;
     }
 }
 
