@@ -149,9 +149,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
         case MAV_RESULT_ACCEPTED:
             _state = State::NONE;
             _state_mutex.unlock();
-            if (work->callback) {
-                work->callback(Result::SUCCESS, 1.0f);
-            }
+            call_callback(work->callback, Result::SUCCESS, 1.0f);
             _work_queue.pop_front();
             _parent.unregister_timeout_handler(_timeout_cookie);
             break;
