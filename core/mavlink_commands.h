@@ -117,6 +117,8 @@ private:
     void receive_command_ack(mavlink_message_t message);
     void receive_timeout();
 
+    void call_callback(const command_result_callback_t &callback, Result result, float progress);
+
     SystemImpl &_parent;
     LockedQueue<Work> _work_queue{};
 
