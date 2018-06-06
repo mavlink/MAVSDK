@@ -1,12 +1,16 @@
 pipeline {
   agent any
+  def docker_ubuntu_1604 = 'dronecore/dronecore-ubuntu-16.04:2018-06-06'
+  def docker_ubuntu_1804 = 'dronecore/dronecore-ubuntu-18.04:2018-06-06'
+  def docker_fedora_27 = 'dronecore/dronecore-fedora-27:2018-06-06'
+  def docker_fedora_28 = 'dronecore/dronecore-fedora-28:2018-06-06'
   stages {
     stage('Build') {
       parallel {
         stage('Ubuntu 16.04 Debug') {
           agent {
             docker {
-              image 'dronecore/dronecore-ubuntu-16.04'
+              image docker_ubuntu_1604
             }
           }
           steps {
@@ -19,7 +23,7 @@ pipeline {
         stage('Ubuntu 16.04 Release') {
           agent {
             docker {
-              image 'dronecore/dronecore-ubuntu-16.04'
+              image docker_ubuntu_1604
             }
           }
           steps {
@@ -32,7 +36,7 @@ pipeline {
         stage('Ubuntu 18.04 Debug') {
           agent {
             docker {
-              image 'dronecore/dronecore-ubuntu-18.04'
+              image docker_ubuntu_1804
             }
           }
           steps {
@@ -45,7 +49,7 @@ pipeline {
         stage('Ubuntu 18.04 Release') {
           agent {
             docker {
-              image 'dronecore/dronecore-ubuntu-18.04'
+              image docker_ubuntu_1804
             }
           }
           steps {
@@ -58,7 +62,7 @@ pipeline {
         stage('Fedora 27 Debug') {
           agent {
             docker {
-              image 'dronecore/dronecore-fedora-27'
+              image docker_fedora_27
             }
           }
           steps {
@@ -71,7 +75,7 @@ pipeline {
         stage('Fedora 27 Release') {
           agent {
             docker {
-              image 'dronecore/dronecore-fedora-27'
+              image docker_fedora_27
             }
           }
           steps {
@@ -84,7 +88,7 @@ pipeline {
         stage('Fedora 28 Debug') {
           agent {
             docker {
-              image 'dronecore/dronecore-fedora-28'
+              image docker_fedora_28
             }
           }
           steps {
@@ -97,7 +101,7 @@ pipeline {
         stage('Fedora 28 Release') {
           agent {
             docker {
-              image 'dronecore/dronecore-fedora-28'
+              image docker_fedora_28
             }
           }
           steps {
@@ -114,7 +118,7 @@ pipeline {
         stage('check style') {
           agent {
             docker {
-              image 'dronecore/dronecore-ubuntu-16.04'
+              image docker_ubuntu_1604
             }
           }
           steps {
@@ -124,7 +128,7 @@ pipeline {
         stage('example/takeoff_land') {
           agent {
             docker {
-              image 'dronecore/dronecore-ubuntu-16.04'
+              image docker_ubuntu_1604
             }
           }
           steps {
@@ -139,7 +143,7 @@ pipeline {
         stage('example/fly_mission') {
           agent {
             docker {
-              image 'dronecore/dronecore-ubuntu-16.04'
+              image docker_ubuntu_1604
             }
           }
           steps {
@@ -154,7 +158,7 @@ pipeline {
         stage('example/offboard_velocity') {
           agent {
             docker {
-              image 'dronecore/dronecore-ubuntu-16.04'
+              image docker_ubuntu_1604
             }
           }
           steps {
@@ -171,7 +175,7 @@ pipeline {
     stage('Generate Docs') {
       agent {
         docker {
-          image 'dronecore/dronecore-ubuntu-16.04'
+          image docker_ubuntu_1604
         }
       }
       steps {
