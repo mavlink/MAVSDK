@@ -86,7 +86,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/core/global_include_test.cpp
     ${PROJECT_SOURCE_DIR}/core/mavlink_channels_test.cpp
     ${PROJECT_SOURCE_DIR}/core/unittests_main.cpp
-    # TODO: add this again     
+    # TODO: add this again
     #${PROJECT_SOURCE_DIR}/core/http_loader_test.cpp
     ${PROJECT_SOURCE_DIR}/core/timeout_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/core/call_every_handler_test.cpp
