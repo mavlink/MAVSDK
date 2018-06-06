@@ -7,7 +7,6 @@ add_library(dronecore_mission ${PLUGIN_LIBRARY_TYPE}
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/core
-    #SYSTEM ${PROJECT_SOURCE_DIR}/third_party/include
     SYSTEM third_party/json11
 )
 
