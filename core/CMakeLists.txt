@@ -3,7 +3,7 @@ find_package(Threads REQUIRED)
 include_directories(
     ${DRONECORE_ZLIB_INCLUDE_DIRS}
     ${CURL_INCLUDE_DIRS}
-    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
 if(IOS OR MSVC OR APPLE)
@@ -83,17 +83,17 @@ install(FILES
 )
 
 list(APPEND UNIT_TEST_SOURCES
-    ${CMAKE_SOURCE_DIR}/core/global_include_test.cpp
-    ${CMAKE_SOURCE_DIR}/core/mavlink_channels_test.cpp
-    ${CMAKE_SOURCE_DIR}/core/unittests_main.cpp
-    # TODO: add this again
-    #${CMAKE_SOURCE_DIR}/core/http_loader_test.cpp
-    ${CMAKE_SOURCE_DIR}/core/timeout_handler_test.cpp
-    ${CMAKE_SOURCE_DIR}/core/call_every_handler_test.cpp
-    ${CMAKE_SOURCE_DIR}/core/curl_test.cpp
-    ${CMAKE_SOURCE_DIR}/core/any_test.cpp
-    ${CMAKE_SOURCE_DIR}/core/cli_arg_test.cpp
-    ${CMAKE_SOURCE_DIR}/core/locked_queue_test.cpp
-    ${CMAKE_SOURCE_DIR}/core/thread_pool_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/global_include_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/mavlink_channels_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/unittests_main.cpp
+    # TODO: add this again     
+    #${PROJECT_SOURCE_DIR}/core/http_loader_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/timeout_handler_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/call_every_handler_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/curl_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/any_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/cli_arg_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/locked_queue_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/thread_pool_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

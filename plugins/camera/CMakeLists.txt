@@ -25,7 +25,7 @@ install(TARGETS dronecore_camera
 )
 
 list(APPEND UNIT_TEST_SOURCES
-    ${CMAKE_SOURCE_DIR}/plugins/camera/camera_definition_test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
 

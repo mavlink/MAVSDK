@@ -1,4 +1,4 @@
-set(ZLIB_ROOT_DIR ${CMAKE_SOURCE_DIR}/third_party/zlib)
+set(ZLIB_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib)
 
 set(SKIP_INSTALL_ALL "true")
 
