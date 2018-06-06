@@ -6,8 +6,8 @@ add_library(dronecore_mission ${PLUGIN_LIBRARY_TYPE}
 )
 
 include_directories(
-    #${CMAKE_CURRENT_SOURCE_DIR}/core
-    #SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/third_party/include
+    ${PROJECT_SOURCE_DIR}/core
+    #SYSTEM ${PROJECT_SOURCE_DIR}/third_party/include
     SYSTEM third_party/json11
 )
 
