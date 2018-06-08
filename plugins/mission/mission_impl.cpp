@@ -1120,6 +1120,11 @@ Mission::Result MissionImpl::build_mission_items(MAV_CMD command,
         if (command == MAV_CMD_NAV_WAYPOINT || command == MAV_CMD_NAV_TAKEOFF ||
             command == MAV_CMD_NAV_LAND) {
             if (new_mission_item->has_position_set()) {
+                if (command == MAV_CMD_NAV_TAKEOFF) {
+                    LogWarn() << "Converted takeoff mission item to normal waypoint";
+                } else if (command == MAV_CMD_NAV_LAND) {
+                    LogWarn() << "Converted land mission item to normal waypoint";
+                }
                 all_mission_items.push_back(new_mission_item);
                 new_mission_item = std::make_shared<MissionItem>();
             }
