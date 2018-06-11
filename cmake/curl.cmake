@@ -1,10 +1,10 @@
 # core and some plugins require curl
 if(ANDROID)
-    set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/android/include)
-    set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/android/${ANDROID_ABI}/libcurl.a)
+    set(CURL_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/android/include)
+    set(CURL_LIBRARY ${PROJECT_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/android/${ANDROID_ABI}/libcurl.a)
 elseif(IOS)
-    set(CURL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/iOS/include)
-    set(CURL_LIBRARY ${CMAKE_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/iOS/libcurl.a)
+    set(CURL_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/iOS/include)
+    set(CURL_LIBRARY ${PROJECT_SOURCE_DIR}/core/third_party/curl-android-ios/prebuilt-with-ssl/iOS/libcurl.a)
 elseif(MSVC)
     # You need to call cmake with -DWIN_CURL_INCLUDE_DIR:STRING="C:\\curl-7.54.1\\include"
     if(NOT WIN_CURL_INCLUDE_DIR)

@@ -6,8 +6,7 @@ add_library(dronecore_mission ${PLUGIN_LIBRARY_TYPE}
 )
 
 include_directories(
-    ${CMAKE_SOURCE_DIR}/core
-    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/include
+    ${PROJECT_SOURCE_DIR}/core
     SYSTEM third_party/json11
 )
 
@@ -37,6 +36,6 @@ if(ANDROID)
 endif()
 
 list(APPEND UNIT_TEST_SOURCES
-    ${CMAKE_SOURCE_DIR}/plugins/mission/mission_import_qgc_test.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/mission_import_qgc_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

@@ -43,7 +43,7 @@ endif()
 
 if(BUILD_TESTS)
     enable_testing()
-    add_subdirectory(${CMAKE_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
     add_subdirectory(integration_tests)
 

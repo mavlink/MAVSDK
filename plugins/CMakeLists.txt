@@ -1,6 +1,6 @@
 include_directories(
-    ${CMAKE_SOURCE_DIR}/core
-    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
+    ${PROJECT_SOURCE_DIR}/core
+    SYSTEM  ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
 if(IOS OR ANDROID)

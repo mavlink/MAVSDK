@@ -1,8 +1,8 @@
 # SYSTEM because we don't want warnings for gtest headers.
 include_directories(
-    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/gtest/googletest/include
-    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/gtest/googlemock/include
-    SYSTEM ${CMAKE_SOURCE_DIR}/third_party/mavlink/include
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
+    SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
@@ -41,8 +41,8 @@ add_executable(integration_tests_runner
 )
 
 include_directories(
-    ${CMAKE_SOURCE_DIR}/core
-    ${CMAKE_SOURCE_DIR}
+    ${PROJECT_SOURCE_DIR}/core
+    ${PROJECT_SOURCE_DIR}
 )
 
 set_target_properties(integration_tests_runner
@@ -72,13 +72,13 @@ add_test(integration_tests
 add_custom_command(TARGET integration_tests_runner
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_SOURCE_DIR}/start_px4_sitl.sh
+        ${PROJECT_SOURCE_DIR}/start_px4_sitl.sh
         ${CMAKE_CURRENT_BINARY_DIR}
 )
 add_custom_command(TARGET integration_tests_runner
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_SOURCE_DIR}/stop_px4_sitl.sh
+        ${PROJECT_SOURCE_DIR}/stop_px4_sitl.sh
         ${CMAKE_CURRENT_BINARY_DIR}
 )
 

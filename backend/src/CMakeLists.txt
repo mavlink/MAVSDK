@@ -45,8 +45,8 @@ target_link_libraries(backend
 
 target_include_directories(backend
     PRIVATE
-    ${CMAKE_SOURCE_DIR}/core
-    ${CMAKE_SOURCE_DIR}/plugins
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/plugins
     ${CMAKE_BINARY_DIR}/backend/src
     ${PLUGINS_DIR}
 )
@@ -74,6 +74,6 @@ else()
 
     target_include_directories(backend_bin
         PRIVATE
-        ${CMAKE_SOURCE_DIR}/core
+        ${CMAKE_CURRENT_SOURCE_DIR}/core
     )
 endif()

@@ -16,9 +16,9 @@ target_include_directories(unit_tests_backend
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/plugins
-    ${CMAKE_SOURCE_DIR}/plugins
+    ${PROJECT_SOURCE_DIR}/plugins
     ${CMAKE_BINARY_DIR}/backend/src
-    ${CMAKE_SOURCE_DIR}
+    ${PROJECT_SOURCE_DIR}
 )
 
 target_link_libraries(unit_tests_backend
