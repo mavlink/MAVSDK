@@ -45,8 +45,8 @@ target_link_libraries(backend
 
 target_include_directories(backend
     PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/core
-    ${CMAKE_CURRENT_SOURCE_DIR}/plugins
+    ${PROJECT_SOURCE_DIR}/core
+    ${PROJECT_SOURCE_DIR}/plugins
     ${CMAKE_BINARY_DIR}/backend/src
     ${PLUGINS_DIR}
 )
