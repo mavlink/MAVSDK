@@ -1,0 +1,20 @@
+public lazy var {{ name }}: Observable<{{ elem_type }}> = create{{ capitalized_name }}()
+
+private func create{{ name }}() -> Observable<{{ elem_type }}> {
+    return Observable.create { observer in
+        let {{ request_name }} = {{ request_rpc_type }}()
+
+        do {
+            let call = try self.service.subscribe{{ name.lower() }}({{ request_name }}, completion: nil)
+            while let response = try? call.receive() {
+                let position = Position(latitudeDeg: response.position.latitudeDeg, longitudeDeg: response.position.longitudeDeg, absoluteAltitudeM: response.position.absoluteAltitudeM, relativeAltitudeM: response.position.relativeAltitudeM)
+
+                observer.onNext(position)
+            }
+        } catch {
+            observer.onError("Failed to subscribe to {{ name }} stream")
+        }
+
+        return Disposables.create()
+    }.subscribeOn(self.scheduler)
+}

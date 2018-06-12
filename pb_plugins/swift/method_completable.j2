@@ -1,0 +1,16 @@
+public func {{ name }}() -> Completable {
+    return Completable.create { completable in
+    let {{ name }}Request = {{ request_rpc_type }}()
+
+    do {
+        let {{ name }}Response = try self.service.{{ name.lower() }}({{ name }}Request)
+        if ({{ name }}Response.{{ plugin_name.title() }}Result.result == {{ package }}_{{ plugin_name.title() }}Result.Result.success) {
+            completable(.completed)
+        } else {
+            completable(.error("Cannot {{ name }}: \({{ name }}Response.{{ plugin_name.title() }}Result.result)"))
+        }
+    } catch {
+        completable(.error(error))
+    }
+    return Disposables.create()
+}

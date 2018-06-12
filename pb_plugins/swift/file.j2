@@ -1,0 +1,17 @@
+import Foundation
+import gRPC
+import RxSwift
+
+public class {{ plugin_name }} {
+    {%- for enum in enums %}
+    {{ enum }}
+    {%- endfor %}
+
+    {%- for struct in structs %}
+    {{ struct }}
+    {%- endfor %}
+
+    {%- for method in methods %}
+    {{ method }}
+    {%- endfor %}
+}

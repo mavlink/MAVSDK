@@ -1,0 +1,14 @@
+public func {{ name }}() -> Single<{{ elem_type }}> {
+    return Single<{{ elem_type }}>.create { single in
+        let {{ name }}Request = {{ request_rpc_type }}()
+
+        do {
+            let {{ name }}Response = try self.service.{{ name.lower() }}({{ name }}Request)
+            single(.success({{ name }}Response.BLAH))
+        } catch {
+            single(.error(error))
+        }
+
+        return Disposables.create()
+    }
+}

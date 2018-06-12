@@ -1,0 +1,32 @@
+public struct {{ name }}: Equatable {
+    {%- for field in fields %}
+    public let {{ field[0] }}: {{ field[1] }}
+    {%- endfor %}
+
+    public init({% for field in fields[:-1] %}{{ field[0] }}: {{ field[1] }}, {% endfor %}{{ fields[-1][0] }}: {{ fields[-1][1] }}) {
+        {%- for field in fields %}
+        self.{{ field[0] }} = {{ field[0] }}
+        {%- endfor %}
+    }
+
+    internal var rpc{{ name }}: {{ rpc_type }} {
+        var rpc{{ name }} = {{ rpc_type }}()
+
+        {%- for field in fields %}
+        rpc {{ name }}.{{ field[0] }} = {{ field[0] }}
+        {%- endfor %}
+
+        return rpc{{ name }}
+    }
+
+    internal static func translateFromRPC(_ rpc{{ name }}: {{ rpc_type }}) -> {{ name }} {
+        return {{ name }}({% for field in fields[:-1] %}{{ field[0] }}: rpc{{ name }}.{{ field[0] }}, {% endfor %}{{ fields[-1][0] }}: rpc{{ name }}.{{ fields[-1][0] }})
+    }
+
+    public static func == (lhs: {{ name }}, rhs:: {{ name }}) -> Bool {
+        return lhs.{{ fields[0][0] }} == rhs.{{ fields[0][0] }}
+            {%- for field in fields[1:] %}
+            && lhs.{{ field[0] }} == rhs.{{ field[0] }}
+            {%- endfor %}
+    }
+}

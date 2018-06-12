@@ -1,0 +1,23 @@
+public enum {{ name }} {
+    {%- for value in values %}
+    case {{ value }}
+    {%- endfor %}
+
+    internal var rpc{{ name }}: {{ package }} {
+        switch self {
+        {%- for value in values %}
+        case .{{ value }}:
+            return .{{ value }}
+        {%- endfor %}
+        }
+    }
+
+    internal static func translateFromRPC(_ rpc{{ name }}: {{ package }}) -> {{ name }} {
+        switch rpc{{ name }} {
+        {%- for value in values %}
+        case .{{ value }}:
+            return .{{ value }}
+        {%- endfor %}
+        }
+    }
+}
