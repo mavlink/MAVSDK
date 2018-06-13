@@ -34,6 +34,7 @@ public:
 
     void set_video_stream_settings(const Camera::VideoStreamSettings &settings);
     Camera::Result get_video_stream_info(Camera::VideoStreamInfo &info);
+    void subscribe_video_stream_info(const Camera::subscribe_video_stream_info_callback_t callback);
 
     Camera::Result start_video_streaming();
     Camera::Result stop_video_streaming();
@@ -137,6 +138,7 @@ private:
     void receive_camera_capture_status_result(MAVLinkCommands::Result result);
 
     void notify_mode(const Camera::Mode mode);
+    void notify_video_stream_info();
 
     void check_status();
 
@@ -175,6 +177,7 @@ private:
     std::unique_ptr<CameraDefinition> _camera_definition{};
 
     Camera::subscribe_mode_callback_t _subscribe_mode_callback{nullptr};
+    Camera::subscribe_video_stream_info_callback_t _subscribe_video_stream_info_callback{nullptr};
 };
 
 } // namespace dronecore

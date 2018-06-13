@@ -324,6 +324,18 @@ public:
     Result get_video_stream_info(VideoStreamInfo &info);
 
     /**
+     * @brief Callback type for video stream info.
+     */
+    typedef std::function<void(VideoStreamInfo)> subscribe_video_stream_info_callback_t;
+
+    /**
+     * @brief Async subscription for video stream info updates.
+     *
+     * @param callback Function to call with video stream updates.
+     */
+    void subscribe_video_stream_info(const subscribe_video_stream_info_callback_t callback);
+
+    /**
      * @brief Starts video streaming (synchronous).
      *
      * Sends a request to start video streaming.

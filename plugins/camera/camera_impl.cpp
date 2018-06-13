@@ -397,6 +397,9 @@ Camera::Result CameraImpl::get_video_stream_info(Camera::VideoStreamInfo &info)
                     LogErr() << "Failed to request video stream info";
                     break;
                 }
+
+                // FIXME: This is not how it should be done.
+                //        We should use something like future/promise for that.
                 while (!_video_stream_info.available) { // Wait for video stream info
                     std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 }
@@ -408,6 +411,14 @@ Camera::Result CameraImpl::get_video_stream_info(Camera::VideoStreamInfo &info)
 
     return result;
     ;
+}
+
+void CameraImpl::subscribe_video_stream_info(
+    const Camera::subscribe_video_stream_info_callback_t callback)
+{
+    // FIXME: This will only work if you also send a request to get the video stream info,
+    //       however, this should presumably work by itself, e.g. by polling.
+    _subscribe_video_stream_info_callback = callback;
 }
 
 Camera::Result
@@ -709,6 +720,16 @@ void CameraImpl::process_video_information(const mavlink_message_t &message)
         video_stream_info.uri = received_video_info.uri;
 
         _video_stream_info.available = true;
+        notify_video_stream_info();
+    }
+}
+
+void CameraImpl::notify_video_stream_info()
+{
+    if (_subscribe_video_stream_info_callback) {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        _parent->call_user_callback(
+            [this]() { _subscribe_video_stream_info_callback(_video_stream_info.info); });
     }
 }
 

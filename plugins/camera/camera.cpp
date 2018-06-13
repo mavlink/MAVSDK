@@ -72,6 +72,11 @@ Camera::Result Camera::get_video_stream_info(VideoStreamInfo &info)
     return _impl->get_video_stream_info(info);
 }
 
+void Camera::subscribe_video_stream_info(const subscribe_video_stream_info_callback_t callback)
+{
+    _impl->subscribe_video_stream_info(callback);
+}
+
 void Camera::stop_video_async(const result_callback_t &callback)
 {
     _impl->stop_video_async(callback);
