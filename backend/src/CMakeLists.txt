@@ -56,11 +56,9 @@ if(IOS)
         FRAMEWORK TRUE
         BUILD_WITH_INSTALL_RPATH TRUE
         INSTALL_NAME_DIR @rpath
-        MACOSX_FRAMEWORK_IDENTIFIER io.dronecore.backend
-        VERSION 0.0.1
-        SOVERSION 0.0.1
         PUBLIC_HEADER backend_api.h
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "DroneCore"
+        MACOSX_FRAMEWORK_INFO_PLIST ${PROJECT_SOURCE_DIR}/backend/cmake/MacOSXFrameworkInfo.plist.in
     )
 else()
     add_executable(backend_bin
