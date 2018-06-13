@@ -206,7 +206,7 @@ public:
     typedef std::function<void(Mode)> subscribe_mode_callback_t;
 
     /**
-     * @brief Async subscription for camera mode updates.
+     * @brief Async subscription for camera mode updates (asynchronous).
      *
      * @param callback Function to call with camera mode updates.
      */
@@ -329,7 +329,7 @@ public:
     typedef std::function<void(VideoStreamInfo)> subscribe_video_stream_info_callback_t;
 
     /**
-     * @brief Async subscription for video stream info updates.
+     * @brief Async subscription for video stream info updates (asynchronous).
      *
      * @param callback Function to call with video stream updates.
      */
