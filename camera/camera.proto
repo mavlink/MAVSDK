@@ -19,7 +19,7 @@ service CameraService {
     rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) {}
     rpc SubscribeCaptureInfo(SubscribeCaptureInfoRequest) returns(stream CaptureInfoResponse) {}
     rpc SubscribeCameraStatus(SubscribeCameraStatusRequest) returns(stream CameraStatusResponse) {}
-    rpc SubscribeCurrentSetting(SubscribeCurrentSettingRequest) returns(stream CurrentSettingResponse) {}
+    rpc SubscribeCurrentSettings(SubscribeCurrentSettingsRequest) returns(stream CurrentSettingsResponse) {}
     rpc SubscribePossibleSettings(SubscribePossibleSettingsRequest) returns(stream PossibleSettingsResponse) {}
     rpc SetSetting(SetSettingRequest) returns(SetSettingResponse) {}
 }
@@ -93,16 +93,14 @@ message CameraStatusResponse {
     CameraStatus camera_status = 1;
 }
 
-message SubscribeCurrentSettingRequest {}
-message CurrentSettingResponse {
-    Setting current_setting = 1;
+message SubscribeCurrentSettingsRequest {}
+message CurrentSettingsResponse {
+    repeated Setting current_setting = 1;
 }
 
 message SubscribePossibleSettingsRequest {}
 message PossibleSettingsResponse {
-    string setting_id = 1;
-    string setting_description = 2;
-    repeated Option option = 3;
+    repeated Setting settings = 1;
 }
 
 message SetSettingRequest {
