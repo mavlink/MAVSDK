@@ -41,6 +41,7 @@ public:
     Camera::Result set_mode(const Camera::Mode mode);
     void set_mode_async(const Camera::Mode mode, const Camera::mode_callback_t &callback);
     void get_mode_async(Camera::mode_callback_t callback);
+    void subscribe_mode(const Camera::subscribe_mode_callback_t callback);
 
     void capture_info_async(Camera::capture_info_callback_t callback);
 
@@ -135,6 +136,8 @@ private:
     void receive_storage_information_result(MAVLinkCommands::Result result);
     void receive_camera_capture_status_result(MAVLinkCommands::Result result);
 
+    void notify_mode(const Camera::Mode mode);
+
     void check_status();
 
     void status_timeout_happened();
@@ -170,6 +173,8 @@ private:
     MAVLinkCommands::CommandLong make_command_request_video_stream_info();
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
+
+    Camera::subscribe_mode_callback_t _subscribe_mode_callback{nullptr};
 };
 
 } // namespace dronecore

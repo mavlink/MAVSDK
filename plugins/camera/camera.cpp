@@ -92,6 +92,11 @@ void Camera::get_mode_async(const mode_callback_t &callback)
     _impl->get_mode_async(callback);
 }
 
+void Camera::subscribe_mode(const subscribe_mode_callback_t callback)
+{
+    _impl->subscribe_mode(callback);
+}
+
 void Camera::get_status_async(get_status_callback_t callback)
 {
     _impl->get_status_async(callback);

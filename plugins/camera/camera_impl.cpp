@@ -438,8 +438,11 @@ Camera::Result CameraImpl::set_mode(const Camera::Mode mode)
     const auto command_result = _parent->send_command(cmd_set_camera_mode);
     const auto camera_result = camera_result_from_command_result(command_result);
 
-    if (camera_result == Camera::Result::SUCCESS && _camera_definition != nullptr) {
-        save_camera_mode(mavlink_mode);
+    if (camera_result == Camera::Result::SUCCESS) {
+        notify_mode(mode);
+        if (_camera_definition != nullptr) {
+            save_camera_mode(mavlink_mode);
+        }
     }
 
     return camera_result;
@@ -494,6 +497,11 @@ void CameraImpl::get_mode_async(Camera::mode_callback_t callback)
                                 std::bind(&CameraImpl::receive_get_mode_command_result, this, _1));
     _parent->register_timeout_handler(
         std::bind(&CameraImpl::get_mode_timeout_happened, this), 1.0, &_get_mode.timeout_cookie);
+}
+
+void CameraImpl::subscribe_mode(const Camera::subscribe_mode_callback_t callback)
+{
+    _subscribe_mode_callback = callback;
 }
 
 bool CameraImpl::interval_valid(float interval_s)
@@ -785,7 +793,15 @@ void CameraImpl::receive_set_mode_command_result(const MAVLinkCommands::Result c
             return;
         }
 
+        notify_mode(mode);
         save_camera_mode(mavlink_mode);
+    }
+}
+
+void CameraImpl::notify_mode(const Camera::Mode mode)
+{
+    if (_subscribe_mode_callback) {
+        _parent->call_user_callback([this, mode]() { _subscribe_mode_callback(mode); });
     }
 }
 

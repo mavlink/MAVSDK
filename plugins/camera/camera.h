@@ -201,6 +201,18 @@ public:
     void get_mode_async(const mode_callback_t &callback);
 
     /**
+     * @brief Callback type for camera mode subscription.
+     */
+    typedef std::function<void(Mode)> subscribe_mode_callback_t;
+
+    /**
+     * @brief Async subscription for camera mode updates.
+     *
+     * @param callback Function to call with camera mode updates.
+     */
+    void subscribe_mode(const subscribe_mode_callback_t callback);
+
+    /**
      * @brief Information about a picture just captured.
      */
     struct CaptureInfo {
