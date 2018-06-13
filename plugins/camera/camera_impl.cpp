@@ -278,6 +278,11 @@ Camera::Result CameraImpl::stop_video()
 {
     auto cmd_stop_video = make_command_stop_video();
 
+    {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        _video_stream_info.info.status = Camera::VideoStreamInfo::Status::NOT_RUNNING;
+    }
+
     return camera_result_from_command_result(_parent->send_command(cmd_stop_video));
 }
 
@@ -353,7 +358,8 @@ void CameraImpl::set_video_stream_settings(const Camera::VideoStreamSettings &se
 
 Camera::Result CameraImpl::start_video_streaming()
 {
-    if (_video_stream_info.available && _video_stream_info.in_progress()) {
+    if (_video_stream_info.available &&
+        _video_stream_info.info.status == Camera::VideoStreamInfo::Status::IN_PROGRESS) {
         return Camera::Result::IN_PROGRESS;
     }
 
@@ -363,7 +369,7 @@ Camera::Result CameraImpl::start_video_streaming()
     auto result = camera_result_from_command_result(_parent->send_command(command));
     if (result == Camera::Result::SUCCESS) {
         // Cache video stream info; app may query immediately next.
-        _video_stream_info.reset();
+        // TODO: check if we can/should do that.
         get_video_stream_info(_video_stream_info.info);
     }
     return result;
@@ -379,47 +385,87 @@ Camera::Result CameraImpl::stop_video_streaming()
     auto result = camera_result_from_command_result(_parent->send_command(command));
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        _video_stream_info.reset();
+        // TODO: check if we can/should do that.
+        _video_stream_info.info.status = Camera::VideoStreamInfo::Status::NOT_RUNNING;
     }
     return result;
 }
 
 Camera::Result CameraImpl::get_video_stream_info(Camera::VideoStreamInfo &info)
 {
-    Camera::Result result = Camera::Result::SUCCESS;
-    {
-        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+    auto prom = std::make_shared<std::promise<Camera::Result>>();
+    auto ret = prom->get_future();
 
-        do {
-            if (!_video_stream_info.available) { // Request if not available
-                auto command = make_command_request_video_stream_info();
-                result = camera_result_from_command_result(_parent->send_command(command));
-                if (result != Camera::Result::SUCCESS) {
-                    LogErr() << "Failed to request video stream info";
-                    break;
-                }
+    get_video_stream_info_async([prom](Camera::Result result, Camera::VideoStreamInfo info) {
+        UNUSED(info);
+        prom->set_value(result);
+    });
 
-                // FIXME: This is not how it should be done.
-                //        We should use something like future/promise for that.
-                while (!_video_stream_info.available) { // Wait for video stream info
-                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                }
-            }
-            // Copy to application, once video stream info is available.
-            info = _video_stream_info.info;
-        } while (false);
+    auto status = ret.wait_for(std::chrono::seconds(5));
+
+    if (status == std::future_status::ready) {
+        info = _video_stream_info.info;
+        return Camera::Result::SUCCESS;
+    } else {
+        return Camera::Result::TIMEOUT;
+    }
+}
+
+void CameraImpl::get_video_stream_info_async(
+    const Camera::get_video_stream_info_callback_t callback)
+{
+    std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+    if (_video_stream_info.callback) {
+        if (callback) {
+            callback(Camera::Result::IN_PROGRESS, _video_stream_info.info);
+        }
+        return;
     }
 
-    return result;
-    ;
+    _video_stream_info.callback = callback;
+
+    auto command = make_command_request_video_stream_info();
+    _parent->send_command_async(command, [this](MAVLinkCommands::Result result, float progress) {
+        Camera::Result camera_result = camera_result_from_command_result(result);
+        if (camera_result != Camera::Result::SUCCESS) {
+            if (_video_stream_info.callback) {
+                _video_stream_info.callback(camera_result, _video_stream_info.info);
+            }
+            return;
+        }
+        _video_stream_info.callback = nullptr;
+        _parent->register_timeout_handler(
+            std::bind(&CameraImpl::get_video_stream_info_timeout, this),
+            1.0,
+            &_video_stream_info.timeout_cookie);
+    });
+}
+
+void CameraImpl::get_video_stream_info_timeout()
+{
+    std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+    LogErr() << "Getting video stream info timed out.";
+
+    _video_stream_info.available = false;
+    if (_video_stream_info.callback) {
+        _video_stream_info.callback(Camera::Result::TIMEOUT, _video_stream_info.info);
+        _video_stream_info.callback = nullptr;
+    }
 }
 
 void CameraImpl::subscribe_video_stream_info(
     const Camera::subscribe_video_stream_info_callback_t callback)
 {
-    // FIXME: This will only work if you also send a request to get the video stream info,
-    //       however, this should presumably work by itself, e.g. by polling.
+    std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+
     _subscribe_video_stream_info_callback = callback;
+    if (callback) {
+        _parent->add_call_every([this]() { get_video_stream_info_async(nullptr); },
+                                1.0,
+                                &_video_stream_info.call_every_cookie);
+    } else {
+        _parent->remove_call_every(_video_stream_info.call_every_cookie);
+    }
 }
 
 Camera::Result
@@ -737,8 +783,13 @@ void CameraImpl::process_video_information(const mavlink_message_t &message)
         video_stream_info.bit_rate_b_s = received_video_info.bitrate;
         video_stream_info.rotation_deg = received_video_info.rotation;
         video_stream_info.uri = received_video_info.uri;
-
         _video_stream_info.available = true;
+
+        if (_video_stream_info.callback) {
+            _parent->unregister_timeout_handler(_video_stream_info.timeout_cookie);
+            _video_stream_info.callback(Camera::Result::SUCCESS, _video_stream_info.info);
+            _video_stream_info.callback = nullptr;
+        }
         notify_video_stream_info();
     }
 }

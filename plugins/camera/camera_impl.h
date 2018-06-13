@@ -34,6 +34,7 @@ public:
 
     void set_video_stream_settings(const Camera::VideoStreamSettings &settings);
     Camera::Result get_video_stream_info(Camera::VideoStreamInfo &info);
+    void get_video_stream_info_async(const Camera::get_video_stream_info_callback_t callback);
     void subscribe_video_stream_info(const Camera::subscribe_video_stream_info_callback_t callback);
 
     Camera::Result start_video_streaming();
@@ -77,7 +78,7 @@ private:
         bool received_storage_information{false};
         void *timeout_cookie{nullptr};
         void *call_every_cookie{nullptr};
-    } _status;
+    } _status{};
 
     static constexpr double DEFAULT_TIMEOUT_S = 3.0;
 
@@ -85,33 +86,26 @@ private:
         std::mutex mutex{};
         Camera::mode_callback_t callback{nullptr};
         void *timeout_cookie{nullptr};
-    } _get_mode;
+    } _get_mode{};
 
     struct {
         std::mutex mutex{};
         int sequence = 1; // The MAVLink spec says the sequence starts at 1.
-    } _capture;
+    } _capture{};
 
     struct {
         std::mutex mutex{};
         Camera::capture_info_callback_t callback{nullptr};
-    } _capture_info;
+    } _capture_info{};
 
     struct {
         std::mutex mutex{};
-        Camera::VideoStreamInfo info;
-        bool available = false;
-        void reset()
-        {
-            info = Camera::VideoStreamInfo();
-            available = false;
-        }
-
-        bool in_progress() const
-        {
-            return info.status == Camera::VideoStreamInfo::Status::IN_PROGRESS;
-        }
-    } _video_stream_info;
+        Camera::VideoStreamInfo info{};
+        bool available{false};
+        Camera::get_video_stream_info_callback_t callback{nullptr};
+        void *timeout_cookie{nullptr};
+        void *call_every_cookie{nullptr};
+    } _video_stream_info{};
 
     void receive_set_mode_command_result(const MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
@@ -147,6 +141,7 @@ private:
     void check_status();
 
     void status_timeout_happened();
+    void get_video_stream_info_timeout();
 
     void load_definition_file(const std::string &uri);
 
