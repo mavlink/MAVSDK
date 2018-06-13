@@ -367,7 +367,7 @@ public:
      *
      * @param callback Function to call with updates.
      */
-    void capture_info_async(capture_info_callback_t callback);
+    void subscribe_capture_info(capture_info_callback_t callback);
 
     /**
      * @brief Information about camera status.

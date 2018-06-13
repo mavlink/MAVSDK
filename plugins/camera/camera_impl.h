@@ -44,7 +44,7 @@ public:
     void get_mode_async(Camera::mode_callback_t callback);
     void subscribe_mode(const Camera::subscribe_mode_callback_t callback);
 
-    void capture_info_async(Camera::capture_info_callback_t callback);
+    void subscribe_capture_info(Camera::capture_info_callback_t callback);
 
     void get_status_async(Camera::get_status_callback_t callback);
 
@@ -139,6 +139,7 @@ private:
 
     void notify_mode(const Camera::Mode mode);
     void notify_video_stream_info();
+    void notify_capture_info(Camera::CaptureInfo capture_info);
 
     void check_status();
 

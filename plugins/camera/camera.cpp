@@ -107,9 +107,9 @@ void Camera::get_status_async(get_status_callback_t callback)
     _impl->get_status_async(callback);
 }
 
-void Camera::capture_info_async(capture_info_callback_t callback)
+void Camera::subscribe_capture_info(capture_info_callback_t callback)
 {
-    _impl->capture_info_async(callback);
+    _impl->subscribe_capture_info(callback);
 }
 
 void Camera::set_option_async(const std::string &setting,

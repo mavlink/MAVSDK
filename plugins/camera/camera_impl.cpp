@@ -583,7 +583,7 @@ void CameraImpl::receive_camera_capture_status_result(MAVLinkCommands::Result re
     _parent->refresh_timeout_handler(_status.timeout_cookie);
 }
 
-void CameraImpl::capture_info_async(Camera::capture_info_callback_t callback)
+void CameraImpl::subscribe_capture_info(Camera::capture_info_callback_t callback)
 {
     std::lock_guard<std::mutex> lock(_capture_info.mutex);
 
@@ -652,8 +652,16 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t &message)
             capture_info.file_url = std::string(image_captured.file_url);
             capture_info.success = (image_captured.capture_result == 1);
             capture_info.index = image_captured.image_index;
-            _capture_info.callback(capture_info);
+            notify_capture_info(capture_info);
         }
+    }
+}
+
+void CameraImpl::notify_capture_info(Camera::CaptureInfo capture_info)
+{
+    if (_capture_info.callback) {
+        _parent->call_user_callback(
+            [this, capture_info]() { _capture_info.callback(capture_info); });
     }
 }
 
