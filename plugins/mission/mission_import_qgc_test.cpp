@@ -38,8 +38,8 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     // These mission items are meant to match those in
     // file:://plugins/mission/qgroundcontrol_sample.plan
     QGCMissionItem items_test[] = {
-        {MAV_CMD_NAV_TAKEOFF, {0., 0., 0., 0., 47.39781011, 8.54553801, 15.}},
-        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39779921, 8.54546693, 15.}},
+        {MAV_CMD_NAV_TAKEOFF, {0., 0., 0., double(NAN), 47.39781011, 8.54553801, 15.}},
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., double(NAN), 47.39779921, 8.54546693, 15.}},
         {MAV_CMD_DO_MOUNT_CONTROL, {25.0, 0., 50.0}}, // Gimbal pitch & yaw in deg
         {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39773658, 8.54543743, 15.}},
         {MAV_CMD_IMAGE_START_CAPTURE,
@@ -55,13 +55,13 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
              1.,
              0.,
          }}, // Start image capture
-        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39768029, 8.54561177, 15.}},
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., double(NAN), 47.39768029, 8.54561177, 15.}},
         {MAV_CMD_DO_CHANGE_SPEED, {1., 100., -1., 0}},
-        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39779649, 8.54566005, 15.}},
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., double(NAN), 47.39779649, 8.54566005, 15.}},
         {MAV_CMD_NAV_LOITER_TIME, {30.}}, // Loiter for 30 seconds
-        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39779468, 8.54561445, 15.}},
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., double(NAN), 47.39779468, 8.54561445, 15.}},
         {MAV_CMD_VIDEO_START_CAPTURE, {}}, // Start video capture
-        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., 0., 47.39784279, 8.54553533, 15.}},
+        {MAV_CMD_NAV_WAYPOINT, {0., 0., 0., double(NAN), 47.39784279, 8.54553533, 15.}},
         {MAV_CMD_IMAGE_STOP_CAPTURE, {}}, // Stop image capture
         {MAV_CMD_VIDEO_STOP_CAPTURE, {}}, // Stop video capture
     };

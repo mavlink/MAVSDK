@@ -1208,7 +1208,12 @@ Mission::Result MissionImpl::import_mission_items(Mission::mission_items_t &all_
         // Extract parameters of each mission item
         std::vector<double> params;
         for (auto &p : json_mission_item["params"].array_items()) {
-            params.push_back(p.number_value());
+            if (p.is_null()) {
+                // QGC sets params as `null` if they should be unchanged.
+                params.push_back(NAN);
+            } else {
+                params.push_back(p.number_value());
+            }
         }
 
         result = build_mission_items(command, params, new_mission_item, all_mission_items);
