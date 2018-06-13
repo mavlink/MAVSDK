@@ -59,6 +59,7 @@ void CameraImpl::init()
 
 void CameraImpl::deinit()
 {
+    _parent->remove_call_every(_status.call_every_cookie);
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
@@ -528,11 +529,6 @@ bool CameraImpl::interval_valid(float interval_s)
 
 void CameraImpl::get_status_async(Camera::get_status_callback_t callback)
 {
-    if (callback == nullptr) {
-        LogDebug() << "get_status_async called with empty callback";
-        return;
-    }
-
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
 
@@ -557,9 +553,24 @@ void CameraImpl::get_status_async(Camera::get_status_callback_t callback)
     _parent->send_command_async(
         cmd_req_storage_info, std::bind(&CameraImpl::receive_storage_information_result, this, _1));
 
-    _parent->register_timeout_handler(std::bind(&CameraImpl::status_timeout_happened, this),
-                                      DEFAULT_TIMEOUT_S,
-                                      &_status.timeout_cookie);
+    if (callback) {
+        _parent->register_timeout_handler(std::bind(&CameraImpl::status_timeout_happened, this),
+                                          DEFAULT_TIMEOUT_S,
+                                          &_status.timeout_cookie);
+    }
+}
+
+void CameraImpl::subscribe_status(const Camera::subscribe_status_callback_t callback)
+{
+    std::lock_guard<std::mutex> lock(_status.mutex);
+
+    _subscribe_status_callback = callback;
+    if (callback) {
+        _parent->add_call_every(
+            [this]() { get_status_async(nullptr); }, 1.0, &_status.call_every_cookie);
+    } else {
+        _parent->remove_call_every(_status.call_every_cookie);
+    }
 }
 
 void CameraImpl::receive_camera_capture_status_result(MAVLinkCommands::Result result)
@@ -753,6 +764,14 @@ void CameraImpl::check_status()
             _status.received_storage_information = false;
             _parent->unregister_timeout_handler(_status.timeout_cookie);
         }
+        notify_status(_status.data);
+    }
+}
+
+void CameraImpl::notify_status(Camera::Status status)
+{
+    if (_subscribe_status_callback) {
+        _parent->call_user_callback([this, status]() { _subscribe_status_callback(status); });
     }
 }
 
@@ -764,10 +783,9 @@ void CameraImpl::status_timeout_happened()
         // Send empty settings with timeout error.
         Camera::Status empty_status = {};
         _status.callback(Camera::Result::TIMEOUT, empty_status);
-        // Then give up.
+        // Discard the subscription
+        _status.callback = nullptr;
     }
-    // Discard the subscription
-    _status.callback = nullptr;
 }
 
 void CameraImpl::receive_command_result(MAVLinkCommands::Result command_result,

@@ -47,6 +47,7 @@ public:
     void subscribe_capture_info(Camera::capture_info_callback_t callback);
 
     void get_status_async(Camera::get_status_callback_t callback);
+    void subscribe_status(const Camera::subscribe_status_callback_t callback);
 
     void set_option_async(const std::string &setting,
                           const std::string &option,
@@ -75,6 +76,7 @@ private:
         bool received_camera_capture_status{false};
         bool received_storage_information{false};
         void *timeout_cookie{nullptr};
+        void *call_every_cookie{nullptr};
     } _status;
 
     static constexpr double DEFAULT_TIMEOUT_S = 3.0;
@@ -140,6 +142,7 @@ private:
     void notify_mode(const Camera::Mode mode);
     void notify_video_stream_info();
     void notify_capture_info(Camera::CaptureInfo capture_info);
+    void notify_status(Camera::Status status);
 
     void check_status();
 
@@ -179,6 +182,7 @@ private:
 
     Camera::subscribe_mode_callback_t _subscribe_mode_callback{nullptr};
     Camera::subscribe_video_stream_info_callback_t _subscribe_video_stream_info_callback{nullptr};
+    Camera::subscribe_status_callback_t _subscribe_status_callback{nullptr};
 };
 
 } // namespace dronecore

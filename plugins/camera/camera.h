@@ -401,6 +401,18 @@ public:
     void get_status_async(get_status_callback_t callback);
 
     /**
+     * @brief Callback type to subscribe to status updates.
+     */
+    typedef std::function<void(Status)> subscribe_status_callback_t;
+
+    /**
+     * @brief Subscribe to status updates (asynchronous).
+     *
+     * @param callback Function to call with status update.
+     */
+    void subscribe_status(const subscribe_status_callback_t callback);
+
+    /**
      * @brief Get settings that can be changed.
      *
      * The list of settings consists of machine readable parameters,

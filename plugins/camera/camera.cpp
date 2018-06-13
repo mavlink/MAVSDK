@@ -107,6 +107,11 @@ void Camera::get_status_async(get_status_callback_t callback)
     _impl->get_status_async(callback);
 }
 
+void Camera::subscribe_status(const Camera::subscribe_status_callback_t callback)
+{
+    _impl->subscribe_status(callback);
+}
+
 void Camera::subscribe_capture_info(capture_info_callback_t callback)
 {
     _impl->subscribe_capture_info(callback);
