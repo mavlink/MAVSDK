@@ -972,8 +972,8 @@ bool CameraImpl::get_possible_settings(std::vector<std::string> &settings)
     return settings.size() > 0;
 }
 
-bool CameraImpl::get_possible_options(const std::string &setting_name,
-                                      std::vector<std::string> &options)
+bool CameraImpl::get_possible_options(const std::string &setting_id,
+                                      std::vector<Camera::Option> &options)
 {
     options.clear();
 
@@ -983,21 +983,23 @@ bool CameraImpl::get_possible_options(const std::string &setting_name,
     }
 
     std::vector<MAVLinkParameters::ParamValue> values;
-    if (!_camera_definition->get_possible_options(setting_name, values)) {
+    if (!_camera_definition->get_possible_options(setting_id, values)) {
         return false;
     }
 
     for (const auto &value : values) {
         std::stringstream ss{};
         ss << value;
-        options.push_back(ss.str());
+        Camera::Option option;
+        option.option_id = ss.str();
+        options.push_back(option);
     }
 
     return options.size() > 0;
 }
 
-void CameraImpl::set_option_async(const std::string &setting,
-                                  const std::string &option,
+void CameraImpl::set_option_async(const std::string &setting_id,
+                                  const Camera::Option &option,
                                   const Camera::result_callback_t &callback)
 {
     if (!_camera_definition) {
@@ -1010,7 +1012,7 @@ void CameraImpl::set_option_async(const std::string &setting,
 
     // We get it first so that we have the type of the param value.
     MAVLinkParameters::ParamValue value;
-    if (!_camera_definition->get_option_value(setting, option, value)) {
+    if (!_camera_definition->get_option_value(setting_id, option.option_id, value)) {
         if (callback) {
             callback(Camera::Result::ERROR);
         }
@@ -1018,7 +1020,7 @@ void CameraImpl::set_option_async(const std::string &setting,
     }
 
     std::vector<MAVLinkParameters::ParamValue> possible_values;
-    _camera_definition->get_possible_options(setting, possible_values);
+    _camera_definition->get_possible_options(setting_id, possible_values);
     bool allowed = false;
     for (const auto &possible_value : possible_values) {
         if (value == possible_value) {
@@ -1026,19 +1028,19 @@ void CameraImpl::set_option_async(const std::string &setting,
         }
     }
     if (!allowed) {
-        LogErr() << "Setting " << setting << "(" << option << ") not allowed";
+        LogErr() << "Setting " << setting_id << "(" << option.option_id << ") not allowed";
         if (callback) {
             callback(Camera::Result::ERROR);
         }
         return;
     }
 
-    _parent->set_param_async(setting,
+    _parent->set_param_async(setting_id,
                              value,
-                             [this, callback, setting, value](bool success) {
+                             [this, callback, setting_id, value](bool success) {
                                  if (success) {
                                      if (this->_camera_definition) {
-                                         _camera_definition->set_setting(setting, value);
+                                         _camera_definition->set_setting(setting_id, value);
                                          refresh_params();
                                      }
                                      if (callback) {
@@ -1053,16 +1055,16 @@ void CameraImpl::set_option_async(const std::string &setting,
                              true);
 }
 
-Camera::Result CameraImpl::get_option(const std::string &setting, std::string &option)
+Camera::Result CameraImpl::get_option(const std::string &setting_id, Camera::Option &option)
 {
     auto prom = std::make_shared<std::promise<Camera::Result>>();
     auto ret = prom->get_future();
 
-    get_option_async(setting,
-                     [prom, &option](Camera::Result result, const std::string &option_name) {
+    get_option_async(setting_id,
+                     [prom, &option](Camera::Result result, const Camera::Option &option_gotten) {
                          prom->set_value(result);
                          if (result == Camera::Result::SUCCESS) {
-                             option = option_name;
+                             option = option_gotten;
                          }
                      });
 
@@ -1075,29 +1077,32 @@ Camera::Result CameraImpl::get_option(const std::string &setting, std::string &o
     }
 }
 
-void CameraImpl::get_option_async(const std::string &setting,
+void CameraImpl::get_option_async(const std::string &setting_id,
                                   const Camera::get_option_callback_t &callback)
 {
     if (!_camera_definition) {
         LogWarn() << "Error: no camera defnition available yet.";
         if (callback) {
-            callback(Camera::Result::ERROR, "");
+            Camera::Option empty_option{};
+            callback(Camera::Result::ERROR, empty_option);
         }
         return;
     }
 
     MAVLinkParameters::ParamValue value;
     // We should have this cached and don't need to get the param.
-    if (_camera_definition->get_setting(setting, value)) {
+    if (_camera_definition->get_setting(setting_id, value)) {
         if (callback) {
-            callback(Camera::Result::SUCCESS, value.get_string());
+            Camera::Option new_option{};
+            new_option.option_id = value.get_string();
+            callback(Camera::Result::SUCCESS, new_option);
         }
     } else {
         // If this still happens, we request the param, but also complain.
         LogWarn() << "The param was probably outdated, trying to fetch it";
         _parent->get_param_async(
-            setting,
-            [setting, this](bool success, MAVLinkParameters::ParamValue value) {
+            setting_id,
+            [setting_id, this](bool success, MAVLinkParameters::ParamValue value) {
                 if (!success) {
                     LogWarn() << "Fetching the param failed";
                     return;
@@ -1106,7 +1111,7 @@ void CameraImpl::get_option_async(const std::string &setting,
                 if (!this->_camera_definition) {
                     return;
                 }
-                this->_camera_definition->set_setting(setting, value);
+                this->_camera_definition->set_setting(setting_id, value);
             },
             true);
 
@@ -1116,30 +1121,30 @@ void CameraImpl::get_option_async(const std::string &setting,
     }
 }
 
-void CameraImpl::subscribe_current_options(
-    const Camera::subscribe_current_options_callback_t &callback)
+void CameraImpl::subscribe_current_settings(
+    const Camera::subscribe_current_settings_callback_t &callback)
 {
-    _subscribe_current_options_callback = callback;
+    _subscribe_current_settings_callback = callback;
 }
 
-void CameraImpl::subscribe_possible_options(
-    const Camera::subscribe_possible_options_callback_t &callback)
+void CameraImpl::subscribe_possible_settings(
+    const Camera::subscribe_possible_settings_callback_t &callback)
 {
-    _subscribe_possible_options_callback = callback;
+    _subscribe_possible_settings_callback = callback;
 }
 
-void CameraImpl::notify_current_options()
+void CameraImpl::notify_current_settings()
 {
-    if (!_subscribe_current_options_callback) {
+    if (!_subscribe_current_settings_callback) {
         return;
     }
 
     if (!_camera_definition) {
-        LogErr() << "notify_current_options has no camera definition";
+        LogErr() << "notify_current_settings has no camera definition";
         return;
     }
 
-    std::vector<std::pair<std::string, std::string>> current_options{};
+    std::vector<Camera::Setting> current_settings{};
     std::vector<std::string> possible_settings{};
     if (!get_possible_settings(possible_settings)) {
         LogErr() << "Could not get possible settings in current options subscription.";
@@ -1150,24 +1155,27 @@ void CameraImpl::notify_current_options()
         // use the cache for this, presumably we updated it right before.
         MAVLinkParameters::ParamValue value;
         if (_camera_definition->get_setting(possible_setting, value)) {
-            current_options.push_back(std::make_pair<>(possible_setting, value.get_string()));
+            Camera::Setting setting;
+            setting.setting_id = possible_setting;
+            setting.option.option_id = value.get_string();
+            current_settings.push_back(setting);
         }
     }
-    _subscribe_current_options_callback(current_options);
+    _subscribe_current_settings_callback(current_settings);
 }
 
-void CameraImpl::notify_possible_options()
+void CameraImpl::notify_possible_settings()
 {
-    if (!_subscribe_possible_options_callback) {
+    if (!_subscribe_possible_settings_callback) {
         return;
     }
 
     if (!_camera_definition) {
-        LogErr() << "notify_possible_options has no camera definition";
+        LogErr() << "notify_possible_settings has no camera definition";
         return;
     }
 
-    std::vector<std::pair<std::string, std::vector<std::string>>> possible_options{};
+    std::vector<Camera::SettingOptions> possible_setting_options{};
 
     std::vector<std::string> possible_settings{};
     if (!get_possible_settings(possible_settings)) {
@@ -1176,12 +1184,13 @@ void CameraImpl::notify_possible_options()
     }
 
     for (auto &possible_setting : possible_settings) {
-        std::vector<std::string> options{};
-        get_possible_options(possible_setting, options);
-        possible_options.push_back(std::make_pair<>(possible_setting, options));
+        Camera::SettingOptions setting_options;
+        setting_options.setting_id = possible_setting;
+        get_possible_options(possible_setting, setting_options.options);
+        possible_setting_options.push_back(setting_options);
     }
 
-    _subscribe_possible_options_callback(possible_options);
+    _subscribe_possible_settings_callback(possible_setting_options);
 }
 
 void CameraImpl::refresh_params()
@@ -1212,8 +1221,8 @@ void CameraImpl::refresh_params()
                 this->_camera_definition->set_setting(param_name, value);
 
                 if (is_last) {
-                    notify_current_options();
-                    notify_possible_options();
+                    notify_current_settings();
+                    notify_possible_settings();
                 }
             },
             true);
@@ -1230,24 +1239,24 @@ void CameraImpl::invalidate_params()
     _camera_definition->set_all_params_unknown();
 }
 
-bool CameraImpl::get_setting_str(const std::string &setting_name, std::string &description)
+bool CameraImpl::get_setting_str(const std::string &setting_id, std::string &description)
 {
     if (!_camera_definition) {
         return false;
     }
 
-    return _camera_definition->get_setting_str(setting_name, description);
+    return _camera_definition->get_setting_str(setting_id, description);
 }
 
-bool CameraImpl::get_option_str(const std::string &setting_name,
-                                const std::string &option_name,
+bool CameraImpl::get_option_str(const std::string &setting_id,
+                                const std::string &option_id,
                                 std::string &description)
 {
     if (!_camera_definition) {
         return false;
     }
 
-    return _camera_definition->get_option_str(setting_name, option_name, description);
+    return _camera_definition->get_option_str(setting_id, option_id, description);
 }
 
 } // namespace dronecore

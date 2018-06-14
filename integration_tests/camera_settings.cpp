@@ -41,7 +41,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
         LogDebug() << "Possible settings in photo mode: ";
         for (auto setting : settings) {
-            LogDebug() << "-" << setting;
+            LogDebug() << "- " << setting;
         }
 
         if (is_e90) {
@@ -71,7 +71,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
             EXPECT_EQ(settings.size(), 5);
         }
 
-        std::vector<std::string> options;
+        std::vector<Camera::Option> options;
 
         if (is_e90) {
             // Try something that is specific to the camera mode.
@@ -151,7 +151,7 @@ TEST(CameraTest, SetSettings)
         EXPECT_STREQ("1", value_set.c_str());
 
         // We should now be able to set shutter speed and ISO.
-        std::vector<std::string> options;
+        std::vector<Camera::Option> options;
         // Try something that is specific to the camera mode.
         EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
         EXPECT_EQ(options.size(), 19);
@@ -235,15 +235,14 @@ TEST(CameraTest, SetSettings)
     }
 }
 
-static void
-receive_current_options(bool &subscription_called,
-                        std::vector<std::pair<std::string, std::string>> current_options)
+static void receive_current_settings(bool &subscription_called,
+                                     const std::vector<Camera::Setting> settings)
 {
     LogDebug() << "Received current options:";
-    EXPECT_TRUE(current_options.size() > 0);
-    for (auto &current_option : current_options) {
-        LogDebug() << "Got setting '" << current_option.first << "' with selected option '"
-                   << current_option.second << "'";
+    EXPECT_TRUE(settings.size() > 0);
+    for (auto &setting : settings) {
+        LogDebug() << "Got setting '" << setting.setting_id << "' with selected option '"
+                   << setting.option.option_id << "'";
     }
     subscription_called = true;
 }
@@ -269,8 +268,8 @@ TEST(CameraTest, SubscribeCurrentSettings)
     EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
 
     bool subscription_called = false;
-    camera->subscribe_current_options(
-        std::bind(receive_current_options, std::ref(subscription_called), _1));
+    camera->subscribe_current_settings(
+        std::bind(receive_current_settings, std::ref(subscription_called), _1));
 
     EXPECT_EQ(camera->set_mode(Camera::Mode::PHOTO), Camera::Result::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -282,17 +281,16 @@ TEST(CameraTest, SubscribeCurrentSettings)
     EXPECT_TRUE(subscription_called);
 }
 
-static void receive_possible_options(
-    bool &subscription_called,
-    std::vector<std::pair<std::string, std::vector<std::string>>> possible_options)
+static void receive_possible_settings(bool &subscription_called,
+                                      const std::vector<Camera::SettingOptions> settings_options)
 {
     LogDebug() << "Received possible options:";
-    EXPECT_TRUE(possible_options.size() > 0);
-    for (auto &possible_option : possible_options) {
-        LogDebug() << "Got setting '" << possible_option.first << "' with options:";
-        EXPECT_TRUE(possible_option.second.size() > 0);
-        for (auto &option : possible_option.second) {
-            LogDebug() << " - '" << option << "'";
+    EXPECT_TRUE(settings_options.size() > 0);
+    for (auto &setting_options : settings_options) {
+        LogDebug() << "Got setting '" << setting_options.setting_id << "' with options:";
+        EXPECT_TRUE(setting_options.options.size() > 0);
+        for (auto &option : setting_options.options) {
+            LogDebug() << " - '" << option.option_id << "'";
         }
     }
     subscription_called = true;
@@ -320,8 +318,8 @@ TEST(CameraTest, SubscribePossibleSettings)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     bool subscription_called = false;
-    camera->subscribe_possible_options(
-        std::bind(receive_possible_options, std::ref(subscription_called), _1));
+    camera->subscribe_possible_settings(
+        std::bind(receive_possible_settings, std::ref(subscription_called), _1));
 
     EXPECT_EQ(camera->set_mode(Camera::Mode::PHOTO), Camera::Result::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(1));

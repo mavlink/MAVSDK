@@ -50,24 +50,25 @@ public:
     void get_status_async(Camera::get_status_callback_t callback);
     void subscribe_status(const Camera::subscribe_status_callback_t callback);
 
-    void set_option_async(const std::string &setting,
-                          const std::string &option,
+    void set_option_async(const std::string &setting_id,
+                          const Camera::Option &option,
                           const Camera::result_callback_t &callback);
 
-    Camera::Result get_option(const std::string &setting, std::string &option);
-    void get_option_async(const std::string &setting,
+    Camera::Result get_option(const std::string &setting_id, Camera::Option &option);
+    void get_option_async(const std::string &setting_id,
                           const Camera::get_option_callback_t &callback);
 
     bool get_possible_settings(std::vector<std::string> &settings);
-    bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
+    bool get_possible_options(const std::string &setting_id, std::vector<Camera::Option> &options);
 
-    bool get_setting_str(const std::string &setting_name, std::string &description);
-    bool get_option_str(const std::string &setting_name,
-                        const std::string &option_name,
+    bool get_setting_str(const std::string &setting_id, std::string &description);
+    bool get_option_str(const std::string &setting_id,
+                        const std::string &option_id,
                         std::string &description);
 
-    void subscribe_current_options(const Camera::subscribe_current_options_callback_t &callback);
-    void subscribe_possible_options(const Camera::subscribe_possible_options_callback_t &callback);
+    void subscribe_current_settings(const Camera::subscribe_current_settings_callback_t &callback);
+    void
+    subscribe_possible_settings(const Camera::subscribe_possible_settings_callback_t &callback);
 
     // Non-copyable
     CameraImpl(const CameraImpl &) = delete;
@@ -141,8 +142,8 @@ private:
     void notify_video_stream_info();
     void notify_capture_info(Camera::CaptureInfo capture_info);
     void notify_status(Camera::Status status);
-    void notify_current_options();
-    void notify_possible_options();
+    void notify_current_settings();
+    void notify_possible_settings();
 
     void check_status();
 
@@ -184,8 +185,8 @@ private:
     Camera::subscribe_mode_callback_t _subscribe_mode_callback{nullptr};
     Camera::subscribe_video_stream_info_callback_t _subscribe_video_stream_info_callback{nullptr};
     Camera::subscribe_status_callback_t _subscribe_status_callback{nullptr};
-    Camera::subscribe_current_options_callback_t _subscribe_current_options_callback{nullptr};
-    Camera::subscribe_possible_options_callback_t _subscribe_possible_options_callback{nullptr};
+    Camera::subscribe_current_settings_callback_t _subscribe_current_settings_callback{nullptr};
+    Camera::subscribe_possible_settings_callback_t _subscribe_possible_settings_callback{nullptr};
 };
 
 } // namespace dronecore

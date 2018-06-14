@@ -68,8 +68,10 @@ set_setting(std::shared_ptr<Camera> camera, const std::string &setting, const st
     auto prom = std::make_shared<std::promise<Camera::Result>>();
     auto ret = prom->get_future();
 
+    Camera::Option new_option{};
+    new_option.option_id = option;
     camera->set_option_async(
-        setting, option, [prom](Camera::Result result) { prom->set_value(result); });
+        setting, new_option, [prom](Camera::Result result) { prom->set_value(result); });
 
     auto status = ret.wait_for(std::chrono::seconds(1));
 
@@ -87,18 +89,19 @@ dronecore::Camera::Result get_setting(std::shared_ptr<dronecore::Camera> camera,
 {
     struct PromiseResult {
         Camera::Result result;
-        std::string value;
+        Camera::Option option;
     };
 
     auto prom = std::make_shared<std::promise<PromiseResult>>();
     auto ret = prom->get_future();
 
-    camera->get_option_async(setting, [prom](Camera::Result result, const std::string &value) {
-        PromiseResult promise_result;
-        promise_result.result = result;
-        promise_result.value = value;
-        prom->set_value(promise_result);
-    });
+    camera->get_option_async(setting,
+                             [prom](Camera::Result result, const Camera::Option &gotten_option) {
+                                 PromiseResult promise_result;
+                                 promise_result.result = result;
+                                 promise_result.option = gotten_option;
+                                 prom->set_value(promise_result);
+                             });
 
     auto status = ret.wait_for(std::chrono::seconds(1));
 
@@ -106,7 +109,7 @@ dronecore::Camera::Result get_setting(std::shared_ptr<dronecore::Camera> camera,
 
     if (status == std::future_status::ready) {
         PromiseResult promise_result = ret.get();
-        option = promise_result.value;
+        option = promise_result.option.option_id;
         return promise_result.result;
     }
     return Camera::Result::TIMEOUT;
