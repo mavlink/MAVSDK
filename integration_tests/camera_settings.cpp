@@ -234,3 +234,46 @@ TEST(CameraTest, SetSettings)
         EXPECT_STREQ(description.c_str(), "Shutter Speed");
     }
 }
+
+static void
+receive_current_options(bool &subscription_called,
+                        std::vector<std::pair<std::string, std::string>> current_options)
+{
+    LogDebug() << "Received current options:";
+    for (auto &current_option : current_options) {
+        LogDebug() << "Got setting '" << current_option.first << "' with selected option '"
+                   << current_option.second << "'";
+    }
+    subscription_called = true;
+}
+
+TEST(CameraTest, SubscribeSettings)
+{
+    DroneCore dc;
+
+    ConnectionResult connection_ret = dc.add_udp_connection();
+    ASSERT_EQ(connection_ret, ConnectionResult::SUCCESS);
+
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    System &system = dc.system();
+    ASSERT_TRUE(system.has_camera());
+    auto camera = std::make_shared<Camera>(system);
+
+    // We need to wait for the camera definition to be ready
+    // because we don't have a check yet.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    bool subscription_called = false;
+    camera->subscribe_current_options(
+        std::bind(receive_current_options, std::ref(subscription_called), _1));
+
+    EXPECT_EQ(camera->set_mode(Camera::Mode::PHOTO), Camera::Result::SUCCESS);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    EXPECT_TRUE(subscription_called);
+
+    subscription_called = false;
+    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    EXPECT_TRUE(subscription_called);
+}

@@ -1053,6 +1053,28 @@ void CameraImpl::set_option_async(const std::string &setting,
                              true);
 }
 
+Camera::Result CameraImpl::get_option(const std::string &setting, std::string &option)
+{
+    auto prom = std::make_shared<std::promise<Camera::Result>>();
+    auto ret = prom->get_future();
+
+    get_option_async(setting,
+                     [prom, &option](Camera::Result result, const std::string &option_name) {
+                         prom->set_value(result);
+                         if (result == Camera::Result::SUCCESS) {
+                             option = option_name;
+                         }
+                     });
+
+    auto status = ret.wait_for(std::chrono::seconds(1));
+
+    if (status == std::future_status::ready) {
+        return Camera::Result::SUCCESS;
+    } else {
+        return Camera::Result::TIMEOUT;
+    }
+}
+
 void CameraImpl::get_option_async(const std::string &setting,
                                   const Camera::get_option_callback_t &callback)
 {
@@ -1094,6 +1116,40 @@ void CameraImpl::get_option_async(const std::string &setting,
     }
 }
 
+void CameraImpl::subscribe_current_options(
+    const Camera::subscribe_current_options_callback_t &callback)
+{
+    _subscribe_current_options_callback = callback;
+}
+
+void CameraImpl::notify_current_options()
+{
+    if (!_subscribe_current_options_callback) {
+        return;
+    }
+
+    if (!_camera_definition) {
+        LogErr() << "notify_current_options has no camera definition";
+        return;
+    }
+
+    std::vector<std::pair<std::string, std::string>> current_options{};
+    std::vector<std::string> possible_settings{};
+    if (!get_possible_settings(possible_settings)) {
+        LogErr() << "Could not get possible settings in current options subscription.";
+        return;
+    }
+
+    for (auto &possible_setting : possible_settings) {
+        // use the cache for this, presumably we updated it right before.
+        MAVLinkParameters::ParamValue value;
+        if (_camera_definition->get_setting(possible_setting, value)) {
+            current_options.push_back(std::make_pair<>(possible_setting, value.get_string()));
+        }
+    }
+    _subscribe_current_options_callback(current_options);
+}
+
 void CameraImpl::refresh_params()
 {
     if (!_camera_definition) {
@@ -1105,11 +1161,13 @@ void CameraImpl::refresh_params()
         return;
     }
 
+    int count = 0;
     for (const auto &param : params) {
         std::string param_name = param;
+        const bool is_last = (count + 1 == params.size());
         _parent->get_param_async(
             param_name,
-            [param_name, this](bool success, MAVLinkParameters::ParamValue value) {
+            [param_name, is_last, this](bool success, MAVLinkParameters::ParamValue value) {
                 if (!success) {
                     return;
                 }
@@ -1118,8 +1176,13 @@ void CameraImpl::refresh_params()
                     return;
                 }
                 this->_camera_definition->set_setting(param_name, value);
+
+                if (is_last) {
+                    notify_current_options();
+                }
             },
             true);
+        ++count;
     }
 }
 

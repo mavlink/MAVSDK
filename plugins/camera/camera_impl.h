@@ -54,6 +54,7 @@ public:
                           const std::string &option,
                           const Camera::result_callback_t &callback);
 
+    Camera::Result get_option(const std::string &setting, std::string &option);
     void get_option_async(const std::string &setting,
                           const Camera::get_option_callback_t &callback);
 
@@ -64,6 +65,8 @@ public:
     bool get_option_str(const std::string &setting_name,
                         const std::string &option_name,
                         std::string &description);
+
+    void subscribe_current_options(const Camera::subscribe_current_options_callback_t &callback);
 
     // Non-copyable
     CameraImpl(const CameraImpl &) = delete;
@@ -137,6 +140,7 @@ private:
     void notify_video_stream_info();
     void notify_capture_info(Camera::CaptureInfo capture_info);
     void notify_status(Camera::Status status);
+    void notify_current_options();
 
     void check_status();
 
@@ -178,6 +182,7 @@ private:
     Camera::subscribe_mode_callback_t _subscribe_mode_callback{nullptr};
     Camera::subscribe_video_stream_info_callback_t _subscribe_video_stream_info_callback{nullptr};
     Camera::subscribe_status_callback_t _subscribe_status_callback{nullptr};
+    Camera::subscribe_current_options_callback_t _subscribe_current_options_callback{nullptr};
 };
 
 } // namespace dronecore

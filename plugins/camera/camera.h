@@ -452,6 +452,15 @@ public:
     bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
 
     /**
+     * @brief Get an option of a setting (synchronous).
+     *
+     * @param setting The machine readable name of the setting.
+     * @param option A reference to the option string to set.
+     * @return Result of request.
+     */
+    Camera::Result get_option(const std::string &setting, std::string &option);
+
+    /**
      * @brief Callback type to get an option.
      */
     typedef std::function<void(Result, const std::string &)> get_option_callback_t;
@@ -474,6 +483,20 @@ public:
     void set_option_async(const std::string &setting,
                           const std::string &option,
                           const result_callback_t &callback);
+
+    /**
+     * @brief Callback type to get the currently selected options.
+     */
+    typedef std::function<void(const std::vector<std::pair<std::string, std::string>>)>
+        subscribe_current_options_callback_t;
+
+    /**
+     * @brief Subscribe to currently selected options (asynchronous).
+     *
+     * @param callback Function to call when current options have been updated.
+     */
+    void subscribe_current_options(const subscribe_current_options_callback_t &callback);
+
     /**
      * @brief Get the human readable string of a setting.
      *

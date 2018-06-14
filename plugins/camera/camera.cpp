@@ -129,6 +129,11 @@ void Camera::set_option_async(const std::string &setting,
     _impl->set_option_async(setting, option, callback);
 }
 
+Camera::Result Camera::get_option(const std::string &setting, std::string &option)
+{
+    return _impl->get_option(setting, option);
+}
+
 void Camera::get_option_async(const std::string &setting, const get_option_callback_t &callback)
 {
     _impl->get_option_async(setting, callback);
@@ -155,6 +160,11 @@ bool Camera::get_option_str(const std::string &setting_name,
                             std::string &description)
 {
     return _impl->get_option_str(setting_name, option_name, description);
+}
+
+void Camera::subscribe_current_options(const subscribe_current_options_callback_t &callback)
+{
+    _impl->subscribe_current_options(callback);
 }
 
 std::string Camera::result_str(Result result)
