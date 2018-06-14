@@ -498,6 +498,19 @@ public:
     void subscribe_current_options(const subscribe_current_options_callback_t &callback);
 
     /**
+     * @brief Callback type to get possible options.
+     */
+    typedef std::function<void(const std::vector<std::pair<std::string, std::vector<std::string>>>)>
+        subscribe_possible_options_callback_t;
+
+    /**
+     * @brief Subscribe to all possible options (asynchronous).
+     *
+     * @param callback Function to call when possible options have been updated.
+     */
+    void subscribe_possible_options(const subscribe_possible_options_callback_t &callback);
+
+    /**
      * @brief Get the human readable string of a setting.
      *
      * @param setting_name The machine readable setting name.

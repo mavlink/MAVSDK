@@ -167,6 +167,11 @@ void Camera::subscribe_current_options(const subscribe_current_options_callback_
     _impl->subscribe_current_options(callback);
 }
 
+void Camera::subscribe_possible_options(const subscribe_possible_options_callback_t &callback)
+{
+    _impl->subscribe_possible_options(callback);
+}
+
 std::string Camera::result_str(Result result)
 {
     switch (result) {

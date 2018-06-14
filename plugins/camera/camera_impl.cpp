@@ -1122,6 +1122,12 @@ void CameraImpl::subscribe_current_options(
     _subscribe_current_options_callback = callback;
 }
 
+void CameraImpl::subscribe_possible_options(
+    const Camera::subscribe_possible_options_callback_t &callback)
+{
+    _subscribe_possible_options_callback = callback;
+}
+
 void CameraImpl::notify_current_options()
 {
     if (!_subscribe_current_options_callback) {
@@ -1148,6 +1154,34 @@ void CameraImpl::notify_current_options()
         }
     }
     _subscribe_current_options_callback(current_options);
+}
+
+void CameraImpl::notify_possible_options()
+{
+    if (!_subscribe_possible_options_callback) {
+        return;
+    }
+
+    if (!_camera_definition) {
+        LogErr() << "notify_possible_options has no camera definition";
+        return;
+    }
+
+    std::vector<std::pair<std::string, std::vector<std::string>>> possible_options{};
+
+    std::vector<std::string> possible_settings{};
+    if (!get_possible_settings(possible_settings)) {
+        LogErr() << "Could not get possible settings in possible options subscription.";
+        return;
+    }
+
+    for (auto &possible_setting : possible_settings) {
+        std::vector<std::string> options{};
+        get_possible_options(possible_setting, options);
+        possible_options.push_back(std::make_pair<>(possible_setting, options));
+    }
+
+    _subscribe_possible_options_callback(possible_options);
 }
 
 void CameraImpl::refresh_params()
@@ -1179,6 +1213,7 @@ void CameraImpl::refresh_params()
 
                 if (is_last) {
                     notify_current_options();
+                    notify_possible_options();
                 }
             },
             true);
