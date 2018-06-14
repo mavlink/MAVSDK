@@ -1,5 +1,4 @@
 from setuptools import setup
-from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
@@ -12,7 +11,7 @@ setup(
     author="@TODO",
     author_email="@TODO",
 
-    packages=["autogen"],
+    packages=["dcsdkgen"],
     install_requires=["protobuf", "jinja2"],
     entry_points={
         "console_scripts": [
