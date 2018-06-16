@@ -62,7 +62,7 @@ def decapitalize(s):
 
 
 def indent(level):
-    """ Decorator to add a constant ident to a block, level times 4 spaces """
+    """ Decorator to add a constant indent to a block, level times 4 spaces """
 
     def decorator(f):
         @functools.wraps(f)
