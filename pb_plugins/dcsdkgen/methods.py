@@ -87,6 +87,7 @@ class SingleMethod(Method):
     def __repr__(self):
         return self._template.render(name=self._name,
                                      elem_type=self._type,
+                                     plugin_name=self._plugin_name,
                                      request_rpc_type=self._request_rpc_type)
 
 
@@ -109,6 +110,7 @@ class ObservableMethod(Method):
         return self._template.render(name=self._name,
                                      capitalized_name=self._capitalized_name,
                                      elem_type=self._type,
+                                     plugin_name=self._plugin_name,
                                      request_name=self._request_name,
                                      request_rpc_type=self._request_rpc_type)
 

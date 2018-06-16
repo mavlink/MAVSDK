@@ -2,6 +2,8 @@
 
 
 import functools
+import re
+from jinja2 import Environment, FileSystemLoader
 
 
 def is_completable(method, responses):
@@ -35,7 +37,7 @@ def is_struct(struct):
 
 
 def extract_string_type(field):
-    """ Extracts the strin types """
+    """ Extracts the string types """
     types = {
             1: "Double",
             2: "Float",
@@ -74,3 +76,21 @@ def indent(level):
 
     return decorator
 
+
+def letter_case_to_delimiter(_str_in):
+    """ Converts TestAbcM to test_abc_m """
+    return re.sub('(?<!^)(?=[A-Z])',
+                  '_',
+                  _str_in).lower()
+
+
+def get_template_env(_searchpath):
+    """ Generates the template environment """
+    _template_env = Environment(loader=FileSystemLoader(
+        searchpath=_searchpath))
+
+    # Register some functions we need to access in the template
+    _template_env.globals.update(
+            letter_case_to_delimiter=letter_case_to_delimiter)
+
+    return _template_env
