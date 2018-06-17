@@ -25,5 +25,5 @@ class {{ plugin_name }}(Base):
                 {{ plugin_name.lower() }}_pb2.ActionResult.SUCCESS)
 
     {%- for method in methods %}
-    {{ method }}
+    {{ indent(method, 1) }}
     {%- endfor %}

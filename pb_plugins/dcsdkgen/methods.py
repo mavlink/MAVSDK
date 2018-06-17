@@ -2,7 +2,6 @@
 
 
 from .utils import (decapitalize,
-                    indent,
                     is_completable,
                     is_observable)
 
@@ -64,7 +63,6 @@ class CompletableMethod(Method):
         super().__init__(plugin_name, package, pb_method)
         self._template = template_env.get_template("method_completable.j2")
 
-    @indent(1)
     def __repr__(self):
         return self._template.render(name=self._name,
                                      package=self._package,
@@ -83,7 +81,6 @@ class SingleMethod(Method):
     def extract_field_type_and_name(self, pb_method):
         self._type = "Float"  # TODO
 
-    @indent(1)
     def __repr__(self):
         return self._template.render(name=self._name,
                                      elem_type=self._type,
@@ -105,7 +102,6 @@ class ObservableMethod(Method):
     def extract_field_type_and_name(self, pb_method):
         self._type = "Float"  # TODO
 
-    @indent(1)
     def __repr__(self):
         return self._template.render(name=self._name,
                                      capitalized_name=self._capitalized_name,

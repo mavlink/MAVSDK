@@ -4,14 +4,14 @@ import RxSwift
 
 public class {{ plugin_name }} {
     {%- for enum in enums %}
-    {{ enum }}
+    {{ indent(enum, 1) }}
     {%- endfor %}
 
     {%- for struct in structs %}
-    {{ struct }}
+    {{ indent(struct, 1) }}
     {%- endfor %}
 
     {%- for method in methods %}
-    {{ method }}
+    {{ indent(method, 1) }}
     {%- endfor %}
 }

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-import functools
 import re
 from jinja2 import Environment, FileSystemLoader
 
@@ -61,20 +60,16 @@ def decapitalize(s):
     return s[:1].lower() + s[1:] if s else ""
 
 
-def indent(level):
-    """ Decorator to add a constant indent to a block, level times 4 spaces """
+def jinja_indent(_in_str, level):
+    """ Indentation helper for the jinja2 templates """
 
-    def decorator(f):
-        @functools.wraps(f)
-        def wrapper(*args, **kwargs):
-            lines = f(*args, **kwargs).split("\n")
-            return lines[0] + "\n" + "\n".join(
-                [line if not line else level * "    " +
-                    line for line in lines[1:]])
+    _in_str = str(_in_str)
 
-        return wrapper
-
-    return decorator
+    return "\n".join(
+            ["" if len(line) == 0 else
+             level * "    " + line
+             for line in _in_str.split("\n")]
+            )
 
 
 def letter_case_to_delimiter(_str_in):
@@ -91,6 +86,7 @@ def get_template_env(_searchpath):
 
     # Register some functions we need to access in the template
     _template_env.globals.update(
-            letter_case_to_delimiter=letter_case_to_delimiter)
+            letter_case_to_delimiter=letter_case_to_delimiter,
+            indent=jinja_indent)
 
     return _template_env

@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-from .utils import indent
-
-
 class Enum(object):
     """ Enum """
 
@@ -16,7 +13,6 @@ class Enum(object):
         for value in pb_enum.value:
             self._values.append(value.name)
 
-    @indent(1)
     def __repr__(self):
         return self._template.render(name=self._name,
                                      values=self._values,

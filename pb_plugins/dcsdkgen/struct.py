@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from .utils import (indent,
-                    extract_string_type,
+from .utils import (extract_string_type,
                     is_response,
                     is_struct)
 
@@ -21,7 +20,6 @@ class Struct(object):
         for field in pb_struct.field:
             self._fields.append((field.json_name, extract_string_type(field)))
 
-    @indent(1)
     def __repr__(self):
         return self._template.render(name=self._name,
                                      fields=self._fields,

@@ -4,7 +4,11 @@ class {{ name }}(object):
     def __init__(
             self,
             {%- for field in fields %}
+            {%- if field == fields|last %}
             {{ letter_case_to_delimiter(field[0]) }}
+            {%- else %}
+            {{ letter_case_to_delimiter(field[0]) }},
+            {%- endif %}
             {%- endfor %}):
         """ Initializes the {{ name }} object """
 
@@ -21,14 +25,10 @@ class {{ name }}(object):
             return \
                 {%- for field in fields %}
                 {%- if field == fields|last %}
-                self.{{ letter_case_to_delimiter(field[0]) }} == \
-                    to_compare.{{ letter_case_to_delimiter(field[0]) }}
+                self.{{ letter_case_to_delimiter(field[0]) }} == to_compare.{{ letter_case_to_delimiter(field[0]) }}
                 {%- else %}
-                self.{{ letter_case_to_delimiter(field[0]) }} == \
-                    to_compare.{{ letter_case_to_delimiter(field[0]) }} and \
+                self.{{ letter_case_to_delimiter(field[0]) }} == to_compare.{{ letter_case_to_delimiter(field[0]) }} and \
                 {%- endif %}
                 {%- endfor %}
         except AttributeError:
             return False
-
-
