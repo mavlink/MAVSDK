@@ -106,6 +106,88 @@ void OffboardImpl::receive_command_result(MAVLinkCommands::Result result,
     }
 }
 
+void OffboardImpl::set_translation_ned(TranslationNED translation_ned)
+{
+    _mutex.lock();
+    _translation_ned = translation_ned;
+
+    if (_mode != Mode::TRANSLATION_NED) {
+        if (_call_every_cookie) {
+            // If we're already sending other setpoints, stop that now.
+            _parent->remove_call_every(_call_every_cookie);
+            _call_every_cookie = nullptr;
+        }
+        // We automatically send NED setpoints from now on.
+        _parent->add_call_every(
+            [this]() { send_translation_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+        _mode = Mode::TRANSLATION_NED;
+    } else {
+        // We're already sending these kind of setpoints. Since the setpoint change, let's
+        // reschedule the next call, so we don't send setpoints too often.
+        _parent->reset_call_every(_call_every_cookie);
+    }
+    _mutex.unlock();
+
+    // also send it right now to reduce latency
+    send_translation_ned();
+}
+
+void OffboardImpl::set_position_ned_yaw(Offboard::PositionNEDYaw position_ned_yaw)
+{
+    TranslationNED translation_ned = {position_ned_yaw.north_m,
+                                      position_ned_yaw.east_m,
+                                      position_ned_yaw.down_m,
+                                      NAN,
+                                      NAN,
+                                      NAN,
+                                      position_ned_yaw.yaw_deg,
+                                      NAN};
+    set_translation_ned(translation_ned);
+}
+
+void OffboardImpl::set_velocity_altitude_ned_yaw(
+    Offboard::VelocityAltitudeNEDYaw velocity_altitude_ned_yaw)
+{
+    TranslationNED translation_ned = {NAN,
+                                      NAN,
+                                      velocity_altitude_ned_yaw.down_m,
+                                      velocity_altitude_ned_yaw.north_m_s,
+                                      velocity_altitude_ned_yaw.east_m_s,
+                                      NAN,
+                                      velocity_altitude_ned_yaw.yaw_deg,
+                                      NAN};
+    set_translation_ned(translation_ned);
+}
+
+void OffboardImpl::set_position_climbrate_ned_yaw(
+    Offboard::PositionClimbRateNEDYaw position_climbrate_ned_yaw)
+{
+    TranslationNED translation_ned = {position_climbrate_ned_yaw.north_m,
+                                      position_climbrate_ned_yaw.east_m,
+                                      NAN,
+                                      NAN,
+                                      NAN,
+                                      position_climbrate_ned_yaw.down_m_s,
+                                      position_climbrate_ned_yaw.yaw_deg,
+                                      NAN};
+    set_translation_ned(translation_ned);
+}
+
+void OffboardImpl::set_position_climbrate_ned_yawspeed(
+    Offboard::PositionClimbRateNEDYawspeed position_climbrate_ned_yawspeed)
+{
+    TranslationNED translation_ned = {position_climbrate_ned_yawspeed.north_m,
+                                      position_climbrate_ned_yawspeed.east_m,
+                                      NAN,
+                                      NAN,
+                                      NAN,
+                                      position_climbrate_ned_yawspeed.down_m_s,
+                                      NAN,
+                                      position_climbrate_ned_yawspeed.yawspeed_deg_s};
+    set_translation_ned(translation_ned);
+}
+
 void OffboardImpl::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
 {
     _mutex.lock();
@@ -158,6 +240,101 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
 
     // also send it right now to reduce latency
     send_velocity_body();
+}
+
+void OffboardImpl::send_translation_ned()
+{
+    // by default ingore all setpoints
+    uint16_t IGNORE_X = (1 << 0);
+    uint16_t IGNORE_Y = (1 << 1);
+    uint16_t IGNORE_Z = (1 << 2);
+    uint16_t IGNORE_VX = (1 << 3);
+    uint16_t IGNORE_VY = (1 << 4);
+    uint16_t IGNORE_VZ = (1 << 5);
+    uint16_t IGNORE_AX = (1 << 6);
+    uint16_t IGNORE_AY = (1 << 7);
+    uint16_t IGNORE_AZ = (1 << 8);
+    // uint16_t IS_FORCE = (1 << 9);
+    uint16_t IGNORE_YAW = (1 << 10);
+    uint16_t IGNORE_YAW_RATE = (1 << 11);
+
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+    float vx = 0.0f;
+    float vy = 0.0f;
+    float vz = 0.0f;
+    float yaw = 0.0f;
+    float yawspeed = 0.0f;
+    const float afx = 0.0f;
+    const float afy = 0.0f;
+    const float afz = 0.0f;
+
+    _mutex.lock();
+    if (std::isfinite(_translation_ned.yaw_deg)) {
+        yaw = to_rad_from_deg(_translation_ned.yaw_deg);
+        // enable yaw
+        IGNORE_YAW &= ~(1 << 10);
+    }
+
+    if (std::isfinite(_translation_ned.yawspeed_deg_s)) {
+        yawspeed = to_rad_from_deg(_translation_ned.yawspeed_deg_s);
+        // enable yawrate
+        IGNORE_YAW_RATE &= ~(1 << 11);
+    }
+
+    if (std::isfinite(_translation_ned.north_m) && std::isfinite(_translation_ned.east_m)) {
+        x = _translation_ned.north_m;
+        y = _translation_ned.east_m;
+        // enable xy
+        IGNORE_X &= ~(1 << 0);
+        IGNORE_Y &= ~(1 << 1);
+    }
+
+    if (std::isfinite(_translation_ned.north_m_s) && std::isfinite(_translation_ned.east_m_s)) {
+        vx = _translation_ned.north_m_s;
+        vy = _translation_ned.east_m_s;
+        // enable vx/vy
+        IGNORE_VX &= ~(1 << 3);
+        IGNORE_VY &= ~(1 << 4);
+    }
+
+    if (std::isfinite(_translation_ned.down_m)) {
+        z = _translation_ned.down_m;
+        // enable altitude
+        IGNORE_Z &= ~(1 << 2);
+    }
+
+    if (std::isfinite(_translation_ned.down_m_s)) {
+        vz = _translation_ned.down_m_s;
+        // enable climbrate
+        IGNORE_VZ &= ~(1 << 5);
+    }
+
+    _mutex.unlock();
+    mavlink_message_t message;
+    mavlink_msg_set_position_target_local_ned_pack(
+        GCSClient::system_id,
+        GCSClient::component_id,
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_FRAME_LOCAL_NED,
+        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY |
+            IGNORE_AZ | IGNORE_YAW | IGNORE_YAW_RATE,
+        x,
+        y,
+        z,
+        vx,
+        vy,
+        vz,
+        afx,
+        afy,
+        afz,
+        yaw,
+        yawspeed);
+    _parent->send_message(message);
 }
 
 void OffboardImpl::send_velocity_ned()

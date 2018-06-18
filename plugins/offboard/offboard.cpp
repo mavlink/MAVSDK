@@ -32,6 +32,27 @@ bool Offboard::is_active() const
     return _impl->is_active();
 }
 
+void Offboard::set_position_ned_yaw(Offboard::PositionNEDYaw position_ned_yaw)
+{
+    return _impl->set_position_ned_yaw(position_ned_yaw);
+}
+
+void Offboard::set_velocity_altitude_ned_yaw(VelocityAltitudeNEDYaw velocity_altitude_ned_yaw)
+{
+    return _impl->set_velocity_altitude_ned_yaw(velocity_altitude_ned_yaw);
+}
+
+void Offboard::set_position_climbrate_ned_yaw(PositionClimbRateNEDYaw position_climbrate_ned_yaw)
+{
+    return _impl->set_position_climbrate_ned_yaw(position_climbrate_ned_yaw);
+}
+
+void Offboard::set_position_climbrate_ned_yawspeed(
+    PositionClimbRateNEDYawspeed position_climbrate_ned_yawspeed)
+{
+    return _impl->set_position_climbrate_ned_yawspeed(position_climbrate_ned_yawspeed);
+}
+
 void Offboard::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
 {
     return _impl->set_velocity_ned(velocity_ned_yaw);
