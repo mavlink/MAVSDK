@@ -44,6 +44,21 @@ public:
     };
 
     /**
+     * @brief Position and velocity local type.
+     */
+    struct PositionVelocityLocal {
+        float north_m; /**< @brief Position along north-direction of local frame in meters. */
+        float east_m; /**< @brief Position along east-direction of local frame in meters. */
+        float down_m; /**< @brief Position along down-direction of local frame in meters. */
+        float north_m_s; /**< @brief Velocity along north-direction of local frame in meters per
+                            seconds. */
+        float east_m_s; /**< @brief Velocity along east-direction of local frame in meters per
+                           seconds. */
+        float down_m_s; /**< @brief Velocity along down-direction of local frame in meters per
+                           seconds. */
+    };
+
+    /**
      * @brief Quaternion type.
      *
      * All rotations and axis systems follow the right-hand rule.
@@ -179,6 +194,14 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     /**
+     * @brief Set rate of position velocity local updates (synchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_position_velocity_local(double rate_hz);
+
+    /**
      * @brief Set rate of position updates (synchronous).
      *
      * @param rate_hz Rate in Hz.
@@ -251,6 +274,14 @@ public:
     Result set_rate_rc_status(double rate_hz);
 
     /**
+     * @brief Set rate of position velocity local updates (asynchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_position_velocity_local_async(double rate_hz, result_callback_t callback);
+
+    /**
      * @brief Set rate of position updates (asynchronous).
      *
      * @param rate_hz Rate in Hz.
@@ -321,6 +352,13 @@ public:
      * @param callback Callback to receive request result.
      */
     void set_rate_rc_status_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief Get the current position / velocity local (synchronous).
+     *
+     * @return PositionVelocityLocal.
+     */
+    PositionVelocityLocal position_velocity_local() const;
 
     /**
      * @brief Get the current position (synchronous).
@@ -428,6 +466,18 @@ public:
      * @return RC status.
      */
     RCStatus rc_status() const;
+
+    /**
+     * @brief Callback type for local position updates.
+     */
+    typedef std::function<void(PositionVelocityLocal)> position_velocity_local_callback_t;
+
+    /**
+     * @brief Subscribe to position-velocity-local updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void position_velocity_local_async(position_velocity_local_callback_t callback);
 
     /**
      * @brief Callback type for position updates.
@@ -638,6 +688,14 @@ private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<TelemetryImpl> _impl;
 };
+
+/**
+ * @brief Equal operator to compare two `Telemetry::PositionVelocityLocal` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::PositionVelocityLocal &lhs,
+                const Telemetry::PositionVelocityLocal &rhs);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Position` objects.

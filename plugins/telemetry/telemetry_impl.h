@@ -26,6 +26,7 @@ public:
     void enable() override;
     void disable() override;
 
+    Telemetry::Result set_rate_position_velocity_local(double rate_hz);
     Telemetry::Result set_rate_position(double rate_hz);
     Telemetry::Result set_rate_home_position(double rate_hz);
     Telemetry::Result set_rate_in_air(double rate_hz);
@@ -36,6 +37,8 @@ public:
     Telemetry::Result set_rate_battery(double rate_hz);
     Telemetry::Result set_rate_rc_status(double rate_hz);
 
+    void set_rate_position_velocity_local_async(double rate_hz,
+                                                Telemetry::result_callback_t callback);
     void set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_home_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_in_air_async(double rate_hz, Telemetry::result_callback_t callback);
@@ -46,6 +49,7 @@ public:
     void set_rate_battery_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_rc_status_async(double rate_hz, Telemetry::result_callback_t callback);
 
+    Telemetry::PositionVelocityLocal get_local_position_velocity() const;
     Telemetry::Position get_position() const;
     Telemetry::Position get_home_position() const;
     bool in_air() const;
@@ -62,6 +66,7 @@ public:
     bool get_health_all_ok() const;
     Telemetry::RCStatus get_rc_status() const;
 
+    void position_velocity_local_async(Telemetry::position_velocity_local_callback_t &callback);
     void position_async(Telemetry::position_callback_t &callback);
     void home_position_async(Telemetry::position_callback_t &callback);
     void in_air_async(Telemetry::in_air_callback_t &callback);
@@ -79,6 +84,7 @@ public:
     void rc_status_async(Telemetry::rc_status_callback_t &callback);
 
 private:
+    void set_position_velocity_local(Telemetry::PositionVelocityLocal position);
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
@@ -98,6 +104,7 @@ private:
     void set_health_level_calibration(bool ok);
     void set_rc_status(bool available, float signal_strength_percent);
 
+    void process_position_velocity_local(const mavlink_message_t &message);
     void process_global_position_int(const mavlink_message_t &message);
     void process_home_position(const mavlink_message_t &message);
     void process_attitude_quaternion(const mavlink_message_t &message);
@@ -131,6 +138,9 @@ private:
     mutable std::mutex _position_mutex;
     Telemetry::Position _position;
 
+    mutable std::mutex _position_velocity_local_mutex{};
+    Telemetry::PositionVelocityLocal _position_velocity_local{NAN, NAN, NAN, NAN, NAN, NAN};
+
     mutable std::mutex _home_position_mutex;
     Telemetry::Position _home_position;
 
@@ -162,6 +172,7 @@ private:
     mutable std::mutex _rc_status_mutex;
     Telemetry::RCStatus _rc_status;
 
+    Telemetry::position_velocity_local_callback_t _position_velocity_local_subscription;
     Telemetry::position_callback_t _position_subscription;
     Telemetry::position_callback_t _home_position_subscription;
     Telemetry::in_air_callback_t _in_air_subscription;
