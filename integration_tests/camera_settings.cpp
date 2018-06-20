@@ -41,7 +41,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
         LogDebug() << "Possible settings in photo mode: ";
         for (auto setting : settings) {
-            LogDebug() << "-" << setting;
+            LogDebug() << "- " << setting;
         }
 
         if (is_e90) {
@@ -71,7 +71,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
             EXPECT_EQ(settings.size(), 5);
         }
 
-        std::vector<std::string> options;
+        std::vector<Camera::Option> options;
 
         if (is_e90) {
             // Try something that is specific to the camera mode.
@@ -151,7 +151,7 @@ TEST(CameraTest, SetSettings)
         EXPECT_STREQ("1", value_set.c_str());
 
         // We should now be able to set shutter speed and ISO.
-        std::vector<std::string> options;
+        std::vector<Camera::Option> options;
         // Try something that is specific to the camera mode.
         EXPECT_TRUE(camera->get_possible_options("CAM_SHUTTERSPD", options));
         EXPECT_EQ(options.size(), 19);
@@ -233,4 +233,100 @@ TEST(CameraTest, SetSettings)
         EXPECT_TRUE(camera->get_setting_str("CAM_SHUTTERSPD", description));
         EXPECT_STREQ(description.c_str(), "Shutter Speed");
     }
+}
+
+static void receive_current_settings(bool &subscription_called,
+                                     const std::vector<Camera::Setting> settings)
+{
+    LogDebug() << "Received current options:";
+    EXPECT_TRUE(settings.size() > 0);
+    for (auto &setting : settings) {
+        LogDebug() << "Got setting '" << setting.setting_id << "' with selected option '"
+                   << setting.option.option_id << "'";
+    }
+    subscription_called = true;
+}
+
+TEST(CameraTest, SubscribeCurrentSettings)
+{
+    DroneCore dc;
+
+    ConnectionResult connection_ret = dc.add_udp_connection();
+    ASSERT_EQ(connection_ret, ConnectionResult::SUCCESS);
+
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    System &system = dc.system();
+    ASSERT_TRUE(system.has_camera());
+    auto camera = std::make_shared<Camera>(system);
+
+    // We need to wait for the camera definition to be ready
+    // because we don't have a check yet.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    // Reset exposure mode
+    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
+
+    bool subscription_called = false;
+    camera->subscribe_current_settings(
+        std::bind(receive_current_settings, std::ref(subscription_called), _1));
+
+    EXPECT_EQ(camera->set_mode(Camera::Mode::PHOTO), Camera::Result::SUCCESS);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    EXPECT_TRUE(subscription_called);
+
+    subscription_called = false;
+    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    EXPECT_TRUE(subscription_called);
+}
+
+static void receive_possible_settings(bool &subscription_called,
+                                      const std::vector<Camera::SettingOptions> settings_options)
+{
+    LogDebug() << "Received possible options:";
+    EXPECT_TRUE(settings_options.size() > 0);
+    for (auto &setting_options : settings_options) {
+        LogDebug() << "Got setting '" << setting_options.setting_id << "' with options:";
+        EXPECT_TRUE(setting_options.options.size() > 0);
+        for (auto &option : setting_options.options) {
+            LogDebug() << " - '" << option.option_id << "'";
+        }
+    }
+    subscription_called = true;
+}
+
+TEST(CameraTest, SubscribePossibleSettings)
+{
+    DroneCore dc;
+
+    ConnectionResult connection_ret = dc.add_udp_connection();
+    ASSERT_EQ(connection_ret, ConnectionResult::SUCCESS);
+
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    System &system = dc.system();
+    ASSERT_TRUE(system.has_camera());
+    auto camera = std::make_shared<Camera>(system);
+
+    // We need to wait for the camera definition to be ready
+    // because we don't have a check yet.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    // Reset exposure mode
+    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    bool subscription_called = false;
+    camera->subscribe_possible_settings(
+        std::bind(receive_possible_settings, std::ref(subscription_called), _1));
+
+    EXPECT_EQ(camera->set_mode(Camera::Mode::PHOTO), Camera::Result::SUCCESS);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    EXPECT_TRUE(subscription_called);
+
+    subscription_called = false;
+    EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "1"), Camera::Result::SUCCESS);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    EXPECT_TRUE(subscription_called);
 }

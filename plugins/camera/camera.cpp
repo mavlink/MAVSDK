@@ -72,6 +72,16 @@ Camera::Result Camera::get_video_stream_info(VideoStreamInfo &info)
     return _impl->get_video_stream_info(info);
 }
 
+void Camera::get_video_stream_info_async(const get_video_stream_info_callback_t callback)
+{
+    _impl->get_video_stream_info_async(callback);
+}
+
+void Camera::subscribe_video_stream_info(const subscribe_video_stream_info_callback_t callback)
+{
+    _impl->subscribe_video_stream_info(callback);
+}
+
 void Camera::stop_video_async(const result_callback_t &callback)
 {
     _impl->stop_video_async(callback);
@@ -92,26 +102,41 @@ void Camera::get_mode_async(const mode_callback_t &callback)
     _impl->get_mode_async(callback);
 }
 
+void Camera::subscribe_mode(const subscribe_mode_callback_t callback)
+{
+    _impl->subscribe_mode(callback);
+}
+
 void Camera::get_status_async(get_status_callback_t callback)
 {
     _impl->get_status_async(callback);
 }
 
-void Camera::capture_info_async(capture_info_callback_t callback)
+void Camera::subscribe_status(const Camera::subscribe_status_callback_t callback)
 {
-    _impl->capture_info_async(callback);
+    _impl->subscribe_status(callback);
 }
 
-void Camera::set_option_async(const std::string &setting,
-                              const std::string &option,
+void Camera::subscribe_capture_info(capture_info_callback_t callback)
+{
+    _impl->subscribe_capture_info(callback);
+}
+
+void Camera::set_option_async(const std::string &setting_id,
+                              const Option &option,
                               const result_callback_t &callback)
 {
-    _impl->set_option_async(setting, option, callback);
+    _impl->set_option_async(setting_id, option, callback);
 }
 
-void Camera::get_option_async(const std::string &setting, const get_option_callback_t &callback)
+Camera::Result Camera::get_option(const std::string &setting_id, Option &option)
 {
-    _impl->get_option_async(setting, callback);
+    return _impl->get_option(setting_id, option);
+}
+
+void Camera::get_option_async(const std::string &setting_id, const get_option_callback_t &callback)
+{
+    _impl->get_option_async(setting_id, callback);
 }
 
 bool Camera::get_possible_settings(std::vector<std::string> &settings)
@@ -119,22 +144,32 @@ bool Camera::get_possible_settings(std::vector<std::string> &settings)
     return _impl->get_possible_settings(settings);
 }
 
-bool Camera::get_possible_options(const std::string &setting_name,
-                                  std::vector<std::string> &options)
+bool Camera::get_possible_options(const std::string &setting_id,
+                                  std::vector<Camera::Option> &options)
 {
-    return _impl->get_possible_options(setting_name, options);
+    return _impl->get_possible_options(setting_id, options);
 }
 
-bool Camera::get_setting_str(const std::string &setting_name, std::string &description)
+bool Camera::get_setting_str(const std::string &setting_id, std::string &description)
 {
-    return _impl->get_setting_str(setting_name, description);
+    return _impl->get_setting_str(setting_id, description);
 }
 
-bool Camera::get_option_str(const std::string &setting_name,
-                            const std::string &option_name,
+bool Camera::get_option_str(const std::string &setting_id,
+                            const std::string &option_id,
                             std::string &description)
 {
-    return _impl->get_option_str(setting_name, option_name, description);
+    return _impl->get_option_str(setting_id, option_id, description);
+}
+
+void Camera::subscribe_current_settings(const subscribe_current_settings_callback_t &callback)
+{
+    _impl->subscribe_current_settings(callback);
+}
+
+void Camera::subscribe_possible_settings(const subscribe_possible_settings_callback_t &callback)
+{
+    _impl->subscribe_possible_settings(callback);
 }
 
 std::string Camera::result_str(Result result)

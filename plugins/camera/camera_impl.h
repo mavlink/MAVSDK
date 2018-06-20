@@ -34,6 +34,8 @@ public:
 
     void set_video_stream_settings(const Camera::VideoStreamSettings &settings);
     Camera::Result get_video_stream_info(Camera::VideoStreamInfo &info);
+    void get_video_stream_info_async(const Camera::get_video_stream_info_callback_t callback);
+    void subscribe_video_stream_info(const Camera::subscribe_video_stream_info_callback_t callback);
 
     Camera::Result start_video_streaming();
     Camera::Result stop_video_streaming();
@@ -41,25 +43,32 @@ public:
     Camera::Result set_mode(const Camera::Mode mode);
     void set_mode_async(const Camera::Mode mode, const Camera::mode_callback_t &callback);
     void get_mode_async(Camera::mode_callback_t callback);
+    void subscribe_mode(const Camera::subscribe_mode_callback_t callback);
 
-    void capture_info_async(Camera::capture_info_callback_t callback);
+    void subscribe_capture_info(Camera::capture_info_callback_t callback);
 
     void get_status_async(Camera::get_status_callback_t callback);
+    void subscribe_status(const Camera::subscribe_status_callback_t callback);
 
-    void set_option_async(const std::string &setting,
-                          const std::string &option,
+    void set_option_async(const std::string &setting_id,
+                          const Camera::Option &option,
                           const Camera::result_callback_t &callback);
 
-    void get_option_async(const std::string &setting,
+    Camera::Result get_option(const std::string &setting_id, Camera::Option &option);
+    void get_option_async(const std::string &setting_id,
                           const Camera::get_option_callback_t &callback);
 
     bool get_possible_settings(std::vector<std::string> &settings);
-    bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
+    bool get_possible_options(const std::string &setting_id, std::vector<Camera::Option> &options);
 
-    bool get_setting_str(const std::string &setting_name, std::string &description);
-    bool get_option_str(const std::string &setting_name,
-                        const std::string &option_name,
+    bool get_setting_str(const std::string &setting_id, std::string &description);
+    bool get_option_str(const std::string &setting_id,
+                        const std::string &option_id,
                         std::string &description);
+
+    void subscribe_current_settings(const Camera::subscribe_current_settings_callback_t &callback);
+    void
+    subscribe_possible_settings(const Camera::subscribe_possible_settings_callback_t &callback);
 
     // Non-copyable
     CameraImpl(const CameraImpl &) = delete;
@@ -73,7 +82,8 @@ private:
         bool received_camera_capture_status{false};
         bool received_storage_information{false};
         void *timeout_cookie{nullptr};
-    } _status;
+        void *call_every_cookie{nullptr};
+    } _status{};
 
     static constexpr double DEFAULT_TIMEOUT_S = 3.0;
 
@@ -81,33 +91,26 @@ private:
         std::mutex mutex{};
         Camera::mode_callback_t callback{nullptr};
         void *timeout_cookie{nullptr};
-    } _get_mode;
+    } _get_mode{};
 
     struct {
         std::mutex mutex{};
         int sequence = 1; // The MAVLink spec says the sequence starts at 1.
-    } _capture;
+    } _capture{};
 
     struct {
         std::mutex mutex{};
         Camera::capture_info_callback_t callback{nullptr};
-    } _capture_info;
+    } _capture_info{};
 
     struct {
         std::mutex mutex{};
-        Camera::VideoStreamInfo info;
-        bool available = false;
-        void reset()
-        {
-            info = Camera::VideoStreamInfo();
-            available = false;
-        }
-
-        bool in_progress() const
-        {
-            return info.status == Camera::VideoStreamInfo::Status::IN_PROGRESS;
-        }
-    } _video_stream_info;
+        Camera::VideoStreamInfo info{};
+        bool available{false};
+        Camera::get_video_stream_info_callback_t callback{nullptr};
+        void *timeout_cookie{nullptr};
+        void *call_every_cookie{nullptr};
+    } _video_stream_info{};
 
     void receive_set_mode_command_result(const MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
@@ -135,9 +138,17 @@ private:
     void receive_storage_information_result(MAVLinkCommands::Result result);
     void receive_camera_capture_status_result(MAVLinkCommands::Result result);
 
+    void notify_mode(const Camera::Mode mode);
+    void notify_video_stream_info();
+    void notify_capture_info(Camera::CaptureInfo capture_info);
+    void notify_status(Camera::Status status);
+    void notify_current_settings();
+    void notify_possible_settings();
+
     void check_status();
 
     void status_timeout_happened();
+    void get_video_stream_info_timeout();
 
     void load_definition_file(const std::string &uri);
 
@@ -170,6 +181,12 @@ private:
     MAVLinkCommands::CommandLong make_command_request_video_stream_info();
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
+
+    Camera::subscribe_mode_callback_t _subscribe_mode_callback{nullptr};
+    Camera::subscribe_video_stream_info_callback_t _subscribe_video_stream_info_callback{nullptr};
+    Camera::subscribe_status_callback_t _subscribe_status_callback{nullptr};
+    Camera::subscribe_current_settings_callback_t _subscribe_current_settings_callback{nullptr};
+    Camera::subscribe_possible_settings_callback_t _subscribe_possible_settings_callback{nullptr};
 };
 
 } // namespace dronecore
