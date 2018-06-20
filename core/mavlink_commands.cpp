@@ -310,10 +310,9 @@ void MAVLinkCommands::call_callback(const command_result_callback_t &callback,
         return;
     }
 
-    // It seems that we don't need to queue the callback on the thread pool
-    // but it works fine just calling it directly.
-    //_parent.call_user_callback([callback, result, progress]() { callback(result, progress); });
-    callback(result, progress);
+    // It seems that we need to queue the callback on the thread pool otherwise
+    // we lock ourselves out when we send a command in the callback receiving a command result.
+    _parent.call_user_callback([callback, result, progress]() { callback(result, progress); });
 }
 
 } // namespace dronecore
