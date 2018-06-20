@@ -201,6 +201,18 @@ public:
     void get_mode_async(const mode_callback_t &callback);
 
     /**
+     * @brief Callback type for camera mode subscription.
+     */
+    typedef std::function<void(Mode)> subscribe_mode_callback_t;
+
+    /**
+     * @brief Async subscription for camera mode updates (asynchronous).
+     *
+     * @param callback Function to call with camera mode updates.
+     */
+    void subscribe_mode(const subscribe_mode_callback_t callback);
+
+    /**
      * @brief Information about a picture just captured.
      */
     struct CaptureInfo {
@@ -312,6 +324,30 @@ public:
     Result get_video_stream_info(VideoStreamInfo &info);
 
     /**
+     * @brief Callback type for asynchronous video stream info call.
+     */
+    typedef std::function<void(Result, VideoStreamInfo)> get_video_stream_info_callback_t;
+
+    /**
+     * @brief Get video stream information (asynchronous).
+     *
+     * @param callback Function to call with video stream info.
+     */
+    void get_video_stream_info_async(const get_video_stream_info_callback_t callback);
+
+    /**
+     * @brief Callback type for video stream info.
+     */
+    typedef std::function<void(VideoStreamInfo)> subscribe_video_stream_info_callback_t;
+
+    /**
+     * @brief Async subscription for video stream info updates (asynchronous).
+     *
+     * @param callback Function to call with video stream updates.
+     */
+    void subscribe_video_stream_info(const subscribe_video_stream_info_callback_t callback);
+
+    /**
      * @brief Starts video streaming (synchronous).
      *
      * Sends a request to start video streaming.
@@ -343,7 +379,7 @@ public:
      *
      * @param callback Function to call with updates.
      */
-    void capture_info_async(capture_info_callback_t callback);
+    void subscribe_capture_info(capture_info_callback_t callback);
 
     /**
      * @brief Information about camera status.
@@ -377,6 +413,44 @@ public:
     void get_status_async(get_status_callback_t callback);
 
     /**
+     * @brief Callback type to subscribe to status updates.
+     */
+    typedef std::function<void(Status)> subscribe_status_callback_t;
+
+    /**
+     * @brief Subscribe to status updates (asynchronous).
+     *
+     * @param callback Function to call with status update.
+     */
+    void subscribe_status(const subscribe_status_callback_t callback);
+
+    /**
+     * @brief Type to represent a setting option.
+     *
+     * This can be e.g. a color mode option such as "enhanced" or a shutter speed
+     * value like "1/50".
+     */
+    struct Option {
+        std::string option_id; /**< Name of the option (machine readable). */
+    };
+
+    /**
+     * @brief Type to represent a setting with a selected option.
+     */
+    struct Setting {
+        std::string setting_id; /**< Name of the setting (machine readable). */
+        Option option; /**< Selected option. */
+    };
+
+    /**
+     * @brief Type to represent a setting with a list of options to choose from.
+     */
+    struct SettingOptions {
+        std::string setting_id; /**< Name of the setting (machine readable). */
+        std::vector<Option> options; /**< List of options. */
+    };
+
+    /**
      * @brief Get settings that can be changed.
      *
      * The list of settings consists of machine readable parameters,
@@ -397,54 +471,89 @@ public:
      *
      * @sa `get_option_str`
      *
-     * @param setting_name Name of setting (machine readable).
-     * @param options List of options to select from.
+     * @param setting_id Name of setting (machine readable).
+     * @param options List of `Option` objects to select from.
      * @return true if request was successful.
      */
-    bool get_possible_options(const std::string &setting_name, std::vector<std::string> &options);
+    bool get_possible_options(const std::string &setting_id, std::vector<Camera::Option> &options);
+
+    /**
+     * @brief Get an option of a setting (synchronous).
+     *
+     * @param setting_id The machine readable name of the setting.
+     * @param option A reference to the option to set.
+     * @return Result of request.
+     */
+    Camera::Result get_option(const std::string &setting_id, Option &option);
 
     /**
      * @brief Callback type to get an option.
      */
-    typedef std::function<void(Result, const std::string &)> get_option_callback_t;
+    typedef std::function<void(Result, const Option &)> get_option_callback_t;
 
     /**
      * @brief Get an option of a setting (asynchronous).
      *
-     * @param setting The machine readable name of the setting.
+     * @param setting_id The machine readable name of the setting.
      * @param callback The callback to get the result and selected option.
      */
-    void get_option_async(const std::string &setting, const get_option_callback_t &callback);
+    void get_option_async(const std::string &setting_id, const get_option_callback_t &callback);
 
     /**
      * @brief Set an option of a setting (asynchronous).
      *
-     * @param setting The machine readable name of the setting.
+     * @param setting_id The machine readable name of the setting.
      * @param option The machine readable name of the option value.
      * @param callback The callback to get the result.
      */
-    void set_option_async(const std::string &setting,
-                          const std::string &option,
+    void set_option_async(const std::string &setting_id,
+                          const Camera::Option &option,
                           const result_callback_t &callback);
+
+    /**
+     * @brief Callback type to get the currently selected settings.
+     */
+    typedef std::function<void(const std::vector<Setting>)> subscribe_current_settings_callback_t;
+
+    /**
+     * @brief Callback type to get possible settings.
+     */
+    typedef std::function<void(const std::vector<SettingOptions>)>
+        subscribe_possible_settings_callback_t;
+
+    /**
+     * @brief Subscribe to currently selected settings (asynchronous).
+     *
+     * @param callback Function to call when current options have been updated.
+     */
+    void subscribe_current_settings(const subscribe_current_settings_callback_t &callback);
+
+    /**
+     * @brief Subscribe to all possible settings (asynchronous).
+     *
+     * @param callback Function to call when possible options have been updated.
+     */
+    void subscribe_possible_settings(const subscribe_possible_settings_callback_t &callback);
+
     /**
      * @brief Get the human readable string of a setting.
      *
-     * @param setting_name The machine readable setting name.
+     * @param setting_id The machine readable setting name.
      * @param description The human readable string of the setting to get.
      * @return true if call was successful and the description has been set.
      */
-    bool get_setting_str(const std::string &setting_name, std::string &description);
+    bool get_setting_str(const std::string &setting_id, std::string &description);
 
     /**
      * @brief Get the human readable string of an option.
      *
-     * @param setting_name The machine readable setting name.
-     * @param option_name The machine readable option value.
+     * @param setting_id The machine readable setting name.
+     * @param option_id The machine readable option value.
      * @param description The human readable string of the option to get.
      * @return true if call was successful and the description has been set.
      */
-    bool get_option_str(const std::string &setting_name,
-                        const std::string &option_name,
+    bool get_option_str(const std::string &setting_id,
+                        const std::string &option_id,
                         std::string &description);
 
     /**
