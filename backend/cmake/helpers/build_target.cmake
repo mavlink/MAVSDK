@@ -1,3 +1,5 @@
+include(ProcessorCount)
+
 function(build_target SRC_DIR TARGET_DIR)
     file(MAKE_DIRECTORY ${TARGET_DIR}/build)
 
@@ -18,6 +20,9 @@ function(build_target SRC_DIR TARGET_DIR)
         WORKING_DIRECTORY "${TARGET_DIR}/build"
     )
 
+    ProcessorCount(NUM_PROCS)
+
+    set(ENV{MAKEFLAGS} -j${NUM_PROCS})
     execute_process(COMMAND ${CMAKE_COMMAND} --build .
         WORKING_DIRECTORY ${TARGET_DIR}/build
     )
