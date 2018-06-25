@@ -948,7 +948,7 @@ void CameraImpl::load_definition_file(const std::string &uri)
     refresh_params();
 }
 
-bool CameraImpl::get_possible_settings(std::vector<std::string> &settings)
+bool CameraImpl::get_possible_setting_options(std::vector<std::string> &settings)
 {
     settings.clear();
 
@@ -1127,10 +1127,10 @@ void CameraImpl::subscribe_current_settings(
     _subscribe_current_settings_callback = callback;
 }
 
-void CameraImpl::subscribe_possible_settings(
-    const Camera::subscribe_possible_settings_callback_t &callback)
+void CameraImpl::subscribe_possible_setting_options(
+    const Camera::subscribe_possible_setting_options_callback_t &callback)
 {
-    _subscribe_possible_settings_callback = callback;
+    _subscribe_possible_setting_options_callback = callback;
 }
 
 void CameraImpl::notify_current_settings()
@@ -1145,13 +1145,13 @@ void CameraImpl::notify_current_settings()
     }
 
     std::vector<Camera::Setting> current_settings{};
-    std::vector<std::string> possible_settings{};
-    if (!get_possible_settings(possible_settings)) {
+    std::vector<std::string> possible_setting_options{};
+    if (!get_possible_setting_options(possible_setting_options)) {
         LogErr() << "Could not get possible settings in current options subscription.";
         return;
     }
 
-    for (auto &possible_setting : possible_settings) {
+    for (auto &possible_setting : possible_setting_options) {
         // use the cache for this, presumably we updated it right before.
         MAVLinkParameters::ParamValue value;
         if (_camera_definition->get_setting(possible_setting, value)) {
@@ -1164,21 +1164,21 @@ void CameraImpl::notify_current_settings()
     _subscribe_current_settings_callback(current_settings);
 }
 
-void CameraImpl::notify_possible_settings()
+void CameraImpl::notify_possible_setting_options()
 {
-    if (!_subscribe_possible_settings_callback) {
+    if (!_subscribe_possible_setting_options_callback) {
         return;
     }
 
     if (!_camera_definition) {
-        LogErr() << "notify_possible_settings has no camera definition";
+        LogErr() << "notify_possible_setting_options has no camera definition";
         return;
     }
 
     std::vector<Camera::SettingOptions> possible_setting_options{};
 
     std::vector<std::string> possible_settings{};
-    if (!get_possible_settings(possible_settings)) {
+    if (!get_possible_setting_options(possible_settings)) {
         LogErr() << "Could not get possible settings in possible options subscription.";
         return;
     }
@@ -1190,7 +1190,7 @@ void CameraImpl::notify_possible_settings()
         possible_setting_options.push_back(setting_options);
     }
 
-    _subscribe_possible_settings_callback(possible_setting_options);
+    _subscribe_possible_setting_options_callback(possible_setting_options);
 }
 
 void CameraImpl::refresh_params()
@@ -1222,7 +1222,7 @@ void CameraImpl::refresh_params()
 
                 if (is_last) {
                     notify_current_settings();
-                    notify_possible_settings();
+                    notify_possible_setting_options();
                 }
             },
             true);

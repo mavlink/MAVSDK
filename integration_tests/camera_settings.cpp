@@ -37,7 +37,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
         set_mode_async(camera, Camera::Mode::PHOTO);
 
         std::vector<std::string> settings;
-        EXPECT_TRUE(camera->get_possible_settings(settings));
+        EXPECT_TRUE(camera->get_possible_setting_options(settings));
 
         LogDebug() << "Possible settings in photo mode: ";
         for (auto setting : settings) {
@@ -56,7 +56,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
-        EXPECT_TRUE(camera->get_possible_settings(settings));
+        EXPECT_TRUE(camera->get_possible_setting_options(settings));
 
         LogDebug() << "Possible settings in video mode: ";
         for (auto setting : settings) {
@@ -281,8 +281,9 @@ TEST(CameraTest, SubscribeCurrentSettings)
     EXPECT_TRUE(subscription_called);
 }
 
-static void receive_possible_settings(bool &subscription_called,
-                                      const std::vector<Camera::SettingOptions> settings_options)
+static void
+receive_possible_setting_options(bool &subscription_called,
+                                 const std::vector<Camera::SettingOptions> settings_options)
 {
     LogDebug() << "Received possible options:";
     EXPECT_TRUE(settings_options.size() > 0);
@@ -318,8 +319,8 @@ TEST(CameraTest, SubscribePossibleSettings)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     bool subscription_called = false;
-    camera->subscribe_possible_settings(
-        std::bind(receive_possible_settings, std::ref(subscription_called), _1));
+    camera->subscribe_possible_setting_options(
+        std::bind(receive_possible_setting_options, std::ref(subscription_called), _1));
 
     EXPECT_EQ(camera->set_mode(Camera::Mode::PHOTO), Camera::Result::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(1));
