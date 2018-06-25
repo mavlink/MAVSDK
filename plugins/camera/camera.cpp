@@ -139,9 +139,9 @@ void Camera::get_option_async(const std::string &setting_id, const get_option_ca
     _impl->get_option_async(setting_id, callback);
 }
 
-bool Camera::get_possible_settings(std::vector<std::string> &settings)
+bool Camera::get_possible_setting_options(std::vector<std::string> &settings)
 {
-    return _impl->get_possible_settings(settings);
+    return _impl->get_possible_setting_options(settings);
 }
 
 bool Camera::get_possible_options(const std::string &setting_id,
@@ -167,9 +167,10 @@ void Camera::subscribe_current_settings(const subscribe_current_settings_callbac
     _impl->subscribe_current_settings(callback);
 }
 
-void Camera::subscribe_possible_settings(const subscribe_possible_settings_callback_t &callback)
+void Camera::subscribe_possible_setting_options(
+    const subscribe_possible_setting_options_callback_t &callback)
 {
-    _impl->subscribe_possible_settings(callback);
+    _impl->subscribe_possible_setting_options(callback);
 }
 
 std::string Camera::result_str(Result result)

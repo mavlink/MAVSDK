@@ -461,7 +461,7 @@ public:
      * @param settings List of settings that can be changed.
      * @return true request was successful.
      */
-    bool get_possible_settings(std::vector<std::string> &settings);
+    bool get_possible_setting_options(std::vector<std::string> &settings);
 
     /**
      * @brief Get possible options for a setting that can be selected.
@@ -516,10 +516,10 @@ public:
     typedef std::function<void(const std::vector<Setting>)> subscribe_current_settings_callback_t;
 
     /**
-     * @brief Callback type to get possible settings.
+     * @brief Callback type to get possible setting options.
      */
     typedef std::function<void(const std::vector<SettingOptions>)>
-        subscribe_possible_settings_callback_t;
+        subscribe_possible_setting_options_callback_t;
 
     /**
      * @brief Subscribe to currently selected settings (asynchronous).
@@ -529,11 +529,12 @@ public:
     void subscribe_current_settings(const subscribe_current_settings_callback_t &callback);
 
     /**
-     * @brief Subscribe to all possible settings (asynchronous).
+     * @brief Subscribe to all possible setting options (asynchronous).
      *
      * @param callback Function to call when possible options have been updated.
      */
-    void subscribe_possible_settings(const subscribe_possible_settings_callback_t &callback);
+    void subscribe_possible_setting_options(
+        const subscribe_possible_setting_options_callback_t &callback);
 
     /**
      * @brief Get the human readable string of a setting.
