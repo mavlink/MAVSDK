@@ -32,6 +32,7 @@ add_executable(integration_tests_runner
     transition_multicopter_fixedwing.cpp
     follow_me.cpp
     multi_components.cpp
+    calibration.cpp
     camera_take_photo.cpp
     camera_take_photo_interval.cpp
     camera_mode.cpp
@@ -60,6 +61,7 @@ target_link_libraries(integration_tests_runner
     dronecore_gimbal
     dronecore_follow_me
     dronecore_camera
+    dronecore_calibration
     gtest
     gtest_main
     gmock

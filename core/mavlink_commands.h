@@ -49,6 +49,7 @@ public:
 
         // In some cases "Reserved" value could be "0".
         // This utility method can be used in such case.
+        // TODO: rename to set_all
         static void set_as_reserved(Params &params, float reserved_value = NAN)
         {
             params.param1 = reserved_value;
@@ -76,6 +77,7 @@ public:
             float param7 = NAN;
         } params{};
 
+        // TODO: rename to set_all
         static void set_as_reserved(Params &params, float reserved_value = NAN)
         {
             params.param1 = reserved_value;
