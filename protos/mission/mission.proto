@@ -64,8 +64,7 @@ message IsMissionFinishedResponse {
 
 message SubscribeMissionProgressRequest {}
 message MissionProgressResponse {
-    int32 current_item_index = 1;
-    int32 mission_count = 2;
+    MissionProgress mission_progress = 1;
 }
 
 message Mission {
@@ -90,6 +89,11 @@ message MissionItem {
         START_VIDEO = 4;
         STOP_VIDEO = 5;
     }
+}
+
+message MissionProgress {
+    int32 current_item_index = 1;
+    int32 mission_count = 2;
 }
 
 message MissionResult {
