@@ -30,14 +30,17 @@ class AutoGen(object):
                                              proto_file.message_type,
                                              template_env)
 
+            requests = Struct.collect_requests(proto_file.package,
+                                               proto_file.message_type)
+
             responses = Struct.collect_responses(proto_file.package,
-                                                 proto_file.message_type,
-                                                 template_env)
+                                                 proto_file.message_type)
 
             methods = Method.collect_methods(plugin_name,
                                              proto_file.package,
                                              proto_file.service[0].method,
                                              structs,
+                                             requests,
                                              responses,
                                              template_env)
 

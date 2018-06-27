@@ -22,6 +22,11 @@ def is_observable(method):
     return method.server_streaming
 
 
+def is_request(struct):
+    """ Checks if a name ends with request """
+    return struct.name.endswith("Request")
+
+
 def is_response(struct):
     """ Checks if a name ends with response """
     return struct.name.endswith("Response")
@@ -53,6 +58,12 @@ def extract_string_type(field):
         return types[field.type]
     else:
         return "UNKNOWN_TYPE"
+
+
+def filter_out_result(fields):
+    """ Filters out the result fields (".*Result$") """
+    for field in fields:
+        if not extract_string_type(field).endswith("Result"): yield field
 
 
 def decapitalize(s):

@@ -2,6 +2,7 @@
 
 
 from .utils import (extract_string_type,
+                    is_request,
                     is_response,
                     is_struct)
 
@@ -36,7 +37,17 @@ class Struct(object):
         return _structs
 
     @staticmethod
-    def collect_responses(package, structs, template_env):
+    def collect_requests(package, structs):
+        _requests = {}
+
+        for struct in structs:
+            if is_request(struct):
+                _requests[struct.name] = struct
+
+        return _requests
+
+    @staticmethod
+    def collect_responses(package, structs):
         _responses = {}
 
         for struct in structs:
