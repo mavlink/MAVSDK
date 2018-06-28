@@ -1,3 +1,5 @@
+#include <future>
+
 #include "camera/camera.h"
 #include "camera/camera.grpc.pb.h"
 
@@ -118,6 +120,69 @@ public:
             fillResponseWithResult(response, camera_result);
         }
 
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetMode(grpc::ServerContext * /* context */,
+                         const rpc::camera::SetModeRequest *request,
+                         rpc::camera::SetModeResponse *response) override
+    {
+        if (request != nullptr) {
+            auto camera_result = _camera.set_mode(translateRPCCameraMode(request->camera_mode()));
+
+            if (response != nullptr) {
+                fillResponseWithResult(response, camera_result);
+            }
+        }
+
+        return grpc::Status::OK;
+    }
+
+    static dronecore::Camera::Mode translateRPCCameraMode(const rpc::camera::CameraMode mode)
+    {
+        switch (mode) {
+            case rpc::camera::CameraMode::PHOTO:
+                return dronecore::Camera::Mode::PHOTO;
+            case rpc::camera::CameraMode::VIDEO:
+                return dronecore::Camera::Mode::VIDEO;
+            default:
+                return dronecore::Camera::Mode::UNKNOWN;
+        }
+    }
+
+    static rpc::camera::CameraMode translateCameraMode(const dronecore::Camera::Mode mode)
+    {
+        switch (mode) {
+            case dronecore::Camera::Mode::PHOTO:
+                return rpc::camera::CameraMode::PHOTO;
+            case dronecore::Camera::Mode::VIDEO:
+                return rpc::camera::CameraMode::VIDEO;
+            default:
+                return rpc::camera::CameraMode::UNKNOWN;
+        }
+    }
+
+    grpc::Status SubscribeMode(grpc::ServerContext * /* context */,
+                               const rpc::camera::SubscribeModeRequest * /* request */,
+                               grpc::ServerWriter<rpc::camera::ModeResponse> *writer) override
+    {
+        std::promise<void> stream_closed_promise;
+        auto stream_closed_future = stream_closed_promise.get_future();
+
+        bool is_finished = false;
+
+        _camera.subscribe_mode(
+            [&writer, &stream_closed_promise, &is_finished](const dronecore::Camera::Mode mode) {
+                rpc::camera::ModeResponse rpc_mode_response;
+                rpc_mode_response.set_camera_mode(translateCameraMode(mode));
+
+                if (!writer->Write(rpc_mode_response) && !is_finished) {
+                    is_finished = true;
+                    stream_closed_promise.set_value();
+                }
+            });
+
+        stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
