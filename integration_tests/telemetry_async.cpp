@@ -23,6 +23,7 @@ static void print_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
 static void print_gps_info(Telemetry::GPSInfo gps_info);
 static void print_battery(Telemetry::Battery battery);
 static void print_rc_status(Telemetry::RCStatus rc_status);
+static void print_position_velocity_local(Telemetry::PositionVelocityLocal position_velocity_local);
 
 static bool _set_rate_error = false;
 static bool _received_position = false;
@@ -39,6 +40,7 @@ static bool _received_ground_speed = false;
 static bool _received_gps_info = false;
 static bool _received_battery = false;
 static bool _received_rc_status = false;
+static bool _received_position_velocity_local = false;
 
 TEST_F(SitlTest, TelemetryAsync)
 {
@@ -111,6 +113,8 @@ TEST_F(SitlTest, TelemetryAsync)
 
     telemetry->rc_status_async(std::bind(&print_rc_status, _1));
 
+    telemetry->position_velocity_local_async(std::bind(&print_position_velocity_local, _1));
+
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     EXPECT_FALSE(_set_rate_error);
@@ -128,6 +132,7 @@ TEST_F(SitlTest, TelemetryAsync)
     EXPECT_TRUE(_received_gps_info);
     EXPECT_TRUE(_received_battery);
     EXPECT_TRUE(_received_rc_status);
+    EXPECT_TRUE(_received_position_velocity_local);
 }
 
 void receive_result(Telemetry::Result result)
@@ -231,4 +236,16 @@ void print_rc_status(Telemetry::RCStatus rc_status)
     std::cout << "RC status [ RSSI: " << rc_status.signal_strength_percent * 100 << "]"
               << std::endl;
     _received_rc_status = true;
+}
+
+void print_position_velocity_local(Telemetry::PositionVelocityLocal position_velocity_local)
+{
+    std::cout << "Got position north_m: " << position_velocity_local.north_m << " m, "
+              << "east_m: " << position_velocity_local.east_m << " m, "
+              << "donw_m: " << position_velocity_local.down_m << " m" << std::endl
+              << "velocity north_m_s: " << position_velocity_local.north_m_s << " m/s, "
+              << "velocity east_m_s: " << position_velocity_local.east_m_s << " m/s, "
+              << "velocity down_m_s: " << position_velocity_local.down_m_s << " m/s" << std::endl;
+
+    _received_position_velocity_local = true;
 }
