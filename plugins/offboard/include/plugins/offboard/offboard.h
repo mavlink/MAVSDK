@@ -74,11 +74,11 @@ public:
      * @brief Type for Position commands in NED (North East Down) coordinates and yaw.
      */
     struct PositionNEDYaw {
-        float north_m; /**< @brief Position along local north in meters. */
-        float east_m; /**< @brief Position along local east in meters. */
-        float down_m; /**< @brief Position along local down in meters. */
-        float yaw_deg; /**< @brief Yaw in degrees relative to local reference (positive is
-                          clock-wise looking from above). */
+        float north_m; /**< @brief Position along north in meters. */
+        float east_m; /**< @brief Position along east in meters. */
+        float down_m; /**< @brief Position along down in meters. */
+        float yaw_deg; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
+                          above). */
     };
 
     /**
@@ -93,19 +93,20 @@ public:
     };
 
     /**
-     * @brief Type for Velocity commands in NE (North East Down) and Altitude in N coordinates and
+     * @brief Type for Velocity commands in NE (North East) and Altitude in N (Down) coordinate and
      * yaw.
      */
     struct VelocityAltitudeNEDYaw {
         float north_m_s; /**< @brief Velocity North in meters/second. */
         float east_m_s; /**< @brief Velocity East in meters/second. */
-        float down_m; /**< @brief Velocity Down in meters. */
+        float down_m; /**< @brief Altitude Down in meters. */
         float yaw_deg; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
                           above). */
     };
 
     /**
-     * @brief Type for Velocity commands in NED (North East Down) coordinates and yaw.
+     * @brief Type for Position commands in NE (North East) and Velocity in N (Down) coordinate and
+     * yaw.
      */
     struct PositionClimbRateNEDYaw {
         float north_m; /**< @brief Position North in meters. */
@@ -116,13 +117,14 @@ public:
     };
 
     /**
-     * @brief Type for Velocity commands in NED (North East Down) coordinates and yaw.
+     * @brief Type for Position commands in NE (North East) and Velocity in N (Down) coordinate and
+     * yawspeed.
      */
     struct PositionClimbRateNEDYawspeed {
         float north_m; /**< @brief Position North in meters. */
         float east_m; /**< @brief Position East in meters. */
         float down_m_s; /**< @brief Velocity Down in meters/second. */
-        float yawspeed_deg_s; /**< @brief Yawspeed in degrees / seconds (0 North, positive is
+        float yawspeed_deg_s; /**< @brief Yawspeed in degrees per seconds (positive is
                           clock-wise looking from above). */
     };
 
@@ -185,8 +187,9 @@ public:
     bool is_active() const;
 
     /**
-     * @brief Set the position in NED coordinates and yaw.
+     * @brief Set the position in NED coordinate and yaw.
      *
+     * @see PositionNEDYaw
      * @param position_ned_yaw Position and yaw `struct`.
      */
     void set_position_ned_yaw(PositionNEDYaw position_ned_yaw);
@@ -199,22 +202,25 @@ public:
     void set_velocity_ned(VelocityNEDYaw velocity_ned_yaw);
 
     /**
-     * @brief Set the velocity in NE coordinates, altitude in D coordinate and yaw.
+     * @brief Set the velocity in NE and altitude in D coordinate and yaw.
      *
+     * @see VelocityAltitudeNEDYaw
      * @param velocity_altitude_ned_yaw Velocity/Altitude and yaw `struct`.
      */
     void set_velocity_altitude_ned_yaw(VelocityAltitudeNEDYaw velocity_altitude_ned_yaw);
 
     /**
-     * @brief Set the position in NE coordinates, climbrate in D coordinate and yaw.
+     * @brief Set the position in NE and climbrate in D coordinate and yaw.
      *
+     * @see PositionClimbRateNEDYaw
      * @param position_climbrate_ned_yaw Position/Climbrate and yaw `struct`.
      */
     void set_position_climbrate_ned_yaw(PositionClimbRateNEDYaw position_climbrate_ned_yaw);
 
     /**
-     * @brief Set the position in NE coordinates, climbrate in D coordinate and yawspeed.
+     * @brief Set the position in NE and climbrate in D coordinate and yawspeed.
      *
+     * @see PositionClimbRateNEDYawspeed
      * @param position_climbrate_ned_yawspeed Position/Climbrate and yawspeed `struct`.
      */
     void set_position_climbrate_ned_yawspeed(

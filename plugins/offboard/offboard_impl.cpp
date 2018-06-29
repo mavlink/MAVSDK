@@ -286,7 +286,7 @@ void OffboardImpl::send_translation_ned()
     if (std::isfinite(_translation_ned.north_m) && std::isfinite(_translation_ned.east_m)) {
         x = _translation_ned.north_m;
         y = _translation_ned.east_m;
-        // enable xy
+        // enable x/y
         IGNORE_X &= ~(1 << 0);
         IGNORE_Y &= ~(1 << 1);
     }
