@@ -1,7 +1,7 @@
 #pragma once
 
 #include "system.h"
-#include "camera.h"
+#include "plugins/camera/camera.h"
 #include "plugin_impl_base.h"
 #include "camera_definition.h"
 

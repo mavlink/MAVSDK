@@ -12,11 +12,18 @@ set_target_properties(dronecode_sdk_logging
 )
 
 install(FILES
-    logging.h
+    include/plugins/logging/logging.h
     DESTINATION ${dronecode_sdk_install_include_dir}
 )
 
 install(TARGETS dronecode_sdk_logging
     #EXPORT dronecode_sdk-targets
     DESTINATION ${dronecode_sdk_install_lib_dir}
+)
+
+target_include_directories(dronecode_sdk_logging 
+PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )

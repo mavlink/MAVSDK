@@ -74,11 +74,19 @@ install(TARGETS dronecode_sdk
 )
 
 install(FILES
-    connection_result.h
-    system.h
-    dronecode_sdk.h
-    plugin_base.h
+    include/connection_result.h
+    include/system.h
+    include/dronecode_sdk.h
+    include/plugin_base.h
     DESTINATION "include/dronecode_sdk"
+)
+
+target_include_directories(dronecode_sdk 
+PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${plugin_header_paths}
+PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 list(APPEND UNIT_TEST_SOURCES

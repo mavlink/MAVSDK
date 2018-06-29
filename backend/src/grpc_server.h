@@ -3,13 +3,13 @@
 #include <grpc++/server.h>
 #include <memory>
 
-#include "action/action.h"
+#include "plugins/action/action.h"
 #include "action/action_service_impl.h"
-#include "camera/camera.h"
+#include "plugins/camera/camera.h"
 #include "camera/camera_service_impl.h"
-#include "core/core_service_impl.h"
+#include "core_service_impl.h"
 #include "dronecode_sdk.h"
-#include "mission/mission.h"
+#include "plugins/mission/mission.h"
 #include "mission/mission_service_impl.h"
 #include "telemetry/telemetry_service_impl.h"
 

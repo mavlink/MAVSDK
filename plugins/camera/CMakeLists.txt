@@ -19,13 +19,20 @@ include_directories(
 )
 
 install(FILES
-    camera.h
+    include/plugins/camera/camera.h
     DESTINATION ${dronecode_sdk_install_include_dir}
 )
 
 install(TARGETS dronecode_sdk_camera
     #EXPORT dronecode_sdk-targets
     DESTINATION ${dronecode_sdk_install_lib_dir}
+)
+
+target_include_directories(dronecode_sdk_camera 
+PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 list(APPEND UNIT_TEST_SOURCES

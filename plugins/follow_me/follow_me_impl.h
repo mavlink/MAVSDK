@@ -1,6 +1,6 @@
 #pragma once
 
-#include "follow_me.h"
+#include "plugins/follow_me/follow_me.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 #include "system.h"

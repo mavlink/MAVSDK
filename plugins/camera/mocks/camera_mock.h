@@ -1,6 +1,6 @@
 #include <gmock/gmock.h>
 
-#include "camera/camera.h"
+#include "plugins/camera/camera.h"
 
 namespace dronecode_sdk {
 namespace testing {

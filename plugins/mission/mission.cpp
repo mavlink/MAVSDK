@@ -1,4 +1,4 @@
-#include "mission.h"
+#include "plugins/mission/mission.h"
 #include "mission_impl.h"
 #include <vector>
 #include "mavlink_include.h"

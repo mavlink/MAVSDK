@@ -18,19 +18,20 @@ common_args="--input-type dir  \
     --force"
 
 library_files="\
-    core/system.h=/usr/include/dronecode_sdk/system.h \
-    core/dronecode_sdk.h=/usr/include/dronecode_sdk/dronecode_sdk.h \
-    build/default/core/libdronecode_sdk.so=/usr/lib/libdronecode_sdk.so \
-    plugins/action/action.h=/usr/include/dronecode_sdk/action.h \
-    plugins/camera/camera.h=/usr/include/dronecode_sdk/camera.h \
-    plugins/follow_me/follow_me.h=/usr/include/dronecode_sdk/follow_me.h \
-    plugins/gimbal/gimbal.h=/usr/include/dronecode_sdk/gimbal.h \
-    plugins/info/info.h=/usr/include/dronecode_sdk/info.h \
-    plugins/logging/logging.h=/usr/include/dronecode_sdk/logging.h \
-    plugins/mission/mission.h=/usr/include/dronecode_sdk/mission.h \
-    plugins/mission/mission_item.h=/usr/include/dronecode_sdk/mission_item.h \
-    plugins/offboard/offboard.h=/usr/include/dronecode_sdk/offboard.h \
-    plugins/telemetry/telemetry.h=/usr/include/dronecode_sdk/telemetry.h"
+    core/include/dronecode_sdk/system.h=/usr/include/dronecode_sdk/system.h \
+    core/include/dronecode_sdk/dronecore.h=/usr/include/dronecode_sdk/dronecode_sdk.h \
+    build/default/core/libdronecore.so=/usr/lib/libdronecode_sdk.so \
+    plugins/action/include/plugins/action/action.h=/usr/include/dronecode_sdk/action.h \
+    plugins/camera/include/plugins/camera/camera.h=/usr/include/dronecode_sdk/camera.h \
+    plugins/follow_me/include/plugins/follow_me/follow_me.h=/usr/include/dronecode_sdk/follow_me.h \
+    plugins/gimbal/include/plugins/gimbal/gimbal.h=/usr/include/dronecode_sdk/gimbal.h \
+    plugins/info/include/plugins/info/info.h=/usr/include/dronecode_sdk/info.h \
+    plugins/logging/include/plugins/logging/logging.h=/usr/include/dronecode_sdk/logging.h \
+    plugins/mission/include/plugins/mission/mission.h=/usr/include/dronecode_sdk/mission.h \
+    plugins/mission/include/plugins.mission/mission_item.h=/usr/include/dronecode_sdk/mission_item.h \
+    plugins/offboard/include/plugins/offboard/offboard.h=/usr/include/dronecode_sdk/offboard.h \
+    plugins/telemetry/include/plugins/telemetry/telemetry.h=/usr/include/dronecode_sdk/telemetry.h \
+    plugins/calibration/include/plugins/calibration/calibration.h=/usr/include/dronecode_sdk/calibration.h"
 
 echo "#!/bin/sh" > run_ldconfig
 echo "/sbin/ldconfig" >> run_ldconfig

@@ -4,7 +4,7 @@
 #include "plugin_impl_base.h"
 #include "mavlink_include.h"
 #include "system.h"
-#include "offboard.h"
+#include "plugins/offboard/offboard.h"
 
 namespace dronecode_sdk {
 
