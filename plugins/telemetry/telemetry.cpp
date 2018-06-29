@@ -10,9 +10,9 @@ Telemetry::Telemetry(System &system) : PluginBase(), _impl{new TelemetryImpl(sys
 
 Telemetry::~Telemetry() {}
 
-Telemetry::Result Telemetry::set_rate_position_velocity_local(double rate_hz)
+Telemetry::Result Telemetry::set_rate_position_velocity_ned(double rate_hz)
 {
-    return _impl->set_rate_position_velocity_local(rate_hz);
+    return _impl->set_rate_position_velocity_ned(rate_hz);
 }
 
 Telemetry::Result Telemetry::set_rate_position(double rate_hz)
@@ -60,9 +60,9 @@ Telemetry::Result Telemetry::set_rate_rc_status(double rate_hz)
     return _impl->set_rate_rc_status(rate_hz);
 }
 
-void Telemetry::set_rate_position_velocity_local_async(double rate_hz, result_callback_t callback)
+void Telemetry::set_rate_position_velocity_ned_async(double rate_hz, result_callback_t callback)
 {
-    _impl->set_rate_position_velocity_local_async(rate_hz, callback);
+    _impl->set_rate_position_velocity_ned_async(rate_hz, callback);
 }
 
 void Telemetry::set_rate_position_async(double rate_hz, result_callback_t callback)
@@ -110,9 +110,9 @@ void Telemetry::set_rate_rc_status_async(double rate_hz, result_callback_t callb
     _impl->set_rate_rc_status_async(rate_hz, callback);
 }
 
-Telemetry::PositionVelocityLocal Telemetry::position_velocity_local() const
+Telemetry::PositionVelocityNED Telemetry::position_velocity_ned() const
 {
-    return _impl->get_local_position_velocity();
+    return _impl->get_position_velocity_ned();
 }
 
 Telemetry::Position Telemetry::position() const
@@ -190,9 +190,9 @@ Telemetry::RCStatus Telemetry::rc_status() const
     return _impl->get_rc_status();
 }
 
-void Telemetry::position_velocity_local_async(position_velocity_local_callback_t callback)
+void Telemetry::position_velocity_ned_async(position_velocity_ned_callback_t callback)
 {
-    return _impl->position_velocity_local_async(callback);
+    return _impl->position_velocity_ned_async(callback);
 }
 
 void Telemetry::position_async(position_callback_t callback)
@@ -316,15 +316,21 @@ const char *Telemetry::result_str(Result result)
     }
 }
 
-bool operator==(const Telemetry::PositionVelocityLocal &lhs,
-                const Telemetry::PositionVelocityLocal &rhs)
+bool operator==(const Telemetry::PositionVelocityNED &lhs,
+                const Telemetry::PositionVelocityNED &rhs)
 {
-    return abs(lhs.north_m - rhs.north_m) <= std::numeric_limits<double>::epsilon() &&
-           abs(lhs.east_m - rhs.east_m) <= std::numeric_limits<double>::epsilon() &&
-           abs(lhs.down_m - rhs.down_m) <= std::numeric_limits<float>::epsilon() &&
-           abs(lhs.north_m_s - rhs.north_m_s) <= std::numeric_limits<float>::epsilon() &&
-           abs(lhs.east_m_s - rhs.east_m_s) <= std::numeric_limits<float>::epsilon() &&
-           abs(lhs.down_m_s - rhs.down_m_s) <= std::numeric_limits<float>::epsilon();
+    return abs(lhs.position.north_m - rhs.position.north_m) <=
+               std::numeric_limits<double>::epsilon() &&
+           abs(lhs.position.east_m - rhs.position.east_m) <=
+               std::numeric_limits<double>::epsilon() &&
+           abs(lhs.position.down_m - rhs.position.down_m) <=
+               std::numeric_limits<float>::epsilon() &&
+           abs(lhs.velocity.north_m_s - rhs.velocity.north_m_s) <=
+               std::numeric_limits<float>::epsilon() &&
+           abs(lhs.velocity.east_m_s - rhs.velocity.east_m_s) <=
+               std::numeric_limits<float>::epsilon() &&
+           abs(lhs.velocity.down_m_s - rhs.velocity.down_m_s) <=
+               std::numeric_limits<float>::epsilon();
 }
 
 bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs)
