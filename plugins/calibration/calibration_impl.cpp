@@ -322,6 +322,19 @@ void CalibrationImpl::process_statustext(const mavlink_message_t &message)
             report_instruction(_parser.get_instruction());
             break;
     }
+
+    switch (_parser.get_status()) {
+        case CalibrationStatustextParser::Status::DONE:
+            // FALLTHROUGH
+        case CalibrationStatustextParser::Status::FAILED:
+            // FALLTHROUGH
+        case CalibrationStatustextParser::Status::CANCELLED:
+            _calibration_callback = nullptr;
+            _state == State::NONE;
+            break;
+        default:
+            break;
+    }
 }
 
 void CalibrationImpl::report_started()
