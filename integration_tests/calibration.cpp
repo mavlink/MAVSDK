@@ -23,6 +23,7 @@ TEST(HardwareTest, GyroCalibration)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     System &system = dc.system();
+    ASSERT_TRUE(system.has_autopilot());
 
     auto calibration = std::make_shared<Calibration>(system);
 
@@ -46,6 +47,7 @@ TEST(HardwareTest, AccelerometerCalibration)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
     System &system = dc.system();
+    ASSERT_TRUE(system.has_autopilot());
 
     auto calibration = std::make_shared<Calibration>(system);
 
@@ -71,6 +73,7 @@ TEST(HardwareTest, MagnetometerCalibration)
     System &system = dc.system();
 
     auto calibration = std::make_shared<Calibration>(system);
+    ASSERT_TRUE(system.has_autopilot());
 
     bool done = false;
 
