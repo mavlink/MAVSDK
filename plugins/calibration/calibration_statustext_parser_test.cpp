@@ -38,17 +38,17 @@ TEST(CalibrationStatustextParser, Progress)
 
     EXPECT_TRUE(parser.parse("[cal] progress <10>"));
     EXPECT_EQ(parser.get_status(), CalibrationStatustextParser::Status::PROGRESS);
-    EXPECT_FLOAT_EQ(parser.get_progress(), 0.10);
+    EXPECT_FLOAT_EQ(parser.get_progress(), 0.10f);
 
     parser.reset();
     EXPECT_TRUE(parser.parse("[cal] right side calibration: progress <78>"));
     EXPECT_EQ(parser.get_status(), CalibrationStatustextParser::Status::PROGRESS);
-    EXPECT_FLOAT_EQ(parser.get_progress(), 0.78);
+    EXPECT_FLOAT_EQ(parser.get_progress(), 0.78f);
 
     parser.reset();
     EXPECT_TRUE(parser.parse("[cal] up side calibration: progress <45>"));
     EXPECT_EQ(parser.get_status(), CalibrationStatustextParser::Status::PROGRESS);
-    EXPECT_FLOAT_EQ(parser.get_progress(), 0.45);
+    EXPECT_FLOAT_EQ(parser.get_progress(), 0.45f);
 }
 
 TEST(CalibrationStatustextParser, Failed)
