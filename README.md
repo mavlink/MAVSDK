@@ -20,47 +20,46 @@ It is written in C++ and aiming to be:
 
 The next steps will be:
 
-- Add Camera settings and actions interface.
 - Add language bindings for Android, iOS, and Python
 
 ## Interfacing
 
-DroneCore currently takes care of the mavlink messaging using a UDP network connection to the drone. Connecting via TCP, or serial is planned but not implemeted yet.
+DroneCore currently takes care of the mavlink messaging. Connections over serial, UDP, and TCP are supported on Linux, macOS, and Windows.
 
 The library provides both synchronous (blocking) API calls, as well as asynchronous API calls using callbacks.
 
 ## API Overview
 
-API consumers use the `DroneCore` class to discover and manage vehicles (`Device` objects), which in turn provide access to all other drone information and control objects (e.g. `Telemetry`, `Mission` etc.).
+API consumers use the `DroneCore` class to discover and manage vehicles (`System` objects). Using the `System` object plugins such as e.g. `Action`, `Telemetry`, or `Mission` can be instantiated which provide information about the state of the drone and allow to interact with it.
 
 The links below take you to the respective header files:
 
 - [dronecore](include/dronecore.h): set up connection, discover devices
-- [device](include/device.h): a device providing access to modules below using ...
-- [device_plugin_container.h.in](include/device_plugin_container.h.in) which is auto-generated on build.
+- [system](include/system.h): an class representing one drone which can consist of multiple components
 - [info](plugins/info/info.h): general info about a device
 - [telemetry](plugins/telemetry/telemetry.h): to receive telemetry data
 - [action](plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
 - [mission](plugins/mission/mission.h)/[mission_item](plugins/mission/mission_item.h): to upload a waypoint mission
 - [offboard](plugins/offboard/offboard.h): for velocity control
 - [gimbal](plugins/gimbal/gimbal.h): control a gimbal
+- [camera](plugins/camera/camera.h): capture images, videos, and set camera settings
 - [follow_me](plugins/follow_me/follow_me.h): drone tracks a position supplied by DroneCore.
 - [logging](plugins/logging/logging.h): (not implemented) data logging and streaming from the vehicle.
 
-For more information see the [API Overview](https://docs.dronecore.io/en/getting_started/#api-overview) in the DroneCore Guide.
+For more information see the [API Overview](https://sdk.dronecode.org/en/#api-overview) in the DroneCore Guide.
 
 
-## Guide Docs (Build instructions etc.)
+## Docs (Build instructions etc.)
 
-Instructions for how to use the library can be found in the [DroneCore Guide](https://docs.dronecore.io/en/).
+Instructions for how to use the library can be found in the [DroneCore Guide](https://sdk.dronecode.org/en).
 
 Quick Links:
 
-- [QuickStart](https://docs.dronecore.io/en/getting_started/)
-- [Building the Library](https://docs.dronecore.io/en/contributing/build.html)
-- [Examples](https://docs.dronecore.io/en/examples/)
-- [API Reference](https://docs.dronecore.io/en/api_reference/)
-- [FAQ](https://docs.dronecore.io/en/getting_started/faq.html)
+- [QuickStart](https://sdk.dronecode.org/en/getting_started/)
+- [Building the Library](https://sdk.dronecode.org/en/contributing/build.html)
+- [Examples](https://sdk.dronecode.org/en/examples/)
+- [API Reference](https://sdk.dronecode.org/en/api_reference/)
+- [FAQ](https://sdk.dronecode.org/en/getting_started/faq.html)
 
 
 ## License
