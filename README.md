@@ -1,5 +1,6 @@
 ![DroneCore](https://raw.githubusercontent.com/dronecore/docs/master/assets/site/dronecore_logo_full.png)
 
+[![jenkins build status](http://ci.px4.io:8080/buildStatus/icon?job=DroneCore/develop)](http://ci.px4.io:8080/blue/organizations/jenkins/DroneCore/activity)
 [![travis-ci build status](https://travis-ci.org/dronecore/DroneCore.svg?branch=develop)](https://travis-ci.org/dronecore/DroneCore)
 [![appveyor build status](https://ci.appveyor.com/api/projects/status/1ntjvooywpxmoir8/branch/develop?svg=true)](https://ci.appveyor.com/project/julianoes/dronecore/branch/develop)
 [![Coverage Status](https://coveralls.io/repos/github/dronecore/DroneCore/badge.svg?branch=develop)](https://coveralls.io/github/dronecore/DroneCore?branch=develop)
