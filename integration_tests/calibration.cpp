@@ -17,7 +17,7 @@ TEST(HardwareTest, GyroCalibration)
 {
     DroneCore dc;
 
-    ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
+    ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
@@ -41,7 +41,7 @@ TEST(HardwareTest, AccelerometerCalibration)
 {
     DroneCore dc;
 
-    ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
+    ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
@@ -65,7 +65,7 @@ TEST(HardwareTest, MagnetometerCalibration)
 {
     DroneCore dc;
 
-    ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
+    ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
