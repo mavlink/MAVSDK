@@ -8,6 +8,10 @@ namespace dronecore {
 class CalibrationImpl;
 class System;
 
+/**
+ * @brief The Calibration class enables to calibrate sensors of a drone such
+ * as gyro, accelerometer, and magnetometer.
+ */
 class Calibration : public PluginBase {
 public:
     /**
