@@ -63,6 +63,11 @@ void TelemetryImpl::init()
     using namespace std::placeholders; // for `_1`
 
     _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_LOCAL_POSITION_NED,
+        std::bind(&TelemetryImpl::process_position_velocity_ned, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
         std::bind(&TelemetryImpl::process_global_position_int, this, _1),
         this);
@@ -148,6 +153,12 @@ void TelemetryImpl::disable()
     _parent->unregister_timeout_handler(_timeout_cookie);
 }
 
+Telemetry::Result TelemetryImpl::set_rate_position_velocity_ned(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_LOCAL_POSITION_NED, rate_hz));
+}
+
 Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)
 {
     _position_rate_hz = rate_hz;
@@ -206,6 +217,15 @@ Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
 {
     return telemetry_result_from_command_result(
         _parent->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz));
+}
+
+void TelemetryImpl::set_rate_position_velocity_ned_async(double rate_hz,
+                                                         Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_LOCAL_POSITION_NED,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
 void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback)
@@ -316,6 +336,22 @@ void TelemetryImpl::command_result_callback(MAVLinkCommands::Result command_resu
     Telemetry::Result action_result = telemetry_result_from_command_result(command_result);
 
     callback(action_result);
+}
+
+void TelemetryImpl::process_position_velocity_ned(const mavlink_message_t &message)
+{
+    mavlink_local_position_ned_t local_position;
+    mavlink_msg_local_position_ned_decode(&message, &local_position);
+    set_position_velocity_ned(Telemetry::PositionVelocityNED({local_position.x,
+                                                              local_position.y,
+                                                              local_position.z,
+                                                              local_position.vx,
+                                                              local_position.vy,
+                                                              local_position.vz}));
+
+    if (_position_velocity_ned_subscription) {
+        _position_velocity_ned_subscription(get_position_velocity_ned());
+    }
 }
 
 void TelemetryImpl::process_global_position_int(const mavlink_message_t &message)
@@ -574,6 +610,18 @@ void TelemetryImpl::receive_rc_channels_timeout()
     set_rc_status(rc_ok, 0.0f);
 }
 
+Telemetry::PositionVelocityNED TelemetryImpl::get_position_velocity_ned() const
+{
+    std::lock_guard<std::mutex> lock(_position_velocity_ned_mutex);
+    return _position_velocity_ned;
+}
+
+void TelemetryImpl::set_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned)
+{
+    std::lock_guard<std::mutex> lock(_position_velocity_ned_mutex);
+    _position_velocity_ned = position_velocity_ned;
+}
+
 Telemetry::Position TelemetryImpl::get_position() const
 {
     std::lock_guard<std::mutex> lock(_position_mutex);
@@ -785,6 +833,12 @@ void TelemetryImpl::set_rc_status(bool available, float signal_strength_percent)
     }
 
     _rc_status.available = available;
+}
+
+void TelemetryImpl::position_velocity_ned_async(
+    Telemetry::position_velocity_ned_callback_t &callback)
+{
+    _position_velocity_ned_subscription = callback;
 }
 
 void TelemetryImpl::position_async(Telemetry::position_callback_t &callback)

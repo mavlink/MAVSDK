@@ -34,13 +34,46 @@ public:
     ~Telemetry();
 
     /**
-     * @brief Position type.
+     * @brief Position type in global coordinates.
      */
     struct Position {
         double latitude_deg; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg; /**< @brief Longitude in degrees (range: -180 to 180) */
         float absolute_altitude_m; /**< @brief Altitude AMSL (above mean sea level) in metres */
         float relative_altitude_m; /**< @brief Altitude relative to takeoff altitude in metres */
+    };
+
+    /**
+     * @brief Position type in local coordinates.
+     *
+     * Position is represented in the NED (North East Down) frame in local coordinate system.
+     */
+    struct PositionNED {
+        float north_m; /**< @brief Position along north-direction in meters. */
+        float east_m; /**< @brief Position along east-direction  in meters. */
+        float down_m; /**< @brief Position along down-direction  in meters. */
+    };
+
+    /**
+     * @brief Velocity type in local coordinates.
+     *
+     * Velocity is represented in NED (North East Down) frame in local coordinate system.
+     */
+    struct VelocityNED {
+        float north_m_s; /**< @brief Velocity along north-direction in meters per seconds. */
+        float east_m_s; /**< @brief Velocity along east-direction in meters per seconds. */
+        float down_m_s; /**< @brief Velocity along down-direction in meters per seconds. */
+    };
+
+    /**
+     * @brief Kinematic type in local coordinates.
+     *
+     * Position and Velocity are represented in NED (North East Down) frame in local coordinate
+     * system.
+     */
+    struct PositionVelocityNED {
+        PositionNED position; /**< @see PositionNED */
+        VelocityNED velocity; /**< @see VelocityNED */
     };
 
     /**
@@ -179,6 +212,15 @@ public:
     typedef std::function<void(Result)> result_callback_t;
 
     /**
+     * @brief Set rate of kinematic (position and velocity) updates (synchronous).
+     *
+     * @see PositionVelocityNED
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_position_velocity_ned(double rate_hz);
+
+    /**
      * @brief Set rate of position updates (synchronous).
      *
      * @param rate_hz Rate in Hz.
@@ -251,6 +293,15 @@ public:
     Result set_rate_rc_status(double rate_hz);
 
     /**
+     * @brief Set rate of kinematic (position and velocity) updates (asynchronous).
+     *
+     * @see PositionVelocityNED
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_position_velocity_ned_async(double rate_hz, result_callback_t callback);
+
+    /**
      * @brief Set rate of position updates (asynchronous).
      *
      * @param rate_hz Rate in Hz.
@@ -321,6 +372,13 @@ public:
      * @param callback Callback to receive request result.
      */
     void set_rate_rc_status_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief Get the current kinematic (position and velocity) in NED frame (synchronous).
+     *
+     * @return PositionVelocityNED.
+     */
+    PositionVelocityNED position_velocity_ned() const;
 
     /**
      * @brief Get the current position (synchronous).
@@ -428,6 +486,18 @@ public:
      * @return RC status.
      */
     RCStatus rc_status() const;
+
+    /**
+     * @brief Callback type for kinematic (position and velocity) updates.
+     */
+    typedef std::function<void(PositionVelocityNED)> position_velocity_ned_callback_t;
+
+    /**
+     * @brief Subscribe to kinematic (position and velocity) updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void position_velocity_ned_async(position_velocity_ned_callback_t callback);
 
     /**
      * @brief Callback type for position updates.
@@ -638,6 +708,14 @@ private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<TelemetryImpl> _impl;
 };
+
+/**
+ * @brief Equal operator to compare two `Telemetry::PositionVelocityNED` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::PositionVelocityNED &lhs,
+                const Telemetry::PositionVelocityNED &rhs);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Position` objects.
