@@ -187,8 +187,9 @@ void CalibrationImpl::command_result_callback(MAVLinkCommands::Result command_re
         case MAVLinkCommands::Result::TIMEOUT:
             // Report all error cases.
             if (_calibration_callback) {
-                _parent->call_user_callback([this, command_result]() {
-                    _calibration_callback(
+                auto calibration_callback_tmp = _calibration_callback;
+                _parent->call_user_callback([calibration_callback_tmp, command_result]() {
+                    calibration_callback_tmp(
                         calibration_result_from_command_result(command_result), NAN, "");
                 });
             }
@@ -198,8 +199,9 @@ void CalibrationImpl::command_result_callback(MAVLinkCommands::Result command_re
 
         case MAVLinkCommands::Result::IN_PROGRESS:
             if (_calibration_callback) {
-                _parent->call_user_callback([this, command_result, progress]() {
-                    _calibration_callback(
+                auto calibration_callback_tmp = _calibration_callback;
+                _parent->call_user_callback([calibration_callback_tmp, command_result, progress]() {
+                    calibration_callback_tmp(
                         calibration_result_from_command_result(command_result), progress, "");
                 });
             }
@@ -330,8 +332,10 @@ void CalibrationImpl::report_started()
 void CalibrationImpl::report_done()
 {
     if (_calibration_callback) {
-        _parent->call_user_callback(
-            [this]() { _calibration_callback(Calibration::Result::SUCCESS, NAN, ""); });
+        auto calibration_callback_tmp = _calibration_callback;
+        _parent->call_user_callback([calibration_callback_tmp]() {
+            calibration_callback_tmp(Calibration::Result::SUCCESS, NAN, "");
+        });
     }
 }
 
@@ -339,8 +343,10 @@ void CalibrationImpl::report_failed(const std::string &failed)
 {
     LogErr() << "Calibration failed: " << failed;
     if (_calibration_callback) {
-        _parent->call_user_callback(
-            [this]() { _calibration_callback(Calibration::Result::FAILED, NAN, ""); });
+        auto calibration_callback_tmp = _calibration_callback;
+        _parent->call_user_callback([calibration_callback_tmp]() {
+            calibration_callback_tmp(Calibration::Result::FAILED, NAN, "");
+        });
     }
 }
 
@@ -348,16 +354,19 @@ void CalibrationImpl::report_cancelled()
 {
     LogWarn() << "Calibration was cancelled";
     if (_calibration_callback) {
-        _parent->call_user_callback(
-            [this]() { _calibration_callback(Calibration::Result::CANCELLED, NAN, ""); });
+        auto calibration_callback_tmp = _calibration_callback;
+        _parent->call_user_callback([calibration_callback_tmp]() {
+            calibration_callback_tmp(Calibration::Result::CANCELLED, NAN, "");
+        });
     }
 }
 
 void CalibrationImpl::report_progress(float progress)
 {
     if (_calibration_callback) {
-        _parent->call_user_callback([this, progress]() {
-            _calibration_callback(Calibration::Result::IN_PROGRESS, progress, "");
+        auto calibration_callback_tmp = _calibration_callback;
+        _parent->call_user_callback([calibration_callback_tmp, progress]() {
+            calibration_callback_tmp(Calibration::Result::IN_PROGRESS, progress, "");
         });
     }
 }
@@ -365,8 +374,9 @@ void CalibrationImpl::report_progress(float progress)
 void CalibrationImpl::report_instruction(const std::string &instruction)
 {
     if (_calibration_callback) {
-        _parent->call_user_callback([this, instruction]() {
-            _calibration_callback(Calibration::Result::INSTRUCTION, NAN, instruction);
+        auto calibration_callback_tmp = _calibration_callback;
+        _parent->call_user_callback([calibration_callback_tmp, instruction]() {
+            calibration_callback_tmp(Calibration::Result::INSTRUCTION, NAN, instruction);
         });
     }
 }
