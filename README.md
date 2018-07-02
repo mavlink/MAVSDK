@@ -65,9 +65,3 @@ Quick Links:
 ## License
 
 The DroneCore project is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
-
-## Authors
-
-See [AUTHORS.md](AUTHORS.md).
-
-
