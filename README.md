@@ -1,4 +1,4 @@
-![DroneCore](https://raw.githubusercontent.com/dronecore/docs/master/assets/site/dronecore_logo_full.png)
+![DroneCore](https://raw.githubusercontent.com/dronecore/docs/master/assets/site/dronecore_logo_full.png) 
 
 [![jenkins build status](http://ci.px4.io:8080/buildStatus/icon?job=DroneCore/develop)](http://ci.px4.io:8080/blue/organizations/jenkins/DroneCore/activity)
 [![travis-ci build status](https://travis-ci.org/dronecore/DroneCore.svg?branch=develop)](https://travis-ci.org/dronecore/DroneCore)
@@ -7,7 +7,7 @@
 
 ## Description
 
-DroneCore is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [Mavlink](http://mavlink.org).
+The [Dronecode SDK](https://www.dronecode.org/sdk/) (previously known as "DroneCore") is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [Mavlink](https://mavlink.io/en/).
 
 It is written in C++ and aiming to be:
 
@@ -24,7 +24,7 @@ The next steps will be:
 
 ## Interfacing
 
-DroneCore currently takes care of the mavlink messaging. Connections over serial, UDP, and TCP are supported on Linux, macOS, and Windows.
+The SDK currently takes care of the MAVLink messaging. Connections over serial, UDP, and TCP are supported on Linux, macOS, and Windows.
 
 The library provides both synchronous (blocking) API calls, as well as asynchronous API calls using callbacks.
 
@@ -46,12 +46,12 @@ The links below take you to the respective header files:
 - [follow_me](plugins/follow_me/follow_me.h): drone tracks a position supplied by DroneCore.
 - [logging](plugins/logging/logging.h): (not implemented) data logging and streaming from the vehicle.
 
-For more information see the [API Overview](https://sdk.dronecode.org/en/#api-overview) in the DroneCore Guide.
+For more information see the [API Overview](https://sdk.dronecode.org/en/#api-overview) in the Dronecode SDK Guide.
 
 
 ## Docs (Build instructions etc.)
 
-Instructions for how to use the library can be found in the [DroneCore Guide](https://sdk.dronecode.org/en).
+Instructions for how to use the library can be found in the [SDK Guide](https://sdk.dronecode.org/en).
 
 Quick Links:
 
@@ -64,4 +64,4 @@ Quick Links:
 
 ## License
 
-The DroneCore project is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
+This project is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
