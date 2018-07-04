@@ -217,4 +217,31 @@ std::ostream &operator<<(std::ostream &str,
                << ", uri: " << video_stream_settings.uri << "]";
 }
 
+bool operator==(const Camera::VideoStreamInfo &lhs, const Camera::VideoStreamInfo &rhs)
+{
+    std::cerr << lhs.status << ", ..............., " << rhs.status << std::endl;
+    return lhs.settings == rhs.settings && lhs.status == rhs.status;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::VideoStreamInfo const &video_stream_info)
+{
+    return str << "[" << std::endl
+               << "settings: " << video_stream_info.settings << std::endl
+               << "status: " << video_stream_info.status << std::endl
+               << "]";
+}
+
+std::ostream &operator<<(std::ostream &str,
+                         Camera::VideoStreamInfo::Status const &video_stream_info_status)
+{
+    switch (video_stream_info_status) {
+        case Camera::VideoStreamInfo::Status::IN_PROGRESS:
+            return str << "IN_PROGRESS";
+        case Camera::VideoStreamInfo::Status::NOT_RUNNING:
+            return str << "NOT_RUNNING";
+        default:
+            return str << "UNKNOWN";
+    }
+}
+
 } // namespace dronecode_sdk

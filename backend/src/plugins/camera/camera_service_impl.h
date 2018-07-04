@@ -200,6 +200,23 @@ public:
         return grpc::Status::OK;
     }
 
+    static std::unique_ptr<rpc::camera::VideoStreamSettings>
+    translateVideoStreamSettings(const dronecore::Camera::VideoStreamSettings video_stream_settings)
+    {
+        auto rpc_video_stream_settings = std::unique_ptr<rpc::camera::VideoStreamSettings>(
+            new rpc::camera::VideoStreamSettings());
+        rpc_video_stream_settings->set_frame_rate_hz(video_stream_settings.frame_rate_hz);
+        rpc_video_stream_settings->set_horizontal_resolution_pix(
+            video_stream_settings.horizontal_resolution_pix);
+        rpc_video_stream_settings->set_vertical_resolution_pix(
+            video_stream_settings.vertical_resolution_pix);
+        rpc_video_stream_settings->set_bit_rate_b_s(video_stream_settings.bit_rate_b_s);
+        rpc_video_stream_settings->set_rotation_deg(video_stream_settings.rotation_deg);
+        rpc_video_stream_settings->set_uri(video_stream_settings.uri);
+
+        return rpc_video_stream_settings;
+    }
+
     static dronecore::Camera::VideoStreamSettings translateRPCVideoStreamSettings(
         const rpc::camera::VideoStreamSettings &rpc_video_stream_settings)
     {
@@ -214,6 +231,87 @@ public:
         video_stream_settings.uri = rpc_video_stream_settings.uri();
 
         return video_stream_settings;
+    }
+
+    static std::unique_ptr<rpc::camera::VideoStreamInfo>
+    translateVideoStreamInfo(const dronecore::Camera::VideoStreamInfo &video_stream_info)
+    {
+        auto rpc_video_stream_info =
+            std::unique_ptr<rpc::camera::VideoStreamInfo>(new rpc::camera::VideoStreamInfo());
+
+        auto rpc_video_stream_settings = translateVideoStreamSettings(video_stream_info.settings);
+        rpc_video_stream_info->set_allocated_video_stream_settings(
+            rpc_video_stream_settings.release());
+
+        auto rpc_video_stream_status = translateVideoStreamStatus(video_stream_info.status);
+        rpc_video_stream_info->set_video_stream_status(rpc_video_stream_status);
+
+        return rpc_video_stream_info;
+    }
+
+    static rpc::camera::VideoStreamInfo_VideoStreamStatus
+    translateVideoStreamStatus(const dronecore::Camera::VideoStreamInfo::Status status)
+    {
+        switch (status) {
+            case dronecore::Camera::VideoStreamInfo::Status::IN_PROGRESS:
+                return rpc::camera::VideoStreamInfo_VideoStreamStatus_IN_PROGRESS;
+            case dronecore::Camera::VideoStreamInfo::Status::NOT_RUNNING:
+            default:
+                return rpc::camera::VideoStreamInfo_VideoStreamStatus_NOT_RUNNING;
+        }
+    }
+
+    static dronecore::Camera::VideoStreamInfo::Status
+    translateRPCVideoStreamStatus(const rpc::camera::VideoStreamInfo_VideoStreamStatus status)
+    {
+        switch (status) {
+            case rpc::camera::VideoStreamInfo_VideoStreamStatus_IN_PROGRESS:
+                return dronecore::Camera::VideoStreamInfo::Status::IN_PROGRESS;
+            case rpc::camera::VideoStreamInfo_VideoStreamStatus_NOT_RUNNING:
+            default:
+                return dronecore::Camera::VideoStreamInfo::Status::NOT_RUNNING;
+        }
+    }
+
+    static dronecore::Camera::VideoStreamInfo
+    translateRPCVideoStreamInfo(const rpc::camera::VideoStreamInfo &rpc_video_stream_info)
+    {
+        dronecore::Camera::VideoStreamInfo video_stream_info;
+        video_stream_info.settings =
+            translateRPCVideoStreamSettings(rpc_video_stream_info.video_stream_settings());
+        video_stream_info.status =
+            translateRPCVideoStreamStatus(rpc_video_stream_info.video_stream_status());
+
+        return video_stream_info;
+    }
+
+    grpc::Status SubscribeVideoStreamInfo(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::SubscribeVideoStreamInfoRequest * /* request */,
+        grpc::ServerWriter<rpc::camera::VideoStreamInfoResponse> *writer) override
+    {
+        std::promise<void> stream_closed_promise;
+        auto stream_closed_future = stream_closed_promise.get_future();
+
+        bool is_finished = false;
+
+        _camera.subscribe_video_stream_info(
+            [&writer, &stream_closed_promise, &is_finished](
+                const dronecore::Camera::VideoStreamInfo video_info) {
+                rpc::camera::VideoStreamInfoResponse rpc_video_stream_info_response;
+                auto video_stream_info = translateVideoStreamInfo(video_info);
+                rpc_video_stream_info_response.set_allocated_video_stream_info(
+                    video_stream_info.release());
+
+                if (!writer->Write(rpc_video_stream_info_response) && !is_finished) {
+                    is_finished = true;
+                    stream_closed_promise.set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+
+        return grpc::Status::OK;
     }
 
 private:

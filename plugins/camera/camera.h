@@ -587,4 +587,26 @@ bool operator==(const Camera::VideoStreamSettings &lhs, const Camera::VideoStrea
 std::ostream &operator<<(std::ostream &str,
                          Camera::VideoStreamSettings const &video_stream_settings);
 
+/**
+ * @brief Equal operator to compare two `Camera::VideoStreamInfo` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::VideoStreamInfo &lhs, const Camera::VideoStreamInfo &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::VideoStreamInfo`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::VideoStreamInfo const &video_stream_info);
+
+/**
+ * @brief Stream operator to print information about a `Camera::VideoStreamInfo::Status`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Camera::VideoStreamInfo::Status const &video_stream_info_status);
+
 } // namespace dronecode_sdk

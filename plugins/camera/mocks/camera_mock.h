@@ -17,6 +17,8 @@ public:
     MOCK_CONST_METHOD1(set_mode, Camera::Result(Camera::Mode));
     MOCK_CONST_METHOD1(subscribe_mode, void(Camera::subscribe_mode_callback_t));
     MOCK_CONST_METHOD1(set_video_stream_settings, void(Camera::VideoStreamSettings));
+    MOCK_CONST_METHOD1(subscribe_video_stream_info,
+                       void(Camera::subscribe_video_stream_info_callback_t));
 };
 
 } // namespace testing

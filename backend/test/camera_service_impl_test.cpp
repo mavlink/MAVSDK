@@ -30,6 +30,8 @@ static constexpr auto ARBITRARY_RESOLUTION = 1280;
 static constexpr auto ARBITRARY_BIT_RATE = 1492;
 static constexpr auto ARBITRARY_ROTATION = 24;
 static constexpr auto ARBITRARY_URI = "rtsp://blah:1337";
+static constexpr auto ARBITRARY_VIDEO_STREAM_STATUS =
+    dronecore::rpc::camera::VideoStreamInfo_VideoStreamStatus_IN_PROGRESS;
 
 std::vector<InputPair> generateInputPairs();
 
@@ -57,7 +59,19 @@ protected:
                                          std::shared_ptr<grpc::ClientContext> context =
                                              std::make_shared<grpc::ClientContext>()) const;
     void checkSendsModes(const std::vector<dronecore::Camera::Mode> &modes) const;
-    dronecore::rpc::camera::VideoStreamSettings *createArbitraryRPCVideoStreamSettings() const;
+    std::unique_ptr<dronecore::rpc::camera::VideoStreamSettings>
+    createArbitraryRPCVideoStreamSettings() const;
+
+    std::future<void>
+    subscribeVideoStreamInfoAsync(std::vector<dronecore::Camera::VideoStreamInfo> &video_info,
+                                  std::shared_ptr<grpc::ClientContext> context) const;
+    std::unique_ptr<dronecore::rpc::camera::VideoStreamInfo>
+    createArbitraryRPCVideoStreamInfo() const;
+    void checkSendsVideoStreamInfo(
+        const std::vector<dronecore::Camera::VideoStreamInfo> &video_info_events) const;
+    dronecore::Camera::VideoStreamInfo
+    createVideoStreamInfo(const dronecore::Camera::VideoStreamSettings settings,
+                          const dronecore::Camera::VideoStreamInfo::Status status) const;
 
     MockCamera _camera;
     CameraServiceImpl _camera_service;
@@ -336,8 +350,8 @@ void CameraServiceImplTest::checkSendsModes(const std::vector<dronecore::Camera:
     std::vector<dronecore::Camera::Mode> received_modes;
     auto mode_events_future = subscribeModeAsync(received_modes, context);
     subscription_future.wait();
-    for (size_t i = 0; i < modes.size(); i++) {
-        mode_callback(modes.at(i));
+    for (const auto mode : modes) {
+        mode_callback(mode);
     }
     context->TryCancel();
     mode_callback(ARBITRARY_CAMERA_MODE);
@@ -372,15 +386,16 @@ TEST_F(CameraServiceImplTest, setVideoStreamSettingsDoesNotFailWithNullResponse)
     dronecore::rpc::camera::SetVideoStreamSettingsRequest request;
 
     auto rpc_settings = createArbitraryRPCVideoStreamSettings();
-    request.set_allocated_video_stream_settings(rpc_settings);
+    request.set_allocated_video_stream_settings(rpc_settings.release());
 
     _camera_service.SetVideoStreamSettings(nullptr, &request, nullptr);
 }
 
-dronecore::rpc::camera::VideoStreamSettings *
+std::unique_ptr<dronecore::rpc::camera::VideoStreamSettings>
 CameraServiceImplTest::createArbitraryRPCVideoStreamSettings() const
 {
-    auto rpc_settings(new dronecore::rpc::camera::VideoStreamSettings());
+    auto rpc_settings = std::unique_ptr<dronecore::rpc::camera::VideoStreamSettings>(
+        new dronecore::rpc::camera::VideoStreamSettings());
     rpc_settings->set_frame_rate_hz(ARBITRARY_FRAME_RATE);
     rpc_settings->set_horizontal_resolution_pix(ARBITRARY_RESOLUTION);
     rpc_settings->set_vertical_resolution_pix(ARBITRARY_RESOLUTION);
@@ -393,14 +408,140 @@ CameraServiceImplTest::createArbitraryRPCVideoStreamSettings() const
 
 TEST_F(CameraServiceImplTest, setsVideoStreamSettingsCorrectly)
 {
-    const auto rpc_video_stream_settings = createArbitraryRPCVideoStreamSettings();
+    auto rpc_video_stream_settings = createArbitraryRPCVideoStreamSettings();
     const auto expected_video_stream_settings =
         CameraServiceImpl::translateRPCVideoStreamSettings(*rpc_video_stream_settings);
     EXPECT_CALL(_camera, set_video_stream_settings(expected_video_stream_settings)).Times(1);
     dronecore::rpc::camera::SetVideoStreamSettingsRequest request;
-    request.set_allocated_video_stream_settings(rpc_video_stream_settings);
+    request.set_allocated_video_stream_settings(rpc_video_stream_settings.release());
 
     _camera_service.SetVideoStreamSettings(nullptr, &request, nullptr);
+}
+
+TEST_F(CameraServiceImplTest, registersToVideoStreamInfo)
+{
+    auto rpc_video_stream_info = createArbitraryRPCVideoStreamInfo();
+    const auto expected_video_stream_info =
+        CameraServiceImpl::translateRPCVideoStreamInfo(*rpc_video_stream_info);
+    dronecore::Camera::subscribe_video_stream_info_callback_t video_info_callback;
+    EXPECT_CALL(_camera, subscribe_video_stream_info(_))
+        .WillOnce(SaveResult(&video_info_callback, &_callback_saved_promise));
+    std::vector<dronecore::Camera::VideoStreamInfo> video_info_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+
+    auto mode_events_future = subscribeVideoStreamInfoAsync(video_info_events, context);
+    _callback_saved_future.wait();
+    context->TryCancel();
+    video_info_callback(expected_video_stream_info);
+    mode_events_future.wait();
+}
+
+std::future<void> CameraServiceImplTest::subscribeVideoStreamInfoAsync(
+    std::vector<dronecore::Camera::VideoStreamInfo> &video_info_events,
+    std::shared_ptr<grpc::ClientContext> context) const
+{
+    return std::async(std::launch::async, [&]() {
+        dronecore::rpc::camera::SubscribeVideoStreamInfoRequest request;
+        auto response_reader = _stub->SubscribeVideoStreamInfo(context.get(), request);
+
+        dronecore::rpc::camera::VideoStreamInfoResponse response;
+        while (response_reader->Read(&response)) {
+            video_info_events.push_back(
+                CameraServiceImpl::translateRPCVideoStreamInfo(response.video_stream_info()));
+        }
+
+        response_reader->Finish();
+    });
+}
+
+std::unique_ptr<dronecore::rpc::camera::VideoStreamInfo>
+CameraServiceImplTest::createArbitraryRPCVideoStreamInfo() const
+{
+    auto rpc_info = std::unique_ptr<dronecore::rpc::camera::VideoStreamInfo>(
+        new dronecore::rpc::camera::VideoStreamInfo());
+    rpc_info->set_video_stream_status(ARBITRARY_VIDEO_STREAM_STATUS);
+    rpc_info->set_allocated_video_stream_settings(
+        createArbitraryRPCVideoStreamSettings().release());
+    rpc_info->set_video_stream_status(ARBITRARY_VIDEO_STREAM_STATUS);
+
+    return rpc_info;
+}
+
+TEST_F(CameraServiceImplTest, doesNotSendVideoStreamInfoIfCallbackNotCalled)
+{
+    std::vector<dronecore::Camera::VideoStreamInfo> video_info_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+    auto video_info_events_future = subscribeVideoStreamInfoAsync(video_info_events, context);
+
+    context->TryCancel();
+    video_info_events_future.wait();
+
+    EXPECT_EQ(0, video_info_events.size());
+}
+
+TEST_F(CameraServiceImplTest, sendsOneVideoStreamInfo)
+{
+    std::vector<dronecore::Camera::VideoStreamInfo> video_info_events;
+    auto video_info_event = createArbitraryRPCVideoStreamInfo();
+    video_info_events.push_back(CameraServiceImpl::translateRPCVideoStreamInfo(*video_info_event));
+
+    checkSendsVideoStreamInfo(video_info_events);
+}
+
+void CameraServiceImplTest::checkSendsVideoStreamInfo(
+    const std::vector<dronecore::Camera::VideoStreamInfo> &video_info_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Camera::subscribe_video_stream_info_callback_t video_info_callback;
+    auto context = std::make_shared<grpc::ClientContext>();
+    EXPECT_CALL(_camera, subscribe_video_stream_info(_))
+        .WillOnce(SaveResult(&video_info_callback, &subscription_promise));
+
+    std::vector<dronecore::Camera::VideoStreamInfo> received_video_info_events;
+    auto video_info_events_future =
+        subscribeVideoStreamInfoAsync(received_video_info_events, context);
+    subscription_future.wait();
+    for (const auto video_info_event : video_info_events) {
+        video_info_callback(video_info_event);
+    }
+    context->TryCancel();
+    auto arbitrary_video_info_event = createArbitraryRPCVideoStreamInfo();
+    video_info_callback(
+        CameraServiceImpl::translateRPCVideoStreamInfo(*arbitrary_video_info_event));
+    video_info_events_future.wait();
+
+    ASSERT_EQ(video_info_events.size(), received_video_info_events.size());
+    for (size_t i = 0; i < video_info_events.size(); i++) {
+        EXPECT_EQ(video_info_events.at(i), received_video_info_events.at(i));
+    }
+}
+
+TEST_F(CameraServiceImplTest, sendsMultipleVideoStreamInfos)
+{
+    std::vector<dronecore::Camera::VideoStreamInfo> video_info_events;
+
+    dronecore::Camera::VideoStreamSettings settings1;
+    settings1.set_highest();
+    video_info_events.push_back(
+        createVideoStreamInfo(settings1, dronecore::Camera::VideoStreamInfo::Status::NOT_RUNNING));
+
+    dronecore::Camera::VideoStreamSettings settings2;
+    video_info_events.push_back(
+        createVideoStreamInfo(settings2, dronecore::Camera::VideoStreamInfo::Status::IN_PROGRESS));
+
+    checkSendsVideoStreamInfo(video_info_events);
+}
+
+dronecore::Camera::VideoStreamInfo CameraServiceImplTest::createVideoStreamInfo(
+    const dronecore::Camera::VideoStreamSettings settings,
+    const dronecore::Camera::VideoStreamInfo::Status status) const
+{
+    dronecore::Camera::VideoStreamInfo video_stream_info;
+    video_stream_info.settings = settings;
+    video_stream_info.status = status;
+
+    return video_stream_info;
 }
 
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,
