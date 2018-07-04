@@ -572,4 +572,19 @@ private:
     std::unique_ptr<CameraImpl> _impl;
 };
 
+/**
+ * @brief Equal operator to compare two `Camera::VideoStreamSettings` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::VideoStreamSettings &lhs, const Camera::VideoStreamSettings &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::VideoStreamSettings`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Camera::VideoStreamSettings const &video_stream_settings);
+
 } // namespace dronecode_sdk

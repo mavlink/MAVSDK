@@ -25,6 +25,11 @@ using InputPair = std::pair<std::string, dronecode_sdk::Camera::Result>;
 static constexpr auto ARBITRARY_FLOAT = 24.2f;
 static constexpr auto ARBITRARY_RPC_CAMERA_MODE = dronecore::rpc::camera::CameraMode::PHOTO;
 static constexpr auto ARBITRARY_CAMERA_MODE = dronecore::Camera::Mode::VIDEO;
+static constexpr auto ARBITRARY_FRAME_RATE = 24.0f;
+static constexpr auto ARBITRARY_RESOLUTION = 1280;
+static constexpr auto ARBITRARY_BIT_RATE = 1492;
+static constexpr auto ARBITRARY_ROTATION = 24;
+static constexpr auto ARBITRARY_URI = "rtsp://blah:1337";
 
 std::vector<InputPair> generateInputPairs();
 
@@ -52,6 +57,7 @@ protected:
                                          std::shared_ptr<grpc::ClientContext> context =
                                              std::make_shared<grpc::ClientContext>()) const;
     void checkSendsModes(const std::vector<dronecore::Camera::Mode> &modes) const;
+    dronecore::rpc::camera::VideoStreamSettings *createArbitraryRPCVideoStreamSettings() const;
 
     MockCamera _camera;
     CameraServiceImpl _camera_service;
@@ -354,6 +360,47 @@ TEST_F(CameraServiceImplTest, sendsMultipleModes)
     modes.push_back(dronecore::Camera::Mode::UNKNOWN);
 
     checkSendsModes(modes);
+}
+
+TEST_F(CameraServiceImplTest, setVideoStreamSettingsDoesNotFailWithAllNullParams)
+{
+    _camera_service.SetVideoStreamSettings(nullptr, nullptr, nullptr);
+}
+
+TEST_F(CameraServiceImplTest, setVideoStreamSettingsDoesNotFailWithNullResponse)
+{
+    dronecore::rpc::camera::SetVideoStreamSettingsRequest request;
+
+    auto rpc_settings = createArbitraryRPCVideoStreamSettings();
+    request.set_allocated_video_stream_settings(rpc_settings);
+
+    _camera_service.SetVideoStreamSettings(nullptr, &request, nullptr);
+}
+
+dronecore::rpc::camera::VideoStreamSettings *
+CameraServiceImplTest::createArbitraryRPCVideoStreamSettings() const
+{
+    auto rpc_settings(new dronecore::rpc::camera::VideoStreamSettings());
+    rpc_settings->set_frame_rate_hz(ARBITRARY_FRAME_RATE);
+    rpc_settings->set_horizontal_resolution_pix(ARBITRARY_RESOLUTION);
+    rpc_settings->set_vertical_resolution_pix(ARBITRARY_RESOLUTION);
+    rpc_settings->set_bit_rate_b_s(ARBITRARY_BIT_RATE);
+    rpc_settings->set_rotation_deg(ARBITRARY_ROTATION);
+    rpc_settings->set_uri(ARBITRARY_URI);
+
+    return rpc_settings;
+}
+
+TEST_F(CameraServiceImplTest, setsVideoStreamSettingsCorrectly)
+{
+    const auto rpc_video_stream_settings = createArbitraryRPCVideoStreamSettings();
+    const auto expected_video_stream_settings =
+        CameraServiceImpl::translateRPCVideoStreamSettings(*rpc_video_stream_settings);
+    EXPECT_CALL(_camera, set_video_stream_settings(expected_video_stream_settings)).Times(1);
+    dronecore::rpc::camera::SetVideoStreamSettingsRequest request;
+    request.set_allocated_video_stream_settings(rpc_video_stream_settings);
+
+    _camera_service.SetVideoStreamSettings(nullptr, &request, nullptr);
 }
 
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,

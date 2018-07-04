@@ -197,4 +197,24 @@ std::string Camera::result_str(Result result)
     }
 }
 
+bool operator==(const Camera::VideoStreamSettings &lhs, const Camera::VideoStreamSettings &rhs)
+{
+    return lhs.frame_rate_hz == rhs.frame_rate_hz &&
+           lhs.horizontal_resolution_pix == rhs.horizontal_resolution_pix &&
+           lhs.vertical_resolution_pix == rhs.vertical_resolution_pix &&
+           lhs.bit_rate_b_s == rhs.bit_rate_b_s && lhs.rotation_deg == rhs.rotation_deg &&
+           lhs.uri == rhs.uri;
+}
+
+std::ostream &operator<<(std::ostream &str,
+                         Camera::VideoStreamSettings const &video_stream_settings)
+{
+    return str << "[frame_rate_hz: " << video_stream_settings.frame_rate_hz
+               << ", horizontal_resolution_pix: " << video_stream_settings.horizontal_resolution_pix
+               << ", vertical_resolution_pix: " << video_stream_settings.vertical_resolution_pix
+               << ", bit_rate_b_s: " << video_stream_settings.bit_rate_b_s
+               << ", rotation_deg: " << video_stream_settings.rotation_deg
+               << ", uri: " << video_stream_settings.uri << "]";
+}
+
 } // namespace dronecode_sdk

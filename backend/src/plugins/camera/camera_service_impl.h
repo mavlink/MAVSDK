@@ -186,6 +186,36 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status
+    SetVideoStreamSettings(grpc::ServerContext * /* context */,
+                           const rpc::camera::SetVideoStreamSettingsRequest *request,
+                           rpc::camera::SetVideoStreamSettingsResponse * /* response */) override
+    {
+        if (request != nullptr) {
+            const auto video_stream_settings =
+                translateRPCVideoStreamSettings(request->video_stream_settings());
+            _camera.set_video_stream_settings(video_stream_settings);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    static dronecore::Camera::VideoStreamSettings translateRPCVideoStreamSettings(
+        const rpc::camera::VideoStreamSettings &rpc_video_stream_settings)
+    {
+        dronecore::Camera::VideoStreamSettings video_stream_settings;
+        video_stream_settings.frame_rate_hz = rpc_video_stream_settings.frame_rate_hz();
+        video_stream_settings.horizontal_resolution_pix =
+            rpc_video_stream_settings.horizontal_resolution_pix();
+        video_stream_settings.vertical_resolution_pix =
+            rpc_video_stream_settings.vertical_resolution_pix();
+        video_stream_settings.bit_rate_b_s = rpc_video_stream_settings.bit_rate_b_s();
+        video_stream_settings.rotation_deg = rpc_video_stream_settings.rotation_deg();
+        video_stream_settings.uri = rpc_video_stream_settings.uri();
+
+        return video_stream_settings;
+    }
+
 private:
     Camera &_camera;
 };
