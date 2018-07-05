@@ -12,7 +12,7 @@
 
 using namespace json11;
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class MissionImpl : public PluginImplBase {
 public:
@@ -130,4 +130,4 @@ private:
     static constexpr double PROCESS_TIMEOUT_S = 1.5;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

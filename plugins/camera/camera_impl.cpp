@@ -6,7 +6,7 @@
 #include "http_loader.h"
 #include <functional>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 using namespace std::placeholders; // for `_1`
 
@@ -1259,4 +1259,4 @@ bool CameraImpl::get_option_str(const std::string &setting_id,
     return _camera_definition->get_option_str(setting_id, option_id, description);
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

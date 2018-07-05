@@ -1244,7 +1244,7 @@ for root, dirs, files in os.walk(DOXYGEN_XML_DIR, topdown=False):
             skip_string=" %s - (index page)" % current_filename
             skipped_files.append(skip_string)
             continue
-        if name.endswith('namespacedronecore.xml'):
+        if name.endswith('namespacedronecode_sdk.xml'):
             print("  Generating: %s (namespace xml index file)" % current_filename)
             currentNamespace=cppNamespace()
             currentNamespace.import_doxygen_namespace_file(name,current_filename)

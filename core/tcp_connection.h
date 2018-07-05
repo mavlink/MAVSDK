@@ -13,7 +13,7 @@
 #undef SOCKET_ERROR
 #endif
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class TcpConnection : public Connection {
 public:
@@ -47,4 +47,4 @@ private:
     std::atomic_bool _is_ok{false};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

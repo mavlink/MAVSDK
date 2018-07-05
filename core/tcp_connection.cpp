@@ -20,7 +20,7 @@
 #define GET_ERROR(_x) WSAGetLastError()
 #endif
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 /* change to remote_ip and remote_port */
 TcpConnection::TcpConnection(Connection::receiver_callback_t receiver_callback,
@@ -205,4 +205,4 @@ void TcpConnection::receive()
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

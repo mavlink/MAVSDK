@@ -1,14 +1,14 @@
 #pragma once
 
 /**
- * @brief Namespace for all dronecore types.
+ * @brief Namespace for all dronecode_sdk types.
  */
-namespace dronecore {
+namespace dronecode_sdk {
 
 /**
  * @brief Result type returned when adding a connection.
  *
- * **Note**: DroneCore does not throw exceptions. Instead a result of this type will be
+ * **Note**: DronecodeSDK does not throw exceptions. Instead a result of this type will be
  * returned when you add a connection: add_udp_connection().
  */
 enum class ConnectionResult {
@@ -67,4 +67,4 @@ inline const char *connection_result_str(const ConnectionResult result)
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -1,11 +1,11 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
 void receive_result(ActionResult result);
@@ -17,7 +17,7 @@ static bool _in_air = false;
 
 TEST_F(SitlTest, ActionAsyncHover)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

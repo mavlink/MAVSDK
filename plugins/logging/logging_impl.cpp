@@ -1,9 +1,9 @@
 #include "global_include.h"
 #include "logging_impl.h"
-#include "dronecore_impl.h"
+#include "dronecode_sdk_impl.h"
 #include "px4_custom_mode.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 LoggingImpl::LoggingImpl(System &system) : PluginImplBase(system)
 {
@@ -133,4 +133,4 @@ void LoggingImpl::command_result_callback(MAVLinkCommands::Result command_result
     callback(action_result);
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

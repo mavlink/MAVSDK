@@ -3,12 +3,12 @@
 #include <memory>
 #include <atomic>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/action/action.h"
 #include "plugins/mission/mission.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
 enum class MissionState : unsigned {
@@ -48,7 +48,7 @@ static std::shared_ptr<MissionItem> add_waypoint(double latitude_deg,
 
 TEST_F(SitlTest, MissionSurvey)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

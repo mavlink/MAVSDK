@@ -5,7 +5,7 @@
 #include "plugin_impl_base.h"
 #include "camera_definition.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class CameraImpl : public PluginImplBase {
 public:
@@ -190,4 +190,4 @@ private:
         _subscribe_possible_setting_options_callback{nullptr};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -1,7 +1,7 @@
 #include "action.h"
 #include "action_impl.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 Action::Action(System &system) : PluginBase(), _impl{new ActionImpl(system)} {}
 
@@ -107,4 +107,4 @@ float Action::get_max_speed_m_s() const
     return _impl->get_max_speed_m_s();
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

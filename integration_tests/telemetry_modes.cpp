@@ -1,17 +1,17 @@
 #include <iostream>
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 #include "integration_test_helper.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 void print_mode(Telemetry::FlightMode flight_mode);
 static Telemetry::FlightMode _flight_mode = Telemetry::FlightMode::UNKNOWN;
 
 TEST_F(SitlTest, TelemetryFlightModes)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

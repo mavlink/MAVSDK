@@ -17,7 +17,7 @@
 #define ANSI_COLOR_RESET "\x1b[0m"
 #endif
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 void set_color(Color color)
 {
@@ -67,4 +67,4 @@ void set_color(Color color)
 #endif
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

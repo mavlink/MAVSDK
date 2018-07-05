@@ -1,4 +1,4 @@
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "http_loader.h"
 #include "curl_include.h"
 #include <fstream>
@@ -8,7 +8,7 @@
 #include <numeric>
 #include <gtest/gtest.h>
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 class HttpLoaderTest : public testing::Test {
 protected:

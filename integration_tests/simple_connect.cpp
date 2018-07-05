@@ -1,14 +1,14 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 TEST_F(SitlTest, TwoConnections)
 {
-    dronecore::DroneCore *dc;
-    dc = new dronecore::DroneCore();
+    dronecode_sdk::DronecodeSDK *dc;
+    dc = new dronecode_sdk::DronecodeSDK();
     std::cout << "started" << std::endl;
 
     ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::SUCCESS);
@@ -31,7 +31,7 @@ TEST_F(SitlTest, TwoConnections)
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    dc = new dronecore::DroneCore();
+    dc = new dronecode_sdk::DronecodeSDK();
 
     ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::SUCCESS);
 

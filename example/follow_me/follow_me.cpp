@@ -11,17 +11,17 @@
  */
 
 #include <chrono>
-#include <dronecore/action.h>
-#include <dronecore/dronecore.h>
-#include <dronecore/follow_me.h>
-#include <dronecore/telemetry.h>
+#include <dronecode_sdk/action.h>
+#include <dronecode_sdk/dronecode_sdk.h>
+#include <dronecode_sdk/follow_me.h>
+#include <dronecode_sdk/telemetry.h>
 #include <iostream>
 #include <memory>
 #include <thread>
 
 #include "fake_location_provider.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 using namespace std::chrono; // for seconds(), milliseconds(), etc
 using namespace std::this_thread; // for sleep_for()
@@ -47,7 +47,7 @@ void usage(std::string bin_name)
 
 int main(int argc, char **argv)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
     std::string connection_url;
     ConnectionResult connection_result;
 

@@ -1,9 +1,9 @@
 #include "connection.h"
-#include "dronecore_impl.h"
+#include "dronecode_sdk_impl.h"
 #include "mavlink_channels.h"
 #include "global_include.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 Connection::Connection(receiver_callback_t receiver_callback) :
     _receiver_callback(receiver_callback),
@@ -43,4 +43,4 @@ void Connection::receive_message(const mavlink_message_t &message)
     _receiver_callback(message);
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

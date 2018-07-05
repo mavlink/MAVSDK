@@ -1,6 +1,6 @@
 #pragma once
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 /**
  * @brief Base class for every plugin.
@@ -28,4 +28,4 @@ public:
     const PluginBase &operator=(const PluginBase &) = delete;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -3,7 +3,7 @@
 #include <string>
 #include <cmath>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class CalibrationStatustextParser {
 public:
@@ -42,4 +42,4 @@ private:
     char _tmp_str[64];
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

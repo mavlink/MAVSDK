@@ -2,7 +2,7 @@
 
 #include "camera/camera.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace testing {
 
 class MockCamera {
@@ -17,4 +17,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecore
+} // namespace dronecode_sdk

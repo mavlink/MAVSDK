@@ -4,7 +4,7 @@
 #include <memory>
 #include "plugin_base.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class OffboardImpl;
 class System;
@@ -16,9 +16,9 @@ class System;
  * as opposed to onboard control right inside the autopilot "board".
  *
  * Client code must specify a setpoint before starting offboard mode.
- * DroneCore automatically resends setpoints at 20Hz (PX4 Offboard mode requires that setpoints are
- * minimally resent at 2Hz). If more precise control is required, clients can call the
- * setpoint methods at whatever rate is required.
+ * DronecodeSDK automatically resends setpoints at 20Hz (PX4 Offboard mode requires that setpoints
+ * are minimally resent at 2Hz). If more precise control is required, clients can call the setpoint
+ * methods at whatever rate is required.
  *
  * **Attention:** this is work in progress, use with caution!
  */
@@ -167,4 +167,4 @@ private:
     std::unique_ptr<OffboardImpl> _impl;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

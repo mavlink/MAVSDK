@@ -18,7 +18,7 @@ const std::string SLASH = "\\";
 const std::string SLASH = "/";
 #endif
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 struct QGCMissionItem {
     MAV_CMD command;

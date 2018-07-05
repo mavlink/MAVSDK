@@ -2,7 +2,7 @@
 
 #include "action/action_result.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace testing {
 
 class MockAction {
@@ -22,4 +22,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecore
+} // namespace dronecode_sdk

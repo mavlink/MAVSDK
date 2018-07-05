@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 int main(int argc, char *argv[])
 {

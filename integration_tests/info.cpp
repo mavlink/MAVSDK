@@ -1,16 +1,16 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/info/info.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 static void on_discover(uint64_t uuid);
 static bool _discovered_system = false;
 
 TEST_F(SitlTest, Info)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

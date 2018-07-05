@@ -6,7 +6,7 @@
 #include "system.h"
 #include "offboard.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class OffboardImpl : public PluginImplBase {
 public:
@@ -52,4 +52,4 @@ private:
     const float SEND_INTERVAL_S = 0.1f;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

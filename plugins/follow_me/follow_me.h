@@ -7,7 +7,7 @@
 #include <functional>
 #include "plugin_base.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class FollowMeImpl;
 class System;
@@ -198,4 +198,4 @@ private:
     std::unique_ptr<FollowMeImpl> _impl;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

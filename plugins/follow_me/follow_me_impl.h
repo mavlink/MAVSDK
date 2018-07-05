@@ -8,7 +8,7 @@
 #include "global_include.h"
 #include "log.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class FollowMeImpl : public PluginImplBase {
 public:
@@ -95,4 +95,4 @@ private:
     std::string debug_str = "FollowMe: ";
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -6,16 +6,16 @@
 #include <atomic>
 
 #include "connection.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "system.h"
 #include "mavlink_include.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
-class DroneCoreImpl {
+class DronecodeSDKImpl {
 public:
-    DroneCoreImpl();
-    ~DroneCoreImpl();
+    DronecodeSDKImpl();
+    ~DronecodeSDKImpl();
 
     void receive_message(const mavlink_message_t &message);
     bool send_message(const mavlink_message_t &message);
@@ -34,8 +34,8 @@ public:
     bool is_connected() const;
     bool is_connected(uint64_t uuid) const;
 
-    void register_on_discover(DroneCore::event_callback_t callback);
-    void register_on_timeout(DroneCore::event_callback_t callback);
+    void register_on_discover(DronecodeSDK::event_callback_t callback);
+    void register_on_timeout(DronecodeSDK::event_callback_t callback);
 
     void notify_on_discover(uint64_t uuid);
     void notify_on_timeout(uint64_t uuid);
@@ -53,10 +53,10 @@ private:
     mutable std::recursive_mutex _systems_mutex;
     std::map<uint8_t, std::shared_ptr<System>> _systems;
 
-    DroneCore::event_callback_t _on_discover_callback;
-    DroneCore::event_callback_t _on_timeout_callback;
+    DronecodeSDK::event_callback_t _on_discover_callback;
+    DronecodeSDK::event_callback_t _on_timeout_callback;
 
     std::atomic<bool> _should_exit = {false};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -2,16 +2,16 @@
 #include <gmock/gmock.h>
 
 #include "connection_initiator.h"
-#include "mocks/dronecore_mock.h"
+#include "mocks/dronecode_sdk_mock.h"
 
 namespace {
 
 using testing::_;
 using testing::NiceMock;
 
-using event_callback_t = dronecore::testing::event_callback_t;
-using MockDroneCore = NiceMock<dronecore::testing::MockDroneCore>;
-using ConnectionInitiator = dronecore::backend::ConnectionInitiator<MockDroneCore>;
+using event_callback_t = dronecode_sdk::testing::event_callback_t;
+using MockDronecodeSDK = NiceMock<dronecode_sdk::testing::MockDronecodeSDK>;
+using ConnectionInitiator = dronecode_sdk::backend::ConnectionInitiator<MockDronecodeSDK>;
 
 static constexpr auto ARBITRARY_PORT = 1291;
 static constexpr auto ARBITRARY_UUID = 1492;
@@ -24,7 +24,7 @@ ACTION_P(SaveCallback, event_callback)
 TEST(ConnectionInitiator, registerDiscoverIsCalledExactlyOnce)
 {
     ConnectionInitiator initiator;
-    MockDroneCore dc;
+    MockDronecodeSDK dc;
     EXPECT_CALL(dc, register_on_discover(_)).Times(1);
 
     initiator.start(dc, ARBITRARY_PORT);
@@ -33,7 +33,7 @@ TEST(ConnectionInitiator, registerDiscoverIsCalledExactlyOnce)
 TEST(ConnectionInitiator, startAddsUDPConnection)
 {
     ConnectionInitiator initiator;
-    MockDroneCore dc;
+    MockDronecodeSDK dc;
 
     EXPECT_CALL(dc, add_udp_connection(_));
 
@@ -43,7 +43,7 @@ TEST(ConnectionInitiator, startAddsUDPConnection)
 TEST(ConnectionInitiator, startHangsUntilSystemDiscovered)
 {
     ConnectionInitiator initiator;
-    MockDroneCore dc;
+    MockDronecodeSDK dc;
     event_callback_t discover_callback;
     EXPECT_CALL(dc, register_on_discover(_)).WillOnce(SaveCallback(&discover_callback));
 
@@ -61,7 +61,7 @@ TEST(ConnectionInitiator, startHangsUntilSystemDiscovered)
 TEST(ConnectionInitiator, connectionDetectedIfDiscoverCallbackCalledBeforeWait)
 {
     ConnectionInitiator initiator;
-    MockDroneCore dc;
+    MockDronecodeSDK dc;
     event_callback_t discover_callback;
     EXPECT_CALL(dc, register_on_discover(_)).WillOnce(SaveCallback(&discover_callback));
 
@@ -73,7 +73,7 @@ TEST(ConnectionInitiator, connectionDetectedIfDiscoverCallbackCalledBeforeWait)
 TEST(ConnectionInitiator, doesNotCrashIfDiscoverCallbackCalledMoreThanOnce)
 {
     ConnectionInitiator initiator;
-    MockDroneCore dc;
+    MockDronecodeSDK dc;
     event_callback_t discover_callback;
     EXPECT_CALL(dc, register_on_discover(_)).WillOnce(SaveCallback(&discover_callback));
 

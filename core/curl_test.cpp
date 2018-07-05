@@ -1,4 +1,4 @@
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "curl_wrapper.h"
 #include <fstream>
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <thread>
 #include <gtest/gtest.h>
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 class CurlTest : public testing::Test {
 protected:
@@ -19,9 +19,9 @@ protected:
     {
         clean();
         _file_url_existing_http =
-            "http://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronecore_test_file";
+            "http://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronecode_sdk_test_file";
         _file_url_existing_https =
-            "https://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronecore_test_file";
+            "https://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronecode_sdk_test_file";
         _file_url_not_existing = "https://notexisting.file/does-really-not-exist";
         _local_path = "testfile.txt";
     }

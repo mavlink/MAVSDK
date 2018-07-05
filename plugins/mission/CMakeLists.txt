@@ -1,4 +1,4 @@
-add_library(dronecore_mission ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_mission ${PLUGIN_LIBRARY_TYPE}
     mission.cpp
     mission_impl.cpp
     mission_item.cpp
@@ -13,20 +13,20 @@ include_directories(
 # JSON parser library for parsing QGC plan for Mission
 add_subdirectory(third_party/json11)
 
-target_link_libraries(dronecore_mission
-    dronecore
+target_link_libraries(dronecode_sdk_mission
+    dronecode_sdk
     json11
 )
 
 install(FILES
     mission.h
     mission_item.h
-    DESTINATION ${dronecore_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}
 )
 
-install(TARGETS dronecore_mission
-    #EXPORT dronecore-targets
-    DESTINATION ${dronecore_install_lib_dir}
+install(TARGETS dronecode_sdk_mission
+    #EXPORT dronecode_sdk-targets
+    DESTINATION ${dronecode_sdk_install_lib_dir}
 )
 
 if(ANDROID)

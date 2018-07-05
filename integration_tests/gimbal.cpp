@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "integration_test_helper.h"
 #include "plugins/action/action.h"
 #include "plugins/action/action_result.h"
@@ -12,7 +12,7 @@
 #include "plugins/offboard/offboard.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i);
 void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal,
@@ -24,7 +24,7 @@ void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
 TEST_F(SitlTest, GimbalMove)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -48,7 +48,7 @@ TEST_F(SitlTest, GimbalMove)
 
 TEST_F(SitlTest, GimbalTakeoffAndMove)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -87,7 +87,7 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
 
 TEST_F(SitlTest, GimbalROIOffboard)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

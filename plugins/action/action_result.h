@@ -1,14 +1,14 @@
 #pragma once
 
 /**
- * @brief Namespace for all dronecore types.
+ * @brief Namespace for all dronecode_sdk types.
  */
-namespace dronecore {
+namespace dronecode_sdk {
 
 /**
  * @brief Possible results returned for commanded actions.
  *
- * @note DroneCore does not throw exceptions. Instead a result of this type will be
+ * @note DronecodeSDK does not throw exceptions. Instead a result of this type will be
  * returned when you execute actions.
  */
 enum class ActionResult {
@@ -62,4 +62,4 @@ inline const char *action_result_str(ActionResult result)
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

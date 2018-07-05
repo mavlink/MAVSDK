@@ -1,12 +1,12 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/telemetry/telemetry.h"
 
 #define CAMERA_AVAILABLE 0 // Set to 1 if camera is available and should be tested.
 
 using namespace std::placeholders; // for `_1`
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 static void receive_result(Telemetry::Result result);
 static void print_position(Telemetry::Position position);
@@ -44,7 +44,7 @@ static bool _received_position_velocity_ned = false;
 
 TEST_F(SitlTest, TelemetryAsync)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
 

@@ -3,7 +3,7 @@
 #include "mission_item.h"
 #include "mavlink_include.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class MissionItemImpl {
 public:
@@ -55,4 +55,4 @@ private:
     double _camera_photo_interval_s = 1.0;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

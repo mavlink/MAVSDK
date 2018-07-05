@@ -6,7 +6,7 @@
 
 #include "mission_item_impl.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 MissionItem::MissionItem() : _impl{new MissionItemImpl()} {}
 
@@ -185,4 +185,4 @@ std::ostream &operator<<(std::ostream &str, MissionItem::CameraAction const &cam
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

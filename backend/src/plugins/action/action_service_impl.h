@@ -1,7 +1,7 @@
 #include "action/action.h"
 #include "action/action.grpc.pb.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace backend {
 
 template<typename Action = Action>
@@ -181,4 +181,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecore
+} // namespace dronecode_sdk

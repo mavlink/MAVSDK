@@ -13,10 +13,10 @@ set_target_properties(unit_tests_runner
 )
 
 target_link_libraries(unit_tests_runner
-    dronecore
-    dronecore_mission
-    dronecore_camera
-    dronecore_calibration
+    dronecode_sdk
+    dronecode_sdk_mission
+    dronecode_sdk_camera
+    dronecode_sdk_calibration
     gtest
     gtest_main
     gmock

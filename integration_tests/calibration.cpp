@@ -1,10 +1,10 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/calibration/calibration.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
 static void receive_calibration_callback(Calibration::Result result,
@@ -15,7 +15,7 @@ static void receive_calibration_callback(Calibration::Result result,
 
 TEST(HardwareTest, GyroCalibration)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -39,7 +39,7 @@ TEST(HardwareTest, GyroCalibration)
 
 TEST(HardwareTest, AccelerometerCalibration)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -63,7 +63,7 @@ TEST(HardwareTest, AccelerometerCalibration)
 
 TEST(HardwareTest, MagnetometerCalibration)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

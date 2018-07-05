@@ -1,4 +1,4 @@
-![DroneCore](https://github.com/dronecore/sdk_docs/raw/develop/assets/site/sdk_logo_full.jpg) 
+![Dronecode SDK](https://github.com/dronecore/sdk_docs/raw/develop/assets/site/sdk_logo_full.jpg)
 
 [![jenkins build status](http://ci.px4.io:8080/buildStatus/icon?job=DroneCore/develop)](http://ci.px4.io:8080/blue/organizations/jenkins/DroneCore/activity)
 [![travis-ci build status](https://travis-ci.org/dronecore/DroneCore.svg?branch=develop)](https://travis-ci.org/dronecore/DroneCore)
@@ -30,7 +30,7 @@ The library provides both synchronous (blocking) API calls, as well as asynchron
 
 ## API Overview
 
-API consumers use the `DroneCore` class to discover and manage vehicles (`System` objects). Using the `System` object plugins such as e.g. `Action`, `Telemetry`, or `Mission` can be instantiated which provide information about the state of the drone and allow to interact with it.
+API consumers use the `DronecodeSDK` class to discover and manage vehicles (`System` objects). Using the `System` object plugins such as e.g. `Action`, `Telemetry`, or `Mission` can be instantiated which provide information about the state of the drone and allow to interact with it.
 
 The links below take you to the respective header files:
 
@@ -43,7 +43,7 @@ The links below take you to the respective header files:
 - [offboard](plugins/offboard/offboard.h): for velocity control
 - [gimbal](plugins/gimbal/gimbal.h): control a gimbal
 - [camera](plugins/camera/camera.h): capture images, videos, and set camera settings
-- [follow_me](plugins/follow_me/follow_me.h): drone tracks a position supplied by DroneCore.
+- [follow_me](plugins/follow_me/follow_me.h): drone tracks a position supplied by the Dronecode SDK.
 - [logging](plugins/logging/logging.h): (not implemented) data logging and streaming from the vehicle.
 
 For more information see the [API Overview](https://sdk.dronecode.org/en/#api-overview) in the Dronecode SDK Guide.

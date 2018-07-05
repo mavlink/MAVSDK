@@ -1,6 +1,6 @@
 #include "timeout_handler.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 TimeoutHandler::TimeoutHandler(Time &time) : _time(time) {}
 
@@ -82,4 +82,4 @@ void TimeoutHandler::run_once()
     _timeouts_mutex.unlock();
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

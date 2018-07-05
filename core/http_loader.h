@@ -7,7 +7,7 @@
 #include "safe_queue.h"
 #include "curl_wrapper.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class ICurlWrapper;
 
@@ -127,4 +127,4 @@ private:
     std::atomic<bool> _should_exit{false};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -1,10 +1,10 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 static void takeoff_and_hover_at_altitude(float altitude_m = NAN);
 
@@ -25,7 +25,7 @@ TEST_F(SitlTest, ActionSimpleHoverLower)
 
 void takeoff_and_hover_at_altitude(float altitude_m)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

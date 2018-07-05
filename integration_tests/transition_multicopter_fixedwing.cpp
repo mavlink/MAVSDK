@@ -1,12 +1,12 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
-// static void connect(DroneCore);
+// static void connect(DronecodeSDK);
 static void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);
 static void takeoff_and_transition_to_fixedwing();
 static void land_and_disarm(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);
@@ -19,7 +19,7 @@ TEST_F(SitlTest, ActionSimpleTransition)
 void takeoff_and_transition_to_fixedwing()
 {
     // Init & connect
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

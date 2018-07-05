@@ -12,8 +12,8 @@
 
 namespace {
 
-namespace dc = dronecore;
-namespace rpc = dronecore::rpc::mission;
+namespace dc = dronecode_sdk;
+namespace rpc = dronecode_sdk::rpc::mission;
 
 using testing::_;
 using testing::NiceMock;
@@ -151,7 +151,7 @@ class MissionServiceImplUploadTest : public MissionServiceImplTestBase {
 protected:
     /**
      * Uploads the mission and saves the result callback together with the actual list of items
-     * that are sent to dronecore. The result callback is saved in _result_callback, and the
+     * that are sent to dronecode_sdk. The result callback is saved in _result_callback, and the
      * mission items are saved in _uploaded_mission.
      */
     std::future<void> uploadMissionAndSaveParams(std::shared_ptr<UploadMissionRequest> request,
@@ -168,7 +168,7 @@ protected:
     void
     checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
 
-    /* Captures the actual mission sent to dronecore by the backend. */
+    /* Captures the actual mission sent to dronecode_sdk by the backend. */
     std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission;
 };
 
@@ -295,7 +295,7 @@ ACTION_P2(SaveResult, callback, callback_saved_promise)
 TEST_F(MissionServiceImplDownloadTest, doesNotFailWhenArgsAreNull)
 {
     auto download_handle = downloadMissionAndSaveParams(nullptr);
-    std::vector<std::shared_ptr<dronecore::MissionItem>> arbitrary_mission;
+    std::vector<std::shared_ptr<dronecode_sdk::MissionItem>> arbitrary_mission;
 
     _download_callback(ARBITRARY_RESULT, arbitrary_mission);
 }
@@ -319,7 +319,7 @@ TEST_P(MissionServiceImplDownloadTest, downloadResultIsTranslatedCorrectly)
     auto response = std::make_shared<DownloadMissionResponse>();
     std::vector<std::shared_ptr<dc::MissionItem>> mission_items;
     auto download_handle = downloadMissionAndSaveParams(response);
-    std::vector<std::shared_ptr<dronecore::MissionItem>> arbitrary_mission;
+    std::vector<std::shared_ptr<dronecode_sdk::MissionItem>> arbitrary_mission;
 
     _download_callback(GetParam().second, arbitrary_mission);
     download_handle.wait();
@@ -407,7 +407,7 @@ protected:
 TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedCallsGetter)
 {
     EXPECT_CALL(_mission, mission_finished()).Times(1);
-    dronecore::rpc::mission::IsMissionFinishedResponse response;
+    dronecode_sdk::rpc::mission::IsMissionFinishedResponse response;
 
     _mission_service.IsMissionFinished(nullptr, nullptr, &response);
 }
@@ -422,7 +422,7 @@ void MissionServiceImplIsFinishedTest::checkReturnsCorrectFinishedStatus(
     const bool expected_finished_status)
 {
     ON_CALL(_mission, mission_finished()).WillByDefault(Return(expected_finished_status));
-    dronecore::rpc::mission::IsMissionFinishedResponse response;
+    dronecode_sdk::rpc::mission::IsMissionFinishedResponse response;
 
     _mission_service.IsMissionFinished(nullptr, nullptr, &response);
 
@@ -497,7 +497,7 @@ TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemSetsRightValue)
     const int expected_item_index = ARBITRARY_INDEX;
     EXPECT_CALL(_mission, set_current_mission_item_async(expected_item_index, _))
         .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
-    dronecore::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    dronecode_sdk::rpc::mission::SetCurrentMissionItemIndexRequest request;
     request.set_index(expected_item_index);
 
     auto set_current_item_handle = std::async(std::launch::async, [this, &request]() {
@@ -505,14 +505,14 @@ TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemSetsRightValue)
     });
 
     _callback_saved_future.wait();
-    _result_callback(dronecore::Mission::Result::SUCCESS);
+    _result_callback(dronecode_sdk::Mission::Result::SUCCESS);
     set_current_item_handle.wait();
 }
 
 TEST_P(MissionServiceImplSetCurrentTest, setCurrentItemResultIsTranslatedCorrectly)
 {
-    dronecore::rpc::mission::SetCurrentMissionItemIndexResponse response;
-    dronecore::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    dronecode_sdk::rpc::mission::SetCurrentMissionItemIndexResponse response;
+    dronecode_sdk::rpc::mission::SetCurrentMissionItemIndexRequest request;
     request.set_index(ARBITRARY_INDEX);
     EXPECT_CALL(_mission, set_current_mission_item_async(_, _))
         .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
@@ -540,7 +540,7 @@ TEST_F(MissionServiceImplGetCurrentTest, getCurrentDoesNotCrashWithNullResponse)
 TEST_F(MissionServiceImplGetCurrentTest, getCurrentReturnsCorrectIndex)
 {
     const auto expected_index = ARBITRARY_INDEX;
-    dronecore::rpc::mission::GetCurrentMissionItemIndexResponse response;
+    dronecode_sdk::rpc::mission::GetCurrentMissionItemIndexResponse response;
     ON_CALL(_mission, current_mission_item()).WillByDefault(Return(expected_index));
 
     _mission_service.GetCurrentMissionItemIndex(nullptr, nullptr, &response);
@@ -557,7 +557,7 @@ TEST_F(MissionServiceImplGetCountTest, getCountDoesNotCrashWithNullResponse)
 TEST_F(MissionServiceImplGetCountTest, getCountReturnsCorrectIndex)
 {
     const auto expected_index = ARBITRARY_INDEX;
-    dronecore::rpc::mission::GetMissionCountResponse response;
+    dronecode_sdk::rpc::mission::GetMissionCountResponse response;
     ON_CALL(_mission, total_mission_items()).WillByDefault(Return(expected_index));
 
     _mission_service.GetMissionCount(nullptr, nullptr, &response);
@@ -602,10 +602,10 @@ std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecore::rpc::mission::SubscribeMissionProgressRequest request;
+        dronecode_sdk::rpc::mission::SubscribeMissionProgressRequest request;
         auto response_reader = _stub->SubscribeMissionProgress(&context, request);
 
-        dronecore::rpc::mission::MissionProgressResponse response;
+        dronecode_sdk::rpc::mission::MissionProgressResponse response;
         while (response_reader->Read(&response)) {
             auto progress_event =
                 std::make_pair(response.current_item_index(), response.mission_count());

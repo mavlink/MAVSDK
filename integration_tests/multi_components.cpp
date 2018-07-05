@@ -5,10 +5,10 @@
 
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "system.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::this_thread;
 using namespace std::chrono;
 
@@ -25,7 +25,7 @@ using namespace std::chrono;
  */
 TEST_F(SitlTest, MultiComponentDiscovery)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     // For both Autopilot and Camera
     ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);

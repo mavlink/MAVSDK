@@ -2,15 +2,15 @@
 #include <future>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "system.h"
 #include "camera_test_helpers.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 TEST(CameraTest, SetMode)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -49,7 +49,7 @@ TEST(CameraTest, SetMode)
 
 TEST(CameraTest, SetModeAsync)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

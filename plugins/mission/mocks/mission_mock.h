@@ -5,7 +5,7 @@
 #include "mission/mission.h"
 #include "mission/mission_item.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace testing {
 
 class MockMission {
@@ -25,4 +25,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecore
+} // namespace dronecode_sdk

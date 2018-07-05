@@ -8,7 +8,7 @@
 #include <windows.h>
 #endif
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class SerialConnection : public Connection {
 public:
@@ -43,4 +43,4 @@ private:
     std::atomic_bool _should_exit{false};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

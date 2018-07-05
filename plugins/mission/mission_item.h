@@ -4,7 +4,7 @@
 #include <ostream>
 #include <string>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class MissionItemImpl;
 class MissionImpl;
@@ -239,4 +239,4 @@ std::ostream &operator<<(std::ostream &str, MissionItem const &mission_item);
  */
 std::ostream &operator<<(std::ostream &str, MissionItem::CameraAction const &camera_action);
 
-} // namespace dronecore
+} // namespace dronecode_sdk

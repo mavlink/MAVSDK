@@ -3,13 +3,13 @@
 #include <memory>
 
 #include "connection_initiator.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "grpc_server.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace backend {
 
-class DroneCoreBackend::Impl {
+class DronecodeSDKBackend::Impl {
 public:
     Impl() {}
     ~Impl() {}
@@ -29,26 +29,26 @@ public:
     void wait() { _server->wait(); }
 
 private:
-    DroneCore _dc;
-    ConnectionInitiator<dronecore::DroneCore> _connection_initiator;
+    DronecodeSDK _dc;
+    ConnectionInitiator<dronecode_sdk::DronecodeSDK> _connection_initiator;
     std::unique_ptr<GRPCServer> _server;
 };
 
-DroneCoreBackend::DroneCoreBackend() : _impl(new Impl()) {}
-DroneCoreBackend::~DroneCoreBackend() = default;
+DronecodeSDKBackend::DronecodeSDKBackend() : _impl(new Impl()) {}
+DronecodeSDKBackend::~DronecodeSDKBackend() = default;
 
-void DroneCoreBackend::startGRPCServer()
+void DronecodeSDKBackend::startGRPCServer()
 {
     _impl->startGRPCServer();
 }
-void DroneCoreBackend::connect(const int mavlink_listen_port)
+void DronecodeSDKBackend::connect(const int mavlink_listen_port)
 {
     return _impl->connect(mavlink_listen_port);
 }
-void DroneCoreBackend::wait()
+void DronecodeSDKBackend::wait()
 {
     _impl->wait();
 }
 
 } // namespace backend
-} // namespace dronecore
+} // namespace dronecode_sdk

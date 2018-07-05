@@ -5,11 +5,11 @@
 #include <future>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "system.h"
 #include "camera_test_helpers.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
 static void receive_camera_result(Camera::Result result);
@@ -21,7 +21,7 @@ static std::atomic<bool> _received_capture_info{false};
 
 TEST(CameraTest, TakePhoto)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -49,7 +49,7 @@ TEST(CameraTest, TakePhoto)
 
 TEST(CameraTest, TakeMultiplePhotos)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     const int num_photos_to_take = 3;
 

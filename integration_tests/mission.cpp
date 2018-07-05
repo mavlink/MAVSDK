@@ -4,12 +4,12 @@
 #include <future>
 #include <atomic>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/action/action.h"
 #include "plugins/mission/mission.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
 static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
@@ -34,7 +34,7 @@ static bool pause_already_done = false;
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     {
         auto prom = std::make_shared<std::promise<void>>();

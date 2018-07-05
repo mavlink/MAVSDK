@@ -1,9 +1,9 @@
 #include "global_include.h"
 #include "offboard_impl.h"
-#include "dronecore_impl.h"
+#include "dronecode_sdk_impl.h"
 #include "px4_custom_mode.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 OffboardImpl::OffboardImpl(System &system) : PluginImplBase(system)
 {
@@ -322,4 +322,4 @@ Offboard::Result OffboardImpl::offboard_result_from_command_result(MAVLinkComman
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

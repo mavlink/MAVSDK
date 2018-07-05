@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 using namespace std::placeholders;
 
@@ -394,4 +394,4 @@ void CalibrationImpl::report_instruction(const std::string &instruction)
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

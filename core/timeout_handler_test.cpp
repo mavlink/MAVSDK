@@ -6,7 +6,7 @@
 #define Time FakeTime
 #endif
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 TEST(TimeoutHandler, Timeout)
 {

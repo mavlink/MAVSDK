@@ -1,14 +1,14 @@
 #include <iostream>
 #include <unistd.h>
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/example/example.h"
 #include "integration_test_helper.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 TEST_F(SitlTest, ExampleHello)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

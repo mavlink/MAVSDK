@@ -7,7 +7,7 @@ list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR}/third_party)
 
 cmake_policy(SET CMP0025 NEW)
 
-project(dronecore)
+project(dronecode_sdk)
 
 option(BUILD_TESTS "Build tests" ON)
 
@@ -29,8 +29,8 @@ else()
     set(lib_path "lib")
 endif()
 
-set(dronecore_install_include_dir "include/dronecore")
-set(dronecore_install_lib_dir ${lib_path})
+set(dronecode_sdk_install_include_dir "include/dronecode_sdk")
+set(dronecode_sdk_install_lib_dir ${lib_path})
 
 add_subdirectory(core)
 add_subdirectory(plugins)
@@ -56,7 +56,7 @@ if(BUILD_TESTS)
 endif()
 
 if (CMAKE_BUILD_BACKEND)
-    message(STATUS "Building dronecore server")
+    message(STATUS "Building dronecode_sdk server")
     add_subdirectory(backend)
 else()
     message(STATUS "BUILD_BACKEND not set: not building grpc backend")
@@ -70,6 +70,6 @@ if (DROP_DEBUG EQUAL 1)
     )
 
     target_link_libraries(drop_debug
-        dronecore
+        dronecode_sdk
     )
 endif()

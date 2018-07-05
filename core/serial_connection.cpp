@@ -46,7 +46,7 @@ std::string GetLastErrorStdStr()
 }
 #endif
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 SerialConnection::SerialConnection(Connection::receiver_callback_t receiver_callback,
                                    const std::string &path,
@@ -307,4 +307,4 @@ void SerialConnection::receive()
         }
     }
 }
-} // namespace dronecore
+} // namespace dronecode_sdk
