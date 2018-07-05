@@ -314,6 +314,113 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status
+    SubscribeCaptureInfo(grpc::ServerContext * /* context */,
+                         const rpc::camera::SubscribeCaptureInfoRequest * /* request */,
+                         grpc::ServerWriter<rpc::camera::CaptureInfoResponse> *writer) override
+    {
+        std::promise<void> stream_closed_promise;
+        auto stream_closed_future = stream_closed_promise.get_future();
+
+        bool is_finished = false;
+
+        _camera.subscribe_capture_info([&writer, &stream_closed_promise, &is_finished](
+                                           const dronecore::Camera::CaptureInfo capture_info) {
+            rpc::camera::CaptureInfoResponse rpc_capture_info_response;
+            auto rpc_capture_info = translateCaptureInfo(capture_info);
+            rpc_capture_info_response.set_allocated_capture_info(rpc_capture_info.release());
+
+            if (!writer->Write(rpc_capture_info_response) && !is_finished) {
+                is_finished = true;
+                stream_closed_promise.set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+
+        return grpc::Status::OK;
+    }
+
+    static std::unique_ptr<rpc::camera::CaptureInfo>
+    translateCaptureInfo(const dronecore::Camera::CaptureInfo &capture_info)
+    {
+        auto rpc_capture_info =
+            std::unique_ptr<rpc::camera::CaptureInfo>(new rpc::camera::CaptureInfo());
+        rpc_capture_info->set_allocated_position(
+            translatePosition(capture_info.position).release());
+        rpc_capture_info->set_allocated_quaternion(
+            translateQuaternion(capture_info.quaternion).release());
+        rpc_capture_info->set_time_utc_us(capture_info.time_utc_us);
+        rpc_capture_info->set_is_success(capture_info.success);
+        rpc_capture_info->set_index(capture_info.index);
+        rpc_capture_info->set_file_url(capture_info.file_url);
+
+        return rpc_capture_info;
+    }
+
+    static std::unique_ptr<rpc::camera::Position>
+    translatePosition(const dronecore::Camera::CaptureInfo::Position &position)
+    {
+        auto rpc_position = std::unique_ptr<rpc::camera::Position>(new rpc::camera::Position());
+        rpc_position->set_latitude_deg(position.latitude_deg);
+        rpc_position->set_longitude_deg(position.longitude_deg);
+        rpc_position->set_absolute_altitude_m(position.absolute_altitude_m);
+        rpc_position->set_relative_altitude_m(position.relative_altitude_m);
+
+        return rpc_position;
+    }
+
+    static std::unique_ptr<rpc::camera::Quaternion>
+    translateQuaternion(const dronecore::Camera::CaptureInfo::Quaternion &quaternion)
+    {
+        auto rpc_quaternion =
+            std::unique_ptr<rpc::camera::Quaternion>(new rpc::camera::Quaternion());
+        rpc_quaternion->set_w(quaternion.w);
+        rpc_quaternion->set_x(quaternion.x);
+        rpc_quaternion->set_y(quaternion.y);
+        rpc_quaternion->set_z(quaternion.z);
+
+        return rpc_quaternion;
+    }
+
+    static dronecore::Camera::CaptureInfo
+    translateRPCCaptureInfo(const rpc::camera::CaptureInfo &rpc_capture_info)
+    {
+        dronecore::Camera::CaptureInfo capture_info;
+        capture_info.position = translateRPCPosition(rpc_capture_info.position());
+        capture_info.quaternion = translateRPCQuaternion(rpc_capture_info.quaternion());
+        capture_info.time_utc_us = rpc_capture_info.time_utc_us();
+        capture_info.success = rpc_capture_info.is_success();
+        capture_info.index = rpc_capture_info.index();
+        capture_info.file_url = rpc_capture_info.file_url();
+
+        return capture_info;
+    }
+
+    static dronecore::Camera::CaptureInfo::Position
+    translateRPCPosition(const rpc::camera::Position &rpc_position)
+    {
+        dronecore::Camera::CaptureInfo::Position position;
+        position.latitude_deg = rpc_position.latitude_deg();
+        position.longitude_deg = rpc_position.longitude_deg();
+        position.absolute_altitude_m = rpc_position.absolute_altitude_m();
+        position.relative_altitude_m = rpc_position.relative_altitude_m();
+
+        return position;
+    }
+
+    static dronecore::Camera::CaptureInfo::Quaternion
+    translateRPCQuaternion(const rpc::camera::Quaternion &rpc_quaternion)
+    {
+        dronecore::Camera::CaptureInfo::Quaternion quaternion;
+        quaternion.w = rpc_quaternion.w();
+        quaternion.x = rpc_quaternion.x();
+        quaternion.y = rpc_quaternion.y();
+        quaternion.z = rpc_quaternion.z();
+
+        return quaternion;
+    }
+
 private:
     Camera &_camera;
 };

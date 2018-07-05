@@ -219,7 +219,6 @@ std::ostream &operator<<(std::ostream &str,
 
 bool operator==(const Camera::VideoStreamInfo &lhs, const Camera::VideoStreamInfo &rhs)
 {
-    std::cerr << lhs.status << ", ..............., " << rhs.status << std::endl;
     return lhs.settings == rhs.settings && lhs.status == rhs.status;
 }
 
@@ -242,6 +241,51 @@ std::ostream &operator<<(std::ostream &str,
         default:
             return str << "UNKNOWN";
     }
+}
+
+bool operator==(const Camera::CaptureInfo &lhs, const Camera::CaptureInfo &rhs)
+{
+    return lhs.position == rhs.position && lhs.quaternion == rhs.quaternion &&
+           lhs.time_utc_us == rhs.time_utc_us && lhs.success == rhs.success &&
+           lhs.index == rhs.index && lhs.file_url == rhs.file_url;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo const &capture_info)
+{
+    return str << "[" << std::endl
+               << "position: " << capture_info.position << std::endl
+               << "quaternion: " << capture_info.quaternion << std::endl
+               << "time_utc_us: " << capture_info.time_utc_us << std::endl
+               << "is_success: " << capture_info.success << std::endl
+               << "index: " << capture_info.index << std::endl
+               << "file_url: " << capture_info.file_url << std::endl;
+}
+
+bool operator==(const Camera::CaptureInfo::Position &lhs, const Camera::CaptureInfo::Position &rhs)
+{
+    return lhs.latitude_deg == rhs.latitude_deg && lhs.longitude_deg == rhs.longitude_deg &&
+           lhs.absolute_altitude_m == rhs.absolute_altitude_m &&
+           lhs.relative_altitude_m == rhs.relative_altitude_m;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Position const &position)
+{
+    return str << "[latitude_deg: " << position.latitude_deg
+               << ", longitude_deg: " << position.longitude_deg
+               << ", absolute_altitude_m: " << position.absolute_altitude_m
+               << ", relative_altitude_m: " << position.relative_altitude_m << "]";
+}
+
+bool operator==(const Camera::CaptureInfo::Quaternion &lhs,
+                const Camera::CaptureInfo::Quaternion &rhs)
+{
+    return lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion const &quaternion)
+{
+    return str << "[w: " << quaternion.w << "x: " << quaternion.x << "y: " << quaternion.y
+               << "z: " << quaternion.z << "]";
 }
 
 } // namespace dronecode_sdk

@@ -32,6 +32,8 @@ static constexpr auto ARBITRARY_ROTATION = 24;
 static constexpr auto ARBITRARY_URI = "rtsp://blah:1337";
 static constexpr auto ARBITRARY_VIDEO_STREAM_STATUS =
     dronecore::rpc::camera::VideoStreamInfo_VideoStreamStatus_IN_PROGRESS;
+static constexpr auto ARBITRARY_INT = 123456;
+static constexpr auto ARBITRARY_BOOL = true;
 
 std::vector<InputPair> generateInputPairs();
 
@@ -72,6 +74,20 @@ protected:
     dronecore::Camera::VideoStreamInfo
     createVideoStreamInfo(const dronecore::Camera::VideoStreamSettings settings,
                           const dronecore::Camera::VideoStreamInfo::Status status) const;
+
+    std::future<void>
+    subscribeCaptureInfoAsync(std::vector<dronecore::Camera::CaptureInfo> &capture_info_events,
+                              std::shared_ptr<grpc::ClientContext> context) const;
+    std::unique_ptr<dronecore::rpc::camera::CaptureInfo> createArbitraryRPCCaptureInfo() const;
+    std::unique_ptr<dronecore::rpc::camera::Position> createRPCPosition(const double lat,
+                                                                        const double lng,
+                                                                        const float abs_alt,
+                                                                        const float rel_alt) const;
+    std::unique_ptr<dronecore::rpc::camera::Quaternion>
+    createRPCQuaternion(const float w, const float x, const float y, const float z) const;
+    void checkSendsCaptureInfo(
+        const std::vector<dronecore::Camera::CaptureInfo> &capture_info_events) const;
+    dronecore::Camera::CaptureInfo createArbitraryCaptureInfo() const;
 
     MockCamera _camera;
     CameraServiceImpl _camera_service;
@@ -462,7 +478,6 @@ CameraServiceImplTest::createArbitraryRPCVideoStreamInfo() const
     rpc_info->set_video_stream_status(ARBITRARY_VIDEO_STREAM_STATUS);
     rpc_info->set_allocated_video_stream_settings(
         createArbitraryRPCVideoStreamSettings().release());
-    rpc_info->set_video_stream_status(ARBITRARY_VIDEO_STREAM_STATUS);
 
     return rpc_info;
 }
@@ -542,6 +557,173 @@ dronecore::Camera::VideoStreamInfo CameraServiceImplTest::createVideoStreamInfo(
     video_stream_info.status = status;
 
     return video_stream_info;
+}
+
+TEST_F(CameraServiceImplTest, registersToCaptureInfo)
+{
+    auto rpc_capture_info = createArbitraryRPCCaptureInfo();
+    const auto expected_capture_info =
+        CameraServiceImpl::translateRPCCaptureInfo(*rpc_capture_info);
+    dronecore::Camera::capture_info_callback_t capture_info_callback;
+    EXPECT_CALL(_camera, subscribe_capture_info(_))
+        .WillOnce(SaveResult(&capture_info_callback, &_callback_saved_promise));
+    std::vector<dronecore::Camera::CaptureInfo> capture_info_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+
+    auto mode_events_future = subscribeCaptureInfoAsync(capture_info_events, context);
+    _callback_saved_future.wait();
+    context->TryCancel();
+    capture_info_callback(expected_capture_info);
+    mode_events_future.wait();
+}
+
+std::future<void> CameraServiceImplTest::subscribeCaptureInfoAsync(
+    std::vector<dronecore::Camera::CaptureInfo> &capture_info_events,
+    std::shared_ptr<grpc::ClientContext> context) const
+{
+    return std::async(std::launch::async, [&]() {
+        dronecore::rpc::camera::SubscribeCaptureInfoRequest request;
+        auto response_reader = _stub->SubscribeCaptureInfo(context.get(), request);
+
+        dronecore::rpc::camera::CaptureInfoResponse response;
+        while (response_reader->Read(&response)) {
+            capture_info_events.push_back(
+                CameraServiceImpl::translateRPCCaptureInfo(response.capture_info()));
+        }
+
+        response_reader->Finish();
+    });
+}
+
+std::unique_ptr<dronecore::rpc::camera::CaptureInfo>
+CameraServiceImplTest::createArbitraryRPCCaptureInfo() const
+{
+    auto rpc_info = std::unique_ptr<dronecore::rpc::camera::CaptureInfo>(
+        new dronecore::rpc::camera::CaptureInfo());
+    rpc_info->set_allocated_position(
+        createRPCPosition(41.848695, 75.132751, 3002.1f, 50.3f).release());
+    rpc_info->set_allocated_quaternion(createRPCQuaternion(0.1f, 0.2f, 0.3f, 0.4f).release());
+    rpc_info->set_time_utc_us(ARBITRARY_INT);
+    rpc_info->set_is_success(ARBITRARY_BOOL);
+    rpc_info->set_index(ARBITRARY_INT);
+    rpc_info->set_file_url(ARBITRARY_URI);
+
+    return rpc_info;
+}
+
+std::unique_ptr<dronecore::rpc::camera::Position> CameraServiceImplTest::createRPCPosition(
+    const double lat, const double lng, const float abs_alt, const float rel_alt) const
+{
+    auto expected_position =
+        std::unique_ptr<dronecore::rpc::camera::Position>(new dronecore::rpc::camera::Position());
+
+    expected_position->set_latitude_deg(lat);
+    expected_position->set_longitude_deg(lng);
+    expected_position->set_absolute_altitude_m(abs_alt);
+    expected_position->set_relative_altitude_m(rel_alt);
+
+    return expected_position;
+}
+
+std::unique_ptr<dronecore::rpc::camera::Quaternion> CameraServiceImplTest::createRPCQuaternion(
+    const float w, const float x, const float y, const float z) const
+{
+    auto quaternion = std::unique_ptr<dronecore::rpc::camera::Quaternion>(
+        new dronecore::rpc::camera::Quaternion());
+
+    quaternion->set_w(w);
+    quaternion->set_x(x);
+    quaternion->set_y(y);
+    quaternion->set_z(z);
+
+    return quaternion;
+}
+
+TEST_F(CameraServiceImplTest, doesNotSendCaptureInfoIfCallbackNotCalled)
+{
+    std::vector<dronecore::Camera::CaptureInfo> camera_info_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+    auto camera_info_events_future = subscribeCaptureInfoAsync(camera_info_events, context);
+
+    context->TryCancel();
+    camera_info_events_future.wait();
+
+    EXPECT_EQ(0, camera_info_events.size());
+}
+
+TEST_F(CameraServiceImplTest, sendsOneCaptureInfo)
+{
+    std::vector<dronecore::Camera::CaptureInfo> capture_info_events;
+    auto capture_info_event = createArbitraryRPCCaptureInfo();
+    capture_info_events.push_back(CameraServiceImpl::translateRPCCaptureInfo(*capture_info_event));
+
+    checkSendsCaptureInfo(capture_info_events);
+}
+
+void CameraServiceImplTest::checkSendsCaptureInfo(
+    const std::vector<dronecore::Camera::CaptureInfo> &capture_info_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Camera::capture_info_callback_t capture_info_callback;
+    auto context = std::make_shared<grpc::ClientContext>();
+    EXPECT_CALL(_camera, subscribe_capture_info(_))
+        .WillOnce(SaveResult(&capture_info_callback, &subscription_promise));
+
+    std::vector<dronecore::Camera::CaptureInfo> received_capture_info_events;
+    auto capture_info_events_future =
+        subscribeCaptureInfoAsync(received_capture_info_events, context);
+    subscription_future.wait();
+    for (const auto capture_info_event : capture_info_events) {
+        capture_info_callback(capture_info_event);
+    }
+    context->TryCancel();
+    auto arbitrary_capture_info_event = createArbitraryRPCCaptureInfo();
+    capture_info_callback(
+        CameraServiceImpl::translateRPCCaptureInfo(*arbitrary_capture_info_event));
+    capture_info_events_future.wait();
+
+    ASSERT_EQ(capture_info_events.size(), received_capture_info_events.size());
+    for (size_t i = 0; i < capture_info_events.size(); i++) {
+        EXPECT_EQ(capture_info_events.at(i), received_capture_info_events.at(i));
+    }
+}
+
+TEST_F(CameraServiceImplTest, sendsMultipleCaptureInfos)
+{
+    std::vector<dronecore::Camera::CaptureInfo> capture_info_events;
+
+    capture_info_events.push_back(createArbitraryCaptureInfo());
+    capture_info_events.push_back(createArbitraryCaptureInfo());
+    capture_info_events.push_back(createArbitraryCaptureInfo());
+    capture_info_events.push_back(createArbitraryCaptureInfo());
+
+    checkSendsCaptureInfo(capture_info_events);
+}
+
+dronecore::Camera::CaptureInfo CameraServiceImplTest::createArbitraryCaptureInfo() const
+{
+    dronecore::Camera::CaptureInfo::Position position;
+    position.latitude_deg = 12.12223;
+    position.longitude_deg = 24.342;
+    position.absolute_altitude_m = 2334.2f;
+    position.relative_altitude_m = 54.12f;
+
+    dronecore::Camera::CaptureInfo::Quaternion quaternion;
+    quaternion.w = 12.3f;
+    quaternion.x = 0.3f;
+    quaternion.y = 1.1f;
+    quaternion.z = -4.2f;
+
+    dronecore::Camera::CaptureInfo capture_info;
+    capture_info.position = position;
+    capture_info.quaternion = quaternion;
+    capture_info.time_utc_us = ARBITRARY_INT;
+    capture_info.success = ARBITRARY_BOOL;
+    capture_info.index = ARBITRARY_INT;
+    capture_info.file_url = ARBITRARY_URI;
+
+    return capture_info;
 }
 
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,

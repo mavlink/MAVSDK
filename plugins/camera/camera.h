@@ -609,4 +609,47 @@ std::ostream &operator<<(std::ostream &str, Camera::VideoStreamInfo const &video
 std::ostream &operator<<(std::ostream &str,
                          Camera::VideoStreamInfo::Status const &video_stream_info_status);
 
+/**
+ * @brief Equal operator to compare two `Camera::CaptureInfo` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::CaptureInfo &lhs, const Camera::CaptureInfo &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::CaptureInfo`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo const &capture_info);
+
+/**
+ * @brief Equal operator to compare two `Camera::CaptureInfo::Position` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::CaptureInfo::Position &lhs, const Camera::CaptureInfo::Position &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::CaptureInfo::Position`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Position const &position);
+
+/**
+ * @brief Equal operator to compare two `Camera::CaptureInfo::Quaternion` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::CaptureInfo::Quaternion &lhs,
+                const Camera::CaptureInfo::Quaternion &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::CaptureInfo::Quaternion`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion const &quaternion);
+
 } // namespace dronecode_sdk
