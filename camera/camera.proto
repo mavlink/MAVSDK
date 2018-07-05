@@ -100,7 +100,7 @@ message CurrentSettingsResponse {
 
 message SubscribePossibleSettingOptionsRequest {}
 message PossibleSettingOptionsResponse {
-    repeated SettingOption setting_options = 1;
+    repeated SettingOptions setting_options = 1;
 }
 
 message SetSettingRequest {
