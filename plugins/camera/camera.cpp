@@ -288,4 +288,37 @@ std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion cons
                << "z: " << quaternion.z << "]";
 }
 
+bool operator==(const Camera::Status &lhs, const Camera::Status &rhs)
+{
+    return lhs.video_on == rhs.video_on && lhs.photo_interval_on == rhs.photo_interval_on &&
+           lhs.storage_status == rhs.storage_status &&
+           lhs.used_storage_mib == rhs.used_storage_mib &&
+           lhs.available_storage_mib == rhs.available_storage_mib &&
+           lhs.total_storage_mib == rhs.total_storage_mib;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::Status const &status)
+{
+    return str << "[video_on: " << status.video_on
+               << ", photo_interval_on: " << status.photo_interval_on
+               << ", storage_status: " << status.storage_status
+               << ", used_storage_mib: " << status.used_storage_mib
+               << ", available_storage_mib: " << status.available_storage_mib
+               << ", total_storage_mib: " << status.total_storage_mib << "]";
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::Status::StorageStatus const &storage_status)
+{
+    switch (storage_status) {
+        case Camera::Status::StorageStatus::UNFORMATTED:
+            return str << "UNFORMATTED";
+        case Camera::Status::StorageStatus::FORMATTED:
+            return str << "FORMATTED";
+        case Camera::Status::StorageStatus::NOT_AVAILABLE:
+            return str << "NOT_AVAILABLE";
+        default:
+            return str << "UNKNOWN";
+    }
+}
+
 } // namespace dronecode_sdk

@@ -34,6 +34,8 @@ static constexpr auto ARBITRARY_VIDEO_STREAM_STATUS =
     dronecore::rpc::camera::VideoStreamInfo_VideoStreamStatus_IN_PROGRESS;
 static constexpr auto ARBITRARY_INT = 123456;
 static constexpr auto ARBITRARY_BOOL = true;
+static constexpr auto ARBITRARY_CAMERA_STORAGE_STATUS =
+    dronecore::Camera::Status::StorageStatus::FORMATTED;
 
 std::vector<InputPair> generateInputPairs();
 
@@ -88,6 +90,19 @@ protected:
     void checkSendsCaptureInfo(
         const std::vector<dronecore::Camera::CaptureInfo> &capture_info_events) const;
     dronecore::Camera::CaptureInfo createArbitraryCaptureInfo() const;
+
+    dronecore::Camera::Status
+    createCameraStatus(const bool is_video_on,
+                       const bool is_photo_interval_on,
+                       const dronecore::Camera::Status::StorageStatus storage_status,
+                       const float used_storage_mib,
+                       const float available_storage_mib,
+                       const float total_storage_mib) const;
+    std::future<void>
+    subscribeCameraStatusAsync(std::vector<dronecore::Camera::Status> &camera_status_events,
+                               std::shared_ptr<grpc::ClientContext> context) const;
+    void checkSendsCameraStatus(
+        const std::vector<dronecore::Camera::Status> &camera_status_events) const;
 
     MockCamera _camera;
     CameraServiceImpl _camera_service;
@@ -724,6 +739,125 @@ dronecore::Camera::CaptureInfo CameraServiceImplTest::createArbitraryCaptureInfo
     capture_info.file_url = ARBITRARY_URI;
 
     return capture_info;
+}
+
+TEST_F(CameraServiceImplTest, registersToCameraStatus)
+{
+    const auto expected_camera_status = createCameraStatus(
+        false, true, dronecore::Camera::Status::StorageStatus::FORMATTED, 3.4f, 12.6f, 16.0f);
+    dronecore::Camera::subscribe_status_callback_t status_callback;
+    EXPECT_CALL(_camera, subscribe_status(_))
+        .WillOnce(SaveResult(&status_callback, &_callback_saved_promise));
+    std::vector<dronecore::Camera::Status> camera_status_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+
+    auto mode_events_future = subscribeCameraStatusAsync(camera_status_events, context);
+    _callback_saved_future.wait();
+    context->TryCancel();
+    status_callback(expected_camera_status);
+    mode_events_future.wait();
+}
+
+dronecore::Camera::Status CameraServiceImplTest::createCameraStatus(
+    const bool is_video_on,
+    const bool is_photo_interval_on,
+    const dronecore::Camera::Status::StorageStatus storage_status,
+    const float used_storage_mib,
+    const float available_storage_mib,
+    const float total_storage_mib) const
+{
+    dronecore::Camera::Status status;
+    status.video_on = is_video_on;
+    status.photo_interval_on = is_photo_interval_on;
+    status.storage_status = storage_status;
+    status.used_storage_mib = used_storage_mib;
+    status.available_storage_mib = available_storage_mib;
+    status.total_storage_mib = total_storage_mib;
+
+    return status;
+}
+
+std::future<void> CameraServiceImplTest::subscribeCameraStatusAsync(
+    std::vector<dronecore::Camera::Status> &camera_status_events,
+    std::shared_ptr<grpc::ClientContext> context) const
+{
+    return std::async(std::launch::async, [&]() {
+        dronecore::rpc::camera::SubscribeCameraStatusRequest request;
+        auto response_reader = _stub->SubscribeCameraStatus(context.get(), request);
+
+        dronecore::rpc::camera::CameraStatusResponse response;
+        while (response_reader->Read(&response)) {
+            camera_status_events.push_back(
+                CameraServiceImpl::translateRPCCameraStatus(response.camera_status()));
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(CameraServiceImplTest, doesNotSendCameraStatusIfCallbackNotCalled)
+{
+    std::vector<dronecore::Camera::Status> camera_status_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+    auto camera_status_events_future = subscribeCameraStatusAsync(camera_status_events, context);
+
+    context->TryCancel();
+    camera_status_events_future.wait();
+
+    EXPECT_EQ(0, camera_status_events.size());
+}
+
+TEST_F(CameraServiceImplTest, sendsOneCameraStatus)
+{
+    std::vector<dronecore::Camera::Status> camera_status_events;
+    auto camera_status_event = createCameraStatus(
+        false, true, dronecore::Camera::Status::StorageStatus::FORMATTED, 3.4f, 12.6f, 16.0f);
+    camera_status_events.push_back(camera_status_event);
+
+    checkSendsCameraStatus(camera_status_events);
+}
+
+void CameraServiceImplTest::checkSendsCameraStatus(
+    const std::vector<dronecore::Camera::Status> &camera_status_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecore::Camera::subscribe_status_callback_t camera_status_callback;
+    auto context = std::make_shared<grpc::ClientContext>();
+    EXPECT_CALL(_camera, subscribe_status(_))
+        .WillOnce(SaveResult(&camera_status_callback, &subscription_promise));
+
+    std::vector<dronecore::Camera::Status> received_camera_status_events;
+    auto camera_status_events_future =
+        subscribeCameraStatusAsync(received_camera_status_events, context);
+    subscription_future.wait();
+    for (const auto camera_status_event : camera_status_events) {
+        camera_status_callback(camera_status_event);
+    }
+    context->TryCancel();
+    auto arbitrary_camera_status_event = createCameraStatus(
+        false, true, dronecore::Camera::Status::StorageStatus::FORMATTED, 3.4f, 12.6f, 16.0f);
+    camera_status_callback(arbitrary_camera_status_event);
+    camera_status_events_future.wait();
+
+    ASSERT_EQ(camera_status_events.size(), received_camera_status_events.size());
+    for (size_t i = 0; i < camera_status_events.size(); i++) {
+        EXPECT_EQ(camera_status_events.at(i), received_camera_status_events.at(i));
+    }
+}
+
+TEST_F(CameraServiceImplTest, sendsMultipleCameraStatus)
+{
+    std::vector<dronecore::Camera::Status> camera_status_events;
+
+    camera_status_events.push_back(createCameraStatus(
+        true, true, dronecore::Camera::Status::StorageStatus::UNFORMATTED, 1.2f, 3.4f, 2.2f));
+    camera_status_events.push_back(createCameraStatus(
+        true, false, dronecore::Camera::Status::StorageStatus::FORMATTED, 11.2f, 58.4f, 8.65f));
+    camera_status_events.push_back(createCameraStatus(
+        false, false, dronecore::Camera::Status::StorageStatus::NOT_AVAILABLE, 1.5f, 8.1f, 6.3f));
+
+    checkSendsCameraStatus(camera_status_events);
 }
 
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,

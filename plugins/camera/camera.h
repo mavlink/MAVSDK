@@ -652,4 +652,25 @@ bool operator==(const Camera::CaptureInfo::Quaternion &lhs,
  */
 std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion const &quaternion);
 
+/**
+ * @brief Equal operator to compare two `Camera::Status` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::Status &lhs, const Camera::Status &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Status`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::Status const &status);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Status::StorageStatus`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::Status::StorageStatus const &storage_status);
+
 } // namespace dronecode_sdk

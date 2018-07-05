@@ -421,6 +421,89 @@ public:
         return quaternion;
     }
 
+    grpc::Status
+    SubscribeCameraStatus(grpc::ServerContext * /* context */,
+                          const rpc::camera::SubscribeCameraStatusRequest * /* request */,
+                          grpc::ServerWriter<rpc::camera::CameraStatusResponse> *writer) override
+    {
+        std::promise<void> stream_closed_promise;
+        auto stream_closed_future = stream_closed_promise.get_future();
+
+        bool is_finished = false;
+
+        _camera.subscribe_status([&writer, &stream_closed_promise, &is_finished](
+                                     const dronecore::Camera::Status camera_status) {
+            rpc::camera::CameraStatusResponse rpc_camera_status_response;
+            auto rpc_camera_status = translateCameraStatus(camera_status);
+            rpc_camera_status_response.set_allocated_camera_status(rpc_camera_status.release());
+
+            if (!writer->Write(rpc_camera_status_response) && !is_finished) {
+                is_finished = true;
+                stream_closed_promise.set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+
+        return grpc::Status::OK;
+    }
+
+    static std::unique_ptr<rpc::camera::CameraStatus>
+    translateCameraStatus(const dronecore::Camera::Status &camera_status)
+    {
+        auto status = std::unique_ptr<rpc::camera::CameraStatus>(new rpc::camera::CameraStatus());
+        status->set_video_on(camera_status.video_on);
+        status->set_photo_interval_on(camera_status.photo_interval_on);
+        status->set_storage_status(translateStorageStatus(camera_status.storage_status));
+        status->set_used_storage_mib(camera_status.used_storage_mib);
+        status->set_available_storage_mib(camera_status.available_storage_mib);
+        status->set_total_storage_mib(camera_status.total_storage_mib);
+
+        return status;
+    }
+
+    static rpc::camera::CameraStatus_StorageStatus
+    translateStorageStatus(const dronecore::Camera::Status::StorageStatus storage_status)
+    {
+        switch (storage_status) {
+            case dronecore::Camera::Status::StorageStatus::UNFORMATTED:
+                return rpc::camera::CameraStatus_StorageStatus_UNFORMATTED;
+            case dronecore::Camera::Status::StorageStatus::FORMATTED:
+                return rpc::camera::CameraStatus_StorageStatus_FORMATTED;
+            case dronecore::Camera::Status::StorageStatus::NOT_AVAILABLE:
+            default:
+                return rpc::camera::CameraStatus_StorageStatus_NOT_AVAILABLE;
+        }
+    }
+
+    static dronecore::Camera::Status
+    translateRPCCameraStatus(const rpc::camera::CameraStatus &rpc_camera_status)
+    {
+        dronecore::Camera::Status status;
+        status.video_on = rpc_camera_status.video_on();
+        status.photo_interval_on = rpc_camera_status.photo_interval_on();
+        status.storage_status = translateRPCStorageStatus(rpc_camera_status.storage_status());
+        status.used_storage_mib = rpc_camera_status.used_storage_mib();
+        status.available_storage_mib = rpc_camera_status.available_storage_mib();
+        status.total_storage_mib = rpc_camera_status.total_storage_mib();
+
+        return status;
+    }
+
+    static dronecore::Camera::Status::StorageStatus
+    translateRPCStorageStatus(const rpc::camera::CameraStatus_StorageStatus storage_status)
+    {
+        switch (storage_status) {
+            case rpc::camera::CameraStatus_StorageStatus_UNFORMATTED:
+                return dronecore::Camera::Status::StorageStatus::UNFORMATTED;
+            case rpc::camera::CameraStatus_StorageStatus_FORMATTED:
+                return dronecore::Camera::Status::StorageStatus::FORMATTED;
+            case rpc::camera::CameraStatus_StorageStatus_NOT_AVAILABLE:
+            default:
+                return dronecore::Camera::Status::StorageStatus::NOT_AVAILABLE;
+        }
+    }
+
 private:
     Camera &_camera;
 };
