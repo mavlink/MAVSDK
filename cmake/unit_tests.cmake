@@ -16,6 +16,7 @@ target_link_libraries(unit_tests_runner
     dronecore
     dronecore_mission
     dronecore_camera
+    dronecore_calibration
     gtest
     gtest_main
     gmock

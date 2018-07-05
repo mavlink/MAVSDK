@@ -5,6 +5,7 @@
 #include <vector>
 #include <functional>
 
+#include "system.h"
 #include "connection_result.h"
 
 namespace dronecore {
