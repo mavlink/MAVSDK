@@ -14,7 +14,7 @@ class DronecodeSDKImpl;
 class System;
 
 /**
- * @brief This is the main class of **%DronecodeSDK MAVLink API Library** (for the Dronecode
+ * @brief This is the main class of Dronecode SDK (a MAVLink API Library for the Dronecode
  Platform).
 
  * It is used to discover vehicles and manage active connections.

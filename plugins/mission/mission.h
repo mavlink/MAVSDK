@@ -76,7 +76,7 @@ public:
      * The method composes the plan into a vector of MissionItem shared pointers that can
      * then be uploaded to a vehicle.
      * The method will fail if any of the imported mission items are not supported
-     * by the %DronecodeSDK API.
+     * by the Dronecode SDK API.
      *
      * @param[out] mission_items Vector of mission items imported from QGC plan.
      * @param qgc_plan_file File path of the QGC plan.
@@ -111,7 +111,7 @@ public:
      * @brief Downloads a vector of mission items from the system (asynchronous).
      *
      * The method will fail if any of the downloaded mission items are not supported
-     * by the DronecodeSDK API.
+     * by the Dronecode SDK API.
      *
      * @param callback Callback to receive mission items and result of this request.
      */

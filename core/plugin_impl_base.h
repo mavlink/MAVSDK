@@ -17,7 +17,7 @@ public:
      * when a system is constructed. This does not mean that the system actually
      * exists and is connected, it might just be an empty dummy system.
      *
-     * Plugins should do initialization steps with other parts of DronecodeSDK
+     * Plugins should do initialization steps with other parts of the Dronecode SDK
      * at this state, e.g. set up callbacks with _parent (System).
      */
     virtual void init() = 0;

@@ -1,5 +1,5 @@
 //
-// Simple example to demonstrate how to use DronecodeSDK.
+// Simple example to demonstrate how to use the Dronecode SDK.
 //
 // Author: Julian Oes <julian@oes.ch>
 
