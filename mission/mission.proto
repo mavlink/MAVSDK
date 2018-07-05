@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecore.rpc.mission;
+package dronecode_sdk.rpc.mission;
 
-option java_package = "io.dronecore.mission";
+option java_package = "io.dronecode_sdk.mission";
 option java_outer_classname = "MissionProto";
 
 service MissionService {

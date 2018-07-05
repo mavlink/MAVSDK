@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecore.rpc.gimbal;
+package dronecode_sdk.rpc.gimbal;
 
-option java_package = "io.dronecore.gimbal";
+option java_package = "io.dronecode_sdk.gimbal";
 option java_outer_classname = "GimbalProto";
 
 service GimbalService {

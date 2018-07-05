@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecore.rpc.discovery;
+package dronecode_sdk.rpc.discovery;
 
-option java_package = "io.dronecore.discovery";
+option java_package = "io.dronecode_sdk.discovery";
 option java_outer_classname = "DiscoveryProto";
 
 service DiscoveryService {

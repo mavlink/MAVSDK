@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecore.rpc.camera;
+package dronecode_sdk.rpc.camera;
 
-option java_package = "io.dronecore.camera";
+option java_package = "io.dronecode_sdk.camera";
 option java_outer_classname = "CameraProto";
 
 service CameraService {

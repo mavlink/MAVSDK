@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecore.rpc.telemetry;
+package dronecode_sdk.rpc.telemetry;
 
-option java_package = "io.dronecore.telemetry";
+option java_package = "io.dronecode_sdk.telemetry";
 option java_outer_classname = "TelemetryProto";
 
 service TelemetryService {

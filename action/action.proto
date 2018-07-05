@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecore.rpc.action;
+package dronecode_sdk.rpc.action;
 
-option java_package = "io.dronecore.action";
+option java_package = "io.dronecode_sdk.action";
 option java_outer_classname = "ActionProto";
 
 service ActionService {
