@@ -7,6 +7,10 @@ target_link_libraries(dronecode_sdk_offboard
     dronecode_sdk
 )
 
+set_target_properties(dronecode_sdk_offboard
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)
+
 install(FILES
     offboard.h
     DESTINATION ${dronecode_sdk_install_include_dir}

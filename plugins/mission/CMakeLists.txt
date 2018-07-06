@@ -10,6 +10,10 @@ include_directories(
     SYSTEM third_party/json11
 )
 
+set_target_properties(dronecode_sdk_mission
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)
+
 # JSON parser library for parsing QGC plan for Mission
 add_subdirectory(third_party/json11)
 
