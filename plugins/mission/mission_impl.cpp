@@ -1210,7 +1210,7 @@ Mission::Result MissionImpl::import_mission_items(Mission::mission_items_t &all_
         for (auto &p : json_mission_item["params"].array_items()) {
             if (p.is_null()) {
                 // QGC sets params as `null` if they should be unchanged.
-                params.push_back(NAN);
+                params.push_back(double(NAN));
             } else {
                 params.push_back(p.number_value());
             }
