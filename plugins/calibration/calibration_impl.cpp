@@ -330,7 +330,7 @@ void CalibrationImpl::process_statustext(const mavlink_message_t &message)
             // FALLTHROUGH
         case CalibrationStatustextParser::Status::CANCELLED:
             _calibration_callback = nullptr;
-            _state == State::NONE;
+            _state = State::NONE;
             break;
         default:
             break;
