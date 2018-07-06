@@ -319,17 +319,17 @@ const char *Telemetry::result_str(Result result)
 bool operator==(const Telemetry::PositionVelocityNED &lhs,
                 const Telemetry::PositionVelocityNED &rhs)
 {
-    return abs(lhs.position.north_m - rhs.position.north_m) <=
-               std::numeric_limits<double>::epsilon() &&
-           abs(lhs.position.east_m - rhs.position.east_m) <=
-               std::numeric_limits<double>::epsilon() &&
-           abs(lhs.position.down_m - rhs.position.down_m) <=
+    return fabs(lhs.position.north_m - rhs.position.north_m) <=
                std::numeric_limits<float>::epsilon() &&
-           abs(lhs.velocity.north_m_s - rhs.velocity.north_m_s) <=
+           fabs(lhs.position.east_m - rhs.position.east_m) <=
                std::numeric_limits<float>::epsilon() &&
-           abs(lhs.velocity.east_m_s - rhs.velocity.east_m_s) <=
+           fabs(lhs.position.down_m - rhs.position.down_m) <=
                std::numeric_limits<float>::epsilon() &&
-           abs(lhs.velocity.down_m_s - rhs.velocity.down_m_s) <=
+           fabs(lhs.velocity.north_m_s - rhs.velocity.north_m_s) <=
+               std::numeric_limits<float>::epsilon() &&
+           fabs(lhs.velocity.east_m_s - rhs.velocity.east_m_s) <=
+               std::numeric_limits<float>::epsilon() &&
+           fabs(lhs.velocity.down_m_s - rhs.velocity.down_m_s) <=
                std::numeric_limits<float>::epsilon();
 }
 
