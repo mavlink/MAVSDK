@@ -1,17 +1,17 @@
 #include <iostream>
 #include <cmath>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/offboard/offboard.h"
 #include "plugins/mission/mission.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 TEST_F(SitlTest, OffboardVelocityNED)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
@@ -107,7 +107,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
 TEST_F(SitlTest, OffboardVelocityBody)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);

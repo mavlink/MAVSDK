@@ -38,7 +38,7 @@ public:
 #define LogWarn() LogWarnDetailed(__FILENAME__, __LINE__)
 #define LogErr() LogErrDetailed(__FILENAME__, __LINE__)
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 enum class Color { RED, GREEN, YELLOW, BLUE, GRAY, RESET };
 
@@ -63,16 +63,16 @@ public:
 #if ANDROID
         switch (_log_level) {
             case LogLevel::Debug:
-                __android_log_print(ANDROID_LOG_DEBUG, "DroneCore", "%s", _s.str().c_str());
+                __android_log_print(ANDROID_LOG_DEBUG, "DronecodeSDK", "%s", _s.str().c_str());
                 break;
             case LogLevel::Info:
-                __android_log_print(ANDROID_LOG_INFO, "DroneCore", "%s", _s.str().c_str());
+                __android_log_print(ANDROID_LOG_INFO, "DronecodeSDK", "%s", _s.str().c_str());
                 break;
             case LogLevel::Warn:
-                __android_log_print(ANDROID_LOG_WARN, "DroneCore", "%s", _s.str().c_str());
+                __android_log_print(ANDROID_LOG_WARN, "DronecodeSDK", "%s", _s.str().c_str());
                 break;
             case LogLevel::Err:
-                __android_log_print(ANDROID_LOG_ERROR, "DroneCore", "%s", _s.str().c_str());
+                __android_log_print(ANDROID_LOG_ERROR, "DronecodeSDK", "%s", _s.str().c_str());
                 break;
         }
         // Unused:
@@ -169,4 +169,4 @@ public:
     }
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

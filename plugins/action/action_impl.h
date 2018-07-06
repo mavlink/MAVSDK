@@ -7,7 +7,7 @@
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class ActionImpl : public PluginImplBase {
 public:
@@ -81,4 +81,4 @@ private:
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

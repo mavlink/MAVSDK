@@ -1,11 +1,11 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 
 using namespace std::placeholders; // for _1
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 static bool _discovered_system = false;
 static uint64_t _uuid = 0;
@@ -46,7 +46,7 @@ void on_discover(uint64_t uuid)
 
 TEST_F(SitlTest, ActionTakeoffAndKill)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
     ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
 
     dc.register_on_discover(std::bind(&on_discover, _1));

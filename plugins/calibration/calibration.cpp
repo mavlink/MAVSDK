@@ -2,7 +2,7 @@
 #include "calibration_impl.h"
 #include "calibration_messages.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 Calibration::Calibration(System &system) : PluginBase()
 {
@@ -58,4 +58,4 @@ const char *Calibration::result_str(Result result)
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

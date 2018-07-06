@@ -17,13 +17,13 @@
 #include <mutex>
 #include <future>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
-class DroneCoreImpl;
+class DronecodeSDKImpl;
 class PluginImplBase;
 
 // GCS: Ground Control Station
-// Type that represents DroneCore client application which is a GCS.
+// Type that represents DronecodeSDK client application which is a GCS.
 struct GCSClient {
     static constexpr uint8_t system_id = 0;
     // FIXME: This is a workaround for now. We should revert it later or add a compid for the SDK.
@@ -45,7 +45,7 @@ public:
         OFFBOARD,
     };
 
-    explicit SystemImpl(DroneCoreImpl &parent, uint8_t system_id, uint8_t component_id);
+    explicit SystemImpl(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t component_id);
     ~SystemImpl();
 
     void process_mavlink_message(const mavlink_message_t &message);
@@ -225,7 +225,7 @@ private:
     std::atomic<bool> _armed{false};
     std::atomic<bool> _hitl_enabled{false};
 
-    DroneCoreImpl &_parent;
+    DronecodeSDKImpl &_parent;
 
     command_result_callback_t _command_result_callback{nullptr};
 
@@ -265,4 +265,4 @@ private:
     bool _iterator_invalidated{false};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -1,4 +1,4 @@
-# Makefile to build DroneCore
+# Makefile to build the Dronecode SDK library
 #
 # The targets are mostly for convenience around cmake.
 #

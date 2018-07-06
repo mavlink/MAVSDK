@@ -2,7 +2,7 @@
  * @file fly_qgc_mission.cpp
  *
  * @brief Demonstrates how to import mission items from QGroundControl plan,
- * and fly them using DroneCore.
+ * and fly them using the Dronecode SDK.
  *
  * Steps to run this example:
  * 1. (a) Create a Mission in QGroundControl and save them to a file (.plan) (OR)
@@ -24,10 +24,10 @@
  * @date 2018-02-04
  */
 
-#include <dronecore/action.h>
-#include <dronecore/dronecore.h>
-#include <dronecore/mission.h>
-#include <dronecore/telemetry.h>
+#include <dronecode_sdk/action.h>
+#include <dronecode_sdk/dronecode_sdk.h>
+#include <dronecode_sdk/mission.h>
+#include <dronecode_sdk/telemetry.h>
 #include <functional>
 #include <future>
 #include <iostream>
@@ -37,7 +37,7 @@
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
 
@@ -61,7 +61,7 @@ void usage(std::string bin_name)
 
 int main(int argc, char **argv)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
     std::string connection_url;
     ConnectionResult connection_result;
 

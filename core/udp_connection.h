@@ -6,7 +6,7 @@
 #include <atomic>
 #include "connection.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class UdpConnection : public Connection {
 public:
@@ -41,4 +41,4 @@ private:
     std::atomic_bool _should_exit{false};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

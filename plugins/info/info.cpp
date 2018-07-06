@@ -1,7 +1,7 @@
 #include "info.h"
 #include "info_impl.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 Info::Info(System &system) : PluginBase(), _impl{new InfoImpl(system)} {}
 
@@ -27,4 +27,4 @@ Info::Product Info::get_product() const
     return _impl->get_product();
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

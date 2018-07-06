@@ -4,7 +4,7 @@
 #include <memory>
 #include "plugin_base.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class TelemetryImpl;
 class System;
@@ -829,4 +829,4 @@ bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs);
  */
 std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status);
 
-} // namespace dronecore
+} // namespace dronecode_sdk

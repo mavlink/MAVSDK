@@ -1,15 +1,15 @@
 
 #include <chrono>
 #include <cstdint>
-#include <dronecore/action.h>
-#include <dronecore/dronecore.h>
-#include <dronecore/telemetry.h>
+#include <dronecode_sdk/action.h>
+#include <dronecode_sdk/dronecode_sdk.h>
+#include <dronecode_sdk/telemetry.h>
 #include <iostream>
 #include <thread>
 
 using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
@@ -27,7 +27,7 @@ void usage(std::string bin_name)
 
 int main(int argc, char **argv)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
     std::string connection_url;
     ConnectionResult connection_result;
 

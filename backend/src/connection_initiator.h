@@ -5,15 +5,15 @@
 #include "connection_result.h"
 #include "log.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace backend {
 
-template<typename DroneCore> class ConnectionInitiator {
+template<typename DronecodeSDK> class ConnectionInitiator {
 public:
     ConnectionInitiator() {}
     ~ConnectionInitiator() {}
 
-    bool start(DroneCore &dc, const int port)
+    bool start(DronecodeSDK &dc, const int port)
     {
         init_mutex();
         init_timeout_logging(dc);
@@ -32,15 +32,15 @@ public:
 private:
     void init_mutex() { _discovery_promise = std::make_shared<std::promise<uint64_t>>(); }
 
-    void init_timeout_logging(DroneCore &dc) const
+    void init_timeout_logging(DronecodeSDK &dc) const
     {
         dc.register_on_timeout(
             [](uint64_t uuid) { LogInfo() << "System timed out [UUID: " << uuid << "]"; });
     }
 
-    bool add_udp_connection(DroneCore &dc, const int port)
+    bool add_udp_connection(DronecodeSDK &dc, const int port)
     {
-        dronecore::ConnectionResult connection_result = dc.add_udp_connection(port);
+        dronecode_sdk::ConnectionResult connection_result = dc.add_udp_connection(port);
 
         if (connection_result != ConnectionResult::SUCCESS) {
             LogErr() << "Connection failed: " << connection_result_str(connection_result);
@@ -50,7 +50,7 @@ private:
         return true;
     }
 
-    std::future<uint64_t> wrapped_register_on_discover(DroneCore &dc)
+    std::future<uint64_t> wrapped_register_on_discover(DronecodeSDK &dc)
     {
         auto future = _discovery_promise->get_future();
 
@@ -72,4 +72,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecore
+} // namespace dronecode_sdk

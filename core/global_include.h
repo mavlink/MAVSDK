@@ -28,7 +28,7 @@
 #define M_PI_F float(M_PI)
 #endif
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
 
@@ -78,4 +78,4 @@ float to_deg_from_rad(float rad);
 bool are_equal(float one, float two);
 bool are_equal(double one, double two);
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -6,7 +6,7 @@
 #include "plugin_impl_base.h"
 #include "calibration_statustext_parser.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class CalibrationImpl : public PluginImplBase {
 public:
@@ -73,4 +73,4 @@ private:
     Calibration::calibration_callback_t _calibration_callback{nullptr};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

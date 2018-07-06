@@ -5,7 +5,7 @@
 #include "plugin_impl_base.h"
 #include <mutex>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class InfoImpl : public PluginImplBase {
 public:
@@ -43,4 +43,4 @@ private:
     translate_binary_to_str(uint8_t *binary, unsigned binary_len, char *str, unsigned str_len);
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

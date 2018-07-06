@@ -1,7 +1,7 @@
 #include "follow_me.h"
 #include "follow_me_impl.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 FollowMe::FollowMe(System &system) : PluginBase(), _impl{new FollowMeImpl(system)} {}
 
@@ -84,4 +84,4 @@ std::string FollowMe::result_str(Result result)
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -1,6 +1,6 @@
 #include "call_every_handler.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 CallEveryHandler::CallEveryHandler(Time &time) : _time(time) {}
 
@@ -85,4 +85,4 @@ void CallEveryHandler::run_once()
     _entries_mutex.unlock();
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -1,7 +1,7 @@
 #include "calibration_statustext_parser.h"
 #include <gtest/gtest.h>
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 TEST(CalibrationStatustextParser, Validity)
 {

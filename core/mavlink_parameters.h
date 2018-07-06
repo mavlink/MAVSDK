@@ -11,7 +11,7 @@
 #include <cstring> // for memcpy
 #include <cassert>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class SystemImpl;
 
@@ -492,4 +492,4 @@ private:
     // dl_time_t _last_request_time = {};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

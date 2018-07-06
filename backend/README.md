@@ -1,4 +1,4 @@
-# DroneCore with GRPC
+# Dronecode SDK with GRPC
 
 ### Build with backend
 

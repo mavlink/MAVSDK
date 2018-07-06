@@ -4,7 +4,7 @@
 
 #include "telemetry_impl.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 Telemetry::Telemetry(System &system) : PluginBase(), _impl{new TelemetryImpl(system)} {}
 
@@ -444,4 +444,4 @@ std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status
                << ", signal_strength_percent: " << rc_status.signal_strength_percent << "]";
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

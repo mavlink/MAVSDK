@@ -3,7 +3,7 @@
 #include "log.h"
 #include <cmath>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 MissionItemImpl::MissionItemImpl() {}
 
@@ -126,4 +126,4 @@ bool MissionItemImpl::is_position_finite() const
            std::isfinite(_relative_altitude_m);
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

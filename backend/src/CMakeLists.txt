@@ -35,11 +35,11 @@ else()
 endif()
 
 target_link_libraries(backend
-    dronecore
-    dronecore_action
-    dronecore_camera
-    dronecore_mission
-    dronecore_telemetry
+    dronecode_sdk
+    dronecode_sdk_action
+    dronecode_sdk_camera
+    dronecode_sdk_mission
+    dronecode_sdk_telemetry
     gRPC::grpc++
 )
 
@@ -57,17 +57,17 @@ if(IOS)
         BUILD_WITH_INSTALL_RPATH TRUE
         INSTALL_NAME_DIR @rpath
         PUBLIC_HEADER backend_api.h
-        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "DroneCore"
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Dronecode SDK"
         MACOSX_FRAMEWORK_INFO_PLIST ${PROJECT_SOURCE_DIR}/backend/cmake/MacOSXFrameworkInfo.plist.in
     )
 else()
     add_executable(backend_bin
-        dronecore_server.cpp
+        dronecode_sdk_server.cpp
     )
 
     target_link_libraries(backend_bin
         backend
-        dronecore
+        dronecode_sdk
     )
 
     target_include_directories(backend_bin

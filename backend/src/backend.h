@@ -2,15 +2,15 @@
 
 #include <memory>
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace backend {
 
-class DroneCoreBackend {
+class DronecodeSDKBackend {
 public:
-    DroneCoreBackend();
-    ~DroneCoreBackend();
-    DroneCoreBackend(DroneCoreBackend &&) = delete;
-    DroneCoreBackend &operator=(DroneCoreBackend &&) = delete;
+    DronecodeSDKBackend();
+    ~DronecodeSDKBackend();
+    DronecodeSDKBackend(DronecodeSDKBackend &&) = delete;
+    DronecodeSDKBackend &operator=(DronecodeSDKBackend &&) = delete;
 
     void startGRPCServer();
     void connect(const int mavlink_listen_port = 14540);
@@ -22,4 +22,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecore
+} // namespace dronecode_sdk

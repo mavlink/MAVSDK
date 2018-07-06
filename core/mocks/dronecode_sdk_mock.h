@@ -2,12 +2,12 @@
 
 #include "connection_result.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace testing {
 
 typedef std::function<void(uint64_t uuid)> event_callback_t;
 
-class MockDroneCore {
+class MockDronecodeSDK {
 public:
     MOCK_CONST_METHOD1(add_udp_connection, ConnectionResult(int local_port_number));
     MOCK_CONST_METHOD1(register_on_discover, void(event_callback_t));
@@ -15,4 +15,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecore
+} // namespace dronecode_sdk

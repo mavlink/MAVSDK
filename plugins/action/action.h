@@ -6,7 +6,7 @@
 #include "action_result.h"
 #include "plugin_base.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class System;
 class ActionImpl;
@@ -261,4 +261,4 @@ private:
     std::unique_ptr<ActionImpl> _impl;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

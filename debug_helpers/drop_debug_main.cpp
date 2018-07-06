@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include <thread>
 
 #if DROP_DEBUG != 1
@@ -20,10 +20,10 @@ int main(int argc, const char *argv[])
     UNUSED(argc);
     UNUSED(argv);
 
-    dronecore::DroneCore dc;
+    dronecode_sdk::DronecodeSDK dc;
 
-    dronecore::ConnectionResult ret = dc.add_udp_connection();
-    if (ret != dronecore::ConnectionResult::SUCCESS) {
+    dronecode_sdk::ConnectionResult ret = dc.add_udp_connection();
+    if (ret != dronecode_sdk::ConnectionResult::SUCCESS) {
         std::cout << "failed to add connection" << std::endl;
         return -1;
     }

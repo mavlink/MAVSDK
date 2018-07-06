@@ -7,7 +7,7 @@
 #include <map>
 #include <string>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class CameraDefinition {
 public:
@@ -88,4 +88,4 @@ private:
     std::string _vendor;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

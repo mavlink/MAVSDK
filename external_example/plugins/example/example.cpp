@@ -1,7 +1,7 @@
 #include "example.h"
 #include "example_impl.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 Example::Example(System &system) : PluginBase()
 {
@@ -18,4 +18,4 @@ void Example::say_hello() const
     _impl->say_hello();
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

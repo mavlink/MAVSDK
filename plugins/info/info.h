@@ -4,7 +4,7 @@
 #include <memory>
 #include "plugin_base.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class System;
 class InfoImpl;
@@ -113,4 +113,4 @@ private:
     std::unique_ptr<InfoImpl> _impl;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

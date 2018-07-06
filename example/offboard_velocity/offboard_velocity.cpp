@@ -9,14 +9,14 @@
 
 #include <chrono>
 #include <cmath>
-#include <dronecore/action.h>
-#include <dronecore/dronecore.h>
-#include <dronecore/offboard.h>
-#include <dronecore/telemetry.h>
+#include <dronecode_sdk/action.h>
+#include <dronecode_sdk/dronecode_sdk.h>
+#include <dronecode_sdk/offboard.h>
+#include <dronecode_sdk/telemetry.h>
 #include <iostream>
 #include <thread>
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
 using std::chrono::seconds;
@@ -66,7 +66,7 @@ inline void offboard_log(const std::string &offb_mode, const std::string msg)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_ned(std::shared_ptr<dronecore::Offboard> offboard)
+bool offb_ctrl_ned(std::shared_ptr<dronecode_sdk::Offboard> offboard)
 {
     const std::string offb_mode = "NED";
     // Send it once before starting offboard, otherwise it will be rejected.
@@ -118,7 +118,7 @@ bool offb_ctrl_ned(std::shared_ptr<dronecore::Offboard> offboard)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_body(std::shared_ptr<dronecore::Offboard> offboard)
+bool offb_ctrl_body(std::shared_ptr<dronecode_sdk::Offboard> offboard)
 {
     const std::string offb_mode = "BODY";
 
@@ -176,7 +176,7 @@ void usage(std::string bin_name)
 
 int main(int argc, char **argv)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
     std::string connection_url;
     ConnectionResult connection_result;
 

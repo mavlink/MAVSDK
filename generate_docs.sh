@@ -35,7 +35,7 @@ make INSTALL_PREFIX=$install_prefix default install
 return_result=0
 # Doxygen likes to run where the source is (because INPUT in .doxygen is empty),
 # so we cd there.
-pushd $install_prefix/include/dronecore
+pushd $install_prefix/include/dronecode_sdk
 # If any warnings are thrown, we should not flag this as a success.
 doxygen_output_file=".doxygen_output.tmp"
 doxygen $source_dir/.doxygen &> $doxygen_output_file

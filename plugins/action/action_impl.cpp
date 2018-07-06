@@ -1,9 +1,9 @@
 #include "action_impl.h"
-#include "dronecore_impl.h"
+#include "dronecode_sdk_impl.h"
 #include "global_include.h"
 #include "px4_custom_mode.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 using namespace std::placeholders; // for `_1`
 
@@ -476,4 +476,4 @@ void ActionImpl::command_result_callback(MAVLinkCommands::Result command_result,
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

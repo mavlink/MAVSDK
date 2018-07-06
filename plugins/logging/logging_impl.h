@@ -5,7 +5,7 @@
 #include "system.h"
 #include "logging.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class LoggingImpl : public PluginImplBase {
 public:
@@ -34,4 +34,4 @@ private:
                                         const Logging::result_callback_t &callback);
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

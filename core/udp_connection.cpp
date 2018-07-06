@@ -23,7 +23,7 @@
 #define GET_ERROR(_x) WSAGetLastError()
 #endif
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 UdpConnection::UdpConnection(Connection::receiver_callback_t receiver_callback,
                              const std::string &local_ip,
@@ -228,4 +228,4 @@ void UdpConnection::receive()
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

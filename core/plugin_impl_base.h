@@ -2,7 +2,7 @@
 #include "system_impl.h"
 #include <memory>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class System;
 class SystemImpl;
@@ -17,14 +17,14 @@ public:
      * when a system is constructed. This does not mean that the system actually
      * exists and is connected, it might just be an empty dummy system.
      *
-     * Plugins should do initialization steps with other parts of DroneCore
+     * Plugins should do initialization steps with other parts of the Dronecode SDK
      * at this state, e.g. set up callbacks with _parent (System).
      */
     virtual void init() = 0;
 
     /*
      * The method `deinit()` is called before a plugin is destructed which happens
-     * usually only at the very end when a DroneCore instance is destructed.
+     * usually only at the very end when a DronecodeSDK instance is destructed.
      *
      * Plugins should do any cleanup of what has been set up during init.
      */
@@ -61,4 +61,4 @@ protected:
     std::shared_ptr<SystemImpl> _parent;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

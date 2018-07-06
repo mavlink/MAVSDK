@@ -1,18 +1,18 @@
-add_library(dronecore_offboard ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_offboard ${PLUGIN_LIBRARY_TYPE}
     offboard.cpp
     offboard_impl.cpp
 )
 
-target_link_libraries(dronecore_offboard
-    dronecore
+target_link_libraries(dronecode_sdk_offboard
+    dronecode_sdk
 )
 
 install(FILES
     offboard.h
-    DESTINATION ${dronecore_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}
 )
 
-install(TARGETS dronecore_offboard
-    #EXPORT dronecore-targets
-    DESTINATION ${dronecore_install_lib_dir}
+install(TARGETS dronecode_sdk_offboard
+    #EXPORT dronecode_sdk-targets
+    DESTINATION ${dronecode_sdk_install_lib_dir}
 )

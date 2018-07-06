@@ -4,12 +4,12 @@
 #include <atomic>
 #include <cmath>
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/action/action.h"
 #include "plugins/mission/mission.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
 static void receive_upload_mission_result(Mission::Result result);
@@ -32,7 +32,7 @@ const static float speeds[4] = {10.0f, 3.0f, 8.0f, 5.0f};
 
 TEST_F(SitlTest, MissionChangeSpeed)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

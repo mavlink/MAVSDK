@@ -5,12 +5,12 @@
 #include <array>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/action/action.h"
 #include "plugins/follow_me/follow_me.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::chrono;
 using namespace std::this_thread;
 using namespace std::placeholders;
@@ -24,7 +24,7 @@ const size_t N_LOCATIONS = 100ul;
 
 TEST_F(SitlTest, FollowMeOneLocation)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
@@ -85,7 +85,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
 
 TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);

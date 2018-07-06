@@ -2,7 +2,7 @@
 #include "global_include.h"
 #include <functional>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 GimbalImpl::GimbalImpl(System &system) : PluginImplBase(system)
 {
@@ -112,4 +112,4 @@ Gimbal::Result GimbalImpl::gimbal_result_from_command_result(MAVLinkCommands::Re
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

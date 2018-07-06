@@ -1,21 +1,21 @@
-add_library(dronecore_calibration ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_calibration ${PLUGIN_LIBRARY_TYPE}
     calibration.cpp
     calibration_impl.cpp
     calibration_statustext_parser.cpp
 )
 
-target_link_libraries(dronecore_calibration
-    dronecore
+target_link_libraries(dronecode_sdk_calibration
+    dronecode_sdk
 )
 
 install(FILES
     calibration.h
-    DESTINATION ${dronecore_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}
 )
 
-install(TARGETS dronecore_calibration
-    #EXPORT dronecore-targets
-    DESTINATION ${dronecore_install_lib_dir}
+install(TARGETS dronecode_sdk_calibration
+    #EXPORT dronecode_sdk-targets
+    DESTINATION ${dronecode_sdk_install_lib_dir}
 )
 
 list(APPEND UNIT_TEST_SOURCES

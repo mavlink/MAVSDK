@@ -1,7 +1,7 @@
 #include "camera/camera.h"
 #include "camera/camera.grpc.pb.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace backend {
 
 template<typename Camera = Camera>
@@ -24,13 +24,13 @@ public:
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType *response,
-                                dronecore::Camera::Result camera_result) const
+                                dronecode_sdk::Camera::Result camera_result) const
     {
         auto rpc_result = static_cast<rpc::camera::CameraResult::Result>(camera_result);
 
         auto *rpc_camera_result = new rpc::camera::CameraResult();
         rpc_camera_result->set_result(rpc_result);
-        rpc_camera_result->set_result_str(dronecore::Camera::result_str(camera_result));
+        rpc_camera_result->set_result_str(dronecode_sdk::Camera::result_str(camera_result));
 
         response->set_allocated_camera_result(rpc_camera_result);
     }
@@ -41,7 +41,7 @@ public:
     {
         if (request == nullptr) {
             if (response != nullptr) {
-                fillResponseWithResult(response, dronecore::Camera::Result::WRONG_ARGUMENT);
+                fillResponseWithResult(response, dronecode_sdk::Camera::Result::WRONG_ARGUMENT);
             }
 
             return grpc::Status::OK;
@@ -126,4 +126,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -11,7 +11,7 @@
 // is disabled for now.
 //#define LEVEL_CALIBRATION
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class System;
 
@@ -197,4 +197,4 @@ private:
     void *_timeout_cookie = nullptr;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

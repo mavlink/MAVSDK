@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <limits>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 using std::chrono::steady_clock;
 
@@ -157,4 +157,4 @@ bool are_equal(double one, double two)
     return (fabs(one - two) < std::numeric_limits<double>::epsilon());
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

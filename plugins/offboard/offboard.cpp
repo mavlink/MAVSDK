@@ -1,7 +1,7 @@
 #include "offboard.h"
 #include "offboard_impl.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 Offboard::Offboard(System &system) : PluginBase(), _impl{new OffboardImpl(system)} {}
 
@@ -63,4 +63,4 @@ const char *Offboard::result_str(Result result)
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

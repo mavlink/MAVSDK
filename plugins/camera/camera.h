@@ -7,7 +7,7 @@
 #include <map>
 #include "plugin_base.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class CameraImpl;
 class System;
@@ -572,4 +572,4 @@ private:
     std::unique_ptr<CameraImpl> _impl;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

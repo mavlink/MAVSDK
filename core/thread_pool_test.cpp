@@ -8,7 +8,7 @@
 //#define Time FakeTime
 //#endif
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders;
 
 static std::atomic<bool> task_one_ran{false};

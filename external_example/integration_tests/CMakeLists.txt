@@ -9,8 +9,8 @@ include_directories(
 )
 
 target_link_libraries(external_example_integration_tests_runner
-    dronecore
-    dronecore_example
+    dronecode_sdk
+    dronecode_sdk_example
     gtest
     gtest_main
     gmock

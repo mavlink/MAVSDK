@@ -8,20 +8,21 @@
 #include "system.h"
 #include "connection_result.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
-class DroneCoreImpl;
+class DronecodeSDKImpl;
 class System;
 
 /**
- * @brief This is the main class of **%DroneCore MAVLink API Library** (for the Dronecode Platform).
+ * @brief This is the main class of Dronecode SDK (a MAVLink API Library for the Dronecode
+ Platform).
 
  * It is used to discover vehicles and manage active connections.
  *
  * An instance of this class must be created (first) in order to use the library.
  * The instance must be destroyed after use in order to break connections and release all resources.
  */
-class DroneCore {
+class DronecodeSDK {
 public:
     /** @brief Default UDP bind IP (accepts any incoming connections). */
     static constexpr auto DEFAULT_UDP_BIND_IP = "0.0.0.0";
@@ -37,14 +38,14 @@ public:
     /**
      * @brief Constructor.
      */
-    DroneCore();
+    DronecodeSDK();
 
     /**
      * @brief Destructor.
      *
      * Disconnects all connected vehicles and releases all resources.
      */
-    ~DroneCore();
+    ~DronecodeSDK();
 
     /**
      * @brief Adds Connection via URL
@@ -117,8 +118,8 @@ public:
      * @brief Get vector of system UUIDs.
      *
      * This returns a vector of the UUIDs of all systems that have been discovered.
-     * If a system doesn't have a UUID then DroneCore will instead use its MAVLink system ID (range:
-     * 0..255).
+     * If a system doesn't have a UUID then DronecodeSDK will instead use its MAVLink system ID
+     * (range: 0..255).
      *
      * @return A vector containing the UUIDs.
      */
@@ -205,11 +206,11 @@ public:
 
 private:
     /* @private. */
-    std::unique_ptr<DroneCoreImpl> _impl;
+    std::unique_ptr<DronecodeSDKImpl> _impl;
 
     // Non-copyable
-    DroneCore(const DroneCore &) = delete;
-    const DroneCore &operator=(const DroneCore &) = delete;
+    DronecodeSDK(const DronecodeSDK &) = delete;
+    const DronecodeSDK &operator=(const DronecodeSDK &) = delete;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

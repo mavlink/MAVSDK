@@ -4,7 +4,7 @@
 
 void runBackend(const int mavlink_listen_port, void (*onServerStarted)(void *), void *context)
 {
-    dronecore::backend::DroneCoreBackend backend;
+    dronecode_sdk::backend::DronecodeSDKBackend backend;
     backend.connect(mavlink_listen_port);
     backend.startGRPCServer();
 

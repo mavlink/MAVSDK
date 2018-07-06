@@ -7,7 +7,7 @@
 #include <functional>
 #include <mutex>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class SystemImpl;
 
@@ -127,4 +127,4 @@ private:
     void *_timeout_cookie = nullptr;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

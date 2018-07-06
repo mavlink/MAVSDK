@@ -1,18 +1,18 @@
-add_library(dronecore_action ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_action ${PLUGIN_LIBRARY_TYPE}
     action.cpp
     action_impl.cpp
 )
 
-target_link_libraries(dronecore_action
-    dronecore
+target_link_libraries(dronecode_sdk_action
+    dronecode_sdk
 )
 
 install(FILES
     action.h
     action_result.h
-    DESTINATION ${dronecore_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}
 )
 
-install(TARGETS dronecore_action
-    DESTINATION ${dronecore_install_lib_dir}
+install(TARGETS dronecode_sdk_action
+    DESTINATION ${dronecode_sdk_install_lib_dir}
 )

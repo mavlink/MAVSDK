@@ -51,17 +51,17 @@ set_target_properties(integration_tests_runner
 )
 
 target_link_libraries(integration_tests_runner
-    dronecore
-    dronecore_telemetry
-    dronecore_action
-    dronecore_mission
-    dronecore_offboard
-    dronecore_logging
-    dronecore_info
-    dronecore_gimbal
-    dronecore_follow_me
-    dronecore_camera
-    dronecore_calibration
+    dronecode_sdk
+    dronecode_sdk_telemetry
+    dronecode_sdk_action
+    dronecode_sdk_mission
+    dronecode_sdk_offboard
+    dronecode_sdk_logging
+    dronecode_sdk_info
+    dronecode_sdk_gimbal
+    dronecode_sdk_follow_me
+    dronecode_sdk_camera
+    dronecode_sdk_calibration
     gtest
     gtest_main
     gmock

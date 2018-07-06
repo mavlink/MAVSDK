@@ -5,7 +5,7 @@
 
 #include "log.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace backend {
 
 void GRPCServer::run()
@@ -40,4 +40,4 @@ void GRPCServer::setup_port(grpc::ServerBuilder &builder)
 }
 
 } // namespace backend
-} // namespace dronecore
+} // namespace dronecode_sdk

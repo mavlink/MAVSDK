@@ -3,7 +3,7 @@
 #include "integration_test_helper.h"
 #include "camera_test_helpers.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 
 Camera::Mode get_mode(std::shared_ptr<Camera> camera)
 {
@@ -83,9 +83,9 @@ set_setting(std::shared_ptr<Camera> camera, const std::string &setting, const st
     return Camera::Result::TIMEOUT;
 }
 
-dronecore::Camera::Result get_setting(std::shared_ptr<dronecore::Camera> camera,
-                                      const std::string &setting,
-                                      std::string &option)
+dronecode_sdk::Camera::Result get_setting(std::shared_ptr<dronecode_sdk::Camera> camera,
+                                          const std::string &setting,
+                                          std::string &option)
 {
     struct PromiseResult {
         Camera::Result result;

@@ -3,7 +3,7 @@
 #include "global_include.h"
 #include "px4_custom_mode.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 using namespace std::placeholders; // for `_1`
 
@@ -409,4 +409,4 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

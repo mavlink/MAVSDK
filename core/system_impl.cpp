@@ -1,6 +1,6 @@
 #include "system.h"
 #include "global_include.h"
-#include "dronecore_impl.h"
+#include "dronecode_sdk_impl.h"
 #include "mavlink_include.h"
 #include "system_impl.h"
 #include "plugin_impl_base.h"
@@ -11,11 +11,11 @@
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 using namespace std::placeholders; // for `_1`
 
-SystemImpl::SystemImpl(DroneCoreImpl &parent, uint8_t system_id, uint8_t comp_id) :
+SystemImpl::SystemImpl(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t comp_id) :
     _system_id(system_id),
     _parent(parent),
     _params(*this),
@@ -873,4 +873,4 @@ void SystemImpl::unlock_communication()
     _communication_locked = false;
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

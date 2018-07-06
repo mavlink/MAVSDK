@@ -23,8 +23,8 @@ add_executable(follow_me
 
 target_link_libraries(follow_me
     LINK_PUBLIC ${Boost_LIBRARIES}
-    dronecore
-    dronecore_action
-    dronecore_follow_me
-    dronecore_telemetry
+    dronecode_sdk
+    dronecode_sdk_action
+    dronecode_sdk_follow_me
+    dronecode_sdk_telemetry
 )

@@ -1,7 +1,7 @@
 #include "http_loader.h"
 #include "curl_wrapper.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 #ifdef TESTING
 HttpLoader::HttpLoader(const std::shared_ptr<ICurlWrapper> &curl_wrapper) :
@@ -119,4 +119,4 @@ bool HttpLoader::download_text_sync(const std::string &url, std::string &content
     return success;
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

@@ -2,7 +2,7 @@
 
 #include "telemetry/telemetry.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace testing {
 
 class MockTelemetry {
@@ -27,4 +27,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecore
+} // namespace dronecode_sdk

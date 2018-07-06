@@ -1,11 +1,11 @@
 #include "integration_test_helper.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include <iostream>
 #include <functional>
 #include <atomic>
 #include "plugins/camera/camera.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
 static void receive_camera_status(Camera::Result result, const Camera::Status status);
@@ -17,7 +17,7 @@ static std::atomic<int> _num_received_status{0};
 
 TEST(CameraTest, Status)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -35,7 +35,7 @@ TEST(CameraTest, Status)
 
 TEST(CameraTest, StatusSubscription)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

@@ -12,14 +12,14 @@ else()
     set(LIBRARY_TYPE "SHARED")
 endif()
 
-add_library(dronecore ${LIBRARY_TYPE}
+add_library(dronecode_sdk ${LIBRARY_TYPE}
     call_every_handler.cpp
     connection.cpp
     curl_wrapper.cpp
     system.cpp
     system_impl.cpp
-    dronecore.cpp
-    dronecore_impl.cpp
+    dronecode_sdk.cpp
+    dronecode_sdk_impl.cpp
     global_include.cpp
     http_loader.cpp
     mavlink_parameters.cpp
@@ -36,7 +36,7 @@ add_library(dronecore ${LIBRARY_TYPE}
     thread_pool.cpp
 )
 
-target_link_libraries(dronecore
+target_link_libraries(dronecode_sdk
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
     ${TINYXML2_LIBRARY}
@@ -44,7 +44,7 @@ target_link_libraries(dronecore
 )
 
 if (IOS)
-    target_link_libraries(dronecore
+    target_link_libraries(dronecode_sdk
         "-framework Foundation"
         "-framework Security"
     )
@@ -52,34 +52,34 @@ endif()
 
 # Link to Windows networking lib.
 if (MSVC)
-    target_link_libraries(dronecore
+    target_link_libraries(dronecode_sdk
         ws2_32
     )
 endif()
 
 if(ANDROID)
-    target_link_libraries(dronecore
+    target_link_libraries(dronecode_sdk
         log
     )
 endif()
 
-set_target_properties(dronecore
+set_target_properties(dronecode_sdk
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-install(TARGETS dronecore
+install(TARGETS dronecode_sdk
     # TODO: not sure if this is needed
-    #EXPORT dronecore-targets
+    #EXPORT dronecode_sdk-targets
     DESTINATION ${lib_path}
 )
 
 install(FILES
     connection_result.h
     system.h
-    dronecore.h
+    dronecode_sdk.h
     plugin_base.h
     ${plugin_header_paths}
-    DESTINATION "include/dronecore"
+    DESTINATION "include/dronecode_sdk"
 )
 
 list(APPEND UNIT_TEST_SOURCES

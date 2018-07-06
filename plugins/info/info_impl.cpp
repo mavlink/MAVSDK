@@ -3,7 +3,7 @@
 #include "system.h"
 #include "global_include.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 InfoImpl::InfoImpl(System &system) : PluginImplBase(system), _version_mutex(), _version()
 {
@@ -184,4 +184,4 @@ const char *InfoImpl::product_id_str(uint16_t product_id)
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

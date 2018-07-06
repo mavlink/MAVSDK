@@ -6,7 +6,7 @@
 #include <cmath>
 #include <functional>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 TelemetryImpl::TelemetryImpl(System &system) :
     PluginImplBase(system),
@@ -918,4 +918,4 @@ void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t &callback)
     _rc_status_subscription = callback;
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

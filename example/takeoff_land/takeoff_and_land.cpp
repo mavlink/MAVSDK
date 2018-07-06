@@ -1,17 +1,17 @@
 //
-// Simple example to demonstrate how to use DroneCore.
+// Simple example to demonstrate how to use the Dronecode SDK.
 //
 // Author: Julian Oes <julian@oes.ch>
 
 #include <chrono>
 #include <cstdint>
-#include <dronecore/action.h>
-#include <dronecore/dronecore.h>
-#include <dronecore/telemetry.h>
+#include <dronecode_sdk/action.h>
+#include <dronecode_sdk/dronecode_sdk.h>
+#include <dronecode_sdk/telemetry.h>
 #include <iostream>
 #include <thread>
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::this_thread;
 using namespace std::chrono;
 
@@ -31,7 +31,7 @@ void usage(std::string bin_name)
 
 int main(int argc, char **argv)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
     std::string connection_url;
     ConnectionResult connection_result;
 

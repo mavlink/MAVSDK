@@ -7,11 +7,11 @@
 #include "mission/mission.grpc.pb.h"
 #include "mission/mission_item.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace backend {
 
 template<typename Mission = Mission>
-class MissionServiceImpl final : public dronecore::rpc::mission::MissionService::Service {
+class MissionServiceImpl final : public dronecode_sdk::rpc::mission::MissionService::Service {
 public:
     MissionServiceImpl(Mission &mission) : _mission(mission) {}
 
@@ -34,7 +34,7 @@ public:
                                  rpc::mission::DownloadMissionResponse *response) override
     {
         _mission.download_mission_async(
-            [this, response](const dronecore::Mission::Result result,
+            [this, response](const dronecode_sdk::Mission::Result result,
                              const std::vector<std::shared_ptr<MissionItem>> mission_items) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
@@ -62,7 +62,7 @@ public:
         const auto result_future = result_promise.get_future();
 
         _mission.start_mission_async(
-            [this, response, &result_promise](const dronecore::Mission::Result result) {
+            [this, response, &result_promise](const dronecode_sdk::Mission::Result result) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -95,7 +95,7 @@ public:
         const auto result_future = result_promise.get_future();
 
         _mission.pause_mission_async(
-            [this, response, &result_promise](const dronecore::Mission::Result result) {
+            [this, response, &result_promise](const dronecode_sdk::Mission::Result result) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -122,7 +122,7 @@ public:
 
         _mission.set_current_mission_item_async(
             request->index(),
-            [this, response, &result_promise](const dronecore::Mission::Result result) {
+            [this, response, &result_promise](const dronecode_sdk::Mission::Result result) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -251,7 +251,7 @@ private:
     {
         _mission.upload_mission_async(
             mission_items,
-            [this, response, &result_promise](const dronecore::Mission::Result result) {
+            [this, response, &result_promise](const dronecode_sdk::Mission::Result result) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -262,27 +262,27 @@ private:
     }
 
     rpc::mission::MissionResult *
-    generateRPCMissionResult(const dronecore::Mission::Result result) const
+    generateRPCMissionResult(const dronecode_sdk::Mission::Result result) const
     {
         auto rpc_result = static_cast<rpc::mission::MissionResult::Result>(result);
 
         auto rpc_mission_result = new rpc::mission::MissionResult();
         rpc_mission_result->set_result(rpc_result);
-        rpc_mission_result->set_result_str(dronecore::Mission::result_str(result));
+        rpc_mission_result->set_result_str(dronecode_sdk::Mission::result_str(result));
 
         return rpc_mission_result;
     }
 
     grpc::Status SubscribeMissionProgress(
         grpc::ServerContext * /* context */,
-        const dronecore::rpc::mission::SubscribeMissionProgressRequest * /* request */,
+        const dronecode_sdk::rpc::mission::SubscribeMissionProgressRequest * /* request */,
         grpc::ServerWriter<rpc::mission::MissionProgressResponse> *writer) override
     {
         std::promise<void> mission_finished_promise;
         auto mission_finished_future = mission_finished_promise.get_future();
 
         _mission.subscribe_progress([&writer, &mission_finished_promise](int current, int total) {
-            dronecore::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
+            dronecode_sdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
             rpc_mission_progress_response.set_current_item_index(current);
             rpc_mission_progress_response.set_mission_count(total);
             writer->Write(rpc_mission_progress_response);
@@ -300,4 +300,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecore
+} // namespace dronecode_sdk

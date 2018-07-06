@@ -3,7 +3,7 @@
 #include <functional>
 #include "plugin_base.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class CalibrationImpl;
 class System;
@@ -99,4 +99,4 @@ private:
     CalibrationImpl *_impl;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

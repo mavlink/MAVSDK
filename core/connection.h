@@ -1,10 +1,10 @@
 #pragma once
 
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "mavlink_receiver.h"
 #include <memory>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class Connection {
 public:
@@ -33,4 +33,4 @@ protected:
     // void received_mavlink_message(mavlink_message_t &);
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

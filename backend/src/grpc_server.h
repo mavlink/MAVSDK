@@ -8,17 +8,17 @@
 #include "camera/camera.h"
 #include "camera/camera_service_impl.h"
 #include "core/core_service_impl.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "mission/mission.h"
 #include "mission/mission_service_impl.h"
 #include "telemetry/telemetry_service_impl.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 namespace backend {
 
 class GRPCServer {
 public:
-    GRPCServer(DroneCore &dc) :
+    GRPCServer(DronecodeSDK &dc) :
         _dc(dc),
         _core(_dc),
         _action(_dc.system()),
@@ -39,7 +39,7 @@ public:
 private:
     void setup_port(grpc::ServerBuilder &builder);
 
-    DroneCore &_dc;
+    DronecodeSDK &_dc;
 
     CoreServiceImpl<> _core;
     Action _action;
@@ -55,4 +55,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecore
+} // namespace dronecode_sdk

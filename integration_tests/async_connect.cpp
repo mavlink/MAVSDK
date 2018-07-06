@@ -1,9 +1,9 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 
-using namespace dronecore;
+using namespace dronecode_sdk;
 using namespace std::placeholders; // for _1
 
 static bool _discovered_system = false;
@@ -15,7 +15,7 @@ void on_timeout(uint64_t uuid);
 
 TEST_F(SitlTest, AsyncConnect)
 {
-    DroneCore dc;
+    DronecodeSDK dc;
 
     ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
 

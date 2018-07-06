@@ -1,13 +1,13 @@
 #include "example_impl.h"
-#include "dronecore.h"
+#include "dronecode_sdk.h"
 #include "global_include.h"
 #include <gtest/gtest.h>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 TEST(ExampleImpl, NoTest)
 {
     ASSERT_TRUE(true);
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

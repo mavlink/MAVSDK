@@ -4,7 +4,7 @@
 #include <memory>
 #include "plugin_base.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class GimbalImpl;
 class System;
@@ -133,4 +133,4 @@ private:
     std::unique_ptr<GimbalImpl> _impl;
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

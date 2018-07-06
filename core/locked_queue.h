@@ -4,7 +4,7 @@
 #include <mutex>
 #include <memory>
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 template<class T> class LockedQueue {
 public:
@@ -62,4 +62,4 @@ private:
     std::mutex _mutex{};
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

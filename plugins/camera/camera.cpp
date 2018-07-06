@@ -1,7 +1,7 @@
 #include "camera.h"
 #include "camera_impl.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 Camera::Camera(System &system) : PluginBase(), _impl{new CameraImpl(system)} {}
 
@@ -197,4 +197,4 @@ std::string Camera::result_str(Result result)
     }
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk

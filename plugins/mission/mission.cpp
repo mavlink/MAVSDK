@@ -3,7 +3,7 @@
 #include <vector>
 #include "mavlink_include.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 Mission::Mission(System &system) : PluginBase(), _impl{new MissionImpl(system)} {}
 
@@ -90,4 +90,4 @@ Mission::Result Mission::import_qgroundcontrol_mission(Mission::mission_items_t 
     return MissionImpl::import_qgroundcontrol_mission(mission_items, qgc_plan_file);
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk
