@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 #include <atomic>
-#include <atomic>
+#include <cmath>
 #include "mission.h"
 #include "mavlink_include.h"
 #include "global_include.h"
