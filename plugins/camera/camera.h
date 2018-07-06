@@ -673,4 +673,32 @@ std::ostream &operator<<(std::ostream &str, Camera::Status const &status);
  */
 std::ostream &operator<<(std::ostream &str, Camera::Status::StorageStatus const &storage_status);
 
+/**
+ * @brief Equal operator to compare two `Camera::Setting` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::Setting &lhs, const Camera::Setting &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Setting`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::Setting const &setting);
+
+/**
+ * @brief Equal operator to compare two `Camera::Option` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::Option &lhs, const Camera::Option &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Option`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::Option const &option);
+
 } // namespace dronecode_sdk

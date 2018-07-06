@@ -171,16 +171,16 @@ public:
 
         bool is_finished = false;
 
-        _camera.subscribe_mode(
-            [&writer, &stream_closed_promise, &is_finished](const dronecode_sdk::Camera::Mode mode) {
-                rpc::camera::ModeResponse rpc_mode_response;
-                rpc_mode_response.set_camera_mode(translateCameraMode(mode));
+        _camera.subscribe_mode([&writer, &stream_closed_promise, &is_finished](
+                                   const dronecode_sdk::Camera::Mode mode) {
+            rpc::camera::ModeResponse rpc_mode_response;
+            rpc_mode_response.set_camera_mode(translateCameraMode(mode));
 
-                if (!writer->Write(rpc_mode_response) && !is_finished) {
-                    is_finished = true;
-                    stream_closed_promise.set_value();
-                }
-            });
+            if (!writer->Write(rpc_mode_response) && !is_finished) {
+                is_finished = true;
+                stream_closed_promise.set_value();
+            }
+        });
 
         stream_closed_future.wait();
         return grpc::Status::OK;
@@ -200,8 +200,8 @@ public:
         return grpc::Status::OK;
     }
 
-    static std::unique_ptr<rpc::camera::VideoStreamSettings>
-    translateVideoStreamSettings(const dronecode_sdk::Camera::VideoStreamSettings video_stream_settings)
+    static std::unique_ptr<rpc::camera::VideoStreamSettings> translateVideoStreamSettings(
+        const dronecode_sdk::Camera::VideoStreamSettings video_stream_settings)
     {
         auto rpc_video_stream_settings = std::unique_ptr<rpc::camera::VideoStreamSettings>(
             new rpc::camera::VideoStreamSettings());
@@ -502,6 +502,71 @@ public:
             default:
                 return dronecode_sdk::Camera::Status::StorageStatus::NOT_AVAILABLE;
         }
+    }
+
+    grpc::Status SubscribeCurrentSettings(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::SubscribeCurrentSettingsRequest * /* request */,
+        grpc::ServerWriter<rpc::camera::CurrentSettingsResponse> *writer) override
+    {
+        std::promise<void> stream_closed_promise;
+        auto stream_closed_future = stream_closed_promise.get_future();
+
+        bool is_finished = false;
+
+        _camera.subscribe_current_settings(
+            [&writer, &stream_closed_promise, &is_finished](
+                const std::vector<dronecode_sdk::Camera::Setting> current_settings) {
+                rpc::camera::CurrentSettingsResponse rpc_current_setting_response;
+
+                for (const auto current_setting : current_settings) {
+                    auto rpc_current_setting = rpc_current_setting_response.add_current_settings();
+                    translateSetting(current_setting, rpc_current_setting);
+                }
+
+                if (!writer->Write(rpc_current_setting_response) && !is_finished) {
+                    is_finished = true;
+                    stream_closed_promise.set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+
+        return grpc::Status::OK;
+    }
+
+    static void translateSetting(const dronecode_sdk::Camera::Setting setting,
+                                 rpc::camera::Setting *rpc_setting)
+    {
+        rpc_setting->set_setting_id(setting.setting_id);
+        rpc_setting->set_allocated_option(translateOption(setting.option).release());
+    }
+
+    static std::unique_ptr<rpc::camera::Option>
+    translateOption(const dronecode_sdk::Camera::Option option)
+    {
+        auto rpc_option = std::unique_ptr<rpc::camera::Option>(new rpc::camera::Option);
+        rpc_option->set_option_id(option.option_id);
+
+        return rpc_option;
+    }
+
+    static dronecode_sdk::Camera::Setting
+    translateRPCSetting(const rpc::camera::Setting rpc_setting)
+    {
+        dronecode_sdk::Camera::Setting setting;
+        setting.setting_id = rpc_setting.setting_id();
+        setting.option = translateRPCOption(rpc_setting.option());
+
+        return setting;
+    }
+
+    static dronecode_sdk::Camera::Option translateRPCOption(const rpc::camera::Option rpc_option)
+    {
+        dronecode_sdk::Camera::Option option;
+        option.option_id = rpc_option.option_id();
+
+        return option;
     }
 
 private:

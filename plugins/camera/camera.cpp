@@ -321,4 +321,24 @@ std::ostream &operator<<(std::ostream &str, Camera::Status::StorageStatus const 
     }
 }
 
+bool operator==(const Camera::Setting &lhs, const Camera::Setting &rhs)
+{
+    return lhs.setting_id == rhs.setting_id && lhs.option == rhs.option;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::Setting const &setting)
+{
+    return str << "[setting_id: " << setting.setting_id << ", option: " << setting.option << "]";
+}
+
+bool operator==(const Camera::Option &lhs, const Camera::Option &rhs)
+{
+    return lhs.option_id == rhs.option_id;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::Option const &option)
+{
+    return str << "[option_id: " << option.option_id << "]";
+}
+
 } // namespace dronecode_sdk

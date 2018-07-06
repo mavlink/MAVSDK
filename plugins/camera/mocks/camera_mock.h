@@ -21,6 +21,8 @@ public:
                        void(Camera::subscribe_video_stream_info_callback_t));
     MOCK_CONST_METHOD1(subscribe_capture_info, void(Camera::capture_info_callback_t));
     MOCK_CONST_METHOD1(subscribe_status, void(Camera::subscribe_status_callback_t));
+    MOCK_CONST_METHOD1(subscribe_current_settings,
+                       void(Camera::subscribe_current_settings_callback_t));
 };
 
 } // namespace testing

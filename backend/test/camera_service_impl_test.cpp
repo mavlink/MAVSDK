@@ -36,6 +36,8 @@ static constexpr auto ARBITRARY_INT = 123456;
 static constexpr auto ARBITRARY_BOOL = true;
 static constexpr auto ARBITRARY_CAMERA_STORAGE_STATUS =
     dronecode_sdk::Camera::Status::StorageStatus::FORMATTED;
+static constexpr auto ARBITRARY_SETTING_ID = "23b442";
+static constexpr auto ARBITRARY_OPTION_ID = "small";
 
 std::vector<InputPair> generateInputPairs();
 
@@ -81,10 +83,8 @@ protected:
     subscribeCaptureInfoAsync(std::vector<dronecode_sdk::Camera::CaptureInfo> &capture_info_events,
                               std::shared_ptr<grpc::ClientContext> context) const;
     std::unique_ptr<dronecode_sdk::rpc::camera::CaptureInfo> createArbitraryRPCCaptureInfo() const;
-    std::unique_ptr<dronecode_sdk::rpc::camera::Position> createRPCPosition(const double lat,
-                                                                        const double lng,
-                                                                        const float abs_alt,
-                                                                        const float rel_alt) const;
+    std::unique_ptr<dronecode_sdk::rpc::camera::Position> createRPCPosition(
+        const double lat, const double lng, const float abs_alt, const float rel_alt) const;
     std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion>
     createRPCQuaternion(const float w, const float x, const float y, const float z) const;
     void checkSendsCaptureInfo(
@@ -103,6 +103,15 @@ protected:
                                std::shared_ptr<grpc::ClientContext> context) const;
     void checkSendsCameraStatus(
         const std::vector<dronecode_sdk::Camera::Status> &camera_status_events) const;
+
+    dronecode_sdk::Camera::Option createOption(const std::string option_id) const;
+    dronecode_sdk::Camera::Setting createSetting(const std::string setting_id,
+                                                 const dronecode_sdk::Camera::Option &option) const;
+    std::future<void> subscribeCurrentSettingsAsync(
+        std::vector<std::vector<dronecode_sdk::Camera::Setting>> &current_settings_events,
+        std::shared_ptr<grpc::ClientContext> context) const;
+    void checkSendsCurrentSettings(const std::vector<std::vector<dronecode_sdk::Camera::Setting>>
+                                       &current_settings_events) const;
 
     MockCamera _camera;
     CameraServiceImpl _camera_service;
@@ -369,7 +378,8 @@ TEST_F(CameraServiceImplTest, sendsOneMode)
     checkSendsModes(modes);
 }
 
-void CameraServiceImplTest::checkSendsModes(const std::vector<dronecode_sdk::Camera::Mode> &modes) const
+void CameraServiceImplTest::checkSendsModes(
+    const std::vector<dronecode_sdk::Camera::Mode> &modes) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -553,12 +563,12 @@ TEST_F(CameraServiceImplTest, sendsMultipleVideoStreamInfos)
 
     dronecode_sdk::Camera::VideoStreamSettings settings1;
     settings1.set_highest();
-    video_info_events.push_back(
-        createVideoStreamInfo(settings1, dronecode_sdk::Camera::VideoStreamInfo::Status::NOT_RUNNING));
+    video_info_events.push_back(createVideoStreamInfo(
+        settings1, dronecode_sdk::Camera::VideoStreamInfo::Status::NOT_RUNNING));
 
     dronecode_sdk::Camera::VideoStreamSettings settings2;
-    video_info_events.push_back(
-        createVideoStreamInfo(settings2, dronecode_sdk::Camera::VideoStreamInfo::Status::IN_PROGRESS));
+    video_info_events.push_back(createVideoStreamInfo(
+        settings2, dronecode_sdk::Camera::VideoStreamInfo::Status::IN_PROGRESS));
 
     checkSendsVideoStreamInfo(video_info_events);
 }
@@ -629,8 +639,8 @@ CameraServiceImplTest::createArbitraryRPCCaptureInfo() const
 std::unique_ptr<dronecode_sdk::rpc::camera::Position> CameraServiceImplTest::createRPCPosition(
     const double lat, const double lng, const float abs_alt, const float rel_alt) const
 {
-    auto expected_position =
-        std::unique_ptr<dronecode_sdk::rpc::camera::Position>(new dronecode_sdk::rpc::camera::Position());
+    auto expected_position = std::unique_ptr<dronecode_sdk::rpc::camera::Position>(
+        new dronecode_sdk::rpc::camera::Position());
 
     expected_position->set_latitude_deg(lat);
     expected_position->set_longitude_deg(lng);
@@ -854,10 +864,161 @@ TEST_F(CameraServiceImplTest, sendsMultipleCameraStatus)
         true, true, dronecode_sdk::Camera::Status::StorageStatus::UNFORMATTED, 1.2f, 3.4f, 2.2f));
     camera_status_events.push_back(createCameraStatus(
         true, false, dronecode_sdk::Camera::Status::StorageStatus::FORMATTED, 11.2f, 58.4f, 8.65f));
-    camera_status_events.push_back(createCameraStatus(
-        false, false, dronecode_sdk::Camera::Status::StorageStatus::NOT_AVAILABLE, 1.5f, 8.1f, 6.3f));
+    camera_status_events.push_back(
+        createCameraStatus(false,
+                           false,
+                           dronecode_sdk::Camera::Status::StorageStatus::NOT_AVAILABLE,
+                           1.5f,
+                           8.1f,
+                           6.3f));
 
     checkSendsCameraStatus(camera_status_events);
+}
+
+TEST_F(CameraServiceImplTest, registersToCurrentSettings)
+{
+    std::vector<dronecode_sdk::Camera::Setting> current_settings;
+    current_settings.push_back(
+        createSetting(ARBITRARY_SETTING_ID, createOption(ARBITRARY_OPTION_ID)));
+    dronecode_sdk::Camera::subscribe_current_settings_callback_t current_settings_callback;
+    EXPECT_CALL(_camera, subscribe_current_settings(_))
+        .WillOnce(SaveResult(&current_settings_callback, &_callback_saved_promise));
+    std::vector<std::vector<dronecode_sdk::Camera::Setting>> current_settings_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+
+    auto mode_events_future = subscribeCurrentSettingsAsync(current_settings_events, context);
+    _callback_saved_future.wait();
+    context->TryCancel();
+    current_settings_callback(current_settings);
+    mode_events_future.wait();
+}
+
+dronecode_sdk::Camera::Setting
+CameraServiceImplTest::createSetting(const std::string setting_id,
+                                     const dronecode_sdk::Camera::Option &option) const
+{
+    dronecode_sdk::Camera::Setting setting;
+    setting.setting_id = setting_id;
+    setting.option = option;
+
+    return setting;
+}
+
+dronecode_sdk::Camera::Option CameraServiceImplTest::createOption(const std::string option_id) const
+{
+    dronecode_sdk::Camera::Option option;
+    option.option_id = option_id;
+
+    return option;
+}
+
+std::future<void> CameraServiceImplTest::subscribeCurrentSettingsAsync(
+    std::vector<std::vector<dronecode_sdk::Camera::Setting>> &current_settings_events,
+    std::shared_ptr<grpc::ClientContext> context) const
+{
+    return std::async(std::launch::async, [&]() {
+        dronecode_sdk::rpc::camera::SubscribeCurrentSettingsRequest request;
+        auto response_reader = _stub->SubscribeCurrentSettings(context.get(), request);
+
+        dronecode_sdk::rpc::camera::CurrentSettingsResponse response;
+        while (response_reader->Read(&response)) {
+            std::vector<dronecode_sdk::Camera::Setting> response_settings;
+
+            for (auto current_setting : response.current_settings()) {
+                response_settings.push_back(
+                    CameraServiceImpl::translateRPCSetting(current_setting));
+            }
+
+            current_settings_events.push_back(response_settings);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(CameraServiceImplTest, doesNotSendCurrentSettingsIfCallbackNotCalled)
+{
+    std::vector<std::vector<dronecode_sdk::Camera::Setting>> current_settings_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+    auto current_settings_events_future =
+        subscribeCurrentSettingsAsync(current_settings_events, context);
+
+    context->TryCancel();
+    current_settings_events_future.wait();
+
+    EXPECT_EQ(0, current_settings_events.size());
+}
+
+TEST_F(CameraServiceImplTest, sendsOneCurrentSettings)
+{
+    std::vector<std::vector<dronecode_sdk::Camera::Setting>> current_settings_events;
+
+    std::vector<dronecode_sdk::Camera::Setting> current_settings;
+    current_settings.push_back(
+        createSetting(ARBITRARY_SETTING_ID, createOption(ARBITRARY_OPTION_ID)));
+    current_settings_events.push_back(current_settings);
+
+    checkSendsCurrentSettings(current_settings_events);
+}
+
+void CameraServiceImplTest::checkSendsCurrentSettings(
+    const std::vector<std::vector<dronecode_sdk::Camera::Setting>> &current_settings_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecode_sdk::Camera::subscribe_current_settings_callback_t current_settings_callback;
+    auto context = std::make_shared<grpc::ClientContext>();
+    EXPECT_CALL(_camera, subscribe_current_settings(_))
+        .WillOnce(SaveResult(&current_settings_callback, &subscription_promise));
+
+    std::vector<std::vector<dronecode_sdk::Camera::Setting>> received_current_settings_events;
+    auto current_settings_events_future =
+        subscribeCurrentSettingsAsync(received_current_settings_events, context);
+    subscription_future.wait();
+    for (const auto current_settings_event : current_settings_events) {
+        current_settings_callback(current_settings_event);
+    }
+    context->TryCancel();
+    std::vector<dronecode_sdk::Camera::Setting> arbitrary_current_settings_event;
+    arbitrary_current_settings_event.push_back(
+        createSetting(ARBITRARY_SETTING_ID, createOption(ARBITRARY_OPTION_ID)));
+    current_settings_callback(arbitrary_current_settings_event);
+    current_settings_events_future.wait();
+
+    ASSERT_EQ(current_settings_events.size(), received_current_settings_events.size());
+    for (size_t i = 0; i < current_settings_events.size(); i++) {
+        auto current_settings = current_settings_events.at(i);
+        auto received_current_settings = received_current_settings_events.at(i);
+
+        for (size_t j = 0; j < current_settings.size(); j++) {
+            EXPECT_EQ(current_settings.at(j), received_current_settings.at(j));
+        }
+    }
+}
+
+TEST_F(CameraServiceImplTest, sendsMultipleCurrentSettings)
+{
+    std::vector<std::vector<dronecode_sdk::Camera::Setting>> current_settings_events;
+
+    std::vector<dronecode_sdk::Camera::Setting> current_settings1;
+    current_settings1.push_back(
+        createSetting("arbitrary_setting_id1", createOption("arbitrary_option_id1")));
+    current_settings1.push_back(
+        createSetting("arbitrary_setting_id2", createOption("arbitrary_option_id2")));
+    current_settings1.push_back(
+        createSetting("arbitrary_setting_id3", createOption("arbitrary_option_id3")));
+    current_settings_events.push_back(current_settings1);
+
+    std::vector<dronecode_sdk::Camera::Setting> current_settings2;
+    current_settings2.push_back(
+        createSetting("arbitrary_setting_id4", createOption("arbitrary_option_id4")));
+    current_settings2.push_back(
+        createSetting("arbitrary_setting_id5", createOption("arbitrary_option_id5")));
+    current_settings2.push_back(
+        createSetting("arbitrary_setting_id6", createOption("arbitrary_option_id6")));
+    current_settings_events.push_back(current_settings2);
+
+    checkSendsCurrentSettings(current_settings_events);
 }
 
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,
