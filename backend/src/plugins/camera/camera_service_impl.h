@@ -626,6 +626,39 @@ public:
         return setting_options;
     }
 
+    grpc::Status SetSetting(grpc::ServerContext * /* context */,
+                            const rpc::camera::SetSettingRequest *request,
+                            rpc::camera::SetSettingResponse *response) override
+    {
+        std::promise<void> set_option_called_promise;
+        auto set_option_called_future = set_option_called_promise.get_future();
+
+        if (request == nullptr) {
+            if (response != nullptr) {
+                fillResponseWithResult(response, dronecode_sdk::Camera::Result::WRONG_ARGUMENT);
+            }
+        } else {
+            const std::string setting_id = request->setting().setting_id();
+            dronecode_sdk::Camera::Option option;
+            option.option_id = request->setting().option().option_id();
+
+            _camera.set_option_async(
+                [this, response, &set_option_called_promise](
+                    dronecode_sdk::Camera::Result camera_result) {
+                    if (response != nullptr) {
+                        fillResponseWithResult(response, camera_result);
+                    }
+                    set_option_called_promise.set_value();
+                },
+                setting_id,
+                option);
+
+            set_option_called_future.wait();
+        }
+
+        return grpc::Status::OK;
+    }
+
 private:
     Camera &_camera;
 };

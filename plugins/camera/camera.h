@@ -506,9 +506,9 @@ public:
      * @param option The machine readable name of the option value.
      * @param callback The callback to get the result.
      */
-    void set_option_async(const std::string &setting_id,
-                          const Camera::Option &option,
-                          const result_callback_t &callback);
+    void set_option_async(const result_callback_t &callback,
+                          const std::string &setting_id,
+                          const Camera::Option &option);
 
     /**
      * @brief Callback type to get the currently selected settings.

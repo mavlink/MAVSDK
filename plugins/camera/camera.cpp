@@ -122,9 +122,9 @@ void Camera::subscribe_capture_info(capture_info_callback_t callback)
     _impl->subscribe_capture_info(callback);
 }
 
-void Camera::set_option_async(const std::string &setting_id,
-                              const Option &option,
-                              const result_callback_t &callback)
+void Camera::set_option_async(const result_callback_t &callback,
+                              const std::string &setting_id,
+                              const Option &option)
 {
     _impl->set_option_async(setting_id, option, callback);
 }

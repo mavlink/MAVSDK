@@ -71,7 +71,7 @@ set_setting(std::shared_ptr<Camera> camera, const std::string &setting, const st
     Camera::Option new_option{};
     new_option.option_id = option;
     camera->set_option_async(
-        setting, new_option, [prom](Camera::Result result) { prom->set_value(result); });
+        [prom](Camera::Result result) { prom->set_value(result); }, setting, new_option);
 
     auto status = ret.wait_for(std::chrono::seconds(1));
 

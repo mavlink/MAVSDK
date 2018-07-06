@@ -38,6 +38,7 @@ static constexpr auto ARBITRARY_CAMERA_STORAGE_STATUS =
     dronecode_sdk::Camera::Status::StorageStatus::FORMATTED;
 static constexpr auto ARBITRARY_SETTING_ID = "23b442";
 static constexpr auto ARBITRARY_OPTION_ID = "small";
+static constexpr auto ARBITRARY_CAMERA_RESULT = dronecode_sdk::Camera::Result::SUCCESS;
 
 std::vector<InputPair> generateInputPairs();
 
@@ -122,6 +123,13 @@ protected:
     void checkSendsPossibleSettingOptions(
         const std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>>
             &possible_setting_options_events) const;
+
+    std::unique_ptr<dronecode_sdk::rpc::camera::Setting>
+    createRPCSetting(const std::string &setting_id, const std::string &option_id);
+    std::future<void> setSettingAndSaveParams(
+        const dronecode_sdk::rpc::camera::SetSettingRequest &request,
+        std::shared_ptr<dronecode_sdk::rpc::camera::SetSettingResponse> response,
+        dronecode_sdk::Camera::result_callback_t &result_callback);
 
     MockCamera _camera;
     CameraServiceImpl _camera_service;
@@ -1181,6 +1189,97 @@ TEST_F(CameraServiceImplTest, sendsMultiplePossibleSettingOptionss)
     possible_setting_options_events.push_back(possible_setting_options);
 
     checkSendsPossibleSettingOptions(possible_setting_options_events);
+}
+
+TEST_P(CameraServiceImplTest, setSettingResultIsTranslatedCorrectly)
+{
+    dronecode_sdk::Camera::result_callback_t result_callback;
+    dronecode_sdk::rpc::camera::SetSettingRequest request;
+    request.set_allocated_setting(
+        createRPCSetting("arbitrary_setting_id", "arbitrary_option_id").release());
+    auto response = std::make_shared<dronecode_sdk::rpc::camera::SetSettingResponse>();
+
+    auto handle = setSettingAndSaveParams(request, response, result_callback);
+    result_callback(GetParam().second);
+
+    EXPECT_EQ(GetParam().first, CameraResult::Result_Name(response->camera_result().result()));
+}
+
+std::future<void> CameraServiceImplTest::setSettingAndSaveParams(
+    const dronecode_sdk::rpc::camera::SetSettingRequest &request,
+    std::shared_ptr<dronecode_sdk::rpc::camera::SetSettingResponse> response,
+    dronecode_sdk::Camera::result_callback_t &result_callback)
+{
+    EXPECT_CALL(_camera, set_option_async(_, _, _))
+        .WillOnce(SaveResult(&result_callback, &_callback_saved_promise));
+
+    auto handle = std::async(std::launch::async, [this, &request, response]() {
+        _camera_service.SetSetting(nullptr, &request, response.get());
+    });
+
+    _callback_saved_future.wait();
+    return handle;
+}
+
+std::unique_ptr<dronecode_sdk::rpc::camera::Setting>
+CameraServiceImplTest::createRPCSetting(const std::string &setting_id, const std::string &option_id)
+{
+    auto setting = std::unique_ptr<dronecode_sdk::rpc::camera::Setting>(
+        new dronecode_sdk::rpc::camera::Setting);
+    setting->set_setting_id(setting_id);
+
+    auto option =
+        std::unique_ptr<dronecode_sdk::rpc::camera::Option>(new dronecode_sdk::rpc::camera::Option);
+    option->set_option_id(option_id);
+    setting->set_allocated_option(option.release());
+
+    return setting;
+}
+
+TEST_F(CameraServiceImplTest, setsSettingEvenWhenContextAndResponseAreNull)
+{
+    dronecode_sdk::Camera::result_callback_t result_callback;
+    dronecode_sdk::rpc::camera::SetSettingRequest request;
+    request.set_allocated_setting(
+        createRPCSetting(ARBITRARY_SETTING_ID, ARBITRARY_OPTION_ID).release());
+    auto response = std::make_shared<dronecode_sdk::rpc::camera::SetSettingResponse>();
+
+    auto handle = setSettingAndSaveParams(request, nullptr, result_callback);
+    result_callback(ARBITRARY_CAMERA_RESULT);
+}
+
+TEST_F(CameraServiceImplTest, setsSettingWithRightParameter)
+{
+    dronecode_sdk::Camera::result_callback_t result_callback;
+    dronecode_sdk::rpc::camera::SetSettingRequest request;
+    request.set_allocated_setting(
+        createRPCSetting(ARBITRARY_SETTING_ID, ARBITRARY_OPTION_ID).release());
+    dronecode_sdk::Camera::Option option;
+    option.option_id = ARBITRARY_OPTION_ID;
+
+    EXPECT_CALL(_camera, set_option_async(_, ARBITRARY_SETTING_ID, option))
+        .WillOnce(SaveResult(&result_callback, &_callback_saved_promise));
+
+    auto handle = std::async(std::launch::async, [this, &request]() {
+        _camera_service.SetSetting(nullptr, &request, nullptr);
+    });
+
+    _callback_saved_future.wait();
+    result_callback(ARBITRARY_CAMERA_RESULT);
+}
+
+TEST_F(CameraServiceImplTest, setSettingReturnsWrongArgumentErrorIfRequestIsNull)
+{
+    dronecode_sdk::rpc::camera::SetSettingResponse response;
+
+    _camera_service.SetSetting(nullptr, nullptr, &response);
+
+    EXPECT_EQ("WRONG_ARGUMENT", CameraResult::Result_Name(response.camera_result().result()));
+}
+
+TEST_F(CameraServiceImplTest, setSettingDoesNotCrashWhenArgsAreNull)
+{
+    _camera_service.SetSetting(nullptr, nullptr, nullptr);
 }
 
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,
