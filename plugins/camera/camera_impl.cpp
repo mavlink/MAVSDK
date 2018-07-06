@@ -510,8 +510,13 @@ Camera::Result CameraImpl::set_mode(const Camera::Mode mode)
 
 void CameraImpl::save_camera_mode(const float mavlink_camera_mode)
 {
+    if (!std::isfinite(mavlink_camera_mode)) {
+        LogWarn() << "Can't save NAN as camera mode";
+        return;
+    }
+
     MAVLinkParameters::ParamValue value;
-    value.set_uint32(mavlink_camera_mode);
+    value.set_uint32(uint32_t(mavlink_camera_mode));
     _camera_definition->set_setting("CAM_MODE", value);
     refresh_params();
 }
