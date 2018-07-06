@@ -569,6 +569,63 @@ public:
         return option;
     }
 
+    grpc::Status SubscribePossibleSettingOptions(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::SubscribePossibleSettingOptionsRequest * /* request */,
+        grpc::ServerWriter<rpc::camera::PossibleSettingOptionsResponse> *writer) override
+    {
+        std::promise<void> stream_closed_promise;
+        auto stream_closed_future = stream_closed_promise.get_future();
+
+        bool is_finished = false;
+
+        _camera.subscribe_possible_setting_options(
+            [&writer, &stream_closed_promise, &is_finished](
+                const std::vector<dronecode_sdk::Camera::SettingOptions> setting_options) {
+                rpc::camera::PossibleSettingOptionsResponse rpc_setting_options_response;
+
+                for (const auto setting_option : setting_options) {
+                    auto rpc_setting_option = rpc_setting_options_response.add_setting_options();
+                    translateSettingOptions(setting_option, rpc_setting_option);
+                }
+
+                if (!writer->Write(rpc_setting_options_response) && !is_finished) {
+                    is_finished = true;
+                    stream_closed_promise.set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+
+        return grpc::Status::OK;
+    }
+
+    static void translateSettingOptions(const dronecode_sdk::Camera::SettingOptions setting_options,
+                                        rpc::camera::SettingOptions *rpc_setting_options)
+    {
+        rpc_setting_options->set_setting_id(setting_options.setting_id);
+
+        for (const auto option : setting_options.options) {
+            auto rpc_option = rpc_setting_options->add_options();
+            rpc_option->set_option_id(option.option_id);
+        }
+    }
+
+    static dronecode_sdk::Camera::SettingOptions
+    translateRPCSettingOptions(const rpc::camera::SettingOptions rpc_setting_options)
+    {
+        dronecode_sdk::Camera::SettingOptions setting_options;
+        setting_options.setting_id = rpc_setting_options.setting_id();
+
+        std::vector<dronecode_sdk::Camera::Option> options;
+        for (auto option : rpc_setting_options.options()) {
+            options.push_back(translateRPCOption(option));
+        }
+        setting_options.options = options;
+
+        return setting_options;
+    }
+
 private:
     Camera &_camera;
 };

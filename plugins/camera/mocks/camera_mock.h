@@ -23,6 +23,8 @@ public:
     MOCK_CONST_METHOD1(subscribe_status, void(Camera::subscribe_status_callback_t));
     MOCK_CONST_METHOD1(subscribe_current_settings,
                        void(Camera::subscribe_current_settings_callback_t));
+    MOCK_CONST_METHOD1(subscribe_possible_setting_options,
+                       void(Camera::subscribe_possible_setting_options_callback_t));
 };
 
 } // namespace testing

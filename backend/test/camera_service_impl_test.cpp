@@ -113,6 +113,16 @@ protected:
     void checkSendsCurrentSettings(const std::vector<std::vector<dronecode_sdk::Camera::Setting>>
                                        &current_settings_events) const;
 
+    dronecode_sdk::Camera::SettingOptions
+    createSettingOptions(const std::string setting_id,
+                         const std::vector<dronecode_sdk::Camera::Option> &options) const;
+    std::future<void> subscribePossibleSettingOptionsAsync(
+        std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>> &possible_settings_events,
+        std::shared_ptr<grpc::ClientContext> context) const;
+    void checkSendsPossibleSettingOptions(
+        const std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>>
+            &possible_setting_options_events) const;
+
     MockCamera _camera;
     CameraServiceImpl _camera_service;
     std::unique_ptr<grpc::Server> _server;
@@ -1019,6 +1029,158 @@ TEST_F(CameraServiceImplTest, sendsMultipleCurrentSettings)
     current_settings_events.push_back(current_settings2);
 
     checkSendsCurrentSettings(current_settings_events);
+}
+
+TEST_F(CameraServiceImplTest, registersToPossibleSettings)
+{
+    std::vector<dronecode_sdk::Camera::SettingOptions> possible_settings;
+    std::vector<dronecode_sdk::Camera::Option> options;
+    options.push_back(createOption(ARBITRARY_OPTION_ID));
+    possible_settings.push_back(createSettingOptions(ARBITRARY_SETTING_ID, options));
+    dronecode_sdk::Camera::subscribe_possible_setting_options_callback_t possible_settings_callback;
+    EXPECT_CALL(_camera, subscribe_possible_setting_options(_))
+        .WillOnce(SaveResult(&possible_settings_callback, &_callback_saved_promise));
+    std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>> possible_settings_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+
+    auto mode_events_future =
+        subscribePossibleSettingOptionsAsync(possible_settings_events, context);
+    _callback_saved_future.wait();
+    context->TryCancel();
+    possible_settings_callback(possible_settings);
+    mode_events_future.wait();
+}
+
+dronecode_sdk::Camera::SettingOptions CameraServiceImplTest::createSettingOptions(
+    const std::string setting_id, const std::vector<dronecode_sdk::Camera::Option> &options) const
+{
+    dronecode_sdk::Camera::SettingOptions setting_options;
+    setting_options.setting_id = setting_id;
+    setting_options.options = options;
+
+    return setting_options;
+}
+
+std::future<void> CameraServiceImplTest::subscribePossibleSettingOptionsAsync(
+    std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>> &possible_settings_events,
+    std::shared_ptr<grpc::ClientContext> context) const
+{
+    return std::async(std::launch::async, [&]() {
+        dronecode_sdk::rpc::camera::SubscribePossibleSettingOptionsRequest request;
+        auto response_reader = _stub->SubscribePossibleSettingOptions(context.get(), request);
+
+        dronecode_sdk::rpc::camera::PossibleSettingOptionsResponse response;
+        while (response_reader->Read(&response)) {
+            std::vector<dronecode_sdk::Camera::SettingOptions> response_setting_options;
+
+            for (auto setting_options : response.setting_options()) {
+                response_setting_options.push_back(
+                    CameraServiceImpl::translateRPCSettingOptions(setting_options));
+            }
+
+            possible_settings_events.push_back(response_setting_options);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(CameraServiceImplTest, doesNotSendPossibleSettingOptionsIfCallbackNotCalled)
+{
+    std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>> possible_setting_options_events;
+    auto context = std::make_shared<grpc::ClientContext>();
+    auto possible_setting_options_events_future =
+        subscribePossibleSettingOptionsAsync(possible_setting_options_events, context);
+
+    context->TryCancel();
+    possible_setting_options_events_future.wait();
+
+    EXPECT_EQ(0, possible_setting_options_events.size());
+}
+
+TEST_F(CameraServiceImplTest, sendsOnePossibleSettingOptions)
+{
+    std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>> possible_setting_options_events;
+
+    std::vector<dronecode_sdk::Camera::SettingOptions> possible_setting_options;
+    std::vector<dronecode_sdk::Camera::Option> options;
+    options.push_back(createOption(ARBITRARY_OPTION_ID));
+    possible_setting_options.push_back(createSettingOptions(ARBITRARY_SETTING_ID, options));
+    possible_setting_options_events.push_back(possible_setting_options);
+
+    checkSendsPossibleSettingOptions(possible_setting_options_events);
+}
+
+void CameraServiceImplTest::checkSendsPossibleSettingOptions(
+    const std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>>
+        &possible_setting_options_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    dronecode_sdk::Camera::subscribe_possible_setting_options_callback_t
+        possible_setting_options_callback;
+    auto context = std::make_shared<grpc::ClientContext>();
+    EXPECT_CALL(_camera, subscribe_possible_setting_options(_))
+        .WillOnce(SaveResult(&possible_setting_options_callback, &subscription_promise));
+
+    std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>>
+        received_possible_setting_options_events;
+    auto possible_setting_options_events_future =
+        subscribePossibleSettingOptionsAsync(received_possible_setting_options_events, context);
+    subscription_future.wait();
+    for (const auto possible_setting_options_event : possible_setting_options_events) {
+        possible_setting_options_callback(possible_setting_options_event);
+    }
+    context->TryCancel();
+
+    std::vector<dronecode_sdk::Camera::SettingOptions> arbitrary_possible_setting_options;
+    std::vector<dronecode_sdk::Camera::Option> options;
+    options.push_back(createOption(ARBITRARY_OPTION_ID));
+    arbitrary_possible_setting_options.push_back(
+        createSettingOptions(ARBITRARY_SETTING_ID, options));
+    possible_setting_options_callback(arbitrary_possible_setting_options);
+    possible_setting_options_events_future.wait();
+
+    ASSERT_EQ(possible_setting_options_events.size(),
+              received_possible_setting_options_events.size());
+    for (size_t i = 0; i < possible_setting_options_events.size(); i++) {
+        auto possible_setting_options = possible_setting_options_events.at(i);
+        auto received_possible_setting_options = received_possible_setting_options_events.at(i);
+
+        for (size_t j = 0; j < possible_setting_options.size(); j++) {
+            EXPECT_EQ(possible_setting_options.at(j), received_possible_setting_options.at(j));
+        }
+    }
+}
+
+TEST_F(CameraServiceImplTest, sendsMultiplePossibleSettingOptionss)
+{
+    std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>> possible_setting_options_events;
+
+    std::vector<dronecode_sdk::Camera::SettingOptions> possible_setting_options;
+
+    std::vector<dronecode_sdk::Camera::Option> options1;
+    options1.push_back(createOption("option1_1"));
+    options1.push_back(createOption("option1_2"));
+    options1.push_back(createOption("option1_3"));
+    possible_setting_options.push_back(createSettingOptions("setting1", options1));
+
+    std::vector<dronecode_sdk::Camera::Option> options2;
+    options2.push_back(createOption("option1"));
+    options2.push_back(createOption("option2"));
+    possible_setting_options.push_back(createSettingOptions("setting2", options2));
+
+    std::vector<dronecode_sdk::Camera::Option> options3;
+    options3.push_back(createOption("option1"));
+    options3.push_back(createOption("option2"));
+    options3.push_back(createOption("option2"));
+    options3.push_back(createOption("option1"));
+    options3.push_back(createOption("option1"));
+    possible_setting_options.push_back(createSettingOptions("setting3", options3));
+
+    possible_setting_options_events.push_back(possible_setting_options);
+
+    checkSendsPossibleSettingOptions(possible_setting_options_events);
 }
 
 INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,

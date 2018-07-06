@@ -701,4 +701,18 @@ bool operator==(const Camera::Option &lhs, const Camera::Option &rhs);
  */
 std::ostream &operator<<(std::ostream &str, Camera::Option const &option);
 
+/**
+ * @brief Equal operator to compare two `Camera::SettingOptions` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Option`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::SettingOptions const &setting_options);
+
 } // namespace dronecode_sdk

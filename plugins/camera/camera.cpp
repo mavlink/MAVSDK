@@ -341,4 +341,33 @@ std::ostream &operator<<(std::ostream &str, Camera::Option const &option)
     return str << "[option_id: " << option.option_id << "]";
 }
 
+bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions &rhs)
+{
+    if (lhs.options.size() != rhs.options.size()) {
+        return false;
+    }
+
+    for (size_t i = 0; i < lhs.options.size(); i++) {
+        if (!(lhs.options.at(i) == rhs.options.at(i))) {
+            return false;
+        }
+    }
+
+    return lhs.setting_id == rhs.setting_id;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::SettingOptions const &setting_options)
+{
+    str << "[setting_id: " << setting_options.setting_id;
+    str << ", options: [";
+
+    for (const auto &option : setting_options.options) {
+        str << option;
+    }
+
+    str << "]";
+
+    return str;
+}
+
 } // namespace dronecode_sdk
