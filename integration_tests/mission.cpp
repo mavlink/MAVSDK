@@ -3,6 +3,7 @@
 #include <memory>
 #include <future>
 #include <atomic>
+#include <cmath>
 #include "integration_test_helper.h"
 #include "dronecode_sdk.h"
 #include "plugins/telemetry/telemetry.h"

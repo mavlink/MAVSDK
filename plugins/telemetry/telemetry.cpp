@@ -1,6 +1,7 @@
 #include "telemetry.h"
 
 #include <limits>
+#include <cmath>
 
 #include "telemetry_impl.h"
 
@@ -319,27 +320,29 @@ const char *Telemetry::result_str(Result result)
 bool operator==(const Telemetry::PositionVelocityNED &lhs,
                 const Telemetry::PositionVelocityNED &rhs)
 {
-    return fabs(lhs.position.north_m - rhs.position.north_m) <=
+    return std::fabs(lhs.position.north_m - rhs.position.north_m) <=
                std::numeric_limits<float>::epsilon() &&
-           fabs(lhs.position.east_m - rhs.position.east_m) <=
+           std::fabs(lhs.position.east_m - rhs.position.east_m) <=
                std::numeric_limits<float>::epsilon() &&
-           fabs(lhs.position.down_m - rhs.position.down_m) <=
+           std::fabs(lhs.position.down_m - rhs.position.down_m) <=
                std::numeric_limits<float>::epsilon() &&
-           fabs(lhs.velocity.north_m_s - rhs.velocity.north_m_s) <=
+           std::fabs(lhs.velocity.north_m_s - rhs.velocity.north_m_s) <=
                std::numeric_limits<float>::epsilon() &&
-           fabs(lhs.velocity.east_m_s - rhs.velocity.east_m_s) <=
+           std::fabs(lhs.velocity.east_m_s - rhs.velocity.east_m_s) <=
                std::numeric_limits<float>::epsilon() &&
-           fabs(lhs.velocity.down_m_s - rhs.velocity.down_m_s) <=
+           std::fabs(lhs.velocity.down_m_s - rhs.velocity.down_m_s) <=
                std::numeric_limits<float>::epsilon();
 }
 
 bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs)
 {
-    return abs(lhs.latitude_deg - rhs.latitude_deg) <= std::numeric_limits<double>::epsilon() &&
-           abs(lhs.longitude_deg - rhs.longitude_deg) <= std::numeric_limits<double>::epsilon() &&
-           abs(lhs.absolute_altitude_m - rhs.absolute_altitude_m) <=
+    return std::abs(lhs.latitude_deg - rhs.latitude_deg) <=
+               std::numeric_limits<double>::epsilon() &&
+           std::abs(lhs.longitude_deg - rhs.longitude_deg) <=
+               std::numeric_limits<double>::epsilon() &&
+           std::abs(lhs.absolute_altitude_m - rhs.absolute_altitude_m) <=
                std::numeric_limits<float>::epsilon() &&
-           abs(lhs.relative_altitude_m - rhs.relative_altitude_m) <=
+           std::abs(lhs.relative_altitude_m - rhs.relative_altitude_m) <=
                std::numeric_limits<float>::epsilon();
 }
 

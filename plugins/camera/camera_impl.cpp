@@ -5,6 +5,7 @@
 #include "mavlink_include.h"
 #include "http_loader.h"
 #include <functional>
+#include <cmath>
 
 namespace dronecode_sdk {
 
