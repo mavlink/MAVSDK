@@ -3,6 +3,7 @@
 #include <cfloat>
 #include <cstdint>
 #include <limits>
+#include <cmath>
 
 namespace dronecode_sdk {
 
@@ -149,12 +150,12 @@ float to_deg_from_rad(float rad)
 
 bool are_equal(float one, float two)
 {
-    return (fabsf(one - two) < std::numeric_limits<float>::epsilon());
+    return (std::fabs(one - two) < std::numeric_limits<float>::epsilon());
 }
 
 bool are_equal(double one, double two)
 {
-    return (fabs(one - two) < std::numeric_limits<double>::epsilon());
+    return (std::fabs(one - two) < std::numeric_limits<double>::epsilon());
 }
 
 } // namespace dronecode_sdk

@@ -5,6 +5,7 @@
 #include "mavlink_include.h"
 #include "http_loader.h"
 #include <functional>
+#include <cmath>
 
 namespace dronecode_sdk {
 
@@ -396,8 +397,8 @@ Camera::Result CameraImpl::get_video_stream_info(Camera::VideoStreamInfo &info)
     auto prom = std::make_shared<std::promise<Camera::Result>>();
     auto ret = prom->get_future();
 
-    get_video_stream_info_async([prom](Camera::Result result, Camera::VideoStreamInfo info) {
-        UNUSED(info);
+    get_video_stream_info_async([prom](Camera::Result result, Camera::VideoStreamInfo info_gotten) {
+        UNUSED(info_gotten);
         prom->set_value(result);
     });
 
@@ -426,6 +427,7 @@ void CameraImpl::get_video_stream_info_async(
 
     auto command = make_command_request_video_stream_info();
     _parent->send_command_async(command, [this](MAVLinkCommands::Result result, float progress) {
+        UNUSED(progress);
         Camera::Result camera_result = camera_result_from_command_result(result);
         if (camera_result != Camera::Result::SUCCESS) {
             if (_video_stream_info.callback) {
@@ -508,8 +510,13 @@ Camera::Result CameraImpl::set_mode(const Camera::Mode mode)
 
 void CameraImpl::save_camera_mode(const float mavlink_camera_mode)
 {
+    if (!std::isfinite(mavlink_camera_mode)) {
+        LogWarn() << "Can't save NAN as camera mode";
+        return;
+    }
+
     MAVLinkParameters::ParamValue value;
-    value.set_uint32(mavlink_camera_mode);
+    value.set_uint32(uint32_t(mavlink_camera_mode));
     _camera_definition->set_setting("CAM_MODE", value);
     refresh_params();
 }
@@ -1102,7 +1109,7 @@ void CameraImpl::get_option_async(const std::string &setting_id,
         LogWarn() << "The param was probably outdated, trying to fetch it";
         _parent->get_param_async(
             setting_id,
-            [setting_id, this](bool success, MAVLinkParameters::ParamValue value) {
+            [setting_id, this](bool success, MAVLinkParameters::ParamValue value_gotten) {
                 if (!success) {
                     LogWarn() << "Fetching the param failed";
                     return;
@@ -1111,7 +1118,7 @@ void CameraImpl::get_option_async(const std::string &setting_id,
                 if (!this->_camera_definition) {
                     return;
                 }
-                this->_camera_definition->set_setting(setting_id, value);
+                this->_camera_definition->set_setting(setting_id, value_gotten);
             },
             true);
 
@@ -1204,7 +1211,7 @@ void CameraImpl::refresh_params()
         return;
     }
 
-    int count = 0;
+    unsigned count = 0;
     for (const auto &param : params) {
         std::string param_name = param;
         const bool is_last = (count + 1 == params.size());

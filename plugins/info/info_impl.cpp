@@ -100,11 +100,11 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
 
     product.vendor_id = autopilot_version.vendor_id;
     const char *vendor_name = vendor_id_str(autopilot_version.vendor_id);
-    STRNCPY(product.vendor_name, vendor_name, sizeof(product.vendor_name));
+    STRNCPY(product.vendor_name, vendor_name, sizeof(product.vendor_name) - 1);
 
     product.product_id = autopilot_version.product_id;
     const char *product_name = product_id_str(autopilot_version.product_id);
-    STRNCPY(product.product_name, product_name, sizeof(product.product_name));
+    STRNCPY(product.product_name, product_name, sizeof(product.product_name) - 1);
 
     set_product(product);
 }

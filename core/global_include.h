@@ -5,14 +5,15 @@
 #include <chrono>
 #include <thread>
 
-#ifdef WINDOWS
-#ifndef _USE_MATH_DEFINES
-#define _USE_MATH_DEFINES
+// Instead of using the constant from math.h or cmath we define it ourselves. This way
+// we don't import all the other C math functions and make sure to use the C++ functions
+// from the standard library (e.g. std::abs() instead of abs()).
+#ifndef M_PI
+constexpr double M_PI = 3.14159265358979323846;
 #endif
-// cmath doesn't contain M_PI
-#include <math.h>
-#else
-#include <cmath>
+
+#ifndef M_PI_F
+constexpr float M_PI_F = float(M_PI);
 #endif
 
 #define MIN(x_, y_) ((x_) > (y_)) ? (y_) : (x_)
@@ -22,10 +23,6 @@
 #define STRNCPY strncpy_s
 #else
 #define STRNCPY strncpy
-#endif
-
-#ifndef M_PI_F
-#define M_PI_F float(M_PI)
 #endif
 
 namespace dronecode_sdk {

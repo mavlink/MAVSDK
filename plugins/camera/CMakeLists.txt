@@ -10,6 +10,10 @@ target_link_libraries(dronecode_sdk_camera
     ${CURL_LIBRARY}
 )
 
+set_target_properties(dronecode_sdk_camera
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)
+
 include_directories(
     ${CURL_INCLUDE_DIRS}
 )

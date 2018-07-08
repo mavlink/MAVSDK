@@ -7,6 +7,10 @@ target_link_libraries(dronecode_sdk_action
     dronecode_sdk
 )
 
+set_target_properties(dronecode_sdk_action
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)
+
 install(FILES
     action.h
     action_result.h
