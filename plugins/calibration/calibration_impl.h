@@ -22,6 +22,7 @@ public:
     void calibrate_gyro_async(const Calibration::calibration_callback_t &callback);
     void calibrate_accelerometer_async(const Calibration::calibration_callback_t &callback);
     void calibrate_magnetometer_async(const Calibration::calibration_callback_t &callback);
+    void calibrate_gimbal_accelerometer_async(const Calibration::calibration_callback_t &callback);
 
     bool is_gyro_calibration_ok() const;
     bool is_accelerometer_calibration_ok() const;
@@ -67,7 +68,8 @@ private:
         NONE,
         GYRO_CALIBRATION,
         ACCELEROMETER_CALIBRATION,
-        MAGNETOMETER_CALIBRATION
+        MAGNETOMETER_CALIBRATION,
+        GIMBAL_ACCELEROMETER_CALIBRATION
     } _state;
 
     Calibration::calibration_callback_t _calibration_callback{nullptr};

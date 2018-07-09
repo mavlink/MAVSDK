@@ -29,6 +29,11 @@ void Calibration::calibrate_magnetometer_async(calibration_callback_t callback)
     _impl->calibrate_magnetometer_async(callback);
 }
 
+void Calibration::calibrate_gimbal_accelerometer_async(calibration_callback_t callback)
+{
+    _impl->calibrate_gimbal_accelerometer_async(callback);
+}
+
 const char *Calibration::result_str(Result result)
 {
     switch (result) {
