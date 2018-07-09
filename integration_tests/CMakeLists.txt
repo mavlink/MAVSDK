@@ -23,6 +23,7 @@ add_executable(integration_tests_runner
     async_hover.cpp
     takeoff_and_kill.cpp
     offboard_velocity.cpp
+    offboard_position.cpp
     logging.cpp
     info.cpp
     mission.cpp

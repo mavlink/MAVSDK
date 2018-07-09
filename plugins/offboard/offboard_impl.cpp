@@ -2,6 +2,7 @@
 #include "offboard_impl.h"
 #include "dronecode_sdk_impl.h"
 #include "px4_custom_mode.h"
+#include <cmath>
 
 namespace dronecode_sdk {
 
@@ -159,6 +160,32 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
     // also send it right now to reduce latency
     send_velocity_body();
 }
+void OffboardImpl::set_position_local_ned(Offboard::PositionLocalNED position_local_ned)
+{
+    _mutex.lock();
+    _position_local_ned = position_local_ned;
+
+    if (_mode != Mode::POSITION_LOCAL_NED) {
+        if (_call_every_cookie) {
+            // If we're already sending other setpoints, stop that now.
+            _parent->remove_call_every(_call_every_cookie);
+            _call_every_cookie = nullptr;
+        }
+        // We automatically send altitude setpoint from now on.
+        _parent->add_call_every(
+            [this]() { send_position_local_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+        _mode = Mode::POSITION_LOCAL_NED;
+    } else {
+        // We're already sending this kind of setpoints. Since the setpoint change, let's
+        // reschedule the next call, so we don't send setpoints too often.
+        _parent->reset_call_every(_call_every_cookie);
+    }
+    _mutex.unlock();
+
+    // also send it right now to reduce latency
+    send_position_local_ned();
+}
 
 void OffboardImpl::send_velocity_ned()
 {
@@ -252,6 +279,74 @@ void OffboardImpl::send_velocity_body()
         _parent->get_autopilot_id(),
         MAV_FRAME_BODY_NED,
         IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW,
+        x,
+        y,
+        z,
+        vx,
+        vy,
+        vz,
+        afx,
+        afy,
+        afz,
+        yaw,
+        yaw_rate);
+    _parent->send_message(message);
+}
+
+void OffboardImpl::send_position_local_ned()
+{
+    _mutex.lock();
+    const float yaw = 0.0f;
+    const float yaw_rate = 0.0f;
+    float x = (float)_position_local_ned.x_m;
+    float y = (float)_position_local_ned.y_m;
+    float z = (float)_position_local_ned.z_m;
+    const float vx = 0.0f;
+    const float vy = 0.0f;
+    const float vz = 0.0f;
+    const float afx = 0.0f;
+    const float afy = 0.0f;
+    const float afz = 0.0f;
+    _mutex.unlock();
+
+    const uint16_t IGNORE_X = std::isnan(x) << 0;
+    const uint16_t IGNORE_Y = std::isnan(y) << 1;
+    const uint16_t IGNORE_Z = std::isnan(z) << 2;
+    const static uint16_t IGNORE_VX = 1 << 3;
+    const static uint16_t IGNORE_VY = 1 << 4;
+    const static uint16_t IGNORE_VZ = 1 << 5;
+    const static uint16_t IGNORE_AX = 1 << 6;
+    const static uint16_t IGNORE_AY = 1 << 7;
+    const static uint16_t IGNORE_AZ = 1 << 8;
+    const static uint16_t IS_FORCE = 0 << 9; // Setpoint is NOT a force setpoint
+    const static uint16_t IGNORE_YAW = 1 << 10;
+    const static uint16_t IGNORE_YAW_RATE = 1 << 11;
+
+    // Set values to finite values if they are not supplied since PX4 check if the values are finite
+    if (std::isnan(x)) {
+        x = 0.0f;
+    }
+    if (std::isnan(y)) {
+        y = 0.0f;
+    }
+    if (std::isnan(z)) {
+        z = 0.0f;
+    }
+
+    const static uint16_t IGNORE_MASK = IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_VX | IGNORE_VY |
+                                        IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IS_FORCE |
+                                        IGNORE_YAW | IGNORE_YAW_RATE;
+
+    mavlink_message_t message;
+    mavlink_msg_set_position_target_local_ned_pack(
+        GCSClient::system_id,
+        GCSClient::component_id,
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_FRAME_LOCAL_NED,
+        IGNORE_MASK,
         x,
         y,
         z,

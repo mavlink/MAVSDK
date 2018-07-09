@@ -94,7 +94,15 @@ public:
     };
 
     /**
-     * @brief Start offboard control (synchronous).
+     * @brief Type for position commands in NED coordinates (north, east, down).
+     */
+    struct PositionLocalNED {
+        float x_m; /**< @brief X Position in NED frame in meters.*/
+        float y_m; /**< @brief Y Position in NED frame in meters.*/
+        float z_m; /**< @brief Z Position in NED frame in meters.*/
+    };
+
+    /* @brief Start offboard control (synchronous).
      *
      * **Attention:** this is work in progress, use with caution!
      *
@@ -152,6 +160,13 @@ public:
      * @param velocity_body_yawspeed Velocity and yaw angular rate `struct`.
      */
     void set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed);
+
+    /**
+     * @brief Set the position in the local NED frame.
+     *
+     * @param position_local_ned Position 'struct'.
+     */
+    void set_position_local_ned(PositionLocalNED position_local_ned);
 
     /**
      * @brief Copy constructor (object is not copyable).
