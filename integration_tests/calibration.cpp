@@ -85,6 +85,30 @@ TEST(HardwareTest, MagnetometerCalibration)
     }
 }
 
+TEST(HardwareTest, GimbalAccelerometerCalibration)
+{
+    DronecodeSDK dc;
+
+    ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    System &system = dc.system();
+    ASSERT_TRUE(system.has_gimbal());
+
+    auto calibration = std::make_shared<Calibration>(system);
+
+    bool done = false;
+
+    calibration->calibrate_gimbal_accelerometer_async(std::bind(
+        &receive_calibration_callback, _1, _2, _3, "gimbal accelerometer", std::ref(done)));
+
+    while (!done) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+}
+
 void receive_calibration_callback(Calibration::Result result,
                                   float progress,
                                   const std::string text,
