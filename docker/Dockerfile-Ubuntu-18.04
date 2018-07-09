@@ -1,5 +1,5 @@
 #
-# Development environment for DroneCore
+# Development environment for the Dronecode SDK based on Ubuntu 18.04.
 #
 # Author: Julian Oes <julian@oes.ch>
 #
@@ -40,4 +40,4 @@ RUN gem install --no-ri --no-rdoc fpm;
 
 CMD ["/bin/bash"]
 
-WORKDIR "/root/DroneCore"
+WORKDIR "/root/DronecodeSDK"
