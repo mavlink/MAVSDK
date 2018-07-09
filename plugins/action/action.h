@@ -228,7 +228,7 @@ public:
     /**
      * @brief Get the takeoff altitude.
      *
-     * @return takeoff Takeoff altitude relative to ground/takeoff location, in meters.
+     * @return Takeoff altitude relative to ground/takeoff location, in meters.
      */
     float get_takeoff_altitude_m() const;
 
@@ -246,7 +246,28 @@ public:
      */
     float get_max_speed_m_s() const;
 
-    // Non-copyable
+    /**
+     * @brief Set the return to launch minimum return altitude.
+     *
+     * When return to launch is initiated, the vehicle climbs to the return altitude if it is lower
+     * and stays at the current altitude if higher than the return altitude. Then it returns to the
+     * home location and lands there.
+     *
+     * @param relative_altitude_m Return altitude relative to takeoff location, in meters.
+     */
+    void set_return_to_launch_return_altitude(float relative_altitude_m);
+
+    /**
+     * @brief Get the return to launch minimum return altitude.
+     *
+     * When return to launch is initiated, the vehicle climbs to the return altitude if it is lower
+     * and stays at the current altitude if higher than the return altitude. Then it returns to the
+     * home location and lands there.
+     *
+     * @return Return altitude relative to takeoff location, in meters.
+     */
+    float get_return_to_launch_return_altitude() const;
+
     /**
      * @brief Copy constructor (object is not copyable).
      */
