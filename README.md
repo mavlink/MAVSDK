@@ -34,7 +34,7 @@ API consumers use the `DronecodeSDK` class to discover and manage vehicles (`Sys
 
 The links below take you to the respective header files:
 
-- [dronecore](include/dronecore.h): set up connection, discover devices
+- [dronecode_sdk](include/dronecode_sdk.h): set up connection, discover devices
 - [system](include/system.h): an class representing one drone which can consist of multiple components
 - [info](plugins/info/info.h): general info about a device
 - [telemetry](plugins/telemetry/telemetry.h): to receive telemetry data
