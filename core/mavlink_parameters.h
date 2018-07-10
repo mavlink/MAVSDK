@@ -445,7 +445,6 @@ public:
     void
     get_param_async(const std::string &name, get_param_callback_t callback, bool extended = false);
 
-    // void save_async();
     void do_work();
 
     friend std::ostream &operator<<(std::ostream &, const ParamValue &);

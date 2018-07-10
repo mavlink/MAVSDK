@@ -77,12 +77,6 @@ void MAVLinkParameters::get_param_async(const std::string &name,
     _get_param_queue.push_back(new_work);
 }
 
-// void MAVLinkParameters::save_async()
-//{
-//    _parent.send_command(MAV_CMD_PREFLIGHT_STORAGE,
-//                          MAVLinkCommands::Params {1.0f, 1.0f, 0.0f, NAN, NAN, NAN, NAN});
-//}
-
 void MAVLinkParameters::do_work()
 {
     std::lock_guard<std::mutex> lock(_state_mutex);
