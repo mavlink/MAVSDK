@@ -260,9 +260,7 @@ public:
     /**
      * @brief Get the return to launch minimum return altitude.
      *
-     * When return to launch is initiated, the vehicle climbs to the return altitude if it is lower
-     * and stays at the current altitude if higher than the return altitude. Then it returns to the
-     * home location and lands there.
+     * @sa `set_return_to_launch_return_altitude`.
      *
      * @return Return altitude relative to takeoff location, in meters.
      */
