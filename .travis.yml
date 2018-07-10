@@ -105,20 +105,20 @@ script:
     make BUILD_TYPE=Coverage run_unit_tests -j4;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build_ubuntu_16.04" ]]; then
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecode/dronecode-sdk-ubuntu-16.04 ./travis-docker-build.sh;
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecode/dronecode-sdk-ubuntu-16.04 ./create_packages.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DronecodeSDK:rw dronecode/dronecode-sdk-ubuntu-16.04 ./travis-docker-build.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DronecodeSDK:rw dronecode/dronecode-sdk-ubuntu-16.04 ./create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build_ubuntu_18.04" ]]; then
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecode/dronecode-sdk-ubuntu-18.04 ./travis-docker-build.sh;
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecode/dronecode-sdk-ubuntu-18.04 ./create_packages.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DronecodeSDK:rw dronecode/dronecode-sdk-ubuntu-18.04 ./travis-docker-build.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DronecodeSDK:rw dronecode/dronecode-sdk-ubuntu-18.04 ./create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build_fedora_27" ]]; then
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecode/dronecode-sdk-fedora-27 ./travis-docker-build.sh;
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecode/dronecode-sdk-fedora-27 ./create_packages.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DronecodeSDK:rw dronecode/dronecode-sdk-fedora-27 ./travis-docker-build.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DronecodeSDK:rw dronecode/dronecode-sdk-fedora-27 ./create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build_fedora_28" ]]; then
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecode/dronecode-sdk-fedora-28 ./travis-docker-build.sh;
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DroneCore:rw dronecode/dronecode-sdk-fedora-28 ./create_packages.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DronecodeSDK:rw dronecode/dronecode-sdk-fedora-28 ./travis-docker-build.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/root/DronecodeSDK:rw dronecode/dronecode-sdk-fedora-28 ./create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     make;
@@ -154,5 +154,5 @@ deploy:
   - "*.deb"
   - "*.rpm"
   on:
-    repo: dronecore/DroneCore
+    repo: Dronecode/DronecodeSDK
     tags: true

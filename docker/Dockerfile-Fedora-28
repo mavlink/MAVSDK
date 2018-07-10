@@ -1,5 +1,5 @@
 #
-# Development environment for DroneCore based on Fedora 28.
+# Development environment for the Dronecode SDK based on Fedora 28.
 #
 # Author: Julian Oes <julian@oes.ch>
 #
@@ -34,4 +34,4 @@ RUN gem install --no-ri --no-rdoc fpm;
 
 CMD ["/bin/bash"]
 
-WORKDIR "/root/DroneCore"
+WORKDIR "/root/DronecodeSDK"
