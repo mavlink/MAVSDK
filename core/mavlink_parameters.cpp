@@ -69,6 +69,15 @@ void MAVLinkParameters::get_param_async(const std::string &name,
         return;
     }
 
+    // Use cached value if available.
+    if (_cache.find(name) != _cache.end()) {
+        if (callback) {
+            callback(true, _cache[name]);
+        }
+        return;
+    }
+
+    // Otherwise push work onto queue.
     GetParamWork new_work;
     new_work.callback = callback;
     new_work.param_name = name;
@@ -208,6 +217,11 @@ void MAVLinkParameters::do_work()
     }
 }
 
+void MAVLinkParameters::reset_cache()
+{
+    _cache.clear();
+}
+
 void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
 {
     // LogDebug() << "getting param value";
@@ -225,9 +239,10 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
         auto work = _get_param_queue.borrow_front();
         if (work) {
             if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) == 0) {
+                ParamValue value;
+                value.set_from_mavlink_param_value(param_value);
+                _cache[work->param_name] = value;
                 if (work->callback) {
-                    ParamValue value;
-                    value.set_from_mavlink_param_value(param_value);
                     work->callback(true, value);
                 }
                 _state = State::NONE;
@@ -248,6 +263,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
             // Now it still needs to match the param name
             if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) == 0) {
                 // We are done, inform caller and go back to idle
+                _cache[work->param_name] = work->param_value;
                 if (work->callback) {
                     work->callback(true);
                 }
@@ -280,9 +296,10 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
         auto work = _get_param_queue.borrow_front();
         if (work) {
             if (strncmp(work->param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) == 0) {
+                ParamValue value;
+                value.set_from_mavlink_param_ext_value(param_ext_value);
+                _cache[work->param_name] = value;
                 if (work->callback) {
-                    ParamValue value;
-                    value.set_from_mavlink_param_ext_value(param_ext_value);
                     work->callback(true, value);
                 }
                 _state = State::NONE;
@@ -305,6 +322,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
             if (strncmp(work->param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) == 0) {
 
                 // We are done, inform caller and go back to idle
+                _cache[work->param_name] = work->param_value;
                 if (work->callback) {
                     work->callback(true);
                 }
@@ -340,6 +358,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
         if (strncmp(work->param_name.c_str(), param_ext_ack.param_id, PARAM_ID_LEN) == 0) {
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
                 // We are done, inform caller and go back to idle
+                _cache[work->param_name] = work->param_value;
                 if (work->callback) {
                     work->callback(true);
                 }

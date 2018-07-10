@@ -10,6 +10,7 @@
 #include <functional>
 #include <cstring> // for memcpy
 #include <cassert>
+#include <map>
 
 namespace dronecode_sdk {
 
@@ -447,6 +448,8 @@ public:
 
     void do_work();
 
+    void reset_cache();
+
     friend std::ostream &operator<<(std::ostream &, const ParamValue &);
 
     // Non-copyable
@@ -485,6 +488,8 @@ private:
         int retries_done = 0;
     };
     LockedQueue<GetParamWork> _get_param_queue{};
+
+    std::map<std::string, ParamValue> _cache{};
 
     void *_timeout_cookie = nullptr;
 
