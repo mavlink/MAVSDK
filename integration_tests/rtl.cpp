@@ -5,6 +5,7 @@
 #include <atomic>
 #include <cmath>
 #include "integration_test_helper.h"
+#include "path_checker.h"
 #include "dronecode_sdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/action/action.h"
@@ -61,6 +62,12 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
     auto mission = std::make_shared<Mission>(system);
     auto action = std::make_shared<Action>(system);
 
+    PathChecker pc;
+
+    telemetry->position_async([&pc](Telemetry::Position position) {
+        pc.check_current_alitude(position.relative_altitude_m);
+    });
+
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for system to be ready";
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -95,6 +102,10 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
         future_result.get();
     }
 
+    pc.set_min_altitude(0.0f);
+    pc.set_next_reach_altitude(mission_altitude_m);
+    pc.set_max_altitude(mission_altitude_m);
+
     LogInfo() << "Arming...";
     const ActionResult arm_result = action->arm();
     ASSERT_EQ(arm_result, ActionResult::SUCCESS);
@@ -125,6 +136,18 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
     }
 
     {
+        // If the mission is higher than the return altitude, we return
+        // at the current mission altitude. If the return altitude is higher
+        // e.g. to clear trees, we need to climb up.
+        if (return_altitude_m > mission_altitude_m) {
+            pc.set_max_altitude(return_altitude_m);
+            pc.set_next_reach_altitude(return_altitude_m);
+        } else {
+            pc.set_max_altitude(mission_altitude_m);
+            pc.set_next_reach_altitude(mission_altitude_m);
+        }
+        pc.set_min_altitude(0.0f);
+
         // We are done, and can do RTL to go home.
         LogInfo() << "Commanding RTL...";
         const ActionResult result = action->return_to_launch();

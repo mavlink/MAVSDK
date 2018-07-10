@@ -34,6 +34,7 @@ add_executable(integration_tests_runner
     follow_me.cpp
     multi_components.cpp
     calibration.cpp
+    path_checker.cpp
     camera_take_photo.cpp
     camera_take_photo_interval.cpp
     camera_mode.cpp
