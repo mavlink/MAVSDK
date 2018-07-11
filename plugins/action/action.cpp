@@ -107,4 +107,14 @@ float Action::get_max_speed_m_s() const
     return _impl->get_max_speed_m_s();
 }
 
+void Action::set_return_to_launch_return_altitude(float relative_altitude_m)
+{
+    _impl->set_return_to_launch_return_altitude(relative_altitude_m);
+}
+
+float Action::get_return_to_launch_return_altitude() const
+{
+    return _impl->get_return_to_launch_return_altitude();
+}
+
 } // namespace dronecode_sdk

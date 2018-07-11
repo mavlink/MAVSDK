@@ -411,21 +411,18 @@ void ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 void ActionImpl::receive_takeoff_alt_param(bool success, float new_relative_altitude_m)
 {
     if (success) {
-        // TODO: This should not be buffered like this, the param system
-        //       needs some refactoring.
         _relative_takeoff_altitude_m = new_relative_altitude_m;
     }
 }
 
 float ActionImpl::get_takeoff_altitude_m() const
 {
+    // FIXME: we never actually get the param, as we should.
     return _relative_takeoff_altitude_m;
 }
 
 void ActionImpl::set_max_speed(float speed_m_s)
 {
-    // TODO: add retries
-    // const int retries = 3;
     _parent->set_param_float_async(
         "MPC_XY_CRUISE",
         speed_m_s,
@@ -441,9 +438,33 @@ void ActionImpl::receive_max_speed_result(bool success, float new_speed_m_s)
     _max_speed_m_s = new_speed_m_s;
 }
 
+void ActionImpl::receive_rtl_return_alt(bool success, float new_rtl_return_alt_m)
+{
+    if (!success) {
+        LogErr() << "setting RTL return alt failed";
+        return;
+    }
+    _rtl_return_alt_m = new_rtl_return_alt_m;
+}
+
 float ActionImpl::get_max_speed_m_s() const
 {
+    // FIXME: we never actually get the param, as we should.
     return _max_speed_m_s;
+}
+
+void ActionImpl::set_return_to_launch_return_altitude(float relative_altitude_m)
+{
+    _parent->set_param_float_async(
+        "RTL_RETURN_ALT",
+        relative_altitude_m,
+        std::bind(&ActionImpl::receive_rtl_return_alt, this, _1, relative_altitude_m));
+}
+
+float ActionImpl::get_return_to_launch_return_altitude() const
+{
+    // FIXME: we never actually get the param, as we should.
+    return _rtl_return_alt_m;
 }
 
 ActionResult ActionImpl::action_result_from_command_result(MAVLinkCommands::Result result)

@@ -28,11 +28,13 @@ add_executable(integration_tests_runner
     mission.cpp
     mission_change_speed.cpp
     mission_survey.cpp
+    rtl.cpp
     gimbal.cpp
     transition_multicopter_fixedwing.cpp
     follow_me.cpp
     multi_components.cpp
     calibration.cpp
+    path_checker.cpp
     camera_take_photo.cpp
     camera_take_photo_interval.cpp
     camera_mode.cpp
