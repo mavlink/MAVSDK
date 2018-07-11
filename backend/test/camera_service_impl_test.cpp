@@ -771,8 +771,8 @@ dronecode_sdk::Camera::CaptureInfo CameraServiceImplTest::createArbitraryCapture
 
 TEST_F(CameraServiceImplTest, registersToCameraStatus)
 {
-    const auto expected_camera_status = createCameraStatus(
-        false, true, dronecode_sdk::Camera::Status::StorageStatus::FORMATTED, 3.4f, 12.6f, 16.0f);
+    const auto expected_camera_status =
+        createCameraStatus(false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f);
     dronecode_sdk::Camera::subscribe_status_callback_t status_callback;
     EXPECT_CALL(_camera, subscribe_status(_))
         .WillOnce(SaveResult(&status_callback, &_callback_saved_promise));
@@ -838,8 +838,8 @@ TEST_F(CameraServiceImplTest, doesNotSendCameraStatusIfCallbackNotCalled)
 TEST_F(CameraServiceImplTest, sendsOneCameraStatus)
 {
     std::vector<dronecode_sdk::Camera::Status> camera_status_events;
-    auto camera_status_event = createCameraStatus(
-        false, true, dronecode_sdk::Camera::Status::StorageStatus::FORMATTED, 3.4f, 12.6f, 16.0f);
+    auto camera_status_event =
+        createCameraStatus(false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f);
     camera_status_events.push_back(camera_status_event);
 
     checkSendsCameraStatus(camera_status_events);
@@ -863,8 +863,8 @@ void CameraServiceImplTest::checkSendsCameraStatus(
         camera_status_callback(camera_status_event);
     }
     context->TryCancel();
-    auto arbitrary_camera_status_event = createCameraStatus(
-        false, true, dronecode_sdk::Camera::Status::StorageStatus::FORMATTED, 3.4f, 12.6f, 16.0f);
+    auto arbitrary_camera_status_event =
+        createCameraStatus(false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f);
     camera_status_callback(arbitrary_camera_status_event);
     camera_status_events_future.wait();
 
