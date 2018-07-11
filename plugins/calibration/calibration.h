@@ -85,6 +85,13 @@ public:
     void calibrate_magnetometer_async(calibration_callback_t callback);
 
     /**
+     * @brief Perform gimbal accelerometer calibration (asynchronous call).
+     *
+     * @param callback Function to receive result and progress of calibration.
+     */
+    void calibrate_gimbal_accelerometer_async(calibration_callback_t callback);
+
+    /**
      * @brief Copy constructor (object is not copyable).
      */
     Calibration(const Calibration &) = delete;

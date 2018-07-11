@@ -137,6 +137,36 @@ void CalibrationImpl::calibrate_magnetometer_async(
                                 std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
+void CalibrationImpl::calibrate_gimbal_accelerometer_async(
+    const Calibration::calibration_callback_t &callback)
+{
+    std::lock_guard<std::mutex> lock(_calibration_mutex);
+
+    if (_parent->is_armed()) {
+        report_failed("System is armed.");
+        return;
+    }
+
+    if (_state != State::NONE) {
+        if (callback) {
+            _parent->call_user_callback(
+                [callback]() { callback(Calibration::Result::BUSY, NAN, ""); });
+        }
+        return;
+    }
+
+    _state = State::GIMBAL_ACCELEROMETER_CALIBRATION;
+    _calibration_callback = callback;
+
+    MAVLinkCommands::CommandLong command{};
+    command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
+    MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
+    command.params.param5 = 1.0f; // Accel
+    command.target_component_id = MAV_COMP_ID_GIMBAL;
+    _parent->send_command_async(command,
+                                std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+}
+
 bool CalibrationImpl::is_gyro_calibration_ok() const
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
