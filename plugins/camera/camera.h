@@ -506,9 +506,9 @@ public:
      * @param option The machine readable name of the option value.
      * @param callback The callback to get the result.
      */
-    void set_option_async(const std::string &setting_id,
-                          const Camera::Option &option,
-                          const result_callback_t &callback);
+    void set_option_async(const result_callback_t &callback,
+                          const std::string &setting_id,
+                          const Camera::Option &option);
 
     /**
      * @brief Callback type to get the currently selected settings.
@@ -571,5 +571,148 @@ private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<CameraImpl> _impl;
 };
+
+/**
+ * @brief Equal operator to compare two `Camera::VideoStreamSettings` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::VideoStreamSettings &lhs, const Camera::VideoStreamSettings &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::VideoStreamSettings`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Camera::VideoStreamSettings const &video_stream_settings);
+
+/**
+ * @brief Equal operator to compare two `Camera::VideoStreamInfo` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::VideoStreamInfo &lhs, const Camera::VideoStreamInfo &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::VideoStreamInfo`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::VideoStreamInfo const &video_stream_info);
+
+/**
+ * @brief Stream operator to print information about a `Camera::VideoStreamInfo::Status`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Camera::VideoStreamInfo::Status const &video_stream_info_status);
+
+/**
+ * @brief Equal operator to compare two `Camera::CaptureInfo` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::CaptureInfo &lhs, const Camera::CaptureInfo &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::CaptureInfo`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo const &capture_info);
+
+/**
+ * @brief Equal operator to compare two `Camera::CaptureInfo::Position` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::CaptureInfo::Position &lhs, const Camera::CaptureInfo::Position &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::CaptureInfo::Position`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Position const &position);
+
+/**
+ * @brief Equal operator to compare two `Camera::CaptureInfo::Quaternion` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::CaptureInfo::Quaternion &lhs,
+                const Camera::CaptureInfo::Quaternion &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::CaptureInfo::Quaternion`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion const &quaternion);
+
+/**
+ * @brief Equal operator to compare two `Camera::Status` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::Status &lhs, const Camera::Status &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Status`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::Status const &status);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Status::StorageStatus`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::Status::StorageStatus const &storage_status);
+
+/**
+ * @brief Equal operator to compare two `Camera::Setting` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::Setting &lhs, const Camera::Setting &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Setting`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::Setting const &setting);
+
+/**
+ * @brief Equal operator to compare two `Camera::Option` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::Option &lhs, const Camera::Option &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Option`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::Option const &option);
+
+/**
+ * @brief Equal operator to compare two `Camera::SettingOptions` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::Option`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::SettingOptions const &setting_options);
 
 } // namespace dronecode_sdk

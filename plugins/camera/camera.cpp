@@ -122,9 +122,9 @@ void Camera::subscribe_capture_info(capture_info_callback_t callback)
     _impl->subscribe_capture_info(callback);
 }
 
-void Camera::set_option_async(const std::string &setting_id,
-                              const Option &option,
-                              const result_callback_t &callback)
+void Camera::set_option_async(const result_callback_t &callback,
+                              const std::string &setting_id,
+                              const Option &option)
 {
     _impl->set_option_async(setting_id, option, callback);
 }
@@ -195,6 +195,179 @@ std::string Camera::result_str(Result result)
         default:
             return "Unknown";
     }
+}
+
+bool operator==(const Camera::VideoStreamSettings &lhs, const Camera::VideoStreamSettings &rhs)
+{
+    return lhs.frame_rate_hz == rhs.frame_rate_hz &&
+           lhs.horizontal_resolution_pix == rhs.horizontal_resolution_pix &&
+           lhs.vertical_resolution_pix == rhs.vertical_resolution_pix &&
+           lhs.bit_rate_b_s == rhs.bit_rate_b_s && lhs.rotation_deg == rhs.rotation_deg &&
+           lhs.uri == rhs.uri;
+}
+
+std::ostream &operator<<(std::ostream &str,
+                         Camera::VideoStreamSettings const &video_stream_settings)
+{
+    return str << "[frame_rate_hz: " << video_stream_settings.frame_rate_hz
+               << ", horizontal_resolution_pix: " << video_stream_settings.horizontal_resolution_pix
+               << ", vertical_resolution_pix: " << video_stream_settings.vertical_resolution_pix
+               << ", bit_rate_b_s: " << video_stream_settings.bit_rate_b_s
+               << ", rotation_deg: " << video_stream_settings.rotation_deg
+               << ", uri: " << video_stream_settings.uri << "]";
+}
+
+bool operator==(const Camera::VideoStreamInfo &lhs, const Camera::VideoStreamInfo &rhs)
+{
+    return lhs.settings == rhs.settings && lhs.status == rhs.status;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::VideoStreamInfo const &video_stream_info)
+{
+    return str << "[" << std::endl
+               << "settings: " << video_stream_info.settings << std::endl
+               << "status: " << video_stream_info.status << std::endl
+               << "]";
+}
+
+std::ostream &operator<<(std::ostream &str,
+                         Camera::VideoStreamInfo::Status const &video_stream_info_status)
+{
+    switch (video_stream_info_status) {
+        case Camera::VideoStreamInfo::Status::IN_PROGRESS:
+            return str << "IN_PROGRESS";
+        case Camera::VideoStreamInfo::Status::NOT_RUNNING:
+            return str << "NOT_RUNNING";
+        default:
+            return str << "UNKNOWN";
+    }
+}
+
+bool operator==(const Camera::CaptureInfo &lhs, const Camera::CaptureInfo &rhs)
+{
+    return lhs.position == rhs.position && lhs.quaternion == rhs.quaternion &&
+           lhs.time_utc_us == rhs.time_utc_us && lhs.success == rhs.success &&
+           lhs.index == rhs.index && lhs.file_url == rhs.file_url;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo const &capture_info)
+{
+    return str << "[" << std::endl
+               << "position: " << capture_info.position << std::endl
+               << "quaternion: " << capture_info.quaternion << std::endl
+               << "time_utc_us: " << capture_info.time_utc_us << std::endl
+               << "is_success: " << capture_info.success << std::endl
+               << "index: " << capture_info.index << std::endl
+               << "file_url: " << capture_info.file_url << std::endl;
+}
+
+bool operator==(const Camera::CaptureInfo::Position &lhs, const Camera::CaptureInfo::Position &rhs)
+{
+    return lhs.latitude_deg == rhs.latitude_deg && lhs.longitude_deg == rhs.longitude_deg &&
+           lhs.absolute_altitude_m == rhs.absolute_altitude_m &&
+           lhs.relative_altitude_m == rhs.relative_altitude_m;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Position const &position)
+{
+    return str << "[latitude_deg: " << position.latitude_deg
+               << ", longitude_deg: " << position.longitude_deg
+               << ", absolute_altitude_m: " << position.absolute_altitude_m
+               << ", relative_altitude_m: " << position.relative_altitude_m << "]";
+}
+
+bool operator==(const Camera::CaptureInfo::Quaternion &lhs,
+                const Camera::CaptureInfo::Quaternion &rhs)
+{
+    return lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion const &quaternion)
+{
+    return str << "[w: " << quaternion.w << "x: " << quaternion.x << "y: " << quaternion.y
+               << "z: " << quaternion.z << "]";
+}
+
+bool operator==(const Camera::Status &lhs, const Camera::Status &rhs)
+{
+    return lhs.video_on == rhs.video_on && lhs.photo_interval_on == rhs.photo_interval_on &&
+           lhs.storage_status == rhs.storage_status &&
+           lhs.used_storage_mib == rhs.used_storage_mib &&
+           lhs.available_storage_mib == rhs.available_storage_mib &&
+           lhs.total_storage_mib == rhs.total_storage_mib;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::Status const &status)
+{
+    return str << "[video_on: " << status.video_on
+               << ", photo_interval_on: " << status.photo_interval_on
+               << ", storage_status: " << status.storage_status
+               << ", used_storage_mib: " << status.used_storage_mib
+               << ", available_storage_mib: " << status.available_storage_mib
+               << ", total_storage_mib: " << status.total_storage_mib << "]";
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::Status::StorageStatus const &storage_status)
+{
+    switch (storage_status) {
+        case Camera::Status::StorageStatus::UNFORMATTED:
+            return str << "UNFORMATTED";
+        case Camera::Status::StorageStatus::FORMATTED:
+            return str << "FORMATTED";
+        case Camera::Status::StorageStatus::NOT_AVAILABLE:
+            return str << "NOT_AVAILABLE";
+        default:
+            return str << "UNKNOWN";
+    }
+}
+
+bool operator==(const Camera::Setting &lhs, const Camera::Setting &rhs)
+{
+    return lhs.setting_id == rhs.setting_id && lhs.option == rhs.option;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::Setting const &setting)
+{
+    return str << "[setting_id: " << setting.setting_id << ", option: " << setting.option << "]";
+}
+
+bool operator==(const Camera::Option &lhs, const Camera::Option &rhs)
+{
+    return lhs.option_id == rhs.option_id;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::Option const &option)
+{
+    return str << "[option_id: " << option.option_id << "]";
+}
+
+bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions &rhs)
+{
+    if (lhs.options.size() != rhs.options.size()) {
+        return false;
+    }
+
+    for (size_t i = 0; i < lhs.options.size(); i++) {
+        if (!(lhs.options.at(i) == rhs.options.at(i))) {
+            return false;
+        }
+    }
+
+    return lhs.setting_id == rhs.setting_id;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::SettingOptions const &setting_options)
+{
+    str << "[setting_id: " << setting_options.setting_id;
+    str << ", options: [";
+
+    for (const auto &option : setting_options.options) {
+        str << option;
+    }
+
+    str << "]";
+
+    return str;
 }
 
 } // namespace dronecode_sdk

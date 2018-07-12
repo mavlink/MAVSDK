@@ -3,6 +3,7 @@
 #include <grpc++/grpc++.h>
 #include <grpc++/server.h>
 #include <grpc++/server_builder.h>
+#include <memory>
 #include <utility>
 #include <vector>
 
