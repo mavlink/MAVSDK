@@ -1236,6 +1236,21 @@ CameraServiceImplTest::createRPCSetting(const std::string &setting_id, const std
     return setting;
 }
 
+TEST_F(CameraServiceImplTest, setSettingInProgressResultIsIgnored)
+{
+    dronecode_sdk::Camera::result_callback_t result_callback;
+    dronecode_sdk::rpc::camera::SetSettingRequest request;
+    request.set_allocated_setting(
+        createRPCSetting("arbitrary_setting_id", "arbitrary_option_id").release());
+    auto response = std::make_shared<dronecode_sdk::rpc::camera::SetSettingResponse>();
+
+    auto handle = setSettingAndSaveParams(request, response, result_callback);
+    result_callback(dronecode_sdk::Camera::Result::IN_PROGRESS);
+    result_callback(dronecode_sdk::Camera::Result::SUCCESS);
+
+    EXPECT_EQ("SUCCESS", CameraResult::Result_Name(response->camera_result().result()));
+}
+
 TEST_F(CameraServiceImplTest, setsSettingEvenWhenContextAndResponseAreNull)
 {
     dronecode_sdk::Camera::result_callback_t result_callback;
@@ -1290,8 +1305,6 @@ std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
     input_pairs.push_back(std::make_pair("SUCCESS", dronecode_sdk::Camera::Result::SUCCESS));
-    input_pairs.push_back(
-        std::make_pair("IN_PROGRESS", dronecode_sdk::Camera::Result::IN_PROGRESS));
     input_pairs.push_back(std::make_pair("BUSY", dronecode_sdk::Camera::Result::BUSY));
     input_pairs.push_back(std::make_pair("DENIED", dronecode_sdk::Camera::Result::DENIED));
     input_pairs.push_back(std::make_pair("ERROR", dronecode_sdk::Camera::Result::ERROR));

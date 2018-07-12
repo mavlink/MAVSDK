@@ -645,6 +645,10 @@ public:
             _camera.set_option_async(
                 [this, response, &set_option_called_promise](
                     dronecode_sdk::Camera::Result camera_result) {
+                    if (camera_result == dronecode_sdk::Camera::Result::IN_PROGRESS) {
+                        return;
+                    }
+
                     if (response != nullptr) {
                         fillResponseWithResult(response, camera_result);
                     }
