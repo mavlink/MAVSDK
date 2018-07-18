@@ -814,8 +814,6 @@ MAVLinkCommands::Result SystemImpl::make_command_msg_rate(uint16_t message_id,
         return MAVLinkCommands::Result::UNKNOWN_ERROR;
     }
 
-    MAVLinkCommands::CommandLong command_msg_rate{};
-
     command.command = MAV_CMD_SET_MESSAGE_INTERVAL;
     command.params.param1 = float(message_id);
     command.params.param2 = interval_us;
