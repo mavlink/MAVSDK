@@ -62,9 +62,9 @@ private:
 
     void process_extended_sys_state(const mavlink_message_t &message);
 
-    void receive_max_speed_result(bool success, float new_speed_m_s);
-    void receive_takeoff_alt_param(bool success, float new_relative_altitude_m);
-    void receive_rtl_return_alt(bool success, float new_return_alt_m);
+    void receive_max_speed_param(bool success, float new_speed_m_s);
+    void receive_takeoff_altitude_param(bool success, float new_relative_altitude_m);
+    void receive_rtl_return_altitude_param(bool success, float new_return_altitude_m);
 
     static ActionResult action_result_from_command_result(MAVLinkCommands::Result result);
 
@@ -82,6 +82,9 @@ private:
     float _rtl_return_alt_m = NAN;
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
+    static constexpr auto TAKEOFF_ALT_PARAM = "MIS_TAKEOFF_ALT";
+    static constexpr auto MAX_SPEED_PARAM = "MPC_XY_CRUISE";
+    static constexpr auto RTL_RETURN_ALTITUDE = "RTL_RETURN_ALT";
 };
 
 } // namespace dronecode_sdk
