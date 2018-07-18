@@ -78,7 +78,6 @@ install(FILES
     system.h
     dronecode_sdk.h
     plugin_base.h
-    ${plugin_header_paths}
     DESTINATION "include/dronecode_sdk"
 )
 
