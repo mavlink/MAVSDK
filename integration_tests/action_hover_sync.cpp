@@ -41,7 +41,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     int iteration = 0;
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        LogInfo() << "waiting for system to be ready";
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         ASSERT_LT(++iteration, 10);
@@ -66,7 +66,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     iteration = 0;
     while (telemetry->in_air()) {
-        std::cout << "waiting for system to be landed" << std::endl;
+        LogInfo() << "waiting for system to be landed";
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         // TODO: currently we need to wait a long time until landed is detected.
