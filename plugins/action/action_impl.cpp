@@ -416,12 +416,15 @@ void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callba
                                    std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
 }
 
-void ActionImpl::set_takeoff_altitude(float relative_altitude_m)
+ActionResult ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
     _parent->set_param_float_async(
         TAKEOFF_ALT_PARAM,
         relative_altitude_m,
         std::bind(&ActionImpl::receive_takeoff_altitude_param, this, _1, relative_altitude_m));
+
+    // FIXME: actually return proper result.
+    return ActionResult::SUCCESS;
 }
 
 void ActionImpl::receive_takeoff_altitude_param(bool success, float new_relative_altitude_m)
@@ -431,17 +434,21 @@ void ActionImpl::receive_takeoff_altitude_param(bool success, float new_relative
     }
 }
 
-float ActionImpl::get_takeoff_altitude_m() const
+std::pair<ActionResult, float> ActionImpl::get_takeoff_altitude() const
 {
-    return _relative_takeoff_altitude_m;
+    // FIXME: actually check if the param is set.
+    return std::make_pair<>(ActionResult::SUCCESS, _relative_takeoff_altitude_m);
 }
 
-void ActionImpl::set_max_speed(float speed_m_s)
+ActionResult ActionImpl::set_max_speed(float speed_m_s)
 {
     _parent->set_param_float_async(
         MAX_SPEED_PARAM,
         speed_m_s,
         std::bind(&ActionImpl::receive_max_speed_param, this, _1, speed_m_s));
+
+    // FIXME: actually return proper result.
+    return ActionResult::SUCCESS;
 }
 
 void ActionImpl::receive_max_speed_param(bool success, float new_speed_m_s)
@@ -462,22 +469,27 @@ void ActionImpl::receive_rtl_return_altitude_param(bool success, float new_rtl_r
     _rtl_return_alt_m = new_rtl_return_alt_m;
 }
 
-float ActionImpl::get_max_speed_m_s() const
+std::pair<ActionResult, float> ActionImpl::get_max_speed() const
 {
-    return _max_speed_m_s;
+    // FIXME: actually check if the param is set.
+    return std::make_pair<>(ActionResult::SUCCESS, _max_speed_m_s);
 }
 
-void ActionImpl::set_return_to_launch_return_altitude(float relative_altitude_m)
+ActionResult ActionImpl::set_return_to_launch_return_altitude(float relative_altitude_m)
 {
     _parent->set_param_float_async(
         RTL_RETURN_ALTITUDE,
         relative_altitude_m,
         std::bind(&ActionImpl::receive_rtl_return_altitude_param, this, _1, relative_altitude_m));
+
+    // FIXME: actually return proper result.
+    return ActionResult::SUCCESS;
 }
 
-float ActionImpl::get_return_to_launch_return_altitude() const
+std::pair<ActionResult, float> ActionImpl::get_return_to_launch_return_altitude() const
 {
-    return _rtl_return_alt_m;
+    // FIXME: actually check if the param is set.
+    return std::make_pair<>(ActionResult::SUCCESS, _rtl_return_alt_m);
 }
 
 ActionResult ActionImpl::action_result_from_command_result(MAVLinkCommands::Result result)

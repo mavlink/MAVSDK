@@ -51,6 +51,10 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     EXPECT_EQ(action_ret, ActionResult::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
+    EXPECT_EQ(ActionResult::SUCCESS, action->set_takeoff_altitude(altitude_m));
+    auto takeoff_altitude_result = action->get_takeoff_altitude();
+    EXPECT_EQ(takeoff_altitude_result.first, ActionResult::SUCCESS);
+    EXPECT_FLOAT_EQ(takeoff_altitude_result.second, altitude_m);
 
     action_ret = action->takeoff();
     EXPECT_EQ(action_ret, ActionResult::SUCCESS);

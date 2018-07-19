@@ -38,14 +38,14 @@ public:
     void transition_to_fixedwing_async(const Action::result_callback_t &callback);
     void transition_to_multicopter_async(const Action::result_callback_t &callback);
 
-    void set_takeoff_altitude(float relative_altitude_m);
-    float get_takeoff_altitude_m() const;
+    ActionResult set_takeoff_altitude(float relative_altitude_m);
+    std::pair<ActionResult, float> get_takeoff_altitude() const;
 
-    void set_max_speed(float speed_m_s);
-    float get_max_speed_m_s() const;
+    ActionResult set_max_speed(float speed_m_s);
+    std::pair<ActionResult, float> get_max_speed() const;
 
-    void set_return_to_launch_return_altitude(float relative_altitude_m);
-    float get_return_to_launch_return_altitude() const;
+    ActionResult set_return_to_launch_return_altitude(float relative_altitude_m);
+    std::pair<ActionResult, float> get_return_to_launch_return_altitude() const;
 
 private:
     void loiter_before_takeoff_async(const Action::result_callback_t &callback);
