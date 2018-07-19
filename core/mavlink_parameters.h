@@ -437,11 +437,15 @@ public:
     };
 
     typedef std::function<void(bool success)> set_param_callback_t;
+
+    bool set_param(const std::string &name, const ParamValue &value, bool extended = false);
+
     void set_param_async(const std::string &name,
                          const ParamValue &value,
                          set_param_callback_t callback,
                          bool extended = false);
 
+    std::pair<bool, ParamValue> get_param(const std::string &name, bool extended);
     typedef std::function<void(bool success, ParamValue value)> get_param_callback_t;
     void
     get_param_async(const std::string &name, get_param_callback_t callback, bool extended = false);

@@ -1,5 +1,6 @@
 #include "mavlink_parameters.h"
 #include "system_impl.h"
+#include <future>
 
 namespace dronecode_sdk {
 
@@ -54,6 +55,16 @@ void MAVLinkParameters::set_param_async(const std::string &name,
     _set_param_queue.push_back(new_work);
 }
 
+bool MAVLinkParameters::set_param(const std::string &name, const ParamValue &value, bool extended)
+{
+    auto prom = std::make_shared<std::promise<bool>>();
+    auto res = prom->get_future();
+
+    set_param_async(name, value, [&prom](bool success) { prom->set_value(success); }, extended);
+
+    return res.get();
+}
+
 void MAVLinkParameters::get_param_async(const std::string &name,
                                         get_param_callback_t callback,
                                         bool extended)
@@ -84,6 +95,21 @@ void MAVLinkParameters::get_param_async(const std::string &name,
     new_work.extended = extended;
 
     _get_param_queue.push_back(new_work);
+}
+
+std::pair<bool, MAVLinkParameters::ParamValue> MAVLinkParameters::get_param(const std::string &name,
+                                                                            bool extended)
+{
+    auto prom = std::make_shared<std::promise<std::pair<bool, MAVLinkParameters::ParamValue>>>();
+    auto res = prom->get_future();
+
+    get_param_async(name,
+                    [&prom](bool success, ParamValue value) {
+                        prom->set_value(std::make_pair<>(success, value));
+                    },
+                    extended);
+
+    return res.get();
 }
 
 void MAVLinkParameters::do_work()
