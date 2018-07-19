@@ -62,10 +62,6 @@ private:
 
     void process_extended_sys_state(const mavlink_message_t &message);
 
-    void receive_max_speed_param(bool success, float new_speed_m_s);
-    void receive_takeoff_altitude_param(bool success, float new_relative_altitude_m);
-    void receive_rtl_return_altitude_param(bool success, float new_return_altitude_m);
-
     static ActionResult action_result_from_command_result(MAVLinkCommands::Result result);
 
     static void command_result_callback(MAVLinkCommands::Result command_result,
@@ -76,10 +72,6 @@ private:
 
     std::atomic<bool> _vtol_transition_support_known{false};
     std::atomic<bool> _vtol_transition_possible{false};
-
-    float _relative_takeoff_altitude_m = 2.5f;
-    float _max_speed_m_s = NAN;
-    float _rtl_return_alt_m = NAN;
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
     static constexpr auto TAKEOFF_ALT_PARAM = "MIS_TAKEOFF_ALT";

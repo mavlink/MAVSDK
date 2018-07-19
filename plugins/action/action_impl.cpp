@@ -42,21 +42,9 @@ void ActionImpl::enable()
                                 nullptr,
                                 MAVLinkCommands::DEFAULT_COMPONENT_ID_AUTOPILOT);
 
-    _parent->get_param_float_async(TAKEOFF_ALT_PARAM,
-                                   std::bind(&ActionImpl::receive_takeoff_altitude_param,
-                                             this,
-                                             std::placeholders::_1,
-                                             std::placeholders::_2));
-    _parent->get_param_float_async(MAX_SPEED_PARAM,
-                                   std::bind(&ActionImpl::receive_max_speed_param,
-                                             this,
-                                             std::placeholders::_1,
-                                             std::placeholders::_2));
-    _parent->get_param_float_async(TAKEOFF_ALT_PARAM,
-                                   std::bind(&ActionImpl::receive_rtl_return_altitude_param,
-                                             this,
-                                             std::placeholders::_1,
-                                             std::placeholders::_2));
+    _parent->get_param_float_async(TAKEOFF_ALT_PARAM, nullptr);
+    _parent->get_param_float_async(MAX_SPEED_PARAM, nullptr);
+    _parent->get_param_float_async(TAKEOFF_ALT_PARAM, nullptr);
 }
 
 void ActionImpl::disable() {}
@@ -420,13 +408,6 @@ ActionResult ActionImpl::set_takeoff_altitude(float relative_altitude_m)
     return success ? ActionResult::SUCCESS : ActionResult::PARAMETER_ERROR;
 }
 
-void ActionImpl::receive_takeoff_altitude_param(bool success, float new_relative_altitude_m)
-{
-    if (success) {
-        _relative_takeoff_altitude_m = new_relative_altitude_m;
-    }
-}
-
 std::pair<ActionResult, float> ActionImpl::get_takeoff_altitude() const
 {
     auto result = _parent->get_param_float(TAKEOFF_ALT_PARAM);
@@ -438,24 +419,6 @@ ActionResult ActionImpl::set_max_speed(float speed_m_s)
 {
     const bool success = _parent->set_param_float(MAX_SPEED_PARAM, speed_m_s);
     return success ? ActionResult::SUCCESS : ActionResult::PARAMETER_ERROR;
-}
-
-void ActionImpl::receive_max_speed_param(bool success, float new_speed_m_s)
-{
-    if (!success) {
-        LogErr() << "setting max speed param failed";
-        return;
-    }
-    _max_speed_m_s = new_speed_m_s;
-}
-
-void ActionImpl::receive_rtl_return_altitude_param(bool success, float new_rtl_return_alt_m)
-{
-    if (!success) {
-        LogErr() << "setting RTL return alt failed";
-        return;
-    }
-    _rtl_return_alt_m = new_rtl_return_alt_m;
 }
 
 std::pair<ActionResult, float> ActionImpl::get_max_speed() const
