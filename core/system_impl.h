@@ -137,6 +137,11 @@ public:
     typedef std::function<void(bool success, float value)> get_param_float_callback_t;
     typedef std::function<void(bool success, int32_t value)> get_param_int_callback_t;
 
+    std::pair<bool, float> get_param_float(const std::string &name);
+    std::pair<bool, float> get_param_int(const std::string &name);
+    std::pair<bool, float> get_param_ext_float(const std::string &name);
+    std::pair<bool, float> get_param_ext_int(const std::string &name);
+
     void get_param_float_async(const std::string &name, get_param_float_callback_t callback);
     void get_param_int_async(const std::string &name, get_param_int_callback_t callback);
     void get_param_ext_float_async(const std::string &name, get_param_float_callback_t callback);
