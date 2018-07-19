@@ -7,11 +7,11 @@
 
 using namespace dronecode_sdk;
 
-static void takeoff_and_hover_at_altitude(float altitude_m = NAN);
+static void takeoff_and_hover_at_altitude(float altitude_m);
 
 TEST_F(SitlTest, ActionHoverSyncDefault)
 {
-    takeoff_and_hover_at_altitude();
+    takeoff_and_hover_at_altitude(2.5);
 }
 
 TEST_F(SitlTest, ActionHoverSyncHigher)
@@ -51,12 +51,6 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     EXPECT_EQ(action_ret, ActionResult::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    if (std::isfinite(altitude_m)) {
-        action->set_takeoff_altitude(altitude_m);
-    } else {
-        // The default should be 2.5 m, so we check against that.
-        altitude_m = 2.5f;
-    }
 
     action_ret = action->takeoff();
     EXPECT_EQ(action_ret, ActionResult::SUCCESS);
