@@ -71,13 +71,9 @@ public:
 
     typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
 
-    // FIXME: I tried to use templates for these;
-    // but I get undefined reference. Need to dig it later.
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandLong &command);
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandInt &command);
 
-    // FIXME: I tried to use templates for these;
-    // but I get undefined reference. Need to dig it later.
     void send_command_async(MAVLinkCommands::CommandLong &command,
                             const command_result_callback_t callback);
     void send_command_async(MAVLinkCommands::CommandInt &command,
