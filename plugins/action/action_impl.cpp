@@ -124,7 +124,6 @@ ActionResult ActionImpl::takeoff() const
     MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_TAKEOFF;
-    command.params.param7 = _relative_takeoff_altitude_m;
     command.target_component_id = _parent->get_autopilot_id();
 
     return action_result_from_command_result(_parent->send_command(command));
@@ -321,7 +320,6 @@ void ActionImpl::takeoff_async_continued(MAVLinkCommands::Result previous_result
     MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_TAKEOFF;
-    command.params.param7 = _relative_takeoff_altitude_m;
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(command,
