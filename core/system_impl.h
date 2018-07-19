@@ -142,6 +142,8 @@ public:
     std::pair<bool, float> get_param_ext_float(const std::string &name);
     std::pair<bool, int> get_param_ext_int(const std::string &name);
 
+    // These methods can be used to cache a parameter when a system connects. For that
+    // the callback can just be set to nullptr.
     void get_param_float_async(const std::string &name, get_param_float_callback_t callback);
     void get_param_int_async(const std::string &name, get_param_int_callback_t callback);
     void get_param_ext_float_async(const std::string &name, get_param_float_callback_t callback);
