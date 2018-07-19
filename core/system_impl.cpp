@@ -4,9 +4,10 @@
 #include "mavlink_include.h"
 #include "system_impl.h"
 #include "plugin_impl_base.h"
+#include "px4_custom_mode.h"
 #include <functional>
 #include <algorithm>
-#include "px4_custom_mode.h"
+#include <future>
 
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0
@@ -522,6 +523,66 @@ uint8_t SystemImpl::get_system_id() const
 void SystemImpl::set_system_id(uint8_t system_id)
 {
     _system_id = system_id;
+}
+
+bool SystemImpl::set_param_float(const std::string &name, float value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set_float(value);
+
+    // We wrap the async call with a promise and future.
+    auto prom = std::make_shared<std::promise<bool>>();
+    auto res = prom->get_future();
+
+    _params.set_param_async(name, param_value, [&prom](bool success) { prom->set_value(success); });
+
+    // Block now to wait for result.
+    return res.get();
+}
+
+bool SystemImpl::set_param_int(const std::string &name, int32_t value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set_int32(value);
+
+    // We wrap the async call with a promise and future.
+    auto prom = std::make_shared<std::promise<bool>>();
+    auto res = prom->get_future();
+
+    _params.set_param_async(name, param_value, [&prom](bool success) { prom->set_value(success); });
+
+    // Block now to wait for result.
+    return res.get();
+}
+
+bool SystemImpl::set_param_ext_float(const std::string &name, float value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set_float(value);
+
+    // We wrap the async call with a promise and future.
+    auto prom = std::make_shared<std::promise<bool>>();
+    auto res = prom->get_future();
+
+    _params.set_param_async(name, param_value, [&prom](bool success) { prom->set_value(success); });
+
+    // Block now to wait for result.
+    return res.get();
+}
+
+bool SystemImpl::set_param_ext_int(const std::string &name, int32_t value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set_int32(value);
+
+    // We wrap the async call with a promise and future.
+    auto prom = std::make_shared<std::promise<bool>>();
+    auto res = prom->get_future();
+
+    _params.set_param_async(name, param_value, [&prom](bool success) { prom->set_value(success); });
+
+    // Block now to wait for result.
+    return res.get();
 }
 
 void SystemImpl::set_param_float_async(const std::string &name, float value, success_t callback)

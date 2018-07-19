@@ -116,6 +116,11 @@ public:
 
     bool is_armed() const { return _armed; }
 
+    bool set_param_float(const std::string &name, float value);
+    bool set_param_int(const std::string &name, int32_t value);
+    bool set_param_ext_float(const std::string &name, float value);
+    bool set_param_ext_int(const std::string &name, int32_t value);
+
     typedef std::function<void(bool success)> success_t;
     void set_param_float_async(const std::string &name, float value, success_t callback);
     void set_param_int_async(const std::string &name, int32_t value, success_t callback);
