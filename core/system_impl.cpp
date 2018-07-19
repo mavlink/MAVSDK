@@ -621,7 +621,7 @@ std::pair<bool, float> SystemImpl::get_param_float(const std::string &name)
     return res.get();
 }
 
-std::pair<bool, float> SystemImpl::get_param_int(const std::string &name)
+std::pair<bool, int> SystemImpl::get_param_int(const std::string &name)
 {
     auto prom = std::make_shared<std::promise<std::pair<bool, int>>>();
     auto res = prom->get_future();
@@ -655,7 +655,7 @@ std::pair<bool, float> SystemImpl::get_param_ext_float(const std::string &name)
     return res.get();
 }
 
-std::pair<bool, float> SystemImpl::get_param_ext_int(const std::string &name)
+std::pair<bool, int> SystemImpl::get_param_ext_int(const std::string &name)
 {
     auto prom = std::make_shared<std::promise<std::pair<bool, int>>>();
     auto res = prom->get_future();
