@@ -24,7 +24,8 @@ enum class ActionResult {
     TIMEOUT, /**< @brief Timeout waiting for command acknowledgement from vehicle. */
     VTOL_TRANSITION_SUPPORT_UNKNOWN, /**< @brief hybrid/VTOL transition refused because VTOL support
                                         is unknown. */
-    NO_VTOL_TRANSITION_SUPPORT /**< @brief Vehicle does not support hybrid/VTOL transitions. */
+    NO_VTOL_TRANSITION_SUPPORT, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
+    PARAMETER_ERROR /**< @brief Error getting or setting parameter. */
 };
 
 /**
@@ -56,6 +57,8 @@ inline const char *action_result_str(ActionResult result)
             return "VTOL transition unknown";
         case ActionResult::NO_VTOL_TRANSITION_SUPPORT:
             return "No VTOL transition support";
+        case ActionResult::PARAMETER_ERROR:
+            return "Parameter error";
         case ActionResult::UNKNOWN:
         default:
             return "Unknown";

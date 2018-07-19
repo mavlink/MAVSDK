@@ -84,7 +84,7 @@ private:
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
     static constexpr auto TAKEOFF_ALT_PARAM = "MIS_TAKEOFF_ALT";
     static constexpr auto MAX_SPEED_PARAM = "MPC_XY_CRUISE";
-    static constexpr auto RTL_RETURN_ALTITUDE = "RTL_RETURN_ALT";
+    static constexpr auto RTL_RETURN_ALTITUDE_PARAM = "RTL_RETURN_ALT";
 };
 
 } // namespace dronecode_sdk
