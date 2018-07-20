@@ -1,4 +1,5 @@
 #include "log.h"
+#include "global_include.h"
 
 #if defined(WINDOWS)
 #include "Windows.h"
@@ -43,6 +44,8 @@ void set_color(Color color)
             SetConsoleTextAttribute(handle, WIN_COLOR_RESET);
             break;
     }
+#elif defined(ANDROID)
+    UNUSED(color);
 #else
     switch (color) {
         case Color::RED:
