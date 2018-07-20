@@ -34,7 +34,7 @@ install(TARGETS dronecode_sdk_mission
 )
 
 if(ANDROID)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/json11/libjson11.so
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/json11/libjson11.a
         DESTINATION ${lib_path}
     )
 endif()
