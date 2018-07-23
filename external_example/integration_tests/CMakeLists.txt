@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 add_executable(external_example_integration_tests_runner
-    ../../../core/unittests_main.cpp
+    ../../core/unittests_main.cpp
     hello_world.cpp
 )
 
