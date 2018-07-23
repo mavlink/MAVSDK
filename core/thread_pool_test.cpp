@@ -17,7 +17,7 @@ static Time our_time;
 
 static void run_delayed()
 {
-    our_time.sleep_for(std::chrono::milliseconds(500));
+    our_time.sleep_for(std::chrono::milliseconds(50));
     task_one_ran = true;
 }
 
@@ -29,9 +29,9 @@ TEST(ThreadPool, SimpleTask)
     task_one_ran = false;
     tp.enqueue(std::bind(run_delayed));
 
-    our_time.sleep_for(std::chrono::milliseconds(250));
+    our_time.sleep_for(std::chrono::milliseconds(25));
     EXPECT_FALSE(task_one_ran);
-    our_time.sleep_for(std::chrono::milliseconds(500));
+    our_time.sleep_for(std::chrono::milliseconds(50));
     EXPECT_TRUE(task_one_ran);
 }
 
@@ -51,7 +51,7 @@ TEST(ThreadPool, SimpleTaskWithArgs)
 
     tp.enqueue(std::bind(add_first_to_second, first, std::ref(second)));
 
-    our_time.sleep_for(std::chrono::milliseconds(250));
+    our_time.sleep_for(std::chrono::milliseconds(25));
     EXPECT_EQ(second, sum);
 }
 
@@ -66,7 +66,7 @@ TEST(ThreadPool, LambdaWithArgs)
 
     tp.enqueue([first, &second]() { second += first; });
 
-    our_time.sleep_for(std::chrono::milliseconds(250));
+    our_time.sleep_for(std::chrono::milliseconds(25));
     EXPECT_EQ(second, sum);
 }
 
@@ -82,7 +82,7 @@ TEST(ThreadPool, ManyTasks)
         tp.enqueue([&tasks, i]() { tasks[i] = i; });
     }
 
-    our_time.sleep_for(std::chrono::milliseconds(250));
+    our_time.sleep_for(std::chrono::milliseconds(25));
 
     for (int i = 0; i < tasks_num; ++i) {
         EXPECT_EQ(tasks[i], i);
