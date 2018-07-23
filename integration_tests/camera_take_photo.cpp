@@ -19,7 +19,7 @@ static void receive_capture_info(Camera::CaptureInfo capture_info);
 static std::atomic<bool> _received_result{false};
 static std::atomic<bool> _received_capture_info{false};
 
-TEST(CameraTest, TakePhoto)
+TEST(CameraTest, TakePhotoSingle)
 {
     DronecodeSDK dc;
 
@@ -47,7 +47,7 @@ TEST(CameraTest, TakePhoto)
     EXPECT_TRUE(_received_capture_info);
 }
 
-TEST(CameraTest, TakeMultiplePhotos)
+TEST(CameraTest, TakePhotosMultiple)
 {
     DronecodeSDK dc;
 

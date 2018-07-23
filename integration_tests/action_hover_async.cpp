@@ -15,7 +15,7 @@ void receive_in_air(bool in_air);
 static bool _all_ok = false;
 static bool _in_air = false;
 
-TEST_F(SitlTest, ActionAsyncHover)
+TEST_F(SitlTest, ActionHoverAsync)
 {
     DronecodeSDK dc;
 

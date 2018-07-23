@@ -13,7 +13,7 @@ static uint64_t _uuid = 0;
 void on_discover(uint64_t uuid);
 void on_timeout(uint64_t uuid);
 
-TEST_F(SitlTest, AsyncConnect)
+TEST_F(SitlTest, SystemConnectionAsync)
 {
     DronecodeSDK dc;
 

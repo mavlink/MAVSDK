@@ -8,7 +8,7 @@
 
 using namespace dronecode_sdk;
 
-TEST(CameraTest, SetMode)
+TEST(CameraTest, SetModeSync)
 {
     DronecodeSDK dc;
 

@@ -5,7 +5,7 @@
 
 using namespace dronecode_sdk;
 
-TEST_F(SitlTest, TelemetrySimple)
+TEST_F(SitlTest, TelemetrySync)
 {
     DronecodeSDK dc;
 

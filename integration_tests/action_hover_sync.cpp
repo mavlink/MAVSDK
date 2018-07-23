@@ -9,17 +9,17 @@ using namespace dronecode_sdk;
 
 static void takeoff_and_hover_at_altitude(float altitude_m = NAN);
 
-TEST_F(SitlTest, ActionSimpleHoverDefault)
+TEST_F(SitlTest, ActionHoverSyncDefault)
 {
     takeoff_and_hover_at_altitude();
 }
 
-TEST_F(SitlTest, ActionSimpleHoverHigher)
+TEST_F(SitlTest, ActionHoverSyncHigher)
 {
     takeoff_and_hover_at_altitude(5.0f);
 }
 
-TEST_F(SitlTest, ActionSimpleHoverLower)
+TEST_F(SitlTest, ActionHoverSyncLower)
 {
     takeoff_and_hover_at_altitude(1.0f);
 }
