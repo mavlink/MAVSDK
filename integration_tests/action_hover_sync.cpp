@@ -37,7 +37,6 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     System &system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
-    auto action = std::make_shared<Action>(system);
 
     int iteration = 0;
     while (!telemetry->health_all_ok()) {
@@ -47,6 +46,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
         ASSERT_LT(++iteration, 10);
     }
 
+    auto action = std::make_shared<Action>(system);
     ActionResult action_ret = action->arm();
     EXPECT_EQ(action_ret, ActionResult::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(1));
