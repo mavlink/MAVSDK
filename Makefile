@@ -136,6 +136,9 @@ run_all_tests: default
 run_unit_tests: default
 	build/default/unit_tests_runner
 
+run_unit_tests_offline: default
+	build/default/unit_tests_runner --gtest_filter="-CurlTest.*"
+
 run_integration_tests: default
 	build/default/integration_tests/integration_tests_runner
 

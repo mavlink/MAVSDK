@@ -2,7 +2,7 @@
 
 set -e
 
-make BUILD_TYPE=Debug run_unit_tests -j4
+make BUILD_TYPE=Debug run_unit_tests_offline -j4
 make default install
 make fix_style
 (cd example/takeoff_land && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make)
@@ -11,7 +11,7 @@ make fix_style
 make clean
 git clean -dfx
 
-make BUILD_TYPE=Release run_unit_tests -j4
+make BUILD_TYPE=Release run_unit_tests_offline -j4
 make default install
 make fix_style
 (cd example/takeoff_land && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make)
