@@ -72,7 +72,7 @@ public:
          * @sa to_str()
          */
         enum class FollowDirection {
-            FRONT_RIGHT, /**< @brief Follow from front right. */
+            FRONT_RIGHT = 0, /**< @brief Follow from front right. */
             BEHIND, /**< @brief Follow from behind. */
             FRONT, /**< @brief Follow from front. */
             FRONT_LEFT, /**< @brief Follow from front left. */
