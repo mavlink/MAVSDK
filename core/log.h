@@ -2,14 +2,14 @@
 
 #include <sstream>
 
-#if ANDROID
+#if defined(ANDROID)
 #include <android/log.h>
 #else
 #include <iostream>
 #include <ctime>
 #endif
 
-#ifndef WINDOWS
+#if !defined(WINDOWS)
 // Remove path and extract only filename.
 #define __FILENAME__ \
     (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
