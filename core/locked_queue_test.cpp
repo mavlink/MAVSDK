@@ -91,10 +91,10 @@ TEST(LockedQueue, ConcurrantAccess)
 
     // The promise should not be fulfilled yet because we have not
     // returned the borrowed item.
-    auto status = fut.wait_for(std::chrono::milliseconds(10));
+    auto status = fut.wait_for(std::chrono::milliseconds(20));
     EXPECT_EQ(status, std::future_status::timeout);
 
     locked_queue.return_front();
-    status = fut.wait_for(std::chrono::milliseconds(10));
+    status = fut.wait_for(std::chrono::milliseconds(20));
     EXPECT_EQ(status, std::future_status::ready);
 }
