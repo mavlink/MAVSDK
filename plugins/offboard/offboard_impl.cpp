@@ -135,56 +135,48 @@ void OffboardImpl::set_translation_ned(TranslationNED translation_ned)
 
 void OffboardImpl::set_position_ned_yaw(Offboard::PositionNEDYaw position_ned_yaw)
 {
-    TranslationNED translation_ned = {position_ned_yaw.north_m,
-                                      position_ned_yaw.east_m,
-                                      position_ned_yaw.down_m,
-                                      NAN,
-                                      NAN,
-                                      NAN,
-                                      position_ned_yaw.yaw_deg,
-                                      NAN};
+    TranslationNED translation_ned{NAN, NAN, NAN, NAN, NAN, NAN, NAN, NAN};
+    translation_ned.north_m = position_ned_yaw.north_m;
+    translation_ned.east_m = position_ned_yaw.east_m;
+    translation_ned.down_m = position_ned_yaw.down_m;
+    translation_ned.yaw_deg = position_ned_yaw.yaw_deg;
+
     set_translation_ned(translation_ned);
 }
 
 void OffboardImpl::set_velocity_altitude_ned_yaw(
     Offboard::VelocityAltitudeNEDYaw velocity_altitude_ned_yaw)
 {
-    TranslationNED translation_ned = {NAN,
-                                      NAN,
-                                      velocity_altitude_ned_yaw.down_m,
-                                      velocity_altitude_ned_yaw.north_m_s,
-                                      velocity_altitude_ned_yaw.east_m_s,
-                                      NAN,
-                                      velocity_altitude_ned_yaw.yaw_deg,
-                                      NAN};
+    TranslationNED translation_ned{NAN, NAN, NAN, NAN, NAN, NAN, NAN, NAN};
+    translation_ned.down_m = velocity_altitude_ned_yaw.down_m;
+    translation_ned.north_m_s = velocity_altitude_ned_yaw.north_m_s;
+    translation_ned.east_m_s = velocity_altitude_ned_yaw.east_m_s;
+    translation_ned.yaw_deg = velocity_altitude_ned_yaw.yaw_deg;
+
     set_translation_ned(translation_ned);
 }
 
 void OffboardImpl::set_position_climbrate_ned_yaw(
     Offboard::PositionClimbRateNEDYaw position_climbrate_ned_yaw)
 {
-    TranslationNED translation_ned = {position_climbrate_ned_yaw.north_m,
-                                      position_climbrate_ned_yaw.east_m,
-                                      NAN,
-                                      NAN,
-                                      NAN,
-                                      position_climbrate_ned_yaw.down_m_s,
-                                      position_climbrate_ned_yaw.yaw_deg,
-                                      NAN};
+    TranslationNED translation_ned{NAN, NAN, NAN, NAN, NAN, NAN, NAN, NAN};
+    translation_ned.north_m = position_climbrate_ned_yaw.north_m;
+    translation_ned.east_m = position_climbrate_ned_yaw.east_m;
+    translation_ned.down_m_s = position_climbrate_ned_yaw.down_m_s;
+    translation_ned.yaw_deg = position_climbrate_ned_yaw.yaw_deg;
+
     set_translation_ned(translation_ned);
 }
 
 void OffboardImpl::set_position_climbrate_ned_yawspeed(
     Offboard::PositionClimbRateNEDYawspeed position_climbrate_ned_yawspeed)
 {
-    TranslationNED translation_ned = {position_climbrate_ned_yawspeed.north_m,
-                                      position_climbrate_ned_yawspeed.east_m,
-                                      NAN,
-                                      NAN,
-                                      NAN,
-                                      position_climbrate_ned_yawspeed.down_m_s,
-                                      NAN,
-                                      position_climbrate_ned_yawspeed.yawspeed_deg_s};
+    TranslationNED translation_ned{NAN, NAN, NAN, NAN, NAN, NAN, NAN, NAN};
+    translation_ned.north_m = position_climbrate_ned_yawspeed.north_m;
+    translation_ned.east_m = position_climbrate_ned_yawspeed.east_m;
+    translation_ned.down_m_s = position_climbrate_ned_yawspeed.down_m_s;
+    translation_ned.yawspeed_deg_s = position_climbrate_ned_yawspeed.yawspeed_deg_s;
+
     set_translation_ned(translation_ned);
 }
 
