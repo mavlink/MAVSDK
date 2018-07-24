@@ -162,6 +162,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_request_camera_capture_sta
 
     cmd_req_camera_cap_stat.command = MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS;
     cmd_req_camera_cap_stat.params.param1 = 1.0f; // Request it
+    cmd_req_camera_cap_stat.target_component_id = MAV_COMP_ID_CAMERA;
 
     return cmd_req_camera_cap_stat;
 }
