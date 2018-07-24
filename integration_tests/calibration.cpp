@@ -13,7 +13,7 @@ static void receive_calibration_callback(Calibration::Result result,
                                          const std::string calibration_type,
                                          bool &done);
 
-TEST(HardwareTest, GyroCalibration)
+TEST(HardwareTest, CalibrationGyro)
 {
     DronecodeSDK dc;
 
@@ -37,7 +37,7 @@ TEST(HardwareTest, GyroCalibration)
     }
 }
 
-TEST(HardwareTest, AccelerometerCalibration)
+TEST(HardwareTest, CalibrationAccelerometer)
 {
     DronecodeSDK dc;
 
@@ -61,7 +61,7 @@ TEST(HardwareTest, AccelerometerCalibration)
     }
 }
 
-TEST(HardwareTest, MagnetometerCalibration)
+TEST(HardwareTest, CalibrationMagnetometer)
 {
     DronecodeSDK dc;
 
@@ -85,7 +85,7 @@ TEST(HardwareTest, MagnetometerCalibration)
     }
 }
 
-TEST(HardwareTest, GimbalAccelerometerCalibration)
+TEST(HardwareTest, CalibrationGimbalAccelerometer)
 {
     DronecodeSDK dc;
 

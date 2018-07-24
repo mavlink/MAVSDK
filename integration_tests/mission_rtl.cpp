@@ -18,17 +18,17 @@ using namespace std::placeholders; // for `_1`
 
 void do_mission_with_rtl(float mission_altitude_m, float rtl_altitude_m);
 
-TEST_F(SitlTest, RTLHigh)
+TEST_F(SitlTest, MissionWithRTLHigh)
 {
     do_mission_with_rtl(20, 30);
 }
 
-TEST_F(SitlTest, RTLLow)
+TEST_F(SitlTest, MissionWithRTLLow)
 {
     do_mission_with_rtl(5, 10);
 }
 
-TEST_F(SitlTest, RTLHigherAnyway)
+TEST_F(SitlTest, MissionWithRTLHigherAnyway)
 {
     do_mission_with_rtl(10, 5);
 }

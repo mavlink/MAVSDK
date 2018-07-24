@@ -13,34 +13,37 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 # This includes all GTests that run integration tests
 add_executable(integration_tests_runner
     ../core/unittests_main.cpp
-    simple_connect.cpp
-    async_connect.cpp
-    telemetry_simple.cpp
-    telemetry_async.cpp
-    telemetry_modes.cpp
-    telemetry_health.cpp
-    simple_hover.cpp
-    async_hover.cpp
-    takeoff_and_kill.cpp
-    offboard_velocity.cpp
-    logging.cpp
-    info.cpp
-    mission.cpp
-    mission_change_speed.cpp
-    mission_survey.cpp
-    rtl.cpp
-    gimbal.cpp
-    transition_multicopter_fixedwing.cpp
-    follow_me.cpp
-    multi_components.cpp
+    action_hover_async.cpp
+    action_hover_sync.cpp
+    action_takeoff_and_kill.cpp
+    action_transition_multicopter_fixedwing.cpp
     calibration.cpp
-    path_checker.cpp
+    camera_mode.cpp
+    camera_settings.cpp
+    camera_status.cpp
     camera_take_photo.cpp
     camera_take_photo_interval.cpp
-    camera_mode.cpp
-    camera_status.cpp
     camera_test_helpers.cpp
-    camera_settings.cpp
+    camera_test_helpers.h
+    CMakeLists.txt
+    follow_me.cpp
+    gimbal.cpp
+    info.cpp
+    logging.cpp
+    mission_change_speed.cpp
+    mission.cpp
+    mission_rtl.cpp
+    mission_survey.cpp
+    offboard_velocity.cpp
+    path_checker.cpp
+    path_checker.h
+    system_connection_async.cpp
+    system_connection_sync.cpp
+    system_multi_components.cpp
+    telemetry_async.cpp
+    telemetry_health.cpp
+    telemetry_modes.cpp
+    telemetry_sync.cpp
 )
 
 include_directories(

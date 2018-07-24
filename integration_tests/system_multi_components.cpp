@@ -20,10 +20,10 @@ using namespace std::chrono;
  * 1. Connect a V4L2 Camera on Ubuntu.
  * 2. Launch Camera Streaming Daemon on Ubuntu and configure UDP port 14550.
  * 3. Launch PX4 SITL.
- * 4. Run SitlTest.MultiComponentDiscovery test.
+ * 4. Run SitlTest.SystemMultipleComponents test.
  * /////////////////////////////////////
  */
-TEST_F(SitlTest, MultiComponentDiscovery)
+TEST_F(SitlTest, SystemMultipleComponents)
 {
     DronecodeSDK dc;
 
