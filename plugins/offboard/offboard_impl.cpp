@@ -237,18 +237,21 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
 void OffboardImpl::send_translation_ned()
 {
     // by default ingore all setpoints
-    uint16_t IGNORE_X = (1 << 0);
-    uint16_t IGNORE_Y = (1 << 1);
-    uint16_t IGNORE_Z = (1 << 2);
-    uint16_t IGNORE_VX = (1 << 3);
-    uint16_t IGNORE_VY = (1 << 4);
-    uint16_t IGNORE_VZ = (1 << 5);
-    uint16_t IGNORE_AX = (1 << 6);
-    uint16_t IGNORE_AY = (1 << 7);
-    uint16_t IGNORE_AZ = (1 << 8);
-    // uint16_t IS_FORCE = (1 << 9);
-    uint16_t IGNORE_YAW = (1 << 10);
-    uint16_t IGNORE_YAW_RATE = (1 << 11);
+    const uint16_t IGNORE_X = (1 << 0);
+    const uint16_t IGNORE_Y = (1 << 1);
+    const uint16_t IGNORE_Z = (1 << 2);
+    const uint16_t IGNORE_VX = (1 << 3);
+    const uint16_t IGNORE_VY = (1 << 4);
+    const uint16_t IGNORE_VZ = (1 << 5);
+    const uint16_t IGNORE_AX = (1 << 6);
+    const uint16_t IGNORE_AY = (1 << 7);
+    const uint16_t IGNORE_AZ = (1 << 8);
+    const uint16_t IS_FORCE = (1 << 9);
+    const uint16_t IGNORE_YAW = (1 << 10);
+    const uint16_t IGNORE_YAW_RATE = (1 << 11);
+
+    // AX/Y/Z and IS_FORCE is currently not supported
+    uint16_t ignore_flags = IGNORE_AX | IGNORE_AY | IGNORE_AZ;
 
     float x = 0.0f;
     float y = 0.0f;
@@ -265,42 +268,40 @@ void OffboardImpl::send_translation_ned()
     _mutex.lock();
     if (std::isfinite(_translation_ned.yaw_deg)) {
         yaw = to_rad_from_deg(_translation_ned.yaw_deg);
-        // enable yaw
-        IGNORE_YAW &= ~(1 << 10);
+    } else {
+        ignore_flags |= IGNORE_YAW;
     }
 
     if (std::isfinite(_translation_ned.yawspeed_deg_s)) {
         yawspeed = to_rad_from_deg(_translation_ned.yawspeed_deg_s);
-        // enable yawrate
-        IGNORE_YAW_RATE &= ~(1 << 11);
+    } else {
+        ignore_flags |= IGNORE_YAW_RATE;
     }
 
     if (std::isfinite(_translation_ned.north_m) && std::isfinite(_translation_ned.east_m)) {
         x = _translation_ned.north_m;
         y = _translation_ned.east_m;
-        // enable x/y
-        IGNORE_X &= ~(1 << 0);
-        IGNORE_Y &= ~(1 << 1);
+    } else {
+        ignore_flags |= IGNORE_X |  IGNORE_Y;
     }
 
     if (std::isfinite(_translation_ned.north_m_s) && std::isfinite(_translation_ned.east_m_s)) {
         vx = _translation_ned.north_m_s;
         vy = _translation_ned.east_m_s;
-        // enable vx/vy
-        IGNORE_VX &= ~(1 << 3);
-        IGNORE_VY &= ~(1 << 4);
+    } else {
+        ignore_flags |= IGNORE_VX | IGNORE_VY;
     }
 
     if (std::isfinite(_translation_ned.down_m)) {
         z = _translation_ned.down_m;
-        // enable altitude
-        IGNORE_Z &= ~(1 << 2);
+    } else {
+        ignore_flags |= IGNORE_Z;
     }
 
     if (std::isfinite(_translation_ned.down_m_s)) {
         vz = _translation_ned.down_m_s;
-        // enable climbrate
-        IGNORE_VZ &= ~(1 << 5);
+    } else {
+        ignore_flags |= IGNORE_VZ;
     }
 
     _mutex.unlock();
@@ -313,8 +314,7 @@ void OffboardImpl::send_translation_ned()
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_FRAME_LOCAL_NED,
-        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY |
-            IGNORE_AZ | IGNORE_YAW | IGNORE_YAW_RATE,
+        ignore_flags,
         x,
         y,
         z,
