@@ -246,7 +246,7 @@ void OffboardImpl::send_translation_ned()
     const uint16_t IGNORE_AX = (1 << 6);
     const uint16_t IGNORE_AY = (1 << 7);
     const uint16_t IGNORE_AZ = (1 << 8);
-    const uint16_t IS_FORCE = (1 << 9);
+    // const uint16_t IS_FORCE = (1 << 9);
     const uint16_t IGNORE_YAW = (1 << 10);
     const uint16_t IGNORE_YAW_RATE = (1 << 11);
 
@@ -266,39 +266,39 @@ void OffboardImpl::send_translation_ned()
     const float afz = 0.0f;
 
     _mutex.lock();
-    if (std::isfinite(_translation_ned.yaw_deg)) {
+    if (isfinite(_translation_ned.yaw_deg)) {
         yaw = to_rad_from_deg(_translation_ned.yaw_deg);
     } else {
         ignore_flags |= IGNORE_YAW;
     }
 
-    if (std::isfinite(_translation_ned.yawspeed_deg_s)) {
+    if (isfinite(_translation_ned.yawspeed_deg_s)) {
         yawspeed = to_rad_from_deg(_translation_ned.yawspeed_deg_s);
     } else {
         ignore_flags |= IGNORE_YAW_RATE;
     }
 
-    if (std::isfinite(_translation_ned.north_m) && std::isfinite(_translation_ned.east_m)) {
+    if (isfinite(_translation_ned.north_m) && isfinite(_translation_ned.east_m)) {
         x = _translation_ned.north_m;
         y = _translation_ned.east_m;
     } else {
-        ignore_flags |= IGNORE_X |  IGNORE_Y;
+        ignore_flags |= IGNORE_X | IGNORE_Y;
     }
 
-    if (std::isfinite(_translation_ned.north_m_s) && std::isfinite(_translation_ned.east_m_s)) {
+    if (isfinite(_translation_ned.north_m_s) && isfinite(_translation_ned.east_m_s)) {
         vx = _translation_ned.north_m_s;
         vy = _translation_ned.east_m_s;
     } else {
         ignore_flags |= IGNORE_VX | IGNORE_VY;
     }
 
-    if (std::isfinite(_translation_ned.down_m)) {
+    if (isfinite(_translation_ned.down_m)) {
         z = _translation_ned.down_m;
     } else {
         ignore_flags |= IGNORE_Z;
     }
 
-    if (std::isfinite(_translation_ned.down_m_s)) {
+    if (isfinite(_translation_ned.down_m_s)) {
         vz = _translation_ned.down_m_s;
     } else {
         ignore_flags |= IGNORE_VZ;
