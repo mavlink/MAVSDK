@@ -57,6 +57,8 @@ TEST_F(SitlTest, MissionSurvey)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     System &system = dc.system();
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto mission = std::make_shared<Mission>(system);
     auto action = std::make_shared<Action>(system);
