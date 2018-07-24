@@ -91,7 +91,6 @@ void SystemImpl::unregister_all_mavlink_message_handlers(const void *cookie)
             ++it;
         }
     }
-    _mavlink_handler_table.clear();
 }
 
 void SystemImpl::register_timeout_handler(std::function<void()> callback,
