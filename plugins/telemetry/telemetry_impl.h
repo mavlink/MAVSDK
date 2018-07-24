@@ -121,6 +121,7 @@ private:
 #ifdef LEVEL_CALIBRATION
     void receive_param_cal_level(bool success, float value);
 #endif
+    void receive_param_hitl(bool success, int value);
 
     void receive_rc_channels_timeout();
 
@@ -171,6 +172,8 @@ private:
 
     mutable std::mutex _rc_status_mutex;
     Telemetry::RCStatus _rc_status;
+
+    std::atomic<bool> _hitl_enabled{false};
 
     Telemetry::position_velocity_ned_callback_t _position_velocity_ned_subscription;
     Telemetry::position_callback_t _position_subscription;
