@@ -573,9 +573,8 @@ void SystemImpl::get_param_async(const std::string &name,
     _params.get_param_async(name, callback, extended);
 }
 
-MAVLinkCommands::Result SystemImpl::make_command_flight_mode(FlightMode flight_mode,
-                                                             uint8_t component_id,
-                                                             MAVLinkCommands::CommandLong &command)
+std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
+SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_id)
 {
     const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
     const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
@@ -611,10 +610,11 @@ MAVLinkCommands::Result SystemImpl::make_command_flight_mode(FlightMode flight_m
             break;
         default:
             LogErr() << "Unknown Flight mode.";
-            return MAVLinkCommands::Result::UNKNOWN_ERROR;
+            MAVLinkCommands::CommandLong empty_command{};
+            return std::make_pair<>(MAVLinkCommands::Result::UNKNOWN_ERROR, empty_command);
     }
 
-    command = MAVLinkCommands::CommandLong(); // wipe off caller's data, if any.
+    MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_DO_SET_MODE;
     command.params.param1 = float(mode);
@@ -622,36 +622,36 @@ MAVLinkCommands::Result SystemImpl::make_command_flight_mode(FlightMode flight_m
     command.params.param3 = float(custom_sub_mode);
     command.target_component_id = component_id;
 
-    return MAVLinkCommands::Result::SUCCESS;
+    return std::make_pair<>(MAVLinkCommands::Result::SUCCESS, command);
 }
 
 MAVLinkCommands::Result SystemImpl::set_flight_mode(FlightMode system_mode, uint8_t component_id)
 {
-    MAVLinkCommands::CommandLong command{};
+    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
+        make_command_flight_mode(system_mode, component_id);
 
-    auto result = make_command_flight_mode(system_mode, component_id, command);
-    if (result != MAVLinkCommands::Result::SUCCESS) {
-        return result;
+    if (result.first != MAVLinkCommands::Result::SUCCESS) {
+        return result.first;
     }
 
-    return send_command(command);
+    return send_command(result.second);
 }
 
 void SystemImpl::set_flight_mode_async(FlightMode system_mode,
                                        command_result_callback_t callback,
                                        uint8_t component_id)
 {
-    MAVLinkCommands::CommandLong command{};
+    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
+        make_command_flight_mode(system_mode, component_id);
 
-    auto result = make_command_flight_mode(system_mode, component_id, command);
-    if (result != MAVLinkCommands::Result::SUCCESS) {
+    if (result.first != MAVLinkCommands::Result::SUCCESS) {
         if (callback) {
-            callback(MAVLinkCommands::Result::UNKNOWN_ERROR, NAN);
+            callback(result.first, NAN);
         }
         return;
     }
 
-    send_command_async(command, callback);
+    send_command_async(result.second, callback);
 }
 
 void SystemImpl::get_param_int_async(const std::string &name, get_param_int_callback_t callback)
@@ -777,14 +777,13 @@ void SystemImpl::send_command_async(MAVLinkCommands::CommandInt &command,
 MAVLinkCommands::Result
 SystemImpl::set_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
-    MAVLinkCommands::CommandLong command_msg_rate{};
-
-    auto result = make_command_msg_rate(message_id, rate_hz, component_id, command_msg_rate);
-    if (result == MAVLinkCommands::Result::SUCCESS) {
-        result = send_command(command_msg_rate);
+    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
+        make_command_msg_rate(message_id, rate_hz, component_id);
+    if (result.first == MAVLinkCommands::Result::SUCCESS) {
+        return send_command(result.second);
     }
 
-    return result;
+    return result.first;
 }
 
 void SystemImpl::set_msg_rate_async(uint16_t message_id,
@@ -792,26 +791,29 @@ void SystemImpl::set_msg_rate_async(uint16_t message_id,
                                     command_result_callback_t callback,
                                     uint8_t component_id)
 {
-    MAVLinkCommands::CommandLong command_msg_rate{};
-
-    auto result = make_command_msg_rate(message_id, rate_hz, component_id, command_msg_rate);
-    if (result == MAVLinkCommands::Result::SUCCESS) {
-        send_command_async(command_msg_rate, callback);
+    std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong> result =
+        make_command_msg_rate(message_id, rate_hz, component_id);
+    if (result.first == MAVLinkCommands::Result::SUCCESS) {
+        send_command_async(result.second, callback);
+    } else {
+        if (callback) {
+            callback(result.first, NAN);
+        }
     }
 }
 
-MAVLinkCommands::Result SystemImpl::make_command_msg_rate(uint16_t message_id,
-                                                          double rate_hz,
-                                                          uint8_t component_id,
-                                                          MAVLinkCommands::CommandLong &command)
+std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
+SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id)
 {
+    MAVLinkCommands::CommandLong command{};
+
     // If left at -1 it will stop the message stream.
     float interval_us = -1.0f;
     if (rate_hz > 0) {
         interval_us = 1e6f / static_cast<float>(rate_hz);
     } else {
         LogErr() << "Rate(Hz) is invalid: %f" << rate_hz;
-        return MAVLinkCommands::Result::UNKNOWN_ERROR;
+        return std::make_pair<>(MAVLinkCommands::Result::UNKNOWN_ERROR, command);
     }
 
     command.command = MAV_CMD_SET_MESSAGE_INTERVAL;
@@ -819,7 +821,7 @@ MAVLinkCommands::Result SystemImpl::make_command_msg_rate(uint16_t message_id,
     command.params.param2 = interval_us;
     command.target_component_id = component_id;
 
-    return MAVLinkCommands::Result::SUCCESS;
+    return std::make_pair<>(MAVLinkCommands::Result::SUCCESS, command);
 }
 
 void SystemImpl::register_plugin(PluginImplBase *plugin_impl)
