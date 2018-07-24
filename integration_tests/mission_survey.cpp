@@ -64,11 +64,12 @@ TEST_F(SitlTest, MissionSurvey)
     auto action = std::make_shared<Action>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        LogInfo() << "Waiting for system to be ready";
+        LogDebug() << "Health: " << telemetry->health();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    std::cout << "System ready, let's start" << std::endl;
+    LogInfo() << "System ready, let's start";
 
     std::vector<std::shared_ptr<MissionItem>> mis;
 
@@ -197,7 +198,7 @@ TEST_F(SitlTest, MissionSurvey)
     while (!finished) {
         static auto _last_state = MissionState::INIT;
         if (_last_state != _mission_state) {
-            std::cout << "state: " << int(_mission_state) << std::endl;
+            LogDebug() << "state: " << int(_mission_state);
             _last_state = _mission_state;
         }
         switch (_mission_state) {
@@ -208,7 +209,7 @@ TEST_F(SitlTest, MissionSurvey)
             case MissionState::UPLOADING:
                 break;
             case MissionState::UPLOADING_DONE:
-                std::cout << "arming!" << std::endl;
+                LogInfo() << "arming!";
                 if (!telemetry->armed()) {
                     action->arm_async(std::bind(&receive_arm_result, _1));
                     _mission_state = MissionState::ARMING;
@@ -267,7 +268,7 @@ void receive_upload_mission_result(Mission::Result result)
     if (result == Mission::Result::SUCCESS) {
         _mission_state = MissionState::UPLOADING_DONE;
     } else {
-        std::cerr << "Error: mission send result: " << Mission::result_str(result) << std::endl;
+        LogErr() << "Error: mission send result: " << Mission::result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
@@ -279,14 +280,14 @@ void receive_start_mission_result(Mission::Result result)
     if (result == Mission::Result::SUCCESS) {
         _mission_state = MissionState::STARTING_DONE;
     } else {
-        std::cerr << "Error: mission start result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: mission start result: " << Mission::result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
 
 void receive_mission_progress(int current, int total)
 {
-    std::cout << "Mission status update: " << current << " / " << total << std::endl;
+    LogInfo() << "Mission status update: " << current << " / " << total;
 
     if (current > 0 && current == total) {
         _mission_state = MissionState::MISSION_DONE;
@@ -300,7 +301,7 @@ void receive_arm_result(ActionResult result)
     if (result == ActionResult::SUCCESS) {
         _mission_state = MissionState::ARMING_DONE;
     } else {
-        std::cerr << "Error: arming result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: arming result: " << action_result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
@@ -311,7 +312,7 @@ void receive_return_to_launch_result(ActionResult result)
 
     if (result == ActionResult::SUCCESS) {
     } else {
-        std::cerr << "Error: return to land result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: return to land result: " << action_result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
@@ -322,7 +323,7 @@ void receive_disarm_result(ActionResult result)
 
     if (result == ActionResult::SUCCESS) {
     } else {
-        std::cerr << "Error: disarming result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: disarming result: " << action_result_str(result);
     }
 
     _mission_state = MissionState::DONE;

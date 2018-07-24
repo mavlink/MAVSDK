@@ -70,6 +70,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
 
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for system to be ready";
+        LogDebug() << "Health: " << telemetry->health();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

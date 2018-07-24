@@ -48,11 +48,12 @@ TEST_F(SitlTest, MissionChangeSpeed)
     auto action = std::make_shared<Action>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        LogInfo() << "Waiting for system to be ready";
+        LogDebug() << "Health: " << telemetry->health();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    std::cout << "System ready, let's start" << std::endl;
+    LogInfo() << "System ready, let's start";
 
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
@@ -99,12 +100,12 @@ TEST_F(SitlTest, MissionChangeSpeed)
     ASSERT_EQ(result, ActionResult::SUCCESS);
 
     while (!mission->mission_finished()) {
-        std::cout << "waiting until mission is done" << std::endl;
+        LogDebug() << "waiting until mission is done";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     while (telemetry->in_air()) {
-        std::cout << "waiting until landed" << std::endl;
+        LogDebug() << "waiting until landed";
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -119,7 +120,7 @@ void receive_upload_mission_result(Mission::Result result)
     if (result == Mission::Result::SUCCESS) {
         _mission_sent_ok = true;
     } else {
-        std::cerr << "Error: mission send result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: mission send result: " << Mission::result_str(result);
     }
 }
 
@@ -130,7 +131,7 @@ void receive_start_mission_result(Mission::Result result)
     if (result == Mission::Result::SUCCESS) {
         _mission_started_ok = true;
     } else {
-        std::cerr << "Error: mission start result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: mission start result: " << Mission::result_str(result);
     }
 }
 
@@ -161,6 +162,6 @@ float current_speed(std::shared_ptr<Telemetry> &telemetry)
 
 void receive_mission_progress(int current, int total)
 {
-    std::cout << "Mission status update: " << current << " / " << total << std::endl;
+    LogInfo() << "Mission status update: " << current << " / " << total;
     _current_item = current;
 }
