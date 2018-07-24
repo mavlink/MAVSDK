@@ -74,9 +74,9 @@ public:
      * @brief Type for Position commands in NED (North East Down) coordinates and yaw.
      */
     struct PositionNEDYaw {
-        float north_m; /**< @brief Position along north in meters. */
-        float east_m; /**< @brief Position along east in meters. */
-        float down_m; /**< @brief Position along down in meters. */
+        float north_m; /**< @brief Position along North in meters. */
+        float east_m; /**< @brief Position along East in meters. */
+        float down_m; /**< @brief Position along Down in meters. */
         float yaw_deg; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
                           above). */
     };
@@ -93,19 +93,19 @@ public:
     };
 
     /**
-     * @brief Type for Velocity commands in NE (North East) and Altitude in N (Down) coordinate and
+     * @brief Type for Velocity commands in NE (North East) and Altitude in D (Down) coordinate and
      * yaw.
      */
     struct VelocityAltitudeNEDYaw {
         float north_m_s; /**< @brief Velocity North in meters/second. */
         float east_m_s; /**< @brief Velocity East in meters/second. */
-        float down_m; /**< @brief Altitude Down in meters. */
+        float down_m; /**< @brief Altitude along Down in meters.  */
         float yaw_deg; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
                           above). */
     };
 
     /**
-     * @brief Type for Position commands in NE (North East) and Velocity in N (Down) coordinate and
+     * @brief Type for Position commands in NE (North East) and Velocity in D (Down) coordinate and
      * yaw.
      */
     struct PositionClimbRateNEDYaw {
@@ -117,7 +117,7 @@ public:
     };
 
     /**
-     * @brief Type for Position commands in NE (North East) and Velocity in N (Down) coordinate and
+     * @brief Type for Position commands in NE (North East) and Velocity in D (Down) coordinate and
      * yawspeed.
      */
     struct PositionClimbRateNEDYawspeed {
