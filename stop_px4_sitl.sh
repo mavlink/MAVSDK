@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script shuts the Gazebo PX4 software in the loop (SITL) simulation down again.
 
