@@ -132,8 +132,15 @@ public:
                                     rpc::action::GetTakeoffAltitudeResponse *response) override
     {
         if (response != nullptr) {
-            auto takeoff_altitude = _action.get_takeoff_altitude_m();
-            response->set_altitude_m(takeoff_altitude);
+            auto result_pair = _action.get_takeoff_altitude();
+
+            auto *rpc_action_result = new rpc::action::ActionResult();
+            rpc_action_result->set_result(
+                static_cast<rpc::action::ActionResult::Result>(result_pair.first));
+            rpc_action_result->set_result_str(action_result_str(result_pair.first));
+
+            response->set_allocated_action_result(rpc_action_result);
+            response->set_altitude(result_pair.second);
         }
 
         return grpc::Status::OK;
@@ -145,7 +152,7 @@ public:
                        rpc::action::SetTakeoffAltitudeResponse * /* response */) override
     {
         if (request != nullptr) {
-            const auto requested_altitude = request->altitude_m();
+            const auto requested_altitude = request->altitude();
             _action.set_takeoff_altitude(requested_altitude);
         }
 
@@ -157,8 +164,15 @@ public:
                                  rpc::action::GetMaximumSpeedResponse *response) override
     {
         if (response != nullptr) {
-            auto max_speed = _action.get_max_speed_m_s();
-            response->set_speed_m_s(max_speed);
+            auto result_pair = _action.get_max_speed();
+
+            auto *rpc_action_result = new rpc::action::ActionResult();
+            rpc_action_result->set_result(
+                static_cast<rpc::action::ActionResult::Result>(result_pair.first));
+            rpc_action_result->set_result_str(action_result_str(result_pair.first));
+
+            response->set_allocated_action_result(rpc_action_result);
+            response->set_speed(result_pair.second);
         }
 
         return grpc::Status::OK;
@@ -166,11 +180,17 @@ public:
 
     grpc::Status SetMaximumSpeed(grpc::ServerContext * /* context */,
                                  const rpc::action::SetMaximumSpeedRequest *request,
-                                 rpc::action::SetMaximumSpeedResponse * /* response */) override
+                                 rpc::action::SetMaximumSpeedResponse *response) override
     {
         if (request != nullptr) {
-            const auto requested_speed = request->speed_m_s();
-            _action.set_max_speed(requested_speed);
+            const auto requested_speed = request->speed();
+            ActionResult action_result = _action.set_max_speed(requested_speed);
+
+            auto *rpc_action_result = new rpc::action::ActionResult();
+            rpc_action_result->set_result(
+                static_cast<rpc::action::ActionResult::Result>(action_result));
+            // rpc_action_result->set_result_str(action_result_str(action_result));
+            response->set_allocated_action_result(rpc_action_result);
         }
 
         return grpc::Status::OK;
