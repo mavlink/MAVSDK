@@ -62,23 +62,29 @@ message TransitionToMulticopterResponse {
 
 message GetTakeoffAltitudeRequest {}
 message GetTakeoffAltitudeResponse {
-    float altitude_m = 1;
+    ActionResult action_result = 1;
+    float altitude = 2;
 }
 
 message SetTakeoffAltitudeRequest {
-    float altitude_m = 1;
+    float altitude = 1;
 }
-message SetTakeoffAltitudeResponse {}
+message SetTakeoffAltitudeResponse {
+    ActionResult action_result = 1;
+}
 
 message GetMaximumSpeedRequest {}
 message GetMaximumSpeedResponse {
-    float speed_m_s = 1;
+    ActionResult action_result = 1;
+    float speed = 2;
 }
 
 message SetMaximumSpeedRequest {
-    float speed_m_s = 1;
+    float speed = 1;
 }
-message SetMaximumSpeedResponse {}
+message SetMaximumSpeedResponse {
+    ActionResult action_result = 1;
+}
 
 message ActionResult {
     enum Result {
