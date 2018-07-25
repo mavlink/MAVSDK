@@ -146,6 +146,12 @@ void TelemetryImpl::enable()
     // If not available, just hardcode it to true.
     set_health_level_calibration(true);
 #endif
+
+    _parent->get_param_int_async(std::string("SYS_HITL"),
+                                 std::bind(&TelemetryImpl::receive_param_hitl,
+                                           this,
+                                           std::placeholders::_1,
+                                           std::placeholders::_2));
 }
 
 void TelemetryImpl::disable()
@@ -604,6 +610,22 @@ void TelemetryImpl::receive_param_cal_level(bool success, float value)
 }
 #endif
 
+void TelemetryImpl::receive_param_hitl(bool success, int value)
+{
+    if (!success) {
+        LogErr() << "Error: Param to determine hitl failed.";
+        return;
+    }
+
+    _hitl_enabled = (value == 1);
+    set_health_accelerometer_calibration(_hitl_enabled);
+    set_health_gyrometer_calibration(_hitl_enabled);
+    set_health_magnetometer_calibration(_hitl_enabled);
+#ifdef LEVEL_CALIBRATION
+    set_health_level_calibration(ok);
+#endif
+}
+
 void TelemetryImpl::receive_rc_channels_timeout()
 {
     const bool rc_ok = false;
@@ -800,25 +822,25 @@ void TelemetryImpl::set_health_home_position(bool ok)
 void TelemetryImpl::set_health_gyrometer_calibration(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
-    _health.gyrometer_calibration_ok = ok;
+    _health.gyrometer_calibration_ok = (ok || _hitl_enabled);
 }
 
 void TelemetryImpl::set_health_accelerometer_calibration(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
-    _health.accelerometer_calibration_ok = ok;
+    _health.accelerometer_calibration_ok = (ok || _hitl_enabled);
 }
 
 void TelemetryImpl::set_health_magnetometer_calibration(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
-    _health.magnetometer_calibration_ok = ok;
+    _health.magnetometer_calibration_ok = (ok || _hitl_enabled);
 }
 
 void TelemetryImpl::set_health_level_calibration(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
-    _health.level_calibration_ok = ok;
+    _health.level_calibration_ok = (ok || _hitl_enabled);
 }
 
 void TelemetryImpl::set_rc_status(bool available, float signal_strength_percent)
