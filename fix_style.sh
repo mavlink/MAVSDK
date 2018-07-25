@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script runs clang-format over all files ending in .h, .c, .cpp listed
 # by git in the given directory.

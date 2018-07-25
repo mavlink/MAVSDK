@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script spawns the Gazebo PX4 software in the loop (SITL) simulation.
 # Options:

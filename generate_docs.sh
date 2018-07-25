@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Run with argument `--skip-checks` to skip checks for clean build and removing install dir.
 
