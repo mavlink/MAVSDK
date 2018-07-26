@@ -414,6 +414,8 @@ std::vector<InputPair> generateInputPairs()
     input_pairs.push_back(std::make_pair("NO_VTOL_TRANSITION_SUPPORT",
                                          dronecode_sdk::ActionResult::NO_VTOL_TRANSITION_SUPPORT));
     input_pairs.push_back(std::make_pair("UNKNOWN", dronecode_sdk::ActionResult::UNKNOWN));
+    input_pairs.push_back(
+        std::make_pair("PARAMETER_ERROR", dronecode_sdk::ActionResult::PARAMETER_ERROR));
 
     return input_pairs;
 }
