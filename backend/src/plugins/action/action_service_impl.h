@@ -186,11 +186,13 @@ public:
             const auto requested_speed = request->speed();
             ActionResult action_result = _action.set_max_speed(requested_speed);
 
-            auto *rpc_action_result = new rpc::action::ActionResult();
-            rpc_action_result->set_result(
-                static_cast<rpc::action::ActionResult::Result>(action_result));
-            // rpc_action_result->set_result_str(action_result_str(action_result));
-            response->set_allocated_action_result(rpc_action_result);
+            if (response != nullptr) {
+                auto *rpc_action_result = new rpc::action::ActionResult();
+                rpc_action_result->set_result(
+                    static_cast<rpc::action::ActionResult::Result>(action_result));
+                rpc_action_result->set_result_str(action_result_str(action_result));
+                response->set_allocated_action_result(rpc_action_result);
+            }
         }
 
         return grpc::Status::OK;

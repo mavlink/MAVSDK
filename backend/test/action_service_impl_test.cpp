@@ -353,16 +353,26 @@ TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullRequest)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
+    dronecode_sdk::rpc::action::SetMaximumSpeedResponse response;
 
-    actionService.SetMaximumSpeed(nullptr, nullptr, nullptr);
+    actionService.SetMaximumSpeed(nullptr, nullptr, &response);
+}
+
+TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullResponse)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    dronecode_sdk::rpc::action::SetMaximumSpeedRequest request;
+    request.set_speed(ARBITRARY_SPEED);
+
+    actionService.SetMaximumSpeed(nullptr, &request, nullptr);
 }
 
 TEST_F(ActionServiceImplTest, setMaxSpeedCallsSetter)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    const auto expected_speed = ARBITRARY_SPEED;
-    EXPECT_CALL(action, set_max_speed(expected_speed)).Times(1);
+    EXPECT_CALL(action, set_max_speed(_)).Times(1);
     dronecode_sdk::rpc::action::SetMaximumSpeedRequest request;
 
     actionService.SetMaximumSpeed(nullptr, &request, nullptr);
