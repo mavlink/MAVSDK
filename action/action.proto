@@ -99,6 +99,7 @@ message ActionResult {
         TIMEOUT = 8;
         VTOL_TRANSITION_SUPPORT_UNKNOWN = 9;
         NO_VTOL_TRANSITION_SUPPORT = 10;
+        PARAMETER_ERROR = 11;
     }
 
     Result result = 1;
