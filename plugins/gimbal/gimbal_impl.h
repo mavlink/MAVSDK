@@ -1,7 +1,7 @@
 #pragma once
 
 #include "system.h"
-#include "gimbal.h"
+#include "plugins/gimbal/gimbal.h"
 #include "plugin_impl_base.h"
 
 namespace dronecode_sdk {

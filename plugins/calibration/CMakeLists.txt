@@ -13,13 +13,20 @@ set_target_properties(dronecode_sdk_calibration
 )
 
 install(FILES
-    calibration.h
+    include/plugins/calibration/calibration.h
     DESTINATION ${dronecode_sdk_install_include_dir}
 )
 
 install(TARGETS dronecode_sdk_calibration
     #EXPORT dronecode_sdk-targets
     DESTINATION ${dronecode_sdk_install_lib_dir}
+)
+
+target_include_directories(dronecode_sdk_calibration
+PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 list(APPEND UNIT_TEST_SOURCES

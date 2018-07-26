@@ -23,14 +23,21 @@ target_link_libraries(dronecode_sdk_mission
 )
 
 install(FILES
-    mission.h
-    mission_item.h
+    include/plugins/mission/mission.h
+    include/plugins/mission/mission_item.h
     DESTINATION ${dronecode_sdk_install_include_dir}
 )
 
 install(TARGETS dronecode_sdk_mission
     #EXPORT dronecode_sdk-targets
     DESTINATION ${dronecode_sdk_install_lib_dir}
+)
+
+target_include_directories(dronecode_sdk_mission
+PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 if(ANDROID)

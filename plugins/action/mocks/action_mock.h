@@ -1,6 +1,6 @@
 #include <gmock/gmock.h>
 
-#include "action/action_result.h"
+#include "plugins/action/action_result.h"
 
 namespace dronecode_sdk {
 namespace testing {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "calibration.h"
+#include "plugins/calibration/calibration.h"
 #include "system.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"

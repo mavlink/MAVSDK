@@ -2,8 +2,8 @@
 
 #include <cstdint>
 
-#include "action.h"
-#include "action_result.h"
+#include "plugins/action/action.h"
+#include "plugins/action/action_result.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 

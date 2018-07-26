@@ -2,8 +2,8 @@
 #include <memory>
 #include <vector>
 
-#include "mission/mission.h"
-#include "mission/mission_item.h"
+#include "plugins/mission/mission.h"
+#include "plugins/mission/mission_item.h"
 
 namespace dronecode_sdk {
 namespace testing {

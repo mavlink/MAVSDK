@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "mission/mission_service_impl.h"
-#include "mission/mission_item.h"
+#include "plugins/mission/mission_item.h"
 #include "mission/mocks/mission_mock.h"
 
 namespace {

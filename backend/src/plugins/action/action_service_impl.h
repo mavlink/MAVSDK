@@ -1,4 +1,4 @@
-#include "action/action.h"
+#include "plugins/action/action.h"
 #include "action/action.grpc.pb.h"
 
 namespace dronecode_sdk {

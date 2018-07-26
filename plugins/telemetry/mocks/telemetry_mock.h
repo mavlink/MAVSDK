@@ -1,6 +1,6 @@
 #include <gmock/gmock.h>
 
-#include "telemetry/telemetry.h"
+#include "plugins/telemetry/telemetry.h"
 
 namespace dronecode_sdk {
 namespace testing {
