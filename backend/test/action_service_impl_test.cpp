@@ -267,8 +267,7 @@ TEST_P(ActionServiceImplTest, getsCorrectTakeoffAltitude)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    const auto expected_pair =
-        std::make_pair<>(dronecode_sdk::ActionResult::SUCCESS, ARBITRARY_ALTITUDE);
+    const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_ALTITUDE);
     ON_CALL(action, get_takeoff_altitude()).WillByDefault(Return(expected_pair));
     dronecode_sdk::rpc::action::GetTakeoffAltitudeResponse response;
 
@@ -338,8 +337,7 @@ TEST_P(ActionServiceImplTest, getMaxSpeedGetsRightValue)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    const auto expected_pair =
-        std::make_pair<>(dronecode_sdk::ActionResult::SUCCESS, ARBITRARY_SPEED);
+    const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_SPEED);
     ON_CALL(action, get_max_speed()).WillByDefault(Return(expected_pair));
     dronecode_sdk::rpc::action::GetMaximumSpeedResponse response;
 
