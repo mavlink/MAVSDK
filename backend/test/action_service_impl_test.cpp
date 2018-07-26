@@ -18,8 +18,8 @@ using ActionServiceImpl = dronecode_sdk::backend::ActionServiceImpl<MockAction>;
 using ActionResult = dronecode_sdk::rpc::action::ActionResult;
 using InputPair = std::pair<std::string, dronecode_sdk::ActionResult>;
 
-static constexpr auto ARBITRARY_ALTITUDE = 42.42f;
-static constexpr auto ARBITRARY_SPEED = 8.24f;
+static constexpr float ARBITRARY_ALTITUDE = 42.42f;
+static constexpr float ARBITRARY_SPEED = 8.24f;
 
 std::vector<InputPair> generateInputPairs();
 std::string armAndGetTranslatedResult(dronecode_sdk::ActionResult arm_result);
@@ -257,23 +257,24 @@ TEST_F(ActionServiceImplTest, getTakeoffAltitudeCallsGetter)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    EXPECT_CALL(action, get_takeoff_altitude_m()).Times(1);
+    EXPECT_CALL(action, get_takeoff_altitude()).Times(1);
     dronecode_sdk::rpc::action::GetTakeoffAltitudeResponse response;
 
     actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
 }
 
-TEST_F(ActionServiceImplTest, getsCorrectTakeoffAltitude)
+TEST_P(ActionServiceImplTest, getsCorrectTakeoffAltitude)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    const float expected_altitude = ARBITRARY_ALTITUDE;
-    ON_CALL(action, get_takeoff_altitude_m()).WillByDefault(Return(expected_altitude));
+    const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_ALTITUDE);
+    ON_CALL(action, get_takeoff_altitude()).WillByDefault(Return(expected_pair));
     dronecode_sdk::rpc::action::GetTakeoffAltitudeResponse response;
 
     actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
 
-    EXPECT_EQ(expected_altitude, response.altitude_m());
+    EXPECT_EQ(GetParam().first, ActionResult::Result_Name(response.action_result().result()));
+    EXPECT_EQ(expected_pair.second, response.altitude());
 }
 
 TEST_F(ActionServiceImplTest, getTakeoffAltitudeDoesNotCrashWithNullResponse)
@@ -302,14 +303,14 @@ TEST_F(ActionServiceImplTest, setTakeoffAltitudeCallsSetter)
     actionService.SetTakeoffAltitude(nullptr, &request, nullptr);
 }
 
-TEST_F(ActionServiceImplTest, setTakeoffAltitudeSetsRightValue)
+TEST_P(ActionServiceImplTest, setTakeoffAltitudeSetsRightValue)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
     float expected_altitude = ARBITRARY_ALTITUDE;
     EXPECT_CALL(action, set_takeoff_altitude(expected_altitude)).Times(1);
     dronecode_sdk::rpc::action::SetTakeoffAltitudeRequest request;
-    request.set_altitude_m(expected_altitude);
+    request.set_altitude(expected_altitude);
 
     actionService.SetTakeoffAltitude(nullptr, &request, nullptr);
 }
@@ -326,31 +327,43 @@ TEST_F(ActionServiceImplTest, getMaxSpeedCallsGetter)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    EXPECT_CALL(action, get_max_speed_m_s()).Times(1);
+    EXPECT_CALL(action, get_max_speed()).Times(1);
     dronecode_sdk::rpc::action::GetMaximumSpeedResponse response;
 
     actionService.GetMaximumSpeed(nullptr, nullptr, &response);
 }
 
-TEST_F(ActionServiceImplTest, getMaxSpeedGetsRightValue)
+TEST_P(ActionServiceImplTest, getMaxSpeedGetsRightValue)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    const auto expected_max_speed = ARBITRARY_SPEED;
-    ON_CALL(action, get_max_speed_m_s()).WillByDefault(Return(expected_max_speed));
+    const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_SPEED);
+    ON_CALL(action, get_max_speed()).WillByDefault(Return(expected_pair));
     dronecode_sdk::rpc::action::GetMaximumSpeedResponse response;
 
     actionService.GetMaximumSpeed(nullptr, nullptr, &response);
 
-    EXPECT_EQ(expected_max_speed, response.speed_m_s());
+    EXPECT_EQ(GetParam().first, ActionResult::Result_Name(response.action_result().result()));
+    EXPECT_EQ(expected_pair.second, response.speed());
 }
 
 TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullRequest)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
+    dronecode_sdk::rpc::action::SetMaximumSpeedResponse response;
 
-    actionService.SetMaximumSpeed(nullptr, nullptr, nullptr);
+    actionService.SetMaximumSpeed(nullptr, nullptr, &response);
+}
+
+TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullResponse)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    dronecode_sdk::rpc::action::SetMaximumSpeedRequest request;
+    request.set_speed(ARBITRARY_SPEED);
+
+    actionService.SetMaximumSpeed(nullptr, &request, nullptr);
 }
 
 TEST_F(ActionServiceImplTest, setMaxSpeedCallsSetter)
@@ -370,7 +383,7 @@ TEST_F(ActionServiceImplTest, setMaxSpeedSetsRightValue)
     const auto expected_speed = ARBITRARY_SPEED;
     EXPECT_CALL(action, set_max_speed(expected_speed)).Times(1);
     dronecode_sdk::rpc::action::SetMaximumSpeedRequest request;
-    request.set_speed_m_s(expected_speed);
+    request.set_speed(expected_speed);
 
     actionService.SetMaximumSpeed(nullptr, &request, nullptr);
 }
@@ -401,6 +414,8 @@ std::vector<InputPair> generateInputPairs()
     input_pairs.push_back(std::make_pair("NO_VTOL_TRANSITION_SUPPORT",
                                          dronecode_sdk::ActionResult::NO_VTOL_TRANSITION_SUPPORT));
     input_pairs.push_back(std::make_pair("UNKNOWN", dronecode_sdk::ActionResult::UNKNOWN));
+    input_pairs.push_back(
+        std::make_pair("PARAMETER_ERROR", dronecode_sdk::ActionResult::PARAMETER_ERROR));
 
     return input_pairs;
 }

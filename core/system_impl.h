@@ -71,13 +71,9 @@ public:
 
     typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
 
-    // FIXME: I tried to use templates for these;
-    // but I get undefined reference. Need to dig it later.
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandLong &command);
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandInt &command);
 
-    // FIXME: I tried to use templates for these;
-    // but I get undefined reference. Need to dig it later.
     void send_command_async(MAVLinkCommands::CommandLong &command,
                             const command_result_callback_t callback);
     void send_command_async(MAVLinkCommands::CommandInt &command,
@@ -116,6 +112,11 @@ public:
 
     bool is_armed() const { return _armed; }
 
+    bool set_param_float(const std::string &name, float value);
+    bool set_param_int(const std::string &name, int32_t value);
+    bool set_param_ext_float(const std::string &name, float value);
+    bool set_param_ext_int(const std::string &name, int32_t value);
+
     typedef std::function<void(bool success)> success_t;
     void set_param_float_async(const std::string &name, float value, success_t callback);
     void set_param_int_async(const std::string &name, int32_t value, success_t callback);
@@ -132,6 +133,13 @@ public:
     typedef std::function<void(bool success, float value)> get_param_float_callback_t;
     typedef std::function<void(bool success, int32_t value)> get_param_int_callback_t;
 
+    std::pair<bool, float> get_param_float(const std::string &name);
+    std::pair<bool, int> get_param_int(const std::string &name);
+    std::pair<bool, float> get_param_ext_float(const std::string &name);
+    std::pair<bool, int> get_param_ext_int(const std::string &name);
+
+    // These methods can be used to cache a parameter when a system connects. For that
+    // the callback can just be set to nullptr.
     void get_param_float_async(const std::string &name, get_param_float_callback_t callback);
     void get_param_int_async(const std::string &name, get_param_int_callback_t callback);
     void get_param_ext_float_async(const std::string &name, get_param_float_callback_t callback);
@@ -144,6 +152,10 @@ public:
                          MAVLinkParameters::ParamValue value,
                          success_t callback,
                          bool extended = false);
+
+    bool
+    set_param(const std::string &name, MAVLinkParameters::ParamValue value, bool extended = false);
+
     void
     get_param_async(const std::string &name, get_param_callback_t callback, bool extended = false);
 

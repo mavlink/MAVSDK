@@ -87,32 +87,32 @@ void Action::transition_to_fixedwing_async(result_callback_t callback)
     _impl->transition_to_fixedwing_async(callback);
 }
 
-void Action::set_takeoff_altitude(float relative_altitude_m)
+ActionResult Action::set_takeoff_altitude(float relative_altitude_m)
 {
-    _impl->set_takeoff_altitude(relative_altitude_m);
+    return _impl->set_takeoff_altitude(relative_altitude_m);
 }
 
-float Action::get_takeoff_altitude_m() const
+std::pair<ActionResult, float> Action::get_takeoff_altitude() const
 {
-    return _impl->get_takeoff_altitude_m();
+    return _impl->get_takeoff_altitude();
 }
 
-void Action::set_max_speed(float speed_m_s)
+ActionResult Action::set_max_speed(float speed_m_s)
 {
-    _impl->set_max_speed(speed_m_s);
+    return _impl->set_max_speed(speed_m_s);
 }
 
-float Action::get_max_speed_m_s() const
+std::pair<ActionResult, float> Action::get_max_speed() const
 {
-    return _impl->get_max_speed_m_s();
+    return _impl->get_max_speed();
 }
 
-void Action::set_return_to_launch_return_altitude(float relative_altitude_m)
+ActionResult Action::set_return_to_launch_return_altitude(float relative_altitude_m)
 {
-    _impl->set_return_to_launch_return_altitude(relative_altitude_m);
+    return _impl->set_return_to_launch_return_altitude(relative_altitude_m);
 }
 
-float Action::get_return_to_launch_return_altitude() const
+std::pair<ActionResult, float> Action::get_return_to_launch_return_altitude() const
 {
     return _impl->get_return_to_launch_return_altitude();
 }

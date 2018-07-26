@@ -4,9 +4,10 @@
 #include "mavlink_include.h"
 #include "system_impl.h"
 #include "plugin_impl_base.h"
+#include "px4_custom_mode.h"
 #include <functional>
 #include <algorithm>
-#include "px4_custom_mode.h"
+#include <future>
 
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0
@@ -524,6 +525,38 @@ void SystemImpl::set_system_id(uint8_t system_id)
     _system_id = system_id;
 }
 
+bool SystemImpl::set_param_float(const std::string &name, float value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set_float(value);
+
+    return _params.set_param(name, param_value, false);
+}
+
+bool SystemImpl::set_param_int(const std::string &name, int32_t value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set_int32(value);
+
+    return _params.set_param(name, param_value, false);
+}
+
+bool SystemImpl::set_param_ext_float(const std::string &name, float value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set_float(value);
+
+    return _params.set_param(name, param_value, true);
+}
+
+bool SystemImpl::set_param_ext_int(const std::string &name, int32_t value)
+{
+    MAVLinkParameters::ParamValue param_value;
+    param_value.set_int32(value);
+
+    return _params.set_param(name, param_value, true);
+}
+
 void SystemImpl::set_param_float_async(const std::string &name, float value, success_t callback)
 {
     MAVLinkParameters::ParamValue param_value;
@@ -552,9 +585,95 @@ void SystemImpl::set_param_ext_int_async(const std::string &name, int32_t value,
     _params.set_param_async(name, param_value, callback, true);
 }
 
+std::pair<bool, float> SystemImpl::get_param_float(const std::string &name)
+{
+    auto prom = std::make_shared<std::promise<std::pair<bool, float>>>();
+    auto res = prom->get_future();
+
+    _params.get_param_async(name, [&prom](bool success, MAVLinkParameters::ParamValue param) {
+        float value = NAN;
+        if (success) {
+            value = param.get_float();
+        }
+        prom->set_value(std::make_pair<>(success, value));
+    });
+
+    return res.get();
+}
+
+std::pair<bool, int> SystemImpl::get_param_int(const std::string &name)
+{
+    auto prom = std::make_shared<std::promise<std::pair<bool, int>>>();
+    auto res = prom->get_future();
+
+    _params.get_param_async(name, [&prom](bool success, MAVLinkParameters::ParamValue param) {
+        int value = 0;
+        if (success) {
+            value = param.get_int32();
+        }
+        prom->set_value(std::make_pair<>(success, value));
+    });
+
+    return res.get();
+}
+
+std::pair<bool, float> SystemImpl::get_param_ext_float(const std::string &name)
+{
+    auto prom = std::make_shared<std::promise<std::pair<bool, float>>>();
+    auto res = prom->get_future();
+
+    _params.get_param_async(name,
+                            [&prom](bool success, MAVLinkParameters::ParamValue param) {
+                                float value = NAN;
+                                if (success) {
+                                    value = param.get_float();
+                                }
+                                prom->set_value(std::make_pair<>(success, value));
+                            },
+                            true);
+
+    return res.get();
+}
+
+std::pair<bool, int> SystemImpl::get_param_ext_int(const std::string &name)
+{
+    auto prom = std::make_shared<std::promise<std::pair<bool, int>>>();
+    auto res = prom->get_future();
+
+    _params.get_param_async(name,
+                            [&prom](bool success, MAVLinkParameters::ParamValue param) {
+                                int value = 0;
+                                if (success) {
+                                    value = param.get_int32();
+                                }
+                                prom->set_value(std::make_pair<>(success, value));
+                            },
+                            true);
+
+    return res.get();
+}
+
 void SystemImpl::get_param_float_async(const std::string &name, get_param_float_callback_t callback)
 {
     _params.get_param_async(name, std::bind(&SystemImpl::receive_float_param, _1, _2, callback));
+}
+
+void SystemImpl::get_param_int_async(const std::string &name, get_param_int_callback_t callback)
+{
+    _params.get_param_async(name, std::bind(&SystemImpl::receive_int_param, _1, _2, callback));
+}
+
+void SystemImpl::get_param_ext_float_async(const std::string &name,
+                                           get_param_float_callback_t callback)
+{
+    _params.get_param_async(
+        name, std::bind(&SystemImpl::receive_float_param, _1, _2, callback), true);
+}
+
+void SystemImpl::get_param_ext_int_async(const std::string &name, get_param_int_callback_t callback)
+{
+    _params.get_param_async(
+        name, std::bind(&SystemImpl::receive_int_param, _1, _2, callback), true);
 }
 
 void SystemImpl::set_param_async(const std::string &name,
@@ -563,6 +682,13 @@ void SystemImpl::set_param_async(const std::string &name,
                                  bool extended)
 {
     _params.set_param_async(name, value, callback, extended);
+}
+
+bool SystemImpl::set_param(const std::string &name,
+                           MAVLinkParameters::ParamValue value,
+                           bool extended)
+{
+    return _params.set_param(name, value, extended);
 }
 
 void SystemImpl::get_param_async(const std::string &name,
@@ -651,24 +777,6 @@ void SystemImpl::set_flight_mode_async(FlightMode system_mode,
     }
 
     send_command_async(result.second, callback);
-}
-
-void SystemImpl::get_param_int_async(const std::string &name, get_param_int_callback_t callback)
-{
-    _params.get_param_async(name, std::bind(&SystemImpl::receive_int_param, _1, _2, callback));
-}
-
-void SystemImpl::get_param_ext_float_async(const std::string &name,
-                                           get_param_float_callback_t callback)
-{
-    _params.get_param_async(
-        name, std::bind(&SystemImpl::receive_float_param, _1, _2, callback), true);
-}
-
-void SystemImpl::get_param_ext_int_async(const std::string &name, get_param_int_callback_t callback)
-{
-    _params.get_param_async(
-        name, std::bind(&SystemImpl::receive_int_param, _1, _2, callback), true);
 }
 
 void SystemImpl::receive_float_param(bool success,

@@ -222,29 +222,33 @@ public:
      * @brief Set takeoff altitude above ground.
      *
      * @param relative_altitude_m Takeoff altitude relative to takeoff location, in meters.
+     * @return Result of request.
      */
-    void set_takeoff_altitude(float relative_altitude_m);
+    ActionResult set_takeoff_altitude(float relative_altitude_m);
 
     /**
      * @brief Get the takeoff altitude.
      *
-     * @return Takeoff altitude relative to ground/takeoff location, in meters.
+     * @return A pair containing the result of request and if successful, the
+     * takeoff altitude relative to ground/takeoff location, in meters.
      */
-    float get_takeoff_altitude_m() const;
+    std::pair<ActionResult, float> get_takeoff_altitude() const;
 
     /**
      * @brief Set vehicle maximum speed.
      *
      * @param speed_m_s Maximum speed in metres/second.
+     * @return Result of request.
      */
-    void set_max_speed(float speed_m_s);
+    ActionResult set_max_speed(float speed_m_s);
 
     /**
      * @brief Get the vehicle maximum speed.
      *
-     * @return Maximum speed in metres/second.
+     * @return A pair containing the result of the request and if successful, the
+     * maximum speed in metres/second.
      */
-    float get_max_speed_m_s() const;
+    std::pair<ActionResult, float> get_max_speed() const;
 
     /**
      * @brief Set the return to launch minimum return altitude.
@@ -254,17 +258,19 @@ public:
      * home location and lands there.
      *
      * @param relative_altitude_m Return altitude relative to takeoff location, in meters.
+     * @return Result of request.
      */
-    void set_return_to_launch_return_altitude(float relative_altitude_m);
+    ActionResult set_return_to_launch_return_altitude(float relative_altitude_m);
 
     /**
      * @brief Get the return to launch minimum return altitude.
      *
      * @sa `set_return_to_launch_return_altitude`.
      *
-     * @return Return altitude relative to takeoff location, in meters.
+     * @return A pair containing the result of the request and if successful, the
+     * return altitude relative to takeoff location, in meters.
      */
-    float get_return_to_launch_return_altitude() const;
+    std::pair<ActionResult, float> get_return_to_launch_return_altitude() const;
 
     /**
      * @brief Copy constructor (object is not copyable).

@@ -38,14 +38,14 @@ public:
     void transition_to_fixedwing_async(const Action::result_callback_t &callback);
     void transition_to_multicopter_async(const Action::result_callback_t &callback);
 
-    void set_takeoff_altitude(float relative_altitude_m);
-    float get_takeoff_altitude_m() const;
+    ActionResult set_takeoff_altitude(float relative_altitude_m);
+    std::pair<ActionResult, float> get_takeoff_altitude() const;
 
-    void set_max_speed(float speed_m_s);
-    float get_max_speed_m_s() const;
+    ActionResult set_max_speed(float speed_m_s);
+    std::pair<ActionResult, float> get_max_speed() const;
 
-    void set_return_to_launch_return_altitude(float relative_altitude_m);
-    float get_return_to_launch_return_altitude() const;
+    ActionResult set_return_to_launch_return_altitude(float relative_altitude_m);
+    std::pair<ActionResult, float> get_return_to_launch_return_altitude() const;
 
 private:
     void loiter_before_takeoff_async(const Action::result_callback_t &callback);
@@ -62,10 +62,6 @@ private:
 
     void process_extended_sys_state(const mavlink_message_t &message);
 
-    void receive_max_speed_result(bool success, float new_speed_m_s);
-    void receive_takeoff_alt_param(bool success, float new_relative_altitude_m);
-    void receive_rtl_return_alt(bool success, float new_return_alt_m);
-
     static ActionResult action_result_from_command_result(MAVLinkCommands::Result result);
 
     static void command_result_callback(MAVLinkCommands::Result command_result,
@@ -77,11 +73,10 @@ private:
     std::atomic<bool> _vtol_transition_support_known{false};
     std::atomic<bool> _vtol_transition_possible{false};
 
-    float _relative_takeoff_altitude_m = 2.5f;
-    float _max_speed_m_s = NAN;
-    float _rtl_return_alt_m = NAN;
-
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
+    static constexpr auto TAKEOFF_ALT_PARAM = "MIS_TAKEOFF_ALT";
+    static constexpr auto MAX_SPEED_PARAM = "MPC_XY_CRUISE";
+    static constexpr auto RTL_RETURN_ALTITUDE_PARAM = "RTL_RETURN_ALT";
 };
 
 } // namespace dronecode_sdk

@@ -10,6 +10,7 @@
 #include <functional>
 #include <cstring> // for memcpy
 #include <cassert>
+#include <map>
 
 namespace dronecode_sdk {
 
@@ -436,17 +437,22 @@ public:
     };
 
     typedef std::function<void(bool success)> set_param_callback_t;
+
+    bool set_param(const std::string &name, const ParamValue &value, bool extended = false);
+
     void set_param_async(const std::string &name,
                          const ParamValue &value,
                          set_param_callback_t callback,
                          bool extended = false);
 
+    std::pair<bool, ParamValue> get_param(const std::string &name, bool extended);
     typedef std::function<void(bool success, ParamValue value)> get_param_callback_t;
     void
     get_param_async(const std::string &name, get_param_callback_t callback, bool extended = false);
 
-    // void save_async();
     void do_work();
+
+    void reset_cache();
 
     friend std::ostream &operator<<(std::ostream &, const ParamValue &);
 
@@ -486,6 +492,8 @@ private:
         int retries_done = 0;
     };
     LockedQueue<GetParamWork> _get_param_queue{};
+
+    std::map<std::string, ParamValue> _cache{};
 
     void *_timeout_cookie = nullptr;
 

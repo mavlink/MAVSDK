@@ -1,5 +1,6 @@
 #include "mavlink_parameters.h"
 #include "system_impl.h"
+#include <future>
 
 namespace dronecode_sdk {
 
@@ -54,6 +55,16 @@ void MAVLinkParameters::set_param_async(const std::string &name,
     _set_param_queue.push_back(new_work);
 }
 
+bool MAVLinkParameters::set_param(const std::string &name, const ParamValue &value, bool extended)
+{
+    auto prom = std::make_shared<std::promise<bool>>();
+    auto res = prom->get_future();
+
+    set_param_async(name, value, [&prom](bool success) { prom->set_value(success); }, extended);
+
+    return res.get();
+}
+
 void MAVLinkParameters::get_param_async(const std::string &name,
                                         get_param_callback_t callback,
                                         bool extended)
@@ -69,6 +80,15 @@ void MAVLinkParameters::get_param_async(const std::string &name,
         return;
     }
 
+    // Use cached value if available.
+    if (_cache.find(name) != _cache.end()) {
+        if (callback) {
+            callback(true, _cache[name]);
+        }
+        return;
+    }
+
+    // Otherwise push work onto queue.
     GetParamWork new_work;
     new_work.callback = callback;
     new_work.param_name = name;
@@ -77,11 +97,20 @@ void MAVLinkParameters::get_param_async(const std::string &name,
     _get_param_queue.push_back(new_work);
 }
 
-// void MAVLinkParameters::save_async()
-//{
-//    _parent.send_command(MAV_CMD_PREFLIGHT_STORAGE,
-//                          MAVLinkCommands::Params {1.0f, 1.0f, 0.0f, NAN, NAN, NAN, NAN});
-//}
+std::pair<bool, MAVLinkParameters::ParamValue> MAVLinkParameters::get_param(const std::string &name,
+                                                                            bool extended)
+{
+    auto prom = std::make_shared<std::promise<std::pair<bool, MAVLinkParameters::ParamValue>>>();
+    auto res = prom->get_future();
+
+    get_param_async(name,
+                    [&prom](bool success, ParamValue value) {
+                        prom->set_value(std::make_pair<>(success, value));
+                    },
+                    extended);
+
+    return res.get();
+}
 
 void MAVLinkParameters::do_work()
 {
@@ -214,6 +243,11 @@ void MAVLinkParameters::do_work()
     }
 }
 
+void MAVLinkParameters::reset_cache()
+{
+    _cache.clear();
+}
+
 void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
 {
     // LogDebug() << "getting param value";
@@ -231,9 +265,10 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
         auto work = _get_param_queue.borrow_front();
         if (work) {
             if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) == 0) {
+                ParamValue value;
+                value.set_from_mavlink_param_value(param_value);
+                _cache[work->param_name] = value;
                 if (work->callback) {
-                    ParamValue value;
-                    value.set_from_mavlink_param_value(param_value);
                     work->callback(true, value);
                 }
                 _state = State::NONE;
@@ -254,6 +289,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
             // Now it still needs to match the param name
             if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) == 0) {
                 // We are done, inform caller and go back to idle
+                _cache[work->param_name] = work->param_value;
                 if (work->callback) {
                     work->callback(true);
                 }
@@ -286,9 +322,10 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
         auto work = _get_param_queue.borrow_front();
         if (work) {
             if (strncmp(work->param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) == 0) {
+                ParamValue value;
+                value.set_from_mavlink_param_ext_value(param_ext_value);
+                _cache[work->param_name] = value;
                 if (work->callback) {
-                    ParamValue value;
-                    value.set_from_mavlink_param_ext_value(param_ext_value);
                     work->callback(true, value);
                 }
                 _state = State::NONE;
@@ -311,6 +348,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
             if (strncmp(work->param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) == 0) {
 
                 // We are done, inform caller and go back to idle
+                _cache[work->param_name] = work->param_value;
                 if (work->callback) {
                     work->callback(true);
                 }
@@ -346,6 +384,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
         if (strncmp(work->param_name.c_str(), param_ext_ack.param_id, PARAM_ID_LEN) == 0) {
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
                 // We are done, inform caller and go back to idle
+                _cache[work->param_name] = work->param_value;
                 if (work->callback) {
                     work->callback(true);
                 }

@@ -38,12 +38,7 @@ private:
 
     enum class ConfigParameter;
     // Config methods
-    void set_default_config();
     bool is_config_ok(const FollowMe::Config &config) const;
-    void receive_param_min_height(bool success, float min_height_m);
-    void receive_param_follow_distance(bool success, float distance);
-    void receive_param_follow_direction(bool success, int32_t direction);
-    void receive_param_responsiveness(bool success, float rsp);
     FollowMe::Result to_follow_me_result(MAVLinkCommands::Result result) const;
 
     bool is_target_location_set() const;
@@ -88,7 +83,6 @@ private:
     Time _time{};
     uint8_t _estimatation_capabilities = 0; // sent to vehicle
     FollowMe::Config _config{}; // has FollowMe configuration settings
-    config_val_t _config_change_requested = 0;
 
     const float SENDER_RATE = 1.0f; // send location updates once in a second
 
