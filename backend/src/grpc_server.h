@@ -7,7 +7,7 @@
 #include "action/action_service_impl.h"
 #include "plugins/camera/camera.h"
 #include "camera/camera_service_impl.h"
-#include "core_service_impl.h"
+#include "core/core_service_impl.h"
 #include "dronecode_sdk.h"
 #include "plugins/mission/mission.h"
 #include "mission/mission_service_impl.h"
