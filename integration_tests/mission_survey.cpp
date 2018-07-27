@@ -57,85 +57,148 @@ TEST_F(SitlTest, MissionSurvey)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     System &system = dc.system();
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto mission = std::make_shared<Mission>(system);
     auto action = std::make_shared<Action>(system);
 
     while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
+        LogInfo() << "Waiting for system to be ready";
+        LogDebug() << "Health: " << telemetry->health();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    std::cout << "System ready, let's start" << std::endl;
+    LogInfo() << "System ready, let's start";
 
     std::vector<std::shared_ptr<MissionItem>> mis;
 
-    mis.push_back(add_waypoint(47.4030765348, 8.4516599619, 20.0, 3.0, true, -90.0, 0.0, false));
-    mis.push_back(add_waypoint(47.4030765348, 8.4516599619, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031028528, 8.4516834802, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031291709, 8.4517069984, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031554889, 8.4517305167, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031818069, 8.4517540350, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032081249, 8.4517775532, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032344429, 8.4518010715, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032607609, 8.4518245898, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032870789, 8.4518481080, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032590152, 8.4519157577, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032326972, 8.4518922394, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032063792, 8.4518687211, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031800612, 8.4518452029, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031537432, 8.4518216846, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031274252, 8.4517981664, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031011072, 8.4517746481, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030747891, 8.4517511298, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030484711, 8.4517276116, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030221531, 8.4517040933, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029940894, 8.4517717429, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030204074, 8.4517952612, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030467255, 8.4518187795, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030730435, 8.4518422977, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030993615, 8.4518658160, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031256795, 8.4518893343, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031519975, 8.4519128525, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031783155, 8.4519363708, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032046335, 8.4519598890, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032309515, 8.4519834073, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4032028879, 8.4520510570, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031765698, 8.4520275387, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031502518, 8.4520040204, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031239338, 8.4519805022, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030976158, 8.4519569839, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030712978, 8.4519334656, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030449798, 8.4519099474, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030186618, 8.4518864291, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029923438, 8.4518629109, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029660257, 8.4518393926, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029379621, 8.4519070422, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029642801, 8.4519305605, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029905981, 8.4519540788, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030169161, 8.4519775970, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030432341, 8.4520011153, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030695521, 8.4520246335, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030958701, 8.4520481518, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031221881, 8.4520716701, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031485062, 8.4520951883, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031748242, 8.4521187066, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031467605, 8.4521863562, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4031204425, 8.4521628380, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030941245, 8.4521393197, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030678064, 8.4521158015, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030414884, 8.4520922832, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4030151704, 8.4520687649, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029888524, 8.4520452467, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029625344, 8.4520217284, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029362164, 8.4519982101, 20.0, 3.0, true, -90.0, 0.0, true));
-    mis.push_back(add_waypoint(47.4029098984, 8.4519746919, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
+    mis.push_back(
+        add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981966450545, 8.54567254016397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982229631545, 8.54569605836397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982492811545, 8.54571957666396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982755991545, 8.54574309496397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3983019171545, 8.54576661316396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3983282351545, 8.54579013146397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3983545531545, 8.54581364976396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3983808711545, 8.54583716796397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3983528074545, 8.54590481766397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3983264894545, 8.54588129936396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3983001714545, 8.54585778106397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982738534545, 8.54583426286396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982475354545, 8.54581074456397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982212174545, 8.54578722636397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981948994545, 8.54576370806397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981685813545, 8.54574018976397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981422633545, 8.54571667156397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981159453545, 8.54569315326397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980878816545, 8.54576080286397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981141996545, 8.54578432116397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981405177545, 8.54580783946397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981668357545, 8.54583135766397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981931537545, 8.54585487596397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982194717545, 8.54587839426397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982457897545, 8.54590191246396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982721077545, 8.54592543076397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982984257545, 8.54594894896396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3983247437545, 8.54597246726397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982966801545, 8.54604011696397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982703620545, 8.54601659866396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982440440545, 8.54599308036397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982177260545, 8.54596956216396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981914080545, 8.54594604386397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981650900545, 8.54592252556397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981387720545, 8.54589900736397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981124540545, 8.54587548906397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980861360545, 8.54585197086396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980598179545, 8.54582845256397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980317543545, 8.54589610216397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980580723545, 8.54591962046396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980843903545, 8.54594313876397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981107083545, 8.54596665696397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981370263545, 8.54599017526397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981633443545, 8.54601369346397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981896623545, 8.54603721176397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982159803545, 8.54606073006397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982422984545, 8.54608424826396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982686164545, 8.54610776656397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982405527545, 8.54617541616397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3982142347545, 8.54615189796396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981879167545, 8.54612837966397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981615986545, 8.54610486146397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981352806545, 8.54608134316397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3981089626545, 8.54605782486397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980826446545, 8.54603430666396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980563266545, 8.54601078836397, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980300086545, 8.54598727006396, 20.0, 3.0, true, -90.0, 0.0, true));
+    mis.push_back(
+        add_waypoint(47.3980036906545, 8.54596375186397, 20.0, 3.0, true, -90.0, 0.0, true));
 
     bool finished = false;
     while (!finished) {
         static auto _last_state = MissionState::INIT;
         if (_last_state != _mission_state) {
-            std::cout << "state: " << int(_mission_state) << std::endl;
+            LogDebug() << "state: " << int(_mission_state);
             _last_state = _mission_state;
         }
         switch (_mission_state) {
@@ -146,7 +209,7 @@ TEST_F(SitlTest, MissionSurvey)
             case MissionState::UPLOADING:
                 break;
             case MissionState::UPLOADING_DONE:
-                std::cout << "arming!" << std::endl;
+                LogInfo() << "arming!";
                 if (!telemetry->armed()) {
                     action->arm_async(std::bind(&receive_arm_result, _1));
                     _mission_state = MissionState::ARMING;
@@ -205,7 +268,7 @@ void receive_upload_mission_result(Mission::Result result)
     if (result == Mission::Result::SUCCESS) {
         _mission_state = MissionState::UPLOADING_DONE;
     } else {
-        std::cerr << "Error: mission send result: " << Mission::result_str(result) << std::endl;
+        LogErr() << "Error: mission send result: " << Mission::result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
@@ -217,14 +280,14 @@ void receive_start_mission_result(Mission::Result result)
     if (result == Mission::Result::SUCCESS) {
         _mission_state = MissionState::STARTING_DONE;
     } else {
-        std::cerr << "Error: mission start result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: mission start result: " << Mission::result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
 
 void receive_mission_progress(int current, int total)
 {
-    std::cout << "Mission status update: " << current << " / " << total << std::endl;
+    LogInfo() << "Mission status update: " << current << " / " << total;
 
     if (current > 0 && current == total) {
         _mission_state = MissionState::MISSION_DONE;
@@ -238,7 +301,7 @@ void receive_arm_result(ActionResult result)
     if (result == ActionResult::SUCCESS) {
         _mission_state = MissionState::ARMING_DONE;
     } else {
-        std::cerr << "Error: arming result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: arming result: " << action_result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
@@ -249,7 +312,7 @@ void receive_return_to_launch_result(ActionResult result)
 
     if (result == ActionResult::SUCCESS) {
     } else {
-        std::cerr << "Error: return to land result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: return to land result: " << action_result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
@@ -260,7 +323,7 @@ void receive_disarm_result(ActionResult result)
 
     if (result == ActionResult::SUCCESS) {
     } else {
-        std::cerr << "Error: disarming result: " << unsigned(result) << std::endl;
+        LogErr() << "Error: disarming result: " << action_result_str(result);
     }
 
     _mission_state = MissionState::DONE;
