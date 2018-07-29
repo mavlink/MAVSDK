@@ -46,16 +46,16 @@ def is_struct(struct):
 def extract_string_type(field):
     """ Extracts the string types """
     types = {
-            1: "Double",
-            2: "Float",
-            4: "UInt64",
-            5: "Int",
-            8: "Bool",
-            9: "String",
-            13: "UInt32",
-            11: str(field.type_name.split(".")[-1]),
-            14: str(field.type_name.split(".")[-1])
-            }
+        1: "Double",
+        2: "Float",
+        4: "UInt64",
+        5: "Int",
+        8: "Bool",
+        9: "String",
+        13: "UInt32",
+        11: str(field.type_name.split(".")[-1]),
+        14: str(field.type_name.split(".")[-1])
+    }
 
     if (field.type in types):
         return types[field.type]
@@ -66,7 +66,13 @@ def extract_string_type(field):
 def filter_out_result(fields):
     """ Filters out the result fields (".*Result$") """
     for field in fields:
-        if not extract_string_type(field).endswith("Result"): yield field
+        if not is_result(field):
+            yield field
+
+
+def is_result(field):
+    """ Check if the field is a *Result """
+    return extract_string_type(field).endswith("Result")
 
 
 def decapitalize(s):
@@ -80,10 +86,10 @@ def jinja_indent(_in_str, level):
     _in_str = str(_in_str)
 
     return "\n".join(
-            ["" if len(line) == 0 else
-             level * "    " + line
-             for line in _in_str.split("\n")]
-            )
+        ["" if len(line) == 0 else
+         level * "    " + line
+         for line in _in_str.split("\n")]
+    )
 
 
 def letter_case_to_delimiter(_str_in):
@@ -100,7 +106,7 @@ def get_template_env(_searchpath):
 
     # Register some functions we need to access in the template
     _template_env.globals.update(
-            letter_case_to_delimiter=letter_case_to_delimiter,
-            indent=jinja_indent)
+        letter_case_to_delimiter=letter_case_to_delimiter,
+        indent=jinja_indent)
 
     return _template_env

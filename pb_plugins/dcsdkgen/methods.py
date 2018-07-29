@@ -11,7 +11,13 @@ from .utils import (decapitalize,
 class Method(object):
     """ Method """
 
-    def __init__(self, plugin_name, package, pb_method, requests, responses):
+    def __init__(
+            self,
+            plugin_name,
+            package,
+            pb_method,
+            requests,
+            responses):
         self._plugin_name = plugin_name
         self._package = package
         self._name = decapitalize(pb_method.name)
@@ -28,7 +34,8 @@ class Method(object):
 
         return_params = list(filter_out_result(response.field))
         if len(return_params) > 1:
-            raise Exception("Responses cannot have more than 1 return parameter (and an optional '*Result')!\nError in {}".format(method_output))
+            raise Exception(
+                "Responses cannot have more than 1 return parameter (and an optional '*Result')!\nError in {}".format(method_output))
 
         if len(return_params) == 1:
             self._return_type = extract_string_type(return_params[0])
@@ -82,7 +89,14 @@ class CompletableMethod(Method):
     """ A completable method doesn't return any value,
     but either succeeds or fails """
 
-    def __init__(self, plugin_name, package, template_env, pb_method, requests, responses):
+    def __init__(
+            self,
+            plugin_name,
+            package,
+            template_env,
+            pb_method,
+            requests,
+            responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
         self._template = template_env.get_template("method_completable.j2")
 
@@ -96,7 +110,14 @@ class CompletableMethod(Method):
 class SingleMethod(Method):
     """ A single method returns a value once """
 
-    def __init__(self, plugin_name, package, template_env, pb_method, requests, responses):
+    def __init__(
+            self,
+            plugin_name,
+            package,
+            template_env,
+            pb_method,
+            requests,
+            responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
         self._template = template_env.get_template("method_single.j2")
 
@@ -111,7 +132,14 @@ class SingleMethod(Method):
 class ObservableMethod(Method):
     """ An observable method emits a stream of values """
 
-    def __init__(self, plugin_name, package, template_env, pb_method, requests, responses):
+    def __init__(
+            self,
+            plugin_name,
+            package,
+            template_env,
+            pb_method,
+            requests,
+            responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
         self._name = decapitalize(pb_method.name) + "Observable"
         self._capitalized_name = pb_method.name + "Observable"
@@ -126,4 +154,3 @@ class ObservableMethod(Method):
                                      plugin_name=self._plugin_name,
                                      request_name=self._request_name,
                                      request_rpc_type=self._request_rpc_type)
-
