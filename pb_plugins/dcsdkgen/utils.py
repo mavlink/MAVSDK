@@ -14,6 +14,9 @@ def is_completable(method, responses):
             method_response.field[0].type_name.endswith("Result")):
         return True
 
+    if (0 == len(method_response.field)):
+        return True
+
     return False
 
 
