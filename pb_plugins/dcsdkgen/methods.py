@@ -2,6 +2,7 @@
 
 
 from .utils import (decapitalize,
+                    remove_subscribe,
                     extract_string_type,
                     filter_out_result,
                     is_completable,
@@ -26,6 +27,10 @@ class Method(object):
                                   + pb_method.name
                                   + "Request")
         self.extract_return_type_and_name(pb_method, responses)
+        self._is_observable = False
+        self._is_completable = False
+        self._is_single = False
+
 
     def extract_return_type_and_name(self, pb_method, responses):
         method_output = pb_method.output_type.split(".")[-1]
@@ -40,6 +45,34 @@ class Method(object):
         if len(return_params) == 1:
             self._return_type = extract_string_type(return_params[0])
             self._return_name = return_params[0].json_name
+
+    @property
+    def is_observable(self):
+        return self._is_observable
+
+    @property
+    def is_completable(self):
+        return self._is_completable
+
+    @property
+    def is_single(self):
+        return self._is_single
+
+    @property
+    def plugin_name(self):
+        return self._plugin_name
+
+    @property
+    def package(self):
+        return self._package
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def request_rpc_type(self):
+        return self._request_rpc_type
 
     @staticmethod
     def collect_methods(
@@ -99,6 +132,7 @@ class CompletableMethod(Method):
             responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
         self._template = template_env.get_template("method_completable.j2")
+        self.is_completable = True
 
     def __repr__(self):
         return self._template.render(name=self._name,
@@ -120,6 +154,7 @@ class SingleMethod(Method):
             responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
         self._template = template_env.get_template("method_single.j2")
+        self._is_single = True
 
     def __repr__(self):
         return self._template.render(name=self._name,
@@ -141,10 +176,11 @@ class ObservableMethod(Method):
             requests,
             responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
-        self._name = decapitalize(pb_method.name) + "Observable"
-        self._capitalized_name = pb_method.name + "Observable"
+        self._name = remove_subscribe(decapitalize(pb_method.name))
+        self._capitalized_name = pb_method.name
         self._request_name = self._name + "Request"
         self._template = template_env.get_template("method_observable.j2")
+        self._is_observable = True
 
     def __repr__(self):
         return self._template.render(name=self._name,
