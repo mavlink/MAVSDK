@@ -618,9 +618,13 @@ void TelemetryImpl::receive_param_hitl(bool success, int value)
     }
 
     _hitl_enabled = (value == 1);
-    set_health_accelerometer_calibration(_hitl_enabled);
-    set_health_gyrometer_calibration(_hitl_enabled);
-    set_health_magnetometer_calibration(_hitl_enabled);
+
+    // assume sensor calibration ok in hitl
+    if (_hitl_enabled) {
+        set_health_accelerometer_calibration(_hitl_enabled);
+        set_health_gyrometer_calibration(_hitl_enabled);
+        set_health_magnetometer_calibration(_hitl_enabled);
+    }
 #ifdef LEVEL_CALIBRATION
     set_health_level_calibration(ok);
 #endif
