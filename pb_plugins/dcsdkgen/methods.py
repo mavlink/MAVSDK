@@ -31,7 +31,6 @@ class Method(object):
         self._is_completable = False
         self._is_single = False
 
-
     def extract_return_type_and_name(self, pb_method, responses):
         method_output = pb_method.output_type.split(".")[-1]
         response = responses[method_output]
