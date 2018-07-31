@@ -286,13 +286,18 @@ void ActionImpl::kill_async(const Action::result_callback_t &callback)
 
 void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
 {
-    ActionResult ret = taking_off_allowed();
-    if (ret != ActionResult::SUCCESS) {
-        if (callback) {
-            callback(ret);
+    // Funny enough the call `takeof_off_allowed()` is sync, so we need to
+    // queue it on the thread pool which confusingly is called
+    // `call_user_callback`.
+    _parent->call_user_callback([this, callback]() {
+        ActionResult ret = taking_off_allowed();
+        if (ret != ActionResult::SUCCESS) {
+            if (callback) {
+                callback(ret);
+            }
+            return;
         }
-        return;
-    }
+    });
 
     loiter_before_takeoff_async(callback);
 }
@@ -333,15 +338,25 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t &callbac
 
 ActionResult ActionImpl::arming_allowed() const
 {
-    if (!_in_air_state_known) {
-        return ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
+    // We want to wait up to 1.5 second, maybe we find out about the
+    // in-air state and can continue. If not, we need to give up.
+    unsigned tries = 0;
+    while (true) {
+        if (_in_air_state_known) {
+            if (!_in_air) {
+                return ActionResult::SUCCESS;
+            } else {
+                return ActionResult::COMMAND_DENIED_NOT_LANDED;
+            }
+        }
+
+        if (tries++ > 30) {
+            break;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
-    if (_in_air) {
-        return ActionResult::COMMAND_DENIED_NOT_LANDED;
-    }
-
-    return ActionResult::SUCCESS;
+    return ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
 }
 
 ActionResult ActionImpl::taking_off_allowed() const
