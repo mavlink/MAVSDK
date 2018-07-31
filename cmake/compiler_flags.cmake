@@ -39,6 +39,10 @@ if(APPLE)
     add_definitions("-DAPPLE")
 endif()
 
+if(IOS)
+    add_definitions("-DIOS")
+endif()
+
 if(UNIX AND NOT APPLE)
     add_definitions("-DLINUX")
 endif()
