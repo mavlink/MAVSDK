@@ -98,3 +98,29 @@ TEST(LockedQueue, ConcurrantAccess)
     status = fut.wait_for(std::chrono::milliseconds(20));
     EXPECT_EQ(status, std::future_status::ready);
 }
+
+TEST(LockedQueue, ChangeValue)
+{
+    struct Item {
+        int value{42};
+    };
+
+    LockedQueue<Item> locked_queue{};
+
+    Item one;
+
+    locked_queue.push_back(one);
+
+    {
+        auto borrowed_item = locked_queue.borrow_front();
+        EXPECT_EQ(borrowed_item->value, 42);
+        borrowed_item->value = 43;
+        locked_queue.return_front();
+    }
+
+    {
+        auto borrowed_item = locked_queue.borrow_front();
+        EXPECT_EQ(borrowed_item->value, 43);
+        locked_queue.pop_front();
+    }
+}

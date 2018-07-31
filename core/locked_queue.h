@@ -14,7 +14,7 @@ public:
     void push_back(T item)
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        _queue.push_back(item);
+        _queue.push_back(std::make_shared<T>(item));
     }
 
     // This allows to get access to the front and keep others
@@ -27,7 +27,7 @@ public:
             _mutex.unlock();
             return nullptr;
         }
-        return std::make_shared<T>(_queue.front());
+        return _queue.front();
     }
 
     // This allows to return a borrowed queue.
@@ -58,7 +58,7 @@ public:
     }
 
 private:
-    std::deque<T> _queue{};
+    std::deque<std::shared_ptr<T>> _queue{};
     std::mutex _mutex{};
 };
 
