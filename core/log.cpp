@@ -44,7 +44,7 @@ void set_color(Color color)
             SetConsoleTextAttribute(handle, WIN_COLOR_RESET);
             break;
     }
-#elif defined(ANDROID)
+#elif defined(ANDROID) || defined(IOS)
     UNUSED(color);
 #else
     switch (color) {
