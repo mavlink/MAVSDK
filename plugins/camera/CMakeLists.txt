@@ -1,12 +1,14 @@
-add_resource(camera_definition_files)
-link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/e90.xml VARIABLE e90xml TEXT)
-link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/e50.xml VARIABLE e50xml TEXT)
-link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/cgoet.xml VARIABLE cgoetxml TEXT)
+if(NOT WINDOWS)
+    add_resource(camera_definition_files)
+    link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/e90.xml VARIABLE e90xml TEXT)
+    link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/e50.xml VARIABLE e50xml TEXT)
+    link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/cgoet.xml VARIABLE cgoetxml TEXT)
 
-get_property(RSC_CPP_FILE TARGET camera_definition_files PROPERTY _AR_SRC_FILE)
-get_property(RSC_H_DIR TARGET camera_definition_files PROPERTY _AR_H_DIR)
+    get_property(RSC_CPP_FILE TARGET camera_definition_files PROPERTY _AR_SRC_FILE)
+    get_property(RSC_H_DIR TARGET camera_definition_files PROPERTY _AR_H_DIR)
 
-include_directories(${RSC_H_DIR})
+    include_directories(${RSC_H_DIR})
+endif()
 
 add_library(dronecode_sdk_camera ${PLUGIN_LIBRARY_TYPE}
     camera.cpp

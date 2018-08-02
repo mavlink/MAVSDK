@@ -4,7 +4,9 @@
 #include "global_include.h"
 #include "mavlink_include.h"
 #include "http_loader.h"
+#if !defined(WINDOWS)
 #include "camera_definition_files.h"
+#endif
 #include <functional>
 #include <cmath>
 
@@ -776,6 +778,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t &message)
     std::string content{};
     bool found_content = false;
 
+#if !defined(WINDOWS)
     // TODO: we might also try to support the correct version of the xml files.
     if (strcmp((const char *)(camera_information.vendor_name), "Yuneec") == 0) {
         if (strcmp((const char *)(camera_information.model_name), "E90") == 0) {
@@ -792,8 +795,11 @@ void CameraImpl::process_camera_information(const mavlink_message_t &message)
             found_content = true;
         }
     } else {
+#endif
         found_content = load_definition_file(camera_information.cam_definition_uri, content);
+#if !defined(WINDOWS)
     }
+#endif
 
     if (found_content) {
         _camera_definition.reset(new CameraDefinition());
