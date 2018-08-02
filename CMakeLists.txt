@@ -15,6 +15,7 @@ include(cmake/compiler_flags.cmake)
 include(cmake/curl.cmake)
 include(cmake/tinyxml2.cmake)
 include(cmake/zlib.cmake)
+include(cmake/embed_files.cmake)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
     message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")

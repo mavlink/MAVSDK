@@ -1,7 +1,14 @@
+ADD_RESOURCES(camera_definition_e90 camera_definition_files/e90.xml)
+ADD_RESOURCES(camera_definition_e50 camera_definition_files/e50.xml)
+ADD_RESOURCES(camera_definition_cgoet camera_definition_files/cgoet.xml)
+
 add_library(dronecode_sdk_camera ${PLUGIN_LIBRARY_TYPE}
     camera.cpp
     camera_impl.cpp
     camera_definition.cpp
+    ${camera_definition_e90}
+    ${camera_definition_e50}
+    ${camera_definition_cgoet}
 )
 
 target_link_libraries(dronecode_sdk_camera
@@ -28,7 +35,7 @@ install(TARGETS dronecode_sdk_camera
     DESTINATION ${dronecode_sdk_install_lib_dir}
 )
 
-target_include_directories(dronecode_sdk_camera 
+target_include_directories(dronecode_sdk_camera
 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 PRIVATE
