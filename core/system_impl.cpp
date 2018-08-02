@@ -189,7 +189,7 @@ void SystemImpl::process_heartbeat(const mavlink_message_t &message)
     if (is_autopilot(message.compid) && !have_uuid()) {
         request_autopilot_version();
 
-    } else if (!is_autopilot(message.compid) && !have_uuid() && ++_non_autopilot_heartbeats >= 2) {
+    } else if (!is_autopilot(message.compid) && !have_uuid() && ++_non_autopilot_heartbeats >= 10) {
         // We've received consecutive heartbeats (atleast twice) from a
         // non-autopilot system! Lets not delay for filling UUID anymore.
         _uuid = message.sysid;
