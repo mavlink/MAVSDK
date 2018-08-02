@@ -1,6 +1,8 @@
-ADD_RESOURCES(camera_definition_e90 camera_definition_files/e90.xml)
-ADD_RESOURCES(camera_definition_e50 camera_definition_files/e50.xml)
-ADD_RESOURCES(camera_definition_cgoet camera_definition_files/cgoet.xml)
+if (UNIX OR APPLE)
+    ADD_RESOURCES(camera_definition_e90 camera_definition_files/e90.xml)
+    ADD_RESOURCES(camera_definition_e50 camera_definition_files/e50.xml)
+    ADD_RESOURCES(camera_definition_cgoet camera_definition_files/cgoet.xml)
+endif()
 
 add_library(dronecode_sdk_camera ${PLUGIN_LIBRARY_TYPE}
     camera.cpp
