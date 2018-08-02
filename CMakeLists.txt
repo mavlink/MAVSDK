@@ -15,7 +15,9 @@ include(cmake/compiler_flags.cmake)
 include(cmake/curl.cmake)
 include(cmake/tinyxml2.cmake)
 include(cmake/zlib.cmake)
-include(cmake/embed_files.cmake)
+
+add_subdirectory(third_party/cpp_rsc/src)
+include(third_party/cpp_rsc/cmake/modules/cpp_resource.cmake)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
     message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
