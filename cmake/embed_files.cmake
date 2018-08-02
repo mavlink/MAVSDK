@@ -8,8 +8,15 @@ function(ADD_RESOURCES out_var)
         file(RELATIVE_PATH rel_path_with_file ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/${in_f})
         get_filename_component(rel_path ${rel_path_with_file} DIRECTORY)
         file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${rel_path})
+
+        if (APPLE)
+            set(binary_options -sectcreate binary)
+        else()
+            set(binary_options -b binary)
+        endif()
+
         add_custom_command(OUTPUT ${out_f}
-            COMMAND ld -r -b binary -o ${out_f} ${CMAKE_CURRENT_SOURCE_DIR}/${in_f}
+            COMMAND ld -r ${binary_options} -o ${out_f} ${CMAKE_CURRENT_SOURCE_DIR}/${in_f}
             DEPENDS ${in_f}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
             COMMENT "Adding resource ${in_f}"
