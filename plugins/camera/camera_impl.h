@@ -150,7 +150,7 @@ private:
     void status_timeout_happened();
     void get_video_stream_info_timeout();
 
-    void load_definition_file(const std::string &uri);
+    bool load_definition_file(const std::string &uri, std::string &content);
 
     void refresh_params();
     void invalidate_params();

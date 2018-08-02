@@ -1,16 +1,18 @@
-if (UNIX OR APPLE)
-    ADD_RESOURCES(camera_definition_e90 camera_definition_files/e90.xml)
-    ADD_RESOURCES(camera_definition_e50 camera_definition_files/e50.xml)
-    ADD_RESOURCES(camera_definition_cgoet camera_definition_files/cgoet.xml)
-endif()
+add_resource(camera_definition_files)
+link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/e90.xml VARIABLE e90xml TEXT)
+link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/e50.xml VARIABLE e50xml TEXT)
+link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/cgoet.xml VARIABLE cgoetxml TEXT)
+
+get_property(RSC_CPP_FILE TARGET camera_definition_files PROPERTY _AR_SRC_FILE)
+get_property(RSC_H_DIR TARGET camera_definition_files PROPERTY _AR_H_DIR)
+
+include_directories(${RSC_H_DIR})
 
 add_library(dronecode_sdk_camera ${PLUGIN_LIBRARY_TYPE}
     camera.cpp
     camera_impl.cpp
     camera_definition.cpp
-    ${camera_definition_e90}
-    ${camera_definition_e50}
-    ${camera_definition_cgoet}
+    ${RSC_CPP_FILE}
 )
 
 target_link_libraries(dronecode_sdk_camera
