@@ -17,8 +17,12 @@ include(cmake/tinyxml2.cmake)
 include(cmake/zlib.cmake)
 
 if(NOT WINDOWS)
+    # This is a workaround to add the path to the cpp_rsc binary for other
+    # builds than default such as ios.
+    list(APPEND CMAKE_PROGRAM_PATH  "${CMAKE_CURRENT_BINARY_DIR}/../default/third_party/cpp_rsc/src")
     add_subdirectory(third_party/cpp_rsc/src)
     include(third_party/cpp_rsc/cmake/modules/cpp_resource.cmake)
+    find_resource_compiler()
 endif()
 
 if(BUILD_TESTS AND (IOS OR ANDROID))

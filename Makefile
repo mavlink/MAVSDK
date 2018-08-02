@@ -72,12 +72,12 @@ all: default
 default:
 	$(call cmake-build)
 
-ios: ios_curl
+ios: ios_curl default
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
 		-DIOS_PLATFORM:STRING=OS)
 
-ios_simulator: ios_curl
+ios_simulator: ios_curl default
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
 		-DIOS_PLATFORM:STRING=SIMULATOR)
