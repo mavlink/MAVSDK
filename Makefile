@@ -82,26 +82,26 @@ ios_simulator: ios_curl default
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
 		-DIOS_PLATFORM:STRING=SIMULATOR)
 
-android_x86: android_curl
+android_x86: android_curl default
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=x86)
 
-android_x86_64: android_curl
+android_x86_64: android_curl default
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=x86_64)
 
-android_armeabi-v7a: android_curl
+android_armeabi-v7a: android_curl default
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_STL:STRING=c++_static \
 		-DANDROID_ABI=armeabi-v7a \
 		-DANDROID_PLATFORM=android-16)
 
-android_arm64-v8a: android_curl
+android_arm64-v8a: android_curl default
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=$(ANDROID_TOOLCHAIN_CMAKE) \
 		-DANDROID_STL:STRING=c++_static \
