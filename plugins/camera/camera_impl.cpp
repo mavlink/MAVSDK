@@ -4,6 +4,9 @@
 #include "global_include.h"
 #include "mavlink_include.h"
 #include "http_loader.h"
+#if !defined(WINDOWS)
+#include "camera_definition_files.h"
+#endif
 #include <functional>
 #include <cmath>
 
@@ -772,7 +775,37 @@ void CameraImpl::process_camera_information(const mavlink_message_t &message)
     mavlink_camera_information_t camera_information;
     mavlink_msg_camera_information_decode(&message, &camera_information);
 
-    load_definition_file(camera_information.cam_definition_uri);
+    std::string content{};
+    bool found_content = false;
+
+#if !defined(WINDOWS)
+    // TODO: we might also try to support the correct version of the xml files.
+    if (strcmp((const char *)(camera_information.vendor_name), "Yuneec") == 0) {
+        if (strcmp((const char *)(camera_information.model_name), "E90") == 0) {
+            LogInfo() << "Using cached file for Yuneec E90.";
+            content = e90xml;
+            found_content = true;
+        } else if (strcmp((const char *)(camera_information.model_name), "E50") == 0) {
+            LogInfo() << "Using cached file for Yuneec E50.";
+            content = e50xml;
+            found_content = true;
+        } else if (strcmp((const char *)(camera_information.model_name), "CGOET") == 0) {
+            LogInfo() << "Using cached file for Yuneec ET.";
+            content = cgoetxml;
+            found_content = true;
+        }
+    } else {
+#endif
+        found_content = load_definition_file(camera_information.cam_definition_uri, content);
+#if !defined(WINDOWS)
+    }
+#endif
+
+    if (found_content) {
+        _camera_definition.reset(new CameraDefinition());
+        _camera_definition->load_string(content);
+        refresh_params();
+    }
 }
 
 void CameraImpl::process_video_information(const mavlink_message_t &message)
@@ -940,20 +973,16 @@ void CameraImpl::get_mode_timeout_happened()
     }
 }
 
-void CameraImpl::load_definition_file(const std::string &uri)
+bool CameraImpl::load_definition_file(const std::string &uri, std::string &content)
 {
     HttpLoader http_loader;
-    std::string content;
     LogInfo() << "Downloading camera definition from: " << uri;
     if (!http_loader.download_text_sync(uri, content)) {
         LogErr() << "Failed to download camera definition.";
-        return;
+        return false;
     }
 
-    _camera_definition.reset(new CameraDefinition());
-    _camera_definition->load_string(content);
-
-    refresh_params();
+    return true;
 }
 
 bool CameraImpl::get_possible_setting_options(std::vector<std::string> &settings)
