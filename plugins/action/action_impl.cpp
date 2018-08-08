@@ -133,6 +133,22 @@ ActionResult ActionImpl::return_to_launch() const
         _parent->set_flight_mode(SystemImpl::FlightMode::RETURN_TO_LAUNCH));
 }
 
+ActionResult ActionImpl::goto_location(float latitude, float longitude, float altitude)
+{
+    MAVLinkCommands::CommandLong command{};
+
+    command.command = MAV_CMD_DO_REPOSITION;
+    command.target_component_id = _parent->get_autopilot_id();
+    command.params.param1 = -1; /* default speed */
+    command.params.param2 = MAV_DO_REPOSITION_FLAGS_CHANGE_MODE;
+    // command.param4 = NaN /* Yaw Unchanged */
+    command.params.param5 = latitude;
+    command.params.param6 = longitude;
+    command.params.param7 = altitude;
+
+    return action_result_from_command_result(_parent->send_command(command));
+}
+
 ActionResult ActionImpl::transition_to_fixedwing() const
 {
     if (!_vtol_transition_support_known) {
