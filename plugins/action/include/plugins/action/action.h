@@ -110,13 +110,13 @@ public:
      * @brief Send command to reposition the vehicle to a specific WGS84 global position
      *
      * This sends the vehicle to a specified lattitude/longitude/altitude coordinates.
-     * @param latitude deg * 1E7
-     * @param longitude deg * 1E7
+     * @param latitude in degrees
+     * @param longitude in degrees
      * @param altitude Altitude AMSL (meters)
      *
      * @return ActionResult of request.
      */
-    ActionResult goto_location(float latitude, float longitude, float altitude);
+    ActionResult goto_location(double latitude, double longitude, double altitude);
 
     /**
      * @brief Send command to transition the drone to fixedwing.

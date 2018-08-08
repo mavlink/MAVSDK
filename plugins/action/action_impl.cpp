@@ -133,8 +133,11 @@ ActionResult ActionImpl::return_to_launch() const
         _parent->set_flight_mode(SystemImpl::FlightMode::RETURN_TO_LAUNCH));
 }
 
-ActionResult ActionImpl::goto_location(float latitude, float longitude, float altitude)
+ActionResult ActionImpl::goto_location(double latitude, double longitude, double altitude)
 {
+    float lat1e7 = (float) (latitude * 1E7);
+    float long1e7 = (float) (longitude * 1E7);
+
     MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_DO_REPOSITION;
@@ -142,8 +145,8 @@ ActionResult ActionImpl::goto_location(float latitude, float longitude, float al
     command.params.param1 = -1; /* default speed */
     command.params.param2 = MAV_DO_REPOSITION_FLAGS_CHANGE_MODE;
     // command.param4 = NaN /* Yaw Unchanged */
-    command.params.param5 = latitude;
-    command.params.param6 = longitude;
+    command.params.param5 = lat1e7;
+    command.params.param6 = long1e7;
     command.params.param7 = altitude;
 
     return action_result_from_command_result(_parent->send_command(command));

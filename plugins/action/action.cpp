@@ -32,7 +32,7 @@ ActionResult Action::land() const
     return _impl->land();
 }
 
-ActionResult Action::goto_location(float latitude, float longitude, float altitude)
+ActionResult Action::goto_location(double latitude, double longitude, double altitude)
 {
     return _impl->goto_location(latitude, longitude, altitude);
 }
