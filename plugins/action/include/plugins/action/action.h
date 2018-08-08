@@ -107,7 +107,7 @@ public:
     ActionResult return_to_launch() const;
 
     /**
-     * @brief Send command to go to reposition the vehicle to a specific WGS84 global position
+     * @brief Send command to reposition the vehicle to a specific WGS84 global position
      *
      * This sends the vehicle to a specified lattitude/longitude/altitude coordinates.
      * @param latitude deg * 1E7
