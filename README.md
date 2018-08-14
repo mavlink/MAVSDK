@@ -1,6 +1,6 @@
 ![Dronecode SDK](https://github.com/dronecore/sdk_docs/raw/develop/assets/site/sdk_logo_full.jpg)
 
-[![jenkins build status](http://ci.px4.io:8080/buildStatus/icon?job=DronecodeSDK/develop)](http://ci.px4.io:8080/blue/organizations/jenkins/DronecodeSDK/activity)
+[![jenkins build status](http://ci.px4.io:8080/buildStatus/icon?job=Dronecode/DronecodeSDK/develop)](http://ci.px4.io:8080/job/Dronecode/job/DronecodeSDK/job/develop/)
 [![travis-ci build status](https://travis-ci.org/Dronecode/DronecodeSDK.svg?branch=develop)](https://travis-ci.org/Dronecode/DronecodeSDK)
 [![appveyor build status](https://ci.appveyor.com/api/projects/status/1ntjvooywpxmoir8/branch/develop?svg=true)](https://ci.appveyor.com/project/julianoes/dronecore/branch/develop)
 [![Coverage Status](https://coveralls.io/repos/github/Dronecode/DronecodeSDK/badge.svg?branch=develop)](https://coveralls.io/github/Dronecode/DronecodeSDK?branch=develop)
