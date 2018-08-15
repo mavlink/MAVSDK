@@ -26,7 +26,7 @@ public:
     ActionResult takeoff() const;
     ActionResult land() const;
     ActionResult return_to_launch() const;
-    ActionResult goto_location(double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_rad);
+    ActionResult goto_location(double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_deg);
     ActionResult transition_to_fixedwing() const;
     ActionResult transition_to_multicopter() const;
 

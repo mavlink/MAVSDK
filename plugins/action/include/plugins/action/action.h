@@ -113,11 +113,11 @@ public:
      * @param latitude_deg Latitude in degrees
      * @param longitude_deg Longitude in degrees
      * @param altitude_amsl_m Altitude AMSL in meters
-     * @param yaw_rad Yaw angle in radians
+     * @param yaw_deg Yaw angle in degrees
      *
      * @return ActionResult of request.
      */
-    ActionResult goto_location(double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_rad);
+    ActionResult goto_location(double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_deg);
 
     /**
      * @brief Send command to transition the drone to fixedwing.
