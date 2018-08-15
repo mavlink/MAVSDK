@@ -7,7 +7,7 @@
 
 ## Description
 
-The [Dronecode SDK](https://www.dronecode.org/sdk/) (previously known as "DroneCore") is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [Mavlink](https://mavlink.io/en/).
+The [Dronecode SDK](https://www.dronecode.org/sdk/) (previously known as "DroneCore") is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [MAVLink](https://mavlink.io/en/).
 
 It is written in C++ and aiming to be:
 
