@@ -4,7 +4,7 @@ project(follow_me)
 
 if(NOT MSVC)
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
-	# Line below required if /usr/local/include is not in your default includes
+    # Line below required if /usr/local/include is not in your default includes
     #include_directories(/usr/local/include)
     # Line below required if /usr/local/lib is not in your default linker path
     #link_directories(/usr/local/lib)
@@ -18,11 +18,6 @@ else()
     add_definitions("-DBOOST_ALL_NO_LIB")
 endif()
 
-if (MSVC)
-
-else()
-
-endif()
 
 include_directories(${Boost_INCLUDE_DIR})
 
