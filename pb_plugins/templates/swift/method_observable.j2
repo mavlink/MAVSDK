@@ -7,9 +7,14 @@ private func create{{ name }}() -> Observable<{{ return_type }}> {
         do {
             let call = try self.service.subscribe{{ name.lower() }}({{ request_name }}, completion: nil)
             while let response = try? call.receive() {
-                let position = Position(latitudeDeg: response.position.latitudeDeg, longitudeDeg: response.position.longitudeDeg, absoluteAltitudeM: response.position.absoluteAltitudeM, relativeAltitudeM: response.position.relativeAltitudeM)
 
-                observer.onNext(position)
+                {% if is_return_type_primitive -%}
+                   let {{ return_name }} = response.{{ return_name }}
+                {% else -%}
+                    let {{ return_name }} = {{ return_type }}.translateFromRPC(response.{{ return_name }})
+                {%- endif %}
+
+                observer.onNext({{ return_name }})
             }
         } catch {
             observer.onError("Failed to subscribe to {{ name }} stream")
