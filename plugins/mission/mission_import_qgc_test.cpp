@@ -11,14 +11,9 @@
 #include "global_include.h"
 #include "log.h"
 
-// To locate QGroundControl plan file during Unit test.
-#ifdef WINDOWS
-const std::string SLASH = "\\";
-#else
-const std::string SLASH = "/";
-#endif
-
 using namespace dronecode_sdk;
+
+static const std::string QGC_SAMPLE_PLAN = "plugins/mission/qgroundcontrol_sample.plan";
 
 struct QGCMissionItem {
     MAV_CMD command;
@@ -78,11 +73,6 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
         EXPECT_EQ(result, Mission::Result::SUCCESS);
     }
     mission_items_local.push_back(new_mission_item);
-
-    // Locate path of QGC Sample plan
-    std::string self_file_path = __FILE__;
-    std::string self_dir_path = self_file_path.substr(0, self_file_path.rfind(SLASH));
-    const std::string QGC_SAMPLE_PLAN = self_dir_path + SLASH + "qgroundcontrol_sample.plan";
 
     // Import Mission items from QGC plan
     Mission::mission_items_t mission_items_imported;
