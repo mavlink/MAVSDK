@@ -221,17 +221,6 @@ TEST(CameraTest, SetSettings)
         EXPECT_EQ(set_setting(camera, "CAM_EXPMODE", "0"), Camera::Result::SUCCESS);
         EXPECT_EQ(get_setting(camera, "CAM_EXPMODE", value_set), Camera::Result::SUCCESS);
         EXPECT_STREQ("0", value_set.c_str());
-
-        // Check human readable strings too.
-        std::string description;
-        EXPECT_FALSE(camera->get_setting_str("BLABLIBLU", description));
-        EXPECT_STREQ(description.c_str(), "");
-
-        EXPECT_TRUE(camera->get_setting_str("CAM_EXPMODE", description));
-        EXPECT_STREQ(description.c_str(), "Exposure Mode");
-
-        EXPECT_TRUE(camera->get_setting_str("CAM_SHUTTERSPD", description));
-        EXPECT_STREQ(description.c_str(), "Shutter Speed");
     }
 }
 
@@ -241,8 +230,15 @@ static void receive_current_settings(bool &subscription_called,
     LogDebug() << "Received current options:";
     EXPECT_TRUE(settings.size() > 0);
     for (auto &setting : settings) {
-        LogDebug() << "Got setting '" << setting.setting_id << "' with selected option '"
-                   << setting.option.option_id << "'";
+        LogDebug() << "Got setting '" << setting.setting_description << "' with selected option '"
+                   << setting.option.option_description << "'";
+
+        // Check human readable strings too.
+        if (setting.setting_id == "CAM_SHUTTERSPD") {
+            EXPECT_STREQ(setting.setting_id.c_str(), "Shutter Speed");
+        } else if (setting.setting_id == "CAM_EXPMODE") {
+            EXPECT_STREQ(setting.setting_id.c_str(), "Exposure Mode");
+        }
     }
     subscription_called = true;
 }
@@ -291,7 +287,12 @@ receive_possible_setting_options(bool &subscription_called,
         LogDebug() << "Got setting '" << setting_options.setting_id << "' with options:";
         EXPECT_TRUE(setting_options.options.size() > 0);
         for (auto &option : setting_options.options) {
-            LogDebug() << " - '" << option.option_id << "'";
+            LogDebug() << " - '" << option.option_description << "'";
+            if (setting_options.setting_id == "Shutter Speed" && option.option_id == "0.0025") {
+                EXPECT_STREQ(option.option_description.c_str(), "1/400");
+            } else if (setting_options.setting_id == "CAM_WBMODE" && option.option_id == "1") {
+                EXPECT_STREQ(option.option_description.c_str(), "Sunrise");
+            }
         }
     }
     subscription_called = true;

@@ -1029,6 +1029,7 @@ bool CameraImpl::get_possible_options(const std::string &setting_id,
         ss << value;
         Camera::Option option;
         option.option_id = ss.str();
+        get_option_str(setting_id, option.option_id, option.option_description);
         options.push_back(option);
     }
 
@@ -1132,6 +1133,7 @@ void CameraImpl::get_option_async(const std::string &setting_id,
         if (callback) {
             Camera::Option new_option{};
             new_option.option_id = value.get_string();
+            get_option_str(setting_id, new_option.option_id, new_option.option_description);
             callback(Camera::Result::SUCCESS, new_option);
         }
     } else {
@@ -1194,7 +1196,10 @@ void CameraImpl::notify_current_settings()
         if (_camera_definition->get_setting(possible_setting, value)) {
             Camera::Setting setting;
             setting.setting_id = possible_setting;
+            get_setting_str(setting.setting_id, setting.setting_description);
             setting.option.option_id = value.get_string();
+            get_option_str(
+                setting.setting_id, setting.option.option_id, setting.option.option_description);
             current_settings.push_back(setting);
         }
     }
