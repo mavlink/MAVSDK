@@ -20,7 +20,7 @@ if(NOT MSVC)
     include(third_party/cpp_rsc/cmake/modules/cpp_resource.cmake)
     if(NOT ANDROID AND NOT IOS)
         # If not cross-compiling, we can build cpp_rsc.
-        add_subdirectory(third_party/cpp_rsc/src)
+        add_subdirectory(third_party/cpp_rsc/src EXCLUDE_FROM_ALL)
     else()
         # For cross-compilation, re-use the binary from default.
         set_property(GLOBAL PROPERTY CPPRSC_CMD ${CMAKE_CURRENT_BINARY_DIR}/../default/third_party/cpp_rsc/src/cpp_rsc)
