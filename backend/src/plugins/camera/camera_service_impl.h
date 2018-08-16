@@ -539,6 +539,7 @@ public:
                                  rpc::camera::Setting *rpc_setting)
     {
         rpc_setting->set_setting_id(setting.setting_id);
+        rpc_setting->set_setting_description(setting.setting_description);
         rpc_setting->set_allocated_option(translateOption(setting.option).release());
     }
 
@@ -547,6 +548,7 @@ public:
     {
         auto rpc_option = std::unique_ptr<rpc::camera::Option>(new rpc::camera::Option);
         rpc_option->set_option_id(option.option_id);
+        rpc_option->set_option_description(option.option_description);
 
         return rpc_option;
     }
@@ -556,6 +558,7 @@ public:
     {
         dronecode_sdk::Camera::Setting setting;
         setting.setting_id = rpc_setting.setting_id();
+        setting.setting_description = rpc_setting.setting_description();
         setting.option = translateRPCOption(rpc_setting.option());
 
         return setting;
@@ -565,6 +568,7 @@ public:
     {
         dronecode_sdk::Camera::Option option;
         option.option_id = rpc_option.option_id();
+        option.option_description = rpc_option.option_description();
 
         return option;
     }

@@ -150,18 +150,6 @@ bool Camera::get_possible_options(const std::string &setting_id,
     return _impl->get_possible_options(setting_id, options);
 }
 
-bool Camera::get_setting_str(const std::string &setting_id, std::string &description)
-{
-    return _impl->get_setting_str(setting_id, description);
-}
-
-bool Camera::get_option_str(const std::string &setting_id,
-                            const std::string &option_id,
-                            std::string &description)
-{
-    return _impl->get_option_str(setting_id, option_id, description);
-}
-
 void Camera::subscribe_current_settings(const subscribe_current_settings_callback_t &callback)
 {
     _impl->subscribe_current_settings(callback);
@@ -323,22 +311,26 @@ std::ostream &operator<<(std::ostream &str, Camera::Status::StorageStatus const 
 
 bool operator==(const Camera::Setting &lhs, const Camera::Setting &rhs)
 {
-    return lhs.setting_id == rhs.setting_id && lhs.option == rhs.option;
+    return lhs.setting_id == rhs.setting_id && lhs.setting_description == rhs.setting_description &&
+           lhs.option == rhs.option;
 }
 
 std::ostream &operator<<(std::ostream &str, Camera::Setting const &setting)
 {
-    return str << "[setting_id: " << setting.setting_id << ", option: " << setting.option << "]";
+    return str << "[setting_id: " << setting.setting_id
+               << ", setting_description: " << setting.setting_description
+               << ", option: " << setting.option << "]";
 }
 
 bool operator==(const Camera::Option &lhs, const Camera::Option &rhs)
 {
-    return lhs.option_id == rhs.option_id;
+    return (lhs.option_id == rhs.option_id) && (lhs.option_description == rhs.option_description);
 }
 
 std::ostream &operator<<(std::ostream &str, Camera::Option const &option)
 {
-    return str << "[option_id: " << option.option_id << "]";
+    return str << "[option_id: " << option.option_id
+               << ", option_description: " << option.option_description << "]";
 }
 
 bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions &rhs)

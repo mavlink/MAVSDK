@@ -432,6 +432,7 @@ public:
      */
     struct Option {
         std::string option_id; /**< Name of the option (machine readable). */
+        std::string option_description; /**< Description of the description (human readable). */
     };
 
     /**
@@ -439,6 +440,7 @@ public:
      */
     struct Setting {
         std::string setting_id; /**< Name of the setting (machine readable). */
+        std::string setting_description; /**< Description of the setting (human readable). */
         Option option; /**< Selected option. */
     };
 
@@ -453,11 +455,6 @@ public:
     /**
      * @brief Get settings that can be changed.
      *
-     * The list of settings consists of machine readable parameters,
-     * for a human readable desription of the setting use get_setting_str().
-     *
-     * @sa `get_setting_str`
-     *
      * @param settings List of settings that can be changed.
      * @return true request was successful.
      */
@@ -465,11 +462,6 @@ public:
 
     /**
      * @brief Get possible options for a setting that can be selected.
-     *
-     * The list of options consists of machine readable option values,
-     * for a human readable description of the option use get_option_str().
-     *
-     * @sa `get_option_str`
      *
      * @param setting_id Name of setting (machine readable).
      * @param options List of `Option` objects to select from.
@@ -535,27 +527,6 @@ public:
      */
     void subscribe_possible_setting_options(
         const subscribe_possible_setting_options_callback_t &callback);
-
-    /**
-     * @brief Get the human readable string of a setting.
-     *
-     * @param setting_id The machine readable setting name.
-     * @param description The human readable string of the setting to get.
-     * @return true if call was successful and the description has been set.
-     */
-    bool get_setting_str(const std::string &setting_id, std::string &description);
-
-    /**
-     * @brief Get the human readable string of an option.
-     *
-     * @param setting_id The machine readable setting name.
-     * @param option_id The machine readable option value.
-     * @param description The human readable string of the option to get.
-     * @return true if call was successful and the description has been set.
-     */
-    bool get_option_str(const std::string &setting_id,
-                        const std::string &option_id,
-                        std::string &description);
 
     /**
      * @brief Copy constructor (object is not copyable).
