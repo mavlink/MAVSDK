@@ -193,11 +193,13 @@ message CameraStatus {
 
 message Setting {
     string setting_id = 1;
-    Option option = 2;
+    string setting_description = 2;
+    Option option = 3;
 }
 
 message Option {
     string option_id = 1;
+    string option_description = 2;
 }
 
 message SettingOptions {
