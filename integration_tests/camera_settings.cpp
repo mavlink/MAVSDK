@@ -235,9 +235,9 @@ static void receive_current_settings(bool &subscription_called,
 
         // Check human readable strings too.
         if (setting.setting_id == "CAM_SHUTTERSPD") {
-            EXPECT_STREQ(setting.setting_id.c_str(), "Shutter Speed");
+            EXPECT_STREQ(setting.setting_description.c_str(), "Shutter Speed");
         } else if (setting.setting_id == "CAM_EXPMODE") {
-            EXPECT_STREQ(setting.setting_id.c_str(), "Exposure Mode");
+            EXPECT_STREQ(setting.setting_description.c_str(), "Exposure Mode");
         }
     }
     subscription_called = true;
@@ -290,7 +290,7 @@ receive_possible_setting_options(bool &subscription_called,
             LogDebug() << " - '" << option.option_description << "'";
             if (setting_options.setting_id == "Shutter Speed" && option.option_id == "0.0025") {
                 EXPECT_STREQ(option.option_description.c_str(), "1/400");
-            } else if (setting_options.setting_id == "CAM_WBMODE" && option.option_id == "1") {
+            } else if (setting_options.setting_id == "CAM_WBMODE" && option.option_id == "2") {
                 EXPECT_STREQ(option.option_description.c_str(), "Sunrise");
             }
         }
