@@ -14,7 +14,6 @@ else()
     link_directories(${CMAKE_SOURCE_DIR}/../../install/lib)
 endif()
 
-
 add_executable(fly_mission
     fly_mission.cpp
 )

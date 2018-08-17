@@ -18,7 +18,6 @@ else()
     add_definitions("-DBOOST_ALL_NO_LIB")
 endif()
 
-
 include_directories(${Boost_INCLUDE_DIR})
 
 add_executable(follow_me
@@ -31,24 +30,5 @@ target_link_libraries(follow_me
     dronecode_sdk
     dronecode_sdk_action
     dronecode_sdk_follow_me
-    dronecode_sdk_telemetry
-)
-
-
-///
-cmake_minimum_required(VERSION 2.8.12)
-
-project(fly_qgc_mission)
-
-
-
-add_executable(fly_qgc_mission
-    fly_qgc_mission.cpp
-)
-
-target_link_libraries(fly_qgc_mission
-    dronecode_sdk
-    dronecode_sdk_action
-    dronecode_sdk_mission
     dronecode_sdk_telemetry
 )
