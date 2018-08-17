@@ -4,6 +4,7 @@
 #include <mutex>
 #include <thread>
 #include <atomic>
+#include <vector>
 #include "connection.h"
 
 namespace dronecode_sdk {
@@ -33,8 +34,16 @@ private:
     int _local_port_number;
 
     std::mutex _remote_mutex{};
-    std::string _remote_ip{};
-    int _remote_port_number{0};
+    struct Remote {
+        std::string ip{};
+        int port_number{0};
+
+        bool operator==(const UdpConnection::Remote &other)
+        {
+            return ip == other.ip && port_number == other.port_number;
+        }
+    };
+    std::vector<Remote> _remotes{};
 
     int _socket_fd{-1};
     std::thread *_recv_thread{nullptr};
