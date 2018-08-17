@@ -117,7 +117,8 @@ public:
      *
      * @return ActionResult of request.
      */
-    ActionResult goto_location(double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_deg);
+    ActionResult
+    goto_location(double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_deg);
 
     /**
      * @brief Send command to transition the drone to fixedwing.
