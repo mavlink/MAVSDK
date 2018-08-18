@@ -16,8 +16,8 @@ endif()
 #link_directories(/usr/local/lib)
 
 if (LOCAL_INSTALL)
-    include_directories(${CMAKE_SOURCE_DIR}/../../install/include)
-    link_directories(${CMAKE_SOURCE_DIR}/../../install/lib)
+    include_directories(${CMAKE_SOURCE_DIR}/../../build/default/install/include)
+    link_directories(${CMAKE_SOURCE_DIR}/../../build/default/install/lib)
 endif()
 
 add_executable(takeoff_and_land
