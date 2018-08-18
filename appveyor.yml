@@ -67,7 +67,7 @@ build_script:
   - cd example\takeoff_land
   - md build
   - cd build
-  - cmake ..  -G "Visual Studio 15 2017 Win64"
+  - cmake ..  -G "Visual Studio 15 2017 Win64" -DLOCAL_INSTALL:BOOL=ON
   - if "%configuration%"=="Debug" (
       cmake --build . --config Debug
     ) else (
