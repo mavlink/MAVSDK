@@ -3,8 +3,14 @@ public func {{ name }}() -> Single<{{ return_type }}> {
         let {{ name }}Request = {{ request_rpc_type }}()
 
         do {
-            let {{ name }}Response = try self.service.{{ name.lower() }}({{ name }}Request)
-            single(.success({{ name }}Response.{{ return_name }}))
+            let response = try self.service.{{ name.lower() }}({{ name }}Request)
+            {% if is_return_type_primitive -%}
+               let {{ return_name }} = response.{{ return_name }}
+            {% else -%}
+                let {{ return_name }} = {{ return_type }}.translateFromRPC(response.{{ return_name }})
+            {%- endif %}
+
+            single(.success({{ return_name }}))
         } catch {
             single(.error(error))
         }

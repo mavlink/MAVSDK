@@ -3,6 +3,7 @@
 
 from .utils import (decapitalize,
                     extract_string_type,
+                    is_primitive_type,
                     filter_out_result,
                     is_completable,
                     is_observable)
@@ -39,6 +40,7 @@ class Method(object):
 
         if len(return_params) == 1:
             self._return_type = extract_string_type(return_params[0])
+            self._is_return_type_primitive = is_primitive_type(return_params[0])
             self._return_name = return_params[0].json_name
 
     @staticmethod
