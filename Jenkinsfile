@@ -13,7 +13,8 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Debug'
+            sh 'make BUILD_TYPE=Debug default install'
+            sh '(cd example/takeoff_land && mkdir build && cd build && cmake .. && make)'
           }
         }
         stage('Ubuntu 16.04 Release') {
