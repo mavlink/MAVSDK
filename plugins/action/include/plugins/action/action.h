@@ -107,6 +107,20 @@ public:
     ActionResult return_to_launch() const;
 
     /**
+     * @brief Send command to reposition the vehicle to a specific WGS84 global position
+     *
+     * This sends the vehicle to a specified lattitude/longitude/altitude coordinates.
+     * @param latitude_deg Latitude in degrees
+     * @param longitude_deg Longitude in degrees
+     * @param altitude_amsl_m Altitude AMSL in meters
+     * @param yaw_deg Yaw angle in degrees
+     *
+     * @return ActionResult of request.
+     */
+    ActionResult
+    goto_location(double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_deg);
+
+    /**
      * @brief Send command to transition the drone to fixedwing.
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the
