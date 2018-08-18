@@ -1,0 +1,37 @@
+FROM ubuntu:16.04
+
+ENV WORKSPACE_DIR /root
+ENV FIRMWARE_DIR ${WORKSPACE_DIR}/Firmware
+
+RUN apt-get update && \
+    apt-get install -y cmake \
+                       curl \
+                       git \
+                       libeigen3-dev \
+                       libopencv-dev \
+                       libroscpp-dev \
+                       protobuf-compiler \
+                       python-jinja2 \
+                       python-empy \
+                       python-toml \
+                       python-numpy \
+                       unzip
+
+RUN curl -ssL http://get.gazebosim.org | sh
+
+RUN git clone https://github.com/PX4/Firmware.git ${FIRMWARE_DIR}
+RUN git -C ${FIRMWARE_DIR} checkout v1.8.0
+RUN git -C ${FIRMWARE_DIR} submodule update --init --recursive
+
+COPY 0002-forward-mavlink-in-docker.patch ${FIRMWARE_DIR}
+RUN git -C ${FIRMWARE_DIR} apply ${FIRMWARE_DIR}/0002-forward-mavlink-in-docker.patch
+
+RUN ["/bin/bash", "-c", " \
+        cd ${FIRMWARE_DIR} && \
+        DONT_RUN=1 make posix gazebo_iris \
+"]
+
+ENTRYPOINT ["/bin/bash", "-c", " \
+    cd ${FIRMWARE_DIR} && \
+    HEADLESS=1 make posix gazebo_iris \
+"]
