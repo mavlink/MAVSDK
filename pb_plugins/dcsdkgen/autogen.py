@@ -54,7 +54,7 @@ class AutoGen(object):
 
             # Fill response
             f = _codegen_response.file.add()
-            f.name = f"generated/{plugin_name}.{request.parameter}"
+            f.name = f"{plugin_name}.{request.parameter}"
             f.content = str(out_file)
 
             return _codegen_response

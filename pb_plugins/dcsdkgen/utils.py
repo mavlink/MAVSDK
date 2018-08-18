@@ -84,13 +84,17 @@ def decapitalize(s):
     return s[:1].lower() + s[1:] if s else ""
 
 
+def remove_subscribe(name):
+    return name.replace("subscribe", "")
+
+
 def jinja_indent(_in_str, level):
     """ Indentation helper for the jinja2 templates """
 
     _in_str = str(_in_str)
 
     return "\n".join(
-        ["" if len(line) == 0 else
+        ["" if not line else
          level * "    " + line
          for line in _in_str.split("\n")]
     )
@@ -111,6 +115,7 @@ def get_template_env(_searchpath):
     # Register some functions we need to access in the template
     _template_env.globals.update(
         letter_case_to_delimiter=letter_case_to_delimiter,
-        indent=jinja_indent)
+        indent=jinja_indent,
+        remove_subscribe=remove_subscribe)
 
     return _template_env
