@@ -133,7 +133,7 @@ class CompletableMethod(Method):
             responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
         self._template = template_env.get_template("method_completable.j2")
-        self.is_completable = True
+        self._is_completable = True
 
     def __repr__(self):
         return self._template.render(name=self._name,
