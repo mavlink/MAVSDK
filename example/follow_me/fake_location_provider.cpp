@@ -6,56 +6,66 @@
 using std::this_thread::sleep_for;
 using std::chrono::seconds;
 
+FakeLocationProvider::FakeLocationProvider() {}
+
+FakeLocationProvider::~FakeLocationProvider()
+{
+    stop();
+}
+
 void FakeLocationProvider::request_location_updates(location_callback_t callback)
 {
     location_callback_ = callback;
-    timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
+    stop();
+    start();
+}
+
+void FakeLocationProvider::start()
+{
+    should_exit_ = false;
+    thread_ = new std::thread(&FakeLocationProvider::compute_locations, this);
+}
+
+void FakeLocationProvider::stop()
+{
+    should_exit_ = true;
+
+    if (thread_) {
+        thread_->join();
+        delete thread_;
+        thread_ = nullptr;
+    }
 }
 
 // Rudimentary location provider whose successive lat, lon combination
 // makes Drone revolve in a semi-circular path.
-void FakeLocationProvider::compute_next_location()
+void FakeLocationProvider::compute_locations()
 {
-    if (count_++ < 10) {
-        location_callback_(latitude_deg_, longitude_deg_);
-        latitude_deg_ -= LATITUDE_DEG_PER_METER * 4;
-        timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
-        timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep_for(seconds(1));
-    }
-    if (count_++ < 20) {
-        location_callback_(latitude_deg_, longitude_deg_);
-        longitude_deg_ += LONGITUDE_DEG_PER_METER * 4;
-        timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
-        timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep_for(seconds(1));
-    }
-    if (count_++ < 30) {
-        location_callback_(latitude_deg_, longitude_deg_);
-        latitude_deg_ += LATITUDE_DEG_PER_METER * 4;
-        timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
-        timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep_for(seconds(1));
-    }
-    if (count_++ < 40) {
-        location_callback_(latitude_deg_, longitude_deg_);
-        longitude_deg_ -= LONGITUDE_DEG_PER_METER * 4;
-        timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
-        timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep_for(seconds(1));
-    }
-    if (count_++ < 50) {
-        location_callback_(latitude_deg_, longitude_deg_);
-        latitude_deg_ -= LATITUDE_DEG_PER_METER * 3;
-        timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
-        timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
-        sleep_for(seconds(1));
-    }
-    if (count_++ < MAX_LOCATIONS) {
-        location_callback_(latitude_deg_, longitude_deg_);
-        longitude_deg_ += LONGITUDE_DEG_PER_METER * 3;
-        timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
-        timer_.async_wait(std::bind(&FakeLocationProvider::compute_next_location, this));
+    while (!should_exit_) {
+        if (count_++ < 10) {
+            location_callback_(latitude_deg_, longitude_deg_);
+            latitude_deg_ -= LATITUDE_DEG_PER_METER * 4;
+        }
+        if (count_++ < 20) {
+            location_callback_(latitude_deg_, longitude_deg_);
+            longitude_deg_ += LONGITUDE_DEG_PER_METER * 4;
+        }
+        if (count_++ < 30) {
+            location_callback_(latitude_deg_, longitude_deg_);
+            latitude_deg_ += LATITUDE_DEG_PER_METER * 4;
+        }
+        if (count_++ < 40) {
+            location_callback_(latitude_deg_, longitude_deg_);
+            longitude_deg_ -= LONGITUDE_DEG_PER_METER * 4;
+        }
+        if (count_++ < 50) {
+            location_callback_(latitude_deg_, longitude_deg_);
+            latitude_deg_ -= LATITUDE_DEG_PER_METER * 3;
+        }
+        if (count_++ < MAX_LOCATIONS) {
+            location_callback_(latitude_deg_, longitude_deg_);
+            longitude_deg_ += LONGITUDE_DEG_PER_METER * 3;
+        }
         sleep_for(seconds(1));
     }
 }
