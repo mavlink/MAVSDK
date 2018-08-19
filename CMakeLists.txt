@@ -27,8 +27,8 @@ if(NOT MSVC)
     endif()
 endif()
 
-if(BUILD_TESTS AND (IOS OR ANDROID))
-    message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
+if(BUILD_TESTS AND (IOS OR ANDROID OR PYTHON))
+    message(STATUS "Building for iOS, Android or Python: forcing BUILD_TESTS to FALSE...")
     set(BUILD_TESTS OFF)
 endif()
 
@@ -71,6 +71,50 @@ if (CMAKE_BUILD_BACKEND)
     add_subdirectory(backend)
 else()
     message(STATUS "BUILD_BACKEND not set: not building grpc backend")
+endif()
+
+if (PYTHON)
+    find_package(PythonLibs REQUIRED)
+    message("Python include directory: ${PYTHON_INCLUDE_DIRS}")
+    message("Python library: ${PYTHON_LIBRARIES}")
+    include_directories(
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/core/include
+        third_party/pybind11/include
+        ${PYTHON_INCLUDE_DIRS}
+    )
+    execute_process(COMMAND
+        python -c "import site; site.getusersitepackages(); print(site.USER_SITE)"
+        OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+    message("Python site-packages: ${PYTHON_SITE_PACKAGES}")
+    # make sure PYTHON_MODULE_PREFIX always has a value
+    if (NOT PYTHON_MODULE_PREFIX)
+        execute_process(COMMAND
+            python -c "from distutils import sysconfig; print(sysconfig.get_config_var('SO'))"
+            OUTPUT_VARIABLE PYTHON_MODULE_EXTENSION OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+        message("Python module extension: ${PYTHON_MODULE_EXTENSION}")
+    endif()
+    set(PYBIND11_CPP_STANDARD -std=c++11)
+    add_subdirectory(third_party/pybind11)
+    add_library(pydronecode_sdk MODULE
+        core/pydronecode_sdk.cpp
+    )
+    set_target_properties(pydronecode_sdk PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}")
+    set_target_properties(pydronecode_sdk PROPERTIES SUFFIX "${PYTHON_MODULE_EXTENSION}")
+    target_link_libraries(pydronecode_sdk
+        dronecode_sdk
+        dronecode_sdk_action
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${CURL_LIBRARY}
+        ${TINYXML2_LIBRARY}
+        ${DRONECORE_ZLIB_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+    )
+    install(FILES "${CMAKE_BINARY_DIR}/${PYTHON_MODULE_PREFIX}pydronecode_sdk${PYTHON_MODULE_EXTENSION}" DESTINATION ${PYTHON_SITE_PACKAGES})
+    # TODO: figure out how to launch sitl and run this script on top
+    #if (PYTHON_TEST)
+        #execute_process(COMMAND python ${CMAKE_SOURCE_DIR}/python/python_pybind_test.py)
+    #endif()
 endif()
 
 if (DROP_DEBUG EQUAL 1)

@@ -7,8 +7,17 @@ if(MSVC)
     # Without this option it will look for dronecode_sdk_telemetry.lib and fail.
     option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)
 else()
-    # We are not using exceptions to make it easier to write wrappers.
-    add_definitions(-fno-exceptions)
+    if (PYTHON)
+        # Pybind11 wants exceptions.
+        add_definitions(-fexceptions)
+    else()
+        # We are not using exceptions to make it easier to write wrappers.
+        add_definitions(-fno-exceptions)
+    endif()
+
+
+    # We need this for pybind11
+    add_definitions(-fPIC)
 
     set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2")
 

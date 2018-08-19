@@ -72,6 +72,10 @@ all: default
 default:
 	$(call cmake-build)
 
+python:
+	$(call cmake-build, \
+		-DPYTHON:BOOL=true)
+
 ios: ios_curl default
 	$(call cmake-build, \
 		-DCMAKE_TOOLCHAIN_FILE=iOS.cmake \
@@ -166,4 +170,4 @@ else
 endif
 
 .PHONY:
-	clean fix_style run_all_tests run_unit_tests run_integration_tests android_env_check
+	python clean fix_style run_all_tests run_unit_tests run_integration_tests android_env_check

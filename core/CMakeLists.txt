@@ -81,8 +81,8 @@ install(FILES
     DESTINATION "include/dronecode_sdk"
 )
 
-target_include_directories(dronecode_sdk 
-PUBLIC 
+target_include_directories(dronecode_sdk
+PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${plugin_header_paths}
 PRIVATE
@@ -104,3 +104,4 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/core/thread_pool_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
+
