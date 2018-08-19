@@ -50,8 +50,8 @@ if (PYTHON)
     include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/core/include
-        third_party/pybind11/include
-        ${PYTHON_INCLUDE_DIRS}
+        SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/third_party/pybind11/include
+        SYSTEM ${PYTHON_INCLUDE_DIRS}
     )
     execute_process(COMMAND
         python -c "import site; site.getusersitepackages(); print(site.USER_SITE)"
