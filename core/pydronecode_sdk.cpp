@@ -1,8 +1,9 @@
 #include "dronecode_sdk.h"
 #include "plugins/action/include/plugins/action/action.h"
+#include "plugins/telemetry/include/plugins/telemetry/telemetry.h"
 
 #include <pybind11/pybind11.h>
-#include <pybind11/functional.h>
+#include <pybind11/stl.h>
 
 namespace dronecode_sdk {
 
@@ -14,7 +15,6 @@ PYBIND11_MODULE(pydronecode_sdk, m)
 
     py::class_<DronecodeSDK>(m, "DronecodeSDK")
         .def(py::init<>())
-        .def("register_on_discover", &DronecodeSDK::register_on_discover)
         .def("add_udp_connection",
              (ConnectionResult(DronecodeSDK::*)(const std::string &, int)) &
                  DronecodeSDK::add_udp_connection,
@@ -22,7 +22,7 @@ PYBIND11_MODULE(pydronecode_sdk, m)
         .def("add_udp_connection",
              (ConnectionResult(DronecodeSDK::*)(int)) & DronecodeSDK::add_udp_connection,
              "Connect to UDP and specify port")
-
+        .def("system_uuids", &DronecodeSDK::system_uuids)
         .def("system",
              (System & (DronecodeSDK::*)() const) & DronecodeSDK::system,
              py::return_value_policy::reference)
@@ -61,7 +61,7 @@ PYBIND11_MODULE(pydronecode_sdk, m)
         .def("land", &Action::land)
         .def("land_async", &Action::land_async);
 
-    py::enum_<ActionResult>(m, "Result")
+    py::enum_<ActionResult>(m, "ActionResult")
         .value("UNKNOWN", ActionResult::UNKNOWN)
         .value("SUCCESS", ActionResult::SUCCESS)
         .value("NO_SYSTEM", ActionResult::NO_SYSTEM)
@@ -76,6 +76,27 @@ PYBIND11_MODULE(pydronecode_sdk, m)
         .value("NO_VTOL_TRANSITION_SUPPORT", ActionResult::NO_VTOL_TRANSITION_SUPPORT)
         .value("PARAMETER_ERROR", ActionResult::PARAMETER_ERROR)
         .export_values();
+
+    py::class_<Telemetry>(m, "Telemetry", plugin_base)
+        .def(py::init<System &>())
+        .def("position", &Telemetry::position);
+
+    py::enum_<Telemetry::Result>(m, "Telemetry_Result")
+        .value("SUCCESS", Telemetry::Result::SUCCESS)
+        .value("NO_SYSTEM", Telemetry::Result::NO_SYSTEM)
+        .value("CONNECTION_ERROR", Telemetry::Result::CONNECTION_ERROR)
+        .value("BUSY", Telemetry::Result::BUSY)
+        .value("COMMAND_DENIED", Telemetry::Result::COMMAND_DENIED)
+        .value("TIMEOUT", Telemetry::Result::TIMEOUT)
+        .value("UNKNOWN", Telemetry::Result::UNKNOWN)
+        .export_values();
+
+    py::class_<Telemetry::Position>(m, "Telemetry_Position")
+        .def_readwrite("latitude_deg", &Telemetry::Position::latitude_deg)
+        .def_readwrite("longitude_deg", &Telemetry::Position::longitude_deg)
+        .def_readwrite("absolute_altitude_m", &Telemetry::Position::absolute_altitude_m)
+        .def_readwrite("relative_altitude_m", &Telemetry::Position::relative_altitude_m);
+
 }
 
 } // namespace dronecode_sdk

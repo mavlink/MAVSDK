@@ -74,6 +74,7 @@ if (PYTHON)
     target_link_libraries(pydronecode_sdk
         dronecode_sdk
         dronecode_sdk_action
+        dronecode_sdk_telemetry
         ${CMAKE_THREAD_LIBS_INIT}
         ${CURL_LIBRARY}
         ${TINYXML2_LIBRARY}
