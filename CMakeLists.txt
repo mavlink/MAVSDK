@@ -43,36 +43,6 @@ endif()
 set(dronecode_sdk_install_include_dir "include/dronecode_sdk")
 set(dronecode_sdk_install_lib_dir ${lib_path})
 
-add_subdirectory(core)
-add_subdirectory(plugins)
-
-if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
-    add_subdirectory(${EXTERNAL_DIR}/plugins
-        ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/plugins)
-    include_directories(${EXTERNAL_DIR})
-endif()
-
-if(BUILD_TESTS)
-    enable_testing()
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
-
-    add_subdirectory(integration_tests)
-
-    if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
-        add_subdirectory(${EXTERNAL_DIR}/integration_tests
-            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
-    endif()
-
-    include(cmake/unit_tests.cmake)
-endif()
-
-if (CMAKE_BUILD_BACKEND)
-    message(STATUS "Building dronecode_sdk server")
-    add_subdirectory(backend)
-else()
-    message(STATUS "BUILD_BACKEND not set: not building grpc backend")
-endif()
-
 if (PYTHON)
     find_package(PythonLibs REQUIRED)
     message("Python include directory: ${PYTHON_INCLUDE_DIRS}")
@@ -115,6 +85,37 @@ if (PYTHON)
     #if (PYTHON_TEST)
         #execute_process(COMMAND python ${CMAKE_SOURCE_DIR}/python/python_pybind_test.py)
     #endif()
+endif()
+
+
+add_subdirectory(core)
+add_subdirectory(plugins)
+
+if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
+    add_subdirectory(${EXTERNAL_DIR}/plugins
+        ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/plugins)
+    include_directories(${EXTERNAL_DIR})
+endif()
+
+if(BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
+
+    add_subdirectory(integration_tests)
+
+    if (DEFINED EXTERNAL_DIR AND NOT EXTERNAL_DIR STREQUAL "")
+        add_subdirectory(${EXTERNAL_DIR}/integration_tests
+            ${CMAKE_CURRENT_BINARY_DIR}/${EXTERNAL_DIR}/integration_tests)
+    endif()
+
+    include(cmake/unit_tests.cmake)
+endif()
+
+if (CMAKE_BUILD_BACKEND)
+    message(STATUS "Building dronecode_sdk server")
+    add_subdirectory(backend)
+else()
+    message(STATUS "BUILD_BACKEND not set: not building grpc backend")
 endif()
 
 if (DROP_DEBUG EQUAL 1)
