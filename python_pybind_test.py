@@ -41,6 +41,8 @@ def main():
                          args=(telemetry, should_exit))
     t.start()
 
+    action.set_takeoff_altitude(1.0)
+
     print("Arming...", end="")
     action.arm()
     print("done.")

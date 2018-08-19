@@ -191,8 +191,8 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &
     command.params.param1 = float(MAV_VTOL_STATE_FW);
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command,
-                                std::bind(&ActionImpl::command_result_callback, this, _1, callback));
+    _parent->send_command_async(
+        command, std::bind(&ActionImpl::command_result_callback, this, _1, callback));
 }
 
 ActionResult ActionImpl::transition_to_multicopter() const
@@ -235,8 +235,8 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
     command.params.param1 = float(MAV_VTOL_STATE_MC);
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command,
-                                std::bind(&ActionImpl::command_result_callback, this, _1, callback));
+    _parent->send_command_async(
+        command, std::bind(&ActionImpl::command_result_callback, this, _1, callback));
 }
 
 void ActionImpl::arm_async(const Action::result_callback_t &callback)
@@ -266,8 +266,8 @@ void ActionImpl::arm_async_continued(MAVLinkCommands::Result previous_result,
     command.params.param1 = 1.0f; // arm
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command,
-                                std::bind(&ActionImpl::command_result_callback, this, _1, callback));
+    _parent->send_command_async(
+        command, std::bind(&ActionImpl::command_result_callback, this, _1, callback));
 }
 
 void ActionImpl::disarm_async(const Action::result_callback_t &callback)
@@ -285,8 +285,8 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
     command.params.param1 = 0.0f; // disarm
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command,
-                                std::bind(&ActionImpl::command_result_callback, this, _1, callback));
+    _parent->send_command_async(
+        command, std::bind(&ActionImpl::command_result_callback, this, _1, callback));
 }
 
 void ActionImpl::kill_async(const Action::result_callback_t &callback)
@@ -297,8 +297,8 @@ void ActionImpl::kill_async(const Action::result_callback_t &callback)
     command.params.param1 = 0.0f; // kill
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command,
-                                std::bind(&ActionImpl::command_result_callback, this, _1, callback));
+    _parent->send_command_async(
+        command, std::bind(&ActionImpl::command_result_callback, this, _1, callback));
 }
 
 void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
@@ -334,8 +334,8 @@ void ActionImpl::takeoff_async_continued(MAVLinkCommands::Result previous_result
     command.command = MAV_CMD_NAV_TAKEOFF;
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command,
-                                std::bind(&ActionImpl::command_result_callback, this, _1, callback));
+    _parent->send_command_async(
+        command, std::bind(&ActionImpl::command_result_callback, this, _1, callback));
 }
 
 void ActionImpl::land_async(const Action::result_callback_t &callback)
@@ -345,14 +345,15 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
     command.command = MAV_CMD_NAV_LAND;
     command.target_component_id = _parent->get_autopilot_id();
 
-    _parent->send_command_async(command,
-                                std::bind(&ActionImpl::command_result_callback, this, _1, callback));
+    _parent->send_command_async(
+        command, std::bind(&ActionImpl::command_result_callback, this, _1, callback));
 }
 
 void ActionImpl::return_to_launch_async(const Action::result_callback_t &callback)
 {
-    _parent->set_flight_mode_async(SystemImpl::FlightMode::RETURN_TO_LAUNCH,
-                                   std::bind(&ActionImpl::command_result_callback, this, _1, callback));
+    _parent->set_flight_mode_async(
+        SystemImpl::FlightMode::RETURN_TO_LAUNCH,
+        std::bind(&ActionImpl::command_result_callback, this, _1, callback));
 }
 
 ActionResult ActionImpl::arming_allowed() const
@@ -501,9 +502,7 @@ void ActionImpl::command_result_callback(MAVLinkCommands::Result command_result,
     ActionResult action_result = action_result_from_command_result(command_result);
 
     if (callback) {
-        _parent->call_user_callback([callback, action_result]() {
-            callback(action_result);
-        });
+        _parent->call_user_callback([callback, action_result]() { callback(action_result); });
     }
 }
 

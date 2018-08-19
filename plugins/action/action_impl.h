@@ -67,7 +67,7 @@ private:
     static ActionResult action_result_from_command_result(MAVLinkCommands::Result result);
 
     void command_result_callback(MAVLinkCommands::Result command_result,
-                                        const Action::result_callback_t &callback);
+                                 const Action::result_callback_t &callback);
 
     std::atomic<bool> _in_air_state_known{false};
     std::atomic<bool> _in_air{false};
