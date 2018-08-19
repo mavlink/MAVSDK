@@ -16,6 +16,7 @@ include(cmake/tinyxml2.cmake)
 include(cmake/zlib.cmake)
 
 if(NOT MSVC)
+    cmake_policy(SET CMP0058 NEW)
     include(third_party/cpp_rsc/cmake/modules/cpp_resource.cmake)
     if(NOT ANDROID AND NOT IOS)
         # If not cross-compiling, we can build cpp_rsc.
