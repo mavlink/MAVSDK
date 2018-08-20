@@ -75,9 +75,13 @@ if (PYTHON)
     add_custom_command(
         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generate_pybind_definition.py
             --headers ${CMAKE_CURRENT_SOURCE_DIR}/plugins/action/include/plugins/action/action.h
+                ${CMAKE_CURRENT_SOURCE_DIR}/plugins/mission/include/plugins/mission/mission.h
+                ${CMAKE_CURRENT_SOURCE_DIR}/plugins/mission/include/plugins/mission/mission_item.h
             --template ${CMAKE_CURRENT_SOURCE_DIR}/core/pydronecode_sdk.cpp.in
             --output ${CMAKE_CURRENT_BINARY_DIR}/core/pydronecode_sdk.cpp
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/plugins/action/include/plugins/action/action.h
+            --verbose
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/generate_pybind_definition.py
+            ${CMAKE_CURRENT_SOURCE_DIR}/plugins/action/include/plugins/action/action.h
             ${CMAKE_CURRENT_SOURCE_DIR}/core/pydronecode_sdk.cpp.in
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/core/pydronecode_sdk.cpp
         COMMENT "Generating code for pybind11."
@@ -91,6 +95,7 @@ if (PYTHON)
     target_link_libraries(pydronecode_sdk
         dronecode_sdk
         dronecode_sdk_action
+        dronecode_sdk_mission
         dronecode_sdk_telemetry
         ${CMAKE_THREAD_LIBS_INIT}
         ${CURL_LIBRARY}
