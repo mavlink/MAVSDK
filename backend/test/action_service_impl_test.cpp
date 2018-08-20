@@ -16,26 +16,26 @@ using MockAction = NiceMock<dronecode_sdk::testing::MockAction>;
 using ActionServiceImpl = dronecode_sdk::backend::ActionServiceImpl<MockAction>;
 
 using ActionResult = dronecode_sdk::rpc::action::ActionResult;
-using InputPair = std::pair<std::string, dronecode_sdk::ActionResult>;
+using InputPair = std::pair<std::string, dronecode_sdk::Action::Result>;
 
 static constexpr float ARBITRARY_ALTITUDE = 42.42f;
 static constexpr float ARBITRARY_SPEED = 8.24f;
 
 std::vector<InputPair> generateInputPairs();
-std::string armAndGetTranslatedResult(dronecode_sdk::ActionResult arm_result);
-std::string disarmAndGetTranslatedResult(dronecode_sdk::ActionResult disarm_result);
-std::string takeoffAndGetTranslatedResult(dronecode_sdk::ActionResult takeoff_result);
-std::string landAndGetTranslatedResult(dronecode_sdk::ActionResult land_result);
-std::string killAndGetTranslatedResult(dronecode_sdk::ActionResult kill_result);
-std::string returnToLaunchAndGetTranslatedResult(dronecode_sdk::ActionResult rtl_result);
+std::string armAndGetTranslatedResult(dronecode_sdk::Action::Result arm_result);
+std::string disarmAndGetTranslatedResult(dronecode_sdk::Action::Result disarm_result);
+std::string takeoffAndGetTranslatedResult(dronecode_sdk::Action::Result takeoff_result);
+std::string landAndGetTranslatedResult(dronecode_sdk::Action::Result land_result);
+std::string killAndGetTranslatedResult(dronecode_sdk::Action::Result kill_result);
+std::string returnToLaunchAndGetTranslatedResult(dronecode_sdk::Action::Result rtl_result);
 std::string
-transitionToFWAndGetTranslatedResult(const dronecode_sdk::ActionResult transition_to_fw_result);
+transitionToFWAndGetTranslatedResult(const dronecode_sdk::Action::Result transition_to_fw_result);
 std::string
-transitionToMCAndGetTranslatedResult(const dronecode_sdk::ActionResult transition_to_fw_result);
+transitionToMCAndGetTranslatedResult(const dronecode_sdk::Action::Result transition_to_fw_result);
 std::string
-getReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::ActionResult action_result);
+getReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::Action::Result action_result);
 std::string
-setReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::ActionResult action_result);
+setReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::Action::Result action_result);
 
 class ActionServiceImplTest : public ::testing::TestWithParam<InputPair> {};
 
@@ -45,7 +45,7 @@ TEST_P(ActionServiceImplTest, armResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string armAndGetTranslatedResult(const dronecode_sdk::ActionResult arm_result)
+std::string armAndGetTranslatedResult(const dronecode_sdk::Action::Result arm_result)
 {
     MockAction action;
     ON_CALL(action, arm()).WillByDefault(Return(arm_result));
@@ -72,7 +72,7 @@ TEST_P(ActionServiceImplTest, disarmResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string disarmAndGetTranslatedResult(dronecode_sdk::ActionResult disarm_result)
+std::string disarmAndGetTranslatedResult(dronecode_sdk::Action::Result disarm_result)
 {
     MockAction action;
     ON_CALL(action, disarm()).WillByDefault(Return(disarm_result));
@@ -99,7 +99,7 @@ TEST_P(ActionServiceImplTest, takeoffResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string takeoffAndGetTranslatedResult(const dronecode_sdk::ActionResult takeoff_result)
+std::string takeoffAndGetTranslatedResult(const dronecode_sdk::Action::Result takeoff_result)
 {
     MockAction action;
     ON_CALL(action, takeoff()).WillByDefault(Return(takeoff_result));
@@ -126,7 +126,7 @@ TEST_P(ActionServiceImplTest, landResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string landAndGetTranslatedResult(const dronecode_sdk::ActionResult land_result)
+std::string landAndGetTranslatedResult(const dronecode_sdk::Action::Result land_result)
 {
     MockAction action;
     ON_CALL(action, land()).WillByDefault(Return(land_result));
@@ -153,7 +153,7 @@ TEST_P(ActionServiceImplTest, killResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string killAndGetTranslatedResult(const dronecode_sdk::ActionResult kill_result)
+std::string killAndGetTranslatedResult(const dronecode_sdk::Action::Result kill_result)
 {
     MockAction action;
     ON_CALL(action, kill()).WillByDefault(Return(kill_result));
@@ -180,7 +180,7 @@ TEST_P(ActionServiceImplTest, rtlResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string returnToLaunchAndGetTranslatedResult(const dronecode_sdk::ActionResult rtl_result)
+std::string returnToLaunchAndGetTranslatedResult(const dronecode_sdk::Action::Result rtl_result)
 {
     MockAction action;
     ON_CALL(action, return_to_launch()).WillByDefault(Return(rtl_result));
@@ -208,7 +208,7 @@ TEST_P(ActionServiceImplTest, transition2fwResultIsTranslatedCorrectly)
 }
 
 std::string
-transitionToFWAndGetTranslatedResult(const dronecode_sdk::ActionResult transition_to_fw_result)
+transitionToFWAndGetTranslatedResult(const dronecode_sdk::Action::Result transition_to_fw_result)
 {
     MockAction action;
     ON_CALL(action, transition_to_fixedwing()).WillByDefault(Return(transition_to_fw_result));
@@ -236,7 +236,7 @@ TEST_P(ActionServiceImplTest, transition2mcResultIsTranslatedCorrectly)
 }
 
 std::string
-transitionToMCAndGetTranslatedResult(const dronecode_sdk::ActionResult transition_to_mc_result)
+transitionToMCAndGetTranslatedResult(const dronecode_sdk::Action::Result transition_to_mc_result)
 {
     MockAction action;
     ON_CALL(action, transition_to_multicopter()).WillByDefault(Return(transition_to_mc_result));
@@ -399,7 +399,7 @@ TEST_P(ActionServiceImplTest, getReturnToLaunchAltitudeResultIsTranslatedCorrect
 }
 
 std::string
-getReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::ActionResult action_result)
+getReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::Action::Result action_result)
 {
     MockAction action;
     const auto return_pair = std::make_pair<>(action_result, ARBITRARY_ALTITUDE);
@@ -451,7 +451,7 @@ TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeResultIsTranslatedCorrect
 }
 
 std::string
-setReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::ActionResult action_result)
+setReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::Action::Result action_result)
 {
     MockAction action;
     ON_CALL(action, set_return_to_launch_return_altitude(_)).WillByDefault(Return(action_result));
@@ -502,27 +502,27 @@ INSTANTIATE_TEST_CASE_P(ActionResultCorrespondences,
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
-    input_pairs.push_back(std::make_pair("SUCCESS", dronecode_sdk::ActionResult::SUCCESS));
-    input_pairs.push_back(std::make_pair("NO_SYSTEM", dronecode_sdk::ActionResult::NO_SYSTEM));
+    input_pairs.push_back(std::make_pair("SUCCESS", dronecode_sdk::Action::Result::SUCCESS));
+    input_pairs.push_back(std::make_pair("NO_SYSTEM", dronecode_sdk::Action::Result::NO_SYSTEM));
     input_pairs.push_back(
-        std::make_pair("CONNECTION_ERROR", dronecode_sdk::ActionResult::CONNECTION_ERROR));
-    input_pairs.push_back(std::make_pair("BUSY", dronecode_sdk::ActionResult::BUSY));
+        std::make_pair("CONNECTION_ERROR", dronecode_sdk::Action::Result::CONNECTION_ERROR));
+    input_pairs.push_back(std::make_pair("BUSY", dronecode_sdk::Action::Result::BUSY));
     input_pairs.push_back(
-        std::make_pair("COMMAND_DENIED", dronecode_sdk::ActionResult::COMMAND_DENIED));
+        std::make_pair("COMMAND_DENIED", dronecode_sdk::Action::Result::COMMAND_DENIED));
     input_pairs.push_back(
         std::make_pair("COMMAND_DENIED_LANDED_STATE_UNKNOWN",
-                       dronecode_sdk::ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN));
+                       dronecode_sdk::Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN));
     input_pairs.push_back(std::make_pair("COMMAND_DENIED_NOT_LANDED",
-                                         dronecode_sdk::ActionResult::COMMAND_DENIED_NOT_LANDED));
-    input_pairs.push_back(std::make_pair("TIMEOUT", dronecode_sdk::ActionResult::TIMEOUT));
+                                         dronecode_sdk::Action::Result::COMMAND_DENIED_NOT_LANDED));
+    input_pairs.push_back(std::make_pair("TIMEOUT", dronecode_sdk::Action::Result::TIMEOUT));
     input_pairs.push_back(
         std::make_pair("VTOL_TRANSITION_SUPPORT_UNKNOWN",
-                       dronecode_sdk::ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN));
-    input_pairs.push_back(std::make_pair("NO_VTOL_TRANSITION_SUPPORT",
-                                         dronecode_sdk::ActionResult::NO_VTOL_TRANSITION_SUPPORT));
-    input_pairs.push_back(std::make_pair("UNKNOWN", dronecode_sdk::ActionResult::UNKNOWN));
+                       dronecode_sdk::Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN));
+    input_pairs.push_back(std::make_pair(
+        "NO_VTOL_TRANSITION_SUPPORT", dronecode_sdk::Action::Result::NO_VTOL_TRANSITION_SUPPORT));
+    input_pairs.push_back(std::make_pair("UNKNOWN", dronecode_sdk::Action::Result::UNKNOWN));
     input_pairs.push_back(
-        std::make_pair("PARAMETER_ERROR", dronecode_sdk::ActionResult::PARAMETER_ERROR));
+        std::make_pair("PARAMETER_ERROR", dronecode_sdk::Action::Result::PARAMETER_ERROR));
 
     return input_pairs;
 }

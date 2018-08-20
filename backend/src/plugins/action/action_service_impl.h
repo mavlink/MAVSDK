@@ -23,13 +23,14 @@ public:
     }
 
     template<typename ResponseType>
-    void fillResponseWithResult(ResponseType *response, ActionResult &action_result) const
+    void fillResponseWithResult(ResponseType *response,
+                                dronecode_sdk::Action::Result &action_result) const
     {
         auto rpc_result = static_cast<rpc::action::ActionResult::Result>(action_result);
 
         auto *rpc_action_result = new rpc::action::ActionResult();
         rpc_action_result->set_result(rpc_result);
-        rpc_action_result->set_result_str(action_result_str(action_result));
+        rpc_action_result->set_result_str(dronecode_sdk::Action::result_str(action_result));
 
         response->set_allocated_action_result(rpc_action_result);
     }
@@ -137,7 +138,7 @@ public:
             auto *rpc_action_result = new rpc::action::ActionResult();
             rpc_action_result->set_result(
                 static_cast<rpc::action::ActionResult::Result>(result_pair.first));
-            rpc_action_result->set_result_str(action_result_str(result_pair.first));
+            rpc_action_result->set_result_str(dronecode_sdk::Action::result_str(result_pair.first));
 
             response->set_allocated_action_result(rpc_action_result);
             response->set_altitude(result_pair.second);
@@ -169,7 +170,7 @@ public:
             auto *rpc_action_result = new rpc::action::ActionResult();
             rpc_action_result->set_result(
                 static_cast<rpc::action::ActionResult::Result>(result_pair.first));
-            rpc_action_result->set_result_str(action_result_str(result_pair.first));
+            rpc_action_result->set_result_str(dronecode_sdk::Action::result_str(result_pair.first));
 
             response->set_allocated_action_result(rpc_action_result);
             response->set_speed(result_pair.second);
@@ -184,13 +185,13 @@ public:
     {
         if (request != nullptr) {
             const auto requested_speed = request->speed();
-            ActionResult action_result = _action.set_max_speed(requested_speed);
+            dronecode_sdk::Action::Result action_result = _action.set_max_speed(requested_speed);
 
             if (response != nullptr) {
                 auto *rpc_action_result = new rpc::action::ActionResult();
                 rpc_action_result->set_result(
                     static_cast<rpc::action::ActionResult::Result>(action_result));
-                rpc_action_result->set_result_str(action_result_str(action_result));
+                rpc_action_result->set_result_str(dronecode_sdk::Action::result_str(action_result));
                 response->set_allocated_action_result(rpc_action_result);
             }
         }
@@ -209,7 +210,7 @@ public:
             auto *rpc_action_result = new rpc::action::ActionResult();
             rpc_action_result->set_result(
                 static_cast<rpc::action::ActionResult::Result>(result_pair.first));
-            rpc_action_result->set_result_str(action_result_str(result_pair.first));
+            rpc_action_result->set_result_str(dronecode_sdk::Action::result_str(result_pair.first));
 
             response->set_allocated_action_result(rpc_action_result);
             response->set_relative_altitude_m(result_pair.second);
@@ -232,7 +233,7 @@ public:
                 auto *rpc_action_result = new rpc::action::ActionResult();
                 rpc_action_result->set_result(
                     static_cast<rpc::action::ActionResult::Result>(action_result));
-                rpc_action_result->set_result_str(action_result_str(action_result));
+                rpc_action_result->set_result_str(dronecode_sdk::Action::result_str(action_result));
 
                 response->set_allocated_action_result(rpc_action_result);
             }

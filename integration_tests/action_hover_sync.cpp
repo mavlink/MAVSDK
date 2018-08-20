@@ -47,17 +47,17 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     }
 
     auto action = std::make_shared<Action>(system);
-    ActionResult action_ret = action->arm();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    Action::Result action_ret = action->arm();
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    EXPECT_EQ(ActionResult::SUCCESS, action->set_takeoff_altitude(altitude_m));
+    EXPECT_EQ(Action::Result::SUCCESS, action->set_takeoff_altitude(altitude_m));
     auto takeoff_altitude_result = action->get_takeoff_altitude();
-    EXPECT_EQ(takeoff_altitude_result.first, ActionResult::SUCCESS);
+    EXPECT_EQ(takeoff_altitude_result.first, Action::Result::SUCCESS);
     EXPECT_FLOAT_EQ(takeoff_altitude_result.second, altitude_m);
 
     action_ret = action->takeoff();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
     // We wait 1.5s / m plus a margin of 3s.
     const int wait_time_s = static_cast<int>(altitude_m * 1.5f + 3.0f);
     std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
@@ -66,7 +66,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     EXPECT_LT(telemetry->position().relative_altitude_m, altitude_m + 0.25f);
 
     action_ret = action->land();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
     iteration = 0;
     while (telemetry->in_air()) {
@@ -78,5 +78,5 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     }
 
     action_ret = action->disarm();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }

@@ -190,8 +190,8 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     EXPECT_TRUE(mission->get_return_to_launch_after_mission());
 
     LogInfo() << "Arming...";
-    const ActionResult arm_result = action->arm();
-    EXPECT_EQ(arm_result, ActionResult::SUCCESS);
+    const Action::Result arm_result = action->arm();
+    EXPECT_EQ(arm_result, Action::Result::SUCCESS);
     LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.

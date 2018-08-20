@@ -49,17 +49,17 @@ void ActionImpl::enable()
 
 void ActionImpl::disable() {}
 
-ActionResult ActionImpl::arm() const
+Action::Result ActionImpl::arm() const
 {
-    ActionResult ret = arming_allowed();
-    if (ret != ActionResult::SUCCESS) {
+    Action::Result ret = arming_allowed();
+    if (ret != Action::Result::SUCCESS) {
         return ret;
     }
 
     // Go to LOITER mode first.
     ret = action_result_from_command_result(_parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
 
-    if (ret != ActionResult::SUCCESS) {
+    if (ret != Action::Result::SUCCESS) {
         return ret;
     }
 
@@ -72,10 +72,10 @@ ActionResult ActionImpl::arm() const
     return action_result_from_command_result(_parent->send_command(command));
 }
 
-ActionResult ActionImpl::disarm() const
+Action::Result ActionImpl::disarm() const
 {
-    ActionResult ret = disarming_allowed();
-    if (ret != ActionResult::SUCCESS) {
+    Action::Result ret = disarming_allowed();
+    if (ret != Action::Result::SUCCESS) {
         return ret;
     }
 
@@ -88,7 +88,7 @@ ActionResult ActionImpl::disarm() const
     return action_result_from_command_result(_parent->send_command(command));
 }
 
-ActionResult ActionImpl::kill() const
+Action::Result ActionImpl::kill() const
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -99,7 +99,7 @@ ActionResult ActionImpl::kill() const
     return action_result_from_command_result(_parent->send_command(command));
 }
 
-ActionResult ActionImpl::reboot() const
+Action::Result ActionImpl::reboot() const
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -113,10 +113,10 @@ ActionResult ActionImpl::reboot() const
     return action_result_from_command_result(_parent->send_command(command));
 }
 
-ActionResult ActionImpl::takeoff() const
+Action::Result ActionImpl::takeoff() const
 {
-    ActionResult ret = taking_off_allowed();
-    if (ret != ActionResult::SUCCESS) {
+    Action::Result ret = taking_off_allowed();
+    if (ret != Action::Result::SUCCESS) {
         return ret;
     }
 
@@ -131,7 +131,7 @@ ActionResult ActionImpl::takeoff() const
     return action_result_from_command_result(_parent->send_command(command));
 }
 
-ActionResult ActionImpl::land() const
+Action::Result ActionImpl::land() const
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -142,16 +142,16 @@ ActionResult ActionImpl::land() const
     return action_result_from_command_result(_parent->send_command(command));
 }
 
-ActionResult ActionImpl::return_to_launch() const
+Action::Result ActionImpl::return_to_launch() const
 {
     return action_result_from_command_result(
         _parent->set_flight_mode(SystemImpl::FlightMode::RETURN_TO_LAUNCH));
 }
 
-ActionResult ActionImpl::goto_location(double latitude_deg,
-                                       double longitude_deg,
-                                       float altitude_amsl_m,
-                                       float yaw_deg)
+Action::Result ActionImpl::goto_location(double latitude_deg,
+                                         double longitude_deg,
+                                         float altitude_amsl_m,
+                                         float yaw_deg)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -165,14 +165,14 @@ ActionResult ActionImpl::goto_location(double latitude_deg,
     return action_result_from_command_result(_parent->send_command(command));
 }
 
-ActionResult ActionImpl::transition_to_fixedwing() const
+Action::Result ActionImpl::transition_to_fixedwing() const
 {
     if (!_vtol_transition_support_known) {
-        return ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN;
+        return Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN;
     }
 
     if (!_vtol_transition_possible) {
-        return ActionResult::NO_VTOL_TRANSITION_SUPPORT;
+        return Action::Result::NO_VTOL_TRANSITION_SUPPORT;
     }
 
     MAVLinkCommands::CommandLong command{};
@@ -188,14 +188,14 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &
 {
     if (!_vtol_transition_support_known) {
         if (callback) {
-            callback(ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN);
+            callback(Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN);
         }
         return;
     }
 
     if (!_vtol_transition_possible) {
         if (callback) {
-            callback(ActionResult::NO_VTOL_TRANSITION_SUPPORT);
+            callback(Action::Result::NO_VTOL_TRANSITION_SUPPORT);
         }
         return;
     }
@@ -210,14 +210,14 @@ void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &
                                 std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-ActionResult ActionImpl::transition_to_multicopter() const
+Action::Result ActionImpl::transition_to_multicopter() const
 {
     if (!_vtol_transition_support_known) {
-        return ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN;
+        return Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN;
     }
 
     if (!_vtol_transition_possible) {
-        return ActionResult::NO_VTOL_TRANSITION_SUPPORT;
+        return Action::Result::NO_VTOL_TRANSITION_SUPPORT;
     }
 
     MAVLinkCommands::CommandLong command{};
@@ -233,14 +233,14 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
 {
     if (!_vtol_transition_support_known) {
         if (callback) {
-            callback(ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN);
+            callback(Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN);
         }
         return;
     }
 
     if (!_vtol_transition_possible) {
         if (callback) {
-            callback(ActionResult::NO_VTOL_TRANSITION_SUPPORT);
+            callback(Action::Result::NO_VTOL_TRANSITION_SUPPORT);
         }
         return;
     }
@@ -256,8 +256,8 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
 
 void ActionImpl::arm_async(const Action::result_callback_t &callback)
 {
-    ActionResult ret = arming_allowed();
-    if (ret != ActionResult::SUCCESS) {
+    Action::Result ret = arming_allowed();
+    if (ret != Action::Result::SUCCESS) {
         if (callback) {
             callback(ret);
         }
@@ -287,8 +287,8 @@ void ActionImpl::arm_async_continued(MAVLinkCommands::Result previous_result,
 
 void ActionImpl::disarm_async(const Action::result_callback_t &callback)
 {
-    ActionResult ret = disarming_allowed();
-    if (ret != ActionResult::SUCCESS) {
+    Action::Result ret = disarming_allowed();
+    if (ret != Action::Result::SUCCESS) {
         if (callback) {
             callback(ret);
         }
@@ -322,8 +322,8 @@ void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
     // queue it on the thread pool which confusingly is called
     // `call_user_callback`.
     _parent->call_user_callback([this, callback]() {
-        ActionResult ret = taking_off_allowed();
-        if (ret != ActionResult::SUCCESS) {
+        Action::Result ret = taking_off_allowed();
+        if (ret != Action::Result::SUCCESS) {
             if (callback) {
                 callback(ret);
             }
@@ -369,7 +369,7 @@ void ActionImpl::return_to_launch_async(const Action::result_callback_t &callbac
                                    std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-ActionResult ActionImpl::arming_allowed() const
+Action::Result ActionImpl::arming_allowed() const
 {
     // We want to wait up to 1.5 second, maybe we find out about the
     // in-air state and can continue. If not, we need to give up.
@@ -377,9 +377,9 @@ ActionResult ActionImpl::arming_allowed() const
     while (true) {
         if (_in_air_state_known) {
             if (!_in_air) {
-                return ActionResult::SUCCESS;
+                return Action::Result::SUCCESS;
             } else {
-                return ActionResult::COMMAND_DENIED_NOT_LANDED;
+                return Action::Result::COMMAND_DENIED_NOT_LANDED;
             }
         }
 
@@ -389,33 +389,33 @@ ActionResult ActionImpl::arming_allowed() const
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
-    return ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
+    return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
 }
 
-ActionResult ActionImpl::taking_off_allowed() const
+Action::Result ActionImpl::taking_off_allowed() const
 {
     if (!_in_air_state_known) {
-        return ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
+        return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
     }
 
     if (_in_air) {
-        return ActionResult::COMMAND_DENIED_NOT_LANDED;
+        return Action::Result::COMMAND_DENIED_NOT_LANDED;
     }
 
-    return ActionResult::SUCCESS;
+    return Action::Result::SUCCESS;
 }
 
-ActionResult ActionImpl::disarming_allowed() const
+Action::Result ActionImpl::disarming_allowed() const
 {
     if (!_in_air_state_known) {
-        return ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
+        return Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN;
     }
 
     if (_in_air) {
-        return ActionResult::COMMAND_DENIED_NOT_LANDED;
+        return Action::Result::COMMAND_DENIED_NOT_LANDED;
     }
 
-    return ActionResult::SUCCESS;
+    return Action::Result::SUCCESS;
 }
 
 void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
@@ -450,80 +450,80 @@ void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callba
                                    std::bind(&ActionImpl::arm_async_continued, this, _1, callback));
 }
 
-ActionResult ActionImpl::set_takeoff_altitude(float relative_altitude_m)
+Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
     const MAVLinkParameters::Result result =
         _parent->set_param_float(TAKEOFF_ALT_PARAM, relative_altitude_m);
-    return (result == MAVLinkParameters::Result::SUCCESS) ? ActionResult::SUCCESS :
-                                                            ActionResult::PARAMETER_ERROR;
+    return (result == MAVLinkParameters::Result::SUCCESS) ? Action::Result::SUCCESS :
+                                                            Action::Result::PARAMETER_ERROR;
 }
 
-std::pair<ActionResult, float> ActionImpl::get_takeoff_altitude() const
+std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 {
     auto result = _parent->get_param_float(TAKEOFF_ALT_PARAM);
     return std::make_pair<>((result.first == MAVLinkParameters::Result::SUCCESS) ?
-                                ActionResult::SUCCESS :
-                                ActionResult::PARAMETER_ERROR,
+                                Action::Result::SUCCESS :
+                                Action::Result::PARAMETER_ERROR,
                             result.second);
 }
 
-ActionResult ActionImpl::set_max_speed(float speed_m_s)
+Action::Result ActionImpl::set_max_speed(float speed_m_s)
 {
     const MAVLinkParameters::Result result = _parent->set_param_float(MAX_SPEED_PARAM, speed_m_s);
-    return (result == MAVLinkParameters::Result::SUCCESS) ? ActionResult::SUCCESS :
-                                                            ActionResult::PARAMETER_ERROR;
+    return (result == MAVLinkParameters::Result::SUCCESS) ? Action::Result::SUCCESS :
+                                                            Action::Result::PARAMETER_ERROR;
 }
 
-std::pair<ActionResult, float> ActionImpl::get_max_speed() const
+std::pair<Action::Result, float> ActionImpl::get_max_speed() const
 {
     auto result = _parent->get_param_float(MAX_SPEED_PARAM);
     return std::make_pair<>((result.first == MAVLinkParameters::Result::SUCCESS) ?
-                                ActionResult::SUCCESS :
-                                ActionResult::PARAMETER_ERROR,
+                                Action::Result::SUCCESS :
+                                Action::Result::PARAMETER_ERROR,
                             result.second);
 }
 
-ActionResult ActionImpl::set_return_to_launch_return_altitude(float relative_altitude_m)
+Action::Result ActionImpl::set_return_to_launch_return_altitude(float relative_altitude_m)
 {
     const MAVLinkParameters::Result result =
         _parent->set_param_float(RTL_RETURN_ALTITUDE_PARAM, relative_altitude_m);
-    return (result == MAVLinkParameters::Result::SUCCESS) ? ActionResult::SUCCESS :
-                                                            ActionResult::PARAMETER_ERROR;
+    return (result == MAVLinkParameters::Result::SUCCESS) ? Action::Result::SUCCESS :
+                                                            Action::Result::PARAMETER_ERROR;
 }
 
-std::pair<ActionResult, float> ActionImpl::get_return_to_launch_return_altitude() const
+std::pair<Action::Result, float> ActionImpl::get_return_to_launch_return_altitude() const
 {
     auto result = _parent->get_param_float(RTL_RETURN_ALTITUDE_PARAM);
     return std::make_pair<>((result.first == MAVLinkParameters::Result::SUCCESS) ?
-                                ActionResult::SUCCESS :
-                                ActionResult::PARAMETER_ERROR,
+                                Action::Result::SUCCESS :
+                                Action::Result::PARAMETER_ERROR,
                             result.second);
 }
 
-ActionResult ActionImpl::action_result_from_command_result(MAVLinkCommands::Result result)
+Action::Result ActionImpl::action_result_from_command_result(MAVLinkCommands::Result result)
 {
     switch (result) {
         case MAVLinkCommands::Result::SUCCESS:
-            return ActionResult::SUCCESS;
+            return Action::Result::SUCCESS;
         case MAVLinkCommands::Result::NO_SYSTEM:
-            return ActionResult::NO_SYSTEM;
+            return Action::Result::NO_SYSTEM;
         case MAVLinkCommands::Result::CONNECTION_ERROR:
-            return ActionResult::CONNECTION_ERROR;
+            return Action::Result::CONNECTION_ERROR;
         case MAVLinkCommands::Result::BUSY:
-            return ActionResult::BUSY;
+            return Action::Result::BUSY;
         case MAVLinkCommands::Result::COMMAND_DENIED:
-            return ActionResult::COMMAND_DENIED;
+            return Action::Result::COMMAND_DENIED;
         case MAVLinkCommands::Result::TIMEOUT:
-            return ActionResult::TIMEOUT;
+            return Action::Result::TIMEOUT;
         default:
-            return ActionResult::UNKNOWN;
+            return Action::Result::UNKNOWN;
     }
 }
 
 void ActionImpl::command_result_callback(MAVLinkCommands::Result command_result,
                                          const Action::result_callback_t &callback)
 {
-    ActionResult action_result = action_result_from_command_result(command_result);
+    Action::Result action_result = action_result_from_command_result(command_result);
 
     if (callback) {
         callback(action_result);

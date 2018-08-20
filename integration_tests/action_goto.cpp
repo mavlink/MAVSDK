@@ -30,12 +30,12 @@ TEST_F(SitlTest, ActionGoto)
     }
 
     auto action = std::make_shared<Action>(system);
-    ActionResult action_ret = action->arm();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    Action::Result action_ret = action->arm();
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     action_ret = action->takeoff();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Go somewhere
@@ -47,7 +47,7 @@ TEST_F(SitlTest, ActionGoto)
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     action_ret = action->land();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
     iteration = 0;
     while (telemetry->in_air()) {
@@ -59,5 +59,5 @@ TEST_F(SitlTest, ActionGoto)
     }
 
     action_ret = action->disarm();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }
