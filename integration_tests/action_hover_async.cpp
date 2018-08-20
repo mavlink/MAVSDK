@@ -8,7 +8,7 @@
 using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
-void receive_result(ActionResult result);
+void receive_result(Action::Result result);
 void receive_health_all_ok(bool all_ok);
 void receive_in_air(bool in_air);
 
@@ -57,9 +57,9 @@ TEST_F(SitlTest, ActionHoverAsync)
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-void receive_result(ActionResult result)
+void receive_result(Action::Result result)
 {
-    EXPECT_EQ(result, ActionResult::SUCCESS);
+    EXPECT_EQ(result, Action::Result::SUCCESS);
 }
 
 void receive_health_all_ok(bool all_ok)

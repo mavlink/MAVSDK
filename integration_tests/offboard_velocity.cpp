@@ -30,11 +30,11 @@ TEST_F(SitlTest, OffboardVelocityNED)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    ActionResult action_ret = action->arm();
-    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
+    Action::Result action_ret = action->arm();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     action_ret = action->takeoff();
-    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
@@ -102,7 +102,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
     action_ret = action->land();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }
 
 TEST_F(SitlTest, OffboardVelocityBody)
@@ -125,11 +125,11 @@ TEST_F(SitlTest, OffboardVelocityBody)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    ActionResult action_ret = action->arm();
-    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
+    Action::Result action_ret = action->arm();
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     action_ret = action->takeoff();
-    ASSERT_EQ(ActionResult::SUCCESS, action_ret);
+    ASSERT_EQ(Action::Result::SUCCESS, action_ret);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
@@ -172,5 +172,5 @@ TEST_F(SitlTest, OffboardVelocityBody)
     EXPECT_EQ(offboard_result, Offboard::Result::SUCCESS);
 
     action_ret = action->land();
-    EXPECT_EQ(action_ret, ActionResult::SUCCESS);
+    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 }

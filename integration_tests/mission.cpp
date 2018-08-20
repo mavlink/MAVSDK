@@ -184,8 +184,8 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     }
 
     LogInfo() << "Arming...";
-    const ActionResult arm_result = action->arm();
-    EXPECT_EQ(arm_result, ActionResult::SUCCESS);
+    const Action::Result arm_result = action->arm();
+    EXPECT_EQ(arm_result, Action::Result::SUCCESS);
     LogInfo() << "Armed.";
 
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
@@ -219,8 +219,8 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     {
         // We are done, and can do RTL to go home.
         LogInfo() << "Commanding RTL...";
-        const ActionResult result = action->return_to_launch();
-        EXPECT_EQ(result, ActionResult::SUCCESS);
+        const Action::Result result = action->return_to_launch();
+        EXPECT_EQ(result, Action::Result::SUCCESS);
         LogInfo() << "Commanded RTL.";
     }
 
