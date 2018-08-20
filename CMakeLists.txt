@@ -47,6 +47,10 @@ if (PYTHON)
     find_package(PythonLibs REQUIRED)
     message("Python include directory: ${PYTHON_INCLUDE_DIRS}")
     message("Python library: ${PYTHON_LIBRARIES}")
+
+    find_package(PythonInterp 3 REQUIRED)
+    message("Python: ${PYTHON_EXECUTABLE}")
+
     include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/core/include
@@ -66,8 +70,21 @@ if (PYTHON)
     endif()
     set(PYBIND11_CPP_STANDARD -std=c++11)
     add_subdirectory(third_party/pybind11)
+
+    # Auto-generate pybind definition
+    add_custom_command(
+        COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generate_pybind_definition.py
+            --headers ${CMAKE_CURRENT_SOURCE_DIR}/plugins/action/include/plugins/action/action.h
+            --template ${CMAKE_CURRENT_SOURCE_DIR}/core/pydronecode_sdk.cpp.in
+            --output ${CMAKE_CURRENT_BINARY_DIR}/core/pydronecode_sdk.cpp
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/plugins/action/include/plugins/action/action.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/core/pydronecode_sdk.cpp.in
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/core/pydronecode_sdk.cpp
+        COMMENT "Generating code for pybind11."
+    )
+
     add_library(pydronecode_sdk MODULE
-        core/pydronecode_sdk.cpp
+        ${CMAKE_CURRENT_BINARY_DIR}/core/pydronecode_sdk.cpp
     )
     set_target_properties(pydronecode_sdk PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}")
     set_target_properties(pydronecode_sdk PROPERTIES SUFFIX "${PYTHON_MODULE_EXTENSION}")
