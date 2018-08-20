@@ -1,6 +1,6 @@
-public lazy var {{ name }}: Observable<{{ return_type }}> = create{{ capitalized_name }}()
+public lazy var {{ name }}: Observable<{{ return_type }}> = create{{ capitalized_name }}({% for param in params %}{{ param.name }}: {{ param.type }}{{ ", " if not loop.last }}{% endfor %})
 
-private func create{{ name }}() -> Observable<{{ return_type }}> {
+private func create{{ name }}({% for param in params %}{{ param.name }}: {{ param.type }}{{ ", " if not loop.last }}{% endfor %}) -> Observable<{{ return_type }}> {
     return Observable.create { observer in
         let {{ request_name }} = {{ request_rpc_type }}()
 

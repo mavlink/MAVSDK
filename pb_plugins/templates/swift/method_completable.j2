@@ -1,4 +1,4 @@
-public func {{ name }}() -> Completable {
+public func {{ name }}({% for param in params %}{{ param.name }}: {{ param.type }}{{ ", " if not loop.last }}{% endfor %}) -> Completable {
     return Completable.create { completable in
     let {{ name }}Request = {{ request_rpc_type }}()
 

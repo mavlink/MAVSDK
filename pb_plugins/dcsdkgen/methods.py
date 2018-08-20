@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from .utils import (decapitalize,
                     remove_subscribe,
                     extract_string_type,
@@ -27,10 +26,21 @@ class Method(object):
                                   + "_"
                                   + pb_method.name
                                   + "Request")
+        self.extract_params(pb_method, requests)
         self.extract_return_type_and_name(pb_method, responses)
         self._is_observable = False
         self._is_completable = False
         self._is_single = False
+
+    def extract_params(self, pb_method, requests):
+        method_input = pb_method.input_type.split(".")[-1]
+        request = requests[method_input]
+        nb_fields = len(request.field)
+
+        self._params = []
+
+        for field in request.field:
+            self._params.append({"name": field.name, "type": extract_string_type(field), "is_primitive": is_primitive_type(field)})
 
     def extract_return_type_and_name(self, pb_method, responses):
         method_output = pb_method.output_type.split(".")[-1]
@@ -138,6 +148,7 @@ class CompletableMethod(Method):
     def __repr__(self):
         return self._template.render(name=self._name,
                                      package=self._package,
+                                     params=self._params,
                                      plugin_name=self._plugin_name,
                                      request_rpc_type=self._request_rpc_type)
 
@@ -159,8 +170,10 @@ class SingleMethod(Method):
 
     def __repr__(self):
         return self._template.render(name=self._name,
+                                     params=self._params,
                                      return_type=self._return_type,
                                      return_name=self._return_name,
+                                     is_return_type_primitive=self._is_return_type_primitive,
                                      plugin_name=self._plugin_name,
                                      request_rpc_type=self._request_rpc_type)
 
@@ -186,8 +199,10 @@ class ObservableMethod(Method):
     def __repr__(self):
         return self._template.render(name=self._name,
                                      capitalized_name=self._capitalized_name,
+                                     params=self._params,
                                      return_type=self._return_type,
                                      return_name=self._return_name,
+                                     is_return_type_primitive=self._is_return_type_primitive,
                                      plugin_name=self._plugin_name,
                                      request_name=self._request_name,
                                      request_rpc_type=self._request_rpc_type)

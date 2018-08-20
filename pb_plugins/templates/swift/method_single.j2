@@ -1,4 +1,4 @@
-public func {{ name }}() -> Single<{{ return_type }}> {
+public func {{ name }}({% for param in params %}{{ param.name }}: {{ param.type }}{{ ", " if not loop.last }}{% endfor %}) -> Single<{{ return_type }}> {
     return Single<{{ return_type }}>.create { single in
         let {{ name }}Request = {{ request_rpc_type }}()
 
@@ -6,7 +6,7 @@ public func {{ name }}() -> Single<{{ return_type }}> {
             let response = try self.service.{{ name.lower() }}({{ name }}Request)
             {% if is_return_type_primitive -%}
                let {{ return_name }} = response.{{ return_name }}
-            {% else -%}
+            {%- else -%}
                 let {{ return_name }} = {{ return_type }}.translateFromRPC(response.{{ return_name }})
             {%- endif %}
 
