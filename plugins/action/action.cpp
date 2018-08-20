@@ -7,55 +7,55 @@ Action::Action(System &system) : PluginBase(), _impl{new ActionImpl(system)} {}
 
 Action::~Action() {}
 
-ActionResult Action::arm() const
+Action::Result Action::arm() const
 {
     return _impl->arm();
 }
 
-ActionResult Action::disarm() const
+Action::Result Action::disarm() const
 {
     return _impl->disarm();
 }
 
-ActionResult Action::kill() const
+Action::Result Action::kill() const
 {
     return _impl->kill();
 }
 
-ActionResult Action::reboot() const
+Action::Result Action::reboot() const
 {
     return _impl->reboot();
 }
 
-ActionResult Action::takeoff() const
+Action::Result Action::takeoff() const
 {
     return _impl->takeoff();
 }
 
-ActionResult Action::land() const
+Action::Result Action::land() const
 {
     return _impl->land();
 }
 
-ActionResult Action::goto_location(double latitude_deg,
-                                   double longitude_deg,
-                                   float altitude_amsl_m,
-                                   float yaw_deg)
+Action::Result Action::goto_location(double latitude_deg,
+                                     double longitude_deg,
+                                     float altitude_amsl_m,
+                                     float yaw_deg)
 {
     return _impl->goto_location(latitude_deg, longitude_deg, altitude_amsl_m, yaw_deg);
 }
 
-ActionResult Action::return_to_launch() const
+Action::Result Action::return_to_launch() const
 {
     return _impl->return_to_launch();
 }
 
-ActionResult Action::transition_to_fixedwing() const
+Action::Result Action::transition_to_fixedwing() const
 {
     return _impl->transition_to_fixedwing();
 }
 
-ActionResult Action::transition_to_multicopter() const
+Action::Result Action::transition_to_multicopter() const
 {
     return _impl->transition_to_multicopter();
 }
@@ -100,34 +100,65 @@ void Action::transition_to_fixedwing_async(result_callback_t callback)
     _impl->transition_to_fixedwing_async(callback);
 }
 
-ActionResult Action::set_takeoff_altitude(float relative_altitude_m)
+Action::Result Action::set_takeoff_altitude(float relative_altitude_m)
 {
     return _impl->set_takeoff_altitude(relative_altitude_m);
 }
 
-std::pair<ActionResult, float> Action::get_takeoff_altitude() const
+std::pair<Action::Result, float> Action::get_takeoff_altitude() const
 {
     return _impl->get_takeoff_altitude();
 }
 
-ActionResult Action::set_max_speed(float speed_m_s)
+Action::Result Action::set_max_speed(float speed_m_s)
 {
     return _impl->set_max_speed(speed_m_s);
 }
 
-std::pair<ActionResult, float> Action::get_max_speed() const
+std::pair<Action::Result, float> Action::get_max_speed() const
 {
     return _impl->get_max_speed();
 }
 
-ActionResult Action::set_return_to_launch_return_altitude(float relative_altitude_m)
+Action::Result Action::set_return_to_launch_return_altitude(float relative_altitude_m)
 {
     return _impl->set_return_to_launch_return_altitude(relative_altitude_m);
 }
 
-std::pair<ActionResult, float> Action::get_return_to_launch_return_altitude() const
+std::pair<Action::Result, float> Action::get_return_to_launch_return_altitude() const
 {
     return _impl->get_return_to_launch_return_altitude();
+}
+
+const char *Action::result_str(Action::Result result)
+{
+    switch (result) {
+        case Action::Result::SUCCESS:
+            return "Success";
+        case Action::Result::NO_SYSTEM:
+            return "No system";
+        case Action::Result::CONNECTION_ERROR:
+            return "Connection error";
+        case Action::Result::BUSY:
+            return "Busy";
+        case Action::Result::COMMAND_DENIED:
+            return "Command denied";
+        case Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN:
+            return "Command denied, landed state is unknown";
+        case Action::Result::COMMAND_DENIED_NOT_LANDED:
+            return "Command denied, not landed";
+        case Action::Result::TIMEOUT:
+            return "Timeout";
+        case Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN:
+            return "VTOL transition unknown";
+        case Action::Result::NO_VTOL_TRANSITION_SUPPORT:
+            return "No VTOL transition support";
+        case Action::Result::PARAMETER_ERROR:
+            return "Parameter error";
+        case Action::Result::UNKNOWN:
+        default:
+            return "Unknown";
+    }
 }
 
 } // namespace dronecode_sdk

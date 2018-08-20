@@ -33,9 +33,9 @@ static MissionState _mission_state = MissionState::INIT;
 static void receive_upload_mission_result(Mission::Result result);
 static void receive_start_mission_result(Mission::Result result);
 static void receive_mission_progress(int current, int total);
-static void receive_arm_result(ActionResult result);
-static void receive_return_to_launch_result(ActionResult result);
-static void receive_disarm_result(ActionResult result);
+static void receive_arm_result(Action::Result result);
+static void receive_return_to_launch_result(Action::Result result);
+static void receive_disarm_result(Action::Result result);
 
 static std::shared_ptr<MissionItem> add_waypoint(double latitude_deg,
                                                  double longitude_deg,
@@ -294,36 +294,36 @@ void receive_mission_progress(int current, int total)
     }
 }
 
-void receive_arm_result(ActionResult result)
+void receive_arm_result(Action::Result result)
 {
-    EXPECT_EQ(result, ActionResult::SUCCESS);
+    EXPECT_EQ(result, Action::Result::SUCCESS);
 
-    if (result == ActionResult::SUCCESS) {
+    if (result == Action::Result::SUCCESS) {
         _mission_state = MissionState::ARMING_DONE;
     } else {
-        LogErr() << "Error: arming result: " << action_result_str(result);
+        LogErr() << "Error: arming result: " << Action::result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
 
-void receive_return_to_launch_result(ActionResult result)
+void receive_return_to_launch_result(Action::Result result)
 {
-    EXPECT_EQ(result, ActionResult::SUCCESS);
+    EXPECT_EQ(result, Action::Result::SUCCESS);
 
-    if (result == ActionResult::SUCCESS) {
+    if (result == Action::Result::SUCCESS) {
     } else {
-        LogErr() << "Error: return to land result: " << action_result_str(result);
+        LogErr() << "Error: return to land result: " << Action::result_str(result);
         _mission_state = MissionState::ERROR;
     }
 }
 
-void receive_disarm_result(ActionResult result)
+void receive_disarm_result(Action::Result result)
 {
-    EXPECT_EQ(result, ActionResult::SUCCESS);
+    EXPECT_EQ(result, Action::Result::SUCCESS);
 
-    if (result == ActionResult::SUCCESS) {
+    if (result == Action::Result::SUCCESS) {
     } else {
-        LogErr() << "Error: disarming result: " << action_result_str(result);
+        LogErr() << "Error: disarming result: " << Action::result_str(result);
     }
 
     _mission_state = MissionState::DONE;
