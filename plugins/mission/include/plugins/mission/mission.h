@@ -90,6 +90,18 @@ public:
                                                 const std::string &qgc_plan_file);
 
     /**
+     * @brief Uploads a vector of mission items to the system (synchronous).
+     *
+     * The mission items are uploaded to a drone. Once uploaded the mission can be started and
+     * executed even if a connection is lost.
+     *
+     * @param mission_items Reference to vector of mission items.
+     *
+     * @return result of request.
+     */
+    Result upload_mission(const std::vector<std::shared_ptr<MissionItem>> &mission_items);
+
+    /**
      * @brief Uploads a vector of mission items to the system (asynchronous).
      *
      * The mission items are uploaded to a drone. Once uploaded the mission can be started and
@@ -116,6 +128,16 @@ public:
      * @param callback Callback to receive mission items and result of this request.
      */
     void download_mission_async(mission_items_and_result_callback_t callback);
+
+    /**
+     * @brief Starts the mission (synchronous).
+     *
+     * Note that the mission must be uploaded to the vehicle using `upload_mission()` before
+     * this method is called.
+     *
+     * @return result of this request.
+     */
+    Result start_mission();
 
     /**
      * @brief Starts the mission (asynchronous).

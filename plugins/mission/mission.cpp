@@ -9,6 +9,12 @@ Mission::Mission(System &system) : PluginBase(), _impl{new MissionImpl(system)} 
 
 Mission::~Mission() {}
 
+Mission::Result
+Mission::upload_mission(const std::vector<std::shared_ptr<MissionItem>> &mission_items)
+{
+    return _impl->upload_mission(mission_items);
+}
+
 void Mission::upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
                                    result_callback_t callback)
 {
@@ -18,6 +24,11 @@ void Mission::upload_mission_async(const std::vector<std::shared_ptr<MissionItem
 void Mission::download_mission_async(Mission::mission_items_and_result_callback_t callback)
 {
     _impl->download_mission_async(callback);
+}
+
+Mission::Result Mission::start_mission()
+{
+    return _impl->start_mission();
 }
 
 void Mission::start_mission_async(result_callback_t callback)

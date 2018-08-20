@@ -122,7 +122,7 @@ class HeaderParser(object):
         if 'static' in part:
             return True
 
-        p = re.compile('^([\w][\w\d_:]*(?:<[\w\d,: ]*>)?)\s*([\w][\w\d_]*)\(([\w\d, ]*)\)\s*.*?$')
+        p = re.compile('^([\w][\w\d_:]*(?:<[\w\d,: ]*>)?)\s*([\w][\w\d_]*)\(([\w\d,<>:& ]*)\)\s*.*?$')
         m = p.match(part)
         if m:
             if len(m.groups()) != 3:
@@ -180,6 +180,10 @@ class HeaderParser(object):
             self.output += '        .def(py::init<System &>())\n'
         elif self.parent_name is not None:
             raise Exception("Can't deal with parent other than PluginBase")
+        elif self.class_name == 'MissionItem':
+            # Hack for std::shared_ptr used to upload/download mission items
+            self.output += '    py::class_<{0}, std::shared_ptr<{0}>>(m, "{0}")\n'.format(self.class_name)
+            self.output += '        .def(py::init<>())\n'
         else:
             self.output += '    py::class_<{0}>(m, "{0}")\n'.format(self.class_name)
             self.output += '        .def(py::init<>())\n'

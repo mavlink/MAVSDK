@@ -82,6 +82,9 @@ if (PYTHON)
             --verbose
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/generate_pybind_definition.py
             ${CMAKE_CURRENT_SOURCE_DIR}/plugins/action/include/plugins/action/action.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/plugins/mission/include/plugins/mission/mission.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/plugins/mission/include/plugins/mission/mission_item.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/plugins/telemetry/include/plugins/telemetry/telemetry.h
             ${CMAKE_CURRENT_SOURCE_DIR}/core/pydronecode_sdk.cpp.in
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/core/pydronecode_sdk.cpp
         COMMENT "Generating code for pybind11."

@@ -25,11 +25,14 @@ public:
     void enable() override;
     void disable() override;
 
+    Mission::Result upload_mission(const std::vector<std::shared_ptr<MissionItem>> &mission_items);
+
     void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
                               const Mission::result_callback_t &callback);
 
     void download_mission_async(const Mission::mission_items_and_result_callback_t &callback);
 
+    Mission::Result start_mission();
     void start_mission_async(const Mission::result_callback_t &callback);
     void pause_mission_async(const Mission::result_callback_t &callback);
 

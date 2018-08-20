@@ -319,6 +319,18 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
     }
 }
 
+Mission::Result
+MissionImpl::upload_mission(const std::vector<std::shared_ptr<MissionItem>> &mission_items)
+{
+    auto prom = std::make_shared<std::promise<Mission::Result>>();
+    auto future_result = prom->get_future();
+
+    upload_mission_async(mission_items,
+                         [prom](Mission::Result result) { prom->set_value(result); });
+
+    return future_result.get();
+}
+
 void MissionImpl::upload_mission_async(
     const std::vector<std::shared_ptr<MissionItem>> &mission_items,
     const Mission::result_callback_t &callback)
@@ -787,6 +799,16 @@ void MissionImpl::download_next_mission_item()
     }
 
     _parent->send_message(message);
+}
+
+Mission::Result MissionImpl::start_mission()
+{
+    auto prom = std::make_shared<std::promise<Mission::Result>>();
+    auto future_result = prom->get_future();
+
+    start_mission_async([prom](Mission::Result result) { prom->set_value(result); });
+
+    return future_result.get();
 }
 
 void MissionImpl::start_mission_async(const Mission::result_callback_t &callback)
