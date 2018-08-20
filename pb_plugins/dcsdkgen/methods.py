@@ -40,7 +40,9 @@ class Method(object):
         self._params = []
 
         for field in request.field:
-            self._params.append({"name": field.name, "type": extract_string_type(field), "is_primitive": is_primitive_type(field)})
+            self._params.append({"name": field.name,
+                                 "type": extract_string_type(field),
+                                 "is_primitive": is_primitive_type(field)})
 
     def extract_return_type_and_name(self, pb_method, responses):
         method_output = pb_method.output_type.split(".")[-1]
@@ -54,7 +56,8 @@ class Method(object):
 
         if len(return_params) == 1:
             self._return_type = extract_string_type(return_params[0])
-            self._is_return_type_primitive = is_primitive_type(return_params[0])
+            self._is_return_type_primitive = is_primitive_type(
+                return_params[0])
             self._return_name = return_params[0].json_name
 
     @property

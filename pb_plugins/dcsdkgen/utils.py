@@ -62,10 +62,12 @@ def extract_string_type(field):
     else:
         return "UNKNOWN_TYPE"
 
+
 def is_primitive_type(field):
     """ Check if the field type is primitive (e.g. bool,
     float) or not (e.g message, enum) """
-    return (not field.type in { 11, 14 })
+    return (not field.type in {11, 14})
+
 
 def filter_out_result(fields):
     """ Filters out the result fields (".*Result$") """

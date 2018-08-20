@@ -26,4 +26,3 @@ class Enum(object):
             _enums[enum.name] = Enum(package, template_env, enum)
 
         return _enums
-

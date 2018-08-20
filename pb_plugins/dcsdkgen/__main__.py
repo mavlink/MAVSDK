@@ -14,7 +14,7 @@ def main():
 
     # Generate code and output it to stdout
     sys.stdout.buffer.write(
-            AutoGen.generate_reactive(request).SerializeToString())
+        AutoGen.generate_reactive(request).SerializeToString())
 
 
 if __name__ == '__main__':

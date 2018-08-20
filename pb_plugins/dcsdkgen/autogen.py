@@ -17,7 +17,7 @@ class AutoGen(object):
 
         # Get the template folder from the environment
         template_env = get_template_env(
-                f"./templates/{request.parameter}")
+            f"./templates/{request.parameter}")
 
         for proto_file in request.proto_file:
             plugin_name = proto_file.name.split('.')[0].capitalize()
