@@ -11,6 +11,9 @@ def debug(string):
     if verbose:
         print(string)
 
+class PluginParseException(Exception):
+    pass
+
 class Method(object):
     def __init__(self):
         self.return_type = ""
@@ -69,8 +72,7 @@ class HeaderParser(object):
                     "async" in line or \
                     "class " + self.class_name in line or \
                     self.class_name + "()" in line or \
-                    "operator" in line or \
-                    "&rhs" in line:  # TODO: remove this hack
+                    "operator" in line:
                 continue
 
             if "struct {" in line:
@@ -116,7 +118,7 @@ class HeaderParser(object):
                           format(self.class_name))
                     return
 
-        raise Exception("Could not find class name")
+        raise PluginParseException("Could not find class name")
 
     def find_method(self, part):
         # We ignore static methods for now.
@@ -127,7 +129,7 @@ class HeaderParser(object):
         m = p.match(part)
         if m:
             if len(m.groups()) != 3:
-                raise Exception("Unknown number of groups {} for {}"
+                raise ("Unknown number of groups {} for {}"
                                 .format(m.groups(), part))
 
             new_method = Method()
@@ -155,7 +157,7 @@ class HeaderParser(object):
             new_enum.name = m.groups()[0]
             debug("Found enum name: '{}'".format(new_enum.name))
         else:
-            raise Exception("Could not parse enum name")
+            raise PluginParseException("Could not parse enum name")
 
         p = re.compile('([\w\d]*),')
         m = p.findall(part)
@@ -166,7 +168,7 @@ class HeaderParser(object):
             self.enums.append(new_enum)
             return True
         else:
-            raise Exception("Could not find enum entries")
+            raise PluginParseException("Could not find enum entries")
 
     def find_struct(self, part):
         if not 'struct' in part:
@@ -180,7 +182,7 @@ class HeaderParser(object):
             new_struct.name = m.groups()[0]
             debug("Found struct name: '{}'".format(new_struct.name))
         else:
-            raise Exception("Could not parse struct name")
+            raise PluginParseException("Could not parse struct name")
 
         p = re.compile('[\w\d]*\s*([\w\d]+);')
         m = p.findall(part)
@@ -191,16 +193,18 @@ class HeaderParser(object):
             self.structs.append(new_struct)
             return True
         else:
-            raise Exception("Could not parse struct fields")
+            raise PluginParseException("Could not parse struct fields")
 
 
 
     def parse_part(self, part):
-        debug("Parsing: '{}'".format(part))
-        if not self.find_method(part) and \
-                not self.find_enum(part) and \
-                not self.find_struct(part):
-            raise Exception("Could not parse '{}'".format(part))
+        try:
+            if self.find_method(part) or \
+                    self.find_enum(part) or \
+                    self.find_struct(part):
+                return
+        except PluginParseException as e:
+            print("Ignoring: '{}', error: {}".format(part, e))
 
 
     def get_pybind_entry(self):
@@ -209,7 +213,7 @@ class HeaderParser(object):
                 format(self.class_name)
             self.output += '        .def(py::init<System &>())\n'
         elif self.parent_name is not None:
-            raise Exception("Can't deal with parent other than PluginBase")
+            raise PluginParseException("Can't deal with parent other than PluginBase")
         elif self.class_name == 'MissionItem':
             # TODO: remove this gack for std::shared_ptr used
             #       to upload/download mission items.
@@ -253,7 +257,11 @@ class HeaderParser(object):
 
         return self.output
 
-
+def remove_newlines_inside_brackets(content):
+    return re.sub(r'\(.*?\)',
+                  lambda m: m.group().replace("\n", " "),
+                  content,
+                  flags=re.DOTALL)
 
 def main():
 
@@ -283,7 +291,9 @@ def main():
     for header in args.headers:
         includes += '#include "{}"\n'.format(header)
         with open(header, "r") as f:
-            lines = f.readlines()
+            content = f.read()
+            content = remove_newlines_inside_brackets(content)
+            lines = content.splitlines()
 
             header_parser = HeaderParser()
             header_parser.parse_plugin_header(lines)

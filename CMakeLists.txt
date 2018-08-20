@@ -78,6 +78,7 @@ if (PYTHON)
                 ${CMAKE_CURRENT_SOURCE_DIR}/plugins/mission/include/plugins/mission/mission.h
                 ${CMAKE_CURRENT_SOURCE_DIR}/plugins/mission/include/plugins/mission/mission_item.h
                 ${CMAKE_CURRENT_SOURCE_DIR}/plugins/telemetry/include/plugins/telemetry/telemetry.h
+                ${CMAKE_CURRENT_SOURCE_DIR}/plugins/gimbal/include/plugins/gimbal/gimbal.h
             --template ${CMAKE_CURRENT_SOURCE_DIR}/core/pydronecode_sdk.cpp.in
             --output ${CMAKE_CURRENT_BINARY_DIR}/core/pydronecode_sdk.cpp
             --verbose
@@ -86,6 +87,7 @@ if (PYTHON)
             ${CMAKE_CURRENT_SOURCE_DIR}/plugins/mission/include/plugins/mission/mission.h
             ${CMAKE_CURRENT_SOURCE_DIR}/plugins/mission/include/plugins/mission/mission_item.h
             ${CMAKE_CURRENT_SOURCE_DIR}/plugins/telemetry/include/plugins/telemetry/telemetry.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/plugins/gimbal/include/plugins/gimbal/gimbal.h
             ${CMAKE_CURRENT_SOURCE_DIR}/core/pydronecode_sdk.cpp.in
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/core/pydronecode_sdk.cpp
         COMMENT "Generating code for pybind11."
@@ -101,6 +103,7 @@ if (PYTHON)
         dronecode_sdk_action
         dronecode_sdk_mission
         dronecode_sdk_telemetry
+        dronecode_sdk_gimbal
         ${CMAKE_THREAD_LIBS_INIT}
         ${CURL_LIBRARY}
         ${TINYXML2_LIBRARY}
