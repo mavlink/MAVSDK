@@ -440,7 +440,10 @@ void MissionImpl::assemble_mavlink_messages()
     _mission_data.mavlink_mission_item_messages.clear();
 
     bool last_position_valid = false; // This flag is to protect us from using an invalid x/y.
-    MAV_FRAME last_frame;
+    // TODO: might want a better default here, this is just
+    //       to prevent the compiler from saying it might not
+    //       be initialized.
+    MAV_FRAME last_frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
     int32_t last_x;
     int32_t last_y;
     float last_z;
