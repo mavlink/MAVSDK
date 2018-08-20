@@ -50,6 +50,7 @@ class HeaderParser(object):
                 continue
 
             if line.startswith("/*") or \
+                    line.startswith("//") or \
                     line.startswith("*") or \
                     line.startswith("#"):
                 continue
@@ -66,7 +67,6 @@ class HeaderParser(object):
                     "explicit" in line or \
                     "callback" in line or \
                     "async" in line or \
-                    "static" in line or \
                     "class " + self.class_name in line or \
                     self.class_name + "()" in line or \
                     "operator" in line:
@@ -78,15 +78,18 @@ class HeaderParser(object):
             if "};" in line:
                 inside_struct = False
 
-            if line.endswith(";") and not inside_struct:
+            if line.endswith(';') and not inside_struct:
                 new_definition = True
             else:
                 new_definition = False
 
-            if "}" in line:
-                continue
-
             part += line + " "
+
+            # Ignore odd leftover '};'
+            if part.strip() == '};':
+                new_definition = False
+                part = ""
+                continue
 
             if new_definition:
                 self.parse_part(part)
@@ -100,7 +103,7 @@ class HeaderParser(object):
                 if m:
                     self.class_name = m.groups()[0]
                     self.parent_name = m.groups()[1]
-                    debug("Found class: {} and parent: {}".
+                    debug("Found class: '{}' and parent: '{}'".
                           format(self.class_name, self.parent_name))
                     return
 
@@ -108,13 +111,17 @@ class HeaderParser(object):
                 m = p.match(line)
                 if m:
                     self.class_name = m.groups()[0]
-                    debug("Found class name: {}".
+                    debug("Found class name: '{}'".
                           format(self.class_name))
                     return
 
         raise Exception("Could not find class name")
 
     def find_method(self, part):
+        # We ignore static methods for now.
+        if 'static' in part:
+            return True
+
         p = re.compile('^([\w][\w\d_:]*(?:<[\w\d,: ]*>)?)\s*([\w][\w\d_]*)\(([\w\d, ]*)\)\s*.*?$')
         m = p.match(part)
         if m:
@@ -136,10 +143,29 @@ class HeaderParser(object):
             return False
 
     def find_enum(self, part):
-        if "enum" in part:
+        if not "enum" in part:
+            return False
+
+        new_enum = Enum()
+
+        p = re.compile('^enum class\s*([\w\d]*)\s{*.*?$')
+        m = p.match(part)
+        if m:
+            new_enum.name = m.groups()[0]
+            debug("Found enum name: '{}'".format(new_enum.name))
+        else:
+            raise Exception("Could not parse enum name")
+
+        p = re.compile('([\w\d]*),')
+        m = p.findall(part)
+        if m:
+            for enum_entry in m:
+                debug("Found enum entry: '{}'".format(enum_entry))
+                new_enum.values.append(enum_entry)
+            self.enums.append(new_enum)
             return True
         else:
-            return False
+            raise Exception("Could not find enum entries")
 
 
     def parse_part(self, part):
@@ -164,6 +190,16 @@ class HeaderParser(object):
                 self.output += ";\n\n"
             else:
                 self.output += "\n"
+
+        for enum_entry in self.enums:
+            self.output += ('    py::enum_<{0}::{1}>(m, "{0}_{1}")\n').format(self.class_name, enum_entry.name)
+            for i, value in enumerate(enum_entry.values):
+                self.output += ('        .value("{0}", {1}::{2}::{0})').format(value, self.class_name, enum_entry.name)
+                if i + 1 == len(enum_entry.values):
+                    self.output += "\n.export_values();\n\n"
+                else:
+                    self.output += "\n"
+
         return self.output
 
 

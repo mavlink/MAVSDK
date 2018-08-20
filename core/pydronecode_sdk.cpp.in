@@ -50,22 +50,6 @@ PYBIND11_MODULE(pydronecode_sdk, m)
 
     py::class_<PluginBase> plugin_base(m, "PluginBase");
 
-    py::enum_<ActionResult>(m, "ActionResult")
-        .value("UNKNOWN", ActionResult::UNKNOWN)
-        .value("SUCCESS", ActionResult::SUCCESS)
-        .value("NO_SYSTEM", ActionResult::NO_SYSTEM)
-        .value("CONNECTION_ERROR", ActionResult::CONNECTION_ERROR)
-        .value("BUSY", ActionResult::BUSY)
-        .value("COMMAND_DENIED", ActionResult::COMMAND_DENIED)
-        .value("COMMAND_DENIED_LANDED_STATE_UNKNOWN",
-               ActionResult::COMMAND_DENIED_LANDED_STATE_UNKNOWN)
-        .value("COMMAND_DENIED_NOT_LANDED", ActionResult::COMMAND_DENIED_NOT_LANDED)
-        .value("TIMEOUT", ActionResult::TIMEOUT)
-        .value("VTOL_TRANSITION_SUPPORT_UNKNOWN", ActionResult::VTOL_TRANSITION_SUPPORT_UNKNOWN)
-        .value("NO_VTOL_TRANSITION_SUPPORT", ActionResult::NO_VTOL_TRANSITION_SUPPORT)
-        .value("PARAMETER_ERROR", ActionResult::PARAMETER_ERROR)
-        .export_values();
-
     py::class_<Telemetry>(m, "Telemetry", plugin_base)
         .def(py::init<System &>())
         .def("position", &Telemetry::position);
