@@ -50,25 +50,6 @@ PYBIND11_MODULE(pydronecode_sdk, m)
 
     py::class_<PluginBase> plugin_base(m, "PluginBase");
 
-    py::class_<Telemetry>(m, "Telemetry", plugin_base)
-        .def(py::init<System &>())
-        .def("position", &Telemetry::position);
-
-    py::enum_<Telemetry::Result>(m, "Telemetry_Result")
-        .value("SUCCESS", Telemetry::Result::SUCCESS)
-        .value("NO_SYSTEM", Telemetry::Result::NO_SYSTEM)
-        .value("CONNECTION_ERROR", Telemetry::Result::CONNECTION_ERROR)
-        .value("BUSY", Telemetry::Result::BUSY)
-        .value("COMMAND_DENIED", Telemetry::Result::COMMAND_DENIED)
-        .value("TIMEOUT", Telemetry::Result::TIMEOUT)
-        .value("UNKNOWN", Telemetry::Result::UNKNOWN)
-        .export_values();
-
-    py::class_<Telemetry::Position>(m, "Telemetry_Position")
-        .def_readwrite("latitude_deg", &Telemetry::Position::latitude_deg)
-        .def_readwrite("longitude_deg", &Telemetry::Position::longitude_deg)
-        .def_readwrite("absolute_altitude_m", &Telemetry::Position::absolute_altitude_m)
-        .def_readwrite("relative_altitude_m", &Telemetry::Position::relative_altitude_m);
 ${plugins}
 }
 

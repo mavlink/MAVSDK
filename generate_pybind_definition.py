@@ -69,7 +69,8 @@ class HeaderParser(object):
                     "async" in line or \
                     "class " + self.class_name in line or \
                     self.class_name + "()" in line or \
-                    "operator" in line:
+                    "operator" in line or \
+                    "&rhs" in line:  # TODO: remove this hack
                 continue
 
             if "struct {" in line:
@@ -167,40 +168,86 @@ class HeaderParser(object):
         else:
             raise Exception("Could not find enum entries")
 
+    def find_struct(self, part):
+        if not 'struct' in part:
+            return False
+
+        new_struct = Struct()
+
+        p = re.compile('^struct\s*([\w\d]*)\s{*.*?$')
+        m = p.match(part)
+        if m:
+            new_struct.name = m.groups()[0]
+            debug("Found struct name: '{}'".format(new_struct.name))
+        else:
+            raise Exception("Could not parse struct name")
+
+        p = re.compile('[\w\d]*\s*([\w\d]+);')
+        m = p.findall(part)
+        if m:
+            for struct_field in m:
+                debug("Found struct variable: '{}'".format(struct_field))
+                new_struct.fields.append(struct_field)
+            self.structs.append(new_struct)
+            return True
+        else:
+            raise Exception("Could not parse struct fields")
+
+
 
     def parse_part(self, part):
+        debug("Parsing: '{}'".format(part))
         if not self.find_method(part) and \
-                not self.find_enum(part):
+                not self.find_enum(part) and \
+                not self.find_struct(part):
             raise Exception("Could not parse '{}'".format(part))
 
 
     def get_pybind_entry(self):
         if self.parent_name == "PluginBase":
-            self.output += '    py::class_<{0}>(m, "{0}", plugin_base)\n'.format(self.class_name)
+            self.output += '    py::class_<{0}>(m, "{0}", plugin_base)\n'.\
+                format(self.class_name)
             self.output += '        .def(py::init<System &>())\n'
         elif self.parent_name is not None:
             raise Exception("Can't deal with parent other than PluginBase")
         elif self.class_name == 'MissionItem':
-            # Hack for std::shared_ptr used to upload/download mission items
-            self.output += '    py::class_<{0}, std::shared_ptr<{0}>>(m, "{0}")\n'.format(self.class_name)
+            # TODO: remove this gack for std::shared_ptr used
+            #       to upload/download mission items.
+            self.output += '    py::class_<{0}, std::shared_ptr<{0}>>(m, "{0}")\n'.\
+                format(self.class_name)
             self.output += '        .def(py::init<>())\n'
         else:
-            self.output += '    py::class_<{0}>(m, "{0}")\n'.format(self.class_name)
+            self.output += '    py::class_<{0}>(m, "{0}")\n'.\
+                format(self.class_name)
             self.output += '        .def(py::init<>())\n'
 
         for i, method in enumerate(self.methods):
-            self.output += '        .def("{0}", &{1}::{0})'.format(method.method_name, self.class_name)
+            self.output += '        .def("{0}", &{1}::{0})'.\
+                format(method.method_name, self.class_name)
             if i + 1 == len(self.methods):
                 self.output += ";\n\n"
             else:
                 self.output += "\n"
 
         for enum_entry in self.enums:
-            self.output += ('    py::enum_<{0}::{1}>(m, "{0}_{1}")\n').format(self.class_name, enum_entry.name)
+            self.output += '    py::enum_<{0}::{1}>(m, "{0}_{1}")\n'.\
+                format(self.class_name, enum_entry.name)
             for i, value in enumerate(enum_entry.values):
-                self.output += ('        .value("{0}", {1}::{2}::{0})').format(value, self.class_name, enum_entry.name)
+                self.output += '        .value("{0}", {1}::{2}::{0})'.\
+                    format(value, self.class_name, enum_entry.name)
                 if i + 1 == len(enum_entry.values):
                     self.output += "\n.export_values();\n\n"
+                else:
+                    self.output += "\n"
+
+        for struct_entry in self.structs:
+            self.output += '    py::class_<{0}::{1}>(m, "{0}_{1}")\n'.\
+                format(self.class_name, struct_entry.name)
+            for i, field in enumerate(struct_entry.fields):
+                self.output += '        .def_readwrite("{0}", &{1}::{2}::{0})'.\
+                    format(field, self.class_name, struct_entry.name)
+                if i + 1 == len(struct_entry.fields):
+                    self.output += ";\n\n"
                 else:
                     self.output += "\n"
 

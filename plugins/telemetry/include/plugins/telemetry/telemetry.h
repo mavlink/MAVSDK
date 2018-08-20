@@ -189,7 +189,7 @@ public:
      * @brief Results enum for telemetry requests.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief %Request succeeded. */
+        SUCCESS, /**< @brief %Request succeeded. */
         NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
         BUSY, /**< @brief System busy. */

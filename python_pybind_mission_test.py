@@ -5,6 +5,7 @@ import time
 import threading
 import signal
 import sys
+import math
 
 
 # We use an event to tell the thread to stop again.
@@ -27,14 +28,14 @@ def exit_script():
     sys.exit(0)
 
 
-def listen_to_position(telemetry, should_exit):
-    """Just poll position and print it."""
+def listen_to_speed(telemetry, should_exit):
+    """Just poll ground speed and print it."""
     while not should_exit.is_set():
-        position = telemetry.position()
-        print("Lat: {}, lon: {}, alt: {}".format(
-            position.latitude_deg,
-            position.longitude_deg,
-            position.relative_altitude_m))
+        speed = telemetry.ground_speed_ned()
+        print("horizontal: {}, vertical: {}".format(
+            math.sqrt(speed.velocity_north_m_s**2 +
+                      speed.velocity_north_m_s**2),
+            -speed.velocity_down_m_s))
         time.sleep(1)
 
 
@@ -58,7 +59,7 @@ def main():
     mission = pydronecode_sdk.Mission(dc.system())
     telemetry = pydronecode_sdk.Telemetry(dc.system())
 
-    thread = threading.Thread(target=listen_to_position,
+    thread = threading.Thread(target=listen_to_speed,
                          args=(telemetry, should_exit))
     thread.start()
 
