@@ -3,6 +3,28 @@
 import pydronecode_sdk
 import time
 import threading
+import signal
+import sys
+
+
+# We use an event to tell the thread to stop again.
+should_exit = threading.Event()
+thread = None
+
+def signal_handler(sig, frame):
+    print("You pressed Ctrl+C")
+    exit_script()
+
+signal.signal(signal.SIGINT, signal_handler)
+
+
+def exit_script():
+    print("Exiting...", end="")
+    should_exit.set()
+    if thread:
+        thread.join()
+    print("done.")
+    sys.exit(0)
 
 
 def listen_to_position(telemetry, should_exit):
@@ -35,11 +57,9 @@ def main():
     action = pydronecode_sdk.Action(dc.system())
     telemetry = pydronecode_sdk.Telemetry(dc.system())
 
-    # We use an event to tell the thread to stop again.
-    should_exit = threading.Event()
-    t = threading.Thread(target=listen_to_position,
+    thread = threading.Thread(target=listen_to_position,
                          args=(telemetry, should_exit))
-    t.start()
+    thread.start()
 
     action.set_takeoff_altitude(1.0)
 
@@ -58,10 +78,7 @@ def main():
     action.land()
     print("done.")
 
-    print("Exiting...", end="")
-    should_exit.set()
-    t.join()
-    print("done.")
+    exit_script()
 
 
 if __name__ == '__main__':
