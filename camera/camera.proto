@@ -204,5 +204,6 @@ message Option {
 
 message SettingOptions {
     string setting_id = 1;
-    repeated Option options = 2;
+    string setting_description = 2;
+    repeated Option options = 3;
 }
