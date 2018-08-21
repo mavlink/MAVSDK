@@ -296,7 +296,7 @@ receive_possible_setting_options(bool &subscription_called,
         EXPECT_TRUE(setting_options.options.size() > 0);
         for (auto &option : setting_options.options) {
             LogDebug() << " - '" << option.option_description << "'";
-            if (setting_options.setting_id == "Shutter Speed" && option.option_id == "0.0025") {
+            if (setting_options.setting_id == "CAM_SHUTTERSPD" && option.option_id == "0.0025") {
                 EXPECT_STREQ(option.option_description.c_str(), "1/400");
             } else if (setting_options.setting_id == "CAM_WBMODE" && option.option_id == "2") {
                 EXPECT_STREQ(option.option_description.c_str(), "Sunrise");
