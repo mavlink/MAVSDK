@@ -1,10 +1,17 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
+from __future__ import print_function
+import sys
+if sys.version_info < (3,0):
+    print("Error: Please run with python3")
+    sys.exit(1)
 
 import pydronecode_sdk
 import time
 import threading
 import signal
-import sys
+
+
 
 
 # We use an event to tell the thread to stop again.
