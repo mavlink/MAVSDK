@@ -6,7 +6,7 @@ include_directories(
     SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
-if(IOS OR MSVC OR APPLE)
+if(IOS OR MSVC OR APPLE OR PYTHON)
     set(LIBRARY_TYPE "STATIC")
 else()
     set(LIBRARY_TYPE "SHARED")

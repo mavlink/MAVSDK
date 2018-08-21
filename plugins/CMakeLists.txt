@@ -3,7 +3,7 @@ include_directories(
     SYSTEM  ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
-if(IOS OR ANDROID)
+if(IOS OR ANDROID OR PYTHON)
     set(PLUGIN_LIBRARY_TYPE STATIC)
 else()
     set(PLUGIN_LIBRARY_TYPE SHARED)
