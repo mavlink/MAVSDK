@@ -608,6 +608,7 @@ public:
                                         rpc::camera::SettingOptions *rpc_setting_options)
     {
         rpc_setting_options->set_setting_id(setting_options.setting_id);
+        rpc_setting_options->set_setting_description(setting_options.setting_description);
 
         for (const auto option : setting_options.options) {
             auto rpc_option = rpc_setting_options->add_options();
@@ -620,6 +621,7 @@ public:
     {
         dronecode_sdk::Camera::SettingOptions setting_options;
         setting_options.setting_id = rpc_setting_options.setting_id();
+        setting_options.setting_description = rpc_setting_options.setting_description();
 
         std::vector<dronecode_sdk::Camera::Option> options;
         for (auto option : rpc_setting_options.options()) {

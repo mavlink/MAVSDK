@@ -1228,6 +1228,7 @@ void CameraImpl::notify_possible_setting_options()
     for (auto &possible_setting : possible_settings) {
         Camera::SettingOptions setting_options;
         setting_options.setting_id = possible_setting;
+        get_setting_str(setting_options.setting_id, setting_options.setting_description);
         get_possible_options(possible_setting, setting_options.options);
         possible_setting_options.push_back(setting_options);
     }

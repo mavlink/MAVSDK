@@ -285,6 +285,14 @@ receive_possible_setting_options(bool &subscription_called,
     EXPECT_TRUE(settings_options.size() > 0);
     for (auto &setting_options : settings_options) {
         LogDebug() << "Got setting '" << setting_options.setting_id << "' with options:";
+
+        // Check human readable strings too.
+        if (setting_options.setting_id == "CAM_SHUTTERSPD") {
+            EXPECT_STREQ(setting_options.setting_description.c_str(), "Shutter Speed");
+        } else if (setting_options.setting_id == "CAM_EXPMODE") {
+            EXPECT_STREQ(setting_options.setting_description.c_str(), "Exposure Mode");
+        }
+
         EXPECT_TRUE(setting_options.options.size() > 0);
         for (auto &option : setting_options.options) {
             LogDebug() << " - '" << option.option_description << "'";

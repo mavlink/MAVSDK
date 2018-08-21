@@ -449,6 +449,7 @@ public:
      */
     struct SettingOptions {
         std::string setting_id; /**< Name of the setting (machine readable). */
+        std::string setting_description; /**< Description of the setting (human readable). */
         std::vector<Option> options; /**< List of options. */
     };
 
