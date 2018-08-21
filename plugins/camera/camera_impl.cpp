@@ -22,6 +22,26 @@ CameraImpl::CameraImpl(System &system) : PluginImplBase(system)
 CameraImpl::~CameraImpl()
 {
     _parent->unregister_plugin(this);
+
+    {
+        std::lock_guard<std::mutex> lock(_status.mutex);
+        _status.callback = nullptr;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_get_mode.mutex);
+        _get_mode.callback = nullptr;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_capture_info.mutex);
+        _capture_info.callback = nullptr;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        _video_stream_info.callback = nullptr;
+    }
 }
 
 void CameraImpl::init()
