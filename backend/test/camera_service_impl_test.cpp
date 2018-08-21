@@ -119,6 +119,7 @@ protected:
 
     dronecode_sdk::Camera::SettingOptions
     createSettingOptions(const std::string setting_id,
+                         const std::string setting_description,
                          const std::vector<dronecode_sdk::Camera::Option> &options) const;
     std::future<void> subscribePossibleSettingOptionsAsync(
         std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>> &possible_settings_events,
@@ -1056,7 +1057,8 @@ TEST_F(CameraServiceImplTest, registersToPossibleSettings)
     std::vector<dronecode_sdk::Camera::SettingOptions> possible_settings;
     std::vector<dronecode_sdk::Camera::Option> options;
     options.push_back(createOption(ARBITRARY_OPTION_ID));
-    possible_settings.push_back(createSettingOptions(ARBITRARY_SETTING_ID, options));
+    possible_settings.push_back(
+        createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
     dronecode_sdk::Camera::subscribe_possible_setting_options_callback_t possible_settings_callback;
     EXPECT_CALL(_camera, subscribe_possible_setting_options(_))
         .WillOnce(SaveResult(&possible_settings_callback, &_callback_saved_promise));
@@ -1072,10 +1074,13 @@ TEST_F(CameraServiceImplTest, registersToPossibleSettings)
 }
 
 dronecode_sdk::Camera::SettingOptions CameraServiceImplTest::createSettingOptions(
-    const std::string setting_id, const std::vector<dronecode_sdk::Camera::Option> &options) const
+    const std::string setting_id,
+    const std::string setting_description,
+    const std::vector<dronecode_sdk::Camera::Option> &options) const
 {
     dronecode_sdk::Camera::SettingOptions setting_options;
     setting_options.setting_id = setting_id;
+    setting_options.setting_description = setting_description;
     setting_options.options = options;
 
     return setting_options;
@@ -1125,7 +1130,8 @@ TEST_F(CameraServiceImplTest, sendsOnePossibleSettingOptions)
     std::vector<dronecode_sdk::Camera::SettingOptions> possible_setting_options;
     std::vector<dronecode_sdk::Camera::Option> options;
     options.push_back(createOption(ARBITRARY_OPTION_ID));
-    possible_setting_options.push_back(createSettingOptions(ARBITRARY_SETTING_ID, options));
+    possible_setting_options.push_back(
+        createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
     possible_setting_options_events.push_back(possible_setting_options);
 
     checkSendsPossibleSettingOptions(possible_setting_options_events);
@@ -1157,7 +1163,7 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
     std::vector<dronecode_sdk::Camera::Option> options;
     options.push_back(createOption(ARBITRARY_OPTION_ID));
     arbitrary_possible_setting_options.push_back(
-        createSettingOptions(ARBITRARY_SETTING_ID, options));
+        createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
     possible_setting_options_callback(arbitrary_possible_setting_options);
     possible_setting_options_events_future.wait();
 
@@ -1183,11 +1189,11 @@ TEST_F(CameraServiceImplTest, sendsMultiplePossibleSettingOptionss)
     options1.push_back(createOption("option1_1"));
     options1.push_back(createOption("option1_2"));
     options1.push_back(createOption("option1_3"));
-    possible_setting_options.push_back(createSettingOptions("setting1", options1));
+    possible_setting_options.push_back(createSettingOptions("setting1", "Setting one", options1));
     std::vector<dronecode_sdk::Camera::Option> options2;
     options2.push_back(createOption("option1"));
     options2.push_back(createOption("option2"));
-    possible_setting_options.push_back(createSettingOptions("setting2", options2));
+    possible_setting_options.push_back(createSettingOptions("setting2", "Setting two", options2));
 
     std::vector<dronecode_sdk::Camera::Option> options3;
     options3.push_back(createOption("option1"));
@@ -1195,7 +1201,7 @@ TEST_F(CameraServiceImplTest, sendsMultiplePossibleSettingOptionss)
     options3.push_back(createOption("option2"));
     options3.push_back(createOption("option1"));
     options3.push_back(createOption("option1"));
-    possible_setting_options.push_back(createSettingOptions("setting3", options3));
+    possible_setting_options.push_back(createSettingOptions("setting3", "Setting Three", options3));
 
     possible_setting_options_events.push_back(possible_setting_options);
 

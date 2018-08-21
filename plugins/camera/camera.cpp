@@ -345,7 +345,7 @@ bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions 
         }
     }
 
-    return lhs.setting_id == rhs.setting_id;
+    return lhs.setting_id == rhs.setting_id && lhs.setting_description == rhs.setting_description;
 }
 
 std::ostream &operator<<(std::ostream &str, Camera::SettingOptions const &setting_options)

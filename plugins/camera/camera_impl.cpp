@@ -22,6 +22,26 @@ CameraImpl::CameraImpl(System &system) : PluginImplBase(system)
 CameraImpl::~CameraImpl()
 {
     _parent->unregister_plugin(this);
+
+    {
+        std::lock_guard<std::mutex> lock(_status.mutex);
+        _status.callback = nullptr;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_get_mode.mutex);
+        _get_mode.callback = nullptr;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_capture_info.mutex);
+        _capture_info.callback = nullptr;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        _video_stream_info.callback = nullptr;
+    }
 }
 
 void CameraImpl::init()
@@ -1228,6 +1248,7 @@ void CameraImpl::notify_possible_setting_options()
     for (auto &possible_setting : possible_settings) {
         Camera::SettingOptions setting_options;
         setting_options.setting_id = possible_setting;
+        get_setting_str(setting_options.setting_id, setting_options.setting_description);
         get_possible_options(possible_setting, setting_options.options);
         possible_setting_options.push_back(setting_options);
     }
