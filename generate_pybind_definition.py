@@ -2,6 +2,7 @@
 
 
 import re
+import os
 import argparse
 from string import Template
 
@@ -307,6 +308,7 @@ def main():
     filled_template = s.substitute(includes=includes,
                                    plugins=plugins)
 
+    os.makedirs(os.path.dirname(args.output))
     with open(args.output, 'w') as f:
         f.write(filled_template)
 
