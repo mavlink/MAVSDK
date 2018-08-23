@@ -613,6 +613,7 @@ public:
         for (const auto option : setting_options.options) {
             auto rpc_option = rpc_setting_options->add_options();
             rpc_option->set_option_id(option.option_id);
+            rpc_option->set_option_description(option.option_description);
         }
     }
 

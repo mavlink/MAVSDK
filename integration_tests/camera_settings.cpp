@@ -284,7 +284,7 @@ receive_possible_setting_options(bool &subscription_called,
     LogDebug() << "Received possible options:";
     EXPECT_TRUE(settings_options.size() > 0);
     for (auto &setting_options : settings_options) {
-        LogDebug() << "Got setting '" << setting_options.setting_id << "' with options:";
+        LogDebug() << "Got setting '" << setting_options.setting_description << "' with options:";
 
         // Check human readable strings too.
         if (setting_options.setting_id == "CAM_SHUTTERSPD") {
