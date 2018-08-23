@@ -287,9 +287,11 @@ private:
             rpc_mission_progress_response.set_mission_count(total);
             writer->Write(rpc_mission_progress_response);
 
-            if (current == total - 1) {
-                mission_finished_promise.set_value();
-            }
+            // FIXME: It is possible that we get this progress update multiple times. If this
+            //        happens, we fulfill the promise more than once which leads to a crash.
+            // if (current == total - 1) {
+            //    mission_finished_promise.set_value();
+            //}
         });
 
         mission_finished_future.wait();
