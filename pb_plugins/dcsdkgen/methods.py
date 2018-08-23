@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from dataclasses import dataclass
 
 from .utils import (decapitalize,
                     remove_subscribe,
@@ -7,6 +8,13 @@ from .utils import (decapitalize,
                     filter_out_result,
                     is_completable,
                     is_observable)
+
+
+@dataclass
+class Param:
+    name: str
+    type: str
+    is_primitive: bool
 
 
 class Method(object):
@@ -35,29 +43,35 @@ class Method(object):
     def extract_params(self, pb_method, requests):
         method_input = pb_method.input_type.split(".")[-1]
         request = requests[method_input]
-        nb_fields = len(request.field)
+        # nb_fields = len(request.field)
 
         self._params = []
 
         for field in request.field:
-            self._params.append({"name": field.name,
-                                 "type": extract_string_type(field),
-                                 "is_primitive": is_primitive_type(field)})
+            self._params.append(
+                Param(
+                    name=field.name,
+                    type=extract_string_type(field),
+                    is_primitive=is_primitive_type(field))
+                    )
 
     def extract_return_type_and_name(self, pb_method, responses):
         method_output = pb_method.output_type.split(".")[-1]
         response = responses[method_output]
-        nb_fields = len(response.field)
+        # nb_fields = len(response.field)
 
         return_params = list(filter_out_result(response.field))
+
         if len(return_params) > 1:
             raise Exception(
-                "Responses cannot have more than 1 return parameter (and an optional '*Result')!\nError in {}".format(method_output))
+                "Responses cannot have more than 1 return parameter" +
+                f"(and an optional '*Result')!\nError in {method_output}")
 
         if len(return_params) == 1:
-            self._return_type = extract_string_type(return_params[0])
-            self._is_return_type_primitive = is_primitive_type(
-                return_params[0])
+            self._return_type = \
+                extract_string_type(return_params[0])
+            self._is_return_type_primitive = \
+                is_primitive_type(return_params[0])
             self._return_name = return_params[0].json_name
 
     @property
