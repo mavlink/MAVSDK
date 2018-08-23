@@ -281,7 +281,7 @@ private:
         std::promise<void> mission_finished_promise;
         auto mission_finished_future = mission_finished_promise.get_future();
 
-        _mission.subscribe_progress([&writer, &mission_finished_promise](int current, int total) {
+        _mission.subscribe_progress([&writer](int current, int total) {
             dronecode_sdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
             rpc_mission_progress_response.set_current_item_index(current);
             rpc_mission_progress_response.set_mission_count(total);
