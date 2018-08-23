@@ -351,6 +351,7 @@ bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions 
 std::ostream &operator<<(std::ostream &str, Camera::SettingOptions const &setting_options)
 {
     str << "[setting_id: " << setting_options.setting_id;
+    str << ", setting_description: " << setting_options.setting_description;
     str << ", options: [";
 
     for (const auto &option : setting_options.options) {

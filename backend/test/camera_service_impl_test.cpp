@@ -107,7 +107,8 @@ protected:
     void checkSendsCameraStatus(
         const std::vector<dronecode_sdk::Camera::Status> &camera_status_events) const;
 
-    dronecode_sdk::Camera::Option createOption(const std::string option_id) const;
+    dronecode_sdk::Camera::Option createOption(const std::string option_id,
+                                               const std::string option_description) const;
     dronecode_sdk::Camera::Setting createSetting(const std::string setting_id,
                                                  const std::string setting_description,
                                                  const dronecode_sdk::Camera::Option &option) const;
@@ -903,8 +904,10 @@ TEST_F(CameraServiceImplTest, sendsMultipleCameraStatus)
 TEST_F(CameraServiceImplTest, registersToCurrentSettings)
 {
     std::vector<dronecode_sdk::Camera::Setting> current_settings;
-    current_settings.push_back(createSetting(
-        ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, createOption(ARBITRARY_OPTION_ID)));
+    current_settings.push_back(
+        createSetting(ARBITRARY_SETTING_ID,
+                      ARBITRARY_SETTING_DESCRIPTION,
+                      createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
     dronecode_sdk::Camera::subscribe_current_settings_callback_t current_settings_callback;
     EXPECT_CALL(_camera, subscribe_current_settings(_))
         .WillOnce(SaveResult(&current_settings_callback, &_callback_saved_promise));
@@ -931,10 +934,13 @@ CameraServiceImplTest::createSetting(const std::string setting_id,
     return setting;
 }
 
-dronecode_sdk::Camera::Option CameraServiceImplTest::createOption(const std::string option_id) const
+dronecode_sdk::Camera::Option
+CameraServiceImplTest::createOption(const std::string option_id,
+                                    const std::string option_description) const
 {
     dronecode_sdk::Camera::Option option;
     option.option_id = option_id;
+    option.option_description = option_description;
 
     return option;
 }
@@ -981,8 +987,10 @@ TEST_F(CameraServiceImplTest, sendsOneCurrentSettings)
     std::vector<std::vector<dronecode_sdk::Camera::Setting>> current_settings_events;
 
     std::vector<dronecode_sdk::Camera::Setting> current_settings;
-    current_settings.push_back(createSetting(
-        ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, createOption(ARBITRARY_OPTION_ID)));
+    current_settings.push_back(
+        createSetting(ARBITRARY_SETTING_ID,
+                      ARBITRARY_SETTING_DESCRIPTION,
+                      createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
     current_settings_events.push_back(current_settings);
 
     checkSendsCurrentSettings(current_settings_events);
@@ -1007,8 +1015,10 @@ void CameraServiceImplTest::checkSendsCurrentSettings(
     }
     context->TryCancel();
     std::vector<dronecode_sdk::Camera::Setting> arbitrary_current_settings_event;
-    arbitrary_current_settings_event.push_back(createSetting(
-        ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, createOption(ARBITRARY_OPTION_ID)));
+    arbitrary_current_settings_event.push_back(
+        createSetting(ARBITRARY_SETTING_ID,
+                      ARBITRARY_SETTING_DESCRIPTION,
+                      createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
     current_settings_callback(arbitrary_current_settings_event);
     current_settings_events_future.wait();
 
@@ -1028,25 +1038,33 @@ TEST_F(CameraServiceImplTest, sendsMultipleCurrentSettings)
     std::vector<std::vector<dronecode_sdk::Camera::Setting>> current_settings_events;
 
     std::vector<dronecode_sdk::Camera::Setting> current_settings1;
-    current_settings1.push_back(createSetting(
-        "arbitrary_setting_id1", "Arbitrary setting id one", createOption("arbitrary_option_id1")));
-    current_settings1.push_back(createSetting(
-        "arbitrary_setting_id2", "Arbitrary setting id two", createOption("arbitrary_option_id2")));
-    current_settings1.push_back(createSetting("arbitrary_setting_id3",
-                                              "Arbitrary setting id three",
-                                              createOption("arbitrary_option_id3")));
+    current_settings1.push_back(
+        createSetting("arbitrary_setting_id1",
+                      "Arbitrary setting id one",
+                      createOption("arbitrary_option_id1", "Arbitrary Option ID one")));
+    current_settings1.push_back(
+        createSetting("arbitrary_setting_id2",
+                      "Arbitrary setting id two",
+                      createOption("arbitrary_option_id2", "Arbitrary Option ID two")));
+    current_settings1.push_back(
+        createSetting("arbitrary_setting_id3",
+                      "Arbitrary setting id three",
+                      createOption("arbitrary_option_id3", "Arbitrary Option ID three")));
     current_settings_events.push_back(current_settings1);
 
     std::vector<dronecode_sdk::Camera::Setting> current_settings2;
-    current_settings2.push_back(createSetting("arbitrary_setting_id4",
-                                              "Arbitrrary setting id four",
-                                              createOption("arbitrary_option_id4")));
-    current_settings2.push_back(createSetting("arbitrary_setting_id5",
-                                              "Arbitrrary setting id five",
-                                              createOption("arbitrary_option_id5")));
-    current_settings2.push_back(createSetting("arbitrary_setting_id6",
-                                              "Arbitrrary setting id six",
-                                              createOption("arbitrary_option_id6")));
+    current_settings2.push_back(
+        createSetting("arbitrary_setting_id4",
+                      "Arbitrary setting id four",
+                      createOption("arbitrary_option_id4", "Arbitrary Option ID four")));
+    current_settings2.push_back(
+        createSetting("arbitrary_setting_id5",
+                      "Arbitrary setting id five",
+                      createOption("arbitrary_option_id5", "Arbitrary Option ID five")));
+    current_settings2.push_back(
+        createSetting("arbitrary_setting_id6",
+                      "Arbitrary setting id six",
+                      createOption("arbitrary_option_id6", "Arbitrary Option ID six")));
     current_settings_events.push_back(current_settings2);
 
     checkSendsCurrentSettings(current_settings_events);
@@ -1056,7 +1074,7 @@ TEST_F(CameraServiceImplTest, registersToPossibleSettings)
 {
     std::vector<dronecode_sdk::Camera::SettingOptions> possible_settings;
     std::vector<dronecode_sdk::Camera::Option> options;
-    options.push_back(createOption(ARBITRARY_OPTION_ID));
+    options.push_back(createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION));
     possible_settings.push_back(
         createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
     dronecode_sdk::Camera::subscribe_possible_setting_options_callback_t possible_settings_callback;
@@ -1129,7 +1147,7 @@ TEST_F(CameraServiceImplTest, sendsOnePossibleSettingOptions)
 
     std::vector<dronecode_sdk::Camera::SettingOptions> possible_setting_options;
     std::vector<dronecode_sdk::Camera::Option> options;
-    options.push_back(createOption(ARBITRARY_OPTION_ID));
+    options.push_back(createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION));
     possible_setting_options.push_back(
         createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
     possible_setting_options_events.push_back(possible_setting_options);
@@ -1161,7 +1179,7 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
 
     std::vector<dronecode_sdk::Camera::SettingOptions> arbitrary_possible_setting_options;
     std::vector<dronecode_sdk::Camera::Option> options;
-    options.push_back(createOption(ARBITRARY_OPTION_ID));
+    options.push_back(createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION));
     arbitrary_possible_setting_options.push_back(
         createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
     possible_setting_options_callback(arbitrary_possible_setting_options);
@@ -1186,21 +1204,21 @@ TEST_F(CameraServiceImplTest, sendsMultiplePossibleSettingOptionss)
     std::vector<dronecode_sdk::Camera::SettingOptions> possible_setting_options;
 
     std::vector<dronecode_sdk::Camera::Option> options1;
-    options1.push_back(createOption("option1_1"));
-    options1.push_back(createOption("option1_2"));
-    options1.push_back(createOption("option1_3"));
+    options1.push_back(createOption("option1_1", "Option One One"));
+    options1.push_back(createOption("option1_2", "Option One Two"));
+    options1.push_back(createOption("option1_3", "Option One Three"));
     possible_setting_options.push_back(createSettingOptions("setting1", "Setting one", options1));
     std::vector<dronecode_sdk::Camera::Option> options2;
-    options2.push_back(createOption("option1"));
-    options2.push_back(createOption("option2"));
+    options2.push_back(createOption("option1", "Option One"));
+    options2.push_back(createOption("option2", "Option One"));
     possible_setting_options.push_back(createSettingOptions("setting2", "Setting two", options2));
 
     std::vector<dronecode_sdk::Camera::Option> options3;
-    options3.push_back(createOption("option1"));
-    options3.push_back(createOption("option2"));
-    options3.push_back(createOption("option2"));
-    options3.push_back(createOption("option1"));
-    options3.push_back(createOption("option1"));
+    options3.push_back(createOption("option1", "Option One"));
+    options3.push_back(createOption("option2", "Option Two"));
+    options3.push_back(createOption("option3", "Option Three"));
+    options3.push_back(createOption("option4", "Option Four"));
+    options3.push_back(createOption("option5", "Option Five"));
     possible_setting_options.push_back(createSettingOptions("setting3", "Setting Three", options3));
 
     possible_setting_options_events.push_back(possible_setting_options);
