@@ -16,6 +16,7 @@
 #endif
 
 #include <cassert>
+#include <algorithm>
 
 #ifndef WINDOWS
 #define GET_ERROR(_x) strerror(_x)
@@ -123,47 +124,40 @@ ConnectionResult UdpConnection::stop()
 
 bool UdpConnection::send_message(const mavlink_message_t &message)
 {
-    struct sockaddr_in dest_addr {};
+    std::lock_guard<std::mutex> lock(_remote_mutex);
 
-    {
-        std::lock_guard<std::mutex> lock(_remote_mutex);
-
-        if (_remote_ip.empty()) {
-            LogErr() << "Remote IP unknown";
-            return false;
-        }
-
-        if (_remote_port_number == 0) {
-            LogErr() << "Remote port unknown";
-            return false;
-        }
-
-        dest_addr.sin_family = AF_INET;
-
-        inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
-
-        dest_addr.sin_port = htons(_remote_port_number);
-    }
-
-    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-    uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
-
-    // TODO: remove this assert again
-    assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
-
-    int send_len = sendto(_socket_fd,
-                          reinterpret_cast<char *>(buffer),
-                          buffer_len,
-                          0,
-                          reinterpret_cast<const sockaddr *>(&dest_addr),
-                          sizeof(dest_addr));
-
-    if (send_len != buffer_len) {
-        LogErr() << "sendto failure: " << GET_ERROR(errno);
+    if (_remotes.size() == 0) {
+        LogErr() << "No known remotes";
         return false;
     }
 
-    return true;
+    bool send_successful = true;
+
+    for (auto &remote : _remotes) {
+        struct sockaddr_in dest_addr {};
+        dest_addr.sin_family = AF_INET;
+
+        inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr);
+        dest_addr.sin_port = htons(remote.port_number);
+
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
+
+        int send_len = sendto(_socket_fd,
+                              reinterpret_cast<char *>(buffer),
+                              buffer_len,
+                              0,
+                              reinterpret_cast<const sockaddr *>(&dest_addr),
+                              sizeof(dest_addr));
+
+        if (send_len != buffer_len) {
+            LogErr() << "sendto failure: " << GET_ERROR(errno);
+            send_successful = false;
+            continue;
+        }
+    }
+
+    return send_successful;
 }
 
 void UdpConnection::receive()
@@ -197,25 +191,14 @@ void UdpConnection::receive()
         {
             std::lock_guard<std::mutex> lock(_remote_mutex);
 
-            int new_remote_port_number = ntohs(src_addr.sin_port);
-            std::string new_remote_ip(inet_ntoa(src_addr.sin_addr));
+            Remote new_remote;
+            new_remote.ip = inet_ntoa(src_addr.sin_addr);
+            new_remote.port_number = ntohs(src_addr.sin_port);
 
-            if (_remote_ip.empty() || _remote_port_number == 0) {
-                // Set IP if we don't know it yet.
-                _remote_ip = new_remote_ip;
-                _remote_port_number = new_remote_port_number;
-
-                LogInfo() << "New device on: " << _remote_ip << ":" << _remote_port_number;
-
-            } else if (_remote_ip.compare(new_remote_ip) != 0 ||
-                       _remote_port_number != new_remote_port_number) {
-                // It is possible that wifi disconnects and a device might get a new
-                // IP and/or UDP port.
-                _remote_ip = new_remote_ip;
-                _remote_port_number = new_remote_port_number;
-
-                LogInfo() << "Device changed to: " << new_remote_ip << ":"
-                          << new_remote_port_number;
+            auto found = std::find(_remotes.begin(), _remotes.end(), new_remote);
+            if (found == _remotes.end()) {
+                LogInfo() << "New device on: " << new_remote.ip << ":" << new_remote.port_number;
+                _remotes.push_back(new_remote);
             }
         }
 

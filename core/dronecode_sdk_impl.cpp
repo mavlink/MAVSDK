@@ -74,10 +74,6 @@ void DronecodeSDKImpl::receive_message(const mavlink_message_t &message)
         return;
     }
 
-    if (message.sysid != 1) {
-        LogDebug() << "sysid: " << int(message.sysid);
-    }
-
     if (_systems.find(message.sysid) != _systems.end()) {
         _systems.at(message.sysid)->system_impl()->process_mavlink_message(message);
     }
@@ -218,12 +214,6 @@ System &DronecodeSDKImpl::get_system()
         if (_systems.size() > 1) {
             LogErr() << "Error: more than one system found:";
 
-            int i = 0;
-            for (auto it = _systems.begin(); it != _systems.end(); ++it) {
-                LogWarn() << "strange: " << i << ": " << int(it->first) << ", " << it->second;
-                ++i;
-            }
-
             // Just return first system instead of failing.
             return *_systems.begin()->second;
         } else {
@@ -262,10 +252,7 @@ bool DronecodeSDKImpl::is_connected() const
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
-    if (_systems.size() == 1) {
-        return _systems.begin()->second->is_connected();
-    }
-    return false;
+    return _systems.begin()->second->is_connected();
 }
 
 bool DronecodeSDKImpl::is_connected(const uint64_t uuid) const
