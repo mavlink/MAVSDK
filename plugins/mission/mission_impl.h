@@ -111,6 +111,8 @@ private:
         Mission::result_callback_t result_callback{nullptr};
         Mission::mission_items_and_result_callback_t mission_items_and_result_callback{nullptr};
         Mission::progress_callback_t progress_callback{nullptr};
+        int last_current_reported_mission_item{-1};
+        int last_total_reported_mission_item{-1};
     } _mission_data{};
 
     void *_timeout_cookie{nullptr};

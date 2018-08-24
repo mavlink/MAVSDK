@@ -177,17 +177,12 @@ void MissionImpl::process_mission_current(const mavlink_message_t &message)
     mavlink_mission_current_t mission_current;
     mavlink_msg_mission_current_decode(&message, &mission_current);
 
-    bool should_report_progress = false;
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        if (_mission_data.last_current_mavlink_mission_item != mission_current.seq) {
-            _mission_data.last_current_mavlink_mission_item = mission_current.seq;
-            should_report_progress = true;
-        }
+        _mission_data.last_current_mavlink_mission_item = mission_current.seq;
     }
-    if (should_report_progress) {
-        report_progress();
-    }
+
+    report_progress();
 
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
@@ -222,15 +217,12 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t &message)
     mavlink_mission_item_reached_t mission_item_reached;
     mavlink_msg_mission_item_reached_decode(&message, &mission_item_reached);
 
-    bool should_report_progress = false;
-    if (_mission_data.last_reached_mavlink_mission_item != mission_item_reached.seq) {
+    {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _mission_data.last_reached_mavlink_mission_item = mission_item_reached.seq;
-        should_report_progress = true;
     }
 
-    if (should_report_progress) {
-        report_progress();
-    }
+    report_progress();
 }
 
 void MissionImpl::process_mission_count(const mavlink_message_t &message)
@@ -952,9 +944,28 @@ void MissionImpl::report_progress()
         return;
     }
 
-    _parent->call_user_callback([this]() {
-        _mission_data.progress_callback(current_mission_item(), total_mission_items());
-    });
+    int current = current_mission_item();
+    int total = total_mission_items();
+
+    bool should_report = false;
+    {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+        if (_mission_data.last_current_reported_mission_item != current) {
+            _mission_data.last_current_reported_mission_item = current;
+            should_report = true;
+        }
+        if (_mission_data.last_total_reported_mission_item != total) {
+            _mission_data.last_total_reported_mission_item = total;
+            should_report = true;
+        }
+    }
+
+    if (should_report) {
+        _parent->call_user_callback([this, current, total]() {
+            LogDebug() << "current: " << current << ", total: " << total;
+            _mission_data.progress_callback(current, total);
+        });
+    }
 }
 
 void MissionImpl::receive_command_result(MAVLinkCommands::Result result,
