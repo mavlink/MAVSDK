@@ -43,7 +43,6 @@ class Method(object):
     def extract_params(self, pb_method, requests):
         method_input = pb_method.input_type.split(".")[-1]
         request = requests[method_input]
-        # nb_fields = len(request.field)
 
         self._params = []
 
@@ -58,7 +57,6 @@ class Method(object):
     def extract_return_type_and_name(self, pb_method, responses):
         method_output = pb_method.output_type.split(".")[-1]
         response = responses[method_output]
-        # nb_fields = len(response.field)
 
         return_params = list(filter_out_result(response.field))
 
