@@ -42,7 +42,7 @@ using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
 
 // Handles Action's result
-inline void handle_action_err_exit(ActionResult result, const std::string &message);
+inline void handle_action_err_exit(Action::Result result, const std::string &message);
 // Handles Mission's result
 inline void handle_mission_err_exit(Mission::Result result, const std::string &message);
 // Handles Connection result
@@ -144,7 +144,7 @@ int main(int argc, char **argv)
     }
 
     std::cout << "Arming..." << std::endl;
-    const ActionResult arm_result = action->arm();
+    const Action::Result arm_result = action->arm();
     handle_action_err_exit(arm_result, "Arm failed: ");
     std::cout << "Armed." << std::endl;
 
@@ -176,9 +176,10 @@ int main(int argc, char **argv)
     {
         // Mission complete. Command RTL to go home.
         std::cout << "Commanding RTL..." << std::endl;
-        const ActionResult result = action->return_to_launch();
-        if (result != ActionResult::SUCCESS) {
-            std::cout << "Failed to command RTL (" << action_result_str(result) << ")" << std::endl;
+        const Action::Result result = action->return_to_launch();
+        if (result != Action::Result::SUCCESS) {
+            std::cout << "Failed to command RTL (" << Action::result_str(result) << ")"
+                      << std::endl;
         } else {
             std::cout << "Commanded RTL." << std::endl;
         }
@@ -187,10 +188,10 @@ int main(int argc, char **argv)
     return 0;
 }
 
-inline void handle_action_err_exit(ActionResult result, const std::string &message)
+inline void handle_action_err_exit(Action::Result result, const std::string &message)
 {
-    if (result != ActionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << action_result_str(result)
+    if (result != Action::Result::SUCCESS) {
+        std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }

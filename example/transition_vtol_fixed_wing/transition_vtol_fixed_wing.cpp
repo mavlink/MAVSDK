@@ -97,19 +97,19 @@ int main(int argc, char **argv)
 
     // Arm vehicle
     std::cout << "Arming..." << std::endl;
-    const ActionResult arm_result = action->arm();
+    const Action::Result arm_result = action->arm();
 
-    if (arm_result != ActionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << action_result_str(arm_result)
+    if (arm_result != Action::Result::SUCCESS) {
+        std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << Action::result_str(arm_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
 
     // Take off
     std::cout << "Taking off..." << std::endl;
-    const ActionResult takeoff_result = action->takeoff();
-    if (takeoff_result != ActionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << action_result_str(takeoff_result)
+    const Action::Result takeoff_result = action->takeoff();
+    if (takeoff_result != Action::Result::SUCCESS) {
+        std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << Action::result_str(takeoff_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         return 1;
     }
@@ -118,11 +118,11 @@ int main(int argc, char **argv)
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     std::cout << "Transition to fixedwing..." << std::endl;
-    const ActionResult fw_result = action->transition_to_fixedwing();
+    const Action::Result fw_result = action->transition_to_fixedwing();
 
-    if (fw_result != ActionResult::SUCCESS) {
+    if (fw_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT
-                  << "Transition to fixed wing failed: " << action_result_str(fw_result)
+                  << "Transition to fixed wing failed: " << Action::result_str(fw_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         // return 1;
     }
@@ -131,10 +131,10 @@ int main(int argc, char **argv)
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     std::cout << "Transition back to multicopter..." << std::endl;
-    const ActionResult mc_result = action->transition_to_multicopter();
-    if (mc_result != ActionResult::SUCCESS) {
+    const Action::Result mc_result = action->transition_to_multicopter();
+    if (mc_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT
-                  << "Transition to multi copter failed:" << action_result_str(mc_result)
+                  << "Transition to multi copter failed:" << Action::result_str(mc_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         //    return 1;
     }
@@ -144,10 +144,10 @@ int main(int argc, char **argv)
 
     // Return to launch
     std::cout << "Return to launch..." << std::endl;
-    const ActionResult rtl_result = action->return_to_launch();
-    if (rtl_result != ActionResult::SUCCESS) {
+    const Action::Result rtl_result = action->return_to_launch();
+    if (rtl_result != Action::Result::SUCCESS) {
         std::cout << ERROR_CONSOLE_TEXT
-                  << "Returning to launch failed:" << action_result_str(rtl_result)
+                  << "Returning to launch failed:" << Action::result_str(rtl_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         //    return 1;
     }
@@ -157,9 +157,9 @@ int main(int argc, char **argv)
 
     // Land
     std::cout << "Landing..." << std::endl;
-    const ActionResult land_result = action->land();
-    if (land_result != ActionResult::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << action_result_str(land_result)
+    const Action::Result land_result = action->land();
+    if (land_result != Action::Result::SUCCESS) {
+        std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << Action::result_str(land_result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         //    return 1;
     }
