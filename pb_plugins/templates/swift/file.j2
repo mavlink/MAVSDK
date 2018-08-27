@@ -1,0 +1,17 @@
+import Foundation
+import gRPC
+import RxSwift
+
+public class {{ plugin_name }} {
+{%- for enum in enums %}
+{{ indent(enum, 1) }}
+{%- endfor %}
+
+{%- for struct in structs %}
+{{ indent(struct, 1) }}
+{%- endfor %}
+
+{%- for method in methods %}
+{{ indent(method, 1) }}
+{%- endfor %}
+}
