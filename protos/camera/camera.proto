@@ -187,8 +187,9 @@ message CameraStatus {
     float used_storage_mib = 3;
     float available_storage_mib = 4;
     float total_storage_mib = 5;
+    float recording_time_s = 6;
 
-    StorageStatus storage_status = 6;
+    StorageStatus storage_status = 7;
 }
 
 message Setting {
