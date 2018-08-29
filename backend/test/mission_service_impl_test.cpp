@@ -579,7 +579,8 @@ protected:
     }
 
     std::future<void>
-    subscribeMissionProgressAsync(std::vector<std::pair<int, int>> &progress_events) const;
+    subscribeMissionProgressAsync(std::vector<std::pair<int, int>> &progress_events,
+                                  std::shared_ptr<grpc::ClientContext> context) const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<MissionService::Stub> _stub;
@@ -588,23 +589,26 @@ protected:
 TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)
 {
     dc::Mission::progress_callback_t progress_callback;
+    auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_mission, subscribe_progress(_))
         .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
     std::vector<std::pair<int, int>> progress_events;
 
-    auto progress_events_future = subscribeMissionProgressAsync(progress_events);
+    auto progress_events_future = subscribeMissionProgressAsync(progress_events, context);
     _callback_saved_future.wait();
     progress_callback(0, 1);
+    context->TryCancel();
+    progress_callback(0, 0); // TryCancel() requires one more event to trigger...
     progress_events_future.wait();
 }
 
 std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
-    std::vector<std::pair<int, int>> &progress_events) const
+    std::vector<std::pair<int, int>> &progress_events,
+    std::shared_ptr<grpc::ClientContext> context) const
 {
     return std::async(std::launch::async, [&]() {
-        grpc::ClientContext context;
         dronecode_sdk::rpc::mission::SubscribeMissionProgressRequest request;
-        auto response_reader = _stub->SubscribeMissionProgress(&context, request);
+        auto response_reader = _stub->SubscribeMissionProgress(context.get(), request);
 
         dronecode_sdk::rpc::mission::MissionProgressResponse response;
         while (response_reader->Read(&response)) {
@@ -631,12 +635,15 @@ TEST_F(MissionServiceImplProgressTest, SendsMultipleMissionProgressEvents)
     }
     std::vector<std::pair<int, int>> received_progress_events;
 
-    auto progress_events_future = subscribeMissionProgressAsync(received_progress_events);
+    auto context = std::make_shared<grpc::ClientContext>();
+    auto progress_events_future = subscribeMissionProgressAsync(received_progress_events, context);
     _callback_saved_future.wait();
 
     for (const auto progress_event : expected_progress_events) {
         progress_callback(progress_event.first, progress_event.second);
     }
+    context->TryCancel();
+    progress_callback(0, 0); // TryCancel() requires one more event to trigger...
     progress_events_future.wait();
 
     ASSERT_EQ(expected_mission_count, received_progress_events.size());
