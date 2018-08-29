@@ -17,6 +17,9 @@
 #include <mutex>
 #include <future>
 
+// TODO: Figure out what to do with systems without UUID.
+//#define ENABLE_FALLBACK_TO_SYSTEM_ID
+
 namespace dronecode_sdk {
 
 class DronecodeSDKImpl;
@@ -225,7 +228,9 @@ private:
 
     uint64_t _uuid{0};
 
+#if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
     int _uuid_retries = 0;
+#endif
     std::atomic<bool> _uuid_initialized{false};
 
     uint8_t _non_autopilot_heartbeats = 0;

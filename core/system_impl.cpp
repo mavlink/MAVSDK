@@ -424,6 +424,7 @@ void SystemImpl::request_autopilot_version()
         return;
     }
 
+#if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
     if (!_autopilot_version_pending && _uuid_retries >= 3) {
         // We give up getting a UUID and use the system ID.
 
@@ -433,6 +434,7 @@ void SystemImpl::request_autopilot_version()
         set_connected();
         return;
     }
+#endif
 
     _autopilot_version_pending = true;
 
@@ -444,7 +446,9 @@ void SystemImpl::request_autopilot_version()
     command.target_component_id = get_autopilot_id();
 
     send_command_async(command, nullptr);
+#if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
     ++_uuid_retries;
+#endif
 
     // We set a timeout to stay "pending" for half a second. This way, we don't give up too
     // early e.g. because multiple components send heartbeats and we receive them all at once
