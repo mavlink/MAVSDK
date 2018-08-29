@@ -278,23 +278,24 @@ private:
         const dronecode_sdk::rpc::mission::SubscribeMissionProgressRequest * /* request */,
         grpc::ServerWriter<rpc::mission::MissionProgressResponse> *writer) override
     {
-        std::promise<void> mission_finished_promise;
-        auto mission_finished_future = mission_finished_promise.get_future();
+        std::promise<void> stream_closed_promise;
+        auto stream_closed_future = stream_closed_promise.get_future();
 
-        _mission.subscribe_progress([&writer](int current, int total) {
-            dronecode_sdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
-            rpc_mission_progress_response.set_current_item_index(current);
-            rpc_mission_progress_response.set_mission_count(total);
-            writer->Write(rpc_mission_progress_response);
+        bool is_finished = false;
 
-            // FIXME: It is possible that we get this progress update multiple times. If this
-            //        happens, we fulfill the promise more than once which leads to a crash.
-            // if (current == total - 1) {
-            //    mission_finished_promise.set_value();
-            //}
-        });
+        _mission.subscribe_progress(
+            [&writer, &stream_closed_promise, &is_finished](int current, int total) {
+                dronecode_sdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
+                rpc_mission_progress_response.set_current_item_index(current);
+                rpc_mission_progress_response.set_mission_count(total);
 
-        mission_finished_future.wait();
+                if (!writer->Write(rpc_mission_progress_response) && !is_finished) {
+                    is_finished = true;
+                    stream_closed_promise.set_value();
+                }
+            });
+
+        stream_closed_future.wait();
         return grpc::Status::OK;
     }
 
