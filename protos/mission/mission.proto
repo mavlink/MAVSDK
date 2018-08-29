@@ -15,6 +15,8 @@ service MissionService {
     rpc GetMissionCount(GetMissionCountRequest) returns(GetMissionCountResponse) {}
     rpc IsMissionFinished(IsMissionFinishedRequest) returns(IsMissionFinishedResponse) {}
     rpc SubscribeMissionProgress(SubscribeMissionProgressRequest) returns(stream MissionProgressResponse) {}
+    rpc GetReturnToLaunchAfterMission(GetReturnToLaunchAfterMissionRequest) returns(GetReturnToLaunchAfterMissionResponse) {}
+    rpc SetReturnToLaunchAfterMission(SetReturnToLaunchAfterMissionRequest) returns(SetReturnToLaunchAfterMissionResponse) {}
 }
 
 message UploadMissionRequest {
@@ -66,6 +68,16 @@ message SubscribeMissionProgressRequest {}
 message MissionProgressResponse {
     MissionProgress mission_progress = 1;
 }
+
+message GetReturnToLaunchAfterMissionRequest {}
+message GetReturnToLaunchAfterMissionResponse {
+    bool enable = 1;
+}
+
+message SetReturnToLaunchAfterMissionRequest {
+    bool enable = 1;
+}
+message SetReturnToLaunchAfterMissionResponse {}
 
 message Mission {
     repeated MissionItem mission_item = 1;
