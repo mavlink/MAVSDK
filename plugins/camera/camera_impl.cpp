@@ -1238,12 +1238,14 @@ void CameraImpl::subscribe_current_settings(
     const Camera::subscribe_current_settings_callback_t &callback)
 {
     _subscribe_current_settings_callback = callback;
+    notify_current_settings();
 }
 
 void CameraImpl::subscribe_possible_setting_options(
     const Camera::subscribe_possible_setting_options_callback_t &callback)
 {
     _subscribe_possible_setting_options_callback = callback;
+    notify_possible_setting_options();
 }
 
 void CameraImpl::notify_current_settings()
