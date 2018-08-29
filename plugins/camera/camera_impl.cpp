@@ -690,6 +690,7 @@ void CameraImpl::process_camera_capture_status(const mavlink_message_t &message)
         _status.data.photo_interval_on =
             (camera_capture_status.image_status == 2 || camera_capture_status.image_status == 3);
         _status.received_camera_capture_status = true;
+        _status.data.recording_time_s = float(camera_capture_status.recording_time_ms) / 1e3f;
     }
 
     check_status();

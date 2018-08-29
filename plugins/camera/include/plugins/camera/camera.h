@@ -398,6 +398,8 @@ public:
         float used_storage_mib; /**< @brief Used storage in MiB. */
         float available_storage_mib; /**< @brief Available storage in MiB. */
         float total_storage_mib; /**< @brief Total storage in MiB. */
+        float recording_time_s; /**< @brief Elapsed time since starting a video recording in
+                                   seconds. */
     };
 
     /**
