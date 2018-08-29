@@ -92,6 +92,7 @@ message MissionItem {
     float gimbal_pitch_deg = 6;
     float gimbal_yaw_deg = 7;
     CameraAction camera_action = 8;
+    float loiter_time_s = 9;
 
     enum CameraAction {
         NONE = 0;
