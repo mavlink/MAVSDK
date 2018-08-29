@@ -4,7 +4,6 @@
 #include "px4_custom_mode.h"
 #include <functional>
 #include <string>
-#include <sstream>
 
 namespace dronecode_sdk {
 
