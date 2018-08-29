@@ -32,6 +32,8 @@ public:
     void start_video_async(const Camera::result_callback_t &callback);
     void stop_video_async(const Camera::result_callback_t &callback);
 
+    Camera::Information get_information();
+
     void set_video_stream_settings(const Camera::VideoStreamSettings &settings);
     Camera::Result get_video_stream_info(Camera::VideoStreamInfo &info);
     void get_video_stream_info_async(const Camera::get_video_stream_info_callback_t callback);
@@ -112,6 +114,13 @@ private:
         void *call_every_cookie{nullptr};
     } _video_stream_info{};
 
+    struct {
+        std::mutex mutex{};
+        Camera::Information data{};
+    } _information{};
+
+    void *_flight_information_call_every_cookie{nullptr};
+
     void receive_set_mode_command_result(const MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
                                          const Camera::Mode mode);
@@ -134,6 +143,7 @@ private:
     void process_camera_settings(const mavlink_message_t &message);
     void process_camera_information(const mavlink_message_t &message);
     void process_video_information(const mavlink_message_t &message);
+    void process_flight_information(const mavlink_message_t &message);
 
     void receive_storage_information_result(MAVLinkCommands::Result result);
     void receive_camera_capture_status_result(MAVLinkCommands::Result result);
@@ -154,6 +164,8 @@ private:
 
     void refresh_params();
     void invalidate_params();
+
+    void request_flight_information();
 
     void save_camera_mode(const float mavlink_camera_mode);
     float to_mavlink_camera_mode(const Camera::Mode mode) const;
