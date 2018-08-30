@@ -52,6 +52,11 @@ void Camera::start_video_async(const result_callback_t &callback)
     _impl->start_video_async(callback);
 }
 
+Camera::Information Camera::get_information()
+{
+    return _impl->get_information();
+}
+
 Camera::Result Camera::start_video_streaming()
 {
     return _impl->start_video_streaming();

@@ -9,6 +9,7 @@
 #endif
 #include <functional>
 #include <cmath>
+#include <sstream>
 
 namespace dronecode_sdk {
 
@@ -76,6 +77,11 @@ void CameraImpl::init()
         std::bind(&CameraImpl::process_video_information, this, _1),
         this);
 
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_FLIGHT_INFORMATION,
+        std::bind(&CameraImpl::process_flight_information, this, _1),
+        this);
+
     auto command_camera_info = make_command_request_camera_info();
 
     _parent->send_command_async(command_camera_info, nullptr);
@@ -90,11 +96,15 @@ void CameraImpl::deinit()
 void CameraImpl::enable()
 {
     refresh_params();
+    request_flight_information();
+    _parent->add_call_every(
+        [this]() { request_flight_information(); }, 10.0, &_flight_information_call_every_cookie);
 }
 
 void CameraImpl::disable()
 {
     invalidate_params();
+    _parent->remove_call_every(_flight_information_call_every_cookie);
 }
 
 MAVLinkCommands::CommandLong CameraImpl::make_command_request_camera_info()
@@ -370,6 +380,13 @@ void CameraImpl::stop_video_async(const Camera::result_callback_t &callback)
 
     _parent->send_command_async(cmd_stop_video,
                                 std::bind(&CameraImpl::receive_command_result, _1, callback));
+}
+
+Camera::Information CameraImpl::get_information()
+{
+    std::lock_guard<std::mutex> lock(_information.mutex);
+
+    return _information.data;
 }
 
 void CameraImpl::set_video_stream_settings(const Camera::VideoStreamSettings &settings)
@@ -796,6 +813,12 @@ void CameraImpl::process_camera_information(const mavlink_message_t &message)
     mavlink_camera_information_t camera_information;
     mavlink_msg_camera_information_decode(&message, &camera_information);
 
+    {
+        std::lock_guard<std::mutex> lock(_information.mutex);
+        _information.data.vendor_name = (char *)(camera_information.vendor_name);
+        _information.data.model_name = (char *)(camera_information.model_name);
+    }
+
     std::string content{};
     bool found_content = false;
 
@@ -853,6 +876,36 @@ void CameraImpl::process_video_information(const mavlink_message_t &message)
             _video_stream_info.callback = nullptr;
         }
         notify_video_stream_info();
+    }
+}
+
+void CameraImpl::process_flight_information(const mavlink_message_t &message)
+{
+    mavlink_flight_information_t flight_information;
+    mavlink_msg_flight_information_decode(&message, &flight_information);
+
+    std::stringstream folder_name_stream;
+    {
+        std::lock_guard<std::mutex> information_lock(_information.mutex);
+
+        // For Yuneec cameras, the folder names can be derived from the flight ID,
+        // starting at 100 up to 999.
+        if (_information.data.vendor_name == "Yuneec" && _information.data.model_name == "E90") {
+            folder_name_stream << (101 + flight_information.flight_uuid % 899) << "E90HD";
+        } else if (_information.data.vendor_name == "Yuneec" &&
+                   _information.data.model_name == "E50") {
+            folder_name_stream << (101 + flight_information.flight_uuid % 899) << "E50HD";
+        } else if (_information.data.vendor_name == "Yuneec" &&
+                   _information.data.model_name == "CGOET") {
+            folder_name_stream << (101 + flight_information.flight_uuid % 899) << "CGOET";
+        } else {
+            // Folder name unknown
+        }
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_status.mutex);
+        _status.data.media_folder_name = folder_name_stream.str();
     }
 }
 
@@ -1321,6 +1374,17 @@ bool CameraImpl::get_option_str(const std::string &setting_id,
     }
 
     return _camera_definition->get_option_str(setting_id, option_id, description);
+}
+
+void CameraImpl::request_flight_information()
+{
+    MAVLinkCommands::CommandLong command_flight_information{};
+
+    command_flight_information.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
+    command_flight_information.params.param1 = 1.0f; // Request it
+    command_flight_information.target_component_id = MAV_COMP_ID_AUTOPILOT1;
+
+    _parent->send_command_async(command_flight_information, nullptr);
 }
 
 } // namespace dronecode_sdk

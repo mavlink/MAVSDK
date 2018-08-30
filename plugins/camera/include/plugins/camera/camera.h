@@ -163,6 +163,21 @@ public:
     void stop_video_async(const result_callback_t &callback);
 
     /**
+     * @brief General camera information.
+     */
+    struct Information {
+        std::string vendor_name; /**< @brief Vendor name of camera. */
+        std::string model_name; /**< @brief Model name of camera. */
+    };
+
+    /**
+     * @brief Get general camera information.
+     *
+     * @return The camera information struct.
+     */
+    Information get_information();
+
+    /**
      * @brief Camera mode type.
      */
     enum class Mode {
@@ -400,6 +415,7 @@ public:
         float total_storage_mib; /**< @brief Total storage in MiB. */
         float recording_time_s; /**< @brief Elapsed time since starting a video recording in
                                    seconds. */
+        std::string media_folder_name; /**< @brief Current folder name where media is saved. */
     };
 
     /**

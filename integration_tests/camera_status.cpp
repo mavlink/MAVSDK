@@ -89,5 +89,6 @@ static void print_camera_status(const Camera::Status status)
     LogDebug() << "Used: " << status.used_storage_mib / 1024.0f << " GiB";
     LogDebug() << "Available: " << status.available_storage_mib / 1024.0f << " GiB";
     LogDebug() << "Total: " << status.total_storage_mib / 1024.0f << " GiB";
+    LogDebug() << "Folder: " << status.media_folder_name;
     LogDebug() << "------";
 }
