@@ -198,6 +198,26 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status
+    GetReturnToLaunchAltitude(grpc::ServerContext * /* context */,
+                              const rpc::action::GetReturnToLaunchAltitudeRequest * /* request */,
+                              rpc::action::GetReturnToLaunchAltitudeResponse *response) override
+    {
+        if (response != nullptr) {
+            auto result_pair = _action.get_return_to_launch_return_altitude();
+
+            auto *rpc_action_result = new rpc::action::ActionResult();
+            rpc_action_result->set_result(
+                static_cast<rpc::action::ActionResult::Result>(result_pair.first));
+            rpc_action_result->set_result_str(action_result_str(result_pair.first));
+
+            response->set_allocated_action_result(rpc_action_result);
+            response->set_relative_altitude_m(result_pair.second);
+        }
+
+        return grpc::Status::OK;
+    }
+
 private:
     Action &_action;
 };
