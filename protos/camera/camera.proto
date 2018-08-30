@@ -188,8 +188,9 @@ message CameraStatus {
     float available_storage_mib = 4;
     float total_storage_mib = 5;
     float recording_time_s = 6;
+    string media_folder_name = 7;
 
-    StorageStatus storage_status = 7;
+    StorageStatus storage_status = 8;
 }
 
 message Setting {
