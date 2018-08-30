@@ -18,6 +18,8 @@ service ActionService {
     rpc SetTakeoffAltitude(SetTakeoffAltitudeRequest) returns(SetTakeoffAltitudeResponse) {}
     rpc GetMaximumSpeed(GetMaximumSpeedRequest) returns(GetMaximumSpeedResponse) {}
     rpc SetMaximumSpeed(SetMaximumSpeedRequest) returns(SetMaximumSpeedResponse) {}
+    rpc GetReturnToLaunchAltitude(GetReturnToLaunchAltitudeRequest) returns(GetReturnToLaunchAltitudeResponse) {}
+    rpc SetReturnToLaunchAltitude(SetReturnToLaunchAltitudeRequest) returns(SetReturnToLaunchAltitudeResponse) {}
 }
 
 message ArmRequest {}
@@ -83,6 +85,19 @@ message SetMaximumSpeedRequest {
     float speed = 1;
 }
 message SetMaximumSpeedResponse {
+    ActionResult action_result = 1;
+}
+
+message GetReturnToLaunchAltitudeRequest {}
+message GetReturnToLaunchAltitudeResponse {
+    ActionResult action_result = 1;
+    float relative_altitude_m = 2;
+}
+
+message SetReturnToLaunchAltitudeRequest {
+    float relative_altitude_m = 1;
+}
+message SetReturnToLaunchAltitudeResponse {
     ActionResult action_result = 1;
 }
 
