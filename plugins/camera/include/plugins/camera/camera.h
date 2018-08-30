@@ -260,6 +260,21 @@ public:
             float z; /**< @brief Quaternion entry 3 also denoted as d. */
         } quaternion; /**< @brief Quaternion of camera orientation. */
 
+        /**
+         * @brief Euler angle type.
+         *
+         * All rotations and axis systems follow the right-hand rule.
+         * The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+         *
+         * For more info see https://en.wikipedia.org/wiki/Euler_angles
+         */
+        struct EulerAngle {
+            float roll_deg; /**< @brief Roll angle in degrees, positive is banking to the right. */
+            float pitch_deg; /**< @brief Pitch angle in degrees, positive is pitching nose up. */
+            float yaw_deg; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above.
+                            */
+        } euler_angle; /**< @brief Euler Angle of camera orientation. */
+
         uint64_t time_utc_us; /**< @brief Timestamp in UTC (since UNIX epoch) in microseconds. */
         bool success; /**< @brief True if capture was successful. */
         int index; /**< @brief Zero-based index of this image since armed. */
