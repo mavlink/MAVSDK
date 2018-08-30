@@ -612,8 +612,8 @@ std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
 
         dronecode_sdk::rpc::mission::MissionProgressResponse response;
         while (response_reader->Read(&response)) {
-            auto progress_event =
-                std::make_pair(response.current_item_index(), response.mission_count());
+            auto progress_event = std::make_pair(response.mission_progress().current_item_index(),
+                                                 response.mission_progress().mission_count());
 
             progress_events.push_back(progress_event);
         }

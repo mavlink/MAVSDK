@@ -286,8 +286,15 @@ private:
         _mission.subscribe_progress(
             [&writer, &stream_closed_promise, &is_finished](int current, int total) {
                 dronecode_sdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
-                rpc_mission_progress_response.set_current_item_index(current);
-                rpc_mission_progress_response.set_mission_count(total);
+
+                auto rpc_mission_progress =
+                    std::unique_ptr<dronecode_sdk::rpc::mission::MissionProgress>(
+                        new dronecode_sdk::rpc::mission::MissionProgress);
+                rpc_mission_progress->set_current_item_index(current);
+                rpc_mission_progress->set_mission_count(total);
+
+                rpc_mission_progress_response.set_allocated_mission_progress(
+                    rpc_mission_progress.release());
 
                 if (!writer->Write(rpc_mission_progress_response) && !is_finished) {
                     is_finished = true;
