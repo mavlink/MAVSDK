@@ -287,6 +287,7 @@ bool operator==(const Camera::Status &lhs, const Camera::Status &rhs)
            lhs.used_storage_mib == rhs.used_storage_mib &&
            lhs.available_storage_mib == rhs.available_storage_mib &&
            lhs.total_storage_mib == rhs.total_storage_mib &&
+           lhs.media_folder_name == rhs.media_folder_name &&
            lhs.recording_time_s == rhs.recording_time_s && lhs.storage_status == rhs.storage_status;
 }
 
@@ -298,6 +299,7 @@ std::ostream &operator<<(std::ostream &str, Camera::Status const &status)
                << ", available_storage_mib: " << status.available_storage_mib
                << ", total_storage_mib: " << status.total_storage_mib
                << ", recording_time_s: " << status.recording_time_s
+               << ", media_folder_name: " << status.media_folder_name
                << ", storage_status: " << status.storage_status << "]";
 }
 

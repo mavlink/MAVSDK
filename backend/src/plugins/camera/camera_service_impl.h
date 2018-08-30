@@ -458,6 +458,7 @@ public:
         status->set_used_storage_mib(camera_status.used_storage_mib);
         status->set_available_storage_mib(camera_status.available_storage_mib);
         status->set_recording_time_s(camera_status.recording_time_s);
+        status->set_media_folder_name(camera_status.media_folder_name);
         status->set_total_storage_mib(camera_status.total_storage_mib);
 
         return status;
@@ -487,6 +488,7 @@ public:
         status.used_storage_mib = rpc_camera_status.used_storage_mib();
         status.available_storage_mib = rpc_camera_status.available_storage_mib();
         status.recording_time_s = rpc_camera_status.recording_time_s();
+        status.media_folder_name = rpc_camera_status.media_folder_name();
         status.total_storage_mib = rpc_camera_status.total_storage_mib();
 
         return status;
