@@ -56,6 +56,7 @@ std::vector<std::shared_ptr<dc::MissionItem>> generateListOfOneItem()
     mission_item->set_fly_through(false);
     mission_item->set_gimbal_pitch_and_yaw(45.2f, 90.3f);
     mission_item->set_camera_action(CameraAction::NONE);
+    mission_item->set_loiter_time(3.2);
 
     mission_items.push_back(mission_item);
     return mission_items;
@@ -72,6 +73,7 @@ std::vector<std::shared_ptr<dc::MissionItem>> generateListOfMultipleItems()
     mission_item0->set_fly_through(false);
     mission_item0->set_gimbal_pitch_and_yaw(45.2f, 90.3f);
     mission_item0->set_camera_action(CameraAction::NONE);
+    mission_item0->set_loiter_time(1.1);
 
     auto mission_item1 = std::make_shared<dc::MissionItem>();
     mission_item1->set_position(46.522626, 6.635356);
@@ -96,6 +98,7 @@ std::vector<std::shared_ptr<dc::MissionItem>> generateListOfMultipleItems()
     mission_item3->set_fly_through(false);
     mission_item3->set_gimbal_pitch_and_yaw(11.2f, 20.3f);
     mission_item3->set_camera_action(CameraAction::STOP_PHOTO_INTERVAL);
+    mission_item3->set_loiter_time(4.4);
 
     auto mission_item4 = std::make_shared<dc::MissionItem>();
     mission_item4->set_position(48.142652, 3.626236);
