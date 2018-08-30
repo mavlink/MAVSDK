@@ -170,6 +170,7 @@ public:
         rpc_mission_item->set_gimbal_yaw_deg(mission_item->get_gimbal_yaw_deg());
         rpc_mission_item->set_camera_action(
             translateCameraAction(mission_item->get_camera_action()));
+        rpc_mission_item->set_loiter_time_s(mission_item->get_loiter_time_s());
     }
 
     static rpc::mission::MissionItem::CameraAction
@@ -204,6 +205,7 @@ public:
         mission_item->set_gimbal_pitch_and_yaw(rpc_mission_item.gimbal_pitch_deg(),
                                                rpc_mission_item.gimbal_yaw_deg());
         mission_item->set_camera_action(translateRPCCameraAction(rpc_mission_item.camera_action()));
+        mission_item->set_loiter_time(rpc_mission_item.loiter_time_s());
 
         return mission_item;
     }
