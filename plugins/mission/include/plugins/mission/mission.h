@@ -118,6 +118,27 @@ public:
     void download_mission_async(mission_items_and_result_callback_t callback);
 
     /**
+     * @brief Set whether to trigger Return-to-Launch (RTL) after mission is complete.
+     *
+     * This enables/disables to command RTL at the end of a mission.
+     *
+     * @note After setting this option, the mission needs to be re-uploaded.
+     *
+     * @param enable Enables RTL after mission is complete.
+     */
+    void set_return_to_launch_after_mission(bool enable);
+
+    /**
+     * @brief Get whether to trigger Return-to-Launch (RTL) after mission is complete.
+     *
+     * @note Before getting this option, it needs to be set, or a mission
+     *       needs to be downloaded.
+     *
+     * @return True if RTL after mission is complete is enabled.
+     */
+    bool get_return_to_launch_after_mission();
+
+    /**
      * @brief Starts the mission (asynchronous).
      *
      * Note that the mission must be uploaded to the vehicle using `upload_mission_async()` before

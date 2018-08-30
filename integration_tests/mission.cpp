@@ -137,6 +137,10 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
                                                  MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
     }
 
+    EXPECT_FALSE(mission->get_return_to_launch_after_mission());
+    mission->set_return_to_launch_after_mission(true);
+    EXPECT_TRUE(mission->get_return_to_launch_after_mission());
+
     {
         LogInfo() << "Uploading mission...";
         // We only have the upload_mission function asynchronous for now, so we wrap it using
@@ -183,6 +187,8 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         future_result.get();
     }
 
+    EXPECT_TRUE(mission->get_return_to_launch_after_mission());
+
     LogInfo() << "Arming...";
     const ActionResult arm_result = action->arm();
     EXPECT_EQ(arm_result, ActionResult::SUCCESS);
@@ -212,20 +218,12 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         future_result.get();
     }
 
+    // At the end of the mission it should RTL automatically, we can
+    // just wait for auto disarm.
+
     while (!mission->mission_finished()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-
-    {
-        // We are done, and can do RTL to go home.
-        LogInfo() << "Commanding RTL...";
-        const ActionResult result = action->return_to_launch();
-        EXPECT_EQ(result, ActionResult::SUCCESS);
-        LogInfo() << "Commanded RTL.";
-    }
-
-    // We need to wait a bit, otherwise the armed state might not be correct yet.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     while (telemetry->armed()) {
         // Wait until we're done.

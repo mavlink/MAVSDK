@@ -414,6 +414,16 @@ void MissionImpl::download_mission_async(
     }
 }
 
+void MissionImpl::set_return_to_launch_after_mission(bool enable_rtl)
+{
+    _enable_return_to_launch_after_mission = enable_rtl;
+}
+
+bool MissionImpl::get_return_to_launch_after_mission()
+{
+    return _enable_return_to_launch_after_mission;
+}
+
 void MissionImpl::assemble_mavlink_messages()
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
@@ -645,6 +655,32 @@ void MissionImpl::assemble_mavlink_messages()
 
         ++item_i;
     }
+
+    if (_enable_return_to_launch_after_mission) {
+        std::shared_ptr<mavlink_message_t> message_rtl(new mavlink_message_t());
+        mavlink_msg_mission_item_int_pack(GCSClient::system_id,
+                                          GCSClient::component_id,
+                                          message_rtl.get(),
+                                          _parent->get_system_id(),
+                                          _parent->get_autopilot_id(),
+                                          _mission_data.mavlink_mission_item_messages.size(),
+                                          MAV_FRAME_MISSION,
+                                          MAV_CMD_NAV_RETURN_TO_LAUNCH,
+                                          0, // current
+                                          1, // autocontinue
+                                          NAN, // loiter time in seconds
+                                          NAN, // empty
+                                          NAN, // radius around waypoint in meters ?
+                                          NAN, // loiter at center of waypoint
+                                          0,
+                                          0,
+                                          0,
+                                          MAV_MISSION_TYPE_MISSION);
+
+        _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+            static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
+        _mission_data.mavlink_mission_item_messages.push_back(message_rtl);
+    }
 }
 
 void MissionImpl::assemble_mission_items()
@@ -654,6 +690,7 @@ void MissionImpl::assemble_mission_items()
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _mission_data.mission_items.clear();
+        _enable_return_to_launch_after_mission = false;
 
         auto new_mission_item = std::make_shared<MissionItem>();
         bool have_set_position = false;
@@ -739,6 +776,9 @@ void MissionImpl::assemble_mission_items()
 
             } else if (it->command == MAV_CMD_NAV_LOITER_TIME) {
                 new_mission_item->set_loiter_time(it->param1);
+
+            } else if (it->command == MAV_CMD_NAV_RETURN_TO_LAUNCH) {
+                _enable_return_to_launch_after_mission = true;
 
             } else {
                 LogErr() << "UNSUPPORTED mission item command (" << it->command << ")";
@@ -1007,7 +1047,11 @@ bool MissionImpl::is_mission_finished() const
     // It is not straightforward to look at "current" because it jumps to 0
     // once the last item has been done. Therefore we have to lo decide using
     // "reached" here.
-    return (unsigned(_mission_data.last_reached_mavlink_mission_item + 1) ==
+    // It seems that we never receive a reached when RTL is initiated after
+    // a mission, and we need to account for that.
+    const unsigned rtl_correction = _enable_return_to_launch_after_mission ? 2 : 1;
+
+    return (unsigned(_mission_data.last_reached_mavlink_mission_item + rtl_correction) ==
             _mission_data.mavlink_mission_item_messages.size());
 }
 

@@ -20,6 +20,16 @@ void Mission::download_mission_async(Mission::mission_items_and_result_callback_
     _impl->download_mission_async(callback);
 }
 
+void Mission::set_return_to_launch_after_mission(bool enable)
+{
+    _impl->set_return_to_launch_after_mission(enable);
+}
+
+bool Mission::get_return_to_launch_after_mission()
+{
+    return _impl->get_return_to_launch_after_mission();
+}
+
 void Mission::start_mission_async(result_callback_t callback)
 {
     _impl->start_mission_async(callback);

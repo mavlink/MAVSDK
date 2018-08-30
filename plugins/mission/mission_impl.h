@@ -30,6 +30,9 @@ public:
 
     void download_mission_async(const Mission::mission_items_and_result_callback_t &callback);
 
+    void set_return_to_launch_after_mission(bool enable_rtl);
+    bool get_return_to_launch_after_mission();
+
     void start_mission_async(const Mission::result_callback_t &callback);
     void pause_mission_async(const Mission::result_callback_t &callback);
 
@@ -116,6 +119,8 @@ private:
     } _mission_data{};
 
     void *_timeout_cookie{nullptr};
+
+    bool _enable_return_to_launch_after_mission{false};
 
     static constexpr unsigned MAX_RETRIES = 3;
 
