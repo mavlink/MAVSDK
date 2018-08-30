@@ -166,8 +166,8 @@ public:
      * @brief General camera information.
      */
     struct Information {
-        std::string vendor_name;
-        std::string model_name;
+        std::string vendor_name; /**< @brief Vendor name of camera. */
+        std::string model_name; /**< @brief Model name of camera. */
     };
 
     /**
