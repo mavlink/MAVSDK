@@ -100,7 +100,9 @@ protected:
                        const dronecode_sdk::Camera::Status::StorageStatus storage_status,
                        const float used_storage_mib,
                        const float available_storage_mib,
-                       const float total_storage_mib) const;
+                       const float total_storage_mib,
+                       const float recording_time_s,
+                       const std::string media_folder_name) const;
     std::future<void>
     subscribeCameraStatusAsync(std::vector<dronecode_sdk::Camera::Status> &camera_status_events,
                                std::shared_ptr<grpc::ClientContext> context) const;
@@ -779,8 +781,8 @@ dronecode_sdk::Camera::CaptureInfo CameraServiceImplTest::createArbitraryCapture
 
 TEST_F(CameraServiceImplTest, registersToCameraStatus)
 {
-    const auto expected_camera_status =
-        createCameraStatus(false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f);
+    const auto expected_camera_status = createCameraStatus(
+        false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f, 0.4f, "100E90HD");
     dronecode_sdk::Camera::subscribe_status_callback_t status_callback;
     EXPECT_CALL(_camera, subscribe_status(_))
         .WillOnce(SaveResult(&status_callback, &_callback_saved_promise));
@@ -800,7 +802,9 @@ dronecode_sdk::Camera::Status CameraServiceImplTest::createCameraStatus(
     const dronecode_sdk::Camera::Status::StorageStatus storage_status,
     const float used_storage_mib,
     const float available_storage_mib,
-    const float total_storage_mib) const
+    const float total_storage_mib,
+    const float recording_time_s,
+    const std::string media_folder_name) const
 {
     dronecode_sdk::Camera::Status status;
     status.video_on = is_video_on;
@@ -809,6 +813,8 @@ dronecode_sdk::Camera::Status CameraServiceImplTest::createCameraStatus(
     status.used_storage_mib = used_storage_mib;
     status.available_storage_mib = available_storage_mib;
     status.total_storage_mib = total_storage_mib;
+    status.recording_time_s = recording_time_s;
+    status.media_folder_name = media_folder_name;
 
     return status;
 }
@@ -846,8 +852,8 @@ TEST_F(CameraServiceImplTest, doesNotSendCameraStatusIfCallbackNotCalled)
 TEST_F(CameraServiceImplTest, sendsOneCameraStatus)
 {
     std::vector<dronecode_sdk::Camera::Status> camera_status_events;
-    auto camera_status_event =
-        createCameraStatus(false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f);
+    auto camera_status_event = createCameraStatus(
+        false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f, 22.4f, "105E90HD");
     camera_status_events.push_back(camera_status_event);
 
     checkSendsCameraStatus(camera_status_events);
@@ -871,8 +877,8 @@ void CameraServiceImplTest::checkSendsCameraStatus(
         camera_status_callback(camera_status_event);
     }
     context->TryCancel();
-    auto arbitrary_camera_status_event =
-        createCameraStatus(false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f);
+    auto arbitrary_camera_status_event = createCameraStatus(
+        false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f, 0.0f, "111E90HD");
     camera_status_callback(arbitrary_camera_status_event);
     camera_status_events_future.wait();
 
@@ -886,17 +892,33 @@ TEST_F(CameraServiceImplTest, sendsMultipleCameraStatus)
 {
     std::vector<dronecode_sdk::Camera::Status> camera_status_events;
 
-    camera_status_events.push_back(createCameraStatus(
-        true, true, dronecode_sdk::Camera::Status::StorageStatus::UNFORMATTED, 1.2f, 3.4f, 2.2f));
-    camera_status_events.push_back(createCameraStatus(
-        true, false, dronecode_sdk::Camera::Status::StorageStatus::FORMATTED, 11.2f, 58.4f, 8.65f));
+    camera_status_events.push_back(
+        createCameraStatus(true,
+                           true,
+                           dronecode_sdk::Camera::Status::StorageStatus::UNFORMATTED,
+                           1.2f,
+                           3.4f,
+                           2.2f,
+                           2.3f,
+                           "104E90HD"));
+    camera_status_events.push_back(
+        createCameraStatus(true,
+                           false,
+                           dronecode_sdk::Camera::Status::StorageStatus::FORMATTED,
+                           11.2f,
+                           58.4f,
+                           8.65f,
+                           2.2f,
+                           "360E90HD"));
     camera_status_events.push_back(
         createCameraStatus(false,
                            false,
                            dronecode_sdk::Camera::Status::StorageStatus::NOT_AVAILABLE,
                            1.5f,
                            8.1f,
-                           6.3f));
+                           6.3f,
+                           1.4f,
+                           "GOPRO621"));
 
     checkSendsCameraStatus(camera_status_events);
 }
