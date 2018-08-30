@@ -32,6 +32,10 @@ std::string
 transitionToFWAndGetTranslatedResult(const dronecode_sdk::ActionResult transition_to_fw_result);
 std::string
 transitionToMCAndGetTranslatedResult(const dronecode_sdk::ActionResult transition_to_fw_result);
+std::string
+getReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::ActionResult action_result);
+std::string
+setReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::ActionResult action_result);
 
 class ActionServiceImplTest : public ::testing::TestWithParam<InputPair> {};
 
@@ -386,6 +390,109 @@ TEST_F(ActionServiceImplTest, setMaxSpeedSetsRightValue)
     request.set_speed(expected_speed);
 
     actionService.SetMaximumSpeed(nullptr, &request, nullptr);
+}
+
+TEST_P(ActionServiceImplTest, getReturnToLaunchAltitudeResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = getReturnToLaunchAltitudeAndGetTranslatedResult(GetParam().second);
+    EXPECT_EQ(rpc_result, GetParam().first);
+}
+
+std::string
+getReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::ActionResult action_result)
+{
+    MockAction action;
+    const auto return_pair = std::make_pair<>(action_result, ARBITRARY_ALTITUDE);
+    ON_CALL(action, get_return_to_launch_return_altitude()).WillByDefault(Return(return_pair));
+    ActionServiceImpl actionService(action);
+    dronecode_sdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
+
+    actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
+
+    return ActionResult::Result_Name(response.action_result().result());
+}
+
+TEST_F(ActionServiceImplTest, getReturnToLaunchAltitudeCallsGetter)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, get_return_to_launch_return_altitude()).Times(1);
+    dronecode_sdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
+
+    actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
+}
+
+TEST_P(ActionServiceImplTest, getsCorrectReturnToLaunchAltitude)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_ALTITUDE);
+    ON_CALL(action, get_return_to_launch_return_altitude()).WillByDefault(Return(expected_pair));
+    dronecode_sdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
+
+    actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
+
+    EXPECT_EQ(GetParam().first, ActionResult::Result_Name(response.action_result().result()));
+    EXPECT_EQ(expected_pair.second, response.relative_altitude_m());
+}
+
+TEST_F(ActionServiceImplTest, getReturnToLaunchAltitudeDoesNotCrashWithNullResponse)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+
+    actionService.GetReturnToLaunchAltitude(nullptr, nullptr, nullptr);
+}
+
+TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeResultIsTranslatedCorrectly)
+{
+    const auto rpc_result = setReturnToLaunchAltitudeAndGetTranslatedResult(GetParam().second);
+    EXPECT_EQ(rpc_result, GetParam().first);
+}
+
+std::string
+setReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::ActionResult action_result)
+{
+    MockAction action;
+    ON_CALL(action, set_return_to_launch_return_altitude(_)).WillByDefault(Return(action_result));
+    ActionServiceImpl actionService(action);
+    dronecode_sdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
+    request.set_relative_altitude_m(ARBITRARY_ALTITUDE);
+    dronecode_sdk::rpc::action::SetReturnToLaunchAltitudeResponse response;
+
+    actionService.SetReturnToLaunchAltitude(nullptr, &request, &response);
+
+    return ActionResult::Result_Name(response.action_result().result());
+}
+
+TEST_F(ActionServiceImplTest, setReturnToLaunchAltitudeDoesNotCrashWithNullParams)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+
+    actionService.SetReturnToLaunchAltitude(nullptr, nullptr, nullptr);
+}
+
+TEST_F(ActionServiceImplTest, setReturnToLaunchAltitudeCallsSetter)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    EXPECT_CALL(action, set_return_to_launch_return_altitude(_)).Times(1);
+    dronecode_sdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
+
+    actionService.SetReturnToLaunchAltitude(nullptr, &request, nullptr);
+}
+
+TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeSetsRightValue)
+{
+    MockAction action;
+    ActionServiceImpl actionService(action);
+    float expected_altitude = ARBITRARY_ALTITUDE;
+    EXPECT_CALL(action, set_return_to_launch_return_altitude(expected_altitude)).Times(1);
+    dronecode_sdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
+    request.set_relative_altitude_m(expected_altitude);
+
+    actionService.SetReturnToLaunchAltitude(nullptr, &request, nullptr);
 }
 
 INSTANTIATE_TEST_CASE_P(ActionResultCorrespondences,
