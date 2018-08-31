@@ -41,6 +41,7 @@ public:
         SUCCESS = 0, /**< @brief Request succeeded. */
         NO_LOGFILES, /**< @brief No logfiles found. */
         TOO_MANY_RETRIES, /**< @brief Too many retries. */
+        PROGRESS, /**< @brief Progress update. */
         UNKNOWN /**< @brief Unknown error. */
     };
 
@@ -55,7 +56,7 @@ public:
     struct Entry {
         unsigned id;
         std::string date;
-        unsigned bytes;
+        unsigned size_bytes;
     };
 
     /**
@@ -75,7 +76,19 @@ public:
      *
      * @param callback Callback to get result from.
      */
-    void get_entries_async(LogFiles::get_entries_callback_t callback);
+    void get_entries_async(get_entries_callback_t callback);
+
+    /**
+     * @brief Callback type for logging requests.
+     */
+    typedef std::function<void(Result, float progress)> download_log_file_callback_t;
+
+    /**
+     * @brief Download log file (asynchronous).
+     *
+     * @param callback Callback to get result and progress.
+     */
+    void download_log_file_async(unsigned id, download_log_file_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).

@@ -20,6 +20,9 @@ void LogFilesImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_LOG_ENTRY, std::bind(&LogFilesImpl::process_log_entry, this, _1), this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_LOG_DATA, std::bind(&LogFilesImpl::process_log_data, this, _1), this);
 }
 
 void LogFilesImpl::deinit()
@@ -54,7 +57,7 @@ void LogFilesImpl::get_entries_async(LogFiles::get_entries_callback_t callback)
     }
 
     _parent->register_timeout_handler(
-        std::bind(&LogFilesImpl::request_list_timeout, this), 0.5, &_entries.cookie);
+        std::bind(&LogFilesImpl::list_timeout, this), 0.5, &_entries.cookie);
 
     request_list_entry(-1);
 }
@@ -90,7 +93,7 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t &message)
     LogFiles::Entry new_entry;
     new_entry.id = log_entry.id;
     // TODO: add date
-    new_entry.bytes = log_entry.size;
+    new_entry.size_bytes = log_entry.size;
     {
         std::lock_guard<std::mutex> lock(_entries.mutex);
         _entries.entry_map[new_entry.id] = new_entry;
@@ -99,7 +102,7 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t &message)
     }
 }
 
-void LogFilesImpl::request_list_timeout()
+void LogFilesImpl::list_timeout()
 {
     std::lock_guard<std::mutex> lock(_entries.mutex);
     if (_entries.entry_map.size() == 0) {
@@ -133,10 +136,134 @@ void LogFilesImpl::request_list_timeout()
                 }
             }
             _parent->register_timeout_handler(
-                std::bind(&LogFilesImpl::request_list_timeout, this), 0.5, &_entries.cookie);
+                std::bind(&LogFilesImpl::list_timeout, this), 0.5, &_entries.cookie);
             _entries.retries++;
         }
     }
+}
+
+void LogFilesImpl::download_log_file_async(unsigned id,
+                                           LogFiles::download_log_file_callback_t callback)
+{
+    unsigned bytes_to_get;
+    {
+        std::lock_guard<std::mutex> lock(_entries.mutex);
+
+        auto it = _entries.entry_map.find(id);
+        if (it == _entries.entry_map.end()) {
+            LogErr() << "Log entry id " << id << " not found";
+            return;
+        }
+
+        bytes_to_get = _entries.entry_map[id].size_bytes;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_data.mutex);
+
+        // TODO: check for busy
+        _data.rerequesting = false;
+        _data.id = id;
+        _data.bytes.resize(bytes_to_get);
+        _data.num_chunks = bytes_to_get / CHUNK_SIZE;
+        if (bytes_to_get % CHUNK_SIZE) {
+            ++_data.num_chunks;
+        }
+        _data.chunks_received.resize(_data.num_chunks);
+
+        _parent->register_timeout_handler(
+            std::bind(&LogFilesImpl::data_timeout, this), 0.2, &_data.cookie);
+    }
+
+    request_log_data(id, 0, bytes_to_get);
+
+    UNUSED(callback);
+}
+
+void LogFilesImpl::process_log_data(const mavlink_message_t &message)
+{
+    mavlink_log_data_t log_data;
+    mavlink_msg_log_data_decode(&message, &log_data);
+
+    static unsigned counter = 0;
+    if (counter < 3 && (log_data.ofs == 1800 || log_data.ofs == 3600)) {
+        ++counter;
+        return;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_data.mutex);
+
+        _parent->refresh_timeout_handler(_data.cookie);
+
+        LogDebug() << "Received log data id: " << int(log_data.id) << ", ofs: " << int(log_data.ofs)
+                   << ", count: " << int(log_data.count);
+
+        if (log_data.count > CHUNK_SIZE) {
+            LogErr() << "Ignoring wrong count";
+            return;
+        }
+
+        if (log_data.ofs / CHUNK_SIZE >= _data.chunks_received.size()) {
+            LogErr() << "Ignoring wrong offset";
+            return;
+        }
+
+        std::memcpy(&_data.bytes[log_data.ofs], log_data.data, log_data.count);
+        _data.chunks_received[log_data.ofs / CHUNK_SIZE] = true;
+
+        if (log_data.ofs / CHUNK_SIZE + 1 == _data.chunks_received.size()) {
+            _data.rerequesting = true;
+        }
+    }
+
+    check_missing_log_data();
+}
+
+void LogFilesImpl::check_missing_log_data()
+{
+    std::lock_guard<std::mutex> lock(_entries.mutex);
+
+    if (!_data.rerequesting) {
+        return;
+    }
+
+    LogDebug() << "Checking if we received all log data";
+    for (unsigned i = 0; i < _data.chunks_received.size(); ++i) {
+        if (!_data.chunks_received[i]) {
+            unsigned bytes_to_get = CHUNK_SIZE;
+            if (i + 1 == _data.chunks_received.size()) {
+                bytes_to_get = _data.bytes.size() - (_data.chunks_received.size() * CHUNK_SIZE - 1);
+            }
+            LogDebug() << "Re-requesting log data " << i * CHUNK_SIZE;
+            request_log_data(_data.id, i * CHUNK_SIZE, bytes_to_get);
+            return;
+        }
+    }
+
+    LogDebug() << "Received all log data.";
+    _parent->unregister_timeout_handler(_data.cookie);
+}
+
+void LogFilesImpl::request_log_data(unsigned id, unsigned chunk_id, unsigned bytes_to_get)
+{
+    mavlink_message_t msg;
+    mavlink_msg_log_request_data_pack(GCSClient::system_id,
+                                      GCSClient::component_id,
+                                      &msg,
+                                      _parent->get_system_id(),
+                                      MAV_COMP_ID_AUTOPILOT1,
+                                      id,
+                                      chunk_id,
+                                      bytes_to_get);
+    _parent->send_message(msg);
+}
+
+void LogFilesImpl::data_timeout()
+{
+    _parent->register_timeout_handler(
+        std::bind(&LogFilesImpl::data_timeout, this), 0.2, &_data.cookie);
+    check_missing_log_data();
 }
 
 } // namespace dronecode_sdk

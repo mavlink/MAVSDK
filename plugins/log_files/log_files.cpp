@@ -12,9 +12,14 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFiles::get_entries(
     return _impl->get_entries();
 }
 
-void LogFiles::get_entries_async(LogFiles::get_entries_callback_t callback)
+void LogFiles::get_entries_async(get_entries_callback_t callback)
 {
     _impl->get_entries_async(callback);
+}
+
+void LogFiles::download_log_file_async(unsigned id, download_log_file_callback_t callback)
+{
+    _impl->download_log_file_async(id, callback);
 }
 
 const char *LogFiles::result_str(Result result)
