@@ -563,6 +563,24 @@ public:
         const subscribe_possible_setting_options_callback_t &callback);
 
     /**
+     * @brief Format storage (e.g. SD card) in camera (asynchronous).
+     *
+     * @note This will delete all content of the camera storage (e.g. SD card).
+     *
+     * @param callback Callback to get result.
+     */
+    void format_storage_async(result_callback_t callback);
+
+    /**
+     * @brief Format storage (e.g. SD card) in camera (synchronous).
+     *
+     * @note This will delete all content of the camera storage (e.g. SD card).
+     *
+     * @return result of request.
+     */
+    Result format_storage();
+
+    /**
      * @brief Copy constructor (object is not copyable).
      */
     Camera(const Camera &) = delete;

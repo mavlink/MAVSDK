@@ -166,6 +166,16 @@ void Camera::subscribe_possible_setting_options(
     _impl->subscribe_possible_setting_options(callback);
 }
 
+Camera::Result Camera::format_storage()
+{
+    return _impl->format_storage();
+}
+
+void Camera::format_storage_async(result_callback_t callback)
+{
+    _impl->format_storage_async(callback);
+}
+
 std::string Camera::result_str(Result result)
 {
     switch (result) {

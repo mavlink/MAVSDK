@@ -72,6 +72,9 @@ public:
     void subscribe_possible_setting_options(
         const Camera::subscribe_possible_setting_options_callback_t &callback);
 
+    Camera::Result format_storage();
+    void format_storage_async(Camera::result_callback_t callback);
+
     // Non-copyable
     CameraImpl(const CameraImpl &) = delete;
     const CameraImpl &operator=(const CameraImpl &) = delete;

@@ -1406,4 +1406,27 @@ void CameraImpl::request_flight_information()
     _parent->send_command_async(command_flight_information, nullptr);
 }
 
+Camera::Result CameraImpl::format_storage()
+{
+    auto prom = std::make_shared<std::promise<Camera::Result>>();
+    auto ret = prom->get_future();
+
+    format_storage_async([prom](Camera::Result result) { prom->set_value(result); });
+
+    return ret.get();
+}
+
+void CameraImpl::format_storage_async(Camera::result_callback_t callback)
+{
+    MAVLinkCommands::CommandLong cmd_format{};
+
+    cmd_format.command = MAV_CMD_STORAGE_FORMAT;
+    cmd_format.params.param1 = 1.0f; // storage ID
+    cmd_format.params.param2 = 1.0f; // format
+    cmd_format.target_component_id = MAV_COMP_ID_CAMERA;
+
+    _parent->send_command_async(cmd_format,
+                                std::bind(&CameraImpl::receive_command_result, _1, callback));
+}
+
 } // namespace dronecode_sdk
