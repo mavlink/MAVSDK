@@ -348,8 +348,10 @@ public:
             std::unique_ptr<rpc::camera::CaptureInfo>(new rpc::camera::CaptureInfo());
         rpc_capture_info->set_allocated_position(
             translatePosition(capture_info.position).release());
-        rpc_capture_info->set_allocated_quaternion(
-            translateQuaternion(capture_info.quaternion).release());
+        rpc_capture_info->set_allocated_attitude_quaternion(
+            translateAttitudeQuaternion(capture_info.attitude_quaternion).release());
+        rpc_capture_info->set_allocated_attitude_euler_angle(
+            translateAttitudeEulerAngle(capture_info.attitude_euler_angle).release());
         rpc_capture_info->set_time_utc_us(capture_info.time_utc_us);
         rpc_capture_info->set_is_success(capture_info.success);
         rpc_capture_info->set_index(capture_info.index);
@@ -370,17 +372,29 @@ public:
         return rpc_position;
     }
 
-    static std::unique_ptr<rpc::camera::Quaternion>
-    translateQuaternion(const dronecode_sdk::Camera::CaptureInfo::Quaternion &quaternion)
+    static std::unique_ptr<rpc::camera::Quaternion> translateAttitudeQuaternion(
+        const dronecode_sdk::Camera::CaptureInfo::Quaternion &attitude_quaternion)
     {
         auto rpc_quaternion =
             std::unique_ptr<rpc::camera::Quaternion>(new rpc::camera::Quaternion());
-        rpc_quaternion->set_w(quaternion.w);
-        rpc_quaternion->set_x(quaternion.x);
-        rpc_quaternion->set_y(quaternion.y);
-        rpc_quaternion->set_z(quaternion.z);
+        rpc_quaternion->set_w(attitude_quaternion.w);
+        rpc_quaternion->set_x(attitude_quaternion.x);
+        rpc_quaternion->set_y(attitude_quaternion.y);
+        rpc_quaternion->set_z(attitude_quaternion.z);
 
         return rpc_quaternion;
+    }
+
+    static std::unique_ptr<rpc::camera::EulerAngle> translateAttitudeEulerAngle(
+        const dronecode_sdk::Camera::CaptureInfo::EulerAngle &attitude_euler_angle)
+    {
+        auto rpc_euler_angle =
+            std::unique_ptr<rpc::camera::EulerAngle>(new rpc::camera::EulerAngle());
+        rpc_euler_angle->set_yaw_deg(attitude_euler_angle.yaw_deg);
+        rpc_euler_angle->set_pitch_deg(attitude_euler_angle.pitch_deg);
+        rpc_euler_angle->set_roll_deg(attitude_euler_angle.roll_deg);
+
+        return rpc_euler_angle;
     }
 
     static dronecode_sdk::Camera::CaptureInfo
@@ -388,7 +402,10 @@ public:
     {
         dronecode_sdk::Camera::CaptureInfo capture_info;
         capture_info.position = translateRPCPosition(rpc_capture_info.position());
-        capture_info.quaternion = translateRPCQuaternion(rpc_capture_info.quaternion());
+        capture_info.attitude_quaternion =
+            translateRPCQuaternion(rpc_capture_info.attitude_quaternion());
+        capture_info.attitude_euler_angle =
+            translateRPCEulerAngle(rpc_capture_info.attitude_euler_angle());
         capture_info.time_utc_us = rpc_capture_info.time_utc_us();
         capture_info.success = rpc_capture_info.is_success();
         capture_info.index = rpc_capture_info.index();
@@ -419,6 +436,17 @@ public:
         quaternion.z = rpc_quaternion.z();
 
         return quaternion;
+    }
+
+    static dronecode_sdk::Camera::CaptureInfo::EulerAngle
+    translateRPCEulerAngle(const rpc::camera::EulerAngle &rpc_euler_angle)
+    {
+        dronecode_sdk::Camera::CaptureInfo::EulerAngle euler_angle;
+        euler_angle.yaw_deg = rpc_euler_angle.yaw_deg();
+        euler_angle.pitch_deg = rpc_euler_angle.pitch_deg();
+        euler_angle.roll_deg = rpc_euler_angle.roll_deg();
+
+        return euler_angle;
     }
 
     grpc::Status

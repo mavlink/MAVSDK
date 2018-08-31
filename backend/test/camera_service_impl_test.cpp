@@ -89,7 +89,9 @@ protected:
     std::unique_ptr<dronecode_sdk::rpc::camera::Position> createRPCPosition(
         const double lat, const double lng, const float abs_alt, const float rel_alt) const;
     std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion>
-    createRPCQuaternion(const float w, const float x, const float y, const float z) const;
+    createRPCAttitudeQuaternion(const float w, const float x, const float y, const float z) const;
+    std::unique_ptr<dronecode_sdk::rpc::camera::EulerAngle> createRPCAttitudeEulerAngle(
+        const float yaw_deg, const float pitch_deg, const float roll_deg) const;
     void checkSendsCaptureInfo(
         const std::vector<dronecode_sdk::Camera::CaptureInfo> &capture_info_events) const;
     dronecode_sdk::Camera::CaptureInfo createArbitraryCaptureInfo() const;
@@ -655,7 +657,10 @@ CameraServiceImplTest::createArbitraryRPCCaptureInfo() const
         new dronecode_sdk::rpc::camera::CaptureInfo());
     rpc_info->set_allocated_position(
         createRPCPosition(41.848695, 75.132751, 3002.1f, 50.3f).release());
-    rpc_info->set_allocated_quaternion(createRPCQuaternion(0.1f, 0.2f, 0.3f, 0.4f).release());
+    rpc_info->set_allocated_attitude_quaternion(
+        createRPCAttitudeQuaternion(0.1f, 0.2f, 0.3f, 0.4f).release());
+    rpc_info->set_allocated_attitude_euler_angle(
+        createRPCAttitudeEulerAngle(12.2f, 90.0f, 11.1f).release());
     rpc_info->set_time_utc_us(ARBITRARY_INT);
     rpc_info->set_is_success(ARBITRARY_BOOL);
     rpc_info->set_index(ARBITRARY_INT);
@@ -678,8 +683,11 @@ std::unique_ptr<dronecode_sdk::rpc::camera::Position> CameraServiceImplTest::cre
     return expected_position;
 }
 
-std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion> CameraServiceImplTest::createRPCQuaternion(
-    const float w, const float x, const float y, const float z) const
+std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion>
+CameraServiceImplTest::createRPCAttitudeQuaternion(const float w,
+                                                   const float x,
+                                                   const float y,
+                                                   const float z) const
 {
     auto quaternion = std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion>(
         new dronecode_sdk::rpc::camera::Quaternion());
@@ -690,6 +698,21 @@ std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion> CameraServiceImplTest::c
     quaternion->set_z(z);
 
     return quaternion;
+}
+
+std::unique_ptr<dronecode_sdk::rpc::camera::EulerAngle>
+CameraServiceImplTest::createRPCAttitudeEulerAngle(const float yaw_deg,
+                                                   const float pitch_deg,
+                                                   const float roll_deg) const
+{
+    auto euler_angle = std::unique_ptr<dronecode_sdk::rpc::camera::EulerAngle>(
+        new dronecode_sdk::rpc::camera::EulerAngle());
+
+    euler_angle->set_yaw_deg(yaw_deg);
+    euler_angle->set_pitch_deg(pitch_deg);
+    euler_angle->set_roll_deg(roll_deg);
+
+    return euler_angle;
 }
 
 TEST_F(CameraServiceImplTest, doesNotSendCaptureInfoIfCallbackNotCalled)
@@ -768,9 +791,15 @@ dronecode_sdk::Camera::CaptureInfo CameraServiceImplTest::createArbitraryCapture
     quaternion.y = 1.1f;
     quaternion.z = -4.2f;
 
+    dronecode_sdk::Camera::CaptureInfo::EulerAngle euler_angle;
+    euler_angle.yaw_deg = 12.6f;
+    euler_angle.pitch_deg = 102.3f;
+    euler_angle.roll_deg = -24.0f;
+
     dronecode_sdk::Camera::CaptureInfo capture_info;
     capture_info.position = position;
-    capture_info.quaternion = quaternion;
+    capture_info.attitude_quaternion = quaternion;
+    capture_info.attitude_euler_angle = euler_angle;
     capture_info.time_utc_us = ARBITRARY_INT;
     capture_info.success = ARBITRARY_BOOL;
     capture_info.index = ARBITRARY_INT;

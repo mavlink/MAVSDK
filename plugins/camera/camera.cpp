@@ -238,7 +238,8 @@ std::ostream &operator<<(std::ostream &str,
 
 bool operator==(const Camera::CaptureInfo &lhs, const Camera::CaptureInfo &rhs)
 {
-    return lhs.position == rhs.position && lhs.quaternion == rhs.quaternion &&
+    return lhs.position == rhs.position && lhs.attitude_quaternion == rhs.attitude_quaternion &&
+           lhs.attitude_euler_angle == rhs.attitude_euler_angle &&
            lhs.time_utc_us == rhs.time_utc_us && lhs.success == rhs.success &&
            lhs.index == rhs.index && lhs.file_url == rhs.file_url;
 }
@@ -247,7 +248,8 @@ std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo const &capture_i
 {
     return str << "[" << std::endl
                << "position: " << capture_info.position << std::endl
-               << "quaternion: " << capture_info.quaternion << std::endl
+               << "attitude_quaternion: " << capture_info.attitude_quaternion << std::endl
+               << "attitude_euler_angle: " << capture_info.attitude_euler_angle << std::endl
                << "time_utc_us: " << capture_info.time_utc_us << std::endl
                << "is_success: " << capture_info.success << std::endl
                << "index: " << capture_info.index << std::endl
@@ -277,8 +279,21 @@ bool operator==(const Camera::CaptureInfo::Quaternion &lhs,
 
 std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion const &quaternion)
 {
-    return str << "[w: " << quaternion.w << "x: " << quaternion.x << "y: " << quaternion.y
-               << "z: " << quaternion.z << "]";
+    return str << "[w: " << quaternion.w << ", x: " << quaternion.x << ", y: " << quaternion.y
+               << ", z: " << quaternion.z << "]";
+}
+
+bool operator==(const Camera::CaptureInfo::EulerAngle &lhs,
+                const Camera::CaptureInfo::EulerAngle &rhs)
+{
+    return lhs.yaw_deg == rhs.yaw_deg && lhs.pitch_deg == rhs.pitch_deg &&
+           lhs.roll_deg == rhs.roll_deg;
+}
+
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::EulerAngle const &euler_angle)
+{
+    return str << "[yaw_deg: " << euler_angle.yaw_deg << ", pitch_deg: " << euler_angle.pitch_deg
+               << ", roll_deg: " << euler_angle.roll_deg;
 }
 
 bool operator==(const Camera::Status &lhs, const Camera::Status &rhs)

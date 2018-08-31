@@ -258,7 +258,7 @@ public:
             float x; /**< @brief Quaternion entry 1 also denoted as b. */
             float y; /**< @brief Quaternion entry 2 also denoted as c. */
             float z; /**< @brief Quaternion entry 3 also denoted as d. */
-        } quaternion; /**< @brief Quaternion of camera orientation. */
+        } attitude_quaternion; /**< @brief Quaternion of camera orientation. */
 
         /**
          * @brief Euler angle type.
@@ -273,7 +273,7 @@ public:
             float pitch_deg; /**< @brief Pitch angle in degrees, positive is pitching nose up. */
             float yaw_deg; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above.
                             */
-        } euler_angle; /**< @brief Euler Angle of camera orientation. */
+        } attitude_euler_angle; /**< @brief Euler Angle of camera orientation. */
 
         uint64_t time_utc_us; /**< @brief Timestamp in UTC (since UNIX epoch) in microseconds. */
         bool success; /**< @brief True if capture was successful. */
@@ -656,6 +656,21 @@ bool operator==(const Camera::CaptureInfo::Quaternion &lhs,
  * @return A reference to the stream.
  */
 std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion const &quaternion);
+
+/**
+ * @brief Equal operator to compare two `Camera::CaptureInfo::EulerAngle` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Camera::CaptureInfo::EulerAngle &lhs,
+                const Camera::CaptureInfo::EulerAngle &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Camera::CaptureInfo::EulerAngle`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::EulerAngle const &euler_angle);
 
 /**
  * @brief Equal operator to compare two `Camera::Status` objects.
