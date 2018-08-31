@@ -24,6 +24,7 @@ add_executable(integration_tests_runner
     camera_status.cpp
     camera_take_photo.cpp
     camera_take_photo_interval.cpp
+    camera_format.cpp
     camera_test_helpers.cpp
     camera_test_helpers.h
     CMakeLists.txt
