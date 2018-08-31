@@ -134,11 +134,12 @@ enum CameraMode {
 
 message CaptureInfo {
     Position position = 1;
-    Quaternion quaternion = 2;
-    uint64 time_utc_us = 3;
-    bool is_success = 4;
-    int32 index = 5;
-    string file_url = 6;
+    Quaternion attitude_quaternion = 2;
+    EulerAngle attitude_euler_angle = 3;
+    uint64 time_utc_us = 4;
+    bool is_success = 5;
+    int32 index = 6;
+    string file_url = 7;
 }
 
 message Position {
@@ -153,6 +154,12 @@ message Quaternion {
     float x = 2;
     float y = 3;
     float z = 4;
+}
+
+message EulerAngle {
+    float roll_deg = 1;
+    float pitch_deg = 2;
+    float yaw_deg = 3;
 }
 
 message VideoStreamSettings {
