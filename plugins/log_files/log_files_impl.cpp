@@ -330,12 +330,10 @@ void LogFilesImpl::check_missing_log_data()
             _data.chunks_to_rerequest_initially = num_missing;
         }
 
-        if (_data.callback) {
+        if (_data.callback && num_missing > 0) {
             unsigned new_progress =
                 90.0f + 10.0f * float(_data.chunks_to_rerequest_initially - num_missing) /
                             float(_data.chunks_to_rerequest_initially);
-
-            LogDebug() << "New progress: " << new_progress;
 
             if (new_progress != _data.last_progress_percentage) {
                 tmp_callback = _data.callback;
