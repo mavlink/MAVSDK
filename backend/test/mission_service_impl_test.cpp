@@ -653,6 +653,58 @@ TEST_F(MissionServiceImplProgressTest, SendsMultipleMissionProgressEvents)
     EXPECT_EQ(expected_progress_events, received_progress_events);
 }
 
+class MissionServiceImplGetRTLAfterMissionTest : public MissionServiceImplTestBase {
+protected:
+    void checkGetRTLAfterMissionReturns(const bool expected_value);
+};
+
+TEST_F(MissionServiceImplGetRTLAfterMissionTest, getRTLAfterMissionDoesNotCrashWithNullResponse)
+{
+    _mission_service.GetReturnToLaunchAfterMission(nullptr, nullptr, nullptr);
+}
+
+TEST_F(MissionServiceImplGetRTLAfterMissionTest, getRTLAfterMissionReturnsCorrectValue)
+{
+    checkGetRTLAfterMissionReturns(true);
+    checkGetRTLAfterMissionReturns(false);
+}
+
+void MissionServiceImplGetRTLAfterMissionTest::checkGetRTLAfterMissionReturns(
+    const bool expected_value)
+{
+    dronecode_sdk::rpc::mission::GetReturnToLaunchAfterMissionResponse response;
+    ON_CALL(_mission, get_return_to_launch_after_mission()).WillByDefault(Return(expected_value));
+
+    _mission_service.GetReturnToLaunchAfterMission(nullptr, nullptr, &response);
+    EXPECT_EQ(expected_value, response.enable());
+}
+
+class MissionServiceImplSetRTLAfterMissionTest : public MissionServiceImplTestBase {
+protected:
+    void checkSetRTLAfterMissionSets(const bool expected_value);
+};
+
+TEST_F(MissionServiceImplSetRTLAfterMissionTest, setRTLAfterMissionDoesNotCrashWithNullRequest)
+{
+    _mission_service.SetReturnToLaunchAfterMission(nullptr, nullptr, nullptr);
+}
+
+TEST_F(MissionServiceImplSetRTLAfterMissionTest, setRTLAfterMissionSetsRightValue)
+{
+    checkSetRTLAfterMissionSets(false);
+    checkSetRTLAfterMissionSets(true);
+}
+
+void MissionServiceImplSetRTLAfterMissionTest::checkSetRTLAfterMissionSets(
+    const bool expected_value)
+{
+    EXPECT_CALL(_mission, set_return_to_launch_after_mission(expected_value));
+    dronecode_sdk::rpc::mission::SetReturnToLaunchAfterMissionRequest request;
+    request.set_enable(expected_value);
+
+    _mission_service.SetReturnToLaunchAfterMission(nullptr, &request, nullptr);
+}
+
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;

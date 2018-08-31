@@ -158,6 +158,63 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeMissionProgress(
+        grpc::ServerContext * /* context */,
+        const dronecode_sdk::rpc::mission::SubscribeMissionProgressRequest * /* request */,
+        grpc::ServerWriter<rpc::mission::MissionProgressResponse> *writer) override
+    {
+        std::promise<void> stream_closed_promise;
+        auto stream_closed_future = stream_closed_promise.get_future();
+
+        bool is_finished = false;
+
+        _mission.subscribe_progress(
+            [&writer, &stream_closed_promise, &is_finished](int current, int total) {
+                dronecode_sdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
+
+                auto rpc_mission_progress =
+                    std::unique_ptr<dronecode_sdk::rpc::mission::MissionProgress>(
+                        new dronecode_sdk::rpc::mission::MissionProgress);
+                rpc_mission_progress->set_current_item_index(current);
+                rpc_mission_progress->set_mission_count(total);
+
+                rpc_mission_progress_response.set_allocated_mission_progress(
+                    rpc_mission_progress.release());
+
+                if (!writer->Write(rpc_mission_progress_response) && !is_finished) {
+                    is_finished = true;
+                    stream_closed_promise.set_value();
+                }
+            });
+
+        stream_closed_future.wait();
+        return grpc::Status::OK;
+    }
+
+    grpc::Status GetReturnToLaunchAfterMission(
+        grpc::ServerContext * /* context */,
+        const rpc::mission::GetReturnToLaunchAfterMissionRequest * /* request */,
+        rpc::mission::GetReturnToLaunchAfterMissionResponse *response) override
+    {
+        if (response != nullptr) {
+            response->set_enable(_mission.get_return_to_launch_after_mission());
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetReturnToLaunchAfterMission(
+        grpc::ServerContext * /* context */,
+        const rpc::mission::SetReturnToLaunchAfterMissionRequest *request,
+        rpc::mission::SetReturnToLaunchAfterMissionResponse * /* response */) override
+    {
+        if (request != nullptr) {
+            _mission.set_return_to_launch_after_mission(request->enable());
+        }
+
+        return grpc::Status::OK;
+    }
+
     static void translateMissionItem(const std::shared_ptr<MissionItem> mission_item,
                                      rpc::mission::MissionItem *rpc_mission_item)
     {
@@ -273,39 +330,6 @@ private:
         rpc_mission_result->set_result_str(dronecode_sdk::Mission::result_str(result));
 
         return rpc_mission_result;
-    }
-
-    grpc::Status SubscribeMissionProgress(
-        grpc::ServerContext * /* context */,
-        const dronecode_sdk::rpc::mission::SubscribeMissionProgressRequest * /* request */,
-        grpc::ServerWriter<rpc::mission::MissionProgressResponse> *writer) override
-    {
-        std::promise<void> stream_closed_promise;
-        auto stream_closed_future = stream_closed_promise.get_future();
-
-        bool is_finished = false;
-
-        _mission.subscribe_progress(
-            [&writer, &stream_closed_promise, &is_finished](int current, int total) {
-                dronecode_sdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
-
-                auto rpc_mission_progress =
-                    std::unique_ptr<dronecode_sdk::rpc::mission::MissionProgress>(
-                        new dronecode_sdk::rpc::mission::MissionProgress);
-                rpc_mission_progress->set_current_item_index(current);
-                rpc_mission_progress->set_mission_count(total);
-
-                rpc_mission_progress_response.set_allocated_mission_progress(
-                    rpc_mission_progress.release());
-
-                if (!writer->Write(rpc_mission_progress_response) && !is_finished) {
-                    is_finished = true;
-                    stream_closed_promise.set_value();
-                }
-            });
-
-        stream_closed_future.wait();
-        return grpc::Status::OK;
     }
 
     Mission &_mission;

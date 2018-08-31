@@ -22,6 +22,8 @@ public:
     MOCK_CONST_METHOD0(total_mission_items, int());
     MOCK_CONST_METHOD0(mission_finished, bool());
     MOCK_CONST_METHOD1(subscribe_progress, void(Mission::progress_callback_t));
+    MOCK_CONST_METHOD0(get_return_to_launch_after_mission, bool());
+    MOCK_CONST_METHOD1(set_return_to_launch_after_mission, void(bool));
 };
 
 } // namespace testing
