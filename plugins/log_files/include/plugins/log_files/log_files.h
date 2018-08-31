@@ -53,10 +53,15 @@ public:
      */
     static const char *result_str(Result result);
 
+    /**
+     * @brief Log file type.
+     *
+     * Describes a log file entry that could be downloaded.
+     */
     struct Entry {
-        unsigned id;
-        std::string date;
-        unsigned size_bytes;
+        unsigned id; /**< @brief ID of the logfile, to specify a file to be downloaded. */
+        std::string date; /**< @brief Date of log file in UTC in format "yyyy-mm-ddThh::mm::ssZ" */
+        unsigned size_bytes; /**< Size of file in bytes. */
     };
 
     /**
@@ -79,13 +84,26 @@ public:
     void get_entries_async(get_entries_callback_t callback);
 
     /**
+     * @brief Download log file (synchronous).
+     *
+     * @note The synchronous method does only report progress through console logs.
+     *
+     * @param id Entry id of log file to download.
+     * @param file_path File path where to download file to.
+     * @return Result of request
+     */
+    Result download_log_file(unsigned id, const std::string &file_path);
+
+    /**
      * @brief Callback type for logging requests.
      */
-    typedef std::function<void(Result, float progress)> download_log_file_callback_t;
+    typedef std::function<void(Result result, float progress)> download_log_file_callback_t;
 
     /**
      * @brief Download log file (asynchronous).
      *
+     * @param id Entry id of log file to download.
+     * @param file_path File path where to download file to.
      * @param callback Callback to get result and progress.
      */
     void download_log_file_async(unsigned id,

@@ -17,6 +17,11 @@ void LogFiles::get_entries_async(get_entries_callback_t callback)
     _impl->get_entries_async(callback);
 }
 
+LogFiles::Result LogFiles::download_log_file(unsigned id, const std::string &file_path)
+{
+    return _impl->download_log_file(id, file_path);
+}
+
 void LogFiles::download_log_file_async(unsigned id,
                                        const std::string &file_path,
                                        download_log_file_callback_t callback)

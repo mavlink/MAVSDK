@@ -24,6 +24,9 @@ void LogFilesImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_LOG_DATA, std::bind(&LogFilesImpl::process_log_data, this, _1), this);
+
+    // Cancel any log file downloads that might still be going on.
+    request_end();
 }
 
 void LogFilesImpl::deinit()
@@ -34,6 +37,17 @@ void LogFilesImpl::deinit()
 void LogFilesImpl::enable() {}
 
 void LogFilesImpl::disable() {}
+
+void LogFilesImpl::request_end()
+{
+    mavlink_message_t msg;
+    mavlink_msg_log_request_end_pack(GCSClient::system_id,
+                                     GCSClient::component_id,
+                                     &msg,
+                                     _parent->get_system_id(),
+                                     MAV_COMP_ID_AUTOPILOT1);
+    _parent->send_message(msg);
+}
 
 std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entries()
 {
@@ -116,16 +130,19 @@ void LogFilesImpl::list_timeout()
             entry_list.push_back(_entries.entry_map[i]);
         }
         if (_entries.callback) {
-            _parent->call_user_callback(
-                [this, entry_list]() { _entries.callback(LogFiles::Result::SUCCESS, entry_list); });
+            LogFiles::get_entries_callback_t tmp_callback = _entries.callback;
+            _parent->call_user_callback([tmp_callback, entry_list]() {
+                tmp_callback(LogFiles::Result::SUCCESS, entry_list);
+            });
         }
     } else {
         if (_entries.retries > 20) {
             LogWarn() << "Too many log entry retries, giving up.";
             if (_entries.callback) {
-                _parent->call_user_callback([this]() {
+                LogFiles::get_entries_callback_t tmp_callback = _entries.callback;
+                _parent->call_user_callback([tmp_callback]() {
                     std::vector<LogFiles::Entry> empty_vector{};
-                    _entries.callback(LogFiles::Result::TOO_MANY_RETRIES, empty_vector);
+                    tmp_callback(LogFiles::Result::TOO_MANY_RETRIES, empty_vector);
                 });
             }
         } else {
@@ -141,6 +158,21 @@ void LogFilesImpl::list_timeout()
             _entries.retries++;
         }
     }
+}
+
+LogFiles::Result LogFilesImpl::download_log_file(unsigned id, const std::string &file_path)
+{
+    auto prom = std::make_shared<std::promise<LogFiles::Result>>();
+    auto future_result = prom->get_future();
+
+    download_log_file_async(id, file_path, [prom](LogFiles::Result result, float progress) {
+        if (result == LogFiles::Result::PROGRESS) {
+            LogInfo() << "Download progress: " << 100.0f * progress;
+        } else {
+            prom->set_value(result);
+        }
+    });
+    return future_result.get();
 }
 
 void LogFilesImpl::download_log_file_async(unsigned id,
@@ -169,6 +201,9 @@ void LogFilesImpl::download_log_file_async(unsigned id,
         _data.bytes.resize(bytes_to_get);
         _data.num_chunks = bytes_to_get / CHUNK_SIZE;
         _data.file_path = file_path;
+        _data.callback = callback;
+        _data.last_progress_percentage = 0;
+        _data.chunks_to_rerequest_initially = 0;
         if (bytes_to_get % CHUNK_SIZE) {
             ++_data.num_chunks;
         }
@@ -176,11 +211,15 @@ void LogFilesImpl::download_log_file_async(unsigned id,
 
         _parent->register_timeout_handler(
             std::bind(&LogFilesImpl::data_timeout, this), 0.2, &_data.cookie);
+
+        if (_data.callback) {
+            LogFiles::download_log_file_callback_t tmp_callback = _data.callback;
+            _parent->call_user_callback(
+                [tmp_callback]() { tmp_callback(LogFiles::Result::PROGRESS, 0.0f); });
+        }
     }
 
     request_log_data(id, 0, bytes_to_get);
-
-    UNUSED(callback);
 }
 
 void LogFilesImpl::process_log_data(const mavlink_message_t &message)
@@ -202,8 +241,9 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
 
         _parent->refresh_timeout_handler(_data.cookie);
 
-        LogDebug() << "Received log data id: " << int(log_data.id) << ", ofs: " << int(log_data.ofs)
-                   << ", count: " << int(log_data.count);
+        // LogDebug() << "Received log data id: " << int(log_data.id) << ", ofs: " <<
+        // int(log_data.ofs)
+        //            << ", count: " << int(log_data.count);
 
         if (log_data.count > CHUNK_SIZE) {
             LogErr() << "Ignoring wrong count";
@@ -218,6 +258,25 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
         std::memcpy(&_data.bytes[log_data.ofs], log_data.data, log_data.count);
         _data.chunks_received[log_data.ofs / CHUNK_SIZE] = true;
 
+        // Don't report if already re-requesting, progress is handled already.
+        if (!_data.rerequesting) {
+            // We leave the last 10% for retransmissions, that's just a guess.
+            unsigned new_percentage =
+                (float(log_data.ofs) / float(_data.bytes.size())) * 100.0f * 0.9f;
+
+            // Only report every 1%
+            if (new_percentage != _data.last_progress_percentage) {
+                _data.last_progress_percentage = new_percentage;
+                if (_data.callback) {
+                    LogFiles::download_log_file_callback_t tmp_callback = _data.callback;
+                    float progress = _data.last_progress_percentage / 100.0f;
+                    _parent->call_user_callback([tmp_callback, progress]() {
+                        tmp_callback(LogFiles::Result::PROGRESS, progress);
+                    });
+                }
+            }
+        }
+
         if (log_data.ofs / CHUNK_SIZE + 1 == _data.chunks_received.size()) {
             _data.rerequesting = true;
         }
@@ -228,6 +287,7 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
 
 void LogFilesImpl::check_missing_log_data()
 {
+    LogFiles::download_log_file_callback_t tmp_callback;
     {
         std::lock_guard<std::mutex> lock(_data.mutex);
 
@@ -235,25 +295,65 @@ void LogFilesImpl::check_missing_log_data()
             return;
         }
 
-        LogDebug() << "Checking if we received all log data";
+        unsigned num_missing = 0;
+        unsigned id_to_get = 0;
+        unsigned ofs_to_get = 0;
+        unsigned bytes_to_get = 0;
+
+        // LogDebug() << "Checking if we received all log data";
         for (unsigned i = 0; i < _data.chunks_received.size(); ++i) {
             if (!_data.chunks_received[i]) {
-                unsigned bytes_to_get = CHUNK_SIZE;
-                if (i + 1 == _data.chunks_received.size()) {
-                    bytes_to_get =
-                        _data.bytes.size() - (_data.chunks_received.size() * CHUNK_SIZE - 1);
+                if (num_missing == 0) {
+                    bytes_to_get = CHUNK_SIZE;
+                    if (i + 1 == _data.chunks_received.size()) {
+                        bytes_to_get =
+                            _data.bytes.size() - (_data.chunks_received.size() * CHUNK_SIZE - 1);
+                    }
+
+                    id_to_get = _data.id;
+                    ofs_to_get = i * CHUNK_SIZE;
                 }
-                LogDebug() << "Re-requesting log data " << i * CHUNK_SIZE;
-                request_log_data(_data.id, i * CHUNK_SIZE, bytes_to_get);
-                return;
+                ++num_missing;
             }
         }
 
-        LogDebug() << "Received all log data.";
-        _parent->unregister_timeout_handler(_data.cookie);
-    }
+        // We need to estimate the progress percentage for the chunks which need to
+        // get re-requested and we use the last 10% for this.
+        if (_data.chunks_to_rerequest_initially == 0) {
+            _data.chunks_to_rerequest_initially = num_missing;
+        }
 
+        if (_data.callback) {
+            unsigned new_progress =
+                90.0f + 10.0f * float(_data.chunks_to_rerequest_initially - num_missing) /
+                            float(_data.chunks_to_rerequest_initially);
+
+            LogDebug() << "New progress: " << new_progress;
+
+            if (new_progress != _data.last_progress_percentage) {
+                tmp_callback = _data.callback;
+                _data.last_progress_percentage = new_progress;
+                _parent->call_user_callback([tmp_callback, new_progress]() {
+                    tmp_callback(LogFiles::Result::PROGRESS, new_progress / 100.0f);
+                });
+            }
+        }
+
+        if (num_missing > 0) {
+            LogDebug() << "Re-requesting log data " << ofs_to_get;
+            request_log_data(id_to_get, ofs_to_get, bytes_to_get);
+            return;
+        }
+
+        _parent->unregister_timeout_handler(_data.cookie);
+        tmp_callback = _data.callback;
+    }
     write_log_data_to_disk();
+
+    if (_data.callback) {
+        _parent->call_user_callback(
+            [tmp_callback]() { tmp_callback(LogFiles::Result::SUCCESS, 1.0f); });
+    }
 }
 
 void LogFilesImpl::request_log_data(unsigned id, unsigned chunk_id, unsigned bytes_to_get)
@@ -272,9 +372,11 @@ void LogFilesImpl::request_log_data(unsigned id, unsigned chunk_id, unsigned byt
 
 void LogFilesImpl::data_timeout()
 {
-    std::lock_guard<std::mutex> lock(_data.mutex);
-    _parent->register_timeout_handler(
-        std::bind(&LogFilesImpl::data_timeout, this), 0.2, &_data.cookie);
+    {
+        std::lock_guard<std::mutex> lock(_data.mutex);
+        _parent->register_timeout_handler(
+            std::bind(&LogFilesImpl::data_timeout, this), 0.2, &_data.cookie);
+    }
     check_missing_log_data();
 }
 

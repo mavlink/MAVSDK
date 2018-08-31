@@ -21,11 +21,14 @@ public:
     std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> get_entries();
     void get_entries_async(LogFiles::get_entries_callback_t callback);
 
+    LogFiles::Result download_log_file(unsigned id, const std::string &file_path);
     void download_log_file_async(unsigned id,
                                  const std::string &file_path,
                                  LogFiles::download_log_file_callback_t callback);
 
 private:
+    void request_end();
+
     void process_log_entry(const mavlink_message_t &message);
     void process_log_data(const mavlink_message_t &message);
     void list_timeout();
@@ -56,6 +59,9 @@ private:
         bool rerequesting{false};
         void *cookie{nullptr};
         std::string file_path{};
+        LogFiles::download_log_file_callback_t callback{nullptr};
+        unsigned last_progress_percentage{0};
+        unsigned chunks_to_rerequest_initially{0};
     } _data;
 
     static constexpr unsigned CHUNK_SIZE = 90;

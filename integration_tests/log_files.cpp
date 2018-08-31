@@ -7,14 +7,12 @@
 
 using namespace dronecode_sdk;
 
-static void download_log_file(std::shared_ptr<LogFiles> log_files, unsigned id);
-
 TEST_F(SitlTest, LogFiles)
 {
     DronecodeSDK dc;
 
-    // ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
-    ConnectionResult ret = dc.add_udp_connection();
+    ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
+    // ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -28,35 +26,21 @@ TEST_F(SitlTest, LogFiles)
 
     EXPECT_EQ(entry_result.first, LogFiles::Result::SUCCESS);
 
+    unsigned num_downloaded_files = 0;
+
     if (entry_result.first == LogFiles::Result::SUCCESS) {
         for (auto &entry : entry_result.second) {
             float size_mib = entry.size_bytes / 1024.0f / 1024.0f;
             LogInfo() << "Entry " << entry.id << ": " << size_mib
                       << " MiB, bytes: " << entry.size_bytes;
-            if (size_mib > 1.0f) {
-                download_log_file(log_files, entry.id);
+            std::stringstream file_path_stream;
+            file_path_stream << "/tmp/logfile_" << entry.id << ".ulog";
+            LogFiles::Result download_ret =
+                log_files->download_log_file(entry.id, file_path_stream.str());
+            EXPECT_EQ(download_ret, LogFiles::Result::SUCCESS);
+            if (++num_downloaded_files >= 2) {
+                break;
             }
         }
     }
-}
-
-void download_log_file(std::shared_ptr<LogFiles> log_files, unsigned id)
-{
-    auto prom = std::make_shared<std::promise<void>>();
-    auto future_result = prom->get_future();
-
-    std::stringstream file_path_stream;
-    file_path_stream << "/tmp/logfile_" << id << ".ulog";
-
-    log_files->download_log_file_async(
-        id, file_path_stream.str(), [prom](LogFiles::Result result, float progress) {
-            if (result == LogFiles::Result::PROGRESS) {
-                LogDebug() << "Progress: " << 100.0f * progress << " %";
-            } else {
-                EXPECT_EQ(result, LogFiles::Result::SUCCESS);
-                prom->set_value();
-            }
-        });
-
-    future_result.wait();
 }
