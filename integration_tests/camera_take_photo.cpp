@@ -92,8 +92,8 @@ void receive_capture_info(Camera::CaptureInfo capture_info)
               << capture_info.position.absolute_altitude_m << " m, "
               << capture_info.position.relative_altitude_m << " m (relative to home).";
     LogInfo() << "Time: " << capture_info.time_utc_us << " us.";
-    LogInfo() << "Attitude: " << capture_info.quaternion.w << ", " << capture_info.quaternion.x
-              << ", " << capture_info.quaternion.y << ", " << capture_info.quaternion.z << ".";
+    LogInfo() << "Attitude: " << capture_info.attitude_quaternion.w << ", " << capture_info.attitude_quaternion.x
+              << ", " << capture_info.attitude_quaternion.y << ", " << capture_info.attitude_quaternion.z << ".";
     LogInfo() << "Result: " << (capture_info.success ? "success" : "fail") << ".";
     LogInfo() << "Saved to " << capture_info.file_url << " (" << capture_info.index << ").";
 

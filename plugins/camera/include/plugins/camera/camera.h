@@ -258,7 +258,7 @@ public:
             float x; /**< @brief Quaternion entry 1 also denoted as b. */
             float y; /**< @brief Quaternion entry 2 also denoted as c. */
             float z; /**< @brief Quaternion entry 3 also denoted as d. */
-        } quaternion; /**< @brief Quaternion of camera orientation. */
+        } attitude_quaternion; /**< @brief Quaternion of camera orientation. */
 
         /**
          * @brief Euler angle type.

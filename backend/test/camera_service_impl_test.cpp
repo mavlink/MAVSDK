@@ -89,7 +89,7 @@ protected:
     std::unique_ptr<dronecode_sdk::rpc::camera::Position> createRPCPosition(
         const double lat, const double lng, const float abs_alt, const float rel_alt) const;
     std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion>
-    createRPCQuaternion(const float w, const float x, const float y, const float z) const;
+    createRPCAttitudeQuaternion(const float w, const float x, const float y, const float z) const;
     void checkSendsCaptureInfo(
         const std::vector<dronecode_sdk::Camera::CaptureInfo> &capture_info_events) const;
     dronecode_sdk::Camera::CaptureInfo createArbitraryCaptureInfo() const;
@@ -655,7 +655,7 @@ CameraServiceImplTest::createArbitraryRPCCaptureInfo() const
         new dronecode_sdk::rpc::camera::CaptureInfo());
     rpc_info->set_allocated_position(
         createRPCPosition(41.848695, 75.132751, 3002.1f, 50.3f).release());
-    rpc_info->set_allocated_quaternion(createRPCQuaternion(0.1f, 0.2f, 0.3f, 0.4f).release());
+    rpc_info->set_allocated_attitude_quaternion(createRPCAttitudeQuaternion(0.1f, 0.2f, 0.3f, 0.4f).release());
     rpc_info->set_time_utc_us(ARBITRARY_INT);
     rpc_info->set_is_success(ARBITRARY_BOOL);
     rpc_info->set_index(ARBITRARY_INT);
@@ -678,7 +678,7 @@ std::unique_ptr<dronecode_sdk::rpc::camera::Position> CameraServiceImplTest::cre
     return expected_position;
 }
 
-std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion> CameraServiceImplTest::createRPCQuaternion(
+std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion> CameraServiceImplTest::createRPCAttitudeQuaternion(
     const float w, const float x, const float y, const float z) const
 {
     auto quaternion = std::unique_ptr<dronecode_sdk::rpc::camera::Quaternion>(
@@ -770,7 +770,7 @@ dronecode_sdk::Camera::CaptureInfo CameraServiceImplTest::createArbitraryCapture
 
     dronecode_sdk::Camera::CaptureInfo capture_info;
     capture_info.position = position;
-    capture_info.quaternion = quaternion;
+    capture_info.attitude_quaternion = quaternion;
     capture_info.time_utc_us = ARBITRARY_INT;
     capture_info.success = ARBITRARY_BOOL;
     capture_info.index = ARBITRARY_INT;

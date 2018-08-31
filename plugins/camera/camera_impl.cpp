@@ -751,11 +751,11 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t &message)
             capture_info.position.absolute_altitude_m = image_captured.alt / 1e3f;
             capture_info.position.relative_altitude_m = image_captured.relative_alt / 1e3f;
             capture_info.time_utc_us = image_captured.time_utc;
-            capture_info.quaternion.w = image_captured.q[0];
-            capture_info.quaternion.x = image_captured.q[1];
-            capture_info.quaternion.y = image_captured.q[2];
-            capture_info.quaternion.z = image_captured.q[3];
-            capture_info.euler_angle = to_euler_angle_from_quaternion(capture_info.quaternion);
+            capture_info.attitude_quaternion.w = image_captured.q[0];
+            capture_info.attitude_quaternion.x = image_captured.q[1];
+            capture_info.attitude_quaternion.y = image_captured.q[2];
+            capture_info.attitude_quaternion.z = image_captured.q[3];
+            capture_info.euler_angle = to_euler_angle_from_quaternion(capture_info.attitude_quaternion);
             capture_info.file_url = std::string(image_captured.file_url);
             capture_info.success = (image_captured.capture_result == 1);
             capture_info.index = image_captured.image_index;

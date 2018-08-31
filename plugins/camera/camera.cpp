@@ -238,7 +238,7 @@ std::ostream &operator<<(std::ostream &str,
 
 bool operator==(const Camera::CaptureInfo &lhs, const Camera::CaptureInfo &rhs)
 {
-    return lhs.position == rhs.position && lhs.quaternion == rhs.quaternion &&
+    return lhs.position == rhs.position && lhs.attitude_quaternion == rhs.attitude_quaternion &&
            lhs.time_utc_us == rhs.time_utc_us && lhs.success == rhs.success &&
            lhs.index == rhs.index && lhs.file_url == rhs.file_url;
 }
@@ -247,7 +247,7 @@ std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo const &capture_i
 {
     return str << "[" << std::endl
                << "position: " << capture_info.position << std::endl
-               << "quaternion: " << capture_info.quaternion << std::endl
+               << "attitude_quaternion: " << capture_info.attitude_quaternion << std::endl
                << "time_utc_us: " << capture_info.time_utc_us << std::endl
                << "is_success: " << capture_info.success << std::endl
                << "index: " << capture_info.index << std::endl
