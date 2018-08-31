@@ -1,5 +1,6 @@
 #include <iostream>
 #include <future>
+#include <sstream>
 #include "dronecode_sdk.h"
 #include "integration_test_helper.h"
 #include "plugins/log_files/log_files.h"
@@ -44,14 +45,18 @@ void download_log_file(std::shared_ptr<LogFiles> log_files, unsigned id)
     auto prom = std::make_shared<std::promise<void>>();
     auto future_result = prom->get_future();
 
-    log_files->download_log_file_async(id, [prom](LogFiles::Result result, float progress) {
-        if (result == LogFiles::Result::PROGRESS) {
-            LogDebug() << "Progress: " << 100.0f * progress << " %";
-        } else {
-            EXPECT_EQ(result, LogFiles::Result::SUCCESS);
-            prom->set_value();
-        }
-    });
+    std::stringstream file_path_stream;
+    file_path_stream << "/tmp/logfile_" << id << ".ulog";
+
+    log_files->download_log_file_async(
+        id, file_path_stream.str(), [prom](LogFiles::Result result, float progress) {
+            if (result == LogFiles::Result::PROGRESS) {
+                LogDebug() << "Progress: " << 100.0f * progress << " %";
+            } else {
+                EXPECT_EQ(result, LogFiles::Result::SUCCESS);
+                prom->set_value();
+            }
+        });
 
     future_result.wait();
 }

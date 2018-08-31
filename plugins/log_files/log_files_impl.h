@@ -21,7 +21,9 @@ public:
     std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> get_entries();
     void get_entries_async(LogFiles::get_entries_callback_t callback);
 
-    void download_log_file_async(unsigned id, LogFiles::download_log_file_callback_t callback);
+    void download_log_file_async(unsigned id,
+                                 const std::string &file_path,
+                                 LogFiles::download_log_file_callback_t callback);
 
 private:
     void process_log_entry(const mavlink_message_t &message);
@@ -33,6 +35,7 @@ private:
     void check_missing_log_data();
     void request_log_data(unsigned id, unsigned offset, unsigned bytes_to_get);
     void data_timeout();
+    void write_log_data_to_disk();
 
     struct {
         std::mutex mutex{};
@@ -52,6 +55,7 @@ private:
         unsigned retries{0};
         bool rerequesting{false};
         void *cookie{nullptr};
+        std::string file_path{};
     } _data;
 
     static constexpr unsigned CHUNK_SIZE = 90;

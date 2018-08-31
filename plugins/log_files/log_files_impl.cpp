@@ -1,6 +1,7 @@
 #include "global_include.h"
 #include "log_files_impl.h"
 #include "dronecode_sdk_impl.h"
+#include <fstream>
 
 namespace dronecode_sdk {
 
@@ -143,6 +144,7 @@ void LogFilesImpl::list_timeout()
 }
 
 void LogFilesImpl::download_log_file_async(unsigned id,
+                                           const std::string &file_path,
                                            LogFiles::download_log_file_callback_t callback)
 {
     unsigned bytes_to_get;
@@ -166,6 +168,7 @@ void LogFilesImpl::download_log_file_async(unsigned id,
         _data.id = id;
         _data.bytes.resize(bytes_to_get);
         _data.num_chunks = bytes_to_get / CHUNK_SIZE;
+        _data.file_path = file_path;
         if (bytes_to_get % CHUNK_SIZE) {
             ++_data.num_chunks;
         }
@@ -185,11 +188,14 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
     mavlink_log_data_t log_data;
     mavlink_msg_log_data_decode(&message, &log_data);
 
+#if 0
+    // To test retransmission
     static unsigned counter = 0;
     if (counter < 3 && (log_data.ofs == 1800 || log_data.ofs == 3600)) {
         ++counter;
         return;
     }
+#endif
 
     {
         std::lock_guard<std::mutex> lock(_data.mutex);
@@ -222,27 +228,32 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
 
 void LogFilesImpl::check_missing_log_data()
 {
-    std::lock_guard<std::mutex> lock(_entries.mutex);
+    {
+        std::lock_guard<std::mutex> lock(_data.mutex);
 
-    if (!_data.rerequesting) {
-        return;
-    }
-
-    LogDebug() << "Checking if we received all log data";
-    for (unsigned i = 0; i < _data.chunks_received.size(); ++i) {
-        if (!_data.chunks_received[i]) {
-            unsigned bytes_to_get = CHUNK_SIZE;
-            if (i + 1 == _data.chunks_received.size()) {
-                bytes_to_get = _data.bytes.size() - (_data.chunks_received.size() * CHUNK_SIZE - 1);
-            }
-            LogDebug() << "Re-requesting log data " << i * CHUNK_SIZE;
-            request_log_data(_data.id, i * CHUNK_SIZE, bytes_to_get);
+        if (!_data.rerequesting) {
             return;
         }
+
+        LogDebug() << "Checking if we received all log data";
+        for (unsigned i = 0; i < _data.chunks_received.size(); ++i) {
+            if (!_data.chunks_received[i]) {
+                unsigned bytes_to_get = CHUNK_SIZE;
+                if (i + 1 == _data.chunks_received.size()) {
+                    bytes_to_get =
+                        _data.bytes.size() - (_data.chunks_received.size() * CHUNK_SIZE - 1);
+                }
+                LogDebug() << "Re-requesting log data " << i * CHUNK_SIZE;
+                request_log_data(_data.id, i * CHUNK_SIZE, bytes_to_get);
+                return;
+            }
+        }
+
+        LogDebug() << "Received all log data.";
+        _parent->unregister_timeout_handler(_data.cookie);
     }
 
-    LogDebug() << "Received all log data.";
-    _parent->unregister_timeout_handler(_data.cookie);
+    write_log_data_to_disk();
 }
 
 void LogFilesImpl::request_log_data(unsigned id, unsigned chunk_id, unsigned bytes_to_get)
@@ -261,9 +272,20 @@ void LogFilesImpl::request_log_data(unsigned id, unsigned chunk_id, unsigned byt
 
 void LogFilesImpl::data_timeout()
 {
+    std::lock_guard<std::mutex> lock(_data.mutex);
     _parent->register_timeout_handler(
         std::bind(&LogFilesImpl::data_timeout, this), 0.2, &_data.cookie);
     check_missing_log_data();
+}
+
+void LogFilesImpl::write_log_data_to_disk()
+{
+    std::lock_guard<std::mutex> lock(_data.mutex);
+
+    std::ofstream out_file;
+    out_file.open(_data.file_path, std::ios::out | std::ios::binary);
+    out_file.write(reinterpret_cast<char *>(_data.bytes.data()), _data.bytes.size());
+    out_file.close();
 }
 
 } // namespace dronecode_sdk

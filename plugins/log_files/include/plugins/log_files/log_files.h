@@ -88,7 +88,9 @@ public:
      *
      * @param callback Callback to get result and progress.
      */
-    void download_log_file_async(unsigned id, download_log_file_callback_t callback);
+    void download_log_file_async(unsigned id,
+                                 const std::string &file_path,
+                                 download_log_file_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).
