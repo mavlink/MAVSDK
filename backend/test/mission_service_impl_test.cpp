@@ -679,6 +679,32 @@ void MissionServiceImplGetRTLAfterMissionTest::checkGetRTLAfterMissionReturns(
     EXPECT_EQ(expected_value, response.enable());
 }
 
+class MissionServiceImplSetRTLAfterMissionTest : public MissionServiceImplTestBase {
+protected:
+    void checkSetRTLAfterMissionSets(const bool expected_value);
+};
+
+TEST_F(MissionServiceImplSetRTLAfterMissionTest, setRTLAfterMissionDoesNotCrashWithNullRequest)
+{
+    _mission_service.SetReturnToLaunchAfterMission(nullptr, nullptr, nullptr);
+}
+
+TEST_F(MissionServiceImplSetRTLAfterMissionTest, setRTLAfterMissionSetsRightValue)
+{
+    checkSetRTLAfterMissionSets(false);
+    checkSetRTLAfterMissionSets(true);
+}
+
+void MissionServiceImplSetRTLAfterMissionTest::checkSetRTLAfterMissionSets(
+    const bool expected_value)
+{
+    EXPECT_CALL(_mission, set_return_to_launch_after_mission(expected_value));
+    dronecode_sdk::rpc::mission::SetReturnToLaunchAfterMissionRequest request;
+    request.set_enable(expected_value);
+
+    _mission_service.SetReturnToLaunchAfterMission(nullptr, &request, nullptr);
+}
+
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;

@@ -203,6 +203,18 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetReturnToLaunchAfterMission(
+        grpc::ServerContext * /* context */,
+        const rpc::mission::SetReturnToLaunchAfterMissionRequest *request,
+        rpc::mission::SetReturnToLaunchAfterMissionResponse * /* response */) override
+    {
+        if (request != nullptr) {
+            _mission.set_return_to_launch_after_mission(request->enable());
+        }
+
+        return grpc::Status::OK;
+    }
+
     static void translateMissionItem(const std::shared_ptr<MissionItem> mission_item,
                                      rpc::mission::MissionItem *rpc_mission_item)
     {
