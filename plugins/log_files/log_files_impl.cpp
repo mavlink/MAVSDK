@@ -2,6 +2,7 @@
 #include "log_files_impl.h"
 #include "dronecode_sdk_impl.h"
 #include <fstream>
+#include <ctime>
 
 namespace dronecode_sdk {
 
@@ -107,7 +108,13 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t &message)
 
     LogFiles::Entry new_entry;
     new_entry.id = log_entry.id;
-    // TODO: add date
+
+    // Convert milliseconds to ISO 8601 date string in UTC.
+    char buf[sizeof "2018-08-31T20:50:42Z"];
+    const time_t time_utc = log_entry.time_utc;
+    strftime(buf, sizeof buf, "%FT%TZ", gmtime(&time_utc));
+
+    new_entry.date = buf;
     new_entry.size_bytes = log_entry.size;
     {
         std::lock_guard<std::mutex> lock(_entries.mutex);

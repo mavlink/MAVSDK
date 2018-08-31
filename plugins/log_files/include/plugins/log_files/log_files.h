@@ -60,7 +60,8 @@ public:
      */
     struct Entry {
         unsigned id; /**< @brief ID of the logfile, to specify a file to be downloaded. */
-        std::string date; /**< @brief Date of log file in UTC in format "yyyy-mm-ddThh::mm::ssZ" */
+        std::string
+            date; /**< @brief Date of log file in UTC in ISO 8601 format "yyyy-mm-ddThh::mm::ssZ" */
         unsigned size_bytes; /**< Size of file in bytes. */
     };
 

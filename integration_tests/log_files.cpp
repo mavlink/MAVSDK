@@ -31,7 +31,8 @@ TEST_F(SitlTest, LogFiles)
     if (entry_result.first == LogFiles::Result::SUCCESS) {
         for (auto &entry : entry_result.second) {
             float size_mib = entry.size_bytes / 1024.0f / 1024.0f;
-            LogInfo() << "Entry " << entry.id << ": " << size_mib
+            LogInfo() << "Entry " << entry.id << ": "
+                      << " at " << entry.date << ", " << size_mib
                       << " MiB, bytes: " << entry.size_bytes;
             std::stringstream file_path_stream;
             file_path_stream << "/tmp/logfile_" << entry.id << ".ulog";
