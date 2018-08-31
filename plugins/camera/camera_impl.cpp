@@ -755,12 +755,28 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t &message)
             capture_info.quaternion.x = image_captured.q[1];
             capture_info.quaternion.y = image_captured.q[2];
             capture_info.quaternion.z = image_captured.q[3];
+            capture_info.euler_angle = to_euler_angle_from_quaternion(capture_info.quaternion);
             capture_info.file_url = std::string(image_captured.file_url);
             capture_info.success = (image_captured.capture_result == 1);
             capture_info.index = image_captured.image_index;
             notify_capture_info(capture_info);
         }
     }
+}
+
+Camera::CaptureInfo::EulerAngle
+CameraImpl::to_euler_angle_from_quaternion(Camera::CaptureInfo::Quaternion quaternion)
+{
+    auto &q = quaternion;
+
+    // FIXME: This is duplicated from telemetry/math_conversions.cpp.
+    Camera::CaptureInfo::EulerAngle euler_angle{
+        to_deg_from_rad(
+            atan2f(2.0f * (q.w * q.x + q.y * q.z), 1.0f - 2.0f * (q.x * q.x + q.y * q.y))),
+        to_deg_from_rad(asinf(2.0f * (q.w * q.y - q.z * q.x))),
+        to_deg_from_rad(
+            atan2f(2.0f * (q.w * q.z + q.x * q.y), 1.0f - 2.0f * (q.y * q.y + q.z * q.z)))};
+    return euler_angle;
 }
 
 void CameraImpl::notify_capture_info(Camera::CaptureInfo capture_info)

@@ -148,6 +148,9 @@ private:
     void receive_storage_information_result(MAVLinkCommands::Result result);
     void receive_camera_capture_status_result(MAVLinkCommands::Result result);
 
+    Camera::CaptureInfo::EulerAngle
+    to_euler_angle_from_quaternion(Camera::CaptureInfo::Quaternion quaternion);
+
     void notify_mode(const Camera::Mode mode);
     void notify_video_stream_info();
     void notify_capture_info(Camera::CaptureInfo capture_info);
