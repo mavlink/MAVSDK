@@ -454,17 +454,19 @@ public:
                           const rpc::camera::SubscribeCameraStatusRequest * /* request */,
                           grpc::ServerWriter<rpc::camera::CameraStatusResponse> *writer) override
     {
+
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
 
         bool is_finished = false;
 
-        _camera.subscribe_status([&writer, &stream_closed_promise, &is_finished](
+        _camera.subscribe_status([this, &writer, &stream_closed_promise, &is_finished](
                                      const dronecode_sdk::Camera::Status camera_status) {
             rpc::camera::CameraStatusResponse rpc_camera_status_response;
             auto rpc_camera_status = translateCameraStatus(camera_status);
             rpc_camera_status_response.set_allocated_camera_status(rpc_camera_status.release());
 
+            std::lock_guard<std::mutex> lock(_subscribe_camera_status_mutex);
             if (!writer->Write(rpc_camera_status_response) && !is_finished) {
                 is_finished = true;
                 stream_closed_promise.set_value();
@@ -704,6 +706,7 @@ public:
 
 private:
     Camera &_camera;
+    mutable std::mutex _subscribe_camera_status_mutex{};
 };
 
 } // namespace backend
