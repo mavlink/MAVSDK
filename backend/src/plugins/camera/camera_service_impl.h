@@ -705,7 +705,7 @@ public:
 
 private:
     Camera &_camera;
-    mutable std::mutex _subscribe_camera_status_mutex{};
+    std::mutex _subscribe_camera_status_mutex{};
 };
 
 } // namespace backend
