@@ -454,7 +454,6 @@ public:
                           const rpc::camera::SubscribeCameraStatusRequest * /* request */,
                           grpc::ServerWriter<rpc::camera::CameraStatusResponse> *writer) override
     {
-
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
 
