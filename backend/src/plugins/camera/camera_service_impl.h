@@ -171,11 +171,12 @@ public:
 
         bool is_finished = false;
 
-        _camera.subscribe_mode([&writer, &stream_closed_promise, &is_finished](
+        _camera.subscribe_mode([this, &writer, &stream_closed_promise, &is_finished](
                                    const dronecode_sdk::Camera::Mode mode) {
             rpc::camera::ModeResponse rpc_mode_response;
             rpc_mode_response.set_camera_mode(translateCameraMode(mode));
 
+            std::lock_guard<std::mutex> lock(_subscribe_mutex);
             if (!writer->Write(rpc_mode_response) && !is_finished) {
                 is_finished = true;
                 stream_closed_promise.set_value();
@@ -296,13 +297,14 @@ public:
         bool is_finished = false;
 
         _camera.subscribe_video_stream_info(
-            [&writer, &stream_closed_promise, &is_finished](
+            [this, &writer, &stream_closed_promise, &is_finished](
                 const dronecode_sdk::Camera::VideoStreamInfo video_info) {
                 rpc::camera::VideoStreamInfoResponse rpc_video_stream_info_response;
                 auto video_stream_info = translateVideoStreamInfo(video_info);
                 rpc_video_stream_info_response.set_allocated_video_stream_info(
                     video_stream_info.release());
 
+                std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!writer->Write(rpc_video_stream_info_response) && !is_finished) {
                     is_finished = true;
                     stream_closed_promise.set_value();
@@ -324,12 +326,13 @@ public:
 
         bool is_finished = false;
 
-        _camera.subscribe_capture_info([&writer, &stream_closed_promise, &is_finished](
+        _camera.subscribe_capture_info([this, &writer, &stream_closed_promise, &is_finished](
                                            const dronecode_sdk::Camera::CaptureInfo capture_info) {
             rpc::camera::CaptureInfoResponse rpc_capture_info_response;
             auto rpc_capture_info = translateCaptureInfo(capture_info);
             rpc_capture_info_response.set_allocated_capture_info(rpc_capture_info.release());
 
+            std::lock_guard<std::mutex> lock(_subscribe_mutex);
             if (!writer->Write(rpc_capture_info_response) && !is_finished) {
                 is_finished = true;
                 stream_closed_promise.set_value();
@@ -465,7 +468,7 @@ public:
             auto rpc_camera_status = translateCameraStatus(camera_status);
             rpc_camera_status_response.set_allocated_camera_status(rpc_camera_status.release());
 
-            std::lock_guard<std::mutex> lock(_subscribe_camera_status_mutex);
+            std::lock_guard<std::mutex> lock(_subscribe_mutex);
             if (!writer->Write(rpc_camera_status_response) && !is_finished) {
                 is_finished = true;
                 stream_closed_promise.set_value();
@@ -548,7 +551,7 @@ public:
         bool is_finished = false;
 
         _camera.subscribe_current_settings(
-            [&writer, &stream_closed_promise, &is_finished](
+            [this, &writer, &stream_closed_promise, &is_finished](
                 const std::vector<dronecode_sdk::Camera::Setting> current_settings) {
                 rpc::camera::CurrentSettingsResponse rpc_current_setting_response;
 
@@ -557,6 +560,7 @@ public:
                     translateSetting(current_setting, rpc_current_setting);
                 }
 
+                std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!writer->Write(rpc_current_setting_response) && !is_finished) {
                     is_finished = true;
                     stream_closed_promise.set_value();
@@ -617,7 +621,7 @@ public:
         bool is_finished = false;
 
         _camera.subscribe_possible_setting_options(
-            [&writer, &stream_closed_promise, &is_finished](
+            [this, &writer, &stream_closed_promise, &is_finished](
                 const std::vector<dronecode_sdk::Camera::SettingOptions> setting_options) {
                 rpc::camera::PossibleSettingOptionsResponse rpc_setting_options_response;
 
@@ -626,6 +630,7 @@ public:
                     translateSettingOptions(setting_option, rpc_setting_option);
                 }
 
+                std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!writer->Write(rpc_setting_options_response) && !is_finished) {
                     is_finished = true;
                     stream_closed_promise.set_value();
@@ -705,7 +710,7 @@ public:
 
 private:
     Camera &_camera;
-    std::mutex _subscribe_camera_status_mutex{};
+    std::mutex _subscribe_mutex{};
 };
 
 } // namespace backend
