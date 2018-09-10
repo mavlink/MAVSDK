@@ -1,8 +1,9 @@
 #pragma once
 
 #include "system.h"
+#include "mavlink_include.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 class FakeSystem
 {
@@ -26,4 +27,4 @@ private:
     void receive_message(const mavlink_message_t &message);
 };
 
-} // namespace dronecore
+} // namespace dronecode_sdk

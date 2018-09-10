@@ -2,7 +2,7 @@
 #include "log.h"
 #include "udp_connection.h"
 
-namespace dronecore {
+namespace dronecode_sdk {
 
 FakeSystem::FakeSystem(State state) :
     _state(state) {}
@@ -35,4 +35,4 @@ void FakeSystem::receive_message(const mavlink_message_t &message)
     // TODO: do more things
 }
 
-} // namespace dronecore
+} // namespace dronecode_sdk
