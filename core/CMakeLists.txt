@@ -82,10 +82,9 @@ install(FILES
     DESTINATION "include/dronecode_sdk"
 )
 
-target_include_directories(dronecode_sdk 
-PUBLIC 
+target_include_directories(dronecode_sdk
+PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${plugin_header_paths}
 PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
