@@ -28,6 +28,13 @@ install(TARGETS dronecode_sdk_action
     DESTINATION ${dronecode_sdk_install_lib_dir}
 )
 
+target_include_directories(dronecode_sdk_action
+PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/plugins/action/action_test.cpp
 )

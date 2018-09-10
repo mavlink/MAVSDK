@@ -14,6 +14,7 @@ set_target_properties(unit_tests_runner
 
 target_link_libraries(unit_tests_runner
     dronecode_sdk
+    dronecode_sdk_action
     dronecode_sdk_mission
     dronecode_sdk_camera
     dronecode_sdk_calibration
