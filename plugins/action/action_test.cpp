@@ -6,9 +6,7 @@
 #include "log.h"
 #include "dronecode_sdk.h"
 
-
 using namespace dronecode_sdk;
-
 
 TEST(PluginAction, HappyPath)
 {
@@ -23,4 +21,3 @@ TEST(PluginAction, HappyPath)
     // TODO: actually do things here.
     EXPECT_TRUE(false);
 }
-
