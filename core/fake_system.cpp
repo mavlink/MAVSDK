@@ -4,8 +4,7 @@
 
 namespace dronecode_sdk {
 
-FakeSystem::FakeSystem(State state) :
-    _state(state) {}
+FakeSystem::FakeSystem(State state) : _state(state) {}
 
 FakeSystem::~FakeSystem()
 {
@@ -15,8 +14,7 @@ FakeSystem::~FakeSystem()
 bool FakeSystem::start()
 {
     auto new_conn = std::make_shared<UdpConnection>(
-                        std::bind(&FakeSystem::receive_message, this, std::placeholders::_1),
-                        "0.0.0.0", 12345);
+        std::bind(&FakeSystem::receive_message, this, std::placeholders::_1), "0.0.0.0", 12345);
     // TODO: we need to actually respond to 14540 but that's not implemented yet
 
     ConnectionResult ret = new_conn->start();
@@ -27,7 +25,6 @@ void FakeSystem::stop()
 {
     // TODO: destruct connection here
 }
-
 
 void FakeSystem::receive_message(const mavlink_message_t &message)
 {

@@ -5,15 +5,9 @@
 
 namespace dronecode_sdk {
 
-class FakeSystem
-{
+class FakeSystem {
 public:
-    enum class State {
-        DEAD,
-        LOYAL,
-        LAZY,
-        REFUSING
-    };
+    enum class State { DEAD, LOYAL, LAZY, REFUSING };
 
     FakeSystem(State state);
     ~FakeSystem();
