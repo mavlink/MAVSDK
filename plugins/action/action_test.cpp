@@ -21,4 +21,20 @@ TEST(PluginAction, HappyPath)
 
     EXPECT_EQ(action->arm(), ActionResult::SUCCESS);
     EXPECT_EQ(action->disarm(), ActionResult::SUCCESS);
+    EXPECT_EQ(action->arm(), ActionResult::SUCCESS);
+    EXPECT_EQ(action->takeoff(), ActionResult::SUCCESS);
+    // Need to wait for landed state to catch up.
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    EXPECT_EQ(action->disarm(), ActionResult::COMMAND_DENIED_NOT_LANDED);
+
+    // Need to land first.
+    EXPECT_EQ(action->land(), ActionResult::SUCCESS);
+    // Need to wait for landed state to catch up.
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    EXPECT_EQ(action->disarm(), ActionResult::SUCCESS);
+
+    // But killing is possible.
+    EXPECT_EQ(action->arm(), ActionResult::SUCCESS);
+    EXPECT_EQ(action->takeoff(), ActionResult::SUCCESS);
+    EXPECT_EQ(action->kill(), ActionResult::SUCCESS);
 }

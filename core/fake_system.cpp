@@ -93,6 +93,14 @@ void FakeSystem::respond_to_command_int(const mavlink_message_t &message)
     mavlink_command_int_t command;
     mavlink_msg_command_int_decode(&message, &command);
 
+    if (command.command == MAV_CMD_NAV_TAKEOFF && _state == State::LOYAL) {
+        _landed = false;
+    }
+
+    if (command.command == MAV_CMD_NAV_LAND && _state == State::LOYAL) {
+        _landed = true;
+    }
+
     send_command_ack(command.command);
 }
 
@@ -100,6 +108,14 @@ void FakeSystem::respond_to_command_long(const mavlink_message_t &message)
 {
     mavlink_command_long_t command;
     mavlink_msg_command_long_decode(&message, &command);
+
+    if (command.command == MAV_CMD_NAV_TAKEOFF && _state == State::LOYAL) {
+        _landed = false;
+    }
+
+    if (command.command == MAV_CMD_NAV_LAND && _state == State::LOYAL) {
+        _landed = true;
+    }
 
     send_command_ack(command.command);
 }
