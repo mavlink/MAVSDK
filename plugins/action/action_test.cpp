@@ -14,10 +14,11 @@ TEST(PluginAction, HappyPath)
     fs->start();
 
     DronecodeSDK dc;
+    dc.add_udp_connection(14540);
     System &system = dc.system();
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
     auto action = std::make_shared<Action>(system);
-    std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    // TODO: actually do things here.
-    EXPECT_TRUE(false);
+    EXPECT_EQ(action->arm(), ActionResult::SUCCESS);
+    EXPECT_EQ(action->disarm(), ActionResult::SUCCESS);
 }

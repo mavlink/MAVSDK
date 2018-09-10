@@ -20,6 +20,8 @@ public:
 
     bool send_message(const mavlink_message_t &message);
 
+    void add_remote_port(int remote_port);
+
     // Non-copyable
     UdpConnection(const UdpConnection &) = delete;
     const UdpConnection &operator=(const UdpConnection &) = delete;

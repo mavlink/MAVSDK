@@ -211,4 +211,14 @@ void UdpConnection::receive()
     }
 }
 
+void UdpConnection::add_remote_port(int remote_port)
+{
+    std::lock_guard<std::mutex> lock(_remote_mutex);
+
+    Remote new_remote{};
+    new_remote.ip = "127.0.0.1";
+    new_remote.port_number = remote_port;
+    _remotes.push_back(new_remote);
+}
+
 } // namespace dronecode_sdk
