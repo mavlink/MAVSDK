@@ -6,8 +6,8 @@ from .utils import (decapitalize,
                     extract_string_type,
                     is_primitive_type,
                     filter_out_result,
-                    is_completable,
-                    is_observable)
+                    no_return,
+                    is_stream)
 
 
 @dataclass
@@ -36,9 +36,9 @@ class Method(object):
                                   + "Request")
         self.extract_params(pb_method, requests)
         self.extract_return_type_and_name(pb_method, responses)
-        self._is_observable = False
-        self._is_completable = False
-        self._is_single = False
+        self._is_stream = False
+        self._no_return = False
+        self._returns = False
 
     def extract_params(self, pb_method, requests):
         method_input = pb_method.input_type.split(".")[-1]
@@ -73,16 +73,16 @@ class Method(object):
             self._return_name = return_params[0].json_name
 
     @property
-    def is_observable(self):
-        return self._is_observable
+    def is_stream(self):
+        return self._is_stream
 
     @property
-    def is_completable(self):
-        return self._is_completable
+    def no_return(self):
+        return self._no_return
 
     @property
-    def is_single(self):
-        return self._is_single
+    def returns(self):
+        return self._returns
 
     @property
     def plugin_name(self):
@@ -113,30 +113,30 @@ class Method(object):
         _methods = {}
         for method in methods:
             # Check if method is completable
-            if (is_completable(method, responses)):
-                _methods[method.name] = CompletableMethod(plugin_name,
-                                                          package,
-                                                          template_env,
-                                                          method,
-                                                          requests,
-                                                          responses)
+            if (no_return(method, responses)):
+                _methods[method.name] = Call(plugin_name,
+                                             package,
+                                             template_env,
+                                             method,
+                                             requests,
+                                             responses)
 
             # Check if method is observable
-            elif (is_observable(method)):
-                _methods[method.name] = ObservableMethod(plugin_name,
-                                                         package,
-                                                         template_env,
-                                                         method,
-                                                         requests,
-                                                         responses)
+            elif (is_stream(method)):
+                _methods[method.name] = Request(plugin_name,
+                                                package,
+                                                template_env,
+                                                method,
+                                                requests,
+                                                responses)
 
             else:
-                _methods[method.name] = SingleMethod(plugin_name,
-                                                     package,
-                                                     template_env,
-                                                     method,
-                                                     requests,
-                                                     responses)
+                _methods[method.name] = Request(plugin_name,
+                                                package,
+                                                template_env,
+                                                method,
+                                                requests,
+                                                responses)
 
         return _methods
 
@@ -144,7 +144,7 @@ class Method(object):
         return "method: {}".format(self._name)
 
 
-class CompletableMethod(Method):
+class Call(Method):
     """ A completable method doesn't return any value,
     but either succeeds or fails """
 
@@ -157,8 +157,8 @@ class CompletableMethod(Method):
             requests,
             responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
-        self._template = template_env.get_template("method_completable.j2")
-        self._is_completable = True
+        self._template = template_env.get_template("call.j2")
+        self._no_return = True
 
     def __repr__(self):
         return self._template.render(name=self._name,
@@ -168,7 +168,7 @@ class CompletableMethod(Method):
                                      request_rpc_type=self._request_rpc_type)
 
 
-class SingleMethod(Method):
+class Request(Method):
     """ A single method returns a value once """
 
     def __init__(
@@ -180,8 +180,8 @@ class SingleMethod(Method):
             requests,
             responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
-        self._template = template_env.get_template("method_single.j2")
-        self._is_single = True
+        self._template = template_env.get_template("request.j2")
+        self._returns = True
 
     def __repr__(self):
         return self._template.render(name=self._name,
@@ -193,7 +193,7 @@ class SingleMethod(Method):
                                      request_rpc_type=self._request_rpc_type)
 
 
-class ObservableMethod(Method):
+class Stream(Method):
     """ An observable method emits a stream of values """
 
     def __init__(
@@ -208,8 +208,8 @@ class ObservableMethod(Method):
         self._name = remove_subscribe(decapitalize(pb_method.name))
         self._capitalized_name = pb_method.name
         self._request_name = self._name + "Request"
-        self._template = template_env.get_template("method_observable.j2")
-        self._is_observable = True
+        self._template = template_env.get_template("stream.j2")
+        self._is_stream = True
 
     def __repr__(self):
         return self._template.render(name=self._name,

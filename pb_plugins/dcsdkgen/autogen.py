@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-
 from google.protobuf.compiler import plugin_pb2
 from .autogen_file import File
 from .methods import Method

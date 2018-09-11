@@ -5,7 +5,7 @@ import re
 from jinja2 import Environment, FileSystemLoader
 
 
-def is_completable(method, responses):
+def no_return(method, responses):
     """ Checks if a method is completable """
     method_output = method.output_type.split(".")[-1]
     method_response = responses[method_output]
@@ -20,7 +20,7 @@ def is_completable(method, responses):
     return False
 
 
-def is_observable(method):
+def is_stream(method):
     """ Checks if a method is an observable (stream) """
     return method.server_streaming
 
