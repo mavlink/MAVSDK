@@ -8,4 +8,4 @@ class {{ name }}:
             {%- for value in values %}
                 {{ loop.index - 1 }}: "{{ value }}",
             {%- endfor %}
-            }.get("", default=None)
+            }.get(response.{{ letter_case_to_delimiter(name) }}, default=None)
