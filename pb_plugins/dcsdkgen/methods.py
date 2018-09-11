@@ -123,12 +123,12 @@ class Method(object):
 
             # Check if stream
             elif (is_stream(method)):
-                _methods[method.name] = Request(plugin_name,
-                                                package,
-                                                template_env,
-                                                method,
-                                                requests,
-                                                responses)
+                _methods[method.name] = Stream(plugin_name,
+                                               package,
+                                               template_env,
+                                               method,
+                                               requests,
+                                               responses)
 
             else:
                 _methods[method.name] = Request(plugin_name,
