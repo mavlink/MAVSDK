@@ -1,6 +1,6 @@
-===================================
-Autogenerator for the dronecore sdk
-===================================
+======================================
+Autogenerator for the DronecodeSDK sdk
+======================================
 
 Install instructions
 ~~~~~~~~~~~~~~~~~~~~

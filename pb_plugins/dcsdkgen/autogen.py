@@ -8,7 +8,7 @@ from .utils import get_template_env
 
 
 class AutoGen(object):
-    """ Autogenerator for the DroneCore bindings """
+    """ Autogenerator for the DronecodeSDK bindings """
 
     @staticmethod
     def generate_reactive(request):
