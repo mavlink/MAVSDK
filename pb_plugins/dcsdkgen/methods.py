@@ -112,7 +112,7 @@ class Method(object):
         """ Collects all methods for the plugin """
         _methods = {}
         for method in methods:
-            # Check if method is completable
+            # Check if method is just a call
             if (no_return(method, responses)):
                 _methods[method.name] = Call(plugin_name,
                                              package,
@@ -121,7 +121,7 @@ class Method(object):
                                              requests,
                                              responses)
 
-            # Check if method is observable
+            # Check if stream
             elif (is_stream(method)):
                 _methods[method.name] = Request(plugin_name,
                                                 package,
@@ -145,8 +145,8 @@ class Method(object):
 
 
 class Call(Method):
-    """ A completable method doesn't return any value,
-    but either succeeds or fails """
+    """ A call method doesn't return any value, but either succeeds or fails
+    """
 
     def __init__(
             self,
@@ -169,7 +169,7 @@ class Call(Method):
 
 
 class Request(Method):
-    """ A single method returns a value once """
+    """ Requests a value """
 
     def __init__(
             self,
@@ -194,7 +194,7 @@ class Request(Method):
 
 
 class Stream(Method):
-    """ An observable method emits a stream of values """
+    """ A stream of values """
 
     def __init__(
             self,
