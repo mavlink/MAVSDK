@@ -94,6 +94,17 @@ public:
     };
 
     /**
+     * @brief Type for attitude commands (roll, pitch, down and yaw angular
+     * rate).
+     */
+    struct AttitudeYawspeed {
+        float roll_deg; /**< @brief Roll angle in degree. */
+        float pitch_deg; /**< @brief Pitch angle in degree. */
+        float yawspeed_deg_s; /**< @brief Yaw angular rate in degrees/second (positive for
+                                 clock-wise looking from above). */
+    };
+
+    /**
      * @brief Start offboard control (synchronous).
      *
      * **Attention:** this is work in progress, use with caution!
@@ -152,6 +163,13 @@ public:
      * @param velocity_body_yawspeed Velocity and yaw angular rate `struct`.
      */
     void set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed);
+
+    /**
+     * @brief Set the attitude and yaw angular rate.
+     *
+     * @param attitude_yawspeed Attitude and yaw angular rate `struct`.
+     */
+    void set_attitude(AttitudeYawspeed attitude_yawspeed);
 
     /**
      * @brief Copy constructor (object is not copyable).

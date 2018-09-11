@@ -42,6 +42,11 @@ void Offboard::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_ya
     return _impl->set_velocity_body(velocity_body_yawspeed);
 }
 
+void Offboard::set_attitude(Offboard::AttitudeYawspeed attitude_yawspeed)
+{
+    return _impl->set_attitude(attitude_yawspeed);
+}
+
 const char *Offboard::result_str(Result result)
 {
     switch (result) {
