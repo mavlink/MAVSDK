@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${MACOSX_FRAMEWORK_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.dronecode_sdk.backend</string>
+	<string>io.dronecodesdk.backend</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
