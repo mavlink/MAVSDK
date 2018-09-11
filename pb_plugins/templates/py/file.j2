@@ -3,6 +3,13 @@ from .._base import AsyncBase
 from ..generated import {{ plugin_name.lower() }}_pb2, {{ plugin_name.lower() }}_pb2_grpc
 
 
+{%- for enum in enums %}
+
+
+{{ enum }}
+{%- endfor %}
+
+
 {%- for struct in structs %}
 
 
