@@ -6,7 +6,7 @@ here = path.abspath(path.dirname(__file__))
 setup(
     name="dcsdkgen",
     version="0.1a",
-    description="Autogenerator for the DroneCore SDK Bindings",
+    description="Autogenerator for the DronecodeSDK Bindings",
     url="@TODO",
     author="@TODO",
     author_email="@TODO",
