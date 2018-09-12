@@ -15,8 +15,6 @@ class AutoGen(object):
     def generate_reactive(request):
 
         # Get the template folder from the environment
-        template_env = get_template_env(
-            f"./templates/{request.parameter}")
         template_env = get_template_env(environ.get("TEMPLATE_PATH", "./"))
 
         for proto_file in request.proto_file:
