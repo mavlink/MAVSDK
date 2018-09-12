@@ -16,6 +16,7 @@ How to use it
 
 .. code-block:: bash
 
+    export TEMPLATE_PATH="$(pwd)/templates/swift"
     protoc --plugin=protoc-gen-custom=$(which dcsdkgen) \
             -I../protos/action \
             --custom_out=. \
