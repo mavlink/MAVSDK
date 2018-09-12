@@ -73,7 +73,7 @@ void LogFilesImpl::get_entries_async(LogFiles::get_entries_callback_t callback)
     }
 
     _parent->register_timeout_handler(
-        std::bind(&LogFilesImpl::list_timeout, this), 0.5, &_entries.cookie);
+        std::bind(&LogFilesImpl::list_timeout, this), 3.0, &_entries.cookie);
 
     request_list_entry(-1);
 }
@@ -161,7 +161,7 @@ void LogFilesImpl::list_timeout()
                 }
             }
             _parent->register_timeout_handler(
-                std::bind(&LogFilesImpl::list_timeout, this), 0.5, &_entries.cookie);
+                std::bind(&LogFilesImpl::list_timeout, this), 3.0, &_entries.cookie);
             _entries.retries++;
         }
     }
@@ -206,15 +206,17 @@ void LogFilesImpl::download_log_file_async(unsigned id,
         _data.rerequesting = false;
         _data.id = id;
         _data.bytes.resize(bytes_to_get);
-        _data.num_chunks = bytes_to_get / CHUNK_SIZE;
         _data.file_path = file_path;
         _data.callback = callback;
         _data.last_progress_percentage = 0;
         _data.chunks_to_rerequest_initially = 0;
+        _data.time_started = _time.steady_time();
+
+        unsigned num_chunks = bytes_to_get / CHUNK_SIZE;
         if (bytes_to_get % CHUNK_SIZE) {
-            ++_data.num_chunks;
+            ++num_chunks;
         }
-        _data.chunks_received.resize(_data.num_chunks);
+        _data.chunks_received.resize(num_chunks);
 
         _parent->register_timeout_handler(
             std::bind(&LogFilesImpl::data_timeout, this), 0.2, &_data.cookie);
@@ -252,6 +254,13 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
         // int(log_data.ofs)
         //            << ", count: " << int(log_data.count);
 
+        static int previous_ofs = 0;
+        if (log_data.ofs != previous_ofs + CHUNK_SIZE) {
+            LogDebug() << "skipped: " << (log_data.ofs - (previous_ofs + CHUNK_SIZE)) / CHUNK_SIZE;
+        }
+
+        previous_ofs = log_data.ofs;
+
         if (log_data.count > CHUNK_SIZE) {
             LogErr() << "Ignoring wrong count";
             return;
@@ -264,6 +273,7 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
 
         std::memcpy(&_data.bytes[log_data.ofs], log_data.data, log_data.count);
         _data.chunks_received[log_data.ofs / CHUNK_SIZE] = true;
+        _data.bytes_received += log_data.count;
 
         // Don't report if already re-requesting, progress is handled already.
         if (!_data.rerequesting) {
@@ -281,6 +291,10 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
                         tmp_callback(LogFiles::Result::PROGRESS, progress);
                     });
                 }
+
+                const float kib_s = float(_data.bytes_received) / float(_time.elapsed_since_s(_data.time_started)) / 1024.0f;
+
+                LogDebug() << _data.bytes_received << " B of " << _data.bytes.size() << " B (" << kib_s << " kiB/s)";
             }
         }
 

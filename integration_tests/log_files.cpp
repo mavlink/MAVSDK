@@ -11,8 +11,8 @@ TEST_F(SitlTest, LogFiles)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
-    // ConnectionResult ret = dc.add_udp_connection();
+    //ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
+    ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));

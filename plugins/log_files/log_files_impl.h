@@ -40,6 +40,8 @@ private:
     void data_timeout();
     void write_log_data_to_disk();
 
+    Time _time{};
+
     struct {
         std::mutex mutex{};
         std::map<unsigned, LogFiles::Entry> entry_map{};
@@ -54,7 +56,6 @@ private:
         std::mutex mutex{};
         std::vector<uint8_t> bytes{};
         std::vector<bool> chunks_received{};
-        unsigned num_chunks{0};
         unsigned retries{0};
         bool rerequesting{false};
         void *cookie{nullptr};
@@ -62,6 +63,8 @@ private:
         LogFiles::download_log_file_callback_t callback{nullptr};
         unsigned last_progress_percentage{0};
         unsigned chunks_to_rerequest_initially{0};
+        unsigned bytes_received{};
+        dl_time_t time_started{};
     } _data;
 
     static constexpr unsigned CHUNK_SIZE = 90;
