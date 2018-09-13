@@ -51,6 +51,9 @@ target_include_directories(backend
     ${PLUGINS_DIR}
 )
 
+file (STRINGS "${PROJECT_SOURCE_DIR}/version" VERSION_STR)
+message(STATUS "Read version: ${VERSION_STR}")
+
 if(IOS)
     set_target_properties(backend PROPERTIES
         FRAMEWORK TRUE
