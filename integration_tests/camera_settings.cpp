@@ -64,7 +64,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
         }
 
         if (is_e90) {
-            EXPECT_EQ(settings.size(), 6);
+            EXPECT_EQ(settings.size(), 7);
         } else if (is_e50) {
             EXPECT_EQ(settings.size(), 5);
         } else if (is_et) {
