@@ -64,7 +64,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
         }
 
         if (is_e90) {
-            EXPECT_EQ(settings.size(), 6);
+            EXPECT_EQ(settings.size(), 7);
         } else if (is_e50) {
             EXPECT_EQ(settings.size(), 5);
         } else if (is_et) {
@@ -143,6 +143,14 @@ TEST(CameraTest, SetSettings)
         EXPECT_EQ(set_setting(camera, "CAM_COLORMODE", "5"), Camera::Result::SUCCESS);
         EXPECT_EQ(get_setting(camera, "CAM_COLORMODE", value_set), Camera::Result::SUCCESS);
         EXPECT_STREQ("5", value_set.c_str());
+
+        EXPECT_EQ(set_setting(camera, "CAM_COLORMODE", "1"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_COLORMODE", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("1", value_set.c_str());
+
+        EXPECT_EQ(set_setting(camera, "CAM_COLORMODE", "3"), Camera::Result::SUCCESS);
+        EXPECT_EQ(get_setting(camera, "CAM_COLORMODE", value_set), Camera::Result::SUCCESS);
+        EXPECT_STREQ("3", value_set.c_str());
 
         // Let's check the manual exposure mode first.
         std::this_thread::sleep_for(std::chrono::seconds(2));
