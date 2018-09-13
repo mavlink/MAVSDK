@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from dataclasses import dataclass
-
 from .utils import (decapitalize,
                     remove_subscribe,
                     extract_string_type,
@@ -10,11 +8,14 @@ from .utils import (decapitalize,
                     is_stream)
 
 
-@dataclass
 class Param:
-    name: str
-    type: str
-    is_primitive: bool
+
+    def __init__(
+            self,
+            name,
+            type,
+            is_primitive):
+        self.name, self.type, self.is_primitive = name, type, is_primitive
 
 
 class Method(object):
