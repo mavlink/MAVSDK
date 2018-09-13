@@ -1336,7 +1336,8 @@ void CameraImpl::refresh_params()
     }
 
     std::vector<std::string> params{};
-    if (!_camera_definition->get_unknown_params(params)) {
+    _camera_definition->get_unknown_params(params);
+    if (params.size() == 0) {
         // We're assuming that we changed one option and this did not cause
         // any other possible settings to change. However, we still would
         // like to notify the current settings with this one change.

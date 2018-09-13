@@ -45,7 +45,7 @@ public:
                         const std::string &option_name,
                         std::string &description);
 
-    bool get_unknown_params(std::vector<std::string> &params);
+    void get_unknown_params(std::vector<std::string> &params);
     void set_all_params_unknown();
 
     // Non-copyable

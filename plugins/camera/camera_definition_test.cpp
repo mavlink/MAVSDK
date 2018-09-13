@@ -282,7 +282,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
 
     {
         std::vector<std::string> params;
-        EXPECT_TRUE(cd.get_unknown_params(params));
+        cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 16);
         for (const auto &param : params) {
             LogInfo() << param;
@@ -298,7 +298,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
     // Now that we set one param it should be less that we need to fetch.
     {
         std::vector<std::string> params;
-        EXPECT_TRUE(cd.get_unknown_params(params));
+        cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 15);
     }
 
@@ -306,7 +306,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
 
     {
         std::vector<std::string> params;
-        EXPECT_TRUE(cd.get_unknown_params(params));
+        cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 16);
     }
 }
@@ -321,7 +321,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
 
     {
         std::vector<std::string> params;
-        EXPECT_TRUE(cd.get_unknown_params(params));
+        cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 0);
         for (const auto &param : params) {
             LogInfo() << param;
@@ -337,7 +337,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
     // Now that we set one param it should be less that we need to fetch.
     {
         std::vector<std::string> params;
-        EXPECT_TRUE(cd.get_unknown_params(params));
+        cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 4);
 
         // TODO: improve the poor man's vector search.

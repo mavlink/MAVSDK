@@ -542,7 +542,7 @@ bool CameraDefinition::get_possible_options(const std::string &name,
     return true;
 }
 
-bool CameraDefinition::get_unknown_params(std::vector<std::string> &params)
+void CameraDefinition::get_unknown_params(std::vector<std::string> &params)
 {
     params.clear();
 
@@ -551,7 +551,6 @@ bool CameraDefinition::get_unknown_params(std::vector<std::string> &params)
             params.push_back(parameter.first);
         }
     }
-    return true;
 }
 
 void CameraDefinition::set_all_params_unknown()
