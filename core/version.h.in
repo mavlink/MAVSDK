@@ -1,0 +1,7 @@
+#pragma once
+
+namespace dronecode_sdk {
+
+constexpr auto version = "@VERSION_STR@";
+
+} // namespace dronecode_sdk
