@@ -169,12 +169,6 @@ public:
     void register_plugin(PluginImplBase *plugin_impl);
     void unregister_plugin(PluginImplBase *plugin_impl);
 
-    // This allows a plugin to lock and unlock all mavlink communication.
-    // The functionality is currently not used by a plugin included here
-    // but nevertheless there for other plugins that can be added from external.
-    void lock_communication();
-    void unlock_communication();
-
     void call_user_callback(const std::function<void()> &func);
 
     // Non-copyable
@@ -265,8 +259,6 @@ private:
     CallEveryHandler _call_every_handler;
 
     Time _time{};
-
-    std::atomic<bool> _communication_locked{false};
 
     std::mutex _plugin_impls_mutex{};
     std::vector<PluginImplBase *> _plugin_impls{};
