@@ -67,6 +67,9 @@ set_target_properties(dronecode_sdk
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
+target_include_directories(dronecode_sdk PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
 install(TARGETS dronecode_sdk
     # TODO: not sure if this is needed
     #EXPORT dronecode_sdk-targets
@@ -81,8 +84,8 @@ install(FILES
     DESTINATION "include/dronecode_sdk"
 )
 
-target_include_directories(dronecode_sdk 
-PUBLIC 
+target_include_directories(dronecode_sdk
+PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${plugin_header_paths}
 PRIVATE
