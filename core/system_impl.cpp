@@ -113,10 +113,6 @@ void SystemImpl::unregister_timeout_handler(const void *cookie)
 
 void SystemImpl::process_mavlink_message(const mavlink_message_t &message)
 {
-    if (_communication_locked) {
-        return;
-    }
-
     _mavlink_handler_table_mutex.lock();
 
 #if MESSAGE_DEBUGGING == 1
@@ -407,10 +403,6 @@ void SystemImpl::send_heartbeat()
 
 bool SystemImpl::send_message(const mavlink_message_t &message)
 {
-    if (_communication_locked) {
-        return false;
-    }
-
 #if MESSAGE_DEBUGGING == 1
     LogDebug() << "Sending msg " << size_t(message.msgid);
 #endif
@@ -972,16 +964,6 @@ void SystemImpl::unregister_plugin(PluginImplBase *plugin_impl)
 void SystemImpl::call_user_callback(const std::function<void()> &func)
 {
     _thread_pool.enqueue(func);
-}
-
-void SystemImpl::lock_communication()
-{
-    _communication_locked = true;
-}
-
-void SystemImpl::unlock_communication()
-{
-    _communication_locked = false;
 }
 
 } // namespace dronecode_sdk
