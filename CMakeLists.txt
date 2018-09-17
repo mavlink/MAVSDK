@@ -43,6 +43,9 @@ endif()
 set(dronecode_sdk_install_include_dir "include/dronecode_sdk")
 set(dronecode_sdk_install_lib_dir ${lib_path})
 
+file (STRINGS "${PROJECT_SOURCE_DIR}/version" VERSION_STR)
+message(STATUS "Read version: ${VERSION_STR}")
+
 add_subdirectory(core)
 add_subdirectory(plugins)
 
