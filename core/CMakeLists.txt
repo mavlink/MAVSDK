@@ -13,7 +13,6 @@ else()
 endif()
 
 add_library(dronecode_sdk ${LIBRARY_TYPE}
-    version.cpp
     call_every_handler.cpp
     connection.cpp
     curl_wrapper.cpp
