@@ -19,5 +19,6 @@ add_subdirectory(info)
 add_subdirectory(follow_me)
 add_subdirectory(camera)
 add_subdirectory(calibration)
+add_subdirectory(geofence)
 
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
