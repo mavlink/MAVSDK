@@ -292,9 +292,11 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
                     });
                 }
 
-                const float kib_s = float(_data.bytes_received) / float(_time.elapsed_since_s(_data.time_started)) / 1024.0f;
+                const float kib_s = float(_data.bytes_received) /
+                                    float(_time.elapsed_since_s(_data.time_started)) / 1024.0f;
 
-                LogDebug() << _data.bytes_received << " B of " << _data.bytes.size() << " B (" << kib_s << " kiB/s)";
+                LogDebug() << _data.bytes_received << " B of " << _data.bytes.size() << " B ("
+                           << kib_s << " kiB/s)";
             }
         }
 
