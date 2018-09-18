@@ -91,7 +91,7 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Debug'
+            sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1'
           }
         }
         stage('Fedora 28 Release') {
@@ -104,7 +104,7 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Release'
+            sh 'make BUILD_TYPE=Release BUILD_BACKEND=1'
           }
         }
       }
