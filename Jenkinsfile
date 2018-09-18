@@ -14,6 +14,8 @@ pipeline {
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
             sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
           }
         }
         stage('Ubuntu 16.04 Release') {
@@ -27,6 +29,8 @@ pipeline {
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
             sh 'make BUILD_TYPE=Release BUILD_BACKEND=1'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
           }
         }
         stage('Ubuntu 18.04 Debug') {
@@ -40,6 +44,8 @@ pipeline {
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
             sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
           }
         }
         stage('Ubuntu 18.04 Release') {
@@ -53,6 +59,8 @@ pipeline {
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
             sh 'make BUILD_TYPE=Release BUILD_BACKEND=1'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
           }
         }
         stage('Fedora 27 Debug') {
@@ -66,6 +74,8 @@ pipeline {
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
             sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
           }
         }
         stage('Fedora 27 Release') {
@@ -79,6 +89,8 @@ pipeline {
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
             sh 'make BUILD_TYPE=Release BUILD_BACKEND=1'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
           }
         }
         stage('Fedora 28 Debug') {
@@ -92,6 +104,8 @@ pipeline {
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
             sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
           }
         }
         stage('Fedora 28 Release') {
@@ -105,6 +119,8 @@ pipeline {
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
             sh 'make BUILD_TYPE=Release BUILD_BACKEND=1'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
           }
         }
       }
