@@ -279,7 +279,7 @@ void LogFilesImpl::process_log_data(const mavlink_message_t &message)
         if (!_data.rerequesting) {
             // We leave the last 10% for retransmissions, that's just a guess.
             unsigned new_percentage =
-                (float(log_data.ofs) / float(_data.bytes.size())) * 100.0f * 0.9f;
+                unsigned((float(log_data.ofs) / float(_data.bytes.size())) * 100.0f * 0.9f);
 
             // Only report every 1%
             if (new_percentage != _data.last_progress_percentage) {
@@ -348,8 +348,8 @@ void LogFilesImpl::check_missing_log_data()
 
         if (_data.callback && num_missing > 0) {
             unsigned new_progress =
-                90.0f + 10.0f * float(_data.chunks_to_rerequest_initially - num_missing) /
-                            float(_data.chunks_to_rerequest_initially);
+                unsigned(90.0f + 10.0f * float(_data.chunks_to_rerequest_initially - num_missing) /
+                                     float(_data.chunks_to_rerequest_initially));
 
             if (new_progress != _data.last_progress_percentage) {
                 tmp_callback = _data.callback;
