@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package dronecode_sdk.rpc.calibration;
+
+option java_package = "io.dronecode_sdk.calibration";
+option java_outer_classname = "CalibrationProto";
+
+service CalibrationService {
+    rpc CalibrateGyro(CalibrateGyroRequest) returns(stream CalibrateGyroResponse) {}
+    rpc CalibrateAccelerometer(CalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {}
+    rpc CalibrateMagnetometer(CalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {}
+    rpc CalibrateGimbalAccelerometer(CalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {}
+}
+
+message CalibrateGyroRequest {}
+message CalibrateGyroResponse {
+    CalibrationResult calibration_result = 1;
+    ProgressData progress_data = 2;
+}
+
+message CalibrateAccelerometerRequest {}
+message CalibrateAccelerometerResponse {
+    CalibrationResult calibration_result = 1;
+    ProgressData progress_data = 2;
+}
+
+message CalibrateMagnetometerRequest {}
+message CalibrateMagnetometerResponse {
+    CalibrationResult calibration_result = 1;
+    ProgressData progress_data = 2;
+}
+
+message CalibrateGimbalAccelerometerRequest {}
+message CalibrateGimbalAccelerometerResponse {
+    CalibrationResult calibration_result = 1;
+    ProgressData progress_data = 2;
+}
+
+message CalibrationResult {
+    enum Result {
+        UNKNOWN = 0;
+        SUCCESS = 1;
+        IN_PROGRESS = 2;
+        INSTRUCTION = 3;
+        FAILED = 4;
+        NO_SYSTEM = 5;
+        CONNECTION_ERROR = 6;
+        BUSY = 7;
+        COMMAND_DENIED = 8;
+        TIMEOUT = 9;
+        CANCELLED = 10;
+    }
+
+    Result result = 1;
+    string result_str = 2;
+}
+
+message ProgressData {
+    bool has_progress = 1;
+    float progress = 2;
+
+    bool has_status_text = 3;
+    string status_text = 4;
+}
