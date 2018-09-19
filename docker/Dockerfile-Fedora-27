@@ -28,6 +28,8 @@ RUN dnf -y install \
     rubygems \
     wget \
     which \
+    zlib-devel \
+    golang \
     && dnf clean all
 
 RUN wget http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-Fedora27.tar.xz \

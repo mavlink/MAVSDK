@@ -28,6 +28,8 @@ RUN dnf -y install \
     ruby-devel \
     rubygems \
     which \
+    zlib-devel \
+    golang \
     && dnf clean all
 
 RUN gem install --no-ri --no-rdoc fpm;
