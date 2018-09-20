@@ -72,12 +72,12 @@ public:
      * @return ActionResult of request.
      */
     ActionResult kill() const;
-    
+
     /**
      * @brief Send command to *reboot* the drone components.
-     * 
+     *
      * This will reboot the autopilot, onboard computer, camera and gimbal.
-     * 
+     *
      * @return ActionResult of request.
      */
     ActionResult reboot() const;

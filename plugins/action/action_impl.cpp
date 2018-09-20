@@ -111,7 +111,6 @@ ActionResult ActionImpl::reboot() const
     command.target_component_id = _parent->get_autopilot_id();
 
     return action_result_from_command_result(_parent->send_command(command));
-
 }
 
 ActionResult ActionImpl::takeoff() const
