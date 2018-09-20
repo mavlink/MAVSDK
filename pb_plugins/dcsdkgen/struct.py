@@ -5,14 +5,21 @@ from .utils import (extract_string_type,
                     is_request,
                     is_response,
                     is_struct)
+from jinja2.exceptions import TemplateNotFound
 
 
 class Struct(object):
     """ Struct """
 
     def __init__(self, package, template_env, pb_struct):
+        try:
+            self._template = template_env.get_template("struct.j2")
+        except TemplateNotFound:
+            # We don't always generate code related to structs (but still
+            # collect them)
+            pass
+
         self._name = pb_struct.name
-        self._template = template_env.get_template("struct.j2")
         self._fields = []
         self._rpc_type = (package.title().replace(".", "_")
                           + "_"
