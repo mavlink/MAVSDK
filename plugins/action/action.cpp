@@ -22,6 +22,11 @@ ActionResult Action::kill() const
     return _impl->kill();
 }
 
+ActionResult Action::reboot() const
+{
+    return _impl->reboot();
+}
+
 ActionResult Action::takeoff() const
 {
     return _impl->takeoff();
