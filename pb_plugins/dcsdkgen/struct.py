@@ -5,6 +5,7 @@ from .utils import (extract_string_type,
                     is_request,
                     is_response,
                     is_struct)
+from .name import Name
 from jinja2.exceptions import TemplateNotFound
 
 
@@ -19,7 +20,7 @@ class Struct(object):
             # collect them)
             pass
 
-        self._name = pb_struct.name
+        self._name = Name(pb_struct.name)
         self._fields = []
         self._rpc_type = (package.title().replace(".", "_")
                           + "_"

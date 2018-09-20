@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-
-
-import re
 from jinja2 import Environment, FileSystemLoader
 
 
@@ -81,11 +78,6 @@ def is_result(field):
     return extract_string_type(field).endswith("Result")
 
 
-def decapitalize(s):
-    """ Decapitalizes a string """
-    return s[:1].lower() + s[1:] if s else ""
-
-
 def remove_subscribe(name):
     return name.replace("subscribe", "")
 
@@ -100,13 +92,6 @@ def jinja_indent(_in_str, level):
          level * "    " + line
          for line in _in_str.split("\n")]
     )
-
-
-def letter_case_to_delimiter(_str_in):
-    """ Converts TestAbcM to test_abc_m """
-    return re.sub('(?<!^)(?=[A-Z])',
-                  '_',
-                  _str_in).lower()
 
 
 def get_template_env(_searchpath):

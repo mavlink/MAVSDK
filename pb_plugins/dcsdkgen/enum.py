@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from .name import Name
 
 
 class Enum(object):
@@ -7,7 +8,7 @@ class Enum(object):
     def __init__(self, package, template_env, pb_enum):
         self._package = package
         self._template = template_env.get_template("enum.j2")
-        self._name = pb_enum.name
+        self._name = Name(pb_enum.name)
         self._values = []
 
         for value in pb_enum.value:

@@ -6,6 +6,7 @@ from .utils import (decapitalize,
                     filter_out_result,
                     no_return,
                     is_stream)
+from .name import Name
 
 
 class Param:
@@ -30,7 +31,7 @@ class Method(object):
             responses):
         self._plugin_name = plugin_name
         self._package = package
-        self._name = decapitalize(pb_method.name)
+        self._name = Name(pb_method.name)
         self._request_rpc_type = (package.title().replace(".", "_")
                                   + "_"
                                   + pb_method.name
