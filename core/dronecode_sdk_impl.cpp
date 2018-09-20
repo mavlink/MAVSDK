@@ -255,6 +255,10 @@ bool DronecodeSDKImpl::is_connected() const
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
+    if (_systems.empty()) {
+        return false;
+    }
+
     return _systems.begin()->second->is_connected();
 }
 
