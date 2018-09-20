@@ -546,8 +546,6 @@ void MissionImpl::assemble_mavlink_messages()
                         static_cast<int>(_mission_data.mavlink_mission_item_messages.size()),
                         item_i});
                 _mission_data.mavlink_mission_item_messages.push_back(message_gimbal_configure);
-
-                ++item_i;
             }
 
             // The gimbal has changed, we need to add a gimbal command.
