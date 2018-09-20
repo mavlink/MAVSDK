@@ -122,6 +122,10 @@ private:
 
     bool _enable_return_to_launch_after_mission{false};
 
+    // FIXME: This is hardcoded for now because it is urgently needed for 3DR with Yuneec H520.
+    //        Ultimate it needs a setter.
+    bool _enable_absolute_gimbal_yaw_angle{true};
+
     static constexpr unsigned MAX_RETRIES = 3;
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
