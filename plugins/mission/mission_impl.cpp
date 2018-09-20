@@ -436,6 +436,7 @@ void MissionImpl::assemble_mavlink_messages()
     float last_z;
 
     unsigned item_i = 0;
+
     for (auto item : _mission_data.mission_items) {
         MissionItemImpl &mission_item_impl = (*(item)->_impl);
 
@@ -509,6 +510,44 @@ void MissionImpl::assemble_mavlink_messages()
 
         if (std::isfinite(mission_item_impl.get_gimbal_yaw_deg()) ||
             std::isfinite(mission_item_impl.get_gimbal_pitch_deg())) {
+            if (_enable_absolute_gimbal_yaw_angle) {
+                // We need to configure the gimbal to use an absolute angle.
+
+                // Current is the 0th waypoint
+                uint8_t current =
+                    ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
+
+                uint8_t autocontinue = 1;
+
+                auto message_gimbal_configure = std::make_shared<mavlink_message_t>();
+                mavlink_msg_mission_item_int_pack(
+                    GCSClient::system_id,
+                    GCSClient::component_id,
+                    message_gimbal_configure.get(),
+                    _parent->get_system_id(),
+                    _parent->get_autopilot_id(),
+                    _mission_data.mavlink_mission_item_messages.size(),
+                    MAV_FRAME_MISSION,
+                    MAV_CMD_DO_MOUNT_CONFIGURE,
+                    current,
+                    autocontinue,
+                    MAV_MOUNT_MODE_MAVLINK_TARGETING,
+                    0.0f, // stabilize roll
+                    0.0f, // stabilize pitch
+                    1.0f, // stabilize yaw, FIXME: for now we use this for an absolute yaw angle,
+                          // because it works.
+                    0,
+                    0,
+                    2.0f, // eventually this is the correct flag to set absolute yaw angle.
+                    MAV_MISSION_TYPE_MISSION);
+
+                _mission_data.mavlink_mission_item_to_mission_item_indices.insert(
+                    std::pair<int, int>{
+                        static_cast<int>(_mission_data.mavlink_mission_item_messages.size()),
+                        item_i});
+                _mission_data.mavlink_mission_item_messages.push_back(message_gimbal_configure);
+            }
+
             // The gimbal has changed, we need to add a gimbal command.
 
             // Current is the 0th waypoint
@@ -737,12 +776,27 @@ void MissionImpl::assemble_mission_items()
 
             } else if (it->command == MAV_CMD_DO_MOUNT_CONTROL) {
                 if (int(it->z) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
-                    LogErr() << "Gimbal mount mode unsupported";
+                    LogErr() << "Gimbal mount control mode unsupported";
                     result = Mission::Result::UNSUPPORTED;
                     break;
                 }
 
                 new_mission_item->set_gimbal_pitch_and_yaw(it->param1, it->param3);
+
+            } else if (it->command == MAV_CMD_DO_MOUNT_CONFIGURE) {
+                if (int(it->param1) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
+                    LogErr() << "Gimbal mount configure mode unsupported";
+                    result = Mission::Result::UNSUPPORTED;
+                    break;
+                }
+
+                // FIXME: ultimately param4 doesn't count anymore and
+                //        param7 holds the truth.
+                if (int(it->param4) == 1 || int(it->z) == 2) {
+                    _enable_absolute_gimbal_yaw_angle = true;
+                } else {
+                    _enable_absolute_gimbal_yaw_angle = false;
+                }
 
             } else if (it->command == MAV_CMD_IMAGE_START_CAPTURE) {
                 if (it->param2 > 0 && int(it->param3) == 0) {
