@@ -23,6 +23,7 @@ public:
     ActionResult arm() const;
     ActionResult disarm() const;
     ActionResult kill() const;
+    ActionResult reboot() const;
     ActionResult takeoff() const;
     ActionResult land() const;
     ActionResult return_to_launch() const;

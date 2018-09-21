@@ -99,6 +99,20 @@ ActionResult ActionImpl::kill() const
     return action_result_from_command_result(_parent->send_command(command));
 }
 
+ActionResult ActionImpl::reboot() const
+{
+    MAVLinkCommands::CommandLong command{};
+
+    command.command = MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN;
+    command.params.param1 = 1.0f; // reboot autopilot
+    command.params.param2 = 1.0f; // reboot onboard computer
+    command.params.param3 = 1.0f; // reboot camera
+    command.params.param4 = 1.0f; // reboot gimbal
+    command.target_component_id = _parent->get_autopilot_id();
+
+    return action_result_from_command_result(_parent->send_command(command));
+}
+
 ActionResult ActionImpl::takeoff() const
 {
     ActionResult ret = taking_off_allowed();
