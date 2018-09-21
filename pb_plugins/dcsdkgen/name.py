@@ -1,9 +1,7 @@
 import re
 
 
-class Name:
-    """ Implements https://github.com/Dronecode/DronecodeSDK-Proto/issues/46
-    """
+class NameParser:
 
     def __init__(self, name):
         self._name = name
