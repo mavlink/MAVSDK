@@ -40,6 +40,10 @@ RUN update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/cl
 
 RUN gem install --no-ri --no-rdoc fpm;
 
+RUN useradd -d /home/dronecode -m -s /bin/bash dronecode
+
+USER dronecode
+
 CMD ["/bin/bash"]
 
-WORKDIR "/root/DronecodeSDK"
+WORKDIR "/home/dronecode/DronecodeSDK"

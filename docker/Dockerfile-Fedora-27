@@ -39,6 +39,10 @@ RUN wget http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-Fedora
 
 RUN gem install --no-ri --no-rdoc fpm;
 
+RUN useradd -d /home/dronecode -m -s /bin/bash dronecode
+
+USER dronecode
+
 CMD ["/bin/bash"]
 
-WORKDIR "/root/DronecodeSDK"
+WORKDIR "/home/dronecode/DronecodeSDK"

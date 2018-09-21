@@ -45,6 +45,10 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
 
 RUN gem install --no-ri --no-rdoc fpm;
 
+RUN useradd -d /home/dronecode -m -s /bin/bash dronecode
+
+USER dronecode
+
 CMD ["/bin/bash"]
 
-WORKDIR "/root/DronecodeSDK"
+WORKDIR "/home/dronecode/DronecodeSDK"
