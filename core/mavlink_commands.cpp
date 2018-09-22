@@ -233,7 +233,14 @@ void MAVLinkCommands::receive_timeout()
     auto work = _work_queue.borrow_front();
 
     if (!work) {
-        // Nevermind, there is nothing to do.
+        // FIXME:
+        // There is nothing to do.
+        // However, we probably shouldn't be in State::WAITING if nothing is in the queue.
+        // Otherwise, we might wait forever because we don't register a new timeout.
+        // What's odd is that from my code review, it should not be possible to ever end up
+        // in State::WAITING with an empty queue, especially since the state is protected by
+        // a mutex.
+        _state = State::NONE;
         return;
     }
 
