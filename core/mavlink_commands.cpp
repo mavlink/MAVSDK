@@ -136,7 +136,8 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 
     if (work->mavlink_command != command_ack.command) {
         // If the command does not match with our current command, ignore it.
-        LogWarn() << "Command ack not matching our current command: " << work->mavlink_command;
+        LogWarn() << "Command ack " << int(command_ack.command)
+                  << " not matching our current command: " << work->mavlink_command;
         _work_queue.return_front();
         return;
     }
@@ -238,6 +239,7 @@ void MAVLinkCommands::receive_timeout()
         // in State::WAITING with an empty queue, especially since the state is protected by
         // a mutex.
         _state = State::NONE;
+        LogErr() << "Received timeout without item in queue.";
         return;
     }
 
