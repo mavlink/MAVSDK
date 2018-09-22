@@ -11,9 +11,6 @@ namespace dronecode_sdk {
 //       The limitation is made because:
 //       - We are not sure what exactly will happen if the commands are sent in parallel
 //         and what kind of edge cases we might run into.
-//       - The timeout handler only supports the (void *)this cookie and therefore only
-//         really supports one timeout per object. We could use (void *)this of the work
-//         item but it also seems a bit dodgy.
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
