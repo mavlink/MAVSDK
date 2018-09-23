@@ -25,6 +25,8 @@ SystemImpl::SystemImpl(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t comp
     _call_every_handler(_time),
     _thread_pool(3)
 {
+    component_discovered_callback = nullptr;
+
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 
     register_mavlink_message_handler(
@@ -332,6 +334,9 @@ void SystemImpl::add_new_component(uint8_t component_id)
 {
     auto res_pair = _components.insert(component_id);
     if (res_pair.second) {
+        if (component_discovered_callback != nullptr) {
+            component_discovered_callback(component_id);
+        }
         LogDebug() << "Component " << component_name(component_id) << " added.";
     }
 }
@@ -339,6 +344,11 @@ void SystemImpl::add_new_component(uint8_t component_id)
 size_t SystemImpl::total_components() const
 {
     return _components.size();
+}
+
+void SystemImpl::register_component_discovered_callback(discover_callback_t callback)
+{
+    component_discovered_callback = callback;
 }
 
 bool SystemImpl::is_standalone() const

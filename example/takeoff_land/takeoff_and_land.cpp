@@ -29,6 +29,12 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
+void component_discovered(uint8_t component_id)
+{
+    std::cout << NORMAL_CONSOLE_TEXT << "Discovered a component with ID " << unsigned(component_id)
+              << std::endl;
+}
+
 int main(int argc, char **argv)
 {
     DronecodeSDK dc;
@@ -51,6 +57,15 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    // We don't need to specify the UUID if it's only one system anyway.
+    // If there were multiple, we could specify it with:
+    // dc.system(uint64_t uuid);
+    System &system = dc.system();
+
+    // Register a callback so we get told when components (camera, gimbal) etc
+    // are found.
+    system.register_component_discovered_callback(component_discovered);
+
     std::cout << "Waiting to discover system..." << std::endl;
     dc.register_on_discover([&discovered_system](uint64_t uuid) {
         std::cout << "Discovered system with UUID: " << uuid << std::endl;
@@ -66,11 +81,6 @@ int main(int argc, char **argv)
                   << std::endl;
         return 1;
     }
-
-    // We don't need to specify the UUID if it's only one system anyway.
-    // If there were multiple, we could specify it with:
-    // dc.system(uint64_t uuid);
-    System &system = dc.system();
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);

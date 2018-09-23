@@ -1,8 +1,11 @@
 #pragma once
 
 #include <memory>
+#include <functional>
 
 namespace dronecode_sdk {
+
+typedef std::function<void(uint8_t)> discover_callback_t;
 
 class SystemImpl;
 class DronecodeSDKImpl;
@@ -75,6 +78,14 @@ public:
      * @return UUID of system.
      */
     uint64_t get_uuid() const;
+
+    /**
+     * @brief Register a callback to be called when a component is discovered.
+     *
+     * @param callback a function of type void(uint8_t) which will be called with the COMPONENT_ID
+     * of the new component.
+     */
+    void register_component_discovered_callback(discover_callback_t callback) const;
 
     /**
      * @brief Copy constructor (object is not copyable).

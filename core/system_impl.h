@@ -22,6 +22,8 @@
 
 namespace dronecode_sdk {
 
+typedef std::function<void(uint8_t)> discover_callback_t;
+
 class DronecodeSDKImpl;
 class PluginImplBase;
 
@@ -96,6 +98,8 @@ public:
     // Adds unique component ids
     void add_new_component(uint8_t component_id);
     size_t total_components() const;
+    void register_component_discovered_callback(discover_callback_t callback);
+    discover_callback_t component_discovered_callback;
 
     uint8_t get_autopilot_id() const;
     std::vector<uint8_t> get_camera_ids() const;
