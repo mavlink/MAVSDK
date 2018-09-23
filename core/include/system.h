@@ -5,6 +5,9 @@
 
 namespace dronecode_sdk {
 
+/**
+ * @brief type for component discovery callback
+ */
 typedef std::function<void(uint8_t)> discover_callback_t;
 
 class SystemImpl;
