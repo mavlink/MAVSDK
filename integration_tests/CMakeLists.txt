@@ -31,7 +31,8 @@ add_executable(integration_tests_runner
     follow_me.cpp
     gimbal.cpp
     info.cpp
-    logging.cpp
+    #logging.cpp # Not fully implemented
+    log_files.cpp
     mission_change_speed.cpp
     mission.cpp
     mission_rtl.cpp
@@ -63,7 +64,7 @@ target_link_libraries(integration_tests_runner
     dronecode_sdk_action
     dronecode_sdk_mission
     dronecode_sdk_offboard
-    dronecode_sdk_logging
+    dronecode_sdk_log_files
     dronecode_sdk_info
     dronecode_sdk_gimbal
     dronecode_sdk_follow_me
