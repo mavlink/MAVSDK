@@ -12,35 +12,33 @@ from jinja2.exceptions import TemplateNotFound
 class Struct(object):
     """ Struct """
 
-    def __init__(self, package, template_env, pb_struct):
-        try:
-            self._template = template_env.get_template("struct.j2")
-        except TemplateNotFound:
-            # We don't always generate code related to structs (but still
-            # collect them)
-            pass
-
+    def __init__(self, plugin_name, package, template_env, pb_struct):
+        self._plugin_name = NameParser(plugin_name)
+        self._package = NameParser(package)
+        self._template = template_env.get_template("struct.j2")
         self._name = NameParser(pb_struct.name)
         self._fields = []
-        self._rpc_type = (package.title().replace(".", "_")
-                          + "_"
-                          + self._name)
 
         for field in pb_struct.field:
-            self._fields.append((field.json_name, extract_string_type(field)))
+            self._fields.append(
+                (NameParser(
+                    field.json_name),
+                    extract_string_type(field)))
 
     def __repr__(self):
-        return self._template.render(name=self._name,
-                                     fields=self._fields,
-                                     rpc_type=self._rpc_type)
+        return self._template.render(plugin_name=self._plugin_name,
+                                     package=self._package,
+                                     name=self._name,
+                                     fields=self._fields)
 
     @staticmethod
-    def collect_structs(package, structs, template_env):
+    def collect_structs(plugin_name, package, structs, template_env):
         _structs = {}
 
         for struct in structs:
             if is_struct(struct):
-                _structs[struct.name] = Struct(package, template_env, struct)
+                _structs[struct.name] = Struct(
+                    plugin_name, package, template_env, struct)
 
         return _structs
 

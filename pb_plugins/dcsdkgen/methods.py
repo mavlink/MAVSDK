@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from .utils import (decapitalize,
-                    remove_subscribe,
+from .utils import (remove_subscribe,
                     extract_string_type,
                     is_primitive_type,
                     filter_out_result,
@@ -29,13 +28,9 @@ class Method(object):
             pb_method,
             requests,
             responses):
-        self._plugin_name = plugin_name
-        self._package = package
+        self._plugin_name = NameParser(plugin_name)
+        self._package = NameParser(package)
         self._name = NameParser(pb_method.name)
-        self._request_rpc_type = (package.title().replace(".", "_")
-                                  + "_"
-                                  + pb_method.name
-                                  + "Request")
         self.extract_params(pb_method, requests)
         self.extract_return_type_and_name(pb_method, responses)
         self._is_stream = False
@@ -51,10 +46,10 @@ class Method(object):
         for field in request.field:
             self._params.append(
                 Param(
-                    name=field.name,
+                    name=NameParser(field.name),
                     type=extract_string_type(field),
                     is_primitive=is_primitive_type(field))
-                    )
+            )
 
     def extract_return_type_and_name(self, pb_method, responses):
         method_output = pb_method.output_type.split(".")[-1]
@@ -72,7 +67,7 @@ class Method(object):
                 extract_string_type(return_params[0])
             self._is_return_type_primitive = \
                 is_primitive_type(return_params[0])
-            self._return_name = return_params[0].json_name
+            self._return_name = NameParser(return_params[0].json_name)
 
     @property
     def is_stream(self):
@@ -164,10 +159,10 @@ class Call(Method):
 
     def __repr__(self):
         return self._template.render(name=self._name,
-                                     package=self._package,
                                      params=self._params,
                                      plugin_name=self._plugin_name,
-                                     request_rpc_type=self._request_rpc_type)
+                                     request_rpc_type=self._request_rpc_type,
+                                     package=self._package)
 
 
 class Request(Method):
@@ -186,13 +181,15 @@ class Request(Method):
         self._returns = True
 
     def __repr__(self):
-        return self._template.render(name=self._name,
-                                     params=self._params,
-                                     return_type=self._return_type,
-                                     return_name=self._return_name,
-                                     is_return_type_primitive=self._is_return_type_primitive,
-                                     plugin_name=self._plugin_name,
-                                     request_rpc_type=self._request_rpc_type)
+        return self._template.render(
+            name=self._name,
+            params=self._params,
+            return_type=self._return_type,
+            return_name=self._return_name,
+            is_return_type_primitive=self._is_return_type_primitive,
+            plugin_name=self._plugin_name,
+            request_rpc_type=self._request_rpc_type,
+            package=self._package)
 
 
 class Stream(Method):
@@ -207,19 +204,16 @@ class Stream(Method):
             requests,
             responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
-        self._name = remove_subscribe(decapitalize(pb_method.name))
-        self._capitalized_name = pb_method.name
-        self._request_name = self._name + "Request"
+        self._name = NameParser(remove_subscribe(pb_method.name))
         self._template = template_env.get_template("stream.j2")
         self._is_stream = True
 
     def __repr__(self):
-        return self._template.render(name=self._name,
-                                     capitalized_name=self._capitalized_name,
-                                     params=self._params,
-                                     return_type=self._return_type,
-                                     return_name=self._return_name,
-                                     is_return_type_primitive=self._is_return_type_primitive,
-                                     plugin_name=self._plugin_name,
-                                     request_name=self._request_name,
-                                     request_rpc_type=self._request_rpc_type)
+        return self._template.render(
+            name=self._name,
+            params=self._params,
+            return_type=self._return_type,
+            return_name=self._return_name,
+            is_return_type_primitive=self._is_return_type_primitive,
+            plugin_name=self._plugin_name,
+            package=self._package)

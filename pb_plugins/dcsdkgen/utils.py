@@ -34,10 +34,9 @@ def is_response(struct):
 
 def is_struct(struct):
     """ Check if the message is a data structure or an rpc
-    request/response/result """
+    request/response"""
     return (not struct.name.endswith("Request") and
-            not struct.name.endswith("Response") and
-            not struct.name.endswith("Result"))
+            not struct.name.endswith("Response"))
 
 
 def extract_string_type(field):
@@ -63,7 +62,7 @@ def extract_string_type(field):
 def is_primitive_type(field):
     """ Check if the field type is primitive (e.g. bool,
     float) or not (e.g message, enum) """
-    return (not field.type in {11, 14})
+    return (field.type not in {11, 14})
 
 
 def filter_out_result(fields):
@@ -79,7 +78,7 @@ def is_result(field):
 
 
 def remove_subscribe(name):
-    return name.replace("subscribe", "")
+    return name.replace("Subscribe", "")
 
 
 def jinja_indent(_in_str, level):
@@ -100,9 +99,6 @@ def get_template_env(_searchpath):
         searchpath=_searchpath))
 
     # Register some functions we need to access in the template
-    _template_env.globals.update(
-        letter_case_to_delimiter=letter_case_to_delimiter,
-        indent=jinja_indent,
-        remove_subscribe=remove_subscribe)
+    _template_env.globals.update(indent=jinja_indent)
 
     return _template_env

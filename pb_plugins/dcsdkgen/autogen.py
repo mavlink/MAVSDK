@@ -24,7 +24,8 @@ class AutoGen(object):
                                        proto_file.enum_type,
                                        template_env)
 
-            structs = Struct.collect_structs(proto_file.package,
+            structs = Struct.collect_structs(plugin_name,
+                                             proto_file.package,
                                              proto_file.message_type,
                                              template_env)
 
@@ -42,7 +43,8 @@ class AutoGen(object):
                                              responses,
                                              template_env)
 
-            out_file = File(plugin_name,
+            out_file = File(proto_file.package,
+                            plugin_name,
                             template_env,
                             enums,
                             structs,
