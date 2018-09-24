@@ -32,6 +32,7 @@ RUN apt-get update \
         wget \
         libz-dev \
         golang-go \
+        sudo \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
@@ -46,6 +47,9 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
 RUN gem install --no-ri --no-rdoc fpm;
 
 RUN useradd -d /home/dronecode -m -s /bin/bash dronecode
+
+ADD /sudoers.txt /etc/sudoers
+RUN chmod 440 /etc/sudoers
 
 USER dronecode
 
