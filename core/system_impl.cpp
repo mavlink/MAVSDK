@@ -335,7 +335,8 @@ void SystemImpl::add_new_component(uint8_t component_id)
     auto res_pair = _components.insert(component_id);
     if (res_pair.second) {
         if (component_discovered_callback != nullptr) {
-            component_discovered_callback(component_id);
+            call_user_callback(
+                [this, component_id]() { component_discovered_callback(component_id); });
         }
         LogDebug() << "Component " << component_name(component_id) << " added.";
     }
