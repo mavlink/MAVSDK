@@ -7,6 +7,7 @@
 #include "timeout_handler.h"
 #include "call_every_handler.h"
 #include "thread_pool.h"
+#include "system.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -21,8 +22,6 @@
 //#define ENABLE_FALLBACK_TO_SYSTEM_ID
 
 namespace dronecode_sdk {
-
-typedef std::function<void(uint8_t)> discover_callback_t;
 
 class DronecodeSDKImpl;
 class PluginImplBase;
