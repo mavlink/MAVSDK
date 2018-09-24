@@ -1,8 +1,13 @@
+#!/usr/bin/env groovy
+
 pipeline {
-  agent any
+  agent none
+
   stages {
+
     stage('Build') {
       parallel {
+
         stage('Ubuntu 16.04 Debug') {
           agent {
             docker {
@@ -18,6 +23,7 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
           }
         }
+
         stage('Ubuntu 16.04 Release') {
           agent {
             docker {
@@ -33,6 +39,7 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
           }
         }
+
         stage('Ubuntu 18.04 Debug') {
           agent {
             docker {
@@ -48,6 +55,7 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
           }
         }
+
         stage('Ubuntu 18.04 Release') {
           agent {
             docker {
@@ -63,6 +71,7 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
           }
         }
+
         stage('Fedora 27 Debug') {
           agent {
             docker {
@@ -78,6 +87,7 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
           }
         }
+
         stage('Fedora 27 Release') {
           agent {
             docker {
@@ -93,6 +103,7 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
           }
         }
+
         stage('Fedora 28 Debug') {
           agent {
             docker {
@@ -108,6 +119,7 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
           }
         }
+
         stage('Fedora 28 Release') {
           agent {
             docker {
@@ -123,10 +135,13 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
           }
         }
-      }
-    }
+
+      } // parallel
+    } // Build
+
     stage('Test') {
       parallel {
+
         stage('check style') {
           agent {
             docker {
@@ -137,6 +152,7 @@ pipeline {
             sh 'make fix_style'
           }
         }
+
         stage('example/takeoff_land') {
           agent {
             docker {
@@ -152,6 +168,7 @@ pipeline {
             // FIXME sh 'make -C example/takeoff_land/build'
           }
         }
+
         stage('example/fly_mission') {
           agent {
             docker {
@@ -167,6 +184,7 @@ pipeline {
             // FIXME sh 'make -C example/fly_mission/build'
           }
         }
+
         stage('example/offboard_velocity') {
           agent {
             docker {
@@ -182,8 +200,10 @@ pipeline {
             // FIXME sh 'make -C example/offboard_velocity/build'
           }
         }
-      }
-    }
+
+      } // parallel
+    } // stage Test
+
     stage('Generate Docs') {
       agent {
         docker {
@@ -196,6 +216,12 @@ pipeline {
         sh 'git submodule update --init --recursive --force'
         sh './generate_docs.sh'
       }
-    }
+    } // stage Generate Docs
+
+  } // stages
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10', artifactDaysToKeepStr: '30'))
+    timeout(time: 60, unit: 'MINUTES')
   }
 }
