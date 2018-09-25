@@ -35,7 +35,7 @@ library_files="\
 
 echo "#!/bin/sh" > run_ldconfig
 
-echo "/sbin/ldconfig" >> run_ldconfig
+echo "sudo /sbin/ldconfig" >> run_ldconfig
 if cat /etc/os-release | grep 'Ubuntu'
 then
     echo "Building DEB package"
