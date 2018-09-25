@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .name import NameParser
+from .name_parser import NameParser
 
 
 class File(object):

@@ -5,7 +5,7 @@ from .utils import (extract_string_type,
                     is_request,
                     is_response,
                     is_struct)
-from .name import NameParser
+from .name_parser import NameParser
 from jinja2.exceptions import TemplateNotFound
 
 

@@ -5,7 +5,7 @@ from .utils import (remove_subscribe,
                     filter_out_result,
                     no_return,
                     is_stream)
-from .name import NameParser
+from .name_parser import NameParser
 
 
 class Param:
