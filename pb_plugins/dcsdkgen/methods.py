@@ -1,21 +1,16 @@
 # -*- coding: utf-8 -*-
 from .utils import (remove_subscribe,
-                    extract_string_type,
-                    is_primitive_type,
                     filter_out_result,
                     no_return,
                     is_stream)
 from .name_parser import NameParser
+from .type_info import TypeInfo
 
 
 class Param:
 
-    def __init__(
-            self,
-            name,
-            type,
-            is_primitive):
-        self.name, self.type, self.is_primitive = name, type, is_primitive
+    def __init__(self, name, type_info):
+        self.name, self.type_info
 
 
 class Method(object):
@@ -47,8 +42,7 @@ class Method(object):
             self._params.append(
                 Param(
                     name=NameParser(field.name),
-                    type=extract_string_type(field),
-                    is_primitive=is_primitive_type(field))
+                    type_info=TypeInfo(field))
             )
 
     def extract_return_type_and_name(self, pb_method, responses):
@@ -63,10 +57,7 @@ class Method(object):
                 f"(and an optional '*Result')!\nError in {method_output}")
 
         if len(return_params) == 1:
-            self._return_type = \
-                extract_string_type(return_params[0])
-            self._is_return_type_primitive = \
-                is_primitive_type(return_params[0])
+            self._return_type = TypeInfo(return_params[0])
             self._return_name = NameParser(return_params[0].json_name)
 
     @property
@@ -186,7 +177,6 @@ class Request(Method):
             params=self._params,
             return_type=self._return_type,
             return_name=self._return_name,
-            is_return_type_primitive=self._is_return_type_primitive,
             plugin_name=self._plugin_name,
             request_rpc_type=self._request_rpc_type,
             package=self._package)
@@ -214,6 +204,5 @@ class Stream(Method):
             params=self._params,
             return_type=self._return_type,
             return_name=self._return_name,
-            is_return_type_primitive=self._is_return_type_primitive,
             plugin_name=self._plugin_name,
             package=self._package)
