@@ -7,7 +7,7 @@
 using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
-static void receive_calibration_callback(const Calibration::Result &result,
+static void receive_calibration_callback(const Calibration::Result result,
                                          const Calibration::ProgressData &progress_data,
                                          const std::string &calibration_type,
                                          bool &done);
@@ -108,7 +108,7 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
     }
 }
 
-void receive_calibration_callback(const Calibration::Result &result,
+void receive_calibration_callback(const Calibration::Result result,
                                   const Calibration::ProgressData &progress_data,
                                   const std::string &calibration_type,
                                   bool &done)
