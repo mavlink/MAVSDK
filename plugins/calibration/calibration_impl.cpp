@@ -57,10 +57,8 @@ void CalibrationImpl::calibrate_gyro_async(const Calibration::calibration_callba
     }
 
     if (_state != State::NONE) {
-        if (callback) {
-            _parent->call_user_callback(
-                [callback]() { callback(Calibration::Result::BUSY, NAN, ""); });
-        }
+        Calibration::ProgressData progress_data(false, NAN, false, "");
+        call_user_callback(callback, Calibration::Result::BUSY, progress_data);
         return;
     }
 
@@ -76,6 +74,16 @@ void CalibrationImpl::calibrate_gyro_async(const Calibration::calibration_callba
                                 std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
+void CalibrationImpl::call_user_callback(const Calibration::calibration_callback_t &callback,
+                                         const Calibration::Result &result,
+                                         const Calibration::ProgressData &progress_data)
+{
+    if (callback) {
+        _parent->call_user_callback(
+            [callback, &result, &progress_data]() { callback(result, progress_data); });
+    }
+}
+
 void CalibrationImpl::calibrate_accelerometer_async(
     const Calibration::calibration_callback_t &callback)
 {
@@ -87,10 +95,8 @@ void CalibrationImpl::calibrate_accelerometer_async(
     }
 
     if (_state != State::NONE) {
-        if (callback) {
-            _parent->call_user_callback(
-                [callback]() { callback(Calibration::Result::BUSY, NAN, ""); });
-        }
+        Calibration::ProgressData progress_data(false, NAN, false, "");
+        call_user_callback(callback, Calibration::Result::BUSY, progress_data);
         return;
     }
 
@@ -117,10 +123,8 @@ void CalibrationImpl::calibrate_magnetometer_async(
     }
 
     if (_state != State::NONE) {
-        if (callback) {
-            _parent->call_user_callback(
-                [callback]() { callback(Calibration::Result::BUSY, NAN, ""); });
-        }
+        Calibration::ProgressData progress_data(false, NAN, false, "");
+        call_user_callback(callback, Calibration::Result::BUSY, progress_data);
         return;
     }
 
@@ -147,10 +151,8 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(
     }
 
     if (_state != State::NONE) {
-        if (callback) {
-            _parent->call_user_callback(
-                [callback]() { callback(Calibration::Result::BUSY, NAN, ""); });
-        }
+        Calibration::ProgressData progress_data(false, NAN, false, "");
+        call_user_callback(callback, Calibration::Result::BUSY, progress_data);
         return;
     }
 
@@ -213,28 +215,24 @@ void CalibrationImpl::command_result_callback(MAVLinkCommands::Result command_re
             // FALLTHROUGH
         case MAVLinkCommands::Result::UNKNOWN_ERROR:
             // FALLTHROUGH
-        case MAVLinkCommands::Result::TIMEOUT:
+        case MAVLinkCommands::Result::TIMEOUT: {
             // Report all error cases.
-            if (_calibration_callback) {
-                auto calibration_callback_tmp = _calibration_callback;
-                _parent->call_user_callback([calibration_callback_tmp, command_result]() {
-                    calibration_callback_tmp(
-                        calibration_result_from_command_result(command_result), NAN, "");
-                });
-            }
+            const auto timeout_result = calibration_result_from_command_result(command_result);
+            call_user_callback(_calibration_callback,
+                               timeout_result,
+                               Calibration::ProgressData(false, NAN, false, ""));
             _calibration_callback = nullptr;
             _state = State::NONE;
             break;
+        }
 
-        case MAVLinkCommands::Result::IN_PROGRESS:
-            if (_calibration_callback) {
-                auto calibration_callback_tmp = _calibration_callback;
-                _parent->call_user_callback([calibration_callback_tmp, command_result, progress]() {
-                    calibration_callback_tmp(
-                        calibration_result_from_command_result(command_result), progress, "");
-                });
-            }
+        case MAVLinkCommands::Result::IN_PROGRESS: {
+            const auto progress_result = calibration_result_from_command_result(command_result);
+            call_user_callback(_calibration_callback,
+                               progress_result,
+                               Calibration::ProgressData(true, progress, false, ""));
             break;
+        }
     };
 }
 
@@ -373,54 +371,34 @@ void CalibrationImpl::report_started()
 
 void CalibrationImpl::report_done()
 {
-    if (_calibration_callback) {
-        auto calibration_callback_tmp = _calibration_callback;
-        _parent->call_user_callback([calibration_callback_tmp]() {
-            calibration_callback_tmp(Calibration::Result::SUCCESS, NAN, "");
-        });
-    }
+    const Calibration::ProgressData progress_data(false, NAN, false, "");
+    call_user_callback(_calibration_callback, Calibration::Result::SUCCESS, progress_data);
 }
 
 void CalibrationImpl::report_failed(const std::string &failed)
 {
     LogErr() << "Calibration failed: " << failed;
-    if (_calibration_callback) {
-        auto calibration_callback_tmp = _calibration_callback;
-        _parent->call_user_callback([calibration_callback_tmp]() {
-            calibration_callback_tmp(Calibration::Result::FAILED, NAN, "");
-        });
-    }
+    const Calibration::ProgressData progress_data(false, NAN, false, "");
+    call_user_callback(_calibration_callback, Calibration::Result::FAILED, progress_data);
 }
 
 void CalibrationImpl::report_cancelled()
 {
     LogWarn() << "Calibration was cancelled";
-    if (_calibration_callback) {
-        auto calibration_callback_tmp = _calibration_callback;
-        _parent->call_user_callback([calibration_callback_tmp]() {
-            calibration_callback_tmp(Calibration::Result::CANCELLED, NAN, "");
-        });
-    }
+    const Calibration::ProgressData progress_data(false, NAN, false, "");
+    call_user_callback(_calibration_callback, Calibration::Result::CANCELLED, progress_data);
 }
 
 void CalibrationImpl::report_progress(float progress)
 {
-    if (_calibration_callback) {
-        auto calibration_callback_tmp = _calibration_callback;
-        _parent->call_user_callback([calibration_callback_tmp, progress]() {
-            calibration_callback_tmp(Calibration::Result::IN_PROGRESS, progress, "");
-        });
-    }
+    const Calibration::ProgressData progress_data(true, progress, false, "");
+    call_user_callback(_calibration_callback, Calibration::Result::IN_PROGRESS, progress_data);
 }
 
 void CalibrationImpl::report_instruction(const std::string &instruction)
 {
-    if (_calibration_callback) {
-        auto calibration_callback_tmp = _calibration_callback;
-        _parent->call_user_callback([calibration_callback_tmp, instruction]() {
-            calibration_callback_tmp(Calibration::Result::INSTRUCTION, NAN, instruction);
-        });
-    }
+    const Calibration::ProgressData progress_data(false, NAN, true, instruction);
+    call_user_callback(_calibration_callback, Calibration::Result::INSTRUCTION, progress_data);
 }
 
 } // namespace dronecode_sdk
