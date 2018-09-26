@@ -1,6 +1,8 @@
 #pragma once
 
 #include <functional>
+#include <string>
+
 #include "plugin_base.h"
 
 namespace dronecode_sdk {
@@ -33,7 +35,7 @@ public:
     ~Calibration();
 
     /**
-     * @brief Possible results returned for camera commands.
+     * @brief Possible results returned for calibration commands.
      */
     enum class Result {
         UNKNOWN,
@@ -50,6 +52,36 @@ public:
     };
 
     /**
+     * @brief Progress data coming from calibration.
+     *
+     * Can be a progress percentage, or an instruction text.
+     */
+    struct ProgressData {
+        bool has_progress;
+        float progress;
+        bool has_status_text;
+        std::string status_text;
+
+        /**
+         * Constructor for ProgressData.
+         *
+         * @param has_progress Whether or not this struct contains progress information.
+         * @param progress The actual progress.
+         * @param has_status_text Whether or not this struct contains an instruction text.
+         * @param status_text The actual instruction text.
+         */
+        ProgressData(const bool _has_progress,
+                     const float _progress,
+                     const bool _has_status_text,
+                     const std::string &_status_text) :
+            has_progress(_has_progress),
+            progress(_progress),
+            has_status_text(_has_status_text),
+            status_text(_status_text)
+        {}
+    };
+
+    /**
      * @brief Returns a human-readable English string for Calibration::Result.
      *
      * @param result The enum value for which a human readable string is required.
@@ -60,8 +92,7 @@ public:
     /**
      * @brief Callback type for asynchronous calibration call.
      */
-    typedef std::function<void(Result result, float progress, const std::string &text)>
-        calibration_callback_t;
+    typedef std::function<void(const Result result, const ProgressData)> calibration_callback_t;
 
     /**
      * @brief Perform gyro calibration (asynchronous call).
