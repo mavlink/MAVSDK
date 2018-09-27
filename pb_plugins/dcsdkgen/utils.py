@@ -8,7 +8,7 @@ def no_return(method, responses):
     method_response = responses[method_output]
 
     if (1 == len(method_response.field) and
-            method_response.field[0].type_name.endswith("Result")):
+            TypeInfo(method_response.field[0]).is_result):
         return True
 
     if (0 == len(method_response.field)):
@@ -39,42 +39,11 @@ def is_struct(struct):
             not struct.name.endswith("Response"))
 
 
-def extract_string_type(field):
-    """ Extracts the string types """
-    types = {
-        1: "Double",
-        2: "Float",
-        4: "UInt64",
-        5: "Int",
-        8: "Bool",
-        9: "String",
-        13: "UInt32",
-        11: str(field.type_name.split(".")[-1]),
-        14: str(field.type_name.split(".")[-1])
-    }
-
-    if (field.type in types):
-        return types[field.type]
-    else:
-        return "UNKNOWN_TYPE"
-
-
-def is_primitive_type(field):
-    """ Check if the field type is primitive (e.g. bool,
-    float) or not (e.g message, enum) """
-    return (field.type not in {11, 14})
-
-
 def filter_out_result(fields):
     """ Filters out the result fields (".*Result$") """
     for field in fields:
-        if not is_result(field):
+        if not field.type_name.endswith("Result"):
             yield field
-
-
-def is_result(field):
-    """ Check if the field is a *Result """
-    return extract_string_type(field).endswith("Result")
 
 
 def remove_subscribe(name):
