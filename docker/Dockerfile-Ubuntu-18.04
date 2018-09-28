@@ -41,13 +41,11 @@ RUN update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/cl
 
 RUN gem install --no-ri --no-rdoc fpm;
 
-RUN useradd -d /home/dronecode -m -s /bin/bash dronecode
-
 ADD /sudoers.txt /etc/sudoers
 RUN chmod 440 /etc/sudoers
 
-USER dronecode
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-CMD ["/bin/bash"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-WORKDIR "/home/dronecode/DronecodeSDK"
+WORKDIR "/home/user/DronecodeSDK"

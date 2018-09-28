@@ -1,2 +1,2 @@
 root ALL=(ALL) ALL
-dronecode ALL=(ALL) NOPASSWD: ALL
+user ALL=(ALL) NOPASSWD: ALL
