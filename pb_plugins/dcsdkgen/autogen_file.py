@@ -7,8 +7,8 @@ class File(object):
 
     def __init__(
             self,
-            package,
             plugin_name,
+            package,
             template_env,
             enums,
             structs,

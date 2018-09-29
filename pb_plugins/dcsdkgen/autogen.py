@@ -43,8 +43,8 @@ class AutoGen(object):
                                              responses,
                                              template_env)
 
-            out_file = File(proto_file.package,
-                            plugin_name,
+            out_file = File(plugin_name,
+                            proto_file.package,
                             template_env,
                             enums,
                             structs,
