@@ -12,6 +12,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -31,6 +32,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -47,6 +49,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-18.04:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -63,6 +66,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-18.04:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -79,6 +83,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-fedora-27:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -95,6 +100,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-fedora-27:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -111,6 +117,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-fedora-28:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -127,6 +134,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-fedora-28:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -149,6 +157,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -160,6 +169,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -176,6 +186,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -192,6 +203,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-09-28'
+              args '-e LOCAL_USER_ID=`id -u`'
             }
           }
           steps {
@@ -211,6 +223,7 @@ pipeline {
       agent {
         docker {
           image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-09-28'
+          args '-e LOCAL_USER_ID=`id -u`'
         }
       }
       steps {
