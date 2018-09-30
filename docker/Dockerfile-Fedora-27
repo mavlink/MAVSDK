@@ -30,6 +30,7 @@ RUN dnf -y install \
     which \
     zlib-devel \
     golang \
+    sudo \
     && dnf clean all
 
 RUN wget http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-Fedora27.tar.xz \
@@ -39,10 +40,11 @@ RUN wget http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-Fedora
 
 RUN gem install --no-ri --no-rdoc fpm;
 
-RUN useradd -d /home/dronecode -m -s /bin/bash dronecode
+ADD /sudoers.txt /etc/sudoers
+RUN chmod 440 /etc/sudoers
 
-USER dronecode
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-CMD ["/bin/bash"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-WORKDIR "/home/dronecode/DronecodeSDK"
+WORKDIR "/home/user/DronecodeSDK"
