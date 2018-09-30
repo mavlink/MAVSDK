@@ -335,8 +335,27 @@ void SystemImpl::add_new_component(uint8_t component_id)
     auto res_pair = _components.insert(component_id);
     if (res_pair.second) {
         if (component_discovered_callback != nullptr) {
+            ComponentType component_type;
+            switch (component_id) {
+                case MAV_COMP_ID_AUTOPILOT1:
+                    component_type = AUTOPILOT;
+                    break;
+                case MAV_COMP_ID_CAMERA:
+                case MAV_COMP_ID_CAMERA2:
+                case MAV_COMP_ID_CAMERA3:
+                case MAV_COMP_ID_CAMERA4:
+                case MAV_COMP_ID_CAMERA5:
+                case MAV_COMP_ID_CAMERA6:
+                    component_type = CAMERA;
+                    break;
+                case MAV_COMP_ID_GIMBAL:
+                    component_type = GIMBAL;
+                    break;
+                default:
+                    component_type = UNKNOWN;
+            }
             call_user_callback(
-                [this, component_id]() { component_discovered_callback(component_id); });
+                [this, component_type]() { component_discovered_callback(component_type); });
         }
         LogDebug() << "Component " << component_name(component_id) << " added.";
     }
@@ -352,8 +371,28 @@ void SystemImpl::register_component_discovered_callback(discover_callback_t call
     component_discovered_callback = callback;
 
     if (total_components() > 0) {
+        ComponentType component_type;
         for (const auto &elem : _components) {
-            call_user_callback([this, elem]() { component_discovered_callback(elem); });
+            switch (elem) {
+                case MAV_COMP_ID_AUTOPILOT1:
+                    component_type = AUTOPILOT;
+                    break;
+                case MAV_COMP_ID_CAMERA:
+                case MAV_COMP_ID_CAMERA2:
+                case MAV_COMP_ID_CAMERA3:
+                case MAV_COMP_ID_CAMERA4:
+                case MAV_COMP_ID_CAMERA5:
+                case MAV_COMP_ID_CAMERA6:
+                    component_type = CAMERA;
+                    break;
+                case MAV_COMP_ID_GIMBAL:
+                    component_type = GIMBAL;
+                    break;
+                default:
+                    component_type = UNKNOWN;
+            }
+            call_user_callback(
+                [this, component_type]() { component_discovered_callback(component_type); });
         }
     }
 }

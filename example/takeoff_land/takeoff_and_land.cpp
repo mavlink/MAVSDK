@@ -5,6 +5,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <dronecode_sdk/system.h>
 #include <dronecode_sdk/action.h>
 #include <dronecode_sdk/dronecode_sdk.h>
 #include <dronecode_sdk/telemetry.h>
@@ -29,10 +30,10 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-void component_discovered(uint8_t component_id)
+void component_discovered(ComponentType component_type)
 {
-    std::cout << NORMAL_CONSOLE_TEXT << "Discovered a component with ID " << unsigned(component_id)
-              << std::endl;
+    std::cout << NORMAL_CONSOLE_TEXT << "Discovered a component with type "
+              << unsigned(component_type) << std::endl;
 }
 
 int main(int argc, char **argv)

@@ -97,6 +97,7 @@ public:
     // Adds unique component ids
     void add_new_component(uint8_t component_id);
     size_t total_components() const;
+
     void register_component_discovered_callback(discover_callback_t callback);
     discover_callback_t component_discovered_callback;
 

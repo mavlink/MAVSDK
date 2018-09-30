@@ -6,9 +6,14 @@
 namespace dronecode_sdk {
 
 /**
+ * @brief Component Types
+ */
+enum ComponentType { UNKNOWN = 0, AUTOPILOT, CAMERA, GIMBAL };
+
+/**
  * @brief type for component discovery callback
  */
-typedef std::function<void(uint8_t)> discover_callback_t;
+typedef std::function<void(ComponentType)> discover_callback_t;
 
 class SystemImpl;
 class DronecodeSDKImpl;
