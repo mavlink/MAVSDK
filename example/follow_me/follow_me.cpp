@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     FakeLocationProvider location_provider;
     // Register for platform-specific Location provider. We're using FakeLocationProvider for the
     // example.
-    location_provider.request_location_updates([&system, &follow_me](double lat, double lon) {
+    location_provider.request_location_updates([&follow_me](double lat, double lon) {
         follow_me->set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
     });
 
