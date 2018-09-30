@@ -350,6 +350,12 @@ size_t SystemImpl::total_components() const
 void SystemImpl::register_component_discovered_callback(discover_callback_t callback)
 {
     component_discovered_callback = callback;
+
+    if (total_components() > 0) {
+        for (const auto &elem : _components) {
+            call_user_callback([this, elem]() { component_discovered_callback(elem); });
+        }
+    }
 }
 
 bool SystemImpl::is_standalone() const

@@ -62,10 +62,6 @@ int main(int argc, char **argv)
     // dc.system(uint64_t uuid);
     System &system = dc.system();
 
-    // Register a callback so we get told when components (camera, gimbal) etc
-    // are found.
-    system.register_component_discovered_callback(component_discovered);
-
     std::cout << "Waiting to discover system..." << std::endl;
     dc.register_on_discover([&discovered_system](uint64_t uuid) {
         std::cout << "Discovered system with UUID: " << uuid << std::endl;
@@ -81,6 +77,10 @@ int main(int argc, char **argv)
                   << std::endl;
         return 1;
     }
+
+    // Register a callback so we get told when components (camera, gimbal) etc
+    // are found.
+    system.register_component_discovered_callback(component_discovered);
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
