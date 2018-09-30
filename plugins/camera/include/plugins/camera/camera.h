@@ -581,6 +581,11 @@ public:
     Result format_storage();
 
     /**
+     * @brief Request Camera Info.
+     */
+    void request_info(void);
+
+    /**
      * @brief Copy constructor (object is not copyable).
      */
     Camera(const Camera &) = delete;

@@ -176,6 +176,11 @@ void Camera::format_storage_async(result_callback_t callback)
     _impl->format_storage_async(callback);
 }
 
+void Camera::request_info()
+{
+    return _impl->request_info();
+}
+
 std::string Camera::result_str(Result result)
 {
     switch (result) {

@@ -107,6 +107,13 @@ void CameraImpl::disable()
     _parent->remove_call_every(_flight_information_call_every_cookie);
 }
 
+void CameraImpl::request_info()
+{
+    auto command_camera_info = make_command_request_camera_info();
+
+    _parent->send_command_async(command_camera_info, nullptr);
+}
+
 MAVLinkCommands::CommandLong CameraImpl::make_command_request_camera_info()
 {
     MAVLinkCommands::CommandLong command_camera_info{};
