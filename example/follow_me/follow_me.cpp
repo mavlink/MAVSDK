@@ -108,8 +108,8 @@ int main(int argc, char **argv)
     // Configure Min height of the drone to be "20 meters" above home & Follow direction as "Front
     // right".
     FollowMe::Config config;
-    config.min_height_m = 20.0;
-    config.follow_direction = FollowMe::Config::FollowDirection::FRONT_RIGHT;
+    config.min_height_m = 10.0;
+    config.follow_direction = FollowMe::Config::FollowDirection::BEHIND;
     FollowMe::Result follow_me_result = follow_me->set_config(config);
 
     // Start Follow Me
