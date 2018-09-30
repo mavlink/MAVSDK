@@ -17,6 +17,7 @@ public:
     ~FakeLocationProvider();
 
     void request_location_updates(location_callback_t callback);
+    bool is_running() { return !should_exit_; };
 
 private:
     void start();

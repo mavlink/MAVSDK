@@ -123,6 +123,10 @@ int main(int argc, char **argv)
         follow_me->set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
     });
 
+    while (location_provider.is_running()) {
+        sleep_for(seconds(1));
+    }
+
     // Stop Follow Me
     follow_me_result = follow_me->stop();
     follow_me_error_exit(follow_me_result, "Failed to stop FollowMe mode");
