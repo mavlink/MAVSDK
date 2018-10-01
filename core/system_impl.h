@@ -7,6 +7,7 @@
 #include "timeout_handler.h"
 #include "call_every_handler.h"
 #include "thread_pool.h"
+#include "system.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -96,6 +97,9 @@ public:
     // Adds unique component ids
     void add_new_component(uint8_t component_id);
     size_t total_components() const;
+
+    void register_component_discovered_callback(discover_callback_t callback);
+    discover_callback_t component_discovered_callback;
 
     uint8_t get_autopilot_id() const;
     std::vector<uint8_t> get_camera_ids() const;
@@ -190,6 +194,7 @@ private:
     void set_disconnected();
 
     static std::string component_name(uint8_t component_id);
+    static ComponentType component_type(uint8_t component_id);
 
     void system_thread();
     void send_heartbeat();

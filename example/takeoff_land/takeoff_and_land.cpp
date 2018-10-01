@@ -5,6 +5,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <dronecode_sdk/system.h>
 #include <dronecode_sdk/action.h>
 #include <dronecode_sdk/dronecode_sdk.h>
 #include <dronecode_sdk/telemetry.h>
@@ -29,6 +30,12 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
+void component_discovered(ComponentType component_type)
+{
+    std::cout << NORMAL_CONSOLE_TEXT << "Discovered a component with type "
+              << unsigned(component_type) << std::endl;
+}
+
 int main(int argc, char **argv)
 {
     DronecodeSDK dc;
@@ -51,6 +58,11 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    // We don't need to specify the UUID if it's only one system anyway.
+    // If there were multiple, we could specify it with:
+    // dc.system(uint64_t uuid);
+    System &system = dc.system();
+
     std::cout << "Waiting to discover system..." << std::endl;
     dc.register_on_discover([&discovered_system](uint64_t uuid) {
         std::cout << "Discovered system with UUID: " << uuid << std::endl;
@@ -67,10 +79,9 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    // We don't need to specify the UUID if it's only one system anyway.
-    // If there were multiple, we could specify it with:
-    // dc.system(uint64_t uuid);
-    System &system = dc.system();
+    // Register a callback so we get told when components (camera, gimbal) etc
+    // are found.
+    system.register_component_discovered_callback(component_discovered);
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);

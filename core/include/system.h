@@ -1,8 +1,19 @@
 #pragma once
 
 #include <memory>
+#include <functional>
 
 namespace dronecode_sdk {
+
+/**
+ * @brief Component Types
+ */
+enum ComponentType { UNKNOWN = 0, AUTOPILOT, CAMERA, GIMBAL };
+
+/**
+ * @brief type for component discovery callback
+ */
+typedef std::function<void(ComponentType)> discover_callback_t;
 
 class SystemImpl;
 class DronecodeSDKImpl;
@@ -75,6 +86,14 @@ public:
      * @return UUID of system.
      */
     uint64_t get_uuid() const;
+
+    /**
+     * @brief Register a callback to be called when a component is discovered.
+     *
+     * @param callback a function of type void(ComponentType) which will be called with the
+     * component type of the new component.
+     */
+    void register_component_discovered_callback(discover_callback_t callback) const;
 
     /**
      * @brief Copy constructor (object is not copyable).
