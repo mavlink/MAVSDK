@@ -108,8 +108,8 @@ int main(int argc, char **argv)
     // Configure Min height of the drone to be "20 meters" above home & Follow direction as "Front
     // right".
     FollowMe::Config config;
-    config.min_height_m = 20.0;
-    config.follow_direction = FollowMe::Config::FollowDirection::FRONT_RIGHT;
+    config.min_height_m = 10.0;
+    config.follow_direction = FollowMe::Config::FollowDirection::BEHIND;
     FollowMe::Result follow_me_result = follow_me->set_config(config);
 
     // Start Follow Me
@@ -119,9 +119,13 @@ int main(int argc, char **argv)
     FakeLocationProvider location_provider;
     // Register for platform-specific Location provider. We're using FakeLocationProvider for the
     // example.
-    location_provider.request_location_updates([&system, &follow_me](double lat, double lon) {
+    location_provider.request_location_updates([&follow_me](double lat, double lon) {
         follow_me->set_target_location({lat, lon, 0.0, 0.f, 0.f, 0.f});
     });
+
+    while (location_provider.is_running()) {
+        sleep_for(seconds(1));
+    }
 
     // Stop Follow Me
     follow_me_result = follow_me->stop();

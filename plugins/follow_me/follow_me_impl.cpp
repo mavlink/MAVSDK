@@ -5,8 +5,6 @@
 
 namespace dronecode_sdk {
 
-using namespace std::placeholders; // for `_1`
-
 FollowMeImpl::FollowMeImpl(System &system) : PluginImplBase(system)
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
@@ -22,9 +20,10 @@ FollowMeImpl::~FollowMeImpl()
 
 void FollowMeImpl::init()
 {
-    _parent->register_mavlink_message_handler(MAVLINK_MSG_ID_HEARTBEAT,
-                                              std::bind(&FollowMeImpl::process_heartbeat, this, _1),
-                                              static_cast<void *>(this));
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_HEARTBEAT,
+        std::bind(&FollowMeImpl::process_heartbeat, this, std::placeholders::_1),
+        static_cast<void *>(this));
 }
 
 void FollowMeImpl::deinit()

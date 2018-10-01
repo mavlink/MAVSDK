@@ -37,39 +37,30 @@ void FakeLocationProvider::stop()
     }
 }
 
-// Rudimentary location provider whose successive lat, lon combination
-// makes Drone revolve in a semi-circular path.
+// Rudimentary location provider to draw a square.
 void FakeLocationProvider::compute_locations()
 {
     while (!should_exit_) {
-        if (count_++ < 10) {
+        if (count_ < 10) {
             location_callback_(latitude_deg_, longitude_deg_);
             latitude_deg_ -= LATITUDE_DEG_PER_METER * 4;
-        }
-        if (count_++ < 20) {
+        } else if (count_ < 20) {
             location_callback_(latitude_deg_, longitude_deg_);
             longitude_deg_ += LONGITUDE_DEG_PER_METER * 4;
-        }
-        if (count_++ < 30) {
+        } else if (count_ < 30) {
             location_callback_(latitude_deg_, longitude_deg_);
             latitude_deg_ += LATITUDE_DEG_PER_METER * 4;
-        }
-        if (count_++ < 40) {
+        } else if (count_ < 40) {
             location_callback_(latitude_deg_, longitude_deg_);
             longitude_deg_ -= LONGITUDE_DEG_PER_METER * 4;
-        }
-        if (count_++ < 50) {
-            location_callback_(latitude_deg_, longitude_deg_);
-            latitude_deg_ -= LATITUDE_DEG_PER_METER * 3;
-        }
-        if (count_++ < MAX_LOCATIONS) {
-            location_callback_(latitude_deg_, longitude_deg_);
-            longitude_deg_ += LONGITUDE_DEG_PER_METER * 3;
+        } else {
+            // We're done.
+            should_exit_ = true;
         }
         sleep_for(seconds(1));
+        ++count_;
     }
 }
 
-const size_t FakeLocationProvider::MAX_LOCATIONS = 60u;
 const double FakeLocationProvider::LATITUDE_DEG_PER_METER = 0.000009044;
 const double FakeLocationProvider::LONGITUDE_DEG_PER_METER = 0.000008985;
