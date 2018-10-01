@@ -46,6 +46,10 @@ def filter_out_result(fields):
             yield field
 
 
+def remove_subscribe(name):
+    return name.replace("Subscribe", "")
+
+
 def jinja_indent(_in_str, level):
     """ Indentation helper for the jinja2 templates """
 

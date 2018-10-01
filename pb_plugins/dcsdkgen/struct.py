@@ -21,7 +21,7 @@ class Struct(object):
 
         for field in pb_struct.field:
             self._fields.append(
-                    (NameParser(field.json_name), TypeInfo(field)))
+                (NameParser(field.json_name), TypeInfo(field)))
 
     def __repr__(self):
         return self._template.render(plugin_name=self._plugin_name,
