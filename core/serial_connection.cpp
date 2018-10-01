@@ -150,6 +150,9 @@ ConnectionResult SerialConnection::setup_port()
     tc.c_cflag &= ~(CBAUD);
     tc.c_cflag |= BOTHER;
 
+    tc.c_ispeed = _baudrate;
+    tc.c_ospeed = _baudrate;
+
     if (ioctl(_fd, TCSETS2, &tc) == -1) {
         LogErr() << "Could not set terminal attributes " << GET_ERROR();
         close(_fd);
