@@ -90,8 +90,8 @@ public:
     /**
      * @brief Register a callback to be called when a component is discovered.
      *
-     * @param callback a function of type void(uint8_t) which will be called with the COMPONENT_ID
-     * of the new component.
+     * @param callback a function of type void(ComponentType) which will be called with the
+     * component type of the new component.
      */
     void register_component_discovered_callback(discover_callback_t callback) const;
 

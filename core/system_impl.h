@@ -194,6 +194,7 @@ private:
     void set_disconnected();
 
     static std::string component_name(uint8_t component_id);
+    static ComponentType component_type(uint8_t component_id);
 
     void system_thread();
     void send_heartbeat();
