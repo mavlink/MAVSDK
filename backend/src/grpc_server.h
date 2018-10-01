@@ -5,6 +5,8 @@
 
 #include "plugins/action/action.h"
 #include "action/action_service_impl.h"
+#include "plugins/calibration/calibration.h"
+#include "calibration/calibration_service_impl.h"
 #include "plugins/camera/camera.h"
 #include "camera/camera_service_impl.h"
 #include "core/core_service_impl.h"

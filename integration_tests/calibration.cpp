@@ -7,10 +7,9 @@
 using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
-static void receive_calibration_callback(Calibration::Result result,
-                                         float progress,
-                                         const std::string text,
-                                         const std::string calibration_type,
+static void receive_calibration_callback(const Calibration::Result result,
+                                         const Calibration::ProgressData &progress_data,
+                                         const std::string &calibration_type,
                                          bool &done);
 
 TEST(HardwareTest, CalibrationGyro)
@@ -30,7 +29,7 @@ TEST(HardwareTest, CalibrationGyro)
     bool done = false;
 
     calibration->calibrate_gyro_async(
-        std::bind(&receive_calibration_callback, _1, _2, _3, "gyro", std::ref(done)));
+        std::bind(&receive_calibration_callback, _1, _2, "gyro", std::ref(done)));
 
     while (!done) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -54,7 +53,7 @@ TEST(HardwareTest, CalibrationAccelerometer)
     bool done = false;
 
     calibration->calibrate_accelerometer_async(
-        std::bind(&receive_calibration_callback, _1, _2, _3, "accelerometer", std::ref(done)));
+        std::bind(&receive_calibration_callback, _1, _2, "accelerometer", std::ref(done)));
 
     while (!done) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -78,7 +77,7 @@ TEST(HardwareTest, CalibrationMagnetometer)
     bool done = false;
 
     calibration->calibrate_magnetometer_async(
-        std::bind(&receive_calibration_callback, _1, _2, _3, "magnetometer", std::ref(done)));
+        std::bind(&receive_calibration_callback, _1, _2, "magnetometer", std::ref(done)));
 
     while (!done) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -101,24 +100,23 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
 
     bool done = false;
 
-    calibration->calibrate_gimbal_accelerometer_async(std::bind(
-        &receive_calibration_callback, _1, _2, _3, "gimbal accelerometer", std::ref(done)));
+    calibration->calibrate_gimbal_accelerometer_async(
+        std::bind(&receive_calibration_callback, _1, _2, "gimbal accelerometer", std::ref(done)));
 
     while (!done) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
 
-void receive_calibration_callback(Calibration::Result result,
-                                  float progress,
-                                  const std::string text,
-                                  const std::string calibration_type,
+void receive_calibration_callback(const Calibration::Result result,
+                                  const Calibration::ProgressData &progress_data,
+                                  const std::string &calibration_type,
                                   bool &done)
 {
     if (result == Calibration::Result::IN_PROGRESS) {
-        LogInfo() << calibration_type << " calibration in progress: " << progress;
+        LogInfo() << calibration_type << " calibration in progress: " << progress_data.progress;
     } else if (result == Calibration::Result::INSTRUCTION) {
-        LogInfo() << calibration_type << " calibration instruction: " << text;
+        LogInfo() << calibration_type << " calibration instruction: " << progress_data.status_text;
     } else {
         EXPECT_EQ(result, Calibration::Result::SUCCESS);
 
@@ -126,7 +124,8 @@ void receive_calibration_callback(Calibration::Result result,
             LogErr() << calibration_type
                      << " calibration error: " << Calibration::result_str(result);
             if (result == Calibration::Result::FAILED) {
-                LogErr() << calibration_type << " cailbration failed: " << text;
+                LogErr() << calibration_type
+                         << " cailbration failed: " << progress_data.status_text;
             }
         }
         done = true;
