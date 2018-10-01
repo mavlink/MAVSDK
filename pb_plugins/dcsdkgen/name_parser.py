@@ -7,6 +7,10 @@ class NameParser:
         self._name = name
 
     @property
+    def lowercase(self):
+        return self._name.lower()
+
+    @property
     def upper_camel_case(self):
         return self._name
 
@@ -18,4 +22,8 @@ class NameParser:
     def snake_case(self):
         return re.sub('(?<!^)(?=[A-Z])',
                       '_',
-                      self._name).lower()
+                      self._name)
+
+    @property
+    def lower_snake_case(self):
+        return self.snake_case.lower()
