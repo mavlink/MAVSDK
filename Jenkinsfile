@@ -25,12 +25,11 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1'
+            sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_DIR=`pwd`/install'
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
-            sh 'sudo make default install'
             sh 'mkdir -p example/takeoff_land/build'
-            sh 'cd example/takeoff_land/build && cmake .. && make'
+            // sh 'cd example/takeoff_land/build && cmake .. && make'
           }
         }
 
