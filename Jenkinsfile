@@ -28,7 +28,7 @@ pipeline {
             sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
-            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/takeoff_land/build && (cd example/takeoff_land/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" .. && make)'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
           }
         }
 
@@ -42,9 +42,10 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Release BUILD_BACKEND=1'
+            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
           }
         }
 
@@ -58,9 +59,10 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1'
+            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
           }
         }
 
@@ -74,9 +76,10 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Release BUILD_BACKEND=1'
+            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
           }
         }
 
@@ -90,9 +93,10 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1'
+            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
           }
         }
 
@@ -106,9 +110,10 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Release BUILD_BACKEND=1'
+            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
           }
         }
 
@@ -122,9 +127,10 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Debug BUILD_BACKEND=1'
+            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
           }
         }
 
@@ -138,9 +144,10 @@ pipeline {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule update --init --recursive --force'
-            sh 'make BUILD_TYPE=Release BUILD_BACKEND=1'
+            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
           }
         }
 
