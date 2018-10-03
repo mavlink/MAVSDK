@@ -149,7 +149,7 @@ after_success:
   git config --global user.email "dronecodesdkbot@gmail.com";
   git config --global user.name "DronecodeSDKBot";
   git remote set-url origin https://${GH_TOKEN}@github.com/Dronecode/DronecodeSDK.git;
-  ./check-version-tag.sh;
+  ./ci-git-release.sh;
   fi
 
 deploy:
