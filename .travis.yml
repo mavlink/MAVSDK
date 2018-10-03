@@ -143,6 +143,11 @@ after_success:
     --exclude-pattern=".*CMakeFiles.*"
     --exclude-pattern=".*_test.*";
   fi
+- if [[ $TRAVIS_BRANCH == “develop” ]]; then
+  git config --global user.name $GIT_BOT_USERNAME;
+  git config --global user.password $GIT_BOT_PASSWORD;
+  ./check-version-tag.sh;
+  fi
 
 deploy:
   provider: releases
