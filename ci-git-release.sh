@@ -2,7 +2,7 @@
 
 set -e
 
-git_branch=`git branch`
+git_branch=`git rev-parse --abbrev-ref HEAD`
 
 # Make sure we're on the 'develop' branch.
 if [ ! "$git_branch" = "develop" ]; then
