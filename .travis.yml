@@ -146,8 +146,8 @@ after_success:
   # Eventually, this should also have: "if [[ $TRAVIS_PULL_REQUEST == “false” ]] && [[ $TRAVIS_BRANCH == “develop” ]]"
   # For now let's test this
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
-  git config --global user.email "dronecodesdkbot@gmail.com";
-  git config --global user.name "DronecodeSDKBot";
+  git config user.email "dronecodesdkbot@gmail.com";
+  git config user.name "DronecodeSDKBot";
   git remote set-url origin https://${GH_TOKEN}@github.com/Dronecode/DronecodeSDK.git;
   ./ci-git-release.sh;
   fi
