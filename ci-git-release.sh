@@ -5,7 +5,7 @@ set -e
 git_branch=`git branch`
 
 # Make sure we're on the 'develop' branch.
-if [ ! $git_branch = "develop" ]; then
+if [ ! "$git_branch" = "develop" ]; then
     echo "Error: branch is '$git_branch' instead of 'develop'"
     exit 1
 fi
