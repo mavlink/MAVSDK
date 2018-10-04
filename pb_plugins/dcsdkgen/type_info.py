@@ -6,10 +6,12 @@ class TypeInfo:
     _default_types = {
         1: "double",
         2: "float",
+        3: "int64_t",
         4: "uint64_t",
-        5: "int",
+        5: "int32_t",
         8: "bool",
         9: "std::string",
+        12: "std::byte",
         13: "uint32_t"
     }
 
@@ -33,7 +35,7 @@ class TypeInfo:
             return str(self._field.type_name.split(".")[-1])
         elif type_id not in self._default_types:
             raise ValueError("UNKNOWN_TYPE")
-        elif self._default_types[self._type_id] in self._conversion_dict:
+        elif self._default_types[type_id] in self._conversion_dict:
             return self._conversion_dict[self._default_types[type_id]]
         else:
             return self._default_types[type_id]

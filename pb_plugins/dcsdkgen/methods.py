@@ -2,15 +2,10 @@
 from .utils import (remove_subscribe,
                     filter_out_result,
                     no_return,
-                    is_stream)
+                    is_stream,
+                    Param)
 from .name_parser import NameParser
 from .type_info import TypeInfo
-
-
-class Param:
-
-    def __init__(self, name, type_info):
-        self.name, self.type_info
 
 
 class Method(object):
@@ -84,10 +79,6 @@ class Method(object):
     def name(self):
         return self._name
 
-    @property
-    def request_rpc_type(self):
-        return self._request_rpc_type
-
     @staticmethod
     def collect_methods(
             plugin_name,
@@ -152,7 +143,6 @@ class Call(Method):
         return self._template.render(name=self._name,
                                      params=self._params,
                                      plugin_name=self._plugin_name,
-                                     request_rpc_type=self._request_rpc_type,
                                      package=self._package)
 
 
@@ -178,7 +168,6 @@ class Request(Method):
             return_type=self._return_type,
             return_name=self._return_name,
             plugin_name=self._plugin_name,
-            request_rpc_type=self._request_rpc_type,
             package=self._package)
 
 
