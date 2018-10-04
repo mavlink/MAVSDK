@@ -143,9 +143,7 @@ after_success:
     --exclude-pattern=".*CMakeFiles.*"
     --exclude-pattern=".*_test.*";
   fi
-  # Eventually, this should also have: "if [[ $TRAVIS_PULL_REQUEST == “false” ]] && [[ $TRAVIS_BRANCH == “develop” ]]"
-  # For now let's test this
-- if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
+- if [[ "${BUILD_TARGET}" = "coverage_build" ]] && [[ $TRAVIS_PULL_REQUEST == “false” ]] && [[ $TRAVIS_BRANCH == “develop” ]]; then
   git config user.email "dronecodesdkbot@gmail.com";
   git config user.name "DronecodeSDKBot";
   git remote set-url origin https://${GH_TOKEN}@github.com/Dronecode/DronecodeSDK.git;
