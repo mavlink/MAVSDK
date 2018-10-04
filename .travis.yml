@@ -143,6 +143,12 @@ after_success:
     --exclude-pattern=".*CMakeFiles.*"
     --exclude-pattern=".*_test.*";
   fi
+- if [[ "${BUILD_TARGET}" = "coverage_build" ]] && [[ $TRAVIS_PULL_REQUEST == “false” ]] && [[ $TRAVIS_BRANCH == “develop” ]]; then
+  git config user.email "dronecodesdkbot@gmail.com";
+  git config user.name "DronecodeSDKBot";
+  git remote set-url origin https://${GH_TOKEN}@github.com/Dronecode/DronecodeSDK.git;
+  ./ci-git-release.sh;
+  fi
 
 deploy:
   provider: releases
@@ -156,3 +162,6 @@ deploy:
   on:
     repo: Dronecode/DronecodeSDK
     tags: true
+env:
+  global:
+  - secure: XifWUJ9By+R5snSRycmNc24yFJ4g4crAPPotHHnChZg3qSR+vvQEYwsprvy1rodKbs8Q6im8DIJzqn1+IQo3ygeh0Lb/OaqpoJbCvXVi2ejLNOWrTBdnO6enJI3pzFgcO6Kav4uvU8rZCenH6EwbZ3IW2ttq6THBxtBEiwCgGE4Msl3BtRmRlkhYohU2Mx8SyuPqsITsA4OS6y/gWI/hBWJRgCgx9SBzRSktYB5Uw7gEZC7Ysd0ao6jYcweIWHyCKEr2X2REZY5LIUtnpMCw92u+ALUf9y53vBrUdUX8miWNPrsIlKSUXzdUKiGE6GhZh4of28ile66LK229aKbJKWlUcUw6lCl4WdD7e+FxdnqOkXdYDy/xElsvUjNwa6rr4jfi7azdAYRv8gItJLKTtIyE6y5lJT6P4Katt4AxcOSMhsvqmjRZAMCzCNj5h6TULRps+pppeawKf5j8o1Q0tHPSm6BXhSy1gmIsxJcYcxESxi7auMeXvQ/mW9AfBjmd8iIxI6qi8uxyzXEtGFRKeW+rXBhqkdln+l52faAUW8vMAopgi/8eC+eARomQGoiqTTdWPiyTZjVrExMPRrXK1rr2rxOa9vKN9SbBw0HygsJ32KD0M0S5OgK69vhtgAkZROJMByWVMki/Zjq82TItpX2/u2LO/l8DP6xaWmdNdu4=
