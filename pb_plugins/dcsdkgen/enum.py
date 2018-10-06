@@ -6,13 +6,13 @@ class Enum(object):
     """ Enum """
 
     def __init__(self, package, template_env, pb_enum):
-        self._package = package
+        self._package = NameParser(package)
         self._template = template_env.get_template("enum.j2")
         self._name = NameParser(pb_enum.name)
         self._values = []
 
         for value in pb_enum.value:
-            self._values.append(value.name)
+            self._values.append(NameParser(value.name))
 
     def __repr__(self):
         return self._template.render(name=self._name,

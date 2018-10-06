@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 from jinja2 import Environment, FileSystemLoader
+from .type_info import TypeInfo
+
+
+class Param:
+
+    def __init__(self, name, type_info):
+        self.name = name
+        self.type_info = type_info
 
 
 def no_return(method, responses):

@@ -7,6 +7,10 @@ class NameParser:
         self._name = name
 
     @property
+    def uppercase(self):
+        return self._name.upper()
+
+    @property
     def lowercase(self):
         return self._name.lower()
 
