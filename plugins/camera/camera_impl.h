@@ -17,6 +17,7 @@ public:
 
     void enable() override;
     void disable() override;
+    void request_info();
 
     Camera::Result take_photo();
 
