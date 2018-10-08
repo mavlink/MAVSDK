@@ -23,7 +23,7 @@ class NameParser:
         return self._name[0].lower() + self._name[1:] if self._name else ""
 
     @property
-    def snake_case(self):
+    def upper_snake_case(self):
         return re.sub('(?<!^)(?=[A-Z])',
                       '_',
                       self._name)
