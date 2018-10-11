@@ -2,6 +2,24 @@ import json
 from os import environ
 
 
+class TypeInfoFactory:
+
+    def __init__(self):
+        self._conversion_dict = self._load_conversions_dict()
+
+    def create(self, field):
+        return TypeInfo(field, self._conversion_dict)
+
+    def _load_conversions_dict(self):
+        try:
+            _template_path = environ.get("TEMPLATE_PATH", "./")
+            _conversion_dict_path = f"{_template_path}/type_conversions"
+            with open(_conversion_dict_path, "r") as handle:
+                return json.loads(handle.read())
+        except FileNotFoundError:
+            return {}
+
+
 class TypeInfo:
     _default_types = {
         1: "double",
@@ -15,16 +33,9 @@ class TypeInfo:
         13: "uint32_t"
     }
 
-    try:
-        _conversion_dict_path = environ.get(
-            "TEMPLATE_PATH", "./") + "/type_conversions"
-        with open(_conversion_dict_path, "r") as handle:
-            _conversion_dict = json.loads(handle.read())
-    except FileNotFoundError:
-        _conversion_dict = {}
-
-    def __init__(self, field):
+    def __init__(self, field, conversion_dict):
         self._field = field
+        self._conversion_dict = conversion_dict
 
     @property
     def name(self):
