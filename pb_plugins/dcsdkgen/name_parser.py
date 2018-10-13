@@ -30,4 +30,4 @@ class NameParser:
 
     @property
     def lower_snake_case(self):
-        return self.snake_case.lower()
+        return self.upper_snake_case.lower()
