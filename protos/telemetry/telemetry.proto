@@ -14,12 +14,12 @@ service TelemetryService {
     rpc SubscribeAttitudeEuler(SubscribeAttitudeEulerRequest) returns(stream AttitudeEulerResponse) {}
     rpc SubscribeCameraAttitudeQuaternion(SubscribeCameraAttitudeQuaternionRequest) returns(stream CameraAttitudeQuaternionResponse) {}
     rpc SubscribeCameraAttitudeEuler(SubscribeCameraAttitudeEulerRequest) returns(stream CameraAttitudeEulerResponse) {}
-    rpc SubscribeGroundSpeedNED(SubscribeGroundSpeedNEDRequest) returns(stream GroundSpeedNEDResponse) {}
-    rpc SubscribeGPSInfo(SubscribeGPSInfoRequest) returns(stream GPSInfoResponse) {}
+    rpc SubscribeGroundSpeedNed(SubscribeGroundSpeedNedRequest) returns(stream GroundSpeedNedResponse) {}
+    rpc SubscribeGpsInfo(SubscribeGpsInfoRequest) returns(stream GpsInfoResponse) {}
     rpc SubscribeBattery(SubscribeBatteryRequest) returns(stream BatteryResponse) {}
     rpc SubscribeFlightMode(SubscribeFlightModeRequest) returns(stream FlightModeResponse) {}
     rpc SubscribeHealth(SubscribeHealthRequest) returns(stream HealthResponse) {}
-    rpc SubscribeRCStatus(SubscribeRCStatusRequest) returns(stream RCStatusResponse) {}
+    rpc SubscribeRcStatus(SubscribeRcStatusRequest) returns(stream RcStatusResponse) {}
 }
 
 message SubscribePositionRequest {}
@@ -62,14 +62,14 @@ message CameraAttitudeEulerResponse {
     EulerAngle attitude_euler = 1;
 }
 
-message SubscribeGroundSpeedNEDRequest {}
-message GroundSpeedNEDResponse {
-    SpeedNED ground_speed_ned = 1;
+message SubscribeGroundSpeedNedRequest {}
+message GroundSpeedNedResponse {
+    SpeedNed ground_speed_ned = 1;
 }
 
-message SubscribeGPSInfoRequest {}
-message GPSInfoResponse {
-    GPSInfo gps_info = 1;
+message SubscribeGpsInfoRequest {}
+message GpsInfoResponse {
+    GpsInfo gps_info = 1;
 }
 
 message SubscribeBatteryRequest {}
@@ -87,9 +87,9 @@ message HealthResponse {
     Health health = 1;
 }
 
-message SubscribeRCStatusRequest {}
-message RCStatusResponse {
-    RCStatus rc_status = 1;
+message SubscribeRcStatusRequest {}
+message RcStatusResponse {
+    RcStatus rc_status = 1;
 }
 
 message Position {
@@ -112,13 +112,13 @@ message EulerAngle {
     float yaw_deg = 3;
 }
 
-message SpeedNED {
+message SpeedNed {
     float velocity_north_m_s = 1;
     float velocity_east_m_s = 2;
     float velocity_down_m_s = 3;
 }
 
-message GPSInfo {
+message GpsInfo {
     int32 num_satellites = 1;
     FixType fix_type = 2;
 }
@@ -160,7 +160,7 @@ message Health {
     bool is_home_position_ok = 7;
 }
 
-message RCStatus {
+message RcStatus {
     bool was_available_once = 1;
     bool is_available = 2;
     float signal_strength_percent = 3;
