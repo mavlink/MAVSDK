@@ -3,9 +3,9 @@ from .utils import (remove_subscribe,
                     filter_out_result,
                     no_return,
                     is_stream,
-                    Param)
+                    Param,
+                    type_info_factory)
 from .name_parser import NameParser
-from .type_info import TypeInfo
 
 
 class Method(object):
@@ -37,7 +37,7 @@ class Method(object):
             self._params.append(
                 Param(
                     name=NameParser(field.name),
-                    type_info=TypeInfo(field))
+                    type_info=type_info_factory.create(field))
             )
 
     def extract_return_type_and_name(self, pb_method, responses):
@@ -52,7 +52,7 @@ class Method(object):
                 f"(and an optional '*Result')!\nError in {method_output}")
 
         if len(return_params) == 1:
-            self._return_type = TypeInfo(return_params[0])
+            self._return_type = type_info_factory.create(return_params[0])
             self._return_name = NameParser(return_params[0].json_name)
 
     @property

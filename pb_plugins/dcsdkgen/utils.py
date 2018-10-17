@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from jinja2 import Environment, FileSystemLoader
-from .type_info import TypeInfo
+from .type_info import TypeInfoFactory
+
+
+type_info_factory = TypeInfoFactory()
 
 
 class Param:
@@ -16,7 +19,7 @@ def no_return(method, responses):
     method_response = responses[method_output]
 
     if (1 == len(method_response.field) and
-            TypeInfo(method_response.field[0]).is_result):
+            type_info_factory.create(method_response.field[0]).is_result):
         return True
 
     if (0 == len(method_response.field)):

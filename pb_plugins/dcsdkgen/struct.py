@@ -4,9 +4,9 @@
 from .utils import (is_request,
                     is_response,
                     is_struct,
-                    Param)
+                    Param,
+                    type_info_factory)
 from .name_parser import NameParser
-from .type_info import TypeInfo
 from jinja2.exceptions import TemplateNotFound
 
 
@@ -22,7 +22,8 @@ class Struct(object):
 
         for field in pb_struct.field:
             self._fields.append(
-                Param(NameParser(field.json_name), TypeInfo(field)))
+                Param(NameParser(field.json_name),
+                      type_info_factory.create(field)))
 
     def __repr__(self):
         return self._template.render(plugin_name=self._plugin_name,
