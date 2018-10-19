@@ -238,7 +238,7 @@ int main(int argc, char **argv)
     action_error_exit(land_result, "Landing failed");
 
     // Check if vehicle is still in air
-    while (telemetry->in_air() == true) {
+    while (telemetry->in_air()) {
         std::cout << "Vehicle is landing..." << std::endl;
         sleep_for(seconds(1));
     }
