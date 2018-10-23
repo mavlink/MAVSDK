@@ -42,7 +42,7 @@ public:
 
     grpc::Status
     CalibrateGyro(grpc::ServerContext * /* context */,
-                  const rpc::calibration::CalibrateGyroRequest request,
+                  const rpc::calibration::CalibrateGyroRequest *request,
                   grpc::ServerWriter<rpc::calibration::CalibrateGyroResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
@@ -70,7 +70,7 @@ public:
 
     grpc::Status CalibrateAccelerometer(
         grpc::ServerContext * /* context */,
-        const rpc::calibration::CalibrateAccelerometerRequest request,
+        const rpc::calibration::CalibrateAccelerometerRequest *request,
         grpc::ServerWriter<rpc::calibration::CalibrateAccelerometerResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
@@ -100,7 +100,7 @@ public:
 
     grpc::Status CalibrateMagnetometer(
         grpc::ServerContext * /* context */,
-        const rpc::calibration::CalibrateMagnetometerRequest request,
+        const rpc::calibration::CalibrateMagnetometerRequest *request,
         grpc::ServerWriter<rpc::calibration::CalibrateMagnetometerResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
@@ -130,7 +130,7 @@ public:
 
     grpc::Status CalibrateGimbalAccelerometer(
         grpc::ServerContext * /* context */,
-        const rpc::calibration::CalibrateGimbalAccelerometerRequest request,
+        const rpc::calibration::CalibrateGimbalAccelerometerRequest *request,
         grpc::ServerWriter<rpc::calibration::CalibrateGimbalAccelerometerResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
