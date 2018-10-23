@@ -1,0 +1,55 @@
+#
+# More information at
+#  http://tracker.ceph.com/projects/ceph/wiki/Ceph_contributors_list_maintenance_guide
+#
+# See .githubmap for GitHub username contributors
+# See .mailmap for name and mail normalization.
+# See .peoplemap for unique list of people
+#
+# To display the 10 organization who contributed
+# most commits to ceph ( requires git >= 1.8.4 ):
+#
+# git log --pretty='%aN <%aE>' | git -c mailmap.file=.organizationmap check-mailmap --stdin | sort | uniq -c | sort -rn
+#   1333 Yuneec Research <contact@yuneecresearch.com>
+#    271 Auterion <contact@auterion.com>
+#    203 Intel <contact@intel.com>
+#     19 Yuneec <contact@yuneec.com>
+#      6 Mohamed Abdelkader Zahana <mohamedashraf123@gmail.com>
+#      5 Dronecode <contact@dronecode.com>
+#      3 Independent <no@organization.net>
+#      2 Yuneec USA <contact@usa.yuneec.com>
+#      1 xgerrmann <xander@gerrmann.nl>
+#      1 Simone Guscetti <simone@px4.io>
+#      1 Gabriel Moreno <gabrielm@cs.cmu.edu>
+#      1 Fabian Klabacher <fklabach@gmail.com>
+#      1 Bert <b.buchholz@kitepower.nl>
+
+Auterion <contact@auterion.com> Beat Küng <beat-kueng@gmx.net>
+Auterion <contact@auterion.com> Barza Nisar <nisarb@student.ethz.ch>
+Auterion <contact@auterion.com> Gus Grubba <mavlink@grubba.com>
+Auterion <contact@auterion.com> Jonas Vautherin <jonas.vautherin@gmail.com>
+Auterion <contact@auterion.com> Thomas Etter <thomas.etter@auterion.com>
+Auterion <contact@auterion.com> Hamish Willee <hamishwillee@gmail.com>
+Dronecode <contact@dronecode.com> Ramón Roche <mrpollo@gmail.com>
+Intel <contact@intel.com> Avinash Reddy Palleti <avinash.reddy.palleti@intel.com>
+Intel <contact@intel.com> Ritul Jasuja <ritul.jasuja@intel.com>
+Intel <contact@intel.com> Prashanth Shakthi <shakthi.prashanth.m@intel.com>
+Intel <contact@intel.com> Lalit Kumar <lalit.kumar.begani@intel.com>
+Independent <no@organization.net> Daniel Agar <daniel@agar.ca>
+Independent <no@organization.net> David Sidrane <david_s5@nscdg.com>
+Independent <no@organization.net> Anthony Lamping <lamping.ap@gmail.com>
+Yuneec Research <contact@yuneecresearch.com> Julian Oes <julian@oes.ch>
+Yuneec Research <contact@yuneecresearch.com> Dario Röthlisberger <dario.roethlisberger@gmail.com>
+Yuneec Research <contact@yuneecresearch.com> Dennis Mannhart <dennis@yuneecresearch.com>
+Yuneec Research <contact@yuneecresearch.com> Simone Guscetti <simone@yuneecresearch.com>
+Yuneec Research <contact@yuneecresearch.com> Martina Rivizzigno <martina@rivizzigno.it>
+Yuneec Research <contact@yuneecresearch.com> Matthias Grob <maetugr@gmail.com>
+Yuneec <contact@yuneec.com> Dave Bowerman <david.bowerman@gmail.com>
+Yuneec USA <contact@usa.yuneec.com> Sushma Sathyanarayana <sush.satyan@gmail.com>
+
+#
+# Local Variables:
+# compile-command: "git log --pretty='%aN <%aE>' | \
+#   git -c mailmap.file=.organizationmap check-mailmap --stdin | \
+#   sort | uniq -c | sort -rn | nl"
+# End:

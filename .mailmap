@@ -1,0 +1,28 @@
+# PX4 .mailmap
+# See this guide for help modifying this file https://github.com/sympy/sympy/wiki/Using-.mailmap
+# Please append your entry
+# Example use of this map:
+#   git log --pretty='%aN <%aE>' | sort | uniq -c | sort -rn
+
+Julian Oes <julian@oes.ch>
+Julian Oes <julian@oes.ch> Julian Oes <joes@student.ethz.ch>
+Jonas Vautherin <jonas.vautherin@gmail.com>
+Jonas Vautherin <jonas.vautherin@gmail.com> Jones <jones@jones-vostok.home>
+Prashanth Shakthi <shakthi.prashanth.m@intel.com>
+Prashanth Shakthi <shakthi.prashanth.m@intel.com> Shakthi Prashanth M <shakthi.prashanth.m@intel.com>
+Hamish Willee <hamishwillee@gmail.com>
+Ritul Jasuja <ritul.jasuja@intel.com> ritul jasuja <ritul.jasuja@intel.com>
+Dennis Mannhart <dennis@yuneecresearch.com> Dennis Mannhart <dennis.mannhart@gmail.com>
+Dennis Mannhart <dennis@yuneecresearch.com> Dennis Mannhart <dennis@px4.io>
+Beat Küng <beat-kueng@gmx.net> <beat-kueng@gmx.net>
+Ramón Roche <mrpollo@gmail.com>
+Avinash Reddy Palleti <avinash.reddy.palleti@intel.com> avinash-palleti <avinash.reddy.palleti@intel.com>
+Martina Rivizzigno <martina@rivizzigno.it>
+Dario Röthlisberger <dario.roethlisberger@gmail.com>
+Thomas Etter <thomas.etter@auterion.com>
+Simone Guscetti <simone@yuneecresearch.com>
+Simone Guscetti <simone@yuneecresearch.com> Simone Guscetti <simone@px4.io>
+Matthias Grob <maetugr@gmail.com>
+Lalit Kumar <lalit.kumar.begani@intel.com>
+David Sidrane <david_s5@nscdg.com>
+Anthony Lamping <lamping.ap@gmail.com> <lamping.ap@gmail.com>
