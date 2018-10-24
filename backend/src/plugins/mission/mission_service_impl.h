@@ -33,9 +33,13 @@ public:
                                  const rpc::mission::DownloadMissionRequest * /* request */,
                                  rpc::mission::DownloadMissionResponse *response) override
     {
+        std::promise<void> result_promise;
+        const auto result_future = result_promise.get_future();
+
         _mission.download_mission_async(
-            [this, response](const dronecode_sdk::Mission::Result result,
-                             const std::vector<std::shared_ptr<MissionItem>> mission_items) {
+            [this, response, &result_promise](
+                const dronecode_sdk::Mission::Result result,
+                const std::vector<std::shared_ptr<MissionItem>> mission_items) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -49,8 +53,11 @@ public:
 
                     response->set_allocated_mission(rpc_mission);
                 }
+
+                result_promise.set_value();
             });
 
+        result_future.wait();
         return grpc::Status::OK;
     }
 
