@@ -695,6 +695,10 @@ void MissionImpl::assemble_mavlink_messages()
         ++item_i;
     }
 
+    // We need to decrement the item_i again because it was increased in the loop above
+    // but the RTL item below still belongs to the last mission item.
+    --item_i;
+
     if (_enable_return_to_launch_after_mission) {
         std::shared_ptr<mavlink_message_t> message_rtl(new mavlink_message_t());
         mavlink_msg_mission_item_int_pack(GCSClient::system_id,
@@ -729,6 +733,7 @@ void MissionImpl::assemble_mission_items()
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _mission_data.mission_items.clear();
+        _mission_data.mavlink_mission_item_to_mission_item_indices.clear();
         _enable_return_to_launch_after_mission = false;
 
         auto new_mission_item = std::make_shared<MissionItem>();
@@ -749,6 +754,8 @@ void MissionImpl::assemble_mission_items()
             result = Mission::Result::NO_MISSION_AVAILABLE;
             return;
         }
+
+        int mavlink_item_i = 0;
 
         for (auto &it : _mission_data.mavlink_mission_items_downloaded) {
             LogDebug() << "Assembling Message: " << int(it->seq);
@@ -839,6 +846,11 @@ void MissionImpl::assemble_mission_items()
                 result = Mission::Result::UNSUPPORTED;
                 break;
             }
+
+            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                mavlink_item_i, static_cast<int>(_mission_data.mission_items.size())});
+
+            ++mavlink_item_i;
         }
 
         // Don't forget to add last mission item.
