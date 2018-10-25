@@ -630,7 +630,7 @@ void CameraImpl::get_status_async(Camera::get_status_callback_t callback)
         if (_status.callback != nullptr) {
             if (callback) {
                 Camera::Status empty_status = {};
-                callback(Camera::Result::IN_PROGRESS, empty_status);
+                callback(Camera::Result::BUSY, empty_status);
                 return;
             }
         }
