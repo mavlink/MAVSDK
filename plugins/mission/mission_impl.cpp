@@ -729,6 +729,7 @@ void MissionImpl::assemble_mission_items()
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _mission_data.mission_items.clear();
+        _mission_data.mavlink_mission_item_to_mission_item_indices.clear();
         _enable_return_to_launch_after_mission = false;
 
         auto new_mission_item = std::make_shared<MissionItem>();
@@ -749,6 +750,8 @@ void MissionImpl::assemble_mission_items()
             result = Mission::Result::NO_MISSION_AVAILABLE;
             return;
         }
+
+        int mavlink_item_i = 0;
 
         for (auto &it : _mission_data.mavlink_mission_items_downloaded) {
             LogDebug() << "Assembling Message: " << int(it->seq);
@@ -839,6 +842,11 @@ void MissionImpl::assemble_mission_items()
                 result = Mission::Result::UNSUPPORTED;
                 break;
             }
+
+            _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
+                mavlink_item_i, static_cast<int>(_mission_data.mission_items.size())});
+
+            ++mavlink_item_i;
         }
 
         // Don't forget to add last mission item.
