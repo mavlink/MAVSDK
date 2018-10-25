@@ -695,6 +695,10 @@ void MissionImpl::assemble_mavlink_messages()
         ++item_i;
     }
 
+    // We need to decrement the item_i again because it was increased in the loop above
+    // but the RTL item below still belongs to the last mission item.
+    --item_i;
+
     if (_enable_return_to_launch_after_mission) {
         std::shared_ptr<mavlink_message_t> message_rtl(new mavlink_message_t());
         mavlink_msg_mission_item_int_pack(GCSClient::system_id,
