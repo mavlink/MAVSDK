@@ -353,13 +353,18 @@ ComponentType SystemImpl::component_type(uint8_t component_id)
 
 void SystemImpl::add_new_component(uint8_t component_id)
 {
+    if (component_id == 0) {
+        return;
+    }
+
     auto res_pair = _components.insert(component_id);
     if (res_pair.second) {
         if (component_discovered_callback != nullptr) {
             const ComponentType type = component_type(component_id);
             call_user_callback([this, type]() { component_discovered_callback(type); });
         }
-        LogDebug() << "Component " << component_name(component_id) << " added.";
+        LogDebug() << "Component " << component_name(component_id) << " (" << int(component_id)
+                   << ") added.";
     }
 }
 
@@ -498,9 +503,9 @@ void SystemImpl::set_connected()
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
         if (!_connected && _uuid_initialized) {
-            LogDebug() << "Found " << _components.size() << " component(s).";
+            LogDebug() << "Discovered " << _components.size() << " component(s) "
+                       << "(UUID: " << _uuid << ")";
 
-            LogDebug() << "Discovered " << _uuid;
             _parent.notify_on_discover(_uuid);
             _connected = true;
 

@@ -215,12 +215,12 @@ System &DronecodeSDKImpl::get_system()
         }
 
         if (_systems.size() > 1) {
-            LogErr() << "Error: more than one system found:";
+            LogErr() << "More than one system found:";
 
             // Just return first system instead of failing.
             return *_systems.begin()->second;
         } else {
-            LogErr() << "Error: no system found.";
+            LogWarn() << "No system found.";
             uint8_t system_id = 0, comp_id = 0;
             make_system_with_component(system_id, comp_id);
             return *_systems[system_id];
@@ -242,7 +242,7 @@ System &DronecodeSDKImpl::get_system(const uint64_t uuid)
 
     // We have not found a system with this UUID.
     // TODO: this is an error condition that we ought to handle properly.
-    LogErr() << "system with UUID: " << uuid << " not found";
+    LogErr() << "System with UUID: " << uuid << " not found";
 
     // Create a dummy
     uint8_t system_id = 0, comp_id = 0;
