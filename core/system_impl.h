@@ -229,10 +229,9 @@ private:
 
 #if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
     int _uuid_retries = 0;
+    uint8_t _non_autopilot_heartbeats = 0;
 #endif
     std::atomic<bool> _uuid_initialized{false};
-
-    uint8_t _non_autopilot_heartbeats = 0;
 
     bool _supports_mission_int{false};
     std::atomic<bool> _armed{false};

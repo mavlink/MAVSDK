@@ -5,8 +5,8 @@
 void runBackend(const int mavlink_listen_port, void (*onServerStarted)(void *), void *context)
 {
     dronecode_sdk::backend::DronecodeSDKBackend backend;
-    backend.connect(mavlink_listen_port);
     backend.startGRPCServer();
+    backend.connect(mavlink_listen_port);
 
     if (onServerStarted != nullptr) {
         onServerStarted(context);

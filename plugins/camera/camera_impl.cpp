@@ -23,26 +23,6 @@ CameraImpl::CameraImpl(System &system) : PluginImplBase(system)
 CameraImpl::~CameraImpl()
 {
     _parent->unregister_plugin(this);
-
-    {
-        std::lock_guard<std::mutex> lock(_status.mutex);
-        _status.callback = nullptr;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(_get_mode.mutex);
-        _get_mode.callback = nullptr;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(_capture_info.mutex);
-        _capture_info.callback = nullptr;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        _video_stream_info.callback = nullptr;
-    }
 }
 
 void CameraImpl::init()
@@ -81,22 +61,42 @@ void CameraImpl::init()
         MAVLINK_MSG_ID_FLIGHT_INFORMATION,
         std::bind(&CameraImpl::process_flight_information, this, _1),
         this);
-
-    auto command_camera_info = make_command_request_camera_info();
-
-    _parent->send_command_async(command_camera_info, nullptr);
 }
 
 void CameraImpl::deinit()
 {
     _parent->remove_call_every(_status.call_every_cookie);
     _parent->unregister_all_mavlink_message_handlers(this);
+
+    {
+        std::lock_guard<std::mutex> lock(_status.mutex);
+        _status.callback = nullptr;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_get_mode.mutex);
+        _get_mode.callback = nullptr;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_capture_info.mutex);
+        _capture_info.callback = nullptr;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        _video_stream_info.callback = nullptr;
+    }
 }
 
 void CameraImpl::enable()
 {
     refresh_params();
     request_flight_information();
+
+    auto command_camera_info = make_command_request_camera_info();
+    _parent->send_command_async(command_camera_info, nullptr);
+
     _parent->add_call_every(
         [this]() { request_flight_information(); }, 10.0, &_flight_information_call_every_cookie);
 }

@@ -172,6 +172,12 @@ void SystemImpl::remove_call_every(const void *cookie)
 
 void SystemImpl::process_heartbeat(const mavlink_message_t &message)
 {
+    // FIXME: for now we ignore heartbeats from UDP_BRIDGE because that's just
+    // confusing since it doesn't mean a vehicle is connected.
+    if (message.compid == MAV_COMP_ID_UDP_BRIDGE) {
+        return;
+    }
+
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 
@@ -187,11 +193,13 @@ void SystemImpl::process_heartbeat(const mavlink_message_t &message)
     if (is_autopilot(message.compid) && !have_uuid()) {
         request_autopilot_version();
 
+#if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
     } else if (!is_autopilot(message.compid) && !have_uuid() && ++_non_autopilot_heartbeats >= 10) {
         // We've received consecutive heartbeats (atleast twice) from a
         // non-autopilot system! Lets not delay for filling UUID anymore.
         _uuid = message.sysid;
         _uuid_initialized = true;
+#endif
     }
 
     set_connected();
@@ -351,13 +359,18 @@ ComponentType SystemImpl::component_type(uint8_t component_id)
 
 void SystemImpl::add_new_component(uint8_t component_id)
 {
+    if (component_id == 0) {
+        return;
+    }
+
     auto res_pair = _components.insert(component_id);
     if (res_pair.second) {
         if (component_discovered_callback != nullptr) {
             const ComponentType type = component_type(component_id);
             call_user_callback([this, type]() { component_discovered_callback(type); });
         }
-        LogDebug() << "Component " << component_name(component_id) << " added.";
+        LogDebug() << "Component " << component_name(component_id) << " (" << int(component_id)
+                   << ") added.";
     }
 }
 
@@ -496,9 +509,9 @@ void SystemImpl::set_connected()
         std::lock_guard<std::mutex> lock(_connection_mutex);
 
         if (!_connected && _uuid_initialized) {
-            LogDebug() << "Found " << _components.size() << " component(s).";
+            LogDebug() << "Discovered " << _components.size() << " component(s) "
+                       << "(UUID: " << _uuid << ")";
 
-            LogDebug() << "Discovered " << _uuid;
             _parent.notify_on_discover(_uuid);
             _connected = true;
 

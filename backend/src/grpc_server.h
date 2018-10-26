@@ -31,9 +31,7 @@ public:
         _mission_service(_mission),
         _telemetry(_dc.system()),
         _telemetry_service(_telemetry)
-    {
-        assert(_dc.system_uuids().size() >= 1);
-    }
+    {}
 
     void run();
     void wait();
