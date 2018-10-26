@@ -30,7 +30,8 @@ public:
         _mission(_dc.system()),
         _mission_service(_mission),
         _telemetry(_dc.system()),
-        _telemetry_service(_telemetry) {}
+        _telemetry_service(_telemetry)
+    {}
 
     void run();
     void wait();
