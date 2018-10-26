@@ -322,6 +322,14 @@ void DronecodeSDKImpl::register_on_discover(const DronecodeSDK::event_callback_t
 
     if (callback) {
         for (auto const &connected_system : _systems) {
+            // Ignore dummy system with system ID 0.
+            if (connected_system.first == 0) {
+                continue;
+            }
+            // Ignore system if UUID is not initialized yet.
+            if (connected_system.second->get_uuid() == 0) {
+                continue;
+            }
             callback(connected_system.second->get_uuid());
         }
     }
