@@ -173,10 +173,10 @@ public:
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
 
-        bool is_finished = false;
+        auto is_finished = std::make_shared<bool>(false);
 
         _mission.subscribe_progress(
-            [&writer, &stream_closed_promise, &is_finished](int current, int total) {
+            [this, &writer, &stream_closed_promise, is_finished](int current, int total) {
                 dronecode_sdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
 
                 auto rpc_mission_progress =
@@ -188,8 +188,9 @@ public:
                 rpc_mission_progress_response.set_allocated_mission_progress(
                     rpc_mission_progress.release());
 
-                if (!writer->Write(rpc_mission_progress_response) && !is_finished) {
-                    is_finished = true;
+                if (!*is_finished && !writer->Write(rpc_mission_progress_response)) {
+                    _mission.subscribe_progress(nullptr);
+                    *is_finished = true;
                     stream_closed_promise.set_value();
                 }
             });
