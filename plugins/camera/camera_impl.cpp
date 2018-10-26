@@ -953,9 +953,14 @@ void CameraImpl::check_status()
 
 void CameraImpl::notify_status(Camera::Status status)
 {
-    if (_subscribe_status_callback) {
-        _parent->call_user_callback([this, status]() { _subscribe_status_callback(status); });
+    // Make a copy because it is passed to the thread pool
+    const auto status_callback = _subscribe_status_callback;
+
+    if (status_callback == nullptr) {
+        return;
     }
+
+    _parent->call_user_callback([status, status_callback]() { status_callback(status); });
 }
 
 void CameraImpl::status_timeout_happened()

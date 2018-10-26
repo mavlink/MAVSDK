@@ -12,6 +12,7 @@
 namespace {
 
 using testing::_;
+using testing::DoDefault;
 using testing::NiceMock;
 using testing::Return;
 
@@ -814,7 +815,9 @@ TEST_F(CameraServiceImplTest, registersToCameraStatus)
         false, true, ARBITRARY_CAMERA_STORAGE_STATUS, 3.4f, 12.6f, 16.0f, 0.4f, "100E90HD");
     dronecode_sdk::Camera::subscribe_status_callback_t status_callback;
     EXPECT_CALL(_camera, subscribe_status(_))
-        .WillOnce(SaveResult(&status_callback, &_callback_saved_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&status_callback, &_callback_saved_promise))
+        .WillOnce(DoDefault());
     std::vector<dronecode_sdk::Camera::Status> camera_status_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
@@ -896,7 +899,9 @@ void CameraServiceImplTest::checkSendsCameraStatus(
     dronecode_sdk::Camera::subscribe_status_callback_t camera_status_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_status(_))
-        .WillOnce(SaveResult(&camera_status_callback, &subscription_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&camera_status_callback, &subscription_promise))
+        .WillOnce(DoDefault());
 
     std::vector<dronecode_sdk::Camera::Status> received_camera_status_events;
     auto camera_status_events_future =
