@@ -178,7 +178,7 @@ public:
 
             std::lock_guard<std::mutex> lock(_subscribe_mutex);
             if (!*is_finished && !writer->Write(rpc_mode_response)) {
-                _camera.subscribe_status(nullptr);
+                _camera.subscribe_mode(nullptr);
                 *is_finished = true;
                 stream_closed_promise.set_value();
             }
@@ -307,7 +307,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_video_stream_info_response)) {
-                    _camera.subscribe_status(nullptr);
+                    _camera.subscribe_video_stream_info(nullptr);
                     *is_finished = true;
                     stream_closed_promise.set_value();
                 }
@@ -336,7 +336,7 @@ public:
 
             std::lock_guard<std::mutex> lock(_subscribe_mutex);
             if (!*is_finished && !writer->Write(rpc_capture_info_response)) {
-                _camera.subscribe_status(nullptr);
+                _camera.subscribe_capture_info(nullptr);
                 *is_finished = true;
                 stream_closed_promise.set_value();
             }
@@ -566,7 +566,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_current_setting_response)) {
-                    _camera.subscribe_status(nullptr);
+                    _camera.subscribe_current_settings(nullptr);
                     *is_finished = true;
                     stream_closed_promise.set_value();
                 }
@@ -637,7 +637,7 @@ public:
 
                 std::lock_guard<std::mutex> lock(_subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_setting_options_response)) {
-                    _camera.subscribe_status(nullptr);
+                    _camera.subscribe_possible_setting_options(nullptr);
                     *is_finished = true;
                     stream_closed_promise.set_value();
                 }
