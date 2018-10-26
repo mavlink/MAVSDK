@@ -782,10 +782,15 @@ CameraImpl::to_euler_angle_from_quaternion(Camera::CaptureInfo::Quaternion quate
 
 void CameraImpl::notify_capture_info(Camera::CaptureInfo capture_info)
 {
-    if (_capture_info.callback) {
-        _parent->call_user_callback(
-            [this, capture_info]() { _capture_info.callback(capture_info); });
+    // Make a copy because it is passed to the thread pool
+    const auto capture_info_callback = _capture_info.callback;
+
+    if (capture_info_callback == nullptr) {
+        return;
     }
+
+    _parent->call_user_callback(
+        [capture_info, capture_info_callback]() { capture_info_callback(capture_info); });
 }
 
 void CameraImpl::process_camera_settings(const mavlink_message_t &message)
@@ -953,9 +958,14 @@ void CameraImpl::check_status()
 
 void CameraImpl::notify_status(Camera::Status status)
 {
-    if (_subscribe_status_callback) {
-        _parent->call_user_callback([this, status]() { _subscribe_status_callback(status); });
+    // Make a copy because it is passed to the thread pool
+    const auto status_callback = _subscribe_status_callback;
+
+    if (status_callback == nullptr) {
+        return;
     }
+
+    _parent->call_user_callback([status, status_callback]() { status_callback(status); });
 }
 
 void CameraImpl::status_timeout_happened()
@@ -1030,9 +1040,14 @@ void CameraImpl::receive_set_mode_command_result(const MAVLinkCommands::Result c
 
 void CameraImpl::notify_mode(const Camera::Mode mode)
 {
-    if (_subscribe_mode_callback) {
-        _parent->call_user_callback([this, mode]() { _subscribe_mode_callback(mode); });
+    // Make a copy because it is passed to the thread pool
+    const auto mode_callback = _subscribe_mode_callback;
+
+    if (mode_callback == nullptr) {
+        return;
     }
+
+    _parent->call_user_callback([mode, mode_callback]() { mode_callback(mode); });
 }
 
 void CameraImpl::receive_get_mode_command_result(MAVLinkCommands::Result command_result)
