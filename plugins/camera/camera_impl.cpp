@@ -61,10 +61,6 @@ void CameraImpl::init()
         MAVLINK_MSG_ID_FLIGHT_INFORMATION,
         std::bind(&CameraImpl::process_flight_information, this, _1),
         this);
-
-    auto command_camera_info = make_command_request_camera_info();
-
-    _parent->send_command_async(command_camera_info, nullptr);
 }
 
 void CameraImpl::deinit()
@@ -97,6 +93,10 @@ void CameraImpl::enable()
 {
     refresh_params();
     request_flight_information();
+
+    auto command_camera_info = make_command_request_camera_info();
+    _parent->send_command_async(command_camera_info, nullptr);
+
     _parent->add_call_every(
         [this]() { request_flight_information(); }, 10.0, &_flight_information_call_every_cookie);
 }
