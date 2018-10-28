@@ -17,6 +17,7 @@ namespace dc = dronecode_sdk;
 namespace rpc = dronecode_sdk::rpc::mission;
 
 using testing::_;
+using testing::DoDefault;
 using testing::NiceMock;
 using testing::Return;
 
@@ -594,7 +595,9 @@ TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)
     dc::Mission::progress_callback_t progress_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_mission, subscribe_progress(_))
-        .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise))
+        .WillOnce(DoDefault());
     std::vector<std::pair<int, int>> progress_events;
 
     auto progress_events_future = subscribeMissionProgressAsync(progress_events, context);
@@ -629,7 +632,9 @@ TEST_F(MissionServiceImplProgressTest, SendsMultipleMissionProgressEvents)
 {
     dc::Mission::progress_callback_t progress_callback;
     EXPECT_CALL(_mission, subscribe_progress(_))
-        .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&progress_callback, &_callback_saved_promise))
+        .WillOnce(DoDefault());
 
     auto expected_mission_count = ARBITRARY_SMALL_INT;
     std::vector<std::pair<int, int>> expected_progress_events;

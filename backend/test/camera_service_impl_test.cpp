@@ -360,7 +360,9 @@ TEST_F(CameraServiceImplTest, registersToCameraMode)
 {
     dronecode_sdk::Camera::subscribe_mode_callback_t mode_callback;
     EXPECT_CALL(_camera, subscribe_mode(_))
-        .WillOnce(SaveResult(&mode_callback, &_callback_saved_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&mode_callback, &_callback_saved_promise))
+        .WillOnce(DoDefault());
     std::vector<dronecode_sdk::Camera::Mode> mode_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
@@ -417,7 +419,9 @@ void CameraServiceImplTest::checkSendsModes(
     dronecode_sdk::Camera::subscribe_mode_callback_t mode_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_mode(_))
-        .WillOnce(SaveResult(&mode_callback, &subscription_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&mode_callback, &subscription_promise))
+        .WillOnce(DoDefault());
 
     std::vector<dronecode_sdk::Camera::Mode> received_modes;
     auto mode_events_future = subscribeModeAsync(received_modes, context);
@@ -497,7 +501,9 @@ TEST_F(CameraServiceImplTest, registersToVideoStreamInfo)
         CameraServiceImpl::translateRPCVideoStreamInfo(*rpc_video_stream_info);
     dronecode_sdk::Camera::subscribe_video_stream_info_callback_t video_info_callback;
     EXPECT_CALL(_camera, subscribe_video_stream_info(_))
-        .WillOnce(SaveResult(&video_info_callback, &_callback_saved_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&video_info_callback, &_callback_saved_promise))
+        .WillOnce(DoDefault());
     std::vector<dronecode_sdk::Camera::VideoStreamInfo> video_info_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
@@ -567,7 +573,9 @@ void CameraServiceImplTest::checkSendsVideoStreamInfo(
     dronecode_sdk::Camera::subscribe_video_stream_info_callback_t video_info_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_video_stream_info(_))
-        .WillOnce(SaveResult(&video_info_callback, &subscription_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&video_info_callback, &subscription_promise))
+        .WillOnce(DoDefault());
 
     std::vector<dronecode_sdk::Camera::VideoStreamInfo> received_video_info_events;
     auto video_info_events_future =
@@ -622,7 +630,9 @@ TEST_F(CameraServiceImplTest, registersToCaptureInfo)
         CameraServiceImpl::translateRPCCaptureInfo(*rpc_capture_info);
     dronecode_sdk::Camera::capture_info_callback_t capture_info_callback;
     EXPECT_CALL(_camera, subscribe_capture_info(_))
-        .WillOnce(SaveResult(&capture_info_callback, &_callback_saved_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&capture_info_callback, &_callback_saved_promise))
+        .WillOnce(DoDefault());
     std::vector<dronecode_sdk::Camera::CaptureInfo> capture_info_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
@@ -745,7 +755,9 @@ void CameraServiceImplTest::checkSendsCaptureInfo(
     dronecode_sdk::Camera::capture_info_callback_t capture_info_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_capture_info(_))
-        .WillOnce(SaveResult(&capture_info_callback, &subscription_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&capture_info_callback, &subscription_promise))
+        .WillOnce(DoDefault());
 
     std::vector<dronecode_sdk::Camera::CaptureInfo> received_capture_info_events;
     auto capture_info_events_future =
@@ -966,7 +978,9 @@ TEST_F(CameraServiceImplTest, registersToCurrentSettings)
                       createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
     dronecode_sdk::Camera::subscribe_current_settings_callback_t current_settings_callback;
     EXPECT_CALL(_camera, subscribe_current_settings(_))
-        .WillOnce(SaveResult(&current_settings_callback, &_callback_saved_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&current_settings_callback, &_callback_saved_promise))
+        .WillOnce(DoDefault());
     std::vector<std::vector<dronecode_sdk::Camera::Setting>> current_settings_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
@@ -1060,7 +1074,9 @@ void CameraServiceImplTest::checkSendsCurrentSettings(
     dronecode_sdk::Camera::subscribe_current_settings_callback_t current_settings_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_current_settings(_))
-        .WillOnce(SaveResult(&current_settings_callback, &subscription_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&current_settings_callback, &subscription_promise))
+        .WillOnce(DoDefault());
 
     std::vector<std::vector<dronecode_sdk::Camera::Setting>> received_current_settings_events;
     auto current_settings_events_future =
@@ -1135,7 +1151,9 @@ TEST_F(CameraServiceImplTest, registersToPossibleSettings)
         createSettingOptions(ARBITRARY_SETTING_ID, ARBITRARY_SETTING_DESCRIPTION, options));
     dronecode_sdk::Camera::subscribe_possible_setting_options_callback_t possible_settings_callback;
     EXPECT_CALL(_camera, subscribe_possible_setting_options(_))
-        .WillOnce(SaveResult(&possible_settings_callback, &_callback_saved_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&possible_settings_callback, &_callback_saved_promise))
+        .WillOnce(DoDefault());
     std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>> possible_settings_events;
     auto context = std::make_shared<grpc::ClientContext>();
 
@@ -1221,7 +1239,9 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
         possible_setting_options_callback;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_possible_setting_options(_))
-        .WillOnce(SaveResult(&possible_setting_options_callback, &subscription_promise));
+        .Times(2)
+        .WillOnce(SaveResult(&possible_setting_options_callback, &subscription_promise))
+        .WillOnce(DoDefault());
 
     std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>>
         received_possible_setting_options_events;
