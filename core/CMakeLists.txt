@@ -36,6 +36,8 @@ add_library(dronecode_sdk ${LIBRARY_TYPE}
     thread_pool.cpp
 )
 
+add_dependencies(dronecode_sdk version)
+
 target_link_libraries(dronecode_sdk
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
@@ -65,13 +67,6 @@ endif()
 
 set_target_properties(dronecode_sdk
     PROPERTIES COMPILE_FLAGS ${warnings}
-)
-
-add_custom_command(
-    TARGET dronecode_sdk
-    COMMAND sed "s/@VERSION_STR@/${VERSION_STR}/" ${PROJECT_SOURCE_DIR}/core/version.h.in > ${CMAKE_CURRENT_BINARY_DIR}/version.h
-    PRE_BUILD
-    DEPENDS ${PROJECT_SOURCE_DIR}/version
 )
 
 target_include_directories(dronecode_sdk PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
