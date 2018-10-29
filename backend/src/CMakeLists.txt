@@ -34,6 +34,8 @@ else()
     add_library(backend STATIC ${BACKEND_SOURCES})
 endif()
 
+add_dependencies(dronecode_sdk version)
+
 target_link_libraries(backend
     dronecode_sdk
     dronecode_sdk_action

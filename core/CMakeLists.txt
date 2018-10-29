@@ -36,6 +36,8 @@ add_library(dronecode_sdk ${LIBRARY_TYPE}
     thread_pool.cpp
 )
 
+add_dependencies(dronecode_sdk version)
+
 target_link_libraries(dronecode_sdk
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
@@ -67,7 +69,6 @@ set_target_properties(dronecode_sdk
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 target_include_directories(dronecode_sdk PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 install(TARGETS dronecode_sdk

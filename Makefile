@@ -147,7 +147,7 @@ distclean:
 	@rm -rf logs/
 
 clean:
-	@if [ -d build ]; then find build -mindepth 2 ! -regex 'build/\w+/third_party.*' -delete; fi
+	@if [ -d build ]; then find build -mindepth 2 ! -regex 'build/[a-zA-Z_]*/third_party.*' -delete; fi
 
 android_env_check:
 ifndef ANDROID_TOOLCHAIN_CMAKE
