@@ -101,7 +101,8 @@ float MissionItemImpl::get_mavlink_param3() const
 
 float MissionItemImpl::get_mavlink_param4() const
 {
-    float yaw_angle_deg = 0.0f;
+    // Just let the drone fly forward.
+    float yaw_angle_deg = NAN;
     return yaw_angle_deg;
 }
 
