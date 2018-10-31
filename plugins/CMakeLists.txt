@@ -19,6 +19,7 @@ add_subdirectory(log_files)
 #add_subdirectory(logging) # Not implemented completely
 add_subdirectory(mission)
 add_subdirectory(offboard)
+add_subdirectory(params_raw)
 add_subdirectory(telemetry)
 
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
