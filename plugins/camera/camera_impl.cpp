@@ -1244,25 +1244,11 @@ void CameraImpl::get_option_async(const std::string &setting_id,
         }
     } else {
         // If this still happens, we request the param, but also complain.
-        LogWarn() << "The param was probably outdated, trying to fetch it";
-        _parent->get_param_async(
-            setting_id,
-            [setting_id, this](bool success, MAVLinkParameters::ParamValue value_gotten) {
-                if (!success) {
-                    LogWarn() << "Fetching the param failed";
-                    return;
-                }
-                // We need to check again by the time this callback runs
-                if (!this->_camera_definition) {
-                    return;
-                }
-                this->_camera_definition->set_setting(setting_id, value_gotten);
-            },
-            true);
-
-        // At this point it might be a good idea to refresh but it's a bit scary
-        // as the stack keeps growing at this point.
-        // refresh_params();
+        LogWarn() << "Setting '" << setting_id << "' not found.";
+        if (callback) {
+            Camera::Option no_option{};
+            callback(Camera::Result::ERROR, no_option);
+        }
     }
 }
 
