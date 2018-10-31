@@ -38,7 +38,7 @@ void MAVLinkParameters::set_param_async(const std::string &name,
     //     LogDebug() << "setting param " << name << " to " << value.get_int();
     // }
 
-    if (name.size() > PARAM_ID_LEN) {
+    if (name.size() >= PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
             callback(false);
@@ -72,7 +72,7 @@ void MAVLinkParameters::get_param_async(const std::string &name,
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
 
-    if (name.size() > PARAM_ID_LEN) {
+    if (name.size() >= PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
             ParamValue empty_param;
