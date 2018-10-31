@@ -571,7 +571,7 @@ void SystemImpl::set_system_id(uint8_t system_id)
     _system_id = system_id;
 }
 
-bool SystemImpl::set_param_float(const std::string &name, float value)
+MAVLinkParameters::Result SystemImpl::set_param_float(const std::string &name, float value)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set_float(value);
@@ -579,7 +579,7 @@ bool SystemImpl::set_param_float(const std::string &name, float value)
     return _params.set_param(name, param_value, false);
 }
 
-bool SystemImpl::set_param_int(const std::string &name, int32_t value)
+MAVLinkParameters::Result SystemImpl::set_param_int(const std::string &name, int32_t value)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set_int32(value);
@@ -587,7 +587,7 @@ bool SystemImpl::set_param_int(const std::string &name, int32_t value)
     return _params.set_param(name, param_value, false);
 }
 
-bool SystemImpl::set_param_ext_float(const std::string &name, float value)
+MAVLinkParameters::Result SystemImpl::set_param_ext_float(const std::string &name, float value)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set_float(value);
@@ -595,7 +595,7 @@ bool SystemImpl::set_param_ext_float(const std::string &name, float value)
     return _params.set_param(name, param_value, true);
 }
 
-bool SystemImpl::set_param_ext_int(const std::string &name, int32_t value)
+MAVLinkParameters::Result SystemImpl::set_param_ext_int(const std::string &name, int32_t value)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set_int32(value);
@@ -631,86 +631,92 @@ void SystemImpl::set_param_ext_int_async(const std::string &name, int32_t value,
     _params.set_param_async(name, param_value, callback, true);
 }
 
-std::pair<bool, float> SystemImpl::get_param_float(const std::string &name)
+std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(const std::string &name)
 {
-    auto prom = std::make_shared<std::promise<std::pair<bool, float>>>();
+    auto prom = std::make_shared<std::promise<std::pair<MAVLinkParameters::Result, float>>>();
     auto res = prom->get_future();
 
     MAVLinkParameters::ParamValue value_type;
     value_type.set_float(0.0f);
 
     _params.get_param_async(
-        name, value_type, [&prom](bool success, MAVLinkParameters::ParamValue param) {
+        name,
+        value_type,
+        [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             float value = NAN;
-            if (success) {
+            if (result == MAVLinkParameters::Result::SUCCESS) {
                 value = param.get_float();
             }
-            prom->set_value(std::make_pair<>(success, value));
+            prom->set_value(std::make_pair<>(result, value));
         });
 
     return res.get();
 }
 
-std::pair<bool, int> SystemImpl::get_param_int(const std::string &name)
+std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_int(const std::string &name)
 {
-    auto prom = std::make_shared<std::promise<std::pair<bool, int>>>();
+    auto prom = std::make_shared<std::promise<std::pair<MAVLinkParameters::Result, int>>>();
     auto res = prom->get_future();
 
     MAVLinkParameters::ParamValue value_type;
     value_type.set_int32(0);
 
     _params.get_param_async(
-        name, value_type, [&prom](bool success, MAVLinkParameters::ParamValue param) {
+        name,
+        value_type,
+        [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
             int value = 0;
-            if (success) {
+            if (result == MAVLinkParameters::Result::SUCCESS) {
                 value = param.get_int32();
             }
-            prom->set_value(std::make_pair<>(success, value));
+            prom->set_value(std::make_pair<>(result, value));
         });
 
     return res.get();
 }
 
-std::pair<bool, float> SystemImpl::get_param_ext_float(const std::string &name)
+std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_ext_float(const std::string &name)
 {
-    auto prom = std::make_shared<std::promise<std::pair<bool, float>>>();
+    auto prom = std::make_shared<std::promise<std::pair<MAVLinkParameters::Result, float>>>();
     auto res = prom->get_future();
 
     MAVLinkParameters::ParamValue value_type;
     value_type.set_float(0.0f);
 
-    _params.get_param_async(name,
-                            value_type,
-                            [&prom](bool success, MAVLinkParameters::ParamValue param) {
-                                float value = NAN;
-                                if (success) {
-                                    value = param.get_float();
-                                }
-                                prom->set_value(std::make_pair<>(success, value));
-                            },
-                            true);
+    _params.get_param_async(
+        name,
+        value_type,
+        [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
+            float value = NAN;
+            if (result == MAVLinkParameters::Result::SUCCESS) {
+                value = param.get_float();
+            }
+            prom->set_value(std::make_pair<>(result, value));
+        },
+        true);
 
     return res.get();
 }
 
-std::pair<bool, int> SystemImpl::get_param_ext_int(const std::string &name)
+std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_ext_int(const std::string &name)
 {
-    auto prom = std::make_shared<std::promise<std::pair<bool, int>>>();
+    auto prom = std::make_shared<std::promise<std::pair<MAVLinkParameters::Result, int>>>();
     auto res = prom->get_future();
 
     MAVLinkParameters::ParamValue value_type;
     value_type.set_int32(0.0f);
 
-    _params.get_param_async(name,
-                            value_type,
-                            [&prom](bool success, MAVLinkParameters::ParamValue param) {
-                                int value = 0;
-                                if (success) {
-                                    value = param.get_int32();
-                                }
-                                prom->set_value(std::make_pair<>(success, value));
-                            },
-                            true);
+    _params.get_param_async(
+        name,
+        value_type,
+        [&prom](MAVLinkParameters::Result result, MAVLinkParameters::ParamValue param) {
+            int value = 0;
+            if (result == MAVLinkParameters::Result::SUCCESS) {
+                value = param.get_int32();
+            }
+            prom->set_value(std::make_pair<>(result, value));
+        },
+        true);
 
     return res.get();
 }
@@ -760,9 +766,8 @@ void SystemImpl::set_param_async(const std::string &name,
     _params.set_param_async(name, value, callback, extended);
 }
 
-bool SystemImpl::set_param(const std::string &name,
-                           MAVLinkParameters::ParamValue value,
-                           bool extended)
+MAVLinkParameters::Result
+SystemImpl::set_param(const std::string &name, MAVLinkParameters::ParamValue value, bool extended)
 {
     return _params.set_param(name, value, extended);
 }
@@ -856,28 +861,28 @@ void SystemImpl::set_flight_mode_async(FlightMode system_mode,
     send_command_async(result.second, callback);
 }
 
-void SystemImpl::receive_float_param(bool success,
+void SystemImpl::receive_float_param(MAVLinkParameters::Result result,
                                      MAVLinkParameters::ParamValue value,
                                      get_param_float_callback_t callback)
 {
     if (callback) {
-        if (success) {
-            callback(success, value.get_float());
+        if (result == MAVLinkParameters::Result::SUCCESS) {
+            callback(result, value.get_float());
         } else {
-            callback(success, NAN);
+            callback(result, NAN);
         }
     }
 }
 
-void SystemImpl::receive_int_param(bool success,
+void SystemImpl::receive_int_param(MAVLinkParameters::Result result,
                                    MAVLinkParameters::ParamValue value,
                                    get_param_int_callback_t callback)
 {
     if (callback) {
-        if (success) {
-            callback(success, value.get_int32());
+        if (result == MAVLinkParameters::Result::SUCCESS) {
+            callback(result, value.get_int32());
         } else {
-            callback(success, 0);
+            callback(result, 0);
         }
     }
 }

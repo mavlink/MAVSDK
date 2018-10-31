@@ -470,18 +470,20 @@ public:
         Any _value;
     };
 
-    typedef std::function<void(bool success)> set_param_callback_t;
+    enum class Result { SUCCESS, TIMEOUT, CONNECTION_ERROR, WRONG_TYPE, PARAM_NAME_TOO_LONG };
 
-    bool set_param(const std::string &name, const ParamValue &value, bool extended = false);
+    typedef std::function<void(Result result)> set_param_callback_t;
+
+    Result set_param(const std::string &name, const ParamValue &value, bool extended = false);
 
     void set_param_async(const std::string &name,
                          const ParamValue &value,
                          set_param_callback_t callback,
                          bool extended = false);
 
-    std::pair<bool, ParamValue>
+    std::pair<Result, ParamValue>
     get_param(const std::string &name, ParamValue value_type, bool extended);
-    typedef std::function<void(bool success, ParamValue value)> get_param_callback_t;
+    typedef std::function<void(Result, ParamValue value)> get_param_callback_t;
     void get_param_async(const std::string &name,
                          ParamValue value_type,
                          get_param_callback_t callback,

@@ -119,12 +119,12 @@ public:
 
     bool is_armed() const { return _armed; }
 
-    bool set_param_float(const std::string &name, float value);
-    bool set_param_int(const std::string &name, int32_t value);
-    bool set_param_ext_float(const std::string &name, float value);
-    bool set_param_ext_int(const std::string &name, int32_t value);
+    MAVLinkParameters::Result set_param_float(const std::string &name, float value);
+    MAVLinkParameters::Result set_param_int(const std::string &name, int32_t value);
+    MAVLinkParameters::Result set_param_ext_float(const std::string &name, float value);
+    MAVLinkParameters::Result set_param_ext_int(const std::string &name, int32_t value);
 
-    typedef std::function<void(bool success)> success_t;
+    typedef std::function<void(MAVLinkParameters::Result result)> success_t;
     void set_param_float_async(const std::string &name, float value, success_t callback);
     void set_param_int_async(const std::string &name, int32_t value, success_t callback);
     void set_param_ext_float_async(const std::string &name, float value, success_t callback);
@@ -137,13 +137,15 @@ public:
                                command_result_callback_t callback,
                                uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
-    typedef std::function<void(bool success, float value)> get_param_float_callback_t;
-    typedef std::function<void(bool success, int32_t value)> get_param_int_callback_t;
+    typedef std::function<void(MAVLinkParameters::Result result, float value)>
+        get_param_float_callback_t;
+    typedef std::function<void(MAVLinkParameters::Result result, int32_t value)>
+        get_param_int_callback_t;
 
-    std::pair<bool, float> get_param_float(const std::string &name);
-    std::pair<bool, int> get_param_int(const std::string &name);
-    std::pair<bool, float> get_param_ext_float(const std::string &name);
-    std::pair<bool, int> get_param_ext_int(const std::string &name);
+    std::pair<MAVLinkParameters::Result, float> get_param_float(const std::string &name);
+    std::pair<MAVLinkParameters::Result, int> get_param_int(const std::string &name);
+    std::pair<MAVLinkParameters::Result, float> get_param_ext_float(const std::string &name);
+    std::pair<MAVLinkParameters::Result, int> get_param_ext_int(const std::string &name);
 
     // These methods can be used to cache a parameter when a system connects. For that
     // the callback can just be set to nullptr.
@@ -152,7 +154,8 @@ public:
     void get_param_ext_float_async(const std::string &name, get_param_float_callback_t callback);
     void get_param_ext_int_async(const std::string &name, get_param_int_callback_t callback);
 
-    typedef std::function<void(bool success, MAVLinkParameters::ParamValue value)>
+    typedef std::function<void(MAVLinkParameters::Result result,
+                               MAVLinkParameters::ParamValue value)>
         get_param_callback_t;
 
     void set_param_async(const std::string &name,
@@ -160,7 +163,7 @@ public:
                          success_t callback,
                          bool extended = false);
 
-    bool
+    MAVLinkParameters::Result
     set_param(const std::string &name, MAVLinkParameters::ParamValue value, bool extended = false);
 
     void get_param_async(const std::string &name,
@@ -209,10 +212,10 @@ private:
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
 
-    static void receive_float_param(bool success,
+    static void receive_float_param(MAVLinkParameters::Result result,
                                     MAVLinkParameters::ParamValue value,
                                     get_param_float_callback_t callback);
-    static void receive_int_param(bool success,
+    static void receive_int_param(MAVLinkParameters::Result result,
                                   MAVLinkParameters::ParamValue value,
                                   get_param_int_callback_t callback);
 
