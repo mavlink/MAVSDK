@@ -27,6 +27,8 @@ public:
     ParamsRaw::Result set_param_float(const std::string &name, float value);
 
 private:
+    static ParamsRaw::Result
+    result_from_mavlink_parameters_result(MAVLinkParameters::Result result);
 };
 
 } // namespace dronecode_sdk

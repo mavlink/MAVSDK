@@ -33,26 +33,30 @@ void FollowMeImpl::deinit()
 
 void FollowMeImpl::enable()
 {
-    _parent->get_param_float_async("NAV_MIN_FT_HT", [this](bool success, float value) {
-        if (success) {
-            _config.min_height_m = value;
-        }
-    });
-    _parent->get_param_float_async("NAV_FT_DST", [this](bool success, float value) {
-        if (success) {
-            _config.follow_distance_m = value;
-        }
-    });
-    _parent->get_param_int_async("NAV_FT_FS", [this](bool success, int32_t value) {
-        if (success) {
-            _config.follow_direction = static_cast<FollowMe::Config::FollowDirection>(value);
-        }
-    });
-    _parent->get_param_float_async("NAV_FT_RS", [this](bool success, float value) {
-        if (success) {
-            _config.responsiveness = value;
-        }
-    });
+    _parent->get_param_float_async("NAV_MIN_FT_HT",
+                                   [this](MAVLinkParameters::Result result, float value) {
+                                       if (result == MAVLinkParameters::Result::SUCCESS) {
+                                           _config.min_height_m = value;
+                                       }
+                                   });
+    _parent->get_param_float_async("NAV_FT_DST",
+                                   [this](MAVLinkParameters::Result result, float value) {
+                                       if (result == MAVLinkParameters::Result::SUCCESS) {
+                                           _config.follow_distance_m = value;
+                                       }
+                                   });
+    _parent->get_param_int_async(
+        "NAV_FT_FS", [this](MAVLinkParameters::Result result, int32_t value) {
+            if (result == MAVLinkParameters::Result::SUCCESS) {
+                _config.follow_direction = static_cast<FollowMe::Config::FollowDirection>(value);
+            }
+        });
+    _parent->get_param_float_async("NAV_FT_RS",
+                                   [this](MAVLinkParameters::Result result, float value) {
+                                       if (result == MAVLinkParameters::Result::SUCCESS) {
+                                           _config.responsiveness = value;
+                                       }
+                                   });
 }
 
 void FollowMeImpl::disable()
@@ -84,21 +88,23 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
 
     // Send configuration to Vehicle
     if (_config.min_height_m != height) {
-        if (_parent->set_param_float("NAV_MIN_FT_HT", height)) {
+        if (_parent->set_param_float("NAV_MIN_FT_HT", height) ==
+            MAVLinkParameters::Result::SUCCESS) {
             _config.min_height_m = height;
         } else {
             success = false;
         }
     }
     if (_config.follow_distance_m != distance) {
-        if (_parent->set_param_float("NAV_FT_DST", distance)) {
+        if (_parent->set_param_float("NAV_FT_DST", distance) ==
+            MAVLinkParameters::Result::SUCCESS) {
             _config.follow_distance_m = distance;
         } else {
             success = false;
         }
     }
     if (_config.follow_direction != config.follow_direction) {
-        if (_parent->set_param_int("NAV_FT_FS", direction)) {
+        if (_parent->set_param_int("NAV_FT_FS", direction) == MAVLinkParameters::Result::SUCCESS) {
             _config.follow_direction = static_cast<FollowMe::Config::FollowDirection>(direction);
 
         } else {
@@ -106,7 +112,8 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
         }
     }
     if (_config.responsiveness != responsiveness) {
-        if (_parent->set_param_float("NAV_FT_RS", responsiveness)) {
+        if (_parent->set_param_float("NAV_FT_RS", responsiveness) ==
+            MAVLinkParameters::Result::SUCCESS) {
             _config.responsiveness = responsiveness;
         } else {
             success = false;

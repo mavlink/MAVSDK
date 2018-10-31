@@ -568,9 +568,9 @@ Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t cu
     }
 }
 
-void TelemetryImpl::receive_param_cal_gyro(bool success, int value)
+void TelemetryImpl::receive_param_cal_gyro(MAVLinkParameters::Result result, int value)
 {
-    if (!success) {
+    if (result != MAVLinkParameters::Result::SUCCESS) {
         LogErr() << "Error: Param for gyro cal failed.";
         return;
     }
@@ -579,9 +579,9 @@ void TelemetryImpl::receive_param_cal_gyro(bool success, int value)
     set_health_gyrometer_calibration(ok);
 }
 
-void TelemetryImpl::receive_param_cal_accel(bool success, int value)
+void TelemetryImpl::receive_param_cal_accel(MAVLinkParameters::Result result, int value)
 {
-    if (!success) {
+    if (result != MAVLinkParameters::Result::SUCCESS) {
         LogErr() << "Error: Param for accel cal failed.";
         return;
     }
@@ -590,9 +590,9 @@ void TelemetryImpl::receive_param_cal_accel(bool success, int value)
     set_health_accelerometer_calibration(ok);
 }
 
-void TelemetryImpl::receive_param_cal_mag(bool success, int value)
+void TelemetryImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int value)
 {
-    if (!success) {
+    if (result != MAVLinkParameters::Result::SUCCESS) {
         LogErr() << "Error: Param for mag cal failed.";
         return;
     }
@@ -602,9 +602,9 @@ void TelemetryImpl::receive_param_cal_mag(bool success, int value)
 }
 
 #ifdef LEVEL_CALIBRATION
-void TelemetryImpl::receive_param_cal_level(bool success, float value)
+void TelemetryImpl::receive_param_cal_level(MAVLinkParameters::Result result, float value)
 {
-    if (!success) {
+    if (result != MAVLinkParameters::Result::SUCCESS) {
         LogErr() << "Error: Param for level cal failed.";
         return;
     }
@@ -614,9 +614,9 @@ void TelemetryImpl::receive_param_cal_level(bool success, float value)
 }
 #endif
 
-void TelemetryImpl::receive_param_hitl(bool success, int value)
+void TelemetryImpl::receive_param_hitl(MAVLinkParameters::Result result, int value)
 {
-    if (!success) {
+    if (result != MAVLinkParameters::Result::SUCCESS) {
         LogErr() << "Error: Param to determine hitl failed.";
         return;
     }

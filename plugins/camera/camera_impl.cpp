@@ -1057,7 +1057,7 @@ void CameraImpl::receive_get_mode_command_result(MAVLinkCommands::Result command
     std::lock_guard<std::mutex> lock(_get_mode.mutex);
 
     if (camera_result == Camera::Result::SUCCESS) {
-        // SUCESS is the normal case and means we keep waiting to receive the mode.
+        // SUCCESS is the normal case and means we keep waiting to receive the mode.
         _parent->refresh_timeout_handler(_get_mode.timeout_cookie);
         return;
     } else {
@@ -1181,8 +1181,8 @@ void CameraImpl::set_option_async(const std::string &setting_id,
 
     _parent->set_param_async(setting_id,
                              value,
-                             [this, callback, setting_id, value](bool success) {
-                                 if (success) {
+                             [this, callback, setting_id, value](MAVLinkParameters::Result result) {
+                                 if (result == MAVLinkParameters::Result::SUCCESS) {
                                      if (this->_camera_definition) {
                                          _camera_definition->set_setting(setting_id, value);
                                          refresh_params();
@@ -1351,25 +1351,25 @@ void CameraImpl::refresh_params()
         const std::string &param_name = param.first;
         const MAVLinkParameters::ParamValue &param_value_type = param.second;
         const bool is_last = (count + 1 == params.size());
-        _parent->get_param_async(
-            param_name,
-            param_value_type,
-            [param_name, is_last, this](bool success, MAVLinkParameters::ParamValue value) {
-                if (!success) {
-                    return;
-                }
-                // We need to check again by the time this callback runs
-                if (!this->_camera_definition) {
-                    return;
-                }
-                this->_camera_definition->set_setting(param_name, value);
+        _parent->get_param_async(param_name,
+                                 param_value_type,
+                                 [param_name, is_last, this](MAVLinkParameters::Result result,
+                                                             MAVLinkParameters::ParamValue value) {
+                                     if (result != MAVLinkParameters::Result::SUCCESS) {
+                                         return;
+                                     }
+                                     // We need to check again by the time this callback runs
+                                     if (!this->_camera_definition) {
+                                         return;
+                                     }
+                                     this->_camera_definition->set_setting(param_name, value);
 
-                if (is_last) {
-                    notify_current_settings();
-                    notify_possible_setting_options();
-                }
-            },
-            true);
+                                     if (is_last) {
+                                         notify_current_settings();
+                                         notify_possible_setting_options();
+                                     }
+                                 },
+                                 true);
         ++count;
     }
 }

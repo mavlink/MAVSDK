@@ -115,13 +115,13 @@ private:
     void process_heartbeat(const mavlink_message_t &message);
     void process_rc_channels(const mavlink_message_t &message);
 
-    void receive_param_cal_gyro(bool success, int value);
-    void receive_param_cal_accel(bool success, int value);
-    void receive_param_cal_mag(bool success, int value);
+    void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
+    void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
+    void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
 #ifdef LEVEL_CALIBRATION
-    void receive_param_cal_level(bool success, float value);
+    void receive_param_cal_level(MAVLinkParameters::Result result, float value);
 #endif
-    void receive_param_hitl(bool success, int value);
+    void receive_param_hitl(MAVLinkParameters::Result result, int value);
 
     void receive_rc_channels_timeout();
 

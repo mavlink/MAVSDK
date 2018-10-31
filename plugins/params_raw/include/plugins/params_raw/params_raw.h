@@ -39,9 +39,19 @@ public:
     enum class Result {
         UNKNOWN, /**< @brief Unknown error. */
         SUCCESS, /**< @brief %Request succeeded. */
-        ERROR, /**< @brief Error. */
-        TIMEOUT /**< @brief Request timed out. */
+        TIMEOUT, /**< @brief Request timed out. */
+        CONNECTION_ERROR, /**< @brief Connection error. */
+        WRONG_TYPE, /**< @brief Error. */
+        PARAM_NAME_TOO_LONG /**< @brief Parameter name too long (> 16). */
     };
+
+    /**
+     * @brief Returns a human-readable English string for `ParamsRaw::Result`.
+     *
+     * @param result The enum value for which a human readable string is required.
+     * @return Human readable string for the `ParamsRaw::Result`.
+     */
+    std::string result_str(Result result);
 
     /**
      * @brief Get an int parameter.

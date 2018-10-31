@@ -20,19 +20,22 @@ TEST_F(SitlTest, ParamsRawSad)
 
     auto params_raw = std::make_shared<ParamsRaw>(system);
 
-    // TODO: It would be nicer if the plugin would return `WRONG_TYPE` instead of just `ERROR`
-    //       for these cases.
-
     {
         const std::pair<ParamsRaw::Result, float> get_result =
             params_raw->get_param_float("SYS_HITL");
-        EXPECT_EQ(get_result.first, ParamsRaw::Result::ERROR);
+        EXPECT_EQ(get_result.first, ParamsRaw::Result::WRONG_TYPE);
     }
 
     {
         const std::pair<ParamsRaw::Result, int32_t> get_result =
             params_raw->get_param_int("COM_RC_LOSS_MAN");
-        EXPECT_EQ(get_result.first, ParamsRaw::Result::ERROR);
+        EXPECT_EQ(get_result.first, ParamsRaw::Result::WRONG_TYPE);
+    }
+
+    {
+        const std::pair<ParamsRaw::Result, int32_t> get_result =
+            params_raw->get_param_int("NAME_TOO_LOOOOONG");
+        EXPECT_EQ(get_result.first, ParamsRaw::Result::PARAM_NAME_TOO_LONG);
     }
 }
 
