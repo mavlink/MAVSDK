@@ -66,6 +66,7 @@ bool MAVLinkParameters::set_param(const std::string &name, const ParamValue &val
 }
 
 void MAVLinkParameters::get_param_async(const std::string &name,
+                                        ParamValue value_type,
                                         get_param_callback_t callback,
                                         bool extended)
 {
@@ -92,18 +93,20 @@ void MAVLinkParameters::get_param_async(const std::string &name,
     GetParamWork new_work;
     new_work.callback = callback;
     new_work.param_name = name;
+    new_work.param_value_type = value_type;
     new_work.extended = extended;
 
     _get_param_queue.push_back(new_work);
 }
 
-std::pair<bool, MAVLinkParameters::ParamValue> MAVLinkParameters::get_param(const std::string &name,
-                                                                            bool extended)
+std::pair<bool, MAVLinkParameters::ParamValue>
+MAVLinkParameters::get_param(const std::string &name, ParamValue value_type, bool extended)
 {
     auto prom = std::make_shared<std::promise<std::pair<bool, MAVLinkParameters::ParamValue>>>();
     auto res = prom->get_future();
 
     get_param_async(name,
+                    value_type,
                     [&prom](bool success, ParamValue value) {
                         prom->set_value(std::make_pair<>(success, value));
                     },
@@ -250,10 +253,10 @@ void MAVLinkParameters::reset_cache()
 
 void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
 {
-    // LogDebug() << "getting param value";
-
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
+
+    // LogDebug() << "getting param value: " << param_value.param_id;
 
     std::lock_guard<std::mutex> lock(_state_mutex);
 
@@ -267,9 +270,17 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
             if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) == 0) {
                 ParamValue value;
                 value.set_from_mavlink_param_value(param_value);
-                _cache[work->param_name] = value;
-                if (work->callback) {
-                    work->callback(true, value);
+                if (value.is_same_type(work->param_value_type)) {
+                    _cache[work->param_name] = value;
+                    if (work->callback) {
+                        work->callback(true, value);
+                    }
+                } else {
+                    LogErr() << "Param types don't match";
+                    ParamValue no_value;
+                    if (work->callback) {
+                        work->callback(false, no_value);
+                    }
                 }
                 _state = State::NONE;
                 _parent.unregister_timeout_handler(_timeout_cookie);
@@ -290,6 +301,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
             if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) == 0) {
                 // We are done, inform caller and go back to idle
                 _cache[work->param_name] = work->param_value;
+                // TODO: check types as well
                 if (work->callback) {
                     work->callback(true);
                 }
@@ -324,6 +336,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
             if (strncmp(work->param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) == 0) {
                 ParamValue value;
                 value.set_from_mavlink_param_ext_value(param_ext_value);
+                // TODO: check types as well
                 _cache[work->param_name] = value;
                 if (work->callback) {
                     work->callback(true, value);
@@ -384,6 +397,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
         if (strncmp(work->param_name.c_str(), param_ext_ack.param_id, PARAM_ID_LEN) == 0) {
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
                 // We are done, inform caller and go back to idle
+                // TODO: check types as well
                 _cache[work->param_name] = work->param_value;
                 if (work->callback) {
                     work->callback(true);

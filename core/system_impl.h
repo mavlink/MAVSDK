@@ -163,8 +163,10 @@ public:
     bool
     set_param(const std::string &name, MAVLinkParameters::ParamValue value, bool extended = false);
 
-    void
-    get_param_async(const std::string &name, get_param_callback_t callback, bool extended = false);
+    void get_param_async(const std::string &name,
+                         MAVLinkParameters::ParamValue value_type,
+                         get_param_callback_t callback,
+                         bool extended);
 
     bool is_connected() const;
 
