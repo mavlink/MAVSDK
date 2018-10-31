@@ -1350,7 +1350,7 @@ void CameraImpl::refresh_params()
         return;
     }
 
-    std::vector<std::string> params{};
+    std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
     _camera_definition->get_unknown_params(params);
     if (params.size() == 0) {
         // We're assuming that we changed one option and this did not cause
@@ -1362,10 +1362,12 @@ void CameraImpl::refresh_params()
 
     unsigned count = 0;
     for (const auto &param : params) {
-        std::string param_name = param;
+        const std::string &param_name = param.first;
+        const MAVLinkParameters::ParamValue &param_value_type = param.second;
         const bool is_last = (count + 1 == params.size());
         _parent->get_param_async(
             param_name,
+            param_value_type,
             [param_name, is_last, this](bool success, MAVLinkParameters::ParamValue value) {
                 if (!success) {
                     return;

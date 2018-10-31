@@ -281,11 +281,11 @@ TEST(CameraDefinition, E90SettingsToUpdate)
     ASSERT_TRUE(cd.load_file(e90_unit_test_file));
 
     {
-        std::vector<std::string> params;
+        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 16);
         for (const auto &param : params) {
-            LogInfo() << param;
+            LogInfo() << param.first;
         }
     }
 
@@ -297,7 +297,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
 
     // Now that we set one param it should be less that we need to fetch.
     {
-        std::vector<std::string> params;
+        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 15);
     }
@@ -305,7 +305,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
     cd.set_all_params_unknown();
 
     {
-        std::vector<std::string> params;
+        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 16);
     }
@@ -320,11 +320,11 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
     cd.assume_default_settings();
 
     {
-        std::vector<std::string> params;
+        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 0);
         for (const auto &param : params) {
-            LogInfo() << param;
+            LogInfo() << param.first;
         }
     }
 
@@ -336,7 +336,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
 
     // Now that we set one param it should be less that we need to fetch.
     {
-        std::vector<std::string> params;
+        std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 4);
 
@@ -348,20 +348,20 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
         bool found_photoratio = false;
 
         for (const auto &param : params) {
-            if (strcmp("CAM_SHUTTERSPD", param.c_str()) == 0) {
+            if (strcmp("CAM_SHUTTERSPD", param.first.c_str()) == 0) {
                 found_shutterspd = true;
             }
-            if (strcmp("CAM_ISO", param.c_str()) == 0) {
+            if (strcmp("CAM_ISO", param.first.c_str()) == 0) {
                 found_iso = true;
             }
-            if (strcmp("CAM_VIDRES", param.c_str()) == 0) {
+            if (strcmp("CAM_VIDRES", param.first.c_str()) == 0) {
                 found_vidres = true;
             }
             // We don't yet handle ASPECTRATIO
-            // if (strcmp("CAM_ASPECTRATIO", param.c_str()) == 0) {
+            // if (strcmp("CAM_ASPECTRATIO", param.first.c_str()) == 0) {
             //    found_aspectratio = true;
             //}
-            if (strcmp("CAM_PHOTORATIO", param.c_str()) == 0) {
+            if (strcmp("CAM_PHOTORATIO", param.first.c_str()) == 0) {
                 found_photoratio = true;
             }
         }

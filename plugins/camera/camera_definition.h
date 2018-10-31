@@ -45,7 +45,8 @@ public:
                         const std::string &option_name,
                         std::string &description);
 
-    void get_unknown_params(std::vector<std::string> &params);
+    void
+    get_unknown_params(std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> &params);
     void set_all_params_unknown();
 
     // Non-copyable
@@ -68,6 +69,7 @@ private:
         bool is_control;
         bool is_readonly;
         bool is_writeonly;
+        MAVLinkParameters::ParamValue type; // for type only, doesn't hold a value
         std::vector<std::string> updates;
         std::vector<std::shared_ptr<Option>> options;
     };
