@@ -704,7 +704,7 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_ext_int(const st
     auto res = prom->get_future();
 
     MAVLinkParameters::ParamValue value_type;
-    value_type.set_int32(0.0f);
+    value_type.set_int32(0);
 
     _params.get_param_async(
         name,
@@ -733,7 +733,7 @@ void SystemImpl::get_param_float_async(const std::string &name, get_param_float_
 void SystemImpl::get_param_int_async(const std::string &name, get_param_int_callback_t callback)
 {
     MAVLinkParameters::ParamValue value_type;
-    value_type.set_int32(0.0f);
+    value_type.set_int32(0);
 
     _params.get_param_async(
         name, value_type, std::bind(&SystemImpl::receive_int_param, _1, _2, callback));
@@ -752,7 +752,7 @@ void SystemImpl::get_param_ext_float_async(const std::string &name,
 void SystemImpl::get_param_ext_int_async(const std::string &name, get_param_int_callback_t callback)
 {
     MAVLinkParameters::ParamValue value_type;
-    value_type.set_int32(0.0f);
+    value_type.set_int32(0);
 
     _params.get_param_async(
         name, value_type, std::bind(&SystemImpl::receive_int_param, _1, _2, callback), true);
