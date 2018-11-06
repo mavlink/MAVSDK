@@ -37,7 +37,7 @@ ParamsRaw::Result ParamsRawImpl::set_param_int(const std::string &name, int32_t 
 
 std::pair<ParamsRaw::Result, float> ParamsRawImpl::get_param_float(const std::string &name)
 {
-    std::pair<MAVLinkParameters::Result, int32_t> result = _parent->get_param_float(name);
+    std::pair<MAVLinkParameters::Result, float> result = _parent->get_param_float(name);
     return std::make_pair<>(result_from_mavlink_parameters_result(result.first), result.second);
 }
 
