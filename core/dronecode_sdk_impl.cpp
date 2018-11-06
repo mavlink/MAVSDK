@@ -219,7 +219,6 @@ System &DronecodeSDKImpl::get_system()
             // Just return first system instead of failing.
             return *_systems.begin()->second;
         } else {
-            LogWarn() << "No system found.";
             uint8_t system_id = 0, comp_id = 0;
             make_system_with_component(system_id, comp_id);
             return *_systems[system_id];
