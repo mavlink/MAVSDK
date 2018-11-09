@@ -845,6 +845,9 @@ SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_i
         case FlightMode::OFFBOARD:
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
             break;
+        case FlightMode::AMS:
+            custom_sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_AMS;
+            break;
         default:
             LogErr() << "Unknown Flight mode.";
             MAVLinkCommands::CommandLong empty_command{};

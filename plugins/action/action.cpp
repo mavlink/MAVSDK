@@ -50,6 +50,11 @@ Action::Result Action::return_to_launch() const
     return _impl->return_to_launch();
 }
 
+Action::Result Action::auto_maneuver_system() const
+{
+    return _impl->auto_maneuver_system();
+}
+
 Action::Result Action::transition_to_fixedwing() const
 {
     return _impl->transition_to_fixedwing();
@@ -88,6 +93,11 @@ void Action::land_async(result_callback_t callback)
 void Action::return_to_launch_async(result_callback_t callback)
 {
     _impl->return_to_launch_async(callback);
+}
+
+void Action::auto_maneuver_system_async(result_callback_t callback)
+{
+    _impl->auto_maneuver_system_async(callback);
 }
 
 void Action::transition_to_multicopter_async(result_callback_t callback)

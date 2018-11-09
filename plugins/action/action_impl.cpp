@@ -149,6 +149,12 @@ Action::Result ActionImpl::return_to_launch() const
         _parent->set_flight_mode(SystemImpl::FlightMode::RETURN_TO_LAUNCH));
 }
 
+Action::Result ActionImpl::auto_maneuver_system() const
+{
+    return action_result_from_command_result(
+        _parent->set_flight_mode(SystemImpl::FlightMode::AMS));
+}
+
 Action::Result ActionImpl::goto_location(double latitude_deg,
                                          double longitude_deg,
                                          float altitude_amsl_m,
@@ -367,6 +373,12 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
 void ActionImpl::return_to_launch_async(const Action::result_callback_t &callback)
 {
     _parent->set_flight_mode_async(SystemImpl::FlightMode::RETURN_TO_LAUNCH,
+                                   std::bind(&ActionImpl::command_result_callback, _1, callback));
+}
+
+void ActionImpl::auto_maneuver_system_async(const Action::result_callback_t &callback)
+{
+    _parent->set_flight_mode_async(SystemImpl::FlightMode::AMS,
                                    std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 

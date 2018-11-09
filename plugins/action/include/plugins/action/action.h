@@ -127,7 +127,7 @@ public:
     Result land() const;
 
     /**
-     * @brief Send command to *return to the launch* (takeoff) position and *land* (asynchronous).
+     * @brief Send command to *return to the launch* (takeoff) position and *land* (synchronous).
      *
      * This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which
      * generally means it will rise up to a certain altitude to clear any obstacles before heading
@@ -136,6 +136,16 @@ public:
      * @return Result of request.
      */
     Result return_to_launch() const;
+
+    /**
+     * @brief Send command to engage the *auto maneuver system (AMS)* (synchronous).
+     *
+     * This switches the drone into [AMS mode](https://docs.px4.io/en/flight_modes/ams.html) which
+     * means it will perform an emergency descend followed by a predefined behavior (loiter/land/...).
+     *
+     * @param callback Function to call with result of request.
+     */
+    Action::Result auto_maneuver_system() const;
 
     /**
      * @brief Send command to reposition the vehicle to a specific WGS84 global position
@@ -240,6 +250,16 @@ public:
      * @param callback Function to call with result of request.
      */
     void return_to_launch_async(result_callback_t callback);
+
+    /**
+     * @brief Send command to engage the *auto maneuver system (AMS)* (asynchronous).
+     *
+     * This switches the drone into [AMS mode](https://docs.px4.io/en/flight_modes/ams.html) which
+     * means it will perform an emergency descend followed by a predefined behavior (loiter/land/...).
+     *
+     * @param callback Function to call with result of request.
+     */
+    void auto_maneuver_system_async(result_callback_t callback);
 
     /**
      * @brief Send command to transition the drone to fixedwing (asynchronous).

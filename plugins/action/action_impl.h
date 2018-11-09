@@ -26,6 +26,7 @@ public:
     Action::Result takeoff() const;
     Action::Result land() const;
     Action::Result return_to_launch() const;
+    Action::Result auto_maneuver_system() const;
     Action::Result
     goto_location(double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_deg);
     Action::Result transition_to_fixedwing() const;
@@ -37,6 +38,7 @@ public:
     void takeoff_async(const Action::result_callback_t &callback);
     void land_async(const Action::result_callback_t &callback);
     void return_to_launch_async(const Action::result_callback_t &callback);
+    void auto_maneuver_system_async(const Action::result_callback_t &callback);
     void transition_to_fixedwing_async(const Action::result_callback_t &callback);
     void transition_to_multicopter_async(const Action::result_callback_t &callback);
 
