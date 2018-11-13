@@ -7,7 +7,6 @@ type_info_factory = TypeInfoFactory()
 
 
 class Param:
-
     def __init__(self, name, type_info):
         self.name = name
         self.type_info = type_info

@@ -30,7 +30,8 @@ class TypeInfo:
         8: "bool",
         9: "std::string",
         12: "std::byte",
-        13: "uint32_t"
+        13: "uint32_t",
+        "repeated": {"prefix": "std::vector<", "suffix": ">"}
     }
 
     def __init__(self, field, conversion_dict):
@@ -40,6 +41,21 @@ class TypeInfo:
     @property
     def name(self):
         """ Extracts the string types """
+        inner_type = self._extract_inner_type()
+
+        if self.is_repeated:
+            if "repeated" in self._conversion_dict:
+                prefix = prefix = self._conversion_dict["repeated"]["prefix"]
+                suffix = self._conversion_dict["repeated"]["suffix"]
+            else:
+                prefix = self._default_types["repeated"]["prefix"]
+                suffix = self._default_types["repeated"]["suffix"]
+
+            return f"{prefix}{inner_type}{suffix}"
+        else:
+            return inner_type
+
+    def _extract_inner_type(self):
         type_id = self._field.type
 
         if not self.is_primitive:
@@ -61,3 +77,9 @@ class TypeInfo:
         """ Check if the field type is primitive (e.g. bool,
         float) or not (e.g message, enum) """
         return self._field.type not in {11, 14}
+
+    @property
+    def is_repeated(self):
+        """ Check if the field is a repeated type (in which
+        case it is converted to a list) """
+        return self._field.label == 3
