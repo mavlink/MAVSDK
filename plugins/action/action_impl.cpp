@@ -136,6 +136,7 @@ ActionResult ActionImpl::land() const
     MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_LAND;
+    command.params.param4 = NAN; // Don't change yaw.
     command.target_component_id = _parent->get_autopilot_id();
 
     return action_result_from_command_result(_parent->send_command(command));
@@ -355,6 +356,7 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
     MAVLinkCommands::CommandLong command{};
 
     command.command = MAV_CMD_NAV_LAND;
+    command.params.param4 = NAN; // Don't change yaw.
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(command,
