@@ -58,10 +58,10 @@ void MAVLinkParameters::set_param_async(const std::string &name,
 MAVLinkParameters::Result
 MAVLinkParameters::set_param(const std::string &name, const ParamValue &value, bool extended)
 {
-    auto prom = std::make_shared<std::promise<Result>>();
-    auto res = prom->get_future();
+    auto prom = std::promise<Result>();
+    auto res = prom.get_future();
 
-    set_param_async(name, value, [&prom](Result result) { prom->set_value(result); }, extended);
+    set_param_async(name, value, [&prom](Result result) { prom.set_value(result); }, extended);
 
     return res.get();
 }
@@ -103,13 +103,13 @@ void MAVLinkParameters::get_param_async(const std::string &name,
 std::pair<MAVLinkParameters::Result, MAVLinkParameters::ParamValue>
 MAVLinkParameters::get_param(const std::string &name, ParamValue value_type, bool extended)
 {
-    auto prom = std::make_shared<std::promise<std::pair<Result, MAVLinkParameters::ParamValue>>>();
-    auto res = prom->get_future();
+    auto prom = std::promise<std::pair<Result, MAVLinkParameters::ParamValue>>();
+    auto res = prom.get_future();
 
     get_param_async(name,
                     value_type,
                     [&prom](Result result, ParamValue value) {
-                        prom->set_value(std::make_pair<>(result, value));
+                        prom.set_value(std::make_pair<>(result, value));
                     },
                     extended);
 
