@@ -38,7 +38,7 @@ void MAVLinkParameters::set_param_async(const std::string &name,
     //     LogDebug() << "setting param " << name << " to " << value.get_int();
     // }
 
-    if (name.size() >= PARAM_ID_LEN) {
+    if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
             callback(Result::PARAM_NAME_TOO_LONG);
@@ -73,7 +73,7 @@ void MAVLinkParameters::get_param_async(const std::string &name,
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
 
-    if (name.size() >= PARAM_ID_LEN) {
+    if (name.size() > PARAM_ID_LEN) {
         LogErr() << "Error: param name too long";
         if (callback) {
             ParamValue empty_param;
@@ -140,7 +140,7 @@ void MAVLinkParameters::do_work()
         // We need to wait for this param to get sent back as confirmation.
         _state = State::SET_PARAM_BUSY;
 
-        char param_id[PARAM_ID_LEN] = {};
+        char param_id[PARAM_ID_LEN + 1] = {};
         STRNCPY(param_id, set_param_work->param_name.c_str(), sizeof(param_id) - 1);
 
         mavlink_message_t message = {};
@@ -194,7 +194,7 @@ void MAVLinkParameters::do_work()
         // or after a timeout.
         _state = State::GET_PARAM_BUSY;
 
-        char param_id[PARAM_ID_LEN] = {};
+        char param_id[PARAM_ID_LEN + 1] = {};
         STRNCPY(param_id, get_param_work->param_name.c_str(), sizeof(param_id) - 1);
 
         // LogDebug() << "now getting: " << get_param_work->param_name;

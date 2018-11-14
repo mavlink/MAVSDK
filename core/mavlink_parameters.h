@@ -510,9 +510,8 @@ private:
     enum class State { NONE, SET_PARAM_BUSY, GET_PARAM_BUSY } _state = State::NONE;
     std::mutex _state_mutex{};
 
-    // Params can be up to 16 chars and without 0-termination.
-    // Therefore we add a 0 here for storing.
-    static constexpr size_t PARAM_ID_LEN = 16 + 1;
+    // Params can be up to 16 chars without 0-termination.
+    static constexpr size_t PARAM_ID_LEN = 16;
 
     struct SetParamWork {
         set_param_callback_t callback = nullptr;
