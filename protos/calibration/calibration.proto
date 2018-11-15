@@ -6,10 +6,10 @@ option java_package = "io.dronecode_sdk.calibration";
 option java_outer_classname = "CalibrationProto";
 
 service CalibrationService {
-    rpc CalibrateGyro(CalibrateGyroRequest) returns(stream CalibrateGyroResponse) {}
-    rpc CalibrateAccelerometer(CalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {}
-    rpc CalibrateMagnetometer(CalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {}
-    rpc CalibrateGimbalAccelerometer(CalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {}
+    rpc SubscribeCalibrateGyro(CalibrateGyroRequest) returns(stream CalibrateGyroResponse) {}
+    rpc SubscribeCalibrateAccelerometer(CalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {}
+    rpc SubscribeCalibrateMagnetometer(CalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {}
+    rpc SubscribeCalibrateGimbalAccelerometer(CalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {}
 }
 
 message CalibrateGyroRequest {}
