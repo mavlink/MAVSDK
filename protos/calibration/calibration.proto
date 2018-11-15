@@ -6,31 +6,31 @@ option java_package = "io.dronecode_sdk.calibration";
 option java_outer_classname = "CalibrationProto";
 
 service CalibrationService {
-    rpc SubscribeCalibrateGyro(CalibrateGyroRequest) returns(stream CalibrateGyroResponse) {}
-    rpc SubscribeCalibrateAccelerometer(CalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {}
-    rpc SubscribeCalibrateMagnetometer(CalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {}
-    rpc SubscribeCalibrateGimbalAccelerometer(CalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {}
+    rpc SubscribeCalibrateGyro(SubscribeCalibrateGyroRequest) returns(stream CalibrateGyroResponse) {}
+    rpc SubscribeCalibrateAccelerometer(SubscribeCalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {}
+    rpc SubscribeCalibrateMagnetometer(SubscribeCalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {}
+    rpc SubscribeCalibrateGimbalAccelerometer(SubscribeCalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {}
 }
 
-message CalibrateGyroRequest {}
+message SubscribeCalibrateGyroRequest {}
 message CalibrateGyroResponse {
     CalibrationResult calibration_result = 1;
     ProgressData progress_data = 2;
 }
 
-message CalibrateAccelerometerRequest {}
+message SubscribeCalibrateAccelerometerRequest {}
 message CalibrateAccelerometerResponse {
     CalibrationResult calibration_result = 1;
     ProgressData progress_data = 2;
 }
 
-message CalibrateMagnetometerRequest {}
+message SubscribeCalibrateMagnetometerRequest {}
 message CalibrateMagnetometerResponse {
     CalibrationResult calibration_result = 1;
     ProgressData progress_data = 2;
 }
 
-message CalibrateGimbalAccelerometerRequest {}
+message SubscribeCalibrateGimbalAccelerometerRequest {}
 message CalibrateGimbalAccelerometerResponse {
     CalibrationResult calibration_result = 1;
     ProgressData progress_data = 2;
