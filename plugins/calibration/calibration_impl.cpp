@@ -259,9 +259,9 @@ CalibrationImpl::calibration_result_from_command_result(MAVLinkCommands::Result 
     }
 }
 
-void CalibrationImpl::receive_param_cal_gyro(bool success, int value)
+void CalibrationImpl::receive_param_cal_gyro(MAVLinkParameters::Result result, int value)
 {
-    if (!success) {
+    if (result != MAVLinkParameters::Result::SUCCESS) {
         LogErr() << "Error: Param for gyro cal failed.";
         return;
     }
@@ -270,9 +270,9 @@ void CalibrationImpl::receive_param_cal_gyro(bool success, int value)
     set_gyro_calibration(ok);
 }
 
-void CalibrationImpl::receive_param_cal_accel(bool success, int value)
+void CalibrationImpl::receive_param_cal_accel(MAVLinkParameters::Result result, int value)
 {
-    if (!success) {
+    if (result != MAVLinkParameters::Result::SUCCESS) {
         LogErr() << "Error: Param for accel cal failed.";
         return;
     }
@@ -281,9 +281,9 @@ void CalibrationImpl::receive_param_cal_accel(bool success, int value)
     set_accelerometer_calibration(ok);
 }
 
-void CalibrationImpl::receive_param_cal_mag(bool success, int value)
+void CalibrationImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int value)
 {
-    if (!success) {
+    if (result != MAVLinkParameters::Result::SUCCESS) {
         LogErr() << "Error: Param for mag cal failed.";
         return;
     }

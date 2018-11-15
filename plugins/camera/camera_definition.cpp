@@ -105,6 +105,27 @@ bool CameraDefinition::parse_xml()
             return false;
         }
 
+        const char *type_str = e_parameter->Attribute("type");
+        if (!type_str) {
+            LogErr() << "type attribute missing";
+            return false;
+        }
+
+        if (strcmp(type_str, "string") == 0) {
+            LogDebug() << "Ignoring string params.";
+            continue;
+        }
+
+        if (strcmp(type_str, "custom") == 0) {
+            LogDebug() << "Ignoring custom params.";
+            continue;
+        }
+
+        if (!new_parameter->type.set_empty_type_from_xml(type_str)) {
+            LogErr() << "unknown type attribute";
+            return false;
+        }
+
         // By default control is on.
         new_parameter->is_control = true;
         const char *control_str = e_parameter->Attribute("control");
@@ -542,13 +563,14 @@ bool CameraDefinition::get_possible_options(const std::string &name,
     return true;
 }
 
-void CameraDefinition::get_unknown_params(std::vector<std::string> &params)
+void CameraDefinition::get_unknown_params(
+    std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> &params)
 {
     params.clear();
 
     for (const auto &parameter : _parameter_map) {
         if (_current_settings[parameter.first].needs_updating) {
-            params.push_back(parameter.first);
+            params.push_back(std::make_pair<>(parameter.first, parameter.second->type));
         }
     }
 }

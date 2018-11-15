@@ -119,7 +119,7 @@ public:
             }
         }
 
-        void set_from_xml(const std::string &type_str, const std::string &value_str)
+        bool set_from_xml(const std::string &type_str, const std::string &value_str)
         {
             if (strcmp(type_str.c_str(), "uint8") == 0) {
                 uint8_t temp = std::stoi(value_str.c_str());
@@ -153,7 +153,38 @@ public:
                 _value = temp;
             } else {
                 LogErr() << "Unknown type: " << type_str;
+                return false;
             }
+            return true;
+        }
+
+        bool set_empty_type_from_xml(const std::string &type_str)
+        {
+            if (strcmp(type_str.c_str(), "uint8") == 0) {
+                _value = uint8_t(0);
+            } else if (strcmp(type_str.c_str(), "int8") == 0) {
+                _value = int8_t(0);
+            } else if (strcmp(type_str.c_str(), "uint16") == 0) {
+                _value = uint16_t(0);
+            } else if (strcmp(type_str.c_str(), "int16") == 0) {
+                _value = int16_t(0);
+            } else if (strcmp(type_str.c_str(), "uint32") == 0) {
+                _value = uint32_t(0);
+            } else if (strcmp(type_str.c_str(), "int32") == 0) {
+                _value = int32_t(0);
+            } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+                _value = uint64_t(0);
+            } else if (strcmp(type_str.c_str(), "uint64") == 0) {
+                _value = int64_t(0);
+            } else if (strcmp(type_str.c_str(), "float") == 0) {
+                _value = 0.0f;
+            } else if (strcmp(type_str.c_str(), "double") == 0) {
+                _value = 0.0;
+            } else {
+                LogErr() << "Unknown type: " << type_str;
+                return false;
+            }
+            return true;
         }
 
         MAV_PARAM_TYPE get_mav_param_type() const
@@ -163,6 +194,7 @@ public:
             } else if (_value.is<int32_t>()) {
                 return MAV_PARAM_TYPE_INT32;
             } else {
+                LogErr() << "Unknown param type sent";
                 return MAV_PARAM_TYPE_REAL32;
             }
         }
@@ -343,6 +375,7 @@ public:
         bool operator==(const ParamValue &rhs) const
         {
             if (!is_same_type(rhs)) {
+                LogWarn() << "Trying to compare different types.";
                 return false;
             }
             if (_value.is<uint8_t>()) {
@@ -366,11 +399,12 @@ public:
             } else if (_value.is<double>()) {
                 return _value.as<double>() == rhs._value.as<double>();
             } else if (_value.is<custom_type_t>()) {
-                // FIXME: not clear how to handle this
+                LogErr() << "Comparing custom_type not supported.";
+                return false;
+            } else {
+                LogErr() << "Comparing unknown types";
                 return false;
             }
-            // FIXME: Added to fix CI error (control reading end of non-void function)
-            return false;
         }
 
         bool operator==(const std::string &value_str) const
@@ -436,19 +470,24 @@ public:
         Any _value;
     };
 
-    typedef std::function<void(bool success)> set_param_callback_t;
+    enum class Result { SUCCESS, TIMEOUT, CONNECTION_ERROR, WRONG_TYPE, PARAM_NAME_TOO_LONG };
 
-    bool set_param(const std::string &name, const ParamValue &value, bool extended = false);
+    typedef std::function<void(Result result)> set_param_callback_t;
+
+    Result set_param(const std::string &name, const ParamValue &value, bool extended = false);
 
     void set_param_async(const std::string &name,
                          const ParamValue &value,
                          set_param_callback_t callback,
                          bool extended = false);
 
-    std::pair<bool, ParamValue> get_param(const std::string &name, bool extended);
-    typedef std::function<void(bool success, ParamValue value)> get_param_callback_t;
-    void
-    get_param_async(const std::string &name, get_param_callback_t callback, bool extended = false);
+    std::pair<Result, ParamValue>
+    get_param(const std::string &name, ParamValue value_type, bool extended);
+    typedef std::function<void(Result, ParamValue value)> get_param_callback_t;
+    void get_param_async(const std::string &name,
+                         ParamValue value_type,
+                         get_param_callback_t callback,
+                         bool extended = false);
 
     void do_work();
 
@@ -471,9 +510,8 @@ private:
     enum class State { NONE, SET_PARAM_BUSY, GET_PARAM_BUSY } _state = State::NONE;
     std::mutex _state_mutex{};
 
-    // Params can be up to 16 chars and without 0-termination.
-    // Therefore we add a 0 here for storing.
-    static constexpr size_t PARAM_ID_LEN = 16 + 1;
+    // Params can be up to 16 chars without 0-termination.
+    static constexpr size_t PARAM_ID_LEN = 16;
 
     struct SetParamWork {
         set_param_callback_t callback = nullptr;
@@ -488,6 +526,7 @@ private:
     struct GetParamWork {
         get_param_callback_t callback = nullptr;
         std::string param_name{};
+        ParamValue param_value_type{};
         bool extended = false;
         int retries_done = 0;
     };
