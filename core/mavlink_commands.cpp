@@ -129,6 +129,8 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 
     // LogDebug() << "We got an ack: " << command_ack.command;
 
+    _state_mutex.lock();
+
     auto work = _work_queue.borrow_front();
     if (!work) {
         return;
@@ -142,7 +144,6 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
         return;
     }
 
-    _state_mutex.lock();
     switch (command_ack.result) {
         case MAV_RESULT_ACCEPTED:
             _state = State::NONE;
@@ -278,13 +279,14 @@ void MAVLinkCommands::receive_timeout()
 
 void MAVLinkCommands::do_work()
 {
+
+    std::lock_guard<std::mutex> lock(_state_mutex);
+
     auto work = _work_queue.borrow_front();
     if (!work) {
         // Nothing to do.
         return;
     }
-
-    std::lock_guard<std::mutex> lock(_state_mutex);
 
     // If the work state is none, we can start the next command.
     switch (_state) {
