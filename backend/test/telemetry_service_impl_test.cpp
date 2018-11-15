@@ -25,7 +25,7 @@ using Position = dronecode_sdk::Telemetry::Position;
 using HealthResponse = dronecode_sdk::rpc::telemetry::HealthResponse;
 using Health = dronecode_sdk::Telemetry::Health;
 
-using GPSInfo = dronecode_sdk::Telemetry::GPSInfo;
+using GpsInfo = dronecode_sdk::Telemetry::GPSInfo;
 using FixType = dronecode_sdk::rpc::telemetry::FixType;
 
 using Battery = dronecode_sdk::Telemetry::Battery;
@@ -37,9 +37,9 @@ using Quaternion = dronecode_sdk::Telemetry::Quaternion;
 
 using EulerAngle = dronecode_sdk::Telemetry::EulerAngle;
 
-using GroundSpeedNED = dronecode_sdk::Telemetry::GroundSpeedNED;
+using GroundSpeedNed = dronecode_sdk::Telemetry::GroundSpeedNED;
 
-using RCStatus = dronecode_sdk::Telemetry::RCStatus;
+using RcStatus = dronecode_sdk::Telemetry::RCStatus;
 
 class TelemetryServiceImplTest : public ::testing::Test {
 protected:
@@ -84,10 +84,10 @@ protected:
     void checkSendsArmedEvents(const std::vector<bool> &armed_events) const;
     std::future<void> subscribeArmedAsync(std::vector<bool> &armed_events) const;
 
-    GPSInfo createGPSInfo(const int num_satellites, const int fix_type) const;
-    void checkSendsGPSInfoEvents(const std::vector<GPSInfo> &gps_info_events) const;
-    std::future<void> subscribeGPSInfoAsync(std::vector<GPSInfo> &gps_info_events) const;
-    int translateRPCGPSFixType(const FixType rpc_fix_type) const;
+    GpsInfo createGpsInfo(const int num_satellites, const int fix_type) const;
+    void checkSendsGpsInfoEvents(const std::vector<GpsInfo> &gps_info_events) const;
+    std::future<void> subscribeGpsInfoAsync(std::vector<GpsInfo> &gps_info_events) const;
+    int translateRPCGpsFixType(const FixType rpc_fix_type) const;
 
     void checkSendsBatteryEvents(const std::vector<Battery> &battery_events) const;
     Battery createBattery(const float voltage_v, const float remaining_percent) const;
@@ -114,17 +114,17 @@ protected:
     std::future<void>
     subscribeCameraAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const;
 
-    void checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNED> &ground_speed_events) const;
-    GroundSpeedNED
-    createGroundSpeedNED(const float vel_north, const float vel_east, const float vel_down) const;
+    void checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNed> &ground_speed_events) const;
+    GroundSpeedNed
+    createGroundSpeedNed(const float vel_north, const float vel_east, const float vel_down) const;
     std::future<void>
-    subscribeGroundSpeedNEDAsync(std::vector<GroundSpeedNED> &ground_speed_events) const;
+    subscribeGroundSpeedNedAsync(std::vector<GroundSpeedNed> &ground_speed_events) const;
 
-    void checkSendsRCStatusEvents(const std::vector<RCStatus> &rc_status_events) const;
-    RCStatus createRCStatus(const bool was_available_once,
+    void checkSendsRcStatusEvents(const std::vector<RcStatus> &rc_status_events) const;
+    RcStatus createRcStatus(const bool was_available_once,
                             const bool is_available,
                             const float signal_strength_percent) const;
-    std::future<void> subscribeRCStatusAsync(std::vector<RCStatus> &rc_status_events) const;
+    std::future<void> subscribeRcStatusAsync(std::vector<RcStatus> &rc_status_events) const;
 
     std::unique_ptr<grpc::Server> _server;
     std::unique_ptr<TelemetryService::Stub> _stub;
@@ -621,32 +621,32 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleArmedEvents)
     checkSendsArmedEvents(armed_events);
 }
 
-TEST_F(TelemetryServiceImplTest, registersToTelemetryGPSInfoAsync)
+TEST_F(TelemetryServiceImplTest, registersToTelemetryGpsInfoAsync)
 {
     EXPECT_CALL(*_telemetry, gps_info_async(_)).Times(1);
 
-    std::vector<GPSInfo> gps_info_events;
-    auto gps_info_stream_future = subscribeGPSInfoAsync(gps_info_events);
+    std::vector<GpsInfo> gps_info_events;
+    auto gps_info_stream_future = subscribeGpsInfoAsync(gps_info_events);
 
     _telemetry_service->stop();
     gps_info_stream_future.wait();
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeGPSInfoAsync(std::vector<GPSInfo> &gps_info_events) const
+TelemetryServiceImplTest::subscribeGpsInfoAsync(std::vector<GpsInfo> &gps_info_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeGPSInfoRequest request;
-        auto response_reader = _stub->SubscribeGPSInfo(&context, request);
+        dronecode_sdk::rpc::telemetry::SubscribeGpsInfoRequest request;
+        auto response_reader = _stub->SubscribeGpsInfo(&context, request);
 
-        dronecode_sdk::rpc::telemetry::GPSInfoResponse response;
+        dronecode_sdk::rpc::telemetry::GpsInfoResponse response;
         while (response_reader->Read(&response)) {
             auto gps_info_rpc = response.gps_info();
 
-            GPSInfo gps_info;
+            GpsInfo gps_info;
             gps_info.num_satellites = gps_info_rpc.num_satellites();
-            gps_info.fix_type = translateRPCGPSFixType(gps_info_rpc.fix_type());
+            gps_info.fix_type = translateRPCGpsFixType(gps_info_rpc.fix_type());
 
             gps_info_events.push_back(gps_info);
         }
@@ -655,7 +655,7 @@ TelemetryServiceImplTest::subscribeGPSInfoAsync(std::vector<GPSInfo> &gps_info_e
     });
 }
 
-int TelemetryServiceImplTest::translateRPCGPSFixType(const FixType rpc_fix_type) const
+int TelemetryServiceImplTest::translateRPCGpsFixType(const FixType rpc_fix_type) const
 {
     switch (rpc_fix_type) {
         default:
@@ -676,10 +676,10 @@ int TelemetryServiceImplTest::translateRPCGPSFixType(const FixType rpc_fix_type)
     }
 }
 
-TEST_F(TelemetryServiceImplTest, doesNotSendGPSInfoIfCallbackNotCalled)
+TEST_F(TelemetryServiceImplTest, doesNotSendGpsInfoIfCallbackNotCalled)
 {
-    std::vector<GPSInfo> gps_info_events;
-    auto gps_info_stream_future = subscribeGPSInfoAsync(gps_info_events);
+    std::vector<GpsInfo> gps_info_events;
+    auto gps_info_stream_future = subscribeGpsInfoAsync(gps_info_events);
 
     _telemetry_service->stop();
     gps_info_stream_future.wait();
@@ -687,16 +687,16 @@ TEST_F(TelemetryServiceImplTest, doesNotSendGPSInfoIfCallbackNotCalled)
     EXPECT_EQ(0, gps_info_events.size());
 }
 
-TEST_F(TelemetryServiceImplTest, sendsOneGPSInfoEvent)
+TEST_F(TelemetryServiceImplTest, sendsOneGpsInfoEvent)
 {
-    std::vector<GPSInfo> gps_info_events;
-    gps_info_events.push_back(createGPSInfo(10, 3));
+    std::vector<GpsInfo> gps_info_events;
+    gps_info_events.push_back(createGpsInfo(10, 3));
 
-    checkSendsGPSInfoEvents(gps_info_events);
+    checkSendsGpsInfoEvents(gps_info_events);
 }
 
-void TelemetryServiceImplTest::checkSendsGPSInfoEvents(
-    const std::vector<GPSInfo> &gps_info_events) const
+void TelemetryServiceImplTest::checkSendsGpsInfoEvents(
+    const std::vector<GpsInfo> &gps_info_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -704,8 +704,8 @@ void TelemetryServiceImplTest::checkSendsGPSInfoEvents(
     EXPECT_CALL(*_telemetry, gps_info_async(_))
         .WillOnce(SaveCallback(&gps_info_callback, &subscription_promise));
 
-    std::vector<GPSInfo> received_gps_info_events;
-    auto gps_info_stream_future = subscribeGPSInfoAsync(received_gps_info_events);
+    std::vector<GpsInfo> received_gps_info_events;
+    auto gps_info_stream_future = subscribeGpsInfoAsync(received_gps_info_events);
     subscription_future.wait();
     for (const auto gps_info : gps_info_events) {
         gps_info_callback(gps_info);
@@ -719,9 +719,9 @@ void TelemetryServiceImplTest::checkSendsGPSInfoEvents(
     }
 }
 
-GPSInfo TelemetryServiceImplTest::createGPSInfo(const int num_satellites, const int fix_type) const
+GpsInfo TelemetryServiceImplTest::createGpsInfo(const int num_satellites, const int fix_type) const
 {
-    GPSInfo expected_gps_info;
+    GpsInfo expected_gps_info;
 
     expected_gps_info.num_satellites = num_satellites;
     expected_gps_info.fix_type = fix_type;
@@ -729,18 +729,18 @@ GPSInfo TelemetryServiceImplTest::createGPSInfo(const int num_satellites, const 
     return expected_gps_info;
 }
 
-TEST_F(TelemetryServiceImplTest, sendsMultipleGPSInfoEvents)
+TEST_F(TelemetryServiceImplTest, sendsMultipleGpsInfoEvents)
 {
-    std::vector<GPSInfo> gps_info_events;
-    gps_info_events.push_back(createGPSInfo(5, 0));
-    gps_info_events.push_back(createGPSInfo(0, 1));
-    gps_info_events.push_back(createGPSInfo(10, 2));
-    gps_info_events.push_back(createGPSInfo(8, 3));
-    gps_info_events.push_back(createGPSInfo(22, 4));
-    gps_info_events.push_back(createGPSInfo(13, 5));
-    gps_info_events.push_back(createGPSInfo(7, 6));
+    std::vector<GpsInfo> gps_info_events;
+    gps_info_events.push_back(createGpsInfo(5, 0));
+    gps_info_events.push_back(createGpsInfo(0, 1));
+    gps_info_events.push_back(createGpsInfo(10, 2));
+    gps_info_events.push_back(createGpsInfo(8, 3));
+    gps_info_events.push_back(createGpsInfo(22, 4));
+    gps_info_events.push_back(createGpsInfo(13, 5));
+    gps_info_events.push_back(createGpsInfo(7, 6));
 
-    checkSendsGPSInfoEvents(gps_info_events);
+    checkSendsGpsInfoEvents(gps_info_events);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryBatteryAsync)
@@ -1337,30 +1337,30 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleCameraAttitudeEuler)
     checkSendsCameraAttitudeEulerAngles(euler_angles);
 }
 
-TEST_F(TelemetryServiceImplTest, registersToTelemetryGroundSpeedNEDAsync)
+TEST_F(TelemetryServiceImplTest, registersToTelemetryGroundSpeedNedAsync)
 {
     EXPECT_CALL(*_telemetry, ground_speed_ned_async(_)).Times(1);
 
-    std::vector<GroundSpeedNED> ground_speed_events;
-    auto ground_speed_stream_future = subscribeGroundSpeedNEDAsync(ground_speed_events);
+    std::vector<GroundSpeedNed> ground_speed_events;
+    auto ground_speed_stream_future = subscribeGroundSpeedNedAsync(ground_speed_events);
 
     _telemetry_service->stop();
     ground_speed_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeGroundSpeedNEDAsync(
-    std::vector<GroundSpeedNED> &ground_speed_events) const
+std::future<void> TelemetryServiceImplTest::subscribeGroundSpeedNedAsync(
+    std::vector<GroundSpeedNed> &ground_speed_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeGroundSpeedNEDRequest request;
-        auto response_reader = _stub->SubscribeGroundSpeedNED(&context, request);
+        dronecode_sdk::rpc::telemetry::SubscribeGroundSpeedNedRequest request;
+        auto response_reader = _stub->SubscribeGroundSpeedNed(&context, request);
 
-        dronecode_sdk::rpc::telemetry::GroundSpeedNEDResponse response;
+        dronecode_sdk::rpc::telemetry::GroundSpeedNedResponse response;
         while (response_reader->Read(&response)) {
             auto ground_speed_rpc = response.ground_speed_ned();
 
-            GroundSpeedNED ground_speed;
+            GroundSpeedNed ground_speed;
             ground_speed.velocity_north_m_s = ground_speed_rpc.velocity_north_m_s();
             ground_speed.velocity_east_m_s = ground_speed_rpc.velocity_east_m_s();
             ground_speed.velocity_down_m_s = ground_speed_rpc.velocity_down_m_s();
@@ -1372,10 +1372,10 @@ std::future<void> TelemetryServiceImplTest::subscribeGroundSpeedNEDAsync(
     });
 }
 
-TEST_F(TelemetryServiceImplTest, doesNotSendGroundSpeedNEDIfCallbackNotCalled)
+TEST_F(TelemetryServiceImplTest, doesNotSendGroundSpeedNedIfCallbackNotCalled)
 {
-    std::vector<GroundSpeedNED> ground_speed_events;
-    auto ground_speed_stream_future = subscribeGroundSpeedNEDAsync(ground_speed_events);
+    std::vector<GroundSpeedNed> ground_speed_events;
+    auto ground_speed_stream_future = subscribeGroundSpeedNedAsync(ground_speed_events);
 
     _telemetry_service->stop();
     ground_speed_stream_future.wait();
@@ -1385,17 +1385,17 @@ TEST_F(TelemetryServiceImplTest, doesNotSendGroundSpeedNEDIfCallbackNotCalled)
 
 TEST_F(TelemetryServiceImplTest, sendsOneGroundSpeedEvent)
 {
-    std::vector<GroundSpeedNED> ground_speed_events;
-    ground_speed_events.push_back(createGroundSpeedNED(12.3f, 1.2f, -0.2f));
+    std::vector<GroundSpeedNed> ground_speed_events;
+    ground_speed_events.push_back(createGroundSpeedNed(12.3f, 1.2f, -0.2f));
 
     checkSendsGroundSpeedEvents(ground_speed_events);
 }
 
-GroundSpeedNED TelemetryServiceImplTest::createGroundSpeedNED(const float vel_north,
+GroundSpeedNed TelemetryServiceImplTest::createGroundSpeedNed(const float vel_north,
                                                               const float vel_east,
                                                               const float vel_down) const
 {
-    GroundSpeedNED ground_speed;
+    GroundSpeedNed ground_speed;
 
     ground_speed.velocity_north_m_s = vel_north;
     ground_speed.velocity_east_m_s = vel_east;
@@ -1405,7 +1405,7 @@ GroundSpeedNED TelemetryServiceImplTest::createGroundSpeedNED(const float vel_no
 }
 
 void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(
-    const std::vector<GroundSpeedNED> &ground_speed_events) const
+    const std::vector<GroundSpeedNed> &ground_speed_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -1413,8 +1413,8 @@ void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(
     EXPECT_CALL(*_telemetry, ground_speed_ned_async(_))
         .WillOnce(SaveCallback(&ground_speed_ned_callback, &subscription_promise));
 
-    std::vector<GroundSpeedNED> received_ground_speed_events;
-    auto ground_speed_stream_future = subscribeGroundSpeedNEDAsync(received_ground_speed_events);
+    std::vector<GroundSpeedNed> received_ground_speed_events;
+    auto ground_speed_stream_future = subscribeGroundSpeedNedAsync(received_ground_speed_events);
     subscription_future.wait();
     for (const auto ground_speed : ground_speed_events) {
         ground_speed_ned_callback(ground_speed);
@@ -1430,38 +1430,38 @@ void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(
 
 TEST_F(TelemetryServiceImplTest, sendsMultipleGroundSpeedEvents)
 {
-    std::vector<GroundSpeedNED> ground_speed_events;
-    ground_speed_events.push_back(createGroundSpeedNED(2.3f, 22.1f, 1.1f));
-    ground_speed_events.push_back(createGroundSpeedNED(5.23f, 1.2f, 4.0f));
-    ground_speed_events.push_back(createGroundSpeedNED(-4.12f, -3.1f, 8.23f));
+    std::vector<GroundSpeedNed> ground_speed_events;
+    ground_speed_events.push_back(createGroundSpeedNed(2.3f, 22.1f, 1.1f));
+    ground_speed_events.push_back(createGroundSpeedNed(5.23f, 1.2f, 4.0f));
+    ground_speed_events.push_back(createGroundSpeedNed(-4.12f, -3.1f, 8.23f));
 
     checkSendsGroundSpeedEvents(ground_speed_events);
 }
 
-TEST_F(TelemetryServiceImplTest, registersToTelemetryRCStatusAsync)
+TEST_F(TelemetryServiceImplTest, registersToTelemetryRcStatusAsync)
 {
     EXPECT_CALL(*_telemetry, rc_status_async(_)).Times(1);
 
-    std::vector<RCStatus> rc_status_events;
-    auto rc_status_stream_future = subscribeRCStatusAsync(rc_status_events);
+    std::vector<RcStatus> rc_status_events;
+    auto rc_status_stream_future = subscribeRcStatusAsync(rc_status_events);
 
     _telemetry_service->stop();
     rc_status_stream_future.wait();
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeRCStatusAsync(std::vector<RCStatus> &rc_status_events) const
+TelemetryServiceImplTest::subscribeRcStatusAsync(std::vector<RcStatus> &rc_status_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeRCStatusRequest request;
-        auto response_reader = _stub->SubscribeRCStatus(&context, request);
+        dronecode_sdk::rpc::telemetry::SubscribeRcStatusRequest request;
+        auto response_reader = _stub->SubscribeRcStatus(&context, request);
 
-        dronecode_sdk::rpc::telemetry::RCStatusResponse response;
+        dronecode_sdk::rpc::telemetry::RcStatusResponse response;
         while (response_reader->Read(&response)) {
             auto rc_status_rpc = response.rc_status();
 
-            RCStatus rc_status;
+            RcStatus rc_status;
             rc_status.available_once = rc_status_rpc.was_available_once();
             rc_status.available = rc_status_rpc.is_available();
             rc_status.signal_strength_percent = rc_status_rpc.signal_strength_percent();
@@ -1473,10 +1473,10 @@ TelemetryServiceImplTest::subscribeRCStatusAsync(std::vector<RCStatus> &rc_statu
     });
 }
 
-TEST_F(TelemetryServiceImplTest, doesNotSendRCStatusIfCallbackNotCalled)
+TEST_F(TelemetryServiceImplTest, doesNotSendRcStatusIfCallbackNotCalled)
 {
-    std::vector<RCStatus> rc_status_events;
-    auto rc_status_stream_future = subscribeRCStatusAsync(rc_status_events);
+    std::vector<RcStatus> rc_status_events;
+    auto rc_status_stream_future = subscribeRcStatusAsync(rc_status_events);
 
     _telemetry_service->stop();
     rc_status_stream_future.wait();
@@ -1484,19 +1484,19 @@ TEST_F(TelemetryServiceImplTest, doesNotSendRCStatusIfCallbackNotCalled)
     EXPECT_EQ(0, rc_status_events.size());
 }
 
-TEST_F(TelemetryServiceImplTest, sendsOneRCStatusEvent)
+TEST_F(TelemetryServiceImplTest, sendsOneRcStatusEvent)
 {
-    std::vector<RCStatus> rc_status_events;
-    rc_status_events.push_back(createRCStatus(true, false, 33.0f));
+    std::vector<RcStatus> rc_status_events;
+    rc_status_events.push_back(createRcStatus(true, false, 33.0f));
 
-    checkSendsRCStatusEvents(rc_status_events);
+    checkSendsRcStatusEvents(rc_status_events);
 }
 
-RCStatus TelemetryServiceImplTest::createRCStatus(const bool was_available_once,
+RcStatus TelemetryServiceImplTest::createRcStatus(const bool was_available_once,
                                                   const bool is_available,
                                                   const float signal_strength_percent) const
 {
-    RCStatus rc_status;
+    RcStatus rc_status;
 
     rc_status.available_once = was_available_once;
     rc_status.available = is_available;
@@ -1505,8 +1505,8 @@ RCStatus TelemetryServiceImplTest::createRCStatus(const bool was_available_once,
     return rc_status;
 }
 
-void TelemetryServiceImplTest::checkSendsRCStatusEvents(
-    const std::vector<RCStatus> &rc_status_events) const
+void TelemetryServiceImplTest::checkSendsRcStatusEvents(
+    const std::vector<RcStatus> &rc_status_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -1514,8 +1514,8 @@ void TelemetryServiceImplTest::checkSendsRCStatusEvents(
     EXPECT_CALL(*_telemetry, rc_status_async(_))
         .WillOnce(SaveCallback(&rc_status_callback, &subscription_promise));
 
-    std::vector<RCStatus> received_rc_status_events;
-    auto rc_status_stream_future = subscribeRCStatusAsync(received_rc_status_events);
+    std::vector<RcStatus> received_rc_status_events;
+    auto rc_status_stream_future = subscribeRcStatusAsync(received_rc_status_events);
     subscription_future.wait();
     for (const auto rc_status : rc_status_events) {
         rc_status_callback(rc_status);
@@ -1529,14 +1529,14 @@ void TelemetryServiceImplTest::checkSendsRCStatusEvents(
     }
 }
 
-TEST_F(TelemetryServiceImplTest, sendsMultipleRCStatusEvents)
+TEST_F(TelemetryServiceImplTest, sendsMultipleRcStatusEvents)
 {
-    std::vector<RCStatus> rc_status_events;
-    rc_status_events.push_back(createRCStatus(false, false, 0.0f));
-    rc_status_events.push_back(createRCStatus(false, true, 54.2f));
-    rc_status_events.push_back(createRCStatus(true, true, 89.12));
+    std::vector<RcStatus> rc_status_events;
+    rc_status_events.push_back(createRcStatus(false, false, 0.0f));
+    rc_status_events.push_back(createRcStatus(false, true, 54.2f));
+    rc_status_events.push_back(createRcStatus(true, true, 89.12));
 
-    checkSendsRCStatusEvents(rc_status_events);
+    checkSendsRcStatusEvents(rc_status_events);
 }
 
 } // namespace
