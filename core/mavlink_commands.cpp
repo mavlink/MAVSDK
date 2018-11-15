@@ -274,7 +274,6 @@ void MAVLinkCommands::receive_timeout()
 
 void MAVLinkCommands::do_work()
 {
-
     std::lock_guard<std::mutex> lock(_state_mutex);
 
     auto work = _work_queue.borrow_front();
