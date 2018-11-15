@@ -25,6 +25,8 @@ public:
         _core(_dc),
         _action(_dc.system()),
         _action_service(_action),
+        _calibration(_dc.system()),
+        _calibration_service(_calibration),
         _camera(_dc.system()),
         _camera_service(_camera),
         _mission(_dc.system()),
@@ -44,6 +46,8 @@ private:
     CoreServiceImpl<> _core;
     Action _action;
     ActionServiceImpl<> _action_service;
+    Calibration _calibration;
+    CalibrationServiceImpl<> _calibration_service;
     Camera _camera;
     CameraServiceImpl<> _camera_service;
     Mission _mission;
