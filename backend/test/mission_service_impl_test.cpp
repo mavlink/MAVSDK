@@ -227,14 +227,14 @@ std::shared_ptr<UploadMissionRequest> MissionServiceImplUploadTest::generateUplo
     const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const
 {
     auto request = std::make_shared<UploadMissionRequest>();
-    auto rpc_mission = new dc::rpc::mission::Mission();
+    auto rpc_mission = new dc::rpc::mission::MissionItems();
 
     for (const auto &mission_item : mission_items) {
-        auto rpc_mission_item = rpc_mission->add_mission_item();
+        auto rpc_mission_item = rpc_mission->add_mission_items();
         MissionServiceImpl::translateMissionItem(mission_item, rpc_mission_item);
     }
 
-    request->set_allocated_mission(rpc_mission);
+    request->set_allocated_mission_items(rpc_mission);
 
     return request;
 }
@@ -347,12 +347,12 @@ void MissionServiceImplDownloadTest::checkItemsAreDownloadedCorrectly(
     _download_callback(ARBITRARY_RESULT, mission_items);
     download_handle.wait();
 
-    ASSERT_EQ(mission_items.size(), response->mission().mission_item().size());
+    ASSERT_EQ(mission_items.size(), response->mission_items().mission_items().size());
 
     for (size_t i = 0; i < mission_items.size(); i++) {
         EXPECT_EQ(*mission_items.at(i),
                   *MissionServiceImpl::translateRPCMissionItem(
-                      response->mission().mission_item().Get(i)));
+                      response->mission_items().mission_items().Get(i)));
     }
 }
 

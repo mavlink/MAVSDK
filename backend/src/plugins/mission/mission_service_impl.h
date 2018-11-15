@@ -44,14 +44,14 @@ public:
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
 
-                    auto rpc_mission = new rpc::mission::Mission();
+                    auto rpc_mission = new rpc::mission::MissionItems();
 
                     for (const auto mission_item : mission_items) {
-                        auto rpc_mission_item = rpc_mission->add_mission_item();
+                        auto rpc_mission_item = rpc_mission->add_mission_items();
                         translateMissionItem(mission_item, rpc_mission_item);
                     }
 
-                    response->set_allocated_mission(rpc_mission);
+                    response->set_allocated_mission_items(rpc_mission);
                 }
 
                 result_promise.set_value();
@@ -304,7 +304,7 @@ private:
         std::vector<std::shared_ptr<MissionItem>> mission_items;
 
         if (request != nullptr) {
-            for (auto rpc_mission_item : request->mission().mission_item()) {
+            for (auto rpc_mission_item : request->mission_items().mission_items()) {
                 mission_items.push_back(translateRPCMissionItem(rpc_mission_item));
             }
         }
