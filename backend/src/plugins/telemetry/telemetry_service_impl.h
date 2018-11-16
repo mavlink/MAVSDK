@@ -112,16 +112,16 @@ public:
     }
 
     grpc::Status
-    SubscribeGPSInfo(grpc::ServerContext * /* context */,
-                     const dronecode_sdk::rpc::telemetry::SubscribeGPSInfoRequest * /* request */,
-                     grpc::ServerWriter<rpc::telemetry::GPSInfoResponse> *writer) override
+    SubscribeGpsInfo(grpc::ServerContext * /* context */,
+                     const dronecode_sdk::rpc::telemetry::SubscribeGpsInfoRequest * /* request */,
+                     grpc::ServerWriter<rpc::telemetry::GpsInfoResponse> *writer) override
     {
         _telemetry.gps_info_async([this, &writer](dronecode_sdk::Telemetry::GPSInfo gps_info) {
-            auto rpc_gps_info = new dronecode_sdk::rpc::telemetry::GPSInfo();
+            auto rpc_gps_info = new dronecode_sdk::rpc::telemetry::GpsInfo();
             rpc_gps_info->set_num_satellites(gps_info.num_satellites);
-            rpc_gps_info->set_fix_type(translateGPSFixType(gps_info.fix_type));
+            rpc_gps_info->set_fix_type(translateGpsFixType(gps_info.fix_type));
 
-            dronecode_sdk::rpc::telemetry::GPSInfoResponse rpc_gps_info_response;
+            dronecode_sdk::rpc::telemetry::GpsInfoResponse rpc_gps_info_response;
             rpc_gps_info_response.set_allocated_gps_info(rpc_gps_info);
             writer->Write(rpc_gps_info_response);
         });
@@ -130,7 +130,7 @@ public:
         return grpc::Status::OK;
     }
 
-    dronecode_sdk::rpc::telemetry::FixType translateGPSFixType(const int fix_type) const
+    dronecode_sdk::rpc::telemetry::FixType translateGpsFixType(const int fix_type) const
     {
         switch (fix_type) {
             default:
@@ -301,19 +301,19 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeGroundSpeedNED(
+    grpc::Status SubscribeGroundSpeedNed(
         grpc::ServerContext * /* context */,
-        const dronecode_sdk::rpc::telemetry::SubscribeGroundSpeedNEDRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::GroundSpeedNEDResponse> *writer) override
+        const dronecode_sdk::rpc::telemetry::SubscribeGroundSpeedNedRequest * /* request */,
+        grpc::ServerWriter<rpc::telemetry::GroundSpeedNedResponse> *writer) override
     {
         _telemetry.ground_speed_ned_async(
             [&writer](dronecode_sdk::Telemetry::GroundSpeedNED ground_speed) {
-                auto rpc_ground_speed = new dronecode_sdk::rpc::telemetry::SpeedNED();
+                auto rpc_ground_speed = new dronecode_sdk::rpc::telemetry::SpeedNed();
                 rpc_ground_speed->set_velocity_north_m_s(ground_speed.velocity_north_m_s);
                 rpc_ground_speed->set_velocity_east_m_s(ground_speed.velocity_east_m_s);
                 rpc_ground_speed->set_velocity_down_m_s(ground_speed.velocity_down_m_s);
 
-                dronecode_sdk::rpc::telemetry::GroundSpeedNEDResponse rpc_ground_speed_response;
+                dronecode_sdk::rpc::telemetry::GroundSpeedNedResponse rpc_ground_speed_response;
                 rpc_ground_speed_response.set_allocated_ground_speed_ned(rpc_ground_speed);
                 writer->Write(rpc_ground_speed_response);
             });
@@ -323,17 +323,17 @@ public:
     }
 
     grpc::Status
-    SubscribeRCStatus(grpc::ServerContext * /* context */,
-                      const dronecode_sdk::rpc::telemetry::SubscribeRCStatusRequest * /* request */,
-                      grpc::ServerWriter<rpc::telemetry::RCStatusResponse> *writer) override
+    SubscribeRcStatus(grpc::ServerContext * /* context */,
+                      const dronecode_sdk::rpc::telemetry::SubscribeRcStatusRequest * /* request */,
+                      grpc::ServerWriter<rpc::telemetry::RcStatusResponse> *writer) override
     {
         _telemetry.rc_status_async([&writer](dronecode_sdk::Telemetry::RCStatus rc_status) {
-            auto rpc_rc_status = new dronecode_sdk::rpc::telemetry::RCStatus();
+            auto rpc_rc_status = new dronecode_sdk::rpc::telemetry::RcStatus();
             rpc_rc_status->set_was_available_once(rc_status.available_once);
             rpc_rc_status->set_is_available(rc_status.available);
             rpc_rc_status->set_signal_strength_percent(rc_status.signal_strength_percent);
 
-            dronecode_sdk::rpc::telemetry::RCStatusResponse rpc_rc_status_response;
+            dronecode_sdk::rpc::telemetry::RcStatusResponse rpc_rc_status_response;
             rpc_rc_status_response.set_allocated_rc_status(rpc_rc_status);
             writer->Write(rpc_rc_status_response);
         });

@@ -40,10 +40,10 @@ public:
         return rpc_progress_data;
     }
 
-    grpc::Status
-    CalibrateGyro(grpc::ServerContext * /* context */,
-                  const rpc::calibration::CalibrateGyroRequest *request,
-                  grpc::ServerWriter<rpc::calibration::CalibrateGyroResponse> *writer) override
+    grpc::Status SubscribeCalibrateGyro(
+        grpc::ServerContext * /* context */,
+        const rpc::calibration::SubscribeCalibrateGyroRequest *request,
+        grpc::ServerWriter<rpc::calibration::CalibrateGyroResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
@@ -68,9 +68,9 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status CalibrateAccelerometer(
+    grpc::Status SubscribeCalibrateAccelerometer(
         grpc::ServerContext * /* context */,
-        const rpc::calibration::CalibrateAccelerometerRequest *request,
+        const rpc::calibration::SubscribeCalibrateAccelerometerRequest *request,
         grpc::ServerWriter<rpc::calibration::CalibrateAccelerometerResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
@@ -98,9 +98,9 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status CalibrateMagnetometer(
+    grpc::Status SubscribeCalibrateMagnetometer(
         grpc::ServerContext * /* context */,
-        const rpc::calibration::CalibrateMagnetometerRequest *request,
+        const rpc::calibration::SubscribeCalibrateMagnetometerRequest *request,
         grpc::ServerWriter<rpc::calibration::CalibrateMagnetometerResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
@@ -128,9 +128,9 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status CalibrateGimbalAccelerometer(
+    grpc::Status SubscribeCalibrateGimbalAccelerometer(
         grpc::ServerContext * /* context */,
-        const rpc::calibration::CalibrateGimbalAccelerometerRequest *request,
+        const rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest *request,
         grpc::ServerWriter<rpc::calibration::CalibrateGimbalAccelerometerResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
