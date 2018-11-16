@@ -611,7 +611,7 @@ void MissionImpl::assemble_mavlink_messages()
                     mission_item_impl.get_loiter_time_s(), // loiter time in seconds
                     NAN, // empty
                     0.0f, // radius around waypoint in meters ?
-                    0.0f, // loiter at center of waypoint
+                    NAN, // don't change yaw
                     last_x,
                     last_y,
                     last_z,
