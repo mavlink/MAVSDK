@@ -10,7 +10,7 @@ else()
     # We are not using exceptions to make it easier to write wrappers.
     add_definitions(-fno-exceptions)
 
-    set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2")
+    set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2 -Weffc++")
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6)
