@@ -80,7 +80,7 @@ void CalibrationImpl::call_user_callback(const Calibration::calibration_callback
 {
     if (callback) {
         _parent->call_user_callback(
-            [callback, &result, &progress_data]() { callback(result, progress_data); });
+            [callback, result, progress_data]() { callback(result, progress_data); });
     }
 }
 
