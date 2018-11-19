@@ -22,11 +22,8 @@ SystemImpl::SystemImpl(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t comp
     _params(*this),
     _commands(*this),
     _timeout_handler(_time),
-    _call_every_handler(_time),
-    _thread_pool(3)
+    _call_every_handler(_time)
 {
-    component_discovered_callback = nullptr;
-
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 
     register_mavlink_message_handler(
@@ -365,9 +362,9 @@ void SystemImpl::add_new_component(uint8_t component_id)
 
     auto res_pair = _components.insert(component_id);
     if (res_pair.second) {
-        if (component_discovered_callback != nullptr) {
+        if (_component_discovered_callback != nullptr) {
             const ComponentType type = component_type(component_id);
-            call_user_callback([this, type]() { component_discovered_callback(type); });
+            call_user_callback([this, type]() { _component_discovered_callback(type); });
         }
         LogDebug() << "Component " << component_name(component_id) << " (" << int(component_id)
                    << ") added.";
@@ -381,12 +378,12 @@ size_t SystemImpl::total_components() const
 
 void SystemImpl::register_component_discovered_callback(discover_callback_t callback)
 {
-    component_discovered_callback = callback;
+    _component_discovered_callback = callback;
 
     if (total_components() > 0) {
         for (const auto &elem : _components) {
             const ComponentType type = component_type(elem);
-            call_user_callback([this, type]() { component_discovered_callback(type); });
+            call_user_callback([this, type]() { _component_discovered_callback(type); });
         }
     }
 }

@@ -28,9 +28,9 @@ public:
 
 private:
     struct Entry {
-        std::function<void()> callback;
-        dl_time_t last_time;
-        float interval_s;
+        std::function<void()> callback{nullptr};
+        dl_time_t last_time{};
+        float interval_s{0.0f};
     };
 
     std::map<void *, std::shared_ptr<Entry>> _entries{};

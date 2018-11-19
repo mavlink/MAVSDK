@@ -10,7 +10,7 @@ typedef std::function<int(int progress, Status status, CURLcode curl_code)> prog
 
 struct dl_up_progress {
     int progress_in_percentage = 0;
-    progress_callback_t progress_callback;
+    progress_callback_t progress_callback{nullptr};
 };
 
 } // namespace dronecode_sdk
