@@ -32,6 +32,9 @@ public:
     FollowMe::Result start();
     FollowMe::Result stop();
 
+    FollowMeImpl(const FollowMeImpl &) = delete;
+    FollowMeImpl &operator=(const FollowMeImpl &) = delete;
+
 private:
     typedef unsigned int config_val_t;
     void process_heartbeat(const mavlink_message_t &message);
@@ -76,8 +79,8 @@ private:
     }
 
     mutable std::mutex _mutex{};
-    FollowMe::TargetLocation _target_location; // sent to vehicle
-    FollowMe::TargetLocation _last_location; // sent to vehicle
+    FollowMe::TargetLocation _target_location{}; // sent to vehicle
+    FollowMe::TargetLocation _last_location{}; // sent to vehicle
     void *_target_location_cookie = nullptr;
 
     Time _time{};

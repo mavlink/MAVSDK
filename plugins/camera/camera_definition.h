@@ -57,37 +57,38 @@ private:
     typedef std::map<std::string, MAVLinkParameters::ParamValue> parameter_range_t;
 
     struct Option {
-        std::string name;
-        MAVLinkParameters::ParamValue value;
-        std::vector<std::string> exclusions;
-        std::map<std::string, parameter_range_t> parameter_ranges;
-        bool is_default;
+        std::string name{};
+        MAVLinkParameters::ParamValue value{};
+        std::vector<std::string> exclusions{};
+        std::map<std::string, parameter_range_t> parameter_ranges{};
+        bool is_default{false};
     };
 
     struct Parameter {
-        std::string description;
-        bool is_control;
-        bool is_readonly;
-        bool is_writeonly;
-        MAVLinkParameters::ParamValue type; // for type only, doesn't hold a value
-        std::vector<std::string> updates;
-        std::vector<std::shared_ptr<Option>> options;
+        std::string description{};
+        bool is_control{false};
+        bool is_readonly{false};
+        bool is_writeonly{false};
+        MAVLinkParameters::ParamValue type{}; // for type only, doesn't hold a value
+        std::vector<std::string> updates{};
+        std::vector<std::shared_ptr<Option>> options{};
     };
+
     bool parse_xml();
 
     tinyxml2::XMLDocument _doc{};
 
-    std::map<std::string, std::shared_ptr<Parameter>> _parameter_map;
+    std::map<std::string, std::shared_ptr<Parameter>> _parameter_map{};
 
     struct InternalCurrentSetting {
-        MAVLinkParameters::ParamValue value;
-        bool needs_updating;
+        MAVLinkParameters::ParamValue value{};
+        bool needs_updating{false};
     };
 
-    std::map<std::string, InternalCurrentSetting> _current_settings;
+    std::map<std::string, InternalCurrentSetting> _current_settings{};
 
-    std::string _model;
-    std::string _vendor;
+    std::string _model{};
+    std::string _vendor{};
 };
 
 } // namespace dronecode_sdk

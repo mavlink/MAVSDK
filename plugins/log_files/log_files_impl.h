@@ -49,10 +49,10 @@ private:
         unsigned max_list_id{0};
         unsigned retries{0};
         void *cookie{nullptr};
-    } _entries;
+    } _entries{};
 
     struct {
-        unsigned id;
+        unsigned id{0};
         std::mutex mutex{};
         std::vector<uint8_t> bytes{};
         std::vector<bool> chunks_received{};
@@ -65,7 +65,7 @@ private:
         unsigned chunks_to_rerequest_initially{0};
         unsigned bytes_received{};
         dl_time_t time_started{};
-    } _data;
+    } _data{};
 
     static constexpr unsigned CHUNK_SIZE = 90;
 };

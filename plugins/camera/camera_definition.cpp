@@ -320,7 +320,10 @@ void CameraDefinition::assume_default_settings()
             // LogDebug() << option->name << " default value: " << option->value << " (type: " <<
             // option->value.typestr() << ")";
 
-            _current_settings[parameter.first] = InternalCurrentSetting{option->value, false};
+            InternalCurrentSetting new_setting;
+            new_setting.value = option->value;
+            new_setting.needs_updating = false;
+            _current_settings[parameter.first] = new_setting;
         }
     }
 }

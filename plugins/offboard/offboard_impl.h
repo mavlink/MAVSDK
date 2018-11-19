@@ -30,6 +30,9 @@ public:
     void set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw);
     void set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
 
+    OffboardImpl(const OffboardImpl &) = delete;
+    OffboardImpl &operator=(const OffboardImpl &) = delete;
+
 private:
     void send_velocity_ned();
     void send_velocity_body();

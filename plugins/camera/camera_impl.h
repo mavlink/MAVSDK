@@ -75,9 +75,8 @@ public:
     Camera::Result format_storage();
     void format_storage_async(Camera::result_callback_t callback);
 
-    // Non-copyable
     CameraImpl(const CameraImpl &) = delete;
-    const CameraImpl &operator=(const CameraImpl &) = delete;
+    CameraImpl &operator=(const CameraImpl &) = delete;
 
 private:
     struct {

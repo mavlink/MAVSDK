@@ -4,10 +4,7 @@
 
 namespace dronecode_sdk {
 
-Calibration::Calibration(System &system) : PluginBase()
-{
-    _impl = new CalibrationImpl(system);
-}
+Calibration::Calibration(System &system) : PluginBase(), _impl(new CalibrationImpl(system)) {}
 
 Calibration::~Calibration()
 {
