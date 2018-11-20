@@ -3,6 +3,7 @@
 #include <queue>
 #include <mutex>
 #include <memory>
+#include <cassert>
 
 namespace dronecode_sdk {
 
@@ -22,33 +23,31 @@ public:
     std::shared_ptr<T> borrow_front()
     {
         _mutex.lock();
+        // Should not be possible because _mutex.lock()
+        assert(_queue_borrowed == false); // double borrow
         if (_queue.size() == 0) {
             // We couldn't borrow anything, therefore don't keep the lock.
             _mutex.unlock();
             return nullptr;
         }
+        _queue_borrowed = true;
         return _queue.front();
     }
 
     // This allows to return a borrowed queue.
     void return_front()
     {
-        // We don't know if the mutex is locked and Windows doesn't let us
-        // unlock an unowned mutex.
-        _mutex.try_lock();
+        assert(_queue_borrowed == true); // return without borrow
+        _queue_borrowed = false;
         _mutex.unlock();
     }
 
     void pop_front()
     {
-        // In case it's not returned, do that now.
-        return_front();
-
-        std::lock_guard<std::mutex> lock(_mutex);
-        if (_queue.size() == 0) {
-            return;
-        }
+        assert(_queue_borrowed == true); // pop without borrow
         _queue.pop_front();
+        _queue_borrowed = false;
+        _mutex.unlock();
     }
 
     size_t size()
@@ -60,6 +59,7 @@ public:
 private:
     std::deque<std::shared_ptr<T>> _queue{};
     std::mutex _mutex{};
+    bool _queue_borrowed = false;
 };
 
 } // namespace dronecode_sdk
