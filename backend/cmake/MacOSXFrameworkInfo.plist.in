@@ -18,6 +18,8 @@
     <string>1</string>
     <key>CFBundleShortVersionString</key>
     <string>${VERSION_STR}</string>
+    <key>DTSDKName</key>
+    <string>iphoneos10.0</string>
     <key>MinimumOSVersion</key>
     <string>11.3</string>
     <key>CSResourcesFileMapped</key>
