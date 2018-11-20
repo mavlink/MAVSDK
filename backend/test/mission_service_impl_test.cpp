@@ -135,21 +135,21 @@ protected:
     }
 
     /* The mocked mission module. */
-    MockMission _mission;
+    MockMission _mission{};
 
     /* The mission service that is actually being tested here. */
     MissionServiceImpl _mission_service;
 
     /* The mission returns its result through a callback, which is saved in _result_callback. */
-    dc::Mission::result_callback_t _result_callback;
+    dc::Mission::result_callback_t _result_callback{};
 
     /* The tests need to make sure that _result_callback has been set before calling it, hence the
      * promise. */
-    std::promise<void> _callback_saved_promise;
+    std::promise<void> _callback_saved_promise{};
 
     /* The tests need to make sure that _result_callback has been set before calling it, hence the
      * future. */
-    std::future<void> _callback_saved_future;
+    std::future<void> _callback_saved_future{};
 };
 
 class MissionServiceImplUploadTest : public MissionServiceImplTestBase {
@@ -174,7 +174,7 @@ protected:
     checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
 
     /* Captures the actual mission sent to dronecode_sdk by the backend. */
-    std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission;
+    std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission{};
 };
 
 INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
@@ -284,7 +284,7 @@ protected:
     void
     checkItemsAreDownloadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
 
-    dc::Mission::mission_items_and_result_callback_t _download_callback;
+    dc::Mission::mission_items_and_result_callback_t _download_callback{};
 };
 
 INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
@@ -586,8 +586,8 @@ protected:
     subscribeMissionProgressAsync(std::vector<std::pair<int, int>> &progress_events,
                                   std::shared_ptr<grpc::ClientContext> context) const;
 
-    std::unique_ptr<grpc::Server> _server;
-    std::unique_ptr<MissionService::Stub> _stub;
+    std::unique_ptr<grpc::Server> _server{};
+    std::unique_ptr<MissionService::Stub> _stub{};
 };
 
 TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)

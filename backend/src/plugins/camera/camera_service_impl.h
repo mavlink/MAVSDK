@@ -278,7 +278,7 @@ public:
     static dronecode_sdk::Camera::VideoStreamInfo
     translateRPCVideoStreamInfo(const rpc::camera::VideoStreamInfo &rpc_video_stream_info)
     {
-        dronecode_sdk::Camera::VideoStreamInfo video_stream_info;
+        dronecode_sdk::Camera::VideoStreamInfo video_stream_info{};
         video_stream_info.settings =
             translateRPCVideoStreamSettings(rpc_video_stream_info.video_stream_settings());
         video_stream_info.status =
@@ -406,7 +406,7 @@ public:
     static dronecode_sdk::Camera::CaptureInfo
     translateRPCCaptureInfo(const rpc::camera::CaptureInfo &rpc_capture_info)
     {
-        dronecode_sdk::Camera::CaptureInfo capture_info;
+        dronecode_sdk::Camera::CaptureInfo capture_info{};
         capture_info.position = translateRPCPosition(rpc_capture_info.position());
         capture_info.attitude_quaternion =
             translateRPCQuaternion(rpc_capture_info.attitude_quaternion());
@@ -517,7 +517,7 @@ public:
     static dronecode_sdk::Camera::Status
     translateRPCCameraStatus(const rpc::camera::CameraStatus &rpc_camera_status)
     {
-        dronecode_sdk::Camera::Status status;
+        dronecode_sdk::Camera::Status status{};
         status.video_on = rpc_camera_status.video_on();
         status.photo_interval_on = rpc_camera_status.photo_interval_on();
         status.storage_status = translateRPCStorageStatus(rpc_camera_status.storage_status());

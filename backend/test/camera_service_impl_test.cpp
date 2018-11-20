@@ -144,13 +144,13 @@ protected:
         std::shared_ptr<dronecode_sdk::rpc::camera::SetSettingResponse> response,
         dronecode_sdk::Camera::result_callback_t &result_callback);
 
-    MockCamera _camera;
+    MockCamera _camera{};
     CameraServiceImpl _camera_service;
-    std::unique_ptr<grpc::Server> _server;
-    std::unique_ptr<CameraService::Stub> _stub;
+    std::unique_ptr<grpc::Server> _server{};
+    std::unique_ptr<CameraService::Stub> _stub{};
 
-    std::promise<void> _callback_saved_promise;
-    std::future<void> _callback_saved_future;
+    std::promise<void> _callback_saved_promise{};
+    std::future<void> _callback_saved_future{};
 };
 
 ACTION_P2(SaveResult, callback, callback_saved_promise)
@@ -616,10 +616,7 @@ dronecode_sdk::Camera::VideoStreamInfo CameraServiceImplTest::createVideoStreamI
     const dronecode_sdk::Camera::VideoStreamSettings settings,
     const dronecode_sdk::Camera::VideoStreamInfo::Status status) const
 {
-    dronecode_sdk::Camera::VideoStreamInfo video_stream_info;
-    video_stream_info.settings = settings;
-    video_stream_info.status = status;
-
+    dronecode_sdk::Camera::VideoStreamInfo video_stream_info{settings, status};
     return video_stream_info;
 }
 
@@ -792,7 +789,7 @@ TEST_F(CameraServiceImplTest, sendsMultipleCaptureInfos)
 
 dronecode_sdk::Camera::CaptureInfo CameraServiceImplTest::createArbitraryCaptureInfo() const
 {
-    dronecode_sdk::Camera::CaptureInfo::Position position;
+    dronecode_sdk::Camera::CaptureInfo::Position position{};
     position.latitude_deg = 12.12223;
     position.longitude_deg = 24.342;
     position.absolute_altitude_m = 2334.2f;
@@ -809,7 +806,7 @@ dronecode_sdk::Camera::CaptureInfo CameraServiceImplTest::createArbitraryCapture
     euler_angle.pitch_deg = 102.3f;
     euler_angle.roll_deg = -24.0f;
 
-    dronecode_sdk::Camera::CaptureInfo capture_info;
+    dronecode_sdk::Camera::CaptureInfo capture_info{};
     capture_info.position = position;
     capture_info.attitude_quaternion = quaternion;
     capture_info.attitude_euler_angle = euler_angle;
@@ -850,7 +847,7 @@ dronecode_sdk::Camera::Status CameraServiceImplTest::createCameraStatus(
     const float recording_time_s,
     const std::string media_folder_name) const
 {
-    dronecode_sdk::Camera::Status status;
+    dronecode_sdk::Camera::Status status{};
     status.video_on = is_video_on;
     status.photo_interval_on = is_photo_interval_on;
     status.storage_status = storage_status;
@@ -996,7 +993,7 @@ CameraServiceImplTest::createSetting(const std::string setting_id,
                                      const std::string setting_description,
                                      const dronecode_sdk::Camera::Option &option) const
 {
-    dronecode_sdk::Camera::Setting setting;
+    dronecode_sdk::Camera::Setting setting{};
     setting.setting_id = setting_id;
     setting.setting_description = setting_description;
     setting.option = option;
