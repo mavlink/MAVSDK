@@ -56,7 +56,7 @@ Instructions for how to use the library can be found in the [SDK Guide](https://
 
 Quick Links:
 
-- [QuickStart](https://sdk.dronecode.org/en/getting_started/)
+- [QuickStart](https://sdk.dronecode.org/en/#getting-started)
 - [Building the Library](https://sdk.dronecode.org/en/contributing/build.html)
 - [Examples](https://sdk.dronecode.org/en/examples/)
 - [API Reference](https://sdk.dronecode.org/en/api_reference/)
