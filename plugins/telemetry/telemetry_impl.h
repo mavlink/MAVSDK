@@ -197,8 +197,8 @@ private:
 
     // The ground speed and position are coupled to the same message, therefore, we just use
     // the faster between the two.
-    double _ground_speed_ned_rate_hz{1.0f};
-    double _position_rate_hz{-1.0f};
+    double _ground_speed_ned_rate_hz{1.0};
+    double _position_rate_hz{-1.0};
 
     void *_timeout_cookie{nullptr};
 };
