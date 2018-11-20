@@ -129,7 +129,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 
     // LogDebug() << "We got an ack: " << command_ack.command;
 
-    _state_mutex.lock();
+    std::unique_lock<std::mutex> lock(_state_mutex);
 
     auto work = _work_queue.borrow_front();
     if (!work) {
@@ -147,44 +147,44 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
     switch (command_ack.result) {
         case MAV_RESULT_ACCEPTED:
             _state = State::NONE;
-            _state_mutex.unlock();
             _parent.unregister_timeout_handler(_timeout_cookie);
             _work_queue.pop_front();
+            lock.unlock();
             call_callback(work->callback, Result::SUCCESS, 1.0f);
             break;
 
         case MAV_RESULT_DENIED:
             LogWarn() << "command denied (" << work->mavlink_command << ").";
             _state = State::NONE;
-            _state_mutex.unlock();
             _parent.unregister_timeout_handler(_timeout_cookie);
             _work_queue.pop_front();
+            lock.unlock();
             call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_UNSUPPORTED:
             LogWarn() << "command unsupported (" << work->mavlink_command << ").";
             _state = State::NONE;
-            _state_mutex.unlock();
             _parent.unregister_timeout_handler(_timeout_cookie);
             _work_queue.pop_front();
+            lock.unlock();
             call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_TEMPORARILY_REJECTED:
             LogWarn() << "command temporarily rejected (" << work->mavlink_command << ").";
             _state = State::NONE;
-            _state_mutex.unlock();
             _parent.unregister_timeout_handler(_timeout_cookie);
             _work_queue.pop_front();
+            lock.unlock();
             call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_FAILED:
             _state = State::NONE;
-            _state_mutex.unlock();
             _parent.unregister_timeout_handler(_timeout_cookie);
             _work_queue.pop_front();
+            lock.unlock();
             call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
@@ -194,7 +194,6 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
                           << work->mavlink_command << ").";
             }
             _state = State::IN_PROGRESS;
-            _state_mutex.unlock();
             // If we get a progress update, we can raise the timeout
             // to something higher because we know the initial command
             // has arrived. A possible timeout for this case is the initial
@@ -213,7 +212,6 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 
         default:
             LogWarn() << "Received unknown ack.";
-            _state_mutex.unlock();
             _work_queue.return_front();
             break;
     }
