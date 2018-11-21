@@ -93,8 +93,6 @@ TEST_F(SitlTest, ParamsRawHappy)
 
         // Get initial value.
         ASSERT_EQ(get_result1.first, ParamsRaw::Result::SUCCESS);
-        ASSERT_GE(get_result1.second, 0);
-        ASSERT_LE(get_result1.second, 1);
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
