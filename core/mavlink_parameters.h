@@ -511,26 +511,18 @@ private:
     // Params can be up to 16 chars without 0-termination.
     static constexpr size_t PARAM_ID_LEN = 16;
 
-    struct SetParamWork {
-        set_param_callback_t callback = nullptr;
+    struct WorkItem {
+        enum class Type { Get, Set } type{Type::Get};
+        // TODO: a union would be nicer for the callback
+        get_param_callback_t get_param_callback{nullptr};
+        set_param_callback_t set_param_callback{nullptr};
         std::string param_name{};
         ParamValue param_value{};
-        bool extended = false;
-        int retries_done = 0;
+        bool extended{false};
+        int retries_done{0};
         bool already_requested{false};
     };
-
-    LockedQueue<SetParamWork> _set_param_queue{};
-
-    struct GetParamWork {
-        get_param_callback_t callback = nullptr;
-        std::string param_name{};
-        ParamValue param_value_type{};
-        bool extended = false;
-        int retries_done = 0;
-        bool already_requested{false};
-    };
-    LockedQueue<GetParamWork> _get_param_queue{};
+    LockedQueue<WorkItem> _work_queue{};
 
     std::map<std::string, ParamValue> _cache{};
 
