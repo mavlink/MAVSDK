@@ -105,13 +105,11 @@ public:
     const MAVLinkCommands &operator=(const MAVLinkCommands &) = delete;
 
 private:
-    enum class State { NONE, WAITING, IN_PROGRESS } _state{State::NONE};
-    std::mutex _state_mutex{};
-
     struct Work {
         int retries_to_do{3};
         double timeout_s{0.5};
         uint16_t mavlink_command{0};
+        bool already_sent{false};
         mavlink_message_t mavlink_message{};
         command_result_callback_t callback{};
     };
