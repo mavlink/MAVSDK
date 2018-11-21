@@ -1133,7 +1133,7 @@ bool CameraImpl::get_possible_options(const std::string &setting_id,
     for (const auto &value : values) {
         std::stringstream ss{};
         ss << value;
-        Camera::Option option;
+        Camera::Option option{};
         option.option_id = ss.str();
         get_option_str(setting_id, option.option_id, option.option_description);
         options.push_back(option);
@@ -1288,7 +1288,7 @@ void CameraImpl::notify_current_settings()
         // use the cache for this, presumably we updated it right before.
         MAVLinkParameters::ParamValue value;
         if (_camera_definition->get_setting(possible_setting, value)) {
-            Camera::Setting setting;
+            Camera::Setting setting{};
             setting.setting_id = possible_setting;
             get_setting_str(setting.setting_id, setting.setting_description);
             setting.option.option_id = value.get_string();
@@ -1320,7 +1320,7 @@ void CameraImpl::notify_possible_setting_options()
     }
 
     for (auto &possible_setting : possible_settings) {
-        Camera::SettingOptions setting_options;
+        Camera::SettingOptions setting_options{};
         setting_options.setting_id = possible_setting;
         get_setting_str(setting_options.setting_id, setting_options.setting_description);
         get_possible_options(possible_setting, setting_options.options);

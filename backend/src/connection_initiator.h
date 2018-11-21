@@ -66,9 +66,9 @@ private:
         return future;
     }
 
-    std::once_flag _discovery_flag;
-    std::shared_ptr<std::promise<uint64_t>> _discovery_promise;
-    std::future<uint64_t> _discovery_future;
+    std::once_flag _discovery_flag{};
+    std::shared_ptr<std::promise<uint64_t>> _discovery_promise{};
+    std::future<uint64_t> _discovery_future{};
 };
 
 } // namespace backend

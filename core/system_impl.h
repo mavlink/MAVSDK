@@ -99,7 +99,6 @@ public:
     size_t total_components() const;
 
     void register_component_discovered_callback(discover_callback_t callback);
-    discover_callback_t component_discovered_callback;
 
     uint8_t get_autopilot_id() const;
     std::vector<uint8_t> get_camera_ids() const;
@@ -219,6 +218,8 @@ private:
                                   MAVLinkParameters::ParamValue value,
                                   get_param_int_callback_t callback);
 
+    discover_callback_t _component_discovered_callback{nullptr};
+
     struct MAVLinkHandlerTableEntry {
         uint16_t msg_id;
         mavlink_message_handler_t callback;
@@ -273,9 +274,9 @@ private:
     std::vector<PluginImplBase *> _plugin_impls{};
 
     // We used set to maintain unique component ids
-    std::unordered_set<uint8_t> _components;
+    std::unordered_set<uint8_t> _components{};
 
-    ThreadPool _thread_pool;
+    ThreadPool _thread_pool{3};
 
     bool _iterator_invalidated{false};
 };

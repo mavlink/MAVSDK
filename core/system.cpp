@@ -15,10 +15,9 @@ namespace dronecode_sdk {
 
 using namespace std::placeholders; // for `_1`
 
-System::System(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t component_id)
-{
-    _system_impl = std::make_shared<SystemImpl>(parent, system_id, component_id);
-}
+System::System(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t component_id) :
+    _system_impl(std::make_shared<SystemImpl>(parent, system_id, component_id))
+{}
 
 System::~System() {}
 

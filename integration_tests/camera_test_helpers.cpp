@@ -8,8 +8,8 @@ using namespace dronecode_sdk;
 Camera::Mode get_mode(std::shared_ptr<Camera> camera)
 {
     struct PromiseResult {
-        Camera::Result result;
-        Camera::Mode mode;
+        Camera::Result result{};
+        Camera::Mode mode{};
     };
 
     auto prom = std::make_shared<std::promise<PromiseResult>>();
@@ -88,8 +88,8 @@ dronecode_sdk::Camera::Result get_setting(std::shared_ptr<dronecode_sdk::Camera>
                                           std::string &option)
 {
     struct PromiseResult {
-        Camera::Result result;
-        Camera::Option option;
+        Camera::Result result{};
+        Camera::Option option{};
     };
 
     auto prom = std::make_shared<std::promise<PromiseResult>>();
@@ -97,7 +97,7 @@ dronecode_sdk::Camera::Result get_setting(std::shared_ptr<dronecode_sdk::Camera>
 
     camera->get_option_async(setting,
                              [prom](Camera::Result result, const Camera::Option &gotten_option) {
-                                 PromiseResult promise_result;
+                                 PromiseResult promise_result{};
                                  promise_result.result = result;
                                  promise_result.option = gotten_option;
                                  prom->set_value(promise_result);

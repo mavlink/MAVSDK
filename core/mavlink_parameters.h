@@ -467,7 +467,7 @@ public:
         }
 
     private:
-        Any _value;
+        Any _value{};
     };
 
     enum class Result { SUCCESS, TIMEOUT, CONNECTION_ERROR, WRONG_TYPE, PARAM_NAME_TOO_LONG };

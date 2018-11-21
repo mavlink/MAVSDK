@@ -30,10 +30,10 @@ public:
     typedef std::function<void(Result, float)> command_result_callback_t;
 
     struct CommandInt {
-        uint8_t target_system_id;
-        uint8_t target_component_id;
+        uint8_t target_system_id{0};
+        uint8_t target_component_id{0};
         MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
-        uint16_t command;
+        uint16_t command{0};
         bool current = 0;
         bool autocontinue = false;
         // Most of the "Reserved" values in MAVLink spec are NAN.
@@ -63,9 +63,9 @@ public:
     };
 
     struct CommandLong {
-        uint8_t target_system_id;
-        uint8_t target_component_id;
-        uint16_t command;
+        uint8_t target_system_id{0};
+        uint8_t target_component_id{0};
+        uint16_t command{0};
         uint8_t confirmation = 0;
         struct Params {
             float param1 = NAN;

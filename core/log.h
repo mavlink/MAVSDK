@@ -128,8 +128,11 @@ public:
 #endif
     }
 
+    LogDetailed(const dronecode_sdk::LogDetailed &) = delete;
+    void operator=(const dronecode_sdk::LogDetailed &) = delete;
+
 protected:
-    enum LogLevel { Debug, Info, Warn, Err } _log_level;
+    enum LogLevel { Debug, Info, Warn, Err } _log_level = LogLevel::Debug;
 
 private:
     std::stringstream _s;

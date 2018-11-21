@@ -73,7 +73,7 @@ private:
         ACCELEROMETER_CALIBRATION,
         MAGNETOMETER_CALIBRATION,
         GIMBAL_ACCELEROMETER_CALIBRATION
-    } _state = State::NONE;
+    } _state{State::NONE};
 
     Calibration::calibration_callback_t _calibration_callback{nullptr};
 };

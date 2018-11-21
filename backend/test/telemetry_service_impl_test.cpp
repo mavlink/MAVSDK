@@ -126,17 +126,17 @@ protected:
                             const float signal_strength_percent) const;
     std::future<void> subscribeRcStatusAsync(std::vector<RcStatus> &rc_status_events) const;
 
-    std::unique_ptr<grpc::Server> _server;
-    std::unique_ptr<TelemetryService::Stub> _stub;
-    std::unique_ptr<MockTelemetry> _telemetry;
-    std::unique_ptr<TelemetryServiceImpl> _telemetry_service;
+    std::unique_ptr<grpc::Server> _server{};
+    std::unique_ptr<TelemetryService::Stub> _stub{};
+    std::unique_ptr<MockTelemetry> _telemetry{};
+    std::unique_ptr<TelemetryServiceImpl> _telemetry_service{};
 
 private:
     void initRandomGenerator();
 
-    std::random_device _random_device;
-    std::mt19937 _generator;
-    std::uniform_int_distribution<> _uniform_int_distribution;
+    std::random_device _random_device{};
+    std::mt19937 _generator{};
+    std::uniform_int_distribution<> _uniform_int_distribution{};
 };
 
 void TelemetryServiceImplTest::initRandomGenerator()

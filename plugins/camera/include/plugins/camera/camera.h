@@ -464,26 +464,26 @@ public:
      * value like "1/50".
      */
     struct Option {
-        std::string option_id; /**< Name of the option (machine readable). */
-        std::string option_description; /**< Description of the description (human readable). */
+        std::string option_id{}; /**< Name of the option (machine readable). */
+        std::string option_description{}; /**< Description of the description (human readable). */
     };
 
     /**
      * @brief Type to represent a setting with a selected option.
      */
     struct Setting {
-        std::string setting_id; /**< Name of the setting (machine readable). */
-        std::string setting_description; /**< Description of the setting (human readable). */
-        Option option; /**< Selected option. */
+        std::string setting_id{}; /**< Name of the setting (machine readable). */
+        std::string setting_description{}; /**< Description of the setting (human readable). */
+        Option option{}; /**< Selected option. */
     };
 
     /**
      * @brief Type to represent a setting with a list of options to choose from.
      */
     struct SettingOptions {
-        std::string setting_id; /**< Name of the setting (machine readable). */
-        std::string setting_description; /**< Description of the setting (human readable). */
-        std::vector<Option> options; /**< List of options. */
+        std::string setting_id{}; /**< Name of the setting (machine readable). */
+        std::string setting_description{}; /**< Description of the setting (human readable). */
+        std::vector<Option> options{}; /**< List of options. */
     };
 
     /**

@@ -49,10 +49,10 @@ protected:
     std::future<void> subscribeDiscoverAsync(std::vector<uint64_t> &uuids);
     std::future<void> subscribeTimeoutAsync(int *stream_count);
 
-    std::unique_ptr<CoreServiceImpl> _core_service;
-    std::unique_ptr<MockDronecodeSDK> _dc;
-    std::unique_ptr<grpc::Server> _server;
-    std::unique_ptr<CoreService::Stub> _stub;
+    std::unique_ptr<CoreServiceImpl> _core_service{};
+    std::unique_ptr<MockDronecodeSDK> _dc{};
+    std::unique_ptr<grpc::Server> _server{};
+    std::unique_ptr<CoreService::Stub> _stub{};
 };
 
 ACTION_P2(SaveCallback, callback, callback_promise)

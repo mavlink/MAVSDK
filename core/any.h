@@ -96,6 +96,9 @@ private:
     template<typename T> struct Derived : Base {
         template<typename U> Derived(U &&value_tmp) : value(std::forward<U>(value_tmp)) {}
 
+        Derived<T>(const dronecode_sdk::Any::Derived<T> &) = delete;
+        void operator=(const dronecode_sdk::Any::Derived<T> &) = delete;
+
         T value;
 
         Base *clone() const { return new Derived<T>(value); }

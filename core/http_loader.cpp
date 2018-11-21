@@ -11,9 +11,8 @@ HttpLoader::HttpLoader(const std::shared_ptr<ICurlWrapper> &curl_wrapper) :
 }
 #endif
 
-HttpLoader::HttpLoader()
+HttpLoader::HttpLoader() : _curl_wrapper(std::make_shared<CurlWrapper>())
 {
-    _curl_wrapper = std::make_shared<CurlWrapper>();
     start();
 }
 

@@ -10,10 +10,10 @@ using namespace dronecode_sdk;
 
 class CurlTest : public testing::Test {
 protected:
-    std::string _file_url_existing_http;
-    std::string _file_url_existing_https;
-    std::string _file_url_not_existing;
-    std::string _local_path;
+    std::string _file_url_existing_http{};
+    std::string _file_url_existing_https{};
+    std::string _file_url_not_existing{};
+    std::string _local_path{};
 
     virtual void SetUp()
     {

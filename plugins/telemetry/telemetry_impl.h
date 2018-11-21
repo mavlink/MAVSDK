@@ -83,6 +83,9 @@ public:
     void health_all_ok_async(Telemetry::health_all_ok_callback_t &callback);
     void rc_status_async(Telemetry::rc_status_callback_t &callback);
 
+    TelemetryImpl(const TelemetryImpl &) = delete;
+    TelemetryImpl &operator=(const TelemetryImpl &) = delete;
+
 private:
     void set_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned);
     void set_position(Telemetry::Position position);
@@ -136,68 +139,68 @@ private:
     // Make all fields thread-safe using mutexs
     // The mutexs are mutable so that the lock can get aqcuired in
     // methods marked const.
-    mutable std::mutex _position_mutex;
-    Telemetry::Position _position;
+    mutable std::mutex _position_mutex{};
+    Telemetry::Position _position{double(NAN), double(NAN), NAN, NAN};
 
     mutable std::mutex _position_velocity_ned_mutex{};
     Telemetry::PositionVelocityNED _position_velocity_ned{{NAN, NAN, NAN}, {NAN, NAN, NAN}};
 
-    mutable std::mutex _home_position_mutex;
-    Telemetry::Position _home_position;
+    mutable std::mutex _home_position_mutex{};
+    Telemetry::Position _home_position{double(NAN), double(NAN), NAN, NAN};
 
     // If possible, just use atomic instead of a mutex.
-    std::atomic_bool _in_air;
-    std::atomic_bool _armed;
+    std::atomic_bool _in_air{false};
+    std::atomic_bool _armed{false};
 
-    mutable std::mutex _attitude_quaternion_mutex;
-    Telemetry::Quaternion _attitude_quaternion;
+    mutable std::mutex _attitude_quaternion_mutex{};
+    Telemetry::Quaternion _attitude_quaternion{NAN, NAN, NAN, NAN};
 
-    mutable std::mutex _camera_attitude_euler_angle_mutex;
-    Telemetry::EulerAngle _camera_attitude_euler_angle;
+    mutable std::mutex _camera_attitude_euler_angle_mutex{};
+    Telemetry::EulerAngle _camera_attitude_euler_angle{NAN, NAN, NAN};
 
-    mutable std::mutex _ground_speed_ned_mutex;
-    Telemetry::GroundSpeedNED _ground_speed_ned;
+    mutable std::mutex _ground_speed_ned_mutex{};
+    Telemetry::GroundSpeedNED _ground_speed_ned{NAN, NAN, NAN};
 
-    mutable std::mutex _gps_info_mutex;
-    Telemetry::GPSInfo _gps_info;
+    mutable std::mutex _gps_info_mutex{};
+    Telemetry::GPSInfo _gps_info{0, 0};
 
-    mutable std::mutex _battery_mutex;
-    Telemetry::Battery _battery;
+    mutable std::mutex _battery_mutex{};
+    Telemetry::Battery _battery{NAN, NAN};
 
-    mutable std::mutex _flight_mode_mutex;
-    Telemetry::FlightMode _flight_mode;
+    mutable std::mutex _flight_mode_mutex{};
+    Telemetry::FlightMode _flight_mode{Telemetry::FlightMode::UNKNOWN};
 
-    mutable std::mutex _health_mutex;
-    Telemetry::Health _health;
+    mutable std::mutex _health_mutex{};
+    Telemetry::Health _health{false, false, false, false, false, false, false};
 
-    mutable std::mutex _rc_status_mutex;
-    Telemetry::RCStatus _rc_status;
+    mutable std::mutex _rc_status_mutex{};
+    Telemetry::RCStatus _rc_status{false, false, 0.0f};
 
     std::atomic<bool> _hitl_enabled{false};
 
-    Telemetry::position_velocity_ned_callback_t _position_velocity_ned_subscription;
-    Telemetry::position_callback_t _position_subscription;
-    Telemetry::position_callback_t _home_position_subscription;
-    Telemetry::in_air_callback_t _in_air_subscription;
-    Telemetry::armed_callback_t _armed_subscription;
-    Telemetry::attitude_quaternion_callback_t _attitude_quaternion_subscription;
-    Telemetry::attitude_euler_angle_callback_t _attitude_euler_angle_subscription;
-    Telemetry::attitude_quaternion_callback_t _camera_attitude_quaternion_subscription;
-    Telemetry::attitude_euler_angle_callback_t _camera_attitude_euler_angle_subscription;
-    Telemetry::ground_speed_ned_callback_t _ground_speed_ned_subscription;
-    Telemetry::gps_info_callback_t _gps_info_subscription;
-    Telemetry::battery_callback_t _battery_subscription;
-    Telemetry::flight_mode_callback_t _flight_mode_subscription;
-    Telemetry::health_callback_t _health_subscription;
-    Telemetry::health_all_ok_callback_t _health_all_ok_subscription;
-    Telemetry::rc_status_callback_t _rc_status_subscription;
+    Telemetry::position_velocity_ned_callback_t _position_velocity_ned_subscription{nullptr};
+    Telemetry::position_callback_t _position_subscription{nullptr};
+    Telemetry::position_callback_t _home_position_subscription{nullptr};
+    Telemetry::in_air_callback_t _in_air_subscription{nullptr};
+    Telemetry::armed_callback_t _armed_subscription{nullptr};
+    Telemetry::attitude_quaternion_callback_t _attitude_quaternion_subscription{nullptr};
+    Telemetry::attitude_euler_angle_callback_t _attitude_euler_angle_subscription{nullptr};
+    Telemetry::attitude_quaternion_callback_t _camera_attitude_quaternion_subscription{nullptr};
+    Telemetry::attitude_euler_angle_callback_t _camera_attitude_euler_angle_subscription{nullptr};
+    Telemetry::ground_speed_ned_callback_t _ground_speed_ned_subscription{nullptr};
+    Telemetry::gps_info_callback_t _gps_info_subscription{nullptr};
+    Telemetry::battery_callback_t _battery_subscription{nullptr};
+    Telemetry::flight_mode_callback_t _flight_mode_subscription{nullptr};
+    Telemetry::health_callback_t _health_subscription{nullptr};
+    Telemetry::health_all_ok_callback_t _health_all_ok_subscription{nullptr};
+    Telemetry::rc_status_callback_t _rc_status_subscription{nullptr};
 
     // The ground speed and position are coupled to the same message, therefore, we just use
     // the faster between the two.
-    double _ground_speed_ned_rate_hz;
-    double _position_rate_hz;
+    double _ground_speed_ned_rate_hz{0.0};
+    double _position_rate_hz{-1.0};
 
-    void *_timeout_cookie = nullptr;
+    void *_timeout_cookie{nullptr};
 };
 
 } // namespace dronecode_sdk
