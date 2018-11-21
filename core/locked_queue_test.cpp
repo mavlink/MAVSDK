@@ -21,13 +21,12 @@ TEST(LockedQueue, FillAndEmpty)
     locked_queue.push_back(three);
     EXPECT_EQ(locked_queue.size(), 3);
 
+    auto tmp = locked_queue.borrow_front();
     locked_queue.pop_front();
     EXPECT_EQ(locked_queue.size(), 2);
+    tmp = locked_queue.borrow_front();
     locked_queue.pop_front();
-    locked_queue.pop_front();
-    EXPECT_EQ(locked_queue.size(), 0);
-
-    // Popping an empty queue should just fail silently.
+    tmp = locked_queue.borrow_front();
     locked_queue.pop_front();
     EXPECT_EQ(locked_queue.size(), 0);
 }
@@ -46,14 +45,10 @@ TEST(LockedQueue, BorrowAndReturn)
 
     auto borrowed_item = locked_queue.borrow_front();
     EXPECT_EQ(*borrowed_item, 1);
-    locked_queue.return_front();
     locked_queue.pop_front();
 
     borrowed_item = locked_queue.borrow_front();
     EXPECT_EQ(*borrowed_item, 2);
-    locked_queue.return_front();
-    // Double returning shouldn't matter.
-    locked_queue.return_front();
     locked_queue.pop_front();
 
     borrowed_item = locked_queue.borrow_front();
