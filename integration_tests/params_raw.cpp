@@ -28,7 +28,7 @@ TEST_F(SitlTest, ParamsRawSad)
 
     {
         const std::pair<ParamsRaw::Result, int32_t> get_result =
-            params_raw->get_param_int("COM_RC_LOSS_MAN");
+            params_raw->get_param_int("MPC_VEL_MANUAL");
         EXPECT_EQ(get_result.first, ParamsRaw::Result::WRONG_TYPE);
     }
 
@@ -89,7 +89,7 @@ TEST_F(SitlTest, ParamsRawHappy)
 
     {
         const std::pair<ParamsRaw::Result, float> get_result1 =
-            params_raw->get_param_float("COM_RC_LOSS_MAN");
+            params_raw->get_param_float("MPC_VEL_MANUAL");
 
         // Get initial value.
         ASSERT_EQ(get_result1.first, ParamsRaw::Result::SUCCESS);
@@ -100,12 +100,12 @@ TEST_F(SitlTest, ParamsRawHappy)
 
         // Toggle the value.
         const ParamsRaw::Result set_result1 =
-            params_raw->set_param_float("COM_RC_LOSS_MAN", get_result1.second + 1.0f);
+            params_raw->set_param_float("MPC_VEL_MANUAL", get_result1.second + 1.0f);
         EXPECT_EQ(set_result1, ParamsRaw::Result::SUCCESS);
 
         // Verify toggle.
         const std::pair<ParamsRaw::Result, float> get_result2 =
-            params_raw->get_param_float("COM_RC_LOSS_MAN");
+            params_raw->get_param_float("MPC_VEL_MANUAL");
         EXPECT_EQ(get_result2.first, ParamsRaw::Result::SUCCESS);
         EXPECT_FLOAT_EQ(get_result2.second, get_result1.second + 1.0f);
 
@@ -113,12 +113,12 @@ TEST_F(SitlTest, ParamsRawHappy)
 
         // Reset back to initial value.
         const ParamsRaw::Result set_result2 =
-            params_raw->set_param_float("COM_RC_LOSS_MAN", get_result1.second);
+            params_raw->set_param_float("MPC_VEL_MANUAL", get_result1.second);
         EXPECT_EQ(set_result2, ParamsRaw::Result::SUCCESS);
 
         // Verify reset.
         const std::pair<ParamsRaw::Result, float> get_result3 =
-            params_raw->get_param_float("COM_RC_LOSS_MAN");
+            params_raw->get_param_float("MPC_VEL_MANUAL");
         EXPECT_EQ(get_result3.first, ParamsRaw::Result::SUCCESS);
         EXPECT_FLOAT_EQ(get_result3.second, get_result1.second);
     }
