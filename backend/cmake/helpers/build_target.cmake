@@ -18,12 +18,22 @@ function(build_target SRC_DIR TARGET_DIR)
             -DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR}
             ${SRC_DIR}
         WORKING_DIRECTORY "${TARGET_DIR}/build"
+        RESULT_VARIABLE PROCESS_FAILED
     )
+
+    if(PROCESS_FAILED)
+        message(FATAL_ERROR "CMake configuration failed for ${SRC_DIR}")
+    endif()
 
     ProcessorCount(NUM_PROCS)
 
     set(ENV{MAKEFLAGS} -j${NUM_PROCS})
     execute_process(COMMAND ${CMAKE_COMMAND} --build .
         WORKING_DIRECTORY ${TARGET_DIR}/build
+        RESULT_VARIABLE PROCESS_FAILED
     )
+
+    if(PROCESS_FAILED)
+        message(FATAL_ERROR "CMake configuration failed for ${SRC_DIR}")
+    endif()
 endfunction()
