@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package dronecode_sdk.rpc.info;
+
+option java_package = "io.dronecode_sdk.info";
+option java_outer_classname = "InfoProto";
+
+service InfoService {
+    rpc GetVersion(GetVersionRequest) returns(GetVersionResponse) {}
+}
+
+message Version {
+    int32 flight_sw_major;
+    int32 flight_sw_minor;
+    int32 flight_sw_patch;
+    int32 flight_sw_vendor_major;
+    int32 flight_sw_vendor_minor;
+    int32 flight_sw_vendor_patch;
+    int32 os_sw_major;
+    int32 os_sw_minor;
+    int32 os_sw_patch;
+}
+
+message GetVersionRequest {}
+message GetVersionResponse {
+    InfoResult info_result = 1;
+    Version version = 2;
+}
+
+message InfoResult {
+    enum Result {
+        UNKNOWN = 0;
+        SUCCESS = 1;
+        INFORMATION_NOT_RECEIVED_YET = 2;
+    }
+
+    Result result = 1;
+    string result_str = 2;
+}
