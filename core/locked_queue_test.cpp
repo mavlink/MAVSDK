@@ -21,7 +21,10 @@ TEST(LockedQueue, FillAndEmpty)
     locked_queue.push_back(three);
     EXPECT_EQ(locked_queue.size(), 3);
 
-    locked_queue.pop_front();
+    {
+        auto guard = locked_queue.guard();
+        guard.pop_front();
+    }
 
     EXPECT_EQ(locked_queue.size(), 2);
 
