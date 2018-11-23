@@ -120,14 +120,14 @@ MAVLinkParameters::get_param(const std::string &name, ParamValue value_type, boo
 
 void MAVLinkParameters::do_work()
 {
-    auto work = _work_queue.borrow_front();
+    auto work_queue_guard = _work_queue.guard();
+    auto work = work_queue_guard.get_front();
 
     if (!work) {
         return;
     }
 
     if (work->already_requested) {
-        _work_queue.return_front();
         return;
     }
 
@@ -168,7 +168,7 @@ void MAVLinkParameters::do_work()
                 if (work->set_param_callback) {
                     work->set_param_callback(MAVLinkParameters::Result::CONNECTION_ERROR);
                 }
-                _work_queue.pop_front();
+                work_queue_guard.pop_front();
                 return;
             }
 
@@ -179,7 +179,6 @@ void MAVLinkParameters::do_work()
             _parent.register_timeout_handler(
                 std::bind(&MAVLinkParameters::receive_timeout, this), 0.5, &_timeout_cookie);
 
-            _work_queue.return_front();
         } break;
 
         case WorkItem::Type::Get: {
@@ -217,7 +216,7 @@ void MAVLinkParameters::do_work()
                     work->get_param_callback(MAVLinkParameters::Result::CONNECTION_ERROR,
                                              empty_param);
                 }
-                _work_queue.pop_front();
+                work_queue_guard.pop_front();
                 return;
             }
 
@@ -229,7 +228,6 @@ void MAVLinkParameters::do_work()
             _parent.register_timeout_handler(
                 std::bind(&MAVLinkParameters::receive_timeout, this), 0.5, &_timeout_cookie);
 
-            _work_queue.return_front();
         } break;
     }
 }
@@ -255,20 +253,19 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
 
     // LogDebug() << "getting param value: " << param_value.param_id;
 
-    auto work = _work_queue.borrow_front();
+    auto work_queue_guard = _work_queue.guard();
+    auto work = work_queue_guard.get_front();
 
     if (!work) {
         return;
     }
 
     if (!work->already_requested) {
-        _work_queue.return_front();
         return;
     }
 
     if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) != 0) {
         // No match, let's just return the borrowed work item.
-        _work_queue.return_front();
         return;
     }
 
@@ -291,7 +288,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
             _parent.unregister_timeout_handler(_timeout_cookie);
             // LogDebug() << "time taken: " <<
             // _parent.get_time().elapsed_since_s(_last_request_time);
-            _work_queue.pop_front();
+            work_queue_guard.pop_front();
         } break;
         case WorkItem::Type::Set: {
             // We are done, inform caller and go back to idle
@@ -303,7 +300,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
             _parent.unregister_timeout_handler(_timeout_cookie);
             // LogDebug() << "time taken: " <<
             // _parent.get_time().elapsed_since_s(_last_request_time);
-            _work_queue.pop_front();
+            work_queue_guard.pop_front();
         } break;
     }
 }
@@ -315,19 +312,18 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
     mavlink_param_ext_value_t param_ext_value;
     mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
 
-    auto work = _work_queue.borrow_front();
+    auto work_queue_guard = _work_queue.guard();
+    auto work = work_queue_guard.get_front();
 
     if (!work) {
         return;
     }
 
     if (!work->already_requested) {
-        _work_queue.return_front();
         return;
     }
 
     if (strncmp(work->param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) != 0) {
-        _work_queue.return_front();
         return;
     }
 
@@ -350,12 +346,11 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
             _parent.unregister_timeout_handler(_timeout_cookie);
             // LogDebug() << "time taken: " <<
             // _parent.get_time().elapsed_since_s(_last_request_time);
-            _work_queue.pop_front();
+            work_queue_guard.pop_front();
         } break;
 
         case WorkItem::Type::Set:
             LogWarn() << "Unexpected ParamExtValue response";
-            _work_queue.return_front();
             break;
     }
 }
@@ -367,27 +362,25 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
     mavlink_param_ext_ack_t param_ext_ack;
     mavlink_msg_param_ext_ack_decode(&message, &param_ext_ack);
 
-    auto work = _work_queue.borrow_front();
+    auto work_queue_guard = _work_queue.guard();
+    auto work = work_queue_guard.get_front();
 
     if (!work) {
         return;
     }
 
     if (!work->already_requested) {
-        _work_queue.return_front();
         return;
     }
 
     // Now it still needs to match the param name
     if (strncmp(work->param_name.c_str(), param_ext_ack.param_id, PARAM_ID_LEN) == 0) {
-        _work_queue.return_front();
         return;
     }
 
     switch (work->type) {
         case WorkItem::Type::Get: {
             LogWarn() << "Unexpected ParamExtAck response.";
-            _work_queue.return_front();
         } break;
 
         case WorkItem::Type::Set: {
@@ -401,12 +394,11 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
                 _parent.unregister_timeout_handler(_timeout_cookie);
                 // LogDebug() << "time taken: " <<
                 // _parent.get_time().elapsed_since_s(_last_request_time);
-                _work_queue.pop_front();
+                work_queue_guard.pop_front();
 
             } else if (param_ext_ack.param_result == PARAM_ACK_IN_PROGRESS) {
                 // Reset timeout and wait again.
                 _parent.refresh_timeout_handler(_timeout_cookie);
-                _work_queue.return_front();
 
             } else {
                 LogErr() << "Somehow we did not get an ack, we got: "
@@ -419,7 +411,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
                 _parent.unregister_timeout_handler(_timeout_cookie);
                 // LogDebug() << "time taken: " <<
                 // _parent.get_time().elapsed_since_s(_last_request_time);
-                _work_queue.pop_front();
+                work_queue_guard.pop_front();
             }
         } break;
     }
@@ -427,7 +419,8 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 
 void MAVLinkParameters::receive_timeout()
 {
-    auto work = _work_queue.borrow_front();
+    auto work_queue_guard = _work_queue.guard();
+    auto work = work_queue_guard.get_front();
 
     if (!work) {
         LogErr() << "Received timeout without work";
@@ -435,7 +428,6 @@ void MAVLinkParameters::receive_timeout()
     }
 
     if (!work->already_requested) {
-        _work_queue.return_front();
         return;
     }
 
@@ -450,7 +442,7 @@ void MAVLinkParameters::receive_timeout()
                 work->get_param_callback(MAVLinkParameters::Result::TIMEOUT, empty_value);
             }
             // TODO: we should retry!
-            _work_queue.pop_front();
+            work_queue_guard.pop_front();
         } break;
         case WorkItem::Type::Set: {
             if (work->set_param_callback) {
@@ -461,7 +453,7 @@ void MAVLinkParameters::receive_timeout()
                 work->set_param_callback(MAVLinkParameters::Result::TIMEOUT);
             }
             // TODO: we should retry!
-            _work_queue.pop_front();
+            work_queue_guard.pop_front();
         } break;
     }
 }
