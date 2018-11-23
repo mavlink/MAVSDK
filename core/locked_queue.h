@@ -3,7 +3,6 @@
 #include <queue>
 #include <mutex>
 #include <memory>
-#include <cassert>
 
 namespace dronecode_sdk {
 
@@ -24,30 +23,21 @@ public:
     {
         _mutex.lock();
         // Should not be possible because _mutex.lock()
-        assert(_queue_borrowed == false); // double borrow
         if (_queue.size() == 0) {
             // We couldn't borrow anything, therefore don't keep the lock.
             _mutex.unlock();
             return nullptr;
         }
-        _queue_borrowed = true;
         return _queue.front();
     }
 
     // This allows to return a borrowed queue.
-    void return_front()
-    {
-        assert(_queue_borrowed == true); // return without borrow
-        _queue_borrowed = false;
-        _mutex.unlock();
-    }
+    void return_front() { _mutex.unlock(); }
 
     void pop_front()
     {
-        assert(_queue_borrowed == true); // pop without borrow
+        std::lock_guard<std::mutex> lock(_mutex);
         _queue.pop_front();
-        _queue_borrowed = false;
-        _mutex.unlock();
     }
 
     size_t size()
@@ -56,10 +46,41 @@ public:
         return _queue.size();
     }
 
+    class Guard {
+    public:
+        Guard(std::mutex &mutex, std::deque<std::shared_ptr<T>> &queue) :
+            _mutex(mutex),
+            _queue(queue)
+        {
+            _mutex.lock();
+        }
+
+        ~Guard() { _mutex.unlock(); }
+
+        std::shared_ptr<T> get_front()
+        {
+            if (_queue.size() == 0) {
+                return nullptr;
+            }
+            return _queue.front();
+        }
+
+        void pop_front() { _queue.pop_front(); }
+
+    private:
+        std::mutex &_mutex;
+        std::deque<std::shared_ptr<T>> &_queue;
+    };
+
+    Guard guard()
+    {
+        Guard new_guard{_mutex, _queue};
+        return new_guard;
+    }
+
 private:
     std::deque<std::shared_ptr<T>> _queue{};
     std::mutex _mutex{};
-    bool _queue_borrowed = false;
 };
 
 } // namespace dronecode_sdk
