@@ -92,8 +92,6 @@ public:
                             command_result_callback_t callback,
                             uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
-    void request_autopilot_version();
-
     // Adds unique component ids
     void add_new_component(uint8_t component_id);
     size_t total_components() const;
@@ -179,6 +177,8 @@ public:
 
     void call_user_callback(const std::function<void()> &func);
 
+    void send_autopilot_version_request();
+
     // Non-copyable
     SystemImpl(const SystemImpl &) = delete;
     const SystemImpl &operator=(const SystemImpl &) = delete;
@@ -187,6 +187,8 @@ private:
     // Helper methods added to increase readablity
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
+
+    void request_autopilot_version();
 
     bool have_uuid() const { return _uuid != 0 && _uuid_initialized; }
 

@@ -477,14 +477,8 @@ void SystemImpl::request_autopilot_version()
 
     _autopilot_version_pending = true;
 
-    // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
-    MAVLinkCommands::CommandLong command{};
+    send_autopilot_version_request();
 
-    command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
-    command.params.param1 = 1.0f;
-    command.target_component_id = get_autopilot_id();
-
-    send_command_async(command, nullptr);
 #if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
     ++_uuid_retries;
 #endif
@@ -497,6 +491,18 @@ void SystemImpl::request_autopilot_version()
     auto &pending_tmp = _autopilot_version_pending;
     register_timeout_handler(
         [&pending_tmp]() { pending_tmp = false; }, 0.5, &_autopilot_version_timed_out_cookie);
+}
+
+void SystemImpl::send_autopilot_version_request()
+{
+    // We don't care about an answer, we mostly care about receiving AUTOPILOT_VERSION.
+    MAVLinkCommands::CommandLong command{};
+
+    command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
+    command.params.param1 = 1.0f;
+    command.target_component_id = get_autopilot_id();
+
+    send_command_async(command, nullptr);
 }
 
 void SystemImpl::set_connected()
