@@ -5,7 +5,7 @@
 
 namespace dronecode_sdk {
 
-InfoImpl::InfoImpl(System &system) : PluginImplBase(system), _version_mutex(), _version()
+InfoImpl::InfoImpl(System &system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -20,9 +20,6 @@ void InfoImpl::init()
     using namespace std::placeholders; // for `_1`
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_HEARTBEAT, std::bind(&InfoImpl::process_heartbeat, this, _1), this);
-
-    _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         std::bind(&InfoImpl::process_autopilot_version, this, _1),
         this);
@@ -33,80 +30,93 @@ void InfoImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void InfoImpl::enable() {}
-
-void InfoImpl::disable() {}
-
-void InfoImpl::process_heartbeat(const mavlink_message_t &message)
+void InfoImpl::enable()
 {
-    UNUSED(message);
+    // We can't rely on System to request the autopilot_version,
+    // so we do it here, anyway.
+    _parent->send_autopilot_version_request();
 
-    if (!is_complete()) {
-        // We try to request more info if not all info is available.
-        // We can't rely on System to request the autopilot_version,
-        // so we do it here, anyway.
-        _parent->request_autopilot_version();
+    // We're going to retry until we have the version.
+    _parent->add_call_every(
+        std::bind(&InfoImpl::request_version_again, this), 1.0f, &_call_every_cookie);
+}
+
+void InfoImpl::disable()
+{
+    _parent->remove_call_every(_call_every_cookie);
+
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _information_received = false;
     }
+}
+
+void InfoImpl::request_version_again()
+{
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (_information_received) {
+            _parent->remove_call_every(_call_every_cookie);
+            return;
+        }
+    }
+
+    _parent->send_autopilot_version_request();
 }
 
 void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
 {
-    mavlink_autopilot_version_t autopilot_version;
+    std::lock_guard<std::mutex> lock(_mutex);
 
+    mavlink_autopilot_version_t autopilot_version;
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
-    Info::Version version{};
-
-    version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
-    version.flight_sw_minor = (autopilot_version.flight_sw_version >> (8 * 2)) & 0xFF;
-    version.flight_sw_patch = (autopilot_version.flight_sw_version >> (8 * 1)) & 0xFF;
+    _version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
+    _version.flight_sw_minor = (autopilot_version.flight_sw_version >> (8 * 2)) & 0xFF;
+    _version.flight_sw_patch = (autopilot_version.flight_sw_version >> (8 * 1)) & 0xFF;
 
     // first three bytes of flight_custon_version (little endian) describe vendor version
     translate_binary_to_str(autopilot_version.flight_custom_version + 3,
                             sizeof(autopilot_version.flight_custom_version) - 3,
-                            version.flight_sw_git_hash,
+                            _version.flight_sw_git_hash,
                             Info::GIT_HASH_STR_LEN);
 
-    version.flight_sw_vendor_major = autopilot_version.flight_custom_version[2];
-    version.flight_sw_vendor_minor = autopilot_version.flight_custom_version[1];
-    version.flight_sw_vendor_patch = autopilot_version.flight_custom_version[0];
+    _version.flight_sw_vendor_major = autopilot_version.flight_custom_version[2];
+    _version.flight_sw_vendor_minor = autopilot_version.flight_custom_version[1];
+    _version.flight_sw_vendor_patch = autopilot_version.flight_custom_version[0];
 
-    version.os_sw_major = (autopilot_version.os_sw_version >> (8 * 3)) & 0xFF;
-    version.os_sw_minor = (autopilot_version.os_sw_version >> (8 * 2)) & 0xFF;
-    version.os_sw_patch = (autopilot_version.os_sw_version >> (8 * 1)) & 0xFF;
+    _version.os_sw_major = (autopilot_version.os_sw_version >> (8 * 3)) & 0xFF;
+    _version.os_sw_minor = (autopilot_version.os_sw_version >> (8 * 2)) & 0xFF;
+    _version.os_sw_patch = (autopilot_version.os_sw_version >> (8 * 1)) & 0xFF;
 
     // Debug() << "flight version: "
-    //     << version.flight_sw_major
+    //     << _version.flight_sw_major
     //     << "."
-    //     << version.flight_sw_minor
+    //     << _version.flight_sw_minor
     //     << "."
-    //     << version.flight_sw_patch;
+    //     << _version.flight_sw_patch;
 
     // Debug() << "os version: "
-    //     << version.os_sw_major
+    //     << _version.os_sw_major
     //     << "."
-    //     << version.os_sw_minor
+    //     << _version.os_sw_minor
     //     << "."
-    //     << version.os_sw_patch;
+    //     << _version.os_sw_patch;
 
     translate_binary_to_str(autopilot_version.os_custom_version,
                             sizeof(autopilot_version.os_custom_version),
-                            version.os_sw_git_hash,
+                            _version.os_sw_git_hash,
                             Info::GIT_HASH_STR_LEN);
 
-    set_version(version);
-
-    Info::Product product{};
-
-    product.vendor_id = autopilot_version.vendor_id;
+    _product.vendor_id = autopilot_version.vendor_id;
     const char *vendor_name = vendor_id_str(autopilot_version.vendor_id);
-    STRNCPY(product.vendor_name, vendor_name, sizeof(product.vendor_name) - 1);
+    STRNCPY(_product.vendor_name, vendor_name, sizeof(_product.vendor_name) - 1);
 
-    product.product_id = autopilot_version.product_id;
+    _product.product_id = autopilot_version.product_id;
     const char *product_name = product_id_str(autopilot_version.product_id);
-    STRNCPY(product.product_name, product_name, sizeof(product.product_name) - 1);
+    STRNCPY(_product.product_name, product_name, sizeof(_product.product_name) - 1);
 
-    set_product(product);
+    _information_received = true;
 }
 
 void InfoImpl::translate_binary_to_str(uint8_t *binary,
@@ -121,47 +131,26 @@ void InfoImpl::translate_binary_to_str(uint8_t *binary,
     }
 }
 
-uint64_t InfoImpl::get_uuid() const
+std::pair<Info::Result, uint64_t> InfoImpl::get_uuid() const
 {
-    return _parent->get_uuid();
+    // TODO: this should be processed in this plugin
+    return std::make_pair<>(Info::Result::SUCCESS, _parent->get_uuid());
 }
 
-bool InfoImpl::is_complete() const
+std::pair<Info::Result, Info::Version> InfoImpl::get_version() const
 {
-    {
-        std::lock_guard<std::mutex> lock(_version_mutex);
-
-        // TODO: check OS version, it's currently just 0 for SITL
-        if (_version.flight_sw_major == 0 /* || _version.os_sw_major == 0*/) {
-            return false;
-        }
-    }
-
-    return true;
+    std::lock_guard<std::mutex> lock(_mutex);
+    return std::make_pair<>((_information_received ? Info::Result::SUCCESS :
+                                                     Info::Result::INFORMATION_NOT_RECEIVED_YET),
+                            _version);
 }
 
-Info::Version InfoImpl::get_version() const
+std::pair<Info::Result, Info::Product> InfoImpl::get_product() const
 {
-    std::lock_guard<std::mutex> lock(_version_mutex);
-    return _version;
-}
-
-Info::Product InfoImpl::get_product() const
-{
-    std::lock_guard<std::mutex> lock(_product_mutex);
-    return _product;
-}
-
-void InfoImpl::set_version(Info::Version version)
-{
-    std::lock_guard<std::mutex> lock(_version_mutex);
-    _version = version;
-}
-
-void InfoImpl::set_product(Info::Product product)
-{
-    std::lock_guard<std::mutex> lock(_product_mutex);
-    _product = product;
+    std::lock_guard<std::mutex> lock(_mutex);
+    return std::make_pair<>((_information_received ? Info::Result::SUCCESS :
+                                                     Info::Result::INFORMATION_NOT_RECEIVED_YET),
+                            _product);
 }
 
 const char *InfoImpl::vendor_id_str(uint16_t vendor_id)
