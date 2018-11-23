@@ -10,15 +10,15 @@ service InfoService {
 }
 
 message Version {
-    int32 flight_sw_major;
-    int32 flight_sw_minor;
-    int32 flight_sw_patch;
-    int32 flight_sw_vendor_major;
-    int32 flight_sw_vendor_minor;
-    int32 flight_sw_vendor_patch;
-    int32 os_sw_major;
-    int32 os_sw_minor;
-    int32 os_sw_patch;
+    int32 flight_sw_major = 1;
+    int32 flight_sw_minor = 2;
+    int32 flight_sw_patch = 3;
+    int32 flight_sw_vendor_major = 4;
+    int32 flight_sw_vendor_minor = 5;
+    int32 flight_sw_vendor_patch = 6;
+    int32 os_sw_major = 7;
+    int32 os_sw_minor = 8;
+    int32 os_sw_patch = 9;
 }
 
 message GetVersionRequest {}
