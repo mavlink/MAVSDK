@@ -25,28 +25,45 @@ TEST_F(SitlTest, Info)
     System &system = dc.system();
     auto info = std::make_shared<Info>(system);
 
+    // FIXME: we need to wait some time until Info has determined the version.
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
     for (unsigned i = 0; i < 3; ++i) {
-        Info::Version version = info->get_version();
+        std::pair<Info::Result, Info::Version> version_result = info->get_version();
 
-        std::cout << "Flight version: " << version.flight_sw_major << "." << version.flight_sw_minor
-                  << "." << version.flight_sw_patch << " ("
-                  << std::string(version.flight_sw_git_hash) << ")" << std::endl;
-        std::cout << "Flight vendor version: " << version.flight_sw_vendor_major << "."
-                  << version.flight_sw_vendor_minor << "." << version.flight_sw_vendor_patch
-                  << std::endl;
-        std::cout << "OS version: " << version.os_sw_major << "." << version.os_sw_minor << "."
-                  << version.os_sw_patch << " (" << std::string(version.os_sw_git_hash) << ")"
-                  << std::endl;
+        EXPECT_EQ(version_result.first, Info::Result::SUCCESS);
 
-        EXPECT_NE(version.flight_sw_major, 0);
+        if (version_result.first == Info::Result::SUCCESS) {
+            std::cout << "Flight version: " << version_result.second.flight_sw_major << "."
+                      << version_result.second.flight_sw_minor << "."
+                      << version_result.second.flight_sw_patch << " ("
+                      << std::string(version_result.second.flight_sw_git_hash) << ")" << std::endl;
+            std::cout << "Flight vendor version: " << version_result.second.flight_sw_vendor_major
+                      << "." << version_result.second.flight_sw_vendor_minor << "."
+                      << version_result.second.flight_sw_vendor_patch << std::endl;
+            std::cout << "OS version: " << version_result.second.os_sw_major << "."
+                      << version_result.second.os_sw_minor << "."
+                      << version_result.second.os_sw_patch << " ("
+                      << std::string(version_result.second.os_sw_git_hash) << ")" << std::endl;
 
-        // FIXME: This is currently 0.
-        // EXPECT_NE(version.os_sw_major, 0);
+            EXPECT_NE(version_result.second.flight_sw_major, 0);
 
-        Info::Product product = info->get_product();
+            // FIXME: This is currently 0.
+            // EXPECT_NE(version_result.second.os_sw_major, 0);
 
-        std::cout << "Vendor: " << product.vendor_name << std::endl;
-        std::cout << "Product: " << product.product_name << std::endl;
+        } else {
+            LogWarn() << "Version request result: " << Info::result_str(version_result.first);
+        }
+
+        std::pair<Info::Result, Info::Product> product_result = info->get_product();
+        EXPECT_EQ(product_result.first, Info::Result::SUCCESS);
+
+        if (product_result.first == Info::Result::SUCCESS) {
+            std::cout << "Vendor: " << product_result.second.vendor_name << std::endl;
+            std::cout << "Product: " << product_result.second.product_name << std::endl;
+        } else {
+            LogWarn() << "Product request result: " << Info::result_str(product_result.first);
+        }
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
