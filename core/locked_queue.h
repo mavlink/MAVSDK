@@ -32,7 +32,36 @@ public:
             _mutex.lock();
         }
 
-        ~Guard() { _mutex.unlock(); }
+        // With some compilers (e.g. MSVC 2017 for the debug build)
+        // the return value optimization does not trigger and the move
+        // constructor is called when Guard is returned in guard().
+        // This means that the old object is destructed while the member
+        // data is passed on to the new object. Since we are unlocking
+        // in the destructor, we need to prevent this from happening for
+        // the object which is discarded after the move constructor.
+        // This is achieved using the _invalidated flag.
+        Guard(Guard &other) = delete;
+        Guard(const Guard &other) = delete;
+        Guard &operator=(const Guard &other) = delete;
+        Guard &operator=(Guard &&other) = delete;
+
+        Guard(Guard &&other) : _mutex(other._mutex), _queue(other._queue)
+        {
+            other._invalidated = true;
+        }
+
+        Guard(const Guard &&other) : _mutex(other._mutex), _queue(other._queue)
+        {
+            other._invalidated = true;
+        }
+
+        ~Guard()
+        {
+            if (_invalidated) {
+                return;
+            }
+            _mutex.unlock();
+        }
 
         std::shared_ptr<T> get_front()
         {
@@ -47,6 +76,7 @@ public:
     private:
         std::mutex &_mutex;
         std::deque<std::shared_ptr<T>> &_queue;
+        bool _invalidated{false};
     };
 
     Guard guard()
