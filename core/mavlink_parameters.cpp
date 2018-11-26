@@ -120,7 +120,7 @@ MAVLinkParameters::get_param(const std::string &name, ParamValue value_type, boo
 
 void MAVLinkParameters::do_work()
 {
-    auto work_queue_guard = _work_queue.guard();
+    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
     if (!work) {
@@ -253,7 +253,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
 
     // LogDebug() << "getting param value: " << param_value.param_id;
 
-    auto work_queue_guard = _work_queue.guard();
+    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
     if (!work) {
@@ -312,7 +312,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
     mavlink_param_ext_value_t param_ext_value;
     mavlink_msg_param_ext_value_decode(&message, &param_ext_value);
 
-    auto work_queue_guard = _work_queue.guard();
+    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
     if (!work) {
@@ -362,7 +362,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
     mavlink_param_ext_ack_t param_ext_ack;
     mavlink_msg_param_ext_ack_decode(&message, &param_ext_ack);
 
-    auto work_queue_guard = _work_queue.guard();
+    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
     if (!work) {
@@ -419,7 +419,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
 
 void MAVLinkParameters::receive_timeout()
 {
-    auto work_queue_guard = _work_queue.guard();
+    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
     if (!work) {

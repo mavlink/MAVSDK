@@ -129,7 +129,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 
     // LogDebug() << "We got an ack: " << command_ack.command;
 
-    auto work_queue_guard = _work_queue.guard();
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
     if (!work) {
@@ -206,7 +206,7 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 void MAVLinkCommands::receive_timeout()
 {
     // If we're not waiting, we ignore this.
-    auto work_queue_guard = _work_queue.guard();
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
     if (!work) {
@@ -242,7 +242,7 @@ void MAVLinkCommands::receive_timeout()
 
 void MAVLinkCommands::do_work()
 {
-    auto work_queue_guard = _work_queue.guard();
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
 
     if (!work) {
