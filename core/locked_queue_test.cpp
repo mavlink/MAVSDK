@@ -22,14 +22,14 @@ TEST(LockedQueue, FillAndEmpty)
     EXPECT_EQ(locked_queue.size(), 3);
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<int>::Guard guard(locked_queue);
         guard.pop_front();
     }
 
     EXPECT_EQ(locked_queue.size(), 2);
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<int>::Guard guard(locked_queue);
         guard.pop_front();
         guard.pop_front();
     }
@@ -50,24 +50,24 @@ TEST(LockedQueue, GuardAndReturn)
     locked_queue.push_back(three);
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<int>::Guard guard(locked_queue);
         EXPECT_EQ(*guard.get_front(), 1);
     }
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<int>::Guard guard(locked_queue);
         EXPECT_EQ(*guard.get_front(), 1);
         guard.pop_front();
     }
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<int>::Guard guard(locked_queue);
         EXPECT_EQ(*guard.get_front(), 2);
     }
 
     EXPECT_EQ(locked_queue.size(), 2);
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<int>::Guard guard(locked_queue);
         guard.pop_front();
         guard.pop_front();
         EXPECT_EQ(guard.get_front(), nullptr);
@@ -88,13 +88,14 @@ TEST(LockedQueue, ConcurrantAccess)
     auto fut = prom.get_future();
 
     {
-        auto *guard_ptr = new LockedQueue<int>::Guard(locked_queue.guard());
+        LockedQueue<int>::Guard *guard_ptr = new LockedQueue<int>::Guard(locked_queue);
+
         EXPECT_EQ(*guard_ptr->get_front(), 1);
 
         auto some_future = std::async(std::launch::async, [&prom, &locked_queue]() {
             // This will wait in the lock until the first item is returned.
             {
-                auto guard_in_callback = locked_queue.guard();
+                LockedQueue<int>::Guard guard_in_callback(locked_queue);
             }
             prom.set_value();
         });
@@ -125,7 +126,7 @@ TEST(LockedQueue, ChangeValue)
     locked_queue.push_back(one);
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<Item>::Guard guard(locked_queue);
         EXPECT_EQ(guard.get_front()->value, 42);
         auto front = guard.get_front();
         if (front) {
@@ -134,7 +135,7 @@ TEST(LockedQueue, ChangeValue)
     }
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<Item>::Guard guard(locked_queue);
         EXPECT_EQ(guard.get_front()->value, 43);
     }
 }
@@ -150,18 +151,18 @@ TEST(LockedQueue, Guard)
     locked_queue.push_back(two);
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<int>::Guard guard(locked_queue);
         EXPECT_EQ(*guard.get_front(), 1);
     }
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<int>::Guard guard(locked_queue);
         EXPECT_EQ(*guard.get_front(), 1);
         guard.pop_front();
     }
 
     {
-        auto guard = locked_queue.guard();
+        LockedQueue<int>::Guard guard(locked_queue);
         EXPECT_EQ(*guard.get_front(), 2);
 
         guard.pop_front();
