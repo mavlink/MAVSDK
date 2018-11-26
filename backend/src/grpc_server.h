@@ -14,6 +14,7 @@
 #include "plugins/mission/mission.h"
 #include "mission/mission_service_impl.h"
 #include "telemetry/telemetry_service_impl.h"
+#include "info/info_service_impl.h"
 
 namespace dronecode_sdk {
 namespace backend {
@@ -32,7 +33,9 @@ public:
         _mission(_dc.system()),
         _mission_service(_mission),
         _telemetry(_dc.system()),
-        _telemetry_service(_telemetry)
+        _telemetry_service(_telemetry),
+        _info(_dc.system()),
+        _info_service(_info)
     {}
 
     void run();
@@ -54,6 +57,8 @@ private:
     MissionServiceImpl<> _mission_service;
     Telemetry _telemetry;
     TelemetryServiceImpl<> _telemetry_service;
+    Info _info;
+    InfoServiceImpl<> _info_service;
 
     std::unique_ptr<grpc::Server> _server;
 };

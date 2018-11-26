@@ -50,7 +50,7 @@ public:
                        const rpc::core::ListRunningPluginsRequest * /* request */,
                        dronecode_sdk::rpc::core::ListRunningPluginsResponse *response) override
     {
-        std::string plugin_names[3] = {"action", "mission", "telemetry"};
+        std::string plugin_names[4] = {"action", "mission", "telemetry", "info"};
 
         for (const auto plugin_name : plugin_names) {
             auto plugin_info = response->add_plugin_info();
