@@ -127,7 +127,10 @@ TEST(LockedQueue, ChangeValue)
     {
         auto guard = locked_queue.guard();
         EXPECT_EQ(guard.get_front()->value, 42);
-        guard.get_front()->value = 43;
+        auto front = guard.get_front();
+        if (front) {
+            front->value = 43;
+        }
     }
 
     {
