@@ -18,26 +18,25 @@ public:
     void enable() override;
     void disable() override;
 
-    uint64_t get_uuid() const;
-    bool is_complete() const;
-    Info::Version get_version() const;
-    Info::Product get_product() const;
+    std::pair<Info::Result, uint64_t> get_uuid() const;
+    std::pair<Info::Result, Info::Version> get_version() const;
+    std::pair<Info::Result, Info::Product> get_product() const;
 
     InfoImpl(const InfoImpl &) = delete;
     InfoImpl &operator=(const InfoImpl &) = delete;
 
 private:
-    void set_version(Info::Version version);
-    void set_product(Info::Product product);
-
+    void request_version_again();
     void process_heartbeat(const mavlink_message_t &message);
     void process_autopilot_version(const mavlink_message_t &message);
 
-    mutable std::mutex _version_mutex{};
-    Info::Version _version = {};
+    mutable std::mutex _mutex{};
 
-    mutable std::mutex _product_mutex{};
-    Info::Product _product = {};
+    Info::Version _version{};
+    Info::Product _product{};
+    bool _information_received{false};
+
+    void *_call_every_cookie{nullptr};
 
     static const char *vendor_id_str(uint16_t vendor_id);
     static const char *product_id_str(uint16_t product_id);

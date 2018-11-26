@@ -8,6 +8,7 @@ add_executable(unit_tests_backend
     core_service_impl_test.cpp
     mission_service_impl_test.cpp
     telemetry_service_impl_test.cpp
+    info_service_impl_test.cpp
 )
 
 set_target_properties(unit_tests_backend PROPERTIES COMPILE_FLAGS ${warnings})

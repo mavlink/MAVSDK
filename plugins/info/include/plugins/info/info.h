@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <string>
 #include "plugin_base.h"
 
 namespace dronecode_sdk {
@@ -31,6 +32,18 @@ public:
      * @brief Destructor (internal use only).
      */
     ~Info();
+
+    /**
+     * @brief Possible results returned for requests.
+     *
+     * @note DronecodeSDK does not throw exceptions. Instead a result of this
+     * type will be returned.
+     */
+    enum class Result {
+        UNKNOWN, /**< @brief Unspecified error. */
+        SUCCESS, /**< @brief The request was successful. */
+        INFORMATION_NOT_RECEIVED_YET /**< @brief The information has not been received yet. */
+    };
 
     /**
      * @brief Length of git hash strings.
@@ -73,32 +86,35 @@ public:
      *
      * If possible this will be a unique identifier provided by hardware.
      *
-     * @return The UUID of the system.
+     * @return a pair containing the result of the request and if successful,
+     * the UUID of the system.
      */
-    uint64_t uuid() const;
-
-    /**
-     * @brief Tests if the Version and Product objects are fully populated from hardware.
-     *
-     * @return `true` if Version and Product objects are fully populated from system.
-     */
-    bool is_complete() const;
+    std::pair<Result, uint64_t> uuid() const;
 
     /**
      * @brief Get system version information.
      *
-     * @return The version object for the system.
+     * @return a pair containing the result of the request and if successful,
+     * the version information about the system.
      */
-    Version get_version() const;
+    std::pair<Result, Version> get_version() const;
 
     /**
      * @brief Get system product information.
      *
-     * @return The product object for the system.
+     * @return a pair containing the result of the request and if successful,
+     * the product information about the system.
      */
-    Product get_product() const;
+    std::pair<Result, Product> get_product() const;
 
-    // Non-copyable
+    /**
+     * @brief Returns a human-readable English string for an Result.
+     *
+     * @param result The enum value for which a human readable string is required.
+     * @return Human readable string for the Result.
+     */
+    static std::string result_str(Result result);
+
     /**
      * @brief Copy Constructor (object is not copyable).
      */
