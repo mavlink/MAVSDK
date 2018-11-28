@@ -17,7 +17,7 @@ pipeline {
         stage('Ubuntu 16.04 Debug') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-10-01'
+              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-11-28'
               args '-e LOCAL_USER_ID=user_id'
             }
           }
@@ -35,7 +35,7 @@ pipeline {
         stage('Ubuntu 16.04 Release') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-10-01'
+              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-11-28'
             }
           }
           steps {
@@ -52,7 +52,7 @@ pipeline {
         stage('Ubuntu 18.04 Debug') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-18.04:2018-10-01'
+              image 'dronecode/dronecode-sdk-ubuntu-18.04:2018-11-28'
             }
           }
           steps {
@@ -69,7 +69,7 @@ pipeline {
         stage('Ubuntu 18.04 Release') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-18.04:2018-10-01'
+              image 'dronecode/dronecode-sdk-ubuntu-18.04:2018-11-28'
             }
           }
           steps {
@@ -86,7 +86,7 @@ pipeline {
         stage('Fedora 27 Debug') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-fedora-27:2018-10-01'
+              image 'dronecode/dronecode-sdk-fedora-27:2018-11-28'
             }
           }
           steps {
@@ -103,7 +103,7 @@ pipeline {
         stage('Fedora 27 Release') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-fedora-27:2018-10-01'
+              image 'dronecode/dronecode-sdk-fedora-27:2018-11-28'
             }
           }
           steps {
@@ -120,7 +120,7 @@ pipeline {
         stage('Fedora 28 Debug') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-fedora-28:2018-10-01'
+              image 'dronecode/dronecode-sdk-fedora-28:2018-11-28'
             }
           }
           steps {
@@ -137,7 +137,7 @@ pipeline {
         stage('Fedora 28 Release') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-fedora-28:2018-10-01'
+              image 'dronecode/dronecode-sdk-fedora-28:2018-11-28'
             }
           }
           steps {
@@ -160,7 +160,7 @@ pipeline {
         stage('check style') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-10-01'
+              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-11-28'
             }
           }
           steps {
@@ -171,7 +171,7 @@ pipeline {
         stage('example/takeoff_land') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-10-01'
+              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-11-28'
             }
           }
           steps {
@@ -187,7 +187,7 @@ pipeline {
         stage('example/fly_mission') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-10-01'
+              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-11-28'
             }
           }
           steps {
@@ -203,7 +203,7 @@ pipeline {
         stage('example/offboard_velocity') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-10-01'
+              image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-11-28'
             }
           }
           steps {
@@ -222,7 +222,7 @@ pipeline {
     stage('Generate Docs') {
       agent {
         docker {
-          image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-10-01'
+          image 'dronecode/dronecode-sdk-ubuntu-16.04:2018-11-28'
         }
       }
       steps {
