@@ -1168,6 +1168,7 @@ void MissionImpl::process_timeout()
             // again.
             _activity.state = Activity::State::NONE;
             LogWarn() << "Mission handling timed out while uploading mission.";
+            report_mission_result(_mission_data.result_callback, Mission::Result::TIMEOUT);
             return;
 
         } else if (_activity.state == Activity::State::GET_MISSION) {
