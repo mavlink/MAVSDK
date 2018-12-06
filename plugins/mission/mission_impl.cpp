@@ -583,7 +583,10 @@ void MissionImpl::assemble_mavlink_messages()
         // FIXME: It is a bit of a hack to set a LOITER_TIME waypoint to add a delay.
         //        A better solution would be to properly use NAV_DELAY instead. This
         //        would not require us to keep the last lat/lon.
-        if (std::isfinite(mission_item_impl.get_loiter_time_s())) {
+        // A loiter time of NAN is ignored but also a loiter time of 0 doesn't
+        // make any sense and should be discarded.
+        if (std::isfinite(mission_item_impl.get_loiter_time_s()) &&
+            mission_item_impl.get_loiter_time_s() > 0.0f) {
             if (!last_position_valid) {
                 // In the case where we get a delay without a previous position, we will have to
                 // ignore it.
