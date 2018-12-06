@@ -583,7 +583,10 @@ void MissionImpl::assemble_mavlink_messages()
         // FIXME: It is a bit of a hack to set a LOITER_TIME waypoint to add a delay.
         //        A better solution would be to properly use NAV_DELAY instead. This
         //        would not require us to keep the last lat/lon.
-        if (std::isfinite(mission_item_impl.get_loiter_time_s())) {
+        // A loiter time of NAN is ignored but also a loiter time of 0 doesn't
+        // make any sense and should be discarded.
+        if (std::isfinite(mission_item_impl.get_loiter_time_s()) &&
+            mission_item_impl.get_loiter_time_s() > 0.0f) {
             if (!last_position_valid) {
                 // In the case where we get a delay without a previous position, we will have to
                 // ignore it.
@@ -622,6 +625,10 @@ void MissionImpl::assemble_mavlink_messages()
                         static_cast<int>(_mission_data.mavlink_mission_item_messages.size()),
                         item_i});
                 _mission_data.mavlink_mission_item_messages.push_back(message_delay);
+            }
+
+            if (mission_item_impl.get_fly_through()) {
+                LogWarn() << "Conflicting options set: fly_through=true and loiter_time>0.";
             }
         }
 
@@ -1252,8 +1259,8 @@ Mission::Result MissionImpl::build_mission_items(MAV_CMD command,
             }
 
             if (command == MAV_CMD_NAV_WAYPOINT) {
-                auto is_fly_thru = !(int(params[0]) > 0);
-                new_mission_item->set_fly_through(is_fly_thru);
+                auto is_fly_through = !(int(params[0]) > 0);
+                new_mission_item->set_fly_through(is_fly_through);
             }
             auto lat = params[4], lon = params[5];
             new_mission_item->set_position(lat, lon);
