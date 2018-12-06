@@ -1252,8 +1252,8 @@ Mission::Result MissionImpl::build_mission_items(MAV_CMD command,
             }
 
             if (command == MAV_CMD_NAV_WAYPOINT) {
-                auto is_fly_thru = !(int(params[0]) > 0);
-                new_mission_item->set_fly_through(is_fly_thru);
+                auto is_fly_through = !(int(params[0]) > 0);
+                new_mission_item->set_fly_through(is_fly_through);
             }
             auto lat = params[4], lon = params[5];
             new_mission_item->set_position(lat, lon);
