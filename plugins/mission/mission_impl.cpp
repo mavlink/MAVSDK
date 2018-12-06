@@ -626,6 +626,10 @@ void MissionImpl::assemble_mavlink_messages()
                         item_i});
                 _mission_data.mavlink_mission_item_messages.push_back(message_delay);
             }
+
+            if (mission_item_impl.get_fly_through()) {
+                LogWarn() << "Conflicting options set: fly_through=true and loiter_time>0.";
+            }
         }
 
         if (mission_item_impl.get_camera_action() != MissionItem::CameraAction::NONE) {
