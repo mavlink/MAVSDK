@@ -11,8 +11,6 @@ service MissionService {
     rpc StartMission(StartMissionRequest) returns(StartMissionResponse) {}
     rpc PauseMission(PauseMissionRequest) returns(PauseMissionResponse) {}
     rpc SetCurrentMissionItemIndex(SetCurrentMissionItemIndexRequest) returns(SetCurrentMissionItemIndexResponse) {}
-    rpc GetCurrentMissionItemIndex(GetCurrentMissionItemIndexRequest) returns(GetCurrentMissionItemIndexResponse) {}
-    rpc GetMissionCount(GetMissionCountRequest) returns(GetMissionCountResponse) {}
     rpc IsMissionFinished(IsMissionFinishedRequest) returns(IsMissionFinishedResponse) {}
     rpc SubscribeMissionProgress(SubscribeMissionProgressRequest) returns(stream MissionProgressResponse) {}
     rpc GetReturnToLaunchAfterMission(GetReturnToLaunchAfterMissionRequest) returns(GetReturnToLaunchAfterMissionResponse) {}
@@ -47,16 +45,6 @@ message SetCurrentMissionItemIndexRequest {
 }
 message SetCurrentMissionItemIndexResponse {
     MissionResult mission_result = 1;
-}
-
-message GetCurrentMissionItemIndexRequest {}
-message GetCurrentMissionItemIndexResponse {
-    int32 index = 1;
-}
-
-message GetMissionCountRequest {}
-message GetMissionCountResponse {
-    int32 count = 1;
 }
 
 message IsMissionFinishedRequest {}
