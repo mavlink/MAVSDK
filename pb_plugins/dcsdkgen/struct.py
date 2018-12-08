@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 
+from .enum import Enum
+from .name_parser import NameParser
 from .utils import (is_request,
                     is_response,
                     is_struct,
                     Param,
                     type_info_factory)
-from .name_parser import NameParser
 from jinja2.exceptions import TemplateNotFound
 
 
@@ -19,6 +20,8 @@ class Struct(object):
         self._template = template_env.get_template("struct.j2")
         self._name = NameParser(pb_struct.name)
         self._fields = []
+        self._nested_enums = Enum.collect_enums(plugin_name, package, pb_struct.enum_type, template_env)
+        self._nested_structs = Struct.collect_structs(plugin_name, package, pb_struct.nested_type, template_env)
 
         for field in pb_struct.field:
             self._fields.append(
@@ -29,7 +32,9 @@ class Struct(object):
         return self._template.render(plugin_name=self._plugin_name,
                                      package=self._package,
                                      name=self._name,
-                                     fields=self._fields)
+                                     fields=self._fields,
+                                     nested_enums=self._nested_enums,
+                                     nested_structs=self._nested_structs)
 
     @staticmethod
     def collect_structs(plugin_name, package, structs, template_env):

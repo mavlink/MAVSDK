@@ -20,7 +20,8 @@ class AutoGen(object):
         for proto_file in request.proto_file:
             plugin_name = proto_file.name.split('.')[0].capitalize()
 
-            enums = Enum.collect_enums(proto_file.package,
+            enums = Enum.collect_enums(plugin_name,
+                                       proto_file.package,
                                        proto_file.enum_type,
                                        template_env)
 
