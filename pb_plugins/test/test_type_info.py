@@ -157,5 +157,13 @@ class TestTypeInfo(unittest.TestCase):
 
         self.assertEqual(type_info.name, "std::vector<SomeNonResultType>")
 
+    @patch("builtins.open", new_callable=mock_open, read_data=_conversion_dict_data_repeatable)
+    def test_inner_name_for_repeated(self, mock_file):
+        type_info_factory = TypeInfoFactory()
+        type_info = type_info_factory.create(self.non_primitive_field(11, "SomeNonResultType", self.repeated_label))
+
+        self.assertEqual(type_info.inner_name, "SomeNonResultType")
+
+
 if __name__ == '__main__':
     unittest.main()

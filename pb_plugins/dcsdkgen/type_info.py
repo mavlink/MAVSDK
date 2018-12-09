@@ -41,7 +41,7 @@ class TypeInfo:
     @property
     def name(self):
         """ Extracts the string types """
-        inner_type = self._extract_inner_type()
+        inner_type = self.inner_name
 
         if self.is_repeated:
             if "repeated" in self._conversion_dict:
@@ -55,7 +55,11 @@ class TypeInfo:
         else:
             return inner_type
 
-    def _extract_inner_type(self):
+    @property
+    def inner_name(self):
+        """ Extracts inner type name. Only different for repeated types,
+        where e.g. type name "std::vector<int>" has "int"
+        as its inner_name """
         type_id = self._field.type
 
         if not self.is_primitive:
