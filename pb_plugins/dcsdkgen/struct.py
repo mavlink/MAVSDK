@@ -20,8 +20,14 @@ class Struct(object):
         self._template = template_env.get_template("struct.j2")
         self._name = NameParser(pb_struct.name)
         self._fields = []
-        self._nested_enums = Enum.collect_enums(plugin_name, package, pb_struct.enum_type, template_env)
-        self._nested_structs = Struct.collect_structs(plugin_name, package, pb_struct.nested_type, template_env)
+        self._nested_enums = Enum.collect_enums(
+            plugin_name,
+            package,
+            pb_struct.enum_type,
+            template_env,
+            parent_struct=self._name)
+        self._nested_structs = Struct.collect_structs(
+            plugin_name, package, pb_struct.nested_type, template_env)
 
         for field in pb_struct.field:
             self._fields.append(
