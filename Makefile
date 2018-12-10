@@ -28,7 +28,6 @@ ifdef NINJA_BUILD
 else
 	CMAKE_GENERATOR ?= "Unix Makefiles"
 	MAKE = make
-	# Use 8 processes in parallel for the usual make
 	MAKE_ARGS = -j$(NPROCS)
 endif
 
