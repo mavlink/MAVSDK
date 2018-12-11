@@ -11,6 +11,16 @@ endif
 # Check for ninja and use it if available
 NINJA_BUILD := $(shell ninja --version 2>/dev/null)
 
+NPROCS := 1
+OS := $(shell uname -s)
+
+ifeq ($(OS),Linux)
+	NPROCS := $(shell grep -c ^processor /proc/cpuinfo)
+endif
+ifeq ($(OS),Darwin) #Mac OS
+	NPROCS := $(shell sysctl -n hw.ncpu || echo 1)
+endif
+
 ifdef NINJA_BUILD
 	CMAKE_GENERATOR ?= "Ninja"
 	MAKE = ninja
@@ -18,8 +28,7 @@ ifdef NINJA_BUILD
 else
 	CMAKE_GENERATOR ?= "Unix Makefiles"
 	MAKE = make
-	# Use 8 processes in parallel for the usual make
-	MAKE_ARGS = -j8
+	MAKE_ARGS = -j$(NPROCS)
 endif
 
 # Get additional arguments after target argument. (e.g. make release install)
