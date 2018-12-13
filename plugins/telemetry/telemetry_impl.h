@@ -121,6 +121,8 @@ private:
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
+
+    void process_parameter_update(const std::string &name);
 #ifdef LEVEL_CALIBRATION
     void receive_param_cal_level(MAVLinkParameters::Result result, float value);
 #endif

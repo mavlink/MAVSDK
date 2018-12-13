@@ -63,10 +63,14 @@ void TelemetryImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS, std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
+
+    _parent->register_param_changed_handler(
+        std::bind(&TelemetryImpl::process_parameter_update, this, _1), this);
 }
 
 void TelemetryImpl::deinit()
 {
+    _parent->unregister_param_changed_handler(this);
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
@@ -906,6 +910,46 @@ void TelemetryImpl::health_all_ok_async(Telemetry::health_all_ok_callback_t &cal
 void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t &callback)
 {
     _rc_status_subscription = callback;
+}
+
+void TelemetryImpl::process_parameter_update(const std::string &name)
+{
+    if (name.compare("CAL_GYRO0_ID") == 0) {
+        _parent->get_param_int_async(std::string("CAL_GYRO0_ID"),
+                                     std::bind(&TelemetryImpl::receive_param_cal_gyro,
+                                               this,
+                                               std::placeholders::_1,
+                                               std::placeholders::_2));
+
+    } else if (name.compare("CAL_ACC0_ID") == 0) {
+        _parent->get_param_int_async(std::string("CAL_ACC0_ID"),
+                                     std::bind(&TelemetryImpl::receive_param_cal_accel,
+                                               this,
+                                               std::placeholders::_1,
+                                               std::placeholders::_2));
+
+    } else if (name.compare("CAL_MAG0_ID") == 0) {
+        _parent->get_param_int_async(std::string("CAL_MAG0_ID"),
+                                     std::bind(&TelemetryImpl::receive_param_cal_mag,
+                                               this,
+                                               std::placeholders::_1,
+                                               std::placeholders::_2));
+
+#ifdef LEVEL_CALIBRATION
+    } else if (name.compare("SENS_BOARD_X_OFF") == 0) {
+        _parent->get_param_float_async(std::string("SENS_BOARD_X_OFF"),
+                                       std::bind(&TelemetryImpl::receive_param_cal_level,
+                                                 this,
+                                                 std::placeholders::_1,
+                                                 std::placeholders::_2));
+#endif
+    } else if (name.compare("SYS_HITL") == 0) {
+        _parent->get_param_int_async(std::string("SYS_HITL"),
+                                     std::bind(&TelemetryImpl::receive_param_hitl,
+                                               this,
+                                               std::placeholders::_1,
+                                               std::placeholders::_2));
+    }
 }
 
 } // namespace dronecode_sdk
