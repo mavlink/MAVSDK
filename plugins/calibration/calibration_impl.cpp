@@ -265,6 +265,34 @@ void CalibrationImpl::process_statustext(const mavlink_message_t &message)
             break;
     }
 
+    // In case we succeed or fail we need to notify that params
+    // might have changed.
+    switch (_parser.get_status()) {
+        case CalibrationStatustextParser::Status::DONE:
+            // FALLTHROUGH
+        case CalibrationStatustextParser::Status::FAILED:
+            // FALLTHROUGH
+        case CalibrationStatustextParser::Status::CANCELLED:
+            switch (_state) {
+                case State::NONE:
+                    break;
+                case State::GYRO_CALIBRATION:
+                    _parent->param_changed("CAL_GYRO0_ID");
+                    break;
+                case State::ACCELEROMETER_CALIBRATION:
+                    _parent->param_changed("CAL_ACC0_ID");
+                    break;
+                case State::MAGNETOMETER_CALIBRATION:
+                    _parent->param_changed("CAL_MAG0_ID");
+                    break;
+                case State::GIMBAL_ACCELEROMETER_CALIBRATION:
+                    break;
+            }
+
+        default:
+            break;
+    }
+
     switch (_parser.get_status()) {
         case CalibrationStatustextParser::Status::DONE:
             // FALLTHROUGH
