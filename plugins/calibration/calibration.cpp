@@ -31,6 +31,11 @@ void Calibration::calibrate_gimbal_accelerometer_async(calibration_callback_t ca
     _impl->calibrate_gimbal_accelerometer_async(callback);
 }
 
+void Calibration::cancel_calibration()
+{
+    _impl->cancel_calibration();
+}
+
 const char *Calibration::result_str(Result result)
 {
     switch (result) {
