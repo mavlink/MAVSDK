@@ -155,6 +155,36 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(
                                 std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
+void CalibrationImpl::cancel_calibration()
+{
+    std::lock_guard<std::mutex> lock(_calibration_mutex);
+
+    uint8_t target_component_id = MAV_COMP_ID_AUTOPILOT1;
+
+    switch (_state) {
+        case State::NONE:
+            LogWarn() << "No calibration to cancel";
+            return;
+        case State::GYRO_CALIBRATION:
+            break;
+        case State::ACCELEROMETER_CALIBRATION:
+            break;
+        case State::MAGNETOMETER_CALIBRATION:
+            break;
+        case State::GIMBAL_ACCELEROMETER_CALIBRATION:
+            target_component_id = MAV_COMP_ID_GIMBAL;
+            break;
+    }
+
+    MAVLinkCommands::CommandLong command{};
+    command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
+    // All params 0 signal cancellation of a calibration.
+    MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
+    command.target_component_id = target_component_id;
+    // We don't care about the result, the initial callback should get notified about it.
+    _parent->send_command_async(command, nullptr);
+}
+
 void CalibrationImpl::command_result_callback(MAVLinkCommands::Result command_result,
                                               float progress)
 {

@@ -24,6 +24,8 @@ public:
     void calibrate_magnetometer_async(const Calibration::calibration_callback_t &callback);
     void calibrate_gimbal_accelerometer_async(const Calibration::calibration_callback_t &callback);
 
+    void cancel_calibration();
+
 private:
     void call_user_callback(const Calibration::calibration_callback_t &callback,
                             const Calibration::Result &result,

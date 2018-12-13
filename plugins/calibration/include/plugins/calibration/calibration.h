@@ -123,6 +123,12 @@ public:
     void calibrate_gimbal_accelerometer_async(calibration_callback_t callback);
 
     /**
+     * @brief Cancel ongoing calibration.
+     *
+     */
+    void cancel_calibration();
+
+    /**
      * @brief Copy constructor (object is not copyable).
      */
     Calibration(const Calibration &) = delete;

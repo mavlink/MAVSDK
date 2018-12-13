@@ -164,6 +164,38 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
     EXPECT_TRUE(telemetry->health().gyrometer_calibration_ok);
 }
 
+TEST(HardwareTest, CalibrationGyroCancelled)
+{
+    DronecodeSDK dc;
+
+    ConnectionResult ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    System &system = dc.system();
+    ASSERT_TRUE(system.has_autopilot());
+
+    // Do gyro calibration.
+    auto calibration = std::make_shared<Calibration>(system);
+
+    std::promise<Calibration::Result> prom{};
+    std::future<Calibration::Result> fut = prom.get_future();
+
+    calibration->calibrate_gyro_async(
+        std::bind(&receive_calibration_callback, _1, _2, "gyro", std::ref(prom)));
+
+    auto status = fut.wait_for(std::chrono::seconds(2));
+    EXPECT_EQ(status, std::future_status::timeout);
+
+    calibration->cancel_calibration();
+
+    status = fut.wait_for(std::chrono::seconds(1));
+    EXPECT_EQ(status, std::future_status::ready);
+    auto future_ret = fut.get();
+    EXPECT_EQ(future_ret, Calibration::Result::CANCELLED);
+}
+
 void receive_calibration_callback(const Calibration::Result result,
                                   const Calibration::ProgressData &progress_data,
                                   const std::string &calibration_type,
