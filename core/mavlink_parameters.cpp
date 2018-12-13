@@ -247,6 +247,15 @@ void MAVLinkParameters::do_work()
     }
 }
 
+void MAVLinkParameters::remove_from_cache(const std::string &name)
+{
+    const auto &it = _cache.find(name);
+    if (it == _cache.end()) {
+        return;
+    }
+    _cache.erase(it);
+}
+
 void MAVLinkParameters::reset_cache()
 {
     _cache.clear();

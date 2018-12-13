@@ -492,6 +492,7 @@ public:
     void do_work();
 
     void reset_cache();
+    void remove_from_cache(const std::string &name);
 
     friend std::ostream &operator<<(std::ostream &, const ParamValue &);
 
