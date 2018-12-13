@@ -30,20 +30,7 @@ void CalibrationImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void CalibrationImpl::enable()
-{
-    // The calibration check should eventually be better than this.
-    // For now, we just do the same as QGC does.
-    _parent->get_param_int_async(std::string("CAL_GYRO0_ID"),
-                                 std::bind(&CalibrationImpl::receive_param_cal_gyro, this, _1, _2));
-
-    _parent->get_param_int_async(
-        std::string("CAL_ACC0_ID"),
-        std::bind(&CalibrationImpl::receive_param_cal_accel, this, _1, _2));
-
-    _parent->get_param_int_async(std::string("CAL_MAG0_ID"),
-                                 std::bind(&CalibrationImpl::receive_param_cal_mag, this, _1, _2));
-}
+void CalibrationImpl::enable() {}
 
 void CalibrationImpl::disable() {}
 
@@ -168,24 +155,6 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(
                                 std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
-bool CalibrationImpl::is_gyro_calibration_ok() const
-{
-    std::lock_guard<std::mutex> lock(_calibration_mutex);
-    return _is_gyro_ok;
-}
-
-bool CalibrationImpl::is_accelerometer_calibration_ok() const
-{
-    std::lock_guard<std::mutex> lock(_calibration_mutex);
-    return _is_accelerometer_ok;
-}
-
-bool CalibrationImpl::is_magnetometer_calibration_ok() const
-{
-    std::lock_guard<std::mutex> lock(_calibration_mutex);
-    return _is_magnetometer_ok;
-}
-
 void CalibrationImpl::command_result_callback(MAVLinkCommands::Result command_result,
                                               float progress)
 {
@@ -257,60 +226,6 @@ CalibrationImpl::calibration_result_from_command_result(MAVLinkCommands::Result 
         default:
             return Calibration::Result::UNKNOWN;
     }
-}
-
-void CalibrationImpl::receive_param_cal_gyro(MAVLinkParameters::Result result, int value)
-{
-    if (result != MAVLinkParameters::Result::SUCCESS) {
-        LogErr() << "Error: Param for gyro cal failed.";
-        return;
-    }
-
-    bool ok = (value != 0);
-    set_gyro_calibration(ok);
-}
-
-void CalibrationImpl::receive_param_cal_accel(MAVLinkParameters::Result result, int value)
-{
-    if (result != MAVLinkParameters::Result::SUCCESS) {
-        LogErr() << "Error: Param for accel cal failed.";
-        return;
-    }
-
-    bool ok = (value != 0);
-    set_accelerometer_calibration(ok);
-}
-
-void CalibrationImpl::receive_param_cal_mag(MAVLinkParameters::Result result, int value)
-{
-    if (result != MAVLinkParameters::Result::SUCCESS) {
-        LogErr() << "Error: Param for mag cal failed.";
-        return;
-    }
-
-    bool ok = (value != 0);
-    set_magnetometer_calibration(ok);
-}
-
-void CalibrationImpl::set_gyro_calibration(bool ok)
-{
-    std::lock_guard<std::mutex> lock(_calibration_mutex);
-
-    _is_gyro_ok = ok;
-}
-
-void CalibrationImpl::set_accelerometer_calibration(bool ok)
-{
-    std::lock_guard<std::mutex> lock(_calibration_mutex);
-
-    _is_accelerometer_ok = ok;
-}
-
-void CalibrationImpl::set_magnetometer_calibration(bool ok)
-{
-    std::lock_guard<std::mutex> lock(_calibration_mutex);
-
-    _is_magnetometer_ok = ok;
 }
 
 void CalibrationImpl::process_statustext(const mavlink_message_t &message)
