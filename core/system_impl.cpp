@@ -1055,4 +1055,45 @@ void SystemImpl::call_user_callback(const std::function<void()> &func)
     _thread_pool.enqueue(func);
 }
 
+void SystemImpl::param_changed(const std::string &name)
+{
+    _params.remove_from_cache(name);
+
+    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
+
+    for (auto &callback : _param_changed_callbacks) {
+        callback.second(name);
+    }
+}
+
+void SystemImpl::register_param_changed_handler(const param_changed_callback_t callback,
+                                                const void *cookie)
+{
+    if (!callback) {
+        LogErr() << "No callback for param_changed_handler supplied.";
+        return;
+    }
+
+    if (!cookie) {
+        LogErr() << "No callback for param_changed_handler supplied.";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
+
+    _param_changed_callbacks[cookie] = callback;
+}
+
+void SystemImpl::unregister_param_changed_handler(const void *cookie)
+{
+    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
+
+    auto it = _param_changed_callbacks.find(cookie);
+    if (it == _param_changed_callbacks.end()) {
+        LogWarn() << "param_changed_handler for cookie not found";
+        return;
+    }
+    _param_changed_callbacks.erase(it);
+}
+
 } // namespace dronecode_sdk
