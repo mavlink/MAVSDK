@@ -47,9 +47,10 @@ public:
         INVALID_ARGUMENT, /**< @brief Invalid argument. */
         UNSUPPORTED, /**< @brief The mission downloaded from the system is not supported. */
         NO_MISSION_AVAILABLE, /**< @brief No mission available on system. */
-        FAILED_TO_OPEN_QGC_PLAN, /**< @brief Failed to open QGroundControl plan */
-        FAILED_TO_PARSE_QGC_PLAN, /**< @brief Failed to parse QGroundControl plan */
-        UNSUPPORTED_MISSION_CMD /**< @brief Unsupported mission command */
+        FAILED_TO_OPEN_QGC_PLAN, /**< @brief Failed to open QGroundControl plan. */
+        FAILED_TO_PARSE_QGC_PLAN, /**< @brief Failed to parse QGroundControl plan. */
+        UNSUPPORTED_MISSION_CMD, /**< @brief Unsupported mission command. */
+        CANCELLED /**< @brief Mission upload or download has been cancelled. */
     };
 
     /**
@@ -102,6 +103,14 @@ public:
                               result_callback_t callback);
 
     /**
+     * @brief Cancel a mission upload (asynchronous).
+     *
+     * This cancels an ongoing mission upload. The mission upload will fail
+     * with the result `Result::CANCELLED`.
+     */
+    void upload_mission_cancel();
+
+    /**
      * @brief Callback type for `download_mission_async()` call to get mission items and result.
      */
     typedef std::function<void(Result, std::vector<std::shared_ptr<MissionItem>>)>
@@ -116,6 +125,14 @@ public:
      * @param callback Callback to receive mission items and result of this request.
      */
     void download_mission_async(mission_items_and_result_callback_t callback);
+
+    /**
+     * @brief Cancel a mission download (asynchronous).
+     *
+     * This cancels an ongoing mission download. The mission download will fail
+     * with the result `Result::CANCELLED`.
+     */
+    void download_mission_cancel();
 
     /**
      * @brief Set whether to trigger Return-to-Launch (RTL) after mission is complete.

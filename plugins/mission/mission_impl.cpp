@@ -102,7 +102,9 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
         if (_activity.state != Activity::State::SET_MISSION) {
-            LogWarn() << "Ignoring mission request int, not active";
+            if (_activity.state != Activity::State::ABORTED) {
+                LogWarn() << "Ignoring mission request int, not active";
+            }
             return;
         }
     }
@@ -123,7 +125,9 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
         if (_activity.state != Activity::State::SET_MISSION) {
-            LogWarn() << "Error: not sure how to process Mission ack.";
+            if (_activity.state != Activity::State::ABORTED) {
+                LogWarn() << "Error: not sure how to process Mission ack.";
+            }
             return;
         }
     }
@@ -318,6 +322,10 @@ void MissionImpl::upload_mission_async(
     bool should_report_mission_result = false;
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
+        if (_activity.state == Activity::State::ABORTED) {
+            _activity.state = Activity::State::NONE;
+        }
+
         if (_activity.state != Activity::State::NONE) {
             should_report_mission_result = true;
         }
@@ -367,12 +375,51 @@ void MissionImpl::upload_mission_async(
     }
 }
 
+void MissionImpl::upload_mission_cancel()
+{
+    _parent->unregister_timeout_handler(_timeout_cookie);
+
+    {
+        std::lock_guard<std::mutex> lock(_activity.mutex);
+        if (_activity.state != Activity::State::SET_MISSION) {
+            LogWarn() << "No mission upload in progress";
+            return;
+        }
+
+        _activity.state = Activity::State::ABORTED;
+    }
+
+    {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+
+        report_mission_result(_mission_data.result_callback, Mission::Result::CANCELLED);
+
+        mavlink_message_t message;
+        mavlink_msg_mission_ack_pack(GCSClient::system_id,
+                                     GCSClient::component_id,
+                                     &message,
+                                     _parent->get_system_id(),
+                                     _parent->get_autopilot_id(),
+                                     MAV_MISSION_DENIED,
+                                     MAV_MISSION_TYPE_MISSION);
+        _parent->send_message(message);
+
+        _mission_data.mavlink_mission_items_downloaded.clear();
+        _mission_data.retries = 0;
+        _mission_data.result_callback = nullptr;
+    }
+}
+
 void MissionImpl::download_mission_async(
     const Mission::mission_items_and_result_callback_t &callback)
 {
     bool should_report_mission_items_and_result = false;
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
+        if (_activity.state == Activity::State::ABORTED) {
+            _activity.state = Activity::State::NONE;
+        }
+
         if (_activity.state != Activity::State::NONE) {
             should_report_mission_items_and_result = true;
         }
@@ -411,6 +458,42 @@ void MissionImpl::download_mission_async(
         _mission_data.mavlink_mission_items_downloaded.clear();
         _mission_data.retries = 0;
         _mission_data.mission_items_and_result_callback = callback;
+    }
+}
+
+void MissionImpl::download_mission_cancel()
+{
+    _parent->unregister_timeout_handler(_timeout_cookie);
+
+    {
+        std::lock_guard<std::mutex> lock(_activity.mutex);
+        if (_activity.state != Activity::State::GET_MISSION) {
+            LogWarn() << "No mission download in progress";
+            return;
+        }
+
+        _activity.state = Activity::State::ABORTED;
+    }
+
+    {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+
+        report_mission_items_and_result(_mission_data.mission_items_and_result_callback,
+                                        Mission::Result::CANCELLED);
+
+        mavlink_message_t message;
+        mavlink_msg_mission_ack_pack(GCSClient::system_id,
+                                     GCSClient::component_id,
+                                     &message,
+                                     _parent->get_system_id(),
+                                     _parent->get_autopilot_id(),
+                                     MAV_MISSION_DENIED,
+                                     MAV_MISSION_TYPE_MISSION);
+        _parent->send_message(message);
+
+        _mission_data.mavlink_mission_items_downloaded.clear();
+        _mission_data.retries = 0;
+        _mission_data.mission_items_and_result_callback = nullptr;
     }
 }
 
@@ -899,6 +982,10 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
     bool should_report_mission_result = false;
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
+        if (_activity.state == Activity::State::ABORTED) {
+            _activity.state = Activity::State::NONE;
+        }
+
         if (_activity.state != Activity::State::NONE) {
             should_report_mission_result = true;
         } else {
@@ -921,6 +1008,10 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
     bool should_report_mission_result = false;
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
+        if (_activity.state == Activity::State::ABORTED) {
+            _activity.state = Activity::State::NONE;
+        }
+
         if (_activity.state != Activity::State::NONE) {
             should_report_mission_result = true;
         } else {
@@ -944,6 +1035,10 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
     bool should_report_mission_result = false;
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
+        if (_activity.state == Activity::State::ABORTED) {
+            _activity.state = Activity::State::NONE;
+        }
+
         if (_activity.state != Activity::State::NONE) {
             should_report_mission_result = true;
         }
