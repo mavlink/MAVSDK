@@ -15,9 +15,19 @@ void Mission::upload_mission_async(const std::vector<std::shared_ptr<MissionItem
     _impl->upload_mission_async(mission_items, callback);
 }
 
+void Mission::upload_mission_cancel()
+{
+    _impl->upload_mission_cancel();
+}
+
 void Mission::download_mission_async(Mission::mission_items_and_result_callback_t callback)
 {
     _impl->download_mission_async(callback);
+}
+
+void Mission::download_mission_cancel()
+{
+    _impl->download_mission_cancel();
 }
 
 void Mission::set_return_to_launch_after_mission(bool enable)
@@ -73,6 +83,8 @@ const char *Mission::result_str(Result result)
             return "Failed to parse QGC plan";
         case Result::UNSUPPORTED_MISSION_CMD:
             return "Unsupported Mission command";
+        case Result::CANCELLED:
+            return "Cancelled";
         case Result::UNKNOWN:
         default:
             return "Unknown";

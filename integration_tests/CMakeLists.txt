@@ -33,6 +33,7 @@ add_executable(integration_tests_runner
     info.cpp
     #logging.cpp # Not fully implemented
     log_files.cpp
+    mission_cancellation.cpp
     mission_change_speed.cpp
     mission.cpp
     mission_rtl.cpp

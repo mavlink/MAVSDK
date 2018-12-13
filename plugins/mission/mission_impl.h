@@ -27,8 +27,10 @@ public:
 
     void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
                               const Mission::result_callback_t &callback);
+    void upload_mission_cancel();
 
     void download_mission_async(const Mission::mission_items_and_result_callback_t &callback);
+    void download_mission_cancel();
 
     void set_return_to_launch_after_mission(bool enable_rtl);
     bool get_return_to_launch_after_mission();
@@ -96,6 +98,7 @@ private:
             SET_CURRENT,
             SET_MISSION,
             GET_MISSION,
+            ABORTED,
             SEND_COMMAND
         } state{Activity::State::NONE};
     } _activity{};
