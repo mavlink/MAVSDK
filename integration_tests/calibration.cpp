@@ -1,4 +1,5 @@
 #include <iostream>
+#include <future>
 #include "integration_test_helper.h"
 #include "global_include.h"
 #include "dronecode_sdk.h"
@@ -10,7 +11,7 @@ using namespace std::placeholders; // for `_1`
 static void receive_calibration_callback(const Calibration::Result result,
                                          const Calibration::ProgressData &progress_data,
                                          const std::string &calibration_type,
-                                         bool &done);
+                                         std::promise<void> &prom);
 
 TEST(HardwareTest, CalibrationGyro)
 {
@@ -26,14 +27,13 @@ TEST(HardwareTest, CalibrationGyro)
 
     auto calibration = std::make_shared<Calibration>(system);
 
-    bool done = false;
+    std::promise<void> prom{};
+    std::future<void> fut = prom.get_future();
 
     calibration->calibrate_gyro_async(
-        std::bind(&receive_calibration_callback, _1, _2, "gyro", std::ref(done)));
+        std::bind(&receive_calibration_callback, _1, _2, "gyro", std::ref(prom)));
 
-    while (!done) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    fut.wait();
 }
 
 TEST(HardwareTest, CalibrationAccelerometer)
@@ -50,14 +50,13 @@ TEST(HardwareTest, CalibrationAccelerometer)
 
     auto calibration = std::make_shared<Calibration>(system);
 
-    bool done = false;
+    std::promise<void> prom{};
+    std::future<void> fut = prom.get_future();
 
     calibration->calibrate_accelerometer_async(
-        std::bind(&receive_calibration_callback, _1, _2, "accelerometer", std::ref(done)));
+        std::bind(&receive_calibration_callback, _1, _2, "accelerometer", std::ref(prom)));
 
-    while (!done) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    fut.wait();
 }
 
 TEST(HardwareTest, CalibrationMagnetometer)
@@ -74,14 +73,13 @@ TEST(HardwareTest, CalibrationMagnetometer)
     auto calibration = std::make_shared<Calibration>(system);
     ASSERT_TRUE(system.has_autopilot());
 
-    bool done = false;
+    std::promise<void> prom{};
+    std::future<void> fut = prom.get_future();
 
     calibration->calibrate_magnetometer_async(
-        std::bind(&receive_calibration_callback, _1, _2, "magnetometer", std::ref(done)));
+        std::bind(&receive_calibration_callback, _1, _2, "magnetometer", std::ref(prom)));
 
-    while (!done) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    fut.wait();
 }
 
 TEST(HardwareTest, CalibrationGimbalAccelerometer)
@@ -98,20 +96,19 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
 
     auto calibration = std::make_shared<Calibration>(system);
 
-    bool done = false;
+    std::promise<void> prom{};
+    std::future<void> fut = prom.get_future();
 
     calibration->calibrate_gimbal_accelerometer_async(
-        std::bind(&receive_calibration_callback, _1, _2, "gimbal accelerometer", std::ref(done)));
+        std::bind(&receive_calibration_callback, _1, _2, "gimbal accelerometer", std::ref(prom)));
 
-    while (!done) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    fut.wait();
 }
 
 void receive_calibration_callback(const Calibration::Result result,
                                   const Calibration::ProgressData &progress_data,
                                   const std::string &calibration_type,
-                                  bool &done)
+                                  std::promise<void> &prom)
 {
     if (result == Calibration::Result::IN_PROGRESS) {
         LogInfo() << calibration_type << " calibration in progress: " << progress_data.progress;
@@ -128,6 +125,7 @@ void receive_calibration_callback(const Calibration::Result result,
                          << " cailbration failed: " << progress_data.status_text;
             }
         }
-        done = true;
+        prom.set_value();
     }
 }
+
