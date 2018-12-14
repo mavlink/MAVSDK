@@ -160,6 +160,33 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
     send_velocity_body();
 }
 
+void OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
+{
+    _mutex.lock();
+    _attitude_rate = attitude_rate;
+
+    if (_mode != Mode::ATTITUDE_RATE) {
+        if (_call_every_cookie) {
+            // If we're already sending other setpoints, stop that now.
+            _parent->remove_call_every(_call_every_cookie);
+            _call_every_cookie = nullptr;
+        }
+        // We automatically send body setpoints from now on.
+        _parent->add_call_every(
+            [this]() { send_attitude_rate(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+        _mode = Mode::ATTITUDE_RATE;
+    } else {
+        // We're already sending these kind of setpoints. Since the setpoint change, let's
+        // reschedule the next call, so we don't send setpoints too often.
+        _parent->reset_call_every(_call_every_cookie);
+    }
+    _mutex.unlock();
+
+    // also send it right now to reduce latency
+    send_attitude_rate();
+}
+
 void OffboardImpl::send_velocity_ned()
 {
     const static uint16_t IGNORE_X = (1 << 0);
@@ -263,6 +290,41 @@ void OffboardImpl::send_velocity_body()
         afz,
         yaw,
         yaw_rate);
+    _parent->send_message(message);
+}
+
+void OffboardImpl::send_attitude_rate()
+{
+    // const static uint8_t IGNORE_BODY_ROLL_RATE = (1 << 0);
+    // const static uint8_t IGNORE_BODY_PITCH_RATE = (1 << 1);
+    // const static uint8_t IGNORE_BODY_YAW_RATE = (1 << 2);
+    // const static uint8_t IGNORE_4 = (1 << 3);
+    // const static uint8_t IGNORE_5 = (1 << 4);
+    // const static uint8_t IGNORE_6 = (1 << 5);
+    // const static uint8_t IGNORE_THRUST = (1 << 6);
+    const static uint8_t IGNORE_ATTITUDE = (1 << 7);
+
+    _mutex.lock();
+    const float thrust = _attitude_rate.thrust_value;
+    const float body_roll_rate = to_rad_from_deg(_attitude_rate.roll_deg_s);
+    const float body_pitch_rate = to_rad_from_deg(_attitude_rate.pitch_deg_s);
+    const float body_yaw_rate = to_rad_from_deg(_attitude_rate.yaw_deg_s);
+    _mutex.unlock();
+
+    mavlink_message_t message;
+    mavlink_msg_set_attitude_target_pack(
+        GCSClient::system_id,
+        GCSClient::component_id,
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        IGNORE_ATTITUDE,
+        0,
+        body_roll_rate,
+        body_pitch_rate,
+        body_yaw_rate,
+        thrust);
     _parent->send_message(message);
 }
 

@@ -29,6 +29,7 @@ public:
 
     void set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw);
     void set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
+    void set_attitude_rate(Offboard::AttitudeRate attitude_rate);
 
     OffboardImpl(const OffboardImpl &) = delete;
     OffboardImpl &operator=(const OffboardImpl &) = delete;
@@ -36,6 +37,7 @@ public:
 private:
     void send_velocity_ned();
     void send_velocity_body();
+    void send_attitude_rate();
 
     void process_heartbeat(const mavlink_message_t &message);
     void receive_command_result(MAVLinkCommands::Result result,
@@ -46,9 +48,15 @@ private:
     void stop_sending_setpoints();
 
     mutable std::mutex _mutex{};
-    enum class Mode { NOT_ACTIVE, VELOCITY_NED, VELOCITY_BODY } _mode = Mode::NOT_ACTIVE;
+    enum class Mode {
+        NOT_ACTIVE,
+        VELOCITY_NED,
+        VELOCITY_BODY,
+        ATTITUDE_RATE
+    } _mode = Mode::NOT_ACTIVE;
     Offboard::VelocityNEDYaw _velocity_ned_yaw{};
     Offboard::VelocityBodyYawspeed _velocity_body_yawspeed{};
+    Offboard::AttitudeRate _attitude_rate{};
 
     void *_call_every_cookie = nullptr;
 

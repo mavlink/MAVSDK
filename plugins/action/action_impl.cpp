@@ -56,7 +56,7 @@ Action::Result ActionImpl::arm() const
         return ret;
     }
 
-    // Go to LOITER mode first.
+    // Go to LOITER mode first. // For No GPS mode with vision system comment the next 5 lines.
     ret = action_result_from_command_result(_parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
 
     if (ret != Action::Result::SUCCESS) {
