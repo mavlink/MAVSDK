@@ -31,6 +31,7 @@ add_executable(integration_tests_runner
     follow_me.cpp
     gimbal.cpp
     info.cpp
+    offboard_attitude.cpp
     #logging.cpp # Not fully implemented
     log_files.cpp
     mission_cancellation.cpp
