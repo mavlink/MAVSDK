@@ -17,45 +17,41 @@ public:
         _queue.push_back(std::make_shared<T>(item));
     }
 
-    // This allows to get access to the front and keep others
-    // from using it. This blocks if the front is already borrowed.
-    std::shared_ptr<T> borrow_front()
-    {
-        _mutex.lock();
-        if (_queue.size() == 0) {
-            // We couldn't borrow anything, therefore don't keep the lock.
-            _mutex.unlock();
-            return nullptr;
-        }
-        return _queue.front();
-    }
-
-    // This allows to return a borrowed queue.
-    void return_front()
-    {
-        // We don't know if the mutex is locked and Windows doesn't let us
-        // unlock an unowned mutex.
-        _mutex.try_lock();
-        _mutex.unlock();
-    }
-
-    void pop_front()
-    {
-        // In case it's not returned, do that now.
-        return_front();
-
-        std::lock_guard<std::mutex> lock(_mutex);
-        if (_queue.size() == 0) {
-            return;
-        }
-        _queue.pop_front();
-    }
-
     size_t size()
     {
         std::lock_guard<std::mutex> lock(_mutex);
         return _queue.size();
     }
+
+    class Guard {
+    public:
+        Guard(LockedQueue &locked_queue) : _locked_queue(locked_queue)
+        {
+            _locked_queue._mutex.lock();
+        }
+
+        ~Guard() { _locked_queue._mutex.unlock(); }
+
+        Guard(Guard &other) = delete;
+        Guard(const Guard &other) = delete;
+        Guard(Guard &&other) = delete;
+        Guard(const Guard &&other) = delete;
+        Guard &operator=(const Guard &other) = delete;
+        Guard &operator=(Guard &&other) = delete;
+
+        std::shared_ptr<T> get_front()
+        {
+            if (_locked_queue._queue.size() == 0) {
+                return nullptr;
+            }
+            return _locked_queue._queue.front();
+        }
+
+        void pop_front() { _locked_queue._queue.pop_front(); }
+
+    private:
+        LockedQueue<T> &_locked_queue;
+    };
 
 private:
     std::deque<std::shared_ptr<T>> _queue{};

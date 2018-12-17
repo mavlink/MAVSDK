@@ -129,9 +129,9 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 
     // LogDebug() << "We got an ack: " << command_ack.command;
 
-    std::unique_lock<std::mutex> lock(_state_mutex);
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    auto work = work_queue_guard.get_front();
 
-    auto work = _work_queue.borrow_front();
     if (!work) {
         return;
     }
@@ -140,51 +140,40 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
         // If the command does not match with our current command, ignore it.
         LogWarn() << "Command ack " << int(command_ack.command)
                   << " not matching our current command: " << work->mavlink_command;
-        _work_queue.return_front();
         return;
     }
 
     switch (command_ack.result) {
         case MAV_RESULT_ACCEPTED:
-            _state = State::NONE;
             _parent.unregister_timeout_handler(_timeout_cookie);
-            _work_queue.pop_front();
-            lock.unlock();
+            work_queue_guard.pop_front();
             call_callback(work->callback, Result::SUCCESS, 1.0f);
             break;
 
         case MAV_RESULT_DENIED:
             LogWarn() << "command denied (" << work->mavlink_command << ").";
-            _state = State::NONE;
             _parent.unregister_timeout_handler(_timeout_cookie);
-            _work_queue.pop_front();
-            lock.unlock();
+            work_queue_guard.pop_front();
             call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_UNSUPPORTED:
             LogWarn() << "command unsupported (" << work->mavlink_command << ").";
-            _state = State::NONE;
             _parent.unregister_timeout_handler(_timeout_cookie);
-            _work_queue.pop_front();
-            lock.unlock();
+            work_queue_guard.pop_front();
             call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_TEMPORARILY_REJECTED:
             LogWarn() << "command temporarily rejected (" << work->mavlink_command << ").";
-            _state = State::NONE;
             _parent.unregister_timeout_handler(_timeout_cookie);
-            _work_queue.pop_front();
-            lock.unlock();
+            work_queue_guard.pop_front();
             call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
         case MAV_RESULT_FAILED:
-            _state = State::NONE;
             _parent.unregister_timeout_handler(_timeout_cookie);
-            _work_queue.pop_front();
-            lock.unlock();
+            work_queue_guard.pop_front();
             call_callback(work->callback, Result::COMMAND_DENIED, NAN);
             break;
 
@@ -193,7 +182,6 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
                 LogInfo() << "progress: " << static_cast<int>(command_ack.progress) << " % ("
                           << work->mavlink_command << ").";
             }
-            _state = State::IN_PROGRESS;
             // If we get a progress update, we can raise the timeout
             // to something higher because we know the initial command
             // has arrived. A possible timeout for this case is the initial
@@ -203,7 +191,6 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             _parent.register_timeout_handler(std::bind(&MAVLinkCommands::receive_timeout, this),
                                              work->retries_to_do * work->timeout_s,
                                              &_timeout_cookie);
-            _work_queue.return_front();
             // FIXME: We can only call callbacks with promises once, so let's not do it
             //        on IN_PROGRESS.
             // call_callback(work->callback, Result::IN_PROGRESS, command_ack.progress /
@@ -212,32 +199,17 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
 
         default:
             LogWarn() << "Received unknown ack.";
-            _work_queue.return_front();
             break;
     }
 }
 
 void MAVLinkCommands::receive_timeout()
 {
-    std::lock_guard<std::mutex> lock(_state_mutex);
-
-    if (_state != State::WAITING) {
-        LogWarn() << "Received command timeout but not waiting.";
-        return;
-    }
-
     // If we're not waiting, we ignore this.
-    auto work = _work_queue.borrow_front();
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    auto work = work_queue_guard.get_front();
 
     if (!work) {
-        // FIXME:
-        // There is nothing to do.
-        // However, we probably shouldn't be in State::WAITING if nothing is in the queue.
-        // Otherwise, we might wait forever because we don't register a new timeout.
-        // What's odd is that from my code review, it should not be possible to ever end up
-        // in State::WAITING with an empty queue, especially since the state is protected by
-        // a mutex.
-        _state = State::NONE;
         LogErr() << "Received timeout without item in queue.";
         return;
     }
@@ -248,8 +220,7 @@ void MAVLinkCommands::receive_timeout()
                   << work->mavlink_command << ").";
         if (!_parent.send_message(work->mavlink_message)) {
             LogErr() << "connection send error in retransmit (" << work->mavlink_command << ").";
-            _state = State::NONE;
-            _work_queue.pop_front();
+            work_queue_guard.pop_front();
             call_callback(work->callback, Result::CONNECTION_ERROR, NAN);
 
         } else {
@@ -257,56 +228,40 @@ void MAVLinkCommands::receive_timeout()
             _parent.register_timeout_handler(std::bind(&MAVLinkCommands::receive_timeout, this),
                                              work->timeout_s,
                                              &_timeout_cookie);
-            _work_queue.return_front();
         }
 
     } else {
         // We have tried retransmitting, giving up now.
         LogErr() << "Retrying failed (" << work->mavlink_command << ")";
 
-        const bool had_been_waiting = (_state == State::WAITING);
+        work_queue_guard.pop_front();
 
-        _state = State::NONE;
-        _work_queue.pop_front();
-
-        if (had_been_waiting) {
-            call_callback(work->callback, Result::TIMEOUT, NAN);
-        }
+        call_callback(work->callback, Result::TIMEOUT, NAN);
     }
 }
 
 void MAVLinkCommands::do_work()
 {
-    std::lock_guard<std::mutex> lock(_state_mutex);
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    auto work = work_queue_guard.get_front();
 
-    auto work = _work_queue.borrow_front();
     if (!work) {
         // Nothing to do.
         return;
     }
 
-    // If the work state is none, we can start the next command.
-    switch (_state) {
-        case State::NONE:
-            // LogDebug() << "sending it the first time (" << work->mavlink_command << ")";
-            if (!_parent.send_message(work->mavlink_message)) {
-                LogErr() << "connection send error (" << work->mavlink_command << ")";
-                _work_queue.pop_front();
-                _state = State::NONE;
-                call_callback(work->callback, Result::CONNECTION_ERROR, NAN);
-            } else {
-                _state = State::WAITING;
-                _parent.register_timeout_handler(std::bind(&MAVLinkCommands::receive_timeout, this),
-                                                 work->timeout_s,
-                                                 &_timeout_cookie);
-                _work_queue.return_front();
-            }
-            break;
-        case State::WAITING:
-        // FALLTHROUGH
-        case State::IN_PROGRESS:
-            _work_queue.return_front();
-            break;
+    if (!work->already_sent) {
+        // LogDebug() << "sending it the first time (" << work->mavlink_command << ")";
+        if (!_parent.send_message(work->mavlink_message)) {
+            LogErr() << "connection send error (" << work->mavlink_command << ")";
+            work_queue_guard.pop_front();
+            call_callback(work->callback, Result::CONNECTION_ERROR, NAN);
+        } else {
+            work->already_sent = true;
+            _parent.register_timeout_handler(std::bind(&MAVLinkCommands::receive_timeout, this),
+                                             work->timeout_s,
+                                             &_timeout_cookie);
+        }
     }
 }
 
