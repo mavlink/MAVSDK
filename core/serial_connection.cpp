@@ -5,6 +5,7 @@
 #if defined(LINUX)
 #include <unistd.h>
 #include <fcntl.h>
+#include <asm/ioctls.h>
 #include <asm/termbits.h>
 #include <sys/ioctl.h>
 
