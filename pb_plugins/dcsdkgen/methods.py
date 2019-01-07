@@ -18,14 +18,15 @@ class Method(object):
             pb_method,
             requests,
             responses):
+        self._is_stream = False
+        self._no_return = False
+        self._has_result = False
+        self._returns = False
         self._plugin_name = NameParser(plugin_name)
         self._package = NameParser(package)
         self._name = NameParser(pb_method.name)
         self.extract_params(pb_method, requests)
         self.extract_return_type_and_name(pb_method, responses)
-        self._is_stream = False
-        self._no_return = False
-        self._returns = False
 
     def extract_params(self, pb_method, requests):
         method_input = pb_method.input_type.split(".")[-1]
@@ -45,6 +46,9 @@ class Method(object):
         response = responses[method_output]
 
         return_params = list(filter_out_result(response.field))
+
+        if len(return_params) < len(response.field):
+            self._has_result = True
 
         if len(return_params) > 1:
             raise Exception(
@@ -143,7 +147,8 @@ class Call(Method):
         return self._template.render(name=self._name,
                                      params=self._params,
                                      plugin_name=self._plugin_name,
-                                     package=self._package)
+                                     package=self._package,
+                                     has_result=self._has_result)
 
 
 class Request(Method):
@@ -168,7 +173,8 @@ class Request(Method):
             return_type=self._return_type,
             return_name=self._return_name,
             plugin_name=self._plugin_name,
-            package=self._package)
+            package=self._package,
+            has_result=self._has_result)
 
 
 class Stream(Method):
@@ -183,9 +189,9 @@ class Stream(Method):
             requests,
             responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
+        self._is_stream = True
         self._name = NameParser(remove_subscribe(pb_method.name))
         self._template = template_env.get_template("stream.j2")
-        self._is_stream = True
 
     def __repr__(self):
         return self._template.render(
@@ -194,4 +200,5 @@ class Stream(Method):
             return_type=self._return_type,
             return_name=self._return_name,
             plugin_name=self._plugin_name,
-            package=self._package)
+            package=self._package,
+            has_result=self._has_result)

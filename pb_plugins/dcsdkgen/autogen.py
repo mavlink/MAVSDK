@@ -5,7 +5,7 @@ from .autogen_file import File
 from .methods import Method
 from .struct import Struct
 from .enum import Enum
-from .utils import get_template_env
+from .utils import (get_template_env, has_result)
 
 
 class AutoGen(object):
@@ -49,7 +49,8 @@ class AutoGen(object):
                             template_env,
                             enums,
                             structs,
-                            methods)
+                            methods,
+                            has_result(structs))
 
             _codegen_response = plugin_pb2.CodeGeneratorResponse()
 

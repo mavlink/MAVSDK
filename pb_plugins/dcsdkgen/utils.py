@@ -43,7 +43,7 @@ def is_response(struct):
 
 
 def is_struct(struct):
-    """ Check if the message is a data structure or an rpc
+    """ Checks if the message is a data structure or an rpc
     request/response"""
     return (not struct.name.endswith("Request") and
             not struct.name.endswith("Response"))
@@ -54,6 +54,16 @@ def filter_out_result(fields):
     for field in fields:
         if not field.type_name.endswith("Result"):
             yield field
+
+
+def has_result(structs):
+    """ Checks if at least one struct is a *Result$. 
+        The expected input is a list of struct names. """
+    for struct in structs:
+        if struct.endswith("Result"):
+            return True
+
+    return False
 
 
 def remove_subscribe(name):
