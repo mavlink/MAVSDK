@@ -117,15 +117,15 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
     const char *product_name = product_id_str(autopilot_version.product_id);
     STRNCPY(_product.product_name, product_name, sizeof(_product.product_name) - 1);
 
-    std::memset(_identification.hardware_uuid, 0, sizeof(_identification.hardware_uuid));
+    std::memset(_identification.hardware_uid, 0, sizeof(_identification.hardware_uid));
 
     if (is_array_zero(autopilot_version.uid2, sizeof(autopilot_version.uid2))) {
-        std::memcpy(_identification.hardware_uuid,
+        std::memcpy(_identification.hardware_uid,
                     reinterpret_cast<uint8_t *>(&autopilot_version.uid),
                     sizeof(autopilot_version.uid));
     } else {
         std::memcpy(
-            _identification.hardware_uuid, autopilot_version.uid2, sizeof(autopilot_version.uid2));
+            _identification.hardware_uid, autopilot_version.uid2, sizeof(autopilot_version.uid2));
     }
 
     _information_received = true;

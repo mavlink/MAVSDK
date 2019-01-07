@@ -71,10 +71,10 @@ TEST_F(SitlTest, Info)
         EXPECT_EQ(identification_result.first, Info::Result::SUCCESS);
 
         if (identification_result.first == Info::Result::SUCCESS) {
-            std::cout << "Hardware UUID: " << identification_result.second.hardware_uuid;
-            for (unsigned j = 0; j < sizeof(identification_result.second.hardware_uuid); ++j) {
+            std::cout << "Hardware UID: " << identification_result.second.hardware_uid;
+            for (unsigned j = 0; j < sizeof(identification_result.second.hardware_uid); ++j) {
                 std::cout << std::hex << std::setfill('0') << std::setw(2)
-                          << int(identification_result.second.hardware_uuid[j]);
+                          << int(identification_result.second.hardware_uid[j]);
             }
             std::cout << std::endl;
         } else {

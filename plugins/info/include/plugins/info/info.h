@@ -85,7 +85,7 @@ public:
      * @brief Type containing identification.
      */
     struct Identification {
-        uint8_t hardware_uuid[18]; /**< @brief UUID of hardware. */
+        uint8_t hardware_uid[18]; /**< @brief UID of hardware. */
     };
 
     /**
