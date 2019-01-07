@@ -7,9 +7,9 @@ Info::Info(System &system) : PluginBase(), _impl{new InfoImpl(system)} {}
 
 Info::~Info() {}
 
-std::pair<Info::Result, uint64_t> Info::uuid() const
+std::pair<Info::Result, Info::Identification> Info::get_identification() const
 {
-    return _impl->get_uuid();
+    return _impl->get_identification();
 }
 
 std::pair<Info::Result, Info::Version> Info::get_version() const

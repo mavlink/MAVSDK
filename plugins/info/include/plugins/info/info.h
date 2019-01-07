@@ -82,14 +82,21 @@ public:
     };
 
     /**
+     * @brief Type containing identification.
+     */
+    struct Identification {
+        uint8_t hardware_uuid[18]; /**< @brief UUID of hardware. */
+    };
+
+    /**
      * @brief Gets the UUID of the system.
      *
      * If possible this will be a unique identifier provided by hardware.
      *
      * @return a pair containing the result of the request and if successful,
-     * the UUID of the system.
+     * the identification information of the system.
      */
-    std::pair<Result, uint64_t> uuid() const;
+    std::pair<Result, Identification> get_identification() const;
 
     /**
      * @brief Get system version information.

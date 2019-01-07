@@ -18,7 +18,7 @@ public:
     void enable() override;
     void disable() override;
 
-    std::pair<Info::Result, uint64_t> get_uuid() const;
+    std::pair<Info::Result, Info::Identification> get_identification() const;
     std::pair<Info::Result, Info::Version> get_version() const;
     std::pair<Info::Result, Info::Product> get_product() const;
 
@@ -34,6 +34,7 @@ private:
 
     Info::Version _version{};
     Info::Product _product{};
+    Info::Identification _identification{};
     bool _information_received{false};
 
     void *_call_every_cookie{nullptr};
@@ -43,6 +44,8 @@ private:
 
     static void
     translate_binary_to_str(uint8_t *binary, unsigned binary_len, char *str, unsigned str_len);
+
+    static bool is_array_zero(const uint8_t *arr, size_t len);
 };
 
 } // namespace dronecode_sdk
