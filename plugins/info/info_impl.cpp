@@ -118,27 +118,10 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
     STRNCPY(_product.product_name, product_name, sizeof(_product.product_name) - 1);
 
     std::memset(_identification.hardware_uid, 0, sizeof(_identification.hardware_uid));
-
-    if (is_array_zero(autopilot_version.uid2, sizeof(autopilot_version.uid2))) {
-        std::memcpy(_identification.hardware_uid,
-                    reinterpret_cast<uint8_t *>(&autopilot_version.uid),
-                    sizeof(autopilot_version.uid));
-    } else {
-        std::memcpy(
-            _identification.hardware_uid, autopilot_version.uid2, sizeof(autopilot_version.uid2));
-    }
+    std::memcpy(
+        _identification.hardware_uid, autopilot_version.uid2, sizeof(autopilot_version.uid2));
 
     _information_received = true;
-}
-
-bool InfoImpl::is_array_zero(const uint8_t *arr, size_t len)
-{
-    for (size_t i = 0; i < len; ++i) {
-        if (arr[i] != 0) {
-            return false;
-        }
-    }
-    return true;
 }
 
 void InfoImpl::translate_binary_to_str(uint8_t *binary,

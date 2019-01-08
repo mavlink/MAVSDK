@@ -44,8 +44,6 @@ private:
 
     static void
     translate_binary_to_str(uint8_t *binary, unsigned binary_len, char *str, unsigned str_len);
-
-    static bool is_array_zero(const uint8_t *arr, size_t len);
 };
 
 } // namespace dronecode_sdk

@@ -85,7 +85,8 @@ public:
      * @brief Type containing identification.
      */
     struct Identification {
-        uint8_t hardware_uid[18]; /**< @brief UID of hardware. */
+        uint8_t hardware_uid[18]; /**< @brief UID of hardware. This refers to uid2 of MAVLink. If
+                                     the system does not support uid2 yet, this will be all zero. */
     };
 
     /**
