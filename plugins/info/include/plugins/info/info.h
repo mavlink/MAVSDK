@@ -90,7 +90,7 @@ public:
     };
 
     /**
-     * @brief Gets the UUID of the system.
+     * @brief Gets the identification of the system.
      *
      * If possible this will be a unique identifier provided by hardware.
      *
