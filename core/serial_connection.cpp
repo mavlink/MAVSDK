@@ -63,42 +63,42 @@ SerialConnection::~SerialConnection()
     stop();
 }
 
-ConnectionResult SerialConnection::start()
+Connection::Result SerialConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return ConnectionResult::CONNECTIONS_EXHAUSTED;
+        return Connection::Result::CONNECTIONS_EXHAUSTED;
     }
 
-    ConnectionResult ret = setup_port();
-    if (ret != ConnectionResult::SUCCESS) {
+    Connection::Result ret = setup_port();
+    if (ret != Connection::Result::SUCCESS) {
         return ret;
     }
 
     start_recv_thread();
 
-    return ConnectionResult::SUCCESS;
+    return Connection::Result::SUCCESS;
 }
 
-ConnectionResult SerialConnection::setup_port()
+Connection::Result SerialConnection::setup_port()
 {
 #if defined(LINUX)
     _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY);
     if (_fd == -1) {
         LogErr() << "open failed: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 #elif defined(APPLE)
     // open() hangs on macOS unless you give it O_NONBLOCK
     _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
     if (_fd == -1) {
         LogErr() << "open failed: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
     // We need to clear the O_NONBLOCK again because we can block while reading
     // as we do it in a separate thread.
     if (fcntl(_fd, F_SETFL, 0) == -1) {
         LogErr() << "fcntl failed: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 #elif defined(WINDOWS)
     _handle = CreateFile(_serial_node.c_str(),
@@ -111,7 +111,7 @@ ConnectionResult SerialConnection::setup_port()
 
     if (_handle == INVALID_HANDLE_VALUE) {
         LogErr() << "CreateFile failed with: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 #endif
 
@@ -122,7 +122,7 @@ ConnectionResult SerialConnection::setup_port()
     if (ioctl(_fd, TCGETS2, &tc) == -1) {
         LogErr() << "Could not get termios2 " << GET_ERROR();
         close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 #elif defined(APPLE)
     struct termios tc;
@@ -131,7 +131,7 @@ ConnectionResult SerialConnection::setup_port()
     if (tcgetattr(_fd, &tc) != 0) {
         LogErr() << "tcgetattr failed: " << GET_ERROR();
         close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 #endif
 
@@ -157,13 +157,13 @@ ConnectionResult SerialConnection::setup_port()
     if (ioctl(_fd, TCSETS2, &tc) == -1) {
         LogErr() << "Could not set terminal attributes " << GET_ERROR();
         close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 
     if (ioctl(_fd, TCFLSH, TCIOFLUSH) == -1) {
         LogErr() << "Could not flush terminal " << GET_ERROR();
         close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 #elif defined(APPLE)
     tc.c_cflag |= CLOCAL; // Without this a write() blocks indefinitely.
@@ -174,7 +174,7 @@ ConnectionResult SerialConnection::setup_port()
     if (tcsetattr(_fd, TCSANOW, &tc) != 0) {
         LogErr() << "tcsetattr failed: " << GET_ERROR();
         close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 #endif
 
@@ -185,7 +185,7 @@ ConnectionResult SerialConnection::setup_port()
 
     if (!GetCommState(_handle, &dcb)) {
         LogErr() << "GetCommState failed with error: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 
     dcb.BaudRate = _baudrate;
@@ -202,7 +202,7 @@ ConnectionResult SerialConnection::setup_port()
 
     if (!SetCommState(_handle, &dcb)) {
         LogErr() << "SetCommState failed with error: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 
     COMMTIMEOUTS timeout = {0};
@@ -215,12 +215,12 @@ ConnectionResult SerialConnection::setup_port()
 
     if (!SetCommTimeouts(_handle, &timeout)) {
         LogErr() << "SetCommTimeouts failed with error: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
+        return Connection::Result::CONNECTION_ERROR;
     }
 
 #endif
 
-    return ConnectionResult::SUCCESS;
+    return Connection::Result::SUCCESS;
 }
 
 void SerialConnection::start_recv_thread()
@@ -228,7 +228,7 @@ void SerialConnection::start_recv_thread()
     _recv_thread = new std::thread(&SerialConnection::receive, this);
 }
 
-ConnectionResult SerialConnection::stop()
+Connection::Result SerialConnection::stop()
 {
     _should_exit = true;
 #if defined(LINUX) || defined(APPLE)
@@ -247,7 +247,7 @@ ConnectionResult SerialConnection::stop()
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
-    return ConnectionResult::SUCCESS;
+    return Connection::Result::SUCCESS;
 }
 
 bool SerialConnection::send_message(const mavlink_message_t &message)
