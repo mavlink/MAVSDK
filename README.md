@@ -9,18 +9,12 @@
 
 The [Dronecode SDK](https://www.dronecode.org/sdk/) (previously known as "DroneCore") is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [MAVLink](https://mavlink.io/en/).
 
-It is written in C++ and aiming to be:
+It is written in C++11 and aiming to be:
 
 - Easy to use with a simple API.
 - Fast and lightweight.
 - Cross-platform (Linux, Mac, Windows, iOS, Android).
 - Extensible (using compile-time plugins).
-
-## Roadmap
-
-The next steps will be:
-
-- Add language bindings for Android, iOS, and Python
 
 ## Interfacing
 
