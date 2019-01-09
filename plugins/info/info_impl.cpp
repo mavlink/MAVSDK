@@ -1,4 +1,5 @@
 #include <functional>
+#include <cstring>
 #include "info_impl.h"
 #include "system.h"
 #include "global_include.h"
@@ -116,6 +117,11 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
     const char *product_name = product_id_str(autopilot_version.product_id);
     STRNCPY(_product.product_name, product_name, sizeof(_product.product_name) - 1);
 
+    static_assert(sizeof(_identification.hardware_uid) == sizeof(autopilot_version.uid2),
+                  "UID length mismatch");
+    std::memcpy(
+        _identification.hardware_uid, autopilot_version.uid2, sizeof(autopilot_version.uid2));
+
     _information_received = true;
 }
 
@@ -131,10 +137,12 @@ void InfoImpl::translate_binary_to_str(uint8_t *binary,
     }
 }
 
-std::pair<Info::Result, uint64_t> InfoImpl::get_uuid() const
+std::pair<Info::Result, Info::Identification> InfoImpl::get_identification() const
 {
-    // TODO: this should be processed in this plugin
-    return std::make_pair<>(Info::Result::SUCCESS, _parent->get_uuid());
+    std::lock_guard<std::mutex> lock(_mutex);
+    return std::make_pair<>((_information_received ? Info::Result::SUCCESS :
+                                                     Info::Result::INFORMATION_NOT_RECEIVED_YET),
+                            _identification);
 }
 
 std::pair<Info::Result, Info::Version> InfoImpl::get_version() const

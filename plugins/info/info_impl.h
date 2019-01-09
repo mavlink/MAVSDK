@@ -18,7 +18,7 @@ public:
     void enable() override;
     void disable() override;
 
-    std::pair<Info::Result, uint64_t> get_uuid() const;
+    std::pair<Info::Result, Info::Identification> get_identification() const;
     std::pair<Info::Result, Info::Version> get_version() const;
     std::pair<Info::Result, Info::Product> get_product() const;
 
@@ -34,6 +34,7 @@ private:
 
     Info::Version _version{};
     Info::Product _product{};
+    Info::Identification _identification{};
     bool _information_received{false};
 
     void *_call_every_cookie{nullptr};
