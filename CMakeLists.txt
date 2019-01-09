@@ -43,13 +43,15 @@ endif()
 set(dronecode_sdk_install_include_dir "include/dronecode_sdk")
 set(dronecode_sdk_install_lib_dir ${lib_path})
 
-file (STRINGS "${PROJECT_SOURCE_DIR}/version" VERSION_STR)
-message(STATUS "Read version: ${VERSION_STR}")
-add_definitions(-DDRONECODE_SDK_VERSION="${VERSION_STR}")
+execute_process(
+    COMMAND git describe --abbrev=8 --dirty --always --tags
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT_VARIABLE VERSION_STR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
 
-add_custom_target(version
-    COMMAND :
-    DEPENDS ${PROJECT_SOURCE_DIR}/version)
+message(STATUS "Version: ${VERSION_STR}")
+add_definitions(-DDRONECODE_SDK_VERSION="${VERSION_STR}")
 
 add_subdirectory(core)
 add_subdirectory(plugins)
