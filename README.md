@@ -16,12 +16,6 @@ It is written in C++11 and aiming to be:
 - Cross-platform (Linux, Mac, Windows, iOS, Android).
 - Extensible (using compile-time plugins).
 
-## Roadmap
-
-The next steps will be:
-
-- Add language bindings for Android, iOS, and Python
-
 ## Interfacing
 
 The SDK currently takes care of the MAVLink messaging. Connections over serial, UDP, and TCP are supported on Linux, macOS, and Windows.
