@@ -8,19 +8,45 @@ namespace dronecode_sdk {
 
 class Connection {
 public:
-    typedef std::function<void(const mavlink_message_t &message)> receiver_callback_t;
+  typedef std::function<void(const mavlink_message_t &message)> receiver_callback_t;
 
-    Connection(receiver_callback_t receiver_callback);
-    virtual ~Connection();
+  Connection(receiver_callback_t receiver_callback);
+  virtual ~Connection();
+  
+  
+  /**
+   * @brief Result type returned when adding a connection.
+   *
+   * **Note**: DronecodeSDK does not throw exceptions. Instead a result of this type will be
+   * returned when you add a connection: add_udp_connection().
+   */
+  enum class Result {
+			       SUCCESS = 0, /**< @brief %Connection succeeded. */
+			       TIMEOUT, /**< @brief %Connection timed out. */
+			       SOCKET_ERROR, /**< @brief Socket error. */
+			       BIND_ERROR, /**< @brief Bind error. */
+			       SOCKET_CONNECTION_ERROR, /**< @brief Socket connection error. */
+			       CONNECTION_ERROR, /**< @brief %Connection error. */
+			       NOT_IMPLEMENTED, /**< @brief %Connection type not implemented. */
+			       SYSTEM_NOT_CONNECTED, /**< @brief No system is connected. */
+			       SYSTEM_BUSY, /**< @brief %System is busy. */
+			       COMMAND_DENIED, /**< @brief Command is denied. */
+			       DESTINATION_IP_UNKNOWN, /**< @brief %Connection IP is unknown. */
+			       CONNECTIONS_EXHAUSTED, /**< @brief %Connections exhausted. */
+			       CONNECTION_URL_INVALID /**< @brief URL invalid. */
+  };
 
-    virtual ConnectionResult start() = 0;
-    virtual ConnectionResult stop() = 0;
+  
+  virtual Result start() = 0;
+  virtual Result stop() = 0;
+  
+  virtual bool send_message(const mavlink_message_t &message) = 0;
 
-    virtual bool send_message(const mavlink_message_t &message) = 0;
-
-    // Non-copyable
-    Connection(const Connection &) = delete;
-    const Connection &operator=(const Connection &) = delete;
+  inline const char *result_str(const ConnectionResult result);
+  
+  // Non-copyable
+  Connection(const Connection &) = delete;
+  const Connection &operator=(const Connection &) = delete;
 
 protected:
     bool start_mavlink_receiver();
