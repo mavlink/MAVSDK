@@ -21,8 +21,8 @@ public:
                            const std::string &remote_ip,
                            int remote_port);
     ~TcpConnection();
-    ConnectionResult start();
-    ConnectionResult stop();
+    Connection::Result start();
+    Connection::Result stop();
 
     bool send_message(const mavlink_message_t &message);
 
@@ -31,7 +31,7 @@ public:
     const TcpConnection &operator=(const TcpConnection &) = delete;
 
 private:
-    ConnectionResult setup_port();
+    Connection::Result setup_port();
     void start_recv_thread();
     int resolve_address(const std::string &ip_address, int port, struct sockaddr_in *addr);
     void receive();

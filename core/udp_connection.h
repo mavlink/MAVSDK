@@ -15,8 +15,8 @@ public:
                            const std::string &local_ip,
                            int local_port);
     ~UdpConnection();
-    ConnectionResult start();
-    ConnectionResult stop();
+    Connection::Result start();
+    Connection::Result stop();
 
     bool send_message(const mavlink_message_t &message);
 
@@ -25,7 +25,7 @@ public:
     const UdpConnection &operator=(const UdpConnection &) = delete;
 
 private:
-    ConnectionResult setup_port();
+    Connection::Result setup_port();
     void start_recv_thread();
 
     void receive();

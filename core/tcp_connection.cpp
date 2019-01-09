@@ -38,30 +38,30 @@ TcpConnection::~TcpConnection()
     stop();
 }
 
-ConnectionResult TcpConnection::start()
+Connection::Result TcpConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return ConnectionResult::CONNECTIONS_EXHAUSTED;
+        return Connection::Result::CONNECTIONS_EXHAUSTED;
     }
 
-    ConnectionResult ret = setup_port();
-    if (ret != ConnectionResult::SUCCESS) {
+    Connection::Result ret = setup_port();
+    if (ret != Connection::Result::SUCCESS) {
         return ret;
     }
 
     start_recv_thread();
 
-    return ConnectionResult::SUCCESS;
+    return Connection::Result::SUCCESS;
 }
 
-ConnectionResult TcpConnection::setup_port()
+Connection::Result TcpConnection::setup_port()
 {
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
         _is_ok = false;
-        return ConnectionResult::SOCKET_ERROR;
+        return Connection::Result::SOCKET_ERROR;
     }
 #endif
 
@@ -70,7 +70,7 @@ ConnectionResult TcpConnection::setup_port()
     if (_socket_fd < 0) {
         LogErr() << "socket error" << GET_ERROR(errno);
         _is_ok = false;
-        return ConnectionResult::SOCKET_ERROR;
+        return Connection::Result::SOCKET_ERROR;
     }
 
     struct sockaddr_in remote_addr {};
@@ -83,11 +83,11 @@ ConnectionResult TcpConnection::setup_port()
                 sizeof(struct sockaddr_in)) < 0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         _is_ok = false;
-        return ConnectionResult::SOCKET_CONNECTION_ERROR;
+        return Connection::Result::SOCKET_CONNECTION_ERROR;
     }
 
     _is_ok = true;
-    return ConnectionResult::SUCCESS;
+    return Connection::Result::SUCCESS;
 }
 
 void TcpConnection::start_recv_thread()
@@ -95,7 +95,7 @@ void TcpConnection::start_recv_thread()
     _recv_thread = new std::thread(&TcpConnection::receive, this);
 }
 
-ConnectionResult TcpConnection::stop()
+Connection::Result TcpConnection::stop()
 {
     _should_exit = true;
 
@@ -123,7 +123,7 @@ ConnectionResult TcpConnection::stop()
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
-    return ConnectionResult::SUCCESS;
+    return Connection::Result::SUCCESS;
 }
 
 bool TcpConnection::send_message(const mavlink_message_t &message)

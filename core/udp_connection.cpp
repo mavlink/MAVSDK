@@ -11,7 +11,7 @@
 #else
 #include <winsock2.h>
 #include <Ws2tcpip.h> // For InetPton
-#undef SOCKET_ERROR // conflicts with ConnectionResult::SOCKET_ERROR
+#undef SOCKET_ERROR // conflicts with Connection::Result::SOCKET_ERROR
 #pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
 #endif
 
@@ -40,29 +40,29 @@ UdpConnection::~UdpConnection()
     stop();
 }
 
-ConnectionResult UdpConnection::start()
+Connection::Result UdpConnection::start()
 {
     if (!start_mavlink_receiver()) {
-        return ConnectionResult::CONNECTIONS_EXHAUSTED;
+        return Connection::Result::CONNECTIONS_EXHAUSTED;
     }
 
-    ConnectionResult ret = setup_port();
-    if (ret != ConnectionResult::SUCCESS) {
+    Connection::Result ret = setup_port();
+    if (ret != Connection::Result::SUCCESS) {
         return ret;
     }
 
     start_recv_thread();
 
-    return ConnectionResult::SUCCESS;
+    return Connection::Result::SUCCESS;
 }
 
-ConnectionResult UdpConnection::setup_port()
+Connection::Result UdpConnection::setup_port()
 {
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
-        return ConnectionResult::SOCKET_ERROR;
+        return Connection::Result::SOCKET_ERROR;
     }
 #endif
 
@@ -70,7 +70,7 @@ ConnectionResult UdpConnection::setup_port()
 
     if (_socket_fd < 0) {
         LogErr() << "socket error" << GET_ERROR(errno);
-        return ConnectionResult::SOCKET_ERROR;
+        return Connection::Result::SOCKET_ERROR;
     }
 
     struct sockaddr_in addr {};
@@ -80,10 +80,10 @@ ConnectionResult UdpConnection::setup_port()
 
     if (bind(_socket_fd, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
-        return ConnectionResult::BIND_ERROR;
+        return Connection::Result::BIND_ERROR;
     }
 
-    return ConnectionResult::SUCCESS;
+    return Connection::Result::SUCCESS;
 }
 
 void UdpConnection::start_recv_thread()
@@ -91,7 +91,7 @@ void UdpConnection::start_recv_thread()
     _recv_thread = new std::thread(&UdpConnection::receive, this);
 }
 
-ConnectionResult UdpConnection::stop()
+Connection::Result UdpConnection::stop()
 {
     _should_exit = true;
 
@@ -119,7 +119,7 @@ ConnectionResult UdpConnection::stop()
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
-    return ConnectionResult::SUCCESS;
+    return Connection::Result::SUCCESS;
 }
 
 bool UdpConnection::send_message(const mavlink_message_t &message)
