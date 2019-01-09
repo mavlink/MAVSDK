@@ -10,6 +10,7 @@
 #include "system_impl.h"
 #include "serial_connection.h"
 #include "cli_arg.h"
+#include "version.h"
 
 namespace dronecode_sdk {
 
@@ -21,7 +22,7 @@ DronecodeSDKImpl::DronecodeSDKImpl() :
     _on_discover_callback(nullptr),
     _on_timeout_callback(nullptr)
 {
-    LogInfo() << "DronecodeSDK version: " << DRONECODE_SDK_VERSION;
+    LogInfo() << "DronecodeSDK version: " << dronecode_sdk_version;
 }
 
 DronecodeSDKImpl::~DronecodeSDKImpl()
