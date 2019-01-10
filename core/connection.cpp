@@ -49,7 +49,7 @@ void Connection::receive_message(const mavlink_message_t &message)
    * @param result The enum value for which a human readable string is required.
    * @return Human readable string for the ConnectionResult.
    */   
-   inline const char * Connection::result_str(const int result)
+   inline const char * Connection::result_str(const Result result)
    {
 
     switch (result) {

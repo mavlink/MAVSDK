@@ -6,10 +6,11 @@
 #include <functional>
 
 #include "system.h"
-#include "connection_result.h"
+#include "connection.h"
 
 namespace dronecode_sdk {
 
+class Connection;
 class DronecodeSDKImpl;
 class System;
 
@@ -59,7 +60,7 @@ public:
      * @param connection_url connection URL string.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_any_connection(const std::string &connection_url);
+    Connection::Result add_any_connection(const std::string &connection_url);
 
     /**
      * @brief Adds a UDP connection to the specified port number.
@@ -69,7 +70,7 @@ public:
      * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_udp_connection(int local_port = DEFAULT_UDP_PORT);
+    Connection::Result add_udp_connection(int local_port = DEFAULT_UDP_PORT);
 
     /**
      * @brief Adds a UDP connection to the specified port number and local interface.
@@ -81,7 +82,7 @@ public:
      * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_udp_connection(const std::string &local_ip,
+    Connection::Result add_udp_connection(const std::string &local_ip,
                                         int local_port = DEFAULT_UDP_PORT);
 
     /**
@@ -90,7 +91,7 @@ public:
      * @param remote_port The TCP port to connect to (defaults to 5760).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_tcp_connection(int remote_port = DEFAULT_TCP_REMOTE_PORT);
+    Connection::Result add_tcp_connection(int remote_port = DEFAULT_TCP_REMOTE_PORT);
 
     /**
      * @brief Adds a TCP connection with a specific IP address and port number.
@@ -99,7 +100,7 @@ public:
      * @param remote_port The TCP port to connect to (defaults to 5760).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_tcp_connection(const std::string &remote_ip,
+    Connection::Result add_tcp_connection(const std::string &remote_ip,
                                         int remote_port = DEFAULT_TCP_REMOTE_PORT);
 
     /**
@@ -111,7 +112,7 @@ public:
      * @param baudrate Baudrate of the serial port (defaults to 57600).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_serial_connection(const std::string &dev_path,
+    Connection::Result add_serial_connection(const std::string &dev_path,
                                            int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
     /**
