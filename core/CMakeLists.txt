@@ -12,6 +12,9 @@ else()
     set(LIBRARY_TYPE "SHARED")
 endif()
 
+
+configure_file(version.h.in version.h)
+
 add_library(dronecode_sdk ${LIBRARY_TYPE}
     call_every_handler.cpp
     connection.cpp
@@ -35,8 +38,6 @@ add_library(dronecode_sdk ${LIBRARY_TYPE}
     cli_arg.cpp
     thread_pool.cpp
 )
-
-add_dependencies(dronecode_sdk version)
 
 target_link_libraries(dronecode_sdk
     ${CMAKE_THREAD_LIBS_INIT}

@@ -139,8 +139,16 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    // Check if vehicle is still in air
+    while (telemetry->in_air()) {
+        std::cout << "Vehicle is landing..." << std::endl;
+        sleep_for(seconds(1));
+    }
+    std::cout << "Landed!" << std::endl;
+
     // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
-    sleep_for(seconds(5));
+    sleep_for(seconds(3));
     std::cout << "Finished..." << std::endl;
+
     return 0;
 }
