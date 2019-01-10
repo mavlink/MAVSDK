@@ -19,9 +19,9 @@ TEST_F(SitlTest, OffboardAttitudeRate)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret =
+    Connection::Result ret =
         dc.add_udp_connection("udp://:14540"); // For connecting with Jmavsim simulator.
-    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
+    ASSERT_EQ(Connection::Result::SUCCESS, ret);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));

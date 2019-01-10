@@ -47,7 +47,7 @@ void on_discover(uint64_t uuid)
 TEST_F(SitlTest, ActionTakeoffAndKill)
 {
     DronecodeSDK dc;
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc.add_udp_connection(), Connection::Result::SUCCESS);
 
     dc.register_on_discover(std::bind(&on_discover, _1));
     std::this_thread::sleep_for(std::chrono::seconds(5));

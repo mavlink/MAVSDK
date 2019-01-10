@@ -26,8 +26,8 @@ TEST_F(SitlTest, FollowMeOneLocation)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(Connection::Result::SUCCESS, ret);
 
     // Wait for system to connect via heartbeat.
     sleep_for(seconds(2));
@@ -87,8 +87,8 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ConnectionResult::SUCCESS, ret);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(Connection::Result::SUCCESS, ret);
 
     // Wait for system to connect via heartbeat.
     sleep_for(seconds(2));

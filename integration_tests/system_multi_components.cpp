@@ -28,7 +28,7 @@ TEST_F(SitlTest, SystemMultipleComponents)
     DronecodeSDK dc;
 
     // For both Autopilot and Camera
-    ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc.add_udp_connection(), Connection::Result::SUCCESS);
 
     // FIXME: As components send Heartbeats at 1Hz,
     // lets wait until atleast 2 of them gets discovered.

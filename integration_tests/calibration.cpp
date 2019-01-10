@@ -19,8 +19,8 @@ TEST(HardwareTest, CalibrationGyro)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -46,8 +46,8 @@ TEST(HardwareTest, CalibrationAccelerometer)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -73,8 +73,8 @@ TEST(HardwareTest, CalibrationMagnetometer)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -100,8 +100,8 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -127,8 +127,8 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -168,8 +168,8 @@ TEST(HardwareTest, CalibrationGyroCancelled)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));

@@ -11,9 +11,9 @@ TEST_F(SitlTest, SystemConnectionMultiple)
     dc = new dronecode_sdk::DronecodeSDK();
     std::cout << "started" << std::endl;
 
-    ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc->add_udp_connection(14540), Connection::Result::SUCCESS);
 
-    ASSERT_EQ(dc->add_udp_connection(14550), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc->add_udp_connection(14550), Connection::Result::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
@@ -33,7 +33,7 @@ TEST_F(SitlTest, SystemConnectionMultiple)
 
     dc = new dronecode_sdk::DronecodeSDK();
 
-    ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::SUCCESS);
+    ASSERT_EQ(dc->add_udp_connection(14540), Connection::Result::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
     uuids = dc->system_uuids();

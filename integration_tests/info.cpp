@@ -12,8 +12,8 @@ TEST_F(SitlTest, Info)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     dc.register_on_discover(std::bind(&on_discover, std::placeholders::_1));
 

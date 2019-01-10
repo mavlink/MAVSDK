@@ -9,8 +9,8 @@ TEST_F(SitlTest, TelemetrySync)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
     System &system = dc.system();

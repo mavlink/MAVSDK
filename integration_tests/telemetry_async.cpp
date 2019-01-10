@@ -46,7 +46,7 @@ TEST_F(SitlTest, TelemetryAsync)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
+    Connection::Result ret = dc.add_udp_connection();
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
@@ -60,7 +60,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     uint64_t uuid = uuids.at(0);
 
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     System &system = dc.system(uuid);
 

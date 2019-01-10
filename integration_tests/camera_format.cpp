@@ -11,8 +11,8 @@ TEST(CameraTest, Format)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret = dc.add_udp_connection();
-    ASSERT_EQ(ret, ConnectionResult::SUCCESS);
+    Connection::Result ret = dc.add_udp_connection();
+    ASSERT_EQ(ret, Connection::Result::SUCCESS);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
