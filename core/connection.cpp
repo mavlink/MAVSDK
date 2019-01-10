@@ -43,15 +43,14 @@ void Connection::receive_message(const mavlink_message_t &message)
     _receiver_callback(message);
 }
 
-  /**
-   * @brief Returns a human-readable English string for a ConnectionResult.
-   *
-   * @param result The enum value for which a human readable string is required.
-   * @return Human readable string for the ConnectionResult.
-   */   
-   inline const char * Connection::result_str(const Result result)
-   {
-
+/**
+ * @brief Returns a human-readable English string for a ConnectionResult.
+ *
+ * @param result The enum value for which a human readable string is required.
+ * @return Human readable string for the ConnectionResult.
+ */
+inline const char *Connection::result_str(const Result result)
+{
     switch (result) {
         case Result::SUCCESS:
             return "Success";
@@ -82,8 +81,6 @@ void Connection::receive_message(const mavlink_message_t &message)
         default:
             return "Unknown";
     }
-    
-  }
+}
 
-  
 } // namespace dronecode_sdk

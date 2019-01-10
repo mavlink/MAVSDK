@@ -83,7 +83,7 @@ public:
      * @return The result of adding the connection.
      */
     Connection::Result add_udp_connection(const std::string &local_ip,
-                                        int local_port = DEFAULT_UDP_PORT);
+                                          int local_port = DEFAULT_UDP_PORT);
 
     /**
      * @brief Adds a TCP connection with a specific port number on localhost.
@@ -101,7 +101,7 @@ public:
      * @return The result of adding the connection.
      */
     Connection::Result add_tcp_connection(const std::string &remote_ip,
-                                        int remote_port = DEFAULT_TCP_REMOTE_PORT);
+                                          int remote_port = DEFAULT_TCP_REMOTE_PORT);
 
     /**
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as
@@ -113,7 +113,7 @@ public:
      * @return The result of adding the connection.
      */
     Connection::Result add_serial_connection(const std::string &dev_path,
-                                           int baudrate = DEFAULT_SERIAL_BAUDRATE);
+                                             int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
     /**
      * @brief Get vector of system UUIDs.

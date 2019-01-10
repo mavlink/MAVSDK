@@ -15,8 +15,8 @@ public:
     explicit SerialConnection(Connection::receiver_callback_t receiver_callback,
                               const std::string &path,
                               int baudrate);
-  Connection::Result start();
-  Connection::Result stop();
+    Connection::Result start();
+    Connection::Result stop();
     ~SerialConnection();
 
     bool send_message(const mavlink_message_t &message);
@@ -26,7 +26,7 @@ public:
     const SerialConnection &operator=(const SerialConnection &) = delete;
 
 private:
-  Connection::Result setup_port();
+    Connection::Result setup_port();
     void start_recv_thread();
     void receive();
 

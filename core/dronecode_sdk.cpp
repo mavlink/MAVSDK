@@ -20,19 +20,19 @@ Connection::Result DronecodeSDK::add_udp_connection(int local_port)
 }
 
 Connection::Result DronecodeSDK::add_udp_connection(const std::string &local_bind_ip,
-                                                  const int local_port)
+                                                    const int local_port)
 {
     return _impl->add_udp_connection(local_bind_ip, local_port);
 }
 
 Connection::Result DronecodeSDK::add_tcp_connection(const std::string &remote_ip,
-                                                  const int remote_port)
+                                                    const int remote_port)
 {
     return _impl->add_tcp_connection(remote_ip, remote_port);
 }
 
 Connection::Result DronecodeSDK::add_serial_connection(const std::string &dev_path,
-                                                     const int baudrate)
+                                                       const int baudrate)
 {
     return _impl->add_serial_connection(dev_path, baudrate);
 }

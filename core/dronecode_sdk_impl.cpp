@@ -142,7 +142,7 @@ Connection::Result DronecodeSDKImpl::add_any_connection(const std::string &conne
 }
 
 Connection::Result DronecodeSDKImpl::add_udp_connection(const std::string &local_ip,
-                                                      const int local_port)
+                                                        const int local_port)
 {
     auto new_conn = std::make_shared<UdpConnection>(
         std::bind(&DronecodeSDKImpl::receive_message, this, std::placeholders::_1),
@@ -156,7 +156,8 @@ Connection::Result DronecodeSDKImpl::add_udp_connection(const std::string &local
     return ret;
 }
 
-Connection::Result DronecodeSDKImpl::add_tcp_connection(const std::string &remote_ip, int remote_port)
+Connection::Result DronecodeSDKImpl::add_tcp_connection(const std::string &remote_ip,
+                                                        int remote_port)
 {
     auto new_conn = std::make_shared<TcpConnection>(
         std::bind(&DronecodeSDKImpl::receive_message, this, std::placeholders::_1),
@@ -170,7 +171,8 @@ Connection::Result DronecodeSDKImpl::add_tcp_connection(const std::string &remot
     return ret;
 }
 
-Connection::Result DronecodeSDKImpl::add_serial_connection(const std::string &dev_path, int baudrate)
+Connection::Result DronecodeSDKImpl::add_serial_connection(const std::string &dev_path,
+                                                           int baudrate)
 {
     auto new_conn = std::make_shared<SerialConnection>(
         std::bind(&DronecodeSDKImpl::receive_message, this, std::placeholders::_1),
