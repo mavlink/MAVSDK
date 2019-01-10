@@ -95,11 +95,11 @@ bool DronecodeSDKImpl::send_message(const mavlink_message_t &message)
     return true;
 }
 
-ConnectionResult DronecodeSDKImpl::add_any_connection(const std::string &connection_url)
+Connection::Result DronecodeSDKImpl::add_any_connection(const std::string &connection_url)
 {
     CliArg cli_arg;
     if (!cli_arg.parse(connection_url)) {
-        return ConnectionResult::CONNECTION_URL_INVALID;
+        return Connection::Result::CONNECTION_URL_INVALID;
     }
 
     switch (cli_arg.get_protocol()) {
@@ -136,11 +136,11 @@ ConnectionResult DronecodeSDKImpl::add_any_connection(const std::string &connect
         }
 
         default:
-            return ConnectionResult::CONNECTION_ERROR;
+            return Connection::Result::CONNECTION_ERROR;
     }
 }
 
-ConnectionResult DronecodeSDKImpl::add_udp_connection(const std::string &local_ip,
+Connection::Result DronecodeSDKImpl::add_udp_connection(const std::string &local_ip,
                                                       const int local_port)
 {
     auto new_conn = std::make_shared<UdpConnection>(
@@ -148,36 +148,36 @@ ConnectionResult DronecodeSDKImpl::add_udp_connection(const std::string &local_i
         local_ip,
         local_port);
 
-    ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::SUCCESS) {
+    Connection::Result ret = new_conn->start();
+    if (ret == Connection::Result::SUCCESS) {
         add_connection(new_conn);
     }
     return ret;
 }
 
-ConnectionResult DronecodeSDKImpl::add_tcp_connection(const std::string &remote_ip, int remote_port)
+Connection::Result DronecodeSDKImpl::add_tcp_connection(const std::string &remote_ip, int remote_port)
 {
     auto new_conn = std::make_shared<TcpConnection>(
         std::bind(&DronecodeSDKImpl::receive_message, this, std::placeholders::_1),
         remote_ip,
         remote_port);
 
-    ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::SUCCESS) {
+    Connection::Result ret = new_conn->start();
+    if (ret == Connection::Result::SUCCESS) {
         add_connection(new_conn);
     }
     return ret;
 }
 
-ConnectionResult DronecodeSDKImpl::add_serial_connection(const std::string &dev_path, int baudrate)
+Connection::Result DronecodeSDKImpl::add_serial_connection(const std::string &dev_path, int baudrate)
 {
     auto new_conn = std::make_shared<SerialConnection>(
         std::bind(&DronecodeSDKImpl::receive_message, this, std::placeholders::_1),
         dev_path,
         baudrate);
 
-    ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::SUCCESS) {
+    Connection::Result ret = new_conn->start();
+    if (ret == Connection::Result::SUCCESS) {
         add_connection(new_conn);
     }
     return ret;
