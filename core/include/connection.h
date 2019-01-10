@@ -1,8 +1,11 @@
 #pragma once
 
-#include "dronecode_sdk.h"
+//#include "dronecode_sdk.h"
 #include "mavlink_receiver.h"
 #include <memory>
+#include <vector>
+#include <functional>
+#include <string>
 
 namespace dronecode_sdk {
 
@@ -42,7 +45,7 @@ public:
   
   virtual bool send_message(const mavlink_message_t &message) = 0;
 
-  inline const char *result_str(const ConnectionResult result);
+  inline const char *result_str(const Result result);
   
   // Non-copyable
   Connection(const Connection &) = delete;
