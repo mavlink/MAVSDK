@@ -78,7 +78,6 @@ install(TARGETS dronecode_sdk
 )
 
 install(FILES
-    include/connection_result.h
     include/system.h
     include/dronecode_sdk.h
     include/plugin_base.h
