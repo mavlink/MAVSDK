@@ -1,10 +1,11 @@
 #pragma once
 
-#include "mission_item.h"
 #include <vector>
 #include <memory>
 #include <functional>
-#include "plugin_base.h"
+
+#include <dronecode_sdk/plugin_base.h>
+#include "mission_item.h"
 
 namespace dronecode_sdk {
 
