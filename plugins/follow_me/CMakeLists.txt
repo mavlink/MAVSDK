@@ -13,7 +13,7 @@ set_target_properties(dronecode_sdk_follow_me
 
 install(FILES
     include/plugins/follow_me/follow_me.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/follow_me
 )
 
 install(TARGETS dronecode_sdk_follow_me

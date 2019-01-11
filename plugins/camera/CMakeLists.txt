@@ -33,7 +33,7 @@ include_directories(
 
 install(FILES
     include/plugins/camera/camera.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/camera
 )
 
 install(TARGETS dronecode_sdk_camera

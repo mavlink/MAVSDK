@@ -25,7 +25,7 @@ target_link_libraries(dronecode_sdk_mission
 install(FILES
     include/plugins/mission/mission.h
     include/plugins/mission/mission_item.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/mission
 )
 
 install(TARGETS dronecode_sdk_mission

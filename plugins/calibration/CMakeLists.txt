@@ -14,7 +14,7 @@ set_target_properties(dronecode_sdk_calibration
 
 install(FILES
     include/plugins/calibration/calibration.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/calibration
 )
 
 install(TARGETS dronecode_sdk_calibration

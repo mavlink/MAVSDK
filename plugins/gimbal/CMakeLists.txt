@@ -13,7 +13,7 @@ set_target_properties(dronecode_sdk_gimbal
 
 install(FILES
     include/plugins/gimbal/gimbal.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/gimbal
 )
 
 install(TARGETS dronecode_sdk_gimbal

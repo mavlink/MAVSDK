@@ -13,7 +13,7 @@ set_target_properties(dronecode_sdk_log_files
 
 install(FILES
     include/plugins/log_files/log_files.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/log_files
 )
 
 install(TARGETS dronecode_sdk_log_files

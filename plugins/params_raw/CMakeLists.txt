@@ -13,7 +13,7 @@ set_target_properties(dronecode_sdk_params_raw
 
 install(FILES
     include/plugins/params_raw/params_raw.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/param_raw
 )
 
 install(TARGETS dronecode_sdk_params_raw
