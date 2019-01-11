@@ -143,12 +143,6 @@ after_success:
     --exclude-pattern=".*CMakeFiles.*"
     --exclude-pattern=".*_test.*";
   fi
-- if [[ "${BUILD_TARGET}" = "coverage_build" ]] && [[ $TRAVIS_PULL_REQUEST == “false” ]] && [[ $TRAVIS_BRANCH == “develop” ]]; then
-  git config user.email "dronecodesdkbot@gmail.com";
-  git config user.name "DronecodeSDKBot";
-  git remote set-url origin https://${GH_TOKEN}@github.com/Dronecode/DronecodeSDK.git;
-  ./ci-git-release.sh;
-  fi
 
 deploy:
   provider: releases
