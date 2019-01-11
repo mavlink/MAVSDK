@@ -9,12 +9,13 @@
 
 #include <chrono>
 #include <cmath>
-#include <dronecode_sdk/action.h>
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/offboard.h>
-#include <dronecode_sdk/telemetry.h>
 #include <iostream>
 #include <thread>
+
+#include <dronecode_sdk/dronecode_sdk.h>
+#include <dronecode_sdk/plugins/action/action.h>
+#include <dronecode_sdk/plugins/offboard/offboard.h>
+#include <dronecode_sdk/plugins/telemetry/telemetry.h>
 
 using namespace dronecode_sdk;
 using std::this_thread::sleep_for;

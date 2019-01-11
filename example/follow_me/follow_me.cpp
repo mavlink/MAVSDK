@@ -11,10 +11,10 @@
  */
 
 #include <chrono>
-#include <dronecode_sdk/action.h>
 #include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/follow_me.h>
-#include <dronecode_sdk/telemetry.h>
+#include <dronecode_sdk/plugins/action/action.h>
+#include <dronecode_sdk/plugins/follow_me/follow_me.h>
+#include <dronecode_sdk/plugins/telemetry/telemetry.h>
 #include <iostream>
 #include <memory>
 #include <thread>

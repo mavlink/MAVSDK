@@ -24,10 +24,11 @@
  * @date 2018-02-04
  */
 
-#include <dronecode_sdk/action.h>
 #include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/mission.h>
-#include <dronecode_sdk/telemetry.h>
+#include <dronecode_sdk/plugins/action/action.h>
+#include <dronecode_sdk/plugins/mission/mission.h>
+#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+
 #include <functional>
 #include <future>
 #include <iostream>
