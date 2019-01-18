@@ -14,7 +14,7 @@ set_target_properties(dronecode_sdk_telemetry
 
 install(FILES
     include/plugins/telemetry/telemetry.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/telemetry
 )
 
 install(TARGETS dronecode_sdk_telemetry

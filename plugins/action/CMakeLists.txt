@@ -20,7 +20,7 @@ PRIVATE
 
 install(FILES
     include/plugins/action/action.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/action
 )
 
 install(TARGETS dronecode_sdk_action

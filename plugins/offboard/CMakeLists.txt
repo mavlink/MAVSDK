@@ -13,7 +13,7 @@ set_target_properties(dronecode_sdk_offboard
 
 install(FILES
     include/plugins/offboard/offboard.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/offboard
 )
 
 install(TARGETS dronecode_sdk_offboard

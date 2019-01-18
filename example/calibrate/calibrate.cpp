@@ -1,6 +1,5 @@
-#include <dronecode_sdk/calibration.h>
 #include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/system.h>
+#include <dronecode_sdk/plugins/calibration/calibration.h>
 #include <future>
 #include <iostream>
 

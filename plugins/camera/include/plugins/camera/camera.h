@@ -5,7 +5,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "plugin_base.h"
+
+#include <dronecode_sdk/plugin_base.h>
 
 namespace dronecode_sdk {
 

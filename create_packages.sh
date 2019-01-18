@@ -7,8 +7,13 @@ version=`git describe --always --tags`
 # We want to extract 1.2.3 from it.
 version=`echo $version | sed 's/v\([0-9]*\.[0-9]*\.[0-9]*\).*$/\1/'`
 
+working_dir=`pwd`
+root_dir=`pwd`/install
+install_dir=$root_dir/usr
+
+rm -rf $install_dir
 make clean
-make BUILD_TYPE=Release
+make BUILD_TYPE=Release INSTALL_PREFIX=$install_dir default install
 
 common_args="--input-type dir  \
     --version $version \
@@ -17,21 +22,12 @@ common_args="--input-type dir  \
     --license BSD-3-Clause \
     --force"
 
-library_files="\
-    core/include/system.h=/usr/include/dronecode_sdk/system.h \
-    core/include/dronecode_sdk.h=/usr/include/dronecode_sdk/dronecode_sdk.h \
-    build/default/core/libdronecode_sdk.so=/usr/lib/libdronecode_sdk.so \
-    plugins/action/include/plugins/action/action.h=/usr/include/dronecode_sdk/action.h \
-    plugins/camera/include/plugins/camera/camera.h=/usr/include/dronecode_sdk/camera.h \
-    plugins/follow_me/include/plugins/follow_me/follow_me.h=/usr/include/dronecode_sdk/follow_me.h \
-    plugins/gimbal/include/plugins/gimbal/gimbal.h=/usr/include/dronecode_sdk/gimbal.h \
-    plugins/info/include/plugins/info/info.h=/usr/include/dronecode_sdk/info.h \
-    plugins/logging/include/plugins/logging/logging.h=/usr/include/dronecode_sdk/logging.h \
-    plugins/mission/include/plugins/mission/mission.h=/usr/include/dronecode_sdk/mission.h \
-    plugins/mission/include/plugins/mission/mission_item.h=/usr/include/dronecode_sdk/mission_item.h \
-    plugins/offboard/include/plugins/offboard/offboard.h=/usr/include/dronecode_sdk/offboard.h \
-    plugins/telemetry/include/plugins/telemetry/telemetry.h=/usr/include/dronecode_sdk/telemetry.h \
-    plugins/calibration/include/plugins/calibration/calibration.h=/usr/include/dronecode_sdk/calibration.h"
+
+pushd $root_dir
+
+# We need the relative path of all files.
+library_files=`find . -type f | cut -sd / -f 2-`
+echo $library_files
 
 echo "#!/bin/sh" > run_ldconfig
 
@@ -41,7 +37,6 @@ then
     echo "Building DEB package"
     fpm $common_args \
         --output-type deb \
-        --depends libtinyxml2-dev \
         --depends libcurl4-openssl-dev \
         --deb-no-default-config-files \
         --name libdronecode_sdk-dev \
@@ -54,7 +49,7 @@ then
 
     for file in *_amd64.deb
     do
-        mv -v "$file" "${file%_amd64.deb}_ubuntu${dist_version}_amd64.deb"
+        mv -v "$file" "$working_dir/${file%_amd64.deb}_ubuntu${dist_version}_amd64.deb"
     done
 
 elif cat /etc/os-release | grep 'Fedora'
@@ -62,20 +57,24 @@ then
     echo "Building RPM package"
     fpm $common_args \
         --output-type rpm \
-        --depends tinyxml2-devel \
         --depends libcurl-devel \
-        --name libdronecode_sdk-devel \
-        --provides libdronecode_sdk-devel \
+        --name dronecode_sdk-devel \
+        --provides dronecode_sdk-devel \
         --after-install run_ldconfig \
         --after-remove run_ldconfig \
+        --rpm-rpmbuild-define "_build_id_links none" \
         $library_files
 
     dist_version=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9]*//g')
 
     for file in *.x86_64.rpm
     do
-        mv -v "$file" "${file%.x86_64.rpm}.fc${dist_version}-x86_64.rpm"
+        mv -v "$file" "$working_dir/${file%.x86_64.rpm}.fc${dist_version}-x86_64.rpm"
     done
 fi
 
 rm run_ldconfig
+
+popd
+
+rm -rf $install_dir

@@ -13,7 +13,7 @@ set_target_properties(dronecode_sdk_info
 
 install(FILES
     include/plugins/info/info.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/info
 )
 
 install(TARGETS dronecode_sdk_info

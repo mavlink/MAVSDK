@@ -3,7 +3,8 @@
 #include <cstdint>
 #include <memory>
 #include <string>
-#include "plugin_base.h"
+
+#include <dronecode_sdk/plugin_base.h>
 
 namespace dronecode_sdk {
 
