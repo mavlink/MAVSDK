@@ -61,13 +61,13 @@ matrix:
       services:
         - docker
       env:
-      - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora_27"
+      - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora_28"
     - os: linux
       sudo: true
       services:
         - docker
       env:
-      - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora_28"
+      - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora_29"
     - os: osx
       osx_image: xcode9.3
       env:
@@ -84,11 +84,11 @@ install:
 - if [[ "${BUILD_TARGET}" = "docker_build_ubuntu_18.04" ]]; then
     docker pull dronecode/dronecode-sdk-ubuntu-18.04;
   fi
-- if [[ "${BUILD_TARGET}" = "docker_build_fedora_27" ]]; then
-    docker pull dronecode/dronecode-sdk-fedora-27;
-  fi
 - if [[ "${BUILD_TARGET}" = "docker_build_fedora_28" ]]; then
     docker pull dronecode/dronecode-sdk-fedora-28;
+  fi
+- if [[ "${BUILD_TARGET}" = "docker_build_fedora_29" ]]; then
+    docker pull dronecode/dronecode-sdk-fedora-29;
   fi
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     pip install --user cpp-coveralls;
@@ -112,13 +112,13 @@ script:
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-ubuntu-18.04 ./travis-docker-build.sh;
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-ubuntu-18.04 ./create_packages.sh;
   fi
-- if [[ "${BUILD_TARGET}" = "docker_build_fedora_27" ]]; then
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-27 ./travis-docker-build.sh;
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-27 ./create_packages.sh;
-  fi
 - if [[ "${BUILD_TARGET}" = "docker_build_fedora_28" ]]; then
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-28 ./travis-docker-build.sh;
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-28 ./create_packages.sh;
+  fi
+- if [[ "${BUILD_TARGET}" = "docker_build_fedora_29" ]]; then
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-29 ./travis-docker-build.sh;
+    docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-29 ./create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     make;
