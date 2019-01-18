@@ -422,7 +422,9 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
 {
     mavlink_extended_sys_state_t extended_sys_state;
     mavlink_msg_extended_sys_state_decode(&message, &extended_sys_state);
-    if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR) {
+    if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR ||
+        extended_sys_state.landed_state == MAV_LANDED_STATE_TAKEOFF ||
+        extended_sys_state.landed_state == MAV_LANDED_STATE_LANDING) {
         _in_air = true;
     } else if (extended_sys_state.landed_state == MAV_LANDED_STATE_ON_GROUND) {
         _in_air = false;
