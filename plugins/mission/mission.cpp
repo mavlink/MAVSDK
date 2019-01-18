@@ -65,18 +65,20 @@ const char *Mission::result_str(Result result)
     switch (result) {
         case Result::SUCCESS:
             return "Success";
-        case Result::BUSY:
-            return "Busy";
         case Result::ERROR:
             return "Error";
         case Result::TOO_MANY_MISSION_ITEMS:
             return "Too many mission items";
-        case Result::INVALID_ARGUMENT:
-            return "Invalid argument";
+        case Result::BUSY:
+            return "Busy";
         case Result::TIMEOUT:
             return "Timeout";
+        case Result::INVALID_ARGUMENT:
+            return "Invalid argument";
         case Result::UNSUPPORTED:
             return "Mission downloaded from system is unsupported";
+        case Result::NO_MISSION_AVAILABLE:
+            return "No mission available";
         case Result::FAILED_TO_OPEN_QGC_PLAN:
             return "Failed to open QGC plan";
         case Result::FAILED_TO_PARSE_QGC_PLAN:
