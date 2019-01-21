@@ -76,6 +76,8 @@ void SystemImpl::register_mavlink_message_handler(uint16_t msg_id,
 
     MAVLinkHandlerTableEntry entry = {msg_id, callback, cookie};
     _mavlink_handler_table.push_back(entry);
+    // Push back can move the std::vector and therefore invalidate the iterator.
+    _iterator_invalidated = true;
 }
 
 void SystemImpl::unregister_all_mavlink_message_handlers(const void *cookie)
