@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .name_parser import NameParser
+from .utils import name_parser_factory
 
 
 class File(object):
@@ -14,8 +14,8 @@ class File(object):
             structs,
             methods,
             has_result):
-        self._package = NameParser(package)
-        self._plugin_name = NameParser(plugin_name)
+        self._package = name_parser_factory.create(package)
+        self._plugin_name = name_parser_factory.create(plugin_name)
         self._template = template_env.get_template("file.j2")
         self._enums = enums
         self._structs = structs

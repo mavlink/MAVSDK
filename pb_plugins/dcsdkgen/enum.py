@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .name_parser import NameParser
+from .utils import name_parser_factory
 
 
 class Enum(object):
@@ -12,15 +12,15 @@ class Enum(object):
             template_env,
             pb_enum,
             parent_struct=None):
-        self._plugin_name = NameParser(plugin_name)
-        self._package = NameParser(package)
+        self._plugin_name = name_parser_factory.create(plugin_name)
+        self._package = name_parser_factory.create(package)
         self._template = template_env.get_template("enum.j2")
-        self._name = NameParser(pb_enum.name)
+        self._name = name_parser_factory.create(pb_enum.name)
         self._values = []
         self._parent_struct = parent_struct
 
         for value in pb_enum.value:
-            self._values.append(NameParser(value.name))
+            self._values.append(name_parser_factory.create(value.name))
 
     def __repr__(self):
         return self._template.render(plugin_name=self._plugin_name,

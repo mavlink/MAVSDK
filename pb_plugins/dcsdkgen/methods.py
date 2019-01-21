@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from .utils import (remove_subscribe,
-                    filter_out_result,
-                    no_return,
+from .utils import (filter_out_result,
                     is_stream,
+                    name_parser_factory,
+                    no_return,
                     Param,
+                    remove_subscribe,
                     type_info_factory)
-from .name_parser import NameParser
 
 
 class Method(object):
@@ -22,9 +22,9 @@ class Method(object):
         self._no_return = False
         self._has_result = False
         self._returns = False
-        self._plugin_name = NameParser(plugin_name)
-        self._package = NameParser(package)
-        self._name = NameParser(pb_method.name)
+        self._plugin_name = name_parser_factory.create(plugin_name)
+        self._package = name_parser_factory.create(package)
+        self._name = name_parser_factory.create(pb_method.name)
         self.extract_params(pb_method, requests)
         self.extract_return_type_and_name(pb_method, responses)
 
@@ -37,7 +37,7 @@ class Method(object):
         for field in request.field:
             self._params.append(
                 Param(
-                    name=NameParser(field.name),
+                    name=name_parser_factory.create(field.name),
                     type_info=type_info_factory.create(field))
             )
 
@@ -57,7 +57,7 @@ class Method(object):
 
         if len(return_params) == 1:
             self._return_type = type_info_factory.create(return_params[0])
-            self._return_name = NameParser(return_params[0].json_name)
+            self._return_name = name_parser_factory.create(return_params[0].json_name)
 
     @property
     def is_stream(self):
@@ -190,7 +190,7 @@ class Stream(Method):
             responses):
         super().__init__(plugin_name, package, pb_method, requests, responses)
         self._is_stream = True
-        self._name = NameParser(remove_subscribe(pb_method.name))
+        self._name = name_parser_factory.create(remove_subscribe(pb_method.name))
         self._template = template_env.get_template("stream.j2")
 
     def __repr__(self):

@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from jinja2 import Environment, FileSystemLoader
+from .name_parser import NameParserFactory
 from .type_info import TypeInfoFactory
 
 
 type_info_factory = TypeInfoFactory()
+name_parser_factory = NameParserFactory()
 
 
 class Param:

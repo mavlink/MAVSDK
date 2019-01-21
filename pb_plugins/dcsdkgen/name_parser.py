@@ -1,45 +1,65 @@
+import json
 import re
+
+from os import environ
+
+class NameParserFactory:
+
+    def __init__(self):
+        self._initialisms = self._load_initialisms()
+
+    def create(self, name):
+        return NameParser(name, self._initialisms)
+
+    def _load_initialisms(self):
+        try:
+            _template_path = environ.get("TEMPLATE_PATH", "./")
+            _initialisms_path = f"{_template_path}/initialisms"
+            with open(_initialisms_path, "r") as handle:
+                return json.loads(handle.read())
+        except FileNotFoundError:
+            return []
+
 
 
 class NameParser:
 
-    def __init__(self, name):
-        """ Tries to detect the input format and save name as upper camel case.
-            This assumes that the input is either given as lower_snake_case,
-            upper_snake_case, UPPERCASE, UPPERCASE_SNAKE, UpperCamelCase or 
-            lowerCamelCase. Other inputs are undefined behavior.
+    def __init__(self, name, initialisms):
+        """ Splits the input name at each '_' or each uppercase letter,
+            unless the word is fully capitalized.
         """
 
-        if '_' in name: # Snake case
-            words = name.split('_')
-            self._name = ''.join(word.title() for word in words)
+        if '_' in name:
+            self._words = name.split('_')
+        elif name.isupper():
+            self._words = [name]
         else:
-            if name[0].isupper():
-                if name.isupper(): # All uppercase
-                    self._name = name.title()
-                else: # Already UpperCamelCase
-                    self._name = name
-            else: # lowerCamelCase
-                self._name = name[0].upper() + name[1:]
+            self._words = re.findall('[a-zA-Z][^A-Z]*', name)
+
+        self._initialisms = initialisms
 
     @property
     def uppercase(self):
-        return self.upper_snake_case.upper()
+        return '_'.join(word.upper() for word in self._words)
 
     @property
     def upper_camel_case(self):
-        return self._name
+        formatted_words = list(map(lambda word: word.title(), self._words))
+        formatted_words = list(map(lambda word: word.upper() if word.upper() in self._initialisms else word, formatted_words))
+        return ''.join(formatted_words)
 
     @property
     def lower_camel_case(self):
-        return self._name[0].lower() + self._name[1:] if self._name else ""
+        formatted_words = list(map(lambda word: word.title(), self._words))
+        formatted_words = list(map(lambda word: word.upper() if word.upper() in self._initialisms else word, formatted_words))
+        return formatted_words[0].lower() + ''.join(formatted_words[1:])
 
     @property
     def upper_snake_case(self):
-        return re.sub('(?<!^)(?=[A-Z])',
-                      '_',
-                      self._name)
+        formatted_words = list(map(lambda word: word.title(), self._words))
+        formatted_words = list(map(lambda word: word.upper() if word.upper() in self._initialisms else word, formatted_words))
+        return '_'.join(formatted_words)
 
     @property
     def lower_snake_case(self):
-        return self.upper_snake_case.lower()
+        return '_'.join(word.lower() for word in self._words)
