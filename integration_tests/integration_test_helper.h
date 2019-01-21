@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+#include <functional>
 #include <gtest/gtest.h>
 #include "global_include.h"
 #include "log.h"
@@ -37,3 +39,19 @@ protected:
 #endif
     }
 };
+
+template<typename Rep, typename Period>
+bool wait_for_cond_sync(std::function<bool()> fun, std::chrono::duration<Rep, Period> duration)
+{
+    // We need at millisecond resolution for sleeping.
+    const std::chrono::milliseconds duration_ms(duration);
+
+    unsigned iteration = 0;
+    while (!fun()) {
+        std::this_thread::sleep_for(duration_ms / 10);
+        if (iteration++ >= 10) {
+            return false;
+        }
+    }
+    return true;
+}

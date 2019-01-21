@@ -32,24 +32,19 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_TRUE(dc.is_connected());
+    LogInfo() << "Waiting for system connect";
+    ASSERT_TRUE(wait_for_cond_sync([&dc]() { return dc.is_connected(); }, std::chrono::seconds(1)));
 
     System &system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
 
-    int iteration = 0;
-    while (!telemetry->health_all_ok()) {
-        LogInfo() << "Waiting for system to be ready";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-
-        ASSERT_LT(++iteration, 10);
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(wait_for_cond_sync([&telemetry]() { return telemetry->health_all_ok(); },
+                                   std::chrono::seconds(10)));
 
     auto action = std::make_shared<Action>(system);
     Action::Result action_ret = action->arm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     EXPECT_EQ(Action::Result::SUCCESS, action->set_takeoff_altitude(altitude_m));
     auto takeoff_altitude_result = action->get_takeoff_altitude();
@@ -72,14 +67,8 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
-    iteration = 0;
-    while (telemetry->in_air()) {
-        LogInfo() << "Waiting for system to be landed";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-
-        // TODO: currently we need to wait a long time until landed is detected.
-        ASSERT_LT(++iteration, 2 * wait_time_s);
-    }
+    EXPECT_TRUE(wait_for_cond_sync([&telemetry]() { return !telemetry->in_air(); },
+                                   std::chrono::seconds(wait_time_s)));
 
     action_ret = action->disarm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
