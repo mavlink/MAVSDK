@@ -33,14 +33,15 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     // Wait for system to connect via heartbeat.
     LogInfo() << "Waiting for system connect";
-    ASSERT_TRUE(wait_for_cond_sync([&dc]() { return dc.is_connected(); }, std::chrono::seconds(1)));
+    ASSERT_TRUE(poll_condition_with_timeout([&dc]() { return dc.is_connected(); },
+                                            std::chrono::seconds(2)));
 
     System &system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
 
     LogInfo() << "Waiting for system to be ready";
-    ASSERT_TRUE(wait_for_cond_sync([&telemetry]() { return telemetry->health_all_ok(); },
-                                   std::chrono::seconds(10)));
+    ASSERT_TRUE(poll_condition_with_timeout([&telemetry]() { return telemetry->health_all_ok(); },
+                                            std::chrono::seconds(10)));
 
     auto action = std::make_shared<Action>(system);
     Action::Result action_ret = action->arm();
@@ -67,8 +68,8 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
-    EXPECT_TRUE(wait_for_cond_sync([&telemetry]() { return !telemetry->in_air(); },
-                                   std::chrono::seconds(wait_time_s)));
+    EXPECT_TRUE(poll_condition_with_timeout([&telemetry]() { return !telemetry->in_air(); },
+                                            std::chrono::seconds(wait_time_s)));
 
     action_ret = action->disarm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
