@@ -24,6 +24,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
@@ -48,6 +49,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
@@ -72,6 +74,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
@@ -96,6 +99,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
@@ -120,6 +124,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
@@ -144,6 +149,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
@@ -168,6 +174,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
@@ -192,6 +199,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX default install'
             sh 'build/default/unit_tests_runner'
@@ -220,6 +228,8 @@ pipeline {
             }
           }
           steps {
+            sh 'git submodule deinit -f .'
+            sh 'git clean -ff -x -d .'
             sh 'make fix_style'
           }
           post {
@@ -240,6 +250,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'mkdir -p example/takeoff_land/build'
             sh 'cd example/takeoff_land/build && cmake ..'
@@ -263,6 +274,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'mkdir -p example/fly_mission/build'
             sh 'cd example/fly_mission/build && cmake ..'
@@ -286,6 +298,7 @@ pipeline {
           steps {
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'mkdir -p example/offboard_velocity/build'
             sh 'cd example/offboard_velocity/build && cmake ..'
@@ -312,6 +325,7 @@ pipeline {
       steps {
         sh 'git submodule deinit -f .'
         sh 'git clean -ff -x -d .'
+        sh 'git submodule sync --recursive'
         sh 'git submodule update --init --recursive --force'
         sh './generate_docs.sh'
       }
