@@ -4,94 +4,86 @@
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace std::placeholders; // for _1
 using namespace dronecode_sdk;
-
-static bool _discovered_system = false;
-static uint64_t _uuid = 0;
-static void on_discover(uint64_t uuid);
-
-static bool _received_arm_result = false;
-static bool _received_takeoff_result = false;
-static bool _received_kill_result = false;
-
-static void receive_arm_result(Action::Result result);
-static void receive_takeoff_result(Action::Result result);
-static void receive_kill_result(Action::Result result);
-
-void receive_arm_result(Action::Result result)
-{
-    ASSERT_EQ(result, Action::Result::SUCCESS);
-    _received_arm_result = true;
-}
-
-void receive_takeoff_result(Action::Result result)
-{
-    ASSERT_EQ(result, Action::Result::SUCCESS);
-    _received_takeoff_result = true;
-}
-
-void receive_kill_result(Action::Result result)
-{
-    ASSERT_EQ(result, Action::Result::SUCCESS);
-    _received_kill_result = true;
-}
-
-void on_discover(uint64_t uuid)
-{
-    std::cout << "Found system with UUID: " << uuid << std::endl;
-    _uuid = uuid;
-    _discovered_system = true;
-}
 
 TEST_F(SitlTest, ActionTakeoffAndKill)
 {
     DronecodeSDK dc;
     ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
 
-    dc.register_on_discover(std::bind(&on_discover, _1));
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    ASSERT_TRUE(_discovered_system);
+    {
+        LogInfo() << "Waiting to discover vehicle";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        dc.register_on_discover([&prom](uint64_t uuid) {
+            prom.set_value();
+            UNUSED(uuid);
+        });
+        ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+    }
 
     System &system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 
-    while (!telemetry->health_all_ok()) {
-        std::cout << "waiting for system to be ready" << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+    {
+        LogDebug() << "Waiting to be ready...";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        telemetry->health_all_ok_async([&telemetry, &prom](bool all_ok) {
+            if (all_ok) {
+                // Unregister to prevent fulfilling promise twice.
+                telemetry->health_all_ok_async(nullptr);
+                prom.set_value();
+            }
+        });
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
-    action->set_takeoff_altitude(0.5f);
+    action->set_takeoff_altitude(0.4);
 
-    action->arm_async(std::bind(&receive_arm_result, _1));
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    ASSERT_TRUE(_received_arm_result);
-
-    action->takeoff_async(std::bind(&receive_takeoff_result, _1));
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    ASSERT_TRUE(_received_takeoff_result);
-
-    bool reached_alt = false;
-    // Wait up to 2.0s (combined 3s) to reach 0.3m.
-    for (unsigned i = 0; i < 1000; ++i) {
-        if (telemetry->position().relative_altitude_m > 0.3f) {
-            reached_alt = true;
-            break;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    {
+        LogInfo() << "Arming";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        action->arm_async([&prom](Action::Result result) {
+            EXPECT_EQ(result, Action::Result::SUCCESS);
+            prom.set_value();
+        });
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     }
-    ASSERT_TRUE(reached_alt);
+
+    {
+        LogInfo() << "Taking off";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        action->takeoff_async([&prom](Action::Result result) {
+            EXPECT_EQ(result, Action::Result::SUCCESS);
+            prom.set_value();
+        });
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+    }
+
+    EXPECT_TRUE(poll_condition_with_timeout(
+        [&telemetry]() { return telemetry->position().relative_altitude_m > 0.2f; },
+        std::chrono::seconds(8)));
 
     // Kill it and hope it doesn't come down upside down, ready to fly again :)
-    action->kill_async(std::bind(&receive_kill_result, _1));
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    ASSERT_TRUE(_received_kill_result);
+    {
+        LogInfo() << "Kill it";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        action->kill_async([&prom](Action::Result result) {
+            EXPECT_EQ(result, Action::Result::SUCCESS);
+            prom.set_value();
+        });
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+    }
 
-    // It should be below 0.5m after having been killed
-    ASSERT_FALSE(telemetry->armed());
+    EXPECT_TRUE(poll_condition_with_timeout([&telemetry]() { return !telemetry->armed(); },
+                                            std::chrono::seconds(2)));
 
     // The land detector takes some time.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_FALSE(telemetry->in_air());
+    EXPECT_TRUE(poll_condition_with_timeout([&telemetry]() { return !telemetry->in_air(); },
+                                            std::chrono::seconds(2)));
 }
