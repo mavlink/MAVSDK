@@ -11,6 +11,7 @@ MAINTAINER Julian Oes <julian@oes.ch>
 RUN dnf -y install \
     autoconf \
     automake \
+    ccache \
     clang \
     cmake \
     colordiff \
