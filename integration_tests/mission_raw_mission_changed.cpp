@@ -2,11 +2,9 @@
 #include "dronecode_sdk.h"
 #include "plugins/mission/mission.h"
 #include "plugins/mission_raw/mission_raw.h"
-#include <memory>
 #include <future>
 
 using namespace dronecode_sdk;
-using namespace std::placeholders; // for `_1`
 
 TEST_F(SitlTest, MissionRawMissionChanged)
 {
@@ -45,19 +43,35 @@ TEST_F(SitlTest, MissionRawMissionChanged)
         LogInfo() << "Uploading mission...";
         // We only have the upload_mission function asynchronous for now, so we wrap it using
         // std::future.
-        auto prom = std::make_shared<std::promise<void>>();
-        auto future_result = prom->get_future();
-        mission->upload_mission_async(mission_items, [prom](Mission::Result result) {
+        std::promise<void> prom{};
+        std::future<void> fut = prom.get_future();
+        mission->upload_mission_async(mission_items, [&prom](Mission::Result result) {
             ASSERT_EQ(result, Mission::Result::SUCCESS);
-            prom->set_value();
+            prom.set_value();
             LogInfo() << "Mission uploaded.";
         });
 
-        auto status = future_result.wait_for(std::chrono::seconds(2));
+        auto status = fut.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);
-        future_result.get();
+        fut.get();
     }
 
     // The mission change callback should have triggered now because we have uploaded a mission.
     EXPECT_EQ(fut_changed.wait_for(std::chrono::milliseconds(500)), std::future_status::ready);
+
+    {
+        std::promise<void> prom{};
+        std::future<void> fut = prom.get_future();
+        LogInfo() << "Download raw mission items.";
+        mission_raw->download_mission_async(
+            [&prom](MissionRaw::Result result,
+                    std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> items) {
+                EXPECT_EQ(result, MissionRaw::Result::SUCCESS);
+                // TODO: validate items
+                UNUSED(items);
+                prom.set_value();
+            });
+        auto status = fut.wait_for(std::chrono::seconds(2));
+        ASSERT_EQ(status, std::future_status::ready);
+    }
 }
