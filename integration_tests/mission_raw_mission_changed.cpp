@@ -13,9 +13,8 @@ static constexpr float SOME_ALTITUDES[] = {5.0f, 7.5f};
 static constexpr float SOME_SPEEDS[] = {4.0f, 5.0f};
 static constexpr unsigned NUM_SOME_ITEMS = sizeof(SOME_LATITUDES) / sizeof(SOME_LATITUDES[0]);
 
-
-static void validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> &items);
-
+static void
+validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> &items);
 
 TEST_F(SitlTest, MissionRawMissionChanged)
 {
@@ -96,14 +95,14 @@ void validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMission
         // Even items are waypoints, odd ones are the speed commands.
         if (i % 2 == 0) {
             EXPECT_EQ(items[i]->command, 16); // MAV_CMD_NAV_WAYPOINT
-            EXPECT_EQ(items[i]->x, std::round(SOME_LATITUDES[i/2] * 1e7));
-            EXPECT_EQ(items[i]->y, std::round(SOME_LONGITUDES[i/2] * 1e7));
-            EXPECT_EQ(items[i]->z, SOME_ALTITUDES[i/2]);
-            LogWarn() << "i/2: " << i/2;
+            EXPECT_EQ(items[i]->x, std::round(SOME_LATITUDES[i / 2] * 1e7));
+            EXPECT_EQ(items[i]->y, std::round(SOME_LONGITUDES[i / 2] * 1e7));
+            EXPECT_EQ(items[i]->z, SOME_ALTITUDES[i / 2]);
+            LogWarn() << "i/2: " << i / 2;
         } else {
             EXPECT_EQ(items[i]->command, 178); // MAV_CMD_DO_CHANGE_SPEED
-            EXPECT_EQ(items[i]->param2, SOME_SPEEDS[i/2]);
-            LogWarn() << "i/2: " << i/2;
+            EXPECT_EQ(items[i]->param2, SOME_SPEEDS[i / 2]);
+            LogWarn() << "i/2: " << i / 2;
         }
     }
 }

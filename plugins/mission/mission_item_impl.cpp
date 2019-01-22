@@ -108,12 +108,12 @@ float MissionItemImpl::get_mavlink_param4() const
 
 int32_t MissionItemImpl::get_mavlink_x() const
 {
-    return int32_t(_latitude_deg * 1e7);
+    return std::round(_latitude_deg * 1e7);
 }
 
 int32_t MissionItemImpl::get_mavlink_y() const
 {
-    return int32_t(_longitude_deg * 1e7);
+    return std::round(_longitude_deg * 1e7);
 }
 
 float MissionItemImpl::get_mavlink_z() const
