@@ -18,7 +18,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-01-18'
-              args '-e LOCAL_USER_ID=user_id'
+              args '-e LOCAL_USER_ID=user_id -e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -29,6 +29,12 @@ pipeline {
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
             sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
+          }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
           }
         }
 
@@ -36,6 +42,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -46,6 +53,12 @@ pipeline {
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
             sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
+          }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
           }
         }
 
@@ -53,6 +66,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-18.04:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -63,6 +77,12 @@ pipeline {
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
             sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
+          }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
           }
         }
 
@@ -70,6 +90,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-18.04:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -80,6 +101,12 @@ pipeline {
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
             sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
+          }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
           }
         }
 
@@ -87,6 +114,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-fedora-28:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -97,6 +125,12 @@ pipeline {
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
             sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
+          }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
           }
         }
 
@@ -104,6 +138,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-fedora-28:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -115,12 +150,19 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
             sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
           }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
+          }
         }
 
         stage('Fedora 28 Debug') {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-fedora-29:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -132,12 +174,19 @@ pipeline {
             sh 'build/default/backend/test/unit_tests_backend'
             sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
           }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
+          }
         }
 
         stage('Fedora 28 Release') {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-fedora-29:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -148,6 +197,12 @@ pipeline {
             sh 'build/default/unit_tests_runner'
             sh 'build/default/backend/test/unit_tests_backend'
             sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
+          }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
           }
         }
 
@@ -161,10 +216,17 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
             sh 'make fix_style'
+          }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
           }
         }
 
@@ -172,6 +234,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -182,12 +245,19 @@ pipeline {
             sh 'cd example/takeoff_land/build && cmake ..'
             // FIXME sh 'make -C example/takeoff_land/build'
           }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
+          }
         }
 
         stage('example/fly_mission') {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -198,12 +268,19 @@ pipeline {
             sh 'cd example/fly_mission/build && cmake ..'
             // FIXME sh 'make -C example/fly_mission/build'
           }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
+          }
         }
 
         stage('example/offboard_velocity') {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-01-18'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
@@ -214,6 +291,12 @@ pipeline {
             sh 'cd example/offboard_velocity/build && cmake ..'
             // FIXME sh 'make -C example/offboard_velocity/build'
           }
+          post {
+            always {
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
+          }
         }
 
       } // parallel
@@ -223,6 +306,7 @@ pipeline {
       agent {
         docker {
           image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-01-18'
+          args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
         }
       }
       steps {
@@ -231,9 +315,19 @@ pipeline {
         sh 'git submodule update --init --recursive --force'
         sh './generate_docs.sh'
       }
+      post {
+        always {
+          sh 'git submodule deinit -f .'
+          sh 'git clean -ff -x -d .'
+        }
+      }
     } // stage Generate Docs
 
   } // stages
+
+  environment {
+    CCACHE_DIR = '/tmp/ccache'
+  }
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10', artifactDaysToKeepStr: '30'))
