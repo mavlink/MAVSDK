@@ -2,9 +2,20 @@
 #include "dronecode_sdk.h"
 #include "plugins/mission/mission.h"
 #include "plugins/mission_raw/mission_raw.h"
+#include <cmath>
 #include <future>
 
 using namespace dronecode_sdk;
+
+static constexpr double SOME_LATITUDES[] = {47.398170, 47.398175};
+static constexpr double SOME_LONGITUDES[] = {8.545649, 8.545654};
+static constexpr float SOME_ALTITUDES[] = {5.0f, 7.5f};
+static constexpr float SOME_SPEEDS[] = {4.0f, 5.0f};
+static constexpr unsigned NUM_SOME_ITEMS = sizeof(SOME_LATITUDES) / sizeof(SOME_LATITUDES[0]);
+
+
+static void validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> &items);
+
 
 TEST_F(SitlTest, MissionRawMissionChanged)
 {
@@ -32,12 +43,15 @@ TEST_F(SitlTest, MissionRawMissionChanged)
     // The mission change callback should not trigger yet.
     EXPECT_EQ(fut_changed.wait_for(std::chrono::milliseconds(500)), std::future_status::timeout);
 
-    auto new_item = std::make_shared<MissionItem>();
-    new_item->set_position(47.398170327054473, 8.5456490218639658);
-    new_item->set_relative_altitude(10.0f);
-    new_item->set_speed(5.0f);
     std::vector<std::shared_ptr<MissionItem>> mission_items;
-    mission_items.push_back(new_item);
+
+    for (unsigned i = 0; i < NUM_SOME_ITEMS; ++i) {
+        auto new_item = std::make_shared<MissionItem>();
+        new_item->set_position(SOME_LATITUDES[i], SOME_LONGITUDES[i]);
+        new_item->set_relative_altitude(SOME_ALTITUDES[i]);
+        new_item->set_speed(SOME_SPEEDS[i]);
+        mission_items.push_back(new_item);
+    }
 
     {
         LogInfo() << "Uploading mission...";
@@ -68,10 +82,28 @@ TEST_F(SitlTest, MissionRawMissionChanged)
                     std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> items) {
                 EXPECT_EQ(result, MissionRaw::Result::SUCCESS);
                 // TODO: validate items
-                UNUSED(items);
+                validate_items(items);
                 prom.set_value();
             });
         auto status = fut.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);
+    }
+}
+
+void validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> &items)
+{
+    for (unsigned i = 0; i < items.size(); ++i) {
+        // Even items are waypoints, odd ones are the speed commands.
+        if (i % 2 == 0) {
+            EXPECT_EQ(items[i]->command, 16); // MAV_CMD_NAV_WAYPOINT
+            EXPECT_EQ(items[i]->x, std::round(SOME_LATITUDES[i/2] * 1e7));
+            EXPECT_EQ(items[i]->y, std::round(SOME_LONGITUDES[i/2] * 1e7));
+            EXPECT_EQ(items[i]->z, SOME_ALTITUDES[i/2]);
+            LogWarn() << "i/2: " << i/2;
+        } else {
+            EXPECT_EQ(items[i]->command, 178); // MAV_CMD_DO_CHANGE_SPEED
+            EXPECT_EQ(items[i]->param2, SOME_SPEEDS[i/2]);
+            LogWarn() << "i/2: " << i/2;
+        }
     }
 }
