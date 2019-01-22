@@ -12,26 +12,27 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
     && apt-get -y --quiet --no-install-recommends install \
-        software-properties-common \
         autoconf \
         automake \
         autotools-dev \
         build-essential \
         ca-certificates \
         clang-format \
-        colordiff \
         cmake \
+        colordiff \
         doxygen \
         git \
+        golang-go \
         libcurl4-openssl-dev \
         libltdl-dev \
         libtinyxml2-dev \
         libtool \
+        libz-dev \
+        ninja-build \
         python \
         python-pip \
         ruby-dev \
-        libz-dev \
-        golang-go \
+        software-properties-common \
         sudo \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
