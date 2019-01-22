@@ -58,6 +58,9 @@ class Method(object):
         if len(return_params) == 1:
             self._return_type = type_info_factory.create(return_params[0])
             self._return_name = name_parser_factory.create(return_params[0].json_name)
+        else:
+            self._return_type = None
+            self._return_name = None
 
     @property
     def is_stream(self):
@@ -95,23 +98,23 @@ class Method(object):
         """ Collects all methods for the plugin """
         _methods = {}
         for method in methods:
-            # Check if method is just a call
-            if (no_return(method, responses)):
-                _methods[method.name] = Call(plugin_name,
-                                             package,
-                                             template_env,
-                                             method,
-                                             requests,
-                                             responses)
-
             # Check if stream
-            elif (is_stream(method)):
+            if (is_stream(method)):
                 _methods[method.name] = Stream(plugin_name,
                                                package,
                                                template_env,
                                                method,
                                                requests,
                                                responses)
+
+            # Check if method is just a call
+            elif (no_return(method, responses)):
+                _methods[method.name] = Call(plugin_name,
+                                             package,
+                                             template_env,
+                                             method,
+                                             requests,
+                                             responses)
 
             else:
                 _methods[method.name] = Request(plugin_name,
