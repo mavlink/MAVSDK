@@ -40,9 +40,19 @@ void MissionRawImpl::process_mission_ack(const mavlink_message_t &message)
 {
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
-    UNUSED(mission_ack);
 
-    // TODO: need to report that mission might have changed.
+    if (mission_ack.type != MAV_MISSION_ACCEPTED) {
+        return;
+    }
+
+    // We assume that if the vehicle sends an ACCEPTED ack might have received
+    // a new mission. In that case we need to notify our user.
+    std::lock_guard<std::mutex> lock(_mission_changed.mutex);
+    if (_mission_changed.callback) {
+        // Local copy because we can't make a copy of member variable.
+        auto callback = _mission_changed.callback;
+        _parent->call_user_callback([callback]() { callback(); });
+    }
 }
 
 void MissionRawImpl::download_mission_async(
@@ -55,7 +65,8 @@ void MissionRawImpl::download_mission_cancel() {}
 
 void MissionRawImpl::subscribe_mission_changed(MissionRaw::mission_changed_callback_t callback)
 {
-    UNUSED(callback);
+    std::lock_guard<std::mutex> lock(_mission_changed.mutex);
+    _mission_changed.callback = callback;
 }
 
 } // namespace dronecode_sdk

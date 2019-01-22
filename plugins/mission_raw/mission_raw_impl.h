@@ -4,6 +4,7 @@
 #include "mavlink_include.h"
 #include "plugins/mission_raw/mission_raw.h"
 #include "plugin_impl_base.h"
+#include <mutex>
 
 namespace dronecode_sdk {
 
@@ -28,6 +29,11 @@ public:
 
 private:
     void process_mission_ack(const mavlink_message_t &message);
+
+    struct MissionChanged {
+        std::mutex mutex{};
+        MissionRaw::mission_changed_callback_t callback{nullptr};
+    } _mission_changed{};
 };
 
 } // namespace dronecode_sdk

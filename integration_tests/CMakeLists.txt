@@ -39,6 +39,7 @@ add_executable(integration_tests_runner
     mission.cpp
     mission_rtl.cpp
     mission_survey.cpp
+    mission_raw_mission_changed.cpp
     offboard_velocity.cpp
     params_raw.cpp
     path_checker.cpp
@@ -66,6 +67,7 @@ target_link_libraries(integration_tests_runner
     dronecode_sdk_telemetry
     dronecode_sdk_action
     dronecode_sdk_mission
+    dronecode_sdk_mission_raw
     dronecode_sdk_offboard
     dronecode_sdk_log_files
     dronecode_sdk_info
