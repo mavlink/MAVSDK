@@ -11,26 +11,28 @@ MAINTAINER Julian Oes <julian@oes.ch>
 RUN dnf -y install \
     autoconf \
     automake \
+    ccache \
     clang \
-    colordiff \
     cmake \
+    colordiff \
     doxygen \
     gcc \
     gcc-c++ \
     git \
+    golang \
     libcurl-devel \
     libtool \
     make \
+    ninja-build \
     python \
-    tinyxml2-devel \
     redhat-rpm-config \
     rpm-build \
     ruby-devel \
     rubygems \
+    sudo \
+    tinyxml2-devel \
     which \
     zlib-devel \
-    golang \
-    sudo \
     && dnf clean all
 
 RUN gem install --no-ri --no-rdoc fpm;
