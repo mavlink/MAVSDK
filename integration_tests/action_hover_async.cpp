@@ -23,7 +23,7 @@ TEST_F(SitlTest, ActionHoverAsync)
             prom.set_value();
             UNUSED(uuid);
         });
-        EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+        ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     }
 
     System &system = dc.system();
