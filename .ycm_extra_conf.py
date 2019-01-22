@@ -90,13 +90,18 @@ flags = [
 'plugins/telemetry/include',
 '-I',
 'backend/src',
-'-I',
 '-isystem',
-'third_party/mavlink/include/mavlink/v2.0',
+'/usr/include'
 '-isystem',
-'./third_party/tinyxml2/',
+'/usr/include/c++/8',
 '-isystem',
-'./third_party/gtest/googletest/include'
+'third_party/mavlink/include',
+'-isystem',
+'./third_party/tinyxml2',
+'-isystem',
+'./third_party/gtest/googletest/include',
+'-isystem',
+'./plugins/mission/third_party/json11'
 ]
 
 
