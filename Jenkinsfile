@@ -22,6 +22,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -47,6 +48,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -72,6 +74,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -97,6 +100,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -122,6 +126,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -147,6 +152,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -172,6 +178,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -197,6 +204,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -228,6 +236,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'make fix_style'
@@ -248,6 +257,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -272,6 +282,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -296,6 +307,7 @@ pipeline {
             }
           }
           steps {
+            sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
             sh 'git submodule sync --recursive'
@@ -323,6 +335,7 @@ pipeline {
         }
       }
       steps {
+        sh 'export'
         sh 'git submodule deinit -f .'
         sh 'git clean -ff -x -d .'
         sh 'git submodule sync --recursive'
