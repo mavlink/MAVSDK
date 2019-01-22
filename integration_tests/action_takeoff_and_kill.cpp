@@ -40,7 +40,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
-    action->set_takeoff_altitude(0.4);
+    action->set_takeoff_altitude(0.4f);
 
     {
         LogInfo() << "Arming";
