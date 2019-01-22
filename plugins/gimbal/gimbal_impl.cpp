@@ -1,6 +1,7 @@
 #include "gimbal_impl.h"
 #include "global_include.h"
 #include <functional>
+#include <cmath>
 
 namespace dronecode_sdk {
 
@@ -61,8 +62,8 @@ GimbalImpl::set_roi_location(double latitude_deg, double longitude_deg, float al
     MAVLinkCommands::CommandInt command{};
 
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
-    command.params.x = int32_t(latitude_deg * 1e7);
-    command.params.y = int32_t(longitude_deg * 1e7);
+    command.params.x = int32_t(std::round(latitude_deg * 1e7));
+    command.params.y = int32_t(std::round(longitude_deg * 1e7));
     command.params.z = altitude_m;
     command.target_component_id = _parent->get_autopilot_id();
 
@@ -77,8 +78,8 @@ void GimbalImpl::set_roi_location_async(double latitude_deg,
     MAVLinkCommands::CommandInt command{};
 
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
-    command.params.x = int32_t(latitude_deg * 1e7);
-    command.params.y = int32_t(longitude_deg * 1e7);
+    command.params.x = int32_t(std::round(latitude_deg * 1e7));
+    command.params.y = int32_t(std::round(longitude_deg * 1e7));
     command.params.z = altitude_m;
     command.target_component_id = _parent->get_autopilot_id();
 
