@@ -262,27 +262,7 @@ std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
 void compare_mission_items(const std::shared_ptr<MissionItem> original,
                            const std::shared_ptr<MissionItem> downloaded)
 {
-    EXPECT_NEAR(original->get_latitude_deg(), downloaded->get_latitude_deg(), 1e-6);
-    EXPECT_NEAR(original->get_longitude_deg(), downloaded->get_longitude_deg(), 1e-6);
-
-    EXPECT_FLOAT_EQ(original->get_relative_altitude_m(), downloaded->get_relative_altitude_m());
-
-    EXPECT_EQ(original->get_fly_through(), downloaded->get_fly_through());
-    if (std::isfinite(original->get_speed_m_s())) {
-        EXPECT_FLOAT_EQ(original->get_speed_m_s(), downloaded->get_speed_m_s());
-    }
-
-    EXPECT_EQ(original->get_camera_action(), downloaded->get_camera_action());
-
-    if (original->get_camera_action() == MissionItem::CameraAction::START_PHOTO_INTERVAL &&
-        std::isfinite(original->get_camera_photo_interval_s())) {
-        EXPECT_DOUBLE_EQ(original->get_camera_photo_interval_s(),
-                         downloaded->get_camera_photo_interval_s());
-    }
-
-    if (std::isfinite(original->get_loiter_time_s())) {
-        EXPECT_FLOAT_EQ(original->get_loiter_time_s(), downloaded->get_loiter_time_s());
-    }
+    EXPECT_TRUE(*original == *downloaded);
 }
 
 void pause_and_resume(std::shared_ptr<Mission> mission)
