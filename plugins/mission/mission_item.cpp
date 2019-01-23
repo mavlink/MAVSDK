@@ -133,19 +133,19 @@ bool operator==(const MissionItem &lhs, const MissionItem &rhs)
     // underlying transport happens with int at 1e7.
     static constexpr double lat_lon_epsilon = 1e7;
 
-    if (!(isnan(lhs.get_latitude_deg()) && isnan(rhs.get_latitude_deg())) &&
+    if (!(std::isnan(lhs.get_latitude_deg()) && std::isnan(rhs.get_latitude_deg())) &&
         std::abs(lhs.get_latitude_deg() - rhs.get_latitude_deg()) > lat_lon_epsilon) {
         // LogDebug() << "Latitude different";
         return false;
     }
 
-    if (!(isnan(lhs.get_longitude_deg()) && isnan(rhs.get_longitude_deg())) &&
+    if (!(std::isnan(lhs.get_longitude_deg()) && std::isnan(rhs.get_longitude_deg())) &&
         std::abs(lhs.get_latitude_deg() - rhs.get_latitude_deg()) > lat_lon_epsilon) {
         // LogDebug() << "Longitude different";
         return false;
     }
 
-    if (!(isnan(lhs.get_relative_altitude_m()) && isnan(rhs.get_relative_altitude_m())) &&
+    if (!(std::isnan(lhs.get_relative_altitude_m()) && std::isnan(rhs.get_relative_altitude_m())) &&
         std::fabs(lhs.get_relative_altitude_m() - rhs.get_relative_altitude_m()) >
             std::numeric_limits<float>::epsilon()) {
         // LogDebug() << "Relative altitude different";
@@ -157,28 +157,28 @@ bool operator==(const MissionItem &lhs, const MissionItem &rhs)
         return false;
     }
 
-    if (!(isnan(lhs.get_speed_m_s()) && isnan(rhs.get_speed_m_s())) &&
+    if (!(std::isnan(lhs.get_speed_m_s()) && std::isnan(rhs.get_speed_m_s())) &&
         std::fabs(lhs.get_speed_m_s() - rhs.get_speed_m_s()) >
             std::numeric_limits<float>::epsilon()) {
         // LogDebug() << "Speed different";
         return false;
     }
 
-    if (!(isnan(lhs.get_gimbal_pitch_deg()) && isnan(rhs.get_gimbal_pitch_deg())) &&
+    if (!(std::isnan(lhs.get_gimbal_pitch_deg()) && std::isnan(rhs.get_gimbal_pitch_deg())) &&
         std::fabs(lhs.get_gimbal_pitch_deg() - rhs.get_gimbal_pitch_deg()) >
             std::numeric_limits<float>::epsilon()) {
         // LogDebug() << "Gimbal pitch different";
         return false;
     }
 
-    if (!(isnan(lhs.get_gimbal_yaw_deg()) && isnan(rhs.get_gimbal_yaw_deg())) &&
+    if (!(std::isnan(lhs.get_gimbal_yaw_deg()) && std::isnan(rhs.get_gimbal_yaw_deg())) &&
         std::fabs(lhs.get_gimbal_yaw_deg() - rhs.get_gimbal_yaw_deg()) >
             std::numeric_limits<float>::epsilon()) {
         // LogDebug() << "Gimbal yaw different";
         return false;
     }
 
-    if (!(isnan(lhs.get_loiter_time_s()) && isnan(rhs.get_loiter_time_s())) &&
+    if (!(std::isnan(lhs.get_loiter_time_s()) && std::isnan(rhs.get_loiter_time_s())) &&
         std::fabs(lhs.get_loiter_time_s() - rhs.get_loiter_time_s()) >
             std::numeric_limits<float>::epsilon()) {
         // LogDebug() << "Loiter time different";
@@ -191,7 +191,8 @@ bool operator==(const MissionItem &lhs, const MissionItem &rhs)
     }
 
     // Underlying is just a float so we can only compare to that accuracy.
-    if (!(isnan(lhs.get_camera_photo_interval_s()) && isnan(rhs.get_camera_photo_interval_s())) &&
+    if (!(std::isnan(lhs.get_camera_photo_interval_s()) &&
+          std::isnan(rhs.get_camera_photo_interval_s())) &&
         float(std::fabs(lhs.get_camera_photo_interval_s() - rhs.get_camera_photo_interval_s())) >
             std::numeric_limits<float>::epsilon()) {
         // LogDebug() << "Camera photo interval different";
