@@ -2,6 +2,7 @@
 #include "system.h"
 #include "global_include.h"
 #include "px4_custom_mode.h"
+#include <cmath>
 
 namespace dronecode_sdk {
 
@@ -253,8 +254,8 @@ void FollowMeImpl::send_target_location()
     //   LogDebug() << debug_str <<  "Lat: " << _target_location.latitude_deg << " Lon: " <<
     //   _target_location.longitude_deg <<
     //	" Alt: " << _target_location.absolute_altitude_m;
-    const int32_t lat_int = static_cast<int32_t>(_target_location.latitude_deg * 1e7);
-    const int32_t lon_int = static_cast<int32_t>(_target_location.longitude_deg * 1e7);
+    const int32_t lat_int = int32_t(std::round(_target_location.latitude_deg * 1e7));
+    const int32_t lon_int = int32_t(std::round(_target_location.longitude_deg * 1e7));
     const float alt = static_cast<float>(_target_location.absolute_altitude_m);
     _mutex.unlock();
 

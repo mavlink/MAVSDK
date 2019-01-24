@@ -2,6 +2,7 @@
 #include "dronecode_sdk_impl.h"
 #include "global_include.h"
 #include "px4_custom_mode.h"
+#include <cmath>
 
 namespace dronecode_sdk {
 
@@ -158,8 +159,8 @@ Action::Result ActionImpl::goto_location(double latitude_deg,
     command.command = MAV_CMD_DO_REPOSITION;
     command.target_component_id = _parent->get_autopilot_id();
     command.params.param4 = to_rad_from_deg(yaw_deg);
-    command.params.x = (int32_t)(latitude_deg * 1E7);
-    command.params.y = (int32_t)(longitude_deg * 1E7);
+    command.params.x = int32_t(std::round(latitude_deg * 1e7));
+    command.params.y = int32_t(std::round(longitude_deg * 1e7));
     command.params.z = altitude_amsl_m;
 
     return action_result_from_command_result(_parent->send_command(command));

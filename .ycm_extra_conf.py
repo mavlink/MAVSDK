@@ -83,6 +83,8 @@ flags = [
 '-I',
 'plugins/mission/include',
 '-I',
+'plugins/mission_raw/include',
+'-I',
 'plugins/offboard/include',
 '-I',
 'plugins/params_raw/include',
