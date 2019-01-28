@@ -13,4 +13,6 @@ echo "Starting with UID : $USER_ID"
 useradd --shell /bin/bash -u $USER_ID -o -c "" -M user
 export HOME=/home/user
 
+chown -R user:user $HOME
+
 exec /bin/su user -c "$@"
