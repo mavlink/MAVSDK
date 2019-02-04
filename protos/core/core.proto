@@ -6,22 +6,23 @@ option java_package = "io.dronecode_sdk.core";
 option java_outer_classname = "CoreProto";
 
 service CoreService {
-    rpc SubscribeDiscover(SubscribeDiscoverRequest) returns(stream DiscoverResponse) {}
-    rpc SubscribeTimeout(SubscribeTimeoutRequest) returns(stream TimeoutResponse) {}
+    rpc SubscribeConnectionState(SubscribeConnectionStateRequest) returns(stream ConnectionStateResponse) {}
     rpc ListRunningPlugins(ListRunningPluginsRequest) returns(ListRunningPluginsResponse) {}
 }
 
-message SubscribeDiscoverRequest {}
-message DiscoverResponse {
-    uint64 uuid = 1;
+message SubscribeConnectionStateRequest {}
+message ConnectionStateResponse {
+    ConnectionState connection_state = 1;
 }
-
-message SubscribeTimeoutRequest {}
-message TimeoutResponse {}
 
 message ListRunningPluginsRequest {}
 message ListRunningPluginsResponse {
     repeated PluginInfo plugin_info = 1;
+}
+
+message ConnectionState {
+    uint64 uuid = 1;
+    bool is_connected = 2;
 }
 
 message PluginInfo {
