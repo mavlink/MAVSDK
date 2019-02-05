@@ -16,27 +16,20 @@ public:
         _stop_future(_stop_promise.get_future())
     {}
 
-    grpc::Status SubscribeDiscover(grpc::ServerContext * /* context */,
-                                   const rpc::core::SubscribeDiscoverRequest * /* request */,
-                                   grpc::ServerWriter<rpc::core::DiscoverResponse> *writer) override
+    grpc::Status SubscribeConnectionState(
+        grpc::ServerContext * /* context */,
+        const rpc::core::SubscribeConnectionStateRequest * /* request */,
+        grpc::ServerWriter<rpc::core::ConnectionStateResponse> *writer) override
     {
         _dc.register_on_discover([&writer](const uint64_t uuid) {
-            dronecode_sdk::rpc::core::DiscoverResponse rpc_discover_response;
-            rpc_discover_response.set_uuid(uuid);
-            writer->Write(rpc_discover_response);
+            const auto rpc_connection_state_response = createRpcConnectionStateResponse(uuid, true);
+            writer->Write(rpc_connection_state_response);
         });
 
-        _stop_future.wait();
-        return grpc::Status::OK;
-    }
-
-    grpc::Status SubscribeTimeout(grpc::ServerContext * /* context */,
-                                  const rpc::core::SubscribeTimeoutRequest * /* request */,
-                                  grpc::ServerWriter<rpc::core::TimeoutResponse> *writer) override
-    {
-        _dc.register_on_timeout([&writer](const uint64_t /* uuid */) {
-            dronecode_sdk::rpc::core::TimeoutResponse rpc_timeout_response;
-            writer->Write(rpc_timeout_response);
+        _dc.register_on_timeout([&writer](const uint64_t uuid) {
+            const auto rpc_connection_state_response =
+                createRpcConnectionStateResponse(uuid, false);
+            writer->Write(rpc_connection_state_response);
         });
 
         _stop_future.wait();
@@ -68,7 +61,21 @@ public:
 private:
     DronecodeSDK &_dc;
     std::promise<void> _stop_promise;
+
     std::future<void> _stop_future;
+
+    static dronecode_sdk::rpc::core::ConnectionStateResponse
+    createRpcConnectionStateResponse(const uint64_t uuid, const bool is_connected)
+    {
+        auto rpc_connection_state = new rpc::core::ConnectionState();
+        rpc_connection_state->set_uuid(uuid);
+        rpc_connection_state->set_is_connected(is_connected);
+
+        dronecode_sdk::rpc::core::ConnectionStateResponse rpc_connection_state_response;
+        rpc_connection_state_response.set_allocated_connection_state(rpc_connection_state);
+
+        return rpc_connection_state_response;
+    }
 };
 
 } // namespace backend

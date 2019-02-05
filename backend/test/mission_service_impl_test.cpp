@@ -227,14 +227,11 @@ std::shared_ptr<UploadMissionRequest> MissionServiceImplUploadTest::generateUplo
     const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const
 {
     auto request = std::make_shared<UploadMissionRequest>();
-    auto rpc_mission = new dc::rpc::mission::MissionItems();
 
     for (const auto &mission_item : mission_items) {
-        auto rpc_mission_item = rpc_mission->add_mission_items();
+        auto rpc_mission_item = request->add_mission_items();
         MissionServiceImpl::translateMissionItem(mission_item, rpc_mission_item);
     }
-
-    request->set_allocated_mission_items(rpc_mission);
 
     return request;
 }
@@ -347,12 +344,11 @@ void MissionServiceImplDownloadTest::checkItemsAreDownloadedCorrectly(
     _download_callback(ARBITRARY_RESULT, mission_items);
     download_handle.wait();
 
-    ASSERT_EQ(mission_items.size(), response->mission_items().mission_items().size());
+    ASSERT_EQ(mission_items.size(), response->mission_items().size());
 
     for (size_t i = 0; i < mission_items.size(); i++) {
         EXPECT_EQ(*mission_items.at(i),
-                  *MissionServiceImpl::translateRPCMissionItem(
-                      response->mission_items().mission_items().Get(i)));
+                  *MissionServiceImpl::translateRPCMissionItem(response->mission_items().Get(i)));
     }
 }
 
@@ -533,40 +529,6 @@ TEST_P(MissionServiceImplSetCurrentTest, setCurrentItemResultIsTranslatedCorrect
 
     EXPECT_EQ(GetParam().first,
               rpc::MissionResult::Result_Name(response.mission_result().result()));
-}
-
-class MissionServiceImplGetCurrentTest : public MissionServiceImplTestBase {};
-
-TEST_F(MissionServiceImplGetCurrentTest, getCurrentDoesNotCrashWithNullResponse)
-{
-    _mission_service.GetCurrentMissionItemIndex(nullptr, nullptr, nullptr);
-}
-
-TEST_F(MissionServiceImplGetCurrentTest, getCurrentReturnsCorrectIndex)
-{
-    const auto expected_index = ARBITRARY_INDEX;
-    dronecode_sdk::rpc::mission::GetCurrentMissionItemIndexResponse response;
-    ON_CALL(_mission, current_mission_item()).WillByDefault(Return(expected_index));
-
-    _mission_service.GetCurrentMissionItemIndex(nullptr, nullptr, &response);
-    EXPECT_EQ(expected_index, response.index());
-}
-
-class MissionServiceImplGetCountTest : public MissionServiceImplTestBase {};
-
-TEST_F(MissionServiceImplGetCountTest, getCountDoesNotCrashWithNullResponse)
-{
-    _mission_service.GetMissionCount(nullptr, nullptr, nullptr);
-}
-
-TEST_F(MissionServiceImplGetCountTest, getCountReturnsCorrectIndex)
-{
-    const auto expected_index = ARBITRARY_INDEX;
-    dronecode_sdk::rpc::mission::GetMissionCountResponse response;
-    ON_CALL(_mission, total_mission_items()).WillByDefault(Return(expected_index));
-
-    _mission_service.GetMissionCount(nullptr, nullptr, &response);
-    EXPECT_EQ(expected_index, response.count());
 }
 
 class MissionServiceImplProgressTest : public MissionServiceImplTestBase {
