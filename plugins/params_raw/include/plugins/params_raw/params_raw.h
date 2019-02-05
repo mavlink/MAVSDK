@@ -22,7 +22,7 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto info = std::make_shared<ParamsRaw>(system);
+     *     auto params_raw = std::make_shared<ParamsRaw>(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
