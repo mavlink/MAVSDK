@@ -44,14 +44,10 @@ public:
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
 
-                    auto rpc_mission = new rpc::mission::MissionItems();
-
                     for (const auto mission_item : mission_items) {
-                        auto rpc_mission_item = rpc_mission->add_mission_items();
+                        auto rpc_mission_item = response->add_mission_items();
                         translateMissionItem(mission_item, rpc_mission_item);
                     }
-
-                    response->set_allocated_mission_items(rpc_mission);
                 }
 
                 result_promise.set_value();
@@ -142,29 +138,6 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status GetCurrentMissionItemIndex(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::GetCurrentMissionItemIndexRequest * /* request */,
-        rpc::mission::GetCurrentMissionItemIndexResponse *response) override
-    {
-        if (response != nullptr) {
-            response->set_index(_mission.current_mission_item());
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status GetMissionCount(grpc::ServerContext * /* context */,
-                                 const rpc::mission::GetMissionCountRequest * /* request */,
-                                 rpc::mission::GetMissionCountResponse *response) override
-    {
-        if (response != nullptr) {
-            response->set_count(_mission.total_mission_items());
-        }
-
-        return grpc::Status::OK;
-    }
-
     grpc::Status SubscribeMissionProgress(
         grpc::ServerContext * /* context */,
         const dronecode_sdk::rpc::mission::SubscribeMissionProgressRequest * /* request */,
@@ -236,6 +209,7 @@ public:
         rpc_mission_item->set_camera_action(
             translateCameraAction(mission_item->get_camera_action()));
         rpc_mission_item->set_loiter_time_s(mission_item->get_loiter_time_s());
+        rpc_mission_item->set_camera_photo_interval_s(mission_item->get_camera_photo_interval_s());
     }
 
     static rpc::mission::MissionItem::CameraAction
@@ -304,7 +278,7 @@ private:
         std::vector<std::shared_ptr<MissionItem>> mission_items;
 
         if (request != nullptr) {
-            for (auto rpc_mission_item : request->mission_items().mission_items()) {
+            for (auto rpc_mission_item : request->mission_items()) {
                 mission_items.push_back(translateRPCMissionItem(rpc_mission_item));
             }
         }
