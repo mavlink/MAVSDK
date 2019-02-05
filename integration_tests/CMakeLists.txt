@@ -10,6 +10,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 # `make test` does not show output, but `make check` does
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
+if (ENABLE_MAVLINK_BACKDOOR)
+    set(additional_sources "mavlink_backdoor.cpp")
+    set(additional_libs "dronecode_sdk_mavlink_backdoor")
+endif()
+
 # This includes all GTests that run integration tests
 add_executable(integration_tests_runner
     ../core/unittests_main.cpp
@@ -51,6 +56,7 @@ add_executable(integration_tests_runner
     telemetry_health.cpp
     telemetry_modes.cpp
     telemetry_sync.cpp
+    ${additional_sources}
 )
 
 include_directories(
@@ -76,6 +82,7 @@ target_link_libraries(integration_tests_runner
     dronecode_sdk_camera
     dronecode_sdk_calibration
     dronecode_sdk_params_raw
+    ${additional_libs}
     gtest
     gtest_main
     gmock

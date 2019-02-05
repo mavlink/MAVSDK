@@ -42,6 +42,8 @@ BUILD_TYPE ?= "Debug"
 # Default is no DROPDEBUG
 DROP_DEBUG ?= 0
 
+# To enable MAVLink backdoor build
+ENABLE_MAVLINK_BACKDOOR ?= 0
 
 CURRENT_DIR := $(shell pwd)
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
@@ -66,6 +68,7 @@ define cmake-build
         -DCMAKE_INSTALL_PREFIX=$(INSTALL_PREFIX) \
 		-DCMAKE_BUILD_BACKEND=$(BUILD_BACKEND) \
 		-DDROP_DEBUG=$(DROP_DEBUG) \
+		-DENABLE_MAVLINK_BACKDOOR=$(ENABLE_MAVLINK_BACKDOOR) \
         -G$(CMAKE_GENERATOR)) \
 	|| (rm -rf $(BUILD_DIR)) \
 fi
