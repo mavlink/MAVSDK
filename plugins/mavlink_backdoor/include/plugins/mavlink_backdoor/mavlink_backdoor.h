@@ -71,9 +71,42 @@ public:
      * callback to be called. To stop the subscription, call this method with
      * `nullptr` as the argument.
      *
+     * @param message_id The MAVLink message ID.
      * @param callback Callback to be called for message subscription.
      */
-    void subscribe_message_async(std::function<void(const mavlink_message_t &)> callback);
+    void subscribe_message_async(uint16_t message_id,
+                                 std::function<void(const mavlink_message_t &)> callback);
+
+    /**
+     * @brief Get our own system ID.
+     *
+     * @return our own system ID.
+     */
+    uint8_t get_our_sysid() const;
+
+    /**
+     * @brief Get our own component ID.
+     *
+     * @return our own component ID.
+     */
+    uint8_t get_our_compid() const;
+
+    /**
+     * @brief Get system ID of target.
+     *
+     * @return system ID of target.
+     */
+    uint8_t get_target_sysid() const;
+
+    /**
+     * @brief Get target component ID.
+     *
+     * This defaults to the component ID of the autopilot (1) if available
+     * and otherwise to all components (0).
+     *
+     * @return component ID of target.
+     */
+    uint8_t get_target_compid() const;
 
     /**
      * @brief Copy Constructor (object is not copyable).

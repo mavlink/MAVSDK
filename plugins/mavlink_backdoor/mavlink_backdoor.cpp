@@ -16,9 +16,9 @@ MavlinkBackdoor::Result MavlinkBackdoor::send_message(const mavlink_message_t &m
 }
 
 void MavlinkBackdoor::subscribe_message_async(
-    std::function<void(const mavlink_message_t &)> callback)
+    uint16_t message_id, std::function<void(const mavlink_message_t &)> callback)
 {
-    _impl->subscribe_message_async(callback);
+    _impl->subscribe_message_async(message_id, callback);
 }
 
 std::string MavlinkBackdoor::result_str(Result result)
@@ -33,6 +33,25 @@ std::string MavlinkBackdoor::result_str(Result result)
         case MavlinkBackdoor::Result::UNKNOWN:
             return "Unknown";
     }
+}
+
+uint8_t MavlinkBackdoor::get_our_sysid() const
+{
+    return _impl->get_our_sysid();
+}
+uint8_t MavlinkBackdoor::get_our_compid() const
+{
+    return _impl->get_our_compid();
+}
+
+uint8_t MavlinkBackdoor::get_target_sysid() const
+{
+    return _impl->get_target_sysid();
+}
+
+uint8_t MavlinkBackdoor::get_target_compid() const
+{
+    return _impl->get_target_compid();
 }
 
 } // namespace dronecode_sdk
