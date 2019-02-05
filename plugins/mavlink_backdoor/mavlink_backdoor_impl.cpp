@@ -23,12 +23,14 @@ void MavlinkBackdoorImpl::enable() {}
 
 void MavlinkBackdoorImpl::disable() {}
 
-MavlinkBackdoor::Result MavlinkBackdoorImpl::send_message(/*const mavlink_message_t& message*/)
+MavlinkBackdoor::Result MavlinkBackdoorImpl::send_message(const mavlink_message_t &message)
 {
+    UNUSED(message);
     return MavlinkBackdoor::Result::UNKNOWN;
 }
 
-void MavlinkBackdoorImpl::subscribe_message_async(std::function<void(/*const mavlink_message_t&*/)> callback)
+void MavlinkBackdoorImpl::subscribe_message_async(
+    std::function<void(const mavlink_message_t &)> callback)
 {
     UNUSED(callback);
 }

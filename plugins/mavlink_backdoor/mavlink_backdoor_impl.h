@@ -18,9 +18,9 @@ public:
     void enable() override;
     void disable() override;
 
-    MavlinkBackdoor::Result send_message(/*const mavlink_message_t& message*/);
+    MavlinkBackdoor::Result send_message(const mavlink_message_t &message);
 
-    void subscribe_message_async(std::function<void(/*const mavlink_message_t&*/)> callback);
+    void subscribe_message_async(std::function<void(const mavlink_message_t &)> callback);
 
 private:
 };

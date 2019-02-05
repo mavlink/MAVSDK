@@ -16,6 +16,11 @@ install(FILES
     DESTINATION ${dronecode_sdk_install_include_dir}/plugins/mavlink_backdoor
 )
 
+install(DIRECTORY
+    ../../third_party/mavlink/include
+    DESTINATION ${dronecode_sdk_install_include_dir}
+)
+
 install(TARGETS dronecode_sdk_mavlink_backdoor
     #EXPORT dronecode_sdk-targets
     DESTINATION ${dronecode_sdk_install_lib_dir}
@@ -24,6 +29,7 @@ install(TARGETS dronecode_sdk_mavlink_backdoor
 target_include_directories(dronecode_sdk_mavlink_backdoor
 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../third_party/mavlink/include
 PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )

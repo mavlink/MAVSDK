@@ -4,6 +4,8 @@
 #include <string>
 #include <functional>
 
+// This plugin provides/includes the mavlink 2.0 header files.
+#include "mavlink/v2.0/common/mavlink.h"
 #include <dronecode_sdk/plugin_base.h>
 
 namespace dronecode_sdk {
@@ -60,7 +62,7 @@ public:
      *
      * @return result of the request.
      */
-    Result send_message(/*const mavlink_message_t& message*/);
+    Result send_message(const mavlink_message_t &message);
 
     /**
      * @brief Subscribe to messages using message ID.
@@ -71,7 +73,7 @@ public:
      *
      * @param callback Callback to be called for message subscription.
      */
-    void subscribe_message_async(std::function<void(/*const mavlink_message_t&*/)> callback);
+    void subscribe_message_async(std::function<void(const mavlink_message_t &)> callback);
 
     /**
      * @brief Copy Constructor (object is not copyable).

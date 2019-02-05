@@ -7,7 +7,7 @@
 
 using namespace dronecode_sdk;
 
-static void receive_highres_imu(/* const mavlink_message_t& message */);
+static void receive_highres_imu(const mavlink_message_t &message);
 
 TEST_F(SitlTest, MavlinkBackdoor)
 {
@@ -28,13 +28,14 @@ TEST_F(SitlTest, MavlinkBackdoor)
     System &system = dc.system();
     auto mavlink_backdoor = std::make_shared<MavlinkBackdoor>(system);
 
-    mavlink_backdoor->send_message();
+    mavlink_message_t message;
+    mavlink_backdoor->send_message(message);
 
     mavlink_backdoor->subscribe_message_async(
-        std::bind(&receive_highres_imu/*, std::placeholders::_1)*/));
+        std::bind(&receive_highres_imu, std::placeholders::_1));
 }
 
-void receive_highres_imu(/* const mavlink_message_t& message */)
+void receive_highres_imu(const mavlink_message_t &message)
 {
-
+    UNUSED(message);
 }
