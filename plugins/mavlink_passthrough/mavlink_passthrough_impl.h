@@ -1,16 +1,16 @@
 #pragma once
 
-#include "plugins/mavlink_backdoor/mavlink_backdoor.h"
+#include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 #include <mutex>
 
 namespace dronecode_sdk {
 
-class MavlinkBackdoorImpl : public PluginImplBase {
+class MavlinkPassthroughImpl : public PluginImplBase {
 public:
-    MavlinkBackdoorImpl(System &system);
-    ~MavlinkBackdoorImpl();
+    MavlinkPassthroughImpl(System &system);
+    ~MavlinkPassthroughImpl();
 
     void init() override;
     void deinit() override;
@@ -18,7 +18,7 @@ public:
     void enable() override;
     void disable() override;
 
-    MavlinkBackdoor::Result send_message(const mavlink_message_t &message);
+    MavlinkPassthrough::Result send_message(const mavlink_message_t &message);
 
     void subscribe_message_async(uint16_t message_id,
                                  std::function<void(const mavlink_message_t &)> callback);

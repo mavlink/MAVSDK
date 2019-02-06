@@ -11,16 +11,16 @@
 namespace dronecode_sdk {
 
 class System;
-class MavlinkBackdoorImpl;
+class MavlinkPassthroughImpl;
 
 /**
- * @brief The MavlinkBackdoor class provides direct MAVLink access
+ * @brief The MavlinkPassthrough class provides direct MAVLink access
  *
  * "With great power comes great responsibility." - This plugin allows
  * you to send and receive MAVLink messages. There is no checking or
  * safe-guards, you're on your own, and you have been warned.
  */
-class MavlinkBackdoor : public PluginBase {
+class MavlinkPassthrough : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -28,17 +28,17 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto mavlink_backdoor = std::make_shared<MavlinkBackdoor>(system);
+     *     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit MavlinkBackdoor(System &system);
+    explicit MavlinkPassthrough(System &system);
 
     /**
      * @brief Destructor (internal use only).
      */
-    ~MavlinkBackdoor();
+    ~MavlinkPassthrough();
 
     /**
      * @brief Possible results returned for requests.
@@ -50,10 +50,10 @@ public:
     };
 
     /**
-     * @brief Returns a human-readable English string for `MavlinkBackdoor::Result`.
+     * @brief Returns a human-readable English string for `MavlinkPassthrough::Result`.
      *
      * @param result The enum value for which a human readable string is required.
-     * @return Human readable string for the `MavlinkBackdoor::Result`.
+     * @return Human readable string for the `MavlinkPassthrough::Result`.
      */
     std::string result_str(Result result);
 
@@ -111,15 +111,15 @@ public:
     /**
      * @brief Copy Constructor (object is not copyable).
      */
-    MavlinkBackdoor(const MavlinkBackdoor &) = delete;
+    MavlinkPassthrough(const MavlinkPassthrough &) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const MavlinkBackdoor &operator=(const MavlinkBackdoor &) = delete;
+    const MavlinkPassthrough &operator=(const MavlinkPassthrough &) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    std::unique_ptr<MavlinkBackdoorImpl> _impl;
+    std::unique_ptr<MavlinkPassthroughImpl> _impl;
 };
 
 } // namespace dronecode_sdk
