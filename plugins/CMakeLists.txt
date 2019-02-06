@@ -23,4 +23,9 @@ add_subdirectory(offboard)
 add_subdirectory(params_raw)
 add_subdirectory(telemetry)
 
+if (ENABLE_MAVLINK_PASSTHROUGH)
+    message(STATUS "Include MAVLink passthrough plugin")
+    add_subdirectory(mavlink_passthrough)
+endif()
+
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

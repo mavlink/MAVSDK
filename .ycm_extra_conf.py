@@ -91,6 +91,8 @@ flags = [
 '-I',
 'plugins/telemetry/include',
 '-I',
+'plugins/mavlink_passthrough/include',
+'-I',
 'backend/src',
 '-isystem',
 '/usr/include'

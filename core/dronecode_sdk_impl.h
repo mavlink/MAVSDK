@@ -17,8 +17,8 @@ public:
     DronecodeSDKImpl();
     ~DronecodeSDKImpl();
 
-    void receive_message(const mavlink_message_t &message);
-    bool send_message(const mavlink_message_t &message);
+    void receive_message(mavlink_message_t &message);
+    bool send_message(mavlink_message_t &message);
 
     ConnectionResult add_any_connection(const std::string &connection_url);
     ConnectionResult

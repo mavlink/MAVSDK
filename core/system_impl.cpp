@@ -112,8 +112,18 @@ void SystemImpl::unregister_timeout_handler(const void *cookie)
     _timeout_handler.remove(cookie);
 }
 
-void SystemImpl::process_mavlink_message(const mavlink_message_t &message)
+void SystemImpl::process_mavlink_message(mavlink_message_t &message)
 {
+    // This is a low level interface where incoming messages can be tampered
+    // with or even dropped.
+    if (_incoming_messages_intercept_callback) {
+        const bool keep = _incoming_messages_intercept_callback(message);
+        if (!keep) {
+            LogDebug() << "Dropped incoming message: " << int(message.msgid);
+            return;
+        }
+    }
+
     _mavlink_handler_table_mutex.lock();
 
 #if MESSAGE_DEBUGGING == 1
@@ -450,8 +460,21 @@ void SystemImpl::send_heartbeat()
     send_message(message);
 }
 
-bool SystemImpl::send_message(const mavlink_message_t &message)
+bool SystemImpl::send_message(mavlink_message_t &message)
 {
+    // This is a low level interface where incoming messages can be tampered
+    // with or even dropped.
+    if (_outgoing_messages_intercept_callback) {
+        const bool keep = _outgoing_messages_intercept_callback(message);
+        if (!keep) {
+            // We fake that everything was sent as instructed because
+            // a potential loss would happen later and we would not be informed
+            // about it.
+            LogDebug() << "Dropped outgoing message: " << int(message.msgid);
+            return true;
+        }
+    }
+
 #if MESSAGE_DEBUGGING == 1
     LogDebug() << "Sending msg " << size_t(message.msgid);
 #endif
@@ -1096,6 +1119,16 @@ void SystemImpl::unregister_param_changed_handler(const void *cookie)
         return;
     }
     _param_changed_callbacks.erase(it);
+}
+
+void SystemImpl::intercept_incoming_messages(std::function<bool(mavlink_message_t &)> callback)
+{
+    _incoming_messages_intercept_callback = callback;
+}
+
+void SystemImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_t &)> callback)
+{
+    _outgoing_messages_intercept_callback = callback;
 }
 
 } // namespace dronecode_sdk
