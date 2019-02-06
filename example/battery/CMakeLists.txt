@@ -8,7 +8,6 @@ if(NOT MSVC)
     #include_directories(/usr/local/include)
     # Line below required if /usr/local/lib is not in your default linker path
     #link_directories(/usr/local/lib)
-    include_directories(/usr/local/include/dronecode_sdk/include/)
 else()
     add_definitions("-std=c++11 -WX -W2")
     include_directories(${CMAKE_SOURCE_DIR}/../../install/include)

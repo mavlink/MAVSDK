@@ -17,8 +17,8 @@ install(FILES
 )
 
 install(DIRECTORY
-    ../../third_party/mavlink/include
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    ../../third_party/mavlink/include/mavlink
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/mavlink_passthrough
 )
 
 install(TARGETS dronecode_sdk_mavlink_passthrough
