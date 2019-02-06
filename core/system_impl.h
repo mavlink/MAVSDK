@@ -52,7 +52,7 @@ public:
     explicit SystemImpl(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t component_id);
     ~SystemImpl();
 
-    void process_mavlink_message(const mavlink_message_t &message);
+    void process_mavlink_message(mavlink_message_t &message);
 
     typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
 
@@ -71,7 +71,7 @@ public:
     void reset_call_every(const void *cookie);
     void remove_call_every(const void *cookie);
 
-    bool send_message(const mavlink_message_t &message);
+    bool send_message(mavlink_message_t &message);
 
     typedef std::function<void(MAVLinkCommands::Result, float)> command_result_callback_t;
 
@@ -186,6 +186,9 @@ public:
 
     void send_autopilot_version_request();
 
+    void intercept_incoming_messages(std::function<bool(mavlink_message_t &)> callback);
+    void intercept_outgoing_messages(std::function<bool(mavlink_message_t &)> callback);
+
     // Non-copyable
     SystemImpl(const SystemImpl &) = delete;
     const SystemImpl &operator=(const SystemImpl &) = delete;
@@ -291,6 +294,9 @@ private:
 
     std::mutex _param_changed_callbacks_mutex{};
     std::map<const void *, param_changed_callback_t> _param_changed_callbacks{};
+
+    std::function<bool(mavlink_message_t &)> _incoming_messages_intercept_callback{nullptr};
+    std::function<bool(mavlink_message_t &)> _outgoing_messages_intercept_callback{nullptr};
 };
 
 } // namespace dronecode_sdk

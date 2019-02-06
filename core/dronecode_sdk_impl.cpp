@@ -40,7 +40,7 @@ DronecodeSDKImpl::~DronecodeSDKImpl()
     }
 }
 
-void DronecodeSDKImpl::receive_message(const mavlink_message_t &message)
+void DronecodeSDKImpl::receive_message(mavlink_message_t &message)
 {
     // Don't ever create a system with sysid 0.
     if (message.sysid == 0) {
@@ -82,7 +82,7 @@ void DronecodeSDKImpl::receive_message(const mavlink_message_t &message)
     }
 }
 
-bool DronecodeSDKImpl::send_message(const mavlink_message_t &message)
+bool DronecodeSDKImpl::send_message(mavlink_message_t &message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
