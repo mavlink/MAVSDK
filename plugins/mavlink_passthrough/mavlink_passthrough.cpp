@@ -10,7 +10,7 @@ MavlinkPassthrough::MavlinkPassthrough(System &system) :
 
 MavlinkPassthrough::~MavlinkPassthrough() {}
 
-MavlinkPassthrough::Result MavlinkPassthrough::send_message(const mavlink_message_t &message)
+MavlinkPassthrough::Result MavlinkPassthrough::send_message(mavlink_message_t &message)
 {
     return _impl->send_message(message);
 }
@@ -52,6 +52,18 @@ uint8_t MavlinkPassthrough::get_target_sysid() const
 uint8_t MavlinkPassthrough::get_target_compid() const
 {
     return _impl->get_target_compid();
+}
+
+void MavlinkPassthrough::intercept_incoming_messages_async(
+    std::function<bool(mavlink_message_t &)> callback)
+{
+    _impl->intercept_incoming_messages_async(callback);
+}
+
+void MavlinkPassthrough::intercept_outgoing_messages_async(
+    std::function<bool(mavlink_message_t &)> callback)
+{
+    _impl->intercept_outgoing_messages_async(callback);
 }
 
 } // namespace dronecode_sdk

@@ -11,7 +11,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTESTING")
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
 if (ENABLE_MAVLINK_PASSTHROUGH)
-    set(additional_sources "mavlink_passthrough.cpp")
+    set(additional_sources
+        mavlink_passthrough.cpp
+        mission_transfer_lossy.cpp)
     set(additional_libs "dronecode_sdk_mavlink_passthrough")
 endif()
 

@@ -23,7 +23,7 @@ void MavlinkPassthroughImpl::enable() {}
 
 void MavlinkPassthroughImpl::disable() {}
 
-MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(const mavlink_message_t &message)
+MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_t &message)
 {
     if (!_parent->send_message(message)) {
         return MavlinkPassthrough::Result::CONNECTION_ERROR;
@@ -55,6 +55,18 @@ uint8_t MavlinkPassthroughImpl::get_target_sysid() const
 uint8_t MavlinkPassthroughImpl::get_target_compid() const
 {
     return _parent->get_autopilot_id();
+}
+
+void MavlinkPassthroughImpl::intercept_incoming_messages_async(
+    std::function<bool(mavlink_message_t &)> callback)
+{
+    _parent->intercept_incoming_messages(callback);
+}
+
+void MavlinkPassthroughImpl::intercept_outgoing_messages_async(
+    std::function<bool(mavlink_message_t &)> callback)
+{
+    _parent->intercept_outgoing_messages(callback);
 }
 
 } // namespace dronecode_sdk

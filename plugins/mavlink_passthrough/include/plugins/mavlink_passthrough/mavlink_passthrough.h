@@ -62,7 +62,7 @@ public:
      *
      * @return result of the request.
      */
-    Result send_message(const mavlink_message_t &message);
+    Result send_message(mavlink_message_t &message);
 
     /**
      * @brief Subscribe to messages using message ID.
@@ -107,6 +107,34 @@ public:
      * @return component ID of target.
      */
     uint8_t get_target_compid() const;
+
+    /**
+     * @brief Intercept incoming messages.
+     *
+     * This is a hook which allows to change or drop MAVLink messages as they
+     * are received before they get forwarded to the core and the other plugins.
+     *
+     * @note This functioniality is provided primarily for testing in order to
+     * simulate packet drops or actors not adhering to the MAVLink protocols.
+     *
+     * @param callback Callback to be called for each incoming message.
+     *        To drop a message, return 'false' from the callback.
+     */
+    void intercept_incoming_messages_async(std::function<bool(mavlink_message_t &)> callback);
+
+    /**
+     * @brief Intercept outgoing messages.
+     *
+     * This is a hook which allows to change or drop MAVLink messages before
+     * they are sent.
+     *
+     * @note This functioniality is provided primarily for testing in order to
+     * simulate packet drops or actors not adhering to the MAVLink protocols.
+     *
+     * @param callback Callback to be called for each outgoing message.
+     *        To drop a message, return 'false' from the callback.
+     */
+    void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t &)> callback);
 
     /**
      * @brief Copy Constructor (object is not copyable).
