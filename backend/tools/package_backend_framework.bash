@@ -19,8 +19,12 @@ if [ -f ${FAT_BIN_DIR}/dronecode-backend.zip ]; then
     exit 1
 fi
 
+echo "Creating fat bin..."
+
 cp -r ${IOS_BACKEND_DIR}/backend.framework ${FAT_BIN_DIR}
 lipo ${IOS_BACKEND_DIR}/backend.framework/backend ${IOS_SIM_BACKEND_DIR}/backend.framework/backend -create -output ${FAT_BIN_DIR}/backend.framework/backend
 
 cd ${FAT_BIN_DIR}
 zip -9 -r dronecode-backend.zip backend.framework
+
+echo "Success! You'll find the fat bin in ${FAT_BIN_DIR}!"
