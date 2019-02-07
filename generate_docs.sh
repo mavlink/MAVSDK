@@ -30,7 +30,7 @@ if [ "$skip_checks" = false ]; then
 fi
 
 # Build and install locally.
-make INSTALL_PREFIX=$install_prefix default install
+make ENABLE_MAVLINK_PASSTHROUGH=1 INSTALL_PREFIX=$install_prefix default install
 
 return_result=0
 # Doxygen likes to run where the source is (because INPUT in .doxygen is empty),
