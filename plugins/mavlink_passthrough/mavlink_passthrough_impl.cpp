@@ -17,7 +17,11 @@ MavlinkPassthroughImpl::~MavlinkPassthroughImpl()
 
 void MavlinkPassthroughImpl::init() {}
 
-void MavlinkPassthroughImpl::deinit() {}
+void MavlinkPassthroughImpl::deinit()
+{
+    _parent->intercept_incoming_messages(nullptr);
+    _parent->intercept_outgoing_messages(nullptr);
+}
 
 void MavlinkPassthroughImpl::enable() {}
 
