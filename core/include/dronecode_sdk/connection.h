@@ -2,6 +2,8 @@
 
 namespace dronecode_sdk {
 
+class ConnectionImpl;
+  
 class Connection {
 public:
   /** @brief Default UDP bind IP (accepts any incoming connections). */
@@ -93,31 +95,6 @@ public:
      */
   Result add_serial_connection(const std::string &dev_path,
 					 int baudrate = DEFAULT_SERIAL_BAUDRATE);
-  
-  /**
-   * @brief Returns `true` if exactly one system is currently connected.
-     *
-     * Connected means we are receiving heartbeats from this system.
-     * It means the same as "discovered" and "not timed out".
-     *
-     * If multiple systems have connected, this will return `false`.
-     *
-     * @return `true` if exactly one system is connected.
-     */
-  bool is_connected() const;
-  
-  /**
-   * @brief Returns `true` if a system is currently connected.
-   *
-   * Connected means we are receiving heartbeats from this system.
-   * It means the same as "discovered" and "not timed out".
-   *
-   * @param uuid UUID of system to check.
-   * @return `true` if system is connected.
-   */
-  bool is_connected(uint64_t uuid) const;
-  
-  
   
   /**
    * @brief Result type returned when adding a connection.
