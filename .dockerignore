@@ -1,0 +1,15 @@
+# docker
+docker/
+# build & install folders
+build*/
+install/
+logs/
+.vscode
+# auto-generated files (below) from Qt Creator
+*.config
+*.creator*
+*.files
+*.includes
+CMakeLists.txt.user*
+
+.DS_Store
