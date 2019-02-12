@@ -1,0 +1,20 @@
+#
+# Build the DronecodeSDK and launches the backend bin
+#
+# Author: Ramón Roche <julian@oes.ch>
+#
+
+FROM dronecode/dronecode-sdk-base:latest
+MAINTAINER Ramón Roche <mrpollo@gmail.com>
+
+ENV BUILD_BACKEND 1
+WORKDIR "/home/user/DronecodeSDK"
+ADD [".", "/home/user/DronecodeSDK"]
+
+# ADD can sometimes copy build/
+# lets make sure we have a clean build
+RUN mkdir build \
+	&& make clean
+RUN make default
+CMD ./build/default/backend/src/backend_bin
+
