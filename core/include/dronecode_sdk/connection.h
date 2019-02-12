@@ -95,7 +95,15 @@ public:
      */
   Result add_serial_connection(const std::string &dev_path,
 					 int baudrate = DEFAULT_SERIAL_BAUDRATE);
-  
+
+  /**
+   * @brief Returns a human-readable English string for a ConnectionResult.
+   *
+   * @param result The enum value for which a human readable string is required.
+   * @return Human readable string for the ConnectionResult.
+   */    
+  inline const char *connection_result_str(const Result result);
+    
   /**
    * @brief Result type returned when adding a connection.
    *

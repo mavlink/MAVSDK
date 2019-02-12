@@ -177,4 +177,37 @@ void ConnectionImpl::add_connection(std::shared_ptr<Connection> new_connection)
     _connections.push_back(new_connection);
 }
 
+inline const char * ConnectionImpl::connection_result_str(const ConnectionResult result)
+{
+    switch (result) {
+        case Connection::Result::SUCCESS:
+            return "Success";
+        case Connection::Result::TIMEOUT:
+            return "Timeout";
+        case Connection::Result::SOCKET_ERROR:
+            return "Socket error";
+        case Connection::Result::BIND_ERROR:
+            return "Bind error";
+        case Connection::Result::SOCKET_CONNECTION_ERROR:
+            return "Socket connection error";
+        case Connection::Result::CONNECTION_ERROR:
+            return "Connection error";
+        case Connection::Result::NOT_IMPLEMENTED:
+            return "Not implemented";
+        case Connection::Result::SYSTEM_NOT_CONNECTED:
+            return "System not connected";
+        case Connection::Result::SYSTEM_BUSY:
+            return "System busy";
+        case Connection::Result::COMMAND_DENIED:
+            return "Command denied";
+        case Connection::Result::DESTINATION_IP_UNKNOWN:
+            return "Destination IP unknown";
+        case Connection::Result::CONNECTIONS_EXHAUSTED:
+            return "Connections exhausted";
+        case Connection::Result::CONNECTION_URL_INVALID:
+            return "Invalid connection URL";
+        default:
+            return "Unknown";
+    }
+  
 }

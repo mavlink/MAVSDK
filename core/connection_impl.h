@@ -22,7 +22,9 @@ public:
   ConnectionResult add_udp_connection(const std::string &local_ip, int local_port_number);
   ConnectionResult add_tcp_connection(const std::string &remote_ip, int remote_port);
   ConnectionResult add_serial_connection(const std::string &dev_path, int baudrate);
-      
+
+  inline const char *connection_result_str(const Result result);
+  
 private:
   void add_connection(std::shared_ptr<Connection>);
 
