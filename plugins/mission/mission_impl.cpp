@@ -58,13 +58,11 @@ void MissionImpl::init()
 
 void MissionImpl::enable() {}
 
-void MissionImpl::disable()
-{
-    _parent->unregister_timeout_handler(_timeout_cookie);
-}
+void MissionImpl::disable() {}
 
 void MissionImpl::deinit()
 {
+    _parent->unregister_timeout_handler(_timeout_cookie);
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
