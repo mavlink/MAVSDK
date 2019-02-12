@@ -5,7 +5,10 @@ from .autogen_file import File
 from .methods import Method
 from .struct import Struct
 from .enum import Enum
-from .utils import (get_template_env, has_result)
+from .utils import (get_template_env,
+                    has_result,
+                    name_parser_factory,
+                    type_info_factory)
 
 
 class AutoGen(object):
@@ -14,8 +17,10 @@ class AutoGen(object):
     @staticmethod
     def generate_reactive(request):
 
-        # Get the template folder from the environment
-        template_env = get_template_env(environ.get("TEMPLATE_PATH", "./"))
+        params = AutoGen.parse_parameter(request.parameter)
+        name_parser_factory.set_template_path(params["template_path"])
+        type_info_factory.set_template_path(params["template_path"])
+        template_env = get_template_env(params["template_path"])
 
         for proto_file in request.proto_file:
             plugin_name = proto_file.name.split('.')[0].capitalize()
@@ -56,7 +61,37 @@ class AutoGen(object):
 
             # Fill response
             f = _codegen_response.file.add()
-            f.name = f"{plugin_name}.{request.parameter}"
+            f.name = f"{plugin_name}.{params['file_ext']}"
             f.content = str(out_file)
 
             return _codegen_response
+
+    @staticmethod
+    def parse_parameter(parameter):
+        raw_params = parameter.split(',')
+
+        params_dict = {}
+        for raw_param in raw_params:
+            split_param = raw_param.split('=')
+            params_dict[split_param[0]] = split_param[1]
+
+        if 'file_ext' not in params_dict:
+            raise Exception("'file_ext' option was not specified! See " +
+                    "--[name]_out=file_ext=<value>,<other_options>:/path/to/output " +
+                    "or --[name]_opt=file_ext=<value>,<other_options> in the protoc" +
+                    "command line.")
+
+        if 'template_path' not in params_dict:
+            template_path = environ.get("TEMPLATE_PATH", "./")
+
+            if template_path is not None:
+                params_dict["template_path"] = template_path
+            else:
+                raise Exception("'template_path' option was not specified! See " +
+                        "--[name]_out=template_path=<value>,<other_options>:/path/to/output " +
+                        "or --[name]_opt=template_path=<value>,<other_options> in the protoc" +
+                        "command line. Alternatively, you can set the TEMPLATE_PATH " +
+                        "environment variable.")
+
+        return params_dict
+

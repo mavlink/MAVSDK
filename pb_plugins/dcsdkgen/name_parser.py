@@ -4,22 +4,21 @@ import re
 from os import environ
 
 class NameParserFactory:
-
-    def __init__(self):
-        self._initialisms = self._load_initialisms()
+    _initialisms = []
 
     def create(self, name):
         return NameParser(name, self._initialisms)
 
-    def _load_initialisms(self):
+    def set_template_path(self, template_path):
+        self._initialisms = self._load_initialisms(template_path)
+
+    def _load_initialisms(self, template_path):
         try:
-            _template_path = environ.get("TEMPLATE_PATH", "./")
-            _initialisms_path = f"{_template_path}/initialisms"
+            _initialisms_path = f"{template_path}/initialisms"
             with open(_initialisms_path, "r") as handle:
                 return json.loads(handle.read())
         except FileNotFoundError:
             return []
-
 
 
 class NameParser:

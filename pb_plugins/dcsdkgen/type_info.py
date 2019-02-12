@@ -3,17 +3,17 @@ from os import environ
 
 
 class TypeInfoFactory:
-
-    def __init__(self):
-        self._conversion_dict = self._load_conversions_dict()
+    _conversion_dict = {}
 
     def create(self, field):
         return TypeInfo(field, self._conversion_dict)
 
-    def _load_conversions_dict(self):
+    def set_template_path(self, template_path):
+        self._conversion_dict = self._load_conversions_dict(template_path)
+
+    def _load_conversions_dict(self, template_path):
         try:
-            _template_path = environ.get("TEMPLATE_PATH", "./")
-            _conversion_dict_path = f"{_template_path}/type_conversions"
+            _conversion_dict_path = f"{template_path}/type_conversions"
             with open(_conversion_dict_path, "r") as handle:
                 return json.loads(handle.read())
         except FileNotFoundError:

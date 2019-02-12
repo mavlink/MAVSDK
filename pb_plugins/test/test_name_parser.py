@@ -159,6 +159,7 @@ class TestNameParser(unittest.TestCase):
     @patch("builtins.open", new_callable=mock_open, read_data=_initialisms_data)
     def test_initalism_is_capitalized_when_camel_case(self, mock_file):
         name_parser_factory = NameParserFactory()
+        name_parser_factory.set_template_path("random/path")
         name = name_parser_factory.create("fileUrl")
 
         self.assertEqual("FileURL", name.upper_camel_case)
@@ -167,6 +168,7 @@ class TestNameParser(unittest.TestCase):
     @patch("builtins.open", new_callable=mock_open, read_data=_initialisms_data)
     def test_initalism_is_capitalized_when_upper_snake_case(self, mock_file):
         name_parser_factory = NameParserFactory()
+        name_parser_factory.set_template_path("random/path")
         name = name_parser_factory.create("fileUrl")
 
         self.assertEqual("File_URL", name.upper_snake_case)
@@ -174,6 +176,7 @@ class TestNameParser(unittest.TestCase):
     @patch("builtins.open", new_callable=mock_open, read_data=_initialisms_data)
     def test_initalism_is_not_capitalized_when_lower_snake_case(self, mock_file):
         name_parser_factory = NameParserFactory()
+        name_parser_factory.set_template_path("random/path")
         name = name_parser_factory.create("fileUrl")
 
         self.assertEqual("file_url", name.lower_snake_case)
