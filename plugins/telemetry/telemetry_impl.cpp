@@ -70,6 +70,7 @@ void TelemetryImpl::init()
 
 void TelemetryImpl::deinit()
 {
+    _parent->unregister_timeout_handler(_timeout_cookie);
     _parent->unregister_param_changed_handler(this);
     _parent->unregister_all_mavlink_message_handlers(this);
 }
@@ -118,10 +119,7 @@ void TelemetryImpl::enable()
                                            std::placeholders::_2));
 }
 
-void TelemetryImpl::disable()
-{
-    _parent->unregister_timeout_handler(_timeout_cookie);
-}
+void TelemetryImpl::disable() {}
 
 Telemetry::Result TelemetryImpl::set_rate_position_velocity_ned(double rate_hz)
 {
