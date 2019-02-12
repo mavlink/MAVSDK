@@ -1284,7 +1284,8 @@ void MissionImpl::process_timeout()
         _mission_data.mutex.lock();
         if (_mission_data.retries++ > MAX_RETRIES) {
             _mission_data.retries = 0;
-            Mission::result_callback_t result_callback = _mission_data.result_callback;
+            Mission::mission_items_and_result_callback_t temp_callback =
+                _mission_data.mission_items_and_result_callback;
             _mission_data.mutex.unlock();
 
             {
@@ -1292,7 +1293,7 @@ void MissionImpl::process_timeout()
                 _activity.state = Activity::State::NONE;
             }
             LogWarn() << "Mission handling timed out while downloading mission.";
-            report_mission_result(result_callback, Mission::Result::TIMEOUT);
+            report_mission_items_and_result(temp_callback, Mission::Result::TIMEOUT);
         } else {
             _mission_data.mutex.unlock();
 
