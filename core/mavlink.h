@@ -6,21 +6,21 @@
 
 namespace dronecode_sdk {
 
-class Connection {
+class Mavlink {
 public:
     typedef std::function<void(const mavlink_message_t &message)> receiver_callback_t;
 
-    Connection(receiver_callback_t receiver_callback);
-    virtual ~Connection();
+    Mavlink(receiver_callback_t receiver_callback);
+    virtual ~Mavlink();
 
-    virtual ConnectionResult start() = 0;
-    virtual ConnectionResult stop() = 0;
+    virtual MavlinkResult start() = 0;
+    virtual MavlinkResult stop() = 0;
 
     virtual bool send_message(const mavlink_message_t &message) = 0;
 
     // Non-copyable
-    Connection(const Connection &) = delete;
-    const Connection &operator=(const Connection &) = delete;
+    Mavlink(const Mavlink &) = delete;
+    const Mavlink &operator=(const Mavlink &) = delete;
 
 protected:
     bool start_mavlink_receiver();

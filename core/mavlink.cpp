@@ -5,19 +5,19 @@
 
 namespace dronecode_sdk {
 
-Connection::Connection(receiver_callback_t receiver_callback) :
+Mavlink::Mavlink(receiver_callback_t receiver_callback) :
     _receiver_callback(receiver_callback),
     _mavlink_receiver()
 {}
 
-Connection::~Connection()
+Mavlink::~Mavlink()
 {
     // Just in case a specific connection didn't call it already.
     stop_mavlink_receiver();
     _receiver_callback = {};
 }
 
-bool Connection::start_mavlink_receiver()
+bool Mavlink::start_mavlink_receiver()
 {
     uint8_t channel;
     if (!MAVLinkChannels::Instance().checkout_free_channel(channel)) {
@@ -28,7 +28,7 @@ bool Connection::start_mavlink_receiver()
     return true;
 }
 
-void Connection::stop_mavlink_receiver()
+void Mavlink::stop_mavlink_receiver()
 {
     if (_mavlink_receiver) {
         uint8_t used_channel = _mavlink_receiver->get_channel();
@@ -38,7 +38,7 @@ void Connection::stop_mavlink_receiver()
     }
 }
 
-void Connection::receive_message(const mavlink_message_t &message)
+void Mavlink::receive_message(const mavlink_message_t &message)
 {
     _receiver_callback(message);
 }
