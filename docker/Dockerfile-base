@@ -1,0 +1,37 @@
+#
+# Development environment for the Dronecode SDK based on Ubuntu 18.04.
+#
+# Author: Ramón Roche <mrpollo@gmail.com>
+#
+
+FROM alpine:3.9
+MAINTAINER Ramón Roche <mrpollo@gmail.com>
+
+ENV \
+	DEBIAN_FRONTEND noninteractive \
+	TERM xterm-color
+
+RUN apk --no-cache update \
+	&& apk upgrade \
+	&& apk --no-cache add --update --virtual build-dependencies \
+		astyle \
+		automake \
+		build-base \
+		ca-certificates \
+		cmake \
+		colordiff \
+		curl-dev \
+		doxygen \
+		gcc \
+		g++ \
+		git \
+		libc6-compat \
+		libstdc++ \
+		libtool \
+		make \
+		openssl \
+		openssl-dev \
+		tinyxml2-dev \
+		zlib-dev \
+	&& rm -rf /var/cache/apk/*
+
