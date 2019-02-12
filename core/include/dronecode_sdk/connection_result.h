@@ -1,31 +1,3 @@
-#pragma once
-
-/**
- * @brief Namespace for all dronecode_sdk types.
- */
-namespace dronecode_sdk {
-
-/**
- * @brief Result type returned when adding a connection.
- *
- * **Note**: DronecodeSDK does not throw exceptions. Instead a result of this type will be
- * returned when you add a connection: add_udp_connection().
- */
-enum class ConnectionResult {
-    SUCCESS = 0, /**< @brief %Connection succeeded. */
-    TIMEOUT, /**< @brief %Connection timed out. */
-    SOCKET_ERROR, /**< @brief Socket error. */
-    BIND_ERROR, /**< @brief Bind error. */
-    SOCKET_CONNECTION_ERROR, /**< @brief Socket connection error. */
-    CONNECTION_ERROR, /**< @brief %Connection error. */
-    NOT_IMPLEMENTED, /**< @brief %Connection type not implemented. */
-    SYSTEM_NOT_CONNECTED, /**< @brief No system is connected. */
-    SYSTEM_BUSY, /**< @brief %System is busy. */
-    COMMAND_DENIED, /**< @brief Command is denied. */
-    DESTINATION_IP_UNKNOWN, /**< @brief %Connection IP is unknown. */
-    CONNECTIONS_EXHAUSTED, /**< @brief %Connections exhausted. */
-    CONNECTION_URL_INVALID /**< @brief URL invalid. */
-};
 
 /**
  * @brief Returns a human-readable English string for a ConnectionResult.
@@ -67,4 +39,3 @@ inline const char *connection_result_str(const ConnectionResult result)
     }
 }
 
-} // namespace dronecode_sdk
