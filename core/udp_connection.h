@@ -9,7 +9,7 @@
 
 namespace dronecode_sdk {
 
-class UdpConnection : public Connection {
+class UdpConnection : public Mavlink {
 public:
     explicit UdpConnection(Connection::receiver_callback_t receiver_callback,
                            const std::string &local_ip,

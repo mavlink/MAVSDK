@@ -26,7 +26,7 @@
 
 namespace dronecode_sdk {
 
-UdpConnection::UdpConnection(Connection::receiver_callback_t receiver_callback,
+UdpConnection::UdpConnection(Mavlink::receiver_callback_t receiver_callback,
                              const std::string &local_ip,
                              int local_port_number) :
     Connection(receiver_callback),
