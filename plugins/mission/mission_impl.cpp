@@ -1167,9 +1167,11 @@ void MissionImpl::report_progress()
     }
 
     if (should_report) {
-        _parent->call_user_callback([this, current, total]() {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+        auto temp_callback = _mission_data.progress_callback;
+        _parent->call_user_callback([temp_callback, current, total]() {
             LogDebug() << "current: " << current << ", total: " << total;
-            _mission_data.progress_callback(current, total);
+            temp_callback(current, total);
         });
     }
 }
