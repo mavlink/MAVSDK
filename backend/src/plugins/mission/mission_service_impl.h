@@ -161,6 +161,7 @@ public:
                 rpc_mission_progress_response.set_allocated_mission_progress(
                     rpc_mission_progress.release());
 
+                std::lock_guard<std::mutex> lock(_write_mutex);
                 if (!*is_finished && !writer->Write(rpc_mission_progress_response)) {
                     _mission.subscribe_progress(nullptr);
                     *is_finished = true;
@@ -315,6 +316,7 @@ private:
     }
 
     Mission &_mission;
+    std::mutex _write_mutex{};
 };
 
 } // namespace backend
