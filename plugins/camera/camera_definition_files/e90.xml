@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <mavlinkcamera>
-    <definition version="18">
+    <definition version="20">
         <model>E90</model>
         <vendor>Yuneec</vendor>
     </definition>
@@ -948,6 +948,13 @@
         </parameter>
         <parameter name="CAM_ZOOM" type="uint32" control="0">
             <description>Camera Zoom</description>
+        </parameter>
+        <parameter name="CAM_FILENUMOPT" type="uint8" default="0">
+            <description>File Numbering Option</description>
+            <options>
+                <option name="Auto Reset" value="0" />
+                <option name="Sequential" value="1" />
+            </options>
         </parameter>
     </parameters>
     <localization>
