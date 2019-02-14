@@ -149,13 +149,6 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     }
 
     if (mission_ack.type == MAV_MISSION_ACCEPTED) {
-        // Reset current and reached; we don't want to get confused
-        // from earlier messages.
-        {
-            std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-            _mission_data.last_current_mavlink_mission_item = -1;
-            _mission_data.last_reached_mavlink_mission_item = -1;
-        }
         {
             std::lock_guard<std::mutex> lock(_activity.mutex);
             _activity.state = Activity::State::NONE;
@@ -199,7 +192,6 @@ void MissionImpl::process_mission_current(const mavlink_message_t &message)
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         if (_mission_data.last_current_mavlink_mission_item == mission_current.seq) {
-            _mission_data.last_current_mavlink_mission_item = -1;
             set_current_successful = true;
         }
     }
@@ -1167,9 +1159,11 @@ void MissionImpl::report_progress()
     }
 
     if (should_report) {
-        _parent->call_user_callback([this, current, total]() {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+        auto temp_callback = _mission_data.progress_callback;
+        _parent->call_user_callback([temp_callback, current, total]() {
             LogDebug() << "current: " << current << ", total: " << total;
-            _mission_data.progress_callback(current, total);
+            temp_callback(current, total);
         });
     }
 }
