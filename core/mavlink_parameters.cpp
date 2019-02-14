@@ -264,7 +264,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
         return;
     }
 
-    if (strncmp(work->param_name.c_str(), param_value.param_id, PARAM_ID_LEN) != 0) {
+    if (work->param_name.compare(param_value.param_id) != 0) {
         // No match, let's just return the borrowed work item.
         return;
     }
@@ -323,7 +323,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
         return;
     }
 
-    if (strncmp(work->param_name.c_str(), param_ext_value.param_id, PARAM_ID_LEN) != 0) {
+    if (work->param_name.compare(param_ext_value.param_id) != 0) {
         return;
     }
 
@@ -374,7 +374,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
     }
 
     // Now it still needs to match the param name
-    if (strncmp(work->param_name.c_str(), param_ext_ack.param_id, PARAM_ID_LEN) == 0) {
+    if (work->param_name.compare(param_ext_ack.param_id) != 0) {
         return;
     }
 
