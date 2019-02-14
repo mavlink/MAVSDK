@@ -69,7 +69,7 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-STRING(REGEX REPLACE v\([0-9]+.[0-9]+.[0-9]+.*$\) \\1 VERSION_STR ${VERSION_STR})
+STRING(REGEX REPLACE v\([0-9]+.[0-9]+.[0-9]+.*$\) \\1 VERSION_STR "${VERSION_STR}")
 
 message(STATUS "Version: ${VERSION_STR}")
 add_definitions(-DDRONECODE_SDK_VERSION="${VERSION_STR}")
