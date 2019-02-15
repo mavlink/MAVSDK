@@ -1,20 +1,29 @@
-#
-# Build the DronecodeSDK and launches the backend bin
-#
-# Author: Ramón Roche <julian@oes.ch>
-#
+FROM alpine:3.8 as builder
 
-FROM dronecode/dronecode-sdk-base:latest
-MAINTAINER Ramón Roche <mrpollo@gmail.com>
+RUN apk update
+RUN apk add build-base \
+            cmake \
+            curl-dev \
+            git \
+            go \
+            linux-headers \
+            perl
 
-ENV BUILD_BACKEND 1
-WORKDIR "/home/user/DronecodeSDK"
-ADD [".", "/home/user/DronecodeSDK"]
+WORKDIR /root/dronecode_sdk
 
-# ADD can sometimes copy build/
-# lets make sure we have a clean build
-RUN mkdir build \
-	&& make clean
-RUN make default
-CMD ./build/default/backend/src/backend_bin
+RUN git clone https://github.com/dronecode/dronecodesdk --recursive .
 
+RUN make BUILD_BACKEND=YES INSTALL_PREFIX=/root/dcsdk_install default install
+
+FROM alpine:3.8
+
+RUN apk update
+RUN apk add libcurl \
+            libgcc \
+            libstdc++
+
+COPY --from=builder /root/dcsdk_install /usr/local
+COPY --from=builder /root/dronecode_sdk/build/default/backend/src/backend_bin /root/backend_bin
+
+EXPOSE 14540/udp
+ENTRYPOINT /root/backend_bin
