@@ -11,7 +11,7 @@ RUN apk add build-base \
 
 WORKDIR /root/dronecode_sdk
 
-RUN git clone https://github.com/dronecode/dronecodesdk --recursive .
+COPY . .
 
 RUN make BUILD_BACKEND=YES INSTALL_PREFIX=/root/dcsdk_install default install
 
