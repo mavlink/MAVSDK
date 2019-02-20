@@ -114,9 +114,10 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _mission_data.retries = 0;
+        _mission_data.last_mission_item_to_upload = mission_request_int.seq;
     }
 
-    upload_mission_item(mission_request_int.seq);
+    upload_mission_item();
 
     // Reset the timeout because we're still communicating.
     _parent->refresh_timeout_handler(_timeout_cookie);
@@ -242,13 +243,11 @@ void MissionImpl::process_mission_count(const mavlink_message_t &message)
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         _mission_data.num_mission_items_to_download = mission_count.count;
         _mission_data.next_mission_item_to_download = 0;
+        _mission_data.retries = 0;
     }
 
-    // We are now requesting mission items and use a lower timeout for this.
-    _parent->unregister_timeout_handler(_timeout_cookie);
+    _parent->refresh_timeout_handler(_timeout_cookie);
 
-    _parent->register_timeout_handler(
-        std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
     download_next_mission_item();
 }
 
@@ -345,6 +344,24 @@ void MissionImpl::upload_mission_async(
 
     assemble_mavlink_messages();
 
+    _parent->register_timeout_handler(
+        std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
+
+    {
+        std::lock_guard<std::mutex> lock(_activity.mutex);
+        _activity.state = Activity::State::SET_MISSION_COUNT;
+    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+        _mission_data.result_callback = callback;
+        _mission_data.retries = 0;
+    }
+
+    send_count();
+}
+
+void MissionImpl::send_count()
+{
     mavlink_message_t message;
     mavlink_msg_mission_count_pack(GCSClient::system_id,
                                    GCSClient::component_id,
@@ -355,22 +372,9 @@ void MissionImpl::upload_mission_async(
                                    MAV_MISSION_TYPE_MISSION);
 
     if (!_parent->send_message(message)) {
-        report_mission_result(callback, Mission::Result::ERROR);
-        return;
-    }
-
-    // We use the longer process timeout here because essentially the autopilot needs to pull
-    // the items up.
-    _parent->register_timeout_handler(
-        std::bind(&MissionImpl::process_timeout, this), PROCESS_TIMEOUT_S, &_timeout_cookie);
-
-    {
-        std::lock_guard<std::mutex> lock(_activity.mutex);
-        _activity.state = Activity::State::SET_MISSION_COUNT;
-    }
-    {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        _mission_data.result_callback = callback;
+        report_mission_result(_mission_data.result_callback, Mission::Result::ERROR);
+        return;
     }
 }
 
@@ -430,7 +434,6 @@ void MissionImpl::download_mission_async(
         return;
     }
 
-    // We retry the list request and mission item request, so we use the lower timeout.
     _parent->register_timeout_handler(
         std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
 
@@ -1100,16 +1103,18 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
     }
 }
 
-void MissionImpl::upload_mission_item(uint16_t seq)
+void MissionImpl::upload_mission_item()
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-    LogDebug() << "Send mission item " << int(seq);
-    if (seq >= _mission_data.mavlink_mission_item_messages.size()) {
+    LogDebug() << "Send mission item " << _mission_data.last_mission_item_to_upload;
+    if (_mission_data.last_mission_item_to_upload >=
+        int(_mission_data.mavlink_mission_item_messages.size())) {
         LogErr() << "Mission item requested out of bounds.";
         return;
     }
 
-    _parent->send_message(*_mission_data.mavlink_mission_item_messages.at(seq));
+    _parent->send_message(
+        *_mission_data.mavlink_mission_item_messages.at(_mission_data.last_mission_item_to_upload));
 }
 
 void MissionImpl::copy_mission_item_vector(
@@ -1275,15 +1280,10 @@ void MissionImpl::process_timeout()
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
 
-        if (_activity.state == Activity::State::SET_MISSION_COUNT ||
-            _activity.state == Activity::State::SET_MISSION_ITEM) {
-            // We can't retry this, the autopilot should be requesting the items
-            // again.
-            _activity.state = Activity::State::NONE;
-            LogWarn() << "Mission handling timed out while uploading mission.";
-            report_mission_result(_mission_data.result_callback, Mission::Result::TIMEOUT);
-            return;
-
+        if (_activity.state == Activity::State::SET_MISSION_ITEM) {
+            should_retry = true;
+        } else if (_activity.state == Activity::State::SET_MISSION_COUNT) {
+            should_retry = true;
         } else if (_activity.state == Activity::State::GET_MISSION_LIST ||
                    _activity.state == Activity::State::GET_MISSION_REQUEST) {
             should_retry = true;
@@ -1309,17 +1309,23 @@ void MissionImpl::process_timeout()
         } else {
             _mission_data.mutex.unlock();
 
-            LogWarn() << "Retrying requesting mission item...";
-            // We are retrying, so we use the lower timeout.
             _parent->register_timeout_handler(
                 std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
 
             {
                 std::lock_guard<std::mutex> lock(_activity.mutex);
                 if (_activity.state == Activity::State::GET_MISSION_LIST) {
+                    LogWarn() << "Retrying requesting mission list...";
                     request_list();
                 } else if (_activity.state == Activity::State::GET_MISSION_REQUEST) {
+                    LogWarn() << "Retrying requesting mission item...";
                     download_next_mission_item();
+                } else if (_activity.state == Activity::State::SET_MISSION_COUNT) {
+                    LogWarn() << "Retrying send mission count...";
+                    send_count();
+                } else if (_activity.state == Activity::State::SET_MISSION_ITEM) {
+                    LogWarn() << "Retrying send mission count...";
+                    upload_mission_item();
                 }
             }
         }
