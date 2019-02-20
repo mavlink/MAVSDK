@@ -169,6 +169,14 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status Cancel(grpc::ServerContext * /* context */,
+                                const rpc::calibration::CancelCalibrationRequest * /* request */,
+                                rpc::calibration::CancelCalibrationResponse * /* response*/) override 
+    {
+        _calibration.cancel_calibration();
+        return grpc::Status::OK;
+    }
+
 private:
     Calibration &_calibration;
     std::mutex _subscribe_mutex{};
