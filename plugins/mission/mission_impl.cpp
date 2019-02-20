@@ -99,7 +99,11 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
 
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
-        if (_activity.state != Activity::State::SET_MISSION) {
+        if (_activity.state == Activity::State::SET_MISSION_COUNT) {
+            _activity.state = Activity::State::SET_MISSION_ITEM;
+        }
+
+        if (_activity.state != Activity::State::SET_MISSION_ITEM) {
             if (_activity.state != Activity::State::ABORTED) {
                 LogWarn() << "Ignoring mission request int, not active";
             }
@@ -120,9 +124,10 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
 
 void MissionImpl::process_mission_ack(const mavlink_message_t &message)
 {
+    // LogDebug() << "Received mission ack";
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
-        if (_activity.state != Activity::State::SET_MISSION) {
+        if (_activity.state != Activity::State::SET_MISSION_ITEM) {
             if (_activity.state != Activity::State::ABORTED) {
                 LogWarn() << "Error: not sure how to process Mission ack.";
             }
@@ -223,9 +228,11 @@ void MissionImpl::process_mission_count(const mavlink_message_t &message)
 {
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
-        if (_activity.state != Activity::State::GET_MISSION) {
+        if (_activity.state != Activity::State::GET_MISSION_LIST) {
             return;
         }
+
+        _activity.state = Activity::State::GET_MISSION_REQUEST;
     }
 
     mavlink_mission_count_t mission_count;
@@ -249,13 +256,15 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
 {
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
-        if (_activity.state != Activity::State::GET_MISSION) {
+        if (_activity.state != Activity::State::GET_MISSION_REQUEST) {
             return;
         }
     }
 
     auto mission_item_int_ptr = std::make_shared<mavlink_mission_item_int_t>();
     mavlink_msg_mission_item_int_decode(&message, mission_item_int_ptr.get());
+
+    // LogDebug() << "Received mission item int: " << int(mission_item_int_ptr->seq);
 
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
@@ -357,7 +366,7 @@ void MissionImpl::upload_mission_async(
 
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
-        _activity.state = Activity::State::SET_MISSION;
+        _activity.state = Activity::State::SET_MISSION_COUNT;
     }
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
@@ -371,7 +380,8 @@ void MissionImpl::upload_mission_cancel()
 
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
-        if (_activity.state != Activity::State::SET_MISSION) {
+        if (_activity.state != Activity::State::SET_MISSION_COUNT &&
+            _activity.state != Activity::State::SET_MISSION_ITEM) {
             LogWarn() << "No mission upload in progress";
             return;
         }
@@ -420,26 +430,13 @@ void MissionImpl::download_mission_async(
         return;
     }
 
-    mavlink_message_t message;
-    mavlink_msg_mission_request_list_pack(GCSClient::system_id,
-                                          GCSClient::component_id,
-                                          &message,
-                                          _parent->get_system_id(),
-                                          _parent->get_autopilot_id(),
-                                          MAV_MISSION_TYPE_MISSION);
-
-    if (!_parent->send_message(message)) {
-        report_mission_items_and_result(callback, Mission::Result::ERROR);
-        return;
-    }
-
     // We retry the list request and mission item request, so we use the lower timeout.
     _parent->register_timeout_handler(
         std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
 
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
-        _activity.state = Activity::State::GET_MISSION;
+        _activity.state = Activity::State::GET_MISSION_LIST;
     }
 
     {
@@ -449,6 +446,26 @@ void MissionImpl::download_mission_async(
         _mission_data.retries = 0;
         _mission_data.mission_items_and_result_callback = callback;
     }
+
+    request_list();
+}
+
+void MissionImpl::request_list()
+{
+    mavlink_message_t message;
+    mavlink_msg_mission_request_list_pack(GCSClient::system_id,
+                                          GCSClient::component_id,
+                                          &message,
+                                          _parent->get_system_id(),
+                                          _parent->get_autopilot_id(),
+                                          MAV_MISSION_TYPE_MISSION);
+
+    if (!_parent->send_message(message)) {
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+        report_mission_items_and_result(_mission_data.mission_items_and_result_callback,
+                                        Mission::Result::CANCELLED);
+        return;
+    }
 }
 
 void MissionImpl::download_mission_cancel()
@@ -457,7 +474,8 @@ void MissionImpl::download_mission_cancel()
 
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
-        if (_activity.state != Activity::State::GET_MISSION) {
+        if (_activity.state != Activity::State::GET_MISSION_LIST &&
+            _activity.state != Activity::State::GET_MISSION_REQUEST) {
             LogWarn() << "No mission download in progress";
             return;
         }
@@ -1257,7 +1275,8 @@ void MissionImpl::process_timeout()
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
 
-        if (_activity.state == Activity::State::SET_MISSION) {
+        if (_activity.state == Activity::State::SET_MISSION_COUNT ||
+            _activity.state == Activity::State::SET_MISSION_ITEM) {
             // We can't retry this, the autopilot should be requesting the items
             // again.
             _activity.state = Activity::State::NONE;
@@ -1265,7 +1284,8 @@ void MissionImpl::process_timeout()
             report_mission_result(_mission_data.result_callback, Mission::Result::TIMEOUT);
             return;
 
-        } else if (_activity.state == Activity::State::GET_MISSION) {
+        } else if (_activity.state == Activity::State::GET_MISSION_LIST ||
+                   _activity.state == Activity::State::GET_MISSION_REQUEST) {
             should_retry = true;
         } else {
             LogWarn() << "unknown mission timeout";
@@ -1293,7 +1313,15 @@ void MissionImpl::process_timeout()
             // We are retrying, so we use the lower timeout.
             _parent->register_timeout_handler(
                 std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
-            download_next_mission_item();
+
+            {
+                std::lock_guard<std::mutex> lock(_activity.mutex);
+                if (_activity.state == Activity::State::GET_MISSION_LIST) {
+                    request_list();
+                } else if (_activity.state == Activity::State::GET_MISSION_REQUEST) {
+                    download_next_mission_item();
+                }
+            }
         }
     }
 }

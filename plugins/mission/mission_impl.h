@@ -82,6 +82,8 @@ private:
                                 const Mission::result_callback_t callback);
 
     void download_next_mission_item();
+    void request_list();
+
     void assemble_mission_items();
 
     static Mission::Result import_mission_items(Mission::mission_items_t &mission_items,
@@ -96,8 +98,10 @@ private:
         enum class State {
             NONE,
             SET_CURRENT,
-            SET_MISSION,
-            GET_MISSION,
+            SET_MISSION_COUNT,
+            SET_MISSION_ITEM,
+            GET_MISSION_LIST,
+            GET_MISSION_REQUEST,
             ABORTED,
             SEND_COMMAND
         } state{Activity::State::NONE};
