@@ -3,7 +3,8 @@
 #include <vector>
 #include <memory>
 #include <functional>
-#include "plugin_base.h"
+
+#include <dronecode_sdk/plugin_base.h>
 
 namespace dronecode_sdk {
 
