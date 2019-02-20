@@ -135,7 +135,7 @@ private:
     //        Ultimate it needs a setter.
     bool _enable_absolute_gimbal_yaw_angle{true};
 
-    static constexpr unsigned MAX_RETRIES = 5;
+    static constexpr unsigned MAX_RETRIES = 10;
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 
