@@ -36,6 +36,11 @@ message CalibrateGimbalAccelerometerResponse {
     ProgressData progress_data = 2;
 }
 
+message CancelCalibrationRequest {}
+message CancelCalibrationResponse {
+    CalibrationResult calibration_result = 1
+}
+
 message CalibrationResult {
     enum Result {
         UNKNOWN = 0;
