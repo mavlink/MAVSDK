@@ -64,7 +64,7 @@ private:
 
     void process_timeout();
 
-    void upload_mission_item(uint16_t seq);
+    void upload_mission_item();
 
     void copy_mission_item_vector(const std::vector<std::shared_ptr<MissionItem>> &mission_items);
 
@@ -83,6 +83,7 @@ private:
 
     void download_next_mission_item();
     void request_list();
+    void send_count();
 
     void assemble_mission_items();
 
@@ -117,6 +118,7 @@ private:
         std::map<int, int> mavlink_mission_item_to_mission_item_indices{};
         int num_mission_items_to_download{-1};
         int next_mission_item_to_download{-1};
+        int last_mission_item_to_upload{-1};
         std::vector<std::shared_ptr<mavlink_mission_item_int_t>> mavlink_mission_items_downloaded{};
         Mission::result_callback_t result_callback{nullptr};
         Mission::mission_items_and_result_callback_t mission_items_and_result_callback{nullptr};
@@ -145,7 +147,6 @@ private:
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_MISSION = 4;
 
     static constexpr double RETRY_TIMEOUT_S = 0.250;
-    static constexpr double PROCESS_TIMEOUT_S = 1.5;
 };
 
 } // namespace dronecode_sdk
