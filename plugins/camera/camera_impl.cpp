@@ -108,7 +108,9 @@ void CameraImpl::disable()
 
 Camera::Result CameraImpl::select_camera(unsigned id)
 {
-    if (id > 6) {
+    static constexpr std::size_t MAX_SUPPORTED_ID = 5;
+
+    if (id > MAX_SUPPORTED_ID) {
         return Camera::Result::WRONG_ARGUMENT;
     }
 
