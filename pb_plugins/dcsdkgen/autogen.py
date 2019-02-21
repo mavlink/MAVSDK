@@ -22,6 +22,8 @@ class AutoGen(object):
         type_info_factory.set_template_path(params["template_path"])
         template_env = get_template_env(params["template_path"])
 
+        _codegen_response = plugin_pb2.CodeGeneratorResponse()
+
         for proto_file in request.proto_file:
             plugin_name = proto_file.name.split('.')[0].capitalize()
 
@@ -57,14 +59,12 @@ class AutoGen(object):
                             methods,
                             has_result(structs))
 
-            _codegen_response = plugin_pb2.CodeGeneratorResponse()
-
             # Fill response
             f = _codegen_response.file.add()
             f.name = f"{plugin_name}.{params['file_ext']}"
             f.content = str(out_file)
 
-            return _codegen_response
+        return _codegen_response
 
     @staticmethod
     def parse_parameter(parameter):
