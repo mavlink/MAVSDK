@@ -38,9 +38,7 @@ message CalibrateGimbalAccelerometerResponse {
 }
 
 message CancelCalibrationRequest {}
-message CancelCalibrationResponse {
-     CalibrationResult calibration_result = 1;
-}
+message CancelCalibrationResponse {}
 
 message CalibrationResult {
     enum Result {
