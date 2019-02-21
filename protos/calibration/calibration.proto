@@ -10,7 +10,7 @@ service CalibrationService {
     rpc SubscribeCalibrateAccelerometer(SubscribeCalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {}
     rpc SubscribeCalibrateMagnetometer(SubscribeCalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {}
     rpc SubscribeCalibrateGimbalAccelerometer(SubscribeCalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {}
-    rpc Cancel(CancelCalibrationRequest) returns(CancelCalibrationResponse) {}
+    rpc CancelCalibration(CancelCalibrationRequest) returns(CancelCalibrationResponse) {}
 }
 
 message SubscribeCalibrateGyroRequest {}
