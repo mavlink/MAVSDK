@@ -132,7 +132,6 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_request_camera_info()
     command_camera_info.command = MAV_CMD_REQUEST_CAMERA_INFORMATION;
     command_camera_info.params.param1 = 1.0f; // Request it
     command_camera_info.target_component_id = _component_id;
-    ;
 
     return command_camera_info;
 }
