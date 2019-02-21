@@ -73,7 +73,8 @@ class AutoGen(object):
         params_dict = {}
         for raw_param in raw_params:
             split_param = raw_param.split('=')
-            params_dict[split_param[0]] = split_param[1]
+            if len(split_param) == 2:
+                params_dict[split_param[0]] = split_param[1]
 
         if 'file_ext' not in params_dict:
             raise Exception("'file_ext' option was not specified! See " +
