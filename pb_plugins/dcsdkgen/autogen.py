@@ -18,6 +18,7 @@ class AutoGen(object):
     def generate_reactive(request):
 
         params = AutoGen.parse_parameter(request.parameter)
+        is_java = params["file_ext"] == "java"
         name_parser_factory.set_template_path(params["template_path"])
         type_info_factory.set_template_path(params["template_path"])
         template_env = get_template_env(params["template_path"])
@@ -25,26 +26,27 @@ class AutoGen(object):
         _codegen_response = plugin_pb2.CodeGeneratorResponse()
 
         for proto_file in request.proto_file:
-            plugin_name = proto_file.name.split('.')[0].capitalize()
+            package = AutoGen.extract_package(proto_file, is_java)
+            plugin_name, plugin_dir = AutoGen.extract_plugin_name_and_dir(proto_file.name, package, is_java)
 
             enums = Enum.collect_enums(plugin_name,
-                                       proto_file.package,
+                                       package,
                                        proto_file.enum_type,
                                        template_env)
 
             structs = Struct.collect_structs(plugin_name,
-                                             proto_file.package,
+                                             package,
                                              proto_file.message_type,
                                              template_env)
 
-            requests = Struct.collect_requests(proto_file.package,
+            requests = Struct.collect_requests(package,
                                                proto_file.message_type)
 
-            responses = Struct.collect_responses(proto_file.package,
+            responses = Struct.collect_responses(package,
                                                  proto_file.message_type)
 
             methods = Method.collect_methods(plugin_name,
-                                             proto_file.package,
+                                             package,
                                              proto_file.service[0].method,
                                              structs,
                                              requests,
@@ -52,7 +54,7 @@ class AutoGen(object):
                                              template_env)
 
             out_file = File(plugin_name,
-                            proto_file.package,
+                            package,
                             template_env,
                             enums,
                             structs,
@@ -61,7 +63,7 @@ class AutoGen(object):
 
             # Fill response
             f = _codegen_response.file.add()
-            f.name = f"{plugin_name}.{params['file_ext']}"
+            f.name = f"{plugin_dir}/{plugin_name}.{params['file_ext']}"
             f.content = str(out_file)
 
         return _codegen_response
@@ -96,3 +98,32 @@ class AutoGen(object):
 
         return params_dict
 
+    @staticmethod
+    def extract_package(proto_file, is_java):
+        if is_java:
+            try:
+                return proto_file.options.java_package
+            except AttributeError:
+                return proto_file.package
+        else:
+            return proto_file.package
+
+    @staticmethod
+    def extract_plugin_name_and_dir(proto_file_name, package, is_java):
+        """ The plugin name is the capitalized name of the proto file,
+        without the extension. For instance, 'action.proto' becomes
+        'Action'.
+
+        The plugin directory is different between Java and other languages.
+        - For Java, it is made from the package.
+        - For other languages, it comes from the path to the proto file,
+          e.g. 'action/action.proto' would become 'action/'. """
+        proto_file_path_tree = proto_file_name.split('/')
+        plugin_name = proto_file_path_tree[-1].split('.')[0].capitalize()
+
+        if is_java:
+            plugin_dir = package.replace('.', '/')
+        else:
+            plugin_dir = "/".join(proto_file_path_tree[0:-1])
+
+        return plugin_name, plugin_dir
