@@ -10,7 +10,6 @@ service CalibrationService {
     rpc SubscribeCalibrateAccelerometer(SubscribeCalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {}
     rpc SubscribeCalibrateMagnetometer(SubscribeCalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {}
     rpc SubscribeCalibrateGimbalAccelerometer(SubscribeCalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {}
-    rpc Cancel(CancelCalibrationRequest) returns(CancelCalibrationResponse) {}
 }
 
 message SubscribeCalibrateGyroRequest {}
@@ -36,9 +35,6 @@ message CalibrateGimbalAccelerometerResponse {
     CalibrationResult calibration_result = 1;
     ProgressData progress_data = 2;
 }
-
-message CancelCalibrationRequest {}
-message CancelCalibrationResponse {}
 
 message CalibrationResult {
     enum Result {
