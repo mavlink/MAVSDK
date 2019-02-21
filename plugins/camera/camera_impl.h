@@ -4,6 +4,7 @@
 #include "plugins/camera/camera.h"
 #include "plugin_impl_base.h"
 #include "camera_definition.h"
+#include "mavlink_include.h"
 
 namespace dronecode_sdk {
 
@@ -17,6 +18,8 @@ public:
 
     void enable() override;
     void disable() override;
+
+    Camera::Result select_camera(unsigned id);
 
     Camera::Result take_photo();
 
@@ -205,6 +208,8 @@ private:
     Camera::subscribe_current_settings_callback_t _subscribe_current_settings_callback{nullptr};
     Camera::subscribe_possible_setting_options_callback_t
         _subscribe_possible_setting_options_callback{nullptr};
+
+    std::atomic<unsigned> _component_id{MAV_COMP_ID_CAMERA};
 };
 
 } // namespace dronecode_sdk

@@ -2,7 +2,6 @@
 #include "camera_definition.h"
 #include "system.h"
 #include "global_include.h"
-#include "mavlink_include.h"
 #include "http_loader.h"
 #if !defined(WINDOWS)
 #include "camera_definition_files.h"
@@ -107,13 +106,31 @@ void CameraImpl::disable()
     _parent->remove_call_every(_flight_information_call_every_cookie);
 }
 
+Camera::Result CameraImpl::select_camera(unsigned id)
+{
+    if (id > 6) {
+        return Camera::Result::WRONG_ARGUMENT;
+    }
+
+    // camera component IDs go from 100 to 105.
+    _component_id = MAV_COMP_ID_CAMERA + id;
+
+    // We should probably reload everything to make sure the
+    // correct  camera is initialized.
+    disable();
+    enable();
+
+    return Camera::Result::SUCCESS;
+}
+
 MAVLinkCommands::CommandLong CameraImpl::make_command_request_camera_info()
 {
     MAVLinkCommands::CommandLong command_camera_info{};
 
     command_camera_info.command = MAV_CMD_REQUEST_CAMERA_INFORMATION;
     command_camera_info.params.param1 = 1.0f; // Request it
-    command_camera_info.target_component_id = MAV_COMP_ID_CAMERA;
+    command_camera_info.target_component_id = _component_id;
+    ;
 
     return command_camera_info;
 }
@@ -128,7 +145,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_take_photo(float interval_
     cmd_take_photo.params.param2 = interval_s;
     cmd_take_photo.params.param3 = no_of_photos;
     cmd_take_photo.params.param4 = float(_capture.sequence++);
-    cmd_take_photo.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_take_photo.target_component_id = _component_id;
 
     return cmd_take_photo;
 }
@@ -138,7 +155,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_stop_photo()
     MAVLinkCommands::CommandLong cmd_stop_photo{};
 
     cmd_stop_photo.command = MAV_CMD_IMAGE_STOP_CAPTURE;
-    cmd_stop_photo.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_stop_photo.target_component_id = _component_id;
 
     return cmd_stop_photo;
 }
@@ -150,7 +167,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_start_video(float capture_
     cmd_start_video.command = MAV_CMD_VIDEO_START_CAPTURE;
     cmd_start_video.params.param1 = 0.f; // Reserved, set to 0
     cmd_start_video.params.param2 = capture_status_rate_hz;
-    cmd_start_video.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_start_video.target_component_id = _component_id;
 
     return cmd_start_video;
 }
@@ -161,7 +178,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_stop_video()
 
     cmd_stop_video.command = MAV_CMD_VIDEO_STOP_CAPTURE;
     cmd_stop_video.params.param1 = 0.f; // Reserved, set to 0
-    cmd_stop_video.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_stop_video.target_component_id = _component_id;
 
     return cmd_stop_video;
 }
@@ -173,7 +190,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_set_camera_mode(float mavl
     cmd_set_camera_mode.command = MAV_CMD_SET_CAMERA_MODE;
     cmd_set_camera_mode.params.param1 = 0.0f; // Reserved, set to 0
     cmd_set_camera_mode.params.param2 = mavlink_mode;
-    cmd_set_camera_mode.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_set_camera_mode.target_component_id = _component_id;
 
     return cmd_set_camera_mode;
 }
@@ -184,7 +201,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_request_camera_settings()
 
     cmd_req_camera_settings.command = MAV_CMD_REQUEST_CAMERA_SETTINGS;
     cmd_req_camera_settings.params.param1 = 1.f; // Request it
-    cmd_req_camera_settings.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_req_camera_settings.target_component_id = _component_id;
 
     return cmd_req_camera_settings;
 }
@@ -195,7 +212,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_request_camera_capture_sta
 
     cmd_req_camera_cap_stat.command = MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS;
     cmd_req_camera_cap_stat.params.param1 = 1.0f; // Request it
-    cmd_req_camera_cap_stat.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_req_camera_cap_stat.target_component_id = _component_id;
 
     return cmd_req_camera_cap_stat;
 }
@@ -207,7 +224,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_request_storage_info()
     cmd_req_storage_info.command = MAV_CMD_REQUEST_STORAGE_INFORMATION;
     cmd_req_storage_info.params.param1 = 0.f; // Reserved, set to 0
     cmd_req_storage_info.params.param2 = 1.f; // Request it
-    cmd_req_storage_info.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_req_storage_info.target_component_id = _component_id;
 
     return cmd_req_storage_info;
 }
@@ -217,7 +234,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_start_video_streaming()
     MAVLinkCommands::CommandLong cmd_start_video_streaming{};
 
     cmd_start_video_streaming.command = MAV_CMD_VIDEO_START_STREAMING;
-    cmd_start_video_streaming.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_start_video_streaming.target_component_id = _component_id;
 
     return cmd_start_video_streaming;
 }
@@ -227,7 +244,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_stop_video_streaming()
     MAVLinkCommands::CommandLong cmd_stop_video_streaming{};
 
     cmd_stop_video_streaming.command = MAV_CMD_VIDEO_STOP_STREAMING;
-    cmd_stop_video_streaming.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_stop_video_streaming.target_component_id = _component_id;
 
     return cmd_stop_video_streaming;
 }
@@ -241,8 +258,8 @@ CameraImpl::make_message_set_video_stream_settings(const Camera::VideoStreamSett
                                                GCSClient::component_id,
                                                &msg,
                                                _parent->get_system_id(),
-                                               MAV_COMP_ID_CAMERA,
-                                               MAV_COMP_ID_CAMERA, // Is it right ?
+                                               _component_id,
+                                               _component_id, // TODO: Is it right ?
                                                settings.frame_rate_hz,
                                                settings.horizontal_resolution_pix,
                                                settings.vertical_resolution_pix,
@@ -259,7 +276,7 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_request_video_stream_info(
 
     cmd_req_video_stream_info.command = MAV_CMD_REQUEST_VIDEO_STREAM_INFORMATION;
     cmd_req_video_stream_info.params.param2 = 1.0f;
-    cmd_req_video_stream_info.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_req_video_stream_info.target_component_id = _component_id;
 
     return cmd_req_video_stream_info;
 }
@@ -1431,7 +1448,7 @@ void CameraImpl::format_storage_async(Camera::result_callback_t callback)
     cmd_format.command = MAV_CMD_STORAGE_FORMAT;
     cmd_format.params.param1 = 1.0f; // storage ID
     cmd_format.params.param2 = 1.0f; // format
-    cmd_format.target_component_id = MAV_COMP_ID_CAMERA;
+    cmd_format.target_component_id = _component_id;
 
     _parent->send_command_async(cmd_format,
                                 std::bind(&CameraImpl::receive_command_result, _1, callback));
