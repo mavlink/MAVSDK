@@ -170,8 +170,8 @@ public:
     }
 
     grpc::Status Cancel(grpc::ServerContext * /* context */,
-                                const rpc::calibration::CancelCalibrationRequest * /* request */,
-                                rpc::calibration::CancelCalibrationResponse * /* response*/) override 
+                        const rpc::calibration::CancelCalibrationRequest * /* request */,
+                        rpc::calibration::CancelCalibrationResponse * /* response*/) override
     {
         _calibration.cancel_calibration();
         return grpc::Status::OK;
