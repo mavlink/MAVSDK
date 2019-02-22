@@ -29,6 +29,15 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status
+    UploadMissionCancel(grpc::ServerContext * /* context */,
+                        const rpc::mission::UploadMissionCancelRequest * /* request */,
+                        rpc::mission::UploadMissionCancelResponse * /* response */) override
+    {
+        _mission.upload_mission_cancel();
+        return grpc::Status::OK;
+    }
+
     grpc::Status DownloadMission(grpc::ServerContext * /* context */,
                                  const rpc::mission::DownloadMissionRequest * /* request */,
                                  rpc::mission::DownloadMissionResponse *response) override
@@ -54,6 +63,15 @@ public:
             });
 
         result_future.wait();
+        return grpc::Status::OK;
+    }
+
+    grpc::Status
+    DownloadMissionCancel(grpc::ServerContext * /* context */,
+                          const rpc::mission::DownloadMissionCancelRequest * /* request */,
+                          rpc::mission::DownloadMissionCancelResponse * /* response */) override
+    {
+        _mission.download_mission_cancel();
         return grpc::Status::OK;
     }
 
