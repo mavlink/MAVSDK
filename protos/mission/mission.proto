@@ -7,6 +7,7 @@ option java_outer_classname = "MissionProto";
 
 service MissionService {
     rpc UploadMission(UploadMissionRequest) returns(UploadMissionResponse) {}
+    rpc UploadMissionCancel(UploadMissionCancelRequest) returns(UploadMissionCancelResponse) {}
     rpc DownloadMission(DownloadMissionRequest) returns(DownloadMissionResponse) {}
     rpc DownloadMissionCancel(DownloadMissionCancelRequest) returns(DownloadMissionCancelResponse) {}
     rpc StartMission(StartMissionRequest) returns(StartMissionResponse) {}
@@ -24,6 +25,9 @@ message UploadMissionRequest {
 message UploadMissionResponse {
     MissionResult mission_result = 1;
 }
+
+message UploadMissionCancelRequest {}
+message UploadMissionCancelResponse {}
 
 message DownloadMissionRequest {}
 message DownloadMissionResponse {
