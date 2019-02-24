@@ -5,10 +5,10 @@ set(SKIP_INSTALL_ALL "true")
 include_directories("${ZLIB_ROOT_DIR}")
 add_subdirectory(${ZLIB_ROOT_DIR} third_party/zlib)
 
-if(NOT ANDROID AND NOT IOS)
-    set_property(TARGET zlibstatic PROPERTY POSITION_INDEPENDENT_CODE ON)
-else()
+if(IOS)
     set_property(TARGET zlibstatic PROPERTY POSITION_INDEPENDENT_CODE OFF)
+else()
+    set_property(TARGET zlibstatic PROPERTY POSITION_INDEPENDENT_CODE ON)
 endif()
 
 set(DRONECORE_ZLIB_LIBRARIES zlibstatic)
