@@ -173,6 +173,10 @@ void MissionRawImpl::process_mission_count(const mavlink_message_t &message)
 
     _mission_download.state = MissionDownload::State::REQUEST_ITEM;
 
+    if (mission_count.count == 0) {
+        _mission_download.state = MissionDownload::State::SHOULD_ACK;
+    }
+
     // Let's just add this to the queue, this way we don't block the receive thread
     // and let go of the mutex as well.
     _parent->register_timeout_handler(
