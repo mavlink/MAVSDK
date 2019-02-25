@@ -29,10 +29,9 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status
-    UploadMissionCancel(grpc::ServerContext * /* context */,
-                        const rpc::mission::UploadMissionCancelRequest * /* request */,
-                        rpc::mission::UploadMissionCancelResponse * /* response */) override
+    grpc::Status CancelMissionUpload(grpc::ServerContext * /* context */,
+                        const rpc::mission::CancelMissionUploadRequest * /* request */,
+                        rpc::mission::CancelMissionUploadResponse * /* response */) override
     {
         _mission.upload_mission_cancel();
         return grpc::Status::OK;
@@ -66,10 +65,9 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status
-    DownloadMissionCancel(grpc::ServerContext * /* context */,
-                          const rpc::mission::DownloadMissionCancelRequest * /* request */,
-                          rpc::mission::DownloadMissionCancelResponse * /* response */) override
+    grpc::Status CancelMissionDownload(grpc::ServerContext * /* context */,
+                          const rpc::mission::CancelMissionDownloadRequest * /* request */,
+                          rpc::mission::CancelMissionDownloadResponse * /* response */) override
     {
         _mission.download_mission_cancel();
         return grpc::Status::OK;
