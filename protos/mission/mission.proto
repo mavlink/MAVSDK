@@ -7,9 +7,9 @@ option java_outer_classname = "MissionProto";
 
 service MissionService {
     rpc UploadMission(UploadMissionRequest) returns(UploadMissionResponse) {}
-    rpc UploadMissionCancel(UploadMissionCancelRequest) returns(UploadMissionCancelResponse) {}
+    rpc CancelMissionUpload(CancelMissionUploadRequest) returns(CancelMissionUploadResponse) {}
     rpc DownloadMission(DownloadMissionRequest) returns(DownloadMissionResponse) {}
-    rpc DownloadMissionCancel(DownloadMissionCancelRequest) returns(DownloadMissionCancelResponse) {}
+    rpc CancelMissionDownload(CancelMissionDownloadRequest) returns(CancelMissionDownloadResponse) {}
     rpc StartMission(StartMissionRequest) returns(StartMissionResponse) {}
     rpc PauseMission(PauseMissionRequest) returns(PauseMissionResponse) {}
     rpc SetCurrentMissionItemIndex(SetCurrentMissionItemIndexRequest) returns(SetCurrentMissionItemIndexResponse) {}
@@ -26,8 +26,8 @@ message UploadMissionResponse {
     MissionResult mission_result = 1;
 }
 
-message UploadMissionCancelRequest {}
-message UploadMissionCancelResponse {}
+message CancelMissionUploadRequest {}
+message CancelMissionUploadResponse {}
 
 message DownloadMissionRequest {}
 message DownloadMissionResponse {
@@ -35,8 +35,8 @@ message DownloadMissionResponse {
     repeated MissionItem mission_items = 2;
 }
 
-message DownloadMissionCancelRequest {}
-message DownloadMissionCancelResponse {}
+message CancelMissionDownloadRequest {}
+message CancelMissionDownloadResponse {}
 
 message StartMissionRequest {}
 message StartMissionResponse {
