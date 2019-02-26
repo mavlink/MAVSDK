@@ -64,7 +64,7 @@ private:
 
     void process_timeout();
 
-    void upload_mission_item(uint16_t seq);
+    void upload_mission_item();
 
     void copy_mission_item_vector(const std::vector<std::shared_ptr<MissionItem>> &mission_items);
 
@@ -82,6 +82,9 @@ private:
                                 const Mission::result_callback_t callback);
 
     void download_next_mission_item();
+    void request_list();
+    void send_count();
+
     void assemble_mission_items();
 
     static Mission::Result import_mission_items(Mission::mission_items_t &mission_items,
@@ -96,8 +99,10 @@ private:
         enum class State {
             NONE,
             SET_CURRENT,
-            SET_MISSION,
-            GET_MISSION,
+            SET_MISSION_COUNT,
+            SET_MISSION_ITEM,
+            GET_MISSION_LIST,
+            GET_MISSION_REQUEST,
             ABORTED,
             SEND_COMMAND
         } state{Activity::State::NONE};
@@ -113,6 +118,7 @@ private:
         std::map<int, int> mavlink_mission_item_to_mission_item_indices{};
         int num_mission_items_to_download{-1};
         int next_mission_item_to_download{-1};
+        int last_mission_item_to_upload{-1};
         std::vector<std::shared_ptr<mavlink_mission_item_int_t>> mavlink_mission_items_downloaded{};
         Mission::result_callback_t result_callback{nullptr};
         Mission::mission_items_and_result_callback_t mission_items_and_result_callback{nullptr};
@@ -129,7 +135,7 @@ private:
     //        Ultimate it needs a setter.
     bool _enable_absolute_gimbal_yaw_angle{true};
 
-    static constexpr unsigned MAX_RETRIES = 3;
+    static constexpr unsigned MAX_RETRIES = 10;
 
     static constexpr uint8_t VEHICLE_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
 
@@ -141,7 +147,6 @@ private:
     static constexpr uint8_t PX4_CUSTOM_SUB_MODE_AUTO_MISSION = 4;
 
     static constexpr double RETRY_TIMEOUT_S = 0.250;
-    static constexpr double PROCESS_TIMEOUT_S = 1.5;
 };
 
 } // namespace dronecode_sdk
