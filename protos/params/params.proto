@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package dronecode_sdk.rpc.params;
+
+option java_package = "io.dronecode_sdk.params";
+option java_outer_classname = "ParamsProto";
+
+ // Option 1
+service ParamsService {
+ rpc GetParam(GetParamRequest) returns(GetParamResponse) {}
+ rpc SetParam(SetParamRequest) returns(SetParamResponse) {}
+}
+
+message GetParamRequest {
+    string name = 1;
+}
+message GetParamResponse {
+    ParamsResult params_result = 1;
+    float value = 2;
+}
+
+message SetParamRequest {
+    string name = 1;
+    float value = 2;
+}
+message SetParamResponse {
+    ParamsResult params_result = 1;
+}
+
+// Option 2
+service ParamsService {
+ rpc GetParamInt(GetParamIntRequest) returns(GetParamIntResponse) {}
+ rpc SetParamInt(SetParamIntRequest) returns(SetParamIntResponse) {}
+ rpc GetParamFloat(GetParamFloatRequest) returns(GetParamFloatResponse) {}
+ rpc SetParamFloat(SetParamFloatRequest) returns(SetParamFloatResponse) {}
+}
+
+
+message GetParamIntRequest {
+    string name = 1;
+}
+message GetParamIntResponse {
+    ParamsResult params_result = 1;
+    int32 value = 2;
+}
+
+message SetParamIntRequest {
+    string name = 1;
+    int32 value = 2;
+}
+message SetParamIntResponse {
+    ParamsResult params_result = 1;
+}
+
+message GetParamFloatRequest {
+    string name = 1;
+}
+message GetParamFloatResponse {
+    ParamsResult params_result = 1;
+    float value = 2;
+}
+
+message SetParamFloatRequest {
+    string name = 1;
+    float value = 2;
+}
+message SetParamFloatResponse {
+    ParamsResult params_result = 1;
+}
+
+// Option 3
+service ParamsService {
+ rpc Get(GetRequest) returns(GetResponse) {}
+ rpc Set(SetRequest) returns(SetResponse) {}
+}
+
+message GetRequest {
+    string name = 1;
+}
+message GetResponse {
+    ParamsResult params_result = 1;
+    float value = 2;
+}
+
+message SetRequest {
+    string name = 1;
+    float value = 2;
+}
+message SetResponse {
+    ParamsResult params_result = 1;
+}
+
+// Option 4?
+
+message ParamsResult {
+    enum Result {
+        UNKNOWN = 0;
+        SUCCESS = 1;
+        TIMEOUT = 2;
+        CONNECTION_ERROR = 3;
+        WRONG_TYPE = 4;
+        PARAM_NAME_TOO_LONG = 5;
+    }
+
+    Result result = 1;
+    string result_str = 2;
+}
