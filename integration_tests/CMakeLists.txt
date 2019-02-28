@@ -48,7 +48,7 @@ add_executable(integration_tests_runner
     mission_survey.cpp
     mission_raw_mission_changed.cpp
     offboard_velocity.cpp
-    params_raw.cpp
+    param.cpp
     path_checker.cpp
     path_checker.h
     system_connection_async.cpp
@@ -83,7 +83,7 @@ target_link_libraries(integration_tests_runner
     dronecode_sdk_follow_me
     dronecode_sdk_camera
     dronecode_sdk_calibration
-    dronecode_sdk_params_raw
+    dronecode_sdk_param
     ${additional_libs}
     gtest
     gtest_main

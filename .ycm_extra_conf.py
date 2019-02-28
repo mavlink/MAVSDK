@@ -87,7 +87,7 @@ flags = [
 '-I',
 'plugins/offboard/include',
 '-I',
-'plugins/params_raw/include',
+'plugins/param/include',
 '-I',
 'plugins/telemetry/include',
 '-I',

@@ -17,6 +17,7 @@
 #include "info/info_service_impl.h"
 #include "plugins/gimbal/gimbal.h"
 #include "gimbal/gimbal_service_impl.h"
+#include "param/param_service_impl.h"
 
 namespace dronecode_sdk {
 namespace backend {
@@ -65,6 +66,8 @@ private:
     TelemetryServiceImpl<> _telemetry_service;
     Info _info;
     InfoServiceImpl<> _info_service;
+    Param _param;
+    ParamServiceImpl<> _param_service;
 
     std::unique_ptr<grpc::Server> _server;
 };

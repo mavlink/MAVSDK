@@ -20,7 +20,7 @@ add_subdirectory(log_files)
 add_subdirectory(mission)
 add_subdirectory(mission_raw)
 add_subdirectory(offboard)
-add_subdirectory(params_raw)
+add_subdirectory(param)
 add_subdirectory(telemetry)
 
 if (ENABLE_MAVLINK_PASSTHROUGH)
