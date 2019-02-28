@@ -3,7 +3,7 @@ syntax = "proto3";
 package dronecode_sdk.rpc.params;
 
 option java_package = "io.dronecode_sdk.params";
-option java_outer_classname = "ParamProto";
+option java_outer_classname = "ParamsProto";
 
 service ParamsService {
  rpc GetIntParams(GetIntParamsRequest) returns(GetIntParamsResponse) {}
