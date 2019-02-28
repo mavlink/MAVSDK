@@ -7,9 +7,9 @@ option java_outer_classname = "ParamProto";
 
 service ParamsService {
  rpc GetIntParams(GetIntParamsRequest) returns(GetIntParamsResponse) {}
- rpc SetIntParams(SetIntParamsRequest) returns(SetIntParamsResponse) {}
- rpc GetFloatParams(GetFloatParamsRequest) returns(GetFloatParamsResponse) {}
- rpc SetFloatParams(SetFloatParamsRequest) returns(SetFloatParamsResponse) {}
+//  rpc SetIntParams(SetIntParamsRequest) returns(SetIntParamsResponse) {}
+//  rpc GetFloatParams(GetFloatParamsRequest) returns(GetFloatParamsResponse) {}
+//  rpc SetFloatParams(SetFloatParamsRequest) returns(SetFloatParamsResponse) {}
 }
 
 message GetIntParamsRequest {
@@ -20,29 +20,29 @@ message GetIntParamsResponse {
     int32 value = 2;
 }
 
-message SetIntParamsRequest {
-    string name = 1;
-    int32 value = 2;
-}
-message SetIntParamsResponse {
-    ParamResult param_result = 1;
-}
+// message SetIntParamsRequest {
+//     string name = 1;
+//     int32 value = 2;
+// }
+// message SetIntParamsResponse {
+//     ParamResult param_result = 1;
+// }
 
-message GetFloatParamsRequest {
-    string name = 1;
-}
-message GetFloatParamsResponse {
-    ParamsResult params_result = 1;
-    float value = 2;
-}
+// message GetFloatParamsRequest {
+//     string name = 1;
+// }
+// message GetFloatParamsResponse {
+//     ParamsResult params_result = 1;
+//     float value = 2;
+// }
 
-message SetFloatParamRequest {
-    string name = 1;
-    float value = 2;
-}
-message SetFloatParamsResponse {
-    ParamsResult params_result = 1;
-}
+// message SetFloatParamRequest {
+//     string name = 1;
+//     float value = 2;
+// }
+// message SetFloatParamsResponse {
+//     ParamsResult params_result = 1;
+// }
 
 message ParamsResult {
     enum Result {
