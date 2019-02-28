@@ -16,8 +16,6 @@ public:
         if (request != nullptr) {
             const auto requested_params = request->name();
 
-            // dronecode_sdk::Params::Result params_result = _params.get_param_int(requested_params);
-
             if (response != nullptr) {
                 auto result_pair = _params.get_param_int(requested_params);
 
