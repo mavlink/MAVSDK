@@ -5,7 +5,7 @@ namespace dronecode_sdk {
 namespace backend {
 
 template<typename Param = Param>
-class ParamServiceImpl final : public rpc::param:ParamService:Service {
+class ParamServiceImpl final : public rpc::param::ParamService::Service {
 public:
     ParamServiceImpl(Param &param) : _param(param) {}
 
@@ -21,8 +21,7 @@ public:
                 auto result_pair = _param.get_param_int(requested_param);
 
                 auto *rpc_param_result = new rpc::param::ParamResult();
-
-                rcp_param_result->set_result(
+                rpc_param_result->set_result(
                     static_cast<rpc::param::ParamResult::Result>(result_pair.first));
                 rpc_param_result->set_result_str(dronecode_sdk::Param::result_str(result_pair.first));
 
@@ -56,7 +55,6 @@ public:
 
         return grpc::Status::OK;
     }
-
 
 private:
     Param &_param;
