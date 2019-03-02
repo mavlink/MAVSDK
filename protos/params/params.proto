@@ -1,50 +1,50 @@
 syntax = "proto3";
 
-package dronecode_sdk.rpc.params;
+package dronecode_sdk.rpc.param;
 
-option java_package = "io.dronecode_sdk.params";
-option java_outer_classname = "ParamsProto";
+option java_package = "io.dronecode_sdk.param";
+option java_outer_classname = "ParamProto";
 
-service ParamsService {
- rpc GetIntParams(GetIntParamsRequest) returns(GetIntParamsResponse) {}
- rpc SetIntParams(SetIntParamsRequest) returns(SetIntParamsResponse) {}
- rpc GetFloatParams(GetFloatParamsRequest) returns(GetFloatParamsResponse) {}
- rpc SetFloatParams(SetFloatParamsRequest) returns(SetFloatParamsResponse) {}
+service ParamService {
+ rpc GetIntParam(GetIntParamRequest) returns(GetIntParamResponse) {}
+ rpc SetIntParam(SetIntParamRequest) returns(SetIntParamResponse) {}
+ rpc GetFloatParam(GetFloatParamRequest) returns(GetFloatParamResponse) {}
+ rpc SetFloatParam(SetFloatParamRequest) returns(SetFloatParamResponse) {}
 }
 
-message GetIntParamsRequest {
+message GetIntParamRequest {
     string name = 1;
 }
-message GetIntParamsResponse {
-    ParamsResult params_result = 1;
+message GetIntParamResponse {
+    ParamResult param_result = 1;
     int32 value = 2;
 }
 
-message SetIntParamsRequest {
+message SetIntParamRequest {
     string name = 1;
     int32 value = 2;
 }
-message SetIntParamsResponse {
-    ParamsResult param_result = 1;
+message SetIntParamResponse {
+    ParamResult param_result = 1;
 }
 
-message GetFloatParamsRequest {
+message GetFloatParamRequest {
     string name = 1;
 }
-message GetFloatParamsResponse {
-    ParamsResult params_result = 1;
+message GetFloatParamResponse {
+    ParamResult param_result = 1;
     float value = 2;
 }
 
-message SetFloatParamsRequest {
+message SetFloatParamRequest {
     string name = 1;
     float value = 2;
 }
-message SetFloatParamsResponse {
-    ParamsResult params_result = 1;
+message SetFloatParamResponse {
+    ParamResult param_result = 1;
 }
 
-message ParamsResult {
+message ParamResult {
     enum Result {
         UNKNOWN = 0;
         SUCCESS = 1;
