@@ -15,13 +15,8 @@
 #include "mission/mission_service_impl.h"
 #include "telemetry/telemetry_service_impl.h"
 #include "info/info_service_impl.h"
-<<<<<<< HEAD
-=======
-#include "plugins/param/param.h"
-#include "param/param_service_impl.h"
 #include "plugins/gimbal/gimbal.h"
 #include "gimbal/gimbal_service_impl.h"
->>>>>>> 58e4c1a... Add gimbal support to the SDK.
 
 namespace dronecode_sdk {
 namespace backend {
