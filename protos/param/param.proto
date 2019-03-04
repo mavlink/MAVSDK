@@ -57,3 +57,4 @@ message ParamResult {
     Result result = 1;
     string result_str = 2;
 }
+
