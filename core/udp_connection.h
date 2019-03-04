@@ -5,6 +5,7 @@
 #include <thread>
 #include <atomic>
 #include <vector>
+#include <cstdint>
 #include "connection.h"
 
 namespace dronecode_sdk {
@@ -42,6 +43,8 @@ private:
         {
             return ip == other.ip && port_number == other.port_number;
         }
+
+        uint8_t system_id{0};
     };
     std::vector<Remote> _remotes{};
 

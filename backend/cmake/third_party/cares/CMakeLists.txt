@@ -5,7 +5,7 @@ project(external-cares)
 include(ExternalProject)
 
 set(ARG_GIT_REPOSITORY https://github.com/c-ares/c-ares.git)
-set(ARG_GIT_TAG cares-1_13_0)
+set(ARG_GIT_TAG cares-1_15_0)
 
 if(ANDROID)
     message(STATUS "Preparing external project \"c-ares\" for Android...")

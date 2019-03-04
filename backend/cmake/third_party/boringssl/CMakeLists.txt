@@ -5,7 +5,7 @@ project(external-boringssl)
 include(ExternalProject)
 
 set(ARG_GIT_REPOSITORY https://github.com/google/boringssl.git)
-set(ARG_GIT_TAG 38c20fe8d514a5328f5db404e116af8e9136c7f8)
+set(ARG_GIT_TAG 98ad4d77e372919980ae6cbcd19e928b8f80ce47)
 
 if(ANDROID)
     message(STATUS "Preparing external project \"boringssl\" for Android...")
