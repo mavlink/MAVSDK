@@ -15,6 +15,8 @@
 #include "mission/mission_service_impl.h"
 #include "telemetry/telemetry_service_impl.h"
 #include "info/info_service_impl.h"
+#include "plugins/gimbal/gimbal.h"
+#include "gimbal/gimbal_service_impl.h"
 
 namespace dronecode_sdk {
 namespace backend {
@@ -28,6 +30,8 @@ public:
         _action_service(_action),
         _calibration(_dc.system()),
         _calibration_service(_calibration),
+        _gimbal(_dc.system()),
+        _gimbal_service(_gimbal),
         _camera(_dc.system()),
         _camera_service(_camera),
         _mission(_dc.system()),
@@ -51,6 +55,8 @@ private:
     ActionServiceImpl<> _action_service;
     Calibration _calibration;
     CalibrationServiceImpl<> _calibration_service;
+    Gimbal _gimbal;
+    GimbalServiceImpl<> _gimbal_service;
     Camera _camera;
     CameraServiceImpl<> _camera_service;
     Mission _mission;
