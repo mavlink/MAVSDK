@@ -16,9 +16,6 @@ constexpr double M_PI = 3.14159265358979323846;
 constexpr float M_PI_F = float(M_PI);
 #endif
 
-#define MIN(x_, y_) ((x_) > (y_)) ? (y_) : (x_)
-#define MAX(x_, y_) ((x_) > (y_)) ? (x_) : (y_)
-
 #ifdef WINDOWS
 #define STRNCPY strncpy_s
 #else
