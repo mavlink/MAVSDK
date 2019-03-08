@@ -21,14 +21,12 @@ TEST_F(SitlTest, ParamSad)
     auto param = std::make_shared<Param>(system);
 
     {
-        const std::pair<Param::Result, float> get_result =
-            param->get_param_float("SYS_HITL");
+        const std::pair<Param::Result, float> get_result = param->get_param_float("SYS_HITL");
         EXPECT_EQ(get_result.first, Param::Result::WRONG_TYPE);
     }
 
     {
-        const std::pair<Param::Result, int32_t> get_result =
-            param->get_param_int("MPC_VEL_MANUAL");
+        const std::pair<Param::Result, int32_t> get_result = param->get_param_int("MPC_VEL_MANUAL");
         EXPECT_EQ(get_result.first, Param::Result::WRONG_TYPE);
     }
 
@@ -65,8 +63,7 @@ TEST_F(SitlTest, ParamHappy)
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         // Toggle the value.
-        const Param::Result set_result1 =
-            param->set_param_int("SYS_HITL", !get_result1.second);
+        const Param::Result set_result1 = param->set_param_int("SYS_HITL", !get_result1.second);
         EXPECT_EQ(set_result1, Param::Result::SUCCESS);
 
         // Verify toggle.
@@ -77,8 +74,7 @@ TEST_F(SitlTest, ParamHappy)
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         // Reset back to initial value.
-        const Param::Result set_result2 =
-            param->set_param_int("SYS_HITL", get_result1.second);
+        const Param::Result set_result2 = param->set_param_int("SYS_HITL", get_result1.second);
         EXPECT_EQ(set_result2, Param::Result::SUCCESS);
 
         // Verify reset.

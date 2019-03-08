@@ -47,8 +47,7 @@ Param::Result ParamImpl::set_param_float(const std::string &name, float value)
     return result_from_mavlink_parameters_result(result);
 }
 
-Param::Result
-ParamImpl::result_from_mavlink_parameters_result(MAVLinkParameters::Result result)
+Param::Result ParamImpl::result_from_mavlink_parameters_result(MAVLinkParameters::Result result)
 {
     switch (result) {
         case MAVLinkParameters::Result::SUCCESS:
