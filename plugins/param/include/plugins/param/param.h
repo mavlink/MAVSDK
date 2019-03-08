@@ -9,12 +9,12 @@
 namespace dronecode_sdk {
 
 class System;
-class ParamsRawImpl;
+class ParamImpl;
 
 /**
- * @brief The ParamsRaw class provides raw access to get and set parameters.
+ * @brief The Param class provides raw access to get and set parameters.
  */
-class ParamsRaw : public PluginBase {
+class Param : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -22,20 +22,20 @@ public:
      * The plugin is typically created as shown below:
      *
      *     ```cpp
-     *     auto params_raw = std::make_shared<ParamsRaw>(system);
+     *     auto param = std::make_shared<Param>(system);
      *     ```
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit ParamsRaw(System &system);
+    explicit Param(System &system);
 
     /**
      * @brief Destructor (internal use only).
      */
-    ~ParamsRaw();
+    ~Param();
 
     /**
-     * @brief Possible results returned for params_raw requests.
+     * @brief Possible results returned for param requests.
      */
     enum class Result {
         UNKNOWN, /**< @brief Unknown error. */
@@ -47,12 +47,12 @@ public:
     };
 
     /**
-     * @brief Returns a human-readable English string for `ParamsRaw::Result`.
+     * @brief Returns a human-readable English string for `Param::Result`.
      *
      * @param result The enum value for which a human readable string is required.
-     * @return Human readable string for the `ParamsRaw::Result`.
+     * @return Human readable string for the `Param::Result`.
      */
-    std::string result_str(Result result);
+    static std::string result_str(Result result);
 
     /**
      * @brief Get an int parameter.
@@ -93,15 +93,15 @@ public:
     /**
      * @brief Copy Constructor (object is not copyable).
      */
-    ParamsRaw(const ParamsRaw &) = delete;
+    Param(const Param &) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const ParamsRaw &operator=(const ParamsRaw &) = delete;
+    const Param &operator=(const Param &) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    std::unique_ptr<ParamsRawImpl> _impl;
+    std::unique_ptr<ParamImpl> _impl;
 };
 
 } // namespace dronecode_sdk
