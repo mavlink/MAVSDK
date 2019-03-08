@@ -43,7 +43,7 @@ public:
                        const rpc::core::ListRunningPluginsRequest * /* request */,
                        dronecode_sdk::rpc::core::ListRunningPluginsResponse *response) override
     {
-        std::string plugin_names[8] = {"action",
+        std::string plugin_names[9] = {"action",
                                        "calibration",
                                        "camera",
                                        "core",
