@@ -304,7 +304,9 @@ void SystemImpl::system_thread()
 
     while (!_should_exit) {
         if (_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
-            send_heartbeat();
+            if (_parent.is_connected()) {
+                send_heartbeat();
+            }
             last_time = _time.steady_time();
         }
 
