@@ -920,6 +920,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t &message)
     } else {
 #endif
         content = camera_information.cam_definition_uri;
+        LogDebug() << "downloading camera definition file from: " << content;
         found_content = load_definition_file(camera_information.cam_definition_uri, content);
 #if !defined(WINDOWS)
     }
