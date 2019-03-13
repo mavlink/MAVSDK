@@ -479,6 +479,7 @@ public:
     void set_param_async(const std::string &name,
                          const ParamValue &value,
                          set_param_callback_t callback,
+                         const void *cookie = nullptr,
                          bool extended = false);
 
     std::pair<Result, ParamValue>
@@ -487,7 +488,10 @@ public:
     void get_param_async(const std::string &name,
                          ParamValue value_type,
                          get_param_callback_t callback,
+                         const void *cookie,
                          bool extended = false);
+
+    void cancel_all_param(const void *cookie);
 
     void do_work();
 
@@ -521,6 +525,7 @@ private:
         bool extended{false};
         int retries_done{0};
         bool already_requested{false};
+        const void *cookie{nullptr};
     };
     LockedQueue<WorkItem> _work_queue{};
 

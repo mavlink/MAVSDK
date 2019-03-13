@@ -71,6 +71,7 @@ void CameraImpl::deinit()
     _parent->remove_call_every(_check_connection_status_call_every_cookie);
     _parent->remove_call_every(_status.call_every_cookie);
     _parent->unregister_all_mavlink_message_handlers(this);
+    _parent->cancel_all_param(this);
 
     {
         std::lock_guard<std::mutex> lock(_status.mutex);
@@ -1255,6 +1256,7 @@ void CameraImpl::set_option_async(const std::string &setting_id,
                                      }
                                  }
                              },
+                             this,
                              true);
 }
 
@@ -1428,6 +1430,7 @@ void CameraImpl::refresh_params()
                                          notify_possible_setting_options();
                                      }
                                  },
+                                 this,
                                  true);
         ++count;
     }

@@ -633,32 +633,44 @@ MAVLinkParameters::Result SystemImpl::set_param_ext_int(const std::string &name,
     return _params.set_param(name, param_value, true);
 }
 
-void SystemImpl::set_param_float_async(const std::string &name, float value, success_t callback)
+void SystemImpl::set_param_float_async(const std::string &name,
+                                       float value,
+                                       success_t callback,
+                                       const void *cookie)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set_float(value);
-    _params.set_param_async(name, param_value, callback);
+    _params.set_param_async(name, param_value, callback, cookie);
 }
 
-void SystemImpl::set_param_int_async(const std::string &name, int32_t value, success_t callback)
+void SystemImpl::set_param_int_async(const std::string &name,
+                                     int32_t value,
+                                     success_t callback,
+                                     const void *cookie)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set_int32(value);
-    _params.set_param_async(name, param_value, callback);
+    _params.set_param_async(name, param_value, callback, cookie);
 }
 
-void SystemImpl::set_param_ext_float_async(const std::string &name, float value, success_t callback)
+void SystemImpl::set_param_ext_float_async(const std::string &name,
+                                           float value,
+                                           success_t callback,
+                                           const void *cookie)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set_float(value);
-    _params.set_param_async(name, param_value, callback, true);
+    _params.set_param_async(name, param_value, callback, cookie, true);
 }
 
-void SystemImpl::set_param_ext_int_async(const std::string &name, int32_t value, success_t callback)
+void SystemImpl::set_param_ext_int_async(const std::string &name,
+                                         int32_t value,
+                                         success_t callback,
+                                         const void *cookie)
 {
     MAVLinkParameters::ParamValue param_value;
     param_value.set_int32(value);
-    _params.set_param_async(name, param_value, callback, true);
+    _params.set_param_async(name, param_value, callback, cookie, true);
 }
 
 std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(const std::string &name)
@@ -678,7 +690,8 @@ std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_float(const st
                 value = param.get_float();
             }
             prom.set_value(std::make_pair<>(result, value));
-        });
+        },
+        this);
 
     return res.get();
 }
@@ -700,7 +713,8 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_int(const std::s
                 value = param.get_int32();
             }
             prom.set_value(std::make_pair<>(result, value));
-        });
+        },
+        this);
 
     return res.get();
 }
@@ -723,6 +737,7 @@ std::pair<MAVLinkParameters::Result, float> SystemImpl::get_param_ext_float(cons
             }
             prom.set_value(std::make_pair<>(result, value));
         },
+        this,
         true);
 
     return res.get();
@@ -746,54 +761,69 @@ std::pair<MAVLinkParameters::Result, int> SystemImpl::get_param_ext_int(const st
             }
             prom.set_value(std::make_pair<>(result, value));
         },
+        this,
         true);
 
     return res.get();
 }
 
-void SystemImpl::get_param_float_async(const std::string &name, get_param_float_callback_t callback)
+void SystemImpl::get_param_float_async(const std::string &name,
+                                       get_param_float_callback_t callback,
+                                       const void *cookie)
 {
     MAVLinkParameters::ParamValue value_type;
     value_type.set_float(0.0f);
 
     _params.get_param_async(
-        name, value_type, std::bind(&SystemImpl::receive_float_param, _1, _2, callback));
+        name, value_type, std::bind(&SystemImpl::receive_float_param, _1, _2, callback), cookie);
 }
 
-void SystemImpl::get_param_int_async(const std::string &name, get_param_int_callback_t callback)
+void SystemImpl::get_param_int_async(const std::string &name,
+                                     get_param_int_callback_t callback,
+                                     const void *cookie)
 {
     MAVLinkParameters::ParamValue value_type;
     value_type.set_int32(0);
 
     _params.get_param_async(
-        name, value_type, std::bind(&SystemImpl::receive_int_param, _1, _2, callback));
+        name, value_type, std::bind(&SystemImpl::receive_int_param, _1, _2, callback), cookie);
 }
 
 void SystemImpl::get_param_ext_float_async(const std::string &name,
-                                           get_param_float_callback_t callback)
+                                           get_param_float_callback_t callback,
+                                           const void *cookie)
 {
     MAVLinkParameters::ParamValue value_type;
     value_type.set_float(0.0f);
 
-    _params.get_param_async(
-        name, value_type, std::bind(&SystemImpl::receive_float_param, _1, _2, callback), true);
+    _params.get_param_async(name,
+                            value_type,
+                            std::bind(&SystemImpl::receive_float_param, _1, _2, callback),
+                            cookie,
+                            true);
 }
 
-void SystemImpl::get_param_ext_int_async(const std::string &name, get_param_int_callback_t callback)
+void SystemImpl::get_param_ext_int_async(const std::string &name,
+                                         get_param_int_callback_t callback,
+                                         const void *cookie)
 {
     MAVLinkParameters::ParamValue value_type;
     value_type.set_int32(0);
 
-    _params.get_param_async(
-        name, value_type, std::bind(&SystemImpl::receive_int_param, _1, _2, callback), true);
+    _params.get_param_async(name,
+                            value_type,
+                            std::bind(&SystemImpl::receive_int_param, _1, _2, callback),
+                            cookie,
+                            true);
 }
 
 void SystemImpl::set_param_async(const std::string &name,
                                  MAVLinkParameters::ParamValue value,
                                  success_t callback,
+                                 const void *cookie,
                                  bool extended)
 {
-    _params.set_param_async(name, value, callback, extended);
+    _params.set_param_async(name, value, callback, cookie, extended);
 }
 
 MAVLinkParameters::Result
@@ -805,9 +835,15 @@ SystemImpl::set_param(const std::string &name, MAVLinkParameters::ParamValue val
 void SystemImpl::get_param_async(const std::string &name,
                                  MAVLinkParameters::ParamValue value_type,
                                  get_param_callback_t callback,
+                                 const void *cookie,
                                  bool extended)
 {
-    _params.get_param_async(name, value_type, callback, extended);
+    _params.get_param_async(name, value_type, callback, cookie, extended);
+}
+
+void SystemImpl::cancel_all_param(const void *cookie)
+{
+    _params.cancel_all_param(cookie);
 }
 
 std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>

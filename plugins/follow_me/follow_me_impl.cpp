@@ -39,25 +39,30 @@ void FollowMeImpl::enable()
                                        if (result == MAVLinkParameters::Result::SUCCESS) {
                                            _config.min_height_m = value;
                                        }
-                                   });
+                                   },
+                                   this);
     _parent->get_param_float_async("NAV_FT_DST",
                                    [this](MAVLinkParameters::Result result, float value) {
                                        if (result == MAVLinkParameters::Result::SUCCESS) {
                                            _config.follow_distance_m = value;
                                        }
-                                   });
-    _parent->get_param_int_async(
-        "NAV_FT_FS", [this](MAVLinkParameters::Result result, int32_t value) {
-            if (result == MAVLinkParameters::Result::SUCCESS) {
-                _config.follow_direction = static_cast<FollowMe::Config::FollowDirection>(value);
-            }
-        });
+                                   },
+                                   this);
+    _parent->get_param_int_async("NAV_FT_FS",
+                                 [this](MAVLinkParameters::Result result, int32_t value) {
+                                     if (result == MAVLinkParameters::Result::SUCCESS) {
+                                         _config.follow_direction =
+                                             static_cast<FollowMe::Config::FollowDirection>(value);
+                                     }
+                                 },
+                                 this);
     _parent->get_param_float_async("NAV_FT_RS",
                                    [this](MAVLinkParameters::Result result, float value) {
                                        if (result == MAVLinkParameters::Result::SUCCESS) {
                                            _config.responsiveness = value;
                                        }
-                                   });
+                                   },
+                                   this);
 }
 
 void FollowMeImpl::disable()
