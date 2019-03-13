@@ -376,9 +376,11 @@ void SystemImpl::add_new_component(uint8_t component_id)
 
     auto res_pair = _components.insert(component_id);
     if (res_pair.second) {
+        std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
         if (_component_discovered_callback != nullptr) {
             const ComponentType type = component_type(component_id);
-            call_user_callback([this, type]() { _component_discovered_callback(type); });
+            auto temp_callback = _component_discovered_callback;
+            call_user_callback([temp_callback, type]() { temp_callback(type); });
         }
         LogDebug() << "Component " << component_name(component_id) << " (" << int(component_id)
                    << ") added.";
@@ -392,12 +394,16 @@ size_t SystemImpl::total_components() const
 
 void SystemImpl::register_component_discovered_callback(discover_callback_t callback)
 {
+    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     _component_discovered_callback = callback;
 
     if (total_components() > 0) {
         for (const auto &elem : _components) {
             const ComponentType type = component_type(elem);
-            call_user_callback([this, type]() { _component_discovered_callback(type); });
+            if (_component_discovered_callback) {
+                auto temp_callback = _component_discovered_callback;
+                call_user_callback([temp_callback, type]() { temp_callback(type); });
+            }
         }
     }
 }

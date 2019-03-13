@@ -254,6 +254,7 @@ private:
                                   MAVLinkParameters::ParamValue value,
                                   get_param_int_callback_t callback);
 
+    std::mutex _component_discovered_callback_mutex{};
     discover_callback_t _component_discovered_callback{nullptr};
 
     struct MAVLinkHandlerTableEntry {
