@@ -37,6 +37,49 @@ TEST(LockedQueue, FillAndEmpty)
     EXPECT_EQ(locked_queue.size(), 0);
 }
 
+TEST(LockedQueue, FillAndIterateAndErase)
+{
+    int one = 1;
+    int two = 2;
+    int three = 3;
+
+    LockedQueue<int> locked_queue{};
+
+    locked_queue.push_back(one);
+    EXPECT_EQ(locked_queue.size(), 1);
+    locked_queue.push_back(two);
+    locked_queue.push_back(three);
+    EXPECT_EQ(locked_queue.size(), 3);
+
+    unsigned counter = 0;
+    for (auto item : locked_queue) {
+        ++counter;
+        EXPECT_EQ(*item, counter);
+    }
+    EXPECT_EQ(counter, 3);
+
+    for (auto item = locked_queue.begin(); item != locked_queue.end();
+         /* manual incrementation */) {
+        if (*item->get() == 2) {
+            item = locked_queue.erase(item);
+        } else {
+            ++item;
+        }
+    }
+
+    EXPECT_EQ(locked_queue.size(), 2);
+
+    counter = 0;
+    for (auto item : locked_queue) {
+        ++counter;
+        if (counter == 1) {
+            EXPECT_EQ(*item, 1);
+        } else if (counter == 2) {
+            EXPECT_EQ(*item, 3);
+        }
+    }
+}
+
 TEST(LockedQueue, GuardAndReturn)
 {
     int one = 1;

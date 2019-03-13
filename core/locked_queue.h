@@ -23,6 +23,13 @@ public:
         return _queue.size();
     }
 
+    using iterator = typename std::deque<std::shared_ptr<T>>::iterator;
+    LockedQueue<T>::iterator begin() { return _queue.begin(); }
+
+    LockedQueue<T>::iterator end() { return _queue.end(); }
+
+    LockedQueue<T>::iterator erase(LockedQueue<T>::iterator it) { return _queue.erase(it); }
+
     class Guard {
     public:
         Guard(LockedQueue &locked_queue) : _locked_queue(locked_queue)
