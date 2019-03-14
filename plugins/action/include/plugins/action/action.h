@@ -141,7 +141,8 @@ public:
      * @brief Send command to engage the *auto maneuver system (AMS)* (synchronous).
      *
      * This switches the drone into [AMS mode](https://docs.px4.io/en/flight_modes/ams.html) which
-     * means it will perform an emergency descend followed by a predefined behavior (loiter/land/...).
+     * means it will perform an emergency descend followed by a predefined behavior
+     * (loiter/land/...).
      *
      * @param callback Function to call with result of request.
      */
@@ -255,7 +256,8 @@ public:
      * @brief Send command to engage the *auto maneuver system (AMS)* (asynchronous).
      *
      * This switches the drone into [AMS mode](https://docs.px4.io/en/flight_modes/ams.html) which
-     * means it will perform an emergency descend followed by a predefined behavior (loiter/land/...).
+     * means it will perform an emergency descend followed by a predefined behavior
+     * (loiter/land/...).
      *
      * @param callback Function to call with result of request.
      */

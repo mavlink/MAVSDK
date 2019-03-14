@@ -151,8 +151,7 @@ Action::Result ActionImpl::return_to_launch() const
 
 Action::Result ActionImpl::auto_maneuver_system() const
 {
-    return action_result_from_command_result(
-        _parent->set_flight_mode(SystemImpl::FlightMode::AMS));
+    return action_result_from_command_result(_parent->set_flight_mode(SystemImpl::FlightMode::AMS));
 }
 
 Action::Result ActionImpl::goto_location(double latitude_deg,

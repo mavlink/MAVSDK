@@ -47,7 +47,7 @@ public:
         MISSION,
         FOLLOW_ME,
         OFFBOARD,
-	AMS,
+        AMS,
     };
 
     explicit SystemImpl(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t component_id);
