@@ -48,6 +48,7 @@ add_executable(integration_tests_runner
     mission_survey.cpp
     mission_raw_mission_changed.cpp
     offboard_velocity.cpp
+    offboard_position.cpp
     param.cpp
     path_checker.cpp
     path_checker.h

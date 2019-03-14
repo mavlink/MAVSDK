@@ -82,6 +82,14 @@ public:
                           above). */
     };
 
+    struct PositionNEDYaw {
+        float north_m; /**< @brief Position North in metres. */
+        float east_m; /**< @brief Position East in metres. */
+        float down_m; /**< @brief Position Down in metres. */
+        float yaw_deg; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
+                          above). */
+    };
+
     /**
      * @brief Type for velocity commands in body coordinates (forward, right, down and yaw angular
      * rate).
@@ -154,6 +162,13 @@ public:
      * @return `true` if active
      */
     bool is_active() const;
+
+    /**
+     * @brief Set the position in NED coordinates and yaw.
+     *
+     * @param position_ned_yaw Position and yaw `struct`.
+     */
+    void set_position_ned(PositionNEDYaw position_ned_yaw);
 
     /**
      * @brief Set the velocity in NED coordinates and yaw.
