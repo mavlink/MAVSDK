@@ -216,9 +216,9 @@ void OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
 
 void OffboardImpl::send_position_ned()
 {
-    //const static uint16_t IGNORE_X = (1 << 0);
-    //const static uint16_t IGNORE_Y = (1 << 1);
-    //const static uint16_t IGNORE_Z = (1 << 2);
+    // const static uint16_t IGNORE_X = (1 << 0);
+    // const static uint16_t IGNORE_Y = (1 << 1);
+    // const static uint16_t IGNORE_Z = (1 << 2);
     const static uint16_t IGNORE_VX = (1 << 3);
     const static uint16_t IGNORE_VY = (1 << 4);
     const static uint16_t IGNORE_VZ = (1 << 5);

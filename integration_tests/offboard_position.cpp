@@ -50,8 +50,8 @@ TEST_F(SitlTest, OffboardPositionNED)
 
     {
         const float radius = 10.0f;
-		const float step = 0.01f;
-        for (float i = 0.0f; i <= 2*static_cast<float>(M_PI); i+=step) {
+        const float step = 0.01f;
+        for (float i = 0.0f; i <= 2 * static_cast<float>(M_PI); i += step) {
             float x = radius * cosf(i);
             float y = radius * sinf(i);
             offboard->set_position_ned({x, y, -10.0f, 90.0f});
