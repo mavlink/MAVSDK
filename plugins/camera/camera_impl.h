@@ -111,8 +111,6 @@ private:
 
     void notify_mode(const Camera::Mode mode);
     void notify_video_stream_info();
-    void notify_capture_info(Camera::CaptureInfo capture_info);
-    void notify_status(Camera::Status status);
     void notify_current_settings();
     void notify_possible_setting_options();
 
@@ -157,11 +155,14 @@ private:
 
     struct {
         std::mutex mutex{};
-        Camera::get_status_callback_t callback{nullptr};
+
+        Camera::get_status_callback_t status_callback{nullptr};
         Camera::Status data{};
         bool received_camera_capture_status{false};
         bool received_storage_information{false};
         void *timeout_cookie{nullptr};
+
+        Camera::subscribe_status_callback_t subscription_callback{nullptr};
         void *call_every_cookie{nullptr};
     } _status{};
 
@@ -171,7 +172,9 @@ private:
         std::mutex mutex{};
         Camera::mode_callback_t callback{nullptr};
         void *timeout_cookie{nullptr};
-    } _get_mode{};
+
+        Camera::subscribe_mode_callback_t subscription_callback{nullptr};
+    } _mode{};
 
     struct {
         std::mutex mutex{};
@@ -189,20 +192,26 @@ private:
         bool available{false};
         Camera::get_video_stream_info_callback_t callback{nullptr};
         void *timeout_cookie{nullptr};
+
+        Camera::subscribe_video_stream_info_callback_t subscription_callback{nullptr};
         void *call_every_cookie{nullptr};
     } _video_stream_info{};
 
     struct {
         std::mutex mutex{};
         Camera::Information data{};
+        // Camera::get_information callback{nullptr};
     } _information{};
 
-    Camera::subscribe_mode_callback_t _subscribe_mode_callback{nullptr};
-    Camera::subscribe_video_stream_info_callback_t _subscribe_video_stream_info_callback{nullptr};
-    Camera::subscribe_status_callback_t _subscribe_status_callback{nullptr};
-    Camera::subscribe_current_settings_callback_t _subscribe_current_settings_callback{nullptr};
-    Camera::subscribe_possible_setting_options_callback_t
-        _subscribe_possible_setting_options_callback{nullptr};
+    struct {
+        std::mutex mutex{};
+        Camera::subscribe_current_settings_callback_t callback{nullptr};
+    } _subscribe_current_settings{};
+
+    struct {
+        std::mutex mutex{};
+        Camera::subscribe_possible_setting_options_callback_t callback{nullptr};
+    } _subscribe_possible_setting_options{};
 
     void *_flight_information_call_every_cookie{nullptr};
 };
