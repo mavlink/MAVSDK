@@ -19,16 +19,12 @@ add_library(dronecode_sdk_camera ${PLUGIN_LIBRARY_TYPE}
 
 target_link_libraries(dronecode_sdk_camera
     dronecode_sdk
-    ${TINYXML2_LIBRARY}
+    tinyxml2::tinyxml2
     ${CURL_LIBRARY}
 )
 
 set_target_properties(dronecode_sdk_camera
     PROPERTIES COMPILE_FLAGS ${warnings}
-)
-
-include_directories(
-    ${CURL_INCLUDE_DIRS}
 )
 
 install(FILES
@@ -37,7 +33,6 @@ install(FILES
 )
 
 install(TARGETS dronecode_sdk_camera
-    #EXPORT dronecode_sdk-targets
     DESTINATION ${dronecode_sdk_install_lib_dir}
 )
 

@@ -1,8 +1,6 @@
 find_package(Threads REQUIRED)
 
 include_directories(
-    ${DRONECORE_ZLIB_INCLUDE_DIRS}
-    ${CURL_INCLUDE_DIRS}
     SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
@@ -11,6 +9,7 @@ if(IOS OR MSVC OR APPLE)
 else()
     set(LIBRARY_TYPE "SHARED")
 endif()
+set(LIBRARY_TYPE "STATIC")
 
 
 configure_file(version.h.in version.h)
@@ -43,7 +42,7 @@ target_link_libraries(dronecode_sdk
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
     ${TINYXML2_LIBRARY}
-    ${DRONECORE_ZLIB_LIBRARIES}
+    ZLIB::ZLIB
 )
 
 if (IOS)
@@ -73,8 +72,6 @@ set_target_properties(dronecode_sdk
 target_include_directories(dronecode_sdk PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 install(TARGETS dronecode_sdk
-    # TODO: not sure if this is needed
-    #EXPORT dronecode_sdk-targets
     DESTINATION ${lib_path}
 )
 

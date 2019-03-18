@@ -8,6 +8,7 @@ if(IOS OR ANDROID)
 else()
     set(PLUGIN_LIBRARY_TYPE SHARED)
 endif()
+set(PLUGIN_LIBRARY_TYPE STATIC)
 
 add_subdirectory(action)
 add_subdirectory(calibration)

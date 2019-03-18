@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.1)
 
 set(CMAKE_CXX_STANDARD 11)
 
-#list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR}/third_party)
-
 cmake_policy(SET CMP0025 NEW)
 
 project(dronecode_sdk)
@@ -30,13 +28,14 @@ endif()
 option(BUILD_TESTS "Build tests" ON)
 
 include(cmake/compiler_flags.cmake)
-#include(cmake/curl.cmake)
-#include(cmake/tinyxml2.cmake)
-#include(cmake/zlib.cmake)
+
+find_package(CURL REQUIRED)
+find_package(tinyxml2 REQUIRED)
+find_package(ZLIB REQUIRED)
 
 if(NOT MSVC)
     cmake_policy(SET CMP0058 NEW)
-    include(third_party/cpp_rsc/cmake/modules/cpp_resource.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp_rsc/cmake/modules/cpp_resource.cmake)
     if(NOT ANDROID AND NOT IOS)
         # If not cross-compiling, we can build cpp_rsc.
         add_subdirectory(third_party/cpp_rsc/src EXCLUDE_FROM_ALL)

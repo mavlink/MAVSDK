@@ -4,7 +4,9 @@ set(PROTO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/proto/protos)
 set(PLUGINS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/plugins)
 
 include(GNUInstallDirs)
-#include(cmake/helpers/build_external.cmake)
+
+find_package(OpenSSL REQUIRED)
+find_package(gRPC REQUIRED)
 
 add_subdirectory(src)
 
