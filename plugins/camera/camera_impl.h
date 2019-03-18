@@ -79,50 +79,6 @@ public:
     CameraImpl &operator=(const CameraImpl &) = delete;
 
 private:
-    struct {
-        std::mutex mutex{};
-        Camera::get_status_callback_t callback{nullptr};
-        Camera::Status data{};
-        bool received_camera_capture_status{false};
-        bool received_storage_information{false};
-        void *timeout_cookie{nullptr};
-        void *call_every_cookie{nullptr};
-    } _status{};
-
-    static constexpr double DEFAULT_TIMEOUT_S = 3.0;
-
-    struct {
-        std::mutex mutex{};
-        Camera::mode_callback_t callback{nullptr};
-        void *timeout_cookie{nullptr};
-    } _get_mode{};
-
-    struct {
-        std::mutex mutex{};
-        int sequence = 1; // The MAVLink spec says the sequence starts at 1.
-    } _capture{};
-
-    struct {
-        std::mutex mutex{};
-        Camera::capture_info_callback_t callback{nullptr};
-    } _capture_info{};
-
-    struct {
-        std::mutex mutex{};
-        Camera::VideoStreamInfo info{};
-        bool available{false};
-        Camera::get_video_stream_info_callback_t callback{nullptr};
-        void *timeout_cookie{nullptr};
-        void *call_every_cookie{nullptr};
-    } _video_stream_info{};
-
-    struct {
-        std::mutex mutex{};
-        Camera::Information data{};
-    } _information{};
-
-    void *_flight_information_call_every_cookie{nullptr};
-
     void receive_set_mode_command_result(const MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
                                          const Camera::Mode mode);
@@ -199,12 +155,56 @@ private:
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
 
+    struct {
+        std::mutex mutex{};
+        Camera::get_status_callback_t callback{nullptr};
+        Camera::Status data{};
+        bool received_camera_capture_status{false};
+        bool received_storage_information{false};
+        void *timeout_cookie{nullptr};
+        void *call_every_cookie{nullptr};
+    } _status{};
+
+    static constexpr double DEFAULT_TIMEOUT_S = 3.0;
+
+    struct {
+        std::mutex mutex{};
+        Camera::mode_callback_t callback{nullptr};
+        void *timeout_cookie{nullptr};
+    } _get_mode{};
+
+    struct {
+        std::mutex mutex{};
+        int sequence = 1; // The MAVLink spec says the sequence starts at 1.
+    } _capture{};
+
+    struct {
+        std::mutex mutex{};
+        Camera::capture_info_callback_t callback{nullptr};
+    } _capture_info{};
+
+    struct {
+        std::mutex mutex{};
+        Camera::VideoStreamInfo info{};
+        bool available{false};
+        Camera::get_video_stream_info_callback_t callback{nullptr};
+        void *timeout_cookie{nullptr};
+        void *call_every_cookie{nullptr};
+    } _video_stream_info{};
+
+    struct {
+        std::mutex mutex{};
+        Camera::Information data{};
+    } _information{};
+
     Camera::subscribe_mode_callback_t _subscribe_mode_callback{nullptr};
     Camera::subscribe_video_stream_info_callback_t _subscribe_video_stream_info_callback{nullptr};
     Camera::subscribe_status_callback_t _subscribe_status_callback{nullptr};
     Camera::subscribe_current_settings_callback_t _subscribe_current_settings_callback{nullptr};
     Camera::subscribe_possible_setting_options_callback_t
         _subscribe_possible_setting_options_callback{nullptr};
+
+    void *_flight_information_call_every_cookie{nullptr};
 };
 
 } // namespace dronecode_sdk
