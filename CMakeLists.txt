@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 set(CMAKE_CXX_STANDARD 11)
 
-list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR}/third_party)
+#list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR}/third_party)
 
 cmake_policy(SET CMP0025 NEW)
 
@@ -30,9 +30,9 @@ endif()
 option(BUILD_TESTS "Build tests" ON)
 
 include(cmake/compiler_flags.cmake)
-include(cmake/curl.cmake)
-include(cmake/tinyxml2.cmake)
-include(cmake/zlib.cmake)
+#include(cmake/curl.cmake)
+#include(cmake/tinyxml2.cmake)
+#include(cmake/zlib.cmake)
 
 if(NOT MSVC)
     cmake_policy(SET CMP0058 NEW)
