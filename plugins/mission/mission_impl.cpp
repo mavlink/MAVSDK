@@ -1132,18 +1132,21 @@ void MissionImpl::copy_mission_item_vector(
 void MissionImpl::report_mission_result(const Mission::result_callback_t &callback,
                                         Mission::Result result)
 {
-    if (callback == nullptr) {
+    const auto temp_callback = callback;
+
+    if (temp_callback == nullptr) {
         LogWarn() << "Callback is not set";
         return;
     }
 
-    _parent->call_user_callback([callback, result]() { callback(result); });
+    _parent->call_user_callback([temp_callback, result]() { temp_callback(result); });
 }
 
 void MissionImpl::report_mission_items_and_result(
     const Mission::mission_items_and_result_callback_t &callback, Mission::Result result)
 {
-    if (callback == nullptr) {
+    const auto temp_callback = callback;
+    if (temp_callback == nullptr) {
         LogWarn() << "Callback is not set";
         return;
     }
@@ -1153,15 +1156,16 @@ void MissionImpl::report_mission_items_and_result(
         // Don't return garbage, better clear it.
         _mission_data.mission_items.clear();
     }
-    _parent->call_user_callback([callback, result, this]() {
+    _parent->call_user_callback([temp_callback, result, this]() {
         // This one is tricky because we keep the lock of the mission data during the callback.
-        callback(result, _mission_data.mission_items);
+        temp_callback(result, _mission_data.mission_items);
     });
 }
 
 void MissionImpl::report_progress()
 {
-    if (_mission_data.progress_callback == nullptr) {
+    const auto temp_callback = _mission_data.progress_callback;
+    if (temp_callback == nullptr) {
         return;
     }
 
@@ -1183,7 +1187,6 @@ void MissionImpl::report_progress()
 
     if (should_report) {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        auto temp_callback = _mission_data.progress_callback;
         _parent->call_user_callback([temp_callback, current, total]() {
             LogDebug() << "current: " << current << ", total: " << total;
             temp_callback(current, total);
