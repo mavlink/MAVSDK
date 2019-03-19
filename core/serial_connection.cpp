@@ -2,14 +2,7 @@
 #include "global_include.h"
 #include "log.h"
 
-#if defined(LINUX)
-#include <unistd.h>
-#include <fcntl.h>
-#include <asm/ioctls.h>
-#include <asm/termbits.h>
-#include <sys/ioctl.h>
-
-#elif defined(APPLE)
+#if defined(APPLE) || defined(LINUX)
 #include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -115,16 +108,7 @@ ConnectionResult SerialConnection::setup_port()
     }
 #endif
 
-#if defined(LINUX)
-    struct termios2 tc;
-    bzero(&tc, sizeof(tc));
-
-    if (ioctl(_fd, TCGETS2, &tc) == -1) {
-        LogErr() << "Could not get termios2 " << GET_ERROR();
-        close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
-    }
-#elif defined(APPLE)
+#if defined(LINUX) || defined(APPLE)
     struct termios tc;
     bzero(&tc, sizeof(tc));
 
@@ -146,26 +130,7 @@ ConnectionResult SerialConnection::setup_port()
     tc.c_cc[VTIME] = 0; // We don't timeout but wait indefinitely.
 #endif
 
-#if defined(LINUX)
-    // CBAUD and BOTHER don't seem to be available for macOS with termios.
-    tc.c_cflag &= ~(CBAUD);
-    tc.c_cflag |= BOTHER;
-
-    tc.c_ispeed = _baudrate;
-    tc.c_ospeed = _baudrate;
-
-    if (ioctl(_fd, TCSETS2, &tc) == -1) {
-        LogErr() << "Could not set terminal attributes " << GET_ERROR();
-        close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
-    }
-
-    if (ioctl(_fd, TCFLSH, TCIOFLUSH) == -1) {
-        LogErr() << "Could not flush terminal " << GET_ERROR();
-        close(_fd);
-        return ConnectionResult::CONNECTION_ERROR;
-    }
-#elif defined(APPLE)
+#if defined(LINUX) || defined(APPLE)
     tc.c_cflag |= CLOCAL; // Without this a write() blocks indefinitely.
 
     cfsetispeed(&tc, _baudrate);
