@@ -92,7 +92,7 @@ void CameraImpl::deinit()
     }
 
     {
-        std::lock_guard<std::mutex> lock(_information.mutex);
+        // std::lock_guard<std::mutex> lock(_information.mutex);
         //_information.callback = nullptr;
     }
 

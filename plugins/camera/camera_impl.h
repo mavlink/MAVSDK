@@ -200,7 +200,6 @@ private:
     struct {
         std::mutex mutex{};
         Camera::Information data{};
-        // Camera::get_information callback{nullptr};
     } _information{};
 
     struct {
