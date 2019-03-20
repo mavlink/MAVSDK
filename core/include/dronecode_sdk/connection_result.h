@@ -24,7 +24,8 @@ enum class ConnectionResult {
     COMMAND_DENIED, /**< @brief Command is denied. */
     DESTINATION_IP_UNKNOWN, /**< @brief %Connection IP is unknown. */
     CONNECTIONS_EXHAUSTED, /**< @brief %Connections exhausted. */
-    CONNECTION_URL_INVALID /**< @brief URL invalid. */
+    CONNECTION_URL_INVALID, /**< @brief URL invalid. */
+    BAUDRATE_UNKNOWN /**< @brief Baudrate unknown. */
 };
 
 /**
@@ -62,6 +63,8 @@ inline const char *connection_result_str(const ConnectionResult result)
             return "Connections exhausted";
         case ConnectionResult::CONNECTION_URL_INVALID:
             return "Invalid connection URL";
+        case ConnectionResult::BAUDRATE_UNKNOWN:
+            return "Baudrate unknown";
         default:
             return "Unknown";
     }

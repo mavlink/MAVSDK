@@ -36,6 +36,7 @@ private:
     std::mutex _mutex = {};
 #if !defined(WINDOWS)
     int _fd = -1;
+    static int define_from_baudrate(int baudrate);
 #else
     HANDLE _handle;
 #endif
