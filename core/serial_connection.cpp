@@ -133,19 +133,23 @@ ConnectionResult SerialConnection::setup_port()
 #if defined(LINUX) || defined(APPLE)
     tc.c_cflag |= CLOCAL; // Without this a write() blocks indefinitely.
 
-    const int baudrate_define = define_from_baudrate(_baudrate);
+#if defined(LINUX)
+    const int baudrate_or_define = define_from_baudrate(_baudrate);
+#elif defined(APPLE)
+    const int baudrate_or_define = _baudrate;
+#endif
 
-    if (baudrate_define == -1) {
+    if (baudrate_or_define == -1) {
         return ConnectionResult::BAUDRATE_UNKNOWN;
     }
 
-    if (cfsetispeed(&tc, baudrate_define) != 0) {
+    if (cfsetispeed(&tc, baudrate_or_define) != 0) {
         LogErr() << "cfsetispeed failed: " << GET_ERROR();
         close(_fd);
         return ConnectionResult::CONNECTION_ERROR;
     }
 
-    if (cfsetospeed(&tc, baudrate_define) != 0) {
+    if (cfsetospeed(&tc, baudrate_or_define) != 0) {
         LogErr() << "cfsetospeed failed: " << GET_ERROR();
         close(_fd);
         return ConnectionResult::CONNECTION_ERROR;
@@ -292,7 +296,7 @@ void SerialConnection::receive()
     }
 }
 
-#ifndef WINDOWS
+#if defined(LINUX)
 int SerialConnection::define_from_baudrate(int baudrate)
 {
     switch (baudrate) {
