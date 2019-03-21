@@ -53,9 +53,9 @@ TEST_F(SitlTest, OffboardPositionNED)
     {
         const float radius = 10.0f;
         const float step = 0.01f;
-        for (float i = 0.0f; i <= 2 * static_cast<float>(M_PI); i += step) {
-            float x = radius * cosf(i);
-            float y = radius * sinf(i);
+        for (float angle = 0.0f; angle <= 2.0f * M_PI_F; angle += step) {
+            float x = radius * cosf(angle);
+            float y = radius * sinf(angle);
             offboard->set_position_ned({x, y, -10.0f, 90.0f});
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
