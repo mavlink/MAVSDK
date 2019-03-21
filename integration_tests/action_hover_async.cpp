@@ -94,7 +94,7 @@ TEST_F(SitlTest, ActionHoverAsync)
                 prom.set_value();
             }
         });
-        EXPECT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(20)), std::future_status::ready);
     }
 
     {
