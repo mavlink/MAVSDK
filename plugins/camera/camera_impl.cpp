@@ -130,7 +130,7 @@ void CameraImpl::check_connection_status()
 void CameraImpl::enable()
 {
     // FIXME: We check for the connection status manually because
-    // we're not interested int the connection state of the autopilot
+    // we're not interested in the connection state of the autopilot
     // but only the camera.
 }
 
@@ -151,7 +151,7 @@ void CameraImpl::manual_enable()
 void CameraImpl::disable()
 {
     // FIXME: We check for the connection status manually because
-    // we're not interested int the connection state of the autopilot
+    // we're not interested in the connection state of the autopilot
     // but only the camera.
 }
 
