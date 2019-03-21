@@ -87,36 +87,40 @@ void TelemetryImpl::enable()
                                  std::bind(&TelemetryImpl::receive_param_cal_gyro,
                                            this,
                                            std::placeholders::_1,
-                                           std::placeholders::_2));
+                                           std::placeholders::_2),
+                                 this);
 
     _parent->get_param_int_async(std::string("CAL_ACC0_ID"),
                                  std::bind(&TelemetryImpl::receive_param_cal_accel,
                                            this,
                                            std::placeholders::_1,
-                                           std::placeholders::_2));
+                                           std::placeholders::_2),
+                                 this);
 
     _parent->get_param_int_async(std::string("CAL_MAG0_ID"),
                                  std::bind(&TelemetryImpl::receive_param_cal_mag,
                                            this,
                                            std::placeholders::_1,
-                                           std::placeholders::_2));
+                                           std::placeholders::_2),
+                                 this);
 
 #ifdef LEVEL_CALIBRATION
     _parent->get_param_float_async(std::string("SENS_BOARD_X_OFF"),
                                    std::bind(&TelemetryImpl::receive_param_cal_level,
                                              this,
                                              std::placeholders::_1,
-                                             std::placeholders::_2));
+                                             std::placeholders::_2),
+                                   this);
 #else
     // If not available, just hardcode it to true.
     set_health_level_calibration(true);
 #endif
 
-    _parent->get_param_int_async(std::string("SYS_HITL"),
-                                 std::bind(&TelemetryImpl::receive_param_hitl,
-                                           this,
-                                           std::placeholders::_1,
-                                           std::placeholders::_2));
+    _parent->get_param_int_async(
+        std::string("SYS_HITL"),
+        std::bind(
+            &TelemetryImpl::receive_param_hitl, this, std::placeholders::_1, std::placeholders::_2),
+        this);
 }
 
 void TelemetryImpl::disable() {}
@@ -919,21 +923,24 @@ void TelemetryImpl::process_parameter_update(const std::string &name)
                                      std::bind(&TelemetryImpl::receive_param_cal_gyro,
                                                this,
                                                std::placeholders::_1,
-                                               std::placeholders::_2));
+                                               std::placeholders::_2),
+                                     this);
 
     } else if (name.compare("CAL_ACC0_ID") == 0) {
         _parent->get_param_int_async(std::string("CAL_ACC0_ID"),
                                      std::bind(&TelemetryImpl::receive_param_cal_accel,
                                                this,
                                                std::placeholders::_1,
-                                               std::placeholders::_2));
+                                               std::placeholders::_2),
+                                     this);
 
     } else if (name.compare("CAL_MAG0_ID") == 0) {
         _parent->get_param_int_async(std::string("CAL_MAG0_ID"),
                                      std::bind(&TelemetryImpl::receive_param_cal_mag,
                                                this,
                                                std::placeholders::_1,
-                                               std::placeholders::_2));
+                                               std::placeholders::_2),
+                                     this);
 
 #ifdef LEVEL_CALIBRATION
     } else if (name.compare("SENS_BOARD_X_OFF") == 0) {
@@ -941,14 +948,16 @@ void TelemetryImpl::process_parameter_update(const std::string &name)
                                        std::bind(&TelemetryImpl::receive_param_cal_level,
                                                  this,
                                                  std::placeholders::_1,
-                                                 std::placeholders::_2));
+                                                 std::placeholders::_2),
+                                       this);
 #endif
     } else if (name.compare("SYS_HITL") == 0) {
         _parent->get_param_int_async(std::string("SYS_HITL"),
                                      std::bind(&TelemetryImpl::receive_param_hitl,
                                                this,
                                                std::placeholders::_1,
-                                               std::placeholders::_2));
+                                               std::placeholders::_2),
+                                     this);
     }
 }
 

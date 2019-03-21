@@ -7,6 +7,11 @@ Camera::Camera(System &system) : PluginBase(), _impl{new CameraImpl(system)} {}
 
 Camera::~Camera() {}
 
+Camera::Result Camera::select_camera(unsigned id)
+{
+    return _impl->select_camera(id);
+}
+
 Camera::Result Camera::take_photo()
 {
     return _impl->take_photo();

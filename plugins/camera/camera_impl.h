@@ -4,6 +4,7 @@
 #include "plugins/camera/camera.h"
 #include "plugin_impl_base.h"
 #include "camera_definition.h"
+#include "mavlink_include.h"
 
 namespace dronecode_sdk {
 
@@ -17,6 +18,8 @@ public:
 
     void enable() override;
     void disable() override;
+
+    Camera::Result select_camera(unsigned id);
 
     Camera::Result take_photo();
 
@@ -79,6 +82,10 @@ public:
     CameraImpl &operator=(const CameraImpl &) = delete;
 
 private:
+    void check_connection_status();
+    void manual_enable();
+    void manual_disable();
+
     void receive_set_mode_command_result(const MAVLinkCommands::Result command_result,
                                          const Camera::mode_callback_t &callback,
                                          const Camera::Mode mode);
@@ -130,6 +137,9 @@ private:
     float to_mavlink_camera_mode(const Camera::Mode mode) const;
     Camera::Mode to_camera_mode(const uint8_t mavlink_camera_mode) const;
 
+    void *_flight_information_call_every_cookie{nullptr};
+    void *_check_connection_status_call_every_cookie{nullptr};
+
     // Utility methods for convenience
     MAVLinkCommands::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
     MAVLinkCommands::CommandLong make_command_stop_photo();
@@ -152,6 +162,9 @@ private:
     MAVLinkCommands::CommandLong make_command_request_video_stream_info();
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
+
+    std::atomic<unsigned> _camera_id{0};
+    std::atomic<bool> _camera_found{false};
 
     struct {
         std::mutex mutex{};
@@ -211,8 +224,6 @@ private:
         std::mutex mutex{};
         Camera::subscribe_possible_setting_options_callback_t callback{nullptr};
     } _subscribe_possible_setting_options{};
-
-    void *_flight_information_call_every_cookie{nullptr};
 };
 
 } // namespace dronecode_sdk

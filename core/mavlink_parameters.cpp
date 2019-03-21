@@ -30,6 +30,7 @@ MAVLinkParameters::~MAVLinkParameters()
 void MAVLinkParameters::set_param_async(const std::string &name,
                                         const ParamValue &value,
                                         set_param_callback_t callback,
+                                        const void *cookie,
                                         bool extended)
 {
     // if (value.is_float()) {
@@ -52,6 +53,7 @@ void MAVLinkParameters::set_param_async(const std::string &name,
     new_work.param_name = name;
     new_work.param_value = value;
     new_work.extended = extended;
+    new_work.cookie = cookie;
 
     _work_queue.push_back(new_work);
 }
@@ -62,7 +64,8 @@ MAVLinkParameters::set_param(const std::string &name, const ParamValue &value, b
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
-    set_param_async(name, value, [&prom](Result result) { prom.set_value(result); }, extended);
+    set_param_async(
+        name, value, [&prom](Result result) { prom.set_value(result); }, this, extended);
 
     return res.get();
 }
@@ -70,6 +73,7 @@ MAVLinkParameters::set_param(const std::string &name, const ParamValue &value, b
 void MAVLinkParameters::get_param_async(const std::string &name,
                                         ParamValue value_type,
                                         get_param_callback_t callback,
+                                        const void *cookie,
                                         bool extended)
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
@@ -98,6 +102,7 @@ void MAVLinkParameters::get_param_async(const std::string &name,
     new_work.param_name = name;
     new_work.param_value = value_type;
     new_work.extended = extended;
+    new_work.cookie = cookie;
 
     _work_queue.push_back(new_work);
 }
@@ -113,9 +118,23 @@ MAVLinkParameters::get_param(const std::string &name, ParamValue value_type, boo
                     [&prom](Result result, ParamValue value) {
                         prom.set_value(std::make_pair<>(result, value));
                     },
+                    this,
                     extended);
 
     return res.get();
+}
+
+void MAVLinkParameters::cancel_all_param(const void *cookie)
+{
+    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
+
+    for (auto item = _work_queue.begin(); item != _work_queue.end(); /* manual incrementation */) {
+        if (item->get()->cookie == cookie) {
+            item = _work_queue.erase(item);
+        } else {
+            ++item;
+        }
+    }
 }
 
 void MAVLinkParameters::do_work()

@@ -19,7 +19,8 @@ class System;
  *
  * Currently only a single camera is supported.
  * When multiple cameras are supported the plugin will need to be
- * instantiated separately for every camera.
+ * instantiated separately for every camera and the camera selected using
+ * `select_camera`.
  *
  * Synchronous and asynchronous variants of the camera methods are supplied.
  */
@@ -64,6 +65,22 @@ public:
      * @return Human readable string for the Camera::Result.
      */
     static std::string result_str(Result result);
+
+    /**
+     * @brief Select camera to interact with.
+     *
+     * @param id The camera ID from 0 to 5.
+     *
+     * Currently supported are IDs 0 to 5 mapping to MAVLink component IDs
+     * 100 to 105.
+     *
+     * It is recommended to instantiate multiple camera plugins to deal
+     * with multiple cameras and to select the camera once right after creating
+     * the plugin.
+     *
+     * @return Result of request.
+     */
+    Result select_camera(unsigned id);
 
     /**
      * @brief Callback type for asynchronous Camera calls.
