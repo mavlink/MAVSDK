@@ -32,6 +32,8 @@ TEST_F(SitlTest, FollowMeOneLocation)
     // Wait for system to connect via heartbeat.
     sleep_for(seconds(2));
     System &system = dc.system();
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto follow_me = std::make_shared<FollowMe>(system);
     auto action = std::make_shared<Action>(system);
@@ -81,6 +83,11 @@ TEST_F(SitlTest, FollowMeOneLocation)
     action_ret = action->land();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
     sleep_for(seconds(2)); // let the system land
+
+    while (telemetry->armed()) {
+        std::cout << "waiting for system to disarm" << std::endl;
+        sleep_for(seconds(1));
+    }
 }
 
 TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
@@ -93,6 +100,8 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     // Wait for system to connect via heartbeat.
     sleep_for(seconds(2));
     System &system = dc.system();
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto follow_me = std::make_shared<FollowMe>(system);
     auto action = std::make_shared<Action>(system);
@@ -147,6 +156,11 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     action_ret = action->land();
     ASSERT_EQ(Action::Result::SUCCESS, action_ret);
     sleep_for(seconds(2)); // let it land
+
+    while (telemetry->armed()) {
+        std::cout << "waiting for system to disarm" << std::endl;
+        sleep_for(seconds(1));
+    }
 }
 
 void print(const FollowMe::Config &config)
