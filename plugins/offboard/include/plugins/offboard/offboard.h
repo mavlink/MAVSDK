@@ -82,6 +82,9 @@ public:
                           above). */
     };
 
+    /**
+     * @brief Type for Position commands in NED (North East Down) coordinates and yaw.
+     */
     struct PositionNEDYaw {
         float north_m; /**< @brief Position North in metres. */
         float east_m; /**< @brief Position East in metres. */
