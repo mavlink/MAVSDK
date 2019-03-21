@@ -30,8 +30,12 @@ TEST_F(SitlTest, GimbalMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-
     System &system = dc.system();
+    // FIXME: This is what it should be, for now though with the typhoon_h480
+    //        SITL simulation, the gimbal is hooked up to the autopilot.
+    // ASSERT_TRUE(system.has_gimbal());
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
 
@@ -54,8 +58,10 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-
     System &system = dc.system();
+    // ASSERT_TRUE(system.has_gimbal());
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
     auto action = std::make_shared<Action>(system);
@@ -93,8 +99,10 @@ TEST_F(SitlTest, GimbalROIOffboard)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-
     System &system = dc.system();
+    // ASSERT_TRUE(system.has_gimbal());
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
     auto action = std::make_shared<Action>(system);
