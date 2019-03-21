@@ -138,13 +138,15 @@ public:
     Result return_to_launch() const;
 
     /**
-     * @brief Send command to reposition the vehicle to a specific WGS84 global position
+     * @brief Send command to move the vehicle to a specific global position.
      *
-     * This sends the vehicle to a specified lattitude/longitude/altitude coordinates.
-     * @param latitude_deg Latitude in degrees
-     * @param longitude_deg Longitude in degrees
-     * @param altitude_amsl_m Altitude AMSL in meters
-     * @param yaw_deg Yaw angle in degrees
+     * The latitude and longitude are given in degrees (WGS84 frame) and the altitude
+     * in meters AMSL (above mean sea level).
+     *
+     * @param latitude_deg Latitude in degrees.
+     * @param longitude_deg Longitude in degrees.
+     * @param altitude_amsl_m Altitude AMSL in meters.
+     * @param yaw_deg Yaw angle in degrees (Frame is NED, 0 is North, positive is clockwise).
      *
      * @return Result of request.
      */

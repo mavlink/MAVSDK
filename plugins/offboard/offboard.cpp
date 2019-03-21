@@ -32,6 +32,11 @@ bool Offboard::is_active() const
     return _impl->is_active();
 }
 
+void Offboard::set_position_ned(Offboard::PositionNEDYaw position_ned_yaw)
+{
+    return _impl->set_position_ned(position_ned_yaw);
+}
+
 void Offboard::set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw)
 {
     return _impl->set_velocity_ned(velocity_ned_yaw);
