@@ -475,6 +475,27 @@ public:
     Health health() const;
 
     /**
+     * @brief Returns true if gyroscope health is ok (synchronous).
+     *
+     * @return True if only gyroscope flags is OK.
+     */
+    bool health_gyrometer() const;
+
+    /**
+     * @brief Returns true if accelerometer health is ok (synchronous).
+     *
+     * @return True if only accelerometer flags is OK.
+     */
+    bool health_accelerometer() const;
+
+    /**
+     * @brief Returns true if magnetometer health is ok (synchronous).
+     *
+     * @return True if only magnetometer flags is OK.
+     */
+    bool health_magnetometer() const;
+
+    /**
      * @brief Returns true if the overall health is ok (synchronous).
      *
      * @return True if all health flags are OK.

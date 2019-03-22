@@ -181,6 +181,21 @@ Telemetry::Health Telemetry::health() const
     return _impl->get_health();
 }
 
+bool Telemetry::health_gyrometer() const
+{
+    return _impl->get_health_gyrometer();
+}
+
+bool Telemetry::health_accelerometer() const
+{
+    return _impl->get_health_accelerometer();
+}
+
+bool Telemetry::health_magnetometer() const
+{
+    return _impl->get_health_magnetometer();
+}
+
 bool Telemetry::health_all_ok() const
 {
     return _impl->get_health_all_ok();

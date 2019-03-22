@@ -759,6 +759,36 @@ Telemetry::Health TelemetryImpl::get_health() const
     return _health;
 }
 
+bool TelemetryImpl::get_health_gyrometer() const
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    if (_health.gyrometer_calibration_ok) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool TelemetryImpl::get_health_accelerometer() const
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    if (_health.accelerometer_calibration_ok) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool TelemetryImpl::get_health_magnetometer() const
+{
+    std::lock_guard<std::mutex> lock(_health_mutex);
+    if (_health.magnetometer_calibration_ok) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 bool TelemetryImpl::get_health_all_ok() const
 {
     std::lock_guard<std::mutex> lock(_health_mutex);

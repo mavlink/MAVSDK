@@ -63,6 +63,9 @@ public:
     Telemetry::Battery get_battery() const;
     Telemetry::FlightMode get_flight_mode() const;
     Telemetry::Health get_health() const;
+    bool get_health_gyrometer() const;
+    bool get_health_accelerometer() const;
+    bool get_health_magnetometer() const;
     bool get_health_all_ok() const;
     Telemetry::RCStatus get_rc_status() const;
 
