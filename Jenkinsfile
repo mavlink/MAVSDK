@@ -1,12 +1,5 @@
 #!/usr/bin/env groovy
 
-def user_id
-def group_id
-node {
-  user_id = sh(returnStdout: true, script: 'id -u').trim()
-  group_id = sh(returnStdout: true, script: 'id -g').trim()
-}
-
 pipeline {
   agent none
 
@@ -18,7 +11,7 @@ pipeline {
           agent {
             docker {
               image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-03-25'
-              args '-e LOCAL_USER_ID=user_id -e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
           steps {
