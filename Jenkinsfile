@@ -370,6 +370,7 @@ pipeline {
 
   environment {
     CCACHE_DIR = '/tmp/ccache'
+    XDG_CACHE_HOME = '/tmp/.cache' // For go build cache.
   }
 
   options {
