@@ -74,6 +74,19 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status Reboot(grpc::ServerContext * /* context */,
+                      const rpc::action::RebootRequest * /* request */,
+                      rpc::action::RebootResponse *response) override
+    {
+        auto action_result = _action.reboot();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, action_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status Kill(grpc::ServerContext * /* context */,
                       const rpc::action::KillRequest * /* request */,
                       rpc::action::KillResponse *response) override
