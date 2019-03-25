@@ -11,6 +11,7 @@ public:
     MOCK_CONST_METHOD0(disarm, Action::Result()){};
     MOCK_CONST_METHOD0(takeoff, Action::Result()){};
     MOCK_CONST_METHOD0(land, Action::Result()){};
+    MOCK_CONST_METHOD0(reboot, Action::Result()){};
     MOCK_CONST_METHOD0(kill, Action::Result()){};
     MOCK_CONST_METHOD0(return_to_launch, Action::Result()){};
     MOCK_CONST_METHOD0(transition_to_fixedwing, Action::Result()){};
