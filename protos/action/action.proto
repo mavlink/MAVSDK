@@ -10,6 +10,7 @@ service ActionService {
     rpc Disarm(DisarmRequest) returns(DisarmResponse) {}
     rpc Takeoff(TakeoffRequest) returns(TakeoffResponse) {}
     rpc Land(LandRequest) returns(LandResponse) {}
+    rpc Reboot(RebootRequest) returns(RebootResponse) {}
     rpc Kill(KillRequest) returns(KillResponse) {}
     rpc ReturnToLaunch(ReturnToLaunchRequest) returns(ReturnToLaunchResponse) {}
     rpc TransitionToFixedWing(TransitionToFixedWingRequest) returns(TransitionToFixedWingResponse) {}
@@ -39,6 +40,11 @@ message TakeoffResponse {
 
 message LandRequest {}
 message LandResponse {
+    ActionResult action_result = 1;
+}
+
+message RebootRequest {}
+message RebootResponse {
     ActionResult action_result = 1;
 }
 
