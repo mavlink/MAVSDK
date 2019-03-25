@@ -7,7 +7,7 @@
 
 if [ -n "${LOCAL_USER_ID}" ]; then
     echo "Starting with UID: $LOCAL_USER_ID"
-    useradd --shell /bin/bash -u $LOCAL_USER_ID -o -c "" -M user
+    usermod -u $LOCAL_USER_ID user
     export HOME=/home/user
     chown -R user:user $HOME
 
