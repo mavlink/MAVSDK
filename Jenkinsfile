@@ -231,6 +231,62 @@ pipeline {
           }
         }
 
+        stage('macOS Debug') {
+          agent {
+            label 'mac'
+          }
+          environment {
+            CCACHE_BASEDIR = "${env.WORKSPACE}"
+          }
+          steps {
+            sh 'export'
+            sh 'git submodule deinit -f .'
+            sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
+            sh 'git submodule update --init --recursive --force'
+            sh 'ccache -z'
+            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX ENABLE_MAVLINK_PASSTHROUGH=1 default install'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
+          }
+          post {
+            always {
+              sh 'ccache -s'
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
+          }
+        }
+
+        stage('macOS Release') {
+          agent {
+            label 'mac'
+          }
+          environment {
+            CCACHE_BASEDIR = "${env.WORKSPACE}"
+          }
+          steps {
+            sh 'export'
+            sh 'git submodule deinit -f .'
+            sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
+            sh 'git submodule update --init --recursive --force'
+            sh 'ccache -z'
+            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX ENABLE_MAVLINK_PASSTHROUGH=1 default install'
+            sh 'build/default/unit_tests_runner'
+            sh 'build/default/backend/test/unit_tests_backend'
+            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
+          }
+          post {
+            always {
+              sh 'ccache -s'
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
+          }
+        }
+
       } // parallel
     } // Build
 
