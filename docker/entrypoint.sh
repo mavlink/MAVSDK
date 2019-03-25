@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 
-# Utility to use local user, taken from:
+# Utility to use local user, initially taken from:
 # https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
 
-# Add local user
-# Either use the LOCAL_USER_ID if passed in at runtime or
-# make educated guess to default of first user.
+# Use LOCAL_USER_ID if passed in at runtime.
 
-USER_ID=${LOCAL_USER_ID:-1000}
+if [ -n "${LOCAL_USER_ID}" ]; then
+    echo "Starting with UID: $LOCAL_USER_ID"
+    useradd --shell /bin/bash -u $LOCAL_USER_ID -o -c "" -M user
+    export HOME=/home/user
+    chown -R user:user $HOME
 
-echo "Starting with UID : $USER_ID"
-useradd --shell /bin/bash -u $USER_ID -o -c "" -M user
-export HOME=/home/user
-
-chown -R user:user $HOME
-
-exec /bin/su user -c "$@"
+    exec su-exec user "$@"
+else
+    exec "$@"
+fi
