@@ -75,8 +75,8 @@ public:
     }
 
     grpc::Status Reboot(grpc::ServerContext * /* context */,
-                      const rpc::action::RebootRequest * /* request */,
-                      rpc::action::RebootResponse *response) override
+                        const rpc::action::RebootRequest * /* request */,
+                        rpc::action::RebootResponse *response) override
     {
         auto action_result = _action.reboot();
 
