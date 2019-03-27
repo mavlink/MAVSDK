@@ -281,7 +281,7 @@ uint8_t DronecodeSDKImpl::get_own_component_id() const
             return MAV_COMP_ID_MISSIONPLANNER + 1;
 
         case DronecodeSDK::Configuration::CompanionComputer:
-            // It's at least a possibility that we are bridgin MAVLink traffic.
+            // It's at least a possibility that we are bridging MAVLink traffic.
             return MAV_COMP_ID_UDP_BRIDGE;
 
         default:
