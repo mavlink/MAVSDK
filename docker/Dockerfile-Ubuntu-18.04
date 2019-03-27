@@ -35,6 +35,7 @@ RUN apt-get update \
         ruby-dev \
         software-properties-common \
         sudo \
+        wget \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
@@ -42,6 +43,12 @@ RUN apt-get update \
 RUN update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-6.0 1000
 
 RUN gem install --no-ri --no-rdoc fpm;
+
+RUN wget -qO- https://github.com/ncopa/su-exec/archive/dddd1567b7c76365e1e0aac561287975020a8fad.tar.gz | tar xvz && \
+    cd su-exec-* && make && mv su-exec /usr/local/bin && cd .. && rm -rf su-exec-*
+
+# Create user with id 1001 (Jenkins docker workflow default)
+RUN useradd --shell /bin/bash -u 1001 -c "" -m user
 
 ADD /sudoers.txt /etc/sudoers
 RUN chmod 440 /etc/sudoers
