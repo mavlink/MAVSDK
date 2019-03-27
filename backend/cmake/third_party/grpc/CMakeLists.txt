@@ -5,7 +5,7 @@ project(external-grpc)
 include(ExternalProject)
 
 set(ARG_GIT_REPOSITORY https://github.com/dronecore/grpc.git)
-set(ARG_GIT_TAG 16856-fix-codegen-off-install)
+set(ARG_GIT_TAG fix-pointer-not-aligned-ios)
 
 # This answer probably saved me from destroying my computer:
 # https://stackoverflow.com/questions/45414507/pass-a-list-of-prefix-paths-to-externalproject-add-in-cmake-args
