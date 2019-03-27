@@ -43,12 +43,12 @@ void MavlinkPassthroughImpl::subscribe_message_async(
 
 uint8_t MavlinkPassthroughImpl::get_our_sysid() const
 {
-    return GCSClient::system_id;
+    return _parent->get_own_system_id();
 }
 
 uint8_t MavlinkPassthroughImpl::get_our_compid() const
 {
-    return GCSClient::component_id;
+    return _parent->get_own_component_id();
 }
 
 uint8_t MavlinkPassthroughImpl::get_target_sysid() const

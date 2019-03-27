@@ -245,8 +245,8 @@ void OffboardImpl::send_position_ned()
 
     mavlink_message_t message;
     mavlink_msg_set_position_target_local_ned_pack(
-        GCSClient::system_id,
-        GCSClient::component_id,
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
         &message,
         static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
         _parent->get_system_id(),
@@ -298,8 +298,8 @@ void OffboardImpl::send_velocity_ned()
 
     mavlink_message_t message;
     mavlink_msg_set_position_target_local_ned_pack(
-        GCSClient::system_id,
-        GCSClient::component_id,
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
         &message,
         static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
         _parent->get_system_id(),
@@ -351,8 +351,8 @@ void OffboardImpl::send_velocity_body()
 
     mavlink_message_t message;
     mavlink_msg_set_position_target_local_ned_pack(
-        GCSClient::system_id,
-        GCSClient::component_id,
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
         &message,
         static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
         _parent->get_system_id(),
@@ -393,8 +393,8 @@ void OffboardImpl::send_attitude_rate()
 
     mavlink_message_t message;
     mavlink_msg_set_attitude_target_pack(
-        GCSClient::system_id,
-        GCSClient::component_id,
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
         &message,
         static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
         _parent->get_system_id(),

@@ -312,8 +312,8 @@ CameraImpl::make_message_set_video_stream_settings(const Camera::VideoStreamSett
 {
     mavlink_message_t msg;
 
-    mavlink_msg_set_video_stream_settings_pack(GCSClient::system_id,
-                                               GCSClient::component_id,
+    mavlink_msg_set_video_stream_settings_pack(_parent->get_own_system_id(),
+                                               _parent->get_own_component_id(),
                                                &msg,
                                                _parent->get_system_id(),
                                                _camera_id + MAV_COMP_ID_CAMERA,

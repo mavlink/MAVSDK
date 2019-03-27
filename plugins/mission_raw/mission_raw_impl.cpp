@@ -127,8 +127,8 @@ void MissionRawImpl::request_list()
     // LogDebug() << "Requesting mission list (" << _mission_download.retries << ")";
 
     mavlink_message_t message;
-    mavlink_msg_mission_request_list_pack(GCSClient::system_id,
-                                          GCSClient::component_id,
+    mavlink_msg_mission_request_list_pack(_parent->get_own_system_id(),
+                                          _parent->get_own_component_id(),
                                           &message,
                                           _parent->get_system_id(),
                                           _parent->get_autopilot_id(),
@@ -203,8 +203,8 @@ void MissionRawImpl::request_item()
     //            << " (" << _mission_download.retries << ")";
 
     mavlink_message_t message;
-    mavlink_msg_mission_request_int_pack(GCSClient::system_id,
-                                         GCSClient::component_id,
+    mavlink_msg_mission_request_int_pack(_parent->get_own_system_id(),
+                                         _parent->get_own_component_id(),
                                          &message,
                                          _parent->get_system_id(),
                                          _parent->get_autopilot_id(),
@@ -291,8 +291,8 @@ void MissionRawImpl::send_ack()
     // LogDebug() << "Sending ack";
 
     mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(GCSClient::system_id,
-                                 GCSClient::component_id,
+    mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
+                                 _parent->get_own_component_id(),
                                  &message,
                                  _parent->get_system_id(),
                                  _parent->get_autopilot_id(),

@@ -72,8 +72,8 @@ void MissionImpl::process_mission_request(const mavlink_message_t &unused)
     UNUSED(unused);
 
     mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(GCSClient::system_id,
-                                 GCSClient::component_id,
+    mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
+                                 _parent->get_own_component_id(),
                                  &message,
                                  _parent->get_system_id(),
                                  _parent->get_autopilot_id(),
@@ -91,8 +91,8 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
     mavlink_mission_request_int_t mission_request_int;
     mavlink_msg_mission_request_int_decode(&message, &mission_request_int);
 
-    if (mission_request_int.target_system != GCSClient::system_id &&
-        mission_request_int.target_component != GCSClient::component_id) {
+    if (mission_request_int.target_system != _parent->get_own_system_id() &&
+        mission_request_int.target_component != _parent->get_own_component_id()) {
         LogWarn() << "Ignore mission request int that is not for us";
         return;
     }
@@ -139,8 +139,8 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
 
-    if (mission_ack.target_system != GCSClient::system_id &&
-        mission_ack.target_component != GCSClient::component_id) {
+    if (mission_ack.target_system != _parent->get_own_system_id() &&
+        mission_ack.target_component != _parent->get_own_component_id()) {
         LogWarn() << "Ignore mission ack that is not for us";
         return;
     }
@@ -279,8 +279,8 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
                 _parent->unregister_timeout_handler(_timeout_cookie);
 
                 mavlink_message_t ack_message;
-                mavlink_msg_mission_ack_pack(GCSClient::system_id,
-                                             GCSClient::component_id,
+                mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
+                                             _parent->get_own_component_id(),
                                              &ack_message,
                                              _parent->get_system_id(),
                                              _parent->get_autopilot_id(),
@@ -363,8 +363,8 @@ void MissionImpl::upload_mission_async(
 void MissionImpl::send_count()
 {
     mavlink_message_t message;
-    mavlink_msg_mission_count_pack(GCSClient::system_id,
-                                   GCSClient::component_id,
+    mavlink_msg_mission_count_pack(_parent->get_own_system_id(),
+                                   _parent->get_own_component_id(),
                                    &message,
                                    _parent->get_system_id(),
                                    _parent->get_autopilot_id(),
@@ -399,8 +399,8 @@ void MissionImpl::upload_mission_cancel()
         report_mission_result(_mission_data.result_callback, Mission::Result::CANCELLED);
 
         mavlink_message_t message;
-        mavlink_msg_mission_ack_pack(GCSClient::system_id,
-                                     GCSClient::component_id,
+        mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
+                                     _parent->get_own_component_id(),
                                      &message,
                                      _parent->get_system_id(),
                                      _parent->get_autopilot_id(),
@@ -456,8 +456,8 @@ void MissionImpl::download_mission_async(
 void MissionImpl::request_list()
 {
     mavlink_message_t message;
-    mavlink_msg_mission_request_list_pack(GCSClient::system_id,
-                                          GCSClient::component_id,
+    mavlink_msg_mission_request_list_pack(_parent->get_own_system_id(),
+                                          _parent->get_own_component_id(),
                                           &message,
                                           _parent->get_system_id(),
                                           _parent->get_autopilot_id(),
@@ -493,8 +493,8 @@ void MissionImpl::download_mission_cancel()
                                         Mission::Result::CANCELLED);
 
         mavlink_message_t message;
-        mavlink_msg_mission_ack_pack(GCSClient::system_id,
-                                     GCSClient::component_id,
+        mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
+                                     _parent->get_own_component_id(),
                                      &message,
                                      _parent->get_system_id(),
                                      _parent->get_autopilot_id(),
@@ -539,8 +539,8 @@ void MissionImpl::assemble_mavlink_messages()
             uint8_t current = ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
             auto message = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(GCSClient::system_id,
-                                              GCSClient::component_id,
+            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
+                                              _parent->get_own_component_id(),
                                               message.get(),
                                               _parent->get_system_id(),
                                               _parent->get_autopilot_id(),
@@ -578,8 +578,8 @@ void MissionImpl::assemble_mavlink_messages()
             uint8_t autocontinue = 1;
 
             auto message_speed = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(GCSClient::system_id,
-                                              GCSClient::component_id,
+            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
+                                              _parent->get_own_component_id(),
                                               message_speed.get(),
                                               _parent->get_system_id(),
                                               _parent->get_autopilot_id(),
@@ -615,8 +615,8 @@ void MissionImpl::assemble_mavlink_messages()
 
                 auto message_gimbal_configure = std::make_shared<mavlink_message_t>();
                 mavlink_msg_mission_item_int_pack(
-                    GCSClient::system_id,
-                    GCSClient::component_id,
+                    _parent->get_own_system_id(),
+                    _parent->get_own_component_id(),
                     message_gimbal_configure.get(),
                     _parent->get_system_id(),
                     _parent->get_autopilot_id(),
@@ -650,8 +650,8 @@ void MissionImpl::assemble_mavlink_messages()
             uint8_t autocontinue = 1;
 
             auto message_gimbal = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(GCSClient::system_id,
-                                              GCSClient::component_id,
+            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
+                                              _parent->get_own_component_id(),
                                               message_gimbal.get(),
                                               _parent->get_system_id(),
                                               _parent->get_autopilot_id(),
@@ -695,8 +695,8 @@ void MissionImpl::assemble_mavlink_messages()
 
                 std::shared_ptr<mavlink_message_t> message_delay(new mavlink_message_t());
                 mavlink_msg_mission_item_int_pack(
-                    GCSClient::system_id,
-                    GCSClient::component_id,
+                    _parent->get_own_system_id(),
+                    _parent->get_own_component_id(),
                     message_delay.get(),
                     _parent->get_system_id(),
                     _parent->get_autopilot_id(),
@@ -769,8 +769,8 @@ void MissionImpl::assemble_mavlink_messages()
             }
 
             auto message_camera = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(GCSClient::system_id,
-                                              GCSClient::component_id,
+            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
+                                              _parent->get_own_component_id(),
                                               message_camera.get(),
                                               _parent->get_system_id(),
                                               _parent->get_autopilot_id(),
@@ -802,8 +802,8 @@ void MissionImpl::assemble_mavlink_messages()
 
     if (_enable_return_to_launch_after_mission) {
         std::shared_ptr<mavlink_message_t> message_rtl(new mavlink_message_t());
-        mavlink_msg_mission_item_int_pack(GCSClient::system_id,
-                                          GCSClient::component_id,
+        mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
+                                          _parent->get_own_component_id(),
                                           message_rtl.get(),
                                           _parent->get_system_id(),
                                           _parent->get_autopilot_id(),
@@ -974,8 +974,8 @@ void MissionImpl::download_next_mission_item()
     mavlink_message_t message;
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        mavlink_msg_mission_request_int_pack(GCSClient::system_id,
-                                             GCSClient::component_id,
+        mavlink_msg_mission_request_int_pack(_parent->get_own_system_id(),
+                                             _parent->get_own_component_id(),
                                              &message,
                                              _parent->get_system_id(),
                                              _parent->get_autopilot_id(),
@@ -1081,8 +1081,8 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
     }
 
     mavlink_message_t message;
-    mavlink_msg_mission_set_current_pack(GCSClient::system_id,
-                                         GCSClient::component_id,
+    mavlink_msg_mission_set_current_pack(_parent->get_own_system_id(),
+                                         _parent->get_own_component_id(),
                                          &message,
                                          _parent->get_system_id(),
                                          _parent->get_autopilot_id(),
