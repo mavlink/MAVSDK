@@ -190,6 +190,11 @@ void DronecodeSDKImpl::add_connection(std::shared_ptr<Connection> new_connection
     _connections.push_back(new_connection);
 }
 
+void DronecodeSDKImpl::set_configuration(DronecodeSDK::Configuration configuration)
+{
+    _configuration = configuration;
+}
+
 std::vector<uint64_t> DronecodeSDKImpl::get_system_uuids() const
 {
     std::vector<uint64_t> uuids = {};
@@ -248,6 +253,54 @@ System &DronecodeSDKImpl::get_system(const uint64_t uuid)
     make_system_with_component(system_id, comp_id);
 
     return *_systems[system_id];
+}
+
+uint8_t DronecodeSDKImpl::get_own_system_id() const
+{
+    switch (_configuration.load()) {
+        case DronecodeSDK::Configuration::GroundStation:
+            // FIXME: This doesn't make much sense actually but it seems to work.
+            return 0;
+
+        case DronecodeSDK::Configuration::CompanionComputer:
+            // FIXME: This should be the same as the drone but we need to
+            // add auto detection for it.
+            return 1;
+
+        default:
+            LogErr() << "Unknown configuration";
+            return 0;
+    }
+}
+
+uint8_t DronecodeSDKImpl::get_own_component_id() const
+{
+    switch (_configuration.load()) {
+        case DronecodeSDK::Configuration::GroundStation:
+            // FIXME: For now we increment by 1 to avoid conflicts with others.
+            return MAV_COMP_ID_MISSIONPLANNER + 1;
+
+        case DronecodeSDK::Configuration::CompanionComputer:
+            // It's at least a possibility that we are bridgin MAVLink traffic.
+            return MAV_COMP_ID_UDP_BRIDGE;
+
+        default:
+            LogErr() << "Unknown configuration";
+            return 0;
+    }
+}
+
+uint8_t DronecodeSDKImpl::get_mav_type() const
+{
+    switch (_configuration.load()) {
+        case DronecodeSDK::Configuration::GroundStation:
+            return MAV_TYPE_GCS;
+        case DronecodeSDK::Configuration::CompanionComputer:
+            return MAV_TYPE_ONBOARD_CONTROLLER;
+        default:
+            LogErr() << "Unknown configuration";
+            return 0;
+    }
 }
 
 bool DronecodeSDKImpl::is_connected() const

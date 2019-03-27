@@ -607,6 +607,21 @@ void SystemImpl::set_system_id(uint8_t system_id)
     _system_id = system_id;
 }
 
+uint8_t SystemImpl::get_own_system_id() const
+{
+    return _parent.get_own_system_id();
+}
+
+uint8_t SystemImpl::get_own_component_id() const
+{
+    return _parent.get_own_component_id();
+}
+
+uint8_t SystemImpl::get_own_mav_type() const
+{
+    return _parent.get_mav_type();
+}
+
 MAVLinkParameters::Result SystemImpl::set_param_float(const std::string &name, float value)
 {
     MAVLinkParameters::ParamValue param_value;
