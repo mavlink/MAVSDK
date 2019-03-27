@@ -162,8 +162,8 @@ void MAVLinkParameters::do_work()
                 work->param_value.get_128_bytes(param_value_buf);
 
                 // FIXME: extended currently always go to the camera component
-                mavlink_msg_param_ext_set_pack(GCSClient::system_id,
-                                               GCSClient::component_id,
+                mavlink_msg_param_ext_set_pack(_parent.get_own_system_id(),
+                                               _parent.get_own_component_id(),
                                                &message,
                                                _parent.get_system_id(),
                                                MAV_COMP_ID_CAMERA,
@@ -172,8 +172,8 @@ void MAVLinkParameters::do_work()
                                                work->param_value.get_mav_param_ext_type());
             } else {
                 // Param set is intended for Autopilot only.
-                mavlink_msg_param_set_pack(GCSClient::system_id,
-                                           GCSClient::component_id,
+                mavlink_msg_param_set_pack(_parent.get_own_system_id(),
+                                           _parent.get_own_component_id(),
                                            &message,
                                            _parent.get_system_id(),
                                            _parent.get_autopilot_id(),
@@ -203,8 +203,8 @@ void MAVLinkParameters::do_work()
         case WorkItem::Type::Get: {
             // LogDebug() << "now getting: " << work->param_name;
             if (work->extended) {
-                mavlink_msg_param_ext_request_read_pack(GCSClient::system_id,
-                                                        GCSClient::component_id,
+                mavlink_msg_param_ext_request_read_pack(_parent.get_own_system_id(),
+                                                        _parent.get_own_component_id(),
                                                         &message,
                                                         _parent.get_system_id(),
                                                         MAV_COMP_ID_CAMERA,
@@ -213,14 +213,14 @@ void MAVLinkParameters::do_work()
 
             } else {
                 // LogDebug() << "request read: "
-                //    << (int)GCSClient::system_id << ":"
-                //    << (int)GCSClient::component_id <<
+                //    << (int)_parent.get_own_system_id() << ":"
+                //    << (int)_parent.get_own_component_id() <<
                 //    " to "
                 //    << (int)_parent.get_system_id() << ":"
                 //    << (int)_parent.get_autopilot_id();
 
-                mavlink_msg_param_request_read_pack(GCSClient::system_id,
-                                                    GCSClient::component_id,
+                mavlink_msg_param_request_read_pack(_parent.get_own_system_id(),
+                                                    _parent.get_own_component_id(),
                                                     &message,
                                                     _parent.get_system_id(),
                                                     _parent.get_autopilot_id(),
