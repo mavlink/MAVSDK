@@ -126,15 +126,6 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
 void MissionImpl::process_mission_ack(const mavlink_message_t &message)
 {
     // LogDebug() << "Received mission ack";
-    {
-        std::lock_guard<std::mutex> lock(_activity.mutex);
-        if (_activity.state != Activity::State::SET_MISSION_ITEM) {
-            if (_activity.state != Activity::State::ABORTED) {
-                LogWarn() << "Error: not sure how to process Mission ack.";
-            }
-            return;
-        }
-    }
 
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
@@ -145,31 +136,44 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
         return;
     }
 
-    // We got some response, so it wasn't a timeout and we can remove it.
-    _parent->unregister_timeout_handler(_timeout_cookie);
-
-    Mission::result_callback_t result_callback;
+    Mission::result_callback_t temp_callback;
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        result_callback = _mission_data.result_callback;
+        temp_callback = _mission_data.result_callback;
     }
 
-    if (mission_ack.type == MAV_MISSION_ACCEPTED) {
-        {
-            std::lock_guard<std::mutex> lock(_activity.mutex);
-            _activity.state = Activity::State::NONE;
+    {
+        std::lock_guard<std::mutex> lock(_activity.mutex);
+        // LogDebug() << "Received mission ack: activity state is: " << int(_activity.state);
+
+        if (_activity.state == Activity::State::ABORTED) {
+            // We ignore acks if we just cancelled.
+            LogWarn() << "Ignoring mission ack because just cancelled";
+            return;
         }
 
-        report_mission_result(result_callback, Mission::Result::SUCCESS);
-        LogInfo() << "Mission accepted";
+        // We got some response, so it wasn't a timeout and we can remove it.
+        _parent->unregister_timeout_handler(_timeout_cookie);
 
-    } else if (mission_ack.type == MAV_MISSION_NO_SPACE) {
-        LogErr() << "Error: too many waypoints: " << int(mission_ack.type);
-        report_mission_result(result_callback, Mission::Result::TOO_MANY_MISSION_ITEMS);
+        if (mission_ack.type == MAV_MISSION_ACCEPTED) {
+            report_mission_result(temp_callback, Mission::Result::SUCCESS);
+            LogInfo() << "Mission accepted";
 
-    } else {
-        LogErr() << "Error: unknown mission ack: " << int(mission_ack.type);
-        report_mission_result(result_callback, Mission::Result::ERROR);
+        } else if (mission_ack.type == MAV_MISSION_NO_SPACE) {
+            LogErr() << "Error: too many waypoints: " << int(mission_ack.type);
+            report_mission_result(temp_callback, Mission::Result::TOO_MANY_MISSION_ITEMS);
+
+        } else if (mission_ack.type == MAV_MISSION_ERROR &&
+                   _activity.state == Activity::State::SET_MISSION_COUNT) {
+            LogErr() << "Error: presumably still busy after cancelling";
+            report_mission_result(temp_callback, Mission::Result::BUSY);
+        } else {
+            LogErr() << "Error: unknown mission ack: " << int(mission_ack.type);
+            report_mission_result(temp_callback, Mission::Result::ERROR);
+        }
+
+        // We need to stop after this, no matter what.
+        _activity.state = Activity::State::NONE;
     }
 }
 
