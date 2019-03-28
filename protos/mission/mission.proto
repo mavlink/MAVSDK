@@ -119,5 +119,6 @@ message MissionResult {
         FAILED_TO_OPEN_QGC_PLAN = 9;
         FAILED_TO_PARSE_QGC_PLAN = 10;
         UNSUPPORTED_MISSION_CMD = 11;
+        TRANSFER_CANCELLED = 12;
     }
 }
