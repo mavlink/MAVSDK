@@ -140,6 +140,11 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         temp_callback = _mission_data.result_callback;
+        // For the odd case where mission_ack is processed twice in quick succession
+        // we need to make sure we only copy the callback once and only get nullptr
+        // for the subsequent case. Otherwise we might report a result twice and
+        // upset a caller.
+        _mission_data.result_callback = nullptr;
     }
 
     {
