@@ -733,6 +733,28 @@ bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs);
 std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position);
 
 /**
+ * @brief Stream operator to print information about a `Telemetry::PositionNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Telemetry::PositionNED const &position_ned);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::VelocityNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Telemetry::VelocityNED const &velocity_ned);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::PositionVelocityNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Telemetry::PositionVelocityNED const &position_velocity_ned);
+
+/**
  * @brief Equal operator to compare two `Telemetry::Health` objects.
  *
  * @return `true` if items are equal.
