@@ -42,8 +42,8 @@ void LogFilesImpl::disable() {}
 void LogFilesImpl::request_end()
 {
     mavlink_message_t msg;
-    mavlink_msg_log_request_end_pack(GCSClient::system_id,
-                                     GCSClient::component_id,
+    mavlink_msg_log_request_end_pack(_parent->get_own_system_id(),
+                                     _parent->get_own_component_id(),
                                      &msg,
                                      _parent->get_system_id(),
                                      MAV_COMP_ID_AUTOPILOT1);
@@ -90,8 +90,8 @@ void LogFilesImpl::request_list_entry(int entry_id)
     }
 
     mavlink_message_t msg;
-    mavlink_msg_log_request_list_pack(GCSClient::system_id,
-                                      GCSClient::component_id,
+    mavlink_msg_log_request_list_pack(_parent->get_own_system_id(),
+                                      _parent->get_own_component_id(),
                                       &msg,
                                       _parent->get_system_id(),
                                       MAV_COMP_ID_AUTOPILOT1,
@@ -380,8 +380,8 @@ void LogFilesImpl::check_missing_log_data()
 void LogFilesImpl::request_log_data(unsigned id, unsigned chunk_id, unsigned bytes_to_get)
 {
     mavlink_message_t msg;
-    mavlink_msg_log_request_data_pack(GCSClient::system_id,
-                                      GCSClient::component_id,
+    mavlink_msg_log_request_data_pack(_parent->get_own_system_id(),
+                                      _parent->get_own_component_id(),
                                       &msg,
                                       _parent->get_system_id(),
                                       MAV_COMP_ID_AUTOPILOT1,

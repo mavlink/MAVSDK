@@ -27,9 +27,15 @@ public:
     ConnectionResult add_tcp_connection(const std::string &remote_ip, int remote_port);
     ConnectionResult add_serial_connection(const std::string &dev_path, int baudrate);
 
+    void set_configuration(DronecodeSDK::Configuration configuration);
+
     std::vector<uint64_t> get_system_uuids() const;
     System &get_system();
     System &get_system(uint64_t uuid);
+
+    uint8_t get_own_system_id() const;
+    uint8_t get_own_component_id() const;
+    uint8_t get_mav_type() const;
 
     bool is_connected() const;
     bool is_connected(uint64_t uuid) const;
@@ -55,6 +61,9 @@ private:
 
     DronecodeSDK::event_callback_t _on_discover_callback;
     DronecodeSDK::event_callback_t _on_timeout_callback;
+
+    std::atomic<DronecodeSDK::Configuration> _configuration{
+        DronecodeSDK::Configuration::GroundStation};
 
     std::atomic<bool> _should_exit = {false};
 };

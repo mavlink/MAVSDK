@@ -26,15 +26,6 @@ namespace dronecode_sdk {
 class DronecodeSDKImpl;
 class PluginImplBase;
 
-// GCS: Ground Control Station
-// Type that represents DronecodeSDK client application which is a GCS.
-struct GCSClient {
-    static constexpr uint8_t system_id = 0;
-    // FIXME: This is a workaround for now. We should revert it later or add a compid for the SDK.
-    static constexpr uint8_t component_id = MAV_COMP_ID_SYSTEM_CONTROL + 1;
-    static constexpr MAV_TYPE type = MAV_TYPE_GCS;
-};
-
 // This class is the pimpl of System. This is to hide the private methods
 // and functionality from the public library API.
 class SystemImpl {
@@ -111,6 +102,10 @@ public:
     uint8_t get_system_id() const;
 
     void set_system_id(uint8_t system_id);
+
+    uint8_t get_own_system_id() const;
+    uint8_t get_own_component_id() const;
+    uint8_t get_own_mav_type() const;
 
     bool does_support_mission_int() const { return _supports_mission_int; }
 

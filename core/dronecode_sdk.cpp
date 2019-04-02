@@ -37,6 +37,11 @@ ConnectionResult DronecodeSDK::add_serial_connection(const std::string &dev_path
     return _impl->add_serial_connection(dev_path, baudrate);
 }
 
+void DronecodeSDK::set_configuration(Configuration configuration)
+{
+    _impl->set_configuration(configuration);
+}
+
 std::vector<uint64_t> DronecodeSDK::system_uuids() const
 {
     return _impl->get_system_uuids();

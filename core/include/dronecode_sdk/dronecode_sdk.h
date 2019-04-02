@@ -115,6 +115,26 @@ public:
                                            int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
     /**
+     * @brief Possible configurations.
+     */
+    enum class Configuration {
+        GroundStation, /**< @brief SDK is used as a ground station. */
+        CompanionComputer /**< @brief SDK is used on a companion computer onboard the system (e.g.
+                             drone). */
+    };
+
+    /**
+     * @brief Set `Configuration` of SDK.
+     *
+     * The default configuration is `Configuration::GroundStation`
+     * The configuration is used in order to set the MAVLink system ID, the
+     * component ID, as well as the MAV_TYPE accordingly.
+     *
+     * @param configuration Configuration chosen.
+     */
+    void set_configuration(Configuration configuration);
+
+    /**
      * @brief Get vector of system UUIDs.
      *
      * This returns a vector of the UUIDs of all systems that have been discovered.

@@ -457,10 +457,10 @@ void SystemImpl::send_heartbeat()
 {
     mavlink_message_t message;
     // GCSClient is not autopilot!; hence MAV_AUTOPILOT_INVALID.
-    mavlink_msg_heartbeat_pack(GCSClient::system_id,
-                               GCSClient::component_id,
+    mavlink_msg_heartbeat_pack(get_own_system_id(),
+                               get_own_component_id(),
                                &message,
-                               MAV_TYPE_GCS,
+                               get_own_mav_type(),
                                MAV_AUTOPILOT_INVALID,
                                0,
                                0,
@@ -605,6 +605,21 @@ uint8_t SystemImpl::get_system_id() const
 void SystemImpl::set_system_id(uint8_t system_id)
 {
     _system_id = system_id;
+}
+
+uint8_t SystemImpl::get_own_system_id() const
+{
+    return _parent.get_own_system_id();
+}
+
+uint8_t SystemImpl::get_own_component_id() const
+{
+    return _parent.get_own_component_id();
+}
+
+uint8_t SystemImpl::get_own_mav_type() const
+{
+    return _parent.get_mav_type();
 }
 
 MAVLinkParameters::Result SystemImpl::set_param_float(const std::string &name, float value)
