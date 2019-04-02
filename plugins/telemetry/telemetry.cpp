@@ -353,6 +353,31 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position)
                << ", rel_alt: " << position.relative_altitude_m << "]";
 }
 
+std::ostream &operator<<(std::ostream &str, Telemetry::PositionNED const &position_ned)
+{
+    return str << "[position_north_m: " << position_ned.north_m
+               << ", position_east_m: " << position_ned.east_m
+               << ", position_down_m: " << position_ned.down_m << "]";
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::VelocityNED const &velocity_ned)
+{
+    return str << "[velocity_north_m_s: " << velocity_ned.north_m_s
+               << ", velocity_east_m_s: " << velocity_ned.east_m_s
+               << ", velocity_down_m_s: " << velocity_ned.down_m_s << "]";
+}
+
+std::ostream &operator<<(std::ostream &str,
+                         Telemetry::PositionVelocityNED const &position_velocity_ned)
+{
+    return str << "[position_north_m: " << position_velocity_ned.position.north_m
+               << ", position_east_m: " << position_velocity_ned.position.east_m
+               << ", position_down_m: " << position_velocity_ned.position.down_m << "] "
+               << "[velocity_north_m_s: " << position_velocity_ned.velocity.north_m_s
+               << ", velocity_east_m_s: " << position_velocity_ned.velocity.east_m_s
+               << ", velocity_down_m_s: " << position_velocity_ned.velocity.down_m_s << "]";
+}
+
 bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs)
 {
     return lhs.gyrometer_calibration_ok == rhs.gyrometer_calibration_ok &&
