@@ -34,9 +34,9 @@ void MissionItem::set_fly_through(bool fly_through)
     _impl->set_fly_through(fly_through);
 }
 
-void MissionItem::set_acceptance_radius(float radius)
+void MissionItem::set_acceptance_radius(float radius_m)
 {
-    _impl->set_acceptance_radius(radius);
+    _impl->set_acceptance_radius(radius_m);
 }
 
 void MissionItem::set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg)
@@ -84,9 +84,9 @@ bool MissionItem::get_fly_through() const
     return _impl->get_fly_through();
 }
 
-float MissionItem::get_acceptance_radius() const
+float MissionItem::get_acceptance_radius_m() const
 {
-    return _impl->get_acceptance_radius();
+    return _impl->get_acceptance_radius_m();
 }
 
 float MissionItem::get_speed_m_s() const
