@@ -57,7 +57,7 @@ public:
      *
      * @param radius Radius around the mission_item where it will be considered as reached
      */
-    void set_acceptance_radius(float radius);
+    void set_acceptance_radius(float radius_m);
 
     /**
      * @brief Set the speed to use after a mission item.
@@ -165,7 +165,7 @@ public:
      *
      * @return Acceptance radius in meters
      */
-    float get_acceptance_radius() const;
+    float get_acceptance_radius_m() const;
     
     /**
      * @brief Get the speed to be used after this mission item.
