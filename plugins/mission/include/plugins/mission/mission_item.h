@@ -166,7 +166,7 @@ public:
      * @return Acceptance radius in meters
      */
     float get_acceptance_radius_m() const;
-    
+
     /**
      * @brief Get the speed to be used after this mission item.
      *
