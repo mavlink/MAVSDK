@@ -34,6 +34,11 @@ void MissionItem::set_fly_through(bool fly_through)
     _impl->set_fly_through(fly_through);
 }
 
+void MissionItem::set_acceptance_radius(float radius)
+{
+    _impl->set_acceptance_radius(radius);
+}
+
 void MissionItem::set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     _impl->set_gimbal_pitch_and_yaw(pitch_deg, yaw_deg);
@@ -77,6 +82,11 @@ float MissionItem::get_relative_altitude_m() const
 bool MissionItem::get_fly_through() const
 {
     return _impl->get_fly_through();
+}
+
+float MissionItem::get_acceptance_radius() const
+{
+    return _impl->get_acceptance_radius();
 }
 
 float MissionItem::get_speed_m_s() const
