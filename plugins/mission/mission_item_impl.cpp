@@ -30,9 +30,9 @@ void MissionItemImpl::set_fly_through(bool fly_through)
     _fly_through = fly_through;
 }
 
-void MissionItemImpl::set_acceptance_radius(float radius)
+void MissionItemImpl::set_acceptance_radius(float radius_m)
 {
-    _acceptance_radius_m = radius;
+    _acceptance_radius_m = radius_m;
 }
 
 void MissionItemImpl::set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg)

@@ -14,7 +14,7 @@ public:
     void set_relative_altitude(float relative_altitude_m);
     void set_speed(float speed_m_s);
     void set_fly_through(bool fly_through);
-    void set_acceptance_radius(float radius);
+    void set_acceptance_radius(float radius_m);
     void set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg);
     void set_loiter_time(float loiter_time_s);
     void set_camera_action(MissionItem::CameraAction action);
@@ -25,7 +25,7 @@ public:
     float get_relative_altitude_m() const { return _relative_altitude_m; }
     float get_speed_m_s() const { return _speed_m_s; }
     bool get_fly_through() const { return _fly_through; };
-    float get_acceptance_radius() const { return _acceptance_radius_m; };
+    float get_acceptance_radius_m() const { return _acceptance_radius_m; };
     float get_gimbal_pitch_deg() const { return _gimbal_pitch_deg; }
     float get_gimbal_yaw_deg() const { return _gimbal_yaw_deg; }
     float get_loiter_time_s() const { return _loiter_time_s; }
