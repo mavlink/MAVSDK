@@ -55,7 +55,7 @@ public:
     /**
      * @brief Set the acceptance radius property of a mission item.
      *
-     * @param radius Radius around the mission_item where it will be considered as reached
+     * @param radius_m Radius in meters around the mission_item where it will be considered as reached.
      */
     void set_acceptance_radius(float radius_m);
 
@@ -163,7 +163,7 @@ public:
     /**
      * @brief Get the acceptance radius of a mission item.
      *
-     * @return Acceptance radius in meters
+     * @return Acceptance radius in meters.
      */
     float get_acceptance_radius_m() const;
 

@@ -90,7 +90,7 @@ float MissionItemImpl::get_mavlink_param1() const
 float MissionItemImpl::get_mavlink_param2() const
 {
     float acceptance_radius_m;
-    if (_acceptance_radius_m) {
+    if (std::isfinite(_acceptance_radius_m)) {
         acceptance_radius_m = _acceptance_radius_m;
     } else if (_fly_through) {
         // _acceptance_radius_m is 0, determine the radius using fly_through

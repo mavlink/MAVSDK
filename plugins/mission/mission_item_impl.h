@@ -50,7 +50,7 @@ private:
     float _relative_altitude_m = NAN;
     float _speed_m_s = NAN;
     bool _fly_through = false;
-    float _acceptance_radius_m = 0.0;
+    float _acceptance_radius_m = NAN;
     float _gimbal_pitch_deg = NAN;
     float _gimbal_yaw_deg = NAN;
     float _loiter_time_s = NAN;
