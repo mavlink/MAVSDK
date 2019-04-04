@@ -53,6 +53,14 @@ public:
     void set_fly_through(bool fly_through);
 
     /**
+     * @brief Set the acceptance radius property of a mission item.
+     *
+     * @param radius_m Radius in meters around the mission_item where it will be considered as
+     * reached.
+     */
+    void set_acceptance_radius(float radius_m);
+
+    /**
      * @brief Set the speed to use after a mission item.
      *
      * @param speed_m_s Speed to use after this mission item in metres/second.
@@ -152,6 +160,13 @@ public:
      *         false if the drone will come to a stop at the waypoint before continuing.
      */
     bool get_fly_through() const;
+
+    /**
+     * @brief Get the acceptance radius of a mission item.
+     *
+     * @return Acceptance radius in meters.
+     */
+    float get_acceptance_radius_m() const;
 
     /**
      * @brief Get the speed to be used after this mission item.

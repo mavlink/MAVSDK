@@ -30,6 +30,11 @@ void MissionItemImpl::set_fly_through(bool fly_through)
     _fly_through = fly_through;
 }
 
+void MissionItemImpl::set_acceptance_radius(float radius_m)
+{
+    _acceptance_radius_m = radius_m;
+}
+
 void MissionItemImpl::set_gimbal_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     _gimbal_pitch_deg = pitch_deg;
@@ -85,9 +90,13 @@ float MissionItemImpl::get_mavlink_param1() const
 float MissionItemImpl::get_mavlink_param2() const
 {
     float acceptance_radius_m;
-    if (_fly_through) {
+    if (std::isfinite(_acceptance_radius_m)) {
+        acceptance_radius_m = _acceptance_radius_m;
+    } else if (_fly_through) {
+        // _acceptance_radius_m is 0, determine the radius using fly_through
         acceptance_radius_m = 3.0f;
     } else {
+        // _acceptance_radius_m is 0, determine the radius using fly_through
         acceptance_radius_m = 1.0f;
     }
 
