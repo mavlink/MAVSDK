@@ -5,7 +5,6 @@
 
 using namespace dronecode_sdk;
 
-
 TEST_F(SitlTest, Info)
 {
     DronecodeSDK dc;
