@@ -30,7 +30,7 @@ static void pause_and_resume(std::shared_ptr<Mission> mission);
 
 static constexpr int NUM_MISSION_ITEMS = 30;
 
-static bool pause_already_done = false;
+static std::atomic<bool> pause_already_done{false};
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
 {
