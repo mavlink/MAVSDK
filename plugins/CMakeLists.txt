@@ -3,13 +3,6 @@ include_directories(
     SYSTEM  ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
-if(IOS OR ANDROID)
-    set(PLUGIN_LIBRARY_TYPE STATIC)
-else()
-    set(PLUGIN_LIBRARY_TYPE SHARED)
-endif()
-set(PLUGIN_LIBRARY_TYPE STATIC)
-
 add_subdirectory(action)
 add_subdirectory(calibration)
 add_subdirectory(camera)

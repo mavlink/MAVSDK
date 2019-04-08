@@ -28,10 +28,8 @@ if(IOS)
     list(APPEND BACKEND_SOURCES module.modulemap)
 endif()
 
-if(ANDROID OR IOS)
+if(IOS)
     add_library(backend SHARED ${BACKEND_SOURCES})
-else()
-    add_library(backend STATIC ${BACKEND_SOURCES})
 endif()
 
 target_link_libraries(backend

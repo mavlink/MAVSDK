@@ -17,7 +17,6 @@ install(FILES
 )
 
 install(TARGETS dronecode_sdk_info
-    #EXPORT dronecode_sdk-targets
     DESTINATION ${dronecode_sdk_install_lib_dir}
 )
 

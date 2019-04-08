@@ -4,14 +4,6 @@ include_directories(
     SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
-if(IOS OR MSVC OR APPLE)
-    set(LIBRARY_TYPE "STATIC")
-else()
-    set(LIBRARY_TYPE "SHARED")
-endif()
-set(LIBRARY_TYPE "STATIC")
-
-
 configure_file(version.h.in version.h)
 
 add_library(dronecode_sdk ${LIBRARY_TYPE}

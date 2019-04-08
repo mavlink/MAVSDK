@@ -1,8 +1,8 @@
-set(PROTOC_BINARY /work/install/bin/protoc)
-set(GRPC_CPP_PLUGIN_BINARY /work/install/bin/grpc_cpp_plugin)
+find_program(PROTOC_BINARY protoc)
+find_program(GRPC_CPP_PLUGIN_BINARY grpc_cpp_plugin)
 
 if(NOT EXISTS ${PROTOC_BINARY} OR NOT EXISTS ${GRPC_CPP_PLUGIN_BINARY})
-    message(FATAL_ERROR "Could not find 'protoc' or 'grpc_cpp_plugin' in the 'default' build folder. Please build for your host first (`make BUILD_DRONECORESERVER=YES default`).")
+    message(FATAL_ERROR "Could not find 'protoc' or 'grpc_cpp_plugin' binaries.")
 endif()
 
 function(compile_proto_pb COMPONENT_NAME PB_COMPILED_SOURCE)

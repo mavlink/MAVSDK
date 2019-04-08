@@ -22,7 +22,6 @@ install(DIRECTORY
 )
 
 install(TARGETS dronecode_sdk_mavlink_passthrough
-    #EXPORT dronecode_sdk-targets
     DESTINATION ${dronecode_sdk_install_lib_dir}
 )
 

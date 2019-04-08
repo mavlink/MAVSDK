@@ -96,7 +96,7 @@ if(BUILD_TESTS)
     include(cmake/unit_tests.cmake)
 endif()
 
-if (CMAKE_BUILD_BACKEND)
+if (BUILD_BACKEND)
     message(STATUS "Building dronecode_sdk server")
     add_subdirectory(backend)
 else()

@@ -14,7 +14,6 @@ set_target_properties(dronecode_sdk_mission
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-# JSON parser library for parsing QGC plan for Mission
 add_subdirectory(third_party/json11)
 
 target_link_libraries(dronecode_sdk_mission
@@ -29,7 +28,6 @@ install(FILES
 )
 
 install(TARGETS dronecode_sdk_mission
-    #EXPORT dronecode_sdk-targets
     DESTINATION ${dronecode_sdk_install_lib_dir}
 )
 
