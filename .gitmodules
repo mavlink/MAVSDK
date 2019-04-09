@@ -1,25 +1,25 @@
 [submodule "mavlink_v2"]
-	path = third_party/mavlink/include/mavlink/v2.0
+	path = src/third_party/mavlink/include/mavlink/v2.0
 	url = https://github.com/mavlink/c_library_v2.git
 [submodule "gtest"]
-	path = third_party/gtest
+	path = src/third_party/gtest
 	url = https://github.com/google/googletest
 [submodule "curl-android-ios"]
-	path = core/third_party/curl-android-ios
+	path = src/core/third_party/curl-android-ios
 	url = https://github.com/dronecore/curl-android-ios.git
 [submodule "tinyxml2"]
-	path = third_party/tinyxml2
+	path = src/third_party/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
 [submodule "dronecore-proto"]
-	path = backend/proto
+	path = src/backend/proto
 	url = https://github.com/dronecore/DroneCore-Proto.git
 [submodule "zlib"]
-	path = third_party/zlib
+	path = src/third_party/zlib
 	url = https://github.com/madler/zlib
 	ignore = dirty
 [submodule "json11"]
-	path = plugins/mission/third_party/json11
+	path = src/plugins/mission/third_party/json11
 	url = https://github.com/dronecore/json11
 [submodule "third_party/cpp_rsc"]
-	path = third_party/cpp_rsc
+	path = src/third_party/cpp_rsc
 	url = https://github.com/orex/cpp_rsc.git

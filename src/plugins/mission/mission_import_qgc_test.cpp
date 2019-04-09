@@ -13,7 +13,7 @@
 
 using namespace dronecode_sdk;
 
-static const std::string QGC_SAMPLE_PLAN = "plugins/mission/qgroundcontrol_sample.plan";
+static const std::string QGC_SAMPLE_PLAN = "src/plugins/mission/qgroundcontrol_sample.plan";
 
 struct QGCMissionItem {
     MAV_CMD command;
