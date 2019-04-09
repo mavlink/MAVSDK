@@ -98,13 +98,13 @@ add_test(integration_tests
 add_custom_command(TARGET integration_tests_runner
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${PROJECT_SOURCE_DIR}/start_px4_sitl.sh
+        ${CMAKE_SOURCE_DIR}/tools/start_px4_sitl.sh
         ${CMAKE_CURRENT_BINARY_DIR}
 )
 add_custom_command(TARGET integration_tests_runner
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${PROJECT_SOURCE_DIR}/stop_px4_sitl.sh
+        ${CMAKE_SOURCE_DIR}/tools/stop_px4_sitl.sh
         ${CMAKE_CURRENT_BINARY_DIR}
 )
 

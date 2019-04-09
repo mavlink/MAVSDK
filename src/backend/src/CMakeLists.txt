@@ -30,6 +30,8 @@ endif()
 
 if(IOS)
     add_library(backend SHARED ${BACKEND_SOURCES})
+else()
+    add_library(backend ${BACKEND_SOURCES})
 endif()
 
 target_link_libraries(backend
@@ -49,7 +51,7 @@ target_include_directories(backend
     PRIVATE
     ${PROJECT_SOURCE_DIR}/core
     ${PROJECT_SOURCE_DIR}/plugins
-    ${CMAKE_BINARY_DIR}/backend/src
+    ${CMAKE_BINARY_DIR}/src/backend/src
     ${PLUGINS_DIR}
 )
 
