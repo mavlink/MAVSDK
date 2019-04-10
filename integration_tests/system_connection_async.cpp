@@ -6,6 +6,10 @@
 using namespace dronecode_sdk;
 using namespace std::placeholders; // for _1
 
+// For now we don't test the timing out because the starting and stopping of
+// PX4 SITL is not working as needed.
+static constexpr bool ENABLE_TEARDOWN_TEST = false;
+
 static bool _discovered_system = false;
 static bool _timeouted_system = false;
 static uint64_t _uuid = 0;
@@ -30,12 +34,14 @@ TEST_F(SitlTest, SystemConnectionAsync)
     // Let params stabilize before shutting it down.
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    // Call gtest to shut down SITL.
-    TearDown();
+    if (ENABLE_TEARDOWN_TEST) {
+        // Call gtest to shut down SITL.
+        TearDown();
 
-    while (!_timeouted_system) {
-        std::cout << "waiting for system to disappear..." << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        while (!_timeouted_system) {
+            std::cout << "waiting for system to disappear..." << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
     }
 }
 
