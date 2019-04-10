@@ -13,6 +13,10 @@
 using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
+static void test_mission(std::shared_ptr<Telemetry> telemetry,
+                         std::shared_ptr<Mission> mission,
+                         std::shared_ptr<Action> action);
+
 static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                                      double longitude_deg,
                                                      float relative_altitude_m,
@@ -62,6 +66,16 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     auto telemetry = std::make_shared<Telemetry>(system);
     auto mission = std::make_shared<Mission>(system);
     auto action = std::make_shared<Action>(system);
+
+    test_mission(telemetry, mission, action);
+    // We do yet another mission to make sure this works repeatable.
+    test_mission(telemetry, mission, action);
+}
+
+void test_mission(std::shared_ptr<Telemetry> telemetry,
+                  std::shared_ptr<Mission> mission,
+                  std::shared_ptr<Action> action)
+{
 
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for system to be ready";
