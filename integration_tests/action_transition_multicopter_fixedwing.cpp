@@ -11,7 +11,7 @@ static void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> t
 static void takeoff_and_transition_to_fixedwing();
 static void land_and_disarm(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);
 
-TEST_F(SitlTest, ActionTransitionSync)
+TEST(SitlTestVtol, ActionTransitionSync)
 {
     takeoff_and_transition_to_fixedwing();
 }
