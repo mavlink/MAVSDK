@@ -28,7 +28,7 @@ static void compare_mission_items(const std::shared_ptr<MissionItem> original,
 
 static void pause_and_resume(std::shared_ptr<Mission> mission);
 
-static constexpr int NUM_MISSION_ITEMS = 30;
+static constexpr int NUM_MISSION_ITEMS = 6;
 
 static std::atomic<bool> pause_already_done{false};
 
