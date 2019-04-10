@@ -21,7 +21,7 @@ void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal,
 void receive_gimbal_result(Gimbal::Result result);
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
-TEST_F(SitlTest, GimbalMove)
+TEST(SitlTestGimbal, GimbalMove)
 {
     DronecodeSDK dc;
 
@@ -49,7 +49,7 @@ TEST_F(SitlTest, GimbalMove)
     }
 }
 
-TEST_F(SitlTest, GimbalTakeoffAndMove)
+TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 {
     DronecodeSDK dc;
 
@@ -90,7 +90,7 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
     std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
-TEST_F(SitlTest, GimbalROIOffboard)
+TEST(SitlTestGimbal, GimbalROIOffboard)
 {
     DronecodeSDK dc;
 
