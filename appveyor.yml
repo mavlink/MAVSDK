@@ -35,15 +35,15 @@ before_build:
   - cd C:\dronecode_sdk
   - git submodule update --init --recursive --depth 100
   - cd C:\
-  - appveyor DownloadFile https://curl.haxx.se/download/curl-7.56.1.zip
-  - 7z x -y curl-7.56.1.zip
+  - appveyor DownloadFile https://curl.haxx.se/download/curl-7.64.1.zip
+  - 7z x -y curl-7.64.1.zip
 
 build: on
 
 build_script:
   - set CL=/MP
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cd curl-7.56.1\winbuild
+  - cd curl-7.64.1\winbuild
   - if "%configuration%"=="Debug" (
       nmake /f Makefile.vc mode=static VC=15 MACHINE=x64 DEBUG=yes
     ) else (
@@ -54,9 +54,9 @@ build_script:
   - md build
   - cd build
   - if "%configuration%"=="Debug" (
-      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.56.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.56.1\builds\libcurl-vc15-x64-debug-static-ipv6-sspi-winssl\lib\libcurl_a_debug.lib" -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=..\install ..
+      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.64.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.64.1\builds\libcurl-vc15-x64-debug-static-ipv6-sspi-winssl\lib\libcurl_a_debug.lib" -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=..\install ..
     ) else (
-      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.56.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.56.1\builds\libcurl-vc15-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=..\install ..
+      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.64.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.64.1\builds\libcurl-vc15-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=..\install ..
     )
   - if "%configuration%"=="Debug" (
       cmake --build . --target install --config Debug
