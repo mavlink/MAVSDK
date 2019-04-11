@@ -16,6 +16,10 @@ elseif(MSVC)
 
     set(CURL_INCLUDE_DIRS ${WIN_CURL_INCLUDE_DIR})
     set(CURL_LIBRARY ${WIN_CURL_LIB})
+    # Strangely with curl 7.64.1 the following libs are required additionally to avoid linking errors.
+    list(APPEND CURL_LIBRARY Crypt32.Lib)
+    list(APPEND CURL_LIBRARY Wldap32.Lib)
+    list(APPEND CURL_LIBRARY Normaliz.lib)
 
     add_definitions(
         -DCURL_STATICLIB
