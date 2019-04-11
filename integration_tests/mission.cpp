@@ -76,7 +76,6 @@ void test_mission(std::shared_ptr<Telemetry> telemetry,
                   std::shared_ptr<Mission> mission,
                   std::shared_ptr<Action> action)
 {
-
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for system to be ready";
         LogDebug() << "Health: " << telemetry->health();
