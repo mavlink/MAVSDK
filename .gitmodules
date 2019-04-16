@@ -4,19 +4,9 @@
 [submodule "gtest"]
 	path = src/third_party/gtest
 	url = https://github.com/google/googletest
-[submodule "curl-android-ios"]
-	path = src/core/third_party/curl-android-ios
-	url = https://github.com/dronecore/curl-android-ios.git
-[submodule "tinyxml2"]
-	path = src/third_party/tinyxml2
-	url = https://github.com/leethomason/tinyxml2.git
 [submodule "dronecore-proto"]
 	path = src/backend/proto
 	url = https://github.com/dronecore/DroneCore-Proto.git
-[submodule "zlib"]
-	path = src/third_party/zlib
-	url = https://github.com/madler/zlib
-	ignore = dirty
 [submodule "json11"]
 	path = src/plugins/mission/third_party/json11
 	url = https://github.com/dronecore/json11
