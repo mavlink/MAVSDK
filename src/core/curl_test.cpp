@@ -11,7 +11,6 @@ using namespace dronecode_sdk;
 class CurlTest : public testing::Test {
 protected:
     std::string _file_url_existing_http{};
-    std::string _file_url_existing_https{};
     std::string _file_url_not_existing{};
     std::string _local_path{};
 
@@ -20,9 +19,7 @@ protected:
         clean();
         _file_url_existing_http =
             "http://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronecode_sdk_test_file";
-        _file_url_existing_https =
-            "https://s3.eu-central-1.amazonaws.com/404f358a-48b5-4aaf-b5fd-adc84ffb0f31/dronecode_sdk_test_file";
-        _file_url_not_existing = "https://notexisting.file/does-really-not-exist";
+        _file_url_not_existing = "http://notexisting.file/does-really-not-exist";
         _local_path = "testfile.txt";
     }
 
@@ -49,17 +46,6 @@ TEST_F(CurlTest, Curl_DownloadText_HTTP_Success)
     EXPECT_EQ(content, "content of this file\n");
 }
 
-TEST_F(CurlTest, Curl_DownloadText_HTTPS_Success)
-{
-    std::string content;
-
-    CurlWrapper curl_wrapper;
-    bool success = curl_wrapper.download_text(_file_url_existing_https, content);
-
-    EXPECT_EQ(success, true);
-    EXPECT_EQ(content, "content of this file\n");
-}
-
 TEST_F(CurlTest, Curl_DownloadText_FileNotFound)
 {
     std::string content = "content gets cleared if download fails";
@@ -76,7 +62,7 @@ TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_Success)
     CurlWrapper curl_wrapper;
 
     bool success =
-        curl_wrapper.download_file_to_path(_file_url_existing_https, _local_path, nullptr);
+        curl_wrapper.download_file_to_path(_file_url_existing_http, _local_path, nullptr);
     EXPECT_EQ(success, true);
 
     bool file_exists = check_file_exists(_local_path);
@@ -111,7 +97,7 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
     CurlWrapper curl_wrapper;
 
     bool success =
-        curl_wrapper.download_file_to_path(_file_url_existing_https, _local_path, progress);
+        curl_wrapper.download_file_to_path(_file_url_existing_http, _local_path, progress);
     EXPECT_EQ(success, true);
     EXPECT_EQ(last_progress, 100);
     EXPECT_EQ(last_status, Status::Finished);
