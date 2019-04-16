@@ -1,25 +1,31 @@
 #!/usr/bin/env bash
 
+# Note: each build (Release, Debug, Coverage) is done in its own folder,
+#       hence removing the need to clean between them.
+#       However, the third_parties (which are always built in Release
+#       mode with the superbuild) are reused between the builds.
+
 set -e
 
-make BUILD_TYPE=Debug run_unit_tests_offline -j4
-#make default install
-make fix_style
-#(cd example/takeoff_land && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make)
-#(cd example/fly_mission && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make)
-#(cd example/offboard_velocity && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make)
-make clean
-git clean -dfx
+# Build and run offline tests in Debug mode
+cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild/debug -H.;
+make -Cbuild/debug -j4;
+./build/debug/src/unit_tests_runner --gtest_filter="-CurlTest.*";
 
-make BUILD_TYPE=Release run_unit_tests_offline -j4
-#make default install
-make fix_style
-#(cd example/takeoff_land && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make) (cd example/fly_mission && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make) (cd example/offboard_velocity && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make)
-make clean
-git clean -dfx
+#git clean -dfx # Does that remove even a gitignored folder?
 
-make EXTERNAL_DIR=external_example
-make clean
-git clean -dfx
+#make fix_style
 
-./generate_docs.sh
+# Build and run offline tests in Release mode
+cmake -DCMAKE_BUILD_TYPE=Release -Bbuild/release -H.;
+make -Cbuild/release -j4;
+./build/release/src/unit_tests_runner --gtest_filter="-CurlTest.*";
+
+#make fix_style
+
+# Try to build the external plugin example
+cmake -DCMAKE_BUILD_TYPE=Release -DEXTERNAL_DIR=external_example -Bbuild/external-plugin -H.;
+make -Cbuild/external-plugin -j4;
+
+# Generate documentation
+./tools/generate_docs.sh

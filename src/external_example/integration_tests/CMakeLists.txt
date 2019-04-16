@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.1)
 
 add_executable(external_example_integration_tests_runner
-    ${CMAKE_SOURCE_DIR}/core/unittests_main.cpp
+    ${PROJECT_SOURCE_DIR}/core/unittests_main.cpp
     hello_world.cpp
 )
 
 include_directories(
-    ${CMAKE_SOURCE_DIR}/core
-    ${CMAKE_SOURCE_DIR}/integration_tests
-    ${CMAKE_SOURCE_DIR}/third_party/gtest/googletest/include
-    ${CMAKE_SOURCE_DIR}/third_party/gtest/googlemock/include
+    ${PROJECT_SOURCE_DIR}/core
+    ${PROJECT_SOURCE_DIR}/integration_tests
+    ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
+    ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
 )
 
 target_link_libraries(external_example_integration_tests_runner
