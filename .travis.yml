@@ -5,18 +5,11 @@ matrix:
   include:
     - os: linux
       dist: trusty
-      sudo: true
       compiler: gcc
       env:
       - MATRIX_EVAL="BUILD_TARGET=gcc_build"
-      addons:
-        apt:
-          packages:
-            - libtinyxml2-dev
-            - libcurl4-openssl-dev
     - os: linux
       dist: trusty
-      sudo: false
       compiler: gcc
       env:
       - MATRIX_EVAL="BUILD_TARGET=gcc_build && CC=gcc-5 && CXX=g++-5"
@@ -27,8 +20,6 @@ matrix:
           packages:
             - gcc-5
             - g++-5
-            - libtinyxml2-dev
-            - libcurl4-openssl-dev
     - os: linux
       dist: trusty
       sudo: false
@@ -97,9 +88,9 @@ install:
 script:
 - set -e
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
-    make BUILD_TYPE=Debug run_unit_tests -j4;
-    make clean;
-    make INSTALL_PREFIX=/usr BUILD_TYPE=Release run_unit_tests -j4;
+    cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild/debug -H. > /dev/null &&
+    make -Cbuild/debug -j4 &&
+    ./build/debug/src/unit_tests_runner;
   fi
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     make BUILD_TYPE=Coverage run_unit_tests -j4;

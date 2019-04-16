@@ -3,14 +3,9 @@ cmake_minimum_required(VERSION 3.1)
 project(external-grpc)
 include(ExternalProject)
 
-# This answer probably saved me from destroying my computer:
-# https://stackoverflow.com/questions/45414507/pass-a-list-of-prefix-paths-to-externalproject-add-in-cmake-args
-string(REPLACE ";" "|" CMAKE_PREFIX_PATH_ALT_SEP "${CMAKE_PREFIX_PATH}")
-
 list(APPEND CMAKE_ARGS
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
-    "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
-    "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH_ALT_SEP}"
+    "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
     "-DZLIB_ROOT=${CMAKE_INSTALL_PREFIX}"
     "-DOPENSSL_ROOT_DIR=${CMAKE_INSTALL_PREFIX}"
     "-DgRPC_BUILD_TESTS=OFF"
