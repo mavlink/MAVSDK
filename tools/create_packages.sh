@@ -2,32 +2,35 @@
 
 set -e
 
+echo "Packaging"
+
 # This creates a version such as "v1.2.3-5-g123abc".
-version=`git describe --always --tags`
+VERSION=`git describe --always --tags`
 # We want to extract 1.2.3 from it.
-version=`echo $version | sed 's/v\([0-9]*\.[0-9]*\.[0-9]*\).*$/\1/'`
+VERSION=`echo ${VERSION} | sed 's/v\([0-9]*\.[0-9]*\.[0-9]*\).*$/\1/'`
 
-working_dir=`pwd`
-root_dir=`pwd`/install
-install_dir=$root_dir/usr
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKING_DIR=${SCRIPT_DIR}/install
+INSTALL_DIR=${WORKING_DIR}/usr
 
-rm -rf $install_dir
-make clean
-make BUILD_TYPE=Release INSTALL_PREFIX=$install_dir default install
+rm -rf ${INSTALL_DIR}
+
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -Bbuild/release-package -H.;
+make -Cbuild/release-package install -j4;
 
 common_args="--input-type dir  \
-    --version $version \
+    --version ${VERSION} \
     --maintainer julian@oes.ch \
     --url https://sdk.dronecode.org \
     --license BSD-3-Clause \
     --force"
 
 
-pushd $root_dir
+pushd ${WORKING_DIR}
 
 # We need the relative path of all files.
-library_files=`find . -type f | cut -sd / -f 2-`
-echo $library_files
+LIBRARY_FILES=`find . -type f | cut -sd / -f 2-`
+echo ${LIBRARY_FILES}
 
 echo "#!/bin/sh" > run_ldconfig
 
@@ -43,13 +46,13 @@ then
         --provides libdronecode_sdk-dev \
         --after-install run_ldconfig \
         --after-remove run_ldconfig \
-        $library_files
+        ${LIBRARY_FILES}
 
-    dist_version=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9.]*//g')
+    DIST_VERSION=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9.]*//g')
 
-    for file in *_amd64.deb
+    for FILE in *_amd64.deb
     do
-        mv -v "$file" "$working_dir/${file%_amd64.deb}_ubuntu${dist_version}_amd64.deb"
+        mv -v "$FILE" "${SCRIPT_DIR}/${FILE%_amd64.deb}_ubuntu${DIST_VERSION}_amd64.deb"
     done
 
 elif cat /etc/os-release | grep 'Fedora'
@@ -63,13 +66,13 @@ then
         --after-install run_ldconfig \
         --after-remove run_ldconfig \
         --rpm-rpmbuild-define "_build_id_links none" \
-        $library_files
+        ${LIBRARY_FILES}
 
-    dist_version=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9]*//g')
+    DIST_VERSION=$(cat /etc/os-release | grep VERSION_ID | sed 's/[^0-9]*//g')
 
-    for file in *.x86_64.rpm
+    for FILE in *.x86_64.rpm
     do
-        mv -v "$file" "$working_dir/${file%.x86_64.rpm}.fc${dist_version}-x86_64.rpm"
+        mv -v "$FILE" "${SCRIPT_DIR}/${FILE%.x86_64.rpm}.fc${DIST_VERSION}-x86_64.rpm"
     done
 fi
 
@@ -77,4 +80,4 @@ rm run_ldconfig
 
 popd
 
-rm -rf $install_dir
+rm -rf ${INSTALL_DIR}
