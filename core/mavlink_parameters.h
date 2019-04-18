@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <string>
 #include <functional>
-#include <cstring> // for memcpy
 #include <cassert>
 #include <map>
 
@@ -509,6 +508,8 @@ private:
     void process_param_ext_value(const mavlink_message_t &message);
     void process_param_ext_ack(const mavlink_message_t &message);
     void receive_timeout();
+
+    static std::string extract_safe_param_id(const char param_id[]);
 
     SystemImpl &_parent;
 

@@ -1,5 +1,6 @@
 #include "mavlink_parameters.h"
 #include "system_impl.h"
+#include <cstring>
 #include <future>
 
 namespace dronecode_sdk {
@@ -270,7 +271,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
 
-    // LogDebug() << "getting param value: " << param_value.param_id;
+    // LogDebug() << "getting param value: " << extract_safe_param_id(param_value.param_id);
 
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
     auto work = work_queue_guard.get_front();
@@ -283,7 +284,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
         return;
     }
 
-    if (work->param_name.compare(param_value.param_id) != 0) {
+    if (work->param_name.compare(extract_safe_param_id(param_value.param_id)) != 0) {
         // No match, let's just return the borrowed work item.
         return;
     }
@@ -342,7 +343,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
         return;
     }
 
-    if (work->param_name.compare(param_ext_value.param_id) != 0) {
+    if (work->param_name.compare(extract_safe_param_id(param_ext_value.param_id)) != 0) {
         return;
     }
 
@@ -393,7 +394,7 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
     }
 
     // Now it still needs to match the param name
-    if (work->param_name.compare(param_ext_ack.param_id) != 0) {
+    if (work->param_name.compare(extract_safe_param_id(param_ext_ack.param_id)) != 0) {
         return;
     }
 
@@ -475,6 +476,15 @@ void MAVLinkParameters::receive_timeout()
             work_queue_guard.pop_front();
         } break;
     }
+}
+
+std::string MAVLinkParameters::extract_safe_param_id(const char param_id[])
+{
+    // The param_id field of the MAVLink struct has length 16 and is not 0 terminated.
+    // Therefore, we make a 0 terminated copy first.
+    char param_id_long_enough[PARAM_ID_LEN + 1] = {};
+    std::memcpy(param_id_long_enough, param_id, PARAM_ID_LEN);
+    return std::string(param_id_long_enough);
 }
 
 std::ostream &operator<<(std::ostream &strm, const MAVLinkParameters::ParamValue &obj)
