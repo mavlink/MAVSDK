@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 
 #include <dronecode_sdk/plugin_base.h>
 
