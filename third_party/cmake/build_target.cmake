@@ -6,6 +6,7 @@ function(build_target TARGET_SOURCE_DIR TARGET_BINARY_DIR TARGET_INSTALL_DIR)
     execute_process(
         COMMAND ${CMAKE_COMMAND}
             "-G${CMAKE_GENERATOR}"
+            "-A\"${CMAKE_GENERATOR_PLATFORM}\""
             "-DCMAKE_FIND_ROOT_PATH=${CMAKE_FIND_ROOT_PATH}"
             "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
             "-DCMAKE_INSTALL_PREFIX=${TARGET_INSTALL_DIR}"
@@ -23,7 +24,13 @@ function(build_target TARGET_SOURCE_DIR TARGET_BINARY_DIR TARGET_INSTALL_DIR)
     ProcessorCount(NUM_PROCS)
     set(ENV{MAKEFLAGS} -j${NUM_PROCS})
 
-    execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${TARGET_BINARY_DIR}
-    )
+    if(MSVC)
+        execute_process(COMMAND ${CMAKE_COMMAND} --build . --config Release
+            WORKING_DIRECTORY ${TARGET_BINARY_DIR}
+        )
+    else()
+        execute_process(COMMAND ${CMAKE_COMMAND} --build .
+            WORKING_DIRECTORY ${TARGET_BINARY_DIR}
+        )
+    endif()
 endfunction()
