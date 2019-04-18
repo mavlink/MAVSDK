@@ -21,10 +21,12 @@ pipeline {
             sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'ccache -z'
-            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Debug BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX ENABLE_MAVLINK_PASSTHROUGH=1 default install'
-            sh 'build/default/unit_tests_runner'
-            sh 'build/default/backend/test/unit_tests_backend'
-            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Debug .. && make)'
+            sh 'cmake BUILD_TYPE=Debug -DBUILD_BACKEND=ON -DCMAKE_INSTALL_PREFIX=install -DENABLE_MAVLINK_PASSTHROUGH=ON -Bbuild/debug -H.'
+            sh 'make -Cbuild/debug install'
+            sh 'build/debug/src/unit_tests_runner'
+            sh 'build/debug/src/backend/test/unit_tests_backend'
+            sh 'cmake -DCMAKE_CXX_FLAGS="-I install/include" -DCMAKE_EXE_LINKER_FLAGS="-L install/lib" CMAKE_BUILD_TYPE=Debug -Bexample/build -Hexample'
+            sh 'make -Cexample/build'
           }
           post {
             always {
@@ -49,10 +51,12 @@ pipeline {
             sh 'git submodule sync --recursive'
             sh 'git submodule update --init --recursive --force'
             sh 'ccache -z'
-            sh 'export INSTALL_PREFIX=`pwd`/install && make BUILD_TYPE=Release BUILD_BACKEND=1 INSTALL_PREFIX=$INSTALL_PREFIX ENABLE_MAVLINK_PASSTHROUGH=1 default install'
-            sh 'build/default/unit_tests_runner'
-            sh 'build/default/backend/test/unit_tests_backend'
-            sh 'export INSTALL_PREFIX=`pwd`/install && mkdir -p example/build && (cd example/build && cmake -DCMAKE_CXX_FLAGS="-I $INSTALL_PREFIX/include" -DCMAKE_EXE_LINKER_FLAGS="-L $INSTALL_PREFIX/lib" CMAKE_BUILD_TYPE=Release .. && make)'
+            sh 'cmake BUILD_TYPE=Release -DBUILD_BACKEND=ON -DCMAKE_INSTALL_PREFIX=install -DENABLE_MAVLINK_PASSTHROUGH=ON -Bbuild/debug -H.'
+            sh 'make -Cbuild/debug install'
+            sh 'build/debug/src/unit_tests_runner'
+            sh 'build/debug/src/backend/test/unit_tests_backend'
+            sh 'cmake -DCMAKE_CXX_FLAGS="-I install/include" -DCMAKE_EXE_LINKER_FLAGS="-L install/lib" CMAKE_BUILD_TYPE=Release -Bexample/build -Hexample'
+            sh 'make -Cexample/build'
           }
           post {
             always {
