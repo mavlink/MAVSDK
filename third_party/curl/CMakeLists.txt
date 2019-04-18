@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.1)
 project(external-curl)
 include(ExternalProject)
 
-set(ARG_GIT_REPOSITORY https://github.com/curl/curl)
-set(ARG_GIT_TAG curl-7_64_1)
-
 list(APPEND CMAKE_ARGS
     "-DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/install"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
@@ -39,9 +36,7 @@ endforeach()
 
 ExternalProject_add(
     curl
-    GIT_REPOSITORY ${ARG_GIT_REPOSITORY}
-    GIT_TAG ${ARG_GIT_TAG}
-    GIT_SHALLOW TRUE
+    URL https://github.com/curl/curl/releases/download/curl-7_64_1/curl-7.64.1.tar.xz
     PREFIX curl
     CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>
     TEST_COMMAND true

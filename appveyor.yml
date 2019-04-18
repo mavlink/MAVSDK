@@ -5,8 +5,8 @@ version: "{build}"
 os: Visual Studio 2017
 
 # build platform, i.e. Win32 (instead of x86), x64, Any CPU. This setting is optional.
-platform:
-  - x64
+#platform:
+#  - x64
 
 # specify custom environment variables
 environment:
@@ -45,7 +45,7 @@ build_script:
   - cd %dronecode_sdk_dir%
   - md build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "Visual Studio 15 2017" -A "x64" -DCMAKE_INSTALL_PREFIX=..\install ..
+  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=..\install ..
   - cmake --build . --target install --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\takeoff_land

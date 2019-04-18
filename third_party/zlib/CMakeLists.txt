@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.1)
 project(external-zlib)
 include(ExternalProject)
 
-set(ARG_GIT_REPOSITORY https://github.com/madler/zlib)
-set(ARG_GIT_TAG v1.2.11)
-
 list(APPEND CMAKE_ARGS
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
@@ -31,9 +28,7 @@ endforeach()
 
 ExternalProject_add(
     zlib
-    GIT_REPOSITORY ${ARG_GIT_REPOSITORY}
-    GIT_TAG ${ARG_GIT_TAG}
-    GIT_SHALLOW TRUE
+    URL https://github.com/madler/zlib/archive/v1.2.11.tar.gz
     PREFIX zlib
     CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>
     )
