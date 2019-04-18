@@ -22,7 +22,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -DEXTERNAL_DIR=external_example -Bbuild/externa
 make -Cbuild/external-plugin -j4;
 
 # Check style
-./tools/fix_style src
+./tools/fix_style.sh .
 
 # Generate documentation
 ./tools/generate_docs.sh
