@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.1)
 project(external-protobuf)
 include(ExternalProject)
 
-set(ARG_GIT_REPOSITORY https://github.com/google/protobuf.git)
-set(ARG_GIT_TAG v3.6.1)
-
 list(APPEND CMAKE_ARGS
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
     "-DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}"
@@ -33,9 +30,7 @@ endforeach()
 
 ExternalProject_add(
     protobuf
-    GIT_REPOSITORY ${ARG_GIT_REPOSITORY}
-    GIT_TAG ${ARG_GIT_TAG}
-    GIT_SHALLOW TRUE
+    URL https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-cpp-3.7.1.tar.gz
     PREFIX protobuf
     CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>/cmake
     )

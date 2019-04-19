@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.1)
 project(external-cares)
 include(ExternalProject)
 
-set(ARG_GIT_REPOSITORY https://github.com/c-ares/c-ares.git)
-set(ARG_GIT_TAG cares-1_15_0)
-
 list(APPEND CMAKE_ARGS
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
@@ -33,9 +30,7 @@ endforeach()
 
 ExternalProject_add(
     cares
-    GIT_REPOSITORY ${ARG_GIT_REPOSITORY}
-    GIT_TAG ${ARG_GIT_TAG}
-    GIT_SHALLOW TRUE
+    URL https://github.com/c-ares/c-ares/releases/download/cares-1_15_0/c-ares-1.15.0.tar.gz
     PREFIX cares
     CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>
     )
