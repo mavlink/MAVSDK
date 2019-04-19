@@ -18,7 +18,7 @@ skip_branch_with_pr: true
 # build configuration, i.e. Debug, Release, etc.
 configuration:
   - Debug
-  - Release
+#  - Release
 
 # scripts that are called at very beginning, before repo cloning
 init:

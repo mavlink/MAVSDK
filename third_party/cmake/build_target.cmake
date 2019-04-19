@@ -34,7 +34,7 @@ function(build_target TARGET_SOURCE_DIR TARGET_BINARY_DIR TARGET_INSTALL_DIR)
     set(ENV{MAKEFLAGS} -j${NUM_PROCS})
 
     if(MSVC)
-        execute_process(COMMAND ${CMAKE_COMMAND} --build . --config Release
+        execute_process(COMMAND ${CMAKE_COMMAND} --build . --config Debug
             WORKING_DIRECTORY ${TARGET_BINARY_DIR}
             RESULT_VARIABLE BUILD_FAILED
         )
