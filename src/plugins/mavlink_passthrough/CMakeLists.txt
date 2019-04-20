@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_mavlink_passthrough ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_mavlink_passthrough
     mavlink_passthrough.cpp
     mavlink_passthrough_impl.cpp
 )

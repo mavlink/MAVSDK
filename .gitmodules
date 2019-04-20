@@ -7,9 +7,6 @@
 [submodule "dronecore-proto"]
 	path = src/backend/proto
 	url = https://github.com/dronecore/DroneCore-Proto.git
-[submodule "json11"]
-	path = src/plugins/mission/third_party/json11
-	url = https://github.com/dronecore/json11
 [submodule "third_party/cpp_rsc"]
 	path = src/third_party/cpp_rsc
 	url = https://github.com/orex/cpp_rsc.git

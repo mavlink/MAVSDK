@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(external-zlib)
+project(external-json11)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
+    "-DBUILD_SHARED_LIBS=OFF"
     )
 
 if(ANDROID)
@@ -21,15 +22,15 @@ elseif(IOS)
         )
 endif()
 
-message(STATUS "Preparing external project \"zlib\" with args:")
+message(STATUS "Preparing external project \"json11\" with args:")
 foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
 ExternalProject_add(
-    zlib
-    URL https://github.com/madler/zlib/archive/v1.2.11.tar.gz
-    PREFIX zlib
-    PATCH_COMMAND patch -p1 < ${PROJECT_SOURCE_DIR}/build_shared_libs.patch
+    json11
+    URL https://github.com/dropbox/json11/archive/v1.0.0.tar.gz
+    PREFIX json11
+    PATCH_COMMAND patch -p1 < ${PROJECT_SOURCE_DIR}/export_config.patch
     CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>
     )

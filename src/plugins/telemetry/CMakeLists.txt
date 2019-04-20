@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_telemetry ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_telemetry
     telemetry.cpp
     telemetry_impl.cpp
     math_conversions.cpp

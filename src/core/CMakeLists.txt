@@ -6,7 +6,7 @@ include_directories(
 
 configure_file(version.h.in version.h)
 
-add_library(dronecode_sdk ${LIBRARY_TYPE}
+add_library(dronecode_sdk
     call_every_handler.cpp
     connection.cpp
     curl_wrapper.cpp

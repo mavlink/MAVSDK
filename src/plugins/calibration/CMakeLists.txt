@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_calibration ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_calibration
     calibration.cpp
     calibration_impl.cpp
     calibration_statustext_parser.cpp

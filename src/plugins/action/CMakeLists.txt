@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_action ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_action
     action.cpp
     action_impl.cpp
 )

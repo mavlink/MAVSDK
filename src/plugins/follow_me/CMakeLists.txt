@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_follow_me ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_follow_me
     follow_me.cpp
     follow_me_impl.cpp
 )

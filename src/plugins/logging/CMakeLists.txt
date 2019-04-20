@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_logging ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_logging
     logging.cpp
     logging_impl.cpp
 )

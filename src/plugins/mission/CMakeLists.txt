@@ -1,4 +1,6 @@
-add_library(dronecode_sdk_mission ${PLUGIN_LIBRARY_TYPE}
+find_package(json11 REQUIRED)
+
+add_library(dronecode_sdk_mission
     mission.cpp
     mission_impl.cpp
     mission_item.cpp
@@ -7,18 +9,15 @@ add_library(dronecode_sdk_mission ${PLUGIN_LIBRARY_TYPE}
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/core
-    SYSTEM third_party/json11
 )
 
 set_target_properties(dronecode_sdk_mission
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-add_subdirectory(third_party/json11)
-
 target_link_libraries(dronecode_sdk_mission
     dronecode_sdk
-    json11
+    json11::json11
 )
 
 install(FILES
@@ -37,12 +36,6 @@ PUBLIC
 PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
-
-if(ANDROID)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/third_party/json11/libjson11.a
-        DESTINATION ${lib_path}
-    )
-endif()
 
 list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/mission_import_qgc_test.cpp

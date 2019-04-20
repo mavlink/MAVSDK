@@ -10,11 +10,6 @@ list(APPEND CMAKE_ARGS
     "-DBUILD_SHARED_LIBS=OFF"
     )
 
-if(DEFINED ${CMAKE_GENERATOR_PLATFORM})
-    set(PLATFORM_ARGUMENT "-A${CMAKE_GENERATOR_PLATFORM}")
-    message(FATAL_ERROR "blaaaaaaaaaah ${PLATFORM_ARGUMENT}")
-endif()
-
 if(ANDROID)
     list(APPEND CMAKE_ARGS
         "-DANDROID_ABI:STRING=${ANDROID_ABI}"
@@ -28,7 +23,7 @@ elseif(IOS)
 endif()
 
 message(STATUS "Preparing external project \"tinyxml2\" with args:")
-foreach(CMAKE_ARG ${PLATFORM_ARGUMENT} ${CMAKE_ARGS})
+foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 

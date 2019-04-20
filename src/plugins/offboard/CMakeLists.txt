@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_offboard ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_offboard
     offboard.cpp
     offboard_impl.cpp
 )

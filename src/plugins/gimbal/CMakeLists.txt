@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_gimbal ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_gimbal
     gimbal.cpp
     gimbal_impl.cpp
 )

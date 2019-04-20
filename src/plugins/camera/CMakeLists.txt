@@ -10,7 +10,7 @@ if(NOT MSVC)
     include_directories(${RSC_H_DIR})
 endif()
 
-add_library(dronecode_sdk_camera ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_camera
     camera.cpp
     camera_impl.cpp
     camera_definition.cpp

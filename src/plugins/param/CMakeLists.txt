@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_param ${PLUGIN_LIBRARY_TYPE}
+add_library(dronecode_sdk_param
     param.cpp
     param_impl.cpp
 )
