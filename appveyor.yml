@@ -51,37 +51,37 @@ build_script:
   - cd example\takeoff_land
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" -A "Win64" ..
+  - cmake -G "Visual Studio 15 2017" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\fly_mission
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" -A "Win64" ..
+  - cmake -G "Visual Studio 15 2017" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\offboard_velocity
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" -A "Win64" ..
+  - cmake -G "Visual Studio 15 2017" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\transition_vtol_fixed_wing
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" -A "Win64" ..
+  - cmake -G "Visual Studio 15 2017" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\follow_me
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" -A "Win64" ..
+  - cmake -G "Visual Studio 15 2017" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\fly_qgc_mission
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" -A "Win64" ..
+  - cmake -G "Visual Studio 15 2017" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
 

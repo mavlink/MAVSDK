@@ -6,6 +6,10 @@ if(MSVC)
     # We need this so Windows links to e.g. dronecode_sdk_telemetry.dll.
     # Without this option it will look for dronecode_sdk_telemetry.lib and fail.
     option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)
+
+    if(NOT BUILD_SHARED_LIBS)
+        add_definitions(-DCURL_STATICLIB)
+    endif()
 else()
     # We are not using exceptions to make it easier to write wrappers.
     add_definitions(-fno-exceptions)
