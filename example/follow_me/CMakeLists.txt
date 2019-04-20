@@ -11,8 +11,8 @@ if(NOT MSVC)
     # Line below required if /usr/local/lib is not in your default linker path
     #link_directories(/usr/local/lib)
 else()
-    include_directories(${CMAKE_SOURCE_DIR}/../../install/include)
-    link_directories(${CMAKE_SOURCE_DIR}/../../install/lib)
+    #include_directories(${CMAKE_SOURCE_DIR}/../../install/include)
+    #link_directories(${CMAKE_SOURCE_DIR}/../../install/lib)
     add_definitions("-std=c++11 -WX -W2")
 endif()
 
@@ -22,9 +22,9 @@ add_executable(follow_me
 )
 
 target_link_libraries(follow_me
-    ${CMAKE_THREAD_LIBS_INIT}
-    dronecode_sdk
     dronecode_sdk_action
     dronecode_sdk_follow_me
     dronecode_sdk_telemetry
+    dronecode_sdk
+    ${CMAKE_THREAD_LIBS_INIT}
 )
