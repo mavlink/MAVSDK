@@ -40,6 +40,8 @@ private:
     void send_velocity_ned();
     void send_velocity_body();
     void send_attitude_rate();
+    void send_attitude();
+
 
     void process_heartbeat(const mavlink_message_t &message);
     void receive_command_result(MAVLinkCommands::Result result,
@@ -55,11 +57,13 @@ private:
         POSITION_NED,
         VELOCITY_NED,
         VELOCITY_BODY,
+        ATTITUDE,
         ATTITUDE_RATE
     } _mode = Mode::NOT_ACTIVE;
     Offboard::PositionNEDYaw _position_ned_yaw{};
     Offboard::VelocityNEDYaw _velocity_ned_yaw{};
     Offboard::VelocityBodyYawspeed _velocity_body_yawspeed{};
+    Offboard::Attitude _attitude{};
     Offboard::AttitudeRate _attitude_rate{};
 
     void *_call_every_cookie = nullptr;
