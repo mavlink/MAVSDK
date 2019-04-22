@@ -30,6 +30,7 @@ public:
     void set_position_ned(Offboard::PositionNEDYaw position_ned_yaw);
     void set_velocity_ned(Offboard::VelocityNEDYaw velocity_ned_yaw);
     void set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
+    void set_attitude(Offboard::Attitude attitude);
     void set_attitude_rate(Offboard::AttitudeRate attitude_rate);
 
     OffboardImpl(const OffboardImpl &) = delete;
