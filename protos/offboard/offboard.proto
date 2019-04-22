@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package dronecode_sdk.rpc.offboard;
+
+option java_package = "io.dronecode_sdk.offboard";
+option java_outer_classname = "OffboardProto";
+
+service OffboardService {
+    rpc Start(StartRequest) returns(StartResponse) {}
+    rpc Stop(StopRequest) returns(StopResponse) {}
+    rpc IsActive(IsActiveRequest) returns(IsActiveResponse) {}
+    rpc SetAttitudeRate(SetAttitudeRateRequest) returns(SetAttitudeRateResponse) {}
+    rpc SetPositionNed(SetPositionNedRequest) returns(SetPositionNedResponse) {}
+    rpc SetVelocityBody(SetVelocityBodyRequest) returns(SetVelocityBodyResponse) {}
+    rpc SetVelocityNed(SetVelocityNedRequest) returns(SetVelocityNedResponse) {}
+}
+
+message StartRequest {}
+message StartResponse {
+    OffboardResult offboard_result = 1;
+}
+
+message StopRequest {}
+message StopResponse {
+    OffboardResult offboard_result = 1;
+}
+
+message IsActiveRequest {}
+message IsActiveResponse {
+    bool is_active = 1;
+}
+
+message SetAttitudeRateRequest {
+    AttitudeRate attitude_rate = 1;
+}
+message SetAttitudeRateResponse {}
+
+message SetPositionNedRequest {
+    PositionNEDYaw position_ned_yaw = 1;
+}
+message SetPositionNedResponse {}
+
+message SetVelocityBodyRequest {
+    VelocityBodyYawspeed velocity_body_yawspeed = 1;
+}
+message SetVelocityBodyResponse {}
+
+message SetVelocityNedRequest {
+    VelocityNEDYaw velocity_ned_yaw = 1;
+}
+message SetVelocityNedResponse {}
+
+message AttitudeRate {
+    float roll_deg_s = 1;
+    float pitch_deg_s = 2;
+    float yaw_deg_s = 3;
+    float thrust_value = 4;
+}
+
+message PositionNEDYaw {
+    float north_m = 1;
+    float east_m = 2;
+    float down_m = 3;
+    float yaw_deg = 4;
+}
+
+message VelocityBodyYawspeed {
+    float forward_m_s = 1;
+    float right_m_s = 2;
+    float down_m_s = 3;
+    float yawspeed_deg_s = 4;
+}
+
+message VelocityNEDYaw {
+    float north_m_s = 1;
+    float east_m_s = 2;
+    float down_m_s = 3;
+    float yaw_deg = 4;
+}
+
+message OffboardResult {
+    enum Result {
+        UNKNOWN = 0;
+        SUCCESS = 1;
+        NO_SYSTEM = 2;
+        CONNECTION_ERROR = 3;
+        BUSY = 4;
+        COMMAND_DENIED = 5;
+        TIMEOUT = 6;
+        NO_SETPOINT_SET = 7;
+    }
+
+    Result result = 1;
+    string result_str = 2;
+}
