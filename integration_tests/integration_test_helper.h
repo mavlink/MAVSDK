@@ -3,6 +3,7 @@
 #include <chrono>
 #include <functional>
 #include <future>
+#include <string>
 #include <gtest/gtest.h>
 #include "global_include.h"
 #include "log.h"
@@ -11,10 +12,10 @@
 
 class SitlTest : public testing::Test {
 protected:
-    virtual void SetUp() override
+    void StartPX4(const std::string &model)
     {
 #ifndef WINDOWS
-        const int ret = system("./start_px4_sitl.sh");
+        const int ret = system((std::string("./start_px4_sitl.sh ") + model).c_str());
         if (ret != 0) {
             dronecode_sdk::LogErr() << "./start_px4_sitl.sh failed, giving up.";
             abort();
@@ -25,7 +26,8 @@ protected:
         dronecode_sdk::LogErr() << "Auto-starting SITL not supported on Windows.";
 #endif
     }
-    virtual void TearDown() override
+
+    void StopPX4()
     {
 #ifndef WINDOWS
         // Don't rush this either.
@@ -38,6 +40,27 @@ protected:
 #else
         dronecode_sdk::LogErr() << "Auto-starting SITL not supported on Windows.";
 #endif
+    }
+
+    virtual void SetUp() override { StartPX4(determineModel()); }
+
+    virtual void TearDown() override { StopPX4(); }
+
+private:
+    static std::string determineModel()
+    {
+        // If no model name is appended to the test name, we use the default which is iris.
+        std::string model_name = "iris";
+
+        const std::string &test_name =
+            ::testing::UnitTest::GetInstance()->current_test_info()->name();
+        const size_t pos = test_name.find_first_of('_', 0);
+        if (pos != std::string::npos) {
+            model_name = test_name.substr(pos + 1, test_name.length() - pos - 1);
+        }
+
+        dronecode_sdk::LogDebug() << "Model chosen: '" << model_name << "'";
+        return model_name;
     }
 };
 

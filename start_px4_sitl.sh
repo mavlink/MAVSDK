@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+if [ "$#" -ne 1 ]; then
+    echo "Model argument needed"
+    exit 1
+fi
+
+sitl_model=$1
+echo "SITL model: $sitl_model"
+
+set -e
+
 # This script spawns the Gazebo PX4 software in the loop (SITL) simulation.
 # Options:
 #     AUTOSTART_SITL=1 if SITL is started manually or real hardware is used.
@@ -14,15 +24,13 @@ fi
 if [[ -n "$PX4_FIRMWARE_DIR" ]]; then
     px4_firmware_dir=$PX4_FIRMWARE_DIR
 else
-    # Try to use the documented default path.
-    px4_firmware_dir=$HOME/src/Firmware
+    # Try to use the default path on the same folder level.
+    px4_firmware_dir=`realpath ../Firmware`
 fi
-
-# HEADLESS=1 can still be set when the integration tests are run.
-#export HEADLESS=0
 
 # Make sure everything is stopped first.
 ./stop_px4_sitl.sh
+
 # To prevent any races.
 sleep 1
 
@@ -46,15 +54,16 @@ fi
 pushd .
 
 # Go to Firmware build dir.
-cd $px4_firmware_dir/build/posix_sitl_default/tmp
+cd $px4_firmware_dir/build/px4_sitl_default/tmp/rootfs
 
 # And run
 $px4_firmware_dir/Tools/sitl_run.sh \
-    $px4_firmware_dir/build/posix_sitl_default/px4 \
-    posix-configs/SITL/init/lpe \
-    none gazebo iris \
+    $px4_firmware_dir/build/px4_sitl_default/bin/px4 \
+    none \
+    gazebo \
+    $sitl_model \
     $px4_firmware_dir \
-    $px4_firmware_dir/build/posix_sitl_default 2>1 > $log_dir/px4_sitl-$timestamp.log &
+    $px4_firmware_dir/build/px4_sitl_default 2>1 > $log_dir/px4_sitl-$timestamp.log &
 
 # Go back to dir where we started
 popd
