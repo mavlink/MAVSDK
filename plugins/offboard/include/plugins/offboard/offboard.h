@@ -106,15 +106,15 @@ public:
     };
 
     /**
-       * @brief Type for attitude commands in NED coordinates (roll, pitch, yaw and thrust
-       */
-      struct Attitude {
-          float roll_deg; /**< @brief attitude in deg. */
-          float pitch_deg; /**< @brief attitude in deg */
-          float yaw_deg; /**< @brief attitude in deg */
-          float thrust_value; /**< @brief Thrust in percentage ranging from 0 to 1 ( 0 to 100
-                                 percent). */
-      };
+     * @brief Type for attitude commands in NED coordinates (roll, pitch, yaw and thrust
+     */
+    struct Attitude {
+        float roll_deg; /**< @brief attitude in deg. */
+        float pitch_deg; /**< @brief attitude in deg */
+        float yaw_deg; /**< @brief attitude in deg */
+        float thrust_value; /**< @brief Thrust in percentage ranging from 0 to 1 ( 0 to 100
+                               percent). */
+    };
 
     /**
      * @brief Type for Attitude rate commands in body coordinates (roll, pitch, yaw  angular
@@ -207,12 +207,12 @@ public:
 
     void set_attitude(Attitude attitude);
 
-   /**
-    * @brief Set the attitude rate in terms of pitch, roll and yaw angular rate along with thrust
-    * in percentage.
-    *
-    * @param attitude_rate roll, pitch and yaw angular rate along with thrust in percentage.
-    */
+    /**
+     * @brief Set the attitude rate in terms of pitch, roll and yaw angular rate along with thrust
+     * in percentage.
+     *
+     * @param attitude_rate roll, pitch and yaw angular rate along with thrust in percentage.
+     */
     void set_attitude_rate(AttitudeRate attitude_rate);
 
     /**

@@ -187,7 +187,6 @@ void OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_bod
     send_velocity_body();
 }
 
-
 void OffboardImpl::set_attitude(Offboard::Attitude attitude)
 {
     _mutex.lock();
@@ -214,7 +213,6 @@ void OffboardImpl::set_attitude(Offboard::Attitude attitude)
     // also send it right now to reduce latency
     send_attitude();
 }
-
 
 void OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
 {
@@ -420,7 +418,6 @@ void OffboardImpl::send_attitude()
     const float yaw = to_rad_from_deg(_attitude.yaw_deg);
     _mutex.unlock();
 
-
     const double cos_phi_2 = cos(double(roll) / 2.0);
     const double sin_phi_2 = sin(double(roll) / 2.0);
     const double cos_theta_2 = cos(double(pitch) / 2.0);
@@ -451,7 +448,6 @@ void OffboardImpl::send_attitude()
         thrust);
     _parent->send_message(message);
 }
-
 
 void OffboardImpl::send_attitude_rate()
 {
