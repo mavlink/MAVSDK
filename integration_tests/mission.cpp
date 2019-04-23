@@ -149,7 +149,6 @@ void test_mission(std::shared_ptr<Telemetry> telemetry,
                                                  MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
     }
 
-    EXPECT_FALSE(mission->get_return_to_launch_after_mission());
     mission->set_return_to_launch_after_mission(true);
     EXPECT_TRUE(mission->get_return_to_launch_after_mission());
 
