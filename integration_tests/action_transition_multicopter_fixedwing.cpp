@@ -25,7 +25,8 @@ void takeoff_and_transition_to_fixedwing()
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_TRUE(poll_condition_with_timeout([&dc]() { return dc.is_connected(); },
+                                            std::chrono::seconds(10)));
     ASSERT_TRUE(dc.is_connected());
 
     System &system = dc.system();

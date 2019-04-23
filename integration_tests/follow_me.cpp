@@ -98,7 +98,8 @@ TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
 
     // Wait for system to connect via heartbeat.
-    sleep_for(seconds(2));
+    ASSERT_TRUE(poll_condition_with_timeout([&dc]() { return dc.is_connected(); },
+                                            std::chrono::seconds(10)));
     System &system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 

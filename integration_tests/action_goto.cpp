@@ -15,8 +15,8 @@ TEST_F(SitlTest, ActionGoto)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_TRUE(dc.is_connected());
+    ASSERT_TRUE(poll_condition_with_timeout([&dc]() { return dc.is_connected(); },
+                                            std::chrono::seconds(10)));
 
     System &system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
@@ -26,7 +26,7 @@ TEST_F(SitlTest, ActionGoto)
         LogInfo() << "waiting for system to be ready";
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        ASSERT_LT(++iteration, 20);
+        ASSERT_LT(++iteration, 10);
     }
 
     auto action = std::make_shared<Action>(system);

@@ -19,7 +19,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
             prom.set_value();
             UNUSED(uuid);
         });
-        ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+        ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
     System &system = dc.system();
@@ -37,7 +37,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
                 prom.set_value();
             }
         });
-        EXPECT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
+        ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
     action->set_takeoff_altitude(0.4f);
