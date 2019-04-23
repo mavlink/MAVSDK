@@ -82,9 +82,9 @@ void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetr
 
     action_ret = action->takeoff();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
-    const int wait_time_s = 10;
+    const int wait_time_s = 15;
     std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
 
-    EXPECT_GT(telemetry->position().relative_altitude_m, altitude_m - 0.25f);
-    EXPECT_LT(telemetry->position().relative_altitude_m, altitude_m + 0.25f);
+    EXPECT_GT(telemetry->position().relative_altitude_m, altitude_m - 0.5f);
+    EXPECT_LT(telemetry->position().relative_altitude_m, altitude_m + 0.5f);
 }
