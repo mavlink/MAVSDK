@@ -106,7 +106,7 @@ public:
         set_color(Color::RESET);
 
         std::cout << _s.str();
-        std::cout << " (" << _caller_filename << ":" << _caller_filenumber << ")";
+        std::cout << " (" << _caller_filename << ":" << std::dec << _caller_filenumber << ")";
 
         std::cout << std::endl;
 #endif
