@@ -2,5 +2,5 @@
 
 int main(int argc, char **argv)
 {
-    runBackend(14540, nullptr, nullptr);
+    runBackend("udp://14540", nullptr, nullptr);
 }
