@@ -21,7 +21,7 @@ protected:
             abort();
         }
         // We need to wait a bit until it's up and running.
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        std::this_thread::sleep_for(std::chrono::seconds(10));
 #else
         dronecode_sdk::LogErr() << "Auto-starting SITL not supported on Windows.";
 #endif
