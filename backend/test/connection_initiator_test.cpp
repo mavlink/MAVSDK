@@ -13,7 +13,7 @@ using event_callback_t = dronecode_sdk::testing::event_callback_t;
 using MockDronecodeSDK = NiceMock<dronecode_sdk::testing::MockDronecodeSDK>;
 using ConnectionInitiator = dronecode_sdk::backend::ConnectionInitiator<MockDronecodeSDK>;
 
-static constexpr auto ARBITRARY_PORT = 1291;
+static constexpr auto ARBITRARY_CONNECTION_URL = "udp://1291";
 static constexpr auto ARBITRARY_UUID = 1492;
 
 ACTION_P(SaveCallback, event_callback)
@@ -27,7 +27,7 @@ TEST(ConnectionInitiator, registerDiscoverIsCalledExactlyOnce)
     MockDronecodeSDK dc;
     EXPECT_CALL(dc, register_on_discover(_)).Times(1);
 
-    initiator.start(dc, ARBITRARY_PORT);
+    initiator.start(dc, ARBITRARY_CONNECTION_URL);
 }
 
 TEST(ConnectionInitiator, startAddsUDPConnection)
@@ -35,9 +35,9 @@ TEST(ConnectionInitiator, startAddsUDPConnection)
     ConnectionInitiator initiator;
     MockDronecodeSDK dc;
 
-    EXPECT_CALL(dc, add_udp_connection(_));
+    EXPECT_CALL(dc, add_any_connection(_));
 
-    initiator.start(dc, ARBITRARY_PORT);
+    initiator.start(dc, ARBITRARY_CONNECTION_URL);
 }
 
 TEST(ConnectionInitiator, startHangsUntilSystemDiscovered)
@@ -48,7 +48,7 @@ TEST(ConnectionInitiator, startHangsUntilSystemDiscovered)
     EXPECT_CALL(dc, register_on_discover(_)).WillOnce(SaveCallback(&discover_callback));
 
     auto async_future = std::async(std::launch::async, [&initiator, &dc]() {
-        initiator.start(dc, ARBITRARY_PORT);
+        initiator.start(dc, ARBITRARY_CONNECTION_URL);
         initiator.wait();
     });
 
@@ -65,7 +65,7 @@ TEST(ConnectionInitiator, connectionDetectedIfDiscoverCallbackCalledBeforeWait)
     event_callback_t discover_callback;
     EXPECT_CALL(dc, register_on_discover(_)).WillOnce(SaveCallback(&discover_callback));
 
-    initiator.start(dc, ARBITRARY_PORT);
+    initiator.start(dc, ARBITRARY_CONNECTION_URL);
     discover_callback(ARBITRARY_UUID);
     initiator.wait();
 }
@@ -77,7 +77,7 @@ TEST(ConnectionInitiator, doesNotCrashIfDiscoverCallbackCalledMoreThanOnce)
     event_callback_t discover_callback;
     EXPECT_CALL(dc, register_on_discover(_)).WillOnce(SaveCallback(&discover_callback));
 
-    initiator.start(dc, ARBITRARY_PORT);
+    initiator.start(dc, ARBITRARY_CONNECTION_URL);
     discover_callback(ARBITRARY_UUID);
     discover_callback(ARBITRARY_UUID);
 }
