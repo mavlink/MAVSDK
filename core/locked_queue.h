@@ -24,11 +24,11 @@ public:
     }
 
     using iterator = typename std::deque<std::shared_ptr<T>>::iterator;
-    LockedQueue<T>::iterator begin() { return _queue.begin(); }
+    iterator begin() { return _queue.begin(); }
 
-    LockedQueue<T>::iterator end() { return _queue.end(); }
+    iterator end() { return _queue.end(); }
 
-    LockedQueue<T>::iterator erase(LockedQueue<T>::iterator it) { return _queue.erase(it); }
+    iterator erase(iterator it) { return _queue.erase(it); }
 
     class Guard {
     public:
