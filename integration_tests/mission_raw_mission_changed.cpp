@@ -98,11 +98,9 @@ void validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMission
             EXPECT_EQ(items[i]->x, std::round(SOME_LATITUDES[i / 2] * 1e7));
             EXPECT_EQ(items[i]->y, std::round(SOME_LONGITUDES[i / 2] * 1e7));
             EXPECT_EQ(items[i]->z, SOME_ALTITUDES[i / 2]);
-            LogWarn() << "i/2: " << i / 2;
         } else {
             EXPECT_EQ(items[i]->command, 178); // MAV_CMD_DO_CHANGE_SPEED
             EXPECT_EQ(items[i]->param2, SOME_SPEEDS[i / 2]);
-            LogWarn() << "i/2: " << i / 2;
         }
     }
 }
