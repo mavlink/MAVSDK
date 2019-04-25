@@ -31,6 +31,11 @@ Telemetry::Result Telemetry::set_rate_in_air(double rate_hz)
     return _impl->set_rate_in_air(rate_hz);
 }
 
+Telemetry::Result Telemetry::set_rate_mav_message(double rate_hz)
+{
+    return _impl->set_rate_mav_message(rate_hz);
+}
+
 Telemetry::Result Telemetry::set_rate_attitude(double rate_hz)
 {
     return _impl->set_rate_attitude(rate_hz);
@@ -81,6 +86,11 @@ void Telemetry::set_rate_in_air_async(double rate_hz, result_callback_t callback
     _impl->set_rate_in_air_async(rate_hz, callback);
 }
 
+void Telemetry::set_rate_mav_message_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_mav_message_async(rate_hz, callback);
+}
+
 void Telemetry::set_rate_attitude_async(double rate_hz, result_callback_t callback)
 {
     _impl->set_rate_attitude_async(rate_hz, callback);
@@ -129,6 +139,11 @@ Telemetry::Position Telemetry::home_position() const
 bool Telemetry::in_air() const
 {
     return _impl->in_air();
+}
+
+Telemetry::MavMessage Telemetry::mav_message() const
+{
+    return _impl->get_mav_message();
 }
 
 bool Telemetry::armed() const
@@ -209,6 +224,11 @@ void Telemetry::home_position_async(position_callback_t callback)
 void Telemetry::in_air_async(in_air_callback_t callback)
 {
     return _impl->in_air_async(callback);
+}
+
+void Telemetry::mav_message_async(mav_message_callback_t callback)
+{
+    return _impl->mav_message_async(callback);
 }
 
 void Telemetry::armed_async(armed_callback_t callback)
@@ -470,6 +490,16 @@ std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status
     return str << "[was_available_once: " << rc_status.available_once
                << ", is_available: " << rc_status.available
                << ", signal_strength_percent: " << rc_status.signal_strength_percent << "]";
+}
+
+bool operator==(const Telemetry::MavMessage &lhs, const Telemetry::MavMessage &rhs)
+{
+    return lhs.message_str == rhs.message_str ;
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::MavMessage const &mav_message)
+{
+    return str << "[message: " << mav_message.message_str << "]";
 }
 
 } // namespace dronecode_sdk
