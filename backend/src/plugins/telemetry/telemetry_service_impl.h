@@ -96,6 +96,43 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeStatusText(
+        grpc::ServerContext * /* context */,
+        const dronecode_sdk::rpc::telemetry::SubscribeStatusTextRequest * /* request */,
+        grpc::ServerWriter<rpc::telemetry::StatusTextResponse> *writer) override
+    {
+        _telemetry.status_text_async(
+            [this, &writer](dronecode_sdk::Telemetry::StatusText status_text) {
+                auto rpc_status_text = new dronecode_sdk::rpc::telemetry::StatusText();
+                rpc_status_text->set_text(status_text.text);
+                rpc_status_text->set_type(translateStatusTextType(status_text.type));
+
+                dronecode_sdk::rpc::telemetry::StatusTextResponse rpc_status_text_response;
+                rpc_status_text_response.set_allocated_status_text(rpc_status_text);
+                writer->Write(rpc_status_text_response);
+            });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
+    dronecode_sdk::rpc::telemetry::StatusText::StatusType
+    translateStatusTextType(const dronecode_sdk::Telemetry::StatusText::StatusType type) const
+    {
+        switch (type) {
+            default:
+            case dronecode_sdk::Telemetry::StatusText::StatusType::INFO:
+                return dronecode_sdk::rpc::telemetry::StatusText::StatusType::
+                    StatusText_StatusType_INFO;
+            case dronecode_sdk::Telemetry::StatusText::StatusType::WARNING:
+                return dronecode_sdk::rpc::telemetry::StatusText::StatusType::
+                    StatusText_StatusType_WARNING;
+            case dronecode_sdk::Telemetry::StatusText::StatusType::CRITICAL:
+                return dronecode_sdk::rpc::telemetry::StatusText::StatusType::
+                    StatusText_StatusType_CRITICAL;
+        }
+    }
+
     grpc::Status
     SubscribeArmed(grpc::ServerContext * /* context */,
                    const dronecode_sdk::rpc::telemetry::SubscribeArmedRequest * /* request */,

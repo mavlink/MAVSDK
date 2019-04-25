@@ -54,6 +54,7 @@ public:
     Telemetry::Position get_home_position() const;
     bool in_air() const;
     bool armed() const;
+    Telemetry::StatusText get_status_text() const;
     Telemetry::EulerAngle get_attitude_euler_angle() const;
     Telemetry::Quaternion get_attitude_quaternion() const;
     Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
@@ -70,6 +71,7 @@ public:
     void position_async(Telemetry::position_callback_t &callback);
     void home_position_async(Telemetry::position_callback_t &callback);
     void in_air_async(Telemetry::in_air_callback_t &callback);
+    void status_text_async(Telemetry::status_text_callback_t &callback);
     void armed_async(Telemetry::armed_callback_t &callback);
     void attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t &callback);
     void attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t &callback);
@@ -91,6 +93,7 @@ private:
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
+    void set_status_text(Telemetry::StatusText status_text);
     void set_armed(bool armed);
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
@@ -116,6 +119,7 @@ private:
     void process_extended_sys_state(const mavlink_message_t &message);
     void process_sys_status(const mavlink_message_t &message);
     void process_heartbeat(const mavlink_message_t &message);
+    void process_statustext(const mavlink_message_t &message);
     void process_rc_channels(const mavlink_message_t &message);
 
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
@@ -154,6 +158,9 @@ private:
     std::atomic_bool _in_air{false};
     std::atomic_bool _armed{false};
 
+    mutable std::mutex _status_text_mutex{};
+    Telemetry::StatusText _status_text{Telemetry::StatusText::StatusType::INFO, ""};
+
     mutable std::mutex _attitude_quaternion_mutex{};
     Telemetry::Quaternion _attitude_quaternion{NAN, NAN, NAN, NAN};
 
@@ -184,6 +191,7 @@ private:
     Telemetry::position_callback_t _position_subscription{nullptr};
     Telemetry::position_callback_t _home_position_subscription{nullptr};
     Telemetry::in_air_callback_t _in_air_subscription{nullptr};
+    Telemetry::status_text_callback_t _status_text_subscription{nullptr};
     Telemetry::armed_callback_t _armed_subscription{nullptr};
     Telemetry::attitude_quaternion_callback_t _attitude_quaternion_subscription{nullptr};
     Telemetry::attitude_euler_angle_callback_t _attitude_euler_angle_subscription{nullptr};

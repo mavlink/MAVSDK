@@ -131,6 +131,11 @@ bool Telemetry::in_air() const
     return _impl->in_air();
 }
 
+Telemetry::StatusText Telemetry::status_text() const
+{
+    return _impl->get_status_text();
+}
+
 bool Telemetry::armed() const
 {
     return _impl->armed();
@@ -209,6 +214,11 @@ void Telemetry::home_position_async(position_callback_t callback)
 void Telemetry::in_air_async(in_air_callback_t callback)
 {
     return _impl->in_air_async(callback);
+}
+
+void Telemetry::status_text_async(status_text_callback_t callback)
+{
+    return _impl->status_text_async(callback);
 }
 
 void Telemetry::armed_async(armed_callback_t callback)
@@ -470,6 +480,16 @@ std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status
     return str << "[was_available_once: " << rc_status.available_once
                << ", is_available: " << rc_status.available
                << ", signal_strength_percent: " << rc_status.signal_strength_percent << "]";
+}
+
+bool operator==(const Telemetry::StatusText &lhs, const Telemetry::StatusText &rhs)
+{
+    return lhs.text == rhs.text && lhs.type == rhs.type;
+}
+
+std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_text)
+{
+    return str << "[statustext: " << status_text.text << "]";
 }
 
 } // namespace dronecode_sdk

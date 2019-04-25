@@ -5,6 +5,7 @@
 #include "px4_custom_mode.h"
 #include <cmath>
 #include <functional>
+#include <string>
 
 namespace dronecode_sdk {
 
@@ -60,6 +61,9 @@ void TelemetryImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&TelemetryImpl::process_heartbeat, this, _1), this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_STATUSTEXT, std::bind(&TelemetryImpl::process_statustext, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS, std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
@@ -489,6 +493,43 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
     }
 }
 
+void TelemetryImpl::process_statustext(const mavlink_message_t &message)
+{
+    mavlink_statustext_t statustext;
+    mavlink_msg_statustext_decode(&message, &statustext);
+
+    Telemetry::StatusText::StatusType type;
+
+    switch (statustext.severity) {
+        case MAV_SEVERITY_WARNING:
+            type = Telemetry::StatusText::StatusType::WARNING;
+            break;
+        case MAV_SEVERITY_CRITICAL:
+            type = Telemetry::StatusText::StatusType::CRITICAL;
+            break;
+        case MAV_SEVERITY_INFO:
+            type = Telemetry::StatusText::StatusType::INFO;
+            break;
+        default:
+            LogWarn() << "Unknown StatusText severity";
+            type = Telemetry::StatusText::StatusType::INFO;
+            break;
+    }
+
+    // statustext.text is not null terminated, therefore we copy it first to
+    // an array big enough that is zeroed.
+    char text_with_null[sizeof(statustext.text) + 1]{};
+    memcpy(text_with_null, statustext.text, sizeof(statustext.text));
+
+    const std::string text = text_with_null;
+
+    set_status_text({type, text});
+
+    if (_status_text_subscription) {
+        _status_text_subscription(get_status_text());
+    }
+}
+
 void TelemetryImpl::process_rc_channels(const mavlink_message_t &message)
 {
     mavlink_rc_channels_t rc_channels;
@@ -657,6 +698,18 @@ bool TelemetryImpl::armed() const
 void TelemetryImpl::set_in_air(bool in_air_new)
 {
     _in_air = in_air_new;
+}
+
+void TelemetryImpl::set_status_text(Telemetry::StatusText status_text)
+{
+    std::lock_guard<std::mutex> lock(_status_text_mutex);
+    _status_text = status_text;
+}
+
+Telemetry::StatusText TelemetryImpl::get_status_text() const
+{
+    std::lock_guard<std::mutex> lock(_status_text_mutex);
+    return _status_text;
 }
 
 void TelemetryImpl::set_armed(bool armed_new)
@@ -852,6 +905,11 @@ void TelemetryImpl::home_position_async(Telemetry::position_callback_t &callback
 void TelemetryImpl::in_air_async(Telemetry::in_air_callback_t &callback)
 {
     _in_air_subscription = callback;
+}
+
+void TelemetryImpl::status_text_async(Telemetry::status_text_callback_t &callback)
+{
+    _status_text_subscription = callback;
 }
 
 void TelemetryImpl::armed_async(Telemetry::armed_callback_t &callback)
