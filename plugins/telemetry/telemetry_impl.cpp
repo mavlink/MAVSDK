@@ -5,6 +5,7 @@
 #include "px4_custom_mode.h"
 #include <cmath>
 #include <functional>
+#include <string>
 
 namespace dronecode_sdk {
 
@@ -60,6 +61,9 @@ void TelemetryImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT, std::bind(&TelemetryImpl::process_heartbeat, this, _1), this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_STATUSTEXT, std::bind(&TelemetryImpl::process_statustext, this, _1), this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS, std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
@@ -152,6 +156,12 @@ Telemetry::Result TelemetryImpl::set_rate_in_air(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_mav_message(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz)); // Anotacao: MAVLINK_MSG_ID_STATUSTEXT?
+}
+
 Telemetry::Result TelemetryImpl::set_rate_attitude(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -224,6 +234,14 @@ void TelemetryImpl::set_rate_in_air_async(double rate_hz, Telemetry::result_call
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_mav_message_async(double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_EXTENDED_SYS_STATE, // Anotacao: Possible error here, since I don't know what to set.
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
@@ -489,6 +507,56 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
     }
 }
 
+void TelemetryImpl::process_statustext(const mavlink_message_t &message)
+{
+    mavlink_statustext_t statustext;
+    mavlink_msg_statustext_decode(&message, &statustext);
+
+    std::string debug_str = "MAVLink: ";
+
+    switch (statustext.severity) {
+        case MAV_SEVERITY_EMERGENCY:
+            debug_str += "emergency";
+            break;
+        case MAV_SEVERITY_ALERT:
+            debug_str += "alert";
+            break;
+        case MAV_SEVERITY_CRITICAL:
+            debug_str += "critical";
+            break;
+        case MAV_SEVERITY_ERROR:
+            debug_str += "error";
+            break;
+        case MAV_SEVERITY_WARNING:
+            debug_str += "warning";
+            break;
+        case MAV_SEVERITY_NOTICE:
+            debug_str += "notice";
+            break;
+        case MAV_SEVERITY_INFO:
+            debug_str += "info";
+            break;
+        case MAV_SEVERITY_DEBUG:
+            debug_str += "debug";
+            break;
+        default:
+            break;
+    }
+
+    // statustext.text is not null terminated, therefore we copy it first to
+    // an array big enough that is zeroed.
+    char text_with_null[sizeof(statustext.text) + 1]{};
+    memcpy(text_with_null, statustext.text, sizeof(statustext.text));
+
+    std::string mav_message_str = debug_str +  ": " + text_with_null;
+
+    set_mav_message({mav_message_str});
+
+    if (_mav_message_subscription) {
+        _mav_message_subscription(get_mav_message());
+    }
+}
+
 void TelemetryImpl::process_rc_channels(const mavlink_message_t &message)
 {
     mavlink_rc_channels_t rc_channels;
@@ -657,6 +725,18 @@ bool TelemetryImpl::armed() const
 void TelemetryImpl::set_in_air(bool in_air_new)
 {
     _in_air = in_air_new;
+}
+
+void TelemetryImpl::set_mav_message(Telemetry::MavMessage mav_message)
+{
+    std::lock_guard<std::mutex> lock(_mav_message_mutex);
+    _mav_message = mav_message;
+}
+
+Telemetry::MavMessage TelemetryImpl::get_mav_message() const
+{
+    std::lock_guard<std::mutex> lock(_mav_message_mutex);
+    return _mav_message;
 }
 
 void TelemetryImpl::set_armed(bool armed_new)
@@ -852,6 +932,11 @@ void TelemetryImpl::home_position_async(Telemetry::position_callback_t &callback
 void TelemetryImpl::in_air_async(Telemetry::in_air_callback_t &callback)
 {
     _in_air_subscription = callback;
+}
+
+void TelemetryImpl::mav_message_async(Telemetry::mav_message_callback_t &callback)
+{
+    _mav_message_subscription = callback;
 }
 
 void TelemetryImpl::armed_async(Telemetry::armed_callback_t &callback)

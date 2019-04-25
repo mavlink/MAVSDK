@@ -129,6 +129,10 @@ public:
                                      5: RTK float, 6: RTK fixed). */
     };
 
+    struct MavMessage {
+        std::string message_str;
+    };
+
     /**
      * @brief Battery type.
      */
@@ -246,6 +250,8 @@ public:
      */
     Result set_rate_in_air(double rate_hz);
 
+    Result set_rate_mav_message(double rate_hz);
+
     /**
      * @brief Set rate of attitude updates (synchronous).
      *
@@ -327,6 +333,8 @@ public:
      */
     void set_rate_in_air_async(double rate_hz, result_callback_t callback);
 
+    void set_rate_mav_message_async(double rate_hz, result_callback_t callback);
+
     /**
      * @brief Set rate of attitude updates (asynchronous).
      *
@@ -402,6 +410,8 @@ public:
      * @return true if in-air (flying) and not on-ground (landed).
      */
     bool in_air() const;
+
+    MavMessage mav_message() const;
 
     /**
      * @brief Get the arming status (synchronous).
@@ -527,12 +537,16 @@ public:
      */
     typedef std::function<void(bool in_air)> in_air_callback_t;
 
+    typedef std::function<void(MavMessage mav_message)> mav_message_callback_t; // Anotacao: Remove mav_message from here?
+
     /**
      * @brief Subscribe to in-air updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
     void in_air_async(in_air_callback_t callback);
+
+    void mav_message_async(mav_message_callback_t callback);
 
     /**
      * @brief Callback type for armed updates (asynchronous).
@@ -852,5 +866,7 @@ bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs);
  * @return A reference to the stream.
  */
 std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status);
+
+std::ostream &operator<<(std::ostream &str, Telemetry::MavMessage const &mav_message);
 
 } // namespace dronecode_sdk

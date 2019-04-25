@@ -97,6 +97,24 @@ public:
     }
 
     grpc::Status
+    SubscribeMavMessage(grpc::ServerContext * /* context */,
+                        const dronecode_sdk::rpc::telemetry::SubscribeMavMessageRequest * /* request */,
+                        grpc::ServerWriter<rpc::telemetry::MavMessageResponse> *writer) override
+    {
+        _telemetry.mav_message_async([&writer](dronecode_sdk::Telemetry::MavMessage mav_message) {
+            auto rpc_mav_message = new dronecode_sdk::rpc::telemetry::MavMessage();
+            rpc_mav_message->set_message_str(mav_message.message_str);
+
+            dronecode_sdk::rpc::telemetry::MavMessageResponse rpc_mav_message_response;
+            rpc_mav_message_response.set_allocated_mav_message(rpc_mav_message);
+            writer->Write(rpc_mav_message_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
+    grpc::Status
     SubscribeArmed(grpc::ServerContext * /* context */,
                    const dronecode_sdk::rpc::telemetry::SubscribeArmedRequest * /* request */,
                    grpc::ServerWriter<rpc::telemetry::ArmedResponse> *writer) override
@@ -339,7 +357,7 @@ public:
         });
 
         _stop_future.wait();
-        return grpc::Status::OK;
+        return grpc::Status::OK; 
     }
 
     void stop() { _stop_promise.set_value(); }
