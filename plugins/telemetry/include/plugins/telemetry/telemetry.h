@@ -135,12 +135,12 @@ public:
     struct StatusText {
         /**
          * @brief Status Types.
-         * 
-         * @note PX4 only supports these 3 status types. 
-         * If other status types are returned for some reason, 
+         *
+         * @note PX4 only supports these 3 status types.
+         * If other status types are returned for some reason,
          * they will be marked as INFO type and logged as a warning.
-        */
-        enum class StatusType { 
+         */
+        enum class StatusType {
             INFO, /**< @brief Message type is an information or other. */
             WARNING, /**< @brief Message type is a warning. */
             CRITICAL /**< @brief Message type is critical. */
