@@ -3,6 +3,7 @@
 #include "dronecode_sdk_impl.h"
 #include <fstream>
 #include <ctime>
+#include <cstring>
 
 namespace dronecode_sdk {
 
