@@ -162,7 +162,7 @@ private:
 
     // Anotacao
     mutable std::mutex _mav_message_mutex{};
-    Telemetry::MavMessage _mav_message{""};
+    Telemetry::MavMessage _mav_message{Telemetry::MavMessage::MessageType::UNKNOWN, ""};
 
     mutable std::mutex _attitude_quaternion_mutex{};
     Telemetry::Quaternion _attitude_quaternion{NAN, NAN, NAN, NAN};

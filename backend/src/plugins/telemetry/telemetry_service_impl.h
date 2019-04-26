@@ -101,9 +101,10 @@ public:
                         const dronecode_sdk::rpc::telemetry::SubscribeMavMessageRequest * /* request */,
                         grpc::ServerWriter<rpc::telemetry::MavMessageResponse> *writer) override
     {
-        _telemetry.mav_message_async([&writer](dronecode_sdk::Telemetry::MavMessage mav_message) {
+        _telemetry.mav_message_async([this, &writer](dronecode_sdk::Telemetry::MavMessage mav_message) {
             auto rpc_mav_message = new dronecode_sdk::rpc::telemetry::MavMessage();
             rpc_mav_message->set_message_str(mav_message.message_str);
+            rpc_mav_message->set_message_type(translateMavMessageType(mav_message.message_type));
 
             dronecode_sdk::rpc::telemetry::MavMessageResponse rpc_mav_message_response;
             rpc_mav_message_response.set_allocated_mav_message(rpc_mav_message);
@@ -112,6 +113,32 @@ public:
 
         _stop_future.wait();
         return grpc::Status::OK;
+    }
+
+    dronecode_sdk::rpc::telemetry::MavMessage::MessageType
+    translateMavMessageType(const dronecode_sdk::Telemetry::MavMessage::MessageType message_type) const
+    {
+        switch (message_type) {
+            default:
+            case dronecode_sdk::Telemetry::MavMessage::MessageType::EMERGENCY:
+                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_EMERGENCY;
+            case dronecode_sdk::Telemetry::MavMessage::MessageType::ALERT:
+                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_ALERT;
+            case dronecode_sdk::Telemetry::MavMessage::MessageType::CRITICAL:
+                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_CRITICAL;
+            case dronecode_sdk::Telemetry::MavMessage::MessageType::ERROR:
+                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_ERROR;
+            case dronecode_sdk::Telemetry::MavMessage::MessageType::WARNING:
+                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_WARNING;
+            case dronecode_sdk::Telemetry::MavMessage::MessageType::NOTICE:
+                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_NOTICE;
+            case dronecode_sdk::Telemetry::MavMessage::MessageType::INFO:
+                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_INFO;
+            case dronecode_sdk::Telemetry::MavMessage::MessageType::DEBUS:
+                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_DEBUS;
+            case dronecode_sdk::Telemetry::MavMessage::MessageType::UNKNOWN:
+                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_UNKNOWN;
+        }
     }
 
     grpc::Status

@@ -130,6 +130,17 @@ public:
     };
 
     struct MavMessage {
+        enum class MessageType {
+                    EMERGENCY,
+                    ALERT,
+                    CRITICAL,
+                    ERROR,
+                    WARNING,
+                    NOTICE,
+                    INFO,
+                    DEBUS,
+                    UNKNOWN
+        } message_type;
         std::string message_str;
     };
 
