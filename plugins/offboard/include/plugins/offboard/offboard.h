@@ -109,9 +109,9 @@ public:
      * @brief Type for attitude commands in NED coordinates (roll, pitch, yaw and thrust
      */
     struct Attitude {
-        float roll_deg; /**< @brief attitude in deg. */
-        float pitch_deg; /**< @brief attitude in deg */
-        float yaw_deg; /**< @brief attitude in deg */
+        float roll_deg; /**< @brief Roll angle in degrees (positive is right side down). */
+        float pitch_deg; /**< @brief Pitch angle in degrees (positive is nose up). */
+        float yaw_deg; /**< @brief Yaw in degrees (positive is move nose to the right). */
         float thrust_value; /**< @brief Thrust in percentage ranging from 0 to 1 ( 0 to 100
                                percent). */
     };
@@ -204,7 +204,6 @@ public:
      *
      * @param attitude roll, pitch and yaw in degrees along with thrust in percentage.
      */
-
     void set_attitude(Attitude attitude);
 
     /**
