@@ -158,8 +158,9 @@ Telemetry::Result TelemetryImpl::set_rate_in_air(double rate_hz)
 
 Telemetry::Result TelemetryImpl::set_rate_status_text(double rate_hz)
 {
-    return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz)); // Anotacao: What rate to set here? MAVLINK_MSG_ID_STATUSTEXT?
+    return telemetry_result_from_command_result(_parent->set_msg_rate(
+        MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
+        rate_hz)); // Anotacao: What rate to set here? MAVLINK_MSG_ID_STATUSTEXT?
 }
 
 Telemetry::Result TelemetryImpl::set_rate_attitude(double rate_hz)
@@ -238,7 +239,8 @@ void TelemetryImpl::set_rate_in_air_async(double rate_hz, Telemetry::result_call
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_status_text_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_status_text_async(double rate_hz,
+                                               Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_EXTENDED_SYS_STATE, // Anotacao: What rate to set here?
@@ -516,7 +518,7 @@ void TelemetryImpl::process_statustext(const mavlink_message_t &message)
 
     switch (statustext.severity) {
         case MAV_SEVERITY_WARNING:
-             type = Telemetry::StatusText::StatusType::WARNING;
+            type = Telemetry::StatusText::StatusType::WARNING;
             break;
         case MAV_SEVERITY_CRITICAL:
             type = Telemetry::StatusText::StatusType::CRITICAL;

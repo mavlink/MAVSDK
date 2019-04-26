@@ -494,8 +494,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status
 
 bool operator==(const Telemetry::StatusText &lhs, const Telemetry::StatusText &rhs)
 {
-    return  lhs.text == rhs.text && 
-            lhs.type == rhs.type;
+    return lhs.text == rhs.text && lhs.type == rhs.type;
 }
 
 std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_text)

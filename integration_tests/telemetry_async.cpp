@@ -245,8 +245,7 @@ void print_rc_status(Telemetry::RCStatus rc_status)
 
 void print_status_text(Telemetry::StatusText status_text)
 {
-    std::cout << "Status Text [" << status_text.text << "]"
-              << std::endl;
+    std::cout << "Status Text [" << status_text.text << "]" << std::endl;
     _received_status_text = true;
 }
 

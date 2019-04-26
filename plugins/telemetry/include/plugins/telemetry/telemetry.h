@@ -130,11 +130,7 @@ public:
     };
 
     struct StatusText {
-        enum class StatusType {
-            INFO,
-            WARNING,
-            CRITICAL
-        } type;
+        enum class StatusType { INFO, WARNING, CRITICAL } type;
         std::string text;
     };
 
@@ -257,10 +253,10 @@ public:
 
     /**
      * @brief Set rate of status text updates (synchronous).
-     * 
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
-    */
+     */
     Result set_rate_status_text(double rate_hz);
 
     /**
@@ -346,10 +342,10 @@ public:
 
     /**
      * @brief Set rate of status text updates (asynchronous).
-     * 
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
-    */
+     */
     void set_rate_status_text_async(double rate_hz, result_callback_t callback);
 
     /**
@@ -423,9 +419,9 @@ public:
 
     /**
      * @brief Get status text (synchronous).
-     * 
+     *
      * @return Status text.
-    */
+     */
     StatusText status_text() const;
 
     /**
@@ -561,10 +557,10 @@ public:
 
     /**
      * @brief Callback for mavlink status text updates.
-     * 
+     *
      * @param status text with message type and text.
      */
-    typedef std::function<void(StatusText status_text)> status_text_callback_t; 
+    typedef std::function<void(StatusText status_text)> status_text_callback_t;
 
     /**
      * @brief Subscribe to in-air updates (asynchronous).
@@ -575,9 +571,9 @@ public:
 
     /**
      * @brief Subscribe to status text updates (asynchronous).
-     * 
+     *
      * @param callback Function to call with updates.
-    */
+     */
     void status_text_async(status_text_callback_t callback);
 
     /**
@@ -901,9 +897,9 @@ std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status
 
 /**
  * @brief Stream operator to print information about a `Telemetry::StatusText`.
- * 
+ *
  * @returns A reference to the stream.
-*/
+ */
 std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_text);
 
 } // namespace dronecode_sdk
