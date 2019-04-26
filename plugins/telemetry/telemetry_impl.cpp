@@ -513,33 +513,43 @@ void TelemetryImpl::process_statustext(const mavlink_message_t &message)
     mavlink_msg_statustext_decode(&message, &statustext);
 
     std::string debug_str = "MAVLink: ";
+    Telemetry::MavMessage::MessageType mav_message_type;
 
     switch (statustext.severity) {
         case MAV_SEVERITY_EMERGENCY:
-            debug_str += "emergency";
+            mav_message_type = Telemetry::MavMessage::MessageType::EMERGENCY;
+            // debug_str += "emergency";
             break;
         case MAV_SEVERITY_ALERT:
-            debug_str += "alert";
+            mav_message_type = Telemetry::MavMessage::MessageType::ALERT;
+            // debug_str += "alert";
             break;
         case MAV_SEVERITY_CRITICAL:
-            debug_str += "critical";
+            mav_message_type = Telemetry::MavMessage::MessageType::CRITICAL;
+            // debug_str += "critical";
             break;
         case MAV_SEVERITY_ERROR:
-            debug_str += "error";
+             mav_message_type = Telemetry::MavMessage::MessageType::ERROR;
+            // debug_str += "error";
             break;
         case MAV_SEVERITY_WARNING:
-            debug_str += "warning";
+             mav_message_type = Telemetry::MavMessage::MessageType::WARNING;
+            // debug_str += "warning";
             break;
         case MAV_SEVERITY_NOTICE:
-            debug_str += "notice";
+            mav_message_type = Telemetry::MavMessage::MessageType::NOTICE;
+            // debug_str += "notice";
             break;
         case MAV_SEVERITY_INFO:
-            debug_str += "info";
+            mav_message_type = Telemetry::MavMessage::MessageType::INFO;
+            // debug_str += "info";
             break;
         case MAV_SEVERITY_DEBUG:
-            debug_str += "debug";
+            mav_message_type = Telemetry::MavMessage::MessageType::DEBUS;
+            // debug_str += "debug";
             break;
         default:
+            mav_message_type = Telemetry::MavMessage::MessageType::UNKNOWN;
             break;
     }
 
@@ -548,9 +558,9 @@ void TelemetryImpl::process_statustext(const mavlink_message_t &message)
     char text_with_null[sizeof(statustext.text) + 1]{};
     memcpy(text_with_null, statustext.text, sizeof(statustext.text));
 
-    std::string mav_message_str = debug_str +  ": " + text_with_null;
+    std::string mav_message_str = text_with_null; //debug_str +  ": " + text_with_null;
 
-    set_mav_message({mav_message_str});
+    set_mav_message({mav_message_type, mav_message_str});
 
     if (_mav_message_subscription) {
         _mav_message_subscription(get_mav_message());
