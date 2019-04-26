@@ -23,7 +23,7 @@ static void print_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
 static void print_gps_info(Telemetry::GPSInfo gps_info);
 static void print_battery(Telemetry::Battery battery);
 static void print_rc_status(Telemetry::RCStatus rc_status);
-static void print_mav_message(Telemetry::MavMessage mav_message);
+static void print_status_text(Telemetry::StatusText status_text);
 static void print_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned);
 
 static bool _set_rate_error = false;
@@ -41,7 +41,7 @@ static bool _received_ground_speed = false;
 static bool _received_gps_info = false;
 static bool _received_battery = false;
 static bool _received_rc_status = false;
-static bool _received_mav_message = false;
+static bool _received_status_text = false;
 static bool _received_position_velocity_ned = false;
 
 TEST_F(SitlTest, TelemetryAsync)
@@ -115,7 +115,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     telemetry->rc_status_async(std::bind(&print_rc_status, _1));
 
-    telemetry->mav_message_async(std::bind(&print_mav_message, _1));
+    telemetry->status_text_async(std::bind(&print_status_text, _1));
 
     telemetry->position_velocity_ned_async(std::bind(&print_position_velocity_ned, _1));
 
@@ -136,7 +136,7 @@ TEST_F(SitlTest, TelemetryAsync)
     EXPECT_TRUE(_received_gps_info);
     EXPECT_TRUE(_received_battery);
     EXPECT_TRUE(_received_rc_status);
-    EXPECT_TRUE(_received_mav_message);
+    EXPECT_TRUE(_received_status_text);
     EXPECT_TRUE(_received_position_velocity_ned);
 }
 
@@ -243,11 +243,11 @@ void print_rc_status(Telemetry::RCStatus rc_status)
     _received_rc_status = true;
 }
 
-void print_mav_message(Telemetry::MavMessage mav_message)
+void print_status_text(Telemetry::StatusText status_text)
 {
-    std::cout << "Mav Message [" << mav_message.message_str << "]"
+    std::cout << "Status Text [" << status_text.text << "]"
               << std::endl;
-    _received_mav_message = true;
+    _received_status_text = true;
 }
 
 void print_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned)

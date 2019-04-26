@@ -31,9 +31,9 @@ Telemetry::Result Telemetry::set_rate_in_air(double rate_hz)
     return _impl->set_rate_in_air(rate_hz);
 }
 
-Telemetry::Result Telemetry::set_rate_mav_message(double rate_hz)
+Telemetry::Result Telemetry::set_rate_status_text(double rate_hz)
 {
-    return _impl->set_rate_mav_message(rate_hz);
+    return _impl->set_rate_status_text(rate_hz);
 }
 
 Telemetry::Result Telemetry::set_rate_attitude(double rate_hz)
@@ -86,9 +86,9 @@ void Telemetry::set_rate_in_air_async(double rate_hz, result_callback_t callback
     _impl->set_rate_in_air_async(rate_hz, callback);
 }
 
-void Telemetry::set_rate_mav_message_async(double rate_hz, result_callback_t callback)
+void Telemetry::set_rate_status_text_async(double rate_hz, result_callback_t callback)
 {
-    _impl->set_rate_mav_message_async(rate_hz, callback);
+    _impl->set_rate_status_text_async(rate_hz, callback);
 }
 
 void Telemetry::set_rate_attitude_async(double rate_hz, result_callback_t callback)
@@ -141,9 +141,9 @@ bool Telemetry::in_air() const
     return _impl->in_air();
 }
 
-Telemetry::MavMessage Telemetry::mav_message() const
+Telemetry::StatusText Telemetry::status_text() const
 {
-    return _impl->get_mav_message();
+    return _impl->get_status_text();
 }
 
 bool Telemetry::armed() const
@@ -226,9 +226,9 @@ void Telemetry::in_air_async(in_air_callback_t callback)
     return _impl->in_air_async(callback);
 }
 
-void Telemetry::mav_message_async(mav_message_callback_t callback)
+void Telemetry::status_text_async(status_text_callback_t callback)
 {
-    return _impl->mav_message_async(callback);
+    return _impl->status_text_async(callback);
 }
 
 void Telemetry::armed_async(armed_callback_t callback)
@@ -492,15 +492,15 @@ std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status
                << ", signal_strength_percent: " << rc_status.signal_strength_percent << "]";
 }
 
-bool operator==(const Telemetry::MavMessage &lhs, const Telemetry::MavMessage &rhs)
+bool operator==(const Telemetry::StatusText &lhs, const Telemetry::StatusText &rhs)
 {
-    return  lhs.message_str == rhs.message_str && 
-            lhs.message_type == rhs.message_type;
+    return  lhs.text == rhs.text && 
+            lhs.type == rhs.type;
 }
 
-std::ostream &operator<<(std::ostream &str, Telemetry::MavMessage const &mav_message)
+std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_text)
 {
-    return str << "[message: " << mav_message.message_str << "]";
+    return str << "[statustext: " << status_text.text << "]";
 }
 
 } // namespace dronecode_sdk

@@ -30,7 +30,7 @@ public:
     Telemetry::Result set_rate_position(double rate_hz);
     Telemetry::Result set_rate_home_position(double rate_hz);
     Telemetry::Result set_rate_in_air(double rate_hz);
-    Telemetry::Result set_rate_mav_message(double rate_hz);
+    Telemetry::Result set_rate_status_text(double rate_hz);
     Telemetry::Result set_rate_attitude(double rate_hz);
     Telemetry::Result set_rate_camera_attitude(double rate_hz);
     Telemetry::Result set_rate_ground_speed_ned(double rate_hz);
@@ -43,7 +43,7 @@ public:
     void set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_home_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_in_air_async(double rate_hz, Telemetry::result_callback_t callback);
-    void set_rate_mav_message_async(double rate_hz, Telemetry::result_callback_t callback);
+    void set_rate_status_text_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_attitude_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_camera_attitude_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_ground_speed_ned_async(double rate_hz, Telemetry::result_callback_t callback);
@@ -56,7 +56,7 @@ public:
     Telemetry::Position get_home_position() const;
     bool in_air() const;
     bool armed() const;
-    Telemetry::MavMessage get_mav_message() const;
+    Telemetry::StatusText get_status_text() const;
     Telemetry::EulerAngle get_attitude_euler_angle() const;
     Telemetry::Quaternion get_attitude_quaternion() const;
     Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
@@ -73,7 +73,7 @@ public:
     void position_async(Telemetry::position_callback_t &callback);
     void home_position_async(Telemetry::position_callback_t &callback);
     void in_air_async(Telemetry::in_air_callback_t &callback);
-    void mav_message_async(Telemetry::mav_message_callback_t &callback);
+    void status_text_async(Telemetry::status_text_callback_t &callback);
     void armed_async(Telemetry::armed_callback_t &callback);
     void attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t &callback);
     void attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t &callback);
@@ -95,7 +95,7 @@ private:
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
-    void set_mav_message(Telemetry::MavMessage mav_message); // Anotacao: HERE>
+    void set_status_text(Telemetry::StatusText status_text);
     void set_armed(bool armed);
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
@@ -121,7 +121,7 @@ private:
     void process_extended_sys_state(const mavlink_message_t &message);
     void process_sys_status(const mavlink_message_t &message);
     void process_heartbeat(const mavlink_message_t &message);
-    void process_statustext(const mavlink_message_t &message); // Anotacao: Problem here?
+    void process_statustext(const mavlink_message_t &message);
     void process_rc_channels(const mavlink_message_t &message);
 
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
@@ -160,9 +160,8 @@ private:
     std::atomic_bool _in_air{false};
     std::atomic_bool _armed{false};
 
-    // Anotacao
-    mutable std::mutex _mav_message_mutex{};
-    Telemetry::MavMessage _mav_message{Telemetry::MavMessage::MessageType::UNKNOWN, ""};
+    mutable std::mutex _status_text_mutex{};
+    Telemetry::StatusText _status_text{Telemetry::StatusText::StatusType::INFO, ""};
 
     mutable std::mutex _attitude_quaternion_mutex{};
     Telemetry::Quaternion _attitude_quaternion{NAN, NAN, NAN, NAN};
@@ -194,7 +193,7 @@ private:
     Telemetry::position_callback_t _position_subscription{nullptr};
     Telemetry::position_callback_t _home_position_subscription{nullptr};
     Telemetry::in_air_callback_t _in_air_subscription{nullptr};
-    Telemetry::mav_message_callback_t _mav_message_subscription{nullptr};
+    Telemetry::status_text_callback_t _status_text_subscription{nullptr};
     Telemetry::armed_callback_t _armed_subscription{nullptr};
     Telemetry::attitude_quaternion_callback_t _attitude_quaternion_subscription{nullptr};
     Telemetry::attitude_euler_angle_callback_t _attitude_euler_angle_subscription{nullptr};

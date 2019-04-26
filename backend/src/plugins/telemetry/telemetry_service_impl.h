@@ -97,47 +97,35 @@ public:
     }
 
     grpc::Status
-    SubscribeMavMessage(grpc::ServerContext * /* context */,
-                        const dronecode_sdk::rpc::telemetry::SubscribeMavMessageRequest * /* request */,
-                        grpc::ServerWriter<rpc::telemetry::MavMessageResponse> *writer) override
+    SubscribeStatusText(grpc::ServerContext * /* context */,
+                        const dronecode_sdk::rpc::telemetry::SubscribeStatusTextRequest * /* request */,
+                        grpc::ServerWriter<rpc::telemetry::StatusTextResponse> *writer) override
     {
-        _telemetry.mav_message_async([this, &writer](dronecode_sdk::Telemetry::MavMessage mav_message) {
-            auto rpc_mav_message = new dronecode_sdk::rpc::telemetry::MavMessage();
-            rpc_mav_message->set_message_str(mav_message.message_str);
-            rpc_mav_message->set_message_type(translateMavMessageType(mav_message.message_type));
+        _telemetry.status_text_async([this, &writer](dronecode_sdk::Telemetry::StatusText status_text) {
+            auto rpc_status_text = new dronecode_sdk::rpc::telemetry::StatusText();
+            rpc_status_text->set_text(status_text.text);
+            rpc_status_text->set_type(translateStatusTextType(status_text.type));
 
-            dronecode_sdk::rpc::telemetry::MavMessageResponse rpc_mav_message_response;
-            rpc_mav_message_response.set_allocated_mav_message(rpc_mav_message);
-            writer->Write(rpc_mav_message_response);
+            dronecode_sdk::rpc::telemetry::StatusTextResponse rpc_status_text_response;
+            rpc_status_text_response.set_allocated_status_text(rpc_status_text);
+            writer->Write(rpc_status_text_response);
         });
 
         _stop_future.wait();
         return grpc::Status::OK;
     }
 
-    dronecode_sdk::rpc::telemetry::MavMessage::MessageType
-    translateMavMessageType(const dronecode_sdk::Telemetry::MavMessage::MessageType message_type) const
+    dronecode_sdk::rpc::telemetry::StatusText::StatusType
+    translateStatusTextType(const dronecode_sdk::Telemetry::StatusText::StatusType type) const
     {
-        switch (message_type) {
+        switch (type) {
             default:
-            case dronecode_sdk::Telemetry::MavMessage::MessageType::EMERGENCY:
-                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_EMERGENCY;
-            case dronecode_sdk::Telemetry::MavMessage::MessageType::ALERT:
-                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_ALERT;
-            case dronecode_sdk::Telemetry::MavMessage::MessageType::CRITICAL:
-                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_CRITICAL;
-            case dronecode_sdk::Telemetry::MavMessage::MessageType::ERROR:
-                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_ERROR;
-            case dronecode_sdk::Telemetry::MavMessage::MessageType::WARNING:
-                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_WARNING;
-            case dronecode_sdk::Telemetry::MavMessage::MessageType::NOTICE:
-                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_NOTICE;
-            case dronecode_sdk::Telemetry::MavMessage::MessageType::INFO:
-                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_INFO;
-            case dronecode_sdk::Telemetry::MavMessage::MessageType::DEBUS:
-                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_DEBUS;
-            case dronecode_sdk::Telemetry::MavMessage::MessageType::UNKNOWN:
-                return dronecode_sdk::rpc::telemetry::MavMessage::MessageType::MavMessage_MessageType_UNKNOWN;
+            case dronecode_sdk::Telemetry::StatusText::StatusType::INFO:
+                return dronecode_sdk::rpc::telemetry::StatusText::StatusType::StatusText_StatusType_INFO;
+            case dronecode_sdk::Telemetry::StatusText::StatusType::WARNING:
+                return dronecode_sdk::rpc::telemetry::StatusText::StatusType::StatusText_StatusType_WARNING;
+            case dronecode_sdk::Telemetry::StatusText::StatusType::CRITICAL:
+                return dronecode_sdk::rpc::telemetry::StatusText::StatusType::StatusText_StatusType_CRITICAL;
         }
     }
 
