@@ -20,7 +20,7 @@ service TelemetryService {
     rpc SubscribeFlightMode(SubscribeFlightModeRequest) returns(stream FlightModeResponse) {}
     rpc SubscribeHealth(SubscribeHealthRequest) returns(stream HealthResponse) {}
     rpc SubscribeRcStatus(SubscribeRcStatusRequest) returns(stream RcStatusResponse) {}
-    rpc SubscribeMavMessage(SubscribeMavMessageRequest) returns(stream MavMessageResponse) {}
+    rpc SubscribeStatusText(SubscribeStatusTextRequest) returns(stream StatusTextResponse) {}
 }
 
 message SubscribePositionRequest {}
@@ -93,9 +93,9 @@ message RcStatusResponse {
     RcStatus rc_status = 1;
 }
 
-message SubscribeMavMessageRequest {}
-message MavMessageResponse {
-    MavMessage mav_message = 1;
+message SubscribeStatusTextRequest {}
+message StatusTextResponse {
+    StatusText status_text = 1;
 }
 
 message Position {
@@ -172,19 +172,13 @@ message RcStatus {
     float signal_strength_percent = 3;
 }
 
-message MavMessage {
+message StatusText {
     enum Type {
-        EMERGENCY = 0;
-        ALERT = 1;
-        CRITICAL = 2;
-        ERROR = 3;
-        WARNING = 4;
-        NOTICE = 5;
-        INFO = 6;
-        DEBUS = 7;
-        UNKNOWN = 8;
+        INFO = 1;
+        WARNING = 2
+        CRITICAL = 3;
     }
     
-    MessageType type = 1;
+    Type type = 1;
     string text = 2;
 }
