@@ -50,6 +50,10 @@ else
     timestamp=`date +%Y-%m-%dT%H:%M:%S%z`
 fi
 
+logfile_path=$log_dir/px4_sitl-$timestamp.log
+
+echo "PX4 SITL log: '$logfile_path'"
+
 # Before changing dir, save where we start from.
 pushd .
 
@@ -63,7 +67,7 @@ $px4_firmware_dir/Tools/sitl_run.sh \
     gazebo \
     $sitl_model \
     $px4_firmware_dir \
-    $px4_firmware_dir/build/px4_sitl_default 2>1 > $log_dir/px4_sitl-$timestamp.log &
+    $px4_firmware_dir/build/px4_sitl_default 2>1 > $logfile_path &
 
 # Go back to dir where we started
 popd
