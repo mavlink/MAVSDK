@@ -173,12 +173,12 @@ message RcStatus {
 }
 
 message StatusText {
-    enum Type {
+    enum StatusType {
         INFO = 0;
         WARNING = 1;
         CRITICAL = 2;
     }
     
-    Type type = 1;
+    StatusType type = 1;
     string text = 2;
 }
