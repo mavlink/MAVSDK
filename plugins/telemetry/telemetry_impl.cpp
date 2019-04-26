@@ -156,10 +156,10 @@ Telemetry::Result TelemetryImpl::set_rate_in_air(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz));
 }
 
-Telemetry::Result TelemetryImpl::set_rate_mav_message(double rate_hz)
+Telemetry::Result TelemetryImpl::set_rate_status_text(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz)); // Anotacao: MAVLINK_MSG_ID_STATUSTEXT?
+        _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz)); // Anotacao: What rate to set here? MAVLINK_MSG_ID_STATUSTEXT?
 }
 
 Telemetry::Result TelemetryImpl::set_rate_attitude(double rate_hz)
@@ -238,10 +238,10 @@ void TelemetryImpl::set_rate_in_air_async(double rate_hz, Telemetry::result_call
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_mav_message_async(double rate_hz, Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_status_text_async(double rate_hz, Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
-        MAVLINK_MSG_ID_EXTENDED_SYS_STATE, // Anotacao: Possible error here, since I don't know what to set.
+        MAVLINK_MSG_ID_EXTENDED_SYS_STATE, // Anotacao: What rate to set here?
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
@@ -512,44 +512,17 @@ void TelemetryImpl::process_statustext(const mavlink_message_t &message)
     mavlink_statustext_t statustext;
     mavlink_msg_statustext_decode(&message, &statustext);
 
-    std::string debug_str = "MAVLink: ";
-    Telemetry::MavMessage::MessageType mav_message_type;
+    Telemetry::StatusText::StatusType type;
 
     switch (statustext.severity) {
-        case MAV_SEVERITY_EMERGENCY:
-            mav_message_type = Telemetry::MavMessage::MessageType::EMERGENCY;
-            // debug_str += "emergency";
-            break;
-        case MAV_SEVERITY_ALERT:
-            mav_message_type = Telemetry::MavMessage::MessageType::ALERT;
-            // debug_str += "alert";
+        case MAV_SEVERITY_WARNING:
+             type = Telemetry::StatusText::StatusType::WARNING;
             break;
         case MAV_SEVERITY_CRITICAL:
-            mav_message_type = Telemetry::MavMessage::MessageType::CRITICAL;
-            // debug_str += "critical";
-            break;
-        case MAV_SEVERITY_ERROR:
-             mav_message_type = Telemetry::MavMessage::MessageType::ERROR;
-            // debug_str += "error";
-            break;
-        case MAV_SEVERITY_WARNING:
-             mav_message_type = Telemetry::MavMessage::MessageType::WARNING;
-            // debug_str += "warning";
-            break;
-        case MAV_SEVERITY_NOTICE:
-            mav_message_type = Telemetry::MavMessage::MessageType::NOTICE;
-            // debug_str += "notice";
-            break;
-        case MAV_SEVERITY_INFO:
-            mav_message_type = Telemetry::MavMessage::MessageType::INFO;
-            // debug_str += "info";
-            break;
-        case MAV_SEVERITY_DEBUG:
-            mav_message_type = Telemetry::MavMessage::MessageType::DEBUS;
-            // debug_str += "debug";
+            type = Telemetry::StatusText::StatusType::CRITICAL;
             break;
         default:
-            mav_message_type = Telemetry::MavMessage::MessageType::UNKNOWN;
+            type = Telemetry::StatusText::StatusType::INFO;
             break;
     }
 
@@ -558,12 +531,12 @@ void TelemetryImpl::process_statustext(const mavlink_message_t &message)
     char text_with_null[sizeof(statustext.text) + 1]{};
     memcpy(text_with_null, statustext.text, sizeof(statustext.text));
 
-    std::string mav_message_str = text_with_null; //debug_str +  ": " + text_with_null;
+    std::string text = text_with_null;
 
-    set_mav_message({mav_message_type, mav_message_str});
+    set_status_text({type, text});
 
-    if (_mav_message_subscription) {
-        _mav_message_subscription(get_mav_message());
+    if (_status_text_subscription) {
+        _status_text_subscription(get_status_text());
     }
 }
 
@@ -737,16 +710,16 @@ void TelemetryImpl::set_in_air(bool in_air_new)
     _in_air = in_air_new;
 }
 
-void TelemetryImpl::set_mav_message(Telemetry::MavMessage mav_message)
+void TelemetryImpl::set_status_text(Telemetry::StatusText status_text)
 {
-    std::lock_guard<std::mutex> lock(_mav_message_mutex);
-    _mav_message = mav_message;
+    std::lock_guard<std::mutex> lock(_status_text_mutex);
+    _status_text = status_text;
 }
 
-Telemetry::MavMessage TelemetryImpl::get_mav_message() const
+Telemetry::StatusText TelemetryImpl::get_status_text() const
 {
-    std::lock_guard<std::mutex> lock(_mav_message_mutex);
-    return _mav_message;
+    std::lock_guard<std::mutex> lock(_status_text_mutex);
+    return _status_text;
 }
 
 void TelemetryImpl::set_armed(bool armed_new)
@@ -944,9 +917,9 @@ void TelemetryImpl::in_air_async(Telemetry::in_air_callback_t &callback)
     _in_air_subscription = callback;
 }
 
-void TelemetryImpl::mav_message_async(Telemetry::mav_message_callback_t &callback)
+void TelemetryImpl::status_text_async(Telemetry::status_text_callback_t &callback)
 {
-    _mav_message_subscription = callback;
+    _status_text_subscription = callback;
 }
 
 void TelemetryImpl::armed_async(Telemetry::armed_callback_t &callback)

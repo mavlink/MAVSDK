@@ -129,19 +129,13 @@ public:
                                      5: RTK float, 6: RTK fixed). */
     };
 
-    struct MavMessage {
-        enum class MessageType {
-                    EMERGENCY,
-                    ALERT,
-                    CRITICAL,
-                    ERROR,
-                    WARNING,
-                    NOTICE,
-                    INFO,
-                    DEBUS,
-                    UNKNOWN
-        } message_type;
-        std::string message_str;
+    struct StatusText {
+        enum class StatusType {
+            INFO,
+            WARNING,
+            CRITICAL
+        } type;
+        std::string text;
     };
 
     /**
@@ -261,7 +255,13 @@ public:
      */
     Result set_rate_in_air(double rate_hz);
 
-    Result set_rate_mav_message(double rate_hz);
+    /**
+     * @brief Set rate of status text updates (synchronous).
+     * 
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+    */
+    Result set_rate_status_text(double rate_hz);
 
     /**
      * @brief Set rate of attitude updates (synchronous).
@@ -344,7 +344,13 @@ public:
      */
     void set_rate_in_air_async(double rate_hz, result_callback_t callback);
 
-    void set_rate_mav_message_async(double rate_hz, result_callback_t callback);
+    /**
+     * @brief Set rate of status text updates (asynchronous).
+     * 
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+    */
+    void set_rate_status_text_async(double rate_hz, result_callback_t callback);
 
     /**
      * @brief Set rate of attitude updates (asynchronous).
@@ -416,13 +422,18 @@ public:
     Position home_position() const;
 
     /**
+     * @brief Get status text (synchronous).
+     * 
+     * @return Status text.
+    */
+    StatusText status_text() const;
+
+    /**
      * @brief Get the in-air status (synchronous).
      *
      * @return true if in-air (flying) and not on-ground (landed).
      */
     bool in_air() const;
-
-    MavMessage mav_message() const;
 
     /**
      * @brief Get the arming status (synchronous).
@@ -548,7 +559,12 @@ public:
      */
     typedef std::function<void(bool in_air)> in_air_callback_t;
 
-    typedef std::function<void(MavMessage mav_message)> mav_message_callback_t; // Anotacao: Remove mav_message from here?
+    /**
+     * @brief Callback for mavlink status text updates.
+     * 
+     * @param status text with message type and text.
+     */
+    typedef std::function<void(StatusText status_text)> status_text_callback_t; 
 
     /**
      * @brief Subscribe to in-air updates (asynchronous).
@@ -557,7 +573,12 @@ public:
      */
     void in_air_async(in_air_callback_t callback);
 
-    void mav_message_async(mav_message_callback_t callback);
+    /**
+     * @brief Subscribe to status text updates (asynchronous).
+     * 
+     * @param callback Function to call with updates.
+    */
+    void status_text_async(status_text_callback_t callback);
 
     /**
      * @brief Callback type for armed updates (asynchronous).
@@ -878,6 +899,11 @@ bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs);
  */
 std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status);
 
-std::ostream &operator<<(std::ostream &str, Telemetry::MavMessage const &mav_message);
+/**
+ * @brief Stream operator to print information about a `Telemetry::StatusText`.
+ * 
+ * @returns A reference to the stream.
+*/
+std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_text);
 
 } // namespace dronecode_sdk
