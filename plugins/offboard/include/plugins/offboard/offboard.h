@@ -106,7 +106,7 @@ public:
     };
 
     /**
-     * @brief Type for attitude commands in NED coordinates (roll, pitch, yaw and thrust
+     * @brief Type for attitude body angles in NED reference frame (roll, pitch, yaw and thrust)
      */
     struct Attitude {
         float roll_deg; /**< @brief Roll angle in degrees (positive is right side down). */
