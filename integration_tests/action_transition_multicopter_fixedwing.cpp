@@ -34,7 +34,6 @@ void takeoff_and_transition_to_fixedwing()
     auto telemetry = std::make_shared<Telemetry>(system);
 
     // We need to takeoff first, otherwise we can't actually transition
-    LogInfo() << "Taking off";
     takeoff(action, telemetry);
 
     LogInfo() << "Transitioning to fixedwing";
@@ -74,13 +73,14 @@ void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetr
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    Action::Result action_ret = action->arm();
-    EXPECT_EQ(action_ret, Action::Result::SUCCESS);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-
     float altitude_m = 10.0f;
     action->set_takeoff_altitude(altitude_m);
 
+    Action::Result action_ret = action->arm();
+    ASSERT_EQ(action_ret, Action::Result::SUCCESS);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    LogInfo() << "Taking off";
     action_ret = action->takeoff();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
     const int wait_time_s = 15;
