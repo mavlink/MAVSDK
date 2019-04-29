@@ -31,11 +31,6 @@ Telemetry::Result Telemetry::set_rate_in_air(double rate_hz)
     return _impl->set_rate_in_air(rate_hz);
 }
 
-Telemetry::Result Telemetry::set_rate_status_text(double rate_hz)
-{
-    return _impl->set_rate_status_text(rate_hz);
-}
-
 Telemetry::Result Telemetry::set_rate_attitude(double rate_hz)
 {
     return _impl->set_rate_attitude(rate_hz);
@@ -84,11 +79,6 @@ void Telemetry::set_rate_home_position_async(double rate_hz, result_callback_t c
 void Telemetry::set_rate_in_air_async(double rate_hz, result_callback_t callback)
 {
     _impl->set_rate_in_air_async(rate_hz, callback);
-}
-
-void Telemetry::set_rate_status_text_async(double rate_hz, result_callback_t callback)
-{
-    _impl->set_rate_status_text_async(rate_hz, callback);
 }
 
 void Telemetry::set_rate_attitude_async(double rate_hz, result_callback_t callback)
