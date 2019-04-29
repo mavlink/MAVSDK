@@ -1,10 +1,10 @@
 #pragma once
 
-#include "plugins/calibration/calibration.h"
-#include "system.h"
+#include "calibration.h"
+#include "calibration_statustext_parser.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
-#include "calibration_statustext_parser.h"
+#include "system.h"
 
 namespace dronecode_sdk {
 

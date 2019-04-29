@@ -4,7 +4,7 @@
 #include <memory>
 #include <functional>
 
-#include <dronecode_sdk/plugin_base.h>
+#include "plugin_base.h"
 
 namespace dronecode_sdk {
 

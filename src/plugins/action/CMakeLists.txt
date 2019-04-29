@@ -11,18 +11,8 @@ set_target_properties(dronecode_sdk_action
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-target_include_directories(dronecode_sdk_action
-PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-install(FILES
-    include/plugins/action/action.h
-    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/action
-)
-
 install(TARGETS dronecode_sdk_action
-    DESTINATION ${dronecode_sdk_install_lib_dir}
-)
+    EXPORT dronecode-sdk-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )

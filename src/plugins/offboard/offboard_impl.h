@@ -1,10 +1,11 @@
 #pragma once
 
 #include <mutex>
-#include "plugin_impl_base.h"
+
 #include "mavlink_include.h"
+#include "offboard.h"
+#include "plugin_impl_base.h"
 #include "system.h"
-#include "plugins/offboard/offboard.h"
 
 namespace dronecode_sdk {
 

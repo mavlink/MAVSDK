@@ -1,6 +1,6 @@
 #pragma once
 
-#include "plugins/telemetry/telemetry.h"
+#include "telemetry.h"
 
 namespace dronecode_sdk {
 

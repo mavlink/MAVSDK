@@ -1,6 +1,7 @@
-#include "plugins/mission_raw/mission_raw.h"
-#include "mission_raw_impl.h"
 #include <vector>
+
+#include "mission_raw.h"
+#include "mission_raw_impl.h"
 
 namespace dronecode_sdk {
 

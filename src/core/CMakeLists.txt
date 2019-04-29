@@ -64,24 +64,10 @@ set_target_properties(dronecode_sdk
 target_include_directories(dronecode_sdk PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 install(TARGETS dronecode_sdk
-    DESTINATION ${lib_path}
-)
-
-install(FILES
-    include/dronecode_sdk/connection_result.h
-    include/dronecode_sdk/system.h
-    include/dronecode_sdk/dronecode_sdk.h
-    include/dronecode_sdk/plugin_base.h
-    DESTINATION "${dronecode_sdk_install_include_dir}"
-)
-
-target_include_directories(dronecode_sdk
-PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/dronecode_sdk
-PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
+    EXPORT dronecode-sdk-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
 
 list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/core/global_include_test.cpp

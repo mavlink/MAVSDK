@@ -1,4 +1,4 @@
-#include "plugins/offboard/offboard.h"
+#include "offboard.h"
 #include "offboard_impl.h"
 
 namespace dronecode_sdk {

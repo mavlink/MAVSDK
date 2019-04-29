@@ -20,22 +20,11 @@ target_link_libraries(dronecode_sdk_mission
     json11::json11
 )
 
-install(FILES
-    include/plugins/mission/mission.h
-    include/plugins/mission/mission_item.h
-    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/mission
-)
-
 install(TARGETS dronecode_sdk_mission
-    DESTINATION ${dronecode_sdk_install_lib_dir}
-)
-
-target_include_directories(dronecode_sdk_mission
-PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
+    EXPORT dronecode-sdk-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
 
 list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/mission_import_qgc_test.cpp

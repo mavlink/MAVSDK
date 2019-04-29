@@ -1,15 +1,11 @@
-/**
-  @file Unit test for #Mission::import_qgroundcontrol_mission().
-  @author Shakthi Prashanth <shakthi.prashanth.m@intel.com>
-*/
-
-#include <gtest/gtest.h>
 #include <atomic>
 #include <cmath>
-#include "plugins/mission/mission.h"
-#include "mavlink_include.h"
+#include <gtest/gtest.h>
+
 #include "global_include.h"
 #include "log.h"
+#include "mavlink_include.h"
+#include "mission.h"
 
 using namespace dronecode_sdk;
 

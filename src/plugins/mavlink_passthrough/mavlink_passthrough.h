@@ -6,7 +6,7 @@
 
 // This plugin provides/includes the mavlink 2.0 header files.
 #include "mavlink/v2.0/common/mavlink.h"
-#include <dronecode_sdk/plugin_base.h>
+#include "plugin_base.h"
 
 namespace dronecode_sdk {
 

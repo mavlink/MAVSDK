@@ -2,10 +2,11 @@
 
 #include <atomic>
 #include <mutex>
-#include "plugins/telemetry/telemetry.h"
+
+#include "telemetry.h"
+#include "mavlink_include.h"
 #include "plugin_impl_base.h"
 #include "system.h"
-#include "mavlink_include.h"
 
 // Since not all vehicles support/require level calibration, this
 // is disabled for now.

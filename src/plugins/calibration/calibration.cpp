@@ -1,4 +1,4 @@
-#include "plugins/calibration/calibration.h"
+#include "calibration.h"
 #include "calibration_impl.h"
 #include "calibration_messages.h"
 

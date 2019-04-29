@@ -1,4 +1,4 @@
-#include "plugins/camera/camera.h"
+#include "camera.h"
 #include "camera_impl.h"
 
 namespace dronecode_sdk {

@@ -1,9 +1,10 @@
 #pragma once
 
-#include "plugins/info/info.h"
+#include <mutex>
+
+#include "info.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
-#include <mutex>
 
 namespace dronecode_sdk {
 

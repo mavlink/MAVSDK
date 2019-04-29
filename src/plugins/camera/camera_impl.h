@@ -1,10 +1,10 @@
 #pragma once
 
-#include "system.h"
-#include "plugins/camera/camera.h"
-#include "plugin_impl_base.h"
+#include "camera.h"
 #include "camera_definition.h"
 #include "mavlink_include.h"
+#include "plugin_impl_base.h"
+#include "system.h"
 
 namespace dronecode_sdk {
 

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "plugins/follow_me/follow_me.h"
+#include "follow_me.h"
+#include "global_include.h"
+#include "log.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 #include "timeout_handler.h"
-#include "global_include.h"
-#include "log.h"
 
 namespace dronecode_sdk {
 

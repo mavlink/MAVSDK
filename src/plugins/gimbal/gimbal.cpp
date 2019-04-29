@@ -1,4 +1,4 @@
-#include "plugins/gimbal/gimbal.h"
+#include "gimbal.h"
 #include "gimbal_impl.h"
 
 namespace dronecode_sdk {

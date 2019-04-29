@@ -1,9 +1,9 @@
 #pragma once
 
-#include "plugin_impl_base.h"
+#include "log_files.h"
 #include "mavlink_include.h"
+#include "plugin_impl_base.h"
 #include "system.h"
-#include "plugins/log_files/log_files.h"
 
 namespace dronecode_sdk {
 
