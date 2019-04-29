@@ -391,18 +391,6 @@ CameraServiceImplTest::subscribeModeAsync(std::vector<dronecode_sdk::Camera::Mod
     });
 }
 
-TEST_F(CameraServiceImplTest, doesNotSendModeIfCallbackNotCalled)
-{
-    std::vector<dronecode_sdk::Camera::Mode> mode_events;
-    auto context = std::make_shared<grpc::ClientContext>();
-    auto mode_events_future = subscribeModeAsync(mode_events, context);
-
-    context->TryCancel();
-    mode_events_future.wait();
-
-    EXPECT_EQ(0, mode_events.size());
-}
-
 TEST_F(CameraServiceImplTest, sendsOneMode)
 {
     std::vector<dronecode_sdk::Camera::Mode> modes;
@@ -542,18 +530,6 @@ CameraServiceImplTest::createArbitraryRPCVideoStreamInfo() const
         createArbitraryRPCVideoStreamSettings().release());
 
     return rpc_info;
-}
-
-TEST_F(CameraServiceImplTest, doesNotSendVideoStreamInfoIfCallbackNotCalled)
-{
-    std::vector<dronecode_sdk::Camera::VideoStreamInfo> video_info_events;
-    auto context = std::make_shared<grpc::ClientContext>();
-    auto video_info_events_future = subscribeVideoStreamInfoAsync(video_info_events, context);
-
-    context->TryCancel();
-    video_info_events_future.wait();
-
-    EXPECT_EQ(0, video_info_events.size());
 }
 
 TEST_F(CameraServiceImplTest, sendsOneVideoStreamInfo)
@@ -723,18 +699,6 @@ CameraServiceImplTest::createRPCAttitudeEulerAngle(const float yaw_deg,
     return euler_angle;
 }
 
-TEST_F(CameraServiceImplTest, doesNotSendCaptureInfoIfCallbackNotCalled)
-{
-    std::vector<dronecode_sdk::Camera::CaptureInfo> camera_info_events;
-    auto context = std::make_shared<grpc::ClientContext>();
-    auto camera_info_events_future = subscribeCaptureInfoAsync(camera_info_events, context);
-
-    context->TryCancel();
-    camera_info_events_future.wait();
-
-    EXPECT_EQ(0, camera_info_events.size());
-}
-
 TEST_F(CameraServiceImplTest, sendsOneCaptureInfo)
 {
     std::vector<dronecode_sdk::Camera::CaptureInfo> capture_info_events;
@@ -876,18 +840,6 @@ std::future<void> CameraServiceImplTest::subscribeCameraStatusAsync(
 
         response_reader->Finish();
     });
-}
-
-TEST_F(CameraServiceImplTest, doesNotSendCameraStatusIfCallbackNotCalled)
-{
-    std::vector<dronecode_sdk::Camera::Status> camera_status_events;
-    auto context = std::make_shared<grpc::ClientContext>();
-    auto camera_status_events_future = subscribeCameraStatusAsync(camera_status_events, context);
-
-    context->TryCancel();
-    camera_status_events_future.wait();
-
-    EXPECT_EQ(0, camera_status_events.size());
 }
 
 TEST_F(CameraServiceImplTest, sendsOneCameraStatus)
@@ -1034,19 +986,6 @@ std::future<void> CameraServiceImplTest::subscribeCurrentSettingsAsync(
 
         response_reader->Finish();
     });
-}
-
-TEST_F(CameraServiceImplTest, doesNotSendCurrentSettingsIfCallbackNotCalled)
-{
-    std::vector<std::vector<dronecode_sdk::Camera::Setting>> current_settings_events;
-    auto context = std::make_shared<grpc::ClientContext>();
-    auto current_settings_events_future =
-        subscribeCurrentSettingsAsync(current_settings_events, context);
-
-    context->TryCancel();
-    current_settings_events_future.wait();
-
-    EXPECT_EQ(0, current_settings_events.size());
 }
 
 TEST_F(CameraServiceImplTest, sendsOneCurrentSettings)
@@ -1197,19 +1136,6 @@ std::future<void> CameraServiceImplTest::subscribePossibleSettingOptionsAsync(
 
         response_reader->Finish();
     });
-}
-
-TEST_F(CameraServiceImplTest, doesNotSendPossibleSettingOptionsIfCallbackNotCalled)
-{
-    std::vector<std::vector<dronecode_sdk::Camera::SettingOptions>> possible_setting_options_events;
-    auto context = std::make_shared<grpc::ClientContext>();
-    auto possible_setting_options_events_future =
-        subscribePossibleSettingOptionsAsync(possible_setting_options_events, context);
-
-    context->TryCancel();
-    possible_setting_options_events_future.wait();
-
-    EXPECT_EQ(0, possible_setting_options_events.size());
 }
 
 TEST_F(CameraServiceImplTest, sendsOnePossibleSettingOptions)
