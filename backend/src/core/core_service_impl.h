@@ -50,6 +50,7 @@ public:
                                        "gimbal",
                                        "info",
                                        "mission",
+                                       "offboard",
                                        "param",
                                        "telemetry"};
 
