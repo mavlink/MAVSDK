@@ -257,7 +257,7 @@ public:
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
-    Result set_rate_status_text(double rate_hz);
+    // Result set_rate_status_text(double rate_hz); // Anotacao
 
     /**
      * @brief Set rate of attitude updates (synchronous).
@@ -346,7 +346,7 @@ public:
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
-    void set_rate_status_text_async(double rate_hz, result_callback_t callback);
+    // void set_rate_status_text_async(double rate_hz, result_callback_t callback); // Anotacao
 
     /**
      * @brief Set rate of attitude updates (asynchronous).
