@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 namespace dronecode_sdk {
 namespace backend {
@@ -13,7 +14,7 @@ public:
     DronecodeSDKBackend &operator=(DronecodeSDKBackend &&) = delete;
 
     void startGRPCServer();
-    void connect(const int mavlink_listen_port = 14540);
+    void connect(const std::string &connection_url = "udp://");
     void wait();
 
 private:

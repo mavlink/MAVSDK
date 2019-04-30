@@ -1,6 +1,7 @@
 #pragma once
 
 #include <future>
+#include <string>
 
 #include "connection_result.h"
 #include "log.h"
@@ -13,14 +14,14 @@ public:
     ConnectionInitiator() {}
     ~ConnectionInitiator() {}
 
-    bool start(DronecodeSDK &dc, const int port)
+    bool start(DronecodeSDK &dc, const std::string &connection_url)
     {
         init_mutex();
         init_timeout_logging(dc);
 
         _discovery_future = wrapped_register_on_discover(dc);
 
-        if (!add_udp_connection(dc, port)) {
+        if (!add_any_connection(dc, connection_url)) {
             return false;
         }
 
@@ -38,9 +39,9 @@ private:
             [](uint64_t uuid) { LogInfo() << "System timed out [UUID: " << uuid << "]"; });
     }
 
-    bool add_udp_connection(DronecodeSDK &dc, const int port)
+    bool add_any_connection(DronecodeSDK &dc, const std::string &connection_url)
     {
-        dronecode_sdk::ConnectionResult connection_result = dc.add_udp_connection(port);
+        dronecode_sdk::ConnectionResult connection_result = dc.add_any_connection(connection_url);
 
         if (connection_result != ConnectionResult::SUCCESS) {
             LogErr() << "Connection failed: " << connection_result_str(connection_result);

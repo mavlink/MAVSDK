@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 __attribute__((visibility("default"))) void
-runBackend(int mavlink_listen_port, void (*onServerStarted)(void *), void *context);
+runBackend(const char *connection_url, void (*onServerStarted)(void *), void *context);
 
 #ifdef __cplusplus
 }

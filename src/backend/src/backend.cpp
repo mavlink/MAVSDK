@@ -14,9 +14,9 @@ public:
     Impl() {}
     ~Impl() {}
 
-    void connect(const int mavlink_listen_port)
+    void connect(const std::string &connection_url)
     {
-        _connection_initiator.start(_dc, 14540);
+        _connection_initiator.start(_dc, connection_url);
         _connection_initiator.wait();
     }
 
@@ -41,9 +41,9 @@ void DronecodeSDKBackend::startGRPCServer()
 {
     _impl->startGRPCServer();
 }
-void DronecodeSDKBackend::connect(const int mavlink_listen_port)
+void DronecodeSDKBackend::connect(const std::string &connection_url)
 {
-    return _impl->connect(mavlink_listen_port);
+    return _impl->connect(connection_url);
 }
 void DronecodeSDKBackend::wait()
 {

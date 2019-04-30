@@ -1,12 +1,12 @@
 #include "backend_api.h"
-
 #include "backend.h"
+#include <string>
 
-void runBackend(const int mavlink_listen_port, void (*onServerStarted)(void *), void *context)
+void runBackend(const char *connection_url, void (*onServerStarted)(void *), void *context)
 {
     dronecode_sdk::backend::DronecodeSDKBackend backend;
     backend.startGRPCServer();
-    backend.connect(mavlink_listen_port);
+    backend.connect(std::string(connection_url));
 
     if (onServerStarted != nullptr) {
         onServerStarted(context);
