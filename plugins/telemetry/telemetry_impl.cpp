@@ -156,13 +156,6 @@ Telemetry::Result TelemetryImpl::set_rate_in_air(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_EXTENDED_SYS_STATE, rate_hz));
 }
 
-// Telemetry::Result TelemetryImpl::set_rate_status_text(double rate_hz)
-// {
-//     return telemetry_result_from_command_result(_parent->set_msg_rate(
-//         MAVLINK_MSG_ID_EXTENDED_SYS_STATE,
-//         rate_hz)); // Anotacao: What rate to set here? MAVLINK_MSG_ID_STATUSTEXT?
-// }
-
 Telemetry::Result TelemetryImpl::set_rate_attitude(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -238,15 +231,6 @@ void TelemetryImpl::set_rate_in_air_async(double rate_hz, Telemetry::result_call
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
-
-// void TelemetryImpl::set_rate_status_text_async(double rate_hz,
-//                                                Telemetry::result_callback_t callback)
-// {
-//     _parent->set_msg_rate_async(
-//         MAVLINK_MSG_ID_EXTENDED_SYS_STATE, // Anotacao: What rate to set here?
-//         rate_hz,
-//         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
-// }
 
 void TelemetryImpl::set_rate_attitude_async(double rate_hz, Telemetry::result_callback_t callback)
 {
