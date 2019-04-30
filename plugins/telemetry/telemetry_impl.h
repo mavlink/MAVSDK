@@ -30,7 +30,6 @@ public:
     Telemetry::Result set_rate_position(double rate_hz);
     Telemetry::Result set_rate_home_position(double rate_hz);
     Telemetry::Result set_rate_in_air(double rate_hz);
-    // Telemetry::Result set_rate_status_text(double rate_hz); Anotacao
     Telemetry::Result set_rate_attitude(double rate_hz);
     Telemetry::Result set_rate_camera_attitude(double rate_hz);
     Telemetry::Result set_rate_ground_speed_ned(double rate_hz);
@@ -43,7 +42,6 @@ public:
     void set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_home_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_in_air_async(double rate_hz, Telemetry::result_callback_t callback);
-    // void set_rate_status_text_async(double rate_hz, Telemetry::result_callback_t callback); Anotacao
     void set_rate_attitude_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_camera_attitude_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_ground_speed_ned_async(double rate_hz, Telemetry::result_callback_t callback);
