@@ -35,7 +35,6 @@ else()
 endif()
 
 target_link_libraries(backend
-    dronecode_sdk
     dronecode_sdk_action
     dronecode_sdk_calibration
     dronecode_sdk_gimbal
@@ -44,6 +43,7 @@ target_link_libraries(backend
     dronecode_sdk_telemetry
     dronecode_sdk_info
     dronecode_sdk_param
+    dronecode_sdk
     gRPC::grpc++
 )
 
@@ -51,8 +51,8 @@ target_include_directories(backend
     PRIVATE
     ${PROJECT_SOURCE_DIR}/core
     ${PROJECT_SOURCE_DIR}/plugins
+    ${PROJECT_SOURCE_DIR}/backend/src/plugins
     ${CMAKE_BINARY_DIR}/src/backend/src
-    ${PLUGINS_DIR}
 )
 
 if(IOS)

@@ -1,4 +1,4 @@
-#include "plugins/param/param.h"
+#include "param/param.h"
 #include "param/param.grpc.pb.h"
 
 namespace dronecode_sdk {

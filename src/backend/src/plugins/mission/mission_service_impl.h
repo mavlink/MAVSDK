@@ -3,9 +3,9 @@
 #include <memory>
 #include <vector>
 
-#include "plugins/mission/mission.h"
+#include "mission/mission.h"
 #include "mission/mission.grpc.pb.h"
-#include "plugins/mission/mission_item.h"
+#include "mission/mission_item.h"
 
 namespace dronecode_sdk {
 namespace backend {

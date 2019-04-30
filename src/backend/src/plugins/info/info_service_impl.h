@@ -1,4 +1,4 @@
-#include "plugins/info/info.h"
+#include "info/info.h"
 #include "info/info.grpc.pb.h"
 
 namespace dronecode_sdk {

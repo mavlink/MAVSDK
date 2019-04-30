@@ -1,6 +1,6 @@
 #include <future>
 
-#include "plugins/telemetry/telemetry.h"
+#include "telemetry/telemetry.h"
 #include "telemetry/telemetry.grpc.pb.h"
 
 namespace dronecode_sdk {
