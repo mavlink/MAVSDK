@@ -35,6 +35,19 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status Stop(grpc::ServerContext * /* context */,
+                      const rpc::Offboard::StopRequest * /* request */,
+                      rpc::Offboard::StopResponse *response) override
+    {
+        auto offboard_result = _offboard.stop();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, offboard_result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status IsActive(grpc::ServerContext * /* context */,
                           const rpc::Offboard::IsActiveRequest * /* request */,
                           rpc::Offboard::IsActiveResponse *response) override
