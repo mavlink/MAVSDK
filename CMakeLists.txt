@@ -18,3 +18,14 @@ install(EXPORT dronecode-sdk-targets
     NAMESPACE DronecodeSDK::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DronecodeSDK
     )
+
+# For the build tree
+configure_file(DronecodeSDKConfig.cmake.in
+    "${PROJECT_BINARY_DIR}/DronecodeSDKConfig.cmake" @ONLY)
+# For the install tree
+configure_file(DronecodeSDKConfig.cmake.in
+    "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/DronecodeSDKConfig.cmake" @ONLY)
+
+install(FILES
+    "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/DronecodeSDKConfig.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DronecodeSDK)

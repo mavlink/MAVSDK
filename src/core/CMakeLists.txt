@@ -34,7 +34,6 @@ target_link_libraries(dronecode_sdk
     ${CMAKE_THREAD_LIBS_INIT}
     ${CURL_LIBRARY}
     ${TINYXML2_LIBRARY}
-    ZLIB::ZLIB
 )
 
 if (IOS)
@@ -59,15 +58,26 @@ endif()
 
 set_target_properties(dronecode_sdk
     PROPERTIES COMPILE_FLAGS ${warnings}
-)
+    )
 
-target_include_directories(dronecode_sdk PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(dronecode_sdk PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<INSTALL_INTERFACE:include>
+    )
 
 install(TARGETS dronecode_sdk
     EXPORT dronecode-sdk-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
+
+install(FILES
+    connection_result.h
+    system.h
+    dronecode_sdk.h
+    plugin_base.h
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk"
+)
 
 list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/core/global_include_test.cpp

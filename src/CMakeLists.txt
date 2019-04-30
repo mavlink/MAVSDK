@@ -30,7 +30,6 @@ include(cmake/compiler_flags.cmake)
 
 find_package(CURL REQUIRED)
 find_package(tinyxml2 REQUIRED)
-find_package(ZLIB REQUIRED)
 
 if(NOT MSVC)
     cmake_policy(SET CMP0058 NEW)

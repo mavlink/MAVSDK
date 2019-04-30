@@ -27,11 +27,21 @@ set_target_properties(dronecode_sdk_camera
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+target_include_directories(dronecode_sdk_camera PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<INSTALL_INTERFACE:include/dronecode_sdk>
+    )
+
 install(TARGETS dronecode_sdk_camera
     EXPORT dronecode-sdk-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
+
+install(FILES
+    camera.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/plugins/camera
+)
 
 list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_test.cpp

@@ -11,8 +11,18 @@ set_target_properties(dronecode_sdk_follow_me
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+target_include_directories(dronecode_sdk_follow_me PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<INSTALL_INTERFACE:include/dronecode_sdk>
+    )
+
 install(TARGETS dronecode_sdk_follow_me
     EXPORT dronecode-sdk-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
+
+install(FILES
+    follow_me.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/plugins/follow_me
+)

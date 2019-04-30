@@ -6,22 +6,20 @@ find_package(Threads REQUIRED)
 
 if(NOT MSVC)
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
-    # Line below required if /usr/local/include is not in your default includes
-    #include_directories(/usr/local/include)
-    # Line below required if /usr/local/lib is not in your default linker path
-    #link_directories(/usr/local/lib)
 else()
     add_definitions("-std=c++11 -WX -W2")
 endif()
+
+find_package(DronecodeSDK REQUIRED)
 
 add_executable(fly_mission
     fly_mission.cpp
 )
 
 target_link_libraries(fly_mission
-    dronecode_sdk_action
-    dronecode_sdk_mission
-    dronecode_sdk_telemetry
-    dronecode_sdk
+    DronecodeSDK::dronecode_sdk_action
+    DronecodeSDK::dronecode_sdk_mission
+    DronecodeSDK::dronecode_sdk_telemetry
+    DronecodeSDK::dronecode_sdk
     ${CMAKE_THREAD_LIBS_INIT}
 )
