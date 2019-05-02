@@ -324,7 +324,7 @@ pipeline {
             sh 'export'
             sh 'git submodule deinit -f .'
             sh 'git clean -ff -x -d .'
-            sh 'make fix_style'
+            sh '${WORKSPACE}/tools/fix_style.sh ${WORKSPACE}'
           }
           post {
             always {
@@ -334,88 +334,6 @@ pipeline {
             }
           }
         }
-
-        stage('example/takeoff_land') {
-          agent {
-            docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-03-25'
-              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
-            }
-          }
-          steps {
-            sh 'export'
-            sh 'git submodule deinit -f .'
-            sh 'git clean -ff -x -d .'
-            sh 'git submodule sync --recursive'
-            sh 'git submodule update --init --recursive --force'
-            sh 'ccache -z'
-            sh 'mkdir -p example/takeoff_land/build'
-            sh 'cd example/takeoff_land/build && cmake ..'
-            // FIXME sh 'make -C example/takeoff_land/build'
-          }
-          post {
-            always {
-              sh 'ccache -s'
-              sh 'git submodule deinit -f .'
-              sh 'git clean -ff -x -d .'
-            }
-          }
-        }
-
-        stage('example/fly_mission') {
-          agent {
-            docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-03-25'
-              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
-            }
-          }
-          steps {
-            sh 'export'
-            sh 'git submodule deinit -f .'
-            sh 'git clean -ff -x -d .'
-            sh 'git submodule sync --recursive'
-            sh 'git submodule update --init --recursive --force'
-            sh 'ccache -z'
-            sh 'mkdir -p example/fly_mission/build'
-            sh 'cd example/fly_mission/build && cmake ..'
-            // FIXME sh 'make -C example/fly_mission/build'
-          }
-          post {
-            always {
-              sh 'ccache -s'
-              sh 'git submodule deinit -f .'
-              sh 'git clean -ff -x -d .'
-            }
-          }
-        }
-
-        stage('example/offboard_velocity') {
-          agent {
-            docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-03-25'
-              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
-            }
-          }
-          steps {
-            sh 'export'
-            sh 'git submodule deinit -f .'
-            sh 'git clean -ff -x -d .'
-            sh 'git submodule sync --recursive'
-            sh 'git submodule update --init --recursive --force'
-            sh 'mkdir -p example/offboard_velocity/build'
-            sh 'ccache -z'
-            sh 'cd example/offboard_velocity/build && cmake ..'
-            // FIXME sh 'make -C example/offboard_velocity/build'
-          }
-          post {
-            always {
-              sh 'ccache -s'
-              sh 'git submodule deinit -f .'
-              sh 'git clean -ff -x -d .'
-            }
-          }
-        }
-
       } // parallel
     } // stage Test
 
@@ -432,7 +350,7 @@ pipeline {
         sh 'git clean -ff -x -d .'
         sh 'git submodule sync --recursive'
         sh 'git submodule update --init --recursive --force'
-        sh './generate_docs.sh'
+        sh '${WORKSPACE}/tools/generate_docs.sh'
       }
       post {
         always {
