@@ -141,9 +141,9 @@ public:
          * they will be marked as INFO type and logged as a warning.
         */
         enum class StatusType { 
-            INFO, 
-            WARNING, 
-            CRITICAL 
+            INFO, /**< @brief Message type is an information or other. */
+            WARNING, /**< @brief Message type is a warning. */
+            CRITICAL /**< @brief Message type is critical. */
         } type;
         std::string text; /**< @brief Mavlink status message. */
     };
