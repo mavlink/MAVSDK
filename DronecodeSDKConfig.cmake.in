@@ -1,5 +1,6 @@
 include(CMakeFindDependencyMacro)
 find_dependency(json11)
+find_dependency(tinyxml2)
 
 get_filename_component(DRONECODESDK_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 include("${DRONECODESDK_CMAKE_DIR}/DronecodeSDKTargets.cmake")

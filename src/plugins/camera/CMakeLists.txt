@@ -17,10 +17,15 @@ add_library(dronecode_sdk_camera
     ${RSC_CPP_FILE}
 )
 
+target_include_directories(dronecode_sdk
+    PRIVATE
+    ${CURL_INCLUDE_DIRS}
+    )
+
 target_link_libraries(dronecode_sdk_camera
     dronecode_sdk
     tinyxml2::tinyxml2
-    ${CURL_LIBRARY}
+    ${CURL_LIBRARIES}
 )
 
 set_target_properties(dronecode_sdk_camera
