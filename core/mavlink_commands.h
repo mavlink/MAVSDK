@@ -24,7 +24,6 @@ public:
         COMMAND_DENIED,
         TIMEOUT,
         IN_PROGRESS,
-        NO_SETPOINT_SET,
         UNKNOWN_ERROR
     };
 

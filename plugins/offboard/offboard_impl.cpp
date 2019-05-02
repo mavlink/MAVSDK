@@ -459,8 +459,6 @@ Offboard::Result OffboardImpl::offboard_result_from_command_result(MAVLinkComman
             return Offboard::Result::COMMAND_DENIED;
         case MAVLinkCommands::Result::TIMEOUT:
             return Offboard::Result::TIMEOUT;
-        case MAVLinkCommands::Result::NO_SETPOINT_SET:
-            return Offboard::Result::NO_SETPOINT_SET;
         default:
             return Offboard::Result::UNKNOWN;
     }
