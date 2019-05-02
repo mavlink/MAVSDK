@@ -129,9 +129,23 @@ public:
                                      5: RTK float, 6: RTK fixed). */
     };
 
+    /**
+     * @brief Status Text information type.
+    */
     struct StatusText {
-        enum class StatusType { INFO, WARNING, CRITICAL } type;
-        std::string text;
+        /**
+         * @brief Status Types.
+         * 
+         * @note PX4 only supports these 3 status types. 
+         * If other status types are returned for some reason, 
+         * they will be marked as INFO type and logged as a warning.
+        */
+        enum class StatusType { 
+            INFO, 
+            WARNING, 
+            CRITICAL 
+        } type;
+        std::string text; /**< @brief Mavlink status message. */
     };
 
     /**
