@@ -45,43 +45,43 @@ build_script:
   - cd %dronecode_sdk_dir%
   - md build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=..\install ..
+  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install ..
   - cmake --build . --target install --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\takeoff_land
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" ..
+  - cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\fly_mission
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" ..
+  - cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\offboard_velocity
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" ..
+  - cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\transition_vtol_fixed_wing
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" ..
+  - cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\follow_me
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" ..
+  - cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\fly_qgc_mission
   - md build
   - cd build
-  - cmake -G "Visual Studio 15 2017" ..
+  - cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
   - cmake --build . --config %configuration%
   - cd %dronecode_sdk_dir%
 
@@ -90,10 +90,10 @@ test: on
 # We need to manually copy the dlls for now, otherwise they are not found.
 test_script:
   - cd %dronecode_sdk_dir%
-  - copy build\third_party\gtest\googlemock\gtest\%configuration%\gtestd.lib build\%configuration%\ &&
-    copy build\third_party\gtest\googlemock\gtest\%configuration%\gtest_maind.lib build\%configuration%\ &&
-    copy build\third_party\gtest\googlemock\%configuration%\gmockd.lib build\%configuration%\ &&
-    copy build\plugins\mission\%configuration%\dronecode_sdk_mission.dll build\%configuration%\ &&
-    copy build\plugins\camera\%configuration%\dronecode_sdk_camera.dll build\%configuration%\ &&
-    copy build\plugins\calibration\%configuration%\dronecode_sdk_calibration.dll build\%configuration%\ &&
-    build\%configuration%\unit_tests_runner.exe
+    #- copy build\src\third_party\gtest\googlemock\gtest\%configuration%\gtestd.lib build\%configuration%\
+    #- copy build\src\third_party\gtest\googlemock\gtest\%configuration%\gtest_maind.lib build\%configuration%\
+    #- copy build\src\third_party\gtest\googlemock\%configuration%\gmockd.lib build\%configuration%\
+    #- copy build\src\plugins\mission\%configuration%\dronecode_sdk_mission.dll build\%configuration%\
+    #- copy build\src\plugins\camera\%configuration%\dronecode_sdk_camera.dll build\%configuration%\
+    #- copy build\src\plugins\calibration\%configuration%\dronecode_sdk_calibration.dll build\%configuration%\
+  - %dronecode_sdk_dir%\build\src\%configuration%\unit_tests_runner.exe
