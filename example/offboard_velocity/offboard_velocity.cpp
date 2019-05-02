@@ -165,6 +165,42 @@ bool offb_ctrl_body(std::shared_ptr<dronecode_sdk::Offboard> offboard)
     return true;
 }
 
+/**
+ * Does Offboard control using attitude commands.
+ *
+ * returns true if everything went well in Offboard control, exits with a log otherwise.
+ */
+bool offb_ctrl_attitude(std::shared_ptr<dronecode_sdk::Offboard> offboard)
+{
+    const std::string offb_mode = "ATTITUDE";
+
+    // Send it once before starting offboard, otherwise it will be rejected.
+    offboard->set_attitude({30.0f, 0.0f, 0.0f, 0.6f});
+
+    Offboard::Result offboard_result = offboard->start();
+    offboard_error_exit(offboard_result, "Offboard start failed");
+    offboard_log(offb_mode, "Offboard started");
+
+    offboard_log(offb_mode, "ROLL 30");
+    offboard->set_attitude({30.0f, 0.0f, 0.0f, 0.6f});
+    sleep_for(seconds(2)); // rolling
+
+    offboard_log(offb_mode, "ROLL -30");
+    offboard->set_attitude({-30.0f, 0.0f, 0.0f, 0.6f});
+    sleep_for(seconds(2)); // Let yaw settle.
+
+    offboard_log(offb_mode, "ROLL 0");
+    offboard->set_attitude({0.0f, 0.0f, 0.0f, 0.6f});
+    sleep_for(seconds(2)); // Let yaw settle.
+
+    // Now, stop offboard mode.
+    offboard_result = offboard->stop();
+    offboard_error_exit(offboard_result, "Offboard stop failed: ");
+    offboard_log(offb_mode, "Offboard stopped");
+
+    return true;
+}
+
 void usage(std::string bin_name)
 {
     std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
@@ -223,8 +259,14 @@ int main(int argc, char **argv)
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5));
 
+    //  using attitude control
+    bool ret = offb_ctrl_attitude(offboard);
+    if (ret == false) {
+        return EXIT_FAILURE;
+    }
+
     //  using local NED co-ordinates
-    bool ret = offb_ctrl_ned(offboard);
+    ret = offb_ctrl_ned(offboard);
     if (ret == false) {
         return EXIT_FAILURE;
     }
