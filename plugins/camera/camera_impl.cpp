@@ -1259,26 +1259,25 @@ void CameraImpl::set_option_async(const std::string &setting_id,
         return;
     }
 
-    _parent->set_param_async(
-        setting_id,
-        value,
-        [this, callback, setting_id, value](MAVLinkParameters::Result result) {
-            if (result == MAVLinkParameters::Result::SUCCESS) {
-                if (this->_camera_definition) {
-                    _camera_definition->set_setting(setting_id, value);
-                    refresh_params();
-                }
-                if (callback) {
-                    callback(Camera::Result::SUCCESS);
-                }
-            } else {
-                if (callback) {
-                    callback(Camera::Result::ERROR);
-                }
-            }
-        },
-        this,
-        true);
+    _parent->set_param_async(setting_id,
+                             value,
+                             [this, callback, setting_id, value](MAVLinkParameters::Result result) {
+                                 if (result == MAVLinkParameters::Result::SUCCESS) {
+                                     if (this->_camera_definition) {
+                                         _camera_definition->set_setting(setting_id, value);
+                                         refresh_params();
+                                     }
+                                     if (callback) {
+                                         callback(Camera::Result::SUCCESS);
+                                     }
+                                 } else {
+                                     if (callback) {
+                                         callback(Camera::Result::ERROR);
+                                     }
+                                 }
+                             },
+                             this,
+                             true);
 }
 
 Camera::Result CameraImpl::get_option(const std::string &setting_id, Camera::Option &option)
@@ -1458,27 +1457,26 @@ void CameraImpl::refresh_params()
         const std::string &param_name = param.first;
         const MAVLinkParameters::ParamValue &param_value_type = param.second;
         const bool is_last = (count + 1 == params.size());
-        _parent->get_param_async(
-            param_name,
-            param_value_type,
-            [param_name, is_last, this](MAVLinkParameters::Result result,
-                                        MAVLinkParameters::ParamValue value) {
-                if (result != MAVLinkParameters::Result::SUCCESS) {
-                    return;
-                }
-                // We need to check again by the time this callback runs
-                if (!this->_camera_definition) {
-                    return;
-                }
-                this->_camera_definition->set_setting(param_name, value);
+        _parent->get_param_async(param_name,
+                                 param_value_type,
+                                 [param_name, is_last, this](MAVLinkParameters::Result result,
+                                                             MAVLinkParameters::ParamValue value) {
+                                     if (result != MAVLinkParameters::Result::SUCCESS) {
+                                         return;
+                                     }
+                                     // We need to check again by the time this callback runs
+                                     if (!this->_camera_definition) {
+                                         return;
+                                     }
+                                     this->_camera_definition->set_setting(param_name, value);
 
-                if (is_last) {
-                    notify_current_settings();
-                    notify_possible_setting_options();
-                }
-            },
-            this,
-            true);
+                                     if (is_last) {
+                                         notify_current_settings();
+                                         notify_possible_setting_options();
+                                     }
+                                 },
+                                 this,
+                                 true);
         ++count;
     }
 }
