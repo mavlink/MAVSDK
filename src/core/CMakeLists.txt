@@ -30,15 +30,10 @@ add_library(dronecode_sdk
     thread_pool.cpp
 )
 
-target_include_directories(dronecode_sdk
-    PRIVATE
-    ${CURL_INCLUDE_DIRS}
-    )
-
 target_link_libraries(dronecode_sdk
-    ${CMAKE_THREAD_LIBS_INIT}
-    ${CURL_LIBRARIES}
     tinyxml2::tinyxml2
+    CURL::libcurl
+    ${CMAKE_THREAD_LIBS_INIT}
 )
 
 if (IOS)

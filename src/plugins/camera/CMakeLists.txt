@@ -17,15 +17,10 @@ add_library(dronecode_sdk_camera
     ${RSC_CPP_FILE}
 )
 
-target_include_directories(dronecode_sdk
-    PRIVATE
-    ${CURL_INCLUDE_DIRS}
-    )
-
 target_link_libraries(dronecode_sdk_camera
     dronecode_sdk
     tinyxml2::tinyxml2
-    ${CURL_LIBRARIES}
+    CURL::libcurl
 )
 
 set_target_properties(dronecode_sdk_camera
@@ -52,4 +47,3 @@ list(APPEND UNIT_TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
-

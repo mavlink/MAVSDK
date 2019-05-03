@@ -28,7 +28,7 @@ option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
 
 include(cmake/compiler_flags.cmake)
 
-find_package(CURL REQUIRED)
+find_package(CURL REQUIRED CONFIG)
 find_package(tinyxml2 REQUIRED)
 
 if(NOT MSVC)

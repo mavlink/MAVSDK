@@ -1,4 +1,11 @@
 include(CMakeFindDependencyMacro)
+
+if(${CMAKE_VERSION} VERSION_LESS "3.9.0")
+    find_package(CURL REQUIRED CONFIG)
+else()
+    find_dependency(CURL REQUIRED CONFIG)
+endif()
+
 find_dependency(json11)
 find_dependency(tinyxml2)
 

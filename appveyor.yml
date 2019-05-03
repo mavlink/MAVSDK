@@ -5,8 +5,8 @@ version: "{build}"
 os: Visual Studio 2017
 
 # build platform, i.e. Win32 (instead of x86), x64, Any CPU. This setting is optional.
-#platform:
-#  - x64
+platform:
+  - x64
 
 # specify custom environment variables
 environment:
@@ -18,7 +18,7 @@ skip_branch_with_pr: true
 # build configuration, i.e. Debug, Release, etc.
 configuration:
   - Debug
-#  - Release
+  - Release
 
 # scripts that are called at very beginning, before repo cloning
 init:
@@ -87,13 +87,6 @@ build_script:
 
 test: on
 
-# We need to manually copy the dlls for now, otherwise they are not found.
 test_script:
   - cd %dronecode_sdk_dir%
-    #- copy build\src\third_party\gtest\googlemock\gtest\%configuration%\gtestd.lib build\%configuration%\
-    #- copy build\src\third_party\gtest\googlemock\gtest\%configuration%\gtest_maind.lib build\%configuration%\
-    #- copy build\src\third_party\gtest\googlemock\%configuration%\gmockd.lib build\%configuration%\
-    #- copy build\src\plugins\mission\%configuration%\dronecode_sdk_mission.dll build\%configuration%\
-    #- copy build\src\plugins\camera\%configuration%\dronecode_sdk_camera.dll build\%configuration%\
-    #- copy build\src\plugins\calibration\%configuration%\dronecode_sdk_calibration.dll build\%configuration%\
-  - %dronecode_sdk_dir%\build\src\%configuration%\unit_tests_runner.exe
+  - build\src\%configuration%\unit_tests_runner.exe
