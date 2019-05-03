@@ -72,6 +72,8 @@ const char *Offboard::result_str(Result result)
             return "Command denied";
         case Result::TIMEOUT:
             return "Timeout";
+        case Result::NO_SETPOINT_SET:
+            return "No setpoint set";
         case Result::UNKNOWN:
         default:
             return "Unknown";
