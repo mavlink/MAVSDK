@@ -27,11 +27,11 @@ API consumers use the `DronecodeSDK` class to discover and manage vehicles (`Sys
 
 The links below take you to the respective header files:
 
-- [dronecode_sdk](core/include/dronecode_sdk.h): set up connection, discover devices
-- [system](core/include/system.h): an class representing one drone which can consist of multiple components
+- [dronecode_sdk](core/include/dronecode_sdk/dronecode_sdk.h): set up connection, discover devices
+- [system](core/include/dronecode_sdk/system.h): an class representing one drone which can consist of multiple components
 - [info](plugins/info/include/plugins/info/info.h): general info about a device
 - [telemetry](plugins/telemetry/include/plugins/telemetry/telemetry.h): to receive telemetry data
-- [action](plugins/action/include/plugins/action/action.h) (and [action_result.h](plugins/action/include/plugins/action/action_result.h)): to send commands such as arm, disarm, takeoff, land to drone
+- [action](plugins/action/include/plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
 - [mission](plugins/mission/include/plugins/mission/mission.h)/[mission_item](plugins/mission/include/plugins/mission/mission_item.h): to upload a waypoint mission
 - [offboard](plugins/offboard/include/plugins/offboard/offboard.h): for velocity control
 - [gimbal](plugins/gimbal/include/plugins/gimbal/gimbal.h): control a gimbal
