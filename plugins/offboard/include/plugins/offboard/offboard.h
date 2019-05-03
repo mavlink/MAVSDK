@@ -48,14 +48,14 @@ public:
      * @brief Results for offboard requests.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief %Request succeeded. */
+        UNKNOWN, /**< @brief Unknown error. */
+        SUCCESS, /**< @brief %Request succeeded. */
         NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
         BUSY, /**< @brief Vehicle busy. */
         COMMAND_DENIED, /**< @brief Command denied. */
         TIMEOUT, /**< @brief %Request timeout. */
-        NO_SETPOINT_SET, /**< Can't start without setpoint set. */
-        UNKNOWN /**< @brief Unknown error. */
+        NO_SETPOINT_SET /**< Can't start without setpoint set. */
     };
 
     /**
