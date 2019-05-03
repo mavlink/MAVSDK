@@ -23,6 +23,11 @@ static constexpr float ARBITRARY_THRUST = 0.5f;
 static constexpr float ARBITRARY_NORTH_M = 10.54f;
 static constexpr float ARBITRARY_EAST_M = 5.62f;
 static constexpr float ARBITRARY_DOWN_M = 1.44f;
+static constexpr float ARBITRARY_VELOCITY_LOW = 1.7f;
+static constexpr float ARBITRARY_VELOCITY_MID = 7.3f;
+static constexpr float ARBITRARY_VELOCITY_HIGH = 14.6f;
+static constexpr float ARBITRARY_VELOCITY_NEG = -0.5f;
+static constexpr float ARBITRARY_YAWSPEED = 3.1f;
 
 std::vector<InputPair> generateInputPairs();
 std::string startAndGetTranslatedResult(dronecode_sdk::Offboard::Result start_result);
@@ -32,8 +37,14 @@ class OffboardServiceImplTest : public ::testing::TestWithParam<InputPair> {
 protected:
     void checkReturnsCorrectIsActiveStatus(const bool expected_is_active_status);
 
-    dronecode_sdk::rpc::offboard::AttitudeRate createArbitraryRPCAttitudeRate() const;
-    dronecode_sdk::rpc::offboard::PositionNEDYaw createArbitraryRPCPositionNEDYaw() const;
+    std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>
+    createArbitraryRPCAttitudeRate() const;
+    std::unique_ptr<dronecode_sdk::rpc::offboard::PositionNEDYaw>
+    createArbitraryRPCPositionNEDYaw() const;
+    std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityBodyYawspeed>
+    createArbitraryRPCVelocityBodyYawspeed() const;
+    std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityNEDYaw>
+    createArbitraryRPCVelocityNedYaw() const;
 };
 
 TEST_P(OffboardServiceImplTest, startResultIsTranslatedCorrectly)
@@ -142,15 +153,15 @@ TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithNullResponse)
     dronecode_sdk::rpc::offboard::SetAttitudeRateRequest request;
 
     auto rpc_attitude_rate = createArbitraryRPCAttitudeRate();
-    request.set_attitude_rate(rpc_attitude_rate);
+    request.set_allocated_attitude_rate(rpc_attitude_rate.release());
 
     offboardService.SetAttitudeRate(nullptr, &request, nullptr);
 }
 
-dronecode_sdk::rpc::offboard::AttitudeRate
+std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>
 OffboardServiceImplTest::createArbitraryRPCAttitudeRate() const
 {
-    auto rpc_attitude_rate = dronecode_sdk::rpc::offboard::AttitudeRate(
+    auto rpc_attitude_rate = std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>(
         new dronecode_sdk::rpc::offboard::AttitudeRate());
     rpc_attitude_rate->set_roll_deg_s(ARBITRARY_ROLL);
     rpc_attitude_rate->set_pitch_deg_s(ARBITRARY_PITCH);
@@ -168,10 +179,10 @@ TEST_F(OffboardServiceImplTest, setsAttitudeRateCorrectly)
 
     auto rpc_attitude_rate = createArbitraryRPCAttitudeRate();
     const auto expected_attitude_rate =
-        OffboardServiceImpl::translateRPCAttitudeRate(rpc_attitude_rate);
+        OffboardServiceImpl::translateRPCAttitudeRate(*rpc_attitude_rate);
     EXPECT_CALL(offboard, set_attitude_rate(expected_attitude_rate)).Times(1);
 
-    request.set_attitude_rate(rpc_attitude_rate);
+    request.set_allocated_attitude_rate(rpc_attitude_rate.release());
 
     offboardService.SetAttitudeRate(nullptr, &request, nullptr);
 }
@@ -191,15 +202,15 @@ TEST_F(OffboardServiceImplTest, setPositionNEDYawDoesNotFailWithNullResponse)
     dronecode_sdk::rpc::offboard::SetPositionNedRequest request;
 
     auto rpc_position_ned_yaw = createArbitraryRPCPositionNEDYaw();
-    request.set_position_ned(rpc_position_ned_yaw);
+    request.set_allocated_position_ned_yaw(rpc_position_ned_yaw.release());
 
     offboardService.SetPositionNed(nullptr, &request, nullptr);
 }
 
-dronecode_sdk::rpc::offboard::PositionNEDYaw
+std::unique_ptr<dronecode_sdk::rpc::offboard::PositionNEDYaw>
 OffboardServiceImplTest::createArbitraryRPCPositionNEDYaw() const
 {
-    auto rpc_position_ned_yaw = dronecode_sdk::rpc::offboard::PositionNEDYaw(
+    auto rpc_position_ned_yaw = std::unique_ptr<dronecode_sdk::rpc::offboard::PositionNEDYaw>(
         new dronecode_sdk::rpc::offboard::PositionNEDYaw());
     rpc_position_ned_yaw->set_north_m(ARBITRARY_NORTH_M);
     rpc_position_ned_yaw->set_east_m(ARBITRARY_EAST_M);
@@ -217,13 +228,115 @@ TEST_F(OffboardServiceImplTest, setsPositionNEDYawCorrectly)
 
     auto rpc_position_ned_yaw = createArbitraryRPCPositionNEDYaw();
     const auto expected_position_ned_yaw =
-        OffboardServiceImpl::translateRPCPositionNEDYaw(rpc_position_ned_yaw);
+        OffboardServiceImpl::translateRPCPositionNEDYaw(*rpc_position_ned_yaw);
     EXPECT_CALL(offboard, set_position_ned(expected_position_ned_yaw)).Times(1);
 
-    request.set_position_ned(rpc_position_ned_yaw);
+    request.set_allocated_position_ned_yaw(rpc_position_ned_yaw.release());
 
     offboardService.SetPositionNed(nullptr, &request, nullptr);
 }
+
+TEST_F(OffboardServiceImplTest, setVelocityBodyDoesNotFailWithAllNullParams)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+
+    offboardService.SetVelocityBody(nullptr, nullptr, nullptr);
+}
+
+TEST_F(OffboardServiceImplTest, setVelocityBodyDoesNotFailWithNullResponse)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+    dronecode_sdk::rpc::offboard::SetVelocityBodyRequest request;
+
+    auto rpc_velocity_body = createArbitraryRPCVelocityBodyYawspeed();
+    request.set_allocated_velocity_body_yawspeed(rpc_velocity_body.release());
+
+    offboardService.SetVelocityBody(nullptr, &request, nullptr);
+}
+
+std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityBodyYawspeed>
+OffboardServiceImplTest::createArbitraryRPCVelocityBodyYawspeed() const
+{
+    auto rpc_velocity_body = std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityBodyYawspeed>(
+        new dronecode_sdk::rpc::offboard::VelocityBodyYawspeed());
+    rpc_velocity_body->set_forward_m_s(ARBITRARY_VELOCITY_HIGH);
+    rpc_velocity_body->set_right_m_s(ARBITRARY_VELOCITY_LOW);
+    rpc_velocity_body->set_down_m_s(ARBITRARY_VELOCITY_NEG);
+    rpc_velocity_body->set_yawspeed_deg_s(ARBITRARY_YAWSPEED);
+
+    return rpc_velocity_body;
+}
+
+TEST_F(OffboardServiceImplTest, setsVelocityBodyCorrectly)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+    dronecode_sdk::rpc::offboard::SetVelocityBodyRequest request;
+
+    auto rpc_velocity_body = createArbitraryRPCVelocityBodyYawspeed();
+    const auto expected_velocity_body =
+        OffboardServiceImpl::translateRPCVelocityBodyYawspeed(*rpc_velocity_body);
+    EXPECT_CALL(offboard, set_velocity_body(expected_velocity_body)).Times(1);
+
+    request.set_allocated_velocity_body_yawspeed(rpc_velocity_body.release());
+
+    offboardService.SetVelocityBody(nullptr, &request, nullptr);
+}
+
+TEST_F(OffboardServiceImplTest, setVelocityNedDoesNotFailWithAllNullParams)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+
+    offboardService.SetVelocityNed(nullptr, nullptr, nullptr);
+}
+
+TEST_F(OffboardServiceImplTest, setVelocityNedDoesNotFailWithNullResponse)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+    dronecode_sdk::rpc::offboard::SetVelocityNedRequest request;
+
+    auto rpc_velocity_ned = createArbitraryRPCVelocityNedYaw();
+    request.set_allocated_velocity_ned_yaw(rpc_velocity_ned.release());
+
+    offboardService.SetVelocityNed(nullptr, &request, nullptr);
+}
+
+std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityNEDYaw>
+OffboardServiceImplTest::createArbitraryRPCVelocityNedYaw() const
+{
+    auto rpc_velocity_ned = std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityNEDYaw>(
+        new dronecode_sdk::rpc::offboard::VelocityNEDYaw());
+    rpc_velocity_ned->set_north_m_s(ARBITRARY_VELOCITY_MID);
+    rpc_velocity_ned->set_east_m_s(ARBITRARY_VELOCITY_LOW);
+    rpc_velocity_ned->set_down_m_s(ARBITRARY_VELOCITY_NEG);
+    rpc_velocity_ned->set_yaw_deg(ARBITRARY_YAW);
+
+    return rpc_velocity_ned;
+}
+
+TEST_F(OffboardServiceImplTest, setsVelocityNedCorrectly)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+    dronecode_sdk::rpc::offboard::SetVelocityNedRequest request;
+
+    auto rpc_velocity_ned = createArbitraryRPCVelocityNedYaw();
+    const auto expected_velocity_ned =
+        OffboardServiceImpl::translateRPCVelocityNEDYaw(*rpc_velocity_ned);
+    EXPECT_CALL(offboard, set_velocity_ned(expected_velocity_ned)).Times(1);
+
+    request.set_allocated_velocity_ned_yaw(rpc_velocity_ned.release());
+
+    offboardService.SetVelocityNed(nullptr, &request, nullptr);
+}
+
+INSTANTIATE_TEST_CASE_P(OffboardResultCorrespondences,
+                        OffboardServiceImplTest,
+                        ::testing::ValuesIn(generateInputPairs()));
 
 std::vector<InputPair> generateInputPairs()
 {

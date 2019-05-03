@@ -65,7 +65,7 @@ public:
                                  rpc::offboard::SetAttitudeRateResponse * /* response */) override
     {
         if (request != nullptr) {
-            auto requested_attitude_rate = request->attitude_rate();
+            auto requested_attitude_rate = translateRPCAttitudeRate(request->attitude_rate());
             _offboard.set_attitude_rate(requested_attitude_rate);
         }
 
@@ -90,7 +90,8 @@ public:
                                 rpc::offboard::SetPositionNedResponse * /* response */) override
     {
         if (request != nullptr) {
-            auto requested_position_ned_yaw = request->position_ned_yaw();
+            auto requested_position_ned_yaw = translateRPCPositionNEDYaw(
+                request->position_ned_yaw());
             _offboard.set_position_ned(requested_position_ned_yaw);
         }
 
@@ -115,11 +116,25 @@ public:
                                  rpc::offboard::SetVelocityBodyResponse * /* response */) override
     {
         if (request != nullptr) {
-            auto requested_velocity_body_yawspeed = request->velocity_body_yawspeed();
+            auto requested_velocity_body_yawspeed = translateRPCVelocityBodyYawspeed(
+                request->velocity_body_yawspeed());
             _offboard.set_velocity_body(requested_velocity_body_yawspeed);
         }
 
         return grpc::Status::OK;
+    }
+
+    static dronecode_sdk::Offboard::VelocityBodyYawspeed translateRPCVelocityBodyYawspeed(
+        const rpc::offboard::VelocityBodyYawspeed &rpc_velocity_body_yawspeed)
+    {
+        dronecode_sdk::Offboard::VelocityBodyYawspeed velocity_body_yawspeed;
+
+        velocity_body_yawspeed.forward_m_s = rpc_velocity_body_yawspeed.forward_m_s();
+        velocity_body_yawspeed.right_m_s = rpc_velocity_body_yawspeed.right_m_s();
+        velocity_body_yawspeed.down_m_s = rpc_velocity_body_yawspeed.down_m_s();
+        velocity_body_yawspeed.yawspeed_deg_s = rpc_velocity_body_yawspeed.yawspeed_deg_s();
+
+        return velocity_body_yawspeed;
     }
 
     grpc::Status SetVelocityNed(grpc::ServerContext * /* context */,
@@ -127,11 +142,25 @@ public:
                                 rpc::offboard::SetVelocityNedResponse * /* response */) override
     {
         if (request != nullptr) {
-            auto requested_velocity_ned_yaw = request->velocity_ned_yaw();
+            auto requested_velocity_ned_yaw = translateRPCVelocityNEDYaw(
+                request->velocity_ned_yaw());
             _offboard.set_velocity_ned(requested_velocity_ned_yaw);
         }
 
         return grpc::Status::OK;
+    }
+
+    static dronecode_sdk::Offboard::VelocityNEDYaw translateRPCVelocityNEDYaw(
+        const rpc::offboard::VelocityNEDYaw &rpc_velocity_ned_yaw)
+    {
+        dronecode_sdk::Offboard::VelocityNEDYaw velocity_ned_yaw;
+
+        velocity_ned_yaw.north_m_s = rpc_velocity_ned_yaw.north_m_s();
+        velocity_ned_yaw.east_m_s = rpc_velocity_ned_yaw.east_m_s();
+        velocity_ned_yaw.down_m_s = rpc_velocity_ned_yaw.down_m_s();
+        velocity_ned_yaw.yaw_deg = rpc_velocity_ned_yaw.yaw_deg();
+
+        return velocity_ned_yaw;
     }
 
 private:
