@@ -273,17 +273,17 @@ std::ostream &operator<<(std::ostream &str,
                          Offboard::VelocityBodyYawspeed const &velocity_body_yawspeed);
 
 /**
-* @brief Equal operator to compare two `Offboard::VelocityNEDYaw` objects.
-*
-* @return `true` if items are equal.
-*/
+ * @brief Equal operator to compare two `Offboard::VelocityNEDYaw` objects.
+ *
+ * @return `true` if items are equal.
+ */
 bool operator==(const Offboard::VelocityNEDYaw &lhs, const Offboard::VelocityNEDYaw &rhs);
 
 /**
-* @brief Stream operator to print information about a `Offboard::VelocityNEDYaw`.
-*
-* @return A reference to the stream.
-*/
+ * @brief Stream operator to print information about a `Offboard::VelocityNEDYaw`.
+ *
+ * @return A reference to the stream.
+ */
 std::ostream &operator<<(std::ostream &str, Offboard::VelocityNEDYaw const &velocity_ned_yaw);
 
 } // namespace dronecode_sdk

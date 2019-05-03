@@ -82,10 +82,8 @@ const char *Offboard::result_str(Result result)
 
 bool operator==(const Offboard::AttitudeRate &lhs, const Offboard::AttitudeRate &rhs)
 {
-    return lhs.roll_deg_s == rhs.roll_deg_s &&
-           lhs.pitch_deg_s == rhs.pitch_deg_s &&
-           lhs.yaw_deg_s == rhs.yaw_deg_s &&
-           lhs.thrust_value == rhs.thrust_value;
+    return lhs.roll_deg_s == rhs.roll_deg_s && lhs.pitch_deg_s == rhs.pitch_deg_s &&
+           lhs.yaw_deg_s == rhs.yaw_deg_s && lhs.thrust_value == rhs.thrust_value;
 }
 
 std::ostream &operator<<(std::ostream &str, Offboard::AttitudeRate const &attitude_rate)
@@ -98,27 +96,22 @@ std::ostream &operator<<(std::ostream &str, Offboard::AttitudeRate const &attitu
 
 bool operator==(const Offboard::PositionNEDYaw &lhs, const Offboard::PositionNEDYaw &rhs)
 {
-    return lhs.north_m == rhs.north_m &&
-           lhs.east_m == rhs.east_m &&
-           lhs.down_m == rhs.down_m &&
+    return lhs.north_m == rhs.north_m && lhs.east_m == rhs.east_m && lhs.down_m == rhs.down_m &&
            lhs.yaw_deg == rhs.yaw_deg;
 }
 
 std::ostream &operator<<(std::ostream &str, Offboard::PositionNEDYaw const &position_ned_yaw)
 {
     return str << "[north_m: " << position_ned_yaw.north_m
-               << ", east_m: " << position_ned_yaw.east_m
-               << ", down_m: " << position_ned_yaw.down_m
+               << ", east_m: " << position_ned_yaw.east_m << ", down_m: " << position_ned_yaw.down_m
                << ", yaw_deg: " << position_ned_yaw.yaw_deg << "]";
 }
 
 bool operator==(const Offboard::VelocityBodyYawspeed &lhs,
                 const Offboard::VelocityBodyYawspeed &rhs)
 {
-    return lhs.forward_m_s == rhs.forward_m_s &&
-           lhs.right_m_s == rhs.right_m_s &&
-           lhs.down_m_s == rhs.down_m_s &&
-           lhs.yawspeed_deg_s == rhs.yawspeed_deg_s;
+    return lhs.forward_m_s == rhs.forward_m_s && lhs.right_m_s == rhs.right_m_s &&
+           lhs.down_m_s == rhs.down_m_s && lhs.yawspeed_deg_s == rhs.yawspeed_deg_s;
 }
 
 std::ostream &operator<<(std::ostream &str,
@@ -132,10 +125,8 @@ std::ostream &operator<<(std::ostream &str,
 
 bool operator==(const Offboard::VelocityNEDYaw &lhs, const Offboard::VelocityNEDYaw &rhs)
 {
-    return lhs.north_m_s == rhs.north_m_s &&
-           lhs.east_m_s == rhs.east_m_s &&
-           lhs.down_m_s == rhs.down_m_s &&
-           lhs.yaw_deg == rhs.yaw_deg;
+    return lhs.north_m_s == rhs.north_m_s && lhs.east_m_s == rhs.east_m_s &&
+           lhs.down_m_s == rhs.down_m_s && lhs.yaw_deg == rhs.yaw_deg;
 }
 
 std::ostream &operator<<(std::ostream &str, Offboard::VelocityNEDYaw const &velocity_ned_yaw)
