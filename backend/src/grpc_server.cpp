@@ -19,6 +19,7 @@ void GRPCServer::run()
     builder.RegisterService(&_gimbal_service);
     builder.RegisterService(&_camera_service);
     builder.RegisterService(&_mission_service);
+    builder.RegisterService(&_offboard_service);
     builder.RegisterService(&_telemetry_service);
     builder.RegisterService(&_info_service);
     builder.RegisterService(&_param_service);
