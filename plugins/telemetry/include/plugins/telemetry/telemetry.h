@@ -144,7 +144,7 @@ public:
             INFO, /**< @brief Message type is an information or other. */
             WARNING, /**< @brief Message type is a warning. */
             CRITICAL /**< @brief Message type is critical. */
-        } type;  /**< @brief Status Text type. */
+        } type; /**< @brief Message type. */
         std::string text; /**< @brief Mavlink status message. */
     };
 
