@@ -48,14 +48,14 @@ public:
      * @brief Results for offboard requests.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief %Request succeeded. */
+        UNKNOWN, /**< @brief Unknown error. */
+        SUCCESS, /**< @brief %Request succeeded. */
         NO_SYSTEM, /**< @brief No system connected. */
         CONNECTION_ERROR, /**< @brief %Connection error. */
         BUSY, /**< @brief Vehicle busy. */
         COMMAND_DENIED, /**< @brief Command denied. */
         TIMEOUT, /**< @brief %Request timeout. */
-        NO_SETPOINT_SET, /**< Can't start without setpoint set. */
-        UNKNOWN /**< @brief Unknown error. */
+        NO_SETPOINT_SET /**< Can't start without setpoint set. */
     };
 
     /**
@@ -227,5 +227,63 @@ private:
     /** @private Underlying implementation, set at instantiation */
     std::unique_ptr<OffboardImpl> _impl;
 };
+
+/**
+ * @brief Equal operator to compare two `Offboard::AttitudeRate` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Offboard::AttitudeRate &lhs, const Offboard::AttitudeRate &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Offboard::AttitudeRate`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Offboard::AttitudeRate const &attitude_rate);
+
+/**
+ * @brief Equal operator to compare two `Offboard::PositionNEDYaw` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Offboard::PositionNEDYaw &lhs, const Offboard::PositionNEDYaw &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Offboard::PositionNEDYaw`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Offboard::PositionNEDYaw const &position_ned_yaw);
+
+/**
+ * @brief Equal operator to compare two `Offboard::VelocityBodyYawspeed` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Offboard::VelocityBodyYawspeed &lhs,
+                const Offboard::VelocityBodyYawspeed &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Offboard::VelocityBodyYawspeed`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Offboard::VelocityBodyYawspeed const &velocity_body_yawspeed);
+
+/**
+ * @brief Equal operator to compare two `Offboard::VelocityNEDYaw` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Offboard::VelocityNEDYaw &lhs, const Offboard::VelocityNEDYaw &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Offboard::VelocityNEDYaw`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Offboard::VelocityNEDYaw const &velocity_ned_yaw);
 
 } // namespace dronecode_sdk

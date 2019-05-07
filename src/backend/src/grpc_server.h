@@ -19,6 +19,8 @@
 #include "gimbal/gimbal_service_impl.h"
 #include "param/param.h"
 #include "param/param_service_impl.h"
+#include "plugins/offboard/offboard.h"
+#include "offboard/offboard_service_impl.h"
 
 namespace dronecode_sdk {
 namespace backend {
@@ -38,6 +40,8 @@ public:
         _camera_service(_camera),
         _mission(_dc.system()),
         _mission_service(_mission),
+        _offboard(_dc.system()),
+        _offboard_service(_offboard),
         _telemetry(_dc.system()),
         _telemetry_service(_telemetry),
         _info(_dc.system()),
@@ -65,6 +69,8 @@ private:
     CameraServiceImpl<> _camera_service;
     Mission _mission;
     MissionServiceImpl<> _mission_service;
+    Offboard _offboard;
+    OffboardServiceImpl<> _offboard_service;
     Telemetry _telemetry;
     TelemetryServiceImpl<> _telemetry_service;
     Info _info;

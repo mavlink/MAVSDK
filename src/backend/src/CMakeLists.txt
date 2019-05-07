@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(COMPONENTS_LIST core action calibration gimbal camera mission telemetry info param)
+set(COMPONENTS_LIST core action calibration gimbal camera mission offboard telemetry info param)
 
 include(cmake/compile_proto.cmake)
 
@@ -40,6 +40,7 @@ target_link_libraries(backend
     dronecode_sdk_gimbal
     dronecode_sdk_camera
     dronecode_sdk_mission
+    dronecode_sdk_offboard
     dronecode_sdk_telemetry
     dronecode_sdk_info
     dronecode_sdk_param
