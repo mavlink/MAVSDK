@@ -7,6 +7,10 @@
 #include "plugin_base.h"
 #include "mission_item.h"
 
+#ifdef ERROR
+#undef ERROR
+#endif
+
 namespace dronecode_sdk {
 
 class MissionImpl;

@@ -8,6 +8,10 @@
 
 #include "plugin_base.h"
 
+#ifdef ERROR
+#undef ERROR
+#endif
+
 namespace dronecode_sdk {
 
 class CameraImpl;

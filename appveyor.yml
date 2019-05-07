@@ -45,7 +45,7 @@ build_script:
   - cd %dronecode_sdk_dir%
   - md build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install ..
+  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install -DBUILD_BACKEND=ON ..
   - cmake --build . --target install --config %configuration%
   - cd %dronecode_sdk_dir%
   - cd example\takeoff_land

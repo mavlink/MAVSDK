@@ -1,5 +1,6 @@
 if(MSVC)
     add_definitions(-DWINDOWS)
+    add_definitions(-D_WIN32_WINNT=0x600)
     set(warnings "-WX -W2")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 

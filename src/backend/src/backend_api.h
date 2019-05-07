@@ -4,7 +4,13 @@
 extern "C" {
 #endif
 
-__attribute__((visibility("default"))) void
+#ifdef WINDOWS
+#define DLLExport __declspec(dllexport)
+#else
+#define DLLExport __attribute__((visibility("default")))
+#endif
+
+DLLExport void
 runBackend(const char *connection_url, void (*onServerStarted)(void *), void *context);
 
 #ifdef __cplusplus

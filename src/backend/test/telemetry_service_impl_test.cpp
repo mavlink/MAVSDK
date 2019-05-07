@@ -1534,7 +1534,7 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleRcStatusEvents)
     std::vector<RcStatus> rc_status_events;
     rc_status_events.push_back(createRcStatus(false, false, 0.0f));
     rc_status_events.push_back(createRcStatus(false, true, 54.2f));
-    rc_status_events.push_back(createRcStatus(true, true, 89.12));
+    rc_status_events.push_back(createRcStatus(true, true, 89.12f));
 
     checkSendsRcStatusEvents(rc_status_events);
 }
