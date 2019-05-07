@@ -9,6 +9,7 @@ service OffboardService {
     rpc Start(StartRequest) returns(StartResponse) {}
     rpc Stop(StopRequest) returns(StopResponse) {}
     rpc IsActive(IsActiveRequest) returns(IsActiveResponse) {}
+    rpc SetAttitude(SetAttitudeRequest) returns(SetAttitudeResponse) {}
     rpc SetAttitudeRate(SetAttitudeRateRequest) returns(SetAttitudeRateResponse) {}
     rpc SetPositionNed(SetPositionNedRequest) returns(SetPositionNedResponse) {}
     rpc SetVelocityBody(SetVelocityBodyRequest) returns(SetVelocityBodyResponse) {}
@@ -30,6 +31,11 @@ message IsActiveResponse {
     bool is_active = 1;
 }
 
+message SetAttitudeRequest {
+  Attitude attitude = 1;
+}
+message SetAttitudeResponse {};
+
 message SetAttitudeRateRequest {
     AttitudeRate attitude_rate = 1;
 }
@@ -49,6 +55,13 @@ message SetVelocityNedRequest {
     VelocityNEDYaw velocity_ned_yaw = 1;
 }
 message SetVelocityNedResponse {}
+
+message Attitude {
+  float roll_deg = 1;
+  float pitch_deg = 2;
+  float yaw_deg = 3;
+  float thrust_value = 4;
+}
 
 message AttitudeRate {
     float roll_deg_s = 1;
