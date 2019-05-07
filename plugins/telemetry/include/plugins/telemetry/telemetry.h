@@ -130,6 +130,25 @@ public:
     };
 
     /**
+     * @brief Status Text information type.
+     */
+    struct StatusText {
+        /**
+         * @brief Status Types.
+         *
+         * @note PX4 only supports these 3 status types.
+         * If other status types are returned for some reason,
+         * they will be marked as INFO type and logged as a warning.
+         */
+        enum class StatusType {
+            INFO, /**< @brief Message type is an information or other. */
+            WARNING, /**< @brief Message type is a warning. */
+            CRITICAL /**< @brief Message type is critical. */
+        } type; /**< @brief Message type. */
+        std::string text; /**< @brief Mavlink status message. */
+    };
+
+    /**
      * @brief Battery type.
      */
     struct Battery {
@@ -397,6 +416,13 @@ public:
     Position home_position() const;
 
     /**
+     * @brief Get status text (synchronous).
+     *
+     * @return Status text.
+     */
+    StatusText status_text() const;
+
+    /**
      * @brief Get the in-air status (synchronous).
      *
      * @return true if in-air (flying) and not on-ground (landed).
@@ -528,11 +554,25 @@ public:
     typedef std::function<void(bool in_air)> in_air_callback_t;
 
     /**
+     * @brief Callback for mavlink status text updates.
+     *
+     * @param status text with message type and text.
+     */
+    typedef std::function<void(StatusText status_text)> status_text_callback_t;
+
+    /**
      * @brief Subscribe to in-air updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
     void in_air_async(in_air_callback_t callback);
+
+    /**
+     * @brief Subscribe to status text updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void status_text_async(status_text_callback_t callback);
 
     /**
      * @brief Callback type for armed updates (asynchronous).
@@ -852,5 +892,12 @@ bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs);
  * @return A reference to the stream.
  */
 std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::StatusText`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_text);
 
 } // namespace dronecode_sdk
