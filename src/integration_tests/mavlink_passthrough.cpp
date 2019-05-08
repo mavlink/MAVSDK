@@ -49,15 +49,25 @@ TEST_F(SitlTest, MavlinkPassthrough)
         std::promise<void> prom;
         std::future<void> fut = prom.get_future();
         unsigned counter = 0;
+        bool stopped = false;
 
         mavlink_passthrough->subscribe_message_async(
-            MAVLINK_MSG_ID_HIGHRES_IMU, [&prom, &counter](const mavlink_message_t &message) {
+            MAVLINK_MSG_ID_HIGHRES_IMU,
+            [&prom, &counter, &stopped, mavlink_passthrough](const mavlink_message_t &message) {
                 mavlink_highres_imu_t highres_imu;
                 mavlink_msg_highres_imu_decode(&message, &highres_imu);
 
-                LogInfo() << "HIGHRES_IMU.temperature: " << highres_imu.temperature << " degrees C";
+                LogInfo() << "HIGHRES_IMU.temperature [1] (" << counter << ")"
+                          << highres_imu.temperature << " degrees C";
                 if (++counter > 100) {
-                    prom.set_value();
+                    EXPECT_FALSE(stopped);
+                    if (!stopped) {
+                        stopped = true;
+                        // Unsubscribe again
+                        mavlink_passthrough->subscribe_message_async(MAVLINK_MSG_ID_HIGHRES_IMU,
+                                                                     nullptr);
+                        prom.set_value();
+                    }
                 };
             });
 

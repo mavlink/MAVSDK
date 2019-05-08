@@ -51,6 +51,7 @@ public:
                                           mavlink_message_handler_t callback,
                                           const void *cookie);
 
+    void unregister_mavlink_message_handler(uint16_t msg_id, const void *cookie);
     void unregister_all_mavlink_message_handlers(const void *cookie);
 
     void register_timeout_handler(std::function<void()> callback, double duration_s, void **cookie);

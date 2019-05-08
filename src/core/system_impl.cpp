@@ -80,6 +80,21 @@ void SystemImpl::register_mavlink_message_handler(uint16_t msg_id,
     _iterator_invalidated = true;
 }
 
+void SystemImpl::unregister_mavlink_message_handler(uint16_t msg_id, const void *cookie)
+{
+    std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
+
+    for (auto it = _mavlink_handler_table.begin(); it != _mavlink_handler_table.end();
+         /* no ++it */) {
+        if (it->msg_id == msg_id && it->cookie == cookie) {
+            it = _mavlink_handler_table.erase(it);
+            _iterator_invalidated = true;
+        } else {
+            ++it;
+        }
+    }
+}
+
 void SystemImpl::unregister_all_mavlink_message_handlers(const void *cookie)
 {
     std::lock_guard<std::mutex> lock(_mavlink_handler_table_mutex);
