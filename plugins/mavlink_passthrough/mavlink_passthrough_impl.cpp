@@ -38,7 +38,11 @@ MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_
 void MavlinkPassthroughImpl::subscribe_message_async(
     uint16_t message_id, std::function<void(const mavlink_message_t &)> callback)
 {
-    _parent->register_mavlink_message_handler(message_id, callback, this);
+    if (callback == nullptr) {
+        _parent->unregister_mavlink_message_handler(message_id, this);
+    } else {
+        _parent->register_mavlink_message_handler(message_id, callback, this);
+    }
 }
 
 uint8_t MavlinkPassthroughImpl::get_our_sysid() const
