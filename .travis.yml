@@ -134,7 +134,7 @@ script:
     ./build/release/src/unit_tests_runner;
   fi
 - if [[ "${BUILD_TARGET}" = "windows" ]]; then
-    cmake -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build/debug/install -Bbuild/debug -H${TRAVIS_BUILD_DIR};
+    cmake -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build/debug/install -DBUILD_BACKEND=ON -Bbuild/debug -H${TRAVIS_BUILD_DIR};
   fi
 
 after_success:
