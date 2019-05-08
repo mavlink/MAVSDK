@@ -41,7 +41,13 @@ void MavlinkPassthroughImpl::subscribe_message_async(
     if (callback == nullptr) {
         _parent->unregister_mavlink_message_handler(message_id, this);
     } else {
-        _parent->register_mavlink_message_handler(message_id, callback, this);
+        auto temp_callback = callback;
+        _parent->register_mavlink_message_handler(
+            message_id,
+            [this, temp_callback](const mavlink_message_t &message) {
+                _parent->call_user_callback([temp_callback, message]() { temp_callback(message); });
+            },
+            this);
     }
 }
 
