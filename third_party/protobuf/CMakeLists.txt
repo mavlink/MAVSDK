@@ -33,5 +33,6 @@ ExternalProject_add(
     protobuf
     URL https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-cpp-3.7.1.tar.gz
     PREFIX protobuf
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>/cmake
+    CMAKE_ARGS "${CMAKE_ARGS}"
+    SOURCE_SUBDIR cmake
     )

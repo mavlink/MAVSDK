@@ -39,5 +39,5 @@ ExternalProject_add(
     grpc
     URL https://github.com/dronecore/grpc/archive/fix-pointer-not-aligned-ios.zip
     PREFIX grpc
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>
+    CMAKE_ARGS "${CMAKE_ARGS}"
     )

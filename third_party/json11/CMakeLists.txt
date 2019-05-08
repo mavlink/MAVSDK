@@ -27,10 +27,10 @@ foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
-ExternalProject_add(
+ExternalProject_Add(
     json11
     URL https://github.com/dropbox/json11/archive/v1.0.0.tar.gz
     PREFIX json11
     PATCH_COMMAND patch -p1 < ${PROJECT_SOURCE_DIR}/export_config.patch
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>
+    CMAKE_ARGS "${CMAKE_ARGS}"
     )

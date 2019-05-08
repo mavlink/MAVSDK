@@ -32,5 +32,5 @@ ExternalProject_add(
     cares
     URL https://github.com/c-ares/c-ares/releases/download/cares-1_15_0/c-ares-1.15.0.tar.gz
     PREFIX cares
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>
+    CMAKE_ARGS "${CMAKE_ARGS}"
     )

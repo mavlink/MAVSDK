@@ -15,6 +15,7 @@ list(APPEND CMAKE_ARGS
     "-DCURL_ZLIB=OFF"
     "-DHTTP_ONLY=ON"
     "-DHAVE_POSIX_STRERROR_R=1"
+    "-DBUILD_TESTING=OFF"
     )
 
 if(ANDROID)
@@ -38,5 +39,5 @@ ExternalProject_add(
     curl
     URL https://github.com/curl/curl/releases/download/curl-7_64_1/curl-7.64.1.tar.xz
     PREFIX curl
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>
+    CMAKE_ARGS "${CMAKE_ARGS}"
     )

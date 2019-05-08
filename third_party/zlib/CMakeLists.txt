@@ -31,5 +31,5 @@ ExternalProject_add(
     URL https://github.com/madler/zlib/archive/v1.2.11.tar.gz
     PREFIX zlib
     PATCH_COMMAND patch -p1 < ${PROJECT_SOURCE_DIR}/build_shared_libs.patch
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} "${CMAKE_ARGS}" <SOURCE_DIR>
+    CMAKE_ARGS "${CMAKE_ARGS}"
     )
