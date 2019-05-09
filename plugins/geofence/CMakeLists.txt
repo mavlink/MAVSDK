@@ -3,17 +3,21 @@ add_library(dronecode_sdk_geofence ${PLUGIN_LIBRARY_TYPE}
     geofence_impl.cpp
 )
 
-target_link_libraries(dronecode_sdk_geofence
-    dronecode_sdk
+include_directories(
+    ${PROJECT_SOURCE_DIR}/core
 )
 
 set_target_properties(dronecode_sdk_geofence
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+target_link_libraries(dronecode_sdk_geofence
+    dronecode_sdk
+)
+
 install(FILES
     include/plugins/geofence/geofence.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${dronecode_sdk_install_include_dir}/plugins/geofence
 )
 
 install(TARGETS dronecode_sdk_geofence

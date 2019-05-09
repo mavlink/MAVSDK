@@ -27,6 +27,11 @@ void GeofenceImpl::init()
         MAVLINK_MSG_ID_MISSION_ACK,
         std::bind(&GeofenceImpl::process_mission_ack, this, _1),
         (void *)this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_STATUSTEXT,
+        std::bind(&GeofenceImpl::process_geofence_violation, this, _1),
+        (void *)this);
 }
 
 void GeofenceImpl::deinit()
@@ -136,6 +141,24 @@ void GeofenceImpl::process_mission_ack(const mavlink_message_t &message)
     } else {
         LogDebug() << "Error: unknown geofence ack: " << int(mission_ack.type);
         report_geofence_result(_result_callback, Geofence::Result::ERROR);
+    }
+}
+
+void GeofenceImpl::process_geofence_violation(const mavlink_message_t &message)
+{
+    mavlink_statustext_t statustext;
+    mavlink_msg_statustext_decode(&message, &statustext);
+
+    if (statustext.severity == MAV_SEVERITY_CRITICAL) {
+        // statustext.text is not null terminated, therefore we copy it first to
+        // an array big enough that is zeroed.
+        char text_with_null[sizeof(statustext.text) + 1]{};
+        memcpy(text_with_null, statustext.text, sizeof(statustext.text));
+
+        if (strstr(text_with_null, "Geofence violation")) {
+            LogDebug() << "GOT GEOFENCE VIOLATION";
+            report_geofence_result(_result_callback, Geofence::Result::VIOLATION);
+        }
     }
 }
 

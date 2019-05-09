@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include <functional>
-#include "plugin_base.h"
+#include <dronecode_sdk/plugin_base.h>
 
 namespace dronecode_sdk {
 
@@ -22,7 +22,8 @@ public:
         BUSY,
         TIMEOUT,
         INVALID_ARGUMENT,
-        UNKNOWN
+        UNKNOWN,
+        VIOLATION
     };
 
     static const char *result_str(Result result);
