@@ -28,8 +28,10 @@ endforeach()
 
 ExternalProject_add(
     zlib
-    URL https://github.com/madler/zlib/archive/v1.2.11.tar.gz
+    GIT_REPOSITORY https://github.com/madler/zlib
+    GIT_TAG v1.2.11
+    GIT_SHALLOW true
     PREFIX zlib
-    PATCH_COMMAND patch -p1 < ${PROJECT_SOURCE_DIR}/build_shared_libs.patch
+    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/build_shared_libs.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
