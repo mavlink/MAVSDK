@@ -60,8 +60,8 @@ void GeofenceImpl::send_geofence_async(
     LogDebug() << "size afterwards is: " << _mavlink_geofence_item_messages.size();
 
     mavlink_message_t message;
-    mavlink_msg_mission_count_pack(GCSClient::system_id,
-                                   GCSClient::component_id,
+    mavlink_msg_mission_count_pack(_parent->get_own_system_id(),
+                                   _parent->get_own_component_id(),
                                    &message,
                                    _parent->get_system_id(),
                                    _parent->get_autopilot_id(),
@@ -90,8 +90,8 @@ void GeofenceImpl::process_mission_request_int(const mavlink_message_t &message)
     mavlink_mission_request_int_t mission_request_int;
     mavlink_msg_mission_request_int_decode(&message, &mission_request_int);
 
-    if (mission_request_int.target_system != GCSClient::system_id &&
-        mission_request_int.target_component != GCSClient::component_id) {
+    if (mission_request_int.target_system != _parent->get_own_system_id() &&
+        mission_request_int.target_component != _parent->get_own_component_id()) {
         LogDebug() << "Ignore geofence request int that is not for us";
         return;
     }
@@ -117,8 +117,8 @@ void GeofenceImpl::process_mission_ack(const mavlink_message_t &message)
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
 
-    if (mission_ack.target_system != GCSClient::system_id &&
-        mission_ack.target_component != GCSClient::component_id) {
+    if (mission_ack.target_system != _parent->get_own_system_id() &&
+        mission_ack.target_component != _parent->get_own_component_id()) {
         LogDebug() << "Ignore geofence ack that is not for us";
         return;
     }
@@ -161,8 +161,8 @@ void GeofenceImpl::assemble_mavlink_messages(
 
         for (auto &point : polygon->points) {
             std::shared_ptr<mavlink_message_t> message(new mavlink_message_t());
-            mavlink_msg_mission_item_int_pack(GCSClient::system_id,
-                                              GCSClient::component_id,
+            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
+                                              _parent->get_own_component_id(),
                                               message.get(),
                                               _parent->get_system_id(),
                                               _parent->get_autopilot_id(),
