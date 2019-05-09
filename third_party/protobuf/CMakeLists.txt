@@ -34,5 +34,6 @@ ExternalProject_add(
     URL https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-cpp-3.7.1.tar.gz
     PREFIX protobuf
     CMAKE_ARGS "${CMAKE_ARGS}"
-    SOURCE_SUBDIR cmake
+    CONFIGURE_COMMAND ${CMAKE_COMMAND} "-G${CMAKE_GENERATOR}" "${CMAKE_ARGS}" <SOURCE_DIR>/cmake
+    #SOURCE_SUBDIR cmake # Not supported by CMake 3.5.1 (Ubuntu 16.04)
     )
