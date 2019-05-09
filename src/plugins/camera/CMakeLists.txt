@@ -1,4 +1,4 @@
-if(NOT MSVC)
+if(NOT MSVC AND NOT MINGW)
     add_resource(camera_definition_files)
     link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/e90.xml VARIABLE e90xml TEXT)
     link_resource_file(camera_definition_files FILE ${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/e50.xml VARIABLE e50xml TEXT)

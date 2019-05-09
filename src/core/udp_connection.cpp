@@ -2,26 +2,28 @@
 #include "global_include.h"
 #include "log.h"
 
-#ifndef WINDOWS
+#ifdef WINDOWS
+#include <winsock2.h>
+#include <Ws2tcpip.h> // For InetPton
+#undef SOCKET_ERROR // conflicts with ConnectionResult::SOCKET_ERROR
+#ifndef MINGW
+#pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
+#endif
+#else
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
 #include <unistd.h> // for close()
-#else
-#include <winsock2.h>
-#include <Ws2tcpip.h> // For InetPton
-#undef SOCKET_ERROR // conflicts with ConnectionResult::SOCKET_ERROR
-#pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
 #endif
 
 #include <cassert>
 #include <algorithm>
 
-#ifndef WINDOWS
-#define GET_ERROR(_x) strerror(_x)
-#else
+#ifdef WINDOWS
 #define GET_ERROR(_x) WSAGetLastError()
+#else
+#define GET_ERROR(_x) strerror(_x)
 #endif
 
 namespace dronecode_sdk {

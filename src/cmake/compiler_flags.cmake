@@ -1,6 +1,9 @@
+if(MINGW)
+    add_definitions(-DWINDOWS -DMINGW)
+endif()
+
 if(MSVC)
     add_definitions(-DWINDOWS)
-    add_definitions(-D_WIN32_WINNT=0x600)
     set(warnings "-WX -W2")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
@@ -13,9 +16,13 @@ if(MSVC)
     endif()
 else()
     # We are not using exceptions to make it easier to write wrappers.
-    add_definitions(-fno-exceptions)
+    if (MINGW)
+        set(warnings "-Wall -Wextra -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion")
+    else()
+        add_definitions(-fno-exceptions)
+        set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2 -Weffc++")
+    endif()
 
-    set(warnings "-Wall -Wextra -Werror -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2 -Weffc++")
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6)

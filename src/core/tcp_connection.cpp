@@ -2,14 +2,16 @@
 #include "global_include.h"
 #include "log.h"
 
-#ifndef WINDOWS
+#ifdef WINDOWS
+#ifndef MINGW
+#pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
+#endif
+#else
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
 #include <unistd.h> // for close()
-#else
-#pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
 #endif
 
 #include <cassert>

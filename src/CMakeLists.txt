@@ -31,7 +31,7 @@ include(cmake/compiler_flags.cmake)
 find_package(CURL REQUIRED CONFIG)
 find_package(tinyxml2 REQUIRED)
 
-if(NOT MSVC)
+if(NOT MSVC AND NOT MINGW)
     cmake_policy(SET CMP0058 NEW)
     include(${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp_rsc/cmake/modules/cpp_resource.cmake)
     if(NOT ANDROID AND NOT IOS)

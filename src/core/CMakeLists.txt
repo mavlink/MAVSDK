@@ -44,7 +44,7 @@ if (IOS)
 endif()
 
 # Link to Windows networking lib.
-if (MSVC)
+if (MSVC OR MINGW)
     target_link_libraries(dronecode_sdk
         ws2_32
     )
