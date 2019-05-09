@@ -3,10 +3,8 @@
  *
  * @brief Demonstrates how to Add & Upload geofence missions using the Dronecode SDK.
  * The example is summarised below:
- * 1. Adds mission items.
- * 2. Starts mission from first mission item.
- * 3. Illustrates Pause/Resume mission item.
- * 4. Exits after the mission is accomplished.
+ * 1. Adds points to geofence.
+ * 2. Uploads the geofence mission.
  *
  * @author Jonathan Zaturensky <jonathan@airmap.com>,
  * @date 2019-05-09
@@ -33,10 +31,7 @@ using namespace std::placeholders; // for `_1`
 using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
 
-static void receive_send_geofence_result(Geofence::Result result);
-
 static Geofence::Polygon::Point add_point(double latitude_deg, double longitude_deg);
-static std::atomic<bool> _got_result{false};
 
 void usage(std::string bin_name)
 {
@@ -119,67 +114,24 @@ int main(int argc, char **argv)
 
     polygons.push_back(new_polygon);
 
-    geofence->send_geofence_async(polygons, std::bind(&receive_send_geofence_result, _1));
+    {
+        std::cout << "Uploading geofence..." << std::endl;
 
-    for (unsigned i = 0; i < 5; ++i) {
-        if (_got_result) {
-            break;
+        auto prom = std::make_shared<std::promise<Geofence::Result>>();
+        auto future_result = prom->get_future();
+        geofence->send_geofence_async(polygons,
+                                      [prom](Geofence::Result result) { prom->set_value(result); });
+
+        const Geofence::Result result = future_result.get();
+        if (result != Geofence::Result::SUCCESS) {
+            std::cout << "Geofence upload failed (" << Geofence::result_str(result) << "), exiting."
+                      << std::endl;
+            return 1;
         }
-        sleep_for(seconds(1));
+        std::cout << "Geofence uploaded." << std::endl;
     }
-
-    // Arm vehicle
-    std::cout << "Arming..." << std::endl;
-    const Action::Result arm_result = action->arm();
-
-    if (arm_result != Action::Result::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Arming failed:" << Action::result_str(arm_result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
-    }
-
-    // Take off
-    std::cout << "Taking off..." << std::endl;
-    const Action::Result takeoff_result = action->takeoff();
-    if (takeoff_result != Action::Result::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Takeoff failed:" << Action::result_str(takeoff_result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
-    }
-
-    // Let it hover for a bit before landing again.
-    sleep_for(seconds(30));
-
-    std::cout << "Landing..." << std::endl;
-    const Action::Result land_result = action->land();
-    if (land_result != Action::Result::SUCCESS) {
-        std::cout << ERROR_CONSOLE_TEXT << "Land failed:" << Action::result_str(land_result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
-        return 1;
-    }
-
-    // Check if vehicle is still in air
-    while (telemetry->in_air()) {
-        std::cout << "Vehicle is landing..." << std::endl;
-        sleep_for(seconds(1));
-    }
-    std::cout << "Landed!" << std::endl;
-
-    // We are relying on auto-disarming but let's keep watching the telemetry for a bit longer.
-    sleep_for(seconds(3));
-    std::cout << "Finished..." << std::endl;
 
     return 0;
-}
-
-void receive_send_geofence_result(Geofence::Result result)
-{
-    if (result == Geofence::Result::SUCCESS) {
-        _got_result = true;
-        std::cout << "Got result\n";
-    } else if (result == Geofence::Result::VIOLATION) {
-        std::cout << "Got violation!!!\n";
-    }
 }
 
 Geofence::Polygon::Point add_point(double latitude_deg, double longitude_deg)

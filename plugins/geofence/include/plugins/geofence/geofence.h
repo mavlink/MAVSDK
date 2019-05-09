@@ -22,8 +22,7 @@ public:
         BUSY,
         TIMEOUT,
         INVALID_ARGUMENT,
-        UNKNOWN,
-        VIOLATION
+        UNKNOWN
     };
 
     static const char *result_str(Result result);

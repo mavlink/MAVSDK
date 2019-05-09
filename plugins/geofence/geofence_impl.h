@@ -35,7 +35,6 @@ private:
 
     void process_mission_request_int(const mavlink_message_t &message);
     void process_mission_ack(const mavlink_message_t &message);
-    void process_geofence_violation(const mavlink_message_t &message);
     void send_geofence_item(uint16_t seq);
 
     static void report_geofence_result(const Geofence::result_callback_t &callback,
