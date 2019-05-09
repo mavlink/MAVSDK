@@ -12,6 +12,8 @@ platform:
 # specify custom environment variables
 environment:
   MSVC_DEFAULT_OPTIONS: ON
+  CFLAGS: "-D_WIN32_WINNT=0x0600"
+  CXXFLAGS: "-D_WIN32_WINNT=0x0600"
 
 # only build PR but not branch as well
 skip_branch_with_pr: true

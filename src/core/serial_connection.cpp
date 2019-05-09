@@ -189,7 +189,7 @@ ConnectionResult SerialConnection::setup_port()
         return ConnectionResult::CONNECTION_ERROR;
     }
 
-    COMMTIMEOUTS timeout = {0};
+    COMMTIMEOUTS timeout = {0, 0, 0, 0, 0};
     timeout.ReadIntervalTimeout = 1;
     timeout.ReadTotalTimeoutConstant = 1;
     timeout.ReadTotalTimeoutMultiplier = 1;
