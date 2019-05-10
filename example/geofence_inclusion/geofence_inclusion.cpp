@@ -16,7 +16,6 @@
 #include <dronecode_sdk/plugins/telemetry/telemetry.h>
 #include <dronecode_sdk/plugins/geofence/geofence.h>
 
-
 #include <functional>
 #include <future>
 #include <iostream>
