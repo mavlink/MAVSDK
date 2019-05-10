@@ -4,7 +4,7 @@
 
 namespace dronecode_sdk {
 
-GeofenceImpl::GeofenceImpl(System &system) : PluginImplBase(system)
+GeofenceImpl::GeofenceImpl(System &system) : PluginImplBase(system), _mavlink_geofence_item_messages()
 {
     _parent->register_plugin(this);
 }
