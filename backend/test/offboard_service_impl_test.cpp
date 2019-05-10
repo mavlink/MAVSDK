@@ -40,8 +40,7 @@ class OffboardServiceImplTest : public ::testing::TestWithParam<InputPair> {
 protected:
     void checkReturnsCorrectIsActiveStatus(const bool expected_is_active_status);
 
-    std::unique_ptr<dronecode_sdk::rpc::offboard::Attitude>
-    createArbitraryRPCAttitude() const;
+    std::unique_ptr<dronecode_sdk::rpc::offboard::Attitude> createArbitraryRPCAttitude() const;
     std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>
     createArbitraryRPCAttitudeRate() const;
     std::unique_ptr<dronecode_sdk::rpc::offboard::PositionNEDYaw>
@@ -215,8 +214,7 @@ TEST_F(OffboardServiceImplTest, setsAttitudeCorrectly)
     dronecode_sdk::rpc::offboard::SetAttitudeRequest request;
 
     auto rpc_attitude = createArbitraryRPCAttitude();
-    const auto expected_attitude =
-      OffboardServiceImpl::translateRPCAttitude(*rpc_attitude);
+    const auto expected_attitude = OffboardServiceImpl::translateRPCAttitude(*rpc_attitude);
     EXPECT_CALL(offboard, set_attitude(expected_attitude)).Times(1);
 
     request.set_allocated_attitude(rpc_attitude.release());
