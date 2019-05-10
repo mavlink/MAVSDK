@@ -208,7 +208,7 @@ OffboardServiceImplTest::createArbitraryRPCAttitudeRate() const
     return rpc_attitude_rate;
 }
 
-TEST_F(OffboardServiceImplTest, setAttitudeCorrectrly)
+TEST_F(OffboardServiceImplTest, setsAttitudeCorrectly)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
