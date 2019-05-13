@@ -148,7 +148,7 @@ void GeofenceImpl::assemble_mavlink_messages(
     _mavlink_geofence_item_messages.clear();
 
     for (auto &polygon : polygons) {
-        u_int16_t command;
+        uint16_t command;
         switch (polygon->type) {
             case Geofence::Polygon::Type::INCLUSION:
                 command = MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION;
