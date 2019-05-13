@@ -44,11 +44,7 @@ mkdir -p $log_dir
 export NO_PXH=1
 
 # The logs are saved with a timestamp.
-if [[ "$unamestr" == 'Linux' ]]; then
-    timestamp=`date --iso-8601=seconds`
-else
-    timestamp=`date +%Y-%m-%dT%H:%M:%S%z`
-fi
+timestamp=`date +%Y-%m-%dT%H-%M-%S%z`
 
 logfile_path=$log_dir/px4_sitl-$timestamp.log
 
