@@ -39,6 +39,7 @@ The links below take you to the respective header files:
 - [follow_me](plugins/follow_me/include/plugins/follow_me/follow_me.h): drone tracks a position supplied by the Dronecode SDK.
 - [calibration](plugins/calibration/include/plugins/calibration/calibration.h): calibrate drone sensors including gyro, accelerometer, and magnetometer.
 - [logging](plugins/logging/include/plugins/logging/logging.h): (not implemented) data logging and streaming from the vehicle.
+- [geofence](plugins/geofence/include/plugins/geofence/geofence.h): to upload a geofence mission
 
 For more information see the [API Overview](https://sdk.dronecode.org/en/#api-overview) in the Dronecode SDK Guide.
 
