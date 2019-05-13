@@ -80,6 +80,18 @@ const char *Offboard::result_str(Result result)
     }
 }
 
+bool operator==(const Offboard::Attitude &lhs, const Offboard::Attitude &rhs)
+{
+    return lhs.roll_deg == rhs.roll_deg && lhs.pitch_deg == rhs.pitch_deg &&
+           lhs.yaw_deg == rhs.yaw_deg && lhs.thrust_value == rhs.thrust_value;
+}
+
+std::ostream &operator<<(std::ostream &str, Offboard::Attitude const &attitude)
+{
+    return str << "[roll_deg: " << attitude.roll_deg << ", pitch_deg: " << attitude.pitch_deg
+               << ", yaw_deg: " << attitude.yaw_deg << ", thrust_value " << attitude.thrust_value
+               << "]";
+}
 bool operator==(const Offboard::AttitudeRate &lhs, const Offboard::AttitudeRate &rhs)
 {
     return lhs.roll_deg_s == rhs.roll_deg_s && lhs.pitch_deg_s == rhs.pitch_deg_s &&

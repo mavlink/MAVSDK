@@ -16,9 +16,12 @@ using OffboardServiceImpl = dronecode_sdk::backend::OffboardServiceImpl<MockOffb
 using OffboardResult = dronecode_sdk::rpc::offboard::OffboardResult;
 using InputPair = std::pair<std::string, dronecode_sdk::Offboard::Result>;
 
-static constexpr float ARBITRARY_ROLL = 2.5f;
-static constexpr float ARBITRARY_PITCH = 4.0f;
-static constexpr float ARBITRARY_YAW = 3.7f;
+static constexpr float ARBITRARY_ROLL = 25.0f;
+static constexpr float ARBITRARY_PITCH = 40.0f;
+static constexpr float ARBITRARY_YAW = 37.0f;
+static constexpr float ARBITRARY_ROLL_RATE = 2.5f;
+static constexpr float ARBITRARY_PITCH_RATE = 4.0f;
+static constexpr float ARBITRARY_YAW_RATE = 3.7f;
 static constexpr float ARBITRARY_THRUST = 0.5f;
 static constexpr float ARBITRARY_NORTH_M = 10.54f;
 static constexpr float ARBITRARY_EAST_M = 5.62f;
@@ -37,6 +40,7 @@ class OffboardServiceImplTest : public ::testing::TestWithParam<InputPair> {
 protected:
     void checkReturnsCorrectIsActiveStatus(const bool expected_is_active_status);
 
+    std::unique_ptr<dronecode_sdk::rpc::offboard::Attitude> createArbitraryRPCAttitude() const;
     std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>
     createArbitraryRPCAttitudeRate() const;
     std::unique_ptr<dronecode_sdk::rpc::offboard::PositionNEDYaw>
@@ -138,12 +142,32 @@ TEST_F(OffboardServiceImplTest, isActiveDoesNotCrashWithNullResponse)
     offboardService.IsActive(nullptr, nullptr, nullptr);
 }
 
+TEST_F(OffboardServiceImplTest, setAttitudeDoesNotFailWithAllNullParams)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+
+    offboardService.SetAttitude(nullptr, nullptr, nullptr);
+}
+
 TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithAllNullParams)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
 
     offboardService.SetAttitudeRate(nullptr, nullptr, nullptr);
+}
+
+TEST_F(OffboardServiceImplTest, setAttitudeDoesNotFailWithNullResponse)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+    dronecode_sdk::rpc::offboard::SetAttitudeRequest request;
+
+    auto rpc_attitude = createArbitraryRPCAttitude();
+    request.set_allocated_attitude(rpc_attitude.release());
+
+    offboardService.SetAttitude(nullptr, &request, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithNullResponse)
@@ -158,17 +182,44 @@ TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithNullResponse)
     offboardService.SetAttitudeRate(nullptr, &request, nullptr);
 }
 
+std::unique_ptr<dronecode_sdk::rpc::offboard::Attitude>
+OffboardServiceImplTest::createArbitraryRPCAttitude() const
+{
+    auto rpc_attitude = std::unique_ptr<dronecode_sdk::rpc::offboard::Attitude>(
+        new dronecode_sdk::rpc::offboard::Attitude());
+    rpc_attitude->set_roll_deg(ARBITRARY_ROLL);
+    rpc_attitude->set_pitch_deg(ARBITRARY_PITCH);
+    rpc_attitude->set_yaw_deg(ARBITRARY_YAW);
+    rpc_attitude->set_thrust_value(ARBITRARY_THRUST);
+
+    return rpc_attitude;
+}
 std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>
 OffboardServiceImplTest::createArbitraryRPCAttitudeRate() const
 {
     auto rpc_attitude_rate = std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>(
         new dronecode_sdk::rpc::offboard::AttitudeRate());
-    rpc_attitude_rate->set_roll_deg_s(ARBITRARY_ROLL);
-    rpc_attitude_rate->set_pitch_deg_s(ARBITRARY_PITCH);
-    rpc_attitude_rate->set_yaw_deg_s(ARBITRARY_YAW);
+    rpc_attitude_rate->set_roll_deg_s(ARBITRARY_ROLL_RATE);
+    rpc_attitude_rate->set_pitch_deg_s(ARBITRARY_PITCH_RATE);
+    rpc_attitude_rate->set_yaw_deg_s(ARBITRARY_YAW_RATE);
     rpc_attitude_rate->set_thrust_value(ARBITRARY_THRUST);
 
     return rpc_attitude_rate;
+}
+
+TEST_F(OffboardServiceImplTest, setsAttitudeCorrectly)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+    dronecode_sdk::rpc::offboard::SetAttitudeRequest request;
+
+    auto rpc_attitude = createArbitraryRPCAttitude();
+    const auto expected_attitude = OffboardServiceImpl::translateRPCAttitude(*rpc_attitude);
+    EXPECT_CALL(offboard, set_attitude(expected_attitude)).Times(1);
+
+    request.set_allocated_attitude(rpc_attitude.release());
+
+    offboardService.SetAttitude(nullptr, &request, nullptr);
 }
 
 TEST_F(OffboardServiceImplTest, setsAttitudeRateCorrectly)

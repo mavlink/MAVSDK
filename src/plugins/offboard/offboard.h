@@ -229,11 +229,25 @@ private:
 };
 
 /**
+ * @brief Equal operator to compare two `Offboard::Attitude` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Offboard::Attitude &lhs, const Offboard::Attitude &rhs);
+
+/**
  * @brief Equal operator to compare two `Offboard::AttitudeRate` objects.
  *
  * @return `true` if items are equal.
  */
 bool operator==(const Offboard::AttitudeRate &lhs, const Offboard::AttitudeRate &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Offboard::Attitude`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Offboard::Attitude const &attitude);
 
 /**
  * @brief Stream operator to print information about a `Offboard::AttitudeRate`.

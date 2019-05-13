@@ -60,6 +60,31 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetAttitude(grpc::ServerContext * /* context */,
+                             const rpc::offboard::SetAttitudeRequest *request,
+                             rpc::offboard::SetAttitudeResponse * /* response */) override
+    {
+        if (request != nullptr) {
+            auto requested_attitude = translateRPCAttitude(request->attitude());
+            _offboard.set_attitude(requested_attitude);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    static dronecode_sdk::Offboard::Attitude
+    translateRPCAttitude(const rpc::offboard::Attitude &rpc_attitude)
+    {
+        dronecode_sdk::Offboard::Attitude attitude;
+
+        attitude.roll_deg = rpc_attitude.roll_deg();
+        attitude.pitch_deg = rpc_attitude.pitch_deg();
+        attitude.yaw_deg = rpc_attitude.yaw_deg();
+        attitude.thrust_value = rpc_attitude.thrust_value();
+
+        return attitude;
+    }
+
     grpc::Status SetAttitudeRate(grpc::ServerContext * /* context */,
                                  const rpc::offboard::SetAttitudeRateRequest *request,
                                  rpc::offboard::SetAttitudeRateResponse * /* response */) override
