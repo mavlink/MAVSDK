@@ -12,7 +12,6 @@ ExternalProject_add(
     openssl
     GIT_REPOSITORY ${ARG_GIT_REPOSITORY}
     GIT_TAG ${ARG_GIT_TAG}
-    GIT_SHALLOW TRUE
     PREFIX openssl
     CONFIGURE_COMMAND <SOURCE_DIR>/config --prefix=${CMAKE_INSTALL_PREFIX} no-shared
     )

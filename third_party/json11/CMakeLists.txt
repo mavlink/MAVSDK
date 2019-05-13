@@ -31,7 +31,6 @@ ExternalProject_Add(
     json11
     GIT_REPOSITORY https://github.com/dropbox/json11
     GIT_TAG v1.0.0
-    GIT_SHALLOW true
     PREFIX json11
     PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/export_config.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
