@@ -68,7 +68,7 @@ private:
 
     void *_call_every_cookie = nullptr;
 
-    const float SEND_INTERVAL_S = 0.1f;
+    const float SEND_INTERVAL_S = 0.05f;
 };
 
 } // namespace dronecode_sdk
