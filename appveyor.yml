@@ -9,11 +9,16 @@ platform:
   - Win32
   - x64
 
-# specify custom environment variables
 environment:
-  MSVC_DEFAULT_OPTIONS: ON
   CFLAGS: "-D_WIN32_WINNT=0x0600"
   CXXFLAGS: "-D_WIN32_WINNT=0x0600"
+  MSVC_DEFAULT_OPTIONS: ON
+  matrix:
+      - COMPILER: mingw-64
+        GENERATOR: MinGW Makefiles
+#      - COMPILER: msvc2017
+#        GENERATOR: Visual Studio 15 2017
+#        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
 # only build PR but not branch as well
 skip_branch_with_pr: true
@@ -33,8 +38,8 @@ clone_folder: C:\dronecode_sdk
 
 # scripts to run before build
 before_build:
-  - set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
-  - set PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin;%PATH%
+  - if "%COMPILER%"=="mingw-64" set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
+  - if "%COMPILER%"=="mingw-64" set PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin;%PATH%
   - cd C:\dronecode_sdk
   - git submodule update --init --recursive --depth 100
   - cd C:\
@@ -43,14 +48,14 @@ build: on
 
 build_script:
   - set CL=/MP
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - if "%COMPILER%"=="msvc2017" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - set dronecode_sdk_dir=C:\dronecode_sdk
   - cd %dronecode_sdk_dir%
-  - md build
-  - cd build
+    #- md build
+    #- cd build
     #- cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install -DBUILD_BACKEND=ON ..
-  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install -DBUILD_BACKEND=ON ..
-  - cmake --build . --target install --config %configuration%
+  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "%GENERATOR%" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install -DBUILD_BACKEND=ON -Bbuild -H.
+  - cmake --build build --target install --config %configuration%
     #- cd %dronecode_sdk_dir%
     #- cd example\takeoff_land
     #- md build
@@ -93,4 +98,5 @@ test: on
 
 test_script:
   - cd %dronecode_sdk_dir%
-  - build\src\%configuration%\unit_tests_runner.exe
+  - build\src\unit_tests_runner.exe
+  - build\src\backend\test\unit_tests_backend.exe
