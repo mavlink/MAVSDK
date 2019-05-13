@@ -51,48 +51,10 @@ build_script:
   - if "%COMPILER%"=="msvc2017" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - set dronecode_sdk_dir=C:\dronecode_sdk
   - cd %dronecode_sdk_dir%
-    #- md build
-    #- cd build
-    #- cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install -DBUILD_BACKEND=ON ..
   - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "%GENERATOR%" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install -DBUILD_BACKEND=ON -Bbuild -H.
   - cmake --build build --target install --config %configuration%
-    #- cd %dronecode_sdk_dir%
-    #- cd example\takeoff_land
-    #- md build
-    #- cd build
-    #- cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
-    #- cmake --build . --config %configuration%
-    #- cd %dronecode_sdk_dir%
-    #- cd example\fly_mission
-    #- md build
-    #- cd build
-    #- cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
-    #- cmake --build . --config %configuration%
-    #- cd %dronecode_sdk_dir%
-    #- cd example\offboard_velocity
-    #- md build
-    #- cd build
-    #- cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
-    #- cmake --build . --config %configuration%
-    #- cd %dronecode_sdk_dir%
-    #- cd example\transition_vtol_fixed_wing
-    #- md build
-    #- cd build
-    #- cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
-    #- cmake --build . --config %configuration%
-    #- cd %dronecode_sdk_dir%
-    #- cd example\follow_me
-    #- md build
-    #- cd build
-    #- cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
-    #- cmake --build . --config %configuration%
-    #- cd %dronecode_sdk_dir%
-    #- cd example\fly_qgc_mission
-    #- md build
-    #- cd build
-    #- cmake -G "Visual Studio 15 2017" -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" ..
-    #- cmake --build . --config %configuration%
-    #- cd %dronecode_sdk_dir%
+  - cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" -Bexample\build -Hexample
+  - cmake --build example\build --config %configuration%
 
 test: on
 
