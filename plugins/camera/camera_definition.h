@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <mutex>
 #include <string>
 
 namespace dronecode_sdk {
@@ -75,6 +76,8 @@ private:
     };
 
     bool parse_xml();
+
+    mutable std::recursive_mutex _mutex{};
 
     tinyxml2::XMLDocument _doc{};
 

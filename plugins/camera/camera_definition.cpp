@@ -32,16 +32,22 @@ bool CameraDefinition::load_string(const std::string &content)
 
 std::string CameraDefinition::get_model() const
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     return _model;
 }
 
 std::string CameraDefinition::get_vendor() const
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     return _vendor;
 }
 
 bool CameraDefinition::parse_xml()
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     auto e_mavlinkcamera = _doc.FirstChildElement("mavlinkcamera");
     if (!e_mavlinkcamera) {
         LogErr() << "Tag mavlinkcamera not found";
@@ -309,6 +315,8 @@ bool CameraDefinition::parse_xml()
 
 void CameraDefinition::assume_default_settings()
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     _current_settings.clear();
 
     for (const auto &parameter : _parameter_map) {
@@ -331,6 +339,8 @@ void CameraDefinition::assume_default_settings()
 bool CameraDefinition::get_all_settings(
     std::map<std::string, MAVLinkParameters::ParamValue> &settings)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     settings.clear();
     for (const auto &current_setting : _current_settings) {
         settings[current_setting.first] = current_setting.second.value;
@@ -342,6 +352,8 @@ bool CameraDefinition::get_all_settings(
 bool CameraDefinition::get_possible_settings(
     std::map<std::string, MAVLinkParameters::ParamValue> &settings)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     settings.clear();
 
     // Find all exclusions
@@ -385,6 +397,8 @@ bool CameraDefinition::get_possible_settings(
 bool CameraDefinition::set_setting(const std::string &name,
                                    const MAVLinkParameters::ParamValue &value)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     if (_parameter_map.find(name) == _parameter_map.end()) {
         LogErr() << "Unknown setting to set";
         return false;
@@ -424,6 +438,8 @@ bool CameraDefinition::set_setting(const std::string &name,
 
 bool CameraDefinition::get_setting(const std::string &name, MAVLinkParameters::ParamValue &value)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     if (_current_settings.find(name) == _current_settings.end()) {
         LogErr() << "Unknown setting to get";
         return false;
@@ -441,6 +457,8 @@ bool CameraDefinition::get_option_value(const std::string &param_name,
                                         const std::string &option_value,
                                         MAVLinkParameters::ParamValue &value)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     if (_parameter_map.find(param_name) == _parameter_map.end()) {
         LogErr() << "Unknown parameter to get option: " << param_name;
         return false;
@@ -459,6 +477,8 @@ bool CameraDefinition::get_option_value(const std::string &param_name,
 bool CameraDefinition::get_all_options(const std::string &name,
                                        std::vector<MAVLinkParameters::ParamValue> &values)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     values.clear();
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
@@ -476,6 +496,8 @@ bool CameraDefinition::get_all_options(const std::string &name,
 bool CameraDefinition::get_possible_options(const std::string &name,
                                             std::vector<MAVLinkParameters::ParamValue> &values)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     values.clear();
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
@@ -569,6 +591,8 @@ bool CameraDefinition::get_possible_options(const std::string &name,
 void CameraDefinition::get_unknown_params(
     std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> &params)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     params.clear();
 
     for (const auto &parameter : _parameter_map) {
@@ -580,6 +604,8 @@ void CameraDefinition::get_unknown_params(
 
 void CameraDefinition::set_all_params_unknown()
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     for (auto &parameter : _parameter_map) {
         _current_settings[parameter.first].needs_updating = true;
     }
@@ -587,6 +613,8 @@ void CameraDefinition::set_all_params_unknown()
 
 bool CameraDefinition::get_setting_str(const std::string &name, std::string &description)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     description.clear();
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
@@ -602,6 +630,8 @@ bool CameraDefinition::get_option_str(const std::string &setting_name,
                                       const std::string &option_name,
                                       std::string &description)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+
     description.clear();
 
     if (_parameter_map.find(setting_name) == _parameter_map.end()) {
