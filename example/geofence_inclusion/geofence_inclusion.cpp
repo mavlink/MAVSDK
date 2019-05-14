@@ -1,7 +1,7 @@
 /**
  * @file geofence_inclusion.cpp
  *
- * @brief Demonstrates how to Add & Upload geofence missions using the Dronecode SDK.
+ * @brief Demonstrates how to Add & Upload geofence using the Dronecode SDK.
  * The example is summarised below:
  * 1. Adds points to geofence.
  * 2. Uploads the geofence mission.

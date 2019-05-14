@@ -11,7 +11,7 @@ class GeofenceImpl;
 class System;
 
 /**
- * @brief The Geofence class enables geofence missions.
+ * @brief The Geofence class enables setting a geofence.
  */
 class Geofence : public PluginBase {
 public:
@@ -93,7 +93,7 @@ public:
     };
 
     /**
-     * @brief Uploads a geofence mission to the system (asynchronous).
+     * @brief Uploads a geofence to the system (asynchronous).
      *
      * The polygons are uploaded to a drone. Once uploaded the geofence will remain
      * on the drone even if a connection is lost.
