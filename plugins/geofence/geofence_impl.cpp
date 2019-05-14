@@ -173,12 +173,12 @@ void GeofenceImpl::assemble_mavlink_messages(
                                               command,
                                               0, // current
                                               0, // autocontinue
-                                              polygon->points.size(), // vertex count
+                                              float(polygon->points.size()), // vertex count
                                               0.0f,
                                               0.0f,
                                               0.0f,
-                                              point.latitude_deg * 1e7,
-                                              point.longitude_deg * 1e7,
+                                              int32_t(std::round(point.latitude_deg * 1e7)),
+                                              int32_t(std::round(point.longitude_deg * 1e7)),
                                               0.0f,
                                               MAV_MISSION_TYPE_FENCE);
             _mavlink_geofence_item_messages.push_back(message);
