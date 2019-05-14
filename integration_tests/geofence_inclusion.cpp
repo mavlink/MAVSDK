@@ -23,7 +23,7 @@ TEST_F(SitlTest, GeofenceInclusion)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
-    sleep(2);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     System &system = dl.system();
     ASSERT_TRUE(system.has_autopilot());
@@ -32,7 +32,7 @@ TEST_F(SitlTest, GeofenceInclusion)
 
     while (!telemetry->health_all_ok()) {
         LogInfo() << "waiting for system to be ready";
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     LogInfo() << "System ready, let's start";
@@ -56,7 +56,7 @@ TEST_F(SitlTest, GeofenceInclusion)
         if (_got_result) {
             break;
         }
-        sleep(1);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     EXPECT_TRUE(_got_result);
