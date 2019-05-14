@@ -1,6 +1,7 @@
 #include "geofence_impl.h"
 #include "global_include.h"
 #include "log.h"
+#include <cmath>
 
 namespace dronecode_sdk {
 
