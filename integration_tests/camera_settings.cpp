@@ -35,6 +35,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
     if (is_e90 || is_e50 || is_et) {
         // Set to photo mode
         set_mode_async(camera, Camera::Mode::PHOTO);
+        std::this_thread::sleep_for(std::chrono::seconds(2));
 
         std::vector<std::string> settings;
         EXPECT_TRUE(camera->get_possible_setting_options(settings));
@@ -45,7 +46,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
         }
 
         if (is_e90) {
-            EXPECT_EQ(settings.size(), 9);
+            EXPECT_EQ(settings.size(), 10);
         } else if (is_e50) {
             EXPECT_EQ(settings.size(), 6);
         } else if (is_et) {
@@ -64,7 +65,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
         }
 
         if (is_e90) {
-            EXPECT_EQ(settings.size(), 7);
+            EXPECT_EQ(settings.size(), 8);
         } else if (is_e50) {
             EXPECT_EQ(settings.size(), 5);
         } else if (is_et) {

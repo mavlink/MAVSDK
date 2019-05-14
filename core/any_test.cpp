@@ -60,3 +60,9 @@ TEST(Any, Copys)
     ASSERT_TRUE(n2.is<float>());
     ASSERT_TRUE(n1.as<float>() == n2.as<float>());
 }
+
+TEST(Any, NotInitialized)
+{
+    Any n{};
+    EXPECT_FALSE(n.is<long long>());
+}
