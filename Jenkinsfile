@@ -134,8 +134,8 @@ pipeline {
             sh 'git submodule update --init --recursive --force'
             sh 'ccache -z'
             sh 'make BUILD_TYPE=Debug'
-            sh 'cp -r /home/user/Firmware Firmware'
-            sh 'PX4_SIM_SPEED_FACTOR=10 AUTOSTART_SITL=1 PX4_FIRMWARE_DIR=Firmware HEADLESS=1 build/default/integration_tests/integration_tests_runner --gtest_filter="SitlTest.*"'
+            sh 'cp -r /home/user/Firmware `pwd`/Firmware'
+            sh 'PX4_SIM_SPEED_FACTOR=10 AUTOSTART_SITL=1 PX4_FIRMWARE_DIR=`pwd`/Firmware HEADLESS=1 build/default/integration_tests/integration_tests_runner --gtest_filter="SitlTest.*"'
           }
           post {
             always {
