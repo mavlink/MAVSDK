@@ -33,6 +33,7 @@ The links below take you to the respective header files:
 - [telemetry](plugins/telemetry/include/plugins/telemetry/telemetry.h): to receive telemetry data
 - [action](plugins/action/include/plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
 - [mission](plugins/mission/include/plugins/mission/mission.h)/[mission_item](plugins/mission/include/plugins/mission/mission_item.h): to upload a waypoint mission
+- [geofence](plugins/geofence/include/plugins/geofence/geofence.h): to upload a geofence
 - [offboard](plugins/offboard/include/plugins/offboard/offboard.h): for velocity control
 - [gimbal](plugins/gimbal/include/plugins/gimbal/gimbal.h): control a gimbal
 - [camera](plugins/camera/include/plugins/camera/camera.h): capture images, videos, and set camera settings
