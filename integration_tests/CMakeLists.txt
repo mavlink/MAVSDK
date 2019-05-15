@@ -36,6 +36,7 @@ add_executable(integration_tests_runner
     camera_test_helpers.h
     CMakeLists.txt
     follow_me.cpp
+    geofence_inclusion.cpp
     gimbal.cpp
     info.cpp
     offboard_attitude.cpp
@@ -84,6 +85,7 @@ target_link_libraries(integration_tests_runner
     dronecode_sdk_follow_me
     dronecode_sdk_camera
     dronecode_sdk_calibration
+    dronecode_sdk_geofence
     dronecode_sdk_param
     ${additional_libs}
     gtest

@@ -22,6 +22,7 @@ add_subdirectory(mission_raw)
 add_subdirectory(offboard)
 add_subdirectory(param)
 add_subdirectory(telemetry)
+add_subdirectory(geofence)
 
 if (ENABLE_MAVLINK_PASSTHROUGH)
     message(STATUS "Include MAVLink passthrough plugin")
