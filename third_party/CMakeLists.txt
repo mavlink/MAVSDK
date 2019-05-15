@@ -4,7 +4,7 @@ project(third_party)
 
 include(cmake/build_target.cmake)
 
-list(APPEND CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/build/install")
+list(APPEND CMAKE_PREFIX_PATH "${DEPS_INSTALL_PATH}")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
 
 build_target(json11)
