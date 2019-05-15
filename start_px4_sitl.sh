@@ -46,10 +46,6 @@ export NO_PXH=1
 # The logs are saved with a timestamp.
 timestamp=`date +%Y-%m-%dT%H-%M-%S%z`
 
-logfile_path=$log_dir/px4_sitl-$timestamp.log
-
-echo "PX4 SITL log: '$logfile_path'"
-
 # Before changing dir, save where we start from.
 pushd .
 
@@ -63,7 +59,7 @@ $px4_firmware_dir/Tools/sitl_run.sh \
     gazebo \
     $sitl_model \
     $px4_firmware_dir \
-    $px4_firmware_dir/build/px4_sitl_default 2>1 > $logfile_path &
+    $px4_firmware_dir/build/px4_sitl_default &
 
 # Go back to dir where we started
 popd
