@@ -19,12 +19,13 @@ TEST_F(SitlTest, OffboardAttitudeRate)
 {
     DronecodeSDK dc;
 
-    ConnectionResult ret =
-        dc.add_udp_connection("udp://:14540"); // For connecting with Jmavsim simulator.
+    ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    ASSERT_TRUE(dc.system().has_autopilot());
 
     System &system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
