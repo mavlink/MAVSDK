@@ -21,7 +21,7 @@ void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal,
 void receive_gimbal_result(Gimbal::Result result);
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
-TEST_F(SitlTest, GimbalMove)
+TEST(SitlTestGimbal, GimbalMove)
 {
     DronecodeSDK dc;
 
@@ -30,8 +30,12 @@ TEST_F(SitlTest, GimbalMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-
     System &system = dc.system();
+    // FIXME: This is what it should be, for now though with the typhoon_h480
+    //        SITL simulation, the gimbal is hooked up to the autopilot.
+    // ASSERT_TRUE(system.has_gimbal());
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
 
@@ -45,7 +49,7 @@ TEST_F(SitlTest, GimbalMove)
     }
 }
 
-TEST_F(SitlTest, GimbalTakeoffAndMove)
+TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 {
     DronecodeSDK dc;
 
@@ -54,8 +58,10 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-
     System &system = dc.system();
+    // ASSERT_TRUE(system.has_gimbal());
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
     auto action = std::make_shared<Action>(system);
@@ -84,7 +90,7 @@ TEST_F(SitlTest, GimbalTakeoffAndMove)
     std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
-TEST_F(SitlTest, GimbalROIOffboard)
+TEST(SitlTestGimbal, GimbalROIOffboard)
 {
     DronecodeSDK dc;
 
@@ -93,8 +99,10 @@ TEST_F(SitlTest, GimbalROIOffboard)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-
     System &system = dc.system();
+    // ASSERT_TRUE(system.has_gimbal());
+    ASSERT_TRUE(system.has_autopilot());
+
     auto telemetry = std::make_shared<Telemetry>(system);
     auto gimbal = std::make_shared<Gimbal>(system);
     auto action = std::make_shared<Action>(system);

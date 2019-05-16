@@ -5,7 +5,7 @@
 
 using namespace dronecode_sdk;
 
-TEST_F(SitlTest, SystemConnectionMultiple)
+TEST(SitlTestMultiple, SystemConnectionMultiple)
 {
     dronecode_sdk::DronecodeSDK *dc;
     dc = new dronecode_sdk::DronecodeSDK();

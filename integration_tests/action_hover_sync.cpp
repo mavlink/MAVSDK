@@ -32,24 +32,20 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    ASSERT_TRUE(dc.is_connected());
+    LogInfo() << "Waiting for system connect";
+    ASSERT_TRUE(poll_condition_with_timeout([&dc]() { return dc.is_connected(); },
+                                            std::chrono::seconds(10)));
 
     System &system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
 
-    int iteration = 0;
-    while (!telemetry->health_all_ok()) {
-        LogInfo() << "waiting for system to be ready";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-
-        ASSERT_LT(++iteration, 10);
-    }
+    LogInfo() << "Waiting for system to be ready";
+    ASSERT_TRUE(poll_condition_with_timeout([&telemetry]() { return telemetry->health_all_ok(); },
+                                            std::chrono::seconds(10)));
 
     auto action = std::make_shared<Action>(system);
     Action::Result action_ret = action->arm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
 
     EXPECT_EQ(Action::Result::SUCCESS, action->set_takeoff_altitude(altitude_m));
     auto takeoff_altitude_result = action->get_takeoff_altitude();
@@ -58,8 +54,12 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     action_ret = action->takeoff();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
-    // We wait 1.5s / m plus a margin of 3s.
-    const int wait_time_s = static_cast<int>(altitude_m * 1.5f + 3.0f);
+
+    // TODO: The wait time should not be hard-coded because the
+    //       simulation might run faster.
+
+    // We wait 2s / m plus a margin of 5s.
+    const int wait_time_s = static_cast<int>(altitude_m * 2.0f + 5.0f);
     std::this_thread::sleep_for(std::chrono::seconds(wait_time_s));
 
     EXPECT_GT(telemetry->position().relative_altitude_m, altitude_m - 0.25f);
@@ -68,14 +68,8 @@ void takeoff_and_hover_at_altitude(float altitude_m)
     action_ret = action->land();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 
-    iteration = 0;
-    while (telemetry->in_air()) {
-        LogInfo() << "waiting for system to be landed";
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-
-        // TODO: currently we need to wait a long time until landed is detected.
-        ASSERT_LT(++iteration, 2 * wait_time_s);
-    }
+    EXPECT_TRUE(poll_condition_with_timeout([&telemetry]() { return !telemetry->in_air(); },
+                                            std::chrono::seconds(wait_time_s)));
 
     action_ret = action->disarm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);

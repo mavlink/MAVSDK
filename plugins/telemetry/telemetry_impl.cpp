@@ -326,7 +326,9 @@ void TelemetryImpl::process_position_velocity_ned(const mavlink_message_t &messa
                                                               local_position.vz}));
 
     if (_position_velocity_ned_subscription) {
-        _position_velocity_ned_subscription(get_position_velocity_ned());
+        auto callback = _position_velocity_ned_subscription;
+        auto arg = get_position_velocity_ned();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 
@@ -343,11 +345,15 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t &message
                           global_position_int.vz * 1e-2f});
 
     if (_position_subscription) {
-        _position_subscription(get_position());
+        auto callback = _position_subscription;
+        auto arg = get_position();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
     if (_ground_speed_ned_subscription) {
-        _ground_speed_ned_subscription(get_ground_speed_ned());
+        auto callback = _ground_speed_ned_subscription;
+        auto arg = get_ground_speed_ned();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 
@@ -364,7 +370,9 @@ void TelemetryImpl::process_home_position(const mavlink_message_t &message)
     set_health_home_position(true);
 
     if (_home_position_subscription) {
-        _home_position_subscription(get_home_position());
+        auto callback = _home_position_subscription;
+        auto arg = get_home_position();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 
@@ -381,11 +389,15 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t &message
     set_attitude_quaternion(quaternion);
 
     if (_attitude_quaternion_subscription) {
-        _attitude_quaternion_subscription(get_attitude_quaternion());
+        auto callback = _attitude_quaternion_subscription;
+        auto arg = get_attitude_quaternion();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
     if (_attitude_euler_angle_subscription) {
-        _attitude_euler_angle_subscription(get_attitude_euler_angle());
+        auto callback = _attitude_euler_angle_subscription;
+        auto arg = get_attitude_euler_angle();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 
@@ -400,11 +412,15 @@ void TelemetryImpl::process_mount_orientation(const mavlink_message_t &message)
     set_camera_attitude_euler_angle(euler_angle);
 
     if (_camera_attitude_quaternion_subscription) {
-        _camera_attitude_quaternion_subscription(get_camera_attitude_quaternion());
+        auto callback = _camera_attitude_quaternion_subscription;
+        auto arg = get_camera_attitude_quaternion();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
     if (_camera_attitude_euler_angle_subscription) {
-        _camera_attitude_euler_angle_subscription(get_camera_attitude_euler_angle());
+        auto callback = _camera_attitude_euler_angle_subscription;
+        auto arg = get_camera_attitude_euler_angle();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 
@@ -424,7 +440,9 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t &message)
     set_health_local_position(gps_ok);
 
     if (_gps_info_subscription) {
-        _gps_info_subscription(get_gps_info());
+        auto callback = _gps_info_subscription;
+        auto arg = get_gps_info();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 
@@ -443,7 +461,9 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t &message)
     // If landed_state is undefined, we use what we have received last.
 
     if (_in_air_subscription) {
-        _in_air_subscription(in_air());
+        auto callback = _in_air_subscription;
+        auto arg = in_air();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 
@@ -457,7 +477,9 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t &message)
          sys_status.battery_remaining * 1e-2f}));
 
     if (_battery_subscription) {
-        _battery_subscription(get_battery());
+        auto callback = _battery_subscription;
+        auto arg = get_battery();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 
@@ -473,7 +495,9 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
     set_armed(((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false));
 
     if (_armed_subscription) {
-        _armed_subscription(armed());
+        auto callback = _armed_subscription;
+        auto arg = armed();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
     if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
@@ -481,15 +505,21 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t &message)
         set_flight_mode(flight_mode);
 
         if (_flight_mode_subscription) {
-            _flight_mode_subscription(get_flight_mode());
+            auto callback = _flight_mode_subscription;
+            auto arg = get_flight_mode();
+            _parent->call_user_callback([callback, arg]() { callback(arg); });
         }
     }
 
     if (_health_subscription) {
-        _health_subscription(get_health());
+        auto callback = _health_subscription;
+        auto arg = get_health();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
     if (_health_all_ok_subscription) {
-        _health_all_ok_subscription(get_health_all_ok());
+        auto callback = _health_all_ok_subscription;
+        auto arg = get_health_all_ok();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
 
@@ -539,7 +569,9 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t &message)
     set_rc_status(rc_ok, rc_channels.rssi);
 
     if (_rc_status_subscription) {
-        _rc_status_subscription(get_rc_status());
+        auto callback = _rc_status_subscription;
+        auto arg = get_rc_status();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
     _parent->refresh_timeout_handler(_timeout_cookie);

@@ -60,7 +60,6 @@ TEST_F(SitlTest, OffboardPositionNED)
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
         offboard->set_position_ned({0.0f, 0.0f, -10.0f, 90.0f});
-        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 
     // Let's make sure that offboard knows it is active.

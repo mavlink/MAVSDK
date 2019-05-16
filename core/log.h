@@ -17,23 +17,7 @@
 #define __FILENAME__ __FILE__
 #endif
 
-// For release builds, don't show debug printfs, and just discard it into the NullStream.
-class NullStream {
-public:
-    template<typename TPrintable> NullStream &operator<<(TPrintable const &)
-    {
-        /* no-op */
-        static NullStream nothing;
-        return nothing;
-    }
-};
-
-#if DEBUG
 #define LogDebug() LogDebugDetailed(__FILENAME__, __LINE__)
-#else
-#define LogDebug() NullStream()
-#endif
-
 #define LogInfo() LogInfoDetailed(__FILENAME__, __LINE__)
 #define LogWarn() LogWarnDetailed(__FILENAME__, __LINE__)
 #define LogErr() LogErrDetailed(__FILENAME__, __LINE__)
@@ -122,7 +106,7 @@ public:
         set_color(Color::RESET);
 
         std::cout << _s.str();
-        std::cout << " (" << _caller_filename << ":" << _caller_filenumber << ")";
+        std::cout << " (" << _caller_filename << ":" << std::dec << _caller_filenumber << ")";
 
         std::cout << std::endl;
 #endif

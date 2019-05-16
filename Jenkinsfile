@@ -119,6 +119,33 @@ pipeline {
           }
         }
 
+        stage('Ubuntu 18.04 Debug PX4 SITL') {
+          agent {
+            docker {
+              image 'dronecode/dronecode-sdk-ubuntu-18.04-px4-sitl:2019-05-15'
+              args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
+            }
+          }
+          steps {
+            sh 'export'
+            sh 'git submodule deinit -f .'
+            sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
+            sh 'git submodule update --init --recursive --force'
+            sh 'ccache -z'
+            sh 'make BUILD_TYPE=Debug'
+            sh 'cp -r /home/user/Firmware `pwd`/Firmware'
+            sh 'HOME=`pwd` PX4_SIM_SPEED_FACTOR=10 AUTOSTART_SITL=1 PX4_FIRMWARE_DIR=`pwd`/Firmware HEADLESS=1 build/default/integration_tests/integration_tests_runner --gtest_filter="SitlTest.*"'
+          }
+          post {
+            always {
+              sh 'ccache -s'
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
+          }
+        }
+
         stage('Fedora 27 Debug') {
           agent {
             docker {
