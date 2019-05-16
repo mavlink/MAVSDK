@@ -9,7 +9,10 @@ set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
 
 build_target(json11)
 build_target(tinyxml2)
+
+if(NOT IOS)
 build_target(zlib)
+endif()
 build_target(curl)
 
 if(${BUILD_BACKEND})

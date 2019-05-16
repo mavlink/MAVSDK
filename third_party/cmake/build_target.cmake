@@ -22,7 +22,7 @@ function(build_target TARGET_NAME)
             "-DANDROID_ABI=${ANDROID_ABI}"
             "-DANDROID_STL=${ANDROID_STL}"
             "-DANDROID_PLATFORM=${ANDROID_PLATFORM}"
-            "-DIOS_PLATFORM=${IOS_PLATFORM}"
+            "-DPLATFORM=${PLATFORM}"
             "-DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR}"
             "-DBUILD_BACKEND=${BUILD_BACKEND}"
             "${TARGET_SOURCE_DIR}"

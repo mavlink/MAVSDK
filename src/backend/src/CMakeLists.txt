@@ -62,7 +62,7 @@ if(IOS)
         BUILD_WITH_INSTALL_RPATH TRUE
         INSTALL_NAME_DIR @rpath
         PUBLIC_HEADER backend_api.h
-        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Dronecode SDK"
+        #XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
         MACOSX_FRAMEWORK_INFO_PLIST ${PROJECT_SOURCE_DIR}/backend/cmake/MacOSXFrameworkInfo.plist.in
     )
 else()

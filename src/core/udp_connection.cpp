@@ -155,12 +155,12 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
-        int send_len = sendto(_socket_fd,
-                              reinterpret_cast<char *>(buffer),
-                              buffer_len,
-                              0,
-                              reinterpret_cast<const sockaddr *>(&dest_addr),
-                              sizeof(dest_addr));
+        const auto send_len = sendto(_socket_fd,
+                                     reinterpret_cast<char *>(buffer),
+                                     buffer_len,
+                                     0,
+                                     reinterpret_cast<const sockaddr *>(&dest_addr),
+                                     sizeof(dest_addr));
 
         if (send_len != buffer_len) {
             LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -180,12 +180,12 @@ void UdpConnection::receive()
     while (!_should_exit) {
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
-        int recv_len = recvfrom(_socket_fd,
-                                buffer,
-                                sizeof(buffer),
-                                0,
-                                reinterpret_cast<struct sockaddr *>(&src_addr),
-                                &src_addr_len);
+        const auto recv_len = recvfrom(_socket_fd,
+                                       buffer,
+                                       sizeof(buffer),
+                                       0,
+                                       reinterpret_cast<struct sockaddr *>(&src_addr),
+                                       &src_addr_len);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
@@ -200,7 +200,7 @@ void UdpConnection::receive()
             continue;
         }
 
-        _mavlink_receiver->set_new_datagram(buffer, recv_len);
+        _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
 
         bool saved_remote = false;
 

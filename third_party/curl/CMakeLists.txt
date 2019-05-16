@@ -23,10 +23,12 @@ if(ANDROID)
         "-DANDROID_ABI:STRING=${ANDROID_ABI}"
         "-DANDROID_STL:STRING=${ANDROID_STL}"
         "-DANDROID_PLATFORM=${ANDROID_PLATFORM}"
+        "-DBUILD_CURL_EXE=OFF"
         )
 elseif(IOS)
     list(APPEND CMAKE_ARGS
-        "-DIOS_PLATFORM=${IOS_PLATFORM}"
+        "-DPLATFORM=${PLATFORM}"
+        "-DBUILD_CURL_EXE=OFF"
         )
 endif()
 

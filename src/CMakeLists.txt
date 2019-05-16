@@ -39,7 +39,7 @@ if(NOT MSVC AND NOT MINGW)
         add_subdirectory(third_party/cpp_rsc/src EXCLUDE_FROM_ALL)
     else()
         # For cross-compilation, re-use the binary from default.
-        set_property(GLOBAL PROPERTY CPPRSC_CMD ${CMAKE_CURRENT_BINARY_DIR}/../default/third_party/cpp_rsc/src/cpp_rsc)
+        set_property(GLOBAL PROPERTY CPPRSC_CMD ${CMAKE_CURRENT_BINARY_DIR}/../../default/src/third_party/cpp_rsc/src/cpp_rsc)
     endif()
 endif()
 

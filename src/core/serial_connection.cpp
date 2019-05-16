@@ -251,7 +251,7 @@ bool SerialConnection::send_message(const mavlink_message_t &message)
 
     int send_len;
 #if defined(LINUX) || defined(APPLE)
-    send_len = write(_fd, buffer, buffer_len);
+    send_len = static_cast<int>(write(_fd, buffer, buffer_len));
 #else
     if (!WriteFile(_handle, buffer, buffer_len, LPDWORD(&send_len), NULL)) {
         LogErr() << "WriteFile failure: " << GET_ERROR();
@@ -275,7 +275,7 @@ void SerialConnection::receive()
     while (!_should_exit) {
         int recv_len;
 #if defined(LINUX) || defined(APPLE)
-        recv_len = read(_fd, buffer, sizeof(buffer));
+        recv_len = static_cast<int>(read(_fd, buffer, sizeof(buffer)));
         if (recv_len < -1) {
             LogErr() << "read failure: " << GET_ERROR();
         }

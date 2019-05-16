@@ -18,7 +18,7 @@ if(ANDROID)
         )
 elseif(IOS)
     list(APPEND CMAKE_ARGS
-        "-DIOS_PLATFORM=${IOS_PLATFORM}"
+        "-DPLATFORM=${PLATFORM}"
         )
 endif()
 

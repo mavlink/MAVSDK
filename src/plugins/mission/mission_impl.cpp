@@ -1277,7 +1277,7 @@ int MissionImpl::current_mission_item() const
 int MissionImpl::total_mission_items() const
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-    return _mission_data.mission_items.size();
+    return static_cast<int>(_mission_data.mission_items.size());
 }
 
 void MissionImpl::subscribe_progress(Mission::progress_callback_t callback)

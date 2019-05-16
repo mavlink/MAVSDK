@@ -153,12 +153,12 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
     // TODO: remove this assert again
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-    int send_len = sendto(_socket_fd,
-                          reinterpret_cast<char *>(buffer),
-                          buffer_len,
-                          0,
-                          reinterpret_cast<const sockaddr *>(&dest_addr),
-                          sizeof(dest_addr));
+    const auto send_len = sendto(_socket_fd,
+                                 reinterpret_cast<char *>(buffer),
+                                 buffer_len,
+                                 0,
+                                 reinterpret_cast<const sockaddr *>(&dest_addr),
+                                 sizeof(dest_addr));
 
     if (send_len != buffer_len) {
         LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -180,7 +180,7 @@ void TcpConnection::receive()
             setup_port();
         }
 
-        int recv_len = recv(_socket_fd, buffer, sizeof(buffer), 0);
+        const auto recv_len = recv(_socket_fd, buffer, sizeof(buffer), 0);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
@@ -198,7 +198,7 @@ void TcpConnection::receive()
             continue;
         }
 
-        _mavlink_receiver->set_new_datagram(buffer, recv_len);
+        _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
 
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {

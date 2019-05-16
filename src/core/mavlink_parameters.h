@@ -133,10 +133,10 @@ public:
                 int16_t temp = std::stoi(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "uint32") == 0) {
-                uint32_t temp = std::stol(value_str.c_str());
+                auto temp = std::stol(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "int32") == 0) {
-                int32_t temp = std::stol(value_str.c_str());
+                auto temp = std::stol(value_str.c_str());
                 _value = temp;
             } else if (strcmp(type_str.c_str(), "uint64") == 0) {
                 uint64_t temp = std::stoll(value_str.c_str());

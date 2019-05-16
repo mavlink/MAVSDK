@@ -1,5 +1,5 @@
-find_program(PROTOC_BINARY protoc)
-find_program(GRPC_CPP_PLUGIN_BINARY grpc_cpp_plugin)
+find_program(PROTOC_BINARY protoc HINTS ${CMAKE_SOURCE_DIR}/build/default/third_party/install/bin)
+find_program(GRPC_CPP_PLUGIN_BINARY grpc_cpp_plugin HINTS ${CMAKE_SOURCE_DIR}/build/default/third_party/install/bin)
 
 if(NOT EXISTS ${PROTOC_BINARY} OR NOT EXISTS ${GRPC_CPP_PLUGIN_BINARY})
     message(FATAL_ERROR "Could not find 'protoc' or 'grpc_cpp_plugin' binaries.")

@@ -9,6 +9,7 @@ list(APPEND CMAKE_ARGS
     "-DCARES_STATIC=ON"
     "-DCARES_SHARED=OFF"
     "-DCARES_STATIC_PIC=ON"
+    "-DCARES_BUILD_TOOLS=OFF"
     )
 
 if(ANDROID)
@@ -19,7 +20,7 @@ if(ANDROID)
         )
 elseif(IOS)
     list(APPEND CMAKE_ARGS
-        "-DIOS_PLATFORM=${IOS_PLATFORM}"
+        "-DPLATFORM=${PLATFORM}"
         )
 endif()
 

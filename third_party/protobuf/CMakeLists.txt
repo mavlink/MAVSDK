@@ -20,7 +20,11 @@ if(ANDROID)
         )
 elseif(IOS)
     list(APPEND CMAKE_ARGS
-        "-DIOS_PLATFORM=${IOS_PLATFORM}"
+        "-DPLATFORM=${PLATFORM}"
+        "-Dprotobuf_BUILD_PROTOC_BINARIES=OFF"
+        "-Dprotobuf_BUILD_TESTS=OFF"
+        "-Dprotobuf_BUILD_SHARED_LIBS=OFF"
+        "-Dprotobuf_MODULE_COMPATIBLE=ON"
         )
 endif()
 
