@@ -46,7 +46,6 @@ add_executable(integration_tests_runner
     mission_change_speed.cpp
     mission.cpp
     mission_rtl.cpp
-    mission_survey.cpp
     mission_raw_mission_changed.cpp
     offboard_velocity.cpp
     offboard_position.cpp

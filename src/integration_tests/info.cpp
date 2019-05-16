@@ -5,9 +5,6 @@
 
 using namespace dronecode_sdk;
 
-static void on_discover(uint64_t uuid);
-static bool _discovered_system = false;
-
 TEST_F(SitlTest, Info)
 {
     DronecodeSDK dc;
@@ -15,12 +12,9 @@ TEST_F(SitlTest, Info)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
-    dc.register_on_discover(std::bind(&on_discover, std::placeholders::_1));
-
-    while (!_discovered_system) {
-        std::cout << "waiting for system to appear..." << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    // Wait for system to connect via heartbeat.
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    ASSERT_TRUE(dc.is_connected());
 
     System &system = dc.system();
     auto info = std::make_shared<Info>(system);
@@ -84,10 +78,4 @@ TEST_F(SitlTest, Info)
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-}
-
-void on_discover(uint64_t uuid)
-{
-    std::cout << "Found system with UUID: " << uuid << std::endl;
-    _discovered_system = true;
 }

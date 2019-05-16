@@ -131,7 +131,7 @@ TEST_F(SitlTest, TelemetryAsync)
     EXPECT_TRUE(_received_ground_speed);
     EXPECT_TRUE(_received_gps_info);
     EXPECT_TRUE(_received_battery);
-    EXPECT_TRUE(_received_rc_status);
+    // EXPECT_TRUE(_received_rc_status); // No RC is sent in SITL.
     EXPECT_TRUE(_received_position_velocity_ned);
 }
 

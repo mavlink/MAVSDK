@@ -7,7 +7,7 @@
 
 using namespace dronecode_sdk;
 
-TEST_F(SitlTest, LogFiles)
+TEST(HardwareTest, LogFiles)
 {
     DronecodeSDK dc;
 

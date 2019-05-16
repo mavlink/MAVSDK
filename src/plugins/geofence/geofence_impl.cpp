@@ -22,14 +22,17 @@ void GeofenceImpl::init()
     using namespace std::placeholders; // for `_1`
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_MISSION_REQUEST_INT,
-        std::bind(&GeofenceImpl::process_mission_request_int, this, _1),
-        (void *)this);
+        MAVLINK_MSG_ID_MISSION_REQUEST,
+        std::bind(&GeofenceImpl::process_mission_request, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_MISSION_ACK,
-        std::bind(&GeofenceImpl::process_mission_ack, this, _1),
-        (void *)this);
+        MAVLINK_MSG_ID_MISSION_REQUEST_INT,
+        std::bind(&GeofenceImpl::process_mission_request_int, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_MISSION_ACK, std::bind(&GeofenceImpl::process_mission_ack, this, _1), this);
 }
 
 void GeofenceImpl::deinit()
@@ -81,6 +84,26 @@ void GeofenceImpl::send_geofence_async(
 
     _parent->register_timeout_handler(
         std::bind(&GeofenceImpl::timeout_happened, this), 2.0, &_timeout_cookie);
+}
+
+void GeofenceImpl::process_mission_request(const mavlink_message_t &unused)
+{
+    // We only support int, so we nack this and thus tell the autopilot to use int.
+    UNUSED(unused);
+
+    mavlink_message_t message;
+    mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
+                                 _parent->get_own_component_id(),
+                                 &message,
+                                 _parent->get_system_id(),
+                                 _parent->get_autopilot_id(),
+                                 MAV_MISSION_UNSUPPORTED,
+                                 MAV_MISSION_TYPE_FENCE);
+
+    _parent->send_message(message);
+
+    // Reset the timeout because we're still communicating.
+    _parent->refresh_timeout_handler(this);
 }
 
 void GeofenceImpl::process_mission_request_int(const mavlink_message_t &message)

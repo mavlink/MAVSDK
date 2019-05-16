@@ -257,15 +257,20 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
 
 void ActionImpl::arm_async(const Action::result_callback_t &callback)
 {
-    Action::Result ret = arming_allowed();
-    if (ret != Action::Result::SUCCESS) {
-        if (callback) {
-            callback(ret);
+    // Funny enough the call `arming_allowed()` is sync, so we need to
+    // queue it on the thread pool which confusingly is called
+    // `call_user_callback`.
+    _parent->call_user_callback([this, callback]() {
+        Action::Result ret = arming_allowed();
+        if (ret != Action::Result::SUCCESS) {
+            if (callback) {
+                callback(ret);
+            }
+            return;
         }
-        return;
-    }
 
-    loiter_before_arm_async(callback);
+        loiter_before_arm_async(callback);
+    });
 }
 
 void ActionImpl::arm_async_continued(MAVLinkCommands::Result previous_result,

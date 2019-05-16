@@ -1,19 +1,12 @@
-#include <iostream>
 #include "integration_test_helper.h"
 #include "global_include.h"
 #include "dronecode_sdk.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 
+#include <future>
+
 using namespace dronecode_sdk;
-using namespace std::placeholders; // for `_1`
-
-void receive_result(Action::Result result);
-void receive_health_all_ok(bool all_ok);
-void receive_in_air(bool in_air);
-
-static bool _all_ok = false;
-static bool _in_air = false;
 
 TEST_F(SitlTest, ActionHoverAsync)
 {
@@ -22,55 +15,96 @@ TEST_F(SitlTest, ActionHoverAsync)
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
-    // Wait for system to connect via heartbeat.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
-    // TODO: this test is pretty dumb, should be improved with more checks.
-    System &system = dc.system();
-
-    auto telemetry = std::make_shared<Telemetry>(system);
-    telemetry->health_all_ok_async(std::bind(&receive_health_all_ok, _1));
-    telemetry->in_air_async(std::bind(&receive_in_air, _1));
-
-    while (!_all_ok) {
-        std::cout << "Waiting to be ready..." << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+    {
+        LogInfo() << "Waiting to discover vehicle";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        dc.register_on_discover([&prom](uint64_t uuid) {
+            prom.set_value();
+            UNUSED(uuid);
+        });
+        ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
+    System &system = dc.system();
+    auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
-    action->arm_async(std::bind(&receive_result, _1));
-    std::this_thread::sleep_for(std::chrono::seconds(2));
 
+    {
+        LogDebug() << "Waiting to be ready...";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        telemetry->health_all_ok_async([&telemetry, &prom](bool all_ok) {
+            if (all_ok) {
+                // Unregister to prevent fulfilling promise twice.
+                telemetry->health_all_ok_async(nullptr);
+                prom.set_value();
+            }
+        });
+        ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
+    }
+
+    {
+        LogInfo() << "Arming";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        action->arm_async([&prom](Action::Result result) {
+            EXPECT_EQ(result, Action::Result::SUCCESS);
+            prom.set_value();
+        });
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+    }
+
+    LogInfo() << "Setting takeoff altitude";
     action->set_takeoff_altitude(5.0f);
 
-    action->takeoff_async(std::bind(&receive_result, _1));
+    {
+        LogInfo() << "Taking off";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        action->takeoff_async([&prom](Action::Result result) {
+            EXPECT_EQ(result, Action::Result::SUCCESS);
+            prom.set_value();
+        });
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+    }
+
+    // TODO: adapt this time based on altitude
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    action->land_async(std::bind(&receive_result, _1));
-
-    while (_in_air) {
-        std::cout << "Waiting to be landed..." << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+    {
+        LogInfo() << "Landing";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        action->land_async([&prom](Action::Result result) {
+            EXPECT_EQ(result, Action::Result::SUCCESS);
+            prom.set_value();
+        });
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     }
 
-    action->disarm_async(std::bind(&receive_result, _1));
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-}
-
-void receive_result(Action::Result result)
-{
-    EXPECT_EQ(result, Action::Result::SUCCESS);
-}
-
-void receive_health_all_ok(bool all_ok)
-{
-    if (all_ok && !_all_ok) {
-        LogDebug() << "we're ready, let's go";
-        _all_ok = true;
+    {
+        LogInfo() << "Waiting to be landed...";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        telemetry->in_air_async([&telemetry, &prom](bool in_air) {
+            if (!in_air) {
+                // Unregister to prevent fulfilling promise twice.
+                telemetry->in_air_async(nullptr);
+                prom.set_value();
+            }
+        });
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(20)), std::future_status::ready);
     }
-}
 
-void receive_in_air(bool in_air)
-{
-    _in_air = in_air;
+    {
+        LogInfo() << "Disarming";
+        std::promise<void> prom;
+        std::future<void> fut = prom.get_future();
+        action->disarm_async([&prom](Action::Result result) {
+            EXPECT_EQ(result, Action::Result::SUCCESS);
+            prom.set_value();
+        });
+        EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
+    }
 }

@@ -13,6 +13,10 @@
 using namespace dronecode_sdk;
 using namespace std::placeholders; // for `_1`
 
+static void test_mission(std::shared_ptr<Telemetry> telemetry,
+                         std::shared_ptr<Mission> mission,
+                         std::shared_ptr<Action> action);
+
 static std::shared_ptr<MissionItem> add_mission_item(double latitude_deg,
                                                      double longitude_deg,
                                                      float relative_altitude_m,
@@ -28,10 +32,9 @@ static void compare_mission_items(const std::shared_ptr<MissionItem> original,
 
 static void pause_and_resume(std::shared_ptr<Mission> mission);
 
-// Set to 50 to test with about 1200 mission items.
-static constexpr int test_with_many_items = 1;
+static constexpr int NUM_MISSION_ITEMS = 6;
 
-static bool pause_already_done = false;
+static std::atomic<bool> pause_already_done{false};
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
 {
@@ -64,6 +67,15 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
     auto mission = std::make_shared<Mission>(system);
     auto action = std::make_shared<Action>(system);
 
+    test_mission(telemetry, mission, action);
+    // We do yet another mission to make sure this works repeatable.
+    test_mission(telemetry, mission, action);
+}
+
+void test_mission(std::shared_ptr<Telemetry> telemetry,
+                  std::shared_ptr<Mission> mission,
+                  std::shared_ptr<Action> action)
+{
     while (!telemetry->health_all_ok()) {
         LogInfo() << "Waiting for system to be ready";
         LogDebug() << "Health: " << telemetry->health();
@@ -75,7 +87,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
 
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
-    for (int i = 0; i < test_with_many_items; ++i) {
+    while (mission_items.size() < NUM_MISSION_ITEMS) {
         mission_items.push_back(add_mission_item(47.398170327054473,
                                                  8.5456490218639658,
                                                  10.0f,
@@ -137,7 +149,6 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
                                                  MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
     }
 
-    EXPECT_FALSE(mission->get_return_to_launch_after_mission());
     mission->set_return_to_launch_after_mission(true);
     EXPECT_TRUE(mission->get_return_to_launch_after_mission());
 
