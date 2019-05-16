@@ -1,12 +1,13 @@
 #pragma once
 
-#include "system.h"
-#include "plugins/geofence/geofence.h"
-#include "mavlink_include.h"
-#include "plugin_impl_base.h"
 #include <memory>
 #include <map>
 #include <atomic>
+
+#include "geofence.h"
+#include "mavlink_include.h"
+#include "plugin_impl_base.h"
+#include "system.h"
 
 namespace dronecode_sdk {
 

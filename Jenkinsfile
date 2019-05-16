@@ -25,7 +25,7 @@ pipeline {
             sh 'make -Cbuild/debug install'
             sh 'build/debug/src/unit_tests_runner'
             sh 'build/debug/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/debug/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {
@@ -55,7 +55,7 @@ pipeline {
             sh 'make -Cbuild/release install'
             sh 'build/release/src/unit_tests_runner'
             sh 'build/release/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/release/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {
@@ -85,7 +85,7 @@ pipeline {
             sh 'make -Cbuild/debug install'
             sh 'build/debug/src/unit_tests_runner'
             sh 'build/debug/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/debug/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {
@@ -115,7 +115,7 @@ pipeline {
             sh 'make -Cbuild/release install'
             sh 'build/release/src/unit_tests_runner'
             sh 'build/release/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/release/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {
@@ -145,7 +145,7 @@ pipeline {
             sh 'make -Cbuild/debug install'
             sh 'build/debug/src/unit_tests_runner'
             sh 'build/debug/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/debug/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {
@@ -175,7 +175,7 @@ pipeline {
             sh 'make -Cbuild/release install'
             sh 'build/release/src/unit_tests_runner'
             sh 'build/release/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/release/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {
@@ -205,7 +205,7 @@ pipeline {
             sh 'make -Cbuild/debug install'
             sh 'build/debug/src/unit_tests_runner'
             sh 'build/debug/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/debug/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {
@@ -235,7 +235,7 @@ pipeline {
             sh 'make -Cbuild/release install'
             sh 'build/release/src/unit_tests_runner'
             sh 'build/release/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/release/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {
@@ -265,7 +265,7 @@ pipeline {
             sh 'make -Cbuild/debug install'
             sh 'build/debug/src/unit_tests_runner'
             sh 'build/debug/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/debug/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {
@@ -295,7 +295,7 @@ pipeline {
             sh 'make -Cbuild/release install'
             sh 'build/release/src/unit_tests_runner'
             sh 'build/release/src/backend/test/unit_tests_backend'
-            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/third_party/build/install" -B./example/build -Hexample'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${WORKSPACE}/install;${WORKSPACE}/build/release/third_party/install" -B./example/build -Hexample'
             sh 'make -Cexample/build'
           }
           post {

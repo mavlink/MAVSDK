@@ -1,4 +1,4 @@
-#include "plugins/geofence/geofence.h"
+#include "geofence.h"
 #include "geofence_impl.h"
 #include <vector>
 
