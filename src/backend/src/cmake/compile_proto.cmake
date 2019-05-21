@@ -1,4 +1,4 @@
-find_program(PROTOC_BINARY protoc HINTS ${CMAKE_SOURCE_DIR}/build/default/third_party/install/bin)
+find_program(PROTOC_BINARY 3.7.1 protoc HINTS ${CMAKE_SOURCE_DIR}/build/default/third_party/install/bin)
 find_program(GRPC_CPP_PLUGIN_BINARY grpc_cpp_plugin HINTS ${CMAKE_SOURCE_DIR}/build/default/third_party/install/bin)
 
 if(NOT EXISTS ${PROTOC_BINARY} OR NOT EXISTS ${GRPC_CPP_PLUGIN_BINARY})

@@ -3,9 +3,9 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-IOS_BACKEND_DIR=${SCRIPT_DIR}/../../build/ios/backend/src
-IOS_SIM_BACKEND_DIR=${SCRIPT_DIR}/../../build/ios_simulator/backend/src
-FAT_BIN_DIR=${SCRIPT_DIR}/../../build/fat_bin
+IOS_BACKEND_DIR=${SCRIPT_DIR}/../../../build/ios/src/backend/src
+IOS_SIM_BACKEND_DIR=${SCRIPT_DIR}/../../../build/ios_simulator/src/backend/src
+FAT_BIN_DIR=${SCRIPT_DIR}/../../../build/fat_bin
 
 mkdir -p ${FAT_BIN_DIR}
 
