@@ -24,9 +24,15 @@ public:
     public:
         typedef char custom_type_t[128];
 
-        ParamValue &operator=(ParamValue value)
+        ParamValue() {}
+
+        ParamValue(ParamValue &rhs) { _value = rhs._value; }
+
+        ParamValue(const ParamValue &rhs) { _value = rhs._value; }
+
+        ParamValue &operator=(ParamValue rhs)
         {
-            _value = value._value;
+            _value = rhs._value;
             return *this;
         }
 
