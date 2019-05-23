@@ -335,6 +335,38 @@ pipeline {
           }
         }
 
+        stage('iOS Release') {
+          agent {
+            label 'mac'
+          }
+          environment {
+            CCACHE_BASEDIR = "${env.WORKSPACE}"
+          }
+          steps {
+            sh 'export'
+            sh 'git submodule deinit -f .'
+            sh 'git clean -ff -x -d .'
+            sh 'git submodule sync --recursive'
+            sh 'git submodule update --init --recursive --force'
+            sh 'ccache -z'
+            sh 'cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -Bbuild/default -H.'
+            sh 'make -Cbuild/default'
+            sh 'cmake -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -Bbuild/ios -H.'
+            sh 'make -Cbuild/ios'
+            sh 'cmake -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -Bbuild/ios_simulator -H.'
+            sh 'make -Cbuild/ios_simulator'
+            sh 'bash ./src/backend/tools/package_backend_framework.bash'
+          }
+          post {
+            always {
+              sh 'ccache -s'
+              sh 'git submodule deinit -f .'
+              sh 'git clean -ff -x -d .'
+            }
+          }
+        }
+
+
       } // parallel
     } // Build
 
