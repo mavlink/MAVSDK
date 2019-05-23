@@ -15,9 +15,9 @@ protected:
     void StartPX4(const std::string &model)
     {
 #ifndef WINDOWS
-        const int ret = system((std::string("./start_px4_sitl.sh ") + model).c_str());
+        const int ret = system((std::string("./tools/start_px4_sitl.sh ") + model).c_str());
         if (ret != 0) {
-            dronecode_sdk::LogErr() << "./start_px4_sitl.sh failed, giving up.";
+            dronecode_sdk::LogErr() << "./tools/start_px4_sitl.sh failed, giving up.";
             abort();
         }
         // We need to wait a bit until it's up and running.
@@ -32,9 +32,9 @@ protected:
 #ifndef WINDOWS
         // Don't rush this either.
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        const int ret = system("./stop_px4_sitl.sh");
+        const int ret = system("./tools/stop_px4_sitl.sh");
         if (ret != 0) {
-            dronecode_sdk::LogErr() << "./stop_px4_sitl.sh failed, giving up.";
+            dronecode_sdk::LogErr() << "./tools/stop_px4_sitl.sh failed, giving up.";
             abort();
         }
 #else

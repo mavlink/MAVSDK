@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 if [ "$#" -ne 1 ]; then
     echo "Model argument needed"
     exit 1
@@ -29,7 +31,7 @@ else
 fi
 
 # Make sure everything is stopped first.
-./stop_px4_sitl.sh
+${script_dir}/stop_px4_sitl.sh
 
 # To prevent any races.
 sleep 1
