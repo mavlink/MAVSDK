@@ -53,7 +53,7 @@ build_script:
   - cd %dronecode_sdk_dir%
   - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "%GENERATOR%" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install -DBUILD_BACKEND=ON -DENABLE_MAVLINK_PASSTHROUGH=ON -Bbuild -H.
   - cmake --build build --target install --config %configuration%
-  - cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\third_party\build\install" -Bexample\build -Hexample
+  - cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\build\third_party\install" -Bexample\build -Hexample
   - cmake --build example\build --config %configuration%
 
 test: on
