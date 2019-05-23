@@ -95,7 +95,7 @@ install:
   fi
 
 script:
-    #- set -e
+- set -e
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
     cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild/debug -H.;
     make -Cbuild/debug -j4;

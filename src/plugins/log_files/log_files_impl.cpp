@@ -330,8 +330,8 @@ void LogFilesImpl::check_missing_log_data()
                 if (num_missing == 0) {
                     bytes_to_get = CHUNK_SIZE;
                     if (i + 1 == _data.chunks_received.size()) {
-                        bytes_to_get =
-                            static_cast<unsigned>(_data.bytes.size() - (_data.chunks_received.size() * CHUNK_SIZE - 1));
+                        bytes_to_get = static_cast<unsigned>(
+                            _data.bytes.size() - (_data.chunks_received.size() * CHUNK_SIZE - 1));
                     }
 
                     id_to_get = _data.id;

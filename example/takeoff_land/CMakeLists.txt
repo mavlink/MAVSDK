@@ -15,7 +15,7 @@ add_executable(takeoff_and_land
 )
 
 target_link_libraries(takeoff_and_land
-    DronecodeSDK::dronecode_sdk
     DronecodeSDK::dronecode_sdk_telemetry
     DronecodeSDK::dronecode_sdk_action
+    DronecodeSDK::dronecode_sdk
 )
