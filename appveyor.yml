@@ -33,7 +33,7 @@ clone_folder: C:\dronecode_sdk
 before_build:
 
   - cd C:\dronecode_sdk
-  - git submodule update --init --recursive --depth 100
+  - git submodule update --init --recursive --depth 200
   - cd C:\
   - appveyor DownloadFile https://curl.haxx.se/download/curl-7.64.1.zip
   - 7z x -y curl-7.64.1.zip
