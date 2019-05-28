@@ -146,9 +146,9 @@ script:
     ./build/release/src/backend/test/unit_tests_backend;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_build" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -Bbuild/default -H.;
+    cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=ON -Bbuild/default -H.;
     cmake --build build/default;
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=./tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -Bbuild/ios -H.;
+    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -Bbuild/ios -H.;
     cmake --build build/ios;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_simulator_build" ]]; then
