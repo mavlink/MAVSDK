@@ -17,7 +17,9 @@ static std::vector<std::shared_ptr<MissionItem>> download_mission(std::shared_pt
 static void compare_mission(const std::vector<std::shared_ptr<MissionItem>> &a,
                             const std::vector<std::shared_ptr<MissionItem>> &b);
 
-static std::atomic<unsigned> lossy_counter{0};
+static bool should_keep_message(const mavlink_message_t &message);
+
+static std::atomic<unsigned> _lossy_counter{0};
 
 TEST_F(SitlTest, MissionTransferLossy)
 {
@@ -50,26 +52,32 @@ TEST_F(SitlTest, MissionTransferLossy)
 
 void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough)
 {
-    mavlink_passthrough->intercept_outgoing_messages_async([](mavlink_message_t &message) {
-        UNUSED(message);
+    mavlink_passthrough->intercept_outgoing_messages_async(
+        [](mavlink_message_t &message) { return should_keep_message(message); });
 
-        // Let's drop every third incoming or outgoing message
-        return !(lossy_counter++ % 11 == 0);
-    });
+    mavlink_passthrough->intercept_incoming_messages_async(
+        [](mavlink_message_t &message) { return should_keep_message(message); });
+}
 
-    mavlink_passthrough->intercept_incoming_messages_async([](mavlink_message_t &message) {
-        UNUSED(message);
-
-        // Let's drop every third incoming or outgoing message
-        return !(lossy_counter++ % 7 == 0);
-    });
+bool should_keep_message(const mavlink_message_t &message)
+{
+    bool should_keep = true;
+    if (message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST ||
+        message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST_LIST ||
+        message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST_INT ||
+        // message.msgid == MAVLINK_MSG_ID_MISSION_ACK || FIXME: we rely on ack
+        message.msgid == MAVLINK_MSG_ID_MISSION_COUNT ||
+        message.msgid == MAVLINK_MSG_ID_MISSION_ITEM_INT) {
+        should_keep = (_lossy_counter++ % 10 != 0);
+    }
+    return should_keep;
 }
 
 std::vector<std::shared_ptr<MissionItem>> create_mission_items()
 {
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
-    for (unsigned i = 0; i < 100; ++i) {
+    for (unsigned i = 0; i < 20; ++i) {
         auto new_item = std::make_shared<MissionItem>();
         new_item->set_position(47.398170327054473 + (i * 1e-6), 8.5456490218639658 + (i * 1e-6));
         new_item->set_relative_altitude(10.0f + (i * 0.2f));
@@ -91,7 +99,7 @@ void upload_mission(std::shared_ptr<Mission> mission,
         LogInfo() << "Mission uploaded.";
     });
 
-    auto status = fut.wait_for(std::chrono::seconds(2));
+    auto status = fut.wait_for(std::chrono::seconds(20));
     ASSERT_EQ(status, std::future_status::ready);
     fut.get();
 }
@@ -113,7 +121,7 @@ std::vector<std::shared_ptr<MissionItem>> download_mission(std::shared_ptr<Missi
             LogInfo() << "Mission downloaded.";
         });
 
-    auto status = fut.wait_for(std::chrono::seconds(2));
+    auto status = fut.wait_for(std::chrono::seconds(20));
     EXPECT_EQ(status, std::future_status::ready);
     fut.get();
 
