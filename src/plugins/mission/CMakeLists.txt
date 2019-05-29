@@ -21,7 +21,7 @@ target_link_libraries(dronecode_sdk_mission
 )
 
 target_include_directories(dronecode_sdk_mission PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/dronecode_sdk>
     )
 
@@ -32,8 +32,8 @@ install(TARGETS dronecode_sdk_mission
     )
 
 install(FILES
-    mission.h
-    mission_item.h
+    include/plugins/mission/mission.h
+    include/plugins/mission/mission_item.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/plugins/mission
 )
 

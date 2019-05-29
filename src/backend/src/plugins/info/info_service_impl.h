@@ -1,5 +1,5 @@
-#include "info/info.h"
 #include "info/info.grpc.pb.h"
+#include "plugins/info/info.h"
 
 namespace dronecode_sdk {
 namespace backend {

@@ -1,5 +1,5 @@
-#include "follow_me.h"
 #include "follow_me_impl.h"
+#include "plugins/follow_me/follow_me.h"
 
 namespace dronecode_sdk {
 

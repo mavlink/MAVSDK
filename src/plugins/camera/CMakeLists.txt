@@ -28,7 +28,7 @@ set_target_properties(dronecode_sdk_camera
 )
 
 target_include_directories(dronecode_sdk_camera PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/dronecode_sdk>
     )
 
@@ -39,7 +39,7 @@ install(TARGETS dronecode_sdk_camera
     )
 
 install(FILES
-    camera.h
+    include/plugins/camera/camera.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/plugins/camera
 )
 

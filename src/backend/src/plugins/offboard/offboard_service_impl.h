@@ -1,5 +1,5 @@
-#include "offboard/offboard.h"
 #include "offboard/offboard.grpc.pb.h"
+#include "plugins/offboard/offboard.h"
 
 namespace dronecode_sdk {
 namespace backend {

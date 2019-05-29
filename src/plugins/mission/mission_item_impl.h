@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mavlink_include.h"
-#include "mission_item.h"
+#include "plugins/mission/mission_item.h"
 
 namespace dronecode_sdk {
 

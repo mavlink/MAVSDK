@@ -1,7 +1,7 @@
 #pragma once
 
-#include "log_files.h"
 #include "mavlink_include.h"
+#include "plugins/log_files/log_files.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 

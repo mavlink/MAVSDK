@@ -1,5 +1,5 @@
-#include "action/action.h"
 #include "action/action.grpc.pb.h"
+#include "plugins/action/action.h"
 
 namespace dronecode_sdk {
 namespace backend {

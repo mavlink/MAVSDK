@@ -1,4 +1,4 @@
-#include "log_files.h"
+#include "plugins/log_files/log_files.h"
 #include "log_files_impl.h"
 
 namespace dronecode_sdk {

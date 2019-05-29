@@ -1,8 +1,8 @@
 #pragma once
 
-#include "camera.h"
 #include "camera_definition.h"
 #include "mavlink_include.h"
+#include "plugins/camera/camera.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 

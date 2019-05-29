@@ -1,5 +1,5 @@
-#include "action.h"
 #include "action_impl.h"
+#include "plugins/action/action.h"
 
 namespace dronecode_sdk {
 

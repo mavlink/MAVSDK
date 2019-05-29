@@ -2,8 +2,8 @@
 
 #include <mutex>
 
-#include "info.h"
 #include "mavlink_include.h"
+#include "plugins/info/info.h"
 #include "plugin_impl_base.h"
 
 namespace dronecode_sdk {

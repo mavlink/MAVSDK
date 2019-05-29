@@ -1,7 +1,7 @@
 #include <future>
 
-#include "calibration/calibration.h"
 #include "calibration/calibration.grpc.pb.h"
+#include "plugins/calibration/calibration.h"
 
 namespace dronecode_sdk {
 namespace backend {

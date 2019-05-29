@@ -1,7 +1,7 @@
 #include <cmath>
 #include <limits>
 
-#include "telemetry.h"
+#include "plugins/telemetry/telemetry.h"
 #include "telemetry_impl.h"
 
 namespace dronecode_sdk {

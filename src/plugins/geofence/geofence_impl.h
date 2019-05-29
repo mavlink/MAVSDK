@@ -4,8 +4,8 @@
 #include <map>
 #include <atomic>
 
-#include "geofence.h"
 #include "mavlink_include.h"
+#include "plugins/geofence/geofence.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 

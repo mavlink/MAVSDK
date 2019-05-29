@@ -3,7 +3,7 @@
 #include <mutex>
 
 #include "mavlink_include.h"
-#include "offboard.h"
+#include "plugins/offboard/offboard.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 

@@ -1,4 +1,4 @@
-#include "info.h"
+#include "plugins/info/info.h"
 #include "info_impl.h"
 
 namespace dronecode_sdk {

@@ -3,7 +3,7 @@
 #include <mutex>
 
 #include "mavlink_include.h"
-#include "mavlink_passthrough.h"
+#include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 #include "plugin_impl_base.h"
 
 namespace dronecode_sdk {

@@ -12,7 +12,7 @@ set_target_properties(dronecode_sdk_info
 )
 
 target_include_directories(dronecode_sdk_info PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/dronecode_sdk>
     )
 
@@ -23,6 +23,6 @@ install(TARGETS dronecode_sdk_info
     )
 
 install(FILES
-    info.h
+    include/plugins/info/info.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/plugins/info
 )

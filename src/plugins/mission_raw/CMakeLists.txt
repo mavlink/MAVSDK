@@ -16,7 +16,7 @@ target_link_libraries(dronecode_sdk_mission_raw
 )
 
 target_include_directories(dronecode_sdk_mission_raw PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/dronecode_sdk>
     )
 
@@ -27,6 +27,6 @@ install(TARGETS dronecode_sdk_mission_raw
     )
 
 install(FILES
-    mission_raw.h
+    include/plugins/mission_raw/mission_raw.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/plugins/mission_raw
 )

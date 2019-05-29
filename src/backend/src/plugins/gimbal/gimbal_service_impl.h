@@ -1,5 +1,5 @@
-#include "gimbal/gimbal.h"
 #include "gimbal/gimbal.grpc.pb.h"
+#include "plugins/gimbal/gimbal.h"
 
 namespace dronecode_sdk {
 namespace backend {

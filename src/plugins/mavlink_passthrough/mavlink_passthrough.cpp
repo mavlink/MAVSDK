@@ -1,4 +1,4 @@
-#include "mavlink_passthrough.h"
+#include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 #include "mavlink_passthrough_impl.h"
 
 namespace dronecode_sdk {

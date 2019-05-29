@@ -1,7 +1,8 @@
+#include "plugins/mission/mission.h"
+
 #include <vector>
 
 #include "mavlink_include.h"
-#include "mission.h"
 #include "mission_impl.h"
 
 namespace dronecode_sdk {

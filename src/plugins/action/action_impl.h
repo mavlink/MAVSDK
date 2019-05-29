@@ -2,8 +2,8 @@
 
 #include <cstdint>
 
-#include "action.h"
 #include "mavlink_include.h"
+#include "plugins/action/action.h"
 #include "plugin_impl_base.h"
 
 namespace dronecode_sdk {

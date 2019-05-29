@@ -1,6 +1,6 @@
 #include <future>
 
-#include "camera/camera.h"
+#include "plugins/camera/camera.h"
 #include "camera/camera.grpc.pb.h"
 
 namespace dronecode_sdk {

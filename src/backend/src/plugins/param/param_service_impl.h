@@ -1,5 +1,5 @@
-#include "param/param.h"
 #include "param/param.grpc.pb.h"
+#include "plugins/param/param.h"
 
 namespace dronecode_sdk {
 namespace backend {

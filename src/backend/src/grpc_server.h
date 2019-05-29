@@ -3,23 +3,23 @@
 #include <grpc++/server.h>
 #include <memory>
 
-#include "action/action.h"
+#include "plugins/action/action.h"
 #include "action/action_service_impl.h"
-#include "calibration/calibration.h"
+#include "plugins/calibration/calibration.h"
 #include "calibration/calibration_service_impl.h"
-#include "camera/camera.h"
+#include "plugins/camera/camera.h"
 #include "camera/camera_service_impl.h"
 #include "core/core_service_impl.h"
 #include "dronecode_sdk.h"
-#include "mission/mission.h"
+#include "plugins/mission/mission.h"
 #include "mission/mission_service_impl.h"
 #include "telemetry/telemetry_service_impl.h"
 #include "info/info_service_impl.h"
-#include "gimbal/gimbal.h"
+#include "plugins/gimbal/gimbal.h"
 #include "gimbal/gimbal_service_impl.h"
-#include "param/param.h"
+#include "plugins/param/param.h"
 #include "param/param_service_impl.h"
-#include "offboard/offboard.h"
+#include "plugins/offboard/offboard.h"
 #include "offboard/offboard_service_impl.h"
 
 namespace dronecode_sdk {

@@ -18,6 +18,6 @@ install(TARGETS dronecode_sdk_logging
     )
 
 install(FILES
-    logging.h
+    include/plugins/logging/logging.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/logging
 )

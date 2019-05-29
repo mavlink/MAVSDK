@@ -3,7 +3,7 @@
 #include <atomic>
 #include <mutex>
 
-#include "telemetry.h"
+#include "plugins/telemetry/telemetry.h"
 #include "mavlink_include.h"
 #include "plugin_impl_base.h"
 #include "system.h"

@@ -5,7 +5,7 @@
 #include "global_include.h"
 #include "log.h"
 #include "mavlink_include.h"
-#include "mission.h"
+#include "plugins/mission/mission.h"
 
 using namespace dronecode_sdk;
 
