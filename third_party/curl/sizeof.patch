@@ -1,0 +1,22 @@
+diff --git a/lib/curl_config.h.cmake b/lib/curl_config.h.cmake
+index 5308eb579..0aa68f056 100644
+--- a/lib/curl_config.h.cmake
++++ b/lib/curl_config.h.cmake
+@@ -889,7 +889,7 @@
+ #cmakedefine SIZEOF_SHORT ${SIZEOF_SHORT}
+ 
+ /* The size of `long', as computed by sizeof. */
+-#cmakedefine SIZEOF_LONG ${SIZEOF_LONG}
++${SIZEOF_LONG_CODE}
+ 
+ /* The size of `off_t', as computed by sizeof. */
+ #cmakedefine SIZEOF_OFF_T ${SIZEOF_OFF_T}
+@@ -898,7 +898,7 @@
+ #cmakedefine SIZEOF_CURL_OFF_T ${SIZEOF_CURL_OFF_T}
+ 
+ /* The size of `size_t', as computed by sizeof. */
+-#cmakedefine SIZEOF_SIZE_T ${SIZEOF_SIZE_T}
++${SIZEOF_SIZE_T_CODE}
+ 
+ /* The size of `time_t', as computed by sizeof. */
+ #cmakedefine SIZEOF_TIME_T ${SIZEOF_TIME_T}

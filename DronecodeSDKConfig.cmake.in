@@ -1,0 +1,13 @@
+include(CMakeFindDependencyMacro)
+
+if(${CMAKE_VERSION} VERSION_LESS "3.9.0")
+    find_package(CURL REQUIRED CONFIG)
+else()
+    find_dependency(CURL REQUIRED CONFIG)
+endif()
+
+find_dependency(json11)
+find_dependency(tinyxml2)
+
+get_filename_component(DRONECODESDK_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include("${DRONECODESDK_CMAKE_DIR}/DronecodeSDKTargets.cmake")

@@ -6,15 +6,11 @@ find_package(Threads REQUIRED)
 
 if(NOT MSVC)
     add_definitions("-std=c++11 -Wall -Wextra -Werror")
-    # Line below required if /usr/local/include is not in your default includes
-    #include_directories(/usr/local/include)
-    # Line below required if /usr/local/lib is not in your default linker path
-    #link_directories(/usr/local/lib)
 else()
-    include_directories(${CMAKE_SOURCE_DIR}/../../install/include)
-    link_directories(${CMAKE_SOURCE_DIR}/../../install/lib)
     add_definitions("-std=c++11 -WX -W2")
 endif()
+
+find_package(DronecodeSDK REQUIRED)
 
 add_executable(follow_me
     follow_me.cpp
@@ -22,9 +18,9 @@ add_executable(follow_me
 )
 
 target_link_libraries(follow_me
+    DronecodeSDK::dronecode_sdk_action
+    DronecodeSDK::dronecode_sdk_follow_me
+    DronecodeSDK::dronecode_sdk_telemetry
+    DronecodeSDK::dronecode_sdk
     ${CMAKE_THREAD_LIBS_INIT}
-    dronecode_sdk
-    dronecode_sdk_action
-    dronecode_sdk_follow_me
-    dronecode_sdk_telemetry
 )
