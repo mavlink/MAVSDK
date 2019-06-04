@@ -16,7 +16,9 @@ set_target_properties(dronecode_sdk_mission
 )
 
 target_link_libraries(dronecode_sdk_mission
+    PUBLIC
     dronecode_sdk
+    PRIVATE
     json11::json11
 )
 

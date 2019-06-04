@@ -31,6 +31,7 @@ add_library(dronecode_sdk
 )
 
 target_link_libraries(dronecode_sdk
+    PRIVATE
     tinyxml2::tinyxml2
     CURL::libcurl
     ${CMAKE_THREAD_LIBS_INIT}
@@ -38,6 +39,7 @@ target_link_libraries(dronecode_sdk
 
 if (IOS)
     target_link_libraries(dronecode_sdk
+        PUBLIC
         "-framework Foundation"
         "-framework Security"
     )
@@ -46,12 +48,14 @@ endif()
 # Link to Windows networking lib.
 if (MSVC OR MINGW)
     target_link_libraries(dronecode_sdk
+        PRIVATE
         ws2_32
     )
 endif()
 
 if(ANDROID)
     target_link_libraries(dronecode_sdk
+        PRIVATE
         log
     )
 endif()
