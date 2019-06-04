@@ -306,10 +306,8 @@ public:
     /**
      * @brief Type for video stream settings.
      *
-     * Application may call set_video_stream_settings() before starting
-     * video streaming to tell Camera server to use these settings during video streaming.
      *
-     * @sa set_video_stream_settings(), get_video_stream_info(), start_video_streaming().
+     * @sa get_video_stream_info(), start_video_streaming().
      */
     struct VideoStreamSettings {
         float frame_rate_hz = 0.f; /**< @brief Frames per second. */
@@ -318,36 +316,7 @@ public:
         uint32_t bit_rate_b_s = 0u; /**< @brief Bit rate in bits per second. */
         uint16_t rotation_deg = 0u; /**< @brief Video image rotation clockwise (0-359 degrees). */
         std::string uri{}; /**< @brief Video stream URI. */
-
-        /**
-         * @brief Sets to highest possible settings for Resolution, framerate.
-         */
-        void set_highest()
-        {
-            frame_rate_hz = FRAME_RATE_HIGHEST;
-            horizontal_resolution_pix = RESOLUTION_H_HIGHEST;
-            vertical_resolution_pix = RESOLUTION_V_HIGHEST;
-            // FIXME: Should bit_rate_b_s be part of set_highest() ?
-            bit_rate_b_s = BIT_RATE_AUTO;
-        }
-
-        constexpr static const float FRAME_RATE_HIGHEST =
-            -1.0f; /**< @brief Highest possible framerate. */
-        constexpr static const uint16_t RESOLUTION_H_HIGHEST =
-            UINT16_MAX; /**< @brief Highest possible horizontal resolution. */
-        constexpr static const uint16_t RESOLUTION_V_HIGHEST =
-            UINT16_MAX; /**< @brief Highest possible vertical resolution. */
-        constexpr static const uint32_t BIT_RATE_AUTO =
-            0; /**< @brief Auto settings for Bit rate. */
     };
-
-    /**
-     * @brief Sets video stream settings.
-     *
-     * @param settings Reference to custom video stream settings which include resolution,
-     * framerate, bitrate, etc.
-     */
-    void set_video_stream_settings(const VideoStreamSettings &settings);
 
     /**
      * @brief Information about video stream.

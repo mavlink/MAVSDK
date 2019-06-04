@@ -307,28 +307,6 @@ MAVLinkCommands::CommandLong CameraImpl::make_command_stop_video_streaming()
     return cmd_stop_video_streaming;
 }
 
-mavlink_message_t
-CameraImpl::make_message_set_video_stream_settings(const Camera::VideoStreamSettings &settings)
-{
-    mavlink_message_t msg;
-
-    mavlink_msg_set_video_stream_settings_pack(_parent->get_own_system_id(),
-                                               _parent->get_own_component_id(),
-                                               &msg,
-                                               _parent->get_system_id(),
-                                               _camera_id + MAV_COMP_ID_CAMERA,
-                                               _camera_id +
-                                                   MAV_COMP_ID_CAMERA, // TODO: Is it right ?
-                                               settings.frame_rate_hz,
-                                               settings.horizontal_resolution_pix,
-                                               settings.vertical_resolution_pix,
-                                               settings.bit_rate_b_s,
-                                               settings.rotation_deg,
-                                               settings.uri.c_str());
-
-    return msg;
-}
-
 MAVLinkCommands::CommandLong CameraImpl::make_command_request_video_stream_info()
 {
     MAVLinkCommands::CommandLong cmd_req_video_stream_info{};
@@ -463,15 +441,6 @@ Camera::Information CameraImpl::get_information()
     std::lock_guard<std::mutex> lock(_information.mutex);
 
     return _information.data;
-}
-
-void CameraImpl::set_video_stream_settings(const Camera::VideoStreamSettings &settings)
-{
-    auto msg = make_message_set_video_stream_settings(settings);
-
-    if (!_parent->send_message(msg)) {
-        LogErr() << "Failed to set Video stream settings";
-    }
 }
 
 Camera::Result CameraImpl::start_video_streaming()
@@ -953,8 +922,11 @@ void CameraImpl::process_video_information(const mavlink_message_t &message)
 
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
+        // TODO: use stream_id and count
         _video_stream_info.info.status =
-            static_cast<Camera::VideoStreamInfo::Status>(received_video_info.status);
+            (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
+                 Camera::VideoStreamInfo::Status::IN_PROGRESS :
+                 Camera::VideoStreamInfo::Status::NOT_RUNNING);
         auto &video_stream_info = _video_stream_info.info.settings;
         video_stream_info.frame_rate_hz = received_video_info.framerate;
         video_stream_info.horizontal_resolution_pix = received_video_info.resolution_h;
