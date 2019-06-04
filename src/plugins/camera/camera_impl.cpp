@@ -929,6 +929,10 @@ void CameraImpl::process_camera_information(const mavlink_message_t &message)
             LogInfo() << "Using cached file for Yuneec ET.";
             content = cgoetxml;
             found_content = true;
+        } else if (strcmp((const char *)(camera_information.model_name), "E10T") == 0) {
+            LogInfo() << "Using cached file for Yuneec E10T.";
+            content = e10txml;
+            found_content = true;
         }
     } else {
 #endif
@@ -992,6 +996,9 @@ void CameraImpl::process_flight_information(const mavlink_message_t &message)
         } else if (_information.data.vendor_name == "Yuneec" &&
                    _information.data.model_name == "CGOET") {
             folder_name_stream << (101 + flight_information.flight_uuid % 899) << "CGOET";
+        } else if (_information.data.vendor_name == "Yuneec" &&
+                   _information.data.model_name == "E10T") {
+            folder_name_stream << (101 + flight_information.flight_uuid % 899) << "E10T";
         } else {
             // Folder name unknown
         }
