@@ -136,29 +136,29 @@ script:
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-29 ./tools/create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=ON -Bbuild/debug -H.;
+    cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/debug -H.;
     cmake --build build/debug;
     ./build/debug/src/unit_tests_runner;
     ./build/debug/src/backend/test/unit_tests_backend;
-    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -Bbuild/release -H.;
+    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/release -H.;
     cmake --build build/release;
     ./build/release/src/unit_tests_runner;
     ./build/release/src/backend/test/unit_tests_backend;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_build" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=ON -Bbuild/default -H.;
+    cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/default -H.;
     cmake --build build/default;
-    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -Bbuild/ios -H.;
+    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/ios -H.;
     cmake --build build/ios;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_simulator_build" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -Bbuild/default -H.;
+    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/default -H.;
     cmake --build build/default;
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=./tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -Bbuild/ios_simulator -H.;
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=./tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/ios_simulator -H.;
     cmake --build build/ios_simulator;
   fi
 - if [[ "${BUILD_TARGET}" = "windows" ]]; then
-    cmake -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build/debug/install -DBUILD_BACKEND=ON -Bbuild/debug -H${TRAVIS_BUILD_DIR};
+    cmake -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build/debug/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/debug -H${TRAVIS_BUILD_DIR};
   fi
 
 after_success:
