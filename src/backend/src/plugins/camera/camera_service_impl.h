@@ -188,20 +188,6 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status
-    SetVideoStreamSettings(grpc::ServerContext * /* context */,
-                           const rpc::camera::SetVideoStreamSettingsRequest *request,
-                           rpc::camera::SetVideoStreamSettingsResponse * /* response */) override
-    {
-        if (request != nullptr) {
-            const auto video_stream_settings =
-                translateRPCVideoStreamSettings(request->video_stream_settings());
-            _camera.set_video_stream_settings(video_stream_settings);
-        }
-
-        return grpc::Status::OK;
-    }
-
     static std::unique_ptr<rpc::camera::VideoStreamSettings> translateVideoStreamSettings(
         const dronecode_sdk::Camera::VideoStreamSettings video_stream_settings)
     {
