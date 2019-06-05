@@ -15,7 +15,6 @@ service CameraService {
     rpc StopVideoStreaming(StopVideoStreamingRequest) returns(StopVideoStreamingResponse) {}
     rpc SetMode(SetModeRequest) returns(SetModeResponse) {}
     rpc SubscribeMode(SubscribeModeRequest) returns(stream ModeResponse) {}
-    rpc SetVideoStreamSettings(SetVideoStreamSettingsRequest) returns(SetVideoStreamSettingsResponse) {}
     rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) {}
     rpc SubscribeCaptureInfo(SubscribeCaptureInfoRequest) returns(stream CaptureInfoResponse) {}
     rpc SubscribeCameraStatus(SubscribeCameraStatusRequest) returns(stream CameraStatusResponse) {}
@@ -72,11 +71,6 @@ message SubscribeModeRequest {}
 message ModeResponse {
     CameraMode camera_mode = 1;
 }
-
-message SetVideoStreamSettingsRequest {
-    VideoStreamSettings video_stream_settings = 1;
-}
-message SetVideoStreamSettingsResponse {}
 
 message SubscribeVideoStreamInfoRequest {}
 message VideoStreamInfoResponse {
