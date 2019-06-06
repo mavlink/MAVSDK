@@ -1,6 +1,6 @@
 /*
 Example to connect multiple vehicles and make them follow their own separate plan file. Also
-saves the telemetry information to a csv file
+saves the telemetry information to csv files
 ./fly_multipleDrones udp://:14540 udp://:14541 ../../../plugins/mission/test.plan
 ../../../plugins/mission/test2.plan
 
@@ -31,19 +31,27 @@ using namespace std::chrono;
 
 /*
 How to Start Multiple Instances (for jMAVSim)
+
+Note: The following instructions to start multiple vehicles in simulations are for Firmware
+Version 1.9.0. If you have other versions running on your machine, please visit this site and select
+appropriate version for the instructions:
+--> https://dev.px4.io/en/simulation/multi_vehicle_jmavsim.html
+
 To start multiple instances (on separate ports):
 
 Build PX4
-    make posix_sitl_default
+    make px4_sitl_default
+
 Run sitl_multiple_run.sh, specifying the number of instances to start (e.g. 2):
     ./Tools/sitl_multiple_run.sh 2
+
 Start the first instance:
-    ./Tools/jmavsim_run.sh
-Start subsequent instances, specifying the simulation UDP port for the instance:
-    ./Tools/jmavsim_run.sh -p 14561
+    ./Tools/jmavsim_run.sh -l
 
-The port should be set to 14560+i for i in [0, N-1].
+Start subsequent instances, specifying the simulation TCP port for the instance:
+    ./Tools/jmavsim_run.sh -p 4561 -l
 
+The port should be set to 4560+i for i in [0, N-1].
 
 
 Steps to run this example:
