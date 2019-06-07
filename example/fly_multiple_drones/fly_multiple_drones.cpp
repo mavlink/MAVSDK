@@ -1,7 +1,7 @@
 /*
 Example to connect multiple vehicles and make them follow their own separate plan file. Also
 saves the telemetry information to csv files
-./fly_multipleDrones udp://:14540 udp://:14541 ../../../plugins/mission/test.plan
+./fly_multiple_drones udp://:14540 udp://:14541 ../../../plugins/mission/test.plan
 ../../../plugins/mission/test2.plan
 
 Author: Julian Oes <julian@oes.ch>
@@ -63,38 +63,24 @@ Steps to run this example:
 as arguments Example: If you have test.plan and test2.plan in "../../../plugins/mission/" and you
 are running two drones in udp://:14540 and udp://:14541 then you run the example as:
 
-./fly_multipleDrones udp://:14540 udp://:14541 ../../../plugins/mission/test.plan
+./fly_multiple_drones udp://:14540 udp://:14541 ../../../plugins/mission/test.plan
 ../../../plugins/mission/test2.plan
 
 */
-
-static void complete_mission(std::string qgc_plan, System &system);
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
-// Handles Action's result
-inline void handle_action_err_exit(Action::Result result, const std::string &message);
-// Handles Mission's result
-inline void handle_mission_err_exit(Mission::Result result, const std::string &message);
-// Handles Connection result
-inline void handle_connection_err_exit(ConnectionResult result, const std::string &message);
+static void complete_mission(std::string qgc_plan, System &system);
 
-void usage(std::string bin_name)
-{
-    std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name
-              << " <connection_url> [path of QGC Mission plan]" << std::endl
-              << "Connection URL format should be :" << std::endl
-              << " For TCP : tcp://[server_host][:server_port]" << std::endl
-              << " For UDP : udp://[bind_host][:bind_port]" << std::endl
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
-}
+static void handle_action_err_exit(Action::Result result, const std::string &message);
 
-// This just returns the current time and date
-// This is being used to store telemetry data
-std::string getTimeStr()
+static void handle_mission_err_exit(Mission::Result result, const std::string &message);
+
+static void handle_connection_err_exit(ConnectionResult result, const std::string &message);
+
+std::string getCurrentTimeString()
 {
     time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     std::string s(30, '\0');
@@ -104,7 +90,7 @@ std::string getTimeStr()
 
 int main(int argc, char *argv[])
 {
-    // There needs to be odd number of arguments provided (includes ./fly_multipleDrones) otherwise
+    // There needs to be odd number of arguments (including ./fly_multiple_drones) otherwise
     // it would suggest either plan files or udp ports hasn't been specified
     if (argc % 2 == 0 || argc == 1) {
         std::cerr
@@ -117,12 +103,12 @@ int main(int argc, char *argv[])
     DronecodeSDK dc;
 
     // Half of argc is how many udp ports is being used
-    int total_ports = argc / 2;
+    int total_ports_used = argc / 2;
 
     // the loop below adds the number of ports the sdk monitors.
     // Loop must start from 1 since we are ignoring argv[0] which would be the name of the
     // executable
-    for (int i = 1; i <= total_ports; ++i) {
+    for (int i = 1; i <= total_ports_used; ++i) {
         ConnectionResult connection_result = dc.add_any_connection(argv[i]);
         if (connection_result != ConnectionResult::SUCCESS) {
             std::cerr << ERROR_CONSOLE_TEXT
@@ -132,20 +118,20 @@ int main(int argc, char *argv[])
         }
     }
 
-    bool discovered_system = false;
+    std::atomic<signed> num_systems_discovered{0};
 
     std::cout << "Waiting to discover system..." << std::endl;
-    dc.register_on_discover([&discovered_system](uint64_t uuid) {
+    dc.register_on_discover([&num_systems_discovered](uint64_t uuid) {
         std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discovered_system = true;
+        ++num_systems_discovered;
     });
 
     // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2
     // seconds.
     sleep_for(seconds(2));
 
-    if (!discovered_system) {
-        std::cerr << ERROR_CONSOLE_TEXT << "No system found, exiting." << NORMAL_CONSOLE_TEXT
+    if (num_systems_discovered != total_ports_used) {
+        std::cerr << ERROR_CONSOLE_TEXT << "Not all systems found, exiting." << NORMAL_CONSOLE_TEXT
                   << std::endl;
         return 1;
     }
@@ -153,7 +139,7 @@ int main(int argc, char *argv[])
     std::vector<std::thread> threads;
 
     int planFile_provided =
-        total_ports + 1; // +1 because first plan is specified at argv[total_ports+1]
+        total_ports_used + 1; // +1 because first plan is specified at argv[total_ports_used+1]
     for (auto uuid : dc.system_uuids()) {
         System &system = dc.system(uuid);
         std::thread t(&complete_mission, argv[planFile_provided], std::ref(system));
@@ -174,7 +160,7 @@ void complete_mission(std::string qgc_plan, System &system)
     auto action = std::make_shared<Action>(system);
     auto mission = std::make_shared<Mission>(system);
 
-    // We want to listen to the altitude of the drone at 1 Hz.
+    // We want to listen to the telemetry data at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry->set_rate_position(1.0);
 
     if (set_rate_result != Telemetry::Result::SUCCESS) {
@@ -186,14 +172,15 @@ void complete_mission(std::string qgc_plan, System &system)
 
     std::cout << "Importing mission from mission plan: " << qgc_plan << std::endl;
 
-    // Creates a file named with their last few digits of uuid number to store lat and lng with time
+    // Creates a file named with vehicle's last few digits of uuid number to store lat and lng with
+    // time
     std::ofstream myFile;
     myFile.open((std::to_string(system.get_uuid() % 100000) + ".csv"));
     myFile << "Time, Vehicle_ID, Altitude, Latitude, Longitude, Absolute_Altitude, \n";
 
     // Setting up the callback to monitor lat and longitude
     telemetry->position_async([&](Telemetry::Position position) {
-        myFile << getTimeStr() << "," << (system.get_uuid()) % 100000 << ","
+        myFile << getCurrentTimeString() << "," << (system.get_uuid()) % 100000 << ","
                << position.relative_altitude_m << "," << position.latitude_deg << ","
                << position.longitude_deg << "," << position.absolute_altitude_m << ", \n";
     });
@@ -260,11 +247,20 @@ void complete_mission(std::string qgc_plan, System &system)
     // Wait for some time.
     sleep_for(seconds(5));
 
-    // Mission complete. Landing now
-    std::cout << "Landing at last node..." << std::endl;
+    {
+        // Mission complete. Command RTL to go home.
+        std::cout << "Commanding RTL..." << std::endl;
+        const Action::Result result = action->return_to_launch();
+        if (result != Action::Result::SUCCESS) {
+            std::cout << "Failed to command RTL (" << Action::result_str(result) << ")"
+                      << std::endl;
+        } else {
+            std::cout << "Commanded RTL." << std::endl;
+        }
+    }
 }
 
-inline void handle_action_err_exit(Action::Result result, const std::string &message)
+static void handle_action_err_exit(Action::Result result, const std::string &message)
 {
     if (result != Action::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
@@ -273,7 +269,7 @@ inline void handle_action_err_exit(Action::Result result, const std::string &mes
     }
 }
 
-inline void handle_mission_err_exit(Mission::Result result, const std::string &message)
+static void handle_mission_err_exit(Mission::Result result, const std::string &message)
 {
     if (result != Mission::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
@@ -282,8 +278,7 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string &m
     }
 }
 
-// Handles connection result
-inline void handle_connection_err_exit(ConnectionResult result, const std::string &message)
+static void handle_connection_err_exit(ConnectionResult result, const std::string &message)
 {
     if (result != ConnectionResult::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
