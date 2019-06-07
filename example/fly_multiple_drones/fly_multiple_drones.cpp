@@ -78,8 +78,6 @@ static void handle_action_err_exit(Action::Result result, const std::string &mes
 
 static void handle_mission_err_exit(Mission::Result result, const std::string &message);
 
-static void handle_connection_err_exit(ConnectionResult result, const std::string &message);
-
 std::string getCurrentTimeString()
 {
     time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -273,15 +271,6 @@ static void handle_mission_err_exit(Mission::Result result, const std::string &m
 {
     if (result != Mission::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
-                  << NORMAL_CONSOLE_TEXT << std::endl;
-        exit(EXIT_FAILURE);
-    }
-}
-
-static void handle_connection_err_exit(ConnectionResult result, const std::string &message)
-{
-    if (result != ConnectionResult::SUCCESS) {
-        std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
                   << NORMAL_CONSOLE_TEXT << std::endl;
         exit(EXIT_FAILURE);
     }
