@@ -18,7 +18,9 @@ add_library(dronecode_sdk_camera
 )
 
 target_link_libraries(dronecode_sdk_camera
+    PUBLIC
     dronecode_sdk
+    PRIVATE
     tinyxml2::tinyxml2
     CURL::libcurl
 )
