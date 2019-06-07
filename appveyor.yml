@@ -51,7 +51,7 @@ build_script:
   - if "%COMPILER%"=="msvc2017" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - set dronecode_sdk_dir=C:\dronecode_sdk
   - cd %dronecode_sdk_dir%
-  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "%GENERATOR%" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install -DBUILD_BACKEND=ON -DENABLE_MAVLINK_PASSTHROUGH=ON -Bbuild -H.
+  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "%GENERATOR%" -DCMAKE_INSTALL_PREFIX=%dronecode_sdk_dir%\install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DENABLE_MAVLINK_PASSTHROUGH=ON -Bbuild -H.
   - cmake --build build --target install --config %configuration%
   - cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_PREFIX_PATH="%dronecode_sdk_dir%\install;%dronecode_sdk_dir%\build\third_party\install" -Bexample\build -Hexample
   - cmake --build example\build --config %configuration%
