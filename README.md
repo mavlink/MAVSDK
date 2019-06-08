@@ -1,12 +1,12 @@
-![Dronecode SDK](https://github.com/dronecore/sdk_docs/raw/develop/assets/site/sdk_logo_full.jpg)
+# MAVSDK
 
-[![travis-ci build status](https://travis-ci.org/Dronecode/DronecodeSDK.svg?branch=develop)](https://travis-ci.org/Dronecode/DronecodeSDK)
-[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/1ntjvooywpxmoir8/branch/develop?svg=true)](https://ci.appveyor.com/project/Dronecode/dronecore/branch/develop)
-[![Coverage Status](https://coveralls.io/repos/github/Dronecode/DronecodeSDK/badge.svg?branch=develop)](https://coveralls.io/github/Dronecode/DronecodeSDK?branch=develop)
+[![travis-ci build status](https://travis-ci.org/mavlink/MAVSDK.svg?branch=develop)](https://travis-ci.org/mavlink/MAVSDK)
+[![Build status](https://ci.appveyor.com/api/projects/status/1ntjvooywpxmoir8/branch/develop?svg=true)](https://ci.appveyor.com/project/Dronecode/dronecore/branch/develop)
+[![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=develop)](https://coveralls.io/github/mavlink/MAVSDK?branch=develop)
 
 ## Description
 
-The [Dronecode SDK](https://www.dronecode.org/sdk/) (previously known as "DroneCore") is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [MAVLink](https://mavlink.io/en/).
+[MAVSDK](https://www.dronecode.org/sdk/) (previously known as "Dronecode SDK", "DroneCore", and "DroneLink") is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [MAVLink](https://mavlink.io/en/).
 
 It is written in C++11 and aiming to be:
 
@@ -23,7 +23,7 @@ The library provides both synchronous (blocking) API calls, as well as asynchron
 
 ## API Overview
 
-API consumers use the `DronecodeSDK` class to discover and manage vehicles (`System` objects). Using the `System` object plugins such as e.g. `Action`, `Telemetry`, or `Mission` can be instantiated which provide information about the state of the drone and allow to interact with it.
+API consumers use `MAVSDK` class to discover and manage vehicles (`System` objects). Using the `System` object plugins such as e.g. `Action`, `Telemetry`, or `Mission` can be instantiated which provide information about the state of the drone and allow to interact with it.
 
 The links below take you to the respective header files:
 
@@ -37,11 +37,11 @@ The links below take you to the respective header files:
 - [offboard](plugins/offboard/include/plugins/offboard/offboard.h): for velocity control
 - [gimbal](plugins/gimbal/include/plugins/gimbal/gimbal.h): control a gimbal
 - [camera](plugins/camera/include/plugins/camera/camera.h): capture images, videos, and set camera settings
-- [follow_me](plugins/follow_me/include/plugins/follow_me/follow_me.h): drone tracks a position supplied by the Dronecode SDK.
+- [follow_me](plugins/follow_me/include/plugins/follow_me/follow_me.h): drone tracks a position supplied by MAVSDK.
 - [calibration](plugins/calibration/include/plugins/calibration/calibration.h): calibrate drone sensors including gyro, accelerometer, and magnetometer.
 - [logging](plugins/logging/include/plugins/logging/logging.h): (not implemented) data logging and streaming from the vehicle.
 
-For more information see the [API Overview](https://sdk.dronecode.org/en/#api-overview) in the Dronecode SDK Guide.
+For more information see the [API Overview](https://sdk.dronecode.org/en/#api-overview) in MAVSDK Guide.
 
 
 ## Docs (Build instructions etc.)
