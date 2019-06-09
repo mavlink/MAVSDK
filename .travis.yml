@@ -63,6 +63,12 @@ matrix:
         - docker
       env:
       - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora_29"
+    - os: linux
+      name: "manylinux1-x64"
+      services:
+        - docker
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=manylinux1-x64"
     - os: osx
       name: "macOS"
       osx_image: xcode10.1
@@ -85,6 +91,9 @@ matrix:
 
 before_install:
 - eval "${MATRIX_EVAL}"
+- if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
+    docker build -t manylinux1-x64-custom -f docker/Dockerfile.manylinux1-x64-custom .;
+  fi
 
 install:
 - set -e
@@ -102,6 +111,10 @@ install:
   fi
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     pip install --user cpp-coveralls;
+  fi
+- if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
+    docker run --rm manylinux1-x64-custom > ./dockcross-manylinux1-x64;
+    chmod +x ./dockcross-manylinux1-x64;
   fi
 
 script:
@@ -134,6 +147,10 @@ script:
 - if [[ "${BUILD_TARGET}" = "docker_build_fedora_29" ]]; then
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-29 ./tools/travis-docker-build.sh;
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-29 ./tools/create_packages.sh;
+  fi
+- if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
+    ./dockcross-manylinux1-x64 cmake -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DMANYLINUX=TRUE -Bbuild/manylinux1-x64 -H.;
+    ./dockcross-manylinux1-x64 cmake --build build/manylinux1-x64;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/debug -H.;
