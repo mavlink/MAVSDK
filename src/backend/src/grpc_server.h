@@ -1,6 +1,7 @@
 #pragma once
 
-#include <grpc++/server.h>
+#include <grpcpp/server.h>
+#include <grpcpp/server_builder.h>
 #include <memory>
 
 #include "plugins/action/action.h"

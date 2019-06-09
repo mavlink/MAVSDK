@@ -34,6 +34,10 @@ elseif(IOS)
         "-DPLATFORM=${PLATFORM}"
         "-DgRPC_BUILD_CODEGEN=OFF"
         )
+elseif(MANYLINUX)
+    list(APPEND CMAKE_ARGS
+        "-DCMAKE_CXX_FLAGS=-DGPR_MANYLINUX1=1"
+        )
 endif()
 
 message(STATUS "Preparing external project \"grpc\" with args:")
@@ -43,8 +47,8 @@ endforeach()
 
 ExternalProject_add(
     grpc
-    #URL https://github.com/dronecore/grpc/archive/fix-pointer-not-aligned-ios.zip
-    URL https://github.com/dronecore/grpc/archive/add-build-tools-option.zip
+    URL https://github.com/dronecore/grpc/archive/grpc-1.20.0-with-mavsdk-patches.zip
+    #URL https://github.com/grpc/grpc/archive/v1.20.0.zip
     PREFIX grpc
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
