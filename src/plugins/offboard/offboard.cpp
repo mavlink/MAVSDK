@@ -57,6 +57,11 @@ void Offboard::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
     return _impl->set_attitude_rate(attitude_rate);
 }
 
+void Offboard::set_actuator_control(Offboard::ActuatorControl actuator_control)
+{
+    return _impl->set_actuator_control(actuator_control);
+}
+
 const char *Offboard::result_str(Result result)
 {
     switch (result) {

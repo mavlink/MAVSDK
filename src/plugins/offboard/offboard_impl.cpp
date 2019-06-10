@@ -241,6 +241,32 @@ void OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
     send_attitude_rate();
 }
 
+void OffboardImpl::set_actuator_control(Offboard::ActuatorControl actuator_control)
+{
+    _mutex.lock();
+    _actuator_control = actuator_control;
+
+    if (_mode != Mode::ACTUATOR_CONTROL) {
+        if (_call_every_cookie) {
+            // If we're already sending other setpoints, stop that now.
+            _parent->remove_call_every(_call_every_cookie);
+            _call_every_cookie = nullptr;
+        }
+        // We automatically send motor rate values from now on.
+        _parent->add_call_every(
+            [this]() { send_actuator_control(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+        _mode = Mode::ACTUATOR_CONTROL;
+    } else {
+        // We're already sending these kind of values. Since the value changes, let's
+        // reschedule the next call, so we don't send values too often.
+        _parent->reset_call_every(_call_every_cookie);
+    }
+    _mutex.unlock();
+
+    send_actuator_control();
+}
+
 void OffboardImpl::send_position_ned()
 {
     // const static uint16_t IGNORE_X = (1 << 0);
@@ -481,6 +507,29 @@ void OffboardImpl::send_attitude_rate()
         body_pitch_rate,
         body_yaw_rate,
         thrust);
+    _parent->send_message(message);
+}
+
+void OffboardImpl::send_actuator_control()
+{
+    _mutex.lock();
+    float actuator_control[8] = {};
+
+    std::copy(_actuator_control.actuator_control.begin(),
+              _actuator_control.actuator_control.end(),
+              actuator_control);
+    _mutex.unlock();
+
+    mavlink_message_t message;
+    mavlink_msg_set_actuator_control_target_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        0,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        actuator_control);
     _parent->send_message(message);
 }
 
