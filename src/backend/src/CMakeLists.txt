@@ -79,4 +79,9 @@ else()
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/core
     )
+
+install(TARGETS backend_bin
+    EXPORT dronecode-sdk-targets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
 endif()
