@@ -132,6 +132,14 @@ public:
     };
 
     /**
+     * @brief Type for actuator control commands
+     *
+     */
+    struct ActuatorControl {
+        std::array<float, 8> actuator_control;
+    };
+
+    /**
      * @brief Start offboard control (synchronous).
      *
      * **Attention:** this is work in progress, use with caution!
@@ -213,6 +221,13 @@ public:
      * @param attitude_rate roll, pitch and yaw angular rate along with thrust in percentage.
      */
     void set_attitude_rate(AttitudeRate attitude_rate);
+
+    /**
+     * @brief Set direct actuator control values
+     *
+     * @param array of 8 values
+     */
+    void set_actuator_control(ActuatorControl actuator_control);
 
     /**
      * @brief Copy constructor (object is not copyable).
