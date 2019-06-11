@@ -85,6 +85,29 @@ const char *Offboard::result_str(Result result)
     }
 }
 
+bool operator==(const Offboard::ActuatorControl &lhs, const Offboard::ActuatorControl &rhs)
+{
+    if (lhs.actuator_group != rhs.actuator_group)
+        return false;
+    for (int i = 0; i < 8; i++)
+        if (lhs.actuator_values[i] != rhs.actuator_values[i])
+            return false;
+    return true;
+}
+
+std::ostream &operator<<(std::ostream &str, Offboard::ActuatorControl const &actuator_control)
+{
+    return str << "[group: " << actuator_control.actuator_group
+               << ", Command port 0: " << actuator_control.actuator_values[0]
+               << ", Command port 1: " << actuator_control.actuator_values[1]
+               << ", Command port 2: " << actuator_control.actuator_values[2]
+               << ", Command port 3: " << actuator_control.actuator_values[3]
+               << ", Command port 4: " << actuator_control.actuator_values[4]
+               << ", Command port 5: " << actuator_control.actuator_values[5]
+               << ", Command port 6: " << actuator_control.actuator_values[6]
+               << ", Command port 7: " << actuator_control.actuator_values[7] << "]";
+}
+
 bool operator==(const Offboard::Attitude &lhs, const Offboard::Attitude &rhs)
 {
     return lhs.roll_deg == rhs.roll_deg && lhs.pitch_deg == rhs.pitch_deg &&
