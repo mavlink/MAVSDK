@@ -16,6 +16,14 @@ using OffboardServiceImpl = mavsdk::backend::OffboardServiceImpl<MockOffboard>;
 using OffboardResult = mavsdk::rpc::offboard::OffboardResult;
 using InputPair = std::pair<std::string, mavsdk::Offboard::Result>;
 
+static constexpr float ARBITRARY_ACTUATOR_CONTROL_0 = -0.42f;
+static constexpr float ARBITRARY_ACTUATOR_CONTROL_1 = 0.15f;
+static constexpr float ARBITRARY_ACTUATOR_CONTROL_2 = 0.56f;
+static constexpr float ARBITRARY_ACTUATOR_CONTROL_3 = -0.95f;
+static constexpr float ARBITRARY_ACTUATOR_CONTROL_4 = 0.34f;
+static constexpr float ARBITRARY_ACTUATOR_CONTROL_5 = 0.98f;
+static constexpr float ARBITRARY_ACTUATOR_CONTROL_6 = -0.15f;
+static constexpr float ARBITRARY_ACTUATOR_CONTROL_7 = 0.15f;
 static constexpr float ARBITRARY_ROLL = 25.0f;
 static constexpr float ARBITRARY_PITCH = 40.0f;
 static constexpr float ARBITRARY_YAW = 37.0f;
@@ -45,7 +53,9 @@ protected:
     std::unique_ptr<mavsdk::rpc::offboard::PositionNEDYaw> createArbitraryRPCPositionNEDYaw() const;
     std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>
     createArbitraryRPCVelocityBodyYawspeed() const;
-    std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw> createArbitraryRPCVelocityNedYaw() const;
+    std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw>
+    createArbitraryRPCVelocityNedYaw() const;
+    std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl> createArbitraryRPCActuatorControl() const;
 };
 
 TEST_P(OffboardServiceImplTest, startResultIsTranslatedCorrectly)
@@ -153,6 +163,61 @@ TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithAllNullParams)
     OffboardServiceImpl offboardService(offboard);
 
     offboardService.SetAttitudeRate(nullptr, nullptr, nullptr);
+}
+
+TEST_F(OffboardServiceImplTest, setActuatorControlDoesNotFailWithAllNullParams)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+
+    offboardService.SetActuatorControl(nullptr, nullptr, nullptr);
+}
+
+TEST_F(OffboardServiceImplTest, setActuatorControlDoesNotFailWithNullResponse)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+    mavsdk::rpc::offboard::SetActuatorControlRequest request;
+
+    auto rpc_actuator_control = createArbitraryRPCActuatorControl();
+    request.set_allocated_actuator_control(rpc_actuator_control.release());
+
+    offboardService.SetActuatorControl(nullptr, &request, nullptr);
+}
+
+TEST_F(OffboardServiceImplTest, setsActuatorControlCorrectly)
+{
+    MockOffboard offboard;
+    OffboardServiceImpl offboardService(offboard);
+    mavsdk::rpc::offboard::SetActuatorControlRequest request;
+
+    auto rpc_actuator_control = createArbitraryRPCActuatorControl();
+    const auto expected_actuator_control = OffboardServiceImpl::translateRPCActuatorControl(*rpc_actuator_control);
+    EXPECT_CALL(offboard, set_actuator_control(expected_actuator_control)).Times(1);
+
+    request.set_allocated_actuator_control(rpc_actuator_control.release());
+
+    offboardService.SetActuatorControl(nullptr, &request, nullptr);
+}
+
+std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>
+OffboardServiceImplTest::createArbitraryRPCActuatorControl() const
+{
+    auto rpc_actuator_control = std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>(
+            new mavsdk::rpc::offboard::ActuatorControl());
+
+    rpc_actuator_control.get()->set_actuator_group(mavsdk::rpc::offboard::ActuatorControl::FLIGHT_CONTROL);
+
+    rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_0);
+    rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_1);
+    rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_2);
+    rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_3);
+    rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_4);
+    rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_5);
+    rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_6);
+    rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_7);
+
+    return rpc_actuator_control;
 }
 
 TEST_F(OffboardServiceImplTest, setAttitudeDoesNotFailWithNullResponse)

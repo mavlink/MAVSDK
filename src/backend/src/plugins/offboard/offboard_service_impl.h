@@ -60,6 +60,35 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetActuatorControl(grpc::ServerContext * /* context */,
+                             const rpc::offboard::SetActuatorControlRequest *request,
+                             rpc::offboard::SetActuatorControlResponse * /* response */) override
+    {
+        if (request != nullptr) {
+            auto requested_actuator_control = translateRPCActuatorControl(request->actuator_control());
+            _offboard.set_actuator_control(requested_actuator_control);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    static mavsdk::Offboard::ActuatorControl
+    translateRPCActuatorControl(const rpc::offboard::ActuatorControl &rpc_actuator_control)
+    {
+        mavsdk::Offboard::ActuatorControl actuator_control = {};
+
+        actuator_control.actuator_group =
+            static_cast<mavsdk::Offboard::ActuatorControl::ActuatorGroup>(rpc_actuator_control.actuator_group());
+
+        int len = std::min(8, rpc_actuator_control.actuator_values_size());
+        for (int i = 0; i < len; i++) {
+            // https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.repeated_field#
+            actuator_control.actuator_values[i] = rpc_actuator_control.actuator_values(i);
+        }
+
+        return actuator_control;
+    }
+
     grpc::Status SetAttitude(grpc::ServerContext * /* context */,
                              const rpc::offboard::SetAttitudeRequest *request,
                              rpc::offboard::SetAttitudeResponse * /* response */) override

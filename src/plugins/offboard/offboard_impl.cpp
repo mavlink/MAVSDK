@@ -264,6 +264,7 @@ void OffboardImpl::set_actuator_control(Offboard::ActuatorControl actuator_contr
     }
     _mutex.unlock();
 
+    // also send it right now to reduce latency
     send_actuator_control();
 }
 
@@ -513,11 +514,7 @@ void OffboardImpl::send_attitude_rate()
 void OffboardImpl::send_actuator_control()
 {
     _mutex.lock();
-    float actuator_control[8] = {};
-
-    std::copy(_actuator_control.actuator_control.begin(),
-              _actuator_control.actuator_control.end(),
-              actuator_control);
+    const Offboard::ActuatorControl actuator_control = _actuator_control;
     _mutex.unlock();
 
     mavlink_message_t message;
@@ -526,10 +523,10 @@ void OffboardImpl::send_actuator_control()
         _parent->get_own_component_id(),
         &message,
         static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
-        0,
+        actuator_control.actuator_group,
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
-        actuator_control);
+        actuator_control.actuator_values);
     _parent->send_message(message);
 }
 

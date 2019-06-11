@@ -132,11 +132,23 @@ public:
     };
 
     /**
-     * @brief Type for actuator control commands
+     * @brief Type for actuator control commands.
+     * ActuatorValues members should be normed to -1..+1 where 0 is neutral position.
+     * Throttle for single rotation direction motors is 0..1, negative range for reverse direction.
      *
+     * In PX4 v1.9.0 Only first four Control Groups are supported
+     * (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
      */
     struct ActuatorControl {
-        std::array<float, 8> actuator_control;
+        enum ActuatorGroup {
+            FLIGHT_CONTROL = 0, /**< @brief Control Group #0 (Flight Control). */
+            FLIGHT_CONTROL_VTOL = 1, /**< @brief Control Group #1 (Flight Control VTOL/Alternate). */
+            GIMBAL = 2, /**< @brief Control Group #2 (Gimbal). */
+            MANUAL_PASSTHROUGH = 3, /**< @brief Control Group #3 (Manual Passthrough). */
+        };
+
+        ActuatorGroup actuator_group; /**< @brief Actuator group. */
+        float actuator_values[8]; /**< @brief Actuator values array. */
     };
 
     /**
@@ -244,6 +256,13 @@ private:
 };
 
 /**
+ * @brief Equal operator to compare two `Offboard::ActuatorControl` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Offboard::ActuatorControl &lhs, const Offboard::ActuatorControl &rhs);
+
+/**
  * @brief Equal operator to compare two `Offboard::Attitude` objects.
  *
  * @return `true` if items are equal.
@@ -256,6 +275,13 @@ bool operator==(const Offboard::Attitude &lhs, const Offboard::Attitude &rhs);
  * @return `true` if items are equal.
  */
 bool operator==(const Offboard::AttitudeRate &lhs, const Offboard::AttitudeRate &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Offboard::ActuatorControl`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Offboard::ActuatorControl const &actuator_control);
 
 /**
  * @brief Stream operator to print information about a `Offboard::Attitude`.

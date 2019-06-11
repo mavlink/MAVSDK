@@ -15,6 +15,7 @@ public:
     MOCK_CONST_METHOD1(set_position_ned, void(Offboard::PositionNEDYaw)){};
     MOCK_CONST_METHOD1(set_velocity_body, void(Offboard::VelocityBodyYawspeed)){};
     MOCK_CONST_METHOD1(set_velocity_ned, void(Offboard::VelocityNEDYaw)){};
+    MOCK_CONST_METHOD1(set_actuator_control, void(Offboard::ActuatorControl)){};
 };
 
 } // namespace testing
