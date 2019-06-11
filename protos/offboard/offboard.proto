@@ -10,6 +10,7 @@ service OffboardService {
     rpc Stop(StopRequest) returns(StopResponse) {}
     rpc IsActive(IsActiveRequest) returns(IsActiveResponse) {}
     rpc SetAttitude(SetAttitudeRequest) returns(SetAttitudeResponse) {}
+    rpc SetActuatorControl(SetActuatorControlRequest) returns(SetActuatorControlResponse) {}
     rpc SetAttitudeRate(SetAttitudeRateRequest) returns(SetAttitudeRateResponse) {}
     rpc SetPositionNed(SetPositionNedRequest) returns(SetPositionNedResponse) {}
     rpc SetVelocityBody(SetVelocityBodyRequest) returns(SetVelocityBodyResponse) {}
@@ -36,6 +37,11 @@ message SetAttitudeRequest {
 }
 message SetAttitudeResponse {};
 
+message SetActuatorControlRequest {
+  ActuatorControl actuator_control = 1;
+}
+message SetActuatorControlResponse {};
+
 message SetAttitudeRateRequest {
     AttitudeRate attitude_rate = 1;
 }
@@ -61,6 +67,18 @@ message Attitude {
   float pitch_deg = 2;
   float yaw_deg = 3;
   float thrust_value = 4;
+}
+
+message ActuatorControl {
+  enum ActuatorGroup {
+    FLIGHT_CONTROL = 0;
+    FLIGHT_CONTROL_VTOL = 1;
+    GIMBAL = 2;
+    MANUAL_PASSTHROUGH = 3;
+  }
+
+  ActuatorGroup actuator_group = 1;
+  repeated float actuator_values = 2 [packed=true];
 }
 
 message AttitudeRate {
