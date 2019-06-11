@@ -1,12 +1,12 @@
-![Dronecode SDK](https://github.com/dronecore/sdk_docs/raw/develop/assets/site/sdk_logo_full.jpg)
+![MAVSDK](https://github.com/mavlink/mavsdk-docs/raw/develop/assets/site/sdk_logo_full.jpg)
 
-[![travis-ci build status](https://travis-ci.org/Dronecode/DronecodeSDK.svg?branch=develop)](https://travis-ci.org/Dronecode/DronecodeSDK)
+[![travis-ci build status](https://travis-ci.org/mavlink/MAVSDK.svg?branch=develop)](https://travis-ci.org/mavlink/MAVSDK)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/1ntjvooywpxmoir8/branch/develop?svg=true)](https://ci.appveyor.com/project/Dronecode/dronecore/branch/develop)
-[![Coverage Status](https://coveralls.io/repos/github/Dronecode/DronecodeSDK/badge.svg?branch=develop)](https://coveralls.io/github/Dronecode/DronecodeSDK?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=develop)](https://coveralls.io/github/mavlink/MAVSDK?branch=develop)
 
 ## Description
 
-The [Dronecode SDK](https://www.dronecode.org/sdk/) (previously known as "DroneCore") is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [MAVLink](https://mavlink.io/en/).
+[MAVSDK](https://www.dronecode.org/sdk/) (previously known as "DronecodeSDK") is an API and library for the [PX4 flight stack](http://github.com/PX4/Firmware) using [MAVLink](https://mavlink.io/en/).
 
 It is written in C++11 and aiming to be:
 
