@@ -7,7 +7,7 @@ include(cmake/compile_proto.cmake)
 foreach(COMPONENT_NAME ${COMPONENTS_LIST})
     compile_proto_pb(${COMPONENT_NAME} PB_COMPILED_SOURCE)
     compile_proto_grpc(${COMPONENT_NAME} GRPC_COMPILED_SOURCE)
-    add_library(${COMPONENT_NAME}_proto_gens ${GRPC_COMPILED_SOURCE} ${PB_COMPILED_SOURCE})
+    add_library(${COMPONENT_NAME}_proto_gens STATIC ${GRPC_COMPILED_SOURCE} ${PB_COMPILED_SOURCE})
     target_link_libraries(${COMPONENT_NAME}_proto_gens
         gRPC::grpc++
     )
