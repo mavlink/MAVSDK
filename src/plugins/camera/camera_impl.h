@@ -37,7 +37,6 @@ public:
 
     Camera::Information get_information();
 
-    void set_video_stream_settings(const Camera::VideoStreamSettings &settings);
     Camera::Result get_video_stream_info(Camera::VideoStreamInfo &info);
     void get_video_stream_info_async(const Camera::get_video_stream_info_callback_t callback);
     void subscribe_video_stream_info(const Camera::subscribe_video_stream_info_callback_t callback);
@@ -155,9 +154,6 @@ private:
 
     MAVLinkCommands::CommandLong make_command_start_video_streaming();
     MAVLinkCommands::CommandLong make_command_stop_video_streaming();
-
-    mavlink_message_t
-    make_message_set_video_stream_settings(const Camera::VideoStreamSettings &settings);
 
     MAVLinkCommands::CommandLong make_command_request_video_stream_info();
 

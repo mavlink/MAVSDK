@@ -440,21 +440,6 @@ TEST_F(CameraServiceImplTest, sendsMultipleModes)
     checkSendsModes(modes);
 }
 
-TEST_F(CameraServiceImplTest, setVideoStreamSettingsDoesNotFailWithAllNullParams)
-{
-    _camera_service.SetVideoStreamSettings(nullptr, nullptr, nullptr);
-}
-
-TEST_F(CameraServiceImplTest, setVideoStreamSettingsDoesNotFailWithNullResponse)
-{
-    dronecode_sdk::rpc::camera::SetVideoStreamSettingsRequest request;
-
-    auto rpc_settings = createArbitraryRPCVideoStreamSettings();
-    request.set_allocated_video_stream_settings(rpc_settings.release());
-
-    _camera_service.SetVideoStreamSettings(nullptr, &request, nullptr);
-}
-
 std::unique_ptr<dronecode_sdk::rpc::camera::VideoStreamSettings>
 CameraServiceImplTest::createArbitraryRPCVideoStreamSettings() const
 {
@@ -468,18 +453,6 @@ CameraServiceImplTest::createArbitraryRPCVideoStreamSettings() const
     rpc_settings->set_uri(ARBITRARY_URI);
 
     return rpc_settings;
-}
-
-TEST_F(CameraServiceImplTest, setsVideoStreamSettingsCorrectly)
-{
-    auto rpc_video_stream_settings = createArbitraryRPCVideoStreamSettings();
-    const auto expected_video_stream_settings =
-        CameraServiceImpl::translateRPCVideoStreamSettings(*rpc_video_stream_settings);
-    EXPECT_CALL(_camera, set_video_stream_settings(expected_video_stream_settings)).Times(1);
-    dronecode_sdk::rpc::camera::SetVideoStreamSettingsRequest request;
-    request.set_allocated_video_stream_settings(rpc_video_stream_settings.release());
-
-    _camera_service.SetVideoStreamSettings(nullptr, &request, nullptr);
 }
 
 TEST_F(CameraServiceImplTest, registersToVideoStreamInfo)
@@ -570,30 +543,6 @@ void CameraServiceImplTest::checkSendsVideoStreamInfo(
     for (size_t i = 0; i < video_info_events.size(); i++) {
         EXPECT_EQ(video_info_events.at(i), received_video_info_events.at(i));
     }
-}
-
-TEST_F(CameraServiceImplTest, sendsMultipleVideoStreamInfos)
-{
-    std::vector<dronecode_sdk::Camera::VideoStreamInfo> video_info_events;
-
-    dronecode_sdk::Camera::VideoStreamSettings settings1;
-    settings1.set_highest();
-    video_info_events.push_back(createVideoStreamInfo(
-        settings1, dronecode_sdk::Camera::VideoStreamInfo::Status::NOT_RUNNING));
-
-    dronecode_sdk::Camera::VideoStreamSettings settings2;
-    video_info_events.push_back(createVideoStreamInfo(
-        settings2, dronecode_sdk::Camera::VideoStreamInfo::Status::IN_PROGRESS));
-
-    checkSendsVideoStreamInfo(video_info_events);
-}
-
-dronecode_sdk::Camera::VideoStreamInfo CameraServiceImplTest::createVideoStreamInfo(
-    const dronecode_sdk::Camera::VideoStreamSettings settings,
-    const dronecode_sdk::Camera::VideoStreamInfo::Status status) const
-{
-    dronecode_sdk::Camera::VideoStreamInfo video_stream_info{settings, status};
-    return video_stream_info;
 }
 
 TEST_F(CameraServiceImplTest, registersToCaptureInfo)
