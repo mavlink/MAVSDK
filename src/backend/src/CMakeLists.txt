@@ -6,10 +6,16 @@ include(cmake/compile_proto.cmake)
 
 foreach(COMPONENT_NAME ${COMPONENTS_LIST})
     compile_proto_pb(${COMPONENT_NAME} PB_COMPILED_SOURCE)
-    list(APPEND PB_COMPILED_SOURCES ${PB_COMPILED_SOURCE})
-
     compile_proto_grpc(${COMPONENT_NAME} GRPC_COMPILED_SOURCE)
-    list(APPEND GRPC_COMPILED_SOURCES ${GRPC_COMPILED_SOURCE})
+    add_library(${COMPONENT_NAME}_proto_gens STATIC ${GRPC_COMPILED_SOURCE} ${PB_COMPILED_SOURCE})
+    target_link_libraries(${COMPONENT_NAME}_proto_gens
+        gRPC::grpc++
+    )
+    target_include_directories(${COMPONENT_NAME}_proto_gens
+      PRIVATE
+      ${CMAKE_BINARY_DIR}/src/backend/src
+    )
+    list(APPEND COMPONENTS_PROTOGENS ${COMPONENT_NAME}_proto_gens)
 endforeach()
 
 set(BACKEND_SOURCES
@@ -17,8 +23,6 @@ set(BACKEND_SOURCES
     backend_api.cpp
     backend.cpp
     grpc_server.cpp
-    ${GRPC_COMPILED_SOURCES}
-    ${PB_COMPILED_SOURCES}
 )
 
 if(IOS)
@@ -47,6 +51,7 @@ target_link_libraries(backend
     dronecode_sdk_param
     dronecode_sdk
     gRPC::grpc++
+    ${COMPONENTS_PROTOGENS}
 )
 
 target_include_directories(backend

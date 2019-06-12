@@ -7,6 +7,7 @@ endif()
 
 function(compile_proto_pb COMPONENT_NAME PB_COMPILED_SOURCE)
     add_custom_command(OUTPUT ${COMPONENT_NAME}/${COMPONENT_NAME}.pb.cc
+        DEPENDS ${PROTO_DIR}/${COMPONENT_NAME}/${COMPONENT_NAME}.proto
         COMMAND ${PROTOC_BINARY}
             -I ${PROTO_DIR}
             --cpp_out=.
@@ -18,6 +19,7 @@ endfunction()
 
 function(compile_proto_grpc COMPONENT_NAME GRPC_COMPILED_SOURCES)
     add_custom_command(OUTPUT ${COMPONENT_NAME}/${COMPONENT_NAME}.grpc.pb.cc
+        DEPENDS ${PROTO_DIR}/${COMPONENT_NAME}/${COMPONENT_NAME}.proto
         COMMAND ${PROTOC_BINARY}
             -I ${PROTO_DIR}
             --grpc_out=.
