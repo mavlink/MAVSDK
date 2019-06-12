@@ -88,14 +88,15 @@ else()
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         )
 
-    install(TARGETS backend
-        EXPORT dronecode-sdk-targets
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        )
+    if(BUILD_SHARED_LIBS)
+        install(TARGETS backend
+            EXPORT dronecode-sdk-targets
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            )
 
-    install(FILES
-        backend_api.h
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/backend"
-        )
+        install(FILES
+            backend_api.h
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/backend"
+            )
+    endif()
 endif()
