@@ -17,7 +17,7 @@ function(compile_proto_pb COMPONENT_NAME PB_COMPILED_SOURCE)
     set(PB_COMPILED_SOURCE ${COMPONENT_NAME}/${COMPONENT_NAME}.pb.cc PARENT_SCOPE)
 endfunction()
 
-function(compile_proto_grpc COMPONENT_NAME GRPC_COMPILED_SOURCES)
+function(compile_proto_grpc COMPONENT_NAME GRPC_COMPILED_SOURCE)
     add_custom_command(OUTPUT ${COMPONENT_NAME}/${COMPONENT_NAME}.grpc.pb.cc
         DEPENDS ${PROTO_DIR}/${COMPONENT_NAME}/${COMPONENT_NAME}.proto
         COMMAND ${PROTOC_BINARY}
