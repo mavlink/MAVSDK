@@ -9,6 +9,10 @@ if(NOT @BUILD_SHARED_LIBS@)
 
     find_dependency(json11)
     find_dependency(tinyxml2)
+
+    if(@BUILD_BACKEND@)
+        find_dependency(gRPC)
+    endif()
 endif()
 
 get_filename_component(DRONECODESDK_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)

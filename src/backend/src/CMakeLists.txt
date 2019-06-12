@@ -35,6 +35,7 @@ else()
 endif()
 
 target_link_libraries(backend
+    PRIVATE
     dronecode_sdk_action
     dronecode_sdk_calibration
     dronecode_sdk_gimbal
@@ -50,10 +51,12 @@ target_link_libraries(backend
 
 target_include_directories(backend
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/core
-    ${PROJECT_SOURCE_DIR}/plugins
-    ${PROJECT_SOURCE_DIR}/backend/src/plugins
-    ${CMAKE_BINARY_DIR}/src/backend/src
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/core>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/plugins>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/backend/src/plugins>
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src/backend/src>
+    $<INSTALL_INTERFACE:include>
 )
 
 if(IOS)
@@ -75,8 +78,19 @@ else()
         dronecode_sdk
     )
 
-    target_include_directories(backend_bin
-        PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/core
-    )
+    install(TARGETS backend_bin
+        EXPORT dronecode-sdk-targets
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        )
+
+    install(TARGETS backend
+        EXPORT dronecode-sdk-targets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
+
+    install(FILES
+        backend_api.h
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/backend"
+        )
 endif()

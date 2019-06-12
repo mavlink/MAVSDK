@@ -30,6 +30,13 @@ target_include_directories(unit_tests_backend
 
 target_link_libraries(unit_tests_backend
     backend
+    dronecode_sdk_action
+    dronecode_sdk_camera
+    dronecode_sdk_info
+    dronecode_sdk_mission
+    dronecode_sdk_offboard
+    dronecode_sdk_telemetry
+    gRPC::grpc++
     gtest
     gmock
     gmock_main
