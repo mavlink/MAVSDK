@@ -149,16 +149,12 @@ script:
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-29 ./tools/create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
-    ./dockcross-manylinux1-x64 cmake -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DMANYLINUX=TRUE -Bbuild/manylinux1-x64 -H.;
-    ./dockcross-manylinux1-x64 cmake --build build/manylinux1-x64;
+    ./dockcross-manylinux1-x64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux1-x64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DMANYLINUX=TRUE -Bbuild/manylinux1-x64 -H.;
+    ./dockcross-manylinux1-x64 cmake --build build/manylinux1-x64 --target install;
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/debug -H.;
-    cmake --build build/debug;
-    ./build/debug/src/unit_tests_runner;
-    ./build/debug/src/backend/test/unit_tests_backend;
-    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/release -H.;
-    cmake --build build/release;
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/release -H.;
+    cmake --build build/release --target install;
     ./build/release/src/unit_tests_runner;
     ./build/release/src/backend/test/unit_tests_backend;
   fi
@@ -192,17 +188,49 @@ after_success:
     --exclude-pattern=".*_test.*";
   fi
 
+before_deploy:
+- if ! [ "$BEFORE_DEPLOY_RUN" ]; then
+      export BEFORE_DEPLOY_RUN=1;
+
+      if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
+          mv build/manylinux1-x64/install/bin/backend_bin build/manylinux1-x64/install/bin/mavsdk_backend_manylinux1-x64;
+      fi;
+      if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
+          mv build/release/install/bin/backend_bin build/release/install/bin/mavsdk_backend_macos;
+      fi;
+  fi
+
 deploy:
-  provider: releases
+- provider: releases
   skip_cleanup: true
   api_key:
-    secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
+      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
+  file_glob: true
+  file: "build/manylinux1-x64/install/bin/mavsdk_backend_manylinux1-x64"
+  on:
+    condition: ${BUILD_TARGET} = manylinux1-x64
+    repo: mavlink/MAVSDK
+    tags: true
+- provider: releases
+  skip_cleanup: true
+  api_key:
+      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
+  file_glob: true
+  file: "build/release/install/bin/mavsdk_backend_macos"
+  on:
+    condition: ${BUILD_TARGET} = osx_build
+    repo: mavlink/MAVSDK
+    tags: true
+- provider: releases
+  skip_cleanup: true
+  api_key:
+      secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
   file_glob: true
   file:
-  - "*.deb"
-  - "*.rpm"
+  - "tools/*.deb"
+  - "tools/*.rpm"
   on:
-    repo: Dronecode/DronecodeSDK
+    repo: mavlink/MAVSDK
     tags: true
 env:
   global:
