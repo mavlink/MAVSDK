@@ -134,19 +134,15 @@ script:
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build_ubuntu_16.04" ]]; then
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-ubuntu-16.04 ./tools/travis-docker-build.sh;
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-ubuntu-16.04 ./tools/create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build_ubuntu_18.04" ]]; then
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-ubuntu-18.04 ./tools/travis-docker-build.sh;
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-ubuntu-18.04 ./tools/create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build_fedora_28" ]]; then
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-28 ./tools/travis-docker-build.sh;
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-28 ./tools/create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "docker_build_fedora_29" ]]; then
     docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-29 ./tools/travis-docker-build.sh;
-    docker run -it --rm -v $TRAVIS_BUILD_DIR:/home/user/DronecodeSDK:rw -e LOCAL_USER_ID=`id -u` dronecode/dronecode-sdk-fedora-29 ./tools/create_packages.sh;
   fi
 - if [[ "${BUILD_TARGET}" = "manylinux1-x64" ]]; then
     ./dockcross-manylinux1-x64 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/manylinux1-x64/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DMANYLINUX=TRUE -Bbuild/manylinux1-x64 -H.;
@@ -154,21 +150,21 @@ script:
   fi
 - if [[ "${BUILD_TARGET}" = "osx_build" ]]; then
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/release -H.;
-    cmake --build build/release --target install;
+    make -Cbuild/release install -j4;
     ./build/release/src/unit_tests_runner;
     ./build/release/src/backend/test/unit_tests_backend;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_build" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/default -H.;
-    cmake --build build/default;
-    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=./tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/ios -H.;
-    cmake --build build/ios;
+    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/default -H.;
+    make -Cbuild/default -j4;
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=./tools/ios.toolchain.cmake -DPLATFORM=OS -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/ios -H.;
+    make -Cbuild/ios -j4;
   fi
 - if [[ "${BUILD_TARGET}" = "ios_simulator_build" ]]; then
     cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/default -H.;
-    cmake --build build/default;
+    make -Cbuild/default -j4;
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=./tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/ios_simulator -H.;
-    cmake --build build/ios_simulator;
+    make -Cbuild/ios_simulator -j4;
   fi
 - if [[ "${BUILD_TARGET}" = "windows" ]]; then
     cmake -G "Visual Studio 15 2017" -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/build/debug/install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -Bbuild/debug -H${TRAVIS_BUILD_DIR};
@@ -227,8 +223,8 @@ deploy:
       secure: hBX3pFWNZiDbz4yKnOjhLg3QS9Ubn1XePxSeIt2Btq5GzbomOPDCgpIFijBppliwj9oKc302EMnZSg2QWeAzFKn9UnmIflJ0E4iymYgwWdTJv+bSnYALJEmO8F6gF9FgRlPk8FCtZiECoTsa75w5TrEZKZpFpmzVYRiDu0eo6sEjW7UJPC0A2KSTXLrBCHSIZy/iasbGmuur4brG7NO0QdMOvDXvhsYfkXDRJFMTtTHvLiKJcqiunPfqARzf1H4x4iczRYscKu5Vn8Kmw3NANGkcIDvEj4ooih831EXxACRZw0VgycgNHOKRXKC9pZ4hLQMon+jxpQX+X8k/K5161oEkF/gCVKyFb31Pk/4Uwe81p1GJY2lAC7MDUxA98RKXhdvVYF2Cp44+IbF0YVoWRUtVAhknXRQ3Weg25kyVSu83q2nN2nZq2qGTnpNIbdN56s/F+uaFtipGEh+vmiv8rNUz+Z5MFrY2FQaSvBTFw9K4tNs9uc+VQd1bE7X5wh0yywEqUEw2nzqTB2xR+OubygUASbk2GLNdc254P0lrzCHbNM62Y7sRX06CM7hPlwhELEkVtUXZWJ0KuhQyLvRh3aPJ3Jj30EswTt/FGT1gzSP1FjjHBRZCK4P2D2rwJ5TMn2JrZKfPxmEd3kVmn6h80+gBbKgonGmZspd2SvPEI5g=
   file_glob: true
   file:
-  - "tools/*.deb"
-  - "tools/*.rpm"
+  - "build/release/*.deb"
+  - "build/release/*.rpm"
   on:
     repo: mavlink/MAVSDK
     tags: true
