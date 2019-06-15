@@ -17,8 +17,8 @@ add_executable(calibrate
 )
 
 target_link_libraries(calibrate
-    DronecodeSDK::dronecode_sdk_calibration
-    DronecodeSDK::dronecode_sdk
+    DronecodeSDK::mavsdk_calibration
+    DronecodeSDK::mavsdk
     ${CMAKE_THREAD_LIBS_INIT}
 )
 

@@ -1,9 +1,8 @@
 #
-# PX4 SITL testing environment for the Dronecode SDK based on Ubuntu 18.04.
-#
+# PX4 SITL testing environment for MAVSDK based on Ubuntu 18.04.
 # Author: Julian Oes <julian@oes.ch>
 #
-FROM dronecode/dronecode-sdk-ubuntu-18.04
+FROM mavlink/mavsdk-ubuntu-18.04
 MAINTAINER Julian Oes <julian@oes.ch>
 
 ENV FIRMWARE_DIR ${WORKDIR}../Firmware

@@ -17,9 +17,9 @@ add_executable(fly_mission
 )
 
 target_link_libraries(fly_mission
-    DronecodeSDK::dronecode_sdk_action
-    DronecodeSDK::dronecode_sdk_mission
-    DronecodeSDK::dronecode_sdk_telemetry
-    DronecodeSDK::dronecode_sdk
+    DronecodeSDK::mavsdk_action
+    DronecodeSDK::mavsdk_mission
+    DronecodeSDK::mavsdk_telemetry
+    DronecodeSDK::mavsdk
     ${CMAKE_THREAD_LIBS_INIT}
 )

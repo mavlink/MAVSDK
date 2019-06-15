@@ -14,7 +14,7 @@ if (ENABLE_MAVLINK_PASSTHROUGH)
     set(additional_sources
         mavlink_passthrough.cpp
         mission_transfer_lossy.cpp)
-    set(additional_libs "dronecode_sdk_mavlink_passthrough")
+    set(additional_libs "mavsdk_mavlink_passthrough")
 endif()
 
 # This includes all GTests that run integration tests
@@ -72,20 +72,20 @@ set_target_properties(integration_tests_runner
 )
 
 target_link_libraries(integration_tests_runner
-    dronecode_sdk
-    dronecode_sdk_telemetry
-    dronecode_sdk_action
-    dronecode_sdk_mission
-    dronecode_sdk_mission_raw
-    dronecode_sdk_offboard
-    dronecode_sdk_log_files
-    dronecode_sdk_info
-    dronecode_sdk_gimbal
-    dronecode_sdk_follow_me
-    dronecode_sdk_camera
-    dronecode_sdk_calibration
-    dronecode_sdk_geofence
-    dronecode_sdk_param
+    mavsdk
+    mavsdk_telemetry
+    mavsdk_action
+    mavsdk_mission
+    mavsdk_mission_raw
+    mavsdk_offboard
+    mavsdk_log_files
+    mavsdk_info
+    mavsdk_gimbal
+    mavsdk_follow_me
+    mavsdk_camera
+    mavsdk_calibration
+    mavsdk_geofence
+    mavsdk_param
     ${additional_libs}
     gtest
     gtest_main

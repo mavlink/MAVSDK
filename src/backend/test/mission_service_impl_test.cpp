@@ -13,7 +13,7 @@
 
 namespace {
 
-namespace dc = dronecode_sdk;
+namespace dc = mavsdk;
 namespace rpc = mavsdk::rpc::mission;
 
 using testing::_;
@@ -156,7 +156,7 @@ class MissionServiceImplUploadTest : public MissionServiceImplTestBase {
 protected:
     /**
      * Uploads the mission and saves the result callback together with the actual list of items
-     * that are sent to dronecode_sdk. The result callback is saved in _result_callback, and the
+     * that are sent to mavsdk. The result callback is saved in _result_callback, and the
      * mission items are saved in _uploaded_mission.
      */
     std::future<void> uploadMissionAndSaveParams(std::shared_ptr<UploadMissionRequest> request,
@@ -173,7 +173,7 @@ protected:
     void
     checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
 
-    /* Captures the actual mission sent to dronecode_sdk by the backend. */
+    /* Captures the actual mission sent to mavsdk by the backend. */
     std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission{};
 };
 

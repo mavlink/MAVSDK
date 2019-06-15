@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 
 #include "connection_initiator.h"
-#include "mocks/dronecode_sdk_mock.h"
+#include "mocks/mavsdk_mock.h"
 
 namespace {
 

@@ -27,8 +27,8 @@ API consumers use `MAVSDK` class to discover and manage vehicles (`System` objec
 
 The links below take you to the respective header files:
 
-- [dronecode_sdk](core/include/dronecode_sdk/dronecode_sdk.h): set up connection, discover devices
-- [system](core/include/dronecode_sdk/system.h): an class representing one drone which can consist of multiple components
+- [mavsdk](core/include/mavsdk/mavsdk.h): set up connection, discover devices
+- [system](core/include/mavsdk/system.h): an class representing one drone which can consist of multiple components
 - [info](plugins/info/include/plugins/info/info.h): general info about a device
 - [telemetry](plugins/telemetry/include/plugins/telemetry/telemetry.h): to receive telemetry data
 - [action](plugins/action/include/plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone

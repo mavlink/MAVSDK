@@ -5,9 +5,9 @@
 
 #include <chrono>
 #include <cstdint>
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <iostream>
 #include <thread>
 

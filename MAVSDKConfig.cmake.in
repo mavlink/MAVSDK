@@ -15,5 +15,5 @@ if(NOT @BUILD_SHARED_LIBS@)
     endif()
 endif()
 
-get_filename_component(DRONECODESDK_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-include("${DRONECODESDK_CMAKE_DIR}/DronecodeSDKTargets.cmake")
+get_filename_component(MAVSDK_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include("${MAVSDK_CMAKE_DIR}/MAVSDKTargets.cmake")

@@ -1,4 +1,4 @@
-add_library(dronecode_sdk_example SHARED
+add_library(mavsdk_example SHARED
     example.cpp
     example_impl.cpp
 )
@@ -8,15 +8,15 @@ include_directories(
     SYSTEM ${PROJECT_SOURCE_DIR}/third_party/mavlink/include
 )
 
-target_link_libraries(dronecode_sdk_example
-    dronecode_sdk
+target_link_libraries(mavsdk_example
+    mavsdk
 )
 
 install(FILES
     example.h
-    DESTINATION ${dronecode_sdk_install_include_dir}
+    DESTINATION ${mavsdk_install_include_dir}
 )
 
-install(TARGETS dronecode_sdk_example
-    DESTINATION ${dronecode_sdk_install_lib_dir}
+install(TARGETS mavsdk_example
+    DESTINATION ${mavsdk_install_lib_dir}
 )

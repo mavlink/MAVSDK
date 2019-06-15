@@ -2,6 +2,6 @@
 
 namespace mavsdk {
 
-constexpr auto dronecode_sdk_version = "@VERSION_STR@";
+constexpr auto mavsdk_version = "@VERSION_STR@";
 
 } // namespace mavsdk

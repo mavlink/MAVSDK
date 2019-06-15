@@ -3,9 +3,9 @@
 //
 // Author: Julian Oes <julian@oes.ch>
 
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <chrono>
 #include <cstdint>
 #include <iostream>

@@ -17,7 +17,7 @@ add_executable(battery
 )
 
 target_link_libraries(battery
-    DronecodeSDK::dronecode_sdk_telemetry
-    DronecodeSDK::dronecode_sdk_mavlink_passthrough
-    DronecodeSDK::dronecode_sdk
+    DronecodeSDK::mavsdk_telemetry
+    DronecodeSDK::mavsdk_mavlink_passthrough
+    DronecodeSDK::mavsdk
 )

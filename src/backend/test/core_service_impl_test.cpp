@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "core/core_service_impl.h"
-#include "core/mocks/dronecode_sdk_mock.h"
+#include "core/mocks/mavsdk_mock.h"
 
 namespace {
 

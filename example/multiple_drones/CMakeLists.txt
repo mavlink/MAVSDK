@@ -17,8 +17,8 @@ add_executable(multiple_drones
 )
 
 target_link_libraries(multiple_drones
-    DronecodeSDK::dronecode_sdk_telemetry
-    DronecodeSDK::dronecode_sdk_action
-    DronecodeSDK::dronecode_sdk
+    DronecodeSDK::mavsdk_telemetry
+    DronecodeSDK::mavsdk_action
+    DronecodeSDK::mavsdk
     ${CMAKE_THREAD_LIBS_INIT}
 )

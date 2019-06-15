@@ -3,9 +3,9 @@
 #include <iostream>
 #include <thread>
 #include <cmath>
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 
 using std::this_thread::sleep_for;
 using std::chrono::seconds;

@@ -15,7 +15,7 @@ add_executable(transition_vtol_fixed_wing
 )
 
 target_link_libraries(transition_vtol_fixed_wing
-    DronecodeSDK::dronecode_sdk_action
-    DronecodeSDK::dronecode_sdk_telemetry
-    DronecodeSDK::dronecode_sdk
+    DronecodeSDK::mavsdk_action
+    DronecodeSDK::mavsdk_telemetry
+    DronecodeSDK::mavsdk
 )

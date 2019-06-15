@@ -39,7 +39,7 @@ make -C${BUILD_DIR} install -j4;
 return_result=0
 # Doxygen likes to run where the source is (because INPUT in .doxygen is empty),
 # so we cd there.
-pushd ${INSTALL_DIR}/include/dronecode_sdk
+pushd ${INSTALL_DIR}/include/mavsdk
 
 # If any warnings are thrown, we should not flag this as a success.
 doxygen_output_file=".doxygen_output.tmp"

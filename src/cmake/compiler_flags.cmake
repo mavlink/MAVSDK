@@ -7,8 +7,8 @@ if(MSVC)
     set(warnings "-WX -W2")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-    # We need this so Windows links to e.g. dronecode_sdk_telemetry.dll.
-    # Without this option it will look for dronecode_sdk_telemetry.lib and fail.
+    # We need this so Windows links to e.g. mavsdk_telemetry.dll.
+    # Without this option it will look for mavsdk_telemetry.lib and fail.
     option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)
 
     if(NOT BUILD_SHARED_LIBS)
