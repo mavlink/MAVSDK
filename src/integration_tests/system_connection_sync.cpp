@@ -3,7 +3,7 @@
 #include "global_include.h"
 #include "mavsdk.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST(SitlTestMultiple, SystemConnectionMultiple)
 {

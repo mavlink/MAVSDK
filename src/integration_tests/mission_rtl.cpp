@@ -11,7 +11,7 @@
 #include "plugins/action/action.h"
 #include "plugins/mission/mission.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 
 // TODO: add checks that verify the return altitude

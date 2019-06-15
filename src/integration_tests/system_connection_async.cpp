@@ -3,7 +3,7 @@
 #include "global_include.h"
 #include "mavsdk.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::placeholders; // for _1
 
 // For now we don't test the timing out because the starting and stopping of

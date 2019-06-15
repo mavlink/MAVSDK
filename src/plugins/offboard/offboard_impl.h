@@ -7,7 +7,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class OffboardImpl : public PluginImplBase {
 public:
@@ -72,4 +72,4 @@ private:
     const float SEND_INTERVAL_S = 0.05f;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

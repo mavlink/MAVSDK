@@ -6,7 +6,7 @@
 
 #include <future>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST_F(SitlTest, ActionHoverAsync)
 {

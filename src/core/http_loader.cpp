@@ -1,7 +1,7 @@
 #include "http_loader.h"
 #include "curl_wrapper.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 #ifdef TESTING
 HttpLoader::HttpLoader(const std::shared_ptr<ICurlWrapper> &curl_wrapper) :
@@ -118,4 +118,4 @@ bool HttpLoader::download_text_sync(const std::string &url, std::string &content
     return success;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

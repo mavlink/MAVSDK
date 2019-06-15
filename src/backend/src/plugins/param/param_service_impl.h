@@ -1,7 +1,7 @@
 #include "param/param.grpc.pb.h"
 #include "plugins/param/param.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename Param = Param>
@@ -110,4 +110,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

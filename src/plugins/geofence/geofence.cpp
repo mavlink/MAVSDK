@@ -2,7 +2,7 @@
 #include "geofence_impl.h"
 #include <vector>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 Geofence::Geofence(System &system) : PluginBase(), _impl{new GeofenceImpl(system)} {}
 
@@ -42,4 +42,4 @@ const char *Geofence::result_str(Result result)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

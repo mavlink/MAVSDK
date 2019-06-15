@@ -12,7 +12,7 @@
 #undef ERROR
 #endif
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class CameraImpl;
 class System;
@@ -744,4 +744,4 @@ bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions 
  */
 std::ostream &operator<<(std::ostream &str, Camera::SettingOptions const &setting_options);
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

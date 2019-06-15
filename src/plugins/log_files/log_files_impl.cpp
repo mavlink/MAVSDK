@@ -5,7 +5,7 @@
 #include <ctime>
 #include <cstring>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 LogFilesImpl::LogFilesImpl(System &system) : PluginImplBase(system)
 {
@@ -412,4 +412,4 @@ void LogFilesImpl::write_log_data_to_disk()
     out_file.close();
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

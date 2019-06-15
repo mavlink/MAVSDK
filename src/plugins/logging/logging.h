@@ -5,7 +5,7 @@
 
 #include <dronecode_sdk/plugin_base.h>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class LoggingImpl;
 class System;
@@ -112,4 +112,4 @@ private:
     std::unique_ptr<LoggingImpl> _impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

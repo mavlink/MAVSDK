@@ -6,7 +6,7 @@
 #include <sstream> // for `std::stringstream`
 #include <cmath>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
@@ -1489,4 +1489,4 @@ Mission::Result MissionImpl::import_mission_items(Mission::mission_items_t &all_
     return result;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

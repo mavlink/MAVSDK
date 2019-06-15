@@ -3,7 +3,7 @@
 #include "plugins/camera/camera.h"
 #include "camera/camera.grpc.pb.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename Camera = Camera>
@@ -706,4 +706,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

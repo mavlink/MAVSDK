@@ -5,7 +5,7 @@
 #include "mavlink_include.h"
 #include "mission_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 Mission::Mission(System &system) : PluginBase(), _impl{new MissionImpl(system)} {}
 
@@ -116,4 +116,4 @@ Mission::Result Mission::import_qgroundcontrol_mission(Mission::mission_items_t 
     return MissionImpl::import_qgroundcontrol_mission(mission_items, qgc_plan_file);
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

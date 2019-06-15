@@ -5,7 +5,7 @@
 #include <atomic>
 #include "plugins/camera/camera.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST(CameraTest, Format)
 {

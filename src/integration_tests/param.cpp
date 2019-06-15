@@ -3,7 +3,7 @@
 #include "mavsdk.h"
 #include "plugins/param/param.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST_F(SitlTest, ParamSad)
 {

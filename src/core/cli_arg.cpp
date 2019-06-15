@@ -5,7 +5,7 @@
 #include <cctype>
 #include <climits>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 void CliArg::reset()
 {
@@ -158,4 +158,4 @@ bool CliArg::find_baudrate(std::string &rest)
     return true;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

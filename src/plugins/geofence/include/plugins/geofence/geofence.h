@@ -6,7 +6,7 @@
 
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class GeofenceImpl;
 class System;
@@ -120,4 +120,4 @@ private:
     std::unique_ptr<GeofenceImpl> _impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -8,7 +8,7 @@
 #include "system.h"
 #include "timeout_handler.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class FollowMeImpl : public PluginImplBase {
 public:
@@ -92,4 +92,4 @@ private:
     std::string debug_str = "FollowMe: ";
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

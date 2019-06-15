@@ -7,7 +7,7 @@
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/geofence/geofence.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 
 static void receive_send_geofence_result(Geofence::Result result);

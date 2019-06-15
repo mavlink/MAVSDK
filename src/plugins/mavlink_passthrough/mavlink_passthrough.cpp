@@ -1,7 +1,7 @@
 #include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 #include "mavlink_passthrough_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 MavlinkPassthrough::MavlinkPassthrough(System &system) :
     PluginBase(),
@@ -66,4 +66,4 @@ void MavlinkPassthrough::intercept_outgoing_messages_async(
     _impl->intercept_outgoing_messages_async(callback);
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

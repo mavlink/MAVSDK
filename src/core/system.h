@@ -3,7 +3,7 @@
 #include <memory>
 #include <functional>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 /**
  * @brief Component Types
@@ -119,4 +119,4 @@ private:
     std::shared_ptr<SystemImpl> _system_impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

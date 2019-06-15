@@ -2,7 +2,7 @@
 
 #include "plugins/info/info.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace testing {
 
 class MockInfo {
@@ -11,4 +11,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecode_sdk
+} // namespace mavsdk

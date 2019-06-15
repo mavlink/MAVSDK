@@ -2,7 +2,7 @@
 #include "math_conversions.h"
 #include <cmath>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 // TODO: this needs to be unit tested.
 
@@ -37,4 +37,4 @@ Telemetry::Quaternion to_quaternion_from_euler_angle(Telemetry::EulerAngle euler
     return quaternion;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

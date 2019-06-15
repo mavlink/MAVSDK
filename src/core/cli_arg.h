@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class CliArg {
 public:
@@ -31,4 +31,4 @@ private:
     int _baudrate{0};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

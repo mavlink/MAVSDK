@@ -4,7 +4,7 @@
 #include <mutex>
 #include <memory>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 template<class T> class LockedQueue {
 public:
@@ -65,4 +65,4 @@ private:
     std::mutex _mutex{};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

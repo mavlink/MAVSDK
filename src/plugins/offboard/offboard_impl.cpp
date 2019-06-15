@@ -3,7 +3,7 @@
 #include "mavsdk_impl.h"
 #include "px4_custom_mode.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 OffboardImpl::OffboardImpl(System &system) : PluginImplBase(system)
 {
@@ -540,4 +540,4 @@ Offboard::Result OffboardImpl::offboard_result_from_command_result(MAVLinkComman
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

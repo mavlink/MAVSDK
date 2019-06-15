@@ -3,7 +3,7 @@
 #include "log.h"
 #include <cmath>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 GeofenceImpl::GeofenceImpl(System &system) :
     PluginImplBase(system),
@@ -240,4 +240,4 @@ void GeofenceImpl::report_geofence_result(const Geofence::result_callback_t &cal
     callback(result);
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -2,7 +2,7 @@
 #include "log.h"
 #include "camera_definition.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 CameraDefinition::CameraDefinition() {}
 
@@ -651,4 +651,4 @@ bool CameraDefinition::get_option_str(const std::string &setting_name,
     return false;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

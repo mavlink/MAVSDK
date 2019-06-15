@@ -3,7 +3,7 @@
 #include <future>
 #include <memory>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 // TODO: Currently the mavlink command handling is made in a way to only
 //       process one command at any time. Therefore, the work state is global
@@ -278,4 +278,4 @@ void MAVLinkCommands::call_callback(const command_result_callback_t &callback,
     _parent.call_user_callback([callback, result, progress]() { callback(result, progress); });
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

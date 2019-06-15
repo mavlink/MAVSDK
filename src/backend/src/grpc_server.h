@@ -23,7 +23,7 @@
 #include "plugins/offboard/offboard.h"
 #include "offboard/offboard_service_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 class GRPCServer {
@@ -83,4 +83,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

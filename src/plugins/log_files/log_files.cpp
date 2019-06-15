@@ -1,7 +1,7 @@
 #include "plugins/log_files/log_files.h"
 #include "log_files_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 LogFiles::LogFiles(System &system) : PluginBase(), _impl{new LogFilesImpl(system)} {}
 
@@ -44,4 +44,4 @@ const char *LogFiles::result_str(Result result)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -1,7 +1,7 @@
 #include "plugins/offboard/offboard.h"
 #include "offboard_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 Offboard::Offboard(System &system) : PluginBase(), _impl{new OffboardImpl(system)} {}
 
@@ -149,4 +149,4 @@ std::ostream &operator<<(std::ostream &str, Offboard::VelocityNEDYaw const &velo
                << ", yaw_deg: " << velocity_ned_yaw.yaw_deg << "]";
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

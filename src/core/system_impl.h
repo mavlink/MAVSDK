@@ -21,7 +21,7 @@
 // TODO: Figure out what to do with systems without UUID.
 //#define ENABLE_FALLBACK_TO_SYSTEM_ID
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class DronecodeSDKImpl;
 class PluginImplBase;
@@ -320,4 +320,4 @@ private:
     std::function<bool(mavlink_message_t &)> _outgoing_messages_intercept_callback{nullptr};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -7,7 +7,7 @@
 #include "mavlink_include.h"
 #include "plugins/mission/mission.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static const std::string QGC_SAMPLE_PLAN = "src/plugins/mission/qgroundcontrol_sample.plan";
 

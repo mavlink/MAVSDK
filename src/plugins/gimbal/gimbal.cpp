@@ -1,7 +1,7 @@
 #include "plugins/gimbal/gimbal.h"
 #include "gimbal_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 Gimbal::Gimbal(System &system) : PluginBase(), _impl{new GimbalImpl(system)} {}
 
@@ -45,4 +45,4 @@ const char *Gimbal::result_str(Result result)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

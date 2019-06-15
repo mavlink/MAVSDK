@@ -4,7 +4,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class GimbalImpl : public PluginImplBase {
 public:
@@ -40,4 +40,4 @@ private:
                                        const Gimbal::result_callback_t &callback);
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

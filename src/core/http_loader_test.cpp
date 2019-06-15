@@ -8,7 +8,7 @@
 #include <numeric>
 #include <gtest/gtest.h>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 class HttpLoaderTest : public testing::Test {
 protected:

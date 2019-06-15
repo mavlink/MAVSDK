@@ -1,6 +1,6 @@
 #include "mavlink_channels.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 MAVLinkChannels::MAVLinkChannels() : _channels_used{}, _channels_used_mutex() {}
 
@@ -31,4 +31,4 @@ void MAVLinkChannels::checkin_used_channel(uint8_t used_channel)
     _channels_used[used_channel] = false;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

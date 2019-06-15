@@ -1,7 +1,7 @@
 #include "offboard/offboard.grpc.pb.h"
 #include "plugins/offboard/offboard.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename Offboard = Offboard>
@@ -193,4 +193,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

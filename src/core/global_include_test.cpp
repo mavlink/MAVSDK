@@ -8,7 +8,7 @@
 #define Time FakeTime
 #endif
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST(GlobalInclude, SteadyTimeIncreasing)
 {

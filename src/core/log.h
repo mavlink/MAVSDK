@@ -22,7 +22,7 @@
 #define LogWarn() LogWarnDetailed(__FILENAME__, __LINE__)
 #define LogErr() LogErrDetailed(__FILENAME__, __LINE__)
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 enum class Color { RED, GREEN, YELLOW, BLUE, GRAY, RESET };
 
@@ -156,4 +156,4 @@ public:
     }
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

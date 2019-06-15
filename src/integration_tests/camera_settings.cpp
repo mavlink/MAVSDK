@@ -7,7 +7,7 @@
 #include "integration_test_helper.h"
 #include "camera_test_helpers.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 
 // To run specific tests for Yuneec cameras.

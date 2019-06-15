@@ -3,7 +3,7 @@
 #include "calibration/calibration.grpc.pb.h"
 #include "plugins/calibration/calibration.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename Calibration = Calibration>
@@ -183,4 +183,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

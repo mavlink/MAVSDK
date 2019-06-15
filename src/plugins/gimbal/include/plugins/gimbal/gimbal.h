@@ -5,7 +5,7 @@
 
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class GimbalImpl;
 class System;
@@ -134,4 +134,4 @@ private:
     std::unique_ptr<GimbalImpl> _impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

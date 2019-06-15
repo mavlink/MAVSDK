@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 #include "mavsdk.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 int main(int argc, char *argv[])
 {

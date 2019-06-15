@@ -12,7 +12,7 @@
 #include "cli_arg.h"
 #include "version.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 DronecodeSDKImpl::DronecodeSDKImpl() :
     _connections_mutex(),
@@ -394,4 +394,4 @@ void DronecodeSDKImpl::register_on_timeout(const DronecodeSDK::event_callback_t 
     _on_timeout_callback = callback;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

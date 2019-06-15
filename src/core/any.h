@@ -6,7 +6,7 @@
 #include <cassert>
 #include "log.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 // Any class taken from:
 // https://codereview.stackexchange.com/questions/20058/c11-any-class
@@ -116,4 +116,4 @@ private:
     Base *ptr;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

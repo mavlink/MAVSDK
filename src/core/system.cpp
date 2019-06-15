@@ -11,7 +11,7 @@
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
@@ -57,4 +57,4 @@ void System::register_component_discovered_callback(discover_callback_t callback
     return _system_impl->register_component_discovered_callback(callback);
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

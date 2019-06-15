@@ -7,7 +7,7 @@
 #include "plugins/mission/mission.h"
 #include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
 static std::vector<std::shared_ptr<MissionItem>> create_mission_items();

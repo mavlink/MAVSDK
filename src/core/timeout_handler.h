@@ -6,7 +6,7 @@
 #include <map>
 #include "global_include.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class TimeoutHandler {
 public:
@@ -39,4 +39,4 @@ private:
     Time &_time;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

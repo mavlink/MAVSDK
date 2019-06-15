@@ -8,7 +8,7 @@
 #include <mutex>
 #include <string>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class CameraDefinition {
 public:
@@ -94,4 +94,4 @@ private:
     std::string _vendor{};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

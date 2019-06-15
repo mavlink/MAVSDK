@@ -2,7 +2,7 @@
 #include "cli_arg.h"
 #include <gtest/gtest.h>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST(CliArg, UDPConnections)
 {

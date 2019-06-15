@@ -2,7 +2,7 @@
 
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class System;
 class ExampleImpl;
@@ -23,4 +23,4 @@ private:
     ExampleImpl *_impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

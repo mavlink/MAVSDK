@@ -6,7 +6,7 @@
 #include <map>
 #include "global_include.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class CallEveryHandler {
 public:
@@ -40,4 +40,4 @@ private:
     Time &_time;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -6,7 +6,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class CameraImpl : public PluginImplBase {
 public:
@@ -222,4 +222,4 @@ private:
     } _subscribe_possible_setting_options{};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

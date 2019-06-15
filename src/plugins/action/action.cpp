@@ -1,7 +1,7 @@
 #include "action_impl.h"
 #include "plugins/action/action.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 Action::Action(System &system) : PluginBase(), _impl{new ActionImpl(system)} {}
 
@@ -161,4 +161,4 @@ const char *Action::result_str(Action::Result result)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

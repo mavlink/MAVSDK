@@ -6,7 +6,7 @@
 #include "system.h"
 #include "camera_test_helpers.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST(CameraTest, SetModeSync)
 {

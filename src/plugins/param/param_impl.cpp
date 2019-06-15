@@ -3,7 +3,7 @@
 #include "system.h"
 #include "global_include.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 ParamImpl::ParamImpl(System &system) : PluginImplBase(system)
 {
@@ -66,4 +66,4 @@ Param::Result ParamImpl::result_from_mavlink_parameters_result(MAVLinkParameters
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

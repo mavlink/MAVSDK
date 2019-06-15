@@ -5,7 +5,7 @@
 
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class System;
 class ActionImpl;
@@ -341,4 +341,4 @@ private:
     std::unique_ptr<ActionImpl> _impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

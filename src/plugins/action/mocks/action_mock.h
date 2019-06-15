@@ -2,7 +2,7 @@
 
 #include "plugins/action/action.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace testing {
 
 class MockAction {
@@ -25,4 +25,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecode_sdk
+} // namespace mavsdk

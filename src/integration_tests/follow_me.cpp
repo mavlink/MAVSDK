@@ -10,7 +10,7 @@
 #include "plugins/action/action.h"
 #include "plugins/follow_me/follow_me.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::chrono;
 using namespace std::this_thread;
 using namespace std::placeholders;

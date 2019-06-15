@@ -5,7 +5,7 @@
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static void takeoff_and_hover_at_altitude(float altitude_m);
 

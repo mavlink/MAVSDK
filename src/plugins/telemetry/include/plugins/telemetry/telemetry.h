@@ -6,7 +6,7 @@
 
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class TelemetryImpl;
 class System;
@@ -900,4 +900,4 @@ std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status
  */
 std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_text);
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -4,7 +4,7 @@
 #include "plugins/example/example.h"
 #include "integration_test_helper.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST_F(SitlTest, ExampleHello)
 {

@@ -13,7 +13,7 @@
 #undef SOCKET_ERROR
 #endif
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class TcpConnection : public Connection {
 public:
@@ -47,4 +47,4 @@ private:
     std::atomic_bool _is_ok{false};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk
