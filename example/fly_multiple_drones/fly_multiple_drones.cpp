@@ -25,7 +25,7 @@ Author: Shusil Shapkota (Air Matrix)
 #include <ctime>
 #include <fstream>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::this_thread;
 using namespace std::chrono;
 
