@@ -3,7 +3,7 @@
 #include <functional>
 #include <memory>
 
-#include <dronecode_sdk/plugin_base.h>
+#include <mavsdk/plugin_base.h>
 
 namespace mavsdk {
 

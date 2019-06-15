@@ -20,8 +20,8 @@ add_executable(offboard
 )
 
 target_link_libraries(offboard
-    DronecodeSDK::dronecode_sdk_action
-    DronecodeSDK::dronecode_sdk_offboard
-    DronecodeSDK::dronecode_sdk_telemetry
-    DronecodeSDK::dronecode_sdk
+    DronecodeSDK::mavsdk_action
+    DronecodeSDK::mavsdk_offboard
+    DronecodeSDK::mavsdk_telemetry
+    DronecodeSDK::mavsdk
 )

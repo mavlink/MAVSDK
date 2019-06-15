@@ -5,9 +5,9 @@
 // Author: Julian Oes <julian@oes.ch>
 // Author: Shayaan Haider (via Slack)
 
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <cstdint>
 #include <iostream>
 #include <thread>

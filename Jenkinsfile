@@ -10,7 +10,7 @@ pipeline {
         stage('Ubuntu 16.04 Debug') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-03-25'
+              image 'mavlink/mavsdk-ubuntu-16.04:2019-03-25'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -40,7 +40,7 @@ pipeline {
         stage('Ubuntu 16.04 Release') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-03-25'
+              image 'mavlink/mavsdk-ubuntu-16.04:2019-03-25'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -70,7 +70,7 @@ pipeline {
         stage('Ubuntu 18.04 Debug') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-18.04:2019-03-25'
+              image 'mavlink/mavsdk-ubuntu-18.04:2019-03-25'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -100,7 +100,7 @@ pipeline {
         stage('Ubuntu 18.04 Release') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-18.04:2019-03-25'
+              image 'mavlink/mavsdk-ubuntu-18.04:2019-03-25'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -130,7 +130,7 @@ pipeline {
         stage('Ubuntu 18.04 Debug PX4 SITL') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-18.04-px4-sitl:2019-05-15'
+              image 'mavlink/mavsdk-ubuntu-18.04-px4-sitl:2019-05-15'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -158,7 +158,7 @@ pipeline {
         stage('Fedora 27 Debug') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-fedora-28:2019-03-25'
+              image 'mavlink/mavsdk-fedora-28:2019-03-25'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -188,7 +188,7 @@ pipeline {
         stage('Fedora 27 Release') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-fedora-28:2019-03-25'
+              image 'mavlink/mavsdk-fedora-28:2019-03-25'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -218,7 +218,7 @@ pipeline {
         stage('Fedora 28 Debug') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-fedora-29:2019-03-25'
+              image 'mavlink/mavsdk-fedora-29:2019-03-25'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -248,7 +248,7 @@ pipeline {
         stage('Fedora 28 Release') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-fedora-29:2019-03-25'
+              image 'mavlink/mavsdk-fedora-29:2019-03-25'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -344,7 +344,7 @@ pipeline {
         stage('check style') {
           agent {
             docker {
-              image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-03-25'
+              image 'mavlink/mavsdk-ubuntu-16.04:2019-03-25'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -368,7 +368,7 @@ pipeline {
     stage('Generate Docs') {
       agent {
         docker {
-          image 'dronecode/dronecode-sdk-ubuntu-16.04:2019-03-25'
+          image 'mavlink/mavsdk-ubuntu-16.04:2019-03-25'
           args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
         }
       }

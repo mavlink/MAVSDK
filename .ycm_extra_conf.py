@@ -63,7 +63,7 @@ flags = [
 '-I',
 'core',
 '-I',
-'core/include/dronecode_sdk',
+'core/include/mavsdk',
 '-I',
 'plugins/action/include',
 '-I',

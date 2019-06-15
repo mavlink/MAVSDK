@@ -12,10 +12,10 @@ set_target_properties(unit_tests_runner
 )
 
 target_link_libraries(unit_tests_runner
-    dronecode_sdk
-    dronecode_sdk_mission
-    dronecode_sdk_camera
-    dronecode_sdk_calibration
+    mavsdk
+    mavsdk_mission
+    mavsdk_camera
+    mavsdk_calibration
     CURL::libcurl
     tinyxml2::tinyxml2
     gtest

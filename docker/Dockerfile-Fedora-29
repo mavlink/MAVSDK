@@ -1,5 +1,5 @@
 #
-# Development environment for the Dronecode SDK based on Fedora 29.
+# Development environment for the MAVSDK based on Fedora 29.
 #
 # Author: Julian Oes <julian@oes.ch>
 #
@@ -51,4 +51,4 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-WORKDIR "/home/user/DronecodeSDK"
+WORKDIR "/home/user/MAVSDK"

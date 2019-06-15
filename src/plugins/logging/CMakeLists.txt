@@ -1,18 +1,18 @@
-add_library(dronecode_sdk_logging
+add_library(mavsdk_logging
     logging.cpp
     logging_impl.cpp
 )
 
-target_link_libraries(dronecode_sdk_logging
-    dronecode_sdk
+target_link_libraries(mavsdk_logging
+    mavsdk
 )
 
-set_target_properties(dronecode_sdk_logging
+set_target_properties(mavsdk_logging
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-install(TARGETS dronecode_sdk_logging
-    EXPORT dronecode-sdk-targets
+install(TARGETS mavsdk_logging
+    EXPORT mavsdk-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )

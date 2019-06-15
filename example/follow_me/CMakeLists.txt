@@ -18,9 +18,9 @@ add_executable(follow_me
 )
 
 target_link_libraries(follow_me
-    DronecodeSDK::dronecode_sdk_action
-    DronecodeSDK::dronecode_sdk_follow_me
-    DronecodeSDK::dronecode_sdk_telemetry
-    DronecodeSDK::dronecode_sdk
+    DronecodeSDK::mavsdk_action
+    DronecodeSDK::mavsdk_follow_me
+    DronecodeSDK::mavsdk_telemetry
+    DronecodeSDK::mavsdk
     ${CMAKE_THREAD_LIBS_INIT}
 )

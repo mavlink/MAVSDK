@@ -40,16 +40,16 @@ endif()
 
 target_link_libraries(backend
     PRIVATE
-    dronecode_sdk_action
-    dronecode_sdk_calibration
-    dronecode_sdk_gimbal
-    dronecode_sdk_camera
-    dronecode_sdk_mission
-    dronecode_sdk_offboard
-    dronecode_sdk_telemetry
-    dronecode_sdk_info
-    dronecode_sdk_param
-    dronecode_sdk
+    mavsdk_action
+    mavsdk_calibration
+    mavsdk_gimbal
+    mavsdk_camera
+    mavsdk_mission
+    mavsdk_offboard
+    mavsdk_telemetry
+    mavsdk_info
+    mavsdk_param
+    mavsdk
     gRPC::grpc++
     ${COMPONENTS_PROTOGENS}
 )
@@ -80,23 +80,23 @@ else()
 
     target_link_libraries(backend_bin
         backend
-        dronecode_sdk
+        mavsdk
     )
 
     install(TARGETS backend_bin
-        EXPORT dronecode-sdk-targets
+        EXPORT mavsdk-targets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         )
 
     if(BUILD_SHARED_LIBS)
         install(TARGETS backend
-            EXPORT dronecode-sdk-targets
+            EXPORT mavsdk-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             )
 
         install(FILES
             backend_api.h
-            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk/backend"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/backend"
             )
     endif()
 endif()

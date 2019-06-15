@@ -10,11 +10,11 @@
  * @date 2019-05-09
  */
 
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/mission/mission.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
-#include <dronecode_sdk/plugins/geofence/geofence.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/mission/mission.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/plugins/geofence/geofence.h>
 
 #include <functional>
 #include <future>

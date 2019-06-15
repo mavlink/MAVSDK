@@ -6,7 +6,7 @@ include_directories(
 
 configure_file(version.h.in version.h)
 
-add_library(dronecode_sdk
+add_library(mavsdk
     call_every_handler.cpp
     connection.cpp
     curl_wrapper.cpp
@@ -30,7 +30,7 @@ add_library(dronecode_sdk
     thread_pool.cpp
 )
 
-target_link_libraries(dronecode_sdk
+target_link_libraries(mavsdk
     PRIVATE
     tinyxml2::tinyxml2
     CURL::libcurl
@@ -38,7 +38,7 @@ target_link_libraries(dronecode_sdk
 )
 
 if (IOS)
-    target_link_libraries(dronecode_sdk
+    target_link_libraries(mavsdk
         PUBLIC
         "-framework Foundation"
         "-framework Security"
@@ -47,30 +47,30 @@ endif()
 
 # Link to Windows networking lib.
 if (MSVC OR MINGW)
-    target_link_libraries(dronecode_sdk
+    target_link_libraries(mavsdk
         PRIVATE
         ws2_32
     )
 endif()
 
 if(ANDROID)
-    target_link_libraries(dronecode_sdk
+    target_link_libraries(mavsdk
         PRIVATE
         log
     )
 endif()
 
-set_target_properties(dronecode_sdk
+set_target_properties(mavsdk
     PROPERTIES COMPILE_FLAGS ${warnings}
     )
 
-target_include_directories(dronecode_sdk PUBLIC
+target_include_directories(mavsdk PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<INSTALL_INTERFACE:include>
     )
 
-install(TARGETS dronecode_sdk
-    EXPORT dronecode-sdk-targets
+install(TARGETS mavsdk
+    EXPORT mavsdk-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
@@ -80,7 +80,7 @@ install(FILES
     system.h
     mavsdk.h
     plugin_base.h
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 
 list(APPEND UNIT_TEST_SOURCES

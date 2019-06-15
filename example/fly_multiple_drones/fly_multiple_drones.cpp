@@ -9,10 +9,10 @@ Author: Shayaan Haider (via Slack)
 Author: Shusil Shapkota (Air Matrix)
 */
 
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/mission/mission.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/mission/mission.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 
 #include <cstdint>
 #include <iostream>

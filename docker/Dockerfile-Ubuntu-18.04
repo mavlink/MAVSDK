@@ -1,5 +1,5 @@
 #
-# Development environment for the Dronecode SDK based on Ubuntu 18.04.
+# Development environment for MAVSDK based on Ubuntu 18.04.
 #
 # Author: Julian Oes <julian@oes.ch>
 #
@@ -57,4 +57,4 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-WORKDIR "/home/user/DronecodeSDK"
+WORKDIR "/home/user/MAVSDK"

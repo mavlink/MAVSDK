@@ -12,10 +12,10 @@
 #include <iostream>
 #include <thread>
 
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/offboard/offboard.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/offboard/offboard.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 
 using namespace mavsdk;
 using std::this_thread::sleep_for;
@@ -67,7 +67,7 @@ inline void offboard_log(const std::string &offb_mode, const std::string msg)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_ned(std::shared_ptr<dronecode_sdk::Offboard> offboard)
+bool offb_ctrl_ned(std::shared_ptr<mavsdk::Offboard> offboard)
 {
     const std::string offb_mode = "NED";
     // Send it once before starting offboard, otherwise it will be rejected.
@@ -119,7 +119,7 @@ bool offb_ctrl_ned(std::shared_ptr<dronecode_sdk::Offboard> offboard)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_body(std::shared_ptr<dronecode_sdk::Offboard> offboard)
+bool offb_ctrl_body(std::shared_ptr<mavsdk::Offboard> offboard)
 {
     const std::string offb_mode = "BODY";
 
@@ -170,7 +170,7 @@ bool offb_ctrl_body(std::shared_ptr<dronecode_sdk::Offboard> offboard)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_attitude(std::shared_ptr<dronecode_sdk::Offboard> offboard)
+bool offb_ctrl_attitude(std::shared_ptr<mavsdk::Offboard> offboard)
 {
     const std::string offb_mode = "ATTITUDE";
 

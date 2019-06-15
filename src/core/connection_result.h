@@ -1,7 +1,7 @@
 #pragma once
 
 /**
- * @brief Namespace for all dronecode_sdk types.
+ * @brief Namespace for all mavsdk types.
  */
 namespace mavsdk {
 

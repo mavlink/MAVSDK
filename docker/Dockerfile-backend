@@ -9,7 +9,7 @@ RUN apk add build-base \
             linux-headers \
             perl
 
-WORKDIR /root/dronecode_sdk
+WORKDIR /root/mavsdk
 
 COPY . .
 
@@ -23,7 +23,7 @@ RUN apk add libcurl \
             libstdc++
 
 COPY --from=builder /root/dcsdk_install /usr/local
-COPY --from=builder /root/dronecode_sdk/build/default/backend/src/backend_bin /root/backend_bin
+COPY --from=builder /root/mavsdk/build/default/backend/src/backend_bin /root/backend_bin
 
 EXPOSE 14540/udp
 ENTRYPOINT /root/backend_bin

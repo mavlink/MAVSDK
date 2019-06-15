@@ -30,12 +30,12 @@ target_include_directories(unit_tests_backend
 
 target_link_libraries(unit_tests_backend
     backend
-    dronecode_sdk_action
-    dronecode_sdk_camera
-    dronecode_sdk_info
-    dronecode_sdk_mission
-    dronecode_sdk_offboard
-    dronecode_sdk_telemetry
+    mavsdk_action
+    mavsdk_camera
+    mavsdk_info
+    mavsdk_mission
+    mavsdk_offboard
+    mavsdk_telemetry
     gRPC::grpc++
     gtest
     gmock

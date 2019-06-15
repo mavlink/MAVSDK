@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 cmake_policy(SET CMP0025 NEW)
 
-project(dronecode_sdk)
+project(mavsdk)
 
 # ccache
 option(CCACHE "Use ccache if available" ON)
@@ -56,8 +56,8 @@ else()
     set(lib_path "lib")
 endif()
 
-set(dronecode_sdk_install_include_dir "include/dronecode_sdk")
-set(dronecode_sdk_install_lib_dir ${lib_path})
+set(mavsdk_install_include_dir "include/mavsdk")
+set(mavsdk_install_lib_dir ${lib_path})
 
 execute_process(
     COMMAND git describe --abbrev=8 --dirty --always --tags
@@ -95,7 +95,7 @@ if(BUILD_TESTS)
 endif()
 
 if (BUILD_BACKEND)
-    message(STATUS "Building dronecode_sdk server")
+    message(STATUS "Building mavsdk server")
     add_subdirectory(backend)
 else()
     message(STATUS "BUILD_BACKEND not set: not building grpc backend")
@@ -109,6 +109,6 @@ if (DROP_DEBUG EQUAL 1)
     )
 
     target_link_libraries(drop_debug
-        dronecode_sdk
+        mavsdk
     )
 endif()
