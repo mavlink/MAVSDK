@@ -19,7 +19,7 @@ public:
             auto *rpc_info_result = new rpc::info::InfoResult();
             rpc_info_result->set_result(
                 static_cast<rpc::info::InfoResult::Result>(result_pair.first));
-            rpc_info_result->set_result_str(dronecode_sdk::Info::result_str(result_pair.first));
+            rpc_info_result->set_result_str(mavsdk::Info::result_str(result_pair.first));
 
             auto *rpc_version = new rpc::info::Version();
             rpc_version->set_flight_sw_major(result_pair.second.flight_sw_major);

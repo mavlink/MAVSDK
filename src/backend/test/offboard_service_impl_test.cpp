@@ -11,10 +11,10 @@ using testing::_;
 using testing::NiceMock;
 using testing::Return;
 
-using MockOffboard = NiceMock<dronecode_sdk::testing::MockOffboard>;
-using OffboardServiceImpl = dronecode_sdk::backend::OffboardServiceImpl<MockOffboard>;
-using OffboardResult = dronecode_sdk::rpc::offboard::OffboardResult;
-using InputPair = std::pair<std::string, dronecode_sdk::Offboard::Result>;
+using MockOffboard = NiceMock<mavsdk::testing::MockOffboard>;
+using OffboardServiceImpl = mavsdk::backend::OffboardServiceImpl<MockOffboard>;
+using OffboardResult = mavsdk::rpc::offboard::OffboardResult;
+using InputPair = std::pair<std::string, mavsdk::Offboard::Result>;
 
 static constexpr float ARBITRARY_ROLL = 25.0f;
 static constexpr float ARBITRARY_PITCH = 40.0f;
@@ -33,22 +33,19 @@ static constexpr float ARBITRARY_VELOCITY_NEG = -0.5f;
 static constexpr float ARBITRARY_YAWSPEED = 3.1f;
 
 std::vector<InputPair> generateInputPairs();
-std::string startAndGetTranslatedResult(dronecode_sdk::Offboard::Result start_result);
-std::string stopAndGetTranslatedResult(dronecode_sdk::Offboard::Result stop_result);
+std::string startAndGetTranslatedResult(mavsdk::Offboard::Result start_result);
+std::string stopAndGetTranslatedResult(mavsdk::Offboard::Result stop_result);
 
 class OffboardServiceImplTest : public ::testing::TestWithParam<InputPair> {
 protected:
     void checkReturnsCorrectIsActiveStatus(const bool expected_is_active_status);
 
-    std::unique_ptr<dronecode_sdk::rpc::offboard::Attitude> createArbitraryRPCAttitude() const;
-    std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>
-    createArbitraryRPCAttitudeRate() const;
-    std::unique_ptr<dronecode_sdk::rpc::offboard::PositionNEDYaw>
-    createArbitraryRPCPositionNEDYaw() const;
-    std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityBodyYawspeed>
+    std::unique_ptr<mavsdk::rpc::offboard::Attitude> createArbitraryRPCAttitude() const;
+    std::unique_ptr<mavsdk::rpc::offboard::AttitudeRate> createArbitraryRPCAttitudeRate() const;
+    std::unique_ptr<mavsdk::rpc::offboard::PositionNEDYaw> createArbitraryRPCPositionNEDYaw() const;
+    std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>
     createArbitraryRPCVelocityBodyYawspeed() const;
-    std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityNEDYaw>
-    createArbitraryRPCVelocityNedYaw() const;
+    std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw> createArbitraryRPCVelocityNedYaw() const;
 };
 
 TEST_P(OffboardServiceImplTest, startResultIsTranslatedCorrectly)
@@ -57,12 +54,12 @@ TEST_P(OffboardServiceImplTest, startResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string startAndGetTranslatedResult(const dronecode_sdk::Offboard::Result start_result)
+std::string startAndGetTranslatedResult(const mavsdk::Offboard::Result start_result)
 {
     MockOffboard offboard;
     ON_CALL(offboard, start()).WillByDefault(Return(start_result));
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::StartResponse response;
+    mavsdk::rpc::offboard::StartResponse response;
 
     offboardService.Start(nullptr, nullptr, &response);
 
@@ -84,12 +81,12 @@ TEST_P(OffboardServiceImplTest, stopResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string stopAndGetTranslatedResult(const dronecode_sdk::Offboard::Result stop_result)
+std::string stopAndGetTranslatedResult(const mavsdk::Offboard::Result stop_result)
 {
     MockOffboard offboard;
     ON_CALL(offboard, stop()).WillByDefault(Return(stop_result));
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::StopResponse response;
+    mavsdk::rpc::offboard::StopResponse response;
 
     offboardService.Stop(nullptr, nullptr, &response);
 
@@ -110,7 +107,7 @@ TEST_F(OffboardServiceImplTest, isActiveCallsGetter)
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
     EXPECT_CALL(offboard, is_active()).Times(1);
-    dronecode_sdk::rpc::offboard::IsActiveResponse response;
+    mavsdk::rpc::offboard::IsActiveResponse response;
 
     offboardService.IsActive(nullptr, nullptr, &response);
 }
@@ -127,7 +124,7 @@ void OffboardServiceImplTest::checkReturnsCorrectIsActiveStatus(
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
     ON_CALL(offboard, is_active()).WillByDefault(Return(expected_is_active_status));
-    dronecode_sdk::rpc::offboard::IsActiveResponse response;
+    mavsdk::rpc::offboard::IsActiveResponse response;
 
     offboardService.IsActive(nullptr, nullptr, &response);
 
@@ -162,7 +159,7 @@ TEST_F(OffboardServiceImplTest, setAttitudeDoesNotFailWithNullResponse)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetAttitudeRequest request;
+    mavsdk::rpc::offboard::SetAttitudeRequest request;
 
     auto rpc_attitude = createArbitraryRPCAttitude();
     request.set_allocated_attitude(rpc_attitude.release());
@@ -174,7 +171,7 @@ TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithNullResponse)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetAttitudeRateRequest request;
+    mavsdk::rpc::offboard::SetAttitudeRateRequest request;
 
     auto rpc_attitude_rate = createArbitraryRPCAttitudeRate();
     request.set_allocated_attitude_rate(rpc_attitude_rate.release());
@@ -182,11 +179,11 @@ TEST_F(OffboardServiceImplTest, setAttitudeRateDoesNotFailWithNullResponse)
     offboardService.SetAttitudeRate(nullptr, &request, nullptr);
 }
 
-std::unique_ptr<dronecode_sdk::rpc::offboard::Attitude>
+std::unique_ptr<mavsdk::rpc::offboard::Attitude>
 OffboardServiceImplTest::createArbitraryRPCAttitude() const
 {
-    auto rpc_attitude = std::unique_ptr<dronecode_sdk::rpc::offboard::Attitude>(
-        new dronecode_sdk::rpc::offboard::Attitude());
+    auto rpc_attitude =
+        std::unique_ptr<mavsdk::rpc::offboard::Attitude>(new mavsdk::rpc::offboard::Attitude());
     rpc_attitude->set_roll_deg(ARBITRARY_ROLL);
     rpc_attitude->set_pitch_deg(ARBITRARY_PITCH);
     rpc_attitude->set_yaw_deg(ARBITRARY_YAW);
@@ -194,11 +191,11 @@ OffboardServiceImplTest::createArbitraryRPCAttitude() const
 
     return rpc_attitude;
 }
-std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>
+std::unique_ptr<mavsdk::rpc::offboard::AttitudeRate>
 OffboardServiceImplTest::createArbitraryRPCAttitudeRate() const
 {
-    auto rpc_attitude_rate = std::unique_ptr<dronecode_sdk::rpc::offboard::AttitudeRate>(
-        new dronecode_sdk::rpc::offboard::AttitudeRate());
+    auto rpc_attitude_rate = std::unique_ptr<mavsdk::rpc::offboard::AttitudeRate>(
+        new mavsdk::rpc::offboard::AttitudeRate());
     rpc_attitude_rate->set_roll_deg_s(ARBITRARY_ROLL_RATE);
     rpc_attitude_rate->set_pitch_deg_s(ARBITRARY_PITCH_RATE);
     rpc_attitude_rate->set_yaw_deg_s(ARBITRARY_YAW_RATE);
@@ -211,7 +208,7 @@ TEST_F(OffboardServiceImplTest, setsAttitudeCorrectly)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetAttitudeRequest request;
+    mavsdk::rpc::offboard::SetAttitudeRequest request;
 
     auto rpc_attitude = createArbitraryRPCAttitude();
     const auto expected_attitude = OffboardServiceImpl::translateRPCAttitude(*rpc_attitude);
@@ -226,7 +223,7 @@ TEST_F(OffboardServiceImplTest, setsAttitudeRateCorrectly)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetAttitudeRateRequest request;
+    mavsdk::rpc::offboard::SetAttitudeRateRequest request;
 
     auto rpc_attitude_rate = createArbitraryRPCAttitudeRate();
     const auto expected_attitude_rate =
@@ -250,7 +247,7 @@ TEST_F(OffboardServiceImplTest, setPositionNEDYawDoesNotFailWithNullResponse)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetPositionNedRequest request;
+    mavsdk::rpc::offboard::SetPositionNedRequest request;
 
     auto rpc_position_ned_yaw = createArbitraryRPCPositionNEDYaw();
     request.set_allocated_position_ned_yaw(rpc_position_ned_yaw.release());
@@ -258,11 +255,11 @@ TEST_F(OffboardServiceImplTest, setPositionNEDYawDoesNotFailWithNullResponse)
     offboardService.SetPositionNed(nullptr, &request, nullptr);
 }
 
-std::unique_ptr<dronecode_sdk::rpc::offboard::PositionNEDYaw>
+std::unique_ptr<mavsdk::rpc::offboard::PositionNEDYaw>
 OffboardServiceImplTest::createArbitraryRPCPositionNEDYaw() const
 {
-    auto rpc_position_ned_yaw = std::unique_ptr<dronecode_sdk::rpc::offboard::PositionNEDYaw>(
-        new dronecode_sdk::rpc::offboard::PositionNEDYaw());
+    auto rpc_position_ned_yaw = std::unique_ptr<mavsdk::rpc::offboard::PositionNEDYaw>(
+        new mavsdk::rpc::offboard::PositionNEDYaw());
     rpc_position_ned_yaw->set_north_m(ARBITRARY_NORTH_M);
     rpc_position_ned_yaw->set_east_m(ARBITRARY_EAST_M);
     rpc_position_ned_yaw->set_down_m(ARBITRARY_DOWN_M);
@@ -275,7 +272,7 @@ TEST_F(OffboardServiceImplTest, setsPositionNEDYawCorrectly)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetPositionNedRequest request;
+    mavsdk::rpc::offboard::SetPositionNedRequest request;
 
     auto rpc_position_ned_yaw = createArbitraryRPCPositionNEDYaw();
     const auto expected_position_ned_yaw =
@@ -299,7 +296,7 @@ TEST_F(OffboardServiceImplTest, setVelocityBodyDoesNotFailWithNullResponse)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetVelocityBodyRequest request;
+    mavsdk::rpc::offboard::SetVelocityBodyRequest request;
 
     auto rpc_velocity_body = createArbitraryRPCVelocityBodyYawspeed();
     request.set_allocated_velocity_body_yawspeed(rpc_velocity_body.release());
@@ -307,11 +304,11 @@ TEST_F(OffboardServiceImplTest, setVelocityBodyDoesNotFailWithNullResponse)
     offboardService.SetVelocityBody(nullptr, &request, nullptr);
 }
 
-std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityBodyYawspeed>
+std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>
 OffboardServiceImplTest::createArbitraryRPCVelocityBodyYawspeed() const
 {
-    auto rpc_velocity_body = std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityBodyYawspeed>(
-        new dronecode_sdk::rpc::offboard::VelocityBodyYawspeed());
+    auto rpc_velocity_body = std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>(
+        new mavsdk::rpc::offboard::VelocityBodyYawspeed());
     rpc_velocity_body->set_forward_m_s(ARBITRARY_VELOCITY_HIGH);
     rpc_velocity_body->set_right_m_s(ARBITRARY_VELOCITY_LOW);
     rpc_velocity_body->set_down_m_s(ARBITRARY_VELOCITY_NEG);
@@ -324,7 +321,7 @@ TEST_F(OffboardServiceImplTest, setsVelocityBodyCorrectly)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetVelocityBodyRequest request;
+    mavsdk::rpc::offboard::SetVelocityBodyRequest request;
 
     auto rpc_velocity_body = createArbitraryRPCVelocityBodyYawspeed();
     const auto expected_velocity_body =
@@ -348,7 +345,7 @@ TEST_F(OffboardServiceImplTest, setVelocityNedDoesNotFailWithNullResponse)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetVelocityNedRequest request;
+    mavsdk::rpc::offboard::SetVelocityNedRequest request;
 
     auto rpc_velocity_ned = createArbitraryRPCVelocityNedYaw();
     request.set_allocated_velocity_ned_yaw(rpc_velocity_ned.release());
@@ -356,11 +353,11 @@ TEST_F(OffboardServiceImplTest, setVelocityNedDoesNotFailWithNullResponse)
     offboardService.SetVelocityNed(nullptr, &request, nullptr);
 }
 
-std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityNEDYaw>
+std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw>
 OffboardServiceImplTest::createArbitraryRPCVelocityNedYaw() const
 {
-    auto rpc_velocity_ned = std::unique_ptr<dronecode_sdk::rpc::offboard::VelocityNEDYaw>(
-        new dronecode_sdk::rpc::offboard::VelocityNEDYaw());
+    auto rpc_velocity_ned = std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw>(
+        new mavsdk::rpc::offboard::VelocityNEDYaw());
     rpc_velocity_ned->set_north_m_s(ARBITRARY_VELOCITY_MID);
     rpc_velocity_ned->set_east_m_s(ARBITRARY_VELOCITY_LOW);
     rpc_velocity_ned->set_down_m_s(ARBITRARY_VELOCITY_NEG);
@@ -373,7 +370,7 @@ TEST_F(OffboardServiceImplTest, setsVelocityNedCorrectly)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
-    dronecode_sdk::rpc::offboard::SetVelocityNedRequest request;
+    mavsdk::rpc::offboard::SetVelocityNedRequest request;
 
     auto rpc_velocity_ned = createArbitraryRPCVelocityNedYaw();
     const auto expected_velocity_ned =
@@ -392,17 +389,17 @@ INSTANTIATE_TEST_CASE_P(OffboardResultCorrespondences,
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
-    input_pairs.push_back(std::make_pair("SUCCESS", dronecode_sdk::Offboard::Result::SUCCESS));
-    input_pairs.push_back(std::make_pair("NO_SYSTEM", dronecode_sdk::Offboard::Result::NO_SYSTEM));
+    input_pairs.push_back(std::make_pair("SUCCESS", mavsdk::Offboard::Result::SUCCESS));
+    input_pairs.push_back(std::make_pair("NO_SYSTEM", mavsdk::Offboard::Result::NO_SYSTEM));
     input_pairs.push_back(
-        std::make_pair("CONNECTION_ERROR", dronecode_sdk::Offboard::Result::CONNECTION_ERROR));
-    input_pairs.push_back(std::make_pair("BUSY", dronecode_sdk::Offboard::Result::BUSY));
+        std::make_pair("CONNECTION_ERROR", mavsdk::Offboard::Result::CONNECTION_ERROR));
+    input_pairs.push_back(std::make_pair("BUSY", mavsdk::Offboard::Result::BUSY));
     input_pairs.push_back(
-        std::make_pair("COMMAND_DENIED", dronecode_sdk::Offboard::Result::COMMAND_DENIED));
-    input_pairs.push_back(std::make_pair("TIMEOUT", dronecode_sdk::Offboard::Result::TIMEOUT));
+        std::make_pair("COMMAND_DENIED", mavsdk::Offboard::Result::COMMAND_DENIED));
+    input_pairs.push_back(std::make_pair("TIMEOUT", mavsdk::Offboard::Result::TIMEOUT));
     input_pairs.push_back(
-        std::make_pair("NO_SETPOINT_SET", dronecode_sdk::Offboard::Result::NO_SETPOINT_SET));
-    input_pairs.push_back(std::make_pair("UNKNOWN", dronecode_sdk::Offboard::Result::UNKNOWN));
+        std::make_pair("NO_SETPOINT_SET", mavsdk::Offboard::Result::NO_SETPOINT_SET));
+    input_pairs.push_back(std::make_pair("UNKNOWN", mavsdk::Offboard::Result::UNKNOWN));
 
     return input_pairs;
 }

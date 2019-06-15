@@ -41,7 +41,7 @@ private:
 
     bool add_any_connection(DronecodeSDK &dc, const std::string &connection_url)
     {
-        dronecode_sdk::ConnectionResult connection_result = dc.add_any_connection(connection_url);
+        mavsdk::ConnectionResult connection_result = dc.add_any_connection(connection_url);
 
         if (connection_result != ConnectionResult::SUCCESS) {
             LogErr() << "Connection failed: " << connection_result_str(connection_result);

@@ -12,30 +12,30 @@ using testing::_;
 using testing::NiceMock;
 using testing::Return;
 
-using MockAction = NiceMock<dronecode_sdk::testing::MockAction>;
-using ActionServiceImpl = dronecode_sdk::backend::ActionServiceImpl<MockAction>;
+using MockAction = NiceMock<mavsdk::testing::MockAction>;
+using ActionServiceImpl = mavsdk::backend::ActionServiceImpl<MockAction>;
 
-using ActionResult = dronecode_sdk::rpc::action::ActionResult;
-using InputPair = std::pair<std::string, dronecode_sdk::Action::Result>;
+using ActionResult = mavsdk::rpc::action::ActionResult;
+using InputPair = std::pair<std::string, mavsdk::Action::Result>;
 
 static constexpr float ARBITRARY_ALTITUDE = 42.42f;
 static constexpr float ARBITRARY_SPEED = 8.24f;
 
 std::vector<InputPair> generateInputPairs();
-std::string armAndGetTranslatedResult(dronecode_sdk::Action::Result arm_result);
-std::string disarmAndGetTranslatedResult(dronecode_sdk::Action::Result disarm_result);
-std::string takeoffAndGetTranslatedResult(dronecode_sdk::Action::Result takeoff_result);
-std::string landAndGetTranslatedResult(dronecode_sdk::Action::Result land_result);
-std::string killAndGetTranslatedResult(dronecode_sdk::Action::Result kill_result);
-std::string returnToLaunchAndGetTranslatedResult(dronecode_sdk::Action::Result rtl_result);
+std::string armAndGetTranslatedResult(mavsdk::Action::Result arm_result);
+std::string disarmAndGetTranslatedResult(mavsdk::Action::Result disarm_result);
+std::string takeoffAndGetTranslatedResult(mavsdk::Action::Result takeoff_result);
+std::string landAndGetTranslatedResult(mavsdk::Action::Result land_result);
+std::string killAndGetTranslatedResult(mavsdk::Action::Result kill_result);
+std::string returnToLaunchAndGetTranslatedResult(mavsdk::Action::Result rtl_result);
 std::string
-transitionToFWAndGetTranslatedResult(const dronecode_sdk::Action::Result transition_to_fw_result);
+transitionToFWAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result);
 std::string
-transitionToMCAndGetTranslatedResult(const dronecode_sdk::Action::Result transition_to_fw_result);
+transitionToMCAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result);
 std::string
-getReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::Action::Result action_result);
+getReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
 std::string
-setReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::Action::Result action_result);
+setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result);
 
 class ActionServiceImplTest : public ::testing::TestWithParam<InputPair> {};
 
@@ -45,12 +45,12 @@ TEST_P(ActionServiceImplTest, armResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string armAndGetTranslatedResult(const dronecode_sdk::Action::Result arm_result)
+std::string armAndGetTranslatedResult(const mavsdk::Action::Result arm_result)
 {
     MockAction action;
     ON_CALL(action, arm()).WillByDefault(Return(arm_result));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::ArmResponse response;
+    mavsdk::rpc::action::ArmResponse response;
 
     actionService.Arm(nullptr, nullptr, &response);
 
@@ -72,12 +72,12 @@ TEST_P(ActionServiceImplTest, disarmResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string disarmAndGetTranslatedResult(dronecode_sdk::Action::Result disarm_result)
+std::string disarmAndGetTranslatedResult(mavsdk::Action::Result disarm_result)
 {
     MockAction action;
     ON_CALL(action, disarm()).WillByDefault(Return(disarm_result));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::DisarmResponse response;
+    mavsdk::rpc::action::DisarmResponse response;
 
     actionService.Disarm(nullptr, nullptr, &response);
 
@@ -99,12 +99,12 @@ TEST_P(ActionServiceImplTest, takeoffResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string takeoffAndGetTranslatedResult(const dronecode_sdk::Action::Result takeoff_result)
+std::string takeoffAndGetTranslatedResult(const mavsdk::Action::Result takeoff_result)
 {
     MockAction action;
     ON_CALL(action, takeoff()).WillByDefault(Return(takeoff_result));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::TakeoffResponse response;
+    mavsdk::rpc::action::TakeoffResponse response;
 
     actionService.Takeoff(nullptr, nullptr, &response);
 
@@ -126,12 +126,12 @@ TEST_P(ActionServiceImplTest, landResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string landAndGetTranslatedResult(const dronecode_sdk::Action::Result land_result)
+std::string landAndGetTranslatedResult(const mavsdk::Action::Result land_result)
 {
     MockAction action;
     ON_CALL(action, land()).WillByDefault(Return(land_result));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::LandResponse response;
+    mavsdk::rpc::action::LandResponse response;
 
     actionService.Land(nullptr, nullptr, &response);
 
@@ -153,12 +153,12 @@ TEST_P(ActionServiceImplTest, killResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string killAndGetTranslatedResult(const dronecode_sdk::Action::Result kill_result)
+std::string killAndGetTranslatedResult(const mavsdk::Action::Result kill_result)
 {
     MockAction action;
     ON_CALL(action, kill()).WillByDefault(Return(kill_result));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::KillResponse response;
+    mavsdk::rpc::action::KillResponse response;
 
     actionService.Kill(nullptr, nullptr, &response);
 
@@ -180,12 +180,12 @@ TEST_P(ActionServiceImplTest, rtlResultIsTranslatedCorrectly)
     EXPECT_EQ(rpc_result, GetParam().first);
 }
 
-std::string returnToLaunchAndGetTranslatedResult(const dronecode_sdk::Action::Result rtl_result)
+std::string returnToLaunchAndGetTranslatedResult(const mavsdk::Action::Result rtl_result)
 {
     MockAction action;
     ON_CALL(action, return_to_launch()).WillByDefault(Return(rtl_result));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::ReturnToLaunchResponse response;
+    mavsdk::rpc::action::ReturnToLaunchResponse response;
 
     actionService.ReturnToLaunch(nullptr, nullptr, &response);
 
@@ -208,12 +208,12 @@ TEST_P(ActionServiceImplTest, transition2fwResultIsTranslatedCorrectly)
 }
 
 std::string
-transitionToFWAndGetTranslatedResult(const dronecode_sdk::Action::Result transition_to_fw_result)
+transitionToFWAndGetTranslatedResult(const mavsdk::Action::Result transition_to_fw_result)
 {
     MockAction action;
     ON_CALL(action, transition_to_fixedwing()).WillByDefault(Return(transition_to_fw_result));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::TransitionToFixedWingResponse response;
+    mavsdk::rpc::action::TransitionToFixedWingResponse response;
 
     actionService.TransitionToFixedWing(nullptr, nullptr, &response);
 
@@ -236,12 +236,12 @@ TEST_P(ActionServiceImplTest, transition2mcResultIsTranslatedCorrectly)
 }
 
 std::string
-transitionToMCAndGetTranslatedResult(const dronecode_sdk::Action::Result transition_to_mc_result)
+transitionToMCAndGetTranslatedResult(const mavsdk::Action::Result transition_to_mc_result)
 {
     MockAction action;
     ON_CALL(action, transition_to_multicopter()).WillByDefault(Return(transition_to_mc_result));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::TransitionToMulticopterResponse response;
+    mavsdk::rpc::action::TransitionToMulticopterResponse response;
 
     actionService.TransitionToMulticopter(nullptr, nullptr, &response);
 
@@ -262,7 +262,7 @@ TEST_F(ActionServiceImplTest, getTakeoffAltitudeCallsGetter)
     MockAction action;
     ActionServiceImpl actionService(action);
     EXPECT_CALL(action, get_takeoff_altitude()).Times(1);
-    dronecode_sdk::rpc::action::GetTakeoffAltitudeResponse response;
+    mavsdk::rpc::action::GetTakeoffAltitudeResponse response;
 
     actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
 }
@@ -273,7 +273,7 @@ TEST_P(ActionServiceImplTest, getsCorrectTakeoffAltitude)
     ActionServiceImpl actionService(action);
     const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_ALTITUDE);
     ON_CALL(action, get_takeoff_altitude()).WillByDefault(Return(expected_pair));
-    dronecode_sdk::rpc::action::GetTakeoffAltitudeResponse response;
+    mavsdk::rpc::action::GetTakeoffAltitudeResponse response;
 
     actionService.GetTakeoffAltitude(nullptr, nullptr, &response);
 
@@ -302,7 +302,7 @@ TEST_F(ActionServiceImplTest, setTakeoffAltitudeCallsSetter)
     MockAction action;
     ActionServiceImpl actionService(action);
     EXPECT_CALL(action, set_takeoff_altitude(_)).Times(1);
-    dronecode_sdk::rpc::action::SetTakeoffAltitudeRequest request;
+    mavsdk::rpc::action::SetTakeoffAltitudeRequest request;
 
     actionService.SetTakeoffAltitude(nullptr, &request, nullptr);
 }
@@ -313,7 +313,7 @@ TEST_P(ActionServiceImplTest, setTakeoffAltitudeSetsRightValue)
     ActionServiceImpl actionService(action);
     float expected_altitude = ARBITRARY_ALTITUDE;
     EXPECT_CALL(action, set_takeoff_altitude(expected_altitude)).Times(1);
-    dronecode_sdk::rpc::action::SetTakeoffAltitudeRequest request;
+    mavsdk::rpc::action::SetTakeoffAltitudeRequest request;
     request.set_altitude(expected_altitude);
 
     actionService.SetTakeoffAltitude(nullptr, &request, nullptr);
@@ -332,7 +332,7 @@ TEST_F(ActionServiceImplTest, getMaxSpeedCallsGetter)
     MockAction action;
     ActionServiceImpl actionService(action);
     EXPECT_CALL(action, get_max_speed()).Times(1);
-    dronecode_sdk::rpc::action::GetMaximumSpeedResponse response;
+    mavsdk::rpc::action::GetMaximumSpeedResponse response;
 
     actionService.GetMaximumSpeed(nullptr, nullptr, &response);
 }
@@ -343,7 +343,7 @@ TEST_P(ActionServiceImplTest, getMaxSpeedGetsRightValue)
     ActionServiceImpl actionService(action);
     const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_SPEED);
     ON_CALL(action, get_max_speed()).WillByDefault(Return(expected_pair));
-    dronecode_sdk::rpc::action::GetMaximumSpeedResponse response;
+    mavsdk::rpc::action::GetMaximumSpeedResponse response;
 
     actionService.GetMaximumSpeed(nullptr, nullptr, &response);
 
@@ -355,7 +355,7 @@ TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullRequest)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::SetMaximumSpeedResponse response;
+    mavsdk::rpc::action::SetMaximumSpeedResponse response;
 
     actionService.SetMaximumSpeed(nullptr, nullptr, &response);
 }
@@ -364,7 +364,7 @@ TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullResponse)
 {
     MockAction action;
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::SetMaximumSpeedRequest request;
+    mavsdk::rpc::action::SetMaximumSpeedRequest request;
     request.set_speed(ARBITRARY_SPEED);
 
     actionService.SetMaximumSpeed(nullptr, &request, nullptr);
@@ -375,7 +375,7 @@ TEST_F(ActionServiceImplTest, setMaxSpeedCallsSetter)
     MockAction action;
     ActionServiceImpl actionService(action);
     EXPECT_CALL(action, set_max_speed(_)).Times(1);
-    dronecode_sdk::rpc::action::SetMaximumSpeedRequest request;
+    mavsdk::rpc::action::SetMaximumSpeedRequest request;
 
     actionService.SetMaximumSpeed(nullptr, &request, nullptr);
 }
@@ -386,7 +386,7 @@ TEST_F(ActionServiceImplTest, setMaxSpeedSetsRightValue)
     ActionServiceImpl actionService(action);
     const auto expected_speed = ARBITRARY_SPEED;
     EXPECT_CALL(action, set_max_speed(expected_speed)).Times(1);
-    dronecode_sdk::rpc::action::SetMaximumSpeedRequest request;
+    mavsdk::rpc::action::SetMaximumSpeedRequest request;
     request.set_speed(expected_speed);
 
     actionService.SetMaximumSpeed(nullptr, &request, nullptr);
@@ -399,13 +399,13 @@ TEST_P(ActionServiceImplTest, getReturnToLaunchAltitudeResultIsTranslatedCorrect
 }
 
 std::string
-getReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::Action::Result action_result)
+getReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
     MockAction action;
     const auto return_pair = std::make_pair<>(action_result, ARBITRARY_ALTITUDE);
     ON_CALL(action, get_return_to_launch_return_altitude()).WillByDefault(Return(return_pair));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
+    mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
 
     actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
 
@@ -417,7 +417,7 @@ TEST_F(ActionServiceImplTest, getReturnToLaunchAltitudeCallsGetter)
     MockAction action;
     ActionServiceImpl actionService(action);
     EXPECT_CALL(action, get_return_to_launch_return_altitude()).Times(1);
-    dronecode_sdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
+    mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
 
     actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
 }
@@ -428,7 +428,7 @@ TEST_P(ActionServiceImplTest, getsCorrectReturnToLaunchAltitude)
     ActionServiceImpl actionService(action);
     const auto expected_pair = std::make_pair<>(GetParam().second, ARBITRARY_ALTITUDE);
     ON_CALL(action, get_return_to_launch_return_altitude()).WillByDefault(Return(expected_pair));
-    dronecode_sdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
+    mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse response;
 
     actionService.GetReturnToLaunchAltitude(nullptr, nullptr, &response);
 
@@ -451,14 +451,14 @@ TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeResultIsTranslatedCorrect
 }
 
 std::string
-setReturnToLaunchAltitudeAndGetTranslatedResult(const dronecode_sdk::Action::Result action_result)
+setReturnToLaunchAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_result)
 {
     MockAction action;
     ON_CALL(action, set_return_to_launch_return_altitude(_)).WillByDefault(Return(action_result));
     ActionServiceImpl actionService(action);
-    dronecode_sdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
+    mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
     request.set_relative_altitude_m(ARBITRARY_ALTITUDE);
-    dronecode_sdk::rpc::action::SetReturnToLaunchAltitudeResponse response;
+    mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse response;
 
     actionService.SetReturnToLaunchAltitude(nullptr, &request, &response);
 
@@ -478,7 +478,7 @@ TEST_F(ActionServiceImplTest, setReturnToLaunchAltitudeCallsSetter)
     MockAction action;
     ActionServiceImpl actionService(action);
     EXPECT_CALL(action, set_return_to_launch_return_altitude(_)).Times(1);
-    dronecode_sdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
+    mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
 
     actionService.SetReturnToLaunchAltitude(nullptr, &request, nullptr);
 }
@@ -489,7 +489,7 @@ TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeSetsRightValue)
     ActionServiceImpl actionService(action);
     float expected_altitude = ARBITRARY_ALTITUDE;
     EXPECT_CALL(action, set_return_to_launch_return_altitude(expected_altitude)).Times(1);
-    dronecode_sdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
+    mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest request;
     request.set_relative_altitude_m(expected_altitude);
 
     actionService.SetReturnToLaunchAltitude(nullptr, &request, nullptr);
@@ -502,27 +502,25 @@ INSTANTIATE_TEST_CASE_P(ActionResultCorrespondences,
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
-    input_pairs.push_back(std::make_pair("SUCCESS", dronecode_sdk::Action::Result::SUCCESS));
-    input_pairs.push_back(std::make_pair("NO_SYSTEM", dronecode_sdk::Action::Result::NO_SYSTEM));
+    input_pairs.push_back(std::make_pair("SUCCESS", mavsdk::Action::Result::SUCCESS));
+    input_pairs.push_back(std::make_pair("NO_SYSTEM", mavsdk::Action::Result::NO_SYSTEM));
     input_pairs.push_back(
-        std::make_pair("CONNECTION_ERROR", dronecode_sdk::Action::Result::CONNECTION_ERROR));
-    input_pairs.push_back(std::make_pair("BUSY", dronecode_sdk::Action::Result::BUSY));
-    input_pairs.push_back(
-        std::make_pair("COMMAND_DENIED", dronecode_sdk::Action::Result::COMMAND_DENIED));
+        std::make_pair("CONNECTION_ERROR", mavsdk::Action::Result::CONNECTION_ERROR));
+    input_pairs.push_back(std::make_pair("BUSY", mavsdk::Action::Result::BUSY));
+    input_pairs.push_back(std::make_pair("COMMAND_DENIED", mavsdk::Action::Result::COMMAND_DENIED));
     input_pairs.push_back(
         std::make_pair("COMMAND_DENIED_LANDED_STATE_UNKNOWN",
-                       dronecode_sdk::Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN));
+                       mavsdk::Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN));
     input_pairs.push_back(std::make_pair("COMMAND_DENIED_NOT_LANDED",
-                                         dronecode_sdk::Action::Result::COMMAND_DENIED_NOT_LANDED));
-    input_pairs.push_back(std::make_pair("TIMEOUT", dronecode_sdk::Action::Result::TIMEOUT));
+                                         mavsdk::Action::Result::COMMAND_DENIED_NOT_LANDED));
+    input_pairs.push_back(std::make_pair("TIMEOUT", mavsdk::Action::Result::TIMEOUT));
+    input_pairs.push_back(std::make_pair("VTOL_TRANSITION_SUPPORT_UNKNOWN",
+                                         mavsdk::Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN));
+    input_pairs.push_back(std::make_pair("NO_VTOL_TRANSITION_SUPPORT",
+                                         mavsdk::Action::Result::NO_VTOL_TRANSITION_SUPPORT));
+    input_pairs.push_back(std::make_pair("UNKNOWN", mavsdk::Action::Result::UNKNOWN));
     input_pairs.push_back(
-        std::make_pair("VTOL_TRANSITION_SUPPORT_UNKNOWN",
-                       dronecode_sdk::Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN));
-    input_pairs.push_back(std::make_pair(
-        "NO_VTOL_TRANSITION_SUPPORT", dronecode_sdk::Action::Result::NO_VTOL_TRANSITION_SUPPORT));
-    input_pairs.push_back(std::make_pair("UNKNOWN", dronecode_sdk::Action::Result::UNKNOWN));
-    input_pairs.push_back(
-        std::make_pair("PARAMETER_ERROR", dronecode_sdk::Action::Result::PARAMETER_ERROR));
+        std::make_pair("PARAMETER_ERROR", mavsdk::Action::Result::PARAMETER_ERROR));
 
     return input_pairs;
 }

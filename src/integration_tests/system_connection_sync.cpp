@@ -7,8 +7,8 @@ using namespace mavsdk;
 
 TEST(SitlTestMultiple, SystemConnectionMultiple)
 {
-    dronecode_sdk::DronecodeSDK *dc;
-    dc = new dronecode_sdk::DronecodeSDK();
+    mavsdk::DronecodeSDK *dc;
+    dc = new mavsdk::DronecodeSDK();
     std::cout << "started" << std::endl;
 
     ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::SUCCESS);
@@ -31,7 +31,7 @@ TEST(SitlTestMultiple, SystemConnectionMultiple)
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    dc = new dronecode_sdk::DronecodeSDK();
+    dc = new mavsdk::DronecodeSDK();
 
     ASSERT_EQ(dc->add_udp_connection(14540), ConnectionResult::SUCCESS);
 

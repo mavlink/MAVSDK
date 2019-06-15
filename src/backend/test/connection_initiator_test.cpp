@@ -9,9 +9,9 @@ namespace {
 using testing::_;
 using testing::NiceMock;
 
-using event_callback_t = dronecode_sdk::testing::event_callback_t;
-using MockDronecodeSDK = NiceMock<dronecode_sdk::testing::MockDronecodeSDK>;
-using ConnectionInitiator = dronecode_sdk::backend::ConnectionInitiator<MockDronecodeSDK>;
+using event_callback_t = mavsdk::testing::event_callback_t;
+using MockDronecodeSDK = NiceMock<mavsdk::testing::MockDronecodeSDK>;
+using ConnectionInitiator = mavsdk::backend::ConnectionInitiator<MockDronecodeSDK>;
 
 static constexpr auto ARBITRARY_CONNECTION_URL = "udp://1291";
 static constexpr auto ARBITRARY_UUID = 1492;
