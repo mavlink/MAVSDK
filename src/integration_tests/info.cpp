@@ -1,6 +1,6 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "plugins/info/info.h"
 
 using namespace dronecode_sdk;

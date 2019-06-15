@@ -2,7 +2,7 @@
 #include <future>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "plugins/calibration/calibration.h"
 #include "plugins/param/param.h"
 #include "plugins/telemetry/telemetry.h"

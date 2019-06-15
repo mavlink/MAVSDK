@@ -1,5 +1,5 @@
 #include <iostream>
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "integration_test_helper.h"
 #include "plugins/logging/logging.h"
 

@@ -2,7 +2,7 @@
 #include <string>
 
 #include "core/core.grpc.pb.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 
 namespace dronecode_sdk {
 namespace backend {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <future>
 #include <sstream>
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "integration_test_helper.h"
 #include "plugins/log_files/log_files.h"
 

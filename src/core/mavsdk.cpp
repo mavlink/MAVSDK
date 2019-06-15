@@ -1,6 +1,6 @@
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 
-#include "dronecode_sdk_impl.h"
+#include "mavsdk_impl.h"
 #include "global_include.h"
 
 namespace dronecode_sdk {

@@ -1,6 +1,6 @@
 #include "system.h"
 #include "global_include.h"
-#include "dronecode_sdk_impl.h"
+#include "mavsdk_impl.h"
 #include "mavlink_include.h"
 #include "system_impl.h"
 #include "plugin_impl_base.h"

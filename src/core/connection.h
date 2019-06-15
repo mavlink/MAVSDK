@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "mavlink_receiver.h"
 #include <memory>
 

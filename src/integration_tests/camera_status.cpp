@@ -1,5 +1,5 @@
 #include "integration_test_helper.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include <iostream>
 #include <functional>
 #include <atomic>

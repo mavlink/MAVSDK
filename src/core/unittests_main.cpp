@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 
 using namespace dronecode_sdk;
 

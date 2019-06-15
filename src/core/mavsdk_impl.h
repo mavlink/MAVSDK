@@ -6,7 +6,7 @@
 #include <atomic>
 
 #include "connection.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "system.h"
 #include "mavlink_include.h"
 

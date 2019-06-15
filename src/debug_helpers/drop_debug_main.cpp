@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include <thread>
 
 #if DROP_DEBUG != 1
