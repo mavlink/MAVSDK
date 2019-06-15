@@ -75,7 +75,7 @@ if(IOS)
     )
 else()
     add_executable(backend_bin
-        dronecode_sdk_server.cpp
+        mavsdk_server.cpp
     )
 
     target_link_libraries(backend_bin
