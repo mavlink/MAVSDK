@@ -9,7 +9,7 @@ void print_health(Telemetry::Health health);
 
 TEST_F(SitlTest, TelemetryHealth)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

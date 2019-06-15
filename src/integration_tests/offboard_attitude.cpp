@@ -18,7 +18,7 @@ static void turn_yaw(std::shared_ptr<Offboard> offboard);
 
 TEST_F(SitlTest, OffboardAttitudeRate)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);

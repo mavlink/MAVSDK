@@ -21,7 +21,7 @@ static std::atomic<bool> _received_capture_info{false};
 
 TEST(CameraTest, TakePhotoSingle)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -49,7 +49,7 @@ TEST(CameraTest, TakePhotoSingle)
 
 TEST(CameraTest, TakePhotosMultiple)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     const int num_photos_to_take = 3;
 

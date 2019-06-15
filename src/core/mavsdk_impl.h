@@ -12,10 +12,10 @@
 
 namespace mavsdk {
 
-class DronecodeSDKImpl {
+class MavsdkImpl {
 public:
-    DronecodeSDKImpl();
-    ~DronecodeSDKImpl();
+    MavsdkImpl();
+    ~MavsdkImpl();
 
     void receive_message(mavlink_message_t &message);
     bool send_message(mavlink_message_t &message);
@@ -27,7 +27,7 @@ public:
     ConnectionResult add_tcp_connection(const std::string &remote_ip, int remote_port);
     ConnectionResult add_serial_connection(const std::string &dev_path, int baudrate);
 
-    void set_configuration(DronecodeSDK::Configuration configuration);
+    void set_configuration(Mavsdk::Configuration configuration);
 
     std::vector<uint64_t> get_system_uuids() const;
     System &get_system();
@@ -40,8 +40,8 @@ public:
     bool is_connected() const;
     bool is_connected(uint64_t uuid) const;
 
-    void register_on_discover(DronecodeSDK::event_callback_t callback);
-    void register_on_timeout(DronecodeSDK::event_callback_t callback);
+    void register_on_discover(Mavsdk::event_callback_t callback);
+    void register_on_timeout(Mavsdk::event_callback_t callback);
 
     void notify_on_discover(uint64_t uuid);
     void notify_on_timeout(uint64_t uuid);
@@ -59,11 +59,10 @@ private:
     mutable std::recursive_mutex _systems_mutex;
     std::map<uint8_t, std::shared_ptr<System>> _systems;
 
-    DronecodeSDK::event_callback_t _on_discover_callback;
-    DronecodeSDK::event_callback_t _on_timeout_callback;
+    Mavsdk::event_callback_t _on_discover_callback;
+    Mavsdk::event_callback_t _on_timeout_callback;
 
-    std::atomic<DronecodeSDK::Configuration> _configuration{
-        DronecodeSDK::Configuration::GroundStation};
+    std::atomic<Mavsdk::Configuration> _configuration{Mavsdk::Configuration::GroundStation};
 
     std::atomic<bool> _should_exit = {false};
 };

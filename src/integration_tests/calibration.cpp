@@ -17,7 +17,7 @@ static void receive_calibration_callback(const Calibration::Result result,
 
 TEST(HardwareTest, CalibrationGyro)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -44,7 +44,7 @@ TEST(HardwareTest, CalibrationGyro)
 
 TEST(HardwareTest, CalibrationAccelerometer)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -71,7 +71,7 @@ TEST(HardwareTest, CalibrationAccelerometer)
 
 TEST(HardwareTest, CalibrationMagnetometer)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -98,7 +98,7 @@ TEST(HardwareTest, CalibrationMagnetometer)
 
 TEST(HardwareTest, CalibrationGimbalAccelerometer)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -125,7 +125,7 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
 
 TEST(HardwareTest, CalibrationGyroWithTelemetry)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -166,7 +166,7 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
 
 TEST(HardwareTest, CalibrationGyroCancelled)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

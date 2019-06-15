@@ -28,7 +28,7 @@ namespace backend {
 
 class GRPCServer {
 public:
-    GRPCServer(DronecodeSDK &dc) :
+    GRPCServer(Mavsdk &dc) :
         _dc(dc),
         _core(_dc),
         _action(_dc.system()),
@@ -57,7 +57,7 @@ public:
 private:
     void setup_port(grpc::ServerBuilder &builder);
 
-    DronecodeSDK &_dc;
+    Mavsdk &_dc;
 
     CoreServiceImpl<> _core;
     Action _action;

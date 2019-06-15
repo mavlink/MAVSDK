@@ -11,7 +11,7 @@ static Telemetry::FlightMode _flight_mode = Telemetry::FlightMode::UNKNOWN;
 
 TEST_F(SitlTest, TelemetryFlightModes)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

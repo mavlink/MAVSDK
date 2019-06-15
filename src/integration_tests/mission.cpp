@@ -38,7 +38,7 @@ static std::atomic<bool> pause_already_done{false};
 
 TEST_F(SitlTest, MissionAddWaypointsAndFly)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     {
         auto prom = std::make_shared<std::promise<void>>();

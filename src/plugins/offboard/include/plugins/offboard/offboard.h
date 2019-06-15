@@ -17,7 +17,7 @@ class System;
  * as opposed to onboard control right inside the autopilot "board".
  *
  * Client code must specify a setpoint before starting offboard mode.
- * DronecodeSDK automatically resends setpoints at 20Hz (PX4 Offboard mode requires that setpoints
+ * Mavsdk automatically resends setpoints at 20Hz (PX4 Offboard mode requires that setpoints
  * are minimally resent at 2Hz). If more precise control is required, clients can call the setpoint
  * methods at whatever rate is required.
  *

@@ -1463,7 +1463,7 @@ Mission::Result MissionImpl::import_mission_items(Mission::mission_items_t &all_
     Mission::Result result = Mission::Result::SUCCESS;
     auto new_mission_item = std::make_shared<MissionItem>();
 
-    // Iterate JSON mission items and build DronecodeSDK mission items
+    // Iterate JSON mission items and build Mavsdk mission items
     for (auto &json_mission_item : json_mission_items["items"].array_items()) {
         // Parameters of Mission item & MAV command of it.
         MAV_CMD command = static_cast<MAV_CMD>(json_mission_item["command"].int_value());

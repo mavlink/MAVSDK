@@ -20,7 +20,7 @@ int main(int argc, const char *argv[])
     UNUSED(argc);
     UNUSED(argv);
 
-    mavsdk::DronecodeSDK dc;
+    mavsdk::Mavsdk dc;
 
     mavsdk::ConnectionResult ret = dc.add_udp_connection();
     if (ret != mavsdk::ConnectionResult::SUCCESS) {

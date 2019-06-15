@@ -22,7 +22,7 @@ static std::shared_ptr<MissionItem> add_waypoint(double latitude_deg,
 
 TEST_F(SitlTest, MissionUploadCancellation)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -65,7 +65,7 @@ TEST_F(SitlTest, MissionUploadCancellation)
 
 TEST_F(SitlTest, MissionDownloadCancellation)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

@@ -4,7 +4,7 @@
 
 void runBackend(const char *connection_url, void (*onServerStarted)(void *), void *context)
 {
-    mavsdk::backend::DronecodeSDKBackend backend;
+    mavsdk::backend::MavsdkBackend backend;
     backend.startGRPCServer();
     backend.connect(std::string(connection_url));
 

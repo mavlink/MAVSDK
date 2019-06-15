@@ -14,7 +14,7 @@
 
 namespace mavsdk {
 
-DronecodeSDKImpl::DronecodeSDKImpl() :
+MavsdkImpl::MavsdkImpl() :
     _connections_mutex(),
     _connections(),
     _systems_mutex(),
@@ -22,10 +22,10 @@ DronecodeSDKImpl::DronecodeSDKImpl() :
     _on_discover_callback(nullptr),
     _on_timeout_callback(nullptr)
 {
-    LogInfo() << "DronecodeSDK version: " << dronecode_sdk_version;
+    LogInfo() << "Mavsdk version: " << dronecode_sdk_version;
 }
 
-DronecodeSDKImpl::~DronecodeSDKImpl()
+MavsdkImpl::~MavsdkImpl()
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
@@ -40,7 +40,7 @@ DronecodeSDKImpl::~DronecodeSDKImpl()
     }
 }
 
-void DronecodeSDKImpl::receive_message(mavlink_message_t &message)
+void MavsdkImpl::receive_message(mavlink_message_t &message)
 {
     // Don't ever create a system with sysid 0.
     if (message.sysid == 0) {
@@ -82,7 +82,7 @@ void DronecodeSDKImpl::receive_message(mavlink_message_t &message)
     }
 }
 
-bool DronecodeSDKImpl::send_message(mavlink_message_t &message)
+bool MavsdkImpl::send_message(mavlink_message_t &message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
@@ -96,7 +96,7 @@ bool DronecodeSDKImpl::send_message(mavlink_message_t &message)
     return true;
 }
 
-ConnectionResult DronecodeSDKImpl::add_any_connection(const std::string &connection_url)
+ConnectionResult MavsdkImpl::add_any_connection(const std::string &connection_url)
 {
     CliArg cli_arg;
     if (!cli_arg.parse(connection_url)) {
@@ -105,8 +105,8 @@ ConnectionResult DronecodeSDKImpl::add_any_connection(const std::string &connect
 
     switch (cli_arg.get_protocol()) {
         case CliArg::Protocol::UDP: {
-            std::string path = DronecodeSDK::DEFAULT_UDP_BIND_IP;
-            int port = DronecodeSDK::DEFAULT_UDP_PORT;
+            std::string path = Mavsdk::DEFAULT_UDP_BIND_IP;
+            int port = Mavsdk::DEFAULT_UDP_PORT;
             if (!cli_arg.get_path().empty()) {
                 path = cli_arg.get_path();
             }
@@ -117,8 +117,8 @@ ConnectionResult DronecodeSDKImpl::add_any_connection(const std::string &connect
         }
 
         case CliArg::Protocol::TCP: {
-            std::string path = DronecodeSDK::DEFAULT_TCP_REMOTE_IP;
-            int port = DronecodeSDK::DEFAULT_TCP_REMOTE_PORT;
+            std::string path = Mavsdk::DEFAULT_TCP_REMOTE_IP;
+            int port = Mavsdk::DEFAULT_TCP_REMOTE_PORT;
             if (!cli_arg.get_path().empty()) {
                 path = cli_arg.get_path();
             }
@@ -129,7 +129,7 @@ ConnectionResult DronecodeSDKImpl::add_any_connection(const std::string &connect
         }
 
         case CliArg::Protocol::SERIAL: {
-            int baudrate = DronecodeSDK::DEFAULT_SERIAL_BAUDRATE;
+            int baudrate = Mavsdk::DEFAULT_SERIAL_BAUDRATE;
             if (cli_arg.get_baudrate()) {
                 baudrate = cli_arg.get_baudrate();
             }
@@ -141,13 +141,10 @@ ConnectionResult DronecodeSDKImpl::add_any_connection(const std::string &connect
     }
 }
 
-ConnectionResult DronecodeSDKImpl::add_udp_connection(const std::string &local_ip,
-                                                      const int local_port)
+ConnectionResult MavsdkImpl::add_udp_connection(const std::string &local_ip, const int local_port)
 {
     auto new_conn = std::make_shared<UdpConnection>(
-        std::bind(&DronecodeSDKImpl::receive_message, this, std::placeholders::_1),
-        local_ip,
-        local_port);
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), local_ip, local_port);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
@@ -156,10 +153,10 @@ ConnectionResult DronecodeSDKImpl::add_udp_connection(const std::string &local_i
     return ret;
 }
 
-ConnectionResult DronecodeSDKImpl::add_tcp_connection(const std::string &remote_ip, int remote_port)
+ConnectionResult MavsdkImpl::add_tcp_connection(const std::string &remote_ip, int remote_port)
 {
     auto new_conn = std::make_shared<TcpConnection>(
-        std::bind(&DronecodeSDKImpl::receive_message, this, std::placeholders::_1),
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1),
         remote_ip,
         remote_port);
 
@@ -170,12 +167,10 @@ ConnectionResult DronecodeSDKImpl::add_tcp_connection(const std::string &remote_
     return ret;
 }
 
-ConnectionResult DronecodeSDKImpl::add_serial_connection(const std::string &dev_path, int baudrate)
+ConnectionResult MavsdkImpl::add_serial_connection(const std::string &dev_path, int baudrate)
 {
     auto new_conn = std::make_shared<SerialConnection>(
-        std::bind(&DronecodeSDKImpl::receive_message, this, std::placeholders::_1),
-        dev_path,
-        baudrate);
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), dev_path, baudrate);
 
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
@@ -184,18 +179,18 @@ ConnectionResult DronecodeSDKImpl::add_serial_connection(const std::string &dev_
     return ret;
 }
 
-void DronecodeSDKImpl::add_connection(std::shared_ptr<Connection> new_connection)
+void MavsdkImpl::add_connection(std::shared_ptr<Connection> new_connection)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
     _connections.push_back(new_connection);
 }
 
-void DronecodeSDKImpl::set_configuration(DronecodeSDK::Configuration configuration)
+void MavsdkImpl::set_configuration(Mavsdk::Configuration configuration)
 {
     _configuration = configuration;
 }
 
-std::vector<uint64_t> DronecodeSDKImpl::get_system_uuids() const
+std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
 {
     std::vector<uint64_t> uuids = {};
 
@@ -209,7 +204,7 @@ std::vector<uint64_t> DronecodeSDKImpl::get_system_uuids() const
     return uuids;
 }
 
-System &DronecodeSDKImpl::get_system()
+System &MavsdkImpl::get_system()
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
@@ -232,7 +227,7 @@ System &DronecodeSDKImpl::get_system()
     }
 }
 
-System &DronecodeSDKImpl::get_system(const uint64_t uuid)
+System &MavsdkImpl::get_system(const uint64_t uuid)
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
@@ -255,14 +250,14 @@ System &DronecodeSDKImpl::get_system(const uint64_t uuid)
     return *_systems[system_id];
 }
 
-uint8_t DronecodeSDKImpl::get_own_system_id() const
+uint8_t MavsdkImpl::get_own_system_id() const
 {
     switch (_configuration.load()) {
-        case DronecodeSDK::Configuration::GroundStation:
+        case Mavsdk::Configuration::GroundStation:
             // FIXME: This doesn't make much sense actually but it seems to work.
             return 0;
 
-        case DronecodeSDK::Configuration::CompanionComputer:
+        case Mavsdk::Configuration::CompanionComputer:
             // FIXME: This should be the same as the drone but we need to
             // add auto detection for it.
             return 1;
@@ -273,14 +268,14 @@ uint8_t DronecodeSDKImpl::get_own_system_id() const
     }
 }
 
-uint8_t DronecodeSDKImpl::get_own_component_id() const
+uint8_t MavsdkImpl::get_own_component_id() const
 {
     switch (_configuration.load()) {
-        case DronecodeSDK::Configuration::GroundStation:
+        case Mavsdk::Configuration::GroundStation:
             // FIXME: For now we increment by 1 to avoid conflicts with others.
             return MAV_COMP_ID_MISSIONPLANNER + 1;
 
-        case DronecodeSDK::Configuration::CompanionComputer:
+        case Mavsdk::Configuration::CompanionComputer:
             // It's at least a possibility that we are bridging MAVLink traffic.
             return MAV_COMP_ID_UDP_BRIDGE;
 
@@ -290,12 +285,12 @@ uint8_t DronecodeSDKImpl::get_own_component_id() const
     }
 }
 
-uint8_t DronecodeSDKImpl::get_mav_type() const
+uint8_t MavsdkImpl::get_mav_type() const
 {
     switch (_configuration.load()) {
-        case DronecodeSDK::Configuration::GroundStation:
+        case Mavsdk::Configuration::GroundStation:
             return MAV_TYPE_GCS;
-        case DronecodeSDK::Configuration::CompanionComputer:
+        case Mavsdk::Configuration::CompanionComputer:
             return MAV_TYPE_ONBOARD_CONTROLLER;
         default:
             LogErr() << "Unknown configuration";
@@ -303,7 +298,7 @@ uint8_t DronecodeSDKImpl::get_mav_type() const
     }
 }
 
-bool DronecodeSDKImpl::is_connected() const
+bool MavsdkImpl::is_connected() const
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -314,7 +309,7 @@ bool DronecodeSDKImpl::is_connected() const
     return _systems.begin()->second->is_connected();
 }
 
-bool DronecodeSDKImpl::is_connected(const uint64_t uuid) const
+bool MavsdkImpl::is_connected(const uint64_t uuid) const
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -326,7 +321,7 @@ bool DronecodeSDKImpl::is_connected(const uint64_t uuid) const
     return false;
 }
 
-void DronecodeSDKImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
+void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -342,7 +337,7 @@ void DronecodeSDKImpl::make_system_with_component(uint8_t system_id, uint8_t com
     _systems.insert(system_entry_t(system_id, new_system));
 }
 
-bool DronecodeSDKImpl::does_system_exist(uint8_t system_id)
+bool MavsdkImpl::does_system_exist(uint8_t system_id)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -353,14 +348,14 @@ bool DronecodeSDKImpl::does_system_exist(uint8_t system_id)
     return false;
 }
 
-void DronecodeSDKImpl::notify_on_discover(const uint64_t uuid)
+void MavsdkImpl::notify_on_discover(const uint64_t uuid)
 {
     if (_on_discover_callback != nullptr) {
         _on_discover_callback(uuid);
     }
 }
 
-void DronecodeSDKImpl::notify_on_timeout(const uint64_t uuid)
+void MavsdkImpl::notify_on_timeout(const uint64_t uuid)
 {
     LogDebug() << "Lost " << uuid;
     if (_on_timeout_callback != nullptr) {
@@ -368,7 +363,7 @@ void DronecodeSDKImpl::notify_on_timeout(const uint64_t uuid)
     }
 }
 
-void DronecodeSDKImpl::register_on_discover(const DronecodeSDK::event_callback_t callback)
+void MavsdkImpl::register_on_discover(const Mavsdk::event_callback_t callback)
 {
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
@@ -389,7 +384,7 @@ void DronecodeSDKImpl::register_on_discover(const DronecodeSDK::event_callback_t
     _on_discover_callback = callback;
 }
 
-void DronecodeSDKImpl::register_on_timeout(const DronecodeSDK::event_callback_t callback)
+void MavsdkImpl::register_on_timeout(const Mavsdk::event_callback_t callback)
 {
     _on_timeout_callback = callback;
 }

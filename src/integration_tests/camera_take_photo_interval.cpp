@@ -20,7 +20,7 @@ static std::atomic<bool> _received_result{false};
 
 TEST(CameraTest, TakePhotoInterval)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

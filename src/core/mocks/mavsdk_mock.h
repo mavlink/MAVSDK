@@ -8,7 +8,7 @@ namespace testing {
 
 typedef std::function<void(uint64_t uuid)> event_callback_t;
 
-class MockDronecodeSDK {
+class MockMavsdk {
 public:
     MOCK_CONST_METHOD1(add_any_connection, ConnectionResult(const std::string &)){};
     MOCK_CONST_METHOD1(register_on_discover, void(event_callback_t)){};

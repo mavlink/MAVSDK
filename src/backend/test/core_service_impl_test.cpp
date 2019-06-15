@@ -14,8 +14,8 @@ namespace {
 using testing::_;
 using testing::NiceMock;
 
-using MockDronecodeSDK = NiceMock<mavsdk::testing::MockDronecodeSDK>;
-using CoreServiceImpl = mavsdk::backend::CoreServiceImpl<MockDronecodeSDK>;
+using MockMavsdk = NiceMock<mavsdk::testing::MockMavsdk>;
+using CoreServiceImpl = mavsdk::backend::CoreServiceImpl<MockMavsdk>;
 using CoreService = mavsdk::rpc::core::CoreService;
 
 using ConnectionStateResponse = mavsdk::rpc::core::ConnectionStateResponse;
@@ -27,7 +27,7 @@ class CoreServiceImplTest : public ::testing::Test {
 protected:
     virtual void SetUp()
     {
-        _dc = std::unique_ptr<MockDronecodeSDK>(new MockDronecodeSDK());
+        _dc = std::unique_ptr<MockMavsdk>(new MockMavsdk());
         _core_service = std::unique_ptr<CoreServiceImpl>(new CoreServiceImpl(*_dc));
 
         grpc::ServerBuilder builder;
@@ -45,7 +45,7 @@ protected:
     std::future<void> subscribeConnectionStateAsync(std::vector<std::pair<uint64_t, bool>> &events);
 
     std::unique_ptr<CoreServiceImpl> _core_service{};
-    std::unique_ptr<MockDronecodeSDK> _dc{};
+    std::unique_ptr<MockMavsdk> _dc{};
     std::unique_ptr<grpc::Server> _server{};
     std::unique_ptr<CoreService::Stub> _stub{};
 };

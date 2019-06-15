@@ -10,7 +10,7 @@ using namespace mavsdk;
 
 TEST(CameraTest, SetModeSync)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -49,7 +49,7 @@ TEST(CameraTest, SetModeSync)
 
 TEST(CameraTest, SetModeAsync)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

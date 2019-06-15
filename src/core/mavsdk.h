@@ -10,7 +10,7 @@
 
 namespace mavsdk {
 
-class DronecodeSDKImpl;
+class MavsdkImpl;
 class System;
 
 /**
@@ -22,7 +22,7 @@ class System;
  * An instance of this class must be created (first) in order to use the library.
  * The instance must be destroyed after use in order to break connections and release all resources.
  */
-class DronecodeSDK {
+class Mavsdk {
 public:
     /** @brief Default UDP bind IP (accepts any incoming connections). */
     static constexpr auto DEFAULT_UDP_BIND_IP = "0.0.0.0";
@@ -38,14 +38,14 @@ public:
     /**
      * @brief Constructor.
      */
-    DronecodeSDK();
+    Mavsdk();
 
     /**
      * @brief Destructor.
      *
      * Disconnects all connected vehicles and releases all resources.
      */
-    ~DronecodeSDK();
+    ~Mavsdk();
 
     /**
      * @brief Adds Connection via URL
@@ -138,7 +138,7 @@ public:
      * @brief Get vector of system UUIDs.
      *
      * This returns a vector of the UUIDs of all systems that have been discovered.
-     * If a system doesn't have a UUID then DronecodeSDK will instead use its MAVLink system ID
+     * If a system doesn't have a UUID then Mavsdk will instead use its MAVLink system ID
      * (range: 0..255).
      *
      * @return A vector containing the UUIDs.
@@ -226,11 +226,11 @@ public:
 
 private:
     /* @private. */
-    std::unique_ptr<DronecodeSDKImpl> _impl;
+    std::unique_ptr<MavsdkImpl> _impl;
 
     // Non-copyable
-    DronecodeSDK(const DronecodeSDK &) = delete;
-    const DronecodeSDK &operator=(const DronecodeSDK &) = delete;
+    Mavsdk(const Mavsdk &) = delete;
+    const Mavsdk &operator=(const Mavsdk &) = delete;
 };
 
 } // namespace mavsdk

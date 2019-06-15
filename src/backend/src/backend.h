@@ -6,12 +6,12 @@
 namespace mavsdk {
 namespace backend {
 
-class DronecodeSDKBackend {
+class MavsdkBackend {
 public:
-    DronecodeSDKBackend();
-    ~DronecodeSDKBackend();
-    DronecodeSDKBackend(DronecodeSDKBackend &&) = delete;
-    DronecodeSDKBackend &operator=(DronecodeSDKBackend &&) = delete;
+    MavsdkBackend();
+    ~MavsdkBackend();
+    MavsdkBackend(MavsdkBackend &&) = delete;
+    MavsdkBackend &operator=(MavsdkBackend &&) = delete;
 
     void startGRPCServer();
     void connect(const std::string &connection_url = "udp://");

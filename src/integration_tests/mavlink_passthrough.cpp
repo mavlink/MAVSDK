@@ -9,7 +9,7 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, MavlinkPassthrough)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
     ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
 
     {

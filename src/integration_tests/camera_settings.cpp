@@ -17,7 +17,7 @@ const static bool is_et = false;
 
 TEST(CameraTest, ShowSettingsAndOptions)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -114,7 +114,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
 TEST(CameraTest, SetSettings)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult connection_ret = dc.add_udp_connection();
     ASSERT_EQ(connection_ret, ConnectionResult::SUCCESS);
@@ -254,7 +254,7 @@ static void receive_current_settings(bool &subscription_called,
 
 TEST(CameraTest, SubscribeCurrentSettings)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult connection_ret = dc.add_udp_connection();
     ASSERT_EQ(connection_ret, ConnectionResult::SUCCESS);
@@ -317,7 +317,7 @@ receive_possible_setting_options(bool &subscription_called,
 
 TEST(CameraTest, SubscribePossibleSettings)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult connection_ret = dc.add_udp_connection();
     ASSERT_EQ(connection_ret, ConnectionResult::SUCCESS);
