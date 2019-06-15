@@ -1,7 +1,7 @@
 #include "mavlink_channels.h"
 #include <gtest/gtest.h>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST(MAVLinkChannels, MaxChannelsSanity)
 {

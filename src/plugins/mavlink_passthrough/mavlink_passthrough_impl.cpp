@@ -3,7 +3,7 @@
 #include "system.h"
 #include "global_include.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 MavlinkPassthroughImpl::MavlinkPassthroughImpl(System &system) : PluginImplBase(system)
 {
@@ -83,4 +83,4 @@ void MavlinkPassthroughImpl::intercept_outgoing_messages_async(
     _parent->intercept_outgoing_messages(callback);
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

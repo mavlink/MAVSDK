@@ -4,7 +4,7 @@
 #include "core/core.grpc.pb.h"
 #include "mavsdk.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename DronecodeSDK = DronecodeSDK>
@@ -87,4 +87,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -3,7 +3,7 @@
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 void print_health(Telemetry::Health health);
 

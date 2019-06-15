@@ -3,7 +3,7 @@
 /**
  * @brief Namespace for all dronecode_sdk types.
  */
-namespace dronecode_sdk {
+namespace mavsdk {
 
 /**
  * @brief Result type returned when adding a connection.
@@ -70,4 +70,4 @@ inline const char *connection_result_str(const ConnectionResult result)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

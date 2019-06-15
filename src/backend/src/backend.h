@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 class DronecodeSDKBackend {
@@ -23,4 +23,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

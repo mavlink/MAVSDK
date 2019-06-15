@@ -3,7 +3,7 @@
 #include "mavsdk_impl.h"
 #include "px4_custom_mode.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 LoggingImpl::LoggingImpl(System &system) : PluginImplBase(system)
 {
@@ -133,4 +133,4 @@ void LoggingImpl::command_result_callback(MAVLinkCommands::Result command_result
     callback(action_result);
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

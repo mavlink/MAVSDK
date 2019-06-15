@@ -5,7 +5,7 @@
 #include "mavsdk.h"
 #include "plugins/mavlink_passthrough/mavlink_passthrough.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST_F(SitlTest, MavlinkPassthrough)
 {

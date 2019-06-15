@@ -5,7 +5,7 @@
 #include <sstream> // for `std::stringstream`
 #include <cmath>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
@@ -332,4 +332,4 @@ void MissionRawImpl::subscribe_mission_changed(MissionRaw::mission_changed_callb
     _mission_changed.callback = callback;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

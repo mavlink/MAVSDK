@@ -26,7 +26,7 @@
 #define GET_ERROR(_x) strerror(_x)
 #endif
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 UdpConnection::UdpConnection(Connection::receiver_callback_t receiver_callback,
                              const std::string &local_ip,
@@ -241,4 +241,4 @@ void UdpConnection::receive()
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

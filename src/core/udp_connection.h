@@ -8,7 +8,7 @@
 #include <cstdint>
 #include "connection.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class UdpConnection : public Connection {
 public:
@@ -53,4 +53,4 @@ private:
     std::atomic_bool _should_exit{false};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

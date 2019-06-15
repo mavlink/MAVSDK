@@ -12,7 +12,7 @@
 
 using namespace json11;
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class MissionImpl : public PluginImplBase {
 public:
@@ -149,4 +149,4 @@ private:
     static constexpr double RETRY_TIMEOUT_S = 0.250;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

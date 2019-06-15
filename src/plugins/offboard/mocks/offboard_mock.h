@@ -2,7 +2,7 @@
 
 #include "plugins/offboard/offboard.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace testing {
 
 class MockOffboard {
@@ -18,4 +18,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecode_sdk
+} // namespace mavsdk

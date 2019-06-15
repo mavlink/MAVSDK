@@ -5,7 +5,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class LogFilesImpl : public PluginImplBase {
 public:
@@ -70,4 +70,4 @@ private:
     static constexpr unsigned CHUNK_SIZE = 90;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -4,7 +4,7 @@
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 // static void connect(DronecodeSDK);
 static void takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);

@@ -2,7 +2,7 @@
 #include "system_impl.h"
 #include <memory>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class System;
 class SystemImpl;
@@ -61,4 +61,4 @@ protected:
     std::shared_ptr<SystemImpl> _parent;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

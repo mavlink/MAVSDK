@@ -9,7 +9,7 @@
 #include "plugins/action/action.h"
 #include "plugins/mission/mission.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 
 static void receive_upload_mission_result(Mission::Result result);

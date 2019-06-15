@@ -7,7 +7,7 @@
 #include "mission/mission.grpc.pb.h"
 #include "plugins/mission/mission_item.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename Mission = Mission>
@@ -338,4 +338,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

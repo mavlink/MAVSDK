@@ -5,7 +5,7 @@
 
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class OffboardImpl;
 class System;
@@ -300,4 +300,4 @@ bool operator==(const Offboard::VelocityNEDYaw &lhs, const Offboard::VelocityNED
  */
 std::ostream &operator<<(std::ostream &str, Offboard::VelocityNEDYaw const &velocity_ned_yaw);
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

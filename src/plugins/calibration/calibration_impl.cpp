@@ -7,7 +7,7 @@
 #include "px4_custom_mode.h"
 #include "system.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 using namespace std::placeholders;
 
@@ -376,4 +376,4 @@ void CalibrationImpl::report_instruction(const std::string &instruction)
     call_user_callback(_calibration_callback, Calibration::Result::INSTRUCTION, progress_data);
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

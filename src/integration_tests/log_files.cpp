@@ -5,7 +5,7 @@
 #include "integration_test_helper.h"
 #include "plugins/log_files/log_files.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST(HardwareTest, LogFiles)
 {

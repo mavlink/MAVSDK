@@ -5,7 +5,7 @@
 #include <limits>
 #include <cmath>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 using std::chrono::steady_clock;
 
@@ -158,4 +158,4 @@ bool are_equal(double one, double two)
     return (std::fabs(one - two) < std::numeric_limits<double>::epsilon());
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -9,7 +9,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class GeofenceImpl : public PluginImplBase {
 public:
@@ -53,4 +53,4 @@ private:
     std::atomic<bool> _active{false};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -6,7 +6,7 @@
 #include "plugins/action/action.h"
 #include "plugin_impl_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class ActionImpl : public PluginImplBase {
 public:
@@ -81,4 +81,4 @@ private:
     static constexpr auto RTL_RETURN_ALTITUDE_PARAM = "RTL_RETURN_ALT";
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

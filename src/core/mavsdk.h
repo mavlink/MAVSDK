@@ -8,7 +8,7 @@
 #include "system.h"
 #include "connection_result.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class DronecodeSDKImpl;
 class System;
@@ -233,4 +233,4 @@ private:
     const DronecodeSDK &operator=(const DronecodeSDK &) = delete;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

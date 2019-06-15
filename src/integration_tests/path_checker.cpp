@@ -1,7 +1,7 @@
 #include "path_checker.h"
 #include "integration_test_helper.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 void PathChecker::set_max_altitude(float relative_altitude_m)
 {

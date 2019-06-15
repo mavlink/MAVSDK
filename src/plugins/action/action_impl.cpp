@@ -4,7 +4,7 @@
 #include "px4_custom_mode.h"
 #include <cmath>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
@@ -538,4 +538,4 @@ void ActionImpl::command_result_callback(MAVLinkCommands::Result command_result,
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

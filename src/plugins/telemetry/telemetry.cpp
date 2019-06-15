@@ -4,7 +4,7 @@
 #include "plugins/telemetry/telemetry.h"
 #include "telemetry_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 Telemetry::Telemetry(System &system) : PluginBase(), _impl{new TelemetryImpl(system)} {}
 
@@ -491,4 +491,4 @@ std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_
     return str << "[statustext: " << status_text.text << "]";
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

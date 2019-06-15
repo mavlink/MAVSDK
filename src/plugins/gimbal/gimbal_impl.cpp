@@ -3,7 +3,7 @@
 #include <functional>
 #include <cmath>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 GimbalImpl::GimbalImpl(System &system) : PluginImplBase(system)
 {
@@ -113,4 +113,4 @@ Gimbal::Result GimbalImpl::gimbal_result_from_command_result(MAVLinkCommands::Re
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

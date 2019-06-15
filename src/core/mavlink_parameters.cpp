@@ -3,7 +3,7 @@
 #include <cstring>
 #include <future>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 MAVLinkParameters::MAVLinkParameters(SystemImpl &parent) : _parent(parent)
 {
@@ -493,4 +493,4 @@ std::ostream &operator<<(std::ostream &strm, const MAVLinkParameters::ParamValue
     return strm;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

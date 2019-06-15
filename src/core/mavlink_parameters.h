@@ -11,7 +11,7 @@
 #include <cassert>
 #include <map>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class SystemImpl;
 
@@ -543,4 +543,4 @@ private:
     // dl_time_t _last_request_time = {};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

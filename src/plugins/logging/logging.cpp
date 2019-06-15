@@ -1,7 +1,7 @@
 #include "logging.h"
 #include "logging_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 Logging::Logging(System &system) : PluginBase(), _impl{new LoggingImpl(system)} {}
 
@@ -48,4 +48,4 @@ const char *Logging::result_str(Result result)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

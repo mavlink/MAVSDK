@@ -9,7 +9,7 @@
 #include "global_include.h"
 #include "safe_queue.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class ThreadPool {
 public:
@@ -35,4 +35,4 @@ private:
     SafeQueue<std::function<void()>> _work_queue{};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

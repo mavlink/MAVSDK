@@ -4,7 +4,7 @@
 #include "mavlink_receiver.h"
 #include <memory>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class Connection {
 public:
@@ -33,4 +33,4 @@ protected:
     // void received_mavlink_message(mavlink_message_t &);
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -7,7 +7,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class MissionRawImpl : public PluginImplBase {
 public:
@@ -57,4 +57,4 @@ private:
     static constexpr double RETRY_TIMEOUT_S = 0.250;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

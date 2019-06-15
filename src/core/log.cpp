@@ -18,7 +18,7 @@
 #define ANSI_COLOR_RESET "\x1b[0m"
 #endif
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 void set_color(Color color)
 {
@@ -70,4 +70,4 @@ void set_color(Color color)
 #endif
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

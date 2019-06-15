@@ -3,7 +3,7 @@
 #include "plugins/telemetry/telemetry.h"
 #include "telemetry/telemetry.grpc.pb.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename Telemetry = Telemetry>
@@ -388,4 +388,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

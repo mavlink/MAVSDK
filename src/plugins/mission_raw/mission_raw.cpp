@@ -3,7 +3,7 @@
 #include "plugins/mission_raw/mission_raw.h"
 #include "mission_raw_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 MissionRaw::MissionRaw(System &system) : PluginBase(), _impl{new MissionRawImpl(system)} {}
 
@@ -45,4 +45,4 @@ void MissionRaw::subscribe_mission_changed(mission_changed_callback_t callback)
     _impl->subscribe_mission_changed(callback);
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

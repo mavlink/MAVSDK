@@ -3,7 +3,7 @@
 #include "mavsdk_impl.h"
 #include "global_include.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 DronecodeSDK::DronecodeSDK() : _impl{new DronecodeSDKImpl()} {}
 
@@ -77,4 +77,4 @@ void DronecodeSDK::register_on_timeout(const event_callback_t callback)
     _impl->register_on_timeout(callback);
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

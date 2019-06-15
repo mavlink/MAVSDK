@@ -8,7 +8,7 @@
 #include "mavlink/v2.0/common/mavlink.h"
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class System;
 class MavlinkPassthroughImpl;
@@ -153,4 +153,4 @@ private:
     std::unique_ptr<MavlinkPassthroughImpl> _impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

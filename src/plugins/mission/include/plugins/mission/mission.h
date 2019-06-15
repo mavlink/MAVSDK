@@ -11,7 +11,7 @@
 #undef ERROR
 #endif
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class MissionImpl;
 class System;
@@ -252,4 +252,4 @@ private:
     std::unique_ptr<MissionImpl> _impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

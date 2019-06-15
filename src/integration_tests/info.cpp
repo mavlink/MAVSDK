@@ -3,7 +3,7 @@
 #include "mavsdk.h"
 #include "plugins/info/info.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST_F(SitlTest, Info)
 {

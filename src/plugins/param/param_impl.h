@@ -6,7 +6,7 @@
 #include "plugins/param/param.h"
 #include "plugin_impl_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class ParamImpl : public PluginImplBase {
 public:
@@ -31,4 +31,4 @@ private:
     static Param::Result result_from_mavlink_parameters_result(MAVLinkParameters::Result result);
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

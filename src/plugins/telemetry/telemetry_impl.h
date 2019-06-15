@@ -12,7 +12,7 @@
 // is disabled for now.
 //#define LEVEL_CALIBRATION
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class System;
 
@@ -213,4 +213,4 @@ private:
 
     void *_timeout_cookie{nullptr};
 };
-} // namespace dronecode_sdk
+} // namespace mavsdk

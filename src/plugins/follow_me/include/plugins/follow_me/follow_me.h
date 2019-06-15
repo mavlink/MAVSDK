@@ -8,7 +8,7 @@
 
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class FollowMeImpl;
 class System;
@@ -199,4 +199,4 @@ private:
     std::unique_ptr<FollowMeImpl> _impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

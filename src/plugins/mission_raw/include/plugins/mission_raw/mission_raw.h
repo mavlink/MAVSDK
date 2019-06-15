@@ -6,7 +6,7 @@
 
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class MissionRawImpl;
 class System;
@@ -141,4 +141,4 @@ private:
     std::unique_ptr<MissionRawImpl> _impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

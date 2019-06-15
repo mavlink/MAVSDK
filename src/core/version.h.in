@@ -1,7 +1,7 @@
 #pragma once
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 constexpr auto dronecode_sdk_version = "@VERSION_STR@";
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

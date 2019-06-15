@@ -3,7 +3,7 @@
 #include "integration_test_helper.h"
 #include "camera_test_helpers.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 Camera::Mode get_mode(std::shared_ptr<Camera> camera)
 {

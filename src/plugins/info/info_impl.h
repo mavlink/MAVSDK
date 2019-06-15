@@ -6,7 +6,7 @@
 #include "plugins/info/info.h"
 #include "plugin_impl_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class InfoImpl : public PluginImplBase {
 public:
@@ -47,4 +47,4 @@ private:
     translate_binary_to_str(uint8_t *binary, unsigned binary_len, char *str, unsigned str_len);
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

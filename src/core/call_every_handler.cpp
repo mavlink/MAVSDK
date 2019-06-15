@@ -1,6 +1,6 @@
 #include "call_every_handler.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 CallEveryHandler::CallEveryHandler(Time &time) : _time(time) {}
 
@@ -85,4 +85,4 @@ void CallEveryHandler::run_once()
     _entries_mutex.unlock();
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

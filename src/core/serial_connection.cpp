@@ -8,7 +8,7 @@
 #include <termios.h>
 #endif
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 #ifndef WINDOWS
 #define GET_ERROR() strerror(errno)
@@ -344,4 +344,4 @@ int SerialConnection::define_from_baudrate(int baudrate)
 }
 #endif
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

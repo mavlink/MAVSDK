@@ -5,7 +5,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class ExampleImpl : public PluginImplBase {
 public:
@@ -24,4 +24,4 @@ private:
     void process_heartbeat(const mavlink_message_t &message);
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -3,7 +3,7 @@
 #include "any.h"
 #include <gtest/gtest.h>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 TEST(Any, StringAndInt)
 {

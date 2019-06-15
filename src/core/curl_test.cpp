@@ -6,7 +6,7 @@
 #include <thread>
 #include <gtest/gtest.h>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 class CurlTest : public testing::Test {
 protected:

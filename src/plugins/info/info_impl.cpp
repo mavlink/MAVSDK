@@ -4,7 +4,7 @@
 #include "system.h"
 #include "global_include.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 InfoImpl::InfoImpl(System &system) : PluginImplBase(system)
 {
@@ -181,4 +181,4 @@ const char *InfoImpl::product_id_str(uint16_t product_id)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

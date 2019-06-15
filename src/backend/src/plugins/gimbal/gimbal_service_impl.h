@@ -1,7 +1,7 @@
 #include "gimbal/gimbal.grpc.pb.h"
 #include "plugins/gimbal/gimbal.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename Gimbal = Gimbal>
@@ -38,4 +38,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

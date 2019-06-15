@@ -2,7 +2,7 @@
 
 #include "plugins/camera/camera.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace testing {
 
 class MockCamera {
@@ -32,4 +32,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecode_sdk
+} // namespace mavsdk

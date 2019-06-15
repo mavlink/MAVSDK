@@ -6,7 +6,7 @@
 #define CAMERA_AVAILABLE 0 // Set to 1 if camera is available and should be tested.
 
 using namespace std::placeholders; // for `_1`
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static void receive_result(Telemetry::Result result);
 static void print_position(Telemetry::Position position);

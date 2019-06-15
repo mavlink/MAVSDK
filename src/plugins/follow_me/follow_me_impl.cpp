@@ -4,7 +4,7 @@
 #include "px4_custom_mode.h"
 #include <cmath>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 FollowMeImpl::FollowMeImpl(System &system) : PluginImplBase(system)
 {
@@ -336,4 +336,4 @@ void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

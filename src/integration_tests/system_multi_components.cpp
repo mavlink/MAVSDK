@@ -8,7 +8,7 @@
 #include "mavsdk.h"
 #include "system.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::this_thread;
 using namespace std::chrono;
 

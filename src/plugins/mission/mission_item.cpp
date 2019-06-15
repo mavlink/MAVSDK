@@ -8,7 +8,7 @@
 
 #include "mission_item_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 MissionItem::MissionItem() : _impl{new MissionItemImpl()} {}
 
@@ -251,4 +251,4 @@ std::ostream &operator<<(std::ostream &str, MissionItem::CameraAction const &cam
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

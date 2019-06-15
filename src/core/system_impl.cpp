@@ -12,7 +12,7 @@
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
@@ -1205,4 +1205,4 @@ void SystemImpl::intercept_outgoing_messages(std::function<bool(mavlink_message_
     _outgoing_messages_intercept_callback = callback;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

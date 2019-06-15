@@ -6,7 +6,7 @@
 #include "mavsdk.h"
 #include "grpc_server.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 class DronecodeSDKBackend::Impl {
@@ -51,4 +51,4 @@ void DronecodeSDKBackend::wait()
 }
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

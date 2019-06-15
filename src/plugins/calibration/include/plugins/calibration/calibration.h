@@ -5,7 +5,7 @@
 
 #include "plugin_base.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class CalibrationImpl;
 class System;
@@ -143,4 +143,4 @@ private:
     CalibrationImpl *_impl;
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -7,7 +7,7 @@
 #include <functional>
 #include <string>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 TelemetryImpl::TelemetryImpl(System &system) : PluginImplBase(system)
 {
@@ -1051,4 +1051,4 @@ void TelemetryImpl::process_parameter_update(const std::string &name)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -1,7 +1,7 @@
 #include "info/info.grpc.pb.h"
 #include "plugins/info/info.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename Info = Info>
@@ -44,4 +44,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

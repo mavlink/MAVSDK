@@ -4,7 +4,7 @@
 #include "global_include.h"
 #include <cstdint>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class MAVLinkReceiver {
 public:
@@ -51,4 +51,4 @@ private:
 #endif
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

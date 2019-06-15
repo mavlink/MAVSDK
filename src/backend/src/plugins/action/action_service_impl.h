@@ -1,7 +1,7 @@
 #include "action/action.grpc.pb.h"
 #include "plugins/action/action.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename Action = Action>
@@ -260,4 +260,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk

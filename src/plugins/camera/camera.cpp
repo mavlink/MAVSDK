@@ -1,7 +1,7 @@
 #include "camera_impl.h"
 #include "plugins/camera/camera.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 Camera::Camera(System &system) : PluginBase(), _impl{new CameraImpl(system)} {}
 
@@ -396,4 +396,4 @@ std::ostream &operator<<(std::ostream &str, Camera::SettingOptions const &settin
     return str;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

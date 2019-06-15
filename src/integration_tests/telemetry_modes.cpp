@@ -4,7 +4,7 @@
 #include "plugins/telemetry/telemetry.h"
 #include "integration_test_helper.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 void print_mode(Telemetry::FlightMode flight_mode);
 static Telemetry::FlightMode _flight_mode = Telemetry::FlightMode::UNKNOWN;

@@ -1,7 +1,7 @@
 #include "plugins/param/param.h"
 #include "param_impl.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 Param::Param(System &system) : PluginBase(), _impl{new ParamImpl(system)} {}
 
@@ -47,4 +47,4 @@ std::string Param::result_str(Result result)
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

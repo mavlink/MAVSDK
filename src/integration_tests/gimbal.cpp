@@ -11,7 +11,7 @@
 #include "plugins/offboard/offboard.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i);
 void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal,

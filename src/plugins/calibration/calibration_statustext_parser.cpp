@@ -3,7 +3,7 @@
 #include "calibration_messages.h"
 #include "log.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 CalibrationStatustextParser::CalibrationStatustextParser() {}
 
@@ -142,4 +142,4 @@ bool CalibrationStatustextParser::check_instruction(const std::string &statustex
     return false;
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

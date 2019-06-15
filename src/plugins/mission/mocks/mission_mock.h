@@ -5,7 +5,7 @@
 #include "plugins/mission/mission.h"
 #include "plugins/mission/mission_item.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace testing {
 
 class MockMission {
@@ -30,4 +30,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecode_sdk
+} // namespace mavsdk

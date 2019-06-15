@@ -10,7 +10,7 @@
 #include <cmath>
 #include <sstream>
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
@@ -1523,4 +1523,4 @@ void CameraImpl::format_storage_async(Camera::result_callback_t callback)
                                 std::bind(&CameraImpl::receive_command_result, _1, callback));
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

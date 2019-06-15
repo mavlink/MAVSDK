@@ -10,7 +10,7 @@
 #include "system.h"
 #include "mavlink_include.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class DronecodeSDKImpl {
 public:
@@ -68,4 +68,4 @@ private:
     std::atomic<bool> _should_exit = {false};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

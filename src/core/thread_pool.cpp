@@ -1,6 +1,6 @@
 #include "thread_pool.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 ThreadPool::ThreadPool(unsigned num_threads) : _num_threads(num_threads) {}
 
@@ -47,4 +47,4 @@ void ThreadPool::worker()
     }
 }
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -9,7 +9,7 @@
 #include "plugins/action/action.h"
 #include "plugins/mission/mission.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static std::shared_ptr<MissionItem> add_waypoint(double latitude_deg,
                                                  double longitude_deg,

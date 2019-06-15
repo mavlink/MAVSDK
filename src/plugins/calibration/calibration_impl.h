@@ -6,7 +6,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class CalibrationImpl : public PluginImplBase {
 public:
@@ -68,4 +68,4 @@ private:
     Calibration::calibration_callback_t _calibration_callback{nullptr};
 };
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

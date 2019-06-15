@@ -22,7 +22,7 @@ constexpr float M_PI_F = float(M_PI);
 #define STRNCPY strncpy
 #endif
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 typedef std::chrono::time_point<std::chrono::steady_clock> dl_time_t;
 
@@ -72,4 +72,4 @@ float to_deg_from_rad(float rad);
 bool are_equal(float one, float two);
 bool are_equal(double one, double two);
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

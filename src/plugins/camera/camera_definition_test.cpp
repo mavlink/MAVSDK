@@ -6,7 +6,7 @@
 #include <memory>
 #include <fstream>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static const std::string e90_unit_test_file = "src/plugins/camera/e90_unit_test.xml";
 

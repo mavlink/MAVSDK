@@ -10,7 +10,7 @@
 using namespace testing;
 #endif // TESTING
 
-namespace dronecode_sdk {
+namespace mavsdk {
 
 class ICurlWrapper {
 public:
@@ -55,4 +55,4 @@ public:
 };
 #endif // TESTING
 
-} // namespace dronecode_sdk
+} // namespace mavsdk

@@ -5,7 +5,7 @@
 #include <cmath>
 #include <future>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static constexpr double SOME_LATITUDES[] = {47.398170, 47.398175};
 static constexpr double SOME_LONGITUDES[] = {8.545649, 8.545654};

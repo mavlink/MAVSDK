@@ -7,7 +7,7 @@
 #include "plugins/param/param.h"
 #include "plugins/telemetry/telemetry.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 
 static void receive_calibration_callback(const Calibration::Result result,

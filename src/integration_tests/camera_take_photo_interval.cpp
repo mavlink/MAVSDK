@@ -9,7 +9,7 @@
 #include "system.h"
 #include "camera_test_helpers.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 
 static void receive_camera_result(Camera::Result result);

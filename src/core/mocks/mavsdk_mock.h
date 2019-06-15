@@ -3,7 +3,7 @@
 
 #include "connection_result.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace testing {
 
 typedef std::function<void(uint64_t uuid)> event_callback_t;
@@ -16,4 +16,4 @@ public:
 };
 
 } // namespace testing
-} // namespace dronecode_sdk
+} // namespace mavsdk

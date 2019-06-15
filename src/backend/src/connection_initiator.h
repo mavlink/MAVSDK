@@ -6,7 +6,7 @@
 #include "connection_result.h"
 #include "log.h"
 
-namespace dronecode_sdk {
+namespace mavsdk {
 namespace backend {
 
 template<typename DronecodeSDK> class ConnectionInitiator {
@@ -73,4 +73,4 @@ private:
 };
 
 } // namespace backend
-} // namespace dronecode_sdk
+} // namespace mavsdk
