@@ -12,8 +12,8 @@ add_library(dronecode_sdk
     curl_wrapper.cpp
     system.cpp
     system_impl.cpp
-    dronecode_sdk.cpp
-    dronecode_sdk_impl.cpp
+    mavsdk.cpp
+    mavsdk_impl.cpp
     global_include.cpp
     http_loader.cpp
     mavlink_parameters.cpp
@@ -78,7 +78,7 @@ install(TARGETS dronecode_sdk
 install(FILES
     connection_result.h
     system.h
-    dronecode_sdk.h
+    mavsdk.h
     plugin_base.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/dronecode_sdk"
 )
