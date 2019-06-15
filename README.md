@@ -1,6 +1,6 @@
-# DronecodeSDK-Proto
+# MAVSDK-Proto
 
-DronecodeSDK is made of a backend in C++, exposing a protobuf API that can be used by different frontends, such as [DronecodeSDK-Python](https://github.com/dronecode/DronecodeSDK-Python), [DronecodeSDK-Swift](https://github.com/dronecode/DronecodeSDK-Swift) or [DronecodeSDK-Java](https://github.com/dronecode/DronecodeSDK-Java).
+MAVSDK is made of a backend in C++, exposing a protobuf API that can be used by different frontends, such as [MAVSDK-Python](https://github.com/dronecode/MAVSDK-Python), [MAVSDK-Swift](https://github.com/dronecode/MAVSDK-Swift) or [MAVSDK-Java](https://github.com/dronecode/MAVSDK-Java).
 
 The backend is made of different components responsible for different parts of the API. Each component defines a protobuf interface in the form of a directory containing `*.proto` files in this repository.
 

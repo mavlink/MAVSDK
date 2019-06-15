@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" Autogenerator for the DronecodeSDK SDK """
+""" Autogenerator for MAVSDK """
 
 
 from .autogen import AutoGen

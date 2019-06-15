@@ -6,7 +6,7 @@ here = path.abspath(path.dirname(__file__))
 setup(
     name="protoc-gen-dcsdk",
     version="0.1",
-    description="Autogenerator for the DronecodeSDK Bindings",
+    description="Autogenerator for the MAVSDK Bindings",
     url="@TODO",
     author="@TODO",
     author_email="@TODO",

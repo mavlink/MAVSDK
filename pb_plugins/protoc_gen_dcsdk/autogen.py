@@ -12,7 +12,7 @@ from .utils import (get_template_env,
 
 
 class AutoGen(object):
-    """ Autogenerator for the DronecodeSDK bindings """
+    """ Autogenerator for the MAVSDK bindings """
 
     @staticmethod
     def generate_reactive(request):

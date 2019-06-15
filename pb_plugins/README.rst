@@ -1,5 +1,5 @@
 ======================================
-Autogenerator for the DronecodeSDK sdk
+Autogenerator for the MAVSDK
 ======================================
 
 Install instructions
