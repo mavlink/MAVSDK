@@ -112,8 +112,8 @@ public:
 #endif
     }
 
-    LogDetailed(const dronecode_sdk::LogDetailed &) = delete;
-    void operator=(const dronecode_sdk::LogDetailed &) = delete;
+    LogDetailed(const mavsdk::LogDetailed &) = delete;
+    void operator=(const mavsdk::LogDetailed &) = delete;
 
 protected:
     enum LogLevel { Debug, Info, Warn, Err } _log_level = LogLevel::Debug;

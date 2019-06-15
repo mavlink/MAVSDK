@@ -11,13 +11,13 @@ public:
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType *response,
-                                dronecode_sdk::Offboard::Result &offboard_result) const
+                                mavsdk::Offboard::Result &offboard_result) const
     {
         auto rpc_result = static_cast<rpc::offboard::OffboardResult::Result>(offboard_result);
 
         auto *rpc_offboard_result = new rpc::offboard::OffboardResult();
         rpc_offboard_result->set_result(rpc_result);
-        rpc_offboard_result->set_result_str(dronecode_sdk::Offboard::result_str(offboard_result));
+        rpc_offboard_result->set_result_str(mavsdk::Offboard::result_str(offboard_result));
 
         response->set_allocated_offboard_result(rpc_offboard_result);
     }
@@ -72,10 +72,10 @@ public:
         return grpc::Status::OK;
     }
 
-    static dronecode_sdk::Offboard::Attitude
+    static mavsdk::Offboard::Attitude
     translateRPCAttitude(const rpc::offboard::Attitude &rpc_attitude)
     {
-        dronecode_sdk::Offboard::Attitude attitude;
+        mavsdk::Offboard::Attitude attitude;
 
         attitude.roll_deg = rpc_attitude.roll_deg();
         attitude.pitch_deg = rpc_attitude.pitch_deg();
@@ -97,10 +97,10 @@ public:
         return grpc::Status::OK;
     }
 
-    static dronecode_sdk::Offboard::AttitudeRate
+    static mavsdk::Offboard::AttitudeRate
     translateRPCAttitudeRate(const rpc::offboard::AttitudeRate &rpc_attitude_rate)
     {
-        dronecode_sdk::Offboard::AttitudeRate attitude_rate;
+        mavsdk::Offboard::AttitudeRate attitude_rate;
 
         attitude_rate.roll_deg_s = rpc_attitude_rate.roll_deg_s();
         attitude_rate.pitch_deg_s = rpc_attitude_rate.pitch_deg_s();
@@ -123,10 +123,10 @@ public:
         return grpc::Status::OK;
     }
 
-    static dronecode_sdk::Offboard::PositionNEDYaw
+    static mavsdk::Offboard::PositionNEDYaw
     translateRPCPositionNEDYaw(const rpc::offboard::PositionNEDYaw &rpc_position_ned_yaw)
     {
-        dronecode_sdk::Offboard::PositionNEDYaw position_ned_yaw;
+        mavsdk::Offboard::PositionNEDYaw position_ned_yaw;
 
         position_ned_yaw.north_m = rpc_position_ned_yaw.north_m();
         position_ned_yaw.east_m = rpc_position_ned_yaw.east_m();
@@ -149,10 +149,10 @@ public:
         return grpc::Status::OK;
     }
 
-    static dronecode_sdk::Offboard::VelocityBodyYawspeed translateRPCVelocityBodyYawspeed(
+    static mavsdk::Offboard::VelocityBodyYawspeed translateRPCVelocityBodyYawspeed(
         const rpc::offboard::VelocityBodyYawspeed &rpc_velocity_body_yawspeed)
     {
-        dronecode_sdk::Offboard::VelocityBodyYawspeed velocity_body_yawspeed;
+        mavsdk::Offboard::VelocityBodyYawspeed velocity_body_yawspeed;
 
         velocity_body_yawspeed.forward_m_s = rpc_velocity_body_yawspeed.forward_m_s();
         velocity_body_yawspeed.right_m_s = rpc_velocity_body_yawspeed.right_m_s();
@@ -175,10 +175,10 @@ public:
         return grpc::Status::OK;
     }
 
-    static dronecode_sdk::Offboard::VelocityNEDYaw
+    static mavsdk::Offboard::VelocityNEDYaw
     translateRPCVelocityNEDYaw(const rpc::offboard::VelocityNEDYaw &rpc_velocity_ned_yaw)
     {
-        dronecode_sdk::Offboard::VelocityNEDYaw velocity_ned_yaw;
+        mavsdk::Offboard::VelocityNEDYaw velocity_ned_yaw;
 
         velocity_ned_yaw.north_m_s = rpc_velocity_ned_yaw.north_m_s();
         velocity_ned_yaw.east_m_s = rpc_velocity_ned_yaw.east_m_s();

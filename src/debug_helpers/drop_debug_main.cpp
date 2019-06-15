@@ -20,10 +20,10 @@ int main(int argc, const char *argv[])
     UNUSED(argc);
     UNUSED(argv);
 
-    dronecode_sdk::DronecodeSDK dc;
+    mavsdk::DronecodeSDK dc;
 
-    dronecode_sdk::ConnectionResult ret = dc.add_udp_connection();
-    if (ret != dronecode_sdk::ConnectionResult::SUCCESS) {
+    mavsdk::ConnectionResult ret = dc.add_udp_connection();
+    if (ret != mavsdk::ConnectionResult::SUCCESS) {
         std::cout << "failed to add connection" << std::endl;
         return -1;
     }

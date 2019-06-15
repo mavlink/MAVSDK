@@ -8,7 +8,7 @@ namespace mavsdk {
 namespace backend {
 
 template<typename DronecodeSDK = DronecodeSDK>
-class CoreServiceImpl final : public dronecode_sdk::rpc::core::CoreService::Service {
+class CoreServiceImpl final : public mavsdk::rpc::core::CoreService::Service {
 public:
     CoreServiceImpl(DronecodeSDK &dc) :
         _dc(dc),
@@ -41,7 +41,7 @@ public:
     grpc::Status
     ListRunningPlugins(grpc::ServerContext * /* context */,
                        const rpc::core::ListRunningPluginsRequest * /* request */,
-                       dronecode_sdk::rpc::core::ListRunningPluginsResponse *response) override
+                       mavsdk::rpc::core::ListRunningPluginsResponse *response) override
     {
         std::string plugin_names[10] = {"action",
                                         "calibration",
@@ -72,14 +72,14 @@ private:
 
     std::future<void> _stop_future;
 
-    static dronecode_sdk::rpc::core::ConnectionStateResponse
+    static mavsdk::rpc::core::ConnectionStateResponse
     createRpcConnectionStateResponse(const uint64_t uuid, const bool is_connected)
     {
         auto rpc_connection_state = new rpc::core::ConnectionState();
         rpc_connection_state->set_uuid(uuid);
         rpc_connection_state->set_is_connected(is_connected);
 
-        dronecode_sdk::rpc::core::ConnectionStateResponse rpc_connection_state_response;
+        mavsdk::rpc::core::ConnectionStateResponse rpc_connection_state_response;
         rpc_connection_state_response.set_allocated_connection_state(rpc_connection_state);
 
         return rpc_connection_state_response;

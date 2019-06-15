@@ -24,7 +24,7 @@ public:
                 auto *rpc_gimbal_result = new rpc::gimbal::GimbalResult();
                 rpc_gimbal_result->set_result(
                     static_cast<rpc::gimbal::GimbalResult::Result>(gimbal_result));
-                rpc_gimbal_result->set_result_str(dronecode_sdk::Gimbal::result_str(gimbal_result));
+                rpc_gimbal_result->set_result_str(mavsdk::Gimbal::result_str(gimbal_result));
 
                 response->set_allocated_gimbal_result(rpc_gimbal_result);
             }

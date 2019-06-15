@@ -22,8 +22,7 @@ public:
                 auto *rpc_param_result = new rpc::param::ParamResult();
                 rpc_param_result->set_result(
                     static_cast<rpc::param::ParamResult::Result>(result_pair.first));
-                rpc_param_result->set_result_str(
-                    dronecode_sdk::Param::result_str(result_pair.first));
+                rpc_param_result->set_result_str(mavsdk::Param::result_str(result_pair.first));
 
                 response->set_allocated_param_result(rpc_param_result);
                 response->set_value(result_pair.second);
@@ -48,7 +47,7 @@ public:
                 auto *rpc_param_result = new rpc::param::ParamResult();
                 rpc_param_result->set_result(
                     static_cast<rpc::param::ParamResult::Result>(param_result));
-                rpc_param_result->set_result_str(dronecode_sdk::Param::result_str(param_result));
+                rpc_param_result->set_result_str(mavsdk::Param::result_str(param_result));
 
                 response->set_allocated_param_result(rpc_param_result);
             }
@@ -70,8 +69,7 @@ public:
                 auto *rpc_param_result = new rpc::param::ParamResult();
                 rpc_param_result->set_result(
                     static_cast<rpc::param::ParamResult::Result>(result_pair.first));
-                rpc_param_result->set_result_str(
-                    dronecode_sdk::Param::result_str(result_pair.first));
+                rpc_param_result->set_result_str(mavsdk::Param::result_str(result_pair.first));
 
                 response->set_allocated_param_result(rpc_param_result);
                 response->set_value(result_pair.second);
@@ -96,7 +94,7 @@ public:
                 auto *rpc_param_result = new rpc::param::ParamResult();
                 rpc_param_result->set_result(
                     static_cast<rpc::param::ParamResult::Result>(param_result));
-                rpc_param_result->set_result_str(dronecode_sdk::Param::result_str(param_result));
+                rpc_param_result->set_result_str(mavsdk::Param::result_str(param_result));
 
                 response->set_allocated_param_result(rpc_param_result);
             }

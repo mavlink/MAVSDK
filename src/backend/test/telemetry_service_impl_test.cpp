@@ -15,31 +15,31 @@ namespace {
 using testing::_;
 using testing::NiceMock;
 
-using MockTelemetry = NiceMock<dronecode_sdk::testing::MockTelemetry>;
-using TelemetryServiceImpl = dronecode_sdk::backend::TelemetryServiceImpl<MockTelemetry>;
-using TelemetryService = dronecode_sdk::rpc::telemetry::TelemetryService;
+using MockTelemetry = NiceMock<mavsdk::testing::MockTelemetry>;
+using TelemetryServiceImpl = mavsdk::backend::TelemetryServiceImpl<MockTelemetry>;
+using TelemetryService = mavsdk::rpc::telemetry::TelemetryService;
 
-using PositionResponse = dronecode_sdk::rpc::telemetry::PositionResponse;
-using Position = dronecode_sdk::Telemetry::Position;
+using PositionResponse = mavsdk::rpc::telemetry::PositionResponse;
+using Position = mavsdk::Telemetry::Position;
 
-using HealthResponse = dronecode_sdk::rpc::telemetry::HealthResponse;
-using Health = dronecode_sdk::Telemetry::Health;
+using HealthResponse = mavsdk::rpc::telemetry::HealthResponse;
+using Health = mavsdk::Telemetry::Health;
 
-using GpsInfo = dronecode_sdk::Telemetry::GPSInfo;
-using FixType = dronecode_sdk::rpc::telemetry::FixType;
+using GpsInfo = mavsdk::Telemetry::GPSInfo;
+using FixType = mavsdk::rpc::telemetry::FixType;
 
-using Battery = dronecode_sdk::Telemetry::Battery;
+using Battery = mavsdk::Telemetry::Battery;
 
-using FlightMode = dronecode_sdk::Telemetry::FlightMode;
-using RPCFlightMode = dronecode_sdk::rpc::telemetry::FlightMode;
+using FlightMode = mavsdk::Telemetry::FlightMode;
+using RPCFlightMode = mavsdk::rpc::telemetry::FlightMode;
 
-using Quaternion = dronecode_sdk::Telemetry::Quaternion;
+using Quaternion = mavsdk::Telemetry::Quaternion;
 
-using EulerAngle = dronecode_sdk::Telemetry::EulerAngle;
+using EulerAngle = mavsdk::Telemetry::EulerAngle;
 
-using GroundSpeedNed = dronecode_sdk::Telemetry::GroundSpeedNED;
+using GroundSpeedNed = mavsdk::Telemetry::GroundSpeedNED;
 
-using RcStatus = dronecode_sdk::Telemetry::RCStatus;
+using RcStatus = mavsdk::Telemetry::RCStatus;
 
 class TelemetryServiceImplTest : public ::testing::Test {
 protected:
@@ -166,10 +166,10 @@ std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<P
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribePositionRequest request;
+        mavsdk::rpc::telemetry::SubscribePositionRequest request;
         auto response_reader = _stub->SubscribePosition(&context, request);
 
-        dronecode_sdk::rpc::telemetry::PositionResponse response;
+        mavsdk::rpc::telemetry::PositionResponse response;
         while (response_reader->Read(&response)) {
             auto position_rpc = response.position();
 
@@ -209,7 +209,7 @@ void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position> &
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::position_callback_t position_callback;
+    mavsdk::Telemetry::position_callback_t position_callback;
     EXPECT_CALL(*_telemetry, position_async(_))
         .WillOnce(SaveCallback(&position_callback, &subscription_promise));
 
@@ -233,7 +233,7 @@ Position TelemetryServiceImplTest::createPosition(const double lat,
                                                   const float abs_alt,
                                                   const float rel_alt) const
 {
-    dronecode_sdk::Telemetry::Position expected_position;
+    mavsdk::Telemetry::Position expected_position;
 
     expected_position.latitude_deg = lat;
     expected_position.longitude_deg = lng;
@@ -268,10 +268,10 @@ std::future<void> TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Hea
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeHealthRequest request;
+        mavsdk::rpc::telemetry::SubscribeHealthRequest request;
         auto response_reader = _stub->SubscribeHealth(&context, request);
 
-        dronecode_sdk::rpc::telemetry::HealthResponse response;
+        mavsdk::rpc::telemetry::HealthResponse response;
         while (response_reader->Read(&response)) {
             auto health_rpc = response.health();
 
@@ -322,7 +322,7 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &heal
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::health_callback_t health_callback;
+    mavsdk::Telemetry::health_callback_t health_callback;
     EXPECT_CALL(*_telemetry, health_async(_))
         .WillOnce(SaveCallback(&health_callback, &subscription_promise));
 
@@ -343,7 +343,7 @@ void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &heal
 
 Health TelemetryServiceImplTest::createRandomHealth()
 {
-    dronecode_sdk::Telemetry::Health health;
+    mavsdk::Telemetry::Health health;
 
     health.gyrometer_calibration_ok = generateRandomBool();
     health.accelerometer_calibration_ok = generateRandomBool();
@@ -383,10 +383,10 @@ TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position> &home_positio
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeHomeRequest request;
+        mavsdk::rpc::telemetry::SubscribeHomeRequest request;
         auto response_reader = _stub->SubscribeHome(&context, request);
 
-        dronecode_sdk::rpc::telemetry::HomeResponse response;
+        mavsdk::rpc::telemetry::HomeResponse response;
         while (response_reader->Read(&response)) {
             auto home_rpc = response.home();
 
@@ -427,7 +427,7 @@ void TelemetryServiceImplTest::checkSendsHomePositions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::position_callback_t home_callback;
+    mavsdk::Telemetry::position_callback_t home_callback;
     EXPECT_CALL(*_telemetry, home_position_async(_))
         .WillOnce(SaveCallback(&home_callback, &subscription_promise));
 
@@ -473,10 +473,10 @@ TelemetryServiceImplTest::subscribeInAirAsync(std::vector<bool> &in_air_events) 
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeInAirRequest request;
+        mavsdk::rpc::telemetry::SubscribeInAirRequest request;
         auto response_reader = _stub->SubscribeInAir(&context, request);
 
-        dronecode_sdk::rpc::telemetry::InAirResponse response;
+        mavsdk::rpc::telemetry::InAirResponse response;
         while (response_reader->Read(&response)) {
             auto is_in_air = response.is_in_air();
             in_air_events.push_back(is_in_air);
@@ -509,7 +509,7 @@ void TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool> &in
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::in_air_callback_t in_air_callback;
+    mavsdk::Telemetry::in_air_callback_t in_air_callback;
     EXPECT_CALL(*_telemetry, in_air_async(_))
         .WillOnce(SaveCallback(&in_air_callback, &subscription_promise));
 
@@ -555,10 +555,10 @@ TelemetryServiceImplTest::subscribeArmedAsync(std::vector<bool> &armed_events) c
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeArmedRequest request;
+        mavsdk::rpc::telemetry::SubscribeArmedRequest request;
         auto response_reader = _stub->SubscribeArmed(&context, request);
 
-        dronecode_sdk::rpc::telemetry::ArmedResponse response;
+        mavsdk::rpc::telemetry::ArmedResponse response;
         while (response_reader->Read(&response)) {
             auto is_armed = response.is_armed();
             armed_events.push_back(is_armed);
@@ -591,7 +591,7 @@ void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool> &ar
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::armed_callback_t armed_callback;
+    mavsdk::Telemetry::armed_callback_t armed_callback;
     EXPECT_CALL(*_telemetry, armed_async(_))
         .WillOnce(SaveCallback(&armed_callback, &subscription_promise));
 
@@ -637,10 +637,10 @@ TelemetryServiceImplTest::subscribeGpsInfoAsync(std::vector<GpsInfo> &gps_info_e
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeGpsInfoRequest request;
+        mavsdk::rpc::telemetry::SubscribeGpsInfoRequest request;
         auto response_reader = _stub->SubscribeGpsInfo(&context, request);
 
-        dronecode_sdk::rpc::telemetry::GpsInfoResponse response;
+        mavsdk::rpc::telemetry::GpsInfoResponse response;
         while (response_reader->Read(&response)) {
             auto gps_info_rpc = response.gps_info();
 
@@ -700,7 +700,7 @@ void TelemetryServiceImplTest::checkSendsGpsInfoEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::gps_info_callback_t gps_info_callback;
+    mavsdk::Telemetry::gps_info_callback_t gps_info_callback;
     EXPECT_CALL(*_telemetry, gps_info_async(_))
         .WillOnce(SaveCallback(&gps_info_callback, &subscription_promise));
 
@@ -759,10 +759,10 @@ TelemetryServiceImplTest::subscribeBatteryAsync(std::vector<Battery> &battery_ev
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeBatteryRequest request;
+        mavsdk::rpc::telemetry::SubscribeBatteryRequest request;
         auto response_reader = _stub->SubscribeBattery(&context, request);
 
-        dronecode_sdk::rpc::telemetry::BatteryResponse response;
+        mavsdk::rpc::telemetry::BatteryResponse response;
         while (response_reader->Read(&response)) {
             auto battery_rpc = response.battery();
 
@@ -811,7 +811,7 @@ void TelemetryServiceImplTest::checkSendsBatteryEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::battery_callback_t battery_callback;
+    mavsdk::Telemetry::battery_callback_t battery_callback;
     EXPECT_CALL(*_telemetry, battery_async(_))
         .WillOnce(SaveCallback(&battery_callback, &subscription_promise));
 
@@ -858,10 +858,10 @@ std::future<void> TelemetryServiceImplTest::subscribeFlightModeAsync(
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeFlightModeRequest request;
+        mavsdk::rpc::telemetry::SubscribeFlightModeRequest request;
         auto response_reader = _stub->SubscribeFlightMode(&context, request);
 
-        dronecode_sdk::rpc::telemetry::FlightModeResponse response;
+        mavsdk::rpc::telemetry::FlightModeResponse response;
         while (response_reader->Read(&response)) {
             FlightMode flight_mode = translateRPCFlightMode(response.flight_mode());
             flight_mode_events.push_back(flight_mode);
@@ -921,7 +921,7 @@ void TelemetryServiceImplTest::checkSendsFlightModeEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::flight_mode_callback_t flight_mode_callback;
+    mavsdk::Telemetry::flight_mode_callback_t flight_mode_callback;
     EXPECT_CALL(*_telemetry, flight_mode_async(_))
         .WillOnce(SaveCallback(&flight_mode_callback, &subscription_promise));
 
@@ -972,10 +972,10 @@ std::future<void> TelemetryServiceImplTest::subscribeAttitudeQuaternionAsync(
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest request;
+        mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest request;
         auto response_reader = _stub->SubscribeAttitudeQuaternion(&context, request);
 
-        dronecode_sdk::rpc::telemetry::AttitudeQuaternionResponse response;
+        mavsdk::rpc::telemetry::AttitudeQuaternionResponse response;
         while (response_reader->Read(&response)) {
             auto quaternion_rpc = response.attitude_quaternion();
 
@@ -1016,7 +1016,7 @@ Quaternion TelemetryServiceImplTest::createQuaternion(const float w,
                                                       const float y,
                                                       const float z) const
 {
-    dronecode_sdk::Telemetry::Quaternion quaternion;
+    mavsdk::Telemetry::Quaternion quaternion;
 
     quaternion.w = w;
     quaternion.x = x;
@@ -1031,7 +1031,7 @@ void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
+    mavsdk::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
     EXPECT_CALL(*_telemetry, attitude_quaternion_async(_))
         .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
 
@@ -1076,10 +1076,10 @@ TelemetryServiceImplTest::subscribeAttitudeEulerAsync(std::vector<EulerAngle> &e
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeAttitudeEulerRequest request;
+        mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest request;
         auto response_reader = _stub->SubscribeAttitudeEuler(&context, request);
 
-        dronecode_sdk::rpc::telemetry::AttitudeEulerResponse response;
+        mavsdk::rpc::telemetry::AttitudeEulerResponse response;
         while (response_reader->Read(&response)) {
             auto euler_angle_rpc = response.attitude_euler();
 
@@ -1131,7 +1131,7 @@ void TelemetryServiceImplTest::checkSendsAttitudeEulerAngles(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
+    mavsdk::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
     EXPECT_CALL(*_telemetry, attitude_euler_angle_async(_))
         .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
 
@@ -1176,10 +1176,10 @@ std::future<void> TelemetryServiceImplTest::subscribeCameraAttitudeQuaternionAsy
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest request;
+        mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest request;
         auto response_reader = _stub->SubscribeCameraAttitudeQuaternion(&context, request);
 
-        dronecode_sdk::rpc::telemetry::CameraAttitudeQuaternionResponse response;
+        mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse response;
         while (response_reader->Read(&response)) {
             auto quaternion_rpc = response.attitude_quaternion();
 
@@ -1220,7 +1220,7 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeQuaternions(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
+    mavsdk::Telemetry::attitude_quaternion_callback_t attitude_quaternion_callback;
     EXPECT_CALL(*_telemetry, camera_attitude_quaternion_async(_))
         .WillOnce(SaveCallback(&attitude_quaternion_callback, &subscription_promise));
 
@@ -1265,10 +1265,10 @@ std::future<void> TelemetryServiceImplTest::subscribeCameraAttitudeEulerAsync(
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest request;
+        mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest request;
         auto response_reader = _stub->SubscribeCameraAttitudeEuler(&context, request);
 
-        dronecode_sdk::rpc::telemetry::CameraAttitudeEulerResponse response;
+        mavsdk::rpc::telemetry::CameraAttitudeEulerResponse response;
         while (response_reader->Read(&response)) {
             auto euler_angle_rpc = response.attitude_euler();
 
@@ -1308,7 +1308,7 @@ void TelemetryServiceImplTest::checkSendsCameraAttitudeEulerAngles(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
+    mavsdk::Telemetry::attitude_euler_angle_callback_t attitude_euler_angle_callback;
     EXPECT_CALL(*_telemetry, camera_attitude_euler_angle_async(_))
         .WillOnce(SaveCallback(&attitude_euler_angle_callback, &subscription_promise));
 
@@ -1353,10 +1353,10 @@ std::future<void> TelemetryServiceImplTest::subscribeGroundSpeedNedAsync(
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeGroundSpeedNedRequest request;
+        mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest request;
         auto response_reader = _stub->SubscribeGroundSpeedNed(&context, request);
 
-        dronecode_sdk::rpc::telemetry::GroundSpeedNedResponse response;
+        mavsdk::rpc::telemetry::GroundSpeedNedResponse response;
         while (response_reader->Read(&response)) {
             auto ground_speed_rpc = response.ground_speed_ned();
 
@@ -1409,7 +1409,7 @@ void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::ground_speed_ned_callback_t ground_speed_ned_callback;
+    mavsdk::Telemetry::ground_speed_ned_callback_t ground_speed_ned_callback;
     EXPECT_CALL(*_telemetry, ground_speed_ned_async(_))
         .WillOnce(SaveCallback(&ground_speed_ned_callback, &subscription_promise));
 
@@ -1454,10 +1454,10 @@ TelemetryServiceImplTest::subscribeRcStatusAsync(std::vector<RcStatus> &rc_statu
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        dronecode_sdk::rpc::telemetry::SubscribeRcStatusRequest request;
+        mavsdk::rpc::telemetry::SubscribeRcStatusRequest request;
         auto response_reader = _stub->SubscribeRcStatus(&context, request);
 
-        dronecode_sdk::rpc::telemetry::RcStatusResponse response;
+        mavsdk::rpc::telemetry::RcStatusResponse response;
         while (response_reader->Read(&response)) {
             auto rc_status_rpc = response.rc_status();
 
@@ -1510,7 +1510,7 @@ void TelemetryServiceImplTest::checkSendsRcStatusEvents(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    dronecode_sdk::Telemetry::rc_status_callback_t rc_status_callback;
+    mavsdk::Telemetry::rc_status_callback_t rc_status_callback;
     EXPECT_CALL(*_telemetry, rc_status_async(_))
         .WillOnce(SaveCallback(&rc_status_callback, &subscription_promise));
 

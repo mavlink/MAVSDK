@@ -30,7 +30,7 @@ public:
 
 private:
     DronecodeSDK _dc;
-    ConnectionInitiator<dronecode_sdk::DronecodeSDK> _connection_initiator;
+    ConnectionInitiator<mavsdk::DronecodeSDK> _connection_initiator;
     std::unique_ptr<GRPCServer> _server;
 };
 

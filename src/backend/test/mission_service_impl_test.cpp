@@ -14,7 +14,7 @@
 namespace {
 
 namespace dc = dronecode_sdk;
-namespace rpc = dronecode_sdk::rpc::mission;
+namespace rpc = mavsdk::rpc::mission;
 
 using testing::_;
 using testing::DoDefault;
@@ -297,7 +297,7 @@ ACTION_P2(SaveResult, callback, callback_saved_promise)
 TEST_F(MissionServiceImplDownloadTest, doesNotFailWhenArgsAreNull)
 {
     auto download_handle = downloadMissionAndSaveParams(nullptr);
-    std::vector<std::shared_ptr<dronecode_sdk::MissionItem>> arbitrary_mission;
+    std::vector<std::shared_ptr<mavsdk::MissionItem>> arbitrary_mission;
 
     _download_callback(ARBITRARY_RESULT, arbitrary_mission);
 }
@@ -321,7 +321,7 @@ TEST_P(MissionServiceImplDownloadTest, downloadResultIsTranslatedCorrectly)
     auto response = std::make_shared<DownloadMissionResponse>();
     std::vector<std::shared_ptr<dc::MissionItem>> mission_items;
     auto download_handle = downloadMissionAndSaveParams(response);
-    std::vector<std::shared_ptr<dronecode_sdk::MissionItem>> arbitrary_mission;
+    std::vector<std::shared_ptr<mavsdk::MissionItem>> arbitrary_mission;
 
     _download_callback(GetParam().second, arbitrary_mission);
     download_handle.wait();
@@ -408,7 +408,7 @@ protected:
 TEST_F(MissionServiceImplIsFinishedTest, isMissionFinishedCallsGetter)
 {
     EXPECT_CALL(_mission, mission_finished()).Times(1);
-    dronecode_sdk::rpc::mission::IsMissionFinishedResponse response;
+    mavsdk::rpc::mission::IsMissionFinishedResponse response;
 
     _mission_service.IsMissionFinished(nullptr, nullptr, &response);
 }
@@ -423,7 +423,7 @@ void MissionServiceImplIsFinishedTest::checkReturnsCorrectFinishedStatus(
     const bool expected_finished_status)
 {
     ON_CALL(_mission, mission_finished()).WillByDefault(Return(expected_finished_status));
-    dronecode_sdk::rpc::mission::IsMissionFinishedResponse response;
+    mavsdk::rpc::mission::IsMissionFinishedResponse response;
 
     _mission_service.IsMissionFinished(nullptr, nullptr, &response);
 
@@ -498,7 +498,7 @@ TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemSetsRightValue)
     const int expected_item_index = ARBITRARY_INDEX;
     EXPECT_CALL(_mission, set_current_mission_item_async(expected_item_index, _))
         .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
-    dronecode_sdk::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest request;
     request.set_index(expected_item_index);
 
     auto set_current_item_handle = std::async(std::launch::async, [this, &request]() {
@@ -506,14 +506,14 @@ TEST_F(MissionServiceImplSetCurrentTest, setCurrentItemSetsRightValue)
     });
 
     _callback_saved_future.wait();
-    _result_callback(dronecode_sdk::Mission::Result::SUCCESS);
+    _result_callback(mavsdk::Mission::Result::SUCCESS);
     set_current_item_handle.wait();
 }
 
 TEST_P(MissionServiceImplSetCurrentTest, setCurrentItemResultIsTranslatedCorrectly)
 {
-    dronecode_sdk::rpc::mission::SetCurrentMissionItemIndexResponse response;
-    dronecode_sdk::rpc::mission::SetCurrentMissionItemIndexRequest request;
+    mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse response;
+    mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest request;
     request.set_index(ARBITRARY_INDEX);
     EXPECT_CALL(_mission, set_current_mission_item_async(_, _))
         .WillOnce(SaveSetItemCallback(&_result_callback, &_callback_saved_promise));
@@ -575,10 +575,10 @@ std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
     std::shared_ptr<grpc::ClientContext> context) const
 {
     return std::async(std::launch::async, [&]() {
-        dronecode_sdk::rpc::mission::SubscribeMissionProgressRequest request;
+        mavsdk::rpc::mission::SubscribeMissionProgressRequest request;
         auto response_reader = _stub->SubscribeMissionProgress(context.get(), request);
 
-        dronecode_sdk::rpc::mission::MissionProgressResponse response;
+        mavsdk::rpc::mission::MissionProgressResponse response;
         while (response_reader->Read(&response)) {
             auto progress_event = std::make_pair(response.mission_progress().current_item_index(),
                                                  response.mission_progress().mission_count());
@@ -639,7 +639,7 @@ TEST_F(MissionServiceImplGetRTLAfterMissionTest, getRTLAfterMissionReturnsCorrec
 void MissionServiceImplGetRTLAfterMissionTest::checkGetRTLAfterMissionReturns(
     const bool expected_value)
 {
-    dronecode_sdk::rpc::mission::GetReturnToLaunchAfterMissionResponse response;
+    mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse response;
     ON_CALL(_mission, get_return_to_launch_after_mission()).WillByDefault(Return(expected_value));
 
     _mission_service.GetReturnToLaunchAfterMission(nullptr, nullptr, &response);
@@ -666,7 +666,7 @@ void MissionServiceImplSetRTLAfterMissionTest::checkSetRTLAfterMissionSets(
     const bool expected_value)
 {
     EXPECT_CALL(_mission, set_return_to_launch_after_mission(expected_value));
-    dronecode_sdk::rpc::mission::SetReturnToLaunchAfterMissionRequest request;
+    mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest request;
     request.set_enable(expected_value);
 
     _mission_service.SetReturnToLaunchAfterMission(nullptr, &request, nullptr);

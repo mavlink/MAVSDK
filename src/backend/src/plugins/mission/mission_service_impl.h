@@ -11,7 +11,7 @@ namespace mavsdk {
 namespace backend {
 
 template<typename Mission = Mission>
-class MissionServiceImpl final : public dronecode_sdk::rpc::mission::MissionService::Service {
+class MissionServiceImpl final : public mavsdk::rpc::mission::MissionService::Service {
 public:
     MissionServiceImpl(Mission &mission) : _mission(mission) {}
 
@@ -47,7 +47,7 @@ public:
 
         _mission.download_mission_async(
             [this, response, &result_promise](
-                const dronecode_sdk::Mission::Result result,
+                const mavsdk::Mission::Result result,
                 const std::vector<std::shared_ptr<MissionItem>> mission_items) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
@@ -83,7 +83,7 @@ public:
         const auto result_future = result_promise.get_future();
 
         _mission.start_mission_async(
-            [this, response, &result_promise](const dronecode_sdk::Mission::Result result) {
+            [this, response, &result_promise](const mavsdk::Mission::Result result) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -116,7 +116,7 @@ public:
         const auto result_future = result_promise.get_future();
 
         _mission.pause_mission_async(
-            [this, response, &result_promise](const dronecode_sdk::Mission::Result result) {
+            [this, response, &result_promise](const mavsdk::Mission::Result result) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -143,7 +143,7 @@ public:
 
         _mission.set_current_mission_item_async(
             request->index(),
-            [this, response, &result_promise](const dronecode_sdk::Mission::Result result) {
+            [this, response, &result_promise](const mavsdk::Mission::Result result) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -158,7 +158,7 @@ public:
 
     grpc::Status SubscribeMissionProgress(
         grpc::ServerContext * /* context */,
-        const dronecode_sdk::rpc::mission::SubscribeMissionProgressRequest * /* request */,
+        const mavsdk::rpc::mission::SubscribeMissionProgressRequest * /* request */,
         grpc::ServerWriter<rpc::mission::MissionProgressResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
@@ -168,11 +168,10 @@ public:
 
         _mission.subscribe_progress(
             [this, &writer, &stream_closed_promise, is_finished](int current, int total) {
-                dronecode_sdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
+                mavsdk::rpc::mission::MissionProgressResponse rpc_mission_progress_response;
 
-                auto rpc_mission_progress =
-                    std::unique_ptr<dronecode_sdk::rpc::mission::MissionProgress>(
-                        new dronecode_sdk::rpc::mission::MissionProgress);
+                auto rpc_mission_progress = std::unique_ptr<mavsdk::rpc::mission::MissionProgress>(
+                    new mavsdk::rpc::mission::MissionProgress);
                 rpc_mission_progress->set_current_item_index(current);
                 rpc_mission_progress->set_mission_count(total);
 
@@ -310,8 +309,7 @@ private:
                             std::promise<void> &result_promise) const
     {
         _mission.upload_mission_async(
-            mission_items,
-            [this, response, &result_promise](const dronecode_sdk::Mission::Result result) {
+            mission_items, [this, response, &result_promise](const mavsdk::Mission::Result result) {
                 if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
@@ -322,13 +320,13 @@ private:
     }
 
     rpc::mission::MissionResult *
-    generateRPCMissionResult(const dronecode_sdk::Mission::Result result) const
+    generateRPCMissionResult(const mavsdk::Mission::Result result) const
     {
         auto rpc_result = static_cast<rpc::mission::MissionResult::Result>(result);
 
         auto rpc_mission_result = new rpc::mission::MissionResult();
         rpc_mission_result->set_result(rpc_result);
-        rpc_mission_result->set_result_str(dronecode_sdk::Mission::result_str(result));
+        rpc_mission_result->set_result_str(mavsdk::Mission::result_str(result));
 
         return rpc_mission_result;
     }

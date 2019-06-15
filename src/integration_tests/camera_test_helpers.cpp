@@ -83,9 +83,8 @@ set_setting(std::shared_ptr<Camera> camera, const std::string &setting, const st
     return Camera::Result::TIMEOUT;
 }
 
-dronecode_sdk::Camera::Result get_setting(std::shared_ptr<dronecode_sdk::Camera> camera,
-                                          const std::string &setting,
-                                          std::string &option)
+mavsdk::Camera::Result
+get_setting(std::shared_ptr<mavsdk::Camera> camera, const std::string &setting, std::string &option)
 {
     struct PromiseResult {
         Camera::Result result{};
