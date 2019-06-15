@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "plugins/example/example.h"
 #include "integration_test_helper.h"
 

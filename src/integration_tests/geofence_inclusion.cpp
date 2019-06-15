@@ -3,7 +3,7 @@
 #include <memory>
 #include <atomic>
 #include "integration_test_helper.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/geofence/geofence.h"
 

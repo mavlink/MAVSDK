@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "integration_test_helper.h"
 #include "plugins/action/action.h"
 #include "plugins/gimbal/gimbal.h"

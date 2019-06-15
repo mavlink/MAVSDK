@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "plugins/camera/camera.h"
 
 dronecode_sdk::Camera::Mode get_mode(std::shared_ptr<dronecode_sdk::Camera> camera);

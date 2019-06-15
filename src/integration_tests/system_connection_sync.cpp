@@ -1,7 +1,7 @@
 #include <iostream>
 #include "integration_test_helper.h"
 #include "global_include.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 
 using namespace dronecode_sdk;
 

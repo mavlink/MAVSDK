@@ -1,6 +1,6 @@
 #include <iostream>
 #include "integration_test_helper.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 
 #define CAMERA_AVAILABLE 0 // Set to 1 if camera is available and should be tested.

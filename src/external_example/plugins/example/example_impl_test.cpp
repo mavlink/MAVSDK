@@ -1,5 +1,5 @@
 #include "example_impl.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "global_include.h"
 #include <gtest/gtest.h>
 

@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "connection_initiator.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "grpc_server.h"
 
 namespace dronecode_sdk {

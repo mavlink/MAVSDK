@@ -1,5 +1,5 @@
 #include "integration_test_helper.h"
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "plugins/mission/mission.h"
 #include "plugins/mission_raw/mission_raw.h"
 #include <cmath>

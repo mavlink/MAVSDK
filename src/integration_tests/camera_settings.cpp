@@ -2,7 +2,7 @@
 #include <functional>
 #include <atomic>
 #include <future>
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "system.h"
 #include "integration_test_helper.h"
 #include "camera_test_helpers.h"

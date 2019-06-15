@@ -1,6 +1,6 @@
 #include "global_include.h"
 #include "offboard_impl.h"
-#include "dronecode_sdk_impl.h"
+#include "mavsdk_impl.h"
 #include "px4_custom_mode.h"
 
 namespace dronecode_sdk {

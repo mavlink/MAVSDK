@@ -1,4 +1,4 @@
-#include "dronecode_sdk.h"
+#include "mavsdk.h"
 #include "curl_wrapper.h"
 #include <fstream>
 #include <iostream>
