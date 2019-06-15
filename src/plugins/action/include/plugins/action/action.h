@@ -45,7 +45,7 @@ public:
     /**
      * @brief Possible results returned for commanded actions.
      *
-     * @note DronecodeSDK does not throw exceptions. Instead a result of this type will be
+     * @note Mavsdk does not throw exceptions. Instead a result of this type will be
      * returned when you execute actions.
      */
     enum class Result {

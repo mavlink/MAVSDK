@@ -18,7 +18,7 @@ validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemI
 
 TEST_F(SitlTest, MissionRawMissionChanged)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

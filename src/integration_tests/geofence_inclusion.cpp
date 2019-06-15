@@ -17,7 +17,7 @@ static std::atomic<bool> _got_result{false};
 
 TEST_F(SitlTest, GeofenceInclusion)
 {
-    DronecodeSDK dl;
+    Mavsdk dl;
 
     ConnectionResult ret = dl.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

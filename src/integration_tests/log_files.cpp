@@ -9,7 +9,7 @@ using namespace mavsdk;
 
 TEST(HardwareTest, LogFiles)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     // ConnectionResult ret = dc.add_serial_connection("/dev/ttyACM0");
     ConnectionResult ret = dc.add_udp_connection();

@@ -23,7 +23,7 @@ static std::atomic<unsigned> _lossy_counter{0};
 
 TEST_F(SitlTest, MissionTransferLossy)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
     ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
 
     {

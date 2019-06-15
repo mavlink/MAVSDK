@@ -19,7 +19,7 @@ void on_timeout(uint64_t uuid);
 
 TEST_F(SitlTest, SystemConnectionAsync)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);
 

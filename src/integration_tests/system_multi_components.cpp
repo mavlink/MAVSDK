@@ -25,7 +25,7 @@ using namespace std::chrono;
  */
 TEST(SitlTestMultiple, SystemMultipleComponents)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     // For both Autopilot and Camera
     ASSERT_EQ(dc.add_udp_connection(), ConnectionResult::SUCCESS);

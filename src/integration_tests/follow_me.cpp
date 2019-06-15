@@ -24,7 +24,7 @@ const size_t N_LOCATIONS = 100ul;
 
 TEST_F(SitlTest, FollowMeOneLocation)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
@@ -92,7 +92,7 @@ TEST_F(SitlTest, FollowMeOneLocation)
 
 TEST_F(SitlTest, FollowMeMultiLocationWithConfig)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);

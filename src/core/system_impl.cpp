@@ -16,7 +16,7 @@ namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
-SystemImpl::SystemImpl(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t comp_id) :
+SystemImpl::SystemImpl(MavsdkImpl &parent, uint8_t system_id, uint8_t comp_id) :
     _system_id(system_id),
     _parent(parent),
     _params(*this),

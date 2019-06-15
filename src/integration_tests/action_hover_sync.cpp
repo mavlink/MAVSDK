@@ -26,7 +26,7 @@ TEST_F(SitlTest, ActionHoverSyncLower)
 
 void takeoff_and_hover_at_altitude(float altitude_m)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

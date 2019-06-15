@@ -35,7 +35,7 @@ TEST_F(SitlTest, MissionWithRTLHigherAnyway)
 
 void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     {
         auto prom = std::make_shared<std::promise<void>>();

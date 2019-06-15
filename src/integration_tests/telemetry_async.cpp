@@ -44,7 +44,7 @@ static bool _received_position_velocity_ned = false;
 
 TEST_F(SitlTest, TelemetryAsync)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
 

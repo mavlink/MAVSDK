@@ -7,10 +7,10 @@
 namespace mavsdk {
 namespace backend {
 
-template<typename DronecodeSDK = DronecodeSDK>
+template<typename Mavsdk = Mavsdk>
 class CoreServiceImpl final : public mavsdk::rpc::core::CoreService::Service {
 public:
-    CoreServiceImpl(DronecodeSDK &dc) :
+    CoreServiceImpl(Mavsdk &dc) :
         _dc(dc),
         _stop_promise(std::promise<void>()),
         _stop_future(_stop_promise.get_future())
@@ -67,7 +67,7 @@ public:
     void stop() { _stop_promise.set_value(); }
 
 private:
-    DronecodeSDK &_dc;
+    Mavsdk &_dc;
     std::promise<void> _stop_promise;
 
     std::future<void> _stop_future;

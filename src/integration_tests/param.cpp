@@ -7,7 +7,7 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, ParamSad)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -39,7 +39,7 @@ TEST_F(SitlTest, ParamSad)
 
 TEST_F(SitlTest, ParamHappy)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

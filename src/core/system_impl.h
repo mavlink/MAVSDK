@@ -23,7 +23,7 @@
 
 namespace mavsdk {
 
-class DronecodeSDKImpl;
+class MavsdkImpl;
 class PluginImplBase;
 
 // This class is the pimpl of System. This is to hide the private methods
@@ -40,7 +40,7 @@ public:
         OFFBOARD,
     };
 
-    explicit SystemImpl(DronecodeSDKImpl &parent, uint8_t system_id, uint8_t component_id);
+    explicit SystemImpl(MavsdkImpl &parent, uint8_t system_id, uint8_t component_id);
     ~SystemImpl();
 
     void process_mavlink_message(mavlink_message_t &message);
@@ -276,7 +276,7 @@ private:
     std::atomic<bool> _armed{false};
     std::atomic<bool> _hitl_enabled{false};
 
-    DronecodeSDKImpl &_parent;
+    MavsdkImpl &_parent;
 
     command_result_callback_t _command_result_callback{nullptr};
 

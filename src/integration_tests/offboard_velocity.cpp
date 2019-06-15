@@ -11,7 +11,7 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, OffboardVelocityNED)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);
@@ -108,7 +108,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
 TEST_F(SitlTest, OffboardVelocityBody)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ConnectionResult::SUCCESS, ret);

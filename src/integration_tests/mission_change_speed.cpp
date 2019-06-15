@@ -32,7 +32,7 @@ const static float speeds[4] = {10.0f, 3.0f, 8.0f, 5.0f};
 
 TEST_F(SitlTest, MissionChangeSpeed)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

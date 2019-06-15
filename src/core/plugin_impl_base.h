@@ -24,7 +24,7 @@ public:
 
     /*
      * The method `deinit()` is called before a plugin is destructed which happens
-     * usually only at the very end when a DronecodeSDK instance is destructed.
+     * usually only at the very end when a Mavsdk instance is destructed.
      *
      * Plugins should do any cleanup of what has been set up during init.
      */

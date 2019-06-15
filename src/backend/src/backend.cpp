@@ -9,7 +9,7 @@
 namespace mavsdk {
 namespace backend {
 
-class DronecodeSDKBackend::Impl {
+class MavsdkBackend::Impl {
 public:
     Impl() {}
     ~Impl() {}
@@ -29,23 +29,23 @@ public:
     void wait() { _server->wait(); }
 
 private:
-    DronecodeSDK _dc;
-    ConnectionInitiator<mavsdk::DronecodeSDK> _connection_initiator;
+    Mavsdk _dc;
+    ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
     std::unique_ptr<GRPCServer> _server;
 };
 
-DronecodeSDKBackend::DronecodeSDKBackend() : _impl(new Impl()) {}
-DronecodeSDKBackend::~DronecodeSDKBackend() = default;
+MavsdkBackend::MavsdkBackend() : _impl(new Impl()) {}
+MavsdkBackend::~MavsdkBackend() = default;
 
-void DronecodeSDKBackend::startGRPCServer()
+void MavsdkBackend::startGRPCServer()
 {
     _impl->startGRPCServer();
 }
-void DronecodeSDKBackend::connect(const std::string &connection_url)
+void MavsdkBackend::connect(const std::string &connection_url)
 {
     return _impl->connect(connection_url);
 }
-void DronecodeSDKBackend::wait()
+void MavsdkBackend::wait()
 {
     _impl->wait();
 }

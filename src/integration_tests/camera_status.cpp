@@ -17,7 +17,7 @@ static std::atomic<int> _num_received_status{0};
 
 TEST(CameraTest, Status)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -35,7 +35,7 @@ TEST(CameraTest, Status)
 
 TEST(CameraTest, StatusSubscription)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);

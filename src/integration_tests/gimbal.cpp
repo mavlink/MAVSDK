@@ -23,7 +23,7 @@ void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
 TEST(SitlTestGimbal, GimbalMove)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -51,7 +51,7 @@ TEST(SitlTestGimbal, GimbalMove)
 
 TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
@@ -92,7 +92,7 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
 TEST(SitlTestGimbal, GimbalROIOffboard)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     ConnectionResult ret = dc.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
