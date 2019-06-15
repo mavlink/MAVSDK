@@ -21,7 +21,7 @@
 
 #include "fake_location_provider.h"
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 using namespace std::chrono; // for seconds(), milliseconds(), etc
 using namespace std::this_thread; // for sleep_for()

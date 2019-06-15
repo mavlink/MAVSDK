@@ -38,7 +38,7 @@
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
 

@@ -10,7 +10,7 @@
 using std::this_thread::sleep_for;
 using std::chrono::seconds;
 using std::chrono::milliseconds;
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static constexpr auto ERROR_CONSOLE_TEXT = "\033[31m";
 static constexpr auto TELEMETRY_CONSOLE_TEXT = "\033[34m";

@@ -17,7 +17,7 @@
 #include <dronecode_sdk/plugins/offboard/offboard.h>
 #include <dronecode_sdk/plugins/telemetry/telemetry.h>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
 using std::chrono::seconds;

@@ -12,7 +12,7 @@
 #include <future>
 #include <memory>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static void subscribe_armed(std::shared_ptr<Telemetry> telemetry);
 static void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
