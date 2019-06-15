@@ -33,12 +33,12 @@ if(IOS)
 endif()
 
 if(IOS)
-    add_library(backend SHARED ${BACKEND_SOURCES})
+    add_library(mavsdk_server SHARED ${BACKEND_SOURCES})
 else()
-    add_library(backend ${BACKEND_SOURCES})
+    add_library(mavsdk_server ${BACKEND_SOURCES})
 endif()
 
-target_link_libraries(backend
+target_link_libraries(mavsdk_server
     PRIVATE
     mavsdk_action
     mavsdk_calibration
@@ -54,7 +54,7 @@ target_link_libraries(backend
     ${COMPONENTS_PROTOGENS}
 )
 
-target_include_directories(backend
+target_include_directories(mavsdk_server
     PRIVATE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/core>
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/plugins>
@@ -65,7 +65,7 @@ target_include_directories(backend
 )
 
 if(IOS)
-    set_target_properties(backend PROPERTIES
+    set_target_properties(mavsdk_server PROPERTIES
         FRAMEWORK TRUE
         BUILD_WITH_INSTALL_RPATH TRUE
         INSTALL_NAME_DIR @rpath
@@ -74,29 +74,33 @@ if(IOS)
         MACOSX_FRAMEWORK_INFO_PLIST ${PROJECT_SOURCE_DIR}/backend/cmake/MacOSXFrameworkInfo.plist.in
     )
 else()
-    add_executable(backend_bin
+    add_executable(mavsdk_server_bin
         mavsdk_server.cpp
     )
 
-    target_link_libraries(backend_bin
-        backend
+    target_link_libraries(mavsdk_server_bin
+        mavsdk_server
         mavsdk
     )
 
-    install(TARGETS backend_bin
+    set_target_properties(mavsdk_server_bin PROPERTIES
+        OUTPUT_NAME mavsdk_server
+    )
+
+    install(TARGETS mavsdk_server_bin
         EXPORT mavsdk-targets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        )
+    )
 
     if(BUILD_SHARED_LIBS)
-        install(TARGETS backend
+        install(TARGETS mavsdk_server
             EXPORT mavsdk-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            )
+        )
 
         install(FILES
             backend_api.h
             DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/backend"
-            )
+        )
     endif()
 endif()

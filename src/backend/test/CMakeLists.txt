@@ -29,7 +29,7 @@ target_include_directories(unit_tests_backend
 )
 
 target_link_libraries(unit_tests_backend
-    backend
+    mavsdk_server
     mavsdk_action
     mavsdk_camera
     mavsdk_info
