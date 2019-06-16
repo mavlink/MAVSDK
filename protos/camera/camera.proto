@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecode_sdk.rpc.camera;
+package mavsdk.rpc.camera;
 
-option java_package = "io.dronecode_sdk.camera";
+option java_package = "io.mavlink.mavsdk.camera";
 option java_outer_classname = "CameraProto";
 
 service CameraService {

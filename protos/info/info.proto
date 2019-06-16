@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecode_sdk.rpc.info;
+package mavsdk.rpc.info;
 
-option java_package = "io.dronecode_sdk.info";
+option java_package = "io.mavlink.mavsdk.info";
 option java_outer_classname = "InfoProto";
 
 service InfoService {

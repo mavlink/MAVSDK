@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecode_sdk.rpc.offboard;
+package mavsdk.rpc.offboard;
 
-option java_package = "io.dronecode_sdk.offboard";
+option java_package = "io.mavlink.mavsdk.offboard";
 option java_outer_classname = "OffboardProto";
 
 service OffboardService {

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecode_sdk.rpc.core;
+package mavsdk.rpc.core;
 
-option java_package = "io.dronecode_sdk.core";
+option java_package = "io.mavlink.mavsdk.core";
 option java_outer_classname = "CoreProto";
 
 service CoreService {

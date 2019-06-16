@@ -78,7 +78,7 @@ class TypeInfo:
 
         Note that it also assumes that the package name has 3 words. It
         will start with a '.', giving something like:
-        '.org.dronecode.sdk.ActionResult.Result'."""
+        '.io.mavlink.mavsdk.ActionResult.Result'."""
         if self.is_primitive:
             return None
 

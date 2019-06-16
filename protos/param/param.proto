@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dronecode_sdk.rpc.param;
+package mavsdk.rpc.param;
 
-option java_package = "io.dronecode_sdk.param";
+option java_package = "io.mavlink.mavsdk.param";
 option java_outer_classname = "ParamProto";
 
 service ParamService {
