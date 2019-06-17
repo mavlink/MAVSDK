@@ -10,14 +10,14 @@ else()
     add_definitions("-std=c++11 -WX -W2")
 endif()
 
-find_package(DronecodeSDK REQUIRED)
+find_package(MAVSDK REQUIRED)
 
 add_executable(battery
     battery.cpp
 )
 
 target_link_libraries(battery
-    DronecodeSDK::mavsdk_telemetry
-    DronecodeSDK::mavsdk_mavlink_passthrough
-    DronecodeSDK::mavsdk
+    MAVSDK::mavsdk_telemetry
+    MAVSDK::mavsdk_mavlink_passthrough
+    MAVSDK::mavsdk
 )

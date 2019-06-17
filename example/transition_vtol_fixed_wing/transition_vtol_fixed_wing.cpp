@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
     const std::string connection_url = argv[1];
 
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     // Add connection specified by CLI argument.
     const ConnectionResult connection_result = dc.add_any_connection(connection_url);
