@@ -60,7 +60,7 @@ void usage(std::string bin_name)
 
 int main(int argc, char **argv)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     {
         auto prom = std::make_shared<std::promise<void>>();

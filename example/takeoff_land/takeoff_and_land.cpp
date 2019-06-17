@@ -37,7 +37,7 @@ void component_discovered(ComponentType component_type)
 
 int main(int argc, char **argv)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
     std::string connection_url;
     ConnectionResult connection_result;
 

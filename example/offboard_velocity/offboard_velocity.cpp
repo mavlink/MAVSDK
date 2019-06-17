@@ -213,7 +213,7 @@ void usage(std::string bin_name)
 
 int main(int argc, char **argv)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
     std::string connection_url;
     ConnectionResult connection_result;
 

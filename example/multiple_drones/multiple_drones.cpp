@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     // the loop below adds the number of ports the sdk monitors.
     for (int i = 1; i < argc; ++i) {

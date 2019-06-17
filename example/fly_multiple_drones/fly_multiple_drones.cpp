@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     // Half of argc is how many udp ports is being used
     int total_ports_used = argc / 2;

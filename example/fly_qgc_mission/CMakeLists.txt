@@ -8,15 +8,15 @@ else()
     add_definitions("-std=c++11 -WX -W2")
 endif()
 
-find_package(DronecodeSDK REQUIRED)
+find_package(MAVSDK REQUIRED)
 
 add_executable(fly_qgc_mission
     fly_qgc_mission.cpp
 )
 
 target_link_libraries(fly_qgc_mission
-    DronecodeSDK::mavsdk_action
-    DronecodeSDK::mavsdk_mission
-    DronecodeSDK::mavsdk_telemetry
-    DronecodeSDK::mavsdk
+    MAVSDK::mavsdk_action
+    MAVSDK::mavsdk_mission
+    MAVSDK::mavsdk_telemetry
+    MAVSDK::mavsdk
 )

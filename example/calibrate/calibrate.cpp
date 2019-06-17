@@ -7,7 +7,7 @@ using namespace mavsdk;
 
 bool are_arguments_valid(int argc, char **argv);
 void print_usage(const std::string &);
-void wait_until_discover(DronecodeSDK &);
+void wait_until_discover(Mavsdk &);
 void calibrate_accelerometer(Calibration &);
 Calibration::calibration_callback_t create_calibration_callback(std::promise<void> &);
 void calibrate_gyro(Calibration &);
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     const auto connection_url = argv[1];
     const auto connection_result = dc.add_any_connection(connection_url);
@@ -58,7 +58,7 @@ void print_usage(const std::string &bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-void wait_until_discover(DronecodeSDK &dc)
+void wait_until_discover(Mavsdk &dc)
 {
     std::cout << "Waiting to discover system..." << std::endl;
     std::promise<void> discover_promise;
