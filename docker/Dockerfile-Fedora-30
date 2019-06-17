@@ -1,10 +1,10 @@
 #
-# Development environment for the MAVSDK based on Fedora 28.
+# Development environment for the MAVSDK based on Fedora 30.
 #
 # Author: Julian Oes <julian@oes.ch>
 #
 
-FROM fedora:28
+FROM fedora:30
 
 MAINTAINER Julian Oes <julian@oes.ch>
 
