@@ -36,7 +36,7 @@ RUN dnf -y install \
     zlib-devel \
     && dnf clean all
 
-RUN gem install --no-ri --no-rdoc fpm;
+RUN gem install --no-document fpm;
 
 RUN wget -qO- https://github.com/ncopa/su-exec/archive/dddd1567b7c76365e1e0aac561287975020a8fad.tar.gz | tar xvz && \
     cd su-exec-* && make && mv su-exec /usr/local/bin && cd .. && rm -rf su-exec-*
