@@ -22,7 +22,7 @@ MavsdkImpl::MavsdkImpl() :
     _on_discover_callback(nullptr),
     _on_timeout_callback(nullptr)
 {
-    LogInfo() << "Mavsdk version: " << mavsdk_version;
+    LogInfo() << "MAVSDK version: " << mavsdk_version;
 }
 
 MavsdkImpl::~MavsdkImpl()
