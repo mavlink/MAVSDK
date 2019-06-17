@@ -10,7 +10,7 @@ pipeline {
         stage('Ubuntu 16.04 Debug') {
           agent {
             docker {
-              image 'mavlink/mavsdk-ubuntu-16.04:2019-03-25'
+              image 'mavsdk/mavsdk-ubuntu-16.04:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -40,7 +40,7 @@ pipeline {
         stage('Ubuntu 16.04 Release') {
           agent {
             docker {
-              image 'mavlink/mavsdk-ubuntu-16.04:2019-03-25'
+              image 'mavsdk/mavsdk-ubuntu-16.04:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -70,7 +70,7 @@ pipeline {
         stage('Ubuntu 18.04 Debug') {
           agent {
             docker {
-              image 'mavlink/mavsdk-ubuntu-18.04:2019-03-25'
+              image 'mavsdk/mavsdk-ubuntu-18.04:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -100,7 +100,7 @@ pipeline {
         stage('Ubuntu 18.04 Release') {
           agent {
             docker {
-              image 'mavlink/mavsdk-ubuntu-18.04:2019-03-25'
+              image 'mavsdk/mavsdk-ubuntu-18.04:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -130,7 +130,7 @@ pipeline {
         stage('Ubuntu 18.04 Debug PX4 SITL') {
           agent {
             docker {
-              image 'mavlink/mavsdk-ubuntu-18.04-px4-sitl:2019-05-15'
+              image 'mavsdk/mavsdk-ubuntu-18.04-px4-sitl:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -155,10 +155,10 @@ pipeline {
           }
         }
 
-        stage('Fedora 27 Debug') {
+        stage('Fedora 29 Debug') {
           agent {
             docker {
-              image 'mavlink/mavsdk-fedora-28:2019-03-25'
+              image 'mavsdk/mavsdk-fedora-29:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -185,10 +185,10 @@ pipeline {
           }
         }
 
-        stage('Fedora 27 Release') {
+        stage('Fedora 29 Release') {
           agent {
             docker {
-              image 'mavlink/mavsdk-fedora-28:2019-03-25'
+              image 'mavsdk/mavsdk-fedora-29:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -215,10 +215,10 @@ pipeline {
           }
         }
 
-        stage('Fedora 28 Debug') {
+        stage('Fedora 30 Debug') {
           agent {
             docker {
-              image 'mavlink/mavsdk-fedora-29:2019-03-25'
+              image 'mavsdk/mavsdk-fedora-30:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -245,10 +245,10 @@ pipeline {
           }
         }
 
-        stage('Fedora 28 Release') {
+        stage('Fedora 30 Release') {
           agent {
             docker {
-              image 'mavlink/mavsdk-fedora-29:2019-03-25'
+              image 'mavsdk/mavsdk-fedora-30:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -344,7 +344,7 @@ pipeline {
         stage('check style') {
           agent {
             docker {
-              image 'mavlink/mavsdk-ubuntu-16.04:2019-03-25'
+              image 'mavsdk/mavsdk-ubuntu-16.04:2019-06-17'
               args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
             }
           }
@@ -368,7 +368,7 @@ pipeline {
     stage('Generate Docs') {
       agent {
         docker {
-          image 'mavlink/mavsdk-ubuntu-16.04:2019-03-25'
+          image 'mavsdk/mavsdk-ubuntu-16.04:2019-06-17'
           args '-e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
         }
       }
