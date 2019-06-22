@@ -1,5 +1,5 @@
 //
-// Simple example to demonstrate how to use the Dronecode SDK.
+// Simple example to demonstrate how to use the MAVSDK.
 //
 // Author: Julian Oes <julian@oes.ch>
 
