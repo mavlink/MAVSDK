@@ -101,7 +101,7 @@ public:
      * @brief Downloads a vector of mission items from the system (asynchronous).
      *
      * The method will fail if any of the downloaded mission items are not supported
-     * by the Dronecode SDK API.
+     * by the MAVSDK API.
      *
      * @param callback Callback to receive mission items and result of this request.
      */
