@@ -1,7 +1,7 @@
 /**
  * @file fly_mission.cpp
  *
- * @brief Demonstrates how to Add & Fly Waypoint missions using the Dronecode SDK.
+ * @brief Demonstrates how to Add & Fly Waypoint missions using the MAVSDK.
  * The example is summarised below:
  * 1. Adds mission items.
  * 2. Starts mission from first mission item.
