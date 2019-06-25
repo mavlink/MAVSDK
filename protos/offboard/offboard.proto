@@ -78,7 +78,7 @@ message ActuatorControl {
   }
 
   ActuatorGroup actuator_group = 1;
-  repeated float actuator_values = 2 [packed=true];
+  repeated float actuator_values = 2;
 }
 
 message AttitudeRate {
