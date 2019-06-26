@@ -9,22 +9,22 @@ FAT_BIN_DIR=${SCRIPT_DIR}/../../../build/fat_bin
 
 mkdir -p ${FAT_BIN_DIR}
 
-if [ -d ${FAT_BIN_DIR}/backend.framework ]; then
-    echo "${FAT_BIN_DIR}/backend.framework already exists! Aborting..."
+if [ -d ${FAT_BIN_DIR}/mavsdk_server.framework ]; then
+    echo "${FAT_BIN_DIR}/mavsdk_server.framework already exists! Aborting..."
     exit 1
 fi
 
-if [ -f ${FAT_BIN_DIR}/dronecode-backend.zip ]; then
-    echo "${FAT_BIN_DIR}/dronecode-backend.zip already exists! Aborting..."
+if [ -f ${FAT_BIN_DIR}/mavsdk_server.zip ]; then
+    echo "${FAT_BIN_DIR}/mavsdk_server.zip already exists! Aborting..."
     exit 1
 fi
 
 echo "Creating fat bin..."
 
-cp -r ${IOS_BACKEND_DIR}/backend.framework ${FAT_BIN_DIR}
-lipo ${IOS_BACKEND_DIR}/backend.framework/backend ${IOS_SIM_BACKEND_DIR}/backend.framework/backend -create -output ${FAT_BIN_DIR}/backend.framework/backend
+cp -r ${IOS_BACKEND_DIR}/mavsdk_server.framework ${FAT_BIN_DIR}
+lipo ${IOS_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server ${IOS_SIM_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server -create -output ${FAT_BIN_DIR}/mavsdk_server.framework/mavsdk_server
 
 cd ${FAT_BIN_DIR}
-zip -9 -r dronecode-backend.zip backend.framework
+zip -9 -r mavsdk_server.zip mavsdk_server.framework
 
 echo "Success! You'll find the fat bin in ${FAT_BIN_DIR}!"
