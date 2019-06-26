@@ -41,20 +41,20 @@ The links below take you to the respective header files:
 - [calibration](plugins/calibration/include/plugins/calibration/calibration.h): calibrate drone sensors including gyro, accelerometer, and magnetometer.
 - [logging](plugins/logging/include/plugins/logging/logging.h): (not implemented) data logging and streaming from the vehicle.
 
-For more information see the [API Overview](https://sdk.dronecode.org/en/#api-overview) in MAVSDK Guide.
+For more information see the [API Overview](https://mavsdk.mavlink.io/develop/en/cpp/#api-overview) in MAVSDK Guide.
 
 
 ## Docs (Build instructions etc.)
 
-Instructions for how to use the library can be found in the [SDK Guide](https://sdk.dronecode.org/en).
+Instructions for how to use the library can be found in the [SDK Guide](https://mavsdk.mavlink.io/develop/en/).
 
 Quick Links:
 
-- [QuickStart](https://sdk.dronecode.org/en/#getting-started)
-- [Building the Library](https://sdk.dronecode.org/en/contributing/build.html)
-- [Examples](https://sdk.dronecode.org/en/examples/)
-- [API Reference](https://sdk.dronecode.org/en/api_reference/)
-- [FAQ](https://sdk.dronecode.org/en/getting_started/faq.html)
+- [QuickStart](https://mavsdk.mavlink.io/develop/en/cpp/#getting-started)
+- [Building the Library](https://mavsdk.mavlink.io/develop/en/contributing/build.html)
+- [Examples](https://mavsdk.mavlink.io/develop/en/examples/)
+- [API Reference](https://mavsdk.mavlink.io/develop/en/api_reference/)
+- [FAQ](https://mavsdk.mavlink.io/develop/en/getting_started/faq.html)
 
 
 ## License
