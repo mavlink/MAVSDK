@@ -149,8 +149,8 @@ public:
      * coordinate system.
      */
     struct IMUReadingNED {
-        AccelerationNED acceleration;
-        AngularVelocityNED angular_velocity;
+        AccelerationNED acceleration; /**< @see AccelerationNED */
+        AngularVelocityNED angular_velocity; /** @see AngularVelocityNED */
     };
 
     /**
