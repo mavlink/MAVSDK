@@ -27,36 +27,38 @@ API consumers use `MAVSDK` class to discover and manage vehicles (`System` objec
 
 The links below take you to the respective header files:
 
-- [mavsdk](core/include/mavsdk/mavsdk.h): set up connection, discover devices
-- [system](core/include/mavsdk/system.h): an class representing one drone which can consist of multiple components
-- [info](plugins/info/include/plugins/info/info.h): general info about a device
-- [telemetry](plugins/telemetry/include/plugins/telemetry/telemetry.h): to receive telemetry data
-- [action](plugins/action/include/plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
-- [mission](plugins/mission/include/plugins/mission/mission.h)/[mission_item](plugins/mission/include/plugins/mission/mission_item.h): to upload a waypoint mission
-- [geofence](plugins/geofence/include/plugins/geofence/geofence.h): to upload a geofence
-- [offboard](plugins/offboard/include/plugins/offboard/offboard.h): for velocity control
-- [gimbal](plugins/gimbal/include/plugins/gimbal/gimbal.h): control a gimbal
-- [camera](plugins/camera/include/plugins/camera/camera.h): capture images, videos, and set camera settings
-- [follow_me](plugins/follow_me/include/plugins/follow_me/follow_me.h): drone tracks a position supplied by MAVSDK.
-- [calibration](plugins/calibration/include/plugins/calibration/calibration.h): calibrate drone sensors including gyro, accelerometer, and magnetometer.
-- [logging](plugins/logging/include/plugins/logging/logging.h): (not implemented) data logging and streaming from the vehicle.
+- [mavsdk](src/core/mavsdk.h): set up connection, discover devices
+- [system](src/core/system.h): an class representing one drone which can consist of multiple components
+- [info](src/plugins/info/include/plugins/info/info.h): general info about a device
+- [telemetry](src/plugins/telemetry/include/plugins/telemetry/telemetry.h): to receive telemetry data
+- [action](src/plugins/action/include/plugins/action/action.h): to send commands such as arm, disarm, takeoff, land to drone
+- [mission](src/plugins/mission/include/plugins/mission/mission.h)/[mission_item](src/plugins/mission/include/plugins/mission/mission_item.h): to upload a waypoint mission
+- [geofence](src/plugins/geofence/include/plugins/geofence/geofence.h): to upload a geofence
+- [offboard](src/plugins/offboard/include/plugins/offboard/offboard.h): for velocity control
+- [gimbal](src/plugins/gimbal/include/plugins/gimbal/gimbal.h): control a gimbal
+- [camera](src/plugins/camera/include/plugins/camera/camera.h): capture images, videos, and set camera settings
+- [follow_me](src/plugins/follow_me/include/plugins/follow_me/follow_me.h): drone tracks a position supplied by MAVSDK.
+- [calibration](src/plugins/calibration/include/plugins/calibration/calibration.h): calibrate drone sensors including gyro, accelerometer, and magnetometer.
+- [logging](src/plugins/logging/include/plugins/logging/logging.h): (not implemented) data logging and streaming from the vehicle.
 
-For more information see the [API Overview](https://sdk.dronecode.org/en/#api-overview) in MAVSDK Guide.
+For more information see the [API Overview](https://mavsdk.mavlink.io/develop/en/cpp/#api-overview) in MAVSDK Guide.
 
 
 ## Docs (Build instructions etc.)
 
-Instructions for how to use the library can be found in the [SDK Guide](https://sdk.dronecode.org/en).
+Instructions for how to use the library can be found in the [SDK Guide](https://mavsdk.mavlink.io/develop/en/).
 
 Quick Links:
 
-- [QuickStart](https://sdk.dronecode.org/en/#getting-started)
-- [Building the Library](https://sdk.dronecode.org/en/contributing/build.html)
-- [Examples](https://sdk.dronecode.org/en/examples/)
-- [API Reference](https://sdk.dronecode.org/en/api_reference/)
-- [FAQ](https://sdk.dronecode.org/en/getting_started/faq.html)
+- [QuickStart](https://mavsdk.mavlink.io/develop/en/cpp/#getting-started)
+- [Building the Library](https://mavsdk.mavlink.io/develop/en/contributing/build.html)
+- [Examples](https://mavsdk.mavlink.io/develop/en/examples/)
+- [API Reference](https://mavsdk.mavlink.io/develop/en/api_reference/)
+- [FAQ](https://mavsdk.mavlink.io/develop/en/getting_started/faq.html)
 
 
 ## License
 
 This project is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
+
+https://github.com/mavlink/MAVSDK/blob/develop/core/include/mavsdk/mavsdk.h
