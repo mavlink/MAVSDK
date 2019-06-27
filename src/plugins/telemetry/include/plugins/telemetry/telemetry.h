@@ -323,6 +323,14 @@ public:
     Result set_rate_ground_speed_ned(double rate_hz);
 
     /**
+     * @brief Set rate of IMU reading (NED) updates (synchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_imu_reading_ned(double rate_hz);
+
+    /**
      * @brief Set rate of GPS information updates (synchronous).
      *
      * @param rate_hz Rate in Hz.
@@ -403,6 +411,13 @@ public:
      */
     void set_rate_ground_speed_ned_async(double rate_hz, result_callback_t callback);
 
+    /**
+     * @brief Set rate of IMU reading (NED) updates (asynchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Cabllback to receive request result.
+     */
+    void set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback);
     /**
      * @brief Set rate of GPS information updates (asynchronous).
      *
@@ -507,6 +522,13 @@ public:
      * @return Ground speed in NED.
      */
     GroundSpeedNED ground_speed_ned() const;
+
+    /**
+     * @brief Get the current IMU reading (NED) (synchronous).
+     *
+     * @return IMU reading in NED.
+     */
+    IMUReadingNED imu_reading_ned() const;
 
     /**
      * @brief Get the current GPS information (synchronous).
@@ -678,6 +700,20 @@ public:
      * @param callback Function to call with updates.
      */
     void ground_speed_ned_async(ground_speed_ned_callback_t callback);
+
+    /**
+     * @brief Callback type for IMU (NED) updates.
+     *
+     * @param imu_reading_ned IMU reading (NED).
+     */
+    typedef std::function<void(IMUReadingNED imu_reading_ned)> imu_reading_ned_callback_t;
+
+    /**
+     * @brief Subscribe to IMU reading (NED) updates (asynchronous).
+     *
+     * @param callback function to call with updates.
+     */
+    void imu_reading_ned_async(imu_reading_ned_callback_t callback);
 
     /**
      * @brief Callback type for GPS information updates.

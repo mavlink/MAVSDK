@@ -34,6 +34,7 @@ public:
     Telemetry::Result set_rate_attitude(double rate_hz);
     Telemetry::Result set_rate_camera_attitude(double rate_hz);
     Telemetry::Result set_rate_ground_speed_ned(double rate_hz);
+    Telemetry::Result set_rate_imu_reading_ned(double rate_hz);
     Telemetry::Result set_rate_gps_info(double rate_hz);
     Telemetry::Result set_rate_battery(double rate_hz);
     Telemetry::Result set_rate_rc_status(double rate_hz);
@@ -46,6 +47,7 @@ public:
     void set_rate_attitude_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_camera_attitude_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_ground_speed_ned_async(double rate_hz, Telemetry::result_callback_t callback);
+    void set_rate_imu_reading_ned_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_gps_info_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_battery_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_rc_status_async(double rate_hz, Telemetry::result_callback_t callback);
@@ -61,6 +63,7 @@ public:
     Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
     Telemetry::Quaternion get_camera_attitude_quaternion() const;
     Telemetry::GroundSpeedNED get_ground_speed_ned() const;
+    Telemetry::IMUReading get_imu_reading_ned() const;
     Telemetry::GPSInfo get_gps_info() const;
     Telemetry::Battery get_battery() const;
     Telemetry::FlightMode get_flight_mode() const;
@@ -79,6 +82,7 @@ public:
     void camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t &callback);
     void camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t &callback);
     void ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t &callback);
+    void imu_reading_ned_async(Telemetry::imu_reading_ned_callback_t &callback);
     void gps_info_async(Telemetry::gps_info_callback_t &callback);
     void battery_async(Telemetry::battery_callback_t &callback);
     void flight_mode_async(Telemetry::flight_mode_callback_t &callback);
@@ -99,6 +103,7 @@ private:
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
     void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
+    void set_imu_reading_ned(Telemetry::IMUReadingNED imu_reading_ned);
     void set_gps_info(Telemetry::GPSInfo gps_info);
     void set_battery(Telemetry::Battery battery);
     void set_flight_mode(Telemetry::FlightMode flight_mode);
@@ -116,6 +121,7 @@ private:
     void process_home_position(const mavlink_message_t &message);
     void process_attitude_quaternion(const mavlink_message_t &message);
     void process_mount_orientation(const mavlink_message_t &message);
+    void process_imu_reading_ned(const mavlink_message_t &message);
     void process_gps_raw_int(const mavlink_message_t &message);
     void process_extended_sys_state(const mavlink_message_t &message);
     void process_sys_status(const mavlink_message_t &message);
@@ -171,6 +177,9 @@ private:
     mutable std::mutex _ground_speed_ned_mutex{};
     Telemetry::GroundSpeedNED _ground_speed_ned{NAN, NAN, NAN};
 
+    mutable std::mutex _imu_reading_ned_mutex{};
+    Telemetry::IMUReadingNED _imu_reading_ned{{NAN, NAN, NAN}, {NAN, NAN, NAN}};
+
     mutable std::mutex _gps_info_mutex{};
     Telemetry::GPSInfo _gps_info{0, 0};
 
@@ -199,6 +208,7 @@ private:
     Telemetry::attitude_quaternion_callback_t _camera_attitude_quaternion_subscription{nullptr};
     Telemetry::attitude_euler_angle_callback_t _camera_attitude_euler_angle_subscription{nullptr};
     Telemetry::ground_speed_ned_callback_t _ground_speed_ned_subscription{nullptr};
+    Telemetry::imu_reading_ned_callback_t _imu_reading_ned_subscription{nullptr};
     Telemetry::gps_info_callback_t _gps_info_subscription{nullptr};
     Telemetry::battery_callback_t _battery_subscription{nullptr};
     Telemetry::flight_mode_callback_t _flight_mode_subscription{nullptr};
