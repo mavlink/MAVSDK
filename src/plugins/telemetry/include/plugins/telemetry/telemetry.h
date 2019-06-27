@@ -121,6 +121,39 @@ public:
     };
 
     /**
+     * @brief Acceleration type in local coordinates.
+     *
+     * The acceleration is represented in the NED (North East Down) frame and in metres/second^2.
+     */
+    struct AccelerationNED {
+        float north_m_ss; /**< @brief Acceleration in North direction in metres/second^2 */
+        float east_m_ss; /**< @brief Acceleration in East direction in metres/second^2 */
+        float down_m_ss; /**< @brief Acceleration in Down direction in metres/second^2 */
+    };
+
+    /**
+     * @brief Angular velocity type in local coordinates.
+     *
+     * The angular velocity is represented in NED (North East Down) frame and in radians/second.
+     */
+    struct AngularVelocityNED {
+        float north_rad_s; /**< @brief Angular velocity in North direction in radians/second */
+        float east_rad_s; /**< @brief Angular velocity in East direction in radians/second */
+        float down_rad_s; /**< @brief Angular velocity in Down direction in radians/second */
+    };
+
+    /**
+     * @brief Inertial measurement unit type in local coordinates.
+     *
+     * Acceleration and angular velocity are represented in NED (North East Down) frame in local
+     * coordinate system.
+     */
+    struct IMUReadingNED {
+        AccelerationNED acceleration;
+        AngularVelocityNED angular_velocity;
+    };
+
+    /**
      * @brief GPS information type.
      */
     struct GPSInfo {
