@@ -45,6 +45,11 @@ Telemetry::Result Telemetry::set_rate_ground_speed_ned(double rate_hz)
     return _impl->set_rate_ground_speed_ned(rate_hz);
 }
 
+Telemetry::Result Telemetry::set_imu_reading_ned(double rate_hz)
+{
+    return _impl->set_rate_imu_reading_ned(rate_hz);
+}
+
 Telemetry::Result Telemetry::set_rate_gps_info(double rate_hz)
 {
     return _impl->set_rate_gps_info(rate_hz);
@@ -93,6 +98,11 @@ void Telemetry::set_rate_camera_attitude_async(double rate_hz, result_callback_t
 void Telemetry::set_rate_ground_speed_ned_async(double rate_hz, result_callback_t callback)
 {
     _impl->set_rate_ground_speed_ned_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_imu_reading_ned_async(rate_hz, callback);
 }
 
 void Telemetry::set_rate_gps_info_async(double rate_hz, result_callback_t callback)
@@ -163,6 +173,11 @@ Telemetry::EulerAngle Telemetry::camera_attitude_euler_angle() const
 Telemetry::GroundSpeedNED Telemetry::ground_speed_ned() const
 {
     return _impl->get_ground_speed_ned();
+}
+
+Telemetry::IMUReadingNED Telemetry::imu_reading_ned() const
+{
+    return _impl->get_imu_reading_ned();
 }
 
 Telemetry::GPSInfo Telemetry::gps_info() const
@@ -248,6 +263,11 @@ void Telemetry::camera_attitude_euler_angle_async(attitude_euler_angle_callback_
 void Telemetry::ground_speed_ned_async(ground_speed_ned_callback_t callback)
 {
     return _impl->ground_speed_ned_async(callback);
+}
+
+void Telemetry::imu_reading_ned_async(imu_reading_ned_callback_t callback)
+{
+    return _impl->imu_reading_ned_async(callback);
 }
 
 void Telemetry::gps_info_async(gps_info_callback_t callback)
