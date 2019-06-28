@@ -32,7 +32,7 @@ Other important repos include:
 - MAVSDK-Swift (2018): Reliable and stable - used in production.
 - MAVSDK-Python (2019): First PyPi release 2019.
 - MAVSDK-Java (2019): Prototype.
-- MAVSDK-JavaScript (2019). Prototype
+- MAVSDK-JavaScript (2019). Proof of concept.
 
 
 
