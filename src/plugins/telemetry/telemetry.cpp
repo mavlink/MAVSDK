@@ -45,7 +45,7 @@ Telemetry::Result Telemetry::set_rate_ground_speed_ned(double rate_hz)
     return _impl->set_rate_ground_speed_ned(rate_hz);
 }
 
-Telemetry::Result Telemetry::set_imu_reading_ned(double rate_hz)
+Telemetry::Result Telemetry::set_rate_imu_reading_ned(double rate_hz)
 {
     return _impl->set_rate_imu_reading_ned(rate_hz);
 }

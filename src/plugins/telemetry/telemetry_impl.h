@@ -63,7 +63,7 @@ public:
     Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
     Telemetry::Quaternion get_camera_attitude_quaternion() const;
     Telemetry::GroundSpeedNED get_ground_speed_ned() const;
-    Telemetry::IMUReading get_imu_reading_ned() const;
+    Telemetry::IMUReadingNED get_imu_reading_ned() const;
     Telemetry::GPSInfo get_gps_info() const;
     Telemetry::Battery get_battery() const;
     Telemetry::FlightMode get_flight_mode() const;
