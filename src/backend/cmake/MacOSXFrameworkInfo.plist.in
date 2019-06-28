@@ -7,7 +7,7 @@
     <key>CFBundleExecutable</key>
     <string>${MACOSX_FRAMEWORK_NAME}</string>
     <key>CFBundleIdentifier</key>
-    <string>io.dronecodesdk.backend</string>
+    <string>io.mavlink.mavsdk</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundlePackageType</key>
