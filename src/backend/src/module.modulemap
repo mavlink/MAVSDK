@@ -1,4 +1,4 @@
-framework module backend {
+framework module mavsdk_server {
   umbrella header "backend_api.h"
 
   export *
