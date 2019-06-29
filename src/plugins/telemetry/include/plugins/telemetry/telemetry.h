@@ -879,6 +879,38 @@ bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs);
 std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health);
 
 /**
+ * @brief Equal operator to compare two `Telemetry::IMUReadingNED` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::IMUReadingNED &lhs,
+                const Telemetry::IMUReadingNEd &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::AccelerationNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Telemetry::AccelerationNED const &acceleration_ned);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::AngularVelocityNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Telemetry::AngularVelocityNED const &angular_velocity_ned);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::IMUReadingNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Telemetry::IMUReadingNED const &imu_reading_ned);
+
+/**
  * @brief Equal operator to compare two `Telemetry::GPSInfo` objects.
  *
  * @return `true` if items are equal.
