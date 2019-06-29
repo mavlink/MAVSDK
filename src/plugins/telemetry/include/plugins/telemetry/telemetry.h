@@ -884,7 +884,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health);
  * @return `true` if items are equal.
  */
 bool operator==(const Telemetry::IMUReadingNED &lhs,
-                const Telemetry::IMUReadingNEd &rhs);
+                const Telemetry::IMUReadingNED &rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::AccelerationNED`.

@@ -430,7 +430,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health)
 }
 
 bool operator==(const Telemetry::IMUReadingNED &lhs,
-                const Telemetry::IMUReadingNEd &rhs)
+                const Telemetry::IMUReadingNED &rhs)
 {
     return std::fabs(lhs.acceleration.north_m_ss - rhs.acceleration.north_m_ss) <=
                std::numeric_limits<float>::epsilon() &&
