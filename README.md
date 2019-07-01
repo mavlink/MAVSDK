@@ -1,4 +1,4 @@
-# MAVSDK
+<img alt="MAVSDK" src="https://mavsdk.mavlink.io/develop/assets/site/sdk_logo_full.png" width="400">
 
 [![travis-ci build status](https://travis-ci.org/mavlink/MAVSDK.svg?branch=develop)](https://travis-ci.org/mavlink/MAVSDK)
 [![Build status](https://ci.appveyor.com/api/projects/status/1ntjvooywpxmoir8/branch/develop?svg=true)](https://ci.appveyor.com/project/Dronecode/dronecore/branch/develop)
