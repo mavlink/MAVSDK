@@ -206,8 +206,6 @@ OffboardServiceImplTest::createArbitraryRPCActuatorControl() const
     auto rpc_actuator_control = std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>(
             new mavsdk::rpc::offboard::ActuatorControl());
 
-    rpc_actuator_control.get()->set_actuator_group(mavsdk::rpc::offboard::ActuatorControl::FLIGHT_CONTROL);
-
     rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_0);
     rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_1);
     rpc_actuator_control.get()->add_actuator_values(ARBITRARY_ACTUATOR_CONTROL_2);

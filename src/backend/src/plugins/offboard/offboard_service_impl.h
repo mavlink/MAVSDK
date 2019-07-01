@@ -77,8 +77,10 @@ public:
     {
         mavsdk::Offboard::ActuatorControl actuator_control = {};
 
-        actuator_control.actuator_group =
-            static_cast<mavsdk::Offboard::ActuatorControl::ActuatorGroup>(rpc_actuator_control.actuator_group());
+        if (rpc_actuator_control.actuator_group() > UINT8_MAX)
+            return actuator_control;
+
+        actuator_control.actuator_group = rpc_actuator_control.actuator_group();
 
         int len = std::min(8, rpc_actuator_control.actuator_values_size());
         for (int i = 0; i < len; i++) {
