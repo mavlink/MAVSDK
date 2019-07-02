@@ -235,6 +235,16 @@ public:
     void set_actuator_control(ActuatorControl actuator_control);
 
     /**
+     * @brief Set direct actuator control values.
+     * Default group_number is zero.
+     *
+     * @param controls array of actuators control values
+     *
+     * @param group_number group number to control
+     */
+    void set_actuator_control(const float (&controls)[8], uint8_t group_number = 0);
+
+    /**
      * @brief Copy constructor (object is not copyable).
      */
     Offboard(const Offboard &) = delete;

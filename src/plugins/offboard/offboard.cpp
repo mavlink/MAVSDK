@@ -62,6 +62,17 @@ void Offboard::set_actuator_control(Offboard::ActuatorControl actuator_control)
     return _impl->set_actuator_control(actuator_control);
 }
 
+void Offboard::set_actuator_control(const float (&controls)[8], uint8_t group_number)
+{
+    Offboard::ActuatorControl actuator_control {};
+
+    std::copy(std::begin(controls), std::end(controls), actuator_control.actuator_values);
+
+    actuator_control.actuator_group = group_number;
+
+    set_actuator_control(actuator_control);
+}
+
 const char *Offboard::result_str(Result result)
 {
     switch (result) {
