@@ -70,15 +70,8 @@ message Attitude {
 }
 
 message ActuatorControl {
-  enum ActuatorGroup {
-    FLIGHT_CONTROL = 0;
-    FLIGHT_CONTROL_VTOL = 1;
-    GIMBAL = 2;
-    MANUAL_PASSTHROUGH = 3;
-  }
-
-  ActuatorGroup actuator_group = 1;
-  repeated float actuator_values = 2;
+  repeated float actuator_values = 1;
+  uint32 actuator_group = 2;
 }
 
 message AttitudeRate {
