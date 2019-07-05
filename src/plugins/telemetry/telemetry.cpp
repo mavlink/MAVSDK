@@ -432,11 +432,11 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health)
 bool operator==(const Telemetry::IMUReadingNED &lhs,
                 const Telemetry::IMUReadingNED &rhs)
 {
-    return std::fabs(lhs.acceleration.north_m_ss - rhs.acceleration.north_m_ss) <=
+    return std::fabs(lhs.acceleration.north_m_s2 - rhs.acceleration.north_m_s2) <=
                std::numeric_limits<float>::epsilon() &&
-           std::fabs(lhs.acceleration.east_m_ss - rhs.acceleration.east_m_ss) <=
+           std::fabs(lhs.acceleration.east_m_s2 - rhs.acceleration.east_m_s2) <=
                std::numeric_limits<float>::epsilon() &&
-           std::fabs(lhs.acceleration.down_m_ss - rhs.acceleration.down_m_ss) <=
+           std::fabs(lhs.acceleration.down_m_s2 - rhs.acceleration.down_m_s2) <=
                std::numeric_limits<float>::epsilon() &&
            std::fabs(lhs.angular_velocity.north_rad_s - rhs.angular_velocity.north_rad_s) <=
                std::numeric_limits<float>::epsilon() &&
@@ -449,28 +449,28 @@ bool operator==(const Telemetry::IMUReadingNED &lhs,
 std::ostream &operator<<(std::ostream &str,
                          Telemetry::AccelerationNED const &acceleration_ned)
 {
-    return str << "[acceleration_north_m_ss: " << acceleration_ned.north_m_ss
-               << ", acceleration_east_m_ss: " << acceleration_ned.east_m_ss
-               << ", acceleration_down_m_ss: " << acceleration_ned.down_m_ss << "]";
+    return str << "[acceleration_north_m_s2: " << acceleration_ned.north_m_s2
+               << ", acceleration_east_m_s2: " << acceleration_ned.east_m_s2
+               << ", acceleration_down_m_s2: " << acceleration_ned.down_m_s2 << "]";
 }
 
 std::ostream &operator<<(std::ostream &str,
                          Telemetry::AngularVelocityNED const &angular_velocity_ned)
 {
-    return str << "[angular_velocity_north_m_ss: " << angular_velocity_ned.north_rad_s
-               << ", angular_velocity_east_m_ss: " << angular_velocity_ned.east_rad_s
-               << ", angular_velocity_down_m_ss: " << angular_velocity_ned.down_rad_s << "]";
+    return str << "[angular_velocity_north_rad_s: " << angular_velocity_ned.north_rad_s
+               << ", angular_velocity_east_rad_s: " << angular_velocity_ned.east_rad_s
+               << ", angular_velocity_down_rad_s: " << angular_velocity_ned.down_rad_s << "]";
 }
 
 std::ostream &operator<<(std::ostream &str,
                          Telemetry::IMUReadingNED const &imu_reading_ned)
 {
-    return str << "[acceleration_north_m_ss: " << imu_reading_ned.acceleration.north_m_ss
-               << ", acceleration_east_m_ss: " << imu_reading_ned.acceleration.east_m_ss
-               << ", acceleration_down_m_ss: " << imu_reading_ned.acceleration.down_m_ss << "]"
-               << "[angular_velocity_north_m_ss: " << imu_reading_ned.angular_velocity.north_rad_s
-               << ", angular_velocity_east_m_ss: " << imu_reading_ned.angular_velocity.east_rad_s
-               << ", angular_velocity_down_m_ss: " << imu_reading_ned.angular_velocity.down_rad_s << "]";
+    return str << "[acceleration_north_m_s2: " << imu_reading_ned.acceleration.north_m_s2
+               << ", acceleration_east_m_s2: " << imu_reading_ned.acceleration.east_m_s2
+               << ", acceleration_down_m_s2: " << imu_reading_ned.acceleration.down_m_s2 << "]"
+               << "[angular_velocity_north_rad_s: " << imu_reading_ned.angular_velocity.north_rad_s
+               << ", angular_velocity_east_rad_s: " << imu_reading_ned.angular_velocity.east_rad_s
+               << ", angular_velocity_down_rad_s: " << imu_reading_ned.angular_velocity.down_rad_s << "]";
 }
 
 bool operator==(const Telemetry::GPSInfo &lhs, const Telemetry::GPSInfo &rhs)

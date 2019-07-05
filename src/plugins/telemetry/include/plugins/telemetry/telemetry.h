@@ -126,9 +126,9 @@ public:
      * The acceleration is represented in the NED (North East Down) frame and in metres/second^2.
      */
     struct AccelerationNED {
-        float north_m_ss; /**< @brief Acceleration in North direction in metres/second^2 */
-        float east_m_ss; /**< @brief Acceleration in East direction in metres/second^2 */
-        float down_m_ss; /**< @brief Acceleration in Down direction in metres/second^2 */
+        float north_m_s2; /**< @brief Acceleration in North direction in metres/second^2 */
+        float east_m_s2; /**< @brief Acceleration in East direction in metres/second^2 */
+        float down_m_s2; /**< @brief Acceleration in Down direction in metres/second^2 */
     };
 
     /**
