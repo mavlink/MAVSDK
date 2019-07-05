@@ -21,14 +21,20 @@ public:
         const rpc::core::SubscribeConnectionStateRequest * /* request */,
         grpc::ServerWriter<rpc::core::ConnectionStateResponse> *writer) override
     {
-        _dc.register_on_discover([&writer](const uint64_t uuid) {
+        std::mutex connection_state_mutex{};
+
+        _dc.register_on_discover([&writer, &connection_state_mutex](const uint64_t uuid) {
             const auto rpc_connection_state_response = createRpcConnectionStateResponse(uuid, true);
+
+            std::lock_guard<std::mutex> lock(connection_state_mutex);
             writer->Write(rpc_connection_state_response);
         });
 
-        _dc.register_on_timeout([&writer](const uint64_t uuid) {
+        _dc.register_on_timeout([&writer, &connection_state_mutex](const uint64_t uuid) {
             const auto rpc_connection_state_response =
                 createRpcConnectionStateResponse(uuid, false);
+
+            std::lock_guard<std::mutex> lock(connection_state_mutex);
             writer->Write(rpc_connection_state_response);
         });
 
