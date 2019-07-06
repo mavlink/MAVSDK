@@ -156,9 +156,8 @@ public:
     /**
      * @brief Inertial measurement unit type in local coordinates.
      *
-     * Acceleration, angular velocity and magnetic field are represented in NED (North East Down) frame in local
-     * coordinate system.
-     * Temperature is measured in degrees Celsius.
+     * Acceleration, angular velocity and magnetic field are represented in NED (North East Down)
+     * frame in local coordinate system. Temperature is measured in degrees Celsius.
      */
     struct IMUReadingNED {
         AccelerationNED acceleration; /**< @see AccelerationNED */
@@ -897,16 +896,14 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health);
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::IMUReadingNED &lhs,
-                const Telemetry::IMUReadingNED &rhs);
+bool operator==(const Telemetry::IMUReadingNED &lhs, const Telemetry::IMUReadingNED &rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::AccelerationNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::AccelerationNED const &acceleration_ned);
+std::ostream &operator<<(std::ostream &str, Telemetry::AccelerationNED const &acceleration_ned);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::AngularVelocityNED`.
@@ -928,8 +925,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::MagneticFieldNED const &m
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::IMUReadingNED const &imu_reading_ned);
+std::ostream &operator<<(std::ostream &str, Telemetry::IMUReadingNED const &imu_reading_ned);
 
 /**
  * @brief Equal operator to compare two `Telemetry::GPSInfo` objects.

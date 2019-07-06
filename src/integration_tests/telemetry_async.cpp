@@ -228,13 +228,13 @@ void print_imu_reading_ned(Telemetry::IMUReadingNED imu_reading_ned)
     std::cout << "Acceleration north: " << imu_reading_ned.acceleration.north_m_s2 << " m/s^2, "
               << "east: " << imu_reading_ned.acceleration.east_m_s2 << " m/s^2, "
               << "down: " << imu_reading_ned.acceleration.down_m_s2 << " m/s^2" << std::endl;
-              << "Angular velocity north: " << imu_reading_ned.angular_velocity.north_rad_s << " rad/s, "
-              << "east: " << imu_reading_ned.angular_velocity.east_rad_s << " rad/s, "
-              << "down: " << imu_reading_ned.angular_velocity.down_rad_s << " rad/s" << std::endl;
-              << "Magnetic field north: " << imu_reading_ned.magnetic_field.north_gauss << " G, "
-              << "east: " << imu_reading_ned.magnetic_field.east_gauss << " G, "
-              << "down: " << imu_reading_ned.magnetic_field.down_gauss << " G" << std::endl;
-              << "Temperature: " << imu_reading_ned.temperature_degC << " C" << std::endl;
+    << "Angular velocity north: " << imu_reading_ned.angular_velocity.north_rad_s << " rad/s, "
+    << "east: " << imu_reading_ned.angular_velocity.east_rad_s << " rad/s, "
+    << "down: " << imu_reading_ned.angular_velocity.down_rad_s << " rad/s" << std::endl;
+    << "Magnetic field north: " << imu_reading_ned.magnetic_field.north_gauss << " G, "
+    << "east: " << imu_reading_ned.magnetic_field.east_gauss << " G, "
+    << "down: " << imu_reading_ned.magnetic_field.down_gauss << " G" << std::endl;
+    << "Temperature: " << imu_reading_ned.temperature_degC << " C" << std::endl;
 }
 
 void print_gps_info(Telemetry::GPSInfo gps_info)

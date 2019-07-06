@@ -429,8 +429,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health)
                << ", home_position_ok: " << health.home_position_ok << "]";
 }
 
-bool operator==(const Telemetry::IMUReadingNED &lhs,
-                const Telemetry::IMUReadingNED &rhs)
+bool operator==(const Telemetry::IMUReadingNED &lhs, const Telemetry::IMUReadingNED &rhs)
 {
     return std::fabs(lhs.acceleration.north_m_s2 - rhs.acceleration.north_m_s2) <=
                std::numeric_limits<float>::epsilon() &&
@@ -452,12 +451,9 @@ bool operator==(const Telemetry::IMUReadingNED &lhs,
                std::numeric_limits<float>::epsilon() &&
            std::fabs(lhs.temperature_degC - rhs.temperature_degC) <=
                std::numeric_limits<float>::epsilon();
-
-
 }
 
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::AccelerationNED const &acceleration_ned)
+std::ostream &operator<<(std::ostream &str, Telemetry::AccelerationNED const &acceleration_ned)
 {
     return str << "[acceleration_north_m_s2: " << acceleration_ned.north_m_s2
                << ", acceleration_east_m_s2: " << acceleration_ned.east_m_s2
@@ -479,18 +475,19 @@ std::ostream &operator<<(std::ostream &str, Telemetry::MagneticFieldNED const &m
                << ", magnetic_field_down_gauss: " << magnetic_field_ned.down_gauss << "]";
 }
 
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::IMUReadingNED const &imu_reading_ned)
+std::ostream &operator<<(std::ostream &str, Telemetry::IMUReadingNED const &imu_reading_ned)
 {
     return str << "[acceleration_north_m_s2: " << imu_reading_ned.acceleration.north_m_s2
                << ", acceleration_east_m_s2: " << imu_reading_ned.acceleration.east_m_s2
                << ", acceleration_down_m_s2: " << imu_reading_ned.acceleration.down_m_s2 << "] "
                << "[angular_velocity_north_rad_s: " << imu_reading_ned.angular_velocity.north_rad_s
                << ", angular_velocity_east_rad_s: " << imu_reading_ned.angular_velocity.east_rad_s
-               << ", angular_velocity_down_rad_s: " << imu_reading_ned.angular_velocity.down_rad_s << "] "
+               << ", angular_velocity_down_rad_s: " << imu_reading_ned.angular_velocity.down_rad_s
+               << "] "
                << "[magnetic_field_north_gauss: " << imu_reading_ned.magnetic_field.north_gauss
                << ", magnetic_field_east_gauss: " << imu_reading_ned.magnetic_field.east_gauss
-               << ", magnetic_field_down_gauss: " << imu_reading_ned.magnetic_field.down_gauss << "] "
+               << ", magnetic_field_down_gauss: " << imu_reading_ned.magnetic_field.down_gauss
+               << "] "
                << "[temperature_degC: " << imu_reading_ned.temperature_degC << "]";
 }
 
