@@ -143,14 +143,28 @@ public:
     };
 
     /**
+     * @brief Magnetic field type in local coordinates.
+     *
+     * The magnetic field is represented in NED (North East Down) frame and is measured in Gauss.
+     */
+    struct MagneticFieldNED {
+        float north_gauss; /**< @brief Magnetic field in North direction measured in Gauss. */
+        float east_gauss; /**< @brief Magnetic field in East direction measured in Gauss. */
+        float down_gauss; /**< @brief Magnetic field in Down direction measured in Gauss. */
+    };
+
+    /**
      * @brief Inertial measurement unit type in local coordinates.
      *
-     * Acceleration and angular velocity are represented in NED (North East Down) frame in local
+     * Acceleration, angular velocity and magnetic field are represented in NED (North East Down) frame in local
      * coordinate system.
+     * Temperature is measured in degrees Celsius.
      */
     struct IMUReadingNED {
         AccelerationNED acceleration; /**< @see AccelerationNED */
-        AngularVelocityNED angular_velocity; /** @see AngularVelocityNED */
+        AngularVelocityNED angular_velocity; /**< @see AngularVelocityNED */
+        MagneticFieldNED magnetic_field; /**< @see MagneticFieldNED */
+        float temperature_degC; /**< @brief Temperature measured in degrees Celsius. */
     };
 
     /**
@@ -901,6 +915,13 @@ std::ostream &operator<<(std::ostream &str,
  */
 std::ostream &operator<<(std::ostream &str,
                          Telemetry::AngularVelocityNED const &angular_velocity_ned);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::MagneticFieldNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Telemetry::MagneticFieldNED const &magnetic_field);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::IMUReadingNED`.

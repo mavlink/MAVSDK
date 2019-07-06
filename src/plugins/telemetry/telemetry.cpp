@@ -443,7 +443,17 @@ bool operator==(const Telemetry::IMUReadingNED &lhs,
            std::fabs(lhs.angular_velocity.east_rad_s - rhs.angular_velocity.east_rad_s) <=
                std::numeric_limits<float>::epsilon() &&
            std::fabs(lhs.angular_velocity.down_rad_s - rhs.angular_velocity.down_rad_s) <=
+               std::numeric_limits<float>::epsilon() &&
+           std::fabs(lhs.magnetic_field.north_gauss - rhs.magnetic_field.north_gauss) <=
+               std::numeric_limits<float>::epsilon() &&
+           std::fabs(lhs.magnetic_field.east_gauss - rhs.magnetic_field.east_gauss) <=
+               std::numeric_limits<float>::epsilon() &&
+           std::fabs(lhs.magnetic_field.down_gauss - rhs.magnetic_field.down_gauss) <=
+               std::numeric_limits<float>::epsilon() &&
+           std::fabs(lhs.temperature_degC - rhs.temperature_degC) <=
                std::numeric_limits<float>::epsilon();
+
+
 }
 
 std::ostream &operator<<(std::ostream &str,
@@ -462,15 +472,26 @@ std::ostream &operator<<(std::ostream &str,
                << ", angular_velocity_down_rad_s: " << angular_velocity_ned.down_rad_s << "]";
 }
 
+std::ostream &operator<<(std::ostream &str, Telemetry::MagneticFieldNED const &magnetic_field_ned)
+{
+    return str << "[magnetic_field_north_gauss: " << magnetic_field_ned.north_gauss
+               << ", magnetic_field_east_gauss: " << magnetic_field_ned.east_gauss
+               << ", magnetic_field_down_gauss: " << magnetic_field_ned.down_gauss << "]";
+}
+
 std::ostream &operator<<(std::ostream &str,
                          Telemetry::IMUReadingNED const &imu_reading_ned)
 {
     return str << "[acceleration_north_m_s2: " << imu_reading_ned.acceleration.north_m_s2
                << ", acceleration_east_m_s2: " << imu_reading_ned.acceleration.east_m_s2
-               << ", acceleration_down_m_s2: " << imu_reading_ned.acceleration.down_m_s2 << "]"
+               << ", acceleration_down_m_s2: " << imu_reading_ned.acceleration.down_m_s2 << "] "
                << "[angular_velocity_north_rad_s: " << imu_reading_ned.angular_velocity.north_rad_s
                << ", angular_velocity_east_rad_s: " << imu_reading_ned.angular_velocity.east_rad_s
-               << ", angular_velocity_down_rad_s: " << imu_reading_ned.angular_velocity.down_rad_s << "]";
+               << ", angular_velocity_down_rad_s: " << imu_reading_ned.angular_velocity.down_rad_s << "] "
+               << "[magnetic_field_north_gauss: " << imu_reading_ned.magnetic_field.north_gauss
+               << ", magnetic_field_east_gauss: " << imu_reading_ned.magnetic_field.east_gauss
+               << ", magnetic_field_down_gauss: " << imu_reading_ned.magnetic_field.down_gauss << "] "
+               << "[temperature_degC: " << imu_reading_ned.temperature_degC << "]";
 }
 
 bool operator==(const Telemetry::GPSInfo &lhs, const Telemetry::GPSInfo &rhs)
