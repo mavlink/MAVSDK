@@ -448,7 +448,11 @@ void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t &message)
                                                   highres_imu.zacc,
                                                   highres_imu.xgyro,
                                                   highres_imu.ygyro,
-                                                  highres_imu.zgyro}));
+                                                  highres_imu.zgyro,
+                                                  highres_imu.xmag,
+                                                  highres_imu.ymag,
+                                                  highres_imu.zmag,
+                                                  highres_imu.temperature}));
 
     if (_imu_reading_ned_subscription) {
         auto callback = _imu_reading_ned_subscription;
