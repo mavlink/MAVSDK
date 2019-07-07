@@ -178,7 +178,8 @@ private:
     Telemetry::GroundSpeedNED _ground_speed_ned{NAN, NAN, NAN};
 
     mutable std::mutex _imu_reading_ned_mutex{};
-    Telemetry::IMUReadingNED _imu_reading_ned{{NAN, NAN, NAN}, {NAN, NAN, NAN}, {NAN, NAN, NAN}, NAN};
+    Telemetry::IMUReadingNED _imu_reading_ned{
+        {NAN, NAN, NAN}, {NAN, NAN, NAN}, {NAN, NAN, NAN}, NAN};
 
     mutable std::mutex _gps_info_mutex{};
     Telemetry::GPSInfo _gps_info{0, 0};
