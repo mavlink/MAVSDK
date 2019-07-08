@@ -132,16 +132,24 @@ public:
     };
 
     /**
-     * @brief Type for actuator control commands.
-     * ActuatorValues members should be normed to -1..+1 where 0 is neutral position.
+     * @brief Type for actuator control command.
+     * controls members should be normed to -1..+1 where 0 is neutral position.
      * Throttle for single rotation direction motors is 0..1, negative range for reverse direction.
+     *
+     * One group support eight controls.
      *
      * In PX4 v1.9.0 Only first four Control Groups are supported
      * (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
      */
     struct ActuatorControl {
-        float actuator_values[8]; /**< @brief Actuator values array. */
-        uint8_t actuator_group; /**< @brief Actuator group. */
+        float controls[16]; /**< @brief Actuator controls array.
+                               First 8 will go to control group 0, the following 8 to control group 1.*/
+        uint8_t num_controls; /**< @brief Number of valid actuator control values in array.
+                               If num_controls <= 8 then only one message for Group 0 will be sent. In this case
+                                controls in controls array for channels from num_controls to 7 will also be sent.
+                               If number > 8 then two messages (to Group 0 and Group 1) will be sent. In this case
+                                controls in controls array from num_controls to 15 will also be sent in the second
+                                message.*/
     };
 
     /**
@@ -228,21 +236,14 @@ public:
     void set_attitude_rate(AttitudeRate attitude_rate);
 
     /**
-     * @brief Set direct actuator control values
+     * @brief Set direct actuator control values to groups #0 and #1.
+     * First 8 controls will go to control group 0, the following 8 controls to control group 1 (if
+     * actuator_control.num_controls more than 8).
      *
      * @param actuator_control actuators control values
      */
-    void set_actuator_control(ActuatorControl actuator_control);
 
-    /**
-     * @brief Set direct actuator control values.
-     * Default group_number is zero.
-     *
-     * @param controls array of actuators control values
-     *
-     * @param group_number group number to control
-     */
-    void set_actuator_control(const float (&controls)[8], uint8_t group_number = 0);
+    void set_actuator_control(const ActuatorControl actuator_control);
 
     /**
      * @brief Copy constructor (object is not copyable).
