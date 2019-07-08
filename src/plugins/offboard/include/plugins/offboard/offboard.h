@@ -143,13 +143,15 @@ public:
      */
     struct ActuatorControl {
         float controls[16]; /**< @brief Actuator controls array.
-                               First 8 will go to control group 0, the following 8 to control group 1.*/
-        uint8_t num_controls; /**< @brief Number of valid actuator control values in array.
-                               If num_controls <= 8 then only one message for Group 0 will be sent. In this case
-                                controls in controls array for channels from num_controls to 7 will also be sent.
-                               If number > 8 then two messages (to Group 0 and Group 1) will be sent. In this case
-                                controls in controls array from num_controls to 15 will also be sent in the second
-                                message.*/
+                               First 8 will go to control group 0, the following 8 to control group 1.
+                               If you want to send less than 16 controls you should to set first non-specified
+                               control to NAN.
+                               If index of first NAN value will be less or equal than 8 then only one
+                               message for Group 0 will be sent. All controls from first NAN value
+                               to 7 in Group 0 will be set to zero.
+                               If index of first NAN value will be great than 8 then two messages (to
+                               Group 0 and Group 1) will be sent. In this case all controls from first NAN value
+                               to 7 in Group 1 will be set to zero. */
     };
 
     /**

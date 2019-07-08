@@ -529,12 +529,22 @@ void OffboardImpl::send_actuator_control_message(const float * controls, uint8_t
 void OffboardImpl::send_actuator_control()
 {
     _mutex.lock();
-    const Offboard::ActuatorControl actuator_control = _actuator_control;
+    Offboard::ActuatorControl actuator_control = _actuator_control;
     _mutex.unlock();
 
-    send_actuator_control_message(actuator_control.controls);
+    int first_nan_index = 16;
 
-    if (actuator_control.num_controls > 8) {
+    for (int i = 0; i < 16; i++) {
+        if (std::isnan(actuator_control.controls[i])) {
+            first_nan_index = i;
+            std::fill(&actuator_control.controls[i], &actuator_control.controls[16], 0.0f);
+            break;
+        }
+    }
+
+    send_actuator_control_message(&actuator_control.controls[0]);
+
+    if (first_nan_index > 8) {
         send_actuator_control_message(&actuator_control.controls[8], 1);
     }
 }

@@ -54,8 +54,7 @@ protected:
     std::unique_ptr<mavsdk::rpc::offboard::PositionNEDYaw> createArbitraryRPCPositionNEDYaw() const;
     std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>
     createArbitraryRPCVelocityBodyYawspeed() const;
-    std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw>
-    createArbitraryRPCVelocityNedYaw() const;
+    std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw> createArbitraryRPCVelocityNedYaw() const;
     std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl> createArbitraryRPCActuatorControl() const;
 };
 

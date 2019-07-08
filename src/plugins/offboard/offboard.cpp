@@ -87,35 +87,46 @@ const char *Offboard::result_str(Result result)
 
 bool operator==(const Offboard::ActuatorControl &lhs, const Offboard::ActuatorControl &rhs)
 {
-    if (lhs.num_controls!= rhs.num_controls)
-        return false;
-    for (int i = 0; i < lhs.num_controls; i++)
-        if (lhs.controls[i] != rhs.controls[i])
+    for (int i = 0; i < 16; i++) {
+        if (std::isnan(lhs.controls[i]) && std::isnan(rhs.controls[i]))
+            return true;
+        if (lhs.controls[i] != rhs.controls[i]) {
             return false;
+        }
+    }
+
     return true;
 }
 
 std::ostream &operator<<(std::ostream &str, Offboard::ActuatorControl const &actuator_control)
 {
+    bool was_nan = false;
+
+    const auto get_value_to_send = [&was_nan](float value) -> float {
+        if (was_nan)
+            return 0.0f;
+        return (std::isnan(value) ? was_nan = true, 0.0f : value);
+    };
+
     str << "[group: " << 0
-               << ", Command port 0: " << actuator_control.controls[0]
-               << ", Command port 1: " << actuator_control.controls[1]
-               << ", Command port 2: " << actuator_control.controls[2]
-               << ", Command port 3: " << actuator_control.controls[3]
-               << ", Command port 4: " << actuator_control.controls[4]
-               << ", Command port 5: " << actuator_control.controls[5]
-               << ", Command port 6: " << actuator_control.controls[6]
-               << ", Command port 7: " << actuator_control.controls[7];
-    if (actuator_control.num_controls > 8) {
+               << ", Command port 0: " << get_value_to_send(actuator_control.controls[0])
+               << ", Command port 1: " << get_value_to_send(actuator_control.controls[1])
+               << ", Command port 2: " << get_value_to_send(actuator_control.controls[2])
+               << ", Command port 3: " << get_value_to_send(actuator_control.controls[3])
+               << ", Command port 4: " << get_value_to_send(actuator_control.controls[4])
+               << ", Command port 5: " << get_value_to_send(actuator_control.controls[5])
+               << ", Command port 6: " << get_value_to_send(actuator_control.controls[6])
+               << ", Command port 7: " << get_value_to_send(actuator_control.controls[7]);
+    if (!was_nan && !std::isnan(actuator_control.controls[8])) {
         str << "], [group: " << 1
-            << ", Command port 0: " << actuator_control.controls[8]
-            << ", Command port 1: " << actuator_control.controls[9]
-            << ", Command port 2: " << actuator_control.controls[10]
-            << ", Command port 3: " << actuator_control.controls[11]
-            << ", Command port 4: " << actuator_control.controls[12]
-            << ", Command port 5: " << actuator_control.controls[13]
-            << ", Command port 6: " << actuator_control.controls[14]
-            << ", Command port 7: " << actuator_control.controls[15];
+            << ", Command port 0: " << get_value_to_send(actuator_control.controls[8])
+            << ", Command port 1: " << get_value_to_send(actuator_control.controls[9])
+            << ", Command port 2: " << get_value_to_send(actuator_control.controls[10])
+            << ", Command port 3: " << get_value_to_send(actuator_control.controls[11])
+            << ", Command port 4: " << get_value_to_send(actuator_control.controls[12])
+            << ", Command port 5: " << get_value_to_send(actuator_control.controls[13])
+            << ", Command port 6: " << get_value_to_send(actuator_control.controls[14])
+            << ", Command port 7: " << get_value_to_send(actuator_control.controls[15]);
     }
     return str << "]";
 }
