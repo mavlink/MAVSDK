@@ -532,20 +532,17 @@ void OffboardImpl::send_actuator_control()
     Offboard::ActuatorControl actuator_control = _actuator_control;
     _mutex.unlock();
 
-    int first_nan_index = 16;
-
-    for (int i = 0; i < 16; i++) {
-        if (std::isnan(actuator_control.controls[i])) {
-            first_nan_index = i;
-            std::fill(&actuator_control.controls[i], &actuator_control.controls[16], 0.0f);
-            break;
+    for (int i = 0; i < 2; i++) {
+        int nan_count = 0;
+        for (int j = 0; i < 8; j++) {
+            if (std::isnan(actuator_control.groups[i].controls[j])) {
+                nan_count++;
+                actuator_control.groups[i].controls[j] = 0.0f;
+            }
         }
-    }
-
-    send_actuator_control_message(&actuator_control.controls[0]);
-
-    if (first_nan_index > 8) {
-        send_actuator_control_message(&actuator_control.controls[8], 1);
+        if (nan_count < 8) {
+            send_actuator_control_message(&actuator_control.groups[i].controls[0], i);
+        }
     }
 }
 

@@ -24,7 +24,6 @@ static constexpr float ARBITRARY_ACTUATOR_CONTROL_4 = 0.34f;
 static constexpr float ARBITRARY_ACTUATOR_CONTROL_5 = 0.98f;
 static constexpr float ARBITRARY_ACTUATOR_CONTROL_6 = -0.15f;
 static constexpr float ARBITRARY_ACTUATOR_CONTROL_7 = 0.15f;
-static constexpr float ARBITRARY_ACTUATOR_CONTROL_8 = 0.65f;
 static constexpr float ARBITRARY_ROLL = 25.0f;
 static constexpr float ARBITRARY_PITCH = 40.0f;
 static constexpr float ARBITRARY_YAW = 37.0f;
@@ -206,15 +205,27 @@ OffboardServiceImplTest::createArbitraryRPCActuatorControl() const
     auto rpc_actuator_control = std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>(
             new mavsdk::rpc::offboard::ActuatorControl());
 
-    rpc_actuator_control.get()->add_controls(ARBITRARY_ACTUATOR_CONTROL_0);
-    rpc_actuator_control.get()->add_controls(ARBITRARY_ACTUATOR_CONTROL_1);
-    rpc_actuator_control.get()->add_controls(ARBITRARY_ACTUATOR_CONTROL_2);
-    rpc_actuator_control.get()->add_controls(ARBITRARY_ACTUATOR_CONTROL_3);
-    rpc_actuator_control.get()->add_controls(ARBITRARY_ACTUATOR_CONTROL_4);
-    rpc_actuator_control.get()->add_controls(ARBITRARY_ACTUATOR_CONTROL_5);
-    rpc_actuator_control.get()->add_controls(ARBITRARY_ACTUATOR_CONTROL_6);
-    rpc_actuator_control.get()->add_controls(ARBITRARY_ACTUATOR_CONTROL_7);
-    rpc_actuator_control.get()->add_controls(ARBITRARY_ACTUATOR_CONTROL_8);
+    auto rpc_actuator_group_0 = rpc_actuator_control.get()->add_groups();
+
+    rpc_actuator_group_0->add_controls(ARBITRARY_ACTUATOR_CONTROL_0);
+    rpc_actuator_group_0->add_controls(ARBITRARY_ACTUATOR_CONTROL_1);
+    rpc_actuator_group_0->add_controls(ARBITRARY_ACTUATOR_CONTROL_2);
+    rpc_actuator_group_0->add_controls(ARBITRARY_ACTUATOR_CONTROL_3);
+    rpc_actuator_group_0->add_controls(ARBITRARY_ACTUATOR_CONTROL_4);
+    rpc_actuator_group_0->add_controls(ARBITRARY_ACTUATOR_CONTROL_5);
+    rpc_actuator_group_0->add_controls(ARBITRARY_ACTUATOR_CONTROL_6);
+    rpc_actuator_group_0->add_controls(ARBITRARY_ACTUATOR_CONTROL_7);
+
+    auto rpc_actuator_group_1 = rpc_actuator_control.get()->add_groups();
+
+    rpc_actuator_group_1->add_controls(ARBITRARY_ACTUATOR_CONTROL_0 + 0.01f);
+    rpc_actuator_group_1->add_controls(ARBITRARY_ACTUATOR_CONTROL_1 + 0.02f);
+    rpc_actuator_group_1->add_controls(ARBITRARY_ACTUATOR_CONTROL_2 + 0.03f);
+    rpc_actuator_group_1->add_controls(ARBITRARY_ACTUATOR_CONTROL_3 + 0.04f);
+    rpc_actuator_group_1->add_controls(ARBITRARY_ACTUATOR_CONTROL_4 + 0.05f);
+    rpc_actuator_group_1->add_controls(ARBITRARY_ACTUATOR_CONTROL_5 + 0.06f);
+    rpc_actuator_group_1->add_controls(ARBITRARY_ACTUATOR_CONTROL_6 + 0.07f);
+    rpc_actuator_group_1->add_controls(ARBITRARY_ACTUATOR_CONTROL_7 + 0.08f);
 
     return rpc_actuator_control;
 }

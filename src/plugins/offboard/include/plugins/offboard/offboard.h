@@ -138,20 +138,20 @@ public:
      *
      * One group support eight controls.
      *
+     * Up to 16 actuator controls can be set. To ignore an output group, set all it conrols to NaN.
+     * If one or more controls in group is not NaN, then all NaN controls will sent as zero.
+     * The first 8 actuator controls internally map to control group 0, the latter 8 actuator controls
+     * map to control group 1.
+     * Depending on what controls are set (instead of NaN) 1 or 2 MAVLink messages are actually sent.
+     *
      * In PX4 v1.9.0 Only first four Control Groups are supported
      * (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
      */
     struct ActuatorControl {
-        float controls[16]; /**< @brief Actuator controls array.
-                               First 8 will go to control group 0, the following 8 to control group 1.
-                               If you want to send less than 16 controls you should to set first non-specified
-                               control to NAN.
-                               If index of first NAN value will be less or equal than 8 then only one
-                               message for Group 0 will be sent. All controls from first NAN value
-                               to 7 in Group 0 will be set to zero.
-                               If index of first NAN value will be great than 8 then two messages (to
-                               Group 0 and Group 1) will be sent. In this case all controls from first NAN value
-                               to 7 in Group 1 will be set to zero. */
+        struct Group {
+            float controls[8]; /**< @brief Controls in the group. */
+        };
+        Group groups[2]; /**< @brief Control Groups. In order not to send a group, set all its values to NaN. */
     };
 
     /**

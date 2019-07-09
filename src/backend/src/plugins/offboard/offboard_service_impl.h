@@ -75,17 +75,16 @@ public:
     static mavsdk::Offboard::ActuatorControl
     translateRPCActuatorControl(const rpc::offboard::ActuatorControl &rpc_actuator_control)
     {
-        mavsdk::Offboard::ActuatorControl actuator_control;
+        mavsdk::Offboard::ActuatorControl actuator_control {std::numeric_limits<float>::quiet_NaN()};
 
-        int len = std::min(16, rpc_actuator_control.controls_size());
+        int num_groups = std::min(2, rpc_actuator_control.groups_size());
 
-        for (int i = 0; i < len; i++) {
-            // https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.repeated_field#
-            actuator_control.controls[i] = rpc_actuator_control.controls(i);
-        }
-
-        if (len < 16) {
-            actuator_control.controls[len] = std::numeric_limits<float>::quiet_NaN();
+        for (int i = 0; i < num_groups; i++) {
+            int num_controls = std::min(8, rpc_actuator_control.groups(i).controls_size());
+            for (int j = 0; j < num_controls; j++) {
+                // https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.repeated_field#
+                actuator_control.groups[i].controls[j] = rpc_actuator_control.groups(i).controls(j);
+            }
         }
 
         return actuator_control;
