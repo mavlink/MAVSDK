@@ -121,6 +121,52 @@ public:
     };
 
     /**
+     * @brief Acceleration type in local coordinates.
+     *
+     * The acceleration is represented in the NED (North East Down) frame and in metres/second^2.
+     */
+    struct AccelerationNED {
+        float north_m_s2; /**< @brief Acceleration in North direction in metres/second^2 */
+        float east_m_s2; /**< @brief Acceleration in East direction in metres/second^2 */
+        float down_m_s2; /**< @brief Acceleration in Down direction in metres/second^2 */
+    };
+
+    /**
+     * @brief Angular velocity type in local coordinates.
+     *
+     * The angular velocity is represented in NED (North East Down) frame and in radians/second.
+     */
+    struct AngularVelocityNED {
+        float north_rad_s; /**< @brief Angular velocity in North direction in radians/second */
+        float east_rad_s; /**< @brief Angular velocity in East direction in radians/second */
+        float down_rad_s; /**< @brief Angular velocity in Down direction in radians/second */
+    };
+
+    /**
+     * @brief Magnetic field type in local coordinates.
+     *
+     * The magnetic field is represented in NED (North East Down) frame and is measured in Gauss.
+     */
+    struct MagneticFieldNED {
+        float north_gauss; /**< @brief Magnetic field in North direction measured in Gauss. */
+        float east_gauss; /**< @brief Magnetic field in East direction measured in Gauss. */
+        float down_gauss; /**< @brief Magnetic field in Down direction measured in Gauss. */
+    };
+
+    /**
+     * @brief Inertial measurement unit type in local coordinates.
+     *
+     * Acceleration, angular velocity and magnetic field are represented in NED (North East Down)
+     * frame in local coordinate system. Temperature is measured in degrees Celsius.
+     */
+    struct IMUReadingNED {
+        AccelerationNED acceleration; /**< @see AccelerationNED */
+        AngularVelocityNED angular_velocity; /**< @see AngularVelocityNED */
+        MagneticFieldNED magnetic_field; /**< @see MagneticFieldNED */
+        float temperature_degC; /**< @brief Temperature measured in degrees Celsius. */
+    };
+
+    /**
      * @brief GPS information type.
      */
     struct GPSInfo {
@@ -290,6 +336,14 @@ public:
     Result set_rate_ground_speed_ned(double rate_hz);
 
     /**
+     * @brief Set rate of IMU reading (NED) updates (synchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_imu_reading_ned(double rate_hz);
+
+    /**
      * @brief Set rate of GPS information updates (synchronous).
      *
      * @param rate_hz Rate in Hz.
@@ -370,6 +424,13 @@ public:
      */
     void set_rate_ground_speed_ned_async(double rate_hz, result_callback_t callback);
 
+    /**
+     * @brief Set rate of IMU reading (NED) updates (asynchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Cabllback to receive request result.
+     */
+    void set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback);
     /**
      * @brief Set rate of GPS information updates (asynchronous).
      *
@@ -474,6 +535,13 @@ public:
      * @return Ground speed in NED.
      */
     GroundSpeedNED ground_speed_ned() const;
+
+    /**
+     * @brief Get the current IMU reading (NED) (synchronous).
+     *
+     * @return IMU reading in NED.
+     */
+    IMUReadingNED imu_reading_ned() const;
 
     /**
      * @brief Get the current GPS information (synchronous).
@@ -647,6 +715,20 @@ public:
     void ground_speed_ned_async(ground_speed_ned_callback_t callback);
 
     /**
+     * @brief Callback type for IMU (NED) updates.
+     *
+     * @param imu_reading_ned IMU reading (NED).
+     */
+    typedef std::function<void(IMUReadingNED imu_reading_ned)> imu_reading_ned_callback_t;
+
+    /**
+     * @brief Subscribe to IMU reading (NED) updates (asynchronous).
+     *
+     * @param callback function to call with updates.
+     */
+    void imu_reading_ned_async(imu_reading_ned_callback_t callback);
+
+    /**
      * @brief Callback type for GPS information updates.
      *
      * @param gps_info GPS information.
@@ -808,6 +890,42 @@ bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs);
  * @return A reference to the stream.
  */
 std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::IMUReadingNED` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::IMUReadingNED &lhs, const Telemetry::IMUReadingNED &rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::AccelerationNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Telemetry::AccelerationNED const &acceleration_ned);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::AngularVelocityNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str,
+                         Telemetry::AngularVelocityNED const &angular_velocity_ned);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::MagneticFieldNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Telemetry::MagneticFieldNED const &magnetic_field);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::IMUReadingNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream &operator<<(std::ostream &str, Telemetry::IMUReadingNED const &imu_reading_ned);
 
 /**
  * @brief Equal operator to compare two `Telemetry::GPSInfo` objects.
