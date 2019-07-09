@@ -69,8 +69,12 @@ message Attitude {
   float thrust_value = 4;
 }
 
+message ControlGroup {
+ repeated float controls = 1;
+}
+
 message ActuatorControl {
-  repeated float controls = 1;
+ repeated ControlGroup control_group = 1;
 }
 
 message AttitudeRate {
