@@ -1,5 +1,6 @@
 #include "plugins/offboard/offboard.h"
 #include "offboard_impl.h"
+#include <cmath>
 
 namespace mavsdk {
 
