@@ -535,7 +535,7 @@ void OffboardImpl::send_actuator_control()
 
     for (int i = 0; i < 2; i++) {
         int nan_count = 0;
-        for (int j = 0; i < 8; j++) {
+        for (int j = 0; j < 8; j++) {
             if (std::isnan(actuator_control.groups[i].controls[j])) {
                 nan_count++;
                 actuator_control.groups[i].controls[j] = 0.0f;
