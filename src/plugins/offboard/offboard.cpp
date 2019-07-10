@@ -112,14 +112,14 @@ std::ostream &operator<<(std::ostream &str, Offboard::ActuatorControl const &act
                << ", Command port 6: " << actuator_control.groups[0].controls[6]
                << ", Command port 7: " << actuator_control.groups[0].controls[7] << "], "
                << "[group: " << 1
-               << ", Command port 0: " << actuator_control.groups[1].controls[8]
-               << ", Command port 1: " << actuator_control.groups[1].controls[9]
-               << ", Command port 2: " << actuator_control.groups[1].controls[10]
-               << ", Command port 3: " << actuator_control.groups[1].controls[11]
-               << ", Command port 4: " << actuator_control.groups[1].controls[12]
-               << ", Command port 5: " << actuator_control.groups[1].controls[13]
-               << ", Command port 6: " << actuator_control.groups[1].controls[14]
-               << ", Command port 7: " << actuator_control.groups[1].controls[15] << "]";
+               << ", Command port 0: " << actuator_control.groups[1].controls[0]
+               << ", Command port 1: " << actuator_control.groups[1].controls[1]
+               << ", Command port 2: " << actuator_control.groups[1].controls[2]
+               << ", Command port 3: " << actuator_control.groups[1].controls[3]
+               << ", Command port 4: " << actuator_control.groups[1].controls[4]
+               << ", Command port 5: " << actuator_control.groups[1].controls[5]
+               << ", Command port 6: " << actuator_control.groups[1].controls[6]
+               << ", Command port 7: " << actuator_control.groups[1].controls[7] << "]";
 }
 
 bool operator==(const Offboard::Attitude &lhs, const Offboard::Attitude &rhs)
