@@ -1,3 +1,4 @@
+#include <cmath>
 #include "global_include.h"
 #include "offboard_impl.h"
 #include "mavsdk_impl.h"
