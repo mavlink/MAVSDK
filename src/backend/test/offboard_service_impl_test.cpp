@@ -54,7 +54,8 @@ protected:
     std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>
     createArbitraryRPCVelocityBodyYawspeed() const;
     std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw> createArbitraryRPCVelocityNedYaw() const;
-    std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl> createArbitraryRPCActuatorControl() const;
+    std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>
+    createArbitraryRPCActuatorControl() const;
 };
 
 TEST_P(OffboardServiceImplTest, startResultIsTranslatedCorrectly)
@@ -191,7 +192,8 @@ TEST_F(OffboardServiceImplTest, setsActuatorControlCorrectly)
     mavsdk::rpc::offboard::SetActuatorControlRequest request;
 
     auto rpc_actuator_control = createArbitraryRPCActuatorControl();
-    const auto expected_actuator_control = OffboardServiceImpl::translateRPCActuatorControl(*rpc_actuator_control);
+    const auto expected_actuator_control =
+        OffboardServiceImpl::translateRPCActuatorControl(*rpc_actuator_control);
     EXPECT_CALL(offboard, set_actuator_control(expected_actuator_control)).Times(1);
 
     request.set_allocated_actuator_control(rpc_actuator_control.release());
@@ -203,7 +205,7 @@ std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>
 OffboardServiceImplTest::createArbitraryRPCActuatorControl() const
 {
     auto rpc_actuator_control = std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>(
-            new mavsdk::rpc::offboard::ActuatorControl());
+        new mavsdk::rpc::offboard::ActuatorControl());
 
     auto rpc_actuator_group_0 = rpc_actuator_control.get()->add_groups();
 

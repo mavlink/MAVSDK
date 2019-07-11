@@ -512,18 +512,18 @@ void OffboardImpl::send_attitude_rate()
     _parent->send_message(message);
 }
 
-void OffboardImpl::send_actuator_control_message(const float * controls, uint8_t group_number)
+void OffboardImpl::send_actuator_control_message(const float *controls, uint8_t group_number)
 {
     mavlink_message_t message;
     mavlink_msg_set_actuator_control_target_pack(
-            _parent->get_own_system_id(),
-            _parent->get_own_component_id(),
-            &message,
-            static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
-            group_number,
-            _parent->get_system_id(),
-            _parent->get_autopilot_id(),
-            controls);
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        group_number,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        controls);
     _parent->send_message(message);
 }
 

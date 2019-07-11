@@ -91,7 +91,7 @@ bool operator==(const Offboard::ActuatorControl &lhs, const Offboard::ActuatorCo
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 8; j++) {
             if ((std::isnan(lhs.groups[i].controls[j]) && std::isnan(rhs.groups[i].controls[j])) ||
-                    lhs.groups[i].controls[j] == rhs.groups[i].controls[j]) {
+                lhs.groups[i].controls[j] == rhs.groups[i].controls[j]) {
                 continue;
             }
             return false;

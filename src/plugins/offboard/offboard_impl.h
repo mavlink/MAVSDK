@@ -45,7 +45,7 @@ private:
     void send_attitude_rate();
     void send_attitude();
     void send_actuator_control();
-    void send_actuator_control_message(const float * controls, uint8_t group_number = 0);
+    void send_actuator_control_message(const float *controls, uint8_t group_number = 0);
 
     void process_heartbeat(const mavlink_message_t &message);
     void receive_command_result(MAVLinkCommands::Result result,
