@@ -77,6 +77,15 @@ private:
 
     bool parse_xml();
 
+    // Until we have std::optional we need to use std::pair to return something that might be
+    // nothing.
+    std::pair<bool, std::vector<std::shared_ptr<Option>>> parse_options(
+        const tinyxml2::XMLElement* options_handle,
+        const std::string& param_name,
+        std::map<std::string, std::string>& type_map);
+    bool
+    find_default(std::vector<std::shared_ptr<Option>>& options, const std::string& default_str);
+
     mutable std::recursive_mutex _mutex{};
 
     tinyxml2::XMLDocument _doc{};
