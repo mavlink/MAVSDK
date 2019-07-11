@@ -1240,6 +1240,8 @@ void CameraImpl::set_option_async(const std::string &setting_id,
 
     _parent->set_param_async(setting_id,
                              value,
+                             this,
+                             true,
                              [this, callback, setting_id, value](MAVLinkParameters::Result result) {
                                  if (result == MAVLinkParameters::Result::SUCCESS) {
                                      if (this->_camera_definition) {
@@ -1254,9 +1256,7 @@ void CameraImpl::set_option_async(const std::string &setting_id,
                                          callback(Camera::Result::ERROR);
                                      }
                                  }
-                             },
-                             this,
-                             true);
+                             });
 }
 
 Camera::Result CameraImpl::get_option(const std::string &setting_id, Camera::Option &option)
@@ -1438,6 +1438,8 @@ void CameraImpl::refresh_params()
         const bool is_last = (count + 1 == params.size());
         _parent->get_param_async(param_name,
                                  param_value_type,
+                                 this,
+                                 true,
                                  [param_name, is_last, this](MAVLinkParameters::Result result,
                                                              MAVLinkParameters::ParamValue value) {
                                      if (result != MAVLinkParameters::Result::SUCCESS) {
@@ -1453,9 +1455,7 @@ void CameraImpl::refresh_params()
                                          notify_current_settings();
                                          notify_possible_setting_options();
                                      }
-                                 },
-                                 this,
-                                 true);
+                                 });
         ++count;
     }
 }

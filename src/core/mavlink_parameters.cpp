@@ -30,9 +30,9 @@ MAVLinkParameters::~MAVLinkParameters()
 
 void MAVLinkParameters::set_param_async(const std::string &name,
                                         const ParamValue &value,
-                                        set_param_callback_t callback,
                                         const void *cookie,
-                                        bool extended)
+                                        bool extended,
+                                        set_param_callback_t callback)
 {
     // if (value.is_float()) {
     //     LogDebug() << "setting param " << name << " to " << value.get_float();
@@ -66,16 +66,16 @@ MAVLinkParameters::set_param(const std::string &name, const ParamValue &value, b
     auto res = prom.get_future();
 
     set_param_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this, extended);
+        name, value, this, extended, [&prom](Result result) { prom.set_value(result); });
 
     return res.get();
 }
 
 void MAVLinkParameters::get_param_async(const std::string &name,
                                         ParamValue value_type,
-                                        get_param_callback_t callback,
                                         const void *cookie,
-                                        bool extended)
+                                        bool extended,
+                                        get_param_callback_t callback)
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
 
@@ -114,13 +114,9 @@ MAVLinkParameters::get_param(const std::string &name, ParamValue value_type, boo
     auto prom = std::promise<std::pair<Result, MAVLinkParameters::ParamValue>>();
     auto res = prom.get_future();
 
-    get_param_async(name,
-                    value_type,
-                    [&prom](Result result, ParamValue value) {
-                        prom.set_value(std::make_pair<>(result, value));
-                    },
-                    this,
-                    extended);
+    get_param_async(name, value_type, this, extended, [&prom](Result result, ParamValue value) {
+        prom.set_value(std::make_pair<>(result, value));
+    });
 
     return res.get();
 }

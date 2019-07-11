@@ -483,18 +483,18 @@ public:
 
     void set_param_async(const std::string &name,
                          const ParamValue &value,
-                         set_param_callback_t callback,
-                         const void *cookie = nullptr,
-                         bool extended = false);
+                         const void *cookie,
+                         bool extended,
+                         set_param_callback_t callback);
 
     std::pair<Result, ParamValue>
     get_param(const std::string &name, ParamValue value_type, bool extended);
     typedef std::function<void(Result, ParamValue value)> get_param_callback_t;
     void get_param_async(const std::string &name,
                          ParamValue value_type,
-                         get_param_callback_t callback,
                          const void *cookie,
-                         bool extended = false);
+                         bool extended,
+                         get_param_callback_t callback);
 
     void cancel_all_param(const void *cookie);
 

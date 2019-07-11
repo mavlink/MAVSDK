@@ -173,18 +173,18 @@ public:
 
     void set_param_async(const std::string &name,
                          MAVLinkParameters::ParamValue value,
-                         success_t callback,
                          const void *cookie,
-                         bool extended = false);
+                         bool extended,
+                         success_t callback);
 
     MAVLinkParameters::Result
     set_param(const std::string &name, MAVLinkParameters::ParamValue value, bool extended = false);
 
     void get_param_async(const std::string &name,
                          MAVLinkParameters::ParamValue value_type,
-                         get_param_callback_t callback,
                          const void *cookie,
-                         bool extended);
+                         bool extended,
+                         get_param_callback_t callback);
 
     void cancel_all_param(const void *cookie);
 
