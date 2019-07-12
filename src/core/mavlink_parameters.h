@@ -416,6 +416,76 @@ public:
             }
         }
 
+        bool operator<(const ParamValue& rhs) const
+        {
+            if (!is_same_type(rhs)) {
+                LogWarn() << "Trying to compare different types.";
+                return false;
+            }
+            if (_value.is<uint8_t>()) {
+                return _value.as<uint8_t>() < rhs._value.as<uint8_t>();
+            } else if (_value.is<int8_t>()) {
+                return _value.as<int8_t>() < rhs._value.as<int8_t>();
+            } else if (_value.is<uint16_t>()) {
+                return _value.as<uint16_t>() < rhs._value.as<uint16_t>();
+            } else if (_value.is<int16_t>()) {
+                return _value.as<int16_t>() < rhs._value.as<int16_t>();
+            } else if (_value.is<uint32_t>()) {
+                return _value.as<uint32_t>() < rhs._value.as<uint32_t>();
+            } else if (_value.is<int32_t>()) {
+                return _value.as<int32_t>() < rhs._value.as<int32_t>();
+            } else if (_value.is<uint64_t>()) {
+                return _value.as<uint64_t>() < rhs._value.as<uint64_t>();
+            } else if (_value.is<int64_t>()) {
+                return _value.as<int64_t>() < rhs._value.as<int64_t>();
+            } else if (_value.is<float>()) {
+                return _value.as<float>() < rhs._value.as<float>();
+            } else if (_value.is<double>()) {
+                return _value.as<double>() < rhs._value.as<double>();
+            } else if (_value.is<custom_type_t>()) {
+                LogErr() << "Comparing custom_type not supported.";
+                return false;
+            } else {
+                LogErr() << "Comparing unknown types";
+                return false;
+            }
+        }
+
+        bool operator>(const ParamValue& rhs) const
+        {
+            if (!is_same_type(rhs)) {
+                LogWarn() << "Trying to compare different types.";
+                return false;
+            }
+            if (_value.is<uint8_t>()) {
+                return _value.as<uint8_t>() > rhs._value.as<uint8_t>();
+            } else if (_value.is<int8_t>()) {
+                return _value.as<int8_t>() > rhs._value.as<int8_t>();
+            } else if (_value.is<uint16_t>()) {
+                return _value.as<uint16_t>() > rhs._value.as<uint16_t>();
+            } else if (_value.is<int16_t>()) {
+                return _value.as<int16_t>() > rhs._value.as<int16_t>();
+            } else if (_value.is<uint32_t>()) {
+                return _value.as<uint32_t>() > rhs._value.as<uint32_t>();
+            } else if (_value.is<int32_t>()) {
+                return _value.as<int32_t>() > rhs._value.as<int32_t>();
+            } else if (_value.is<uint64_t>()) {
+                return _value.as<uint64_t>() > rhs._value.as<uint64_t>();
+            } else if (_value.is<int64_t>()) {
+                return _value.as<int64_t>() > rhs._value.as<int64_t>();
+            } else if (_value.is<float>()) {
+                return _value.as<float>() > rhs._value.as<float>();
+            } else if (_value.is<double>()) {
+                return _value.as<double>() > rhs._value.as<double>();
+            } else if (_value.is<custom_type_t>()) {
+                LogErr() << "Comparing custom_type not supported.";
+                return false;
+            } else {
+                LogErr() << "Comparing unknown types";
+                return false;
+            }
+        }
+
         bool operator==(const std::string& value_str) const
         {
             // LogDebug() << "Compare " << typestr() << " and " << rhs.typestr();
