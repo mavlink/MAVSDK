@@ -8,10 +8,6 @@
 
 #include "plugin_base.h"
 
-#ifdef ERROR
-#undef ERROR
-#endif
-
 namespace mavsdk {
 
 class CameraImpl;
@@ -474,7 +470,9 @@ public:
     struct SettingOptions {
         std::string setting_id{}; /**< Name of the setting (machine readable). */
         std::string setting_description{}; /**< Description of the setting (human readable). */
-        std::vector<Option> options{}; /**< List of options. */
+        std::vector<Option>
+            options{}; /**< List of options, or if range [min, max] or [min, max, interval]. */
+        bool is_range{false}; /**< If Option is given as a range. */
     };
 
     /**

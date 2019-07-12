@@ -7,6 +7,8 @@
 #include <map>
 #include <mutex>
 #include <string>
+#include <tuple>
+#include <utility>
 
 namespace mavsdk {
 
@@ -62,7 +64,6 @@ private:
         MAVLinkParameters::ParamValue value{};
         std::vector<std::string> exclusions{};
         std::map<std::string, parameter_range_t> parameter_ranges{};
-        bool is_default{false};
     };
 
     struct Parameter {
@@ -73,6 +74,8 @@ private:
         MAVLinkParameters::ParamValue type{}; // for type only, doesn't hold a value
         std::vector<std::string> updates{};
         std::vector<std::shared_ptr<Option>> options{};
+        Option default_option{};
+        bool is_range{false};
     };
 
     bool parse_xml();
@@ -83,8 +86,12 @@ private:
         const tinyxml2::XMLElement* options_handle,
         const std::string& param_name,
         std::map<std::string, std::string>& type_map);
-    bool
-    find_default(std::vector<std::shared_ptr<Option>>& options, const std::string& default_str);
+    std::tuple<bool, std::vector<std::shared_ptr<Option>>, Option> parse_range_options(
+        const tinyxml2::XMLElement* param_handle,
+        const std::string& param_name,
+        std::map<std::string, std::string>& type_map);
+    std::pair<bool, Option> find_default(
+        const std::vector<std::shared_ptr<Option>>& options, const std::string& default_str);
 
     mutable std::recursive_mutex _mutex{};
 
