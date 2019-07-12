@@ -7,15 +7,15 @@ namespace backend {
 template<typename Offboard = Offboard>
 class OffboardServiceImpl final : public rpc::offboard::OffboardService::Service {
 public:
-    OffboardServiceImpl(Offboard &offboard) : _offboard(offboard) {}
+    OffboardServiceImpl(Offboard& offboard) : _offboard(offboard) {}
 
     template<typename ResponseType>
     void
-    fillResponseWithResult(ResponseType *response, mavsdk::Offboard::Result &offboard_result) const
+    fillResponseWithResult(ResponseType* response, mavsdk::Offboard::Result& offboard_result) const
     {
         auto rpc_result = static_cast<rpc::offboard::OffboardResult::Result>(offboard_result);
 
-        auto *rpc_offboard_result = new rpc::offboard::OffboardResult();
+        auto* rpc_offboard_result = new rpc::offboard::OffboardResult();
         rpc_offboard_result->set_result(rpc_result);
         rpc_offboard_result->set_result_str(mavsdk::Offboard::result_str(offboard_result));
 
@@ -23,9 +23,9 @@ public:
     }
 
     grpc::Status Start(
-        grpc::ServerContext * /* context */,
-        const rpc::offboard::StartRequest * /* request */,
-        rpc::offboard::StartResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::StartRequest* /* request */,
+        rpc::offboard::StartResponse* response) override
     {
         auto offboard_result = _offboard.start();
 
@@ -37,9 +37,9 @@ public:
     }
 
     grpc::Status Stop(
-        grpc::ServerContext * /* context */,
-        const rpc::offboard::StopRequest * /* request */,
-        rpc::offboard::StopResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::StopRequest* /* request */,
+        rpc::offboard::StopResponse* response) override
     {
         auto offboard_result = _offboard.stop();
 
@@ -51,9 +51,9 @@ public:
     }
 
     grpc::Status IsActive(
-        grpc::ServerContext * /* context */,
-        const rpc::offboard::IsActiveRequest * /* request */,
-        rpc::offboard::IsActiveResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::IsActiveRequest* /* request */,
+        rpc::offboard::IsActiveResponse* response) override
     {
         if (response != nullptr) {
             auto is_active = _offboard.is_active();
@@ -64,9 +64,9 @@ public:
     }
 
     grpc::Status SetAttitude(
-        grpc::ServerContext * /* context */,
-        const rpc::offboard::SetAttitudeRequest *request,
-        rpc::offboard::SetAttitudeResponse * /* response */) override
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetAttitudeRequest* request,
+        rpc::offboard::SetAttitudeResponse* /* response */) override
     {
         if (request != nullptr) {
             auto requested_attitude = translateRPCAttitude(request->attitude());
@@ -77,7 +77,7 @@ public:
     }
 
     static mavsdk::Offboard::Attitude
-    translateRPCAttitude(const rpc::offboard::Attitude &rpc_attitude)
+    translateRPCAttitude(const rpc::offboard::Attitude& rpc_attitude)
     {
         mavsdk::Offboard::Attitude attitude;
 
@@ -90,9 +90,9 @@ public:
     }
 
     grpc::Status SetAttitudeRate(
-        grpc::ServerContext * /* context */,
-        const rpc::offboard::SetAttitudeRateRequest *request,
-        rpc::offboard::SetAttitudeRateResponse * /* response */) override
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetAttitudeRateRequest* request,
+        rpc::offboard::SetAttitudeRateResponse* /* response */) override
     {
         if (request != nullptr) {
             auto requested_attitude_rate = translateRPCAttitudeRate(request->attitude_rate());
@@ -103,7 +103,7 @@ public:
     }
 
     static mavsdk::Offboard::AttitudeRate
-    translateRPCAttitudeRate(const rpc::offboard::AttitudeRate &rpc_attitude_rate)
+    translateRPCAttitudeRate(const rpc::offboard::AttitudeRate& rpc_attitude_rate)
     {
         mavsdk::Offboard::AttitudeRate attitude_rate;
 
@@ -116,9 +116,9 @@ public:
     }
 
     grpc::Status SetPositionNed(
-        grpc::ServerContext * /* context */,
-        const rpc::offboard::SetPositionNedRequest *request,
-        rpc::offboard::SetPositionNedResponse * /* response */) override
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetPositionNedRequest* request,
+        rpc::offboard::SetPositionNedResponse* /* response */) override
     {
         if (request != nullptr) {
             auto requested_position_ned_yaw =
@@ -130,7 +130,7 @@ public:
     }
 
     static mavsdk::Offboard::PositionNEDYaw
-    translateRPCPositionNEDYaw(const rpc::offboard::PositionNEDYaw &rpc_position_ned_yaw)
+    translateRPCPositionNEDYaw(const rpc::offboard::PositionNEDYaw& rpc_position_ned_yaw)
     {
         mavsdk::Offboard::PositionNEDYaw position_ned_yaw;
 
@@ -143,9 +143,9 @@ public:
     }
 
     grpc::Status SetVelocityBody(
-        grpc::ServerContext * /* context */,
-        const rpc::offboard::SetVelocityBodyRequest *request,
-        rpc::offboard::SetVelocityBodyResponse * /* response */) override
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetVelocityBodyRequest* request,
+        rpc::offboard::SetVelocityBodyResponse* /* response */) override
     {
         if (request != nullptr) {
             auto requested_velocity_body_yawspeed =
@@ -157,7 +157,7 @@ public:
     }
 
     static mavsdk::Offboard::VelocityBodyYawspeed translateRPCVelocityBodyYawspeed(
-        const rpc::offboard::VelocityBodyYawspeed &rpc_velocity_body_yawspeed)
+        const rpc::offboard::VelocityBodyYawspeed& rpc_velocity_body_yawspeed)
     {
         mavsdk::Offboard::VelocityBodyYawspeed velocity_body_yawspeed;
 
@@ -170,9 +170,9 @@ public:
     }
 
     grpc::Status SetVelocityNed(
-        grpc::ServerContext * /* context */,
-        const rpc::offboard::SetVelocityNedRequest *request,
-        rpc::offboard::SetVelocityNedResponse * /* response */) override
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetVelocityNedRequest* request,
+        rpc::offboard::SetVelocityNedResponse* /* response */) override
     {
         if (request != nullptr) {
             auto requested_velocity_ned_yaw =
@@ -184,7 +184,7 @@ public:
     }
 
     static mavsdk::Offboard::VelocityNEDYaw
-    translateRPCVelocityNEDYaw(const rpc::offboard::VelocityNEDYaw &rpc_velocity_ned_yaw)
+    translateRPCVelocityNEDYaw(const rpc::offboard::VelocityNEDYaw& rpc_velocity_ned_yaw)
     {
         mavsdk::Offboard::VelocityNEDYaw velocity_ned_yaw;
 
@@ -197,7 +197,7 @@ public:
     }
 
 private:
-    Offboard &_offboard;
+    Offboard& _offboard;
 };
 
 } // namespace backend

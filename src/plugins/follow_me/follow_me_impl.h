@@ -12,7 +12,7 @@ namespace mavsdk {
 
 class FollowMeImpl : public PluginImplBase {
 public:
-    FollowMeImpl(System &system);
+    FollowMeImpl(System& system);
     ~FollowMeImpl();
 
     void init() override;
@@ -21,27 +21,27 @@ public:
     void enable() override;
     void disable() override;
 
-    const FollowMe::Config &get_config() const;
-    FollowMe::Result set_config(const FollowMe::Config &config);
+    const FollowMe::Config& get_config() const;
+    FollowMe::Result set_config(const FollowMe::Config& config);
 
-    void set_target_location(const FollowMe::TargetLocation &location);
-    const FollowMe::TargetLocation &get_last_location() const;
+    void set_target_location(const FollowMe::TargetLocation& location);
+    const FollowMe::TargetLocation& get_last_location() const;
 
     bool is_active() const;
 
     FollowMe::Result start();
     FollowMe::Result stop();
 
-    FollowMeImpl(const FollowMeImpl &) = delete;
-    FollowMeImpl &operator=(const FollowMeImpl &) = delete;
+    FollowMeImpl(const FollowMeImpl&) = delete;
+    FollowMeImpl& operator=(const FollowMeImpl&) = delete;
 
 private:
     typedef unsigned int config_val_t;
-    void process_heartbeat(const mavlink_message_t &message);
+    void process_heartbeat(const mavlink_message_t& message);
 
     enum class ConfigParameter;
     // Config methods
-    bool is_config_ok(const FollowMe::Config &config) const;
+    bool is_config_ok(const FollowMe::Config& config) const;
     FollowMe::Result to_follow_me_result(MAVLinkCommands::Result result) const;
 
     bool is_target_location_set() const;
@@ -65,7 +65,7 @@ private:
     {
         return (config_val) | static_cast<config_val_t>(cfgp);
     }
-    friend config_val_t operator|=(config_val_t &config_val, ConfigParameter cfgp)
+    friend config_val_t operator|=(config_val_t& config_val, ConfigParameter cfgp)
     {
         return config_val = config_val | static_cast<config_val_t>(cfgp);
     }
@@ -81,7 +81,7 @@ private:
     mutable std::mutex _mutex{};
     FollowMe::TargetLocation _target_location{}; // sent to vehicle
     FollowMe::TargetLocation _last_location{}; // sent to vehicle
-    void *_target_location_cookie = nullptr;
+    void* _target_location_cookie = nullptr;
 
     Time _time{};
     uint8_t _estimatation_capabilities = 0; // sent to vehicle

@@ -27,7 +27,7 @@ namespace mavsdk {
 /* change to remote_ip and remote_port */
 TcpConnection::TcpConnection(
     Connection::receiver_callback_t receiver_callback,
-    const std::string &remote_ip,
+    const std::string& remote_ip,
     int remote_port) :
     Connection(receiver_callback),
     _remote_ip(remote_ip),
@@ -81,8 +81,7 @@ ConnectionResult TcpConnection::setup_port()
     remote_addr.sin_port = htons(_remote_port_number);
     remote_addr.sin_addr.s_addr = inet_addr(_remote_ip.c_str());
 
-    if (connect(
-            _socket_fd, reinterpret_cast<sockaddr *>(&remote_addr), sizeof(struct sockaddr_in)) <
+    if (connect(_socket_fd, reinterpret_cast<sockaddr*>(&remote_addr), sizeof(struct sockaddr_in)) <
         0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         _is_ok = false;
@@ -129,7 +128,7 @@ ConnectionResult TcpConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool TcpConnection::send_message(const mavlink_message_t &message)
+bool TcpConnection::send_message(const mavlink_message_t& message)
 {
     if (_remote_ip.empty()) {
         LogErr() << "Remote IP unknown";
@@ -156,10 +155,10 @@ bool TcpConnection::send_message(const mavlink_message_t &message)
 
     const auto send_len = sendto(
         _socket_fd,
-        reinterpret_cast<char *>(buffer),
+        reinterpret_cast<char*>(buffer),
         buffer_len,
         0,
-        reinterpret_cast<const sockaddr *>(&dest_addr),
+        reinterpret_cast<const sockaddr*>(&dest_addr),
         sizeof(dest_addr));
 
     if (send_len != buffer_len) {

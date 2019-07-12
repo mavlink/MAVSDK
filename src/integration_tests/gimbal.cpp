@@ -28,7 +28,7 @@ TEST(SitlTestGimbal, GimbalMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System &system = dc.system();
+    System& system = dc.system();
     // FIXME: This is what it should be, for now though with the typhoon_h480
     //        SITL simulation, the gimbal is hooked up to the autopilot.
     // ASSERT_TRUE(system.has_gimbal());
@@ -56,7 +56,7 @@ TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System &system = dc.system();
+    System& system = dc.system();
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system.has_autopilot());
 
@@ -97,7 +97,7 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System &system = dc.system();
+    System& system = dc.system();
     // ASSERT_TRUE(system.has_gimbal());
     ASSERT_TRUE(system.has_autopilot());
 
@@ -111,7 +111,7 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    const Telemetry::Position &position = telemetry->position();
+    const Telemetry::Position& position = telemetry->position();
 
     // set the ROI location: a bit to the north of the vehicle's location
     const double latitude_offset_deg = 3. / 111111.; // this is about 3 m

@@ -58,7 +58,7 @@ public:
      * @param connection_url connection URL string.
      * @return The result of adding the connection.
      */
-    ConnectionResult add_any_connection(const std::string &connection_url);
+    ConnectionResult add_any_connection(const std::string& connection_url);
 
     /**
      * @brief Adds a UDP connection to the specified port number.
@@ -81,7 +81,7 @@ public:
      * @return The result of adding the connection.
      */
     ConnectionResult
-    add_udp_connection(const std::string &local_ip, int local_port = DEFAULT_UDP_PORT);
+    add_udp_connection(const std::string& local_ip, int local_port = DEFAULT_UDP_PORT);
 
     /**
      * @brief Adds a TCP connection with a specific port number on localhost.
@@ -99,7 +99,7 @@ public:
      * @return The result of adding the connection.
      */
     ConnectionResult
-    add_tcp_connection(const std::string &remote_ip, int remote_port = DEFAULT_TCP_REMOTE_PORT);
+    add_tcp_connection(const std::string& remote_ip, int remote_port = DEFAULT_TCP_REMOTE_PORT);
 
     /**
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as
@@ -111,7 +111,7 @@ public:
      * @return The result of adding the connection.
      */
     ConnectionResult
-    add_serial_connection(const std::string &dev_path, int baudrate = DEFAULT_SERIAL_BAUDRATE);
+    add_serial_connection(const std::string& dev_path, int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
     /**
      * @brief Possible configurations.
@@ -151,7 +151,7 @@ public:
      *
      * @return A reference to a system.
      */
-    System &system() const;
+    System& system() const;
 
     /**
      * @brief Get the system with the specified UUID.
@@ -162,7 +162,7 @@ public:
      * @param uuid UUID of system to get.
      * @return A reference to the specified system.
      */
-    System &system(uint64_t uuid) const;
+    System& system(uint64_t uuid) const;
 
     /**
      * @brief Callback type for discover and timeout notifications.
@@ -228,8 +228,8 @@ private:
     std::unique_ptr<MavsdkImpl> _impl;
 
     // Non-copyable
-    Mavsdk(const Mavsdk &) = delete;
-    const Mavsdk &operator=(const Mavsdk &) = delete;
+    Mavsdk(const Mavsdk&) = delete;
+    const Mavsdk& operator=(const Mavsdk&) = delete;
 };
 
 } // namespace mavsdk

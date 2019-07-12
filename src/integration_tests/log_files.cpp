@@ -17,7 +17,7 @@ TEST(HardwareTest, LogFiles)
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
     auto log_files = std::make_shared<LogFiles>(system);
 
@@ -29,7 +29,7 @@ TEST(HardwareTest, LogFiles)
     unsigned num_downloaded_files = 0;
 
     if (entry_result.first == LogFiles::Result::SUCCESS) {
-        for (auto &entry : entry_result.second) {
+        for (auto& entry : entry_result.second) {
             float size_mib = entry.size_bytes / 1024.0f / 1024.0f;
             LogInfo() << "Entry " << entry.id << ": "
                       << " at " << entry.date << ", " << size_mib

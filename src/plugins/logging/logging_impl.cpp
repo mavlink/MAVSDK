@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-LoggingImpl::LoggingImpl(System &system) : PluginImplBase(system)
+LoggingImpl::LoggingImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -59,7 +59,7 @@ Logging::Result LoggingImpl::stop_logging() const
     return logging_result_from_command_result(_parent->send_command(command));
 }
 
-void LoggingImpl::start_logging_async(const Logging::result_callback_t &callback)
+void LoggingImpl::start_logging_async(const Logging::result_callback_t& callback)
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -71,7 +71,7 @@ void LoggingImpl::start_logging_async(const Logging::result_callback_t &callback
         command, std::bind(&LoggingImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void LoggingImpl::stop_logging_async(const Logging::result_callback_t &callback)
+void LoggingImpl::stop_logging_async(const Logging::result_callback_t& callback)
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -83,13 +83,13 @@ void LoggingImpl::stop_logging_async(const Logging::result_callback_t &callback)
         command, std::bind(&LoggingImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void LoggingImpl::process_logging_data(const mavlink_message_t &message)
+void LoggingImpl::process_logging_data(const mavlink_message_t& message)
 {
     mavlink_logging_data_t logging_data;
     mavlink_msg_logging_data_decode(&message, &logging_data);
 }
 
-void LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
+void LoggingImpl::process_logging_data_acked(const mavlink_message_t& message)
 {
     mavlink_logging_data_acked_t logging_data_acked;
     mavlink_msg_logging_data_acked_decode(&message, &logging_data_acked);
@@ -127,7 +127,7 @@ Logging::Result LoggingImpl::logging_result_from_command_result(MAVLinkCommands:
 }
 
 void LoggingImpl::command_result_callback(
-    MAVLinkCommands::Result command_result, const Logging::result_callback_t &callback)
+    MAVLinkCommands::Result command_result, const Logging::result_callback_t& callback)
 {
     Logging::Result action_result = logging_result_from_command_result(command_result);
 

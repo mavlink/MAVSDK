@@ -29,7 +29,7 @@ TEST(CameraTest, TakePhotoSingle)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
@@ -59,7 +59,7 @@ TEST(CameraTest, TakePhotosMultiple)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 

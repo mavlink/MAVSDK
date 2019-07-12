@@ -3,20 +3,20 @@
 
 namespace mavsdk {
 
-MavlinkPassthrough::MavlinkPassthrough(System &system) :
+MavlinkPassthrough::MavlinkPassthrough(System& system) :
     PluginBase(),
     _impl{new MavlinkPassthroughImpl(system)}
 {}
 
 MavlinkPassthrough::~MavlinkPassthrough() {}
 
-MavlinkPassthrough::Result MavlinkPassthrough::send_message(mavlink_message_t &message)
+MavlinkPassthrough::Result MavlinkPassthrough::send_message(mavlink_message_t& message)
 {
     return _impl->send_message(message);
 }
 
 void MavlinkPassthrough::subscribe_message_async(
-    uint16_t message_id, std::function<void(const mavlink_message_t &)> callback)
+    uint16_t message_id, std::function<void(const mavlink_message_t&)> callback)
 {
     _impl->subscribe_message_async(message_id, callback);
 }
@@ -55,13 +55,13 @@ uint8_t MavlinkPassthrough::get_target_compid() const
 }
 
 void MavlinkPassthrough::intercept_incoming_messages_async(
-    std::function<bool(mavlink_message_t &)> callback)
+    std::function<bool(mavlink_message_t&)> callback)
 {
     _impl->intercept_incoming_messages_async(callback);
 }
 
 void MavlinkPassthrough::intercept_outgoing_messages_async(
-    std::function<bool(mavlink_message_t &)> callback)
+    std::function<bool(mavlink_message_t&)> callback)
 {
     _impl->intercept_outgoing_messages_async(callback);
 }

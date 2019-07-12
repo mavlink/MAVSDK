@@ -7,7 +7,7 @@ namespace mavsdk {
 
 class MAVLinkChannels {
 public:
-    static MAVLinkChannels &Instance()
+    static MAVLinkChannels& Instance()
     {
         // This should be thread-safe in C++11.
         static MAVLinkChannels instance;
@@ -16,10 +16,10 @@ public:
     }
 
     // delete copy and move constructors and assign operators
-    MAVLinkChannels(MAVLinkChannels const &) = delete; // Copy construct
-    MAVLinkChannels(MAVLinkChannels &&) = delete; // Move construct
-    MAVLinkChannels &operator=(MAVLinkChannels const &) = delete; // Copy assign
-    MAVLinkChannels &operator=(MAVLinkChannels &&) = delete; // Move assign
+    MAVLinkChannels(MAVLinkChannels const&) = delete; // Copy construct
+    MAVLinkChannels(MAVLinkChannels&&) = delete; // Move construct
+    MAVLinkChannels& operator=(MAVLinkChannels const&) = delete; // Copy assign
+    MAVLinkChannels& operator=(MAVLinkChannels&&) = delete; // Move assign
 
     MAVLinkChannels();
     ~MAVLinkChannels();
@@ -30,7 +30,7 @@ public:
      * @param new_channel: the channel assigned to use
      * @return true if a free channel was available.
      */
-    bool checkout_free_channel(uint8_t &new_channel);
+    bool checkout_free_channel(uint8_t& new_channel);
 
     /**
      * Check a used channel back in and mark it as free again.

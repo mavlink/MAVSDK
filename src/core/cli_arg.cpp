@@ -15,7 +15,7 @@ void CliArg::reset()
     _port = 0;
 }
 
-bool CliArg::parse(const std::string &uri)
+bool CliArg::parse(const std::string& uri)
 {
     reset();
 
@@ -41,7 +41,7 @@ bool CliArg::parse(const std::string &uri)
     return true;
 }
 
-bool CliArg::find_protocol(std::string &rest)
+bool CliArg::find_protocol(std::string& rest)
 {
     const std::string udp = "udp";
     const std::string tcp = "tcp";
@@ -66,7 +66,7 @@ bool CliArg::find_protocol(std::string &rest)
     }
 }
 
-bool CliArg::find_path(std::string &rest)
+bool CliArg::find_path(std::string& rest)
 {
     if (rest.length() == 0) {
         if (_protocol == Protocol::UDP || _protocol == Protocol::TCP) {
@@ -98,7 +98,7 @@ bool CliArg::find_path(std::string &rest)
                 LogWarn() << "COM port number missing";
                 return false;
             }
-            for (const auto &digit : _path.substr(3, _path.length() - 3)) {
+            for (const auto& digit : _path.substr(3, _path.length() - 3)) {
                 if (!std::isdigit(digit)) {
                     LogWarn() << "COM port number invalid.";
                     _path = "";
@@ -115,14 +115,14 @@ bool CliArg::find_path(std::string &rest)
     return true;
 }
 
-bool CliArg::find_port(std::string &rest)
+bool CliArg::find_port(std::string& rest)
 {
     if (rest.length() == 0) {
         _port = 0;
         return true;
     }
 
-    for (const auto &digit : rest) {
+    for (const auto& digit : rest) {
         if (!std::isdigit(digit)) {
             LogWarn() << "Non-numeric char found in port";
             return false;
@@ -141,14 +141,14 @@ bool CliArg::find_port(std::string &rest)
     return true;
 }
 
-bool CliArg::find_baudrate(std::string &rest)
+bool CliArg::find_baudrate(std::string& rest)
 {
     if (rest.length() == 0) {
         _port = 0;
         return true;
     }
 
-    for (const auto &digit : rest) {
+    for (const auto& digit : rest) {
         if (!std::isdigit(digit)) {
             LogWarn() << "Non-numeric char found in baudrate";
             return false;

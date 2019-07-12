@@ -33,11 +33,11 @@ using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
 
 // Handles Action's result
-inline void handle_action_err_exit(Action::Result result, const std::string &message);
+inline void handle_action_err_exit(Action::Result result, const std::string& message);
 // Handles Mission's result
-inline void handle_mission_err_exit(Mission::Result result, const std::string &message);
+inline void handle_mission_err_exit(Mission::Result result, const std::string& message);
 // Handles Connection result
-inline void handle_connection_err_exit(ConnectionResult result, const std::string &message);
+inline void handle_connection_err_exit(ConnectionResult result, const std::string& message);
 
 static std::shared_ptr<MissionItem> make_mission_item(
     double latitude_deg,
@@ -59,7 +59,7 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     Mavsdk dc;
 
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
     // We don't need to specifiy the UUID if it's only one system anyway.
     // If there were multiple, we could specify it with:
     // dc.system(uint64_t uuid);
-    System &system = dc.system();
+    System& system = dc.system();
     auto action = std::make_shared<Action>(system);
     auto mission = std::make_shared<Mission>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
@@ -312,7 +312,7 @@ std::shared_ptr<MissionItem> make_mission_item(
     return new_item;
 }
 
-inline void handle_action_err_exit(Action::Result result, const std::string &message)
+inline void handle_action_err_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
@@ -321,7 +321,7 @@ inline void handle_action_err_exit(Action::Result result, const std::string &mes
     }
 }
 
-inline void handle_mission_err_exit(Mission::Result result, const std::string &message)
+inline void handle_mission_err_exit(Mission::Result result, const std::string& message)
 {
     if (result != Mission::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
@@ -331,7 +331,7 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string &m
 }
 
 // Handles connection result
-inline void handle_connection_err_exit(ConnectionResult result, const std::string &message)
+inline void handle_connection_err_exit(ConnectionResult result, const std::string& message)
 {
     if (result != ConnectionResult::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)

@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Logging::Logging(System &system) : PluginBase(), _impl{new LoggingImpl(system)} {}
+Logging::Logging(System& system) : PluginBase(), _impl{new LoggingImpl(system)} {}
 
 Logging::~Logging() {}
 
@@ -27,7 +27,7 @@ void Logging::stop_logging_async(result_callback_t callback)
     _impl->stop_logging_async(callback);
 }
 
-const char *Logging::result_str(Result result)
+const char* Logging::result_str(Result result)
 {
     switch (result) {
         case Result::SUCCESS:

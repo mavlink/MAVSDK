@@ -11,7 +11,7 @@ namespace mavsdk {
 
 class OffboardImpl : public PluginImplBase {
 public:
-    OffboardImpl(System &system);
+    OffboardImpl(System& system);
     ~OffboardImpl();
 
     void init() override;
@@ -34,8 +34,8 @@ public:
     void set_attitude(Offboard::Attitude attitude);
     void set_attitude_rate(Offboard::AttitudeRate attitude_rate);
 
-    OffboardImpl(const OffboardImpl &) = delete;
-    OffboardImpl &operator=(const OffboardImpl &) = delete;
+    OffboardImpl(const OffboardImpl&) = delete;
+    OffboardImpl& operator=(const OffboardImpl&) = delete;
 
 private:
     void send_position_ned();
@@ -44,9 +44,9 @@ private:
     void send_attitude_rate();
     void send_attitude();
 
-    void process_heartbeat(const mavlink_message_t &message);
+    void process_heartbeat(const mavlink_message_t& message);
     void receive_command_result(
-        MAVLinkCommands::Result result, const Offboard::result_callback_t &callback);
+        MAVLinkCommands::Result result, const Offboard::result_callback_t& callback);
 
     static Offboard::Result offboard_result_from_command_result(MAVLinkCommands::Result result);
 
@@ -67,7 +67,7 @@ private:
     Offboard::Attitude _attitude{};
     Offboard::AttitudeRate _attitude_rate{};
 
-    void *_call_every_cookie = nullptr;
+    void* _call_every_cookie = nullptr;
 
     const float SEND_INTERVAL_S = 0.05f;
 };

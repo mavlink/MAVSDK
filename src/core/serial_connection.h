@@ -13,16 +13,16 @@ namespace mavsdk {
 class SerialConnection : public Connection {
 public:
     explicit SerialConnection(
-        Connection::receiver_callback_t receiver_callback, const std::string &path, int baudrate);
+        Connection::receiver_callback_t receiver_callback, const std::string& path, int baudrate);
     ConnectionResult start();
     ConnectionResult stop();
     ~SerialConnection();
 
-    bool send_message(const mavlink_message_t &message);
+    bool send_message(const mavlink_message_t& message);
 
     // Non-copyable
-    SerialConnection(const SerialConnection &) = delete;
-    const SerialConnection &operator=(const SerialConnection &) = delete;
+    SerialConnection(const SerialConnection&) = delete;
+    const SerialConnection& operator=(const SerialConnection&) = delete;
 
 private:
     ConnectionResult setup_port();
@@ -43,7 +43,7 @@ private:
     HANDLE _handle;
 #endif
 
-    std::thread *_recv_thread = nullptr;
+    std::thread* _recv_thread = nullptr;
     std::atomic_bool _should_exit{false};
 };
 

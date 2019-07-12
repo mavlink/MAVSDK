@@ -44,7 +44,7 @@ std::string GetLastErrorStdStr()
 #endif
 
 SerialConnection::SerialConnection(
-    Connection::receiver_callback_t receiver_callback, const std::string &path, int baudrate) :
+    Connection::receiver_callback_t receiver_callback, const std::string& path, int baudrate) :
     Connection(receiver_callback),
     _serial_node(path),
     _baudrate(baudrate)
@@ -235,7 +235,7 @@ ConnectionResult SerialConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool SerialConnection::send_message(const mavlink_message_t &message)
+bool SerialConnection::send_message(const mavlink_message_t& message)
 {
     if (_serial_node.empty()) {
         LogErr() << "Dev Path unknown";

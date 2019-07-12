@@ -11,7 +11,7 @@ namespace mavsdk {
 
 using namespace std::placeholders;
 
-CalibrationImpl::CalibrationImpl(System &system) : PluginImplBase(system)
+CalibrationImpl::CalibrationImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -36,7 +36,7 @@ void CalibrationImpl::enable() {}
 
 void CalibrationImpl::disable() {}
 
-void CalibrationImpl::calibrate_gyro_async(const Calibration::calibration_callback_t &callback)
+void CalibrationImpl::calibrate_gyro_async(const Calibration::calibration_callback_t& callback)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -64,9 +64,9 @@ void CalibrationImpl::calibrate_gyro_async(const Calibration::calibration_callba
 }
 
 void CalibrationImpl::call_user_callback(
-    const Calibration::calibration_callback_t &callback,
-    const Calibration::Result &result,
-    const Calibration::ProgressData &progress_data)
+    const Calibration::calibration_callback_t& callback,
+    const Calibration::Result& result,
+    const Calibration::ProgressData& progress_data)
 {
     if (callback) {
         _parent->call_user_callback(
@@ -75,7 +75,7 @@ void CalibrationImpl::call_user_callback(
 }
 
 void CalibrationImpl::calibrate_accelerometer_async(
-    const Calibration::calibration_callback_t &callback)
+    const Calibration::calibration_callback_t& callback)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -103,7 +103,7 @@ void CalibrationImpl::calibrate_accelerometer_async(
 }
 
 void CalibrationImpl::calibrate_magnetometer_async(
-    const Calibration::calibration_callback_t &callback)
+    const Calibration::calibration_callback_t& callback)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -131,7 +131,7 @@ void CalibrationImpl::calibrate_magnetometer_async(
 }
 
 void CalibrationImpl::calibrate_gimbal_accelerometer_async(
-    const Calibration::calibration_callback_t &callback)
+    const Calibration::calibration_callback_t& callback)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -263,7 +263,7 @@ CalibrationImpl::calibration_result_from_command_result(MAVLinkCommands::Result 
     }
 }
 
-void CalibrationImpl::process_statustext(const mavlink_message_t &message)
+void CalibrationImpl::process_statustext(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
     if (_state == State::NONE) {
@@ -353,7 +353,7 @@ void CalibrationImpl::report_done()
     call_user_callback(_calibration_callback, Calibration::Result::SUCCESS, progress_data);
 }
 
-void CalibrationImpl::report_failed(const std::string &failed)
+void CalibrationImpl::report_failed(const std::string& failed)
 {
     LogErr() << "Calibration failed: " << failed;
     const Calibration::ProgressData progress_data(false, NAN, false, "");
@@ -373,7 +373,7 @@ void CalibrationImpl::report_progress(float progress)
     call_user_callback(_calibration_callback, Calibration::Result::IN_PROGRESS, progress_data);
 }
 
-void CalibrationImpl::report_instruction(const std::string &instruction)
+void CalibrationImpl::report_instruction(const std::string& instruction)
 {
     const Calibration::ProgressData progress_data(false, NAN, true, instruction);
     call_user_callback(_calibration_callback, Calibration::Result::INSTRUCTION, progress_data);

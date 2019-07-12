@@ -35,7 +35,7 @@ void component_discovered(ComponentType component_type)
               << unsigned(component_type) << std::endl;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     Mavsdk dc;
     std::string connection_url;
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     // We don't need to specify the UUID if it's only one system anyway.
     // If there were multiple, we could specify it with:
     // dc.system(uint64_t uuid);
-    System &system = dc.system();
+    System& system = dc.system();
 
     std::cout << "Waiting to discover system..." << std::endl;
     dc.register_on_discover([&discovered_system](uint64_t uuid) {

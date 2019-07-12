@@ -12,9 +12,9 @@ using namespace std::placeholders; // for `_1`
 
 static void receive_calibration_callback(
     const Calibration::Result result,
-    const Calibration::ProgressData &progress_data,
-    const std::string &calibration_type,
-    std::promise<Calibration::Result> &prom);
+    const Calibration::ProgressData& progress_data,
+    const std::string& calibration_type,
+    std::promise<Calibration::Result>& prom);
 
 TEST(HardwareTest, CalibrationGyro)
 {
@@ -25,7 +25,7 @@ TEST(HardwareTest, CalibrationGyro)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto calibration = std::make_shared<Calibration>(system);
@@ -52,7 +52,7 @@ TEST(HardwareTest, CalibrationAccelerometer)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto calibration = std::make_shared<Calibration>(system);
@@ -79,7 +79,7 @@ TEST(HardwareTest, CalibrationMagnetometer)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System &system = dc.system();
+    System& system = dc.system();
 
     auto calibration = std::make_shared<Calibration>(system);
     ASSERT_TRUE(system.has_autopilot());
@@ -106,7 +106,7 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_gimbal());
 
     auto calibration = std::make_shared<Calibration>(system);
@@ -133,7 +133,7 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
     // Reset Gyro calibration using param.
@@ -174,7 +174,7 @@ TEST(HardwareTest, CalibrationGyroCancelled)
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
     // Do gyro calibration.
@@ -199,9 +199,9 @@ TEST(HardwareTest, CalibrationGyroCancelled)
 
 void receive_calibration_callback(
     const Calibration::Result result,
-    const Calibration::ProgressData &progress_data,
-    const std::string &calibration_type,
-    std::promise<Calibration::Result> &prom)
+    const Calibration::ProgressData& progress_data,
+    const std::string& calibration_type,
+    std::promise<Calibration::Result>& prom)
 {
     if (result == Calibration::Result::IN_PROGRESS) {
         LogInfo() << calibration_type << " calibration in progress: " << progress_data.progress;

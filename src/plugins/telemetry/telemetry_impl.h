@@ -18,7 +18,7 @@ class System;
 
 class TelemetryImpl : public PluginImplBase {
 public:
-    TelemetryImpl(System &system);
+    TelemetryImpl(System& system);
     ~TelemetryImpl();
 
     void init() override;
@@ -71,27 +71,27 @@ public:
     bool get_health_all_ok() const;
     Telemetry::RCStatus get_rc_status() const;
 
-    void position_velocity_ned_async(Telemetry::position_velocity_ned_callback_t &callback);
-    void position_async(Telemetry::position_callback_t &callback);
-    void home_position_async(Telemetry::position_callback_t &callback);
-    void in_air_async(Telemetry::in_air_callback_t &callback);
-    void status_text_async(Telemetry::status_text_callback_t &callback);
-    void armed_async(Telemetry::armed_callback_t &callback);
-    void attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t &callback);
-    void attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t &callback);
-    void camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t &callback);
-    void camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t &callback);
-    void ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t &callback);
-    void imu_reading_ned_async(Telemetry::imu_reading_ned_callback_t &callback);
-    void gps_info_async(Telemetry::gps_info_callback_t &callback);
-    void battery_async(Telemetry::battery_callback_t &callback);
-    void flight_mode_async(Telemetry::flight_mode_callback_t &callback);
-    void health_async(Telemetry::health_callback_t &callback);
-    void health_all_ok_async(Telemetry::health_all_ok_callback_t &callback);
-    void rc_status_async(Telemetry::rc_status_callback_t &callback);
+    void position_velocity_ned_async(Telemetry::position_velocity_ned_callback_t& callback);
+    void position_async(Telemetry::position_callback_t& callback);
+    void home_position_async(Telemetry::position_callback_t& callback);
+    void in_air_async(Telemetry::in_air_callback_t& callback);
+    void status_text_async(Telemetry::status_text_callback_t& callback);
+    void armed_async(Telemetry::armed_callback_t& callback);
+    void attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback);
+    void attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback);
+    void camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback);
+    void camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback);
+    void ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t& callback);
+    void imu_reading_ned_async(Telemetry::imu_reading_ned_callback_t& callback);
+    void gps_info_async(Telemetry::gps_info_callback_t& callback);
+    void battery_async(Telemetry::battery_callback_t& callback);
+    void flight_mode_async(Telemetry::flight_mode_callback_t& callback);
+    void health_async(Telemetry::health_callback_t& callback);
+    void health_all_ok_async(Telemetry::health_all_ok_callback_t& callback);
+    void rc_status_async(Telemetry::rc_status_callback_t& callback);
 
-    TelemetryImpl(const TelemetryImpl &) = delete;
-    TelemetryImpl &operator=(const TelemetryImpl &) = delete;
+    TelemetryImpl(const TelemetryImpl&) = delete;
+    TelemetryImpl& operator=(const TelemetryImpl&) = delete;
 
 private:
     void set_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned);
@@ -116,24 +116,24 @@ private:
     void set_health_level_calibration(bool ok);
     void set_rc_status(bool available, float signal_strength_percent);
 
-    void process_position_velocity_ned(const mavlink_message_t &message);
-    void process_global_position_int(const mavlink_message_t &message);
-    void process_home_position(const mavlink_message_t &message);
-    void process_attitude_quaternion(const mavlink_message_t &message);
-    void process_mount_orientation(const mavlink_message_t &message);
-    void process_imu_reading_ned(const mavlink_message_t &message);
-    void process_gps_raw_int(const mavlink_message_t &message);
-    void process_extended_sys_state(const mavlink_message_t &message);
-    void process_sys_status(const mavlink_message_t &message);
-    void process_heartbeat(const mavlink_message_t &message);
-    void process_statustext(const mavlink_message_t &message);
-    void process_rc_channels(const mavlink_message_t &message);
+    void process_position_velocity_ned(const mavlink_message_t& message);
+    void process_global_position_int(const mavlink_message_t& message);
+    void process_home_position(const mavlink_message_t& message);
+    void process_attitude_quaternion(const mavlink_message_t& message);
+    void process_mount_orientation(const mavlink_message_t& message);
+    void process_imu_reading_ned(const mavlink_message_t& message);
+    void process_gps_raw_int(const mavlink_message_t& message);
+    void process_extended_sys_state(const mavlink_message_t& message);
+    void process_sys_status(const mavlink_message_t& message);
+    void process_heartbeat(const mavlink_message_t& message);
+    void process_statustext(const mavlink_message_t& message);
+    void process_rc_channels(const mavlink_message_t& message);
 
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
 
-    void process_parameter_update(const std::string &name);
+    void process_parameter_update(const std::string& name);
 #ifdef LEVEL_CALIBRATION
     void receive_param_cal_level(MAVLinkParameters::Result result, float value);
 #endif
@@ -145,7 +145,7 @@ private:
     telemetry_result_from_command_result(MAVLinkCommands::Result command_result);
 
     static void command_result_callback(
-        MAVLinkCommands::Result command_result, const Telemetry::result_callback_t &callback);
+        MAVLinkCommands::Result command_result, const Telemetry::result_callback_t& callback);
 
     static Telemetry::FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
@@ -222,6 +222,6 @@ private:
     double _ground_speed_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
 
-    void *_timeout_cookie{nullptr};
+    void* _timeout_cookie{nullptr};
 };
 } // namespace mavsdk

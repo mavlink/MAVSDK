@@ -25,7 +25,7 @@ TEST(CameraTest, Status)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     auto camera = std::make_shared<Camera>(system);
 
     camera->get_status_async(std::bind(&receive_camera_status, _1, _2));
@@ -43,7 +43,7 @@ TEST(CameraTest, StatusSubscription)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     auto camera = std::make_shared<Camera>(system);
 
     camera->subscribe_status(std::bind(&receive_camera_status_subscription, _1));

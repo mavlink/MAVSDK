@@ -131,7 +131,7 @@ TEST(LockedQueue, ConcurrantAccess)
     auto fut = prom.get_future();
 
     {
-        LockedQueue<int>::Guard *guard_ptr = new LockedQueue<int>::Guard(locked_queue);
+        LockedQueue<int>::Guard* guard_ptr = new LockedQueue<int>::Guard(locked_queue);
 
         EXPECT_EQ(*guard_ptr->get_front(), 1);
 

@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-OffboardImpl::OffboardImpl(System &system) : PluginImplBase(system)
+OffboardImpl::OffboardImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -98,7 +98,7 @@ bool OffboardImpl::is_active() const
 }
 
 void OffboardImpl::receive_command_result(
-    MAVLinkCommands::Result result, const Offboard::result_callback_t &callback)
+    MAVLinkCommands::Result result, const Offboard::result_callback_t& callback)
 {
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
     if (callback) {
@@ -484,7 +484,7 @@ void OffboardImpl::send_attitude_rate()
     _parent->send_message(message);
 }
 
-void OffboardImpl::process_heartbeat(const mavlink_message_t &message)
+void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
 {
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);

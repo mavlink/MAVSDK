@@ -7,22 +7,22 @@ namespace backend {
 template<typename Info = Info>
 class InfoServiceImpl final : public rpc::info::InfoService::Service {
 public:
-    InfoServiceImpl(Info &info) : _info(info) {}
+    InfoServiceImpl(Info& info) : _info(info) {}
 
     grpc::Status GetVersion(
-        grpc::ServerContext * /* context */,
-        const rpc::info::GetVersionRequest * /* request */,
-        rpc::info::GetVersionResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::info::GetVersionRequest* /* request */,
+        rpc::info::GetVersionResponse* response) override
     {
         if (response != nullptr) {
             auto result_pair = _info.get_version();
 
-            auto *rpc_info_result = new rpc::info::InfoResult();
+            auto* rpc_info_result = new rpc::info::InfoResult();
             rpc_info_result->set_result(
                 static_cast<rpc::info::InfoResult::Result>(result_pair.first));
             rpc_info_result->set_result_str(mavsdk::Info::result_str(result_pair.first));
 
-            auto *rpc_version = new rpc::info::Version();
+            auto* rpc_version = new rpc::info::Version();
             rpc_version->set_flight_sw_major(result_pair.second.flight_sw_major);
             rpc_version->set_flight_sw_minor(result_pair.second.flight_sw_minor);
             rpc_version->set_flight_sw_patch(result_pair.second.flight_sw_patch);
@@ -41,7 +41,7 @@ public:
     }
 
 private:
-    Info &_info;
+    Info& _info;
 };
 
 } // namespace backend

@@ -18,13 +18,13 @@ using namespace mavsdk;
 using namespace std::this_thread;
 using namespace std::chrono;
 
-static void takeoff_and_land(System &system);
+static void takeoff_and_land(System& system);
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     if (argc == 1) {
         std::cerr << ERROR_CONSOLE_TEXT << "Please specify connection" << NORMAL_CONSOLE_TEXT
@@ -66,18 +66,18 @@ int main(int argc, char *argv[])
     std::vector<std::thread> threads;
 
     for (auto uuid : dc.system_uuids()) {
-        System &system = dc.system(uuid);
+        System& system = dc.system(uuid);
         std::thread t(&takeoff_and_land, std::ref(system));
         threads.push_back(std::move(t));
     }
 
-    for (auto &t : threads) {
+    for (auto& t : threads) {
         t.join();
     }
     return 0;
 }
 
-void takeoff_and_land(System &system)
+void takeoff_and_land(System& system)
 {
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);

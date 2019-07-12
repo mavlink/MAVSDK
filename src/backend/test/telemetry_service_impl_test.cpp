@@ -62,68 +62,68 @@ protected:
 
     virtual void TearDown() { _server->Shutdown(); }
 
-    std::future<void> subscribePositionAsync(std::vector<Position> &positions);
+    std::future<void> subscribePositionAsync(std::vector<Position>& positions);
     Position createPosition(
         const double lat, const double lng, const float abs_alt, const float rel_alt) const;
-    void checkSendsPositions(const std::vector<Position> &positions);
+    void checkSendsPositions(const std::vector<Position>& positions);
 
-    std::future<void> subscribeHealthAsync(std::vector<Health> &healths);
-    void checkSendsHealths(const std::vector<Health> &healths);
+    std::future<void> subscribeHealthAsync(std::vector<Health>& healths);
+    void checkSendsHealths(const std::vector<Health>& healths);
     Health createRandomHealth();
     std::vector<Health> generateRandomHealthsVector(const int size);
     bool generateRandomBool();
 
-    void checkSendsHomePositions(const std::vector<Position> &home_positions) const;
-    std::future<void> subscribeHomeAsync(std::vector<Position> &home_positions) const;
+    void checkSendsHomePositions(const std::vector<Position>& home_positions) const;
+    std::future<void> subscribeHomeAsync(std::vector<Position>& home_positions) const;
 
-    void checkSendsInAirEvents(const std::vector<bool> &in_air_events) const;
-    std::future<void> subscribeInAirAsync(std::vector<bool> &in_air_events) const;
+    void checkSendsInAirEvents(const std::vector<bool>& in_air_events) const;
+    std::future<void> subscribeInAirAsync(std::vector<bool>& in_air_events) const;
 
-    void checkSendsArmedEvents(const std::vector<bool> &armed_events) const;
-    std::future<void> subscribeArmedAsync(std::vector<bool> &armed_events) const;
+    void checkSendsArmedEvents(const std::vector<bool>& armed_events) const;
+    std::future<void> subscribeArmedAsync(std::vector<bool>& armed_events) const;
 
     GpsInfo createGpsInfo(const int num_satellites, const int fix_type) const;
-    void checkSendsGpsInfoEvents(const std::vector<GpsInfo> &gps_info_events) const;
-    std::future<void> subscribeGpsInfoAsync(std::vector<GpsInfo> &gps_info_events) const;
+    void checkSendsGpsInfoEvents(const std::vector<GpsInfo>& gps_info_events) const;
+    std::future<void> subscribeGpsInfoAsync(std::vector<GpsInfo>& gps_info_events) const;
     int translateRPCGpsFixType(const FixType rpc_fix_type) const;
 
-    void checkSendsBatteryEvents(const std::vector<Battery> &battery_events) const;
+    void checkSendsBatteryEvents(const std::vector<Battery>& battery_events) const;
     Battery createBattery(const float voltage_v, const float remaining_percent) const;
-    std::future<void> subscribeBatteryAsync(std::vector<Battery> &battery_events) const;
+    std::future<void> subscribeBatteryAsync(std::vector<Battery>& battery_events) const;
 
-    void checkSendsFlightModeEvents(const std::vector<FlightMode> &flight_mode_events) const;
+    void checkSendsFlightModeEvents(const std::vector<FlightMode>& flight_mode_events) const;
     FlightMode translateRPCFlightMode(const RPCFlightMode rpc_flight_mode) const;
-    std::future<void> subscribeFlightModeAsync(std::vector<FlightMode> &flight_mode_events) const;
+    std::future<void> subscribeFlightModeAsync(std::vector<FlightMode>& flight_mode_events) const;
 
-    void checkSendsAttitudeQuaternions(const std::vector<Quaternion> &quaternions) const;
+    void checkSendsAttitudeQuaternions(const std::vector<Quaternion>& quaternions) const;
     Quaternion createQuaternion(const float w, const float x, const float y, const float z) const;
-    std::future<void> subscribeAttitudeQuaternionAsync(std::vector<Quaternion> &quaternions) const;
+    std::future<void> subscribeAttitudeQuaternionAsync(std::vector<Quaternion>& quaternions) const;
 
-    void checkSendsAttitudeEulerAngles(const std::vector<EulerAngle> &euler_angles) const;
+    void checkSendsAttitudeEulerAngles(const std::vector<EulerAngle>& euler_angles) const;
     EulerAngle
     createEulerAngle(const float roll_deg, const float pitch_deg, const float yaw_deg) const;
-    std::future<void> subscribeAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const;
+    std::future<void> subscribeAttitudeEulerAsync(std::vector<EulerAngle>& euler_angles) const;
 
-    void checkSendsCameraAttitudeQuaternions(const std::vector<Quaternion> &quaternions) const;
+    void checkSendsCameraAttitudeQuaternions(const std::vector<Quaternion>& quaternions) const;
     std::future<void>
-    subscribeCameraAttitudeQuaternionAsync(std::vector<Quaternion> &quaternions) const;
+    subscribeCameraAttitudeQuaternionAsync(std::vector<Quaternion>& quaternions) const;
 
-    void checkSendsCameraAttitudeEulerAngles(const std::vector<EulerAngle> &euler_angles) const;
+    void checkSendsCameraAttitudeEulerAngles(const std::vector<EulerAngle>& euler_angles) const;
     std::future<void>
-    subscribeCameraAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const;
+    subscribeCameraAttitudeEulerAsync(std::vector<EulerAngle>& euler_angles) const;
 
-    void checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNed> &ground_speed_events) const;
+    void checkSendsGroundSpeedEvents(const std::vector<GroundSpeedNed>& ground_speed_events) const;
     GroundSpeedNed
     createGroundSpeedNed(const float vel_north, const float vel_east, const float vel_down) const;
     std::future<void>
-    subscribeGroundSpeedNedAsync(std::vector<GroundSpeedNed> &ground_speed_events) const;
+    subscribeGroundSpeedNedAsync(std::vector<GroundSpeedNed>& ground_speed_events) const;
 
-    void checkSendsRcStatusEvents(const std::vector<RcStatus> &rc_status_events) const;
+    void checkSendsRcStatusEvents(const std::vector<RcStatus>& rc_status_events) const;
     RcStatus createRcStatus(
         const bool was_available_once,
         const bool is_available,
         const float signal_strength_percent) const;
-    std::future<void> subscribeRcStatusAsync(std::vector<RcStatus> &rc_status_events) const;
+    std::future<void> subscribeRcStatusAsync(std::vector<RcStatus>& rc_status_events) const;
 
     std::unique_ptr<grpc::Server> _server{};
     std::unique_ptr<TelemetryService::Stub> _stub{};
@@ -161,7 +161,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionAsync)
     position_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<Position> &positions)
+std::future<void> TelemetryServiceImplTest::subscribePositionAsync(std::vector<Position>& positions)
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -204,7 +204,7 @@ TEST_F(TelemetryServiceImplTest, sendsOnePosition)
     checkSendsPositions(positions);
 }
 
-void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position> &positions)
+void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position>& positions)
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -261,7 +261,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryHealthAsync)
     health_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Health> &healths)
+std::future<void> TelemetryServiceImplTest::subscribeHealthAsync(std::vector<Health>& healths)
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -315,7 +315,7 @@ std::vector<Health> TelemetryServiceImplTest::generateRandomHealthsVector(const 
     return healths;
 }
 
-void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health> &healths)
+void TelemetryServiceImplTest::checkSendsHealths(const std::vector<Health>& healths)
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -376,7 +376,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryHomeAsync)
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position> &home_positions) const
+TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position>& home_positions) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -420,7 +420,7 @@ TEST_F(TelemetryServiceImplTest, sendsOneHome)
 }
 
 void TelemetryServiceImplTest::checkSendsHomePositions(
-    const std::vector<Position> &home_positions) const
+    const std::vector<Position>& home_positions) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -466,7 +466,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryInAirAsync)
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeInAirAsync(std::vector<bool> &in_air_events) const
+TelemetryServiceImplTest::subscribeInAirAsync(std::vector<bool>& in_air_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -502,7 +502,7 @@ TEST_F(TelemetryServiceImplTest, sendsOneInAirEvent)
     checkSendsInAirEvents(in_air_events);
 }
 
-void TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool> &in_air_events) const
+void TelemetryServiceImplTest::checkSendsInAirEvents(const std::vector<bool>& in_air_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -548,7 +548,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryArmedAsync)
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeArmedAsync(std::vector<bool> &armed_events) const
+TelemetryServiceImplTest::subscribeArmedAsync(std::vector<bool>& armed_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -584,7 +584,7 @@ TEST_F(TelemetryServiceImplTest, sendsOneArmedEvent)
     checkSendsArmedEvents(armed_events);
 }
 
-void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool> &armed_events) const
+void TelemetryServiceImplTest::checkSendsArmedEvents(const std::vector<bool>& armed_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -630,7 +630,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryGpsInfoAsync)
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeGpsInfoAsync(std::vector<GpsInfo> &gps_info_events) const
+TelemetryServiceImplTest::subscribeGpsInfoAsync(std::vector<GpsInfo>& gps_info_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -693,7 +693,7 @@ TEST_F(TelemetryServiceImplTest, sendsOneGpsInfoEvent)
 }
 
 void TelemetryServiceImplTest::checkSendsGpsInfoEvents(
-    const std::vector<GpsInfo> &gps_info_events) const
+    const std::vector<GpsInfo>& gps_info_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -752,7 +752,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryBatteryAsync)
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeBatteryAsync(std::vector<Battery> &battery_events) const
+TelemetryServiceImplTest::subscribeBatteryAsync(std::vector<Battery>& battery_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -804,7 +804,7 @@ TelemetryServiceImplTest::createBattery(const float voltage_v, const float remai
 }
 
 void TelemetryServiceImplTest::checkSendsBatteryEvents(
-    const std::vector<Battery> &battery_events) const
+    const std::vector<Battery>& battery_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -851,7 +851,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryFlightModeAsync)
 }
 
 std::future<void> TelemetryServiceImplTest::subscribeFlightModeAsync(
-    std::vector<FlightMode> &flight_mode_events) const
+    std::vector<FlightMode>& flight_mode_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -914,7 +914,7 @@ TEST_F(TelemetryServiceImplTest, sendsOneFlightModeEvent)
 }
 
 void TelemetryServiceImplTest::checkSendsFlightModeEvents(
-    const std::vector<FlightMode> &flight_mode_events) const
+    const std::vector<FlightMode>& flight_mode_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -965,7 +965,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeQuaternionAsync)
 }
 
 std::future<void> TelemetryServiceImplTest::subscribeAttitudeQuaternionAsync(
-    std::vector<Quaternion> &quaternions) const
+    std::vector<Quaternion>& quaternions) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -1022,7 +1022,7 @@ Quaternion TelemetryServiceImplTest::createQuaternion(
 }
 
 void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(
-    const std::vector<Quaternion> &quaternions) const
+    const std::vector<Quaternion>& quaternions) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -1067,7 +1067,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeEulerAsync)
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeAttitudeEulerAsync(std::vector<EulerAngle> &euler_angles) const
+TelemetryServiceImplTest::subscribeAttitudeEulerAsync(std::vector<EulerAngle>& euler_angles) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -1121,7 +1121,7 @@ EulerAngle TelemetryServiceImplTest::createEulerAngle(
 }
 
 void TelemetryServiceImplTest::checkSendsAttitudeEulerAngles(
-    const std::vector<EulerAngle> &euler_angles) const
+    const std::vector<EulerAngle>& euler_angles) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -1166,7 +1166,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeQuaternionAsy
 }
 
 std::future<void> TelemetryServiceImplTest::subscribeCameraAttitudeQuaternionAsync(
-    std::vector<Quaternion> &quaternions) const
+    std::vector<Quaternion>& quaternions) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -1210,7 +1210,7 @@ TEST_F(TelemetryServiceImplTest, sendsOneCameraAttitudeQuaternion)
 }
 
 void TelemetryServiceImplTest::checkSendsCameraAttitudeQuaternions(
-    const std::vector<Quaternion> &quaternions) const
+    const std::vector<Quaternion>& quaternions) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -1255,7 +1255,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryCameraAttitudeEulerAsync)
 }
 
 std::future<void> TelemetryServiceImplTest::subscribeCameraAttitudeEulerAsync(
-    std::vector<EulerAngle> &euler_angles) const
+    std::vector<EulerAngle>& euler_angles) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -1298,7 +1298,7 @@ TEST_F(TelemetryServiceImplTest, sendsOneCameraAttitudeEuler)
 }
 
 void TelemetryServiceImplTest::checkSendsCameraAttitudeEulerAngles(
-    const std::vector<EulerAngle> &euler_angles) const
+    const std::vector<EulerAngle>& euler_angles) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -1343,7 +1343,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryGroundSpeedNedAsync)
 }
 
 std::future<void> TelemetryServiceImplTest::subscribeGroundSpeedNedAsync(
-    std::vector<GroundSpeedNed> &ground_speed_events) const
+    std::vector<GroundSpeedNed>& ground_speed_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -1398,7 +1398,7 @@ GroundSpeedNed TelemetryServiceImplTest::createGroundSpeedNed(
 }
 
 void TelemetryServiceImplTest::checkSendsGroundSpeedEvents(
-    const std::vector<GroundSpeedNed> &ground_speed_events) const
+    const std::vector<GroundSpeedNed>& ground_speed_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
@@ -1443,7 +1443,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryRcStatusAsync)
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeRcStatusAsync(std::vector<RcStatus> &rc_status_events) const
+TelemetryServiceImplTest::subscribeRcStatusAsync(std::vector<RcStatus>& rc_status_events) const
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
@@ -1500,7 +1500,7 @@ RcStatus TelemetryServiceImplTest::createRcStatus(
 }
 
 void TelemetryServiceImplTest::checkSendsRcStatusEvents(
-    const std::vector<RcStatus> &rc_status_events) const
+    const std::vector<RcStatus>& rc_status_events) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();

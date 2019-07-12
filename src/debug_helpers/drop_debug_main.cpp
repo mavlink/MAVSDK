@@ -15,7 +15,7 @@ bool _timeouted_system = false;
 void on_discover(uint64_t uuid);
 void on_timeout(uint64_t uuid);
 
-int main(int argc, const char *argv[])
+int main(int argc, const char* argv[])
 {
     UNUSED(argc);
     UNUSED(argv);

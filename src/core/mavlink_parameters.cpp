@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-MAVLinkParameters::MAVLinkParameters(SystemImpl &parent) : _parent(parent)
+MAVLinkParameters::MAVLinkParameters(SystemImpl& parent) : _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_PARAM_VALUE,
@@ -29,10 +29,10 @@ MAVLinkParameters::~MAVLinkParameters()
 }
 
 void MAVLinkParameters::set_param_async(
-    const std::string &name,
-    const ParamValue &value,
+    const std::string& name,
+    const ParamValue& value,
     set_param_callback_t callback,
-    const void *cookie,
+    const void* cookie,
     bool extended)
 {
     // if (value.is_float()) {
@@ -61,7 +61,7 @@ void MAVLinkParameters::set_param_async(
 }
 
 MAVLinkParameters::Result
-MAVLinkParameters::set_param(const std::string &name, const ParamValue &value, bool extended)
+MAVLinkParameters::set_param(const std::string& name, const ParamValue& value, bool extended)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
@@ -73,10 +73,10 @@ MAVLinkParameters::set_param(const std::string &name, const ParamValue &value, b
 }
 
 void MAVLinkParameters::get_param_async(
-    const std::string &name,
+    const std::string& name,
     ParamValue value_type,
     get_param_callback_t callback,
-    const void *cookie,
+    const void* cookie,
     bool extended)
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
@@ -111,7 +111,7 @@ void MAVLinkParameters::get_param_async(
 }
 
 std::pair<MAVLinkParameters::Result, MAVLinkParameters::ParamValue>
-MAVLinkParameters::get_param(const std::string &name, ParamValue value_type, bool extended)
+MAVLinkParameters::get_param(const std::string& name, ParamValue value_type, bool extended)
 {
     auto prom = std::promise<std::pair<Result, MAVLinkParameters::ParamValue>>();
     auto res = prom.get_future();
@@ -128,7 +128,7 @@ MAVLinkParameters::get_param(const std::string &name, ParamValue value_type, boo
     return res.get();
 }
 
-void MAVLinkParameters::cancel_all_param(const void *cookie)
+void MAVLinkParameters::cancel_all_param(const void* cookie)
 {
     LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
 
@@ -259,9 +259,9 @@ void MAVLinkParameters::do_work()
     }
 }
 
-void MAVLinkParameters::remove_from_cache(const std::string &name)
+void MAVLinkParameters::remove_from_cache(const std::string& name)
 {
-    const auto &it = _cache.find(name);
+    const auto& it = _cache.find(name);
     if (it == _cache.end()) {
         return;
     }
@@ -273,7 +273,7 @@ void MAVLinkParameters::reset_cache()
     _cache.clear();
 }
 
-void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
+void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
 {
     mavlink_param_value_t param_value;
     mavlink_msg_param_value_decode(&message, &param_value);
@@ -332,7 +332,7 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t &message)
     }
 }
 
-void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message)
+void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message)
 {
     // LogDebug() << "getting param ext value";
 
@@ -382,7 +382,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t &message
     }
 }
 
-void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t &message)
+void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
 {
     // LogDebug() << "getting param ext ack";
 
@@ -494,7 +494,7 @@ std::string MAVLinkParameters::extract_safe_param_id(const char param_id[])
     return std::string(param_id_long_enough);
 }
 
-std::ostream &operator<<(std::ostream &strm, const MAVLinkParameters::ParamValue &obj)
+std::ostream& operator<<(std::ostream& strm, const MAVLinkParameters::ParamValue& obj)
 {
     strm << obj.get_string();
     return strm;

@@ -16,9 +16,9 @@ using namespace mavsdk;
 
 static void subscribe_armed(std::shared_ptr<Telemetry> telemetry);
 static void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
-static void usage(const std::string &bin_name);
+static void usage(const std::string& bin_name);
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     Mavsdk dc;
     std::string connection_url;
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    System &system = dc.system();
+    System& system = dc.system();
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
@@ -101,7 +101,7 @@ void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough
     mavlink_passthrough->send_message(message);
 }
 
-void usage(const std::string &bin_name)
+void usage(const std::string& bin_name)
 {
     std::cout << "Usage : " << bin_name << " <connection_url>" << std::endl
               << "Connection URL format should be :" << std::endl

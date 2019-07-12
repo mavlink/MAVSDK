@@ -9,7 +9,7 @@ namespace mavsdk {
 
 class ExampleImpl : public PluginImplBase {
 public:
-    ExampleImpl(System &system);
+    ExampleImpl(System& system);
     ~ExampleImpl();
 
     void say_hello() const;
@@ -21,7 +21,7 @@ public:
     void disable() override;
 
 private:
-    void process_heartbeat(const mavlink_message_t &message);
+    void process_heartbeat(const mavlink_message_t& message);
 };
 
 } // namespace mavsdk

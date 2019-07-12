@@ -6,7 +6,7 @@
 
 namespace mavsdk {
 
-FollowMeImpl::FollowMeImpl(System &system) : PluginImplBase(system)
+FollowMeImpl::FollowMeImpl(System& system) : PluginImplBase(system)
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
     _last_location = _target_location =
@@ -24,7 +24,7 @@ void FollowMeImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&FollowMeImpl::process_heartbeat, this, std::placeholders::_1),
-        static_cast<void *>(this));
+        static_cast<void*>(this));
 }
 
 void FollowMeImpl::deinit()
@@ -73,12 +73,12 @@ void FollowMeImpl::disable()
     stop_sending_target_location();
 }
 
-const FollowMe::Config &FollowMeImpl::get_config() const
+const FollowMe::Config& FollowMeImpl::get_config() const
 {
     return _config;
 }
 
-FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
+FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 {
     // Valdidate configuration
     if (!is_config_ok(config)) {
@@ -132,7 +132,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
     return (success ? FollowMe::Result::SUCCESS : FollowMe::Result::SET_CONFIG_FAILED);
 }
 
-void FollowMeImpl::set_target_location(const FollowMe::TargetLocation &location)
+void FollowMeImpl::set_target_location(const FollowMe::TargetLocation& location)
 {
     _mutex.lock();
     _target_location = location;
@@ -158,7 +158,7 @@ void FollowMeImpl::set_target_location(const FollowMe::TargetLocation &location)
     send_target_location();
 }
 
-const FollowMe::TargetLocation &FollowMeImpl::get_last_location() const
+const FollowMe::TargetLocation& FollowMeImpl::get_last_location() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
     return _last_location;
@@ -198,7 +198,7 @@ FollowMe::Result FollowMeImpl::stop()
     return to_follow_me_result(_parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
 }
 
-bool FollowMeImpl::is_config_ok(const FollowMe::Config &config) const
+bool FollowMeImpl::is_config_ok(const FollowMe::Config& config) const
 {
     auto config_ok = false;
 
@@ -311,7 +311,7 @@ void FollowMeImpl::stop_sending_target_location()
     _mode = Mode::NOT_ACTIVE;
 }
 
-void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
+void FollowMeImpl::process_heartbeat(const mavlink_message_t& message)
 {
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);

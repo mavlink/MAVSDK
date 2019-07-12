@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Action::Action(System &system) : PluginBase(), _impl{new ActionImpl(system)} {}
+Action::Action(System& system) : PluginBase(), _impl{new ActionImpl(system)} {}
 
 Action::~Action() {}
 
@@ -128,7 +128,7 @@ std::pair<Action::Result, float> Action::get_return_to_launch_return_altitude() 
     return _impl->get_return_to_launch_return_altitude();
 }
 
-const char *Action::result_str(Action::Result result)
+const char* Action::result_str(Action::Result result)
 {
     switch (result) {
         case Action::Result::SUCCESS:

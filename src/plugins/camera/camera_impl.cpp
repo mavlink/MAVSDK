@@ -14,7 +14,7 @@ namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
-CameraImpl::CameraImpl(System &system) : PluginImplBase(system)
+CameraImpl::CameraImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -376,7 +376,7 @@ Camera::Result CameraImpl::stop_video()
     return camera_result_from_command_result(_parent->send_command(cmd_stop_video));
 }
 
-void CameraImpl::take_photo_async(const Camera::result_callback_t &callback)
+void CameraImpl::take_photo_async(const Camera::result_callback_t& callback)
 {
     // TODO: check whether we are in photo mode.
 
@@ -390,7 +390,7 @@ void CameraImpl::take_photo_async(const Camera::result_callback_t &callback)
 }
 
 void CameraImpl::start_photo_interval_async(
-    float interval_s, const Camera::result_callback_t &callback)
+    float interval_s, const Camera::result_callback_t& callback)
 {
     if (!interval_valid(interval_s)) {
         if (callback) {
@@ -409,7 +409,7 @@ void CameraImpl::start_photo_interval_async(
         cmd_take_photo_time_lapse, std::bind(&CameraImpl::receive_command_result, _1, callback));
 }
 
-void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t &callback)
+void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t& callback)
 {
     auto cmd_stop_photo_interval = make_command_stop_photo();
 
@@ -417,7 +417,7 @@ void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t &call
         cmd_stop_photo_interval, std::bind(&CameraImpl::receive_command_result, _1, callback));
 }
 
-void CameraImpl::start_video_async(const Camera::result_callback_t &callback)
+void CameraImpl::start_video_async(const Camera::result_callback_t& callback)
 {
     // TODO: check whether video capture is already in progress.
     // TODO: check whether we are in video mode.
@@ -429,7 +429,7 @@ void CameraImpl::start_video_async(const Camera::result_callback_t &callback)
         cmd_start_video, std::bind(&CameraImpl::receive_command_result, _1, callback));
 }
 
-void CameraImpl::stop_video_async(const Camera::result_callback_t &callback)
+void CameraImpl::stop_video_async(const Camera::result_callback_t& callback)
 {
     auto cmd_stop_video = make_command_stop_video();
 
@@ -481,7 +481,7 @@ Camera::Result CameraImpl::stop_video_streaming()
     return result;
 }
 
-Camera::Result CameraImpl::get_video_stream_info(Camera::VideoStreamInfo &info)
+Camera::Result CameraImpl::get_video_stream_info(Camera::VideoStreamInfo& info)
 {
     auto prom = std::make_shared<std::promise<Camera::Result>>();
     auto ret = prom->get_future();
@@ -624,7 +624,7 @@ float CameraImpl::to_mavlink_camera_mode(const Camera::Mode mode) const
     }
 }
 
-void CameraImpl::set_mode_async(const Camera::Mode mode, const Camera::mode_callback_t &callback)
+void CameraImpl::set_mode_async(const Camera::Mode mode, const Camera::mode_callback_t& callback)
 {
     const auto mavlink_mode = to_mavlink_camera_mode(mode);
     auto cmd_set_camera_mode = make_command_set_camera_mode(mavlink_mode);
@@ -747,7 +747,7 @@ void CameraImpl::subscribe_capture_info(Camera::capture_info_callback_t callback
     _capture_info.callback = callback;
 }
 
-void CameraImpl::process_camera_capture_status(const mavlink_message_t &message)
+void CameraImpl::process_camera_capture_status(const mavlink_message_t& message)
 {
     mavlink_camera_capture_status_t camera_capture_status;
     mavlink_msg_camera_capture_status_decode(&message, &camera_capture_status);
@@ -765,7 +765,7 @@ void CameraImpl::process_camera_capture_status(const mavlink_message_t &message)
     check_status();
 }
 
-void CameraImpl::process_storage_information(const mavlink_message_t &message)
+void CameraImpl::process_storage_information(const mavlink_message_t& message)
 {
     mavlink_storage_information_t storage_information;
     mavlink_msg_storage_information_decode(&message, &storage_information);
@@ -788,7 +788,7 @@ void CameraImpl::process_storage_information(const mavlink_message_t &message)
     check_status();
 }
 
-void CameraImpl::process_camera_image_captured(const mavlink_message_t &message)
+void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
 {
     mavlink_camera_image_captured_t image_captured;
     mavlink_msg_camera_image_captured_decode(&message, &image_captured);
@@ -823,7 +823,7 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t &message)
 Camera::CaptureInfo::EulerAngle
 CameraImpl::to_euler_angle_from_quaternion(Camera::CaptureInfo::Quaternion quaternion)
 {
-    auto &q = quaternion;
+    auto& q = quaternion;
 
     // FIXME: This is duplicated from telemetry/math_conversions.cpp.
     Camera::CaptureInfo::EulerAngle euler_angle{
@@ -835,7 +835,7 @@ CameraImpl::to_euler_angle_from_quaternion(Camera::CaptureInfo::Quaternion quate
     return euler_angle;
 }
 
-void CameraImpl::process_camera_settings(const mavlink_message_t &message)
+void CameraImpl::process_camera_settings(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mode.mutex);
 
@@ -872,15 +872,15 @@ Camera::Mode CameraImpl::to_camera_mode(const uint8_t mavlink_camera_mode) const
     }
 }
 
-void CameraImpl::process_camera_information(const mavlink_message_t &message)
+void CameraImpl::process_camera_information(const mavlink_message_t& message)
 {
     mavlink_camera_information_t camera_information;
     mavlink_msg_camera_information_decode(&message, &camera_information);
 
     {
         std::lock_guard<std::mutex> lock(_information.mutex);
-        _information.data.vendor_name = (char *)(camera_information.vendor_name);
-        _information.data.model_name = (char *)(camera_information.model_name);
+        _information.data.vendor_name = (char*)(camera_information.vendor_name);
+        _information.data.model_name = (char*)(camera_information.model_name);
     }
 
     std::string content{};
@@ -888,20 +888,20 @@ void CameraImpl::process_camera_information(const mavlink_message_t &message)
 
 #if !defined(WINDOWS)
     // TODO: we might also try to support the correct version of the xml files.
-    if (strcmp((const char *)(camera_information.vendor_name), "Yuneec") == 0) {
-        if (strcmp((const char *)(camera_information.model_name), "E90") == 0) {
+    if (strcmp((const char*)(camera_information.vendor_name), "Yuneec") == 0) {
+        if (strcmp((const char*)(camera_information.model_name), "E90") == 0) {
             LogInfo() << "Using cached file for Yuneec E90.";
             content = e90xml;
             found_content = true;
-        } else if (strcmp((const char *)(camera_information.model_name), "E50") == 0) {
+        } else if (strcmp((const char*)(camera_information.model_name), "E50") == 0) {
             LogInfo() << "Using cached file for Yuneec E50.";
             content = e50xml;
             found_content = true;
-        } else if (strcmp((const char *)(camera_information.model_name), "CGOET") == 0) {
+        } else if (strcmp((const char*)(camera_information.model_name), "CGOET") == 0) {
             LogInfo() << "Using cached file for Yuneec ET.";
             content = cgoetxml;
             found_content = true;
-        } else if (strcmp((const char *)(camera_information.model_name), "E10T") == 0) {
+        } else if (strcmp((const char*)(camera_information.model_name), "E10T") == 0) {
             LogInfo() << "Using cached file for Yuneec E10T.";
             content = e10txml;
             found_content = true;
@@ -922,7 +922,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t &message)
     }
 }
 
-void CameraImpl::process_video_information(const mavlink_message_t &message)
+void CameraImpl::process_video_information(const mavlink_message_t& message)
 {
     mavlink_video_stream_information_t received_video_info;
     mavlink_msg_video_stream_information_decode(&message, &received_video_info);
@@ -934,7 +934,7 @@ void CameraImpl::process_video_information(const mavlink_message_t &message)
             (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
                  Camera::VideoStreamInfo::Status::IN_PROGRESS :
                  Camera::VideoStreamInfo::Status::NOT_RUNNING);
-        auto &video_stream_info = _video_stream_info.info.settings;
+        auto& video_stream_info = _video_stream_info.info.settings;
         video_stream_info.frame_rate_hz = received_video_info.framerate;
         video_stream_info.horizontal_resolution_pix = received_video_info.resolution_h;
         video_stream_info.vertical_resolution_pix = received_video_info.resolution_v;
@@ -952,7 +952,7 @@ void CameraImpl::process_video_information(const mavlink_message_t &message)
     }
 }
 
-void CameraImpl::process_flight_information(const mavlink_message_t &message)
+void CameraImpl::process_flight_information(const mavlink_message_t& message)
 {
     mavlink_flight_information_t flight_information;
     mavlink_msg_flight_information_decode(&message, &flight_information);
@@ -1037,7 +1037,7 @@ void CameraImpl::status_timeout_happened()
 }
 
 void CameraImpl::receive_command_result(
-    MAVLinkCommands::Result command_result, const Camera::result_callback_t &callback)
+    MAVLinkCommands::Result command_result, const Camera::result_callback_t& callback)
 {
     Camera::Result camera_result = camera_result_from_command_result(command_result);
 
@@ -1073,7 +1073,7 @@ void CameraImpl::receive_storage_information_result(MAVLinkCommands::Result resu
 
 void CameraImpl::receive_set_mode_command_result(
     const MAVLinkCommands::Result command_result,
-    const Camera::mode_callback_t &callback,
+    const Camera::mode_callback_t& callback,
     const Camera::Mode mode)
 {
     Camera::Result camera_result = camera_result_from_command_result(command_result);
@@ -1142,7 +1142,7 @@ void CameraImpl::get_mode_timeout_happened()
     }
 }
 
-bool CameraImpl::load_definition_file(const std::string &uri, std::string &content)
+bool CameraImpl::load_definition_file(const std::string& uri, std::string& content)
 {
     HttpLoader http_loader;
     LogInfo() << "Downloading camera definition from: " << uri;
@@ -1154,7 +1154,7 @@ bool CameraImpl::load_definition_file(const std::string &uri, std::string &conte
     return true;
 }
 
-bool CameraImpl::get_possible_setting_options(std::vector<std::string> &settings)
+bool CameraImpl::get_possible_setting_options(std::vector<std::string>& settings)
 {
     settings.clear();
 
@@ -1166,7 +1166,7 @@ bool CameraImpl::get_possible_setting_options(std::vector<std::string> &settings
     std::map<std::string, MAVLinkParameters::ParamValue> cd_settings{};
     _camera_definition->get_possible_settings(cd_settings);
 
-    for (const auto &cd_setting : cd_settings) {
+    for (const auto& cd_setting : cd_settings) {
         if (cd_setting.first == "CAM_MODE") {
             // We ignore the mode param.
             continue;
@@ -1179,7 +1179,7 @@ bool CameraImpl::get_possible_setting_options(std::vector<std::string> &settings
 }
 
 bool CameraImpl::get_possible_options(
-    const std::string &setting_id, std::vector<Camera::Option> &options)
+    const std::string& setting_id, std::vector<Camera::Option>& options)
 {
     options.clear();
 
@@ -1193,7 +1193,7 @@ bool CameraImpl::get_possible_options(
         return false;
     }
 
-    for (const auto &value : values) {
+    for (const auto& value : values) {
         std::stringstream ss{};
         ss << value;
         Camera::Option option{};
@@ -1206,9 +1206,9 @@ bool CameraImpl::get_possible_options(
 }
 
 void CameraImpl::set_option_async(
-    const std::string &setting_id,
-    const Camera::Option &option,
-    const Camera::result_callback_t &callback)
+    const std::string& setting_id,
+    const Camera::Option& option,
+    const Camera::result_callback_t& callback)
 {
     if (!_camera_definition) {
         LogWarn() << "Error: no camera defnition available yet.";
@@ -1230,7 +1230,7 @@ void CameraImpl::set_option_async(
     std::vector<MAVLinkParameters::ParamValue> possible_values;
     _camera_definition->get_possible_options(setting_id, possible_values);
     bool allowed = false;
-    for (const auto &possible_value : possible_values) {
+    for (const auto& possible_value : possible_values) {
         if (value == possible_value) {
             allowed = true;
         }
@@ -1265,13 +1265,13 @@ void CameraImpl::set_option_async(
         true);
 }
 
-Camera::Result CameraImpl::get_option(const std::string &setting_id, Camera::Option &option)
+Camera::Result CameraImpl::get_option(const std::string& setting_id, Camera::Option& option)
 {
     auto prom = std::make_shared<std::promise<Camera::Result>>();
     auto ret = prom->get_future();
 
     get_option_async(
-        setting_id, [prom, &option](Camera::Result result, const Camera::Option &option_gotten) {
+        setting_id, [prom, &option](Camera::Result result, const Camera::Option& option_gotten) {
             prom->set_value(result);
             if (result == Camera::Result::SUCCESS) {
                 option = option_gotten;
@@ -1288,7 +1288,7 @@ Camera::Result CameraImpl::get_option(const std::string &setting_id, Camera::Opt
 }
 
 void CameraImpl::get_option_async(
-    const std::string &setting_id, const Camera::get_option_callback_t &callback)
+    const std::string& setting_id, const Camera::get_option_callback_t& callback)
 {
     if (!_camera_definition) {
         LogWarn() << "Error: no camera defnition available yet.";
@@ -1319,7 +1319,7 @@ void CameraImpl::get_option_async(
 }
 
 void CameraImpl::subscribe_current_settings(
-    const Camera::subscribe_current_settings_callback_t &callback)
+    const Camera::subscribe_current_settings_callback_t& callback)
 {
     {
         std::lock_guard<std::mutex> lock(_subscribe_current_settings.mutex);
@@ -1329,7 +1329,7 @@ void CameraImpl::subscribe_current_settings(
 }
 
 void CameraImpl::subscribe_possible_setting_options(
-    const Camera::subscribe_possible_setting_options_callback_t &callback)
+    const Camera::subscribe_possible_setting_options_callback_t& callback)
 {
     {
         std::lock_guard<std::mutex> lock(_subscribe_possible_setting_options.mutex);
@@ -1358,7 +1358,7 @@ void CameraImpl::notify_current_settings()
         return;
     }
 
-    for (auto &possible_setting : possible_setting_options) {
+    for (auto& possible_setting : possible_setting_options) {
         // use the cache for this, presumably we updated it right before.
         MAVLinkParameters::ParamValue value;
         if (_camera_definition->get_setting(possible_setting, value)) {
@@ -1377,7 +1377,7 @@ void CameraImpl::notify_current_settings()
     // We create a function object in order to move be able to move the settings into it.
     // FIXME: Use C++14 where this is not necessary anymore.
     _parent->call_user_callback(std::bind(
-        [temp_callback](const std::vector<Camera::Setting> &settings) { temp_callback(settings); },
+        [temp_callback](const std::vector<Camera::Setting>& settings) { temp_callback(settings); },
         std::move(current_settings)));
 }
 
@@ -1402,7 +1402,7 @@ void CameraImpl::notify_possible_setting_options()
         return;
     }
 
-    for (auto &possible_setting : possible_settings) {
+    for (auto& possible_setting : possible_settings) {
         Camera::SettingOptions setting_options{};
         setting_options.setting_id = possible_setting;
         get_setting_str(setting_options.setting_id, setting_options.setting_description);
@@ -1415,7 +1415,7 @@ void CameraImpl::notify_possible_setting_options()
     // We create a function object in order to move be able to move the settings into it.
     // FIXME: Use C++14 where this is not necessary anymore.
     _parent->call_user_callback(std::bind(
-        [temp_callback](const std::vector<Camera::SettingOptions> &options) {
+        [temp_callback](const std::vector<Camera::SettingOptions>& options) {
             temp_callback(options);
         },
         std::move(possible_setting_options)));
@@ -1438,9 +1438,9 @@ void CameraImpl::refresh_params()
     }
 
     unsigned count = 0;
-    for (const auto &param : params) {
-        const std::string &param_name = param.first;
-        const MAVLinkParameters::ParamValue &param_value_type = param.second;
+    for (const auto& param : params) {
+        const std::string& param_name = param.first;
+        const MAVLinkParameters::ParamValue& param_value_type = param.second;
         const bool is_last = (count + 1 == params.size());
         _parent->get_param_async(
             param_name,
@@ -1476,7 +1476,7 @@ void CameraImpl::invalidate_params()
     _camera_definition->set_all_params_unknown();
 }
 
-bool CameraImpl::get_setting_str(const std::string &setting_id, std::string &description)
+bool CameraImpl::get_setting_str(const std::string& setting_id, std::string& description)
 {
     if (!_camera_definition) {
         return false;
@@ -1486,7 +1486,7 @@ bool CameraImpl::get_setting_str(const std::string &setting_id, std::string &des
 }
 
 bool CameraImpl::get_option_str(
-    const std::string &setting_id, const std::string &option_id, std::string &description)
+    const std::string& setting_id, const std::string& option_id, std::string& description)
 {
     if (!_camera_definition) {
         return false;

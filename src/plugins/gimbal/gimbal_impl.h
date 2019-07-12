@@ -8,7 +8,7 @@ namespace mavsdk {
 
 class GimbalImpl : public PluginImplBase {
 public:
-    GimbalImpl(System &system);
+    GimbalImpl(System& system);
     ~GimbalImpl();
 
     void init() override;
@@ -31,14 +31,14 @@ public:
         Gimbal::result_callback_t callback);
 
     // Non-copyable
-    GimbalImpl(const GimbalImpl &) = delete;
-    const GimbalImpl &operator=(const GimbalImpl &) = delete;
+    GimbalImpl(const GimbalImpl&) = delete;
+    const GimbalImpl& operator=(const GimbalImpl&) = delete;
 
 private:
     static Gimbal::Result gimbal_result_from_command_result(MAVLinkCommands::Result command_result);
 
     static void receive_command_result(
-        MAVLinkCommands::Result command_result, const Gimbal::result_callback_t &callback);
+        MAVLinkCommands::Result command_result, const Gimbal::result_callback_t& callback);
 };
 
 } // namespace mavsdk

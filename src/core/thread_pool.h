@@ -17,10 +17,10 @@ public:
     ~ThreadPool();
 
     // delete copy and move constructors and assign operators
-    ThreadPool(ThreadPool const &) = delete; // Copy construct
-    ThreadPool(ThreadPool &&) = delete; // Move construct
-    ThreadPool &operator=(ThreadPool const &) = delete; // Copy assign
-    ThreadPool &operator=(ThreadPool &&) = delete; // Move assign
+    ThreadPool(ThreadPool const&) = delete; // Copy construct
+    ThreadPool(ThreadPool&&) = delete; // Move construct
+    ThreadPool& operator=(ThreadPool const&) = delete; // Copy assign
+    ThreadPool& operator=(ThreadPool&&) = delete; // Move assign
 
     bool start();
     bool stop();

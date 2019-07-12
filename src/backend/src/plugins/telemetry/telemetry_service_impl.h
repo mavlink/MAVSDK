@@ -9,16 +9,16 @@ namespace backend {
 template<typename Telemetry = Telemetry>
 class TelemetryServiceImpl final : public mavsdk::rpc::telemetry::TelemetryService::Service {
 public:
-    TelemetryServiceImpl(Telemetry &telemetry) :
+    TelemetryServiceImpl(Telemetry& telemetry) :
         _telemetry(telemetry),
         _stop_promise(std::promise<void>()),
         _stop_future(_stop_promise.get_future())
     {}
 
     grpc::Status SubscribePosition(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribePositionRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::PositionResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribePositionRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::PositionResponse>* writer) override
     {
         std::mutex position_mutex{};
 
@@ -41,9 +41,9 @@ public:
     }
 
     grpc::Status SubscribeHealth(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeHealthRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::HealthResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeHealthRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::HealthResponse>* writer) override
     {
         std::mutex health_mutex{};
 
@@ -69,9 +69,9 @@ public:
     }
 
     grpc::Status SubscribeHome(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeHomeRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::HomeResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeHomeRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::HomeResponse>* writer) override
     {
         std::mutex home_mutex{};
 
@@ -95,9 +95,9 @@ public:
     }
 
     grpc::Status SubscribeInAir(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeInAirRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::InAirResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeInAirRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::InAirResponse>* writer) override
     {
         std::mutex in_air_mutex{};
 
@@ -114,9 +114,9 @@ public:
     }
 
     grpc::Status SubscribeStatusText(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeStatusTextRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::StatusTextResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeStatusTextRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::StatusTextResponse>* writer) override
     {
         std::mutex status_text_mutex{};
 
@@ -154,9 +154,9 @@ public:
     }
 
     grpc::Status SubscribeArmed(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeArmedRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::ArmedResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeArmedRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::ArmedResponse>* writer) override
     {
         std::mutex armed_mutex{};
 
@@ -173,9 +173,9 @@ public:
     }
 
     grpc::Status SubscribeGpsInfo(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeGpsInfoRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::GpsInfoResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::GpsInfoResponse>* writer) override
     {
         std::mutex gps_info_mutex{};
 
@@ -218,9 +218,9 @@ public:
     }
 
     grpc::Status SubscribeBattery(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeBatteryRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::BatteryResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeBatteryRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::BatteryResponse>* writer) override
     {
         std::mutex battery_mutex{};
 
@@ -241,9 +241,9 @@ public:
     }
 
     grpc::Status SubscribeFlightMode(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeFlightModeRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::FlightModeResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeFlightModeRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::FlightModeResponse>* writer) override
     {
         std::mutex flight_mode_mutex{};
 
@@ -289,9 +289,9 @@ public:
     }
 
     grpc::Status SubscribeAttitudeQuaternion(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::AttitudeQuaternionResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::AttitudeQuaternionResponse>* writer) override
     {
         std::mutex attitude_quaternion_mutex{};
 
@@ -315,9 +315,9 @@ public:
     }
 
     grpc::Status SubscribeAttitudeEuler(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::AttitudeEulerResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::AttitudeEulerResponse>* writer) override
     {
         std::mutex attitude_euler_mutex{};
 
@@ -340,9 +340,9 @@ public:
     }
 
     grpc::Status SubscribeCameraAttitudeQuaternion(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::CameraAttitudeQuaternionResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::CameraAttitudeQuaternionResponse>* writer) override
     {
         std::mutex camera_attitude_quaternion_mutex{};
 
@@ -366,9 +366,9 @@ public:
     }
 
     grpc::Status SubscribeCameraAttitudeEuler(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::CameraAttitudeEulerResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::CameraAttitudeEulerResponse>* writer) override
     {
         std::mutex camera_attitude_euler_mutex{};
 
@@ -391,9 +391,9 @@ public:
     }
 
     grpc::Status SubscribeGroundSpeedNed(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::GroundSpeedNedResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::GroundSpeedNedResponse>* writer) override
     {
         std::mutex ground_speed_mutex{};
 
@@ -416,9 +416,9 @@ public:
     }
 
     grpc::Status SubscribeRcStatus(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::telemetry::SubscribeRcStatusRequest * /* request */,
-        grpc::ServerWriter<rpc::telemetry::RcStatusResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeRcStatusRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::RcStatusResponse>* writer) override
     {
         std::mutex rc_status_mutex{};
 
@@ -443,7 +443,7 @@ public:
     void stop() { _stop_promise.set_value(); }
 
 private:
-    Telemetry &_telemetry;
+    Telemetry& _telemetry;
     std::promise<void> _stop_promise;
     std::future<void> _stop_future;
 };

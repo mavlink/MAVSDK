@@ -6,7 +6,7 @@
 
 namespace mavsdk {
 
-InfoImpl::InfoImpl(System &system) : PluginImplBase(system)
+InfoImpl::InfoImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -65,7 +65,7 @@ void InfoImpl::request_version_again()
     _parent->send_autopilot_version_request();
 }
 
-void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
+void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -112,11 +112,11 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
         Info::GIT_HASH_STR_LEN);
 
     _product.vendor_id = autopilot_version.vendor_id;
-    const char *vendor_name = vendor_id_str(autopilot_version.vendor_id);
+    const char* vendor_name = vendor_id_str(autopilot_version.vendor_id);
     STRNCPY(_product.vendor_name, vendor_name, sizeof(_product.vendor_name) - 1);
 
     _product.product_id = autopilot_version.product_id;
-    const char *product_name = product_id_str(autopilot_version.product_id);
+    const char* product_name = product_id_str(autopilot_version.product_id);
     STRNCPY(_product.product_name, product_name, sizeof(_product.product_name) - 1);
 
     static_assert(
@@ -129,7 +129,7 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
 }
 
 void InfoImpl::translate_binary_to_str(
-    uint8_t *binary, unsigned binary_len, char *str, unsigned str_len)
+    uint8_t* binary, unsigned binary_len, char* str, unsigned str_len)
 {
     for (unsigned i = 0; i < binary_len; ++i) {
         // One hex number occupies 2 chars.
@@ -165,7 +165,7 @@ std::pair<Info::Result, Info::Product> InfoImpl::get_product() const
         _product);
 }
 
-const char *InfoImpl::vendor_id_str(uint16_t vendor_id)
+const char* InfoImpl::vendor_id_str(uint16_t vendor_id)
 {
     switch (vendor_id) {
         case 0x26ac:
@@ -175,7 +175,7 @@ const char *InfoImpl::vendor_id_str(uint16_t vendor_id)
     }
 }
 
-const char *InfoImpl::product_id_str(uint16_t product_id)
+const char* InfoImpl::product_id_str(uint16_t product_id)
 {
     switch (product_id) {
         case 0x0010:

@@ -8,7 +8,7 @@ namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
-ActionImpl::ActionImpl(System &system) : PluginImplBase(system)
+ActionImpl::ActionImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -184,7 +184,7 @@ Action::Result ActionImpl::transition_to_fixedwing() const
     return action_result_from_command_result(_parent->send_command(command));
 }
 
-void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t &callback)
+void ActionImpl::transition_to_fixedwing_async(const Action::result_callback_t& callback)
 {
     if (!_vtol_transition_support_known) {
         if (callback) {
@@ -229,7 +229,7 @@ Action::Result ActionImpl::transition_to_multicopter() const
     return action_result_from_command_result(_parent->send_command(command));
 }
 
-void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t &callback)
+void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t& callback)
 {
     if (!_vtol_transition_support_known) {
         if (callback) {
@@ -254,7 +254,7 @@ void ActionImpl::transition_to_multicopter_async(const Action::result_callback_t
         command, std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-void ActionImpl::arm_async(const Action::result_callback_t &callback)
+void ActionImpl::arm_async(const Action::result_callback_t& callback)
 {
     // Funny enough the call `arming_allowed()` is sync, so we need to
     // queue it on the thread pool which confusingly is called
@@ -273,7 +273,7 @@ void ActionImpl::arm_async(const Action::result_callback_t &callback)
 }
 
 void ActionImpl::arm_async_continued(
-    MAVLinkCommands::Result previous_result, const Action::result_callback_t &callback)
+    MAVLinkCommands::Result previous_result, const Action::result_callback_t& callback)
 {
     if (previous_result != MAVLinkCommands::Result::SUCCESS) {
         command_result_callback(previous_result, callback);
@@ -290,7 +290,7 @@ void ActionImpl::arm_async_continued(
         command, std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-void ActionImpl::disarm_async(const Action::result_callback_t &callback)
+void ActionImpl::disarm_async(const Action::result_callback_t& callback)
 {
     Action::Result ret = disarming_allowed();
     if (ret != Action::Result::SUCCESS) {
@@ -309,7 +309,7 @@ void ActionImpl::disarm_async(const Action::result_callback_t &callback)
         command, std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-void ActionImpl::kill_async(const Action::result_callback_t &callback)
+void ActionImpl::kill_async(const Action::result_callback_t& callback)
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -321,7 +321,7 @@ void ActionImpl::kill_async(const Action::result_callback_t &callback)
         command, std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
+void ActionImpl::takeoff_async(const Action::result_callback_t& callback)
 {
     // Funny enough the call `takeof_off_allowed()` is sync, so we need to
     // queue it on the thread pool which confusingly is called
@@ -340,7 +340,7 @@ void ActionImpl::takeoff_async(const Action::result_callback_t &callback)
 }
 
 void ActionImpl::takeoff_async_continued(
-    MAVLinkCommands::Result previous_result, const Action::result_callback_t &callback)
+    MAVLinkCommands::Result previous_result, const Action::result_callback_t& callback)
 {
     if (previous_result != MAVLinkCommands::Result::SUCCESS) {
         command_result_callback(previous_result, callback);
@@ -356,7 +356,7 @@ void ActionImpl::takeoff_async_continued(
         command, std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-void ActionImpl::land_async(const Action::result_callback_t &callback)
+void ActionImpl::land_async(const Action::result_callback_t& callback)
 {
     MAVLinkCommands::CommandLong command{};
 
@@ -368,7 +368,7 @@ void ActionImpl::land_async(const Action::result_callback_t &callback)
         command, std::bind(&ActionImpl::command_result_callback, _1, callback));
 }
 
-void ActionImpl::return_to_launch_async(const Action::result_callback_t &callback)
+void ActionImpl::return_to_launch_async(const Action::result_callback_t& callback)
 {
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::RETURN_TO_LAUNCH,
@@ -424,7 +424,7 @@ Action::Result ActionImpl::disarming_allowed() const
     return Action::Result::SUCCESS;
 }
 
-void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
+void ActionImpl::process_extended_sys_state(const mavlink_message_t& message)
 {
     mavlink_extended_sys_state_t extended_sys_state;
     mavlink_msg_extended_sys_state_decode(&message, &extended_sys_state);
@@ -445,14 +445,14 @@ void ActionImpl::process_extended_sys_state(const mavlink_message_t &message)
     _vtol_transition_support_known = true;
 }
 
-void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t &callback)
+void ActionImpl::loiter_before_takeoff_async(const Action::result_callback_t& callback)
 {
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::HOLD,
         std::bind(&ActionImpl::takeoff_async_continued, this, _1, callback));
 }
 
-void ActionImpl::loiter_before_arm_async(const Action::result_callback_t &callback)
+void ActionImpl::loiter_before_arm_async(const Action::result_callback_t& callback)
 {
     _parent->set_flight_mode_async(
         SystemImpl::FlightMode::HOLD,
@@ -530,7 +530,7 @@ Action::Result ActionImpl::action_result_from_command_result(MAVLinkCommands::Re
 }
 
 void ActionImpl::command_result_callback(
-    MAVLinkCommands::Result command_result, const Action::result_callback_t &callback)
+    MAVLinkCommands::Result command_result, const Action::result_callback_t& callback)
 {
     Action::Result action_result = action_result_from_command_result(command_result);
 

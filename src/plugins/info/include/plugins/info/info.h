@@ -27,7 +27,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Info(System &system);
+    explicit Info(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -127,11 +127,11 @@ public:
     /**
      * @brief Copy Constructor (object is not copyable).
      */
-    Info(const Info &) = delete;
+    Info(const Info&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Info &operator=(const Info &) = delete;
+    const Info& operator=(const Info&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

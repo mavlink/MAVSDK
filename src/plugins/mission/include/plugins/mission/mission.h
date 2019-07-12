@@ -32,7 +32,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Mission(System &system);
+    explicit Mission(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -64,7 +64,7 @@ public:
      * @param result Enum for which string is required.
      * @return Human readable string for the Mission::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Callback type for async mission calls.
@@ -93,7 +93,7 @@ public:
      *     Result::FAILED_TO_PARSE_QGC_PLAN, Result::UNSUPPORTED_MISSION_CMD.
      */
     static Result
-    import_qgroundcontrol_mission(mission_items_t &mission_items, const std::string &qgc_plan_file);
+    import_qgroundcontrol_mission(mission_items_t& mission_items, const std::string& qgc_plan_file);
 
     /**
      * @brief Uploads a vector of mission items to the system (asynchronous).
@@ -105,7 +105,7 @@ public:
      * @param callback Callback to receive result of this request.
      */
     void upload_mission_async(
-        const std::vector<std::shared_ptr<MissionItem>> &mission_items, result_callback_t callback);
+        const std::vector<std::shared_ptr<MissionItem>>& mission_items, result_callback_t callback);
 
     /**
      * @brief Cancel a mission upload (asynchronous).
@@ -241,11 +241,11 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Mission(const Mission &) = delete;
+    Mission(const Mission&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Mission &operator=(const Mission &) = delete;
+    const Mission& operator=(const Mission&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

@@ -30,13 +30,13 @@ void set_color(Color color);
 
 class LogDetailed {
 public:
-    LogDetailed(const char *filename, int filenumber) :
+    LogDetailed(const char* filename, int filenumber) :
         _s(),
         _caller_filename(filename),
         _caller_filenumber(filenumber)
     {}
 
-    template<typename T> LogDetailed &operator<<(const T &x)
+    template<typename T> LogDetailed& operator<<(const T& x)
     {
         _s << x;
         return *this;
@@ -83,7 +83,7 @@ public:
         // https://stackoverflow.com/questions/16357999#answer-16358264
         time_t rawtime;
         time(&rawtime);
-        struct tm *timeinfo = localtime(&rawtime);
+        struct tm* timeinfo = localtime(&rawtime);
         char time_buffer[10]{}; // We need 8 characters + \0
         strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S", timeinfo);
         std::cout << "[" << time_buffer;
@@ -112,21 +112,21 @@ public:
 #endif
     }
 
-    LogDetailed(const mavsdk::LogDetailed &) = delete;
-    void operator=(const mavsdk::LogDetailed &) = delete;
+    LogDetailed(const mavsdk::LogDetailed&) = delete;
+    void operator=(const mavsdk::LogDetailed&) = delete;
 
 protected:
     enum LogLevel { Debug, Info, Warn, Err } _log_level = LogLevel::Debug;
 
 private:
     std::stringstream _s;
-    const char *_caller_filename;
+    const char* _caller_filename;
     int _caller_filenumber;
 };
 
 class LogDebugDetailed : public LogDetailed {
 public:
-    LogDebugDetailed(const char *filename, int filenumber) : LogDetailed(filename, filenumber)
+    LogDebugDetailed(const char* filename, int filenumber) : LogDetailed(filename, filenumber)
     {
         _log_level = LogLevel::Debug;
     }
@@ -134,7 +134,7 @@ public:
 
 class LogInfoDetailed : public LogDetailed {
 public:
-    LogInfoDetailed(const char *filename, int filenumber) : LogDetailed(filename, filenumber)
+    LogInfoDetailed(const char* filename, int filenumber) : LogDetailed(filename, filenumber)
     {
         _log_level = LogLevel::Info;
     }
@@ -142,7 +142,7 @@ public:
 
 class LogWarnDetailed : public LogDetailed {
 public:
-    LogWarnDetailed(const char *filename, int filenumber) : LogDetailed(filename, filenumber)
+    LogWarnDetailed(const char* filename, int filenumber) : LogDetailed(filename, filenumber)
     {
         _log_level = LogLevel::Warn;
     }
@@ -150,7 +150,7 @@ public:
 
 class LogErrDetailed : public LogDetailed {
 public:
-    LogErrDetailed(const char *filename, int filenumber) : LogDetailed(filename, filenumber)
+    LogErrDetailed(const char* filename, int filenumber) : LogDetailed(filename, filenumber)
     {
         _log_level = LogLevel::Err;
     }

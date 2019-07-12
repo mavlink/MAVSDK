@@ -31,9 +31,9 @@ using namespace std::this_thread; // for sleep_for()
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
-inline void action_error_exit(Action::Result result, const std::string &message);
-inline void follow_me_error_exit(FollowMe::Result result, const std::string &message);
-inline void connection_error_exit(ConnectionResult result, const std::string &message);
+inline void action_error_exit(Action::Result result, const std::string& message);
+inline void follow_me_error_exit(FollowMe::Result result, const std::string& message);
+inline void connection_error_exit(ConnectionResult result, const std::string& message);
 
 void usage(std::string bin_name)
 {
@@ -45,7 +45,7 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     Mavsdk dc;
     std::string connection_url;
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
     }
 
     // System got discovered.
-    System &system = dc.system();
+    System& system = dc.system();
     auto action = std::make_shared<Action>(system);
     auto follow_me = std::make_shared<FollowMe>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 }
 
 // Handles Action's result
-inline void action_error_exit(Action::Result result, const std::string &message)
+inline void action_error_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
@@ -155,7 +155,7 @@ inline void action_error_exit(Action::Result result, const std::string &message)
     }
 }
 // Handles FollowMe's result
-inline void follow_me_error_exit(FollowMe::Result result, const std::string &message)
+inline void follow_me_error_exit(FollowMe::Result result, const std::string& message)
 {
     if (result != FollowMe::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << FollowMe::result_str(result)
@@ -164,7 +164,7 @@ inline void follow_me_error_exit(FollowMe::Result result, const std::string &mes
     }
 }
 // Handles connection result
-inline void connection_error_exit(ConnectionResult result, const std::string &message)
+inline void connection_error_exit(ConnectionResult result, const std::string& message)
 {
     if (result != ConnectionResult::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)

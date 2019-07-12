@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 DLLExport void
-runBackend(const char *connection_url, void (*onServerStarted)(void *), void *context);
+runBackend(const char* connection_url, void (*onServerStarted)(void*), void* context);
 
 #ifdef __cplusplus
 }

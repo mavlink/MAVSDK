@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-GimbalImpl::GimbalImpl(System &system) : PluginImplBase(system)
+GimbalImpl::GimbalImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -85,7 +85,7 @@ void GimbalImpl::set_roi_location_async(
 }
 
 void GimbalImpl::receive_command_result(
-    MAVLinkCommands::Result command_result, const Gimbal::result_callback_t &callback)
+    MAVLinkCommands::Result command_result, const Gimbal::result_callback_t& callback)
 {
     Gimbal::Result gimbal_result = gimbal_result_from_command_result(command_result);
 

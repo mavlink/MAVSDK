@@ -13,12 +13,12 @@ namespace backend {
 template<typename Mission = Mission>
 class MissionServiceImpl final : public mavsdk::rpc::mission::MissionService::Service {
 public:
-    MissionServiceImpl(Mission &mission) : _mission(mission) {}
+    MissionServiceImpl(Mission& mission) : _mission(mission) {}
 
     grpc::Status UploadMission(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::UploadMissionRequest *request,
-        rpc::mission::UploadMissionResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::UploadMissionRequest* request,
+        rpc::mission::UploadMissionResponse* response) override
     {
         std::promise<void> result_promise;
         const auto result_future = result_promise.get_future();
@@ -31,18 +31,18 @@ public:
     }
 
     grpc::Status CancelMissionUpload(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::CancelMissionUploadRequest * /* request */,
-        rpc::mission::CancelMissionUploadResponse * /* response */) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::CancelMissionUploadRequest* /* request */,
+        rpc::mission::CancelMissionUploadResponse* /* response */) override
     {
         _mission.upload_mission_cancel();
         return grpc::Status::OK;
     }
 
     grpc::Status DownloadMission(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::DownloadMissionRequest * /* request */,
-        rpc::mission::DownloadMissionResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::DownloadMissionRequest* /* request */,
+        rpc::mission::DownloadMissionResponse* response) override
     {
         std::promise<void> result_promise;
         const auto result_future = result_promise.get_future();
@@ -69,18 +69,18 @@ public:
     }
 
     grpc::Status CancelMissionDownload(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::CancelMissionDownloadRequest * /* request */,
-        rpc::mission::CancelMissionDownloadResponse * /* response */) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::CancelMissionDownloadRequest* /* request */,
+        rpc::mission::CancelMissionDownloadResponse* /* response */) override
     {
         _mission.download_mission_cancel();
         return grpc::Status::OK;
     }
 
     grpc::Status StartMission(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::StartMissionRequest * /* request */,
-        rpc::mission::StartMissionResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::StartMissionRequest* /* request */,
+        rpc::mission::StartMissionResponse* response) override
     {
         std::promise<void> result_promise;
         const auto result_future = result_promise.get_future();
@@ -100,9 +100,9 @@ public:
     }
 
     grpc::Status IsMissionFinished(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::IsMissionFinishedRequest * /* request */,
-        rpc::mission::IsMissionFinishedResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::IsMissionFinishedRequest* /* request */,
+        rpc::mission::IsMissionFinishedResponse* response) override
     {
         if (response != nullptr) {
             auto is_mission_finished = _mission.mission_finished();
@@ -113,9 +113,9 @@ public:
     }
 
     grpc::Status PauseMission(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::PauseMissionRequest * /* request */,
-        rpc::mission::PauseMissionResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::PauseMissionRequest* /* request */,
+        rpc::mission::PauseMissionResponse* response) override
     {
         std::promise<void> result_promise;
         const auto result_future = result_promise.get_future();
@@ -135,9 +135,9 @@ public:
     }
 
     grpc::Status SetCurrentMissionItemIndex(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::SetCurrentMissionItemIndexRequest *request,
-        rpc::mission::SetCurrentMissionItemIndexResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::SetCurrentMissionItemIndexRequest* request,
+        rpc::mission::SetCurrentMissionItemIndexResponse* response) override
     {
         if (request == nullptr) {
             return grpc::Status::OK;
@@ -162,9 +162,9 @@ public:
     }
 
     grpc::Status SubscribeMissionProgress(
-        grpc::ServerContext * /* context */,
-        const mavsdk::rpc::mission::SubscribeMissionProgressRequest * /* request */,
-        grpc::ServerWriter<rpc::mission::MissionProgressResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::mission::SubscribeMissionProgressRequest* /* request */,
+        grpc::ServerWriter<rpc::mission::MissionProgressResponse>* writer) override
     {
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
@@ -196,9 +196,9 @@ public:
     }
 
     grpc::Status GetReturnToLaunchAfterMission(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::GetReturnToLaunchAfterMissionRequest * /* request */,
-        rpc::mission::GetReturnToLaunchAfterMissionResponse *response) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::GetReturnToLaunchAfterMissionRequest* /* request */,
+        rpc::mission::GetReturnToLaunchAfterMissionResponse* response) override
     {
         if (response != nullptr) {
             response->set_enable(_mission.get_return_to_launch_after_mission());
@@ -208,9 +208,9 @@ public:
     }
 
     grpc::Status SetReturnToLaunchAfterMission(
-        grpc::ServerContext * /* context */,
-        const rpc::mission::SetReturnToLaunchAfterMissionRequest *request,
-        rpc::mission::SetReturnToLaunchAfterMissionResponse * /* response */) override
+        grpc::ServerContext* /* context */,
+        const rpc::mission::SetReturnToLaunchAfterMissionRequest* request,
+        rpc::mission::SetReturnToLaunchAfterMissionResponse* /* response */) override
     {
         if (request != nullptr) {
             _mission.set_return_to_launch_after_mission(request->enable());
@@ -221,7 +221,7 @@ public:
 
     static void translateMissionItem(
         const std::shared_ptr<MissionItem> mission_item,
-        rpc::mission::MissionItem *rpc_mission_item)
+        rpc::mission::MissionItem* rpc_mission_item)
     {
         rpc_mission_item->set_latitude_deg(mission_item->get_latitude_deg());
         rpc_mission_item->set_longitude_deg(mission_item->get_longitude_deg());
@@ -257,7 +257,7 @@ public:
     }
 
     static std::shared_ptr<MissionItem>
-    translateRPCMissionItem(const rpc::mission::MissionItem &rpc_mission_item)
+    translateRPCMissionItem(const rpc::mission::MissionItem& rpc_mission_item)
     {
         auto mission_item = std::make_shared<MissionItem>();
         mission_item->set_position(
@@ -297,7 +297,7 @@ public:
 
 private:
     std::vector<std::shared_ptr<MissionItem>>
-    extractMissionItems(const rpc::mission::UploadMissionRequest *request) const
+    extractMissionItems(const rpc::mission::UploadMissionRequest* request) const
     {
         std::vector<std::shared_ptr<MissionItem>> mission_items;
 
@@ -311,9 +311,9 @@ private:
     }
 
     void uploadMissionItems(
-        const std::vector<std::shared_ptr<MissionItem>> &mission_items,
-        rpc::mission::UploadMissionResponse *response,
-        std::promise<void> &result_promise) const
+        const std::vector<std::shared_ptr<MissionItem>>& mission_items,
+        rpc::mission::UploadMissionResponse* response,
+        std::promise<void>& result_promise) const
     {
         _mission.upload_mission_async(
             mission_items, [this, response, &result_promise](const mavsdk::Mission::Result result) {
@@ -326,7 +326,7 @@ private:
             });
     }
 
-    rpc::mission::MissionResult *
+    rpc::mission::MissionResult*
     generateRPCMissionResult(const mavsdk::Mission::Result result) const
     {
         auto rpc_result = static_cast<rpc::mission::MissionResult::Result>(result);
@@ -338,7 +338,7 @@ private:
         return rpc_mission_result;
     }
 
-    Mission &_mission;
+    Mission& _mission;
     std::mutex _write_mutex{};
 };
 

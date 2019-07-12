@@ -35,7 +35,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Action(System &system);
+    explicit Action(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -325,16 +325,16 @@ public:
      * @param result The enum value for which a human readable string is required.
      * @return Human readable string for the Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Action(const Action &) = delete;
+    Action(const Action&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Action &operator=(const Action &) = delete;
+    const Action& operator=(const Action&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

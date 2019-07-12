@@ -221,12 +221,12 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    MissionItem(const MissionItem &) = delete;
+    MissionItem(const MissionItem&) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const MissionItem &operator=(const MissionItem &) = delete;
+    const MissionItem& operator=(const MissionItem&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */
@@ -238,20 +238,20 @@ private:
  *
  * @return `true` if items are equal.
  */
-bool operator==(const MissionItem &lhs, const MissionItem &rhs);
+bool operator==(const MissionItem& lhs, const MissionItem& rhs);
 
 /**
  * @brief Stream operator to print infos about a `MissionItem`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, MissionItem const &mission_item);
+std::ostream& operator<<(std::ostream& str, MissionItem const& mission_item);
 
 /**
  * @brief Stream operator to print infos about a `MissionItem::CameraAction`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, MissionItem::CameraAction const &camera_action);
+std::ostream& operator<<(std::ostream& str, MissionItem::CameraAction const& camera_action);
 
 } // namespace mavsdk

@@ -25,7 +25,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
@@ -122,7 +122,7 @@ TEST(CameraTest, SetSettings)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
@@ -234,11 +234,11 @@ TEST(CameraTest, SetSettings)
 }
 
 static void
-receive_current_settings(bool &subscription_called, const std::vector<Camera::Setting> settings)
+receive_current_settings(bool& subscription_called, const std::vector<Camera::Setting> settings)
 {
     LogDebug() << "Received current options:";
     EXPECT_TRUE(settings.size() > 0);
-    for (auto &setting : settings) {
+    for (auto& setting : settings) {
         LogDebug() << "Got setting '" << setting.setting_description << "' with selected option '"
                    << setting.option.option_description << "'";
 
@@ -262,7 +262,7 @@ TEST(CameraTest, SubscribeCurrentSettings)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 
@@ -287,11 +287,11 @@ TEST(CameraTest, SubscribeCurrentSettings)
 }
 
 static void receive_possible_setting_options(
-    bool &subscription_called, const std::vector<Camera::SettingOptions> settings_options)
+    bool& subscription_called, const std::vector<Camera::SettingOptions> settings_options)
 {
     LogDebug() << "Received possible options:";
     EXPECT_TRUE(settings_options.size() > 0);
-    for (auto &setting_options : settings_options) {
+    for (auto& setting_options : settings_options) {
         LogDebug() << "Got setting '" << setting_options.setting_description << "' with options:";
 
         // Check human readable strings too.
@@ -302,7 +302,7 @@ static void receive_possible_setting_options(
         }
 
         EXPECT_TRUE(setting_options.options.size() > 0);
-        for (auto &option : setting_options.options) {
+        for (auto& option : setting_options.options) {
             LogDebug() << " - '" << option.option_description << "'";
             if (setting_options.setting_id == "CAM_SHUTTERSPD" && option.option_id == "0.0025") {
                 EXPECT_STREQ(option.option_description.c_str(), "1/400");
@@ -324,7 +324,7 @@ TEST(CameraTest, SubscribePossibleSettings)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_camera());
     auto camera = std::make_shared<Camera>(system);
 

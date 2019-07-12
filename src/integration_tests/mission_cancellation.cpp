@@ -32,7 +32,7 @@ TEST_F(SitlTest, MissionUploadCancellation)
     ASSERT_TRUE(poll_condition_with_timeout(
         [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto mission = std::make_shared<Mission>(system);
@@ -75,7 +75,7 @@ TEST_F(SitlTest, MissionDownloadCancellation)
     ASSERT_TRUE(poll_condition_with_timeout(
         [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto mission = std::make_shared<Mission>(system);
