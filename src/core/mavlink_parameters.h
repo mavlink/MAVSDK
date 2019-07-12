@@ -312,6 +312,10 @@ public:
 
         uint8_t get_uint8() const { return uint8_t(_value); }
 
+        int16_t get_int16() const { return int16_t(_value); }
+
+        uint16_t get_uint16() const { return uint16_t(_value); }
+
         int32_t get_int32() const { return int32_t(_value); }
 
         uint32_t get_uint32() const { return uint32_t(_value); }
