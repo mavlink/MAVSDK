@@ -92,8 +92,8 @@ public:
      *     Otherwise one of the error codes: Result::FAILED_TO_OPEN_QGC_PLAN,
      *     Result::FAILED_TO_PARSE_QGC_PLAN, Result::UNSUPPORTED_MISSION_CMD.
      */
-    static Result import_qgroundcontrol_mission(mission_items_t &mission_items,
-                                                const std::string &qgc_plan_file);
+    static Result
+    import_qgroundcontrol_mission(mission_items_t &mission_items, const std::string &qgc_plan_file);
 
     /**
      * @brief Uploads a vector of mission items to the system (asynchronous).
@@ -104,8 +104,8 @@ public:
      * @param mission_items Reference to vector of mission items.
      * @param callback Callback to receive result of this request.
      */
-    void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
-                              result_callback_t callback);
+    void upload_mission_async(
+        const std::vector<std::shared_ptr<MissionItem>> &mission_items, result_callback_t callback);
 
     /**
      * @brief Cancel a mission upload (asynchronous).

@@ -54,21 +54,21 @@ public:
     void get_status_async(Camera::get_status_callback_t callback);
     void subscribe_status(const Camera::subscribe_status_callback_t callback);
 
-    void set_option_async(const std::string &setting_id,
-                          const Camera::Option &option,
-                          const Camera::result_callback_t &callback);
+    void set_option_async(
+        const std::string &setting_id,
+        const Camera::Option &option,
+        const Camera::result_callback_t &callback);
 
     Camera::Result get_option(const std::string &setting_id, Camera::Option &option);
-    void get_option_async(const std::string &setting_id,
-                          const Camera::get_option_callback_t &callback);
+    void
+    get_option_async(const std::string &setting_id, const Camera::get_option_callback_t &callback);
 
     bool get_possible_setting_options(std::vector<std::string> &settings);
     bool get_possible_options(const std::string &setting_id, std::vector<Camera::Option> &options);
 
     bool get_setting_str(const std::string &setting_id, std::string &description);
-    bool get_option_str(const std::string &setting_id,
-                        const std::string &option_id,
-                        std::string &description);
+    bool get_option_str(
+        const std::string &setting_id, const std::string &option_id, std::string &description);
 
     void subscribe_current_settings(const Camera::subscribe_current_settings_callback_t &callback);
     void subscribe_possible_setting_options(
@@ -85,9 +85,10 @@ private:
     void manual_enable();
     void manual_disable();
 
-    void receive_set_mode_command_result(const MAVLinkCommands::Result command_result,
-                                         const Camera::mode_callback_t &callback,
-                                         const Camera::Mode mode);
+    void receive_set_mode_command_result(
+        const MAVLinkCommands::Result command_result,
+        const Camera::mode_callback_t &callback,
+        const Camera::Mode mode);
 
     void get_mode_timeout_happened();
 
@@ -96,8 +97,8 @@ private:
     static Camera::Result
     camera_result_from_command_result(const MAVLinkCommands::Result command_result);
 
-    static void receive_command_result(MAVLinkCommands::Result command_result,
-                                       const Camera::result_callback_t &callback);
+    static void receive_command_result(
+        MAVLinkCommands::Result command_result, const Camera::result_callback_t &callback);
 
     static bool interval_valid(float interval_s);
 

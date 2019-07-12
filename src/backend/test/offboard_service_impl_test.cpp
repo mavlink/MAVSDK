@@ -382,9 +382,10 @@ TEST_F(OffboardServiceImplTest, setsVelocityNedCorrectly)
     offboardService.SetVelocityNed(nullptr, &request, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(OffboardResultCorrespondences,
-                        OffboardServiceImplTest,
-                        ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_CASE_P(
+    OffboardResultCorrespondences,
+    OffboardServiceImplTest,
+    ::testing::ValuesIn(generateInputPairs()));
 
 std::vector<InputPair> generateInputPairs()
 {

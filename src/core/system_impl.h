@@ -47,9 +47,8 @@ public:
 
     typedef std::function<void(const mavlink_message_t &)> mavlink_message_handler_t;
 
-    void register_mavlink_message_handler(uint16_t msg_id,
-                                          mavlink_message_handler_t callback,
-                                          const void *cookie);
+    void register_mavlink_message_handler(
+        uint16_t msg_id, mavlink_message_handler_t callback, const void *cookie);
 
     void unregister_mavlink_message_handler(uint16_t msg_id, const void *cookie);
     void unregister_all_mavlink_message_handlers(const void *cookie);
@@ -70,19 +69,19 @@ public:
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandLong &command);
     MAVLinkCommands::Result send_command(MAVLinkCommands::CommandInt &command);
 
-    void send_command_async(MAVLinkCommands::CommandLong &command,
-                            const command_result_callback_t callback);
-    void send_command_async(MAVLinkCommands::CommandInt &command,
-                            const command_result_callback_t callback);
+    void send_command_async(
+        MAVLinkCommands::CommandLong &command, const command_result_callback_t callback);
+    void send_command_async(
+        MAVLinkCommands::CommandInt &command, const command_result_callback_t callback);
 
-    MAVLinkCommands::Result set_msg_rate(uint16_t message_id,
-                                         double rate_hz,
-                                         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+    MAVLinkCommands::Result set_msg_rate(
+        uint16_t message_id, double rate_hz, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
-    void set_msg_rate_async(uint16_t message_id,
-                            double rate_hz,
-                            command_result_callback_t callback,
-                            uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+    void set_msg_rate_async(
+        uint16_t message_id,
+        double rate_hz,
+        command_result_callback_t callback,
+        uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     // Adds unique component ids
     void add_new_component(uint8_t component_id);
@@ -118,29 +117,22 @@ public:
     MAVLinkParameters::Result set_param_ext_int(const std::string &name, int32_t value);
 
     typedef std::function<void(MAVLinkParameters::Result result)> success_t;
-    void set_param_float_async(const std::string &name,
-                               float value,
-                               success_t callback,
-                               const void *cookie);
-    void set_param_int_async(const std::string &name,
-                             int32_t value,
-                             success_t callback,
-                             const void *cookie);
-    void set_param_ext_float_async(const std::string &name,
-                                   float value,
-                                   success_t callback,
-                                   const void *cookie);
-    void set_param_ext_int_async(const std::string &name,
-                                 int32_t value,
-                                 success_t callback,
-                                 const void *cookie);
+    void set_param_float_async(
+        const std::string &name, float value, success_t callback, const void *cookie);
+    void set_param_int_async(
+        const std::string &name, int32_t value, success_t callback, const void *cookie);
+    void set_param_ext_float_async(
+        const std::string &name, float value, success_t callback, const void *cookie);
+    void set_param_ext_int_async(
+        const std::string &name, int32_t value, success_t callback, const void *cookie);
 
-    MAVLinkCommands::Result set_flight_mode(FlightMode mode,
-                                            uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+    MAVLinkCommands::Result
+    set_flight_mode(FlightMode mode, uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
-    void set_flight_mode_async(FlightMode mode,
-                               command_result_callback_t callback,
-                               uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+    void set_flight_mode_async(
+        FlightMode mode,
+        command_result_callback_t callback,
+        uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
     typedef std::function<void(MAVLinkParameters::Result result, float value)>
         get_param_float_callback_t;
@@ -154,45 +146,43 @@ public:
 
     // These methods can be used to cache a parameter when a system connects. For that
     // the callback can just be set to nullptr.
-    void get_param_float_async(const std::string &name,
-                               get_param_float_callback_t callback,
-                               const void *cookie);
-    void get_param_int_async(const std::string &name,
-                             get_param_int_callback_t callback,
-                             const void *cookie);
-    void get_param_ext_float_async(const std::string &name,
-                                   get_param_float_callback_t callback,
-                                   const void *cookie);
-    void get_param_ext_int_async(const std::string &name,
-                                 get_param_int_callback_t callback,
-                                 const void *cookie);
+    void get_param_float_async(
+        const std::string &name, get_param_float_callback_t callback, const void *cookie);
+    void get_param_int_async(
+        const std::string &name, get_param_int_callback_t callback, const void *cookie);
+    void get_param_ext_float_async(
+        const std::string &name, get_param_float_callback_t callback, const void *cookie);
+    void get_param_ext_int_async(
+        const std::string &name, get_param_int_callback_t callback, const void *cookie);
 
-    typedef std::function<void(MAVLinkParameters::Result result,
-                               MAVLinkParameters::ParamValue value)>
+    typedef std::function<void(
+        MAVLinkParameters::Result result, MAVLinkParameters::ParamValue value)>
         get_param_callback_t;
 
-    void set_param_async(const std::string &name,
-                         MAVLinkParameters::ParamValue value,
-                         success_t callback,
-                         const void *cookie,
-                         bool extended = false);
+    void set_param_async(
+        const std::string &name,
+        MAVLinkParameters::ParamValue value,
+        success_t callback,
+        const void *cookie,
+        bool extended = false);
 
     MAVLinkParameters::Result
     set_param(const std::string &name, MAVLinkParameters::ParamValue value, bool extended = false);
 
-    void get_param_async(const std::string &name,
-                         MAVLinkParameters::ParamValue value_type,
-                         get_param_callback_t callback,
-                         const void *cookie,
-                         bool extended);
+    void get_param_async(
+        const std::string &name,
+        MAVLinkParameters::ParamValue value_type,
+        get_param_callback_t callback,
+        const void *cookie,
+        bool extended);
 
     void cancel_all_param(const void *cookie);
 
     void param_changed(const std::string &name);
 
     typedef std::function<void(const std::string &name)> param_changed_callback_t;
-    void register_param_changed_handler(const param_changed_callback_t callback,
-                                        const void *cookie);
+    void
+    register_param_changed_handler(const param_changed_callback_t callback, const void *cookie);
     void unregister_param_changed_handler(const void *cookie);
 
     bool is_connected() const;
@@ -243,12 +233,14 @@ private:
     std::pair<MAVLinkCommands::Result, MAVLinkCommands::CommandLong>
     make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t component_id);
 
-    static void receive_float_param(MAVLinkParameters::Result result,
-                                    MAVLinkParameters::ParamValue value,
-                                    get_param_float_callback_t callback);
-    static void receive_int_param(MAVLinkParameters::Result result,
-                                  MAVLinkParameters::ParamValue value,
-                                  get_param_int_callback_t callback);
+    static void receive_float_param(
+        MAVLinkParameters::Result result,
+        MAVLinkParameters::ParamValue value,
+        get_param_float_callback_t callback);
+    static void receive_int_param(
+        MAVLinkParameters::Result result,
+        MAVLinkParameters::ParamValue value,
+        get_param_int_callback_t callback);
 
     std::mutex _component_discovered_callback_mutex{};
     discover_callback_t _component_discovered_callback{nullptr};

@@ -27,9 +27,10 @@ public:
     void cancel_calibration();
 
 private:
-    void call_user_callback(const Calibration::calibration_callback_t &callback,
-                            const Calibration::Result &result,
-                            const Calibration::ProgressData &progress_data);
+    void call_user_callback(
+        const Calibration::calibration_callback_t &callback,
+        const Calibration::Result &result,
+        const Calibration::ProgressData &progress_data);
     void process_statustext(const mavlink_message_t &message);
 
     void command_result_callback(MAVLinkCommands::Result command_result, float progress);

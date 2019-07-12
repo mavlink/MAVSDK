@@ -102,8 +102,8 @@ public:
      * @param polygons Reference to vector of polygons.
      * @param callback Callback to receive result of this request.
      */
-    void send_geofence_async(const std::vector<std::shared_ptr<Polygon>> &polygons,
-                             result_callback_t callback);
+    void send_geofence_async(
+        const std::vector<std::shared_ptr<Polygon>> &polygons, result_callback_t callback);
 
     // Non-copyable
     /**

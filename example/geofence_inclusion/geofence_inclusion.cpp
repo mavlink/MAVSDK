@@ -118,8 +118,8 @@ int main(int argc, char **argv)
 
         auto prom = std::make_shared<std::promise<Geofence::Result>>();
         auto future_result = prom->get_future();
-        geofence->send_geofence_async(polygons,
-                                      [prom](Geofence::Result result) { prom->set_value(result); });
+        geofence->send_geofence_async(
+            polygons, [prom](Geofence::Result result) { prom->set_value(result); });
 
         const Geofence::Result result = future_result.get();
         if (result != Geofence::Result::SUCCESS) {

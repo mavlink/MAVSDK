@@ -33,18 +33,18 @@ public:
     bool get_all_settings(std::map<std::string, MAVLinkParameters::ParamValue> &settings);
     bool get_possible_settings(std::map<std::string, MAVLinkParameters::ParamValue> &settings);
 
-    bool get_option_value(const std::string &param_name,
-                          const std::string &option_value,
-                          MAVLinkParameters::ParamValue &value);
-    bool get_all_options(const std::string &name,
-                         std::vector<MAVLinkParameters::ParamValue> &values);
-    bool get_possible_options(const std::string &name,
-                              std::vector<MAVLinkParameters::ParamValue> &values);
+    bool get_option_value(
+        const std::string &param_name,
+        const std::string &option_value,
+        MAVLinkParameters::ParamValue &value);
+    bool
+    get_all_options(const std::string &name, std::vector<MAVLinkParameters::ParamValue> &values);
+    bool get_possible_options(
+        const std::string &name, std::vector<MAVLinkParameters::ParamValue> &values);
 
     bool get_setting_str(const std::string &setting_name, std::string &description);
-    bool get_option_str(const std::string &setting_name,
-                        const std::string &option_name,
-                        std::string &description);
+    bool get_option_str(
+        const std::string &setting_name, const std::string &option_name, std::string &description);
 
     void
     get_unknown_params(std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> &params);

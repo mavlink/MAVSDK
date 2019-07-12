@@ -838,8 +838,8 @@ private:
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::PositionVelocityNED &lhs,
-                const Telemetry::PositionVelocityNED &rhs);
+bool operator==(
+    const Telemetry::PositionVelocityNED &lhs, const Telemetry::PositionVelocityNED &rhs);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Position` objects.
@@ -874,8 +874,8 @@ std::ostream &operator<<(std::ostream &str, Telemetry::VelocityNED const &veloci
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::PositionVelocityNED const &position_velocity_ned);
+std::ostream &
+operator<<(std::ostream &str, Telemetry::PositionVelocityNED const &position_velocity_ned);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Health` objects.
@@ -910,8 +910,8 @@ std::ostream &operator<<(std::ostream &str, Telemetry::AccelerationNED const &ac
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::AngularVelocityNED const &angular_velocity_ned);
+std::ostream &
+operator<<(std::ostream &str, Telemetry::AngularVelocityNED const &angular_velocity_ned);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::MagneticFieldNED`.

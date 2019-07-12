@@ -22,9 +22,8 @@ LogFiles::Result LogFiles::download_log_file(unsigned id, const std::string &fil
     return _impl->download_log_file(id, file_path);
 }
 
-void LogFiles::download_log_file_async(unsigned id,
-                                       const std::string &file_path,
-                                       download_log_file_callback_t callback)
+void LogFiles::download_log_file_async(
+    unsigned id, const std::string &file_path, download_log_file_callback_t callback)
 {
     _impl->download_log_file_async(id, file_path, callback);
 }

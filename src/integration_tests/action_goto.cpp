@@ -15,8 +15,8 @@ TEST_F(SitlTest, ActionGoto)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
-    ASSERT_TRUE(poll_condition_with_timeout([&dc]() { return dc.is_connected(); },
-                                            std::chrono::seconds(10)));
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
 
     System &system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);

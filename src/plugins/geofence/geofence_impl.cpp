@@ -66,13 +66,14 @@ void GeofenceImpl::send_geofence_async(
     LogDebug() << "size afterwards is: " << _mavlink_geofence_item_messages.size();
 
     mavlink_message_t message;
-    mavlink_msg_mission_count_pack(_parent->get_own_system_id(),
-                                   _parent->get_own_component_id(),
-                                   &message,
-                                   _parent->get_system_id(),
-                                   _parent->get_autopilot_id(),
-                                   _mavlink_geofence_item_messages.size(),
-                                   MAV_MISSION_TYPE_FENCE);
+    mavlink_msg_mission_count_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        _mavlink_geofence_item_messages.size(),
+        MAV_MISSION_TYPE_FENCE);
 
     LogDebug() << "About to send " << _mavlink_geofence_item_messages.size() << " geofence items";
 
@@ -92,13 +93,14 @@ void GeofenceImpl::process_mission_request(const mavlink_message_t &unused)
     UNUSED(unused);
 
     mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
-                                 _parent->get_own_component_id(),
-                                 &message,
-                                 _parent->get_system_id(),
-                                 _parent->get_autopilot_id(),
-                                 MAV_MISSION_UNSUPPORTED,
-                                 MAV_MISSION_TYPE_FENCE);
+    mavlink_msg_mission_ack_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_MISSION_UNSUPPORTED,
+        MAV_MISSION_TYPE_FENCE);
 
     _parent->send_message(message);
 
@@ -187,24 +189,25 @@ void GeofenceImpl::assemble_mavlink_messages(
 
         for (auto &point : polygon->points) {
             std::shared_ptr<mavlink_message_t> message(new mavlink_message_t());
-            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
-                                              _parent->get_own_component_id(),
-                                              message.get(),
-                                              _parent->get_system_id(),
-                                              _parent->get_autopilot_id(),
-                                              _mavlink_geofence_item_messages.size(),
-                                              MAV_FRAME_GLOBAL_INT,
-                                              command,
-                                              0, // current
-                                              0, // autocontinue
-                                              float(polygon->points.size()), // vertex count
-                                              0.0f,
-                                              0.0f,
-                                              0.0f,
-                                              int32_t(std::round(point.latitude_deg * 1e7)),
-                                              int32_t(std::round(point.longitude_deg * 1e7)),
-                                              0.0f,
-                                              MAV_MISSION_TYPE_FENCE);
+            mavlink_msg_mission_item_int_pack(
+                _parent->get_own_system_id(),
+                _parent->get_own_component_id(),
+                message.get(),
+                _parent->get_system_id(),
+                _parent->get_autopilot_id(),
+                _mavlink_geofence_item_messages.size(),
+                MAV_FRAME_GLOBAL_INT,
+                command,
+                0, // current
+                0, // autocontinue
+                float(polygon->points.size()), // vertex count
+                0.0f,
+                0.0f,
+                0.0f,
+                int32_t(std::round(point.latitude_deg * 1e7)),
+                int32_t(std::round(point.longitude_deg * 1e7)),
+                0.0f,
+                MAV_MISSION_TYPE_FENCE);
             _mavlink_geofence_item_messages.push_back(message);
         }
     }
@@ -229,8 +232,8 @@ void GeofenceImpl::send_geofence_item(uint16_t seq)
     _parent->send_message(*_mavlink_geofence_item_messages.at(seq));
 }
 
-void GeofenceImpl::report_geofence_result(const Geofence::result_callback_t &callback,
-                                          Geofence::Result result)
+void GeofenceImpl::report_geofence_result(
+    const Geofence::result_callback_t &callback, Geofence::Result result)
 {
     if (callback == nullptr) {
         LogDebug() << "Callback is not set";

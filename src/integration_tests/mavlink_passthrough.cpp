@@ -28,20 +28,21 @@ TEST_F(SitlTest, MavlinkPassthrough)
 
     {
         mavlink_message_t message;
-        mavlink_msg_command_long_pack(mavlink_passthrough->get_our_sysid(),
-                                      mavlink_passthrough->get_our_compid(),
-                                      &message,
-                                      mavlink_passthrough->get_target_sysid(),
-                                      mavlink_passthrough->get_target_compid(),
-                                      MAV_CMD_SET_MESSAGE_INTERVAL,
-                                      0, // first transmission
-                                      float(MAVLINK_MSG_ID_HIGHRES_IMU),
-                                      2000.0f, // 50 Hz
-                                      NAN,
-                                      NAN,
-                                      NAN,
-                                      NAN,
-                                      NAN);
+        mavlink_msg_command_long_pack(
+            mavlink_passthrough->get_our_sysid(),
+            mavlink_passthrough->get_our_compid(),
+            &message,
+            mavlink_passthrough->get_target_sysid(),
+            mavlink_passthrough->get_target_compid(),
+            MAV_CMD_SET_MESSAGE_INTERVAL,
+            0, // first transmission
+            float(MAVLINK_MSG_ID_HIGHRES_IMU),
+            2000.0f, // 50 Hz
+            NAN,
+            NAN,
+            NAN,
+            NAN,
+            NAN);
         mavlink_passthrough->send_message(message);
     }
 
@@ -64,8 +65,8 @@ TEST_F(SitlTest, MavlinkPassthrough)
                     if (!stopped) {
                         stopped = true;
                         // Unsubscribe again
-                        mavlink_passthrough->subscribe_message_async(MAVLINK_MSG_ID_HIGHRES_IMU,
-                                                                     nullptr);
+                        mavlink_passthrough->subscribe_message_async(
+                            MAVLINK_MSG_ID_HIGHRES_IMU, nullptr);
                         prom.set_value();
                     }
                 };

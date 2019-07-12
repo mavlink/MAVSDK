@@ -65,31 +65,30 @@ protected:
 
     void setCameraMode(const mavsdk::rpc::camera::CameraMode mode);
 
-    std::future<void> subscribeModeAsync(std::vector<mavsdk::Camera::Mode> &camera_modes,
-                                         std::shared_ptr<grpc::ClientContext> context =
-                                             std::make_shared<grpc::ClientContext>()) const;
+    std::future<void> subscribeModeAsync(
+        std::vector<mavsdk::Camera::Mode> &camera_modes,
+        std::shared_ptr<grpc::ClientContext> context =
+            std::make_shared<grpc::ClientContext>()) const;
     void checkSendsModes(const std::vector<mavsdk::Camera::Mode> &modes) const;
     std::unique_ptr<mavsdk::rpc::camera::VideoStreamSettings>
     createArbitraryRPCVideoStreamSettings() const;
 
-    std::future<void>
-    subscribeVideoStreamInfoAsync(std::vector<mavsdk::Camera::VideoStreamInfo> &video_info,
-                                  std::shared_ptr<grpc::ClientContext> context) const;
+    std::future<void> subscribeVideoStreamInfoAsync(
+        std::vector<mavsdk::Camera::VideoStreamInfo> &video_info,
+        std::shared_ptr<grpc::ClientContext> context) const;
     std::unique_ptr<mavsdk::rpc::camera::VideoStreamInfo> createArbitraryRPCVideoStreamInfo() const;
     void checkSendsVideoStreamInfo(
         const std::vector<mavsdk::Camera::VideoStreamInfo> &video_info_events) const;
-    mavsdk::Camera::VideoStreamInfo
-    createVideoStreamInfo(const mavsdk::Camera::VideoStreamSettings settings,
-                          const mavsdk::Camera::VideoStreamInfo::Status status) const;
+    mavsdk::Camera::VideoStreamInfo createVideoStreamInfo(
+        const mavsdk::Camera::VideoStreamSettings settings,
+        const mavsdk::Camera::VideoStreamInfo::Status status) const;
 
-    std::future<void>
-    subscribeCaptureInfoAsync(std::vector<mavsdk::Camera::CaptureInfo> &capture_info_events,
-                              std::shared_ptr<grpc::ClientContext> context) const;
+    std::future<void> subscribeCaptureInfoAsync(
+        std::vector<mavsdk::Camera::CaptureInfo> &capture_info_events,
+        std::shared_ptr<grpc::ClientContext> context) const;
     std::unique_ptr<mavsdk::rpc::camera::CaptureInfo> createArbitraryRPCCaptureInfo() const;
-    std::unique_ptr<mavsdk::rpc::camera::Position> createRPCPosition(const double lat,
-                                                                     const double lng,
-                                                                     const float abs_alt,
-                                                                     const float rel_alt) const;
+    std::unique_ptr<mavsdk::rpc::camera::Position> createRPCPosition(
+        const double lat, const double lng, const float abs_alt, const float rel_alt) const;
     std::unique_ptr<mavsdk::rpc::camera::Quaternion>
     createRPCAttitudeQuaternion(const float w, const float x, const float y, const float z) const;
     std::unique_ptr<mavsdk::rpc::camera::EulerAngle> createRPCAttitudeEulerAngle(
@@ -98,36 +97,37 @@ protected:
         const std::vector<mavsdk::Camera::CaptureInfo> &capture_info_events) const;
     mavsdk::Camera::CaptureInfo createArbitraryCaptureInfo() const;
 
-    mavsdk::Camera::Status
-    createCameraStatus(const bool is_video_on,
-                       const bool is_photo_interval_on,
-                       const mavsdk::Camera::Status::StorageStatus storage_status,
-                       const float used_storage_mib,
-                       const float available_storage_mib,
-                       const float total_storage_mib,
-                       const float recording_time_s,
-                       const std::string media_folder_name) const;
-    std::future<void>
-    subscribeCameraStatusAsync(std::vector<mavsdk::Camera::Status> &camera_status_events,
-                               std::shared_ptr<grpc::ClientContext> context) const;
+    mavsdk::Camera::Status createCameraStatus(
+        const bool is_video_on,
+        const bool is_photo_interval_on,
+        const mavsdk::Camera::Status::StorageStatus storage_status,
+        const float used_storage_mib,
+        const float available_storage_mib,
+        const float total_storage_mib,
+        const float recording_time_s,
+        const std::string media_folder_name) const;
+    std::future<void> subscribeCameraStatusAsync(
+        std::vector<mavsdk::Camera::Status> &camera_status_events,
+        std::shared_ptr<grpc::ClientContext> context) const;
     void
     checkSendsCameraStatus(const std::vector<mavsdk::Camera::Status> &camera_status_events) const;
 
-    mavsdk::Camera::Option createOption(const std::string option_id,
-                                        const std::string option_description) const;
-    mavsdk::Camera::Setting createSetting(const std::string setting_id,
-                                          const std::string setting_description,
-                                          const mavsdk::Camera::Option &option) const;
+    mavsdk::Camera::Option
+    createOption(const std::string option_id, const std::string option_description) const;
+    mavsdk::Camera::Setting createSetting(
+        const std::string setting_id,
+        const std::string setting_description,
+        const mavsdk::Camera::Option &option) const;
     std::future<void> subscribeCurrentSettingsAsync(
         std::vector<std::vector<mavsdk::Camera::Setting>> &current_settings_events,
         std::shared_ptr<grpc::ClientContext> context) const;
     void checkSendsCurrentSettings(
         const std::vector<std::vector<mavsdk::Camera::Setting>> &current_settings_events) const;
 
-    mavsdk::Camera::SettingOptions
-    createSettingOptions(const std::string setting_id,
-                         const std::string setting_description,
-                         const std::vector<mavsdk::Camera::Option> &options) const;
+    mavsdk::Camera::SettingOptions createSettingOptions(
+        const std::string setting_id,
+        const std::string setting_description,
+        const std::vector<mavsdk::Camera::Option> &options) const;
     std::future<void> subscribePossibleSettingOptionsAsync(
         std::vector<std::vector<mavsdk::Camera::SettingOptions>> &possible_settings_events,
         std::shared_ptr<grpc::ClientContext> context) const;
@@ -135,15 +135,15 @@ protected:
     checkSendsPossibleSettingOptions(const std::vector<std::vector<mavsdk::Camera::SettingOptions>>
                                          &possible_setting_options_events) const;
 
-    std::unique_ptr<mavsdk::rpc::camera::Setting>
-    createRPCSetting(const std::string &setting_id,
-                     const std::string &setting_description,
-                     const std::string &option_id,
-                     const std::string &option_description);
-    std::future<void>
-    setSettingAndSaveParams(const mavsdk::rpc::camera::SetSettingRequest &request,
-                            std::shared_ptr<mavsdk::rpc::camera::SetSettingResponse> response,
-                            mavsdk::Camera::result_callback_t &result_callback);
+    std::unique_ptr<mavsdk::rpc::camera::Setting> createRPCSetting(
+        const std::string &setting_id,
+        const std::string &setting_description,
+        const std::string &option_id,
+        const std::string &option_description);
+    std::future<void> setSettingAndSaveParams(
+        const mavsdk::rpc::camera::SetSettingRequest &request,
+        std::shared_ptr<mavsdk::rpc::camera::SetSettingResponse> response,
+        mavsdk::Camera::result_callback_t &result_callback);
 
     MockCamera _camera{};
     CameraServiceImpl _camera_service;
@@ -374,9 +374,9 @@ TEST_F(CameraServiceImplTest, registersToCameraMode)
     mode_events_future.wait();
 }
 
-std::future<void>
-CameraServiceImplTest::subscribeModeAsync(std::vector<mavsdk::Camera::Mode> &camera_modes,
-                                          std::shared_ptr<grpc::ClientContext> context) const
+std::future<void> CameraServiceImplTest::subscribeModeAsync(
+    std::vector<mavsdk::Camera::Mode> &camera_modes,
+    std::shared_ptr<grpc::ClientContext> context) const
 {
     return std::async(std::launch::async, [&]() {
         mavsdk::rpc::camera::SubscribeModeRequest request;
@@ -831,33 +831,33 @@ TEST_F(CameraServiceImplTest, sendsMultipleCameraStatus)
 {
     std::vector<mavsdk::Camera::Status> camera_status_events;
 
-    camera_status_events.push_back(
-        createCameraStatus(true,
-                           true,
-                           mavsdk::Camera::Status::StorageStatus::UNFORMATTED,
-                           1.2f,
-                           3.4f,
-                           2.2f,
-                           2.3f,
-                           "104E90HD"));
-    camera_status_events.push_back(
-        createCameraStatus(true,
-                           false,
-                           mavsdk::Camera::Status::StorageStatus::FORMATTED,
-                           11.2f,
-                           58.4f,
-                           8.65f,
-                           2.2f,
-                           "360E90HD"));
-    camera_status_events.push_back(
-        createCameraStatus(false,
-                           false,
-                           mavsdk::Camera::Status::StorageStatus::NOT_AVAILABLE,
-                           1.5f,
-                           8.1f,
-                           6.3f,
-                           1.4f,
-                           "GOPRO621"));
+    camera_status_events.push_back(createCameraStatus(
+        true,
+        true,
+        mavsdk::Camera::Status::StorageStatus::UNFORMATTED,
+        1.2f,
+        3.4f,
+        2.2f,
+        2.3f,
+        "104E90HD"));
+    camera_status_events.push_back(createCameraStatus(
+        true,
+        false,
+        mavsdk::Camera::Status::StorageStatus::FORMATTED,
+        11.2f,
+        58.4f,
+        8.65f,
+        2.2f,
+        "360E90HD"));
+    camera_status_events.push_back(createCameraStatus(
+        false,
+        false,
+        mavsdk::Camera::Status::StorageStatus::NOT_AVAILABLE,
+        1.5f,
+        8.1f,
+        6.3f,
+        1.4f,
+        "GOPRO621"));
 
     checkSendsCameraStatus(camera_status_events);
 }
@@ -865,10 +865,10 @@ TEST_F(CameraServiceImplTest, sendsMultipleCameraStatus)
 TEST_F(CameraServiceImplTest, registersToCurrentSettings)
 {
     std::vector<mavsdk::Camera::Setting> current_settings;
-    current_settings.push_back(
-        createSetting(ARBITRARY_SETTING_ID,
-                      ARBITRARY_SETTING_DESCRIPTION,
-                      createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
+    current_settings.push_back(createSetting(
+        ARBITRARY_SETTING_ID,
+        ARBITRARY_SETTING_DESCRIPTION,
+        createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
     mavsdk::Camera::subscribe_current_settings_callback_t current_settings_callback;
     EXPECT_CALL(_camera, subscribe_current_settings(_))
         .Times(2)
@@ -884,10 +884,10 @@ TEST_F(CameraServiceImplTest, registersToCurrentSettings)
     mode_events_future.wait();
 }
 
-mavsdk::Camera::Setting
-CameraServiceImplTest::createSetting(const std::string setting_id,
-                                     const std::string setting_description,
-                                     const mavsdk::Camera::Option &option) const
+mavsdk::Camera::Setting CameraServiceImplTest::createSetting(
+    const std::string setting_id,
+    const std::string setting_description,
+    const mavsdk::Camera::Option &option) const
 {
     mavsdk::Camera::Setting setting{};
     setting.setting_id = setting_id;
@@ -897,9 +897,8 @@ CameraServiceImplTest::createSetting(const std::string setting_id,
     return setting;
 }
 
-mavsdk::Camera::Option
-CameraServiceImplTest::createOption(const std::string option_id,
-                                    const std::string option_description) const
+mavsdk::Camera::Option CameraServiceImplTest::createOption(
+    const std::string option_id, const std::string option_description) const
 {
     mavsdk::Camera::Option option;
     option.option_id = option_id;
@@ -937,10 +936,10 @@ TEST_F(CameraServiceImplTest, sendsOneCurrentSettings)
     std::vector<std::vector<mavsdk::Camera::Setting>> current_settings_events;
 
     std::vector<mavsdk::Camera::Setting> current_settings;
-    current_settings.push_back(
-        createSetting(ARBITRARY_SETTING_ID,
-                      ARBITRARY_SETTING_DESCRIPTION,
-                      createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
+    current_settings.push_back(createSetting(
+        ARBITRARY_SETTING_ID,
+        ARBITRARY_SETTING_DESCRIPTION,
+        createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
     current_settings_events.push_back(current_settings);
 
     checkSendsCurrentSettings(current_settings_events);
@@ -967,10 +966,10 @@ void CameraServiceImplTest::checkSendsCurrentSettings(
     }
     context->TryCancel();
     std::vector<mavsdk::Camera::Setting> arbitrary_current_settings_event;
-    arbitrary_current_settings_event.push_back(
-        createSetting(ARBITRARY_SETTING_ID,
-                      ARBITRARY_SETTING_DESCRIPTION,
-                      createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
+    arbitrary_current_settings_event.push_back(createSetting(
+        ARBITRARY_SETTING_ID,
+        ARBITRARY_SETTING_DESCRIPTION,
+        createOption(ARBITRARY_OPTION_ID, ARBITRARY_OPTION_DESCRIPTION)));
     current_settings_callback(arbitrary_current_settings_event);
     current_settings_events_future.wait();
 
@@ -990,33 +989,33 @@ TEST_F(CameraServiceImplTest, sendsMultipleCurrentSettings)
     std::vector<std::vector<mavsdk::Camera::Setting>> current_settings_events;
 
     std::vector<mavsdk::Camera::Setting> current_settings1;
-    current_settings1.push_back(
-        createSetting("arbitrary_setting_id1",
-                      "Arbitrary setting id one",
-                      createOption("arbitrary_option_id1", "Arbitrary Option ID one")));
-    current_settings1.push_back(
-        createSetting("arbitrary_setting_id2",
-                      "Arbitrary setting id two",
-                      createOption("arbitrary_option_id2", "Arbitrary Option ID two")));
-    current_settings1.push_back(
-        createSetting("arbitrary_setting_id3",
-                      "Arbitrary setting id three",
-                      createOption("arbitrary_option_id3", "Arbitrary Option ID three")));
+    current_settings1.push_back(createSetting(
+        "arbitrary_setting_id1",
+        "Arbitrary setting id one",
+        createOption("arbitrary_option_id1", "Arbitrary Option ID one")));
+    current_settings1.push_back(createSetting(
+        "arbitrary_setting_id2",
+        "Arbitrary setting id two",
+        createOption("arbitrary_option_id2", "Arbitrary Option ID two")));
+    current_settings1.push_back(createSetting(
+        "arbitrary_setting_id3",
+        "Arbitrary setting id three",
+        createOption("arbitrary_option_id3", "Arbitrary Option ID three")));
     current_settings_events.push_back(current_settings1);
 
     std::vector<mavsdk::Camera::Setting> current_settings2;
-    current_settings2.push_back(
-        createSetting("arbitrary_setting_id4",
-                      "Arbitrary setting id four",
-                      createOption("arbitrary_option_id4", "Arbitrary Option ID four")));
-    current_settings2.push_back(
-        createSetting("arbitrary_setting_id5",
-                      "Arbitrary setting id five",
-                      createOption("arbitrary_option_id5", "Arbitrary Option ID five")));
-    current_settings2.push_back(
-        createSetting("arbitrary_setting_id6",
-                      "Arbitrary setting id six",
-                      createOption("arbitrary_option_id6", "Arbitrary Option ID six")));
+    current_settings2.push_back(createSetting(
+        "arbitrary_setting_id4",
+        "Arbitrary setting id four",
+        createOption("arbitrary_option_id4", "Arbitrary Option ID four")));
+    current_settings2.push_back(createSetting(
+        "arbitrary_setting_id5",
+        "Arbitrary setting id five",
+        createOption("arbitrary_option_id5", "Arbitrary Option ID five")));
+    current_settings2.push_back(createSetting(
+        "arbitrary_setting_id6",
+        "Arbitrary setting id six",
+        createOption("arbitrary_option_id6", "Arbitrary Option ID six")));
     current_settings_events.push_back(current_settings2);
 
     checkSendsCurrentSettings(current_settings_events);
@@ -1127,8 +1126,8 @@ void CameraServiceImplTest::checkSendsPossibleSettingOptions(
     possible_setting_options_callback(arbitrary_possible_setting_options);
     possible_setting_options_events_future.wait();
 
-    ASSERT_EQ(possible_setting_options_events.size(),
-              received_possible_setting_options_events.size());
+    ASSERT_EQ(
+        possible_setting_options_events.size(), received_possible_setting_options_events.size());
     for (size_t i = 0; i < possible_setting_options_events.size(); i++) {
         auto possible_setting_options = possible_setting_options_events.at(i);
         auto received_possible_setting_options = received_possible_setting_options_events.at(i);
@@ -1172,10 +1171,11 @@ TEST_P(CameraServiceImplTest, setSettingResultIsTranslatedCorrectly)
 {
     mavsdk::Camera::result_callback_t result_callback;
     mavsdk::rpc::camera::SetSettingRequest request;
-    request.set_allocated_setting(createRPCSetting("arbitrary_setting_id",
-                                                   "arbitrary_setting_description",
-                                                   "arbitrary_option_id",
-                                                   "arbitrary_option_description")
+    request.set_allocated_setting(createRPCSetting(
+                                      "arbitrary_setting_id",
+                                      "arbitrary_setting_description",
+                                      "arbitrary_option_id",
+                                      "arbitrary_option_description")
                                       .release());
     auto response = std::make_shared<mavsdk::rpc::camera::SetSettingResponse>();
 
@@ -1201,11 +1201,11 @@ std::future<void> CameraServiceImplTest::setSettingAndSaveParams(
     return handle;
 }
 
-std::unique_ptr<mavsdk::rpc::camera::Setting>
-CameraServiceImplTest::createRPCSetting(const std::string &setting_id,
-                                        const std::string &setting_description,
-                                        const std::string &option_id,
-                                        const std::string &option_description)
+std::unique_ptr<mavsdk::rpc::camera::Setting> CameraServiceImplTest::createRPCSetting(
+    const std::string &setting_id,
+    const std::string &setting_description,
+    const std::string &option_id,
+    const std::string &option_description)
 {
     auto setting = std::unique_ptr<mavsdk::rpc::camera::Setting>(new mavsdk::rpc::camera::Setting);
     setting->set_setting_id(setting_id);
@@ -1223,10 +1223,11 @@ TEST_F(CameraServiceImplTest, setSettingInProgressResultIsIgnored)
 {
     mavsdk::Camera::result_callback_t result_callback;
     mavsdk::rpc::camera::SetSettingRequest request;
-    request.set_allocated_setting(createRPCSetting("arbitrary_setting_id",
-                                                   "arbitrary_setting_description",
-                                                   "arbitrary_option_id",
-                                                   "arbitrary_option_description")
+    request.set_allocated_setting(createRPCSetting(
+                                      "arbitrary_setting_id",
+                                      "arbitrary_setting_description",
+                                      "arbitrary_option_id",
+                                      "arbitrary_option_description")
                                       .release());
     auto response = std::make_shared<mavsdk::rpc::camera::SetSettingResponse>();
 
@@ -1241,10 +1242,11 @@ TEST_F(CameraServiceImplTest, setsSettingEvenWhenContextAndResponseAreNull)
 {
     mavsdk::Camera::result_callback_t result_callback;
     mavsdk::rpc::camera::SetSettingRequest request;
-    request.set_allocated_setting(createRPCSetting(ARBITRARY_SETTING_ID,
-                                                   ARBITRARY_SETTING_DESCRIPTION,
-                                                   ARBITRARY_OPTION_ID,
-                                                   ARBITRARY_OPTION_DESCRIPTION)
+    request.set_allocated_setting(createRPCSetting(
+                                      ARBITRARY_SETTING_ID,
+                                      ARBITRARY_SETTING_DESCRIPTION,
+                                      ARBITRARY_OPTION_ID,
+                                      ARBITRARY_OPTION_DESCRIPTION)
                                       .release());
     auto response = std::make_shared<mavsdk::rpc::camera::SetSettingResponse>();
 
@@ -1256,10 +1258,11 @@ TEST_F(CameraServiceImplTest, setsSettingWithRightParameter)
 {
     mavsdk::Camera::result_callback_t result_callback;
     mavsdk::rpc::camera::SetSettingRequest request;
-    request.set_allocated_setting(createRPCSetting(ARBITRARY_SETTING_ID,
-                                                   ARBITRARY_SETTING_DESCRIPTION,
-                                                   ARBITRARY_OPTION_ID,
-                                                   ARBITRARY_OPTION_DESCRIPTION)
+    request.set_allocated_setting(createRPCSetting(
+                                      ARBITRARY_SETTING_ID,
+                                      ARBITRARY_SETTING_DESCRIPTION,
+                                      ARBITRARY_OPTION_ID,
+                                      ARBITRARY_OPTION_DESCRIPTION)
                                       .release());
     mavsdk::Camera::Option option;
     option.option_id = ARBITRARY_OPTION_ID;
@@ -1289,9 +1292,8 @@ TEST_F(CameraServiceImplTest, setSettingDoesNotCrashWhenArgsAreNull)
     _camera_service.SetSetting(nullptr, nullptr, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(CameraResultCorrespondences,
-                        CameraServiceImplTest,
-                        ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_CASE_P(
+    CameraResultCorrespondences, CameraServiceImplTest, ::testing::ValuesIn(generateInputPairs()));
 
 std::vector<InputPair> generateInputPairs()
 {

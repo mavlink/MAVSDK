@@ -80,8 +80,8 @@ public:
      * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_udp_connection(const std::string &local_ip,
-                                        int local_port = DEFAULT_UDP_PORT);
+    ConnectionResult
+    add_udp_connection(const std::string &local_ip, int local_port = DEFAULT_UDP_PORT);
 
     /**
      * @brief Adds a TCP connection with a specific port number on localhost.
@@ -98,8 +98,8 @@ public:
      * @param remote_port The TCP port to connect to (defaults to 5760).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_tcp_connection(const std::string &remote_ip,
-                                        int remote_port = DEFAULT_TCP_REMOTE_PORT);
+    ConnectionResult
+    add_tcp_connection(const std::string &remote_ip, int remote_port = DEFAULT_TCP_REMOTE_PORT);
 
     /**
      * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as
@@ -110,8 +110,8 @@ public:
      * @param baudrate Baudrate of the serial port (defaults to 57600).
      * @return The result of adding the connection.
      */
-    ConnectionResult add_serial_connection(const std::string &dev_path,
-                                           int baudrate = DEFAULT_SERIAL_BAUDRATE);
+    ConnectionResult
+    add_serial_connection(const std::string &dev_path, int baudrate = DEFAULT_SERIAL_BAUDRATE);
 
     /**
      * @brief Possible configurations.

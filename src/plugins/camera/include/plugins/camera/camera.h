@@ -523,9 +523,10 @@ public:
      * @param option The machine readable name of the option value.
      * @param callback The callback to get the result.
      */
-    void set_option_async(const result_callback_t &callback,
-                          const std::string &setting_id,
-                          const Camera::Option &option);
+    void set_option_async(
+        const result_callback_t &callback,
+        const std::string &setting_id,
+        const Camera::Option &option);
 
     /**
      * @brief Callback type to get the currently selected settings.
@@ -598,8 +599,8 @@ bool operator==(const Camera::VideoStreamSettings &lhs, const Camera::VideoStrea
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Camera::VideoStreamSettings const &video_stream_settings);
+std::ostream &
+operator<<(std::ostream &str, Camera::VideoStreamSettings const &video_stream_settings);
 
 /**
  * @brief Equal operator to compare two `Camera::VideoStreamInfo` objects.
@@ -620,8 +621,8 @@ std::ostream &operator<<(std::ostream &str, Camera::VideoStreamInfo const &video
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Camera::VideoStreamInfo::Status const &video_stream_info_status);
+std::ostream &
+operator<<(std::ostream &str, Camera::VideoStreamInfo::Status const &video_stream_info_status);
 
 /**
  * @brief Equal operator to compare two `Camera::CaptureInfo` objects.
@@ -656,8 +657,8 @@ std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Position const 
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Camera::CaptureInfo::Quaternion &lhs,
-                const Camera::CaptureInfo::Quaternion &rhs);
+bool operator==(
+    const Camera::CaptureInfo::Quaternion &lhs, const Camera::CaptureInfo::Quaternion &rhs);
 
 /**
  * @brief Stream operator to print information about a `Camera::CaptureInfo::Quaternion`.
@@ -671,8 +672,8 @@ std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion cons
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Camera::CaptureInfo::EulerAngle &lhs,
-                const Camera::CaptureInfo::EulerAngle &rhs);
+bool operator==(
+    const Camera::CaptureInfo::EulerAngle &lhs, const Camera::CaptureInfo::EulerAngle &rhs);
 
 /**
  * @brief Stream operator to print information about a `Camera::CaptureInfo::EulerAngle`.

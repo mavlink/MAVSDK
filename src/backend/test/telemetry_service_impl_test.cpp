@@ -63,10 +63,8 @@ protected:
     virtual void TearDown() { _server->Shutdown(); }
 
     std::future<void> subscribePositionAsync(std::vector<Position> &positions);
-    Position createPosition(const double lat,
-                            const double lng,
-                            const float abs_alt,
-                            const float rel_alt) const;
+    Position createPosition(
+        const double lat, const double lng, const float abs_alt, const float rel_alt) const;
     void checkSendsPositions(const std::vector<Position> &positions);
 
     std::future<void> subscribeHealthAsync(std::vector<Health> &healths);
@@ -121,9 +119,10 @@ protected:
     subscribeGroundSpeedNedAsync(std::vector<GroundSpeedNed> &ground_speed_events) const;
 
     void checkSendsRcStatusEvents(const std::vector<RcStatus> &rc_status_events) const;
-    RcStatus createRcStatus(const bool was_available_once,
-                            const bool is_available,
-                            const float signal_strength_percent) const;
+    RcStatus createRcStatus(
+        const bool was_available_once,
+        const bool is_available,
+        const float signal_strength_percent) const;
     std::future<void> subscribeRcStatusAsync(std::vector<RcStatus> &rc_status_events) const;
 
     std::unique_ptr<grpc::Server> _server{};
@@ -228,10 +227,8 @@ void TelemetryServiceImplTest::checkSendsPositions(const std::vector<Position> &
     }
 }
 
-Position TelemetryServiceImplTest::createPosition(const double lat,
-                                                  const double lng,
-                                                  const float abs_alt,
-                                                  const float rel_alt) const
+Position TelemetryServiceImplTest::createPosition(
+    const double lat, const double lng, const float abs_alt, const float rel_alt) const
 {
     mavsdk::Telemetry::Position expected_position;
 
@@ -796,8 +793,8 @@ TEST_F(TelemetryServiceImplTest, sendsOneBatteryEvent)
     checkSendsBatteryEvents(battery_events);
 }
 
-Battery TelemetryServiceImplTest::createBattery(const float voltage_v,
-                                                const float remaining_percent) const
+Battery
+TelemetryServiceImplTest::createBattery(const float voltage_v, const float remaining_percent) const
 {
     Battery battery;
     battery.voltage_v = voltage_v;
@@ -1011,10 +1008,8 @@ TEST_F(TelemetryServiceImplTest, sendsOneAttitudeQuaternion)
     checkSendsAttitudeQuaternions(quaternions);
 }
 
-Quaternion TelemetryServiceImplTest::createQuaternion(const float w,
-                                                      const float x,
-                                                      const float y,
-                                                      const float z) const
+Quaternion TelemetryServiceImplTest::createQuaternion(
+    const float w, const float x, const float y, const float z) const
 {
     mavsdk::Telemetry::Quaternion quaternion;
 
@@ -1114,9 +1109,8 @@ TEST_F(TelemetryServiceImplTest, sendsOneAttitudeEuler)
     checkSendsAttitudeEulerAngles(euler_angles);
 }
 
-EulerAngle TelemetryServiceImplTest::createEulerAngle(const float roll_deg,
-                                                      const float pitch_deg,
-                                                      const float yaw_deg) const
+EulerAngle TelemetryServiceImplTest::createEulerAngle(
+    const float roll_deg, const float pitch_deg, const float yaw_deg) const
 {
     EulerAngle euler_angle;
     euler_angle.roll_deg = roll_deg;
@@ -1391,9 +1385,8 @@ TEST_F(TelemetryServiceImplTest, sendsOneGroundSpeedEvent)
     checkSendsGroundSpeedEvents(ground_speed_events);
 }
 
-GroundSpeedNed TelemetryServiceImplTest::createGroundSpeedNed(const float vel_north,
-                                                              const float vel_east,
-                                                              const float vel_down) const
+GroundSpeedNed TelemetryServiceImplTest::createGroundSpeedNed(
+    const float vel_north, const float vel_east, const float vel_down) const
 {
     GroundSpeedNed ground_speed;
 
@@ -1492,9 +1485,10 @@ TEST_F(TelemetryServiceImplTest, sendsOneRcStatusEvent)
     checkSendsRcStatusEvents(rc_status_events);
 }
 
-RcStatus TelemetryServiceImplTest::createRcStatus(const bool was_available_once,
-                                                  const bool is_available,
-                                                  const float signal_strength_percent) const
+RcStatus TelemetryServiceImplTest::createRcStatus(
+    const bool was_available_once,
+    const bool is_available,
+    const float signal_strength_percent) const
 {
     RcStatus rc_status;
 

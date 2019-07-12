@@ -21,8 +21,8 @@ public:
 
     MavlinkPassthrough::Result send_message(mavlink_message_t &message);
 
-    void subscribe_message_async(uint16_t message_id,
-                                 std::function<void(const mavlink_message_t &)> callback);
+    void subscribe_message_async(
+        uint16_t message_id, std::function<void(const mavlink_message_t &)> callback);
 
     uint8_t get_our_sysid() const;
     uint8_t get_our_compid() const;

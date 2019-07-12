@@ -14,10 +14,8 @@
 using namespace mavsdk;
 
 void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i);
-void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal,
-                              double latitude_deg,
-                              double longitude_deg,
-                              float altitude_m);
+void send_gimbal_roi_location(
+    std::shared_ptr<Gimbal> gimbal, double latitude_deg, double longitude_deg, float altitude_m);
 void receive_gimbal_result(Gimbal::Result result);
 void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
@@ -117,10 +115,11 @@ TEST(SitlTestGimbal, GimbalROIOffboard)
 
     // set the ROI location: a bit to the north of the vehicle's location
     const double latitude_offset_deg = 3. / 111111.; // this is about 3 m
-    send_gimbal_roi_location(gimbal,
-                             position.latitude_deg + latitude_offset_deg,
-                             position.longitude_deg,
-                             position.absolute_altitude_m + 1.f);
+    send_gimbal_roi_location(
+        gimbal,
+        position.latitude_deg + latitude_offset_deg,
+        position.longitude_deg,
+        position.absolute_altitude_m + 1.f);
 
     Action::Result action_result = action->arm();
     EXPECT_EQ(action_result, Action::Result::SUCCESS);
@@ -177,10 +176,8 @@ void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i)
     gimbal->set_pitch_and_yaw_async(pitch_deg, yaw_deg, &receive_gimbal_result);
 }
 
-void send_gimbal_roi_location(std::shared_ptr<Gimbal> gimbal,
-                              double latitude_deg,
-                              double longitude_deg,
-                              float altitude_m)
+void send_gimbal_roi_location(
+    std::shared_ptr<Gimbal> gimbal, double latitude_deg, double longitude_deg, float altitude_m)
 {
     gimbal->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, &receive_gimbal_result);
 }

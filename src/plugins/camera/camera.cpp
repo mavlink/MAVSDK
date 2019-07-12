@@ -127,9 +127,8 @@ void Camera::subscribe_capture_info(capture_info_callback_t callback)
     _impl->subscribe_capture_info(callback);
 }
 
-void Camera::set_option_async(const result_callback_t &callback,
-                              const std::string &setting_id,
-                              const Option &option)
+void Camera::set_option_async(
+    const result_callback_t &callback, const std::string &setting_id, const Option &option)
 {
     _impl->set_option_async(setting_id, option, callback);
 }
@@ -149,8 +148,8 @@ bool Camera::get_possible_setting_options(std::vector<std::string> &settings)
     return _impl->get_possible_setting_options(settings);
 }
 
-bool Camera::get_possible_options(const std::string &setting_id,
-                                  std::vector<Camera::Option> &options)
+bool Camera::get_possible_options(
+    const std::string &setting_id, std::vector<Camera::Option> &options)
 {
     return _impl->get_possible_options(setting_id, options);
 }
@@ -209,8 +208,8 @@ bool operator==(const Camera::VideoStreamSettings &lhs, const Camera::VideoStrea
            lhs.uri == rhs.uri;
 }
 
-std::ostream &operator<<(std::ostream &str,
-                         Camera::VideoStreamSettings const &video_stream_settings)
+std::ostream &
+operator<<(std::ostream &str, Camera::VideoStreamSettings const &video_stream_settings)
 {
     return str << "[frame_rate_hz: " << video_stream_settings.frame_rate_hz
                << ", horizontal_resolution_pix: " << video_stream_settings.horizontal_resolution_pix
@@ -233,8 +232,8 @@ std::ostream &operator<<(std::ostream &str, Camera::VideoStreamInfo const &video
                << "]";
 }
 
-std::ostream &operator<<(std::ostream &str,
-                         Camera::VideoStreamInfo::Status const &video_stream_info_status)
+std::ostream &
+operator<<(std::ostream &str, Camera::VideoStreamInfo::Status const &video_stream_info_status)
 {
     switch (video_stream_info_status) {
         case Camera::VideoStreamInfo::Status::IN_PROGRESS:
@@ -281,8 +280,8 @@ std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Position const 
                << ", relative_altitude_m: " << position.relative_altitude_m << "]";
 }
 
-bool operator==(const Camera::CaptureInfo::Quaternion &lhs,
-                const Camera::CaptureInfo::Quaternion &rhs)
+bool operator==(
+    const Camera::CaptureInfo::Quaternion &lhs, const Camera::CaptureInfo::Quaternion &rhs)
 {
     return lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
 }
@@ -293,8 +292,8 @@ std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion cons
                << ", z: " << quaternion.z << "]";
 }
 
-bool operator==(const Camera::CaptureInfo::EulerAngle &lhs,
-                const Camera::CaptureInfo::EulerAngle &rhs)
+bool operator==(
+    const Camera::CaptureInfo::EulerAngle &lhs, const Camera::CaptureInfo::EulerAngle &rhs)
 {
     return lhs.yaw_deg == rhs.yaw_deg && lhs.pitch_deg == rhs.pitch_deg &&
            lhs.roll_deg == rhs.roll_deg;

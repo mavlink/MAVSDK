@@ -39,8 +39,8 @@ public:
     Telemetry::Result set_rate_battery(double rate_hz);
     Telemetry::Result set_rate_rc_status(double rate_hz);
 
-    void set_rate_position_velocity_ned_async(double rate_hz,
-                                              Telemetry::result_callback_t callback);
+    void
+    set_rate_position_velocity_ned_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_home_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_in_air_async(double rate_hz, Telemetry::result_callback_t callback);
@@ -144,8 +144,8 @@ private:
     static Telemetry::Result
     telemetry_result_from_command_result(MAVLinkCommands::Result command_result);
 
-    static void command_result_callback(MAVLinkCommands::Result command_result,
-                                        const Telemetry::result_callback_t &callback);
+    static void command_result_callback(
+        MAVLinkCommands::Result command_result, const Telemetry::result_callback_t &callback);
 
     static Telemetry::FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 

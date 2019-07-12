@@ -92,34 +92,42 @@ void TelemetryImpl::enable()
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
 
-    _parent->get_param_int_async(std::string("CAL_GYRO0_ID"),
-                                 std::bind(&TelemetryImpl::receive_param_cal_gyro,
-                                           this,
-                                           std::placeholders::_1,
-                                           std::placeholders::_2),
-                                 this);
+    _parent->get_param_int_async(
+        std::string("CAL_GYRO0_ID"),
+        std::bind(
+            &TelemetryImpl::receive_param_cal_gyro,
+            this,
+            std::placeholders::_1,
+            std::placeholders::_2),
+        this);
 
-    _parent->get_param_int_async(std::string("CAL_ACC0_ID"),
-                                 std::bind(&TelemetryImpl::receive_param_cal_accel,
-                                           this,
-                                           std::placeholders::_1,
-                                           std::placeholders::_2),
-                                 this);
+    _parent->get_param_int_async(
+        std::string("CAL_ACC0_ID"),
+        std::bind(
+            &TelemetryImpl::receive_param_cal_accel,
+            this,
+            std::placeholders::_1,
+            std::placeholders::_2),
+        this);
 
-    _parent->get_param_int_async(std::string("CAL_MAG0_ID"),
-                                 std::bind(&TelemetryImpl::receive_param_cal_mag,
-                                           this,
-                                           std::placeholders::_1,
-                                           std::placeholders::_2),
-                                 this);
+    _parent->get_param_int_async(
+        std::string("CAL_MAG0_ID"),
+        std::bind(
+            &TelemetryImpl::receive_param_cal_mag,
+            this,
+            std::placeholders::_1,
+            std::placeholders::_2),
+        this);
 
 #ifdef LEVEL_CALIBRATION
-    _parent->get_param_float_async(std::string("SENS_BOARD_X_OFF"),
-                                   std::bind(&TelemetryImpl::receive_param_cal_level,
-                                             this,
-                                             std::placeholders::_1,
-                                             std::placeholders::_2),
-                                   this);
+    _parent->get_param_float_async(
+        std::string("SENS_BOARD_X_OFF"),
+        std::bind(
+            &TelemetryImpl::receive_param_cal_level,
+            this,
+            std::placeholders::_1,
+            std::placeholders::_2),
+        this);
 #else
     // If not available, just hardcode it to true.
     set_health_level_calibration(true);
@@ -206,8 +214,8 @@ Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz));
 }
 
-void TelemetryImpl::set_rate_position_velocity_ned_async(double rate_hz,
-                                                         Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_position_velocity_ned_async(
+    double rate_hz, Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_LOCAL_POSITION_NED,
@@ -226,8 +234,8 @@ void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::result_ca
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_home_position_async(double rate_hz,
-                                                 Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_home_position_async(
+    double rate_hz, Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HOME_POSITION,
@@ -251,8 +259,8 @@ void TelemetryImpl::set_rate_attitude_async(double rate_hz, Telemetry::result_ca
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_camera_attitude_async(double rate_hz,
-                                                   Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_camera_attitude_async(
+    double rate_hz, Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_MOUNT_ORIENTATION,
@@ -260,8 +268,8 @@ void TelemetryImpl::set_rate_camera_attitude_async(double rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_ground_speed_ned_async(double rate_hz,
-                                                    Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_ground_speed_ned_async(
+    double rate_hz, Telemetry::result_callback_t callback)
 {
     _ground_speed_ned_rate_hz = rate_hz;
     double max_rate_hz = std::max(_position_rate_hz, _ground_speed_ned_rate_hz);
@@ -272,8 +280,8 @@ void TelemetryImpl::set_rate_ground_speed_ned_async(double rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_imu_reading_ned_async(double rate_hz,
-                                                   Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_imu_reading_ned_async(
+    double rate_hz, Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_HIGHRES_IMU,
@@ -326,8 +334,8 @@ TelemetryImpl::telemetry_result_from_command_result(MAVLinkCommands::Result comm
     }
 }
 
-void TelemetryImpl::command_result_callback(MAVLinkCommands::Result command_result,
-                                            const Telemetry::result_callback_t &callback)
+void TelemetryImpl::command_result_callback(
+    MAVLinkCommands::Result command_result, const Telemetry::result_callback_t &callback)
 {
     Telemetry::Result action_result = telemetry_result_from_command_result(command_result);
 
@@ -1068,45 +1076,55 @@ void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t &callback)
 void TelemetryImpl::process_parameter_update(const std::string &name)
 {
     if (name.compare("CAL_GYRO0_ID") == 0) {
-        _parent->get_param_int_async(std::string("CAL_GYRO0_ID"),
-                                     std::bind(&TelemetryImpl::receive_param_cal_gyro,
-                                               this,
-                                               std::placeholders::_1,
-                                               std::placeholders::_2),
-                                     this);
+        _parent->get_param_int_async(
+            std::string("CAL_GYRO0_ID"),
+            std::bind(
+                &TelemetryImpl::receive_param_cal_gyro,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
 
     } else if (name.compare("CAL_ACC0_ID") == 0) {
-        _parent->get_param_int_async(std::string("CAL_ACC0_ID"),
-                                     std::bind(&TelemetryImpl::receive_param_cal_accel,
-                                               this,
-                                               std::placeholders::_1,
-                                               std::placeholders::_2),
-                                     this);
+        _parent->get_param_int_async(
+            std::string("CAL_ACC0_ID"),
+            std::bind(
+                &TelemetryImpl::receive_param_cal_accel,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
 
     } else if (name.compare("CAL_MAG0_ID") == 0) {
-        _parent->get_param_int_async(std::string("CAL_MAG0_ID"),
-                                     std::bind(&TelemetryImpl::receive_param_cal_mag,
-                                               this,
-                                               std::placeholders::_1,
-                                               std::placeholders::_2),
-                                     this);
+        _parent->get_param_int_async(
+            std::string("CAL_MAG0_ID"),
+            std::bind(
+                &TelemetryImpl::receive_param_cal_mag,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
 
 #ifdef LEVEL_CALIBRATION
     } else if (name.compare("SENS_BOARD_X_OFF") == 0) {
-        _parent->get_param_float_async(std::string("SENS_BOARD_X_OFF"),
-                                       std::bind(&TelemetryImpl::receive_param_cal_level,
-                                                 this,
-                                                 std::placeholders::_1,
-                                                 std::placeholders::_2),
-                                       this);
+        _parent->get_param_float_async(
+            std::string("SENS_BOARD_X_OFF"),
+            std::bind(
+                &TelemetryImpl::receive_param_cal_level,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
 #endif
     } else if (name.compare("SYS_HITL") == 0) {
-        _parent->get_param_int_async(std::string("SYS_HITL"),
-                                     std::bind(&TelemetryImpl::receive_param_hitl,
-                                               this,
-                                               std::placeholders::_1,
-                                               std::placeholders::_2),
-                                     this);
+        _parent->get_param_int_async(
+            std::string("SYS_HITL"),
+            std::bind(
+                &TelemetryImpl::receive_param_hitl,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2),
+            this);
     }
 }
 

@@ -77,10 +77,11 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
     _version.flight_sw_patch = (autopilot_version.flight_sw_version >> (8 * 1)) & 0xFF;
 
     // first three bytes of flight_custon_version (little endian) describe vendor version
-    translate_binary_to_str(autopilot_version.flight_custom_version + 3,
-                            sizeof(autopilot_version.flight_custom_version) - 3,
-                            _version.flight_sw_git_hash,
-                            Info::GIT_HASH_STR_LEN);
+    translate_binary_to_str(
+        autopilot_version.flight_custom_version + 3,
+        sizeof(autopilot_version.flight_custom_version) - 3,
+        _version.flight_sw_git_hash,
+        Info::GIT_HASH_STR_LEN);
 
     _version.flight_sw_vendor_major = autopilot_version.flight_custom_version[2];
     _version.flight_sw_vendor_minor = autopilot_version.flight_custom_version[1];
@@ -104,10 +105,11 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
     //     << "."
     //     << _version.os_sw_patch;
 
-    translate_binary_to_str(autopilot_version.os_custom_version,
-                            sizeof(autopilot_version.os_custom_version),
-                            _version.os_sw_git_hash,
-                            Info::GIT_HASH_STR_LEN);
+    translate_binary_to_str(
+        autopilot_version.os_custom_version,
+        sizeof(autopilot_version.os_custom_version),
+        _version.os_sw_git_hash,
+        Info::GIT_HASH_STR_LEN);
 
     _product.vendor_id = autopilot_version.vendor_id;
     const char *vendor_name = vendor_id_str(autopilot_version.vendor_id);
@@ -117,18 +119,17 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t &message)
     const char *product_name = product_id_str(autopilot_version.product_id);
     STRNCPY(_product.product_name, product_name, sizeof(_product.product_name) - 1);
 
-    static_assert(sizeof(_identification.hardware_uid) == sizeof(autopilot_version.uid2),
-                  "UID length mismatch");
+    static_assert(
+        sizeof(_identification.hardware_uid) == sizeof(autopilot_version.uid2),
+        "UID length mismatch");
     std::memcpy(
         _identification.hardware_uid, autopilot_version.uid2, sizeof(autopilot_version.uid2));
 
     _information_received = true;
 }
 
-void InfoImpl::translate_binary_to_str(uint8_t *binary,
-                                       unsigned binary_len,
-                                       char *str,
-                                       unsigned str_len)
+void InfoImpl::translate_binary_to_str(
+    uint8_t *binary, unsigned binary_len, char *str, unsigned str_len)
 {
     for (unsigned i = 0; i < binary_len; ++i) {
         // One hex number occupies 2 chars.
@@ -140,25 +141,28 @@ void InfoImpl::translate_binary_to_str(uint8_t *binary,
 std::pair<Info::Result, Info::Identification> InfoImpl::get_identification() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    return std::make_pair<>((_information_received ? Info::Result::SUCCESS :
-                                                     Info::Result::INFORMATION_NOT_RECEIVED_YET),
-                            _identification);
+    return std::make_pair<>(
+        (_information_received ? Info::Result::SUCCESS :
+                                 Info::Result::INFORMATION_NOT_RECEIVED_YET),
+        _identification);
 }
 
 std::pair<Info::Result, Info::Version> InfoImpl::get_version() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    return std::make_pair<>((_information_received ? Info::Result::SUCCESS :
-                                                     Info::Result::INFORMATION_NOT_RECEIVED_YET),
-                            _version);
+    return std::make_pair<>(
+        (_information_received ? Info::Result::SUCCESS :
+                                 Info::Result::INFORMATION_NOT_RECEIVED_YET),
+        _version);
 }
 
 std::pair<Info::Result, Info::Product> InfoImpl::get_product() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    return std::make_pair<>((_information_received ? Info::Result::SUCCESS :
-                                                     Info::Result::INFORMATION_NOT_RECEIVED_YET),
-                            _product);
+    return std::make_pair<>(
+        (_information_received ? Info::Result::SUCCESS :
+                                 Info::Result::INFORMATION_NOT_RECEIVED_YET),
+        _product);
 }
 
 const char *InfoImpl::vendor_id_str(uint16_t vendor_id)

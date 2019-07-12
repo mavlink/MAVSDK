@@ -276,8 +276,8 @@ bool CameraDefinition::parse_xml()
                         }
 
                         MAVLinkParameters::ParamValue new_param_value;
-                        new_param_value.set_from_xml(type_map[roption_parameter_str],
-                                                     roption_value_str);
+                        new_param_value.set_from_xml(
+                            type_map[roption_parameter_str], roption_value_str);
                         new_parameter_range[roption_name_str] = new_param_value;
 
                         // LogDebug() << "range option: "
@@ -394,8 +394,8 @@ bool CameraDefinition::get_possible_settings(
     return (settings.size() > 0);
 }
 
-bool CameraDefinition::set_setting(const std::string &name,
-                                   const MAVLinkParameters::ParamValue &value)
+bool CameraDefinition::set_setting(
+    const std::string &name, const MAVLinkParameters::ParamValue &value)
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
@@ -453,9 +453,10 @@ bool CameraDefinition::get_setting(const std::string &name, MAVLinkParameters::P
     }
 }
 
-bool CameraDefinition::get_option_value(const std::string &param_name,
-                                        const std::string &option_value,
-                                        MAVLinkParameters::ParamValue &value)
+bool CameraDefinition::get_option_value(
+    const std::string &param_name,
+    const std::string &option_value,
+    MAVLinkParameters::ParamValue &value)
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
@@ -474,8 +475,8 @@ bool CameraDefinition::get_option_value(const std::string &param_name,
     return false;
 }
 
-bool CameraDefinition::get_all_options(const std::string &name,
-                                       std::vector<MAVLinkParameters::ParamValue> &values)
+bool CameraDefinition::get_all_options(
+    const std::string &name, std::vector<MAVLinkParameters::ParamValue> &values)
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
@@ -493,8 +494,8 @@ bool CameraDefinition::get_all_options(const std::string &name,
     return true;
 }
 
-bool CameraDefinition::get_possible_options(const std::string &name,
-                                            std::vector<MAVLinkParameters::ParamValue> &values)
+bool CameraDefinition::get_possible_options(
+    const std::string &name, std::vector<MAVLinkParameters::ParamValue> &values)
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
@@ -626,9 +627,8 @@ bool CameraDefinition::get_setting_str(const std::string &name, std::string &des
     return true;
 }
 
-bool CameraDefinition::get_option_str(const std::string &setting_name,
-                                      const std::string &option_name,
-                                      std::string &description)
+bool CameraDefinition::get_option_str(
+    const std::string &setting_name, const std::string &option_name, std::string &description)
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 

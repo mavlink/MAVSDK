@@ -9,9 +9,10 @@ class GimbalServiceImpl final : public rpc::gimbal::GimbalService::Service {
 public:
     GimbalServiceImpl(Gimbal &gimbal) : _gimbal(gimbal) {}
 
-    grpc::Status SetPitchAndYaw(grpc::ServerContext * /*  context */,
-                                const rpc::gimbal::SetPitchAndYawRequest *request,
-                                rpc::gimbal::SetPitchAndYawResponse *response) override
+    grpc::Status SetPitchAndYaw(
+        grpc::ServerContext * /*  context */,
+        const rpc::gimbal::SetPitchAndYawRequest *request,
+        rpc::gimbal::SetPitchAndYawResponse *response) override
     {
         if (request != nullptr) {
             const auto requested_gimbal_pitch = request->pitch_deg();

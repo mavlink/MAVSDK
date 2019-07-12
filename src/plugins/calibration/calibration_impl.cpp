@@ -59,13 +59,14 @@ void CalibrationImpl::calibrate_gyro_async(const Calibration::calibration_callba
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param1 = 1.0f; // Gyro
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    _parent->send_command_async(command,
-                                std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+    _parent->send_command_async(
+        command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
-void CalibrationImpl::call_user_callback(const Calibration::calibration_callback_t &callback,
-                                         const Calibration::Result &result,
-                                         const Calibration::ProgressData &progress_data)
+void CalibrationImpl::call_user_callback(
+    const Calibration::calibration_callback_t &callback,
+    const Calibration::Result &result,
+    const Calibration::ProgressData &progress_data)
 {
     if (callback) {
         _parent->call_user_callback(
@@ -97,8 +98,8 @@ void CalibrationImpl::calibrate_accelerometer_async(
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    _parent->send_command_async(command,
-                                std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+    _parent->send_command_async(
+        command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
 void CalibrationImpl::calibrate_magnetometer_async(
@@ -125,8 +126,8 @@ void CalibrationImpl::calibrate_magnetometer_async(
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param2 = 1.0f; // Mag
     command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    _parent->send_command_async(command,
-                                std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+    _parent->send_command_async(
+        command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
 void CalibrationImpl::calibrate_gimbal_accelerometer_async(
@@ -153,8 +154,8 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(
     MAVLinkCommands::CommandLong::set_as_reserved(command.params, 0.0f);
     command.params.param5 = 1.0f; // Accel
     command.target_component_id = MAV_COMP_ID_GIMBAL;
-    _parent->send_command_async(command,
-                                std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
+    _parent->send_command_async(
+        command, std::bind(&CalibrationImpl::command_result_callback, this, _1, _2));
 }
 
 void CalibrationImpl::cancel_calibration()
@@ -187,8 +188,8 @@ void CalibrationImpl::cancel_calibration()
     _parent->send_command_async(command, nullptr);
 }
 
-void CalibrationImpl::command_result_callback(MAVLinkCommands::Result command_result,
-                                              float progress)
+void CalibrationImpl::command_result_callback(
+    MAVLinkCommands::Result command_result, float progress)
 {
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
@@ -219,9 +220,10 @@ void CalibrationImpl::command_result_callback(MAVLinkCommands::Result command_re
         case MAVLinkCommands::Result::TIMEOUT: {
             // Report all error cases.
             const auto timeout_result = calibration_result_from_command_result(command_result);
-            call_user_callback(_calibration_callback,
-                               timeout_result,
-                               Calibration::ProgressData(false, NAN, false, ""));
+            call_user_callback(
+                _calibration_callback,
+                timeout_result,
+                Calibration::ProgressData(false, NAN, false, ""));
             _calibration_callback = nullptr;
             _state = State::NONE;
             break;
@@ -229,9 +231,10 @@ void CalibrationImpl::command_result_callback(MAVLinkCommands::Result command_re
 
         case MAVLinkCommands::Result::IN_PROGRESS: {
             const auto progress_result = calibration_result_from_command_result(command_result);
-            call_user_callback(_calibration_callback,
-                               progress_result,
-                               Calibration::ProgressData(true, progress, false, ""));
+            call_user_callback(
+                _calibration_callback,
+                progress_result,
+                Calibration::ProgressData(true, progress, false, ""));
             break;
         }
     };

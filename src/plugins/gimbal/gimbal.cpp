@@ -22,10 +22,8 @@ Gimbal::Result Gimbal::set_roi_location(double latitude_deg, double longitude_de
     return _impl->set_roi_location(latitude_deg, longitude_deg, altitude_m);
 }
 
-void Gimbal::set_roi_location_async(double latitude_deg,
-                                    double longitude_deg,
-                                    float altitude_m,
-                                    result_callback_t callback)
+void Gimbal::set_roi_location_async(
+    double latitude_deg, double longitude_deg, float altitude_m, result_callback_t callback)
 {
     _impl->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
 }

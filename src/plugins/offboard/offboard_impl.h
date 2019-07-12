@@ -45,8 +45,8 @@ private:
     void send_attitude();
 
     void process_heartbeat(const mavlink_message_t &message);
-    void receive_command_result(MAVLinkCommands::Result result,
-                                const Offboard::result_callback_t &callback);
+    void receive_command_result(
+        MAVLinkCommands::Result result, const Offboard::result_callback_t &callback);
 
     static Offboard::Result offboard_result_from_command_result(MAVLinkCommands::Result result);
 

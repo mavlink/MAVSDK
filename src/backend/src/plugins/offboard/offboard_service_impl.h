@@ -10,8 +10,8 @@ public:
     OffboardServiceImpl(Offboard &offboard) : _offboard(offboard) {}
 
     template<typename ResponseType>
-    void fillResponseWithResult(ResponseType *response,
-                                mavsdk::Offboard::Result &offboard_result) const
+    void
+    fillResponseWithResult(ResponseType *response, mavsdk::Offboard::Result &offboard_result) const
     {
         auto rpc_result = static_cast<rpc::offboard::OffboardResult::Result>(offboard_result);
 
@@ -22,9 +22,10 @@ public:
         response->set_allocated_offboard_result(rpc_offboard_result);
     }
 
-    grpc::Status Start(grpc::ServerContext * /* context */,
-                       const rpc::offboard::StartRequest * /* request */,
-                       rpc::offboard::StartResponse *response) override
+    grpc::Status Start(
+        grpc::ServerContext * /* context */,
+        const rpc::offboard::StartRequest * /* request */,
+        rpc::offboard::StartResponse *response) override
     {
         auto offboard_result = _offboard.start();
 
@@ -35,9 +36,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status Stop(grpc::ServerContext * /* context */,
-                      const rpc::offboard::StopRequest * /* request */,
-                      rpc::offboard::StopResponse *response) override
+    grpc::Status Stop(
+        grpc::ServerContext * /* context */,
+        const rpc::offboard::StopRequest * /* request */,
+        rpc::offboard::StopResponse *response) override
     {
         auto offboard_result = _offboard.stop();
 
@@ -48,9 +50,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status IsActive(grpc::ServerContext * /* context */,
-                          const rpc::offboard::IsActiveRequest * /* request */,
-                          rpc::offboard::IsActiveResponse *response) override
+    grpc::Status IsActive(
+        grpc::ServerContext * /* context */,
+        const rpc::offboard::IsActiveRequest * /* request */,
+        rpc::offboard::IsActiveResponse *response) override
     {
         if (response != nullptr) {
             auto is_active = _offboard.is_active();
@@ -60,9 +63,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetAttitude(grpc::ServerContext * /* context */,
-                             const rpc::offboard::SetAttitudeRequest *request,
-                             rpc::offboard::SetAttitudeResponse * /* response */) override
+    grpc::Status SetAttitude(
+        grpc::ServerContext * /* context */,
+        const rpc::offboard::SetAttitudeRequest *request,
+        rpc::offboard::SetAttitudeResponse * /* response */) override
     {
         if (request != nullptr) {
             auto requested_attitude = translateRPCAttitude(request->attitude());
@@ -85,9 +89,10 @@ public:
         return attitude;
     }
 
-    grpc::Status SetAttitudeRate(grpc::ServerContext * /* context */,
-                                 const rpc::offboard::SetAttitudeRateRequest *request,
-                                 rpc::offboard::SetAttitudeRateResponse * /* response */) override
+    grpc::Status SetAttitudeRate(
+        grpc::ServerContext * /* context */,
+        const rpc::offboard::SetAttitudeRateRequest *request,
+        rpc::offboard::SetAttitudeRateResponse * /* response */) override
     {
         if (request != nullptr) {
             auto requested_attitude_rate = translateRPCAttitudeRate(request->attitude_rate());
@@ -110,9 +115,10 @@ public:
         return attitude_rate;
     }
 
-    grpc::Status SetPositionNed(grpc::ServerContext * /* context */,
-                                const rpc::offboard::SetPositionNedRequest *request,
-                                rpc::offboard::SetPositionNedResponse * /* response */) override
+    grpc::Status SetPositionNed(
+        grpc::ServerContext * /* context */,
+        const rpc::offboard::SetPositionNedRequest *request,
+        rpc::offboard::SetPositionNedResponse * /* response */) override
     {
         if (request != nullptr) {
             auto requested_position_ned_yaw =
@@ -136,9 +142,10 @@ public:
         return position_ned_yaw;
     }
 
-    grpc::Status SetVelocityBody(grpc::ServerContext * /* context */,
-                                 const rpc::offboard::SetVelocityBodyRequest *request,
-                                 rpc::offboard::SetVelocityBodyResponse * /* response */) override
+    grpc::Status SetVelocityBody(
+        grpc::ServerContext * /* context */,
+        const rpc::offboard::SetVelocityBodyRequest *request,
+        rpc::offboard::SetVelocityBodyResponse * /* response */) override
     {
         if (request != nullptr) {
             auto requested_velocity_body_yawspeed =
@@ -162,9 +169,10 @@ public:
         return velocity_body_yawspeed;
     }
 
-    grpc::Status SetVelocityNed(grpc::ServerContext * /* context */,
-                                const rpc::offboard::SetVelocityNedRequest *request,
-                                rpc::offboard::SetVelocityNedResponse * /* response */) override
+    grpc::Status SetVelocityNed(
+        grpc::ServerContext * /* context */,
+        const rpc::offboard::SetVelocityNedRequest *request,
+        rpc::offboard::SetVelocityNedResponse * /* response */) override
     {
         if (request != nullptr) {
             auto requested_velocity_ned_yaw =

@@ -77,8 +77,9 @@ TEST_F(SitlTest, MissionRawMissionChanged)
         std::future<void> fut = prom.get_future();
         LogInfo() << "Download raw mission items.";
         mission_raw->download_mission_async(
-            [&prom](MissionRaw::Result result,
-                    std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> items) {
+            [&prom](
+                MissionRaw::Result result,
+                std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> items) {
                 EXPECT_EQ(result, MissionRaw::Result::SUCCESS);
                 // TODO: validate items
                 validate_items(items);

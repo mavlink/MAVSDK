@@ -11,8 +11,8 @@ Mission::Mission(System &system) : PluginBase(), _impl{new MissionImpl(system)} 
 
 Mission::~Mission() {}
 
-void Mission::upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
-                                   result_callback_t callback)
+void Mission::upload_mission_async(
+    const std::vector<std::shared_ptr<MissionItem>> &mission_items, result_callback_t callback)
 {
     _impl->upload_mission_async(mission_items, callback);
 }
@@ -110,8 +110,8 @@ void Mission::subscribe_progress(progress_callback_t callback)
     _impl->subscribe_progress(callback);
 }
 
-Mission::Result Mission::import_qgroundcontrol_mission(Mission::mission_items_t &mission_items,
-                                                       const std::string &qgc_plan_file)
+Mission::Result Mission::import_qgroundcontrol_mission(
+    Mission::mission_items_t &mission_items, const std::string &qgc_plan_file)
 {
     return MissionImpl::import_qgroundcontrol_mission(mission_items, qgc_plan_file);
 }

@@ -53,10 +53,10 @@ private:
     void loiter_before_takeoff_async(const Action::result_callback_t &callback);
     void loiter_before_arm_async(const Action::result_callback_t &callback);
 
-    void takeoff_async_continued(MAVLinkCommands::Result previous_result,
-                                 const Action::result_callback_t &callback);
-    void arm_async_continued(MAVLinkCommands::Result previous_result,
-                             const Action::result_callback_t &callback);
+    void takeoff_async_continued(
+        MAVLinkCommands::Result previous_result, const Action::result_callback_t &callback);
+    void arm_async_continued(
+        MAVLinkCommands::Result previous_result, const Action::result_callback_t &callback);
 
     Action::Result arming_allowed() const;
     Action::Result disarming_allowed() const;
@@ -66,8 +66,8 @@ private:
 
     static Action::Result action_result_from_command_result(MAVLinkCommands::Result result);
 
-    static void command_result_callback(MAVLinkCommands::Result command_result,
-                                        const Action::result_callback_t &callback);
+    static void command_result_callback(
+        MAVLinkCommands::Result command_result, const Action::result_callback_t &callback);
 
     std::atomic<bool> _in_air_state_known{false};
     std::atomic<bool> _in_air{false};

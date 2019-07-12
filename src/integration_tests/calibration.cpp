@@ -10,10 +10,11 @@
 using namespace mavsdk;
 using namespace std::placeholders; // for `_1`
 
-static void receive_calibration_callback(const Calibration::Result result,
-                                         const Calibration::ProgressData &progress_data,
-                                         const std::string &calibration_type,
-                                         std::promise<Calibration::Result> &prom);
+static void receive_calibration_callback(
+    const Calibration::Result result,
+    const Calibration::ProgressData &progress_data,
+    const std::string &calibration_type,
+    std::promise<Calibration::Result> &prom);
 
 TEST(HardwareTest, CalibrationGyro)
 {
@@ -196,10 +197,11 @@ TEST(HardwareTest, CalibrationGyroCancelled)
     EXPECT_EQ(future_ret, Calibration::Result::CANCELLED);
 }
 
-void receive_calibration_callback(const Calibration::Result result,
-                                  const Calibration::ProgressData &progress_data,
-                                  const std::string &calibration_type,
-                                  std::promise<Calibration::Result> &prom)
+void receive_calibration_callback(
+    const Calibration::Result result,
+    const Calibration::ProgressData &progress_data,
+    const std::string &calibration_type,
+    std::promise<Calibration::Result> &prom)
 {
     if (result == Calibration::Result::IN_PROGRESS) {
         LogInfo() << calibration_type << " calibration in progress: " << progress_data.progress;

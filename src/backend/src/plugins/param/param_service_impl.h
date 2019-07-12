@@ -9,9 +9,10 @@ class ParamServiceImpl final : public rpc::param::ParamService::Service {
 public:
     ParamServiceImpl(Param &param) : _param(param) {}
 
-    grpc::Status GetIntParam(grpc::ServerContext * /* context */,
-                             const rpc::param::GetIntParamRequest *request,
-                             rpc::param::GetIntParamResponse *response) override
+    grpc::Status GetIntParam(
+        grpc::ServerContext * /* context */,
+        const rpc::param::GetIntParamRequest *request,
+        rpc::param::GetIntParamResponse *response) override
     {
         if (request != nullptr) {
             const auto requested_param = request->name();
@@ -32,9 +33,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetIntParam(grpc::ServerContext * /* context */,
-                             const rpc::param::SetIntParamRequest *request,
-                             rpc::param::SetIntParamResponse *response) override
+    grpc::Status SetIntParam(
+        grpc::ServerContext * /* context */,
+        const rpc::param::SetIntParamRequest *request,
+        rpc::param::SetIntParamResponse *response) override
     {
         if (request != nullptr) {
             const auto requested_param_name = request->name();
@@ -56,9 +58,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status GetFloatParam(grpc::ServerContext * /* context */,
-                               const rpc::param::GetFloatParamRequest *request,
-                               rpc::param::GetFloatParamResponse *response) override
+    grpc::Status GetFloatParam(
+        grpc::ServerContext * /* context */,
+        const rpc::param::GetFloatParamRequest *request,
+        rpc::param::GetFloatParamResponse *response) override
     {
         if (request != nullptr) {
             const auto requested_param = request->name();
@@ -79,9 +82,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetFloatParam(grpc::ServerContext * /* context */,
-                               const rpc::param::SetFloatParamRequest *request,
-                               rpc::param::SetFloatParamResponse *response) override
+    grpc::Status SetFloatParam(
+        grpc::ServerContext * /* context */,
+        const rpc::param::SetFloatParamRequest *request,
+        rpc::param::SetFloatParamResponse *response) override
     {
         if (request != nullptr) {
             const auto requested_param_name = request->name();
