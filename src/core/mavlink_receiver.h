@@ -22,11 +22,12 @@ public:
 
 #if DROP_DEBUG == 1
     void debug_drop_rate();
-    void print_line(const char *index,
-                    unsigned count,
-                    unsigned count_total,
-                    unsigned overall_bytes,
-                    unsigned overall_bytes_total);
+    void print_line(
+        const char *index,
+        unsigned count,
+        unsigned count_total,
+        unsigned overall_bytes,
+        unsigned overall_bytes_total);
 #endif
 
 private:

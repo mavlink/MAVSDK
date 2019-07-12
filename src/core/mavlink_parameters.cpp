@@ -28,11 +28,12 @@ MAVLinkParameters::~MAVLinkParameters()
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-void MAVLinkParameters::set_param_async(const std::string &name,
-                                        const ParamValue &value,
-                                        set_param_callback_t callback,
-                                        const void *cookie,
-                                        bool extended)
+void MAVLinkParameters::set_param_async(
+    const std::string &name,
+    const ParamValue &value,
+    set_param_callback_t callback,
+    const void *cookie,
+    bool extended)
 {
     // if (value.is_float()) {
     //     LogDebug() << "setting param " << name << " to " << value.get_float();
@@ -71,11 +72,12 @@ MAVLinkParameters::set_param(const std::string &name, const ParamValue &value, b
     return res.get();
 }
 
-void MAVLinkParameters::get_param_async(const std::string &name,
-                                        ParamValue value_type,
-                                        get_param_callback_t callback,
-                                        const void *cookie,
-                                        bool extended)
+void MAVLinkParameters::get_param_async(
+    const std::string &name,
+    ParamValue value_type,
+    get_param_callback_t callback,
+    const void *cookie,
+    bool extended)
 {
     // LogDebug() << "getting param " << name << ", extended: " << (extended ? "yes" : "no");
 
@@ -114,13 +116,14 @@ MAVLinkParameters::get_param(const std::string &name, ParamValue value_type, boo
     auto prom = std::promise<std::pair<Result, MAVLinkParameters::ParamValue>>();
     auto res = prom.get_future();
 
-    get_param_async(name,
-                    value_type,
-                    [&prom](Result result, ParamValue value) {
-                        prom.set_value(std::make_pair<>(result, value));
-                    },
-                    this,
-                    extended);
+    get_param_async(
+        name,
+        value_type,
+        [&prom](Result result, ParamValue value) {
+            prom.set_value(std::make_pair<>(result, value));
+        },
+        this,
+        extended);
 
     return res.get();
 }
@@ -163,24 +166,26 @@ void MAVLinkParameters::do_work()
                 work->param_value.get_128_bytes(param_value_buf);
 
                 // FIXME: extended currently always go to the camera component
-                mavlink_msg_param_ext_set_pack(_parent.get_own_system_id(),
-                                               _parent.get_own_component_id(),
-                                               &message,
-                                               _parent.get_system_id(),
-                                               MAV_COMP_ID_CAMERA,
-                                               param_id,
-                                               param_value_buf,
-                                               work->param_value.get_mav_param_ext_type());
+                mavlink_msg_param_ext_set_pack(
+                    _parent.get_own_system_id(),
+                    _parent.get_own_component_id(),
+                    &message,
+                    _parent.get_system_id(),
+                    MAV_COMP_ID_CAMERA,
+                    param_id,
+                    param_value_buf,
+                    work->param_value.get_mav_param_ext_type());
             } else {
                 // Param set is intended for Autopilot only.
-                mavlink_msg_param_set_pack(_parent.get_own_system_id(),
-                                           _parent.get_own_component_id(),
-                                           &message,
-                                           _parent.get_system_id(),
-                                           _parent.get_autopilot_id(),
-                                           param_id,
-                                           work->param_value.get_4_float_bytes(),
-                                           work->param_value.get_mav_param_type());
+                mavlink_msg_param_set_pack(
+                    _parent.get_own_system_id(),
+                    _parent.get_own_component_id(),
+                    &message,
+                    _parent.get_system_id(),
+                    _parent.get_autopilot_id(),
+                    param_id,
+                    work->param_value.get_4_float_bytes(),
+                    work->param_value.get_mav_param_type());
             }
 
             if (!_parent.send_message(message)) {
@@ -204,13 +209,14 @@ void MAVLinkParameters::do_work()
         case WorkItem::Type::Get: {
             // LogDebug() << "now getting: " << work->param_name;
             if (work->extended) {
-                mavlink_msg_param_ext_request_read_pack(_parent.get_own_system_id(),
-                                                        _parent.get_own_component_id(),
-                                                        &message,
-                                                        _parent.get_system_id(),
-                                                        MAV_COMP_ID_CAMERA,
-                                                        param_id,
-                                                        -1);
+                mavlink_msg_param_ext_request_read_pack(
+                    _parent.get_own_system_id(),
+                    _parent.get_own_component_id(),
+                    &message,
+                    _parent.get_system_id(),
+                    MAV_COMP_ID_CAMERA,
+                    param_id,
+                    -1);
 
             } else {
                 // LogDebug() << "request read: "
@@ -220,21 +226,22 @@ void MAVLinkParameters::do_work()
                 //    << (int)_parent.get_system_id() << ":"
                 //    << (int)_parent.get_autopilot_id();
 
-                mavlink_msg_param_request_read_pack(_parent.get_own_system_id(),
-                                                    _parent.get_own_component_id(),
-                                                    &message,
-                                                    _parent.get_system_id(),
-                                                    _parent.get_autopilot_id(),
-                                                    param_id,
-                                                    -1);
+                mavlink_msg_param_request_read_pack(
+                    _parent.get_own_system_id(),
+                    _parent.get_own_component_id(),
+                    &message,
+                    _parent.get_system_id(),
+                    _parent.get_autopilot_id(),
+                    param_id,
+                    -1);
             }
 
             if (!_parent.send_message(message)) {
                 LogErr() << "Error: Send message failed";
                 if (work->get_param_callback) {
                     ParamValue empty_param;
-                    work->get_param_callback(MAVLinkParameters::Result::CONNECTION_ERROR,
-                                             empty_param);
+                    work->get_param_callback(
+                        MAVLinkParameters::Result::CONNECTION_ERROR, empty_param);
                 }
                 work_queue_guard.pop_front();
                 return;

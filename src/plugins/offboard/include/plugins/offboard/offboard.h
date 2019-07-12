@@ -275,16 +275,16 @@ std::ostream &operator<<(std::ostream &str, Offboard::PositionNEDYaw const &posi
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Offboard::VelocityBodyYawspeed &lhs,
-                const Offboard::VelocityBodyYawspeed &rhs);
+bool operator==(
+    const Offboard::VelocityBodyYawspeed &lhs, const Offboard::VelocityBodyYawspeed &rhs);
 
 /**
  * @brief Stream operator to print information about a `Offboard::VelocityBodyYawspeed`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Offboard::VelocityBodyYawspeed const &velocity_body_yawspeed);
+std::ostream &
+operator<<(std::ostream &str, Offboard::VelocityBodyYawspeed const &velocity_body_yawspeed);
 
 /**
  * @brief Equal operator to compare two `Offboard::VelocityNEDYaw` objects.

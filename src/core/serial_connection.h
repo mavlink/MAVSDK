@@ -12,9 +12,8 @@ namespace mavsdk {
 
 class SerialConnection : public Connection {
 public:
-    explicit SerialConnection(Connection::receiver_callback_t receiver_callback,
-                              const std::string &path,
-                              int baudrate);
+    explicit SerialConnection(
+        Connection::receiver_callback_t receiver_callback, const std::string &path, int baudrate);
     ConnectionResult start();
     ConnectionResult stop();
     ~SerialConnection();

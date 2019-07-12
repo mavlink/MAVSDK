@@ -44,10 +44,10 @@ public:
 
     // For now, the running plugins are hardcoded and we assume they are always started by the
     // backend.
-    grpc::Status
-    ListRunningPlugins(grpc::ServerContext * /* context */,
-                       const rpc::core::ListRunningPluginsRequest * /* request */,
-                       mavsdk::rpc::core::ListRunningPluginsResponse *response) override
+    grpc::Status ListRunningPlugins(
+        grpc::ServerContext * /* context */,
+        const rpc::core::ListRunningPluginsRequest * /* request */,
+        mavsdk::rpc::core::ListRunningPluginsResponse *response) override
     {
         std::string plugin_names[10] = {"action",
                                         "calibration",

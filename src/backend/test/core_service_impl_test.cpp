@@ -150,8 +150,8 @@ CoreServiceImplTest::subscribeConnectionStateAsync(std::vector<std::pair<uint64_
 
         mavsdk::rpc::core::ConnectionStateResponse response;
         while (response_reader->Read(&response)) {
-            events.push_back(std::make_pair(response.connection_state().uuid(),
-                                            response.connection_state().is_connected()));
+            events.push_back(std::make_pair(
+                response.connection_state().uuid(), response.connection_state().is_connected()));
         }
     });
 }

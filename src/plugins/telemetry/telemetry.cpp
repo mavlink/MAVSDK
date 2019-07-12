@@ -346,8 +346,8 @@ const char *Telemetry::result_str(Result result)
     }
 }
 
-bool operator==(const Telemetry::PositionVelocityNED &lhs,
-                const Telemetry::PositionVelocityNED &rhs)
+bool operator==(
+    const Telemetry::PositionVelocityNED &lhs, const Telemetry::PositionVelocityNED &rhs)
 {
     return std::fabs(lhs.position.north_m - rhs.position.north_m) <=
                std::numeric_limits<float>::epsilon() &&
@@ -396,8 +396,8 @@ std::ostream &operator<<(std::ostream &str, Telemetry::VelocityNED const &veloci
                << ", velocity_down_m_s: " << velocity_ned.down_m_s << "]";
 }
 
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::PositionVelocityNED const &position_velocity_ned)
+std::ostream &
+operator<<(std::ostream &str, Telemetry::PositionVelocityNED const &position_velocity_ned)
 {
     return str << "[position_north_m: " << position_velocity_ned.position.north_m
                << ", position_east_m: " << position_velocity_ned.position.east_m
@@ -460,8 +460,8 @@ std::ostream &operator<<(std::ostream &str, Telemetry::AccelerationNED const &ac
                << ", acceleration_down_m_s2: " << acceleration_ned.down_m_s2 << "]";
 }
 
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::AngularVelocityNED const &angular_velocity_ned)
+std::ostream &
+operator<<(std::ostream &str, Telemetry::AngularVelocityNED const &angular_velocity_ned)
 {
     return str << "[angular_velocity_north_rad_s: " << angular_velocity_ned.north_rad_s
                << ", angular_velocity_east_rad_s: " << angular_velocity_ned.east_rad_s

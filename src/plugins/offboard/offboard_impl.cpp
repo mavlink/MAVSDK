@@ -97,8 +97,8 @@ bool OffboardImpl::is_active() const
     return (_mode != Mode::NOT_ACTIVE);
 }
 
-void OffboardImpl::receive_command_result(MAVLinkCommands::Result result,
-                                          const Offboard::result_callback_t &callback)
+void OffboardImpl::receive_command_result(
+    MAVLinkCommands::Result result, const Offboard::result_callback_t &callback)
 {
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
     if (callback) {

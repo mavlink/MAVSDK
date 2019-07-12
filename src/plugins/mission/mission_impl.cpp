@@ -72,13 +72,14 @@ void MissionImpl::process_mission_request(const mavlink_message_t &unused)
     UNUSED(unused);
 
     mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
-                                 _parent->get_own_component_id(),
-                                 &message,
-                                 _parent->get_system_id(),
-                                 _parent->get_autopilot_id(),
-                                 MAV_MISSION_UNSUPPORTED,
-                                 MAV_MISSION_TYPE_MISSION);
+    mavlink_msg_mission_ack_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_MISSION_UNSUPPORTED,
+        MAV_MISSION_TYPE_MISSION);
 
     _parent->send_message(message);
 
@@ -168,8 +169,9 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
             LogErr() << "Error: too many waypoints: " << int(mission_ack.type);
             report_mission_result(temp_callback, Mission::Result::TOO_MANY_MISSION_ITEMS);
 
-        } else if (mission_ack.type == MAV_MISSION_ERROR &&
-                   _activity.state == Activity::State::SET_MISSION_COUNT) {
+        } else if (
+            mission_ack.type == MAV_MISSION_ERROR &&
+            _activity.state == Activity::State::SET_MISSION_COUNT) {
             LogErr() << "Error: presumably still busy after cancelling";
             report_mission_result(temp_callback, Mission::Result::BUSY);
         } else {
@@ -288,13 +290,14 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
                 _parent->unregister_timeout_handler(_timeout_cookie);
 
                 mavlink_message_t ack_message;
-                mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
-                                             _parent->get_own_component_id(),
-                                             &ack_message,
-                                             _parent->get_system_id(),
-                                             _parent->get_autopilot_id(),
-                                             MAV_MISSION_ACCEPTED,
-                                             MAV_MISSION_TYPE_MISSION);
+                mavlink_msg_mission_ack_pack(
+                    _parent->get_own_system_id(),
+                    _parent->get_own_component_id(),
+                    &ack_message,
+                    _parent->get_system_id(),
+                    _parent->get_autopilot_id(),
+                    MAV_MISSION_ACCEPTED,
+                    MAV_MISSION_TYPE_MISSION);
 
                 _parent->send_message(ack_message);
 
@@ -372,13 +375,14 @@ void MissionImpl::upload_mission_async(
 void MissionImpl::send_count()
 {
     mavlink_message_t message;
-    mavlink_msg_mission_count_pack(_parent->get_own_system_id(),
-                                   _parent->get_own_component_id(),
-                                   &message,
-                                   _parent->get_system_id(),
-                                   _parent->get_autopilot_id(),
-                                   _mission_data.mavlink_mission_item_messages.size(),
-                                   MAV_MISSION_TYPE_MISSION);
+    mavlink_msg_mission_count_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        _mission_data.mavlink_mission_item_messages.size(),
+        MAV_MISSION_TYPE_MISSION);
 
     if (!_parent->send_message(message)) {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
@@ -408,13 +412,14 @@ void MissionImpl::upload_mission_cancel()
         report_mission_result(_mission_data.result_callback, Mission::Result::CANCELLED);
 
         mavlink_message_t message;
-        mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
-                                     _parent->get_own_component_id(),
-                                     &message,
-                                     _parent->get_system_id(),
-                                     _parent->get_autopilot_id(),
-                                     MAV_MISSION_DENIED,
-                                     MAV_MISSION_TYPE_MISSION);
+        mavlink_msg_mission_ack_pack(
+            _parent->get_own_system_id(),
+            _parent->get_own_component_id(),
+            &message,
+            _parent->get_system_id(),
+            _parent->get_autopilot_id(),
+            MAV_MISSION_DENIED,
+            MAV_MISSION_TYPE_MISSION);
         _parent->send_message(message);
 
         _mission_data.mavlink_mission_items_downloaded.clear();
@@ -465,17 +470,18 @@ void MissionImpl::download_mission_async(
 void MissionImpl::request_list()
 {
     mavlink_message_t message;
-    mavlink_msg_mission_request_list_pack(_parent->get_own_system_id(),
-                                          _parent->get_own_component_id(),
-                                          &message,
-                                          _parent->get_system_id(),
-                                          _parent->get_autopilot_id(),
-                                          MAV_MISSION_TYPE_MISSION);
+    mavlink_msg_mission_request_list_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_MISSION_TYPE_MISSION);
 
     if (!_parent->send_message(message)) {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        report_mission_items_and_result(_mission_data.mission_items_and_result_callback,
-                                        Mission::Result::CANCELLED);
+        report_mission_items_and_result(
+            _mission_data.mission_items_and_result_callback, Mission::Result::CANCELLED);
         return;
     }
 }
@@ -498,17 +504,18 @@ void MissionImpl::download_mission_cancel()
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
 
-        report_mission_items_and_result(_mission_data.mission_items_and_result_callback,
-                                        Mission::Result::CANCELLED);
+        report_mission_items_and_result(
+            _mission_data.mission_items_and_result_callback, Mission::Result::CANCELLED);
 
         mavlink_message_t message;
-        mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
-                                     _parent->get_own_component_id(),
-                                     &message,
-                                     _parent->get_system_id(),
-                                     _parent->get_autopilot_id(),
-                                     MAV_MISSION_DENIED,
-                                     MAV_MISSION_TYPE_MISSION);
+        mavlink_msg_mission_ack_pack(
+            _parent->get_own_system_id(),
+            _parent->get_own_component_id(),
+            &message,
+            _parent->get_system_id(),
+            _parent->get_autopilot_id(),
+            MAV_MISSION_DENIED,
+            MAV_MISSION_TYPE_MISSION);
         _parent->send_message(message);
 
         _mission_data.mavlink_mission_items_downloaded.clear();
@@ -548,24 +555,25 @@ void MissionImpl::assemble_mavlink_messages()
             uint8_t current = ((_mission_data.mavlink_mission_item_messages.size() == 0) ? 1 : 0);
 
             auto message = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
-                                              _parent->get_own_component_id(),
-                                              message.get(),
-                                              _parent->get_system_id(),
-                                              _parent->get_autopilot_id(),
-                                              _mission_data.mavlink_mission_item_messages.size(),
-                                              mission_item_impl.get_mavlink_frame(),
-                                              mission_item_impl.get_mavlink_cmd(),
-                                              current,
-                                              mission_item_impl.get_mavlink_autocontinue(),
-                                              mission_item_impl.get_mavlink_param1(),
-                                              mission_item_impl.get_mavlink_param2(),
-                                              mission_item_impl.get_mavlink_param3(),
-                                              mission_item_impl.get_mavlink_param4(),
-                                              mission_item_impl.get_mavlink_x(),
-                                              mission_item_impl.get_mavlink_y(),
-                                              mission_item_impl.get_mavlink_z(),
-                                              MAV_MISSION_TYPE_MISSION);
+            mavlink_msg_mission_item_int_pack(
+                _parent->get_own_system_id(),
+                _parent->get_own_component_id(),
+                message.get(),
+                _parent->get_system_id(),
+                _parent->get_autopilot_id(),
+                _mission_data.mavlink_mission_item_messages.size(),
+                mission_item_impl.get_mavlink_frame(),
+                mission_item_impl.get_mavlink_cmd(),
+                current,
+                mission_item_impl.get_mavlink_autocontinue(),
+                mission_item_impl.get_mavlink_param1(),
+                mission_item_impl.get_mavlink_param2(),
+                mission_item_impl.get_mavlink_param3(),
+                mission_item_impl.get_mavlink_param4(),
+                mission_item_impl.get_mavlink_x(),
+                mission_item_impl.get_mavlink_y(),
+                mission_item_impl.get_mavlink_z(),
+                MAV_MISSION_TYPE_MISSION);
 
             last_position_valid = true; // because we checked is_position_finite
             last_x = mission_item_impl.get_mavlink_x();
@@ -587,24 +595,25 @@ void MissionImpl::assemble_mavlink_messages()
             uint8_t autocontinue = 1;
 
             auto message_speed = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
-                                              _parent->get_own_component_id(),
-                                              message_speed.get(),
-                                              _parent->get_system_id(),
-                                              _parent->get_autopilot_id(),
-                                              _mission_data.mavlink_mission_item_messages.size(),
-                                              MAV_FRAME_MISSION,
-                                              MAV_CMD_DO_CHANGE_SPEED,
-                                              current,
-                                              autocontinue,
-                                              1.0f, // ground speed
-                                              mission_item_impl.get_speed_m_s(),
-                                              -1.0f, // no throttle change
-                                              0.0f, // absolute
-                                              0,
-                                              0,
-                                              NAN,
-                                              MAV_MISSION_TYPE_MISSION);
+            mavlink_msg_mission_item_int_pack(
+                _parent->get_own_system_id(),
+                _parent->get_own_component_id(),
+                message_speed.get(),
+                _parent->get_system_id(),
+                _parent->get_autopilot_id(),
+                _mission_data.mavlink_mission_item_messages.size(),
+                MAV_FRAME_MISSION,
+                MAV_CMD_DO_CHANGE_SPEED,
+                current,
+                autocontinue,
+                1.0f, // ground speed
+                mission_item_impl.get_speed_m_s(),
+                -1.0f, // no throttle change
+                0.0f, // absolute
+                0,
+                0,
+                NAN,
+                MAV_MISSION_TYPE_MISSION);
 
             _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
                 static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
@@ -659,24 +668,25 @@ void MissionImpl::assemble_mavlink_messages()
             uint8_t autocontinue = 1;
 
             auto message_gimbal = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
-                                              _parent->get_own_component_id(),
-                                              message_gimbal.get(),
-                                              _parent->get_system_id(),
-                                              _parent->get_autopilot_id(),
-                                              _mission_data.mavlink_mission_item_messages.size(),
-                                              MAV_FRAME_MISSION,
-                                              MAV_CMD_DO_MOUNT_CONTROL,
-                                              current,
-                                              autocontinue,
-                                              mission_item_impl.get_gimbal_pitch_deg(), // pitch
-                                              0.0f, // roll (yes it is a weird order)
-                                              mission_item_impl.get_gimbal_yaw_deg(), // yaw
-                                              NAN,
-                                              0,
-                                              0,
-                                              MAV_MOUNT_MODE_MAVLINK_TARGETING,
-                                              MAV_MISSION_TYPE_MISSION);
+            mavlink_msg_mission_item_int_pack(
+                _parent->get_own_system_id(),
+                _parent->get_own_component_id(),
+                message_gimbal.get(),
+                _parent->get_system_id(),
+                _parent->get_autopilot_id(),
+                _mission_data.mavlink_mission_item_messages.size(),
+                MAV_FRAME_MISSION,
+                MAV_CMD_DO_MOUNT_CONTROL,
+                current,
+                autocontinue,
+                mission_item_impl.get_gimbal_pitch_deg(), // pitch
+                0.0f, // roll (yes it is a weird order)
+                mission_item_impl.get_gimbal_yaw_deg(), // yaw
+                NAN,
+                0,
+                0,
+                MAV_MOUNT_MODE_MAVLINK_TARGETING,
+                MAV_MISSION_TYPE_MISSION);
 
             _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
                 static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
@@ -778,24 +788,25 @@ void MissionImpl::assemble_mavlink_messages()
             }
 
             auto message_camera = std::make_shared<mavlink_message_t>();
-            mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
-                                              _parent->get_own_component_id(),
-                                              message_camera.get(),
-                                              _parent->get_system_id(),
-                                              _parent->get_autopilot_id(),
-                                              _mission_data.mavlink_mission_item_messages.size(),
-                                              MAV_FRAME_MISSION,
-                                              command,
-                                              current,
-                                              autocontinue,
-                                              param1,
-                                              param2,
-                                              param3,
-                                              NAN,
-                                              0,
-                                              0,
-                                              NAN,
-                                              MAV_MISSION_TYPE_MISSION);
+            mavlink_msg_mission_item_int_pack(
+                _parent->get_own_system_id(),
+                _parent->get_own_component_id(),
+                message_camera.get(),
+                _parent->get_system_id(),
+                _parent->get_autopilot_id(),
+                _mission_data.mavlink_mission_item_messages.size(),
+                MAV_FRAME_MISSION,
+                command,
+                current,
+                autocontinue,
+                param1,
+                param2,
+                param3,
+                NAN,
+                0,
+                0,
+                NAN,
+                MAV_MISSION_TYPE_MISSION);
 
             _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
                 static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
@@ -811,24 +822,25 @@ void MissionImpl::assemble_mavlink_messages()
 
     if (_enable_return_to_launch_after_mission) {
         std::shared_ptr<mavlink_message_t> message_rtl(new mavlink_message_t());
-        mavlink_msg_mission_item_int_pack(_parent->get_own_system_id(),
-                                          _parent->get_own_component_id(),
-                                          message_rtl.get(),
-                                          _parent->get_system_id(),
-                                          _parent->get_autopilot_id(),
-                                          _mission_data.mavlink_mission_item_messages.size(),
-                                          MAV_FRAME_MISSION,
-                                          MAV_CMD_NAV_RETURN_TO_LAUNCH,
-                                          0, // current
-                                          1, // autocontinue
-                                          NAN, // loiter time in seconds
-                                          NAN, // empty
-                                          NAN, // radius around waypoint in meters ?
-                                          NAN, // loiter at center of waypoint
-                                          0,
-                                          0,
-                                          0,
-                                          MAV_MISSION_TYPE_MISSION);
+        mavlink_msg_mission_item_int_pack(
+            _parent->get_own_system_id(),
+            _parent->get_own_component_id(),
+            message_rtl.get(),
+            _parent->get_system_id(),
+            _parent->get_autopilot_id(),
+            _mission_data.mavlink_mission_item_messages.size(),
+            MAV_FRAME_MISSION,
+            MAV_CMD_NAV_RETURN_TO_LAUNCH,
+            0, // current
+            1, // autocontinue
+            NAN, // loiter time in seconds
+            NAN, // empty
+            NAN, // radius around waypoint in meters ?
+            NAN, // loiter at center of waypoint
+            0,
+            0,
+            0,
+            MAV_MISSION_TYPE_MISSION);
 
         _mission_data.mavlink_mission_item_to_mission_item_indices.insert(std::pair<int, int>{
             static_cast<int>(_mission_data.mavlink_mission_item_messages.size()), item_i});
@@ -983,13 +995,14 @@ void MissionImpl::download_next_mission_item()
     mavlink_message_t message;
     {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-        mavlink_msg_mission_request_int_pack(_parent->get_own_system_id(),
-                                             _parent->get_own_component_id(),
-                                             &message,
-                                             _parent->get_system_id(),
-                                             _parent->get_autopilot_id(),
-                                             _mission_data.next_mission_item_to_download,
-                                             MAV_MISSION_TYPE_MISSION);
+        mavlink_msg_mission_request_int_pack(
+            _parent->get_own_system_id(),
+            _parent->get_own_component_id(),
+            &message,
+            _parent->get_system_id(),
+            _parent->get_autopilot_id(),
+            _mission_data.next_mission_item_to_download,
+            MAV_MISSION_TYPE_MISSION);
 
         LogDebug() << "Requested mission item " << _mission_data.next_mission_item_to_download;
     }
@@ -1090,12 +1103,13 @@ void MissionImpl::set_current_mission_item_async(int current, Mission::result_ca
     }
 
     mavlink_message_t message;
-    mavlink_msg_mission_set_current_pack(_parent->get_own_system_id(),
-                                         _parent->get_own_component_id(),
-                                         &message,
-                                         _parent->get_system_id(),
-                                         _parent->get_autopilot_id(),
-                                         mavlink_index);
+    mavlink_msg_mission_set_current_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        mavlink_index);
 
     if (!_parent->send_message(message)) {
         report_mission_result(callback, Mission::Result::ERROR);
@@ -1138,8 +1152,8 @@ void MissionImpl::copy_mission_item_vector(
     }
 }
 
-void MissionImpl::report_mission_result(const Mission::result_callback_t &callback,
-                                        Mission::Result result)
+void MissionImpl::report_mission_result(
+    const Mission::result_callback_t &callback, Mission::Result result)
 {
     const auto temp_callback = callback;
 
@@ -1203,8 +1217,8 @@ void MissionImpl::report_progress()
     }
 }
 
-void MissionImpl::receive_command_result(MAVLinkCommands::Result result,
-                                         const Mission::result_callback_t callback)
+void MissionImpl::receive_command_result(
+    MAVLinkCommands::Result result, const Mission::result_callback_t callback)
 {
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
@@ -1246,8 +1260,9 @@ bool MissionImpl::is_mission_finished() const
     // a mission, and we need to account for that.
     const unsigned rtl_correction = _enable_return_to_launch_after_mission ? 2 : 1;
 
-    return (unsigned(_mission_data.last_reached_mavlink_mission_item + rtl_correction) ==
-            _mission_data.mavlink_mission_item_messages.size());
+    return (
+        unsigned(_mission_data.last_reached_mavlink_mission_item + rtl_correction) ==
+        _mission_data.mavlink_mission_item_messages.size());
 }
 
 int MissionImpl::current_mission_item() const
@@ -1296,8 +1311,9 @@ void MissionImpl::process_timeout()
             should_retry = true;
         } else if (_activity.state == Activity::State::SET_MISSION_COUNT) {
             should_retry = true;
-        } else if (_activity.state == Activity::State::GET_MISSION_LIST ||
-                   _activity.state == Activity::State::GET_MISSION_REQUEST) {
+        } else if (
+            _activity.state == Activity::State::GET_MISSION_LIST ||
+            _activity.state == Activity::State::GET_MISSION_REQUEST) {
             should_retry = true;
         } else {
             LogWarn() << "unknown mission timeout";
@@ -1344,8 +1360,8 @@ void MissionImpl::process_timeout()
     }
 }
 
-Mission::Result MissionImpl::import_qgroundcontrol_mission(Mission::mission_items_t &mission_items,
-                                                           const std::string &qgc_plan_file)
+Mission::Result MissionImpl::import_qgroundcontrol_mission(
+    Mission::mission_items_t &mission_items, const std::string &qgc_plan_file)
 {
     std::ifstream file(qgc_plan_file);
     if (!file) { // File open error
@@ -1371,10 +1387,11 @@ Mission::Result MissionImpl::import_qgroundcontrol_mission(Mission::mission_item
 }
 
 // Build a mission item out of command, params and add them to the mission vector.
-Mission::Result MissionImpl::build_mission_items(MAV_CMD command,
-                                                 std::vector<double> params,
-                                                 std::shared_ptr<MissionItem> &new_mission_item,
-                                                 Mission::mission_items_t &all_mission_items)
+Mission::Result MissionImpl::build_mission_items(
+    MAV_CMD command,
+    std::vector<double> params,
+    std::shared_ptr<MissionItem> &new_mission_item,
+    Mission::mission_items_t &all_mission_items)
 {
     Mission::Result result = Mission::Result::SUCCESS;
 
@@ -1456,8 +1473,8 @@ Mission::Result MissionImpl::build_mission_items(MAV_CMD command,
     return result;
 }
 
-Mission::Result MissionImpl::import_mission_items(Mission::mission_items_t &all_mission_items,
-                                                  const Json &qgc_plan_json)
+Mission::Result MissionImpl::import_mission_items(
+    Mission::mission_items_t &all_mission_items, const Json &qgc_plan_json)
 {
     const auto json_mission_items = qgc_plan_json["mission"];
     Mission::Result result = Mission::Result::SUCCESS;

@@ -12,9 +12,10 @@ namespace mavsdk {
 
 class UdpConnection : public Connection {
 public:
-    explicit UdpConnection(Connection::receiver_callback_t receiver_callback,
-                           const std::string &local_ip,
-                           int local_port);
+    explicit UdpConnection(
+        Connection::receiver_callback_t receiver_callback,
+        const std::string &local_ip,
+        int local_port);
     ~UdpConnection();
     ConnectionResult start();
     ConnectionResult stop();

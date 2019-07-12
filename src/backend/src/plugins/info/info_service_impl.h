@@ -9,9 +9,10 @@ class InfoServiceImpl final : public rpc::info::InfoService::Service {
 public:
     InfoServiceImpl(Info &info) : _info(info) {}
 
-    grpc::Status GetVersion(grpc::ServerContext * /* context */,
-                            const rpc::info::GetVersionRequest * /* request */,
-                            rpc::info::GetVersionResponse *response) override
+    grpc::Status GetVersion(
+        grpc::ServerContext * /* context */,
+        const rpc::info::GetVersionRequest * /* request */,
+        rpc::info::GetVersionResponse *response) override
     {
         if (response != nullptr) {
             auto result_pair = _info.get_version();

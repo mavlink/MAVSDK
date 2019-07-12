@@ -38,8 +38,8 @@ TEST_F(SitlTest, MissionChangeSpeed)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
-    ASSERT_TRUE(poll_condition_with_timeout([&dc]() { return dc.is_connected(); },
-                                            std::chrono::seconds(10)));
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
 
     System &system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
@@ -163,10 +163,11 @@ add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_
 
 float current_speed(std::shared_ptr<Telemetry> &telemetry)
 {
-    return std::sqrt(telemetry->ground_speed_ned().velocity_north_m_s *
-                         telemetry->ground_speed_ned().velocity_north_m_s +
-                     telemetry->ground_speed_ned().velocity_east_m_s *
-                         telemetry->ground_speed_ned().velocity_east_m_s);
+    return std::sqrt(
+        telemetry->ground_speed_ned().velocity_north_m_s *
+            telemetry->ground_speed_ned().velocity_north_m_s +
+        telemetry->ground_speed_ned().velocity_east_m_s *
+            telemetry->ground_speed_ned().velocity_east_m_s);
 }
 
 void receive_mission_progress(int current, int total)

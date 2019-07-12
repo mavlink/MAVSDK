@@ -119,15 +119,15 @@ std::ostream &operator<<(std::ostream &str, Offboard::PositionNEDYaw const &posi
                << ", yaw_deg: " << position_ned_yaw.yaw_deg << "]";
 }
 
-bool operator==(const Offboard::VelocityBodyYawspeed &lhs,
-                const Offboard::VelocityBodyYawspeed &rhs)
+bool operator==(
+    const Offboard::VelocityBodyYawspeed &lhs, const Offboard::VelocityBodyYawspeed &rhs)
 {
     return lhs.forward_m_s == rhs.forward_m_s && lhs.right_m_s == rhs.right_m_s &&
            lhs.down_m_s == rhs.down_m_s && lhs.yawspeed_deg_s == rhs.yawspeed_deg_s;
 }
 
-std::ostream &operator<<(std::ostream &str,
-                         Offboard::VelocityBodyYawspeed const &velocity_body_yawspeed)
+std::ostream &
+operator<<(std::ostream &str, Offboard::VelocityBodyYawspeed const &velocity_body_yawspeed)
 {
     return str << "[forward_m_s: " << velocity_body_yawspeed.forward_m_s
                << ", right_m_s: " << velocity_body_yawspeed.right_m_s

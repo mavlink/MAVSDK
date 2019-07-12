@@ -11,11 +11,13 @@ using namespace mavsdk;
 
 static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
 static std::vector<std::shared_ptr<MissionItem>> create_mission_items();
-static void upload_mission(std::shared_ptr<Mission> mission,
-                           const std::vector<std::shared_ptr<MissionItem>> &mission_items);
+static void upload_mission(
+    std::shared_ptr<Mission> mission,
+    const std::vector<std::shared_ptr<MissionItem>> &mission_items);
 static std::vector<std::shared_ptr<MissionItem>> download_mission(std::shared_ptr<Mission> mission);
-static void compare_mission(const std::vector<std::shared_ptr<MissionItem>> &a,
-                            const std::vector<std::shared_ptr<MissionItem>> &b);
+static void compare_mission(
+    const std::vector<std::shared_ptr<MissionItem>> &a,
+    const std::vector<std::shared_ptr<MissionItem>> &b);
 
 static bool should_keep_message(const mavlink_message_t &message);
 
@@ -87,8 +89,9 @@ std::vector<std::shared_ptr<MissionItem>> create_mission_items()
     return mission_items;
 }
 
-void upload_mission(std::shared_ptr<Mission> mission,
-                    const std::vector<std::shared_ptr<MissionItem>> &mission_items)
+void upload_mission(
+    std::shared_ptr<Mission> mission,
+    const std::vector<std::shared_ptr<MissionItem>> &mission_items)
 {
     LogInfo() << "Uploading mission...";
     auto prom = std::promise<void>{};
@@ -113,8 +116,8 @@ std::vector<std::shared_ptr<MissionItem>> download_mission(std::shared_ptr<Missi
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
     mission->download_mission_async(
-        [&prom, &mission_items](Mission::Result result,
-                                std::vector<std::shared_ptr<MissionItem>> mission_items_) {
+        [&prom, &mission_items](
+            Mission::Result result, std::vector<std::shared_ptr<MissionItem>> mission_items_) {
             EXPECT_EQ(result, Mission::Result::SUCCESS);
             mission_items = mission_items_;
             prom.set_value();
@@ -128,8 +131,9 @@ std::vector<std::shared_ptr<MissionItem>> download_mission(std::shared_ptr<Missi
     return mission_items;
 }
 
-void compare_mission(const std::vector<std::shared_ptr<MissionItem>> &a,
-                     const std::vector<std::shared_ptr<MissionItem>> &b)
+void compare_mission(
+    const std::vector<std::shared_ptr<MissionItem>> &a,
+    const std::vector<std::shared_ptr<MissionItem>> &b)
 {
     EXPECT_EQ(a.size(), b.size());
 

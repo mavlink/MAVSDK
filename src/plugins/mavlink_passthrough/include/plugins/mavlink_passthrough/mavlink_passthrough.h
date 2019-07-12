@@ -77,8 +77,8 @@ public:
      * @param message_id The MAVLink message ID.
      * @param callback Callback to be called for message subscription.
      */
-    void subscribe_message_async(uint16_t message_id,
-                                 std::function<void(const mavlink_message_t &)> callback);
+    void subscribe_message_async(
+        uint16_t message_id, std::function<void(const mavlink_message_t &)> callback);
 
     /**
      * @brief Get our own system ID.

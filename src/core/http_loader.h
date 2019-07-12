@@ -25,14 +25,16 @@ public:
 
     bool download_sync(const std::string &url, const std::string &local_path);
     bool download_text_sync(const std::string &url, std::string &content);
-    void download_async(const std::string &url,
-                        const std::string &local_path,
-                        const progress_callback_t &progress_callback = nullptr);
+    void download_async(
+        const std::string &url,
+        const std::string &local_path,
+        const progress_callback_t &progress_callback = nullptr);
 
     bool upload_sync(const std::string &target_url, const std::string &local_path);
-    void upload_async(const std::string &target_url,
-                      const std::string &local_path,
-                      const progress_callback_t &progress_callback = nullptr);
+    void upload_async(
+        const std::string &target_url,
+        const std::string &local_path,
+        const progress_callback_t &progress_callback = nullptr);
 
     // Non-copyable
     HttpLoader(const HttpLoader &) = delete;
@@ -63,9 +65,10 @@ private:
 
     class DownloadItem : public WorkItem {
     public:
-        DownloadItem(const std::string &url,
-                     const std::string &local_path,
-                     const progress_callback_t &progress_callback) :
+        DownloadItem(
+            const std::string &url,
+            const std::string &local_path,
+            const progress_callback_t &progress_callback) :
             _url(url),
             _local_path(local_path),
             _progress_callback(progress_callback)
@@ -88,9 +91,10 @@ private:
 
     class UploadItem : public WorkItem {
     public:
-        UploadItem(const std::string &target_url,
-                   const std::string &local_path,
-                   const progress_callback_t &progress_callback) :
+        UploadItem(
+            const std::string &target_url,
+            const std::string &local_path,
+            const progress_callback_t &progress_callback) :
             _target_url(target_url),
             _local_path(local_path),
             _progress_callback(progress_callback)
@@ -112,12 +116,13 @@ private:
     };
 
     static void work_thread(HttpLoader *self);
-    static void do_item(const std::shared_ptr<WorkItem> &item,
-                        const std::shared_ptr<ICurlWrapper> &curl_wrapper);
-    static bool do_download(const std::shared_ptr<DownloadItem> &item,
-                            const std::shared_ptr<ICurlWrapper> &curl_wrapper);
-    static bool do_upload(const std::shared_ptr<UploadItem> &item,
-                          const std::shared_ptr<ICurlWrapper> &curl_wrapper);
+    static void do_item(
+        const std::shared_ptr<WorkItem> &item, const std::shared_ptr<ICurlWrapper> &curl_wrapper);
+    static bool do_download(
+        const std::shared_ptr<DownloadItem> &item,
+        const std::shared_ptr<ICurlWrapper> &curl_wrapper);
+    static bool do_upload(
+        const std::shared_ptr<UploadItem> &item, const std::shared_ptr<ICurlWrapper> &curl_wrapper);
 
     std::shared_ptr<ICurlWrapper> _curl_wrapper;
 

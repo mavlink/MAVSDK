@@ -11,14 +11,15 @@
 
 using namespace mavsdk;
 
-static std::shared_ptr<MissionItem> add_waypoint(double latitude_deg,
-                                                 double longitude_deg,
-                                                 float relative_altitude_m,
-                                                 float speed_m_s,
-                                                 bool is_fly_through,
-                                                 float gimbal_pitch_deg,
-                                                 float gimbal_yaw_deg,
-                                                 bool take_photo);
+static std::shared_ptr<MissionItem> add_waypoint(
+    double latitude_deg,
+    double longitude_deg,
+    float relative_altitude_m,
+    float speed_m_s,
+    bool is_fly_through,
+    float gimbal_pitch_deg,
+    float gimbal_yaw_deg,
+    bool take_photo);
 
 TEST_F(SitlTest, MissionUploadCancellation)
 {
@@ -28,8 +29,8 @@ TEST_F(SitlTest, MissionUploadCancellation)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
-    ASSERT_TRUE(poll_condition_with_timeout([&dc]() { return dc.is_connected(); },
-                                            std::chrono::seconds(10)));
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
 
     System &system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
@@ -71,8 +72,8 @@ TEST_F(SitlTest, MissionDownloadCancellation)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
     // Wait for system to connect via heartbeat.
-    ASSERT_TRUE(poll_condition_with_timeout([&dc]() { return dc.is_connected(); },
-                                            std::chrono::seconds(10)));
+    ASSERT_TRUE(poll_condition_with_timeout(
+        [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
 
     System &system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
@@ -107,8 +108,9 @@ TEST_F(SitlTest, MissionDownloadCancellation)
         std::future<Mission::Result> fut = prom.get_future();
 
         mission->download_mission_async(
-            [&prom](Mission::Result result,
-                    std::vector<std::shared_ptr<MissionItem>> received_mission_items) {
+            [&prom](
+                Mission::Result result,
+                std::vector<std::shared_ptr<MissionItem>> received_mission_items) {
                 UNUSED(received_mission_items);
                 LogInfo() << "Download mission result: " << Mission::result_str(result);
                 prom.set_value(result);
@@ -126,14 +128,15 @@ TEST_F(SitlTest, MissionDownloadCancellation)
     }
 }
 
-std::shared_ptr<MissionItem> add_waypoint(double latitude_deg,
-                                          double longitude_deg,
-                                          float relative_altitude_m,
-                                          float speed_m_s,
-                                          bool is_fly_through,
-                                          float gimbal_pitch_deg,
-                                          float gimbal_yaw_deg,
-                                          bool take_photo)
+std::shared_ptr<MissionItem> add_waypoint(
+    double latitude_deg,
+    double longitude_deg,
+    float relative_altitude_m,
+    float speed_m_s,
+    bool is_fly_through,
+    float gimbal_pitch_deg,
+    float gimbal_yaw_deg,
+    bool take_photo)
 {
     std::shared_ptr<MissionItem> new_item(new MissionItem());
     new_item->set_position(latitude_deg, longitude_deg);

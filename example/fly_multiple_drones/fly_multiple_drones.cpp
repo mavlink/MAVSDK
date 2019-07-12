@@ -206,8 +206,8 @@ void complete_mission(std::string qgc_plan, System &system)
         // Wrap the asynchronous upload_mission function using std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(mission_items,
-                                      [prom](Mission::Result result) { prom->set_value(result); });
+        mission->upload_mission_async(
+            mission_items, [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         handle_mission_err_exit(result, "Mission upload failed: ");

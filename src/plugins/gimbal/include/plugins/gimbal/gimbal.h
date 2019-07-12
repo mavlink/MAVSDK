@@ -114,10 +114,8 @@ public:
      * @param altitude_m Altitude in meters (ASML).
      * @param callback Function to call with result of request.
      */
-    void set_roi_location_async(double latitude_deg,
-                                double longitude_deg,
-                                float altitude_m,
-                                result_callback_t callback);
+    void set_roi_location_async(
+        double latitude_deg, double longitude_deg, float altitude_m, result_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).

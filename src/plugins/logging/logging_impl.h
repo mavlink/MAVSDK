@@ -30,8 +30,8 @@ private:
 
     static Logging::Result logging_result_from_command_result(MAVLinkCommands::Result result);
 
-    static void command_result_callback(MAVLinkCommands::Result command_result,
-                                        const Logging::result_callback_t &callback);
+    static void command_result_callback(
+        MAVLinkCommands::Result command_result, const Logging::result_callback_t &callback);
 };
 
 } // namespace mavsdk

@@ -11,9 +11,10 @@ class CameraServiceImpl final : public rpc::camera::CameraService::Service {
 public:
     CameraServiceImpl(Camera &camera) : _camera(camera) {}
 
-    grpc::Status TakePhoto(grpc::ServerContext * /* context */,
-                           const rpc::camera::TakePhotoRequest * /* request */,
-                           rpc::camera::TakePhotoResponse *response) override
+    grpc::Status TakePhoto(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::TakePhotoRequest * /* request */,
+        rpc::camera::TakePhotoResponse *response) override
     {
         auto camera_result = _camera.take_photo();
 
@@ -36,9 +37,10 @@ public:
         response->set_allocated_camera_result(rpc_camera_result);
     }
 
-    grpc::Status StartPhotoInterval(grpc::ServerContext * /* context */,
-                                    const rpc::camera::StartPhotoIntervalRequest *request,
-                                    rpc::camera::StartPhotoIntervalResponse *response) override
+    grpc::Status StartPhotoInterval(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::StartPhotoIntervalRequest *request,
+        rpc::camera::StartPhotoIntervalResponse *response) override
     {
         if (request == nullptr) {
             if (response != nullptr) {
@@ -57,9 +59,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status StopPhotoInterval(grpc::ServerContext * /* context */,
-                                   const rpc::camera::StopPhotoIntervalRequest * /* request */,
-                                   rpc::camera::StopPhotoIntervalResponse *response) override
+    grpc::Status StopPhotoInterval(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::StopPhotoIntervalRequest * /* request */,
+        rpc::camera::StopPhotoIntervalResponse *response) override
     {
         auto camera_result = _camera.stop_photo_interval();
 
@@ -70,9 +73,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status StartVideo(grpc::ServerContext * /* context */,
-                            const rpc::camera::StartVideoRequest * /* request */,
-                            rpc::camera::StartVideoResponse *response) override
+    grpc::Status StartVideo(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::StartVideoRequest * /* request */,
+        rpc::camera::StartVideoResponse *response) override
     {
         auto camera_result = _camera.start_video();
 
@@ -83,9 +87,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status StopVideo(grpc::ServerContext * /* context */,
-                           const rpc::camera::StopVideoRequest * /* request */,
-                           rpc::camera::StopVideoResponse *response) override
+    grpc::Status StopVideo(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::StopVideoRequest * /* request */,
+        rpc::camera::StopVideoResponse *response) override
     {
         auto camera_result = _camera.stop_video();
 
@@ -96,9 +101,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status StartVideoStreaming(grpc::ServerContext * /* context */,
-                                     const rpc::camera::StartVideoStreamingRequest * /* request */,
-                                     rpc::camera::StartVideoStreamingResponse *response) override
+    grpc::Status StartVideoStreaming(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::StartVideoStreamingRequest * /* request */,
+        rpc::camera::StartVideoStreamingResponse *response) override
     {
         auto camera_result = _camera.start_video_streaming();
 
@@ -109,9 +115,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status StopVideoStreaming(grpc::ServerContext * /* context */,
-                                    const rpc::camera::StopVideoStreamingRequest * /* request */,
-                                    rpc::camera::StopVideoStreamingResponse *response) override
+    grpc::Status StopVideoStreaming(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::StopVideoStreamingRequest * /* request */,
+        rpc::camera::StopVideoStreamingResponse *response) override
     {
         auto camera_result = _camera.stop_video_streaming();
 
@@ -122,9 +129,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetMode(grpc::ServerContext * /* context */,
-                         const rpc::camera::SetModeRequest *request,
-                         rpc::camera::SetModeResponse *response) override
+    grpc::Status SetMode(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::SetModeRequest *request,
+        rpc::camera::SetModeResponse *response) override
     {
         if (request != nullptr) {
             auto camera_result = _camera.set_mode(translateRPCCameraMode(request->camera_mode()));
@@ -161,9 +169,10 @@ public:
         }
     }
 
-    grpc::Status SubscribeMode(grpc::ServerContext * /* context */,
-                               const rpc::camera::SubscribeModeRequest * /* request */,
-                               grpc::ServerWriter<rpc::camera::ModeResponse> *writer) override
+    grpc::Status SubscribeMode(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::SubscribeModeRequest * /* request */,
+        grpc::ServerWriter<rpc::camera::ModeResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
@@ -302,10 +311,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status
-    SubscribeCaptureInfo(grpc::ServerContext * /* context */,
-                         const rpc::camera::SubscribeCaptureInfoRequest * /* request */,
-                         grpc::ServerWriter<rpc::camera::CaptureInfoResponse> *writer) override
+    grpc::Status SubscribeCaptureInfo(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::SubscribeCaptureInfoRequest * /* request */,
+        grpc::ServerWriter<rpc::camera::CaptureInfoResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
@@ -439,10 +448,10 @@ public:
         return euler_angle;
     }
 
-    grpc::Status
-    SubscribeCameraStatus(grpc::ServerContext * /* context */,
-                          const rpc::camera::SubscribeCameraStatusRequest * /* request */,
-                          grpc::ServerWriter<rpc::camera::CameraStatusResponse> *writer) override
+    grpc::Status SubscribeCameraStatus(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::SubscribeCameraStatusRequest * /* request */,
+        grpc::ServerWriter<rpc::camera::CameraStatusResponse> *writer) override
     {
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
@@ -561,8 +570,8 @@ public:
         return grpc::Status::OK;
     }
 
-    static void translateSetting(const mavsdk::Camera::Setting setting,
-                                 rpc::camera::Setting *rpc_setting)
+    static void
+    translateSetting(const mavsdk::Camera::Setting setting, rpc::camera::Setting *rpc_setting)
     {
         rpc_setting->set_setting_id(setting.setting_id);
         rpc_setting->set_setting_description(setting.setting_description);
@@ -630,8 +639,9 @@ public:
         return grpc::Status::OK;
     }
 
-    static void translateSettingOptions(const mavsdk::Camera::SettingOptions setting_options,
-                                        rpc::camera::SettingOptions *rpc_setting_options)
+    static void translateSettingOptions(
+        const mavsdk::Camera::SettingOptions setting_options,
+        rpc::camera::SettingOptions *rpc_setting_options)
     {
         rpc_setting_options->set_setting_id(setting_options.setting_id);
         rpc_setting_options->set_setting_description(setting_options.setting_description);
@@ -659,9 +669,10 @@ public:
         return setting_options;
     }
 
-    grpc::Status SetSetting(grpc::ServerContext * /* context */,
-                            const rpc::camera::SetSettingRequest *request,
-                            rpc::camera::SetSettingResponse *response) override
+    grpc::Status SetSetting(
+        grpc::ServerContext * /* context */,
+        const rpc::camera::SetSettingRequest *request,
+        rpc::camera::SetSettingResponse *response) override
     {
         std::promise<void> set_option_called_promise;
         auto set_option_called_future = set_option_called_promise.get_future();

@@ -94,13 +94,13 @@ get_setting(std::shared_ptr<mavsdk::Camera> camera, const std::string &setting, 
     auto prom = std::make_shared<std::promise<PromiseResult>>();
     auto ret = prom->get_future();
 
-    camera->get_option_async(setting,
-                             [prom](Camera::Result result, const Camera::Option &gotten_option) {
-                                 PromiseResult promise_result{};
-                                 promise_result.result = result;
-                                 promise_result.option = gotten_option;
-                                 prom->set_value(promise_result);
-                             });
+    camera->get_option_async(
+        setting, [prom](Camera::Result result, const Camera::Option &gotten_option) {
+            PromiseResult promise_result{};
+            promise_result.result = result;
+            promise_result.option = gotten_option;
+            prom->set_value(promise_result);
+        });
 
     auto status = ret.wait_for(std::chrono::seconds(1));
 

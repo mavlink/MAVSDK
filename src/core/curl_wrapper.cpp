@@ -18,8 +18,8 @@ CurlWrapper::~CurlWrapper() {}
 // https://stackoverflow.com/questions/9786150/save-curl-content-result-into-a-string-in-c
 static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp)
 {
-    reinterpret_cast<std::string *>(userp)->append(reinterpret_cast<char *>(contents),
-                                                   size * nmemb);
+    reinterpret_cast<std::string *>(userp)->append(
+        reinterpret_cast<char *>(contents), size * nmemb);
     return size * nmemb;
 }
 
@@ -95,9 +95,8 @@ template<typename T> std::string to_string(T value)
     return os.str();
 }
 
-bool CurlWrapper::upload_file(const std::string &url,
-                              const std::string &path,
-                              const progress_callback_t &progress_callback)
+bool CurlWrapper::upload_file(
+    const std::string &url, const std::string &path, const progress_callback_t &progress_callback)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     CURLcode res;
@@ -182,9 +181,8 @@ download_progress_update(void *p, double dltotal, double dlnow, double ultotal, 
     return 0;
 }
 
-bool CurlWrapper::download_file_to_path(const std::string &url,
-                                        const std::string &path,
-                                        const progress_callback_t &progress_callback)
+bool CurlWrapper::download_file_to_path(
+    const std::string &url, const std::string &path, const progress_callback_t &progress_callback)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     FILE *fp;

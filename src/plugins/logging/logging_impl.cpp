@@ -95,12 +95,13 @@ void LoggingImpl::process_logging_data_acked(const mavlink_message_t &message)
     mavlink_msg_logging_data_acked_decode(&message, &logging_data_acked);
 
     mavlink_message_t answer;
-    mavlink_msg_logging_ack_pack(GCSClient::system_id,
-                                 GCSClient::component_id,
-                                 &answer,
-                                 _parent->get_system_id(),
-                                 _parent->get_autopilot_id(),
-                                 logging_data_acked.sequence);
+    mavlink_msg_logging_ack_pack(
+        GCSClient::system_id,
+        GCSClient::component_id,
+        &answer,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        logging_data_acked.sequence);
 
     _parent->send_message(answer);
 }
@@ -125,8 +126,8 @@ Logging::Result LoggingImpl::logging_result_from_command_result(MAVLinkCommands:
     }
 }
 
-void LoggingImpl::command_result_callback(MAVLinkCommands::Result command_result,
-                                          const Logging::result_callback_t &callback)
+void LoggingImpl::command_result_callback(
+    MAVLinkCommands::Result command_result, const Logging::result_callback_t &callback)
 {
     Logging::Result action_result = logging_result_from_command_result(command_result);
 

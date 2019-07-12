@@ -70,10 +70,11 @@ public:
          * @param _has_status_text Whether or not this struct contains an instruction text.
          * @param _status_text The actual instruction text.
          */
-        ProgressData(const bool _has_progress,
-                     const float _progress,
-                     const bool _has_status_text,
-                     const std::string &_status_text) :
+        ProgressData(
+            const bool _has_progress,
+            const float _progress,
+            const bool _has_status_text,
+            const std::string &_status_text) :
             has_progress(_has_progress),
             progress(_progress),
             has_status_text(_has_status_text),

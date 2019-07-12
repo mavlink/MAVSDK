@@ -16,13 +16,14 @@ struct QGCMissionItem {
     std::vector<double> params;
 };
 
-Mission::Result compose_mission_items(MAV_CMD command,
-                                      std::vector<double> params,
-                                      std::shared_ptr<MissionItem> &new_mission_item,
-                                      Mission::mission_items_t &mission_items);
+Mission::Result compose_mission_items(
+    MAV_CMD command,
+    std::vector<double> params,
+    std::shared_ptr<MissionItem> &new_mission_item,
+    Mission::mission_items_t &mission_items);
 
-static void compare(const std::shared_ptr<MissionItem> local,
-                    const std::shared_ptr<MissionItem> imported);
+static void
+compare(const std::shared_ptr<MissionItem> local, const std::shared_ptr<MissionItem> imported);
 
 TEST(QGCMissionImport, ValidateQGCMissonItems)
 {
@@ -84,10 +85,11 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     }
 }
 
-Mission::Result compose_mission_items(MAV_CMD command,
-                                      std::vector<double> params,
-                                      std::shared_ptr<MissionItem> &new_mission_item,
-                                      Mission::mission_items_t &mission_items)
+Mission::Result compose_mission_items(
+    MAV_CMD command,
+    std::vector<double> params,
+    std::shared_ptr<MissionItem> &new_mission_item,
+    Mission::mission_items_t &mission_items)
 {
     Mission::Result result = Mission::Result::SUCCESS;
 
@@ -188,8 +190,8 @@ void compare(const std::shared_ptr<MissionItem> local, const std::shared_ptr<Mis
     if (local->get_camera_action() == MissionItem::CameraAction::START_PHOTO_INTERVAL &&
         // Camera commands
         std::isfinite(local->get_camera_photo_interval_s())) {
-        EXPECT_DOUBLE_EQ(local->get_camera_photo_interval_s(),
-                         imported->get_camera_photo_interval_s());
+        EXPECT_DOUBLE_EQ(
+            local->get_camera_photo_interval_s(), imported->get_camera_photo_interval_s());
     }
 
     if (std::isfinite(local->get_loiter_time_s())) {

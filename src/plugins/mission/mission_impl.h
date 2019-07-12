@@ -25,8 +25,9 @@ public:
     void enable() override;
     void disable() override;
 
-    void upload_mission_async(const std::vector<std::shared_ptr<MissionItem>> &mission_items,
-                              const Mission::result_callback_t &callback);
+    void upload_mission_async(
+        const std::vector<std::shared_ptr<MissionItem>> &mission_items,
+        const Mission::result_callback_t &callback);
     void upload_mission_cancel();
 
     void download_mission_async(const Mission::mission_items_and_result_callback_t &callback);
@@ -47,8 +48,8 @@ public:
 
     void subscribe_progress(Mission::progress_callback_t callback);
 
-    static Mission::Result import_qgroundcontrol_mission(Mission::mission_items_t &mission_items,
-                                                         const std::string &qgc_plan_file);
+    static Mission::Result import_qgroundcontrol_mission(
+        Mission::mission_items_t &mission_items, const std::string &qgc_plan_file);
     // Non-copyable
     MissionImpl(const MissionImpl &) = delete;
     const MissionImpl &operator=(const MissionImpl &) = delete;
@@ -72,14 +73,13 @@ private:
 
     void report_mission_result(const Mission::result_callback_t &callback, Mission::Result result);
 
-    void
-    report_mission_items_and_result(const Mission::mission_items_and_result_callback_t &callback,
-                                    Mission::Result result);
+    void report_mission_items_and_result(
+        const Mission::mission_items_and_result_callback_t &callback, Mission::Result result);
 
     void report_progress();
 
-    void receive_command_result(MAVLinkCommands::Result result,
-                                const Mission::result_callback_t callback);
+    void receive_command_result(
+        MAVLinkCommands::Result result, const Mission::result_callback_t callback);
 
     void download_next_mission_item();
     void request_list();
@@ -87,12 +87,13 @@ private:
 
     void assemble_mission_items();
 
-    static Mission::Result import_mission_items(Mission::mission_items_t &mission_items,
-                                                const Json &mission_json);
-    static Mission::Result build_mission_items(MAV_CMD command,
-                                               std::vector<double> params,
-                                               std::shared_ptr<MissionItem> &new_mission_item,
-                                               Mission::mission_items_t &all_mission_items);
+    static Mission::Result
+    import_mission_items(Mission::mission_items_t &mission_items, const Json &mission_json);
+    static Mission::Result build_mission_items(
+        MAV_CMD command,
+        std::vector<double> params,
+        std::shared_ptr<MissionItem> &new_mission_item,
+        Mission::mission_items_t &all_mission_items);
 
     struct Activity {
         mutable std::mutex mutex{};

@@ -38,9 +38,8 @@ Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
     return gimbal_result_from_command_result(_parent->send_command(command));
 }
 
-void GimbalImpl::set_pitch_and_yaw_async(float pitch_deg,
-                                         float yaw_deg,
-                                         Gimbal::result_callback_t callback)
+void GimbalImpl::set_pitch_and_yaw_async(
+    float pitch_deg, float yaw_deg, Gimbal::result_callback_t callback)
 {
     const float roll_deg = 0.0f;
     MAVLinkCommands::CommandLong command{};
@@ -70,10 +69,8 @@ GimbalImpl::set_roi_location(double latitude_deg, double longitude_deg, float al
     return gimbal_result_from_command_result(_parent->send_command(command));
 }
 
-void GimbalImpl::set_roi_location_async(double latitude_deg,
-                                        double longitude_deg,
-                                        float altitude_m,
-                                        Gimbal::result_callback_t callback)
+void GimbalImpl::set_roi_location_async(
+    double latitude_deg, double longitude_deg, float altitude_m, Gimbal::result_callback_t callback)
 {
     MAVLinkCommands::CommandInt command{};
 
@@ -87,8 +84,8 @@ void GimbalImpl::set_roi_location_async(double latitude_deg,
         command, std::bind(&GimbalImpl::receive_command_result, std::placeholders::_1, callback));
 }
 
-void GimbalImpl::receive_command_result(MAVLinkCommands::Result command_result,
-                                        const Gimbal::result_callback_t &callback)
+void GimbalImpl::receive_command_result(
+    MAVLinkCommands::Result command_result, const Gimbal::result_callback_t &callback)
 {
     Gimbal::Result gimbal_result = gimbal_result_from_command_result(command_result);
 

@@ -127,12 +127,13 @@ void MissionRawImpl::request_list()
     // LogDebug() << "Requesting mission list (" << _mission_download.retries << ")";
 
     mavlink_message_t message;
-    mavlink_msg_mission_request_list_pack(_parent->get_own_system_id(),
-                                          _parent->get_own_component_id(),
-                                          &message,
-                                          _parent->get_system_id(),
-                                          _parent->get_autopilot_id(),
-                                          MAV_MISSION_TYPE_MISSION);
+    mavlink_msg_mission_request_list_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_MISSION_TYPE_MISSION);
 
     if (!_parent->send_message(message)) {
         // This is a terrible and unexpected error. Therefore we don't even
@@ -203,13 +204,14 @@ void MissionRawImpl::request_item()
     //            << " (" << _mission_download.retries << ")";
 
     mavlink_message_t message;
-    mavlink_msg_mission_request_int_pack(_parent->get_own_system_id(),
-                                         _parent->get_own_component_id(),
-                                         &message,
-                                         _parent->get_system_id(),
-                                         _parent->get_autopilot_id(),
-                                         _mission_download.next_mission_item_to_download,
-                                         MAV_MISSION_TYPE_MISSION);
+    mavlink_msg_mission_request_int_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        _mission_download.next_mission_item_to_download,
+        MAV_MISSION_TYPE_MISSION);
 
     if (!_parent->send_message(message)) {
         // This is a terrible and unexpected error. Therefore we don't even
@@ -291,13 +293,14 @@ void MissionRawImpl::send_ack()
     // LogDebug() << "Sending ack";
 
     mavlink_message_t message;
-    mavlink_msg_mission_ack_pack(_parent->get_own_system_id(),
-                                 _parent->get_own_component_id(),
-                                 &message,
-                                 _parent->get_system_id(),
-                                 _parent->get_autopilot_id(),
-                                 MAV_MISSION_ACCEPTED,
-                                 MAV_MISSION_TYPE_MISSION);
+    mavlink_msg_mission_ack_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_MISSION_ACCEPTED,
+        MAV_MISSION_TYPE_MISSION);
 
     if (!_parent->send_message(message)) {
         // This is a terrible and unexpected error. Therefore we don't even

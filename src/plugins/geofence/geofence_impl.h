@@ -22,8 +22,9 @@ public:
     void enable() override;
     void disable() override;
 
-    void send_geofence_async(const std::vector<std::shared_ptr<Geofence::Polygon>> &polygons,
-                             const Geofence::result_callback_t &callback);
+    void send_geofence_async(
+        const std::vector<std::shared_ptr<Geofence::Polygon>> &polygons,
+        const Geofence::result_callback_t &callback);
 
     // Non-copyable
     GeofenceImpl(const GeofenceImpl &) = delete;
@@ -39,11 +40,11 @@ private:
     void process_mission_ack(const mavlink_message_t &message);
     void send_geofence_item(uint16_t seq);
 
-    static void report_geofence_result(const Geofence::result_callback_t &callback,
-                                       Geofence::Result result);
+    static void
+    report_geofence_result(const Geofence::result_callback_t &callback, Geofence::Result result);
 
-    void receive_command_result(MAVLinkCommands::Result command_result,
-                                const Geofence::result_callback_t &callback);
+    void receive_command_result(
+        MAVLinkCommands::Result command_result, const Geofence::result_callback_t &callback);
 
     Geofence::result_callback_t _result_callback = nullptr;
 

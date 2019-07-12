@@ -66,9 +66,10 @@ protected:
             }));
     }
 
-    void expect_one_simulated_download_to_fail(const std::shared_ptr<CurlWrapperMock> &curl_wrapper,
-                                               const std::string &url,
-                                               const std::string &path)
+    void expect_one_simulated_download_to_fail(
+        const std::shared_ptr<CurlWrapperMock> &curl_wrapper,
+        const std::string &url,
+        const std::string &path)
     {
         EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
             .WillOnce(Invoke([&](const std::string & /*url*/,
@@ -80,10 +81,10 @@ protected:
             }));
     }
 
-    void
-    expect_one_simulated_download_to_succeed(const std::shared_ptr<CurlWrapperMock> &curl_wrapper,
-                                             const std::string &url,
-                                             const std::string &path)
+    void expect_one_simulated_download_to_succeed(
+        const std::shared_ptr<CurlWrapperMock> &curl_wrapper,
+        const std::string &url,
+        const std::string &path)
     {
         EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
             .WillOnce(Invoke([&](const std::string & /*url*/,

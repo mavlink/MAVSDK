@@ -82,20 +82,21 @@ void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough
                                 UINT16_MAX}; // mV
 
     mavlink_message_t message;
-    mavlink_msg_battery_status_pack(mavlink_passthrough->get_our_sysid(),
-                                    mavlink_passthrough->get_our_compid(),
-                                    &message,
-                                    0, // id
-                                    MAV_BATTERY_FUNCTION_ALL, // battery_function
-                                    MAV_BATTERY_TYPE_LION, // type
-                                    2500, // 100*temperature C
-                                    &voltages[0],
-                                    4000, // 100*current_battery A
-                                    1000, // current_consumed, mAh
-                                    -1, // energy consumed hJ
-                                    80, // battery_remaining %
-                                    3600, // time_remaining
-                                    MAV_BATTERY_CHARGE_STATE_OK);
+    mavlink_msg_battery_status_pack(
+        mavlink_passthrough->get_our_sysid(),
+        mavlink_passthrough->get_our_compid(),
+        &message,
+        0, // id
+        MAV_BATTERY_FUNCTION_ALL, // battery_function
+        MAV_BATTERY_TYPE_LION, // type
+        2500, // 100*temperature C
+        &voltages[0],
+        4000, // 100*current_battery A
+        1000, // current_consumed, mAh
+        -1, // energy consumed hJ
+        80, // battery_remaining %
+        3600, // time_remaining
+        MAV_BATTERY_CHARGE_STATE_OK);
 
     mavlink_passthrough->send_message(message);
 }

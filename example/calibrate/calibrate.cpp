@@ -87,8 +87,8 @@ void calibrate_accelerometer(Calibration &calibration)
 Calibration::calibration_callback_t
 create_calibration_callback(std::promise<void> &calibration_promise)
 {
-    return [&calibration_promise](const Calibration::Result result,
-                                  const Calibration::ProgressData progress_data) {
+    return [&calibration_promise](
+               const Calibration::Result result, const Calibration::ProgressData progress_data) {
         switch (result) {
             case Calibration::Result::SUCCESS:
                 std::cout << "--- Calibration succeeded!" << std::endl;
