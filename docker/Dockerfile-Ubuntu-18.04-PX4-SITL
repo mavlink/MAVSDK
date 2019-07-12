@@ -30,5 +30,6 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN git clone https://github.com/PX4/Firmware.git ${FIRMWARE_DIR}
+RUN git -C ${FIRMWARE_DIR} checkout stable
 RUN git -C ${FIRMWARE_DIR} submodule update --init --recursive
 RUN cd ${FIRMWARE_DIR} && DONT_RUN=1 make px4_sitl gazebo && DONT_RUN=1 make px4_sitl gazebo
