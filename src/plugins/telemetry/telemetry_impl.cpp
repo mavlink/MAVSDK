@@ -68,6 +68,11 @@ void TelemetryImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS, std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
 
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_HIGHRES_IMU,
+        std::bind(&TelemetryImpl::process_imu_reading_ned, this, _1),
+        this);
+
     _parent->register_param_changed_handler(
         std::bind(&TelemetryImpl::process_parameter_update, this, _1), this);
 }
