@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Camera::Camera(System &system) : PluginBase(), _impl{new CameraImpl(system)} {}
+Camera::Camera(System& system) : PluginBase(), _impl{new CameraImpl(system)} {}
 
 Camera::~Camera() {}
 
@@ -37,22 +37,22 @@ Camera::Result Camera::stop_video()
     return _impl->stop_video();
 }
 
-void Camera::take_photo_async(const result_callback_t &callback)
+void Camera::take_photo_async(const result_callback_t& callback)
 {
     _impl->take_photo_async(callback);
 }
 
-void Camera::start_photo_interval_async(float interval_s, const result_callback_t &callback)
+void Camera::start_photo_interval_async(float interval_s, const result_callback_t& callback)
 {
     _impl->start_photo_interval_async(interval_s, callback);
 }
 
-void Camera::stop_photo_interval_async(const result_callback_t &callback)
+void Camera::stop_photo_interval_async(const result_callback_t& callback)
 {
     _impl->stop_photo_interval_async(callback);
 }
 
-void Camera::start_video_async(const result_callback_t &callback)
+void Camera::start_video_async(const result_callback_t& callback)
 {
     _impl->start_video_async(callback);
 }
@@ -72,7 +72,7 @@ Camera::Result Camera::stop_video_streaming()
     return _impl->stop_video_streaming();
 }
 
-Camera::Result Camera::get_video_stream_info(VideoStreamInfo &info)
+Camera::Result Camera::get_video_stream_info(VideoStreamInfo& info)
 {
     return _impl->get_video_stream_info(info);
 }
@@ -87,7 +87,7 @@ void Camera::subscribe_video_stream_info(const subscribe_video_stream_info_callb
     _impl->subscribe_video_stream_info(callback);
 }
 
-void Camera::stop_video_async(const result_callback_t &callback)
+void Camera::stop_video_async(const result_callback_t& callback)
 {
     _impl->stop_video_async(callback);
 }
@@ -97,12 +97,12 @@ Camera::Result Camera::set_mode(const Mode mode)
     return _impl->set_mode(mode);
 }
 
-void Camera::set_mode_async(const Mode mode, const mode_callback_t &callback)
+void Camera::set_mode_async(const Mode mode, const mode_callback_t& callback)
 {
     _impl->set_mode_async(mode, callback);
 }
 
-void Camera::get_mode_async(const mode_callback_t &callback)
+void Camera::get_mode_async(const mode_callback_t& callback)
 {
     _impl->get_mode_async(callback);
 }
@@ -128,39 +128,39 @@ void Camera::subscribe_capture_info(capture_info_callback_t callback)
 }
 
 void Camera::set_option_async(
-    const result_callback_t &callback, const std::string &setting_id, const Option &option)
+    const result_callback_t& callback, const std::string& setting_id, const Option& option)
 {
     _impl->set_option_async(setting_id, option, callback);
 }
 
-Camera::Result Camera::get_option(const std::string &setting_id, Option &option)
+Camera::Result Camera::get_option(const std::string& setting_id, Option& option)
 {
     return _impl->get_option(setting_id, option);
 }
 
-void Camera::get_option_async(const std::string &setting_id, const get_option_callback_t &callback)
+void Camera::get_option_async(const std::string& setting_id, const get_option_callback_t& callback)
 {
     _impl->get_option_async(setting_id, callback);
 }
 
-bool Camera::get_possible_setting_options(std::vector<std::string> &settings)
+bool Camera::get_possible_setting_options(std::vector<std::string>& settings)
 {
     return _impl->get_possible_setting_options(settings);
 }
 
 bool Camera::get_possible_options(
-    const std::string &setting_id, std::vector<Camera::Option> &options)
+    const std::string& setting_id, std::vector<Camera::Option>& options)
 {
     return _impl->get_possible_options(setting_id, options);
 }
 
-void Camera::subscribe_current_settings(const subscribe_current_settings_callback_t &callback)
+void Camera::subscribe_current_settings(const subscribe_current_settings_callback_t& callback)
 {
     _impl->subscribe_current_settings(callback);
 }
 
 void Camera::subscribe_possible_setting_options(
-    const subscribe_possible_setting_options_callback_t &callback)
+    const subscribe_possible_setting_options_callback_t& callback)
 {
     _impl->subscribe_possible_setting_options(callback);
 }
@@ -199,7 +199,7 @@ std::string Camera::result_str(Result result)
     }
 }
 
-bool operator==(const Camera::VideoStreamSettings &lhs, const Camera::VideoStreamSettings &rhs)
+bool operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs)
 {
     return lhs.frame_rate_hz == rhs.frame_rate_hz &&
            lhs.horizontal_resolution_pix == rhs.horizontal_resolution_pix &&
@@ -208,8 +208,8 @@ bool operator==(const Camera::VideoStreamSettings &lhs, const Camera::VideoStrea
            lhs.uri == rhs.uri;
 }
 
-std::ostream &
-operator<<(std::ostream &str, Camera::VideoStreamSettings const &video_stream_settings)
+std::ostream&
+operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings)
 {
     return str << "[frame_rate_hz: " << video_stream_settings.frame_rate_hz
                << ", horizontal_resolution_pix: " << video_stream_settings.horizontal_resolution_pix
@@ -219,12 +219,12 @@ operator<<(std::ostream &str, Camera::VideoStreamSettings const &video_stream_se
                << ", uri: " << video_stream_settings.uri << "]";
 }
 
-bool operator==(const Camera::VideoStreamInfo &lhs, const Camera::VideoStreamInfo &rhs)
+bool operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs)
 {
     return lhs.settings == rhs.settings && lhs.status == rhs.status;
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::VideoStreamInfo const &video_stream_info)
+std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info)
 {
     return str << "[" << std::endl
                << "settings: " << video_stream_info.settings << std::endl
@@ -232,8 +232,8 @@ std::ostream &operator<<(std::ostream &str, Camera::VideoStreamInfo const &video
                << "]";
 }
 
-std::ostream &
-operator<<(std::ostream &str, Camera::VideoStreamInfo::Status const &video_stream_info_status)
+std::ostream&
+operator<<(std::ostream& str, Camera::VideoStreamInfo::Status const& video_stream_info_status)
 {
     switch (video_stream_info_status) {
         case Camera::VideoStreamInfo::Status::IN_PROGRESS:
@@ -245,7 +245,7 @@ operator<<(std::ostream &str, Camera::VideoStreamInfo::Status const &video_strea
     }
 }
 
-bool operator==(const Camera::CaptureInfo &lhs, const Camera::CaptureInfo &rhs)
+bool operator==(const Camera::CaptureInfo& lhs, const Camera::CaptureInfo& rhs)
 {
     return lhs.position == rhs.position && lhs.attitude_quaternion == rhs.attitude_quaternion &&
            lhs.attitude_euler_angle == rhs.attitude_euler_angle &&
@@ -253,7 +253,7 @@ bool operator==(const Camera::CaptureInfo &lhs, const Camera::CaptureInfo &rhs)
            lhs.index == rhs.index && lhs.file_url == rhs.file_url;
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo const &capture_info)
+std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo const& capture_info)
 {
     return str << "[" << std::endl
                << "position: " << capture_info.position << std::endl
@@ -265,14 +265,14 @@ std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo const &capture_i
                << "file_url: " << capture_info.file_url << std::endl;
 }
 
-bool operator==(const Camera::CaptureInfo::Position &lhs, const Camera::CaptureInfo::Position &rhs)
+bool operator==(const Camera::CaptureInfo::Position& lhs, const Camera::CaptureInfo::Position& rhs)
 {
     return lhs.latitude_deg == rhs.latitude_deg && lhs.longitude_deg == rhs.longitude_deg &&
            lhs.absolute_altitude_m == rhs.absolute_altitude_m &&
            lhs.relative_altitude_m == rhs.relative_altitude_m;
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Position const &position)
+std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo::Position const& position)
 {
     return str << "[latitude_deg: " << position.latitude_deg
                << ", longitude_deg: " << position.longitude_deg
@@ -281,31 +281,31 @@ std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Position const 
 }
 
 bool operator==(
-    const Camera::CaptureInfo::Quaternion &lhs, const Camera::CaptureInfo::Quaternion &rhs)
+    const Camera::CaptureInfo::Quaternion& lhs, const Camera::CaptureInfo::Quaternion& rhs)
 {
     return lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::Quaternion const &quaternion)
+std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo::Quaternion const& quaternion)
 {
     return str << "[w: " << quaternion.w << ", x: " << quaternion.x << ", y: " << quaternion.y
                << ", z: " << quaternion.z << "]";
 }
 
 bool operator==(
-    const Camera::CaptureInfo::EulerAngle &lhs, const Camera::CaptureInfo::EulerAngle &rhs)
+    const Camera::CaptureInfo::EulerAngle& lhs, const Camera::CaptureInfo::EulerAngle& rhs)
 {
     return lhs.yaw_deg == rhs.yaw_deg && lhs.pitch_deg == rhs.pitch_deg &&
            lhs.roll_deg == rhs.roll_deg;
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::CaptureInfo::EulerAngle const &euler_angle)
+std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo::EulerAngle const& euler_angle)
 {
     return str << "[yaw_deg: " << euler_angle.yaw_deg << ", pitch_deg: " << euler_angle.pitch_deg
                << ", roll_deg: " << euler_angle.roll_deg;
 }
 
-bool operator==(const Camera::Status &lhs, const Camera::Status &rhs)
+bool operator==(const Camera::Status& lhs, const Camera::Status& rhs)
 {
     return lhs.video_on == rhs.video_on && lhs.photo_interval_on == rhs.photo_interval_on &&
            lhs.used_storage_mib == rhs.used_storage_mib &&
@@ -315,7 +315,7 @@ bool operator==(const Camera::Status &lhs, const Camera::Status &rhs)
            lhs.recording_time_s == rhs.recording_time_s && lhs.storage_status == rhs.storage_status;
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::Status const &status)
+std::ostream& operator<<(std::ostream& str, Camera::Status const& status)
 {
     return str << "[video_on: " << status.video_on
                << ", photo_interval_on: " << status.photo_interval_on
@@ -327,7 +327,7 @@ std::ostream &operator<<(std::ostream &str, Camera::Status const &status)
                << ", storage_status: " << status.storage_status << "]";
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::Status::StorageStatus const &storage_status)
+std::ostream& operator<<(std::ostream& str, Camera::Status::StorageStatus const& storage_status)
 {
     switch (storage_status) {
         case Camera::Status::StorageStatus::UNFORMATTED:
@@ -341,31 +341,31 @@ std::ostream &operator<<(std::ostream &str, Camera::Status::StorageStatus const 
     }
 }
 
-bool operator==(const Camera::Setting &lhs, const Camera::Setting &rhs)
+bool operator==(const Camera::Setting& lhs, const Camera::Setting& rhs)
 {
     return lhs.setting_id == rhs.setting_id && lhs.setting_description == rhs.setting_description &&
            lhs.option == rhs.option;
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::Setting const &setting)
+std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting)
 {
     return str << "[setting_id: " << setting.setting_id
                << ", setting_description: " << setting.setting_description
                << ", option: " << setting.option << "]";
 }
 
-bool operator==(const Camera::Option &lhs, const Camera::Option &rhs)
+bool operator==(const Camera::Option& lhs, const Camera::Option& rhs)
 {
     return (lhs.option_id == rhs.option_id) && (lhs.option_description == rhs.option_description);
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::Option const &option)
+std::ostream& operator<<(std::ostream& str, Camera::Option const& option)
 {
     return str << "[option_id: " << option.option_id
                << ", option_description: " << option.option_description << "]";
 }
 
-bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions &rhs)
+bool operator==(const Camera::SettingOptions& lhs, const Camera::SettingOptions& rhs)
 {
     if (lhs.options.size() != rhs.options.size()) {
         return false;
@@ -380,13 +380,13 @@ bool operator==(const Camera::SettingOptions &lhs, const Camera::SettingOptions 
     return lhs.setting_id == rhs.setting_id && lhs.setting_description == rhs.setting_description;
 }
 
-std::ostream &operator<<(std::ostream &str, Camera::SettingOptions const &setting_options)
+std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& setting_options)
 {
     str << "[setting_id: " << setting_options.setting_id;
     str << ", setting_description: " << setting_options.setting_description;
     str << ", options: [";
 
-    for (const auto &option : setting_options.options) {
+    for (const auto& option : setting_options.options) {
         str << option;
     }
 

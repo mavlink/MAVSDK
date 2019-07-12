@@ -4,7 +4,7 @@
 
 namespace mavsdk {
 
-Geofence::Geofence(System &system) : PluginBase(), _impl{new GeofenceImpl(system)} {}
+Geofence::Geofence(System& system) : PluginBase(), _impl{new GeofenceImpl(system)} {}
 
 Geofence::~Geofence() {}
 
@@ -16,12 +16,12 @@ Geofence::Polygon::~Polygon()
 }
 
 void Geofence::send_geofence_async(
-    const std::vector<std::shared_ptr<Geofence::Polygon>> &polygons, result_callback_t callback)
+    const std::vector<std::shared_ptr<Geofence::Polygon>>& polygons, result_callback_t callback)
 {
     _impl->send_geofence_async(polygons, callback);
 }
 
-const char *Geofence::result_str(Result result)
+const char* Geofence::result_str(Result result)
 {
     switch (result) {
         case Result::SUCCESS:

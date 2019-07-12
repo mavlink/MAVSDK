@@ -36,7 +36,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit MavlinkPassthrough(System &system);
+    explicit MavlinkPassthrough(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -65,7 +65,7 @@ public:
      *
      * @return result of the request.
      */
-    Result send_message(mavlink_message_t &message);
+    Result send_message(mavlink_message_t& message);
 
     /**
      * @brief Subscribe to messages using message ID.
@@ -78,7 +78,7 @@ public:
      * @param callback Callback to be called for message subscription.
      */
     void subscribe_message_async(
-        uint16_t message_id, std::function<void(const mavlink_message_t &)> callback);
+        uint16_t message_id, std::function<void(const mavlink_message_t&)> callback);
 
     /**
      * @brief Get our own system ID.
@@ -123,7 +123,7 @@ public:
      * @param callback Callback to be called for each incoming message.
      *        To drop a message, return 'false' from the callback.
      */
-    void intercept_incoming_messages_async(std::function<bool(mavlink_message_t &)> callback);
+    void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
     /**
      * @brief Intercept outgoing messages.
@@ -137,16 +137,16 @@ public:
      * @param callback Callback to be called for each outgoing message.
      *        To drop a message, return 'false' from the callback.
      */
-    void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t &)> callback);
+    void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
     /**
      * @brief Copy Constructor (object is not copyable).
      */
-    MavlinkPassthrough(const MavlinkPassthrough &) = delete;
+    MavlinkPassthrough(const MavlinkPassthrough&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const MavlinkPassthrough &operator=(const MavlinkPassthrough &) = delete;
+    const MavlinkPassthrough& operator=(const MavlinkPassthrough&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

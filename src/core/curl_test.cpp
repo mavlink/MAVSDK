@@ -27,7 +27,7 @@ protected:
 
     void clean() { remove(_local_path.c_str()); }
 
-    bool check_file_exists(const std::string &file_path)
+    bool check_file_exists(const std::string& file_path)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         std::ifstream infile(file_path.c_str());

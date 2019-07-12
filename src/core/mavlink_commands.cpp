@@ -14,7 +14,7 @@ namespace mavsdk {
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
-MAVLinkCommands::MAVLinkCommands(SystemImpl &parent) : _parent(parent)
+MAVLinkCommands::MAVLinkCommands(SystemImpl& parent) : _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
@@ -27,7 +27,7 @@ MAVLinkCommands::~MAVLinkCommands()
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandInt &command)
+MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandInt& command)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -47,7 +47,7 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
     return res.get();
 }
 
-MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandLong &command)
+MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandLong& command)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -67,7 +67,7 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
 }
 
 void MAVLinkCommands::queue_command_async(
-    const CommandInt &command, command_result_callback_t callback)
+    const CommandInt& command, command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
@@ -97,7 +97,7 @@ void MAVLinkCommands::queue_command_async(
 }
 
 void MAVLinkCommands::queue_command_async(
-    const CommandLong &command, command_result_callback_t callback)
+    const CommandLong& command, command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
@@ -271,7 +271,7 @@ void MAVLinkCommands::do_work()
 }
 
 void MAVLinkCommands::call_callback(
-    const command_result_callback_t &callback, Result result, float progress)
+    const command_result_callback_t& callback, Result result, float progress)
 {
     if (!callback) {
         return;

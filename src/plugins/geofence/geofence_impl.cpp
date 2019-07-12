@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-GeofenceImpl::GeofenceImpl(System &system) :
+GeofenceImpl::GeofenceImpl(System& system) :
     PluginImplBase(system),
     _mavlink_geofence_item_messages()
 {
@@ -45,8 +45,8 @@ void GeofenceImpl::enable() {}
 void GeofenceImpl::disable() {}
 
 void GeofenceImpl::send_geofence_async(
-    const std::vector<std::shared_ptr<Geofence::Polygon>> &polygons,
-    const Geofence::result_callback_t &callback)
+    const std::vector<std::shared_ptr<Geofence::Polygon>>& polygons,
+    const Geofence::result_callback_t& callback)
 {
     if (_active) {
         report_geofence_result(callback, Geofence::Result::BUSY);
@@ -87,7 +87,7 @@ void GeofenceImpl::send_geofence_async(
         std::bind(&GeofenceImpl::timeout_happened, this), 2.0, &_timeout_cookie);
 }
 
-void GeofenceImpl::process_mission_request(const mavlink_message_t &unused)
+void GeofenceImpl::process_mission_request(const mavlink_message_t& unused)
 {
     // We only support int, so we nack this and thus tell the autopilot to use int.
     UNUSED(unused);
@@ -108,7 +108,7 @@ void GeofenceImpl::process_mission_request(const mavlink_message_t &unused)
     _parent->refresh_timeout_handler(this);
 }
 
-void GeofenceImpl::process_mission_request_int(const mavlink_message_t &message)
+void GeofenceImpl::process_mission_request_int(const mavlink_message_t& message)
 {
     if (!_active) {
         LogDebug() << "Ignore geofence request, currently inactive";
@@ -135,7 +135,7 @@ void GeofenceImpl::process_mission_request_int(const mavlink_message_t &message)
     _parent->refresh_timeout_handler(this);
 }
 
-void GeofenceImpl::process_mission_ack(const mavlink_message_t &message)
+void GeofenceImpl::process_mission_ack(const mavlink_message_t& message)
 {
     if (!_active) {
         LogDebug() << "Ignore mission ack because not active";
@@ -168,12 +168,12 @@ void GeofenceImpl::process_mission_ack(const mavlink_message_t &message)
 }
 
 void GeofenceImpl::assemble_mavlink_messages(
-    const std::vector<std::shared_ptr<Geofence::Polygon>> &polygons)
+    const std::vector<std::shared_ptr<Geofence::Polygon>>& polygons)
 {
     // TODO: delete all entries first
     _mavlink_geofence_item_messages.clear();
 
-    for (auto &polygon : polygons) {
+    for (auto& polygon : polygons) {
         uint16_t command;
         switch (polygon->type) {
             case Geofence::Polygon::Type::INCLUSION:
@@ -187,7 +187,7 @@ void GeofenceImpl::assemble_mavlink_messages(
                 return;
         }
 
-        for (auto &point : polygon->points) {
+        for (auto& point : polygon->points) {
             std::shared_ptr<mavlink_message_t> message(new mavlink_message_t());
             mavlink_msg_mission_item_int_pack(
                 _parent->get_own_system_id(),
@@ -233,7 +233,7 @@ void GeofenceImpl::send_geofence_item(uint16_t seq)
 }
 
 void GeofenceImpl::report_geofence_result(
-    const Geofence::result_callback_t &callback, Geofence::Result result)
+    const Geofence::result_callback_t& callback, Geofence::Result result)
 {
     if (callback == nullptr) {
         LogDebug() << "Callback is not set";

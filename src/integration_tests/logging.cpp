@@ -14,7 +14,7 @@ TEST_F(SitlTest, Logging)
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dc.system();
+    System& system = dc.system();
     auto logging = std::make_shared<Logging>(system);
     Logging::Result log_ret = logging->start_logging();
 

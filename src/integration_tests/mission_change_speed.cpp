@@ -20,7 +20,7 @@ std::shared_ptr<MissionItem> only_set_speed(float speed_m_s);
 std::shared_ptr<MissionItem>
 add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_m, float speed_m_s);
 
-float current_speed(std::shared_ptr<Telemetry> &telemetry);
+float current_speed(std::shared_ptr<Telemetry>& telemetry);
 
 static std::atomic<bool> _mission_sent_ok{false};
 static std::atomic<bool> _mission_started_ok{false};
@@ -41,7 +41,7 @@ TEST_F(SitlTest, MissionChangeSpeed)
     ASSERT_TRUE(poll_condition_with_timeout(
         [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);
@@ -161,7 +161,7 @@ add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_
     return new_item;
 }
 
-float current_speed(std::shared_ptr<Telemetry> &telemetry)
+float current_speed(std::shared_ptr<Telemetry>& telemetry)
 {
     return std::sqrt(
         telemetry->ground_speed_ned().velocity_north_m_s *

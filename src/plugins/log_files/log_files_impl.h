@@ -9,7 +9,7 @@ namespace mavsdk {
 
 class LogFilesImpl : public PluginImplBase {
 public:
-    LogFilesImpl(System &system);
+    LogFilesImpl(System& system);
     ~LogFilesImpl();
 
     void init() override;
@@ -21,15 +21,15 @@ public:
     std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> get_entries();
     void get_entries_async(LogFiles::get_entries_callback_t callback);
 
-    LogFiles::Result download_log_file(unsigned id, const std::string &file_path);
+    LogFiles::Result download_log_file(unsigned id, const std::string& file_path);
     void download_log_file_async(
-        unsigned id, const std::string &file_path, LogFiles::download_log_file_callback_t callback);
+        unsigned id, const std::string& file_path, LogFiles::download_log_file_callback_t callback);
 
 private:
     void request_end();
 
-    void process_log_entry(const mavlink_message_t &message);
-    void process_log_data(const mavlink_message_t &message);
+    void process_log_entry(const mavlink_message_t& message);
+    void process_log_data(const mavlink_message_t& message);
     void list_timeout();
 
     void request_list_entry(int entry_id);
@@ -47,7 +47,7 @@ private:
         LogFiles::get_entries_callback_t callback{nullptr};
         unsigned max_list_id{0};
         unsigned retries{0};
-        void *cookie{nullptr};
+        void* cookie{nullptr};
     } _entries{};
 
     struct {
@@ -57,7 +57,7 @@ private:
         std::vector<bool> chunks_received{};
         unsigned retries{0};
         bool rerequesting{false};
-        void *cookie{nullptr};
+        void* cookie{nullptr};
         std::string file_path{};
         LogFiles::download_log_file_callback_t callback{nullptr};
         unsigned last_progress_percentage{0};

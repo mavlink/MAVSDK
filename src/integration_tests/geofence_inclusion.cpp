@@ -25,7 +25,7 @@ TEST_F(SitlTest, GeofenceInclusion)
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    System &system = dl.system();
+    System& system = dl.system();
     ASSERT_TRUE(system.has_autopilot());
     auto telemetry = std::make_shared<Telemetry>(system);
     auto geofence = std::make_shared<Geofence>(system);

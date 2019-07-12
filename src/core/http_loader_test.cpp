@@ -30,13 +30,13 @@ protected:
         remove(_file_local_path_3.c_str());
     }
 
-    bool check_file_exists(const std::string &file_path)
+    bool check_file_exists(const std::string& file_path)
     {
         std::ifstream infile(file_path.c_str());
         return infile.good();
     }
 
-    void write_file(const std::string &path, const std::string &content)
+    void write_file(const std::string& path, const std::string& content)
     {
         std::ofstream file;
         file.open(path);
@@ -45,12 +45,12 @@ protected:
     }
 
     void
-    expect_all_simulated_downloads_to_succeed(const std::shared_ptr<CurlWrapperMock> &curl_wrapper)
+    expect_all_simulated_downloads_to_succeed(const std::shared_ptr<CurlWrapperMock>& curl_wrapper)
     {
         EXPECT_CALL(*curl_wrapper, download_file_to_path(_, _, _))
-            .WillRepeatedly(Invoke([&](const std::string & /*url*/,
-                                       const std::string &path,
-                                       const progress_callback_t &progress_callback) {
+            .WillRepeatedly(Invoke([&](const std::string& /*url*/,
+                                       const std::string& path,
+                                       const progress_callback_t& progress_callback) {
                 for (size_t i = 0; i <= 100; i++) {
                     if (progress_callback != nullptr) {
                         progress_callback(i, Status::Downloading, CURLcode::CURLE_OK);
@@ -67,14 +67,14 @@ protected:
     }
 
     void expect_one_simulated_download_to_fail(
-        const std::shared_ptr<CurlWrapperMock> &curl_wrapper,
-        const std::string &url,
-        const std::string &path)
+        const std::shared_ptr<CurlWrapperMock>& curl_wrapper,
+        const std::string& url,
+        const std::string& path)
     {
         EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
-            .WillOnce(Invoke([&](const std::string & /*url*/,
-                                 const std::string & /*path*/,
-                                 const progress_callback_t &progress_callback) {
+            .WillOnce(Invoke([&](const std::string& /*url*/,
+                                 const std::string& /*path*/,
+                                 const progress_callback_t& progress_callback) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(20));
                 progress_callback(0, Status::Error, CURLcode::CURLE_COULDNT_RESOLVE_HOST);
                 return false;
@@ -82,14 +82,14 @@ protected:
     }
 
     void expect_one_simulated_download_to_succeed(
-        const std::shared_ptr<CurlWrapperMock> &curl_wrapper,
-        const std::string &url,
-        const std::string &path)
+        const std::shared_ptr<CurlWrapperMock>& curl_wrapper,
+        const std::string& url,
+        const std::string& path)
     {
         EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
-            .WillOnce(Invoke([&](const std::string & /*url*/,
-                                 const std::string &got_path,
-                                 const progress_callback_t &progress_callback) {
+            .WillOnce(Invoke([&](const std::string& /*url*/,
+                                 const std::string& got_path,
+                                 const progress_callback_t& progress_callback) {
                 for (size_t i = 0; i <= 100; i++) {
                     if (progress_callback != nullptr) {
                         progress_callback(i, Status::Downloading, CURLcode::CURLE_OK);

@@ -27,7 +27,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Geofence(System &system);
+    explicit Geofence(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -53,7 +53,7 @@ public:
      * @param result Enum for which string is required.
      * @return Human readable string for the Geofence::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Callback type for async geofence calls.
@@ -103,17 +103,17 @@ public:
      * @param callback Callback to receive result of this request.
      */
     void send_geofence_async(
-        const std::vector<std::shared_ptr<Polygon>> &polygons, result_callback_t callback);
+        const std::vector<std::shared_ptr<Polygon>>& polygons, result_callback_t callback);
 
     // Non-copyable
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Geofence(const Geofence &) = delete;
+    Geofence(const Geofence&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Geofence &operator=(const Geofence &) = delete;
+    const Geofence& operator=(const Geofence&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

@@ -19,8 +19,8 @@ struct QGCMissionItem {
 Mission::Result compose_mission_items(
     MAV_CMD command,
     std::vector<double> params,
-    std::shared_ptr<MissionItem> &new_mission_item,
-    Mission::mission_items_t &mission_items);
+    std::shared_ptr<MissionItem>& new_mission_item,
+    Mission::mission_items_t& mission_items);
 
 static void
 compare(const std::shared_ptr<MissionItem> local, const std::shared_ptr<MissionItem> imported);
@@ -63,7 +63,7 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
     auto new_mission_item = std::make_shared<MissionItem>();
     Mission::Result result = Mission::Result::SUCCESS;
 
-    for (auto &qgc_it : items_test) {
+    for (auto& qgc_it : items_test) {
         auto command = qgc_it.command;
         auto params = qgc_it.params;
         result = compose_mission_items(command, params, new_mission_item, mission_items_local);
@@ -88,8 +88,8 @@ TEST(QGCMissionImport, ValidateQGCMissonItems)
 Mission::Result compose_mission_items(
     MAV_CMD command,
     std::vector<double> params,
-    std::shared_ptr<MissionItem> &new_mission_item,
-    Mission::mission_items_t &mission_items)
+    std::shared_ptr<MissionItem>& new_mission_item,
+    Mission::mission_items_t& mission_items)
 {
     Mission::Result result = Mission::Result::SUCCESS;
 

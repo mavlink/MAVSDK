@@ -15,7 +15,7 @@ MAVLinkReceiver::MAVLinkReceiver(uint8_t channel) :
 #endif
 {}
 
-void MAVLinkReceiver::set_new_datagram(char *datagram, unsigned datagram_len)
+void MAVLinkReceiver::set_new_datagram(char* datagram, unsigned datagram_len)
 {
     _datagram = datagram;
     _datagram_len = datagram_len;
@@ -109,7 +109,7 @@ void MAVLinkReceiver::debug_drop_rate()
 }
 
 void MAVLinkReceiver::print_line(
-    const char *index,
+    const char* index,
     unsigned count,
     unsigned count_total,
     unsigned overall_bytes,

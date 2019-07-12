@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-MissionRaw::MissionRaw(System &system) : PluginBase(), _impl{new MissionRawImpl(system)} {}
+MissionRaw::MissionRaw(System& system) : PluginBase(), _impl{new MissionRawImpl(system)} {}
 
 MissionRaw::~MissionRaw() {}
 
@@ -19,7 +19,7 @@ void MissionRaw::download_mission_cancel()
     _impl->download_mission_cancel();
 }
 
-const char *MissionRaw::result_str(Result result)
+const char* MissionRaw::result_str(Result result)
 {
     switch (result) {
         case Result::SUCCESS:

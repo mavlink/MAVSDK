@@ -62,7 +62,7 @@ TEST_F(SitlTest, MissionAddWaypointsAndFly)
         dc.register_on_discover(nullptr);
     }
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto telemetry = std::make_shared<Telemetry>(system);

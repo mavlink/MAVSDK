@@ -28,7 +28,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Gimbal(System &system);
+    explicit Gimbal(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -51,7 +51,7 @@ public:
      * @param result The enum value for which a human readable string is required.
      * @return Human readable string for the Gimbal::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Callback type for asynchronous Gimbal calls.
@@ -120,12 +120,12 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Gimbal(const Gimbal &) = delete;
+    Gimbal(const Gimbal&) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Gimbal &operator=(const Gimbal &) = delete;
+    const Gimbal& operator=(const Gimbal&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

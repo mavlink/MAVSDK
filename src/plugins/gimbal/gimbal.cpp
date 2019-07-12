@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Gimbal::Gimbal(System &system) : PluginBase(), _impl{new GimbalImpl(system)} {}
+Gimbal::Gimbal(System& system) : PluginBase(), _impl{new GimbalImpl(system)} {}
 
 Gimbal::~Gimbal() {}
 
@@ -28,7 +28,7 @@ void Gimbal::set_roi_location_async(
     _impl->set_roi_location_async(latitude_deg, longitude_deg, altitude_m, callback);
 }
 
-const char *Gimbal::result_str(Result result)
+const char* Gimbal::result_str(Result result)
 {
     switch (result) {
         case Result::SUCCESS:

@@ -28,7 +28,7 @@ public:
         void(Camera::subscribe_possible_setting_options_callback_t)){};
     MOCK_CONST_METHOD3(
         set_option_async,
-        void(Camera::result_callback_t, const std::string &, const Camera::Option)){};
+        void(Camera::result_callback_t, const std::string&, const Camera::Option)){};
 };
 
 } // namespace testing

@@ -52,7 +52,7 @@ IndentWidth: 4
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false
 NamespaceIndentation: None
-PointerAlignment: Right
+PointerAlignment: Left
 ReflowComments: true
 SortIncludes: false
 SortUsingDeclarations: false

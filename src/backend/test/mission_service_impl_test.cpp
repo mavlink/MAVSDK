@@ -165,14 +165,14 @@ protected:
 
     /* Generate an UploadMissionRequest from a list of mission items. */
     std::shared_ptr<UploadMissionRequest>
-    generateUploadRequest(const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const;
+    generateUploadRequest(const std::vector<std::shared_ptr<dc::MissionItem>>& mission_items) const;
 
     /**
      * Upload a list of items through gRPC, catch the list that is actually sent by
      * the backend, and verify that it has been sent correctly over gRPC.
      */
     void
-    checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
+    checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>>& mission_items);
 
     /* Captures the actual mission sent to mavsdk by the backend. */
     std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission{};
@@ -226,11 +226,11 @@ TEST_P(MissionServiceImplUploadTest, uploadResultIsTranslatedCorrectly)
 }
 
 std::shared_ptr<UploadMissionRequest> MissionServiceImplUploadTest::generateUploadRequest(
-    const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const
+    const std::vector<std::shared_ptr<dc::MissionItem>>& mission_items) const
 {
     auto request = std::make_shared<UploadMissionRequest>();
 
-    for (const auto &mission_item : mission_items) {
+    for (const auto& mission_item : mission_items) {
         auto rpc_mission_item = request->add_mission_items();
         MissionServiceImpl::translateMissionItem(mission_item, rpc_mission_item);
     }
@@ -255,7 +255,7 @@ TEST_F(MissionServiceImplUploadTest, uploadsOneItemMission)
 }
 
 void MissionServiceImplUploadTest::checkItemsAreUploadedCorrectly(
-    std::vector<std::shared_ptr<dc::MissionItem>> &mission_items)
+    std::vector<std::shared_ptr<dc::MissionItem>>& mission_items)
 {
     auto request = generateUploadRequest(mission_items);
 
@@ -281,7 +281,7 @@ protected:
     std::future<void>
     downloadMissionAndSaveParams(std::shared_ptr<DownloadMissionResponse> response);
     void
-    checkItemsAreDownloadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
+    checkItemsAreDownloadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>>& mission_items);
 
     dc::Mission::mission_items_and_result_callback_t _download_callback{};
 };
@@ -340,7 +340,7 @@ TEST_F(MissionServiceImplDownloadTest, downloadsOneItemMission)
 }
 
 void MissionServiceImplDownloadTest::checkItemsAreDownloadedCorrectly(
-    std::vector<std::shared_ptr<dc::MissionItem>> &mission_items)
+    std::vector<std::shared_ptr<dc::MissionItem>>& mission_items)
 {
     auto response = std::make_shared<DownloadMissionResponse>();
     auto download_handle = downloadMissionAndSaveParams(response);
@@ -552,7 +552,7 @@ protected:
     }
 
     std::future<void> subscribeMissionProgressAsync(
-        std::vector<std::pair<int, int>> &progress_events,
+        std::vector<std::pair<int, int>>& progress_events,
         std::shared_ptr<grpc::ClientContext> context) const;
 
     std::unique_ptr<grpc::Server> _server{};
@@ -578,7 +578,7 @@ TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)
 }
 
 std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
-    std::vector<std::pair<int, int>> &progress_events,
+    std::vector<std::pair<int, int>>& progress_events,
     std::shared_ptr<grpc::ClientContext> context) const
 {
     return std::async(std::launch::async, [&]() {

@@ -23,7 +23,7 @@ TEST_F(SitlTest, MavlinkPassthrough)
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     }
 
-    System &system = dc.system();
+    System& system = dc.system();
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
 
     {
@@ -54,7 +54,7 @@ TEST_F(SitlTest, MavlinkPassthrough)
 
         mavlink_passthrough->subscribe_message_async(
             MAVLINK_MSG_ID_HIGHRES_IMU,
-            [&prom, &counter, &stopped, mavlink_passthrough](const mavlink_message_t &message) {
+            [&prom, &counter, &stopped, mavlink_passthrough](const mavlink_message_t& message) {
                 mavlink_highres_imu_t highres_imu;
                 mavlink_msg_highres_imu_decode(&message, &highres_imu);
 

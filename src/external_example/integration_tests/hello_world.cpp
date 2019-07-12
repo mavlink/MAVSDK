@@ -17,7 +17,7 @@ TEST_F(SitlTest, ExampleHello)
     std::this_thread::sleep_for(std::chrono::seconds(2));
     ASSERT_TRUE(dc.is_connected());
 
-    System &system = dc.system();
+    System& system = dc.system();
     auto example = std::make_shared<Example>(system);
 
     // Apparently it can say hello.

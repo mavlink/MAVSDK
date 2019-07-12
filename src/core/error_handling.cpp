@@ -2,7 +2,7 @@
 
 namespace mavsdk {
 
-const char *result_str(Result res)
+const char* result_str(Result res)
 {
     switch (res) {
         case Result::SUCCESS:

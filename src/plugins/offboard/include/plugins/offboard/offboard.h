@@ -37,7 +37,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Offboard(System &system);
+    explicit Offboard(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -64,7 +64,7 @@ public:
      * @param result The enum value for which a string is required.
      * @returns Human-readable string for enum value.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Callback type for offboard requests.
@@ -217,11 +217,11 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Offboard(const Offboard &) = delete;
+    Offboard(const Offboard&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Offboard &operator=(const Offboard &) = delete;
+    const Offboard& operator=(const Offboard&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */
@@ -233,42 +233,42 @@ private:
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Offboard::Attitude &lhs, const Offboard::Attitude &rhs);
+bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs);
 
 /**
  * @brief Equal operator to compare two `Offboard::AttitudeRate` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Offboard::AttitudeRate &lhs, const Offboard::AttitudeRate &rhs);
+bool operator==(const Offboard::AttitudeRate& lhs, const Offboard::AttitudeRate& rhs);
 
 /**
  * @brief Stream operator to print information about a `Offboard::Attitude`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Offboard::Attitude const &attitude);
+std::ostream& operator<<(std::ostream& str, Offboard::Attitude const& attitude);
 
 /**
  * @brief Stream operator to print information about a `Offboard::AttitudeRate`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Offboard::AttitudeRate const &attitude_rate);
+std::ostream& operator<<(std::ostream& str, Offboard::AttitudeRate const& attitude_rate);
 
 /**
  * @brief Equal operator to compare two `Offboard::PositionNEDYaw` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Offboard::PositionNEDYaw &lhs, const Offboard::PositionNEDYaw &rhs);
+bool operator==(const Offboard::PositionNEDYaw& lhs, const Offboard::PositionNEDYaw& rhs);
 
 /**
  * @brief Stream operator to print information about a `Offboard::PositionNEDYaw`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Offboard::PositionNEDYaw const &position_ned_yaw);
+std::ostream& operator<<(std::ostream& str, Offboard::PositionNEDYaw const& position_ned_yaw);
 
 /**
  * @brief Equal operator to compare two `Offboard::VelocityBodyYawspeed` objects.
@@ -276,28 +276,28 @@ std::ostream &operator<<(std::ostream &str, Offboard::PositionNEDYaw const &posi
  * @return `true` if items are equal.
  */
 bool operator==(
-    const Offboard::VelocityBodyYawspeed &lhs, const Offboard::VelocityBodyYawspeed &rhs);
+    const Offboard::VelocityBodyYawspeed& lhs, const Offboard::VelocityBodyYawspeed& rhs);
 
 /**
  * @brief Stream operator to print information about a `Offboard::VelocityBodyYawspeed`.
  *
  * @return A reference to the stream.
  */
-std::ostream &
-operator<<(std::ostream &str, Offboard::VelocityBodyYawspeed const &velocity_body_yawspeed);
+std::ostream&
+operator<<(std::ostream& str, Offboard::VelocityBodyYawspeed const& velocity_body_yawspeed);
 
 /**
  * @brief Equal operator to compare two `Offboard::VelocityNEDYaw` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Offboard::VelocityNEDYaw &lhs, const Offboard::VelocityNEDYaw &rhs);
+bool operator==(const Offboard::VelocityNEDYaw& lhs, const Offboard::VelocityNEDYaw& rhs);
 
 /**
  * @brief Stream operator to print information about a `Offboard::VelocityNEDYaw`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Offboard::VelocityNEDYaw const &velocity_ned_yaw);
+std::ostream& operator<<(std::ostream& str, Offboard::VelocityNEDYaw const& velocity_ned_yaw);
 
 } // namespace mavsdk

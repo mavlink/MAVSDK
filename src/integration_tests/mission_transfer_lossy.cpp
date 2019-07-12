@@ -13,13 +13,13 @@ static void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrou
 static std::vector<std::shared_ptr<MissionItem>> create_mission_items();
 static void upload_mission(
     std::shared_ptr<Mission> mission,
-    const std::vector<std::shared_ptr<MissionItem>> &mission_items);
+    const std::vector<std::shared_ptr<MissionItem>>& mission_items);
 static std::vector<std::shared_ptr<MissionItem>> download_mission(std::shared_ptr<Mission> mission);
 static void compare_mission(
-    const std::vector<std::shared_ptr<MissionItem>> &a,
-    const std::vector<std::shared_ptr<MissionItem>> &b);
+    const std::vector<std::shared_ptr<MissionItem>>& a,
+    const std::vector<std::shared_ptr<MissionItem>>& b);
 
-static bool should_keep_message(const mavlink_message_t &message);
+static bool should_keep_message(const mavlink_message_t& message);
 
 static std::atomic<unsigned> _lossy_counter{0};
 
@@ -39,7 +39,7 @@ TEST_F(SitlTest, MissionTransferLossy)
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     }
 
-    System &system = dc.system();
+    System& system = dc.system();
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
     auto mission = std::make_shared<Mission>(system);
 
@@ -55,13 +55,13 @@ TEST_F(SitlTest, MissionTransferLossy)
 void set_link_lossy(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough)
 {
     mavlink_passthrough->intercept_outgoing_messages_async(
-        [](mavlink_message_t &message) { return should_keep_message(message); });
+        [](mavlink_message_t& message) { return should_keep_message(message); });
 
     mavlink_passthrough->intercept_incoming_messages_async(
-        [](mavlink_message_t &message) { return should_keep_message(message); });
+        [](mavlink_message_t& message) { return should_keep_message(message); });
 }
 
-bool should_keep_message(const mavlink_message_t &message)
+bool should_keep_message(const mavlink_message_t& message)
 {
     bool should_keep = true;
     if (message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST ||
@@ -91,7 +91,7 @@ std::vector<std::shared_ptr<MissionItem>> create_mission_items()
 
 void upload_mission(
     std::shared_ptr<Mission> mission,
-    const std::vector<std::shared_ptr<MissionItem>> &mission_items)
+    const std::vector<std::shared_ptr<MissionItem>>& mission_items)
 {
     LogInfo() << "Uploading mission...";
     auto prom = std::promise<void>{};
@@ -132,8 +132,8 @@ std::vector<std::shared_ptr<MissionItem>> download_mission(std::shared_ptr<Missi
 }
 
 void compare_mission(
-    const std::vector<std::shared_ptr<MissionItem>> &a,
-    const std::vector<std::shared_ptr<MissionItem>> &b)
+    const std::vector<std::shared_ptr<MissionItem>>& a,
+    const std::vector<std::shared_ptr<MissionItem>>& b)
 {
     EXPECT_EQ(a.size(), b.size());
 

@@ -13,7 +13,7 @@ class SystemImpl;
 
 class MAVLinkCommands {
 public:
-    explicit MAVLinkCommands(SystemImpl &parent);
+    explicit MAVLinkCommands(SystemImpl& parent);
     ~MAVLinkCommands();
 
     enum class Result {
@@ -50,7 +50,7 @@ public:
         // In some cases "Reserved" value could be "0".
         // This utility method can be used in such case.
         // TODO: rename to set_all
-        static void set_as_reserved(Params &params, float reserved_value = NAN)
+        static void set_as_reserved(Params& params, float reserved_value = NAN)
         {
             params.param1 = reserved_value;
             params.param2 = reserved_value;
@@ -78,7 +78,7 @@ public:
         } params{};
 
         // TODO: rename to set_all
-        static void set_as_reserved(Params &params, float reserved_value = NAN)
+        static void set_as_reserved(Params& params, float reserved_value = NAN)
         {
             params.param1 = reserved_value;
             params.param2 = reserved_value;
@@ -90,19 +90,19 @@ public:
         }
     };
 
-    Result send_command(const CommandInt &command);
-    Result send_command(const CommandLong &command);
+    Result send_command(const CommandInt& command);
+    Result send_command(const CommandLong& command);
 
-    void queue_command_async(const CommandInt &command, command_result_callback_t callback);
-    void queue_command_async(const CommandLong &command, command_result_callback_t callback);
+    void queue_command_async(const CommandInt& command, command_result_callback_t callback);
+    void queue_command_async(const CommandLong& command, command_result_callback_t callback);
 
     void do_work();
 
     static const int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
 
     // Non-copyable
-    MAVLinkCommands(const MAVLinkCommands &) = delete;
-    const MAVLinkCommands &operator=(const MAVLinkCommands &) = delete;
+    MAVLinkCommands(const MAVLinkCommands&) = delete;
+    const MAVLinkCommands& operator=(const MAVLinkCommands&) = delete;
 
 private:
     struct Work {
@@ -117,12 +117,12 @@ private:
     void receive_command_ack(mavlink_message_t message);
     void receive_timeout();
 
-    void call_callback(const command_result_callback_t &callback, Result result, float progress);
+    void call_callback(const command_result_callback_t& callback, Result result, float progress);
 
-    SystemImpl &_parent;
+    SystemImpl& _parent;
     LockedQueue<Work> _work_queue{};
 
-    void *_timeout_cookie = nullptr;
+    void* _timeout_cookie = nullptr;
 };
 
 } // namespace mavsdk

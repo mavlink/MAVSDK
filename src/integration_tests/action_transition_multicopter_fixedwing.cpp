@@ -29,7 +29,7 @@ void takeoff_and_transition_to_fixedwing()
         [&dc]() { return dc.is_connected(); }, std::chrono::seconds(10)));
     ASSERT_TRUE(dc.is_connected());
 
-    System &system = dc.system();
+    System& system = dc.system();
     auto action = std::make_shared<Action>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
 

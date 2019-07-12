@@ -38,7 +38,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit MissionRaw(System &system);
+    explicit MissionRaw(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -65,7 +65,7 @@ public:
      * @param result Enum for which string is required.
      * @return Human readable string for the MissionRaw::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Mission item identical to MAVLink MISSION_ITEM_INT.
@@ -130,11 +130,11 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    MissionRaw(const MissionRaw &) = delete;
+    MissionRaw(const MissionRaw&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const MissionRaw &operator=(const MissionRaw &) = delete;
+    const MissionRaw& operator=(const MissionRaw&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

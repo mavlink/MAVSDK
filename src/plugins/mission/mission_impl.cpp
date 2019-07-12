@@ -10,7 +10,7 @@ namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
-MissionImpl::MissionImpl(System &system) : PluginImplBase(system)
+MissionImpl::MissionImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -66,7 +66,7 @@ void MissionImpl::deinit()
     _parent->unregister_all_mavlink_message_handlers(this);
 }
 
-void MissionImpl::process_mission_request(const mavlink_message_t &unused)
+void MissionImpl::process_mission_request(const mavlink_message_t& unused)
 {
     // We only support int, so we nack this and thus tell the autopilot to use int.
     UNUSED(unused);
@@ -87,7 +87,7 @@ void MissionImpl::process_mission_request(const mavlink_message_t &unused)
     _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
-void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
+void MissionImpl::process_mission_request_int(const mavlink_message_t& message)
 {
     mavlink_mission_request_int_t mission_request_int;
     mavlink_msg_mission_request_int_decode(&message, &mission_request_int);
@@ -124,7 +124,7 @@ void MissionImpl::process_mission_request_int(const mavlink_message_t &message)
     _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
-void MissionImpl::process_mission_ack(const mavlink_message_t &message)
+void MissionImpl::process_mission_ack(const mavlink_message_t& message)
 {
     // LogDebug() << "Received mission ack";
 
@@ -184,7 +184,7 @@ void MissionImpl::process_mission_ack(const mavlink_message_t &message)
     }
 }
 
-void MissionImpl::process_mission_current(const mavlink_message_t &message)
+void MissionImpl::process_mission_current(const mavlink_message_t& message)
 {
     mavlink_mission_current_t mission_current;
     mavlink_msg_mission_current_decode(&message, &mission_current);
@@ -223,7 +223,7 @@ void MissionImpl::process_mission_current(const mavlink_message_t &message)
     }
 }
 
-void MissionImpl::process_mission_item_reached(const mavlink_message_t &message)
+void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
 {
     mavlink_mission_item_reached_t mission_item_reached;
     mavlink_msg_mission_item_reached_decode(&message, &mission_item_reached);
@@ -236,7 +236,7 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t &message)
     report_progress();
 }
 
-void MissionImpl::process_mission_count(const mavlink_message_t &message)
+void MissionImpl::process_mission_count(const mavlink_message_t& message)
 {
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
@@ -262,7 +262,7 @@ void MissionImpl::process_mission_count(const mavlink_message_t &message)
     download_next_mission_item();
 }
 
-void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
+void MissionImpl::process_mission_item_int(const mavlink_message_t& message)
 {
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
@@ -326,8 +326,8 @@ void MissionImpl::process_mission_item_int(const mavlink_message_t &message)
 }
 
 void MissionImpl::upload_mission_async(
-    const std::vector<std::shared_ptr<MissionItem>> &mission_items,
-    const Mission::result_callback_t &callback)
+    const std::vector<std::shared_ptr<MissionItem>>& mission_items,
+    const Mission::result_callback_t& callback)
 {
     bool should_report_mission_result = false;
     {
@@ -429,7 +429,7 @@ void MissionImpl::upload_mission_cancel()
 }
 
 void MissionImpl::download_mission_async(
-    const Mission::mission_items_and_result_callback_t &callback)
+    const Mission::mission_items_and_result_callback_t& callback)
 {
     bool should_report_mission_items_and_result = false;
     {
@@ -548,7 +548,7 @@ void MissionImpl::assemble_mavlink_messages()
     unsigned item_i = 0;
 
     for (auto item : _mission_data.mission_items) {
-        MissionItemImpl &mission_item_impl = (*(item)->_impl);
+        MissionItemImpl& mission_item_impl = (*(item)->_impl);
 
         if (mission_item_impl.is_position_finite()) {
             // Current is the 0th waypoint
@@ -879,7 +879,7 @@ void MissionImpl::assemble_mission_items()
 
         int mavlink_item_i = 0;
 
-        for (auto &it : _mission_data.mavlink_mission_items_downloaded) {
+        for (auto& it : _mission_data.mavlink_mission_items_downloaded) {
             LogDebug() << "Assembling Message: " << int(it->seq);
 
             if (it->command == MAV_CMD_NAV_WAYPOINT) {
@@ -1010,7 +1010,7 @@ void MissionImpl::download_next_mission_item()
     _parent->send_message(message);
 }
 
-void MissionImpl::start_mission_async(const Mission::result_callback_t &callback)
+void MissionImpl::start_mission_async(const Mission::result_callback_t& callback)
 {
     bool should_report_mission_result = false;
     {
@@ -1036,7 +1036,7 @@ void MissionImpl::start_mission_async(const Mission::result_callback_t &callback
         std::bind(&MissionImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
-void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback)
+void MissionImpl::pause_mission_async(const Mission::result_callback_t& callback)
 {
     bool should_report_mission_result = false;
     {
@@ -1063,7 +1063,7 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t &callback
         std::bind(&MissionImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
-void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t &callback)
+void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t& callback)
 {
     bool should_report_mission_result = false;
     {
@@ -1141,7 +1141,7 @@ void MissionImpl::upload_mission_item()
 }
 
 void MissionImpl::copy_mission_item_vector(
-    const std::vector<std::shared_ptr<MissionItem>> &mission_items)
+    const std::vector<std::shared_ptr<MissionItem>>& mission_items)
 {
     std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
     _mission_data.mission_items.clear();
@@ -1153,7 +1153,7 @@ void MissionImpl::copy_mission_item_vector(
 }
 
 void MissionImpl::report_mission_result(
-    const Mission::result_callback_t &callback, Mission::Result result)
+    const Mission::result_callback_t& callback, Mission::Result result)
 {
     const auto temp_callback = callback;
 
@@ -1166,7 +1166,7 @@ void MissionImpl::report_mission_result(
 }
 
 void MissionImpl::report_mission_items_and_result(
-    const Mission::mission_items_and_result_callback_t &callback, Mission::Result result)
+    const Mission::mission_items_and_result_callback_t& callback, Mission::Result result)
 {
     const auto temp_callback = callback;
     if (temp_callback == nullptr) {
@@ -1361,7 +1361,7 @@ void MissionImpl::process_timeout()
 }
 
 Mission::Result MissionImpl::import_qgroundcontrol_mission(
-    Mission::mission_items_t &mission_items, const std::string &qgc_plan_file)
+    Mission::mission_items_t& mission_items, const std::string& qgc_plan_file)
 {
     std::ifstream file(qgc_plan_file);
     if (!file) { // File open error
@@ -1390,8 +1390,8 @@ Mission::Result MissionImpl::import_qgroundcontrol_mission(
 Mission::Result MissionImpl::build_mission_items(
     MAV_CMD command,
     std::vector<double> params,
-    std::shared_ptr<MissionItem> &new_mission_item,
-    Mission::mission_items_t &all_mission_items)
+    std::shared_ptr<MissionItem>& new_mission_item,
+    Mission::mission_items_t& all_mission_items)
 {
     Mission::Result result = Mission::Result::SUCCESS;
 
@@ -1474,20 +1474,20 @@ Mission::Result MissionImpl::build_mission_items(
 }
 
 Mission::Result MissionImpl::import_mission_items(
-    Mission::mission_items_t &all_mission_items, const Json &qgc_plan_json)
+    Mission::mission_items_t& all_mission_items, const Json& qgc_plan_json)
 {
     const auto json_mission_items = qgc_plan_json["mission"];
     Mission::Result result = Mission::Result::SUCCESS;
     auto new_mission_item = std::make_shared<MissionItem>();
 
     // Iterate JSON mission items and build Mavsdk mission items
-    for (auto &json_mission_item : json_mission_items["items"].array_items()) {
+    for (auto& json_mission_item : json_mission_items["items"].array_items()) {
         // Parameters of Mission item & MAV command of it.
         MAV_CMD command = static_cast<MAV_CMD>(json_mission_item["command"].int_value());
 
         // Extract parameters of each mission item
         std::vector<double> params;
-        for (auto &p : json_mission_item["params"].array_items()) {
+        for (auto& p : json_mission_item["params"].array_items()) {
             if (p.is_null()) {
                 // QGC sets params as `null` if they should be unchanged.
                 params.push_back(double(NAN));

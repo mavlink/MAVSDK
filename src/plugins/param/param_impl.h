@@ -10,7 +10,7 @@ namespace mavsdk {
 
 class ParamImpl : public PluginImplBase {
 public:
-    ParamImpl(System &system);
+    ParamImpl(System& system);
     ~ParamImpl();
 
     void init() override;
@@ -19,13 +19,13 @@ public:
     void enable() override;
     void disable() override;
 
-    std::pair<Param::Result, int32_t> get_param_int(const std::string &name);
+    std::pair<Param::Result, int32_t> get_param_int(const std::string& name);
 
-    Param::Result set_param_int(const std::string &name, int32_t value);
+    Param::Result set_param_int(const std::string& name, int32_t value);
 
-    std::pair<Param::Result, float> get_param_float(const std::string &name);
+    std::pair<Param::Result, float> get_param_float(const std::string& name);
 
-    Param::Result set_param_float(const std::string &name, float value);
+    Param::Result set_param_float(const std::string& name, float value);
 
 private:
     static Param::Result result_from_mavlink_parameters_result(MAVLinkParameters::Result result);

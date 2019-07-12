@@ -9,7 +9,7 @@ namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
-MissionRawImpl::MissionRawImpl(System &system) : PluginImplBase(system)
+MissionRawImpl::MissionRawImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -46,7 +46,7 @@ void MissionRawImpl::enable() {}
 
 void MissionRawImpl::disable() {}
 
-void MissionRawImpl::process_mission_ack(const mavlink_message_t &message)
+void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
 {
     mavlink_mission_ack_t mission_ack;
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
@@ -66,7 +66,7 @@ void MissionRawImpl::process_mission_ack(const mavlink_message_t &message)
 }
 
 void MissionRawImpl::download_mission_async(
-    const MissionRaw::mission_items_and_result_callback_t &callback)
+    const MissionRaw::mission_items_and_result_callback_t& callback)
 {
     {
         std::lock_guard<std::mutex> lock(_mission_download.mutex);
@@ -153,7 +153,7 @@ void MissionRawImpl::request_list()
         std::bind(&MissionRawImpl::do_download_step, this), RETRY_TIMEOUT_S, &_timeout_cookie);
 }
 
-void MissionRawImpl::process_mission_count(const mavlink_message_t &message)
+void MissionRawImpl::process_mission_count(const mavlink_message_t& message)
 {
     // LogDebug() << "Received mission count";
 
@@ -231,7 +231,7 @@ void MissionRawImpl::request_item()
         std::bind(&MissionRawImpl::do_download_step, this), RETRY_TIMEOUT_S, &_timeout_cookie);
 }
 
-void MissionRawImpl::process_mission_item_int(const mavlink_message_t &message)
+void MissionRawImpl::process_mission_item_int(const mavlink_message_t& message)
 {
     // LogDebug() << "Received mission item int";
 

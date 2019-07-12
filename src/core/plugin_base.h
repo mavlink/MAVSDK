@@ -20,12 +20,12 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    PluginBase(const PluginBase &) = delete;
+    PluginBase(const PluginBase&) = delete;
 
     /**
      * @brief Assign operator (object is not copyable).
      */
-    const PluginBase &operator=(const PluginBase &) = delete;
+    const PluginBase& operator=(const PluginBase&) = delete;
 };
 
 } // namespace mavsdk
