@@ -40,7 +40,10 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
-    action->set_takeoff_altitude(0.4f);
+    // FIXME: We only want to takeoff to an altitude to maybe 0.5 meters, however,
+    //        that's currently broken in PX4, so we use a higher altitude.
+    //        Also see: https://github.com/PX4/Firmware/issues/12471
+    action->set_takeoff_altitude(1.5f);
 
     {
         LogInfo() << "Arming";
