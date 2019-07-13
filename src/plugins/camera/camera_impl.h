@@ -97,7 +97,7 @@ private:
     static Camera::Result
     camera_result_from_command_result(const MAVLinkCommands::Result command_result);
 
-    static void receive_command_result(
+    void receive_command_result(
         MAVLinkCommands::Result command_result, const Camera::result_callback_t& callback);
 
     static bool interval_valid(float interval_s);
