@@ -8,7 +8,8 @@ MAINTAINER Julian Oes <julian@oes.ch>
 ENV FIRMWARE_DIR ${WORKDIR}../Firmware
 
 RUN apt-get update && \
-    apt-get install -y cmake \
+    apt-get install -y bc \
+                       cmake \
                        curl \
                        git \
                        libeigen3-dev \
