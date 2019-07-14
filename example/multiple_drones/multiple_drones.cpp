@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
     }
 
     Mavsdk dc;
-    
-    int total_udp_ports = argc-1;
+
+    int total_udp_ports = argc - 1;
 
     // the loop below adds the number of ports the sdk monitors.
     for (int i = 1; i < argc; ++i) {
