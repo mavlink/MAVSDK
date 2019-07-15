@@ -9,12 +9,12 @@
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include <cstdint>
+#include <atomic>
 #include <iostream>
 #include <thread>
 #include <chrono>
 
 using namespace mavsdk;
-
 using namespace std::this_thread;
 using namespace std::chrono;
 
@@ -34,6 +34,8 @@ int main(int argc, char *argv[])
 
     Mavsdk dc;
 
+    int total_udp_ports = argc - 1;
+
     // the loop below adds the number of ports the sdk monitors.
     for (int i = 1; i < argc; ++i) {
         ConnectionResult connection_result = dc.add_any_connection(argv[i]);
@@ -45,20 +47,20 @@ int main(int argc, char *argv[])
         }
     }
 
-    bool discovered_system = false;
+    std::atomic<signed> num_systems_discovered{0};
 
     std::cout << "Waiting to discover system..." << std::endl;
-    dc.register_on_discover([&discovered_system](uint64_t uuid) {
+    dc.register_on_discover([&num_systems_discovered](uint64_t uuid) {
         std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discovered_system = true;
+        ++num_systems_discovered;
     });
 
     // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2
     // seconds.
     sleep_for(seconds(2));
 
-    if (!discovered_system) {
-        std::cerr << ERROR_CONSOLE_TEXT << "No system found, exiting." << NORMAL_CONSOLE_TEXT
+    if (num_systems_discovered != total_udp_ports) {
+        std::cerr << ERROR_CONSOLE_TEXT << "Not all systems found, exiting." << NORMAL_CONSOLE_TEXT
                   << std::endl;
         return 1;
     }
