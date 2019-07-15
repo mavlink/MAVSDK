@@ -68,6 +68,11 @@ void TelemetryImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS, std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
 
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
+        std::bind(&TelemetryImpl::process_utm_global_position, this, _1),
+        this);
+
     _parent->register_param_changed_handler(
         std::bind(&TelemetryImpl::process_parameter_update, this, _1), this);
 }
@@ -296,6 +301,15 @@ void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::result_c
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_RC_CHANNELS,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_utm_global_position_async(double rate_hz,
+                                                       Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
         rate_hz,
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
@@ -614,6 +628,22 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t &message)
     _parent->refresh_timeout_handler(_timeout_cookie);
 }
 
+void TelemetryImpl::process_utm_global_position(const mavlink_message_t &message)
+{
+    mavlink_utm_global_position_t utm_global_position;
+    mavlink_msg_utm_global_position_decode(&message, &utm_global_position);
+
+    set_utm_epoch(utm_global_position.time);
+
+    if (_utm_global_position_subscription) {
+        auto callback = _utm_global_position_subscription;
+        auto arg = get_utm_epoch();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+
+    _parent->refresh_timeout_handler(_timeout_cookie);
+}
+
 Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
 {
     px4::px4_custom_mode px4_custom_mode;
@@ -911,6 +941,12 @@ Telemetry::RCStatus TelemetryImpl::get_rc_status() const
     return _rc_status;
 }
 
+uint64_t TelemetryImpl::get_utm_epoch() const
+{
+    std::lock_guard<std::mutex> lock(_utm_epoch_mutex);
+    return _utm_epoch;
+}
+
 void TelemetryImpl::set_health_local_position(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
@@ -965,6 +1001,12 @@ void TelemetryImpl::set_rc_status(bool available, float signal_strength_percent)
     }
 
     _rc_status.available = available;
+}
+
+void TelemetryImpl::set_utm_epoch(uint64_t time_us)
+{
+    std::lock_guard<std::mutex> lock(_utm_epoch_mutex);
+    _utm_epoch = time_us;
 }
 
 void TelemetryImpl::position_velocity_ned_async(
@@ -1058,6 +1100,11 @@ void TelemetryImpl::health_all_ok_async(Telemetry::health_all_ok_callback_t &cal
 void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t &callback)
 {
     _rc_status_subscription = callback;
+}
+
+void TelemetryImpl::utm_global_position_async(Telemetry::utm_global_position_callback_t &callback)
+{
+    _utm_global_position_subscription = callback;
 }
 
 void TelemetryImpl::process_parameter_update(const std::string &name)

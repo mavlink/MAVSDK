@@ -456,6 +456,14 @@ public:
     void set_rate_rc_status_async(double rate_hz, result_callback_t callback);
 
     /**
+     * @brief Set rate of UTM global position update (asynchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_utm_global_position_async(double rate_hz, result_callback_t callback);
+
+    /**
      * @brief Get the current kinematic (position and velocity) in NED frame (synchronous).
      *
      * @return PositionVelocityNED.
@@ -812,11 +820,25 @@ public:
     typedef std::function<void(RCStatus rc_status)> rc_status_callback_t;
 
     /**
+     * @brief Callback type for UTM global position updates.
+     *
+     * @param uint64_t Epoch time [us].
+     */
+    typedef std::function<void(uint64_t time_us)> utm_global_position_callback_t;
+
+    /**
      * @brief Subscribe to RC status updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
     void rc_status_async(rc_status_callback_t callback);
+
+    /**
+     * @brief Subscribe to UTM global position updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void utm_global_position_async(utm_global_position_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).
