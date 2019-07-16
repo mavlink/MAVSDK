@@ -474,6 +474,13 @@ public:
      *
      * @return Home position.
      */
+    PositionNED position_ned() const;
+
+    /**
+     * @brief Get the home position (synchronous).
+     *
+     * @return Home position.
+     */
     Position home_position() const;
 
     /**
@@ -606,6 +613,20 @@ public:
      * @param callback Function to call with updates.
      */
     void position_async(position_callback_t callback);
+
+    /**
+     * @brief Subscribe to home position updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    typedef std::function<void(PositionNED)> position_ned_callback_t;
+
+    /**
+     * @brief Subscribe to position updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void position_ned_async(position_ned_callback_t callback);
 
     /**
      * @brief Subscribe to home position updates (asynchronous).
@@ -841,6 +862,9 @@ private:
 bool operator==(const Telemetry::PositionVelocityNED &lhs,
                 const Telemetry::PositionVelocityNED &rhs);
 
+bool operator==(const Telemetry::PositionNED &lhs,
+                const Telemetry::PositionNED &rhs);
+
 /**
  * @brief Equal operator to compare two `Telemetry::Position` objects.
  *
@@ -863,7 +887,7 @@ std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position)
 std::ostream &operator<<(std::ostream &str, Telemetry::PositionNED const &position_ned);
 
 /**
- * @brief Stream operator to print information about a `Telemetry::VelocityNED`.
+ * @brief Stream operator to print information about a `Telemetry::PositionNED`.
  *
  * @return A reference to the stream.
  */

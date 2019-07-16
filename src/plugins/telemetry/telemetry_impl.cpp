@@ -149,6 +149,12 @@ Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_position_ned(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_LOCAL_POSITION_NED, rate_hz));
+}
+
 Telemetry::Result TelemetryImpl::set_rate_home_position(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -207,6 +213,15 @@ Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
 }
 
 void TelemetryImpl::set_rate_position_velocity_ned_async(double rate_hz,
+                                                         Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_LOCAL_POSITION_NED,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_position_ned_async(double rate_hz,
                                                          Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
@@ -345,9 +360,18 @@ void TelemetryImpl::process_position_velocity_ned(const mavlink_message_t &messa
                                                               local_position.vy,
                                                               local_position.vz}));
 
+    set_position_ned(Telemetry::PositionNED({local_position.x,
+                                                              local_position.y,
+                                                              local_position.z}));
+
     if (_position_velocity_ned_subscription) {
         auto callback = _position_velocity_ned_subscription;
         auto arg = get_position_velocity_ned();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+    if (_position_ned_subscription) {
+        auto callback = _position_ned_subscription;
+        auto arg = get_position_ned();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
@@ -741,10 +765,22 @@ Telemetry::Position TelemetryImpl::get_position() const
     return _position;
 }
 
+Telemetry::PositionNED TelemetryImpl::get_position_ned() const
+{
+    std::lock_guard<std::mutex> lock(_position_ned_mutex);
+    return _position_ned;
+}
+
 void TelemetryImpl::set_position(Telemetry::Position position)
 {
     std::lock_guard<std::mutex> lock(_position_mutex);
     _position = position;
+}
+
+void TelemetryImpl::set_position_ned(Telemetry::PositionNED position_ned)
+{
+    std::lock_guard<std::mutex> lock(_position_ned_mutex);
+    _position_ned = position_ned;
 }
 
 Telemetry::Position TelemetryImpl::get_home_position() const
@@ -981,6 +1017,11 @@ void TelemetryImpl::position_velocity_ned_async(
 void TelemetryImpl::position_async(Telemetry::position_callback_t &callback)
 {
     _position_subscription = callback;
+}
+
+void TelemetryImpl::position_ned_async(Telemetry::position_ned_callback_t &callback)
+{
+    _position_ned_subscription = callback;
 }
 
 void TelemetryImpl::home_position_async(Telemetry::position_callback_t &callback)

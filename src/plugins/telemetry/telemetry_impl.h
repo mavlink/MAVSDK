@@ -29,6 +29,7 @@ public:
 
     Telemetry::Result set_rate_position_velocity_ned(double rate_hz);
     Telemetry::Result set_rate_position(double rate_hz);
+    Telemetry::Result set_rate_position_ned(double rate_hz);
     Telemetry::Result set_rate_home_position(double rate_hz);
     Telemetry::Result set_rate_in_air(double rate_hz);
     Telemetry::Result set_rate_attitude(double rate_hz);
@@ -42,6 +43,7 @@ public:
     void set_rate_position_velocity_ned_async(double rate_hz,
                                               Telemetry::result_callback_t callback);
     void set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback);
+    void set_rate_position_ned_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_home_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_in_air_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_attitude_async(double rate_hz, Telemetry::result_callback_t callback);
@@ -54,6 +56,7 @@ public:
 
     Telemetry::PositionVelocityNED get_position_velocity_ned() const;
     Telemetry::Position get_position() const;
+    Telemetry::PositionNED get_position_ned() const;
     Telemetry::Position get_home_position() const;
     bool in_air() const;
     bool armed() const;
@@ -73,6 +76,7 @@ public:
 
     void position_velocity_ned_async(Telemetry::position_velocity_ned_callback_t &callback);
     void position_async(Telemetry::position_callback_t &callback);
+    void position_ned_async(Telemetry::position_ned_callback_t &callback);
     void home_position_async(Telemetry::position_callback_t &callback);
     void in_air_async(Telemetry::in_air_callback_t &callback);
     void status_text_async(Telemetry::status_text_callback_t &callback);
@@ -95,6 +99,7 @@ public:
 
 private:
     void set_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned);
+    void set_position_ned(Telemetry::PositionNED position_ned);
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
@@ -158,6 +163,9 @@ private:
     mutable std::mutex _position_velocity_ned_mutex{};
     Telemetry::PositionVelocityNED _position_velocity_ned{{NAN, NAN, NAN}, {NAN, NAN, NAN}};
 
+    mutable std::mutex _position_ned_mutex{};
+    Telemetry::PositionNED _position_ned{NAN, NAN, NAN};
+
     mutable std::mutex _home_position_mutex{};
     Telemetry::Position _home_position{double(NAN), double(NAN), NAN, NAN};
 
@@ -200,6 +208,7 @@ private:
 
     Telemetry::position_velocity_ned_callback_t _position_velocity_ned_subscription{nullptr};
     Telemetry::position_callback_t _position_subscription{nullptr};
+    Telemetry::position_ned_callback_t _position_ned_subscription{nullptr};
     Telemetry::position_callback_t _home_position_subscription{nullptr};
     Telemetry::in_air_callback_t _in_air_subscription{nullptr};
     Telemetry::status_text_callback_t _status_text_subscription{nullptr};

@@ -130,6 +130,12 @@ Telemetry::Position Telemetry::position() const
     return _impl->get_position();
 }
 
+Telemetry::PositionNED Telemetry::position_ned() const
+{
+    return _impl->get_position_ned();
+}
+
+
 Telemetry::Position Telemetry::home_position() const
 {
     return _impl->get_home_position();
@@ -218,6 +224,11 @@ void Telemetry::position_velocity_ned_async(position_velocity_ned_callback_t cal
 void Telemetry::position_async(position_callback_t callback)
 {
     return _impl->position_async(callback);
+}
+
+void Telemetry::position_ned_async(position_ned_callback_t callback)
+{
+    return _impl->position_ned_async(callback);
 }
 
 void Telemetry::home_position_async(position_callback_t callback)
@@ -360,6 +371,17 @@ bool operator==(const Telemetry::PositionVelocityNED &lhs,
            std::fabs(lhs.velocity.east_m_s - rhs.velocity.east_m_s) <=
                std::numeric_limits<float>::epsilon() &&
            std::fabs(lhs.velocity.down_m_s - rhs.velocity.down_m_s) <=
+               std::numeric_limits<float>::epsilon();
+}
+
+bool operator==(const Telemetry::PositionNED &lhs,
+                const Telemetry::PositionNED &rhs)
+{
+    return std::fabs(lhs.north_m - rhs.north_m) <=
+               std::numeric_limits<float>::epsilon() &&
+           std::fabs(lhs.east_m - rhs.east_m) <=
+               std::numeric_limits<float>::epsilon() &&
+           std::fabs(lhs.down_m - rhs.down_m) <=
                std::numeric_limits<float>::epsilon();
 }
 
