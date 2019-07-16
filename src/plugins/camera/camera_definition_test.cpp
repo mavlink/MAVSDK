@@ -284,7 +284,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
         std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 16);
-        for (const auto &param : params) {
+        for (const auto& param : params) {
             LogInfo() << param.first;
         }
     }
@@ -323,7 +323,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
         std::vector<std::pair<std::string, MAVLinkParameters::ParamValue>> params;
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 0);
-        for (const auto &param : params) {
+        for (const auto& param : params) {
             LogInfo() << param.first;
         }
     }
@@ -347,7 +347,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
         // bool found_aspectratio = false;
         bool found_photoratio = false;
 
-        for (const auto &param : params) {
+        for (const auto& param : params) {
             if (strcmp("CAM_SHUTTERSPD", param.first.c_str()) == 0) {
                 found_shutterspd = true;
             }

@@ -27,7 +27,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Param(System &system);
+    explicit Param(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -61,7 +61,7 @@ public:
      *
      * @return a pair of the result of the request and the param (if successful).
      */
-    std::pair<Result, int32_t> get_param_int(const std::string &name);
+    std::pair<Result, int32_t> get_param_int(const std::string& name);
 
     /**
      * @brief Set an int parameter.
@@ -70,7 +70,7 @@ public:
      *
      * @return result of the request.
      */
-    Result set_param_int(const std::string &name, int32_t value);
+    Result set_param_int(const std::string& name, int32_t value);
 
     /**
      * @brief Get a float parameter.
@@ -79,7 +79,7 @@ public:
      *
      * @return a pair of the result of the request and the param (if successful).
      */
-    std::pair<Result, float> get_param_float(const std::string &name);
+    std::pair<Result, float> get_param_float(const std::string& name);
 
     /**
      * @brief Set a float parameter.
@@ -88,16 +88,16 @@ public:
      *
      * @return result of the request.
      */
-    Result set_param_float(const std::string &name, float value);
+    Result set_param_float(const std::string& name, float value);
 
     /**
      * @brief Copy Constructor (object is not copyable).
      */
-    Param(const Param &) = delete;
+    Param(const Param&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Param &operator=(const Param &) = delete;
+    const Param& operator=(const Param&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

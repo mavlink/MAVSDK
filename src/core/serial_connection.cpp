@@ -21,14 +21,15 @@ std::string GetLastErrorStdStr()
     DWORD error = GetLastError();
     if (error) {
         LPVOID lpMsgBuf;
-        DWORD bufLen = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
-                                         FORMAT_MESSAGE_IGNORE_INSERTS,
-                                     NULL,
-                                     error,
-                                     MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                                     (LPTSTR)&lpMsgBuf,
-                                     0,
-                                     NULL);
+        DWORD bufLen = FormatMessage(
+            FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
+                FORMAT_MESSAGE_IGNORE_INSERTS,
+            NULL,
+            error,
+            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+            (LPTSTR)&lpMsgBuf,
+            0,
+            NULL);
         if (bufLen) {
             LPCSTR lpMsgStr = (LPCSTR)lpMsgBuf;
             std::string result(lpMsgStr, lpMsgStr + bufLen);
@@ -42,9 +43,8 @@ std::string GetLastErrorStdStr()
 }
 #endif
 
-SerialConnection::SerialConnection(Connection::receiver_callback_t receiver_callback,
-                                   const std::string &path,
-                                   int baudrate) :
+SerialConnection::SerialConnection(
+    Connection::receiver_callback_t receiver_callback, const std::string& path, int baudrate) :
     Connection(receiver_callback),
     _serial_node(path),
     _baudrate(baudrate)
@@ -94,13 +94,14 @@ ConnectionResult SerialConnection::setup_port()
         return ConnectionResult::CONNECTION_ERROR;
     }
 #elif defined(WINDOWS)
-    _handle = CreateFile(_serial_node.c_str(),
-                         GENERIC_READ | GENERIC_WRITE,
-                         0, // exclusive-access
-                         NULL, //  default security attributes
-                         OPEN_EXISTING,
-                         0, //  not overlapped I/O
-                         NULL); //  hTemplate must be NULL for comm devices
+    _handle = CreateFile(
+        _serial_node.c_str(),
+        GENERIC_READ | GENERIC_WRITE,
+        0, // exclusive-access
+        NULL, //  default security attributes
+        OPEN_EXISTING,
+        0, //  not overlapped I/O
+        NULL); //  hTemplate must be NULL for comm devices
 
     if (_handle == INVALID_HANDLE_VALUE) {
         LogErr() << "CreateFile failed with: " << GET_ERROR();
@@ -234,7 +235,7 @@ ConnectionResult SerialConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool SerialConnection::send_message(const mavlink_message_t &message)
+bool SerialConnection::send_message(const mavlink_message_t& message)
 {
     if (_serial_node.empty()) {
         LogErr() << "Dev Path unknown";

@@ -15,7 +15,7 @@ TEST(TimeoutHandler, Timeout)
 
     bool timeout_happened = false;
 
-    void *cookie = nullptr;
+    void* cookie = nullptr;
     th.add([&timeout_happened]() { timeout_happened = true; }, 0.5, &cookie);
 
     time.sleep_for(std::chrono::milliseconds(250));
@@ -53,8 +53,8 @@ TEST(TimeoutHandler, CallTimeoutInTimeoutCallback)
 
     bool timeout_happened = false;
 
-    void *cookie1 = nullptr;
-    void *cookie2 = nullptr;
+    void* cookie1 = nullptr;
+    void* cookie2 = nullptr;
     th.add(
         [&th, &timeout_happened, &cookie2]() {
             timeout_happened = true;
@@ -84,7 +84,7 @@ TEST(TimeoutHandler, TimeoutRefreshed)
 
     bool timeout_happened = false;
 
-    void *cookie = nullptr;
+    void* cookie = nullptr;
     th.add([&timeout_happened]() { timeout_happened = true; }, 0.5, &cookie);
 
     time.sleep_for(std::chrono::milliseconds(400));
@@ -108,7 +108,7 @@ TEST(TimeoutHandler, TimeoutRemoved)
 
     bool timeout_happened = false;
 
-    void *cookie = nullptr;
+    void* cookie = nullptr;
     th.add([&timeout_happened]() { timeout_happened = true; }, 0.5, &cookie);
 
     time.sleep_for(std::chrono::milliseconds(250));
@@ -127,7 +127,7 @@ TEST(TimeoutHandler, TimeoutRemovedDuringCallback)
 
     bool timeout_happened = false;
 
-    void *cookie = nullptr;
+    void* cookie = nullptr;
     th.add(
         [&th, &cookie, &timeout_happened]() {
             // This is evil but can potentially happen. We remove our own timeout while
@@ -151,8 +151,8 @@ TEST(TimeoutHandler, NextTimeoutRemovedDuringCallback)
     Time time{};
     TimeoutHandler th(time);
 
-    void *cookie1 = nullptr;
-    void *cookie2 = nullptr;
+    void* cookie1 = nullptr;
+    void* cookie2 = nullptr;
 
     th.add(
         [&th, &cookie2]() {

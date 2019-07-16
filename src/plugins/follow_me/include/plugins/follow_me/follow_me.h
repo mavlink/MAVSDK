@@ -37,7 +37,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit FollowMe(System &system);
+    explicit FollowMe(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -107,7 +107,7 @@ public:
      * @return Current FollowMe configuration.
      * @sa set_config()
      */
-    const Config &get_config() const;
+    const Config& get_config() const;
 
     /**
      * @brief Applies FollowMe configuration by sending it to system.
@@ -117,7 +117,7 @@ public:
      *         In case of failure, last configuration is preserved.
      * @sa get_config()
      */
-    Result set_config(const Config &config);
+    Result set_config(const Config& config);
 
     /**
      * @brief Checks whether FollowMe is active.
@@ -153,14 +153,14 @@ public:
      * @param[in] location Location of the moving target.
      * @sa get_last_location()
      */
-    void set_target_location(const TargetLocation &location);
+    void set_target_location(const TargetLocation& location);
 
     /**
      * @brief Returns the last location of the target.
      * @return Last location of the target.
      * @sa set_target_location()
      */
-    const TargetLocation &get_last_location() const;
+    const TargetLocation& get_last_location() const;
 
     /**
      * @brief Returns English string for FollowMe error codes
@@ -187,12 +187,12 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    FollowMe(const FollowMe &) = delete;
+    FollowMe(const FollowMe&) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const FollowMe &operator=(const FollowMe &) = delete;
+    const FollowMe& operator=(const FollowMe&) = delete;
 
 private:
     // Underlying implementation, set at instantiation

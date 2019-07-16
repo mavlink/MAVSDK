@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-ParamImpl::ParamImpl(System &system) : PluginImplBase(system)
+ParamImpl::ParamImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -23,25 +23,25 @@ void ParamImpl::enable() {}
 
 void ParamImpl::disable() {}
 
-std::pair<Param::Result, int32_t> ParamImpl::get_param_int(const std::string &name)
+std::pair<Param::Result, int32_t> ParamImpl::get_param_int(const std::string& name)
 {
     std::pair<MAVLinkParameters::Result, int32_t> result = _parent->get_param_int(name);
     return std::make_pair<>(result_from_mavlink_parameters_result(result.first), result.second);
 }
 
-Param::Result ParamImpl::set_param_int(const std::string &name, int32_t value)
+Param::Result ParamImpl::set_param_int(const std::string& name, int32_t value)
 {
     MAVLinkParameters::Result result = _parent->set_param_int(name, value);
     return result_from_mavlink_parameters_result(result);
 }
 
-std::pair<Param::Result, float> ParamImpl::get_param_float(const std::string &name)
+std::pair<Param::Result, float> ParamImpl::get_param_float(const std::string& name)
 {
     std::pair<MAVLinkParameters::Result, float> result = _parent->get_param_float(name);
     return std::make_pair<>(result_from_mavlink_parameters_result(result.first), result.second);
 }
 
-Param::Result ParamImpl::set_param_float(const std::string &name, float value)
+Param::Result ParamImpl::set_param_float(const std::string& name, float value)
 {
     MAVLinkParameters::Result result = _parent->set_param_float(name, value);
     return result_from_mavlink_parameters_result(result);

@@ -27,7 +27,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Calibration(System &system);
+    explicit Calibration(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -70,10 +70,11 @@ public:
          * @param _has_status_text Whether or not this struct contains an instruction text.
          * @param _status_text The actual instruction text.
          */
-        ProgressData(const bool _has_progress,
-                     const float _progress,
-                     const bool _has_status_text,
-                     const std::string &_status_text) :
+        ProgressData(
+            const bool _has_progress,
+            const float _progress,
+            const bool _has_status_text,
+            const std::string& _status_text) :
             has_progress(_has_progress),
             progress(_progress),
             has_status_text(_has_status_text),
@@ -87,7 +88,7 @@ public:
      * @param result The enum value for which a human readable string is required.
      * @return Human readable string for the Calibration::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Callback type for asynchronous calibration call.
@@ -131,16 +132,16 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Calibration(const Calibration &) = delete;
+    Calibration(const Calibration&) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Calibration &operator=(const Calibration &) = delete;
+    const Calibration& operator=(const Calibration&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */
-    CalibrationImpl *_impl;
+    CalibrationImpl* _impl;
 };
 
 } // namespace mavsdk

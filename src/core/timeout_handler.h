@@ -10,18 +10,18 @@ namespace mavsdk {
 
 class TimeoutHandler {
 public:
-    TimeoutHandler(Time &time);
+    TimeoutHandler(Time& time);
     ~TimeoutHandler();
 
     // delete copy and move constructors and assign operators
-    TimeoutHandler(TimeoutHandler const &) = delete; // Copy construct
-    TimeoutHandler(TimeoutHandler &&) = delete; // Move construct
-    TimeoutHandler &operator=(TimeoutHandler const &) = delete; // Copy assign
-    TimeoutHandler &operator=(TimeoutHandler &&) = delete; // Move assign
+    TimeoutHandler(TimeoutHandler const&) = delete; // Copy construct
+    TimeoutHandler(TimeoutHandler&&) = delete; // Move construct
+    TimeoutHandler& operator=(TimeoutHandler const&) = delete; // Copy assign
+    TimeoutHandler& operator=(TimeoutHandler&&) = delete; // Move assign
 
-    void add(std::function<void()> callback, double duration_s, void **cookie);
-    void refresh(const void *cookie);
-    void remove(const void *cookie);
+    void add(std::function<void()> callback, double duration_s, void** cookie);
+    void refresh(const void* cookie);
+    void remove(const void* cookie);
 
     void run_once();
 
@@ -32,11 +32,11 @@ private:
         double duration_s{0.0};
     };
 
-    std::map<void *, std::shared_ptr<Timeout>> _timeouts{};
+    std::map<void*, std::shared_ptr<Timeout>> _timeouts{};
     std::mutex _timeouts_mutex{};
     bool _iterator_invalidated{false};
 
-    Time &_time;
+    Time& _time;
 };
 
 } // namespace mavsdk

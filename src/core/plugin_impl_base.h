@@ -9,7 +9,7 @@ class SystemImpl;
 
 class PluginImplBase {
 public:
-    explicit PluginImplBase(System &system);
+    explicit PluginImplBase(System& system);
     virtual ~PluginImplBase() = default;
 
     /*
@@ -54,8 +54,8 @@ public:
     virtual void disable() = 0;
 
     // Non-copyable
-    PluginImplBase(const PluginImplBase &) = delete;
-    const PluginImplBase &operator=(const PluginImplBase &) = delete;
+    PluginImplBase(const PluginImplBase&) = delete;
+    const PluginImplBase& operator=(const PluginImplBase&) = delete;
 
 protected:
     std::shared_ptr<SystemImpl> _parent;

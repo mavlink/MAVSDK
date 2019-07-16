@@ -40,7 +40,7 @@ TEST(SitlTestMultiple, SystemMultipleComponents)
 
     for (auto uuid : uuids) {
         std::cout << "We found a System with UUID: " << uuid << '\n';
-        System &system = dc.system(uuid);
+        System& system = dc.system(uuid);
 
         auto has_autopilot = system.has_autopilot();
         auto is_standalone = system.is_standalone();

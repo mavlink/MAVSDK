@@ -22,7 +22,7 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
-    System &system = dc.system();
+    System& system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 
@@ -40,7 +40,10 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     }
 
-    action->set_takeoff_altitude(0.4f);
+    // FIXME: We only want to takeoff to an altitude to maybe 0.5 meters, however,
+    //        that's currently broken in PX4, so we use a higher altitude.
+    //        Also see: https://github.com/PX4/Firmware/issues/12471
+    action->set_takeoff_altitude(1.5f);
 
     {
         LogInfo() << "Arming";
@@ -80,10 +83,10 @@ TEST_F(SitlTest, ActionTakeoffAndKill)
         EXPECT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     }
 
-    EXPECT_TRUE(poll_condition_with_timeout([&telemetry]() { return !telemetry->armed(); },
-                                            std::chrono::seconds(2)));
+    EXPECT_TRUE(poll_condition_with_timeout(
+        [&telemetry]() { return !telemetry->armed(); }, std::chrono::seconds(2)));
 
     // The land detector takes some time.
-    EXPECT_TRUE(poll_condition_with_timeout([&telemetry]() { return !telemetry->in_air(); },
-                                            std::chrono::seconds(2)));
+    EXPECT_TRUE(poll_condition_with_timeout(
+        [&telemetry]() { return !telemetry->in_air(); }, std::chrono::seconds(2)));
 }

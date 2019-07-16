@@ -14,7 +14,7 @@ namespace mavsdk {
 //       - The queue used does not support going through and checking each and every
 //         item yet.
 
-MAVLinkCommands::MAVLinkCommands(SystemImpl &parent) : _parent(parent)
+MAVLinkCommands::MAVLinkCommands(SystemImpl& parent) : _parent(parent)
 {
     _parent.register_mavlink_message_handler(
         MAVLINK_MSG_ID_COMMAND_ACK,
@@ -27,7 +27,7 @@ MAVLinkCommands::~MAVLinkCommands()
     _parent.unregister_all_mavlink_message_handlers(this);
 }
 
-MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandInt &command)
+MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandInt& command)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -47,7 +47,7 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
     return res.get();
 }
 
-MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandLong &command)
+MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::CommandLong& command)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
@@ -66,56 +66,58 @@ MAVLinkCommands::Result MAVLinkCommands::send_command(const MAVLinkCommands::Com
     return res.get();
 }
 
-void MAVLinkCommands::queue_command_async(const CommandInt &command,
-                                          command_result_callback_t callback)
+void MAVLinkCommands::queue_command_async(
+    const CommandInt& command, command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
 
     Work new_work{};
-    mavlink_msg_command_int_pack(_parent.get_own_system_id(),
-                                 _parent.get_own_component_id(),
-                                 &new_work.mavlink_message,
-                                 command.target_system_id,
-                                 command.target_component_id,
-                                 command.frame,
-                                 command.command,
-                                 command.current,
-                                 command.autocontinue,
-                                 command.params.param1,
-                                 command.params.param2,
-                                 command.params.param3,
-                                 command.params.param4,
-                                 command.params.x,
-                                 command.params.y,
-                                 command.params.z);
+    mavlink_msg_command_int_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &new_work.mavlink_message,
+        command.target_system_id,
+        command.target_component_id,
+        command.frame,
+        command.command,
+        command.current,
+        command.autocontinue,
+        command.params.param1,
+        command.params.param2,
+        command.params.param3,
+        command.params.param4,
+        command.params.x,
+        command.params.y,
+        command.params.z);
 
     new_work.callback = callback;
     new_work.mavlink_command = command.command;
     _work_queue.push_back(new_work);
 }
 
-void MAVLinkCommands::queue_command_async(const CommandLong &command,
-                                          command_result_callback_t callback)
+void MAVLinkCommands::queue_command_async(
+    const CommandLong& command, command_result_callback_t callback)
 {
     // LogDebug() << "Command " << (int)(command.command) << " to send to "
     //  << (int)(command.target_system_id)<< ", " << (int)(command.target_component_id;
 
     Work new_work{};
-    mavlink_msg_command_long_pack(_parent.get_own_system_id(),
-                                  _parent.get_own_component_id(),
-                                  &new_work.mavlink_message,
-                                  command.target_system_id,
-                                  command.target_component_id,
-                                  command.command,
-                                  command.confirmation,
-                                  command.params.param1,
-                                  command.params.param2,
-                                  command.params.param3,
-                                  command.params.param4,
-                                  command.params.param5,
-                                  command.params.param6,
-                                  command.params.param7);
+    mavlink_msg_command_long_pack(
+        _parent.get_own_system_id(),
+        _parent.get_own_component_id(),
+        &new_work.mavlink_message,
+        command.target_system_id,
+        command.target_component_id,
+        command.command,
+        command.confirmation,
+        command.params.param1,
+        command.params.param2,
+        command.params.param3,
+        command.params.param4,
+        command.params.param5,
+        command.params.param6,
+        command.params.param7);
 
     new_work.callback = callback;
     new_work.mavlink_command = command.command;
@@ -188,9 +190,10 @@ void MAVLinkCommands::receive_command_ack(mavlink_message_t message)
             // timeout * the possible retries because this should match the
             // case where there is no progress update and we keep trying.
             _parent.unregister_timeout_handler(_timeout_cookie);
-            _parent.register_timeout_handler(std::bind(&MAVLinkCommands::receive_timeout, this),
-                                             work->retries_to_do * work->timeout_s,
-                                             &_timeout_cookie);
+            _parent.register_timeout_handler(
+                std::bind(&MAVLinkCommands::receive_timeout, this),
+                work->retries_to_do * work->timeout_s,
+                &_timeout_cookie);
             // FIXME: We can only call callbacks with promises once, so let's not do it
             //        on IN_PROGRESS.
             // call_callback(work->callback, Result::IN_PROGRESS, command_ack.progress /
@@ -225,9 +228,10 @@ void MAVLinkCommands::receive_timeout()
 
         } else {
             --work->retries_to_do;
-            _parent.register_timeout_handler(std::bind(&MAVLinkCommands::receive_timeout, this),
-                                             work->timeout_s,
-                                             &_timeout_cookie);
+            _parent.register_timeout_handler(
+                std::bind(&MAVLinkCommands::receive_timeout, this),
+                work->timeout_s,
+                &_timeout_cookie);
         }
 
     } else {
@@ -258,16 +262,16 @@ void MAVLinkCommands::do_work()
             call_callback(work->callback, Result::CONNECTION_ERROR, NAN);
         } else {
             work->already_sent = true;
-            _parent.register_timeout_handler(std::bind(&MAVLinkCommands::receive_timeout, this),
-                                             work->timeout_s,
-                                             &_timeout_cookie);
+            _parent.register_timeout_handler(
+                std::bind(&MAVLinkCommands::receive_timeout, this),
+                work->timeout_s,
+                &_timeout_cookie);
         }
     }
 }
 
-void MAVLinkCommands::call_callback(const command_result_callback_t &callback,
-                                    Result result,
-                                    float progress)
+void MAVLinkCommands::call_callback(
+    const command_result_callback_t& callback, Result result, float progress)
 {
     if (!callback) {
         return;

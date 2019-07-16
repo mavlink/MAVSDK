@@ -6,7 +6,7 @@
 
 namespace mavsdk {
 
-FollowMeImpl::FollowMeImpl(System &system) : PluginImplBase(system)
+FollowMeImpl::FollowMeImpl(System& system) : PluginImplBase(system)
 {
     // (Lat, Lon, Alt) => double, (vx, vy, vz) => float
     _last_location = _target_location =
@@ -24,7 +24,7 @@ void FollowMeImpl::init()
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         std::bind(&FollowMeImpl::process_heartbeat, this, std::placeholders::_1),
-        static_cast<void *>(this));
+        static_cast<void*>(this));
 }
 
 void FollowMeImpl::deinit()
@@ -34,35 +34,38 @@ void FollowMeImpl::deinit()
 
 void FollowMeImpl::enable()
 {
-    _parent->get_param_float_async("NAV_MIN_FT_HT",
-                                   [this](MAVLinkParameters::Result result, float value) {
-                                       if (result == MAVLinkParameters::Result::SUCCESS) {
-                                           _config.min_height_m = value;
-                                       }
-                                   },
-                                   this);
-    _parent->get_param_float_async("NAV_FT_DST",
-                                   [this](MAVLinkParameters::Result result, float value) {
-                                       if (result == MAVLinkParameters::Result::SUCCESS) {
-                                           _config.follow_distance_m = value;
-                                       }
-                                   },
-                                   this);
-    _parent->get_param_int_async("NAV_FT_FS",
-                                 [this](MAVLinkParameters::Result result, int32_t value) {
-                                     if (result == MAVLinkParameters::Result::SUCCESS) {
-                                         _config.follow_direction =
-                                             static_cast<FollowMe::Config::FollowDirection>(value);
-                                     }
-                                 },
-                                 this);
-    _parent->get_param_float_async("NAV_FT_RS",
-                                   [this](MAVLinkParameters::Result result, float value) {
-                                       if (result == MAVLinkParameters::Result::SUCCESS) {
-                                           _config.responsiveness = value;
-                                       }
-                                   },
-                                   this);
+    _parent->get_param_float_async(
+        "NAV_MIN_FT_HT",
+        [this](MAVLinkParameters::Result result, float value) {
+            if (result == MAVLinkParameters::Result::SUCCESS) {
+                _config.min_height_m = value;
+            }
+        },
+        this);
+    _parent->get_param_float_async(
+        "NAV_FT_DST",
+        [this](MAVLinkParameters::Result result, float value) {
+            if (result == MAVLinkParameters::Result::SUCCESS) {
+                _config.follow_distance_m = value;
+            }
+        },
+        this);
+    _parent->get_param_int_async(
+        "NAV_FT_FS",
+        [this](MAVLinkParameters::Result result, int32_t value) {
+            if (result == MAVLinkParameters::Result::SUCCESS) {
+                _config.follow_direction = static_cast<FollowMe::Config::FollowDirection>(value);
+            }
+        },
+        this);
+    _parent->get_param_float_async(
+        "NAV_FT_RS",
+        [this](MAVLinkParameters::Result result, float value) {
+            if (result == MAVLinkParameters::Result::SUCCESS) {
+                _config.responsiveness = value;
+            }
+        },
+        this);
 }
 
 void FollowMeImpl::disable()
@@ -70,12 +73,12 @@ void FollowMeImpl::disable()
     stop_sending_target_location();
 }
 
-const FollowMe::Config &FollowMeImpl::get_config() const
+const FollowMe::Config& FollowMeImpl::get_config() const
 {
     return _config;
 }
 
-FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
+FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 {
     // Valdidate configuration
     if (!is_config_ok(config)) {
@@ -129,7 +132,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config &config)
     return (success ? FollowMe::Result::SUCCESS : FollowMe::Result::SET_CONFIG_FAILED);
 }
 
-void FollowMeImpl::set_target_location(const FollowMe::TargetLocation &location)
+void FollowMeImpl::set_target_location(const FollowMe::TargetLocation& location)
 {
     _mutex.lock();
     _target_location = location;
@@ -155,7 +158,7 @@ void FollowMeImpl::set_target_location(const FollowMe::TargetLocation &location)
     send_target_location();
 }
 
-const FollowMe::TargetLocation &FollowMeImpl::get_last_location() const
+const FollowMe::TargetLocation& FollowMeImpl::get_last_location() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
     return _last_location;
@@ -195,7 +198,7 @@ FollowMe::Result FollowMeImpl::stop()
     return to_follow_me_result(_parent->set_flight_mode(SystemImpl::FlightMode::HOLD));
 }
 
-bool FollowMeImpl::is_config_ok(const FollowMe::Config &config) const
+bool FollowMeImpl::is_config_ok(const FollowMe::Config& config) const
 {
     auto config_ok = false;
 
@@ -203,11 +206,13 @@ bool FollowMeImpl::is_config_ok(const FollowMe::Config &config) const
         LogErr() << debug_str << "Err: Min height must be atleast 8.0 meters";
     } else if (config.follow_distance_m < FollowMe::Config::MIN_FOLLOW_DIST_M) {
         LogErr() << debug_str << "Err: Min Follow distance must be atleast 1.0 meter";
-    } else if (config.follow_direction < FollowMe::Config::FollowDirection::FRONT_RIGHT ||
-               config.follow_direction > FollowMe::Config::FollowDirection::NONE) {
+    } else if (
+        config.follow_direction < FollowMe::Config::FollowDirection::FRONT_RIGHT ||
+        config.follow_direction > FollowMe::Config::FollowDirection::NONE) {
         LogErr() << debug_str << "Err: Invalid Follow direction";
-    } else if (config.responsiveness < FollowMe::Config::MIN_RESPONSIVENESS ||
-               config.responsiveness > FollowMe::Config::MAX_RESPONSIVENESS) {
+    } else if (
+        config.responsiveness < FollowMe::Config::MIN_RESPONSIVENESS ||
+        config.responsiveness > FollowMe::Config::MAX_RESPONSIVENESS) {
         LogErr() << debug_str << "Err: Responsiveness must be in range (0.0 to 1.0)";
     } else { // Config is OK
         config_ok = true;
@@ -272,20 +277,21 @@ void FollowMeImpl::send_target_location()
     uint64_t custom_state = 0;
 
     mavlink_message_t msg{};
-    mavlink_msg_follow_target_pack(_parent->get_own_system_id(),
-                                   _parent->get_own_component_id(),
-                                   &msg,
-                                   elapsed_msec,
-                                   _estimatation_capabilities,
-                                   lat_int,
-                                   lon_int,
-                                   alt,
-                                   vel,
-                                   accel_unknown,
-                                   attitude_q_unknown,
-                                   rates_unknown,
-                                   pos_std_dev,
-                                   custom_state);
+    mavlink_msg_follow_target_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        elapsed_msec,
+        _estimatation_capabilities,
+        lat_int,
+        lon_int,
+        alt,
+        vel,
+        accel_unknown,
+        attitude_q_unknown,
+        rates_unknown,
+        pos_std_dev,
+        custom_state);
 
     if (!_parent->send_message(msg)) {
         LogErr() << debug_str << "send_target_location() failed..";
@@ -305,7 +311,7 @@ void FollowMeImpl::stop_sending_target_location()
     _mode = Mode::NOT_ACTIVE;
 }
 
-void FollowMeImpl::process_heartbeat(const mavlink_message_t &message)
+void FollowMeImpl::process_heartbeat(const mavlink_message_t& message)
 {
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);

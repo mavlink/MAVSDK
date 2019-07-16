@@ -29,7 +29,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit LogFiles(System &system);
+    explicit LogFiles(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -53,7 +53,7 @@ public:
      * @param result Enum for which string is required.
      * @return result Human-readable string for LogFiles::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Log file type.
@@ -95,7 +95,7 @@ public:
      * @param file_path File path where to download file to.
      * @return Result of request
      */
-    Result download_log_file(unsigned id, const std::string &file_path);
+    Result download_log_file(unsigned id, const std::string& file_path);
 
     /**
      * @brief Callback type for logging requests.
@@ -109,18 +109,17 @@ public:
      * @param file_path File path where to download file to.
      * @param callback Callback to get result and progress.
      */
-    void download_log_file_async(unsigned id,
-                                 const std::string &file_path,
-                                 download_log_file_callback_t callback);
+    void download_log_file_async(
+        unsigned id, const std::string& file_path, download_log_file_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    LogFiles(const LogFiles &) = delete;
+    LogFiles(const LogFiles&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const LogFiles &operator=(const LogFiles &) = delete;
+    const LogFiles& operator=(const LogFiles&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

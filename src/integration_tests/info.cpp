@@ -16,7 +16,7 @@ TEST_F(SitlTest, Info)
     std::this_thread::sleep_for(std::chrono::seconds(2));
     ASSERT_TRUE(dc.is_connected());
 
-    System &system = dc.system();
+    System& system = dc.system();
     auto info = std::make_shared<Info>(system);
 
     // FIXME: we need to wait some time until Info has determined the version.

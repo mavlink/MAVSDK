@@ -28,7 +28,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Telemetry(System &system);
+    explicit Telemetry(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -118,6 +118,52 @@ public:
         float velocity_north_m_s; /**< @brief Velocity in North direction in metres/second. */
         float velocity_east_m_s; /**< @brief Velocity in East direction in metres/second. */
         float velocity_down_m_s; /**< @brief Velocity in Down direction in metres/second. */
+    };
+
+    /**
+     * @brief Acceleration type in local coordinates.
+     *
+     * The acceleration is represented in the NED (North East Down) frame and in metres/second^2.
+     */
+    struct AccelerationNED {
+        float north_m_s2; /**< @brief Acceleration in North direction in metres/second^2 */
+        float east_m_s2; /**< @brief Acceleration in East direction in metres/second^2 */
+        float down_m_s2; /**< @brief Acceleration in Down direction in metres/second^2 */
+    };
+
+    /**
+     * @brief Angular velocity type in local coordinates.
+     *
+     * The angular velocity is represented in NED (North East Down) frame and in radians/second.
+     */
+    struct AngularVelocityNED {
+        float north_rad_s; /**< @brief Angular velocity in North direction in radians/second */
+        float east_rad_s; /**< @brief Angular velocity in East direction in radians/second */
+        float down_rad_s; /**< @brief Angular velocity in Down direction in radians/second */
+    };
+
+    /**
+     * @brief Magnetic field type in local coordinates.
+     *
+     * The magnetic field is represented in NED (North East Down) frame and is measured in Gauss.
+     */
+    struct MagneticFieldNED {
+        float north_gauss; /**< @brief Magnetic field in North direction measured in Gauss. */
+        float east_gauss; /**< @brief Magnetic field in East direction measured in Gauss. */
+        float down_gauss; /**< @brief Magnetic field in Down direction measured in Gauss. */
+    };
+
+    /**
+     * @brief Inertial measurement unit type in local coordinates.
+     *
+     * Acceleration, angular velocity and magnetic field are represented in NED (North East Down)
+     * frame in local coordinate system. Temperature is measured in degrees Celsius.
+     */
+    struct IMUReadingNED {
+        AccelerationNED acceleration; /**< @see AccelerationNED */
+        AngularVelocityNED angular_velocity; /**< @see AngularVelocityNED */
+        MagneticFieldNED magnetic_field; /**< @see MagneticFieldNED */
+        float temperature_degC; /**< @brief Temperature measured in degrees Celsius. */
     };
 
     /**
@@ -225,7 +271,7 @@ public:
      * @param result The enum value for which string is needed.
      * @return Human readable string for the Telemetry::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Callback type for telemetry requests.
@@ -288,6 +334,14 @@ public:
      * @return Result of request.
      */
     Result set_rate_ground_speed_ned(double rate_hz);
+
+    /**
+     * @brief Set rate of IMU reading (NED) updates (synchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_imu_reading_ned(double rate_hz);
 
     /**
      * @brief Set rate of GPS information updates (synchronous).
@@ -370,6 +424,13 @@ public:
      */
     void set_rate_ground_speed_ned_async(double rate_hz, result_callback_t callback);
 
+    /**
+     * @brief Set rate of IMU reading (NED) updates (asynchronous).
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Cabllback to receive request result.
+     */
+    void set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback);
     /**
      * @brief Set rate of GPS information updates (asynchronous).
      *
@@ -474,6 +535,13 @@ public:
      * @return Ground speed in NED.
      */
     GroundSpeedNED ground_speed_ned() const;
+
+    /**
+     * @brief Get the current IMU reading (NED) (synchronous).
+     *
+     * @return IMU reading in NED.
+     */
+    IMUReadingNED imu_reading_ned() const;
 
     /**
      * @brief Get the current GPS information (synchronous).
@@ -647,6 +715,20 @@ public:
     void ground_speed_ned_async(ground_speed_ned_callback_t callback);
 
     /**
+     * @brief Callback type for IMU (NED) updates.
+     *
+     * @param imu_reading_ned IMU reading (NED).
+     */
+    typedef std::function<void(IMUReadingNED imu_reading_ned)> imu_reading_ned_callback_t;
+
+    /**
+     * @brief Subscribe to IMU reading (NED) updates (asynchronous).
+     *
+     * @param callback function to call with updates.
+     */
+    void imu_reading_ned_async(imu_reading_ned_callback_t callback);
+
+    /**
      * @brief Callback type for GPS information updates.
      *
      * @param gps_info GPS information.
@@ -739,12 +821,12 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Telemetry(const Telemetry &) = delete;
+    Telemetry(const Telemetry&) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Telemetry &operator=(const Telemetry &) = delete;
+    const Telemetry& operator=(const Telemetry&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */
@@ -756,148 +838,184 @@ private:
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::PositionVelocityNED &lhs,
-                const Telemetry::PositionVelocityNED &rhs);
+bool operator==(
+    const Telemetry::PositionVelocityNED& lhs, const Telemetry::PositionVelocityNED& rhs);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Position` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs);
+bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::Position`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position);
+std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::PositionNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::PositionNED const &position_ned);
+std::ostream& operator<<(std::ostream& str, Telemetry::PositionNED const& position_ned);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::VelocityNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::VelocityNED const &velocity_ned);
+std::ostream& operator<<(std::ostream& str, Telemetry::VelocityNED const& velocity_ned);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::PositionVelocityNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::PositionVelocityNED const &position_velocity_ned);
+std::ostream&
+operator<<(std::ostream& str, Telemetry::PositionVelocityNED const& position_velocity_ned);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Health` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs);
+bool operator==(const Telemetry::Health& lhs, const Telemetry::Health& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::Health`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health);
+std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::IMUReadingNED` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::IMUReadingNED& lhs, const Telemetry::IMUReadingNED& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::AccelerationNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::AccelerationNED const& acceleration_ned);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::AngularVelocityNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream&
+operator<<(std::ostream& str, Telemetry::AngularVelocityNED const& angular_velocity_ned);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::MagneticFieldNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::MagneticFieldNED const& magnetic_field);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::IMUReadingNED`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::IMUReadingNED const& imu_reading_ned);
 
 /**
  * @brief Equal operator to compare two `Telemetry::GPSInfo` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::GPSInfo &lhs, const Telemetry::GPSInfo &rhs);
+bool operator==(const Telemetry::GPSInfo& lhs, const Telemetry::GPSInfo& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::GPSInfo`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::GPSInfo const &gps_info);
+std::ostream& operator<<(std::ostream& str, Telemetry::GPSInfo const& gps_info);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Battery` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::Battery &lhs, const Telemetry::Battery &rhs);
+bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::Battery`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::Battery const &battery);
+std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Quaternion` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::Quaternion &lhs, const Telemetry::Quaternion &rhs);
+bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::Quaternion`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::Quaternion const &quaternion);
+std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion);
 
 /**
  * @brief Equal operator to compare two `Telemetry::EulerAngle` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::EulerAngle &lhs, const Telemetry::EulerAngle &rhs);
+bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::EulerAngle`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::EulerAngle const &euler_angle);
+std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle);
 
 /**
  * @brief Equal operator to compare two `Telemetry::GroundSpeedNED` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::GroundSpeedNED &lhs, const Telemetry::GroundSpeedNED &rhs);
+bool operator==(const Telemetry::GroundSpeedNED& lhs, const Telemetry::GroundSpeedNED& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::GroundSpeedNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::GroundSpeedNED const &ground_speed);
+std::ostream& operator<<(std::ostream& str, Telemetry::GroundSpeedNED const& ground_speed);
 
 /**
  * @brief Equal operator to compare two `Telemetry::RCStatus` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs);
+bool operator==(const Telemetry::RCStatus& lhs, const Telemetry::RCStatus& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::RCStatus`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status);
+std::ostream& operator<<(std::ostream& str, Telemetry::RCStatus const& rc_status);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::StatusText`.
  *
  * @returns A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_text);
+std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_text);
 
 } // namespace mavsdk

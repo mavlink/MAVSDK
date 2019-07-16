@@ -28,7 +28,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Gimbal(System &system);
+    explicit Gimbal(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -51,7 +51,7 @@ public:
      * @param result The enum value for which a human readable string is required.
      * @return Human readable string for the Gimbal::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Callback type for asynchronous Gimbal calls.
@@ -114,20 +114,18 @@ public:
      * @param altitude_m Altitude in meters (ASML).
      * @param callback Function to call with result of request.
      */
-    void set_roi_location_async(double latitude_deg,
-                                double longitude_deg,
-                                float altitude_m,
-                                result_callback_t callback);
+    void set_roi_location_async(
+        double latitude_deg, double longitude_deg, float altitude_m, result_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Gimbal(const Gimbal &) = delete;
+    Gimbal(const Gimbal&) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Gimbal &operator=(const Gimbal &) = delete;
+    const Gimbal& operator=(const Gimbal&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

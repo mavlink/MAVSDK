@@ -5,7 +5,7 @@
 
 namespace mavsdk {
 
-MavlinkPassthroughImpl::MavlinkPassthroughImpl(System &system) : PluginImplBase(system)
+MavlinkPassthroughImpl::MavlinkPassthroughImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -27,7 +27,7 @@ void MavlinkPassthroughImpl::enable() {}
 
 void MavlinkPassthroughImpl::disable() {}
 
-MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_t &message)
+MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_t& message)
 {
     if (!_parent->send_message(message)) {
         return MavlinkPassthrough::Result::CONNECTION_ERROR;
@@ -36,7 +36,7 @@ MavlinkPassthrough::Result MavlinkPassthroughImpl::send_message(mavlink_message_
 }
 
 void MavlinkPassthroughImpl::subscribe_message_async(
-    uint16_t message_id, std::function<void(const mavlink_message_t &)> callback)
+    uint16_t message_id, std::function<void(const mavlink_message_t&)> callback)
 {
     if (callback == nullptr) {
         _parent->unregister_mavlink_message_handler(message_id, this);
@@ -44,7 +44,7 @@ void MavlinkPassthroughImpl::subscribe_message_async(
         auto temp_callback = callback;
         _parent->register_mavlink_message_handler(
             message_id,
-            [this, temp_callback](const mavlink_message_t &message) {
+            [this, temp_callback](const mavlink_message_t& message) {
                 _parent->call_user_callback([temp_callback, message]() { temp_callback(message); });
             },
             this);
@@ -72,13 +72,13 @@ uint8_t MavlinkPassthroughImpl::get_target_compid() const
 }
 
 void MavlinkPassthroughImpl::intercept_incoming_messages_async(
-    std::function<bool(mavlink_message_t &)> callback)
+    std::function<bool(mavlink_message_t&)> callback)
 {
     _parent->intercept_incoming_messages(callback);
 }
 
 void MavlinkPassthroughImpl::intercept_outgoing_messages_async(
-    std::function<bool(mavlink_message_t &)> callback)
+    std::function<bool(mavlink_message_t&)> callback)
 {
     _parent->intercept_outgoing_messages(callback);
 }

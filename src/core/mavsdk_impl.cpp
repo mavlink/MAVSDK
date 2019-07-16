@@ -40,7 +40,7 @@ MavsdkImpl::~MavsdkImpl()
     }
 }
 
-void MavsdkImpl::receive_message(mavlink_message_t &message)
+void MavsdkImpl::receive_message(mavlink_message_t& message)
 {
     // Don't ever create a system with sysid 0.
     if (message.sysid == 0) {
@@ -82,7 +82,7 @@ void MavsdkImpl::receive_message(mavlink_message_t &message)
     }
 }
 
-bool MavsdkImpl::send_message(mavlink_message_t &message)
+bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
 
@@ -96,7 +96,7 @@ bool MavsdkImpl::send_message(mavlink_message_t &message)
     return true;
 }
 
-ConnectionResult MavsdkImpl::add_any_connection(const std::string &connection_url)
+ConnectionResult MavsdkImpl::add_any_connection(const std::string& connection_url)
 {
     CliArg cli_arg;
     if (!cli_arg.parse(connection_url)) {
@@ -141,7 +141,7 @@ ConnectionResult MavsdkImpl::add_any_connection(const std::string &connection_ur
     }
 }
 
-ConnectionResult MavsdkImpl::add_udp_connection(const std::string &local_ip, const int local_port)
+ConnectionResult MavsdkImpl::add_udp_connection(const std::string& local_ip, const int local_port)
 {
     auto new_conn = std::make_shared<UdpConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), local_ip, local_port);
@@ -153,7 +153,7 @@ ConnectionResult MavsdkImpl::add_udp_connection(const std::string &local_ip, con
     return ret;
 }
 
-ConnectionResult MavsdkImpl::add_tcp_connection(const std::string &remote_ip, int remote_port)
+ConnectionResult MavsdkImpl::add_tcp_connection(const std::string& remote_ip, int remote_port)
 {
     auto new_conn = std::make_shared<TcpConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1),
@@ -167,7 +167,7 @@ ConnectionResult MavsdkImpl::add_tcp_connection(const std::string &remote_ip, in
     return ret;
 }
 
-ConnectionResult MavsdkImpl::add_serial_connection(const std::string &dev_path, int baudrate)
+ConnectionResult MavsdkImpl::add_serial_connection(const std::string& dev_path, int baudrate)
 {
     auto new_conn = std::make_shared<SerialConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), dev_path, baudrate);
@@ -204,7 +204,7 @@ std::vector<uint64_t> MavsdkImpl::get_system_uuids() const
     return uuids;
 }
 
-System &MavsdkImpl::get_system()
+System& MavsdkImpl::get_system()
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
@@ -227,7 +227,7 @@ System &MavsdkImpl::get_system()
     }
 }
 
-System &MavsdkImpl::get_system(const uint64_t uuid)
+System& MavsdkImpl::get_system(const uint64_t uuid)
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
@@ -368,7 +368,7 @@ void MavsdkImpl::register_on_discover(const Mavsdk::event_callback_t callback)
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
     if (callback) {
-        for (auto const &connected_system : _systems) {
+        for (auto const& connected_system : _systems) {
             // Ignore dummy system with system ID 0.
             if (connected_system.first == 0) {
                 continue;

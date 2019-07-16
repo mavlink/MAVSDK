@@ -6,7 +6,7 @@ static void usage();
 
 static auto constexpr default_connection = "udp://:14540";
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     if (argc > 2) {
         usage();

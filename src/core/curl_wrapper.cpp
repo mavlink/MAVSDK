@@ -16,14 +16,13 @@ CurlWrapper::~CurlWrapper() {}
 // converts curl output to string
 // taken from
 // https://stackoverflow.com/questions/9786150/save-curl-content-result-into-a-string-in-c
-static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp)
+static size_t write_callback(void* contents, size_t size, size_t nmemb, void* userp)
 {
-    reinterpret_cast<std::string *>(userp)->append(reinterpret_cast<char *>(contents),
-                                                   size * nmemb);
+    reinterpret_cast<std::string*>(userp)->append(reinterpret_cast<char*>(contents), size * nmemb);
     return size * nmemb;
 }
 
-bool CurlWrapper::download_text(const std::string &url, std::string &content)
+bool CurlWrapper::download_text(const std::string& url, std::string& content)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     std::string readBuffer;
@@ -52,12 +51,12 @@ bool CurlWrapper::download_text(const std::string &url, std::string &content)
 }
 
 static int
-upload_progress_update(void *p, double dltotal, double dlnow, double ultotal, double ulnow)
+upload_progress_update(void* p, double dltotal, double dlnow, double ultotal, double ulnow)
 {
     UNUSED(dltotal);
     UNUSED(dlnow);
 
-    struct dl_up_progress *myp = reinterpret_cast<struct dl_up_progress *>(p);
+    struct dl_up_progress* myp = reinterpret_cast<struct dl_up_progress*>(p);
 
     if (myp->progress_callback == nullptr) {
         return 0;
@@ -77,7 +76,7 @@ upload_progress_update(void *p, double dltotal, double dlnow, double ultotal, do
     return 0;
 }
 
-size_t get_file_size(const std::string &path)
+size_t get_file_size(const std::string& path)
 {
     std::streampos begin, end;
     std::ifstream myfile(path.c_str(), std::ios::binary);
@@ -95,9 +94,8 @@ template<typename T> std::string to_string(T value)
     return os.str();
 }
 
-bool CurlWrapper::upload_file(const std::string &url,
-                              const std::string &path,
-                              const progress_callback_t &progress_callback)
+bool CurlWrapper::upload_file(
+    const std::string& url, const std::string& path, const progress_callback_t& progress_callback)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     CURLcode res;
@@ -106,10 +104,10 @@ bool CurlWrapper::upload_file(const std::string &url,
         struct dl_up_progress prog;
         prog.progress_callback = progress_callback;
 
-        curl_httppost *post = NULL;
-        curl_httppost *last = NULL;
+        curl_httppost* post = NULL;
+        curl_httppost* last = NULL;
 
-        struct curl_slist *chunk = NULL;
+        struct curl_slist* chunk = NULL;
 
         // avoid sending 'Expect: 100-Continue' header, required by some server implementations
         chunk = curl_slist_append(chunk, "Expect:");
@@ -157,12 +155,12 @@ bool CurlWrapper::upload_file(const std::string &url,
 }
 
 static int
-download_progress_update(void *p, double dltotal, double dlnow, double ultotal, double ulnow)
+download_progress_update(void* p, double dltotal, double dlnow, double ultotal, double ulnow)
 {
     UNUSED(ultotal);
     UNUSED(ulnow);
 
-    struct dl_up_progress *myp = reinterpret_cast<struct dl_up_progress *>(p);
+    struct dl_up_progress* myp = reinterpret_cast<struct dl_up_progress*>(p);
 
     if (myp->progress_callback == nullptr) {
         return 0;
@@ -182,12 +180,11 @@ download_progress_update(void *p, double dltotal, double dlnow, double ultotal, 
     return 0;
 }
 
-bool CurlWrapper::download_file_to_path(const std::string &url,
-                                        const std::string &path,
-                                        const progress_callback_t &progress_callback)
+bool CurlWrapper::download_file_to_path(
+    const std::string& url, const std::string& path, const progress_callback_t& progress_callback)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
-    FILE *fp;
+    FILE* fp;
 
     if (nullptr != curl) {
         CURLcode res;

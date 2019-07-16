@@ -10,25 +10,31 @@ namespace backend {
 template<typename Mavsdk = Mavsdk>
 class CoreServiceImpl final : public mavsdk::rpc::core::CoreService::Service {
 public:
-    CoreServiceImpl(Mavsdk &dc) :
+    CoreServiceImpl(Mavsdk& dc) :
         _dc(dc),
         _stop_promise(std::promise<void>()),
         _stop_future(_stop_promise.get_future())
     {}
 
     grpc::Status SubscribeConnectionState(
-        grpc::ServerContext * /* context */,
-        const rpc::core::SubscribeConnectionStateRequest * /* request */,
-        grpc::ServerWriter<rpc::core::ConnectionStateResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const rpc::core::SubscribeConnectionStateRequest* /* request */,
+        grpc::ServerWriter<rpc::core::ConnectionStateResponse>* writer) override
     {
-        _dc.register_on_discover([&writer](const uint64_t uuid) {
+        std::mutex connection_state_mutex{};
+
+        _dc.register_on_discover([&writer, &connection_state_mutex](const uint64_t uuid) {
             const auto rpc_connection_state_response = createRpcConnectionStateResponse(uuid, true);
+
+            std::lock_guard<std::mutex> lock(connection_state_mutex);
             writer->Write(rpc_connection_state_response);
         });
 
-        _dc.register_on_timeout([&writer](const uint64_t uuid) {
+        _dc.register_on_timeout([&writer, &connection_state_mutex](const uint64_t uuid) {
             const auto rpc_connection_state_response =
                 createRpcConnectionStateResponse(uuid, false);
+
+            std::lock_guard<std::mutex> lock(connection_state_mutex);
             writer->Write(rpc_connection_state_response);
         });
 
@@ -38,10 +44,10 @@ public:
 
     // For now, the running plugins are hardcoded and we assume they are always started by the
     // backend.
-    grpc::Status
-    ListRunningPlugins(grpc::ServerContext * /* context */,
-                       const rpc::core::ListRunningPluginsRequest * /* request */,
-                       mavsdk::rpc::core::ListRunningPluginsResponse *response) override
+    grpc::Status ListRunningPlugins(
+        grpc::ServerContext* /* context */,
+        const rpc::core::ListRunningPluginsRequest* /* request */,
+        mavsdk::rpc::core::ListRunningPluginsResponse* response) override
     {
         std::string plugin_names[10] = {"action",
                                         "calibration",
@@ -67,7 +73,7 @@ public:
     void stop() { _stop_promise.set_value(); }
 
 private:
-    Mavsdk &_dc;
+    Mavsdk& _dc;
     std::promise<void> _stop_promise;
 
     std::future<void> _stop_future;

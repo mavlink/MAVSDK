@@ -37,7 +37,7 @@ public:
      * @param system_id System id.
      * @param comp_id Component id.
      */
-    explicit System(MavsdkImpl &parent, uint8_t system_id, uint8_t comp_id);
+    explicit System(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id);
     /**
      * @brief Destructor.
      */
@@ -98,12 +98,12 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    System(const System &) = delete;
+    System(const System&) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const System &operator=(const System &) = delete;
+    const System& operator=(const System&) = delete;
 
 private:
     std::shared_ptr<SystemImpl> system_impl() { return _system_impl; };

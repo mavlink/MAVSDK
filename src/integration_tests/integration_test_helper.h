@@ -12,7 +12,7 @@
 
 class SitlTest : public testing::Test {
 protected:
-    void StartPX4(const std::string &model)
+    void StartPX4(const std::string& model)
     {
 #ifndef WINDOWS
         const int ret = system((std::string("./tools/start_px4_sitl.sh ") + model).c_str());
@@ -52,7 +52,7 @@ private:
         // If no model name is appended to the test name, we use the default which is iris.
         std::string model_name = "iris";
 
-        const std::string &test_name =
+        const std::string& test_name =
             ::testing::UnitTest::GetInstance()->current_test_info()->name();
         const size_t pos = test_name.find_first_of('_', 0);
         if (pos != std::string::npos) {
@@ -65,8 +65,8 @@ private:
 };
 
 template<typename Rep, typename Period>
-bool poll_condition_with_timeout(std::function<bool()> fun,
-                                 std::chrono::duration<Rep, Period> duration)
+bool poll_condition_with_timeout(
+    std::function<bool()> fun, std::chrono::duration<Rep, Period> duration)
 {
     // We need at millisecond resolution for sleeping.
     const std::chrono::milliseconds duration_ms(duration);

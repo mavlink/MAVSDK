@@ -15,7 +15,7 @@ MAVLinkReceiver::MAVLinkReceiver(uint8_t channel) :
 #endif
 {}
 
-void MAVLinkReceiver::set_new_datagram(char *datagram, unsigned datagram_len)
+void MAVLinkReceiver::set_new_datagram(char* datagram, unsigned datagram_len)
 {
     _datagram = datagram;
     _datagram_len = datagram_len;
@@ -74,23 +74,26 @@ void MAVLinkReceiver::debug_drop_rate()
 
                 _time_elapsed += elapsed_since_s(_last_time);
 
-                print_line("FMU   ",
-                           sys_status.errors_comm,
-                           sys_status.errors_comm,
-                           _bytes_sent_overall,
-                           _bytes_sent_overall);
+                print_line(
+                    "FMU   ",
+                    sys_status.errors_comm,
+                    sys_status.errors_comm,
+                    _bytes_sent_overall,
+                    _bytes_sent_overall);
                 // print_line("Gimbal", sys_status.errors_count1, sys_status.errors_comm,
                 //           _bytes_at_gimbal_overall, _bytes_sent_overall);
-                print_line("Camera",
-                           sys_status.errors_count2,
-                           sys_status.errors_comm,
-                           _bytes_at_camera_overall,
-                           _bytes_sent_overall);
-                print_line("SDK   ",
-                           _bytes_received,
-                           sys_status.errors_comm,
-                           _bytes_at_sdk_overall,
-                           _bytes_sent_overall);
+                print_line(
+                    "Camera",
+                    sys_status.errors_count2,
+                    sys_status.errors_comm,
+                    _bytes_at_camera_overall,
+                    _bytes_sent_overall);
+                print_line(
+                    "SDK   ",
+                    _bytes_received,
+                    sys_status.errors_comm,
+                    _bytes_at_sdk_overall,
+                    _bytes_sent_overall);
 
             } else {
                 LogDebug() << "Missed SYS_STATUS";
@@ -105,11 +108,12 @@ void MAVLinkReceiver::debug_drop_rate()
     }
 }
 
-void MAVLinkReceiver::print_line(const char *index,
-                                 unsigned count,
-                                 unsigned count_total,
-                                 unsigned overall_bytes,
-                                 unsigned overall_bytes_total)
+void MAVLinkReceiver::print_line(
+    const char* index,
+    unsigned count,
+    unsigned count_total,
+    unsigned overall_bytes,
+    unsigned overall_bytes_total)
 {
     LogDebug() << "count " << index << ": " << std::setw(6) << count << ", loss: " << std::setw(6)
                << count_total - count << ",  " << std::setw(6) << std::setprecision(2) << std::fixed

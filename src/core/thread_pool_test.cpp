@@ -35,7 +35,7 @@ TEST(ThreadPool, SimpleTask)
     EXPECT_TRUE(task_one_ran);
 }
 
-static void add_first_to_second(int arg1, int &arg2)
+static void add_first_to_second(int arg1, int& arg2)
 {
     arg2 += arg1;
 }
