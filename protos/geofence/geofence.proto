@@ -6,7 +6,7 @@ option java_package = "io.mavlink.mavsdk.geofence";
 option java_outer_classname = "GeofenceProto";
 
 service GeofenceService {
-    rpc SendGeofence(SendGeofenceRequest) returns(SendGeofenceRespose) {}
+    rpc SendGeofence(SendGeofenceRequest) returns(SendGeofenceResponse) {}
 }
 
 
