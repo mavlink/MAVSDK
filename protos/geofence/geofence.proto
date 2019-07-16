@@ -29,7 +29,7 @@ message SendGeofenceRequest {
     repeated Polygon polygons = 1;
 }
 
-message SendGeofenceRespose {
+message SendGeofenceResponse {
     GeofenceResult geofence_result = 1;
 }
 
