@@ -103,8 +103,7 @@ bool operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorCo
 
 std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control)
 {
-    return str << "[group: " << 0
-               << ", Command port 0: " << actuator_control.groups[0].controls[0]
+    return str << "[group: " << 0 << ", Command port 0: " << actuator_control.groups[0].controls[0]
                << ", Command port 1: " << actuator_control.groups[0].controls[1]
                << ", Command port 2: " << actuator_control.groups[0].controls[2]
                << ", Command port 3: " << actuator_control.groups[0].controls[3]
@@ -112,8 +111,7 @@ std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& act
                << ", Command port 5: " << actuator_control.groups[0].controls[5]
                << ", Command port 6: " << actuator_control.groups[0].controls[6]
                << ", Command port 7: " << actuator_control.groups[0].controls[7] << "], "
-               << "[group: " << 1
-               << ", Command port 0: " << actuator_control.groups[1].controls[0]
+               << "[group: " << 1 << ", Command port 0: " << actuator_control.groups[1].controls[0]
                << ", Command port 1: " << actuator_control.groups[1].controls[1]
                << ", Command port 2: " << actuator_control.groups[1].controls[2]
                << ", Command port 3: " << actuator_control.groups[1].controls[3]
