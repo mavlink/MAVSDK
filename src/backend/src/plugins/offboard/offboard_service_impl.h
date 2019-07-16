@@ -63,10 +63,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status
-    SetActuatorControl(grpc::ServerContext * /* context */,
-                       const rpc::offboard::SetActuatorControlRequest *request,
-                       rpc::offboard::SetActuatorControlResponse * /* response */) override
+    grpc::Status SetActuatorControl(
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetActuatorControlRequest* request,
+        rpc::offboard::SetActuatorControlResponse* /* response */) override
     {
         if (request != nullptr) {
             auto requested_actuator_control =
@@ -78,7 +78,7 @@ public:
     }
 
     static mavsdk::Offboard::ActuatorControl
-    translateRPCActuatorControl(const rpc::offboard::ActuatorControl &rpc_actuator_control)
+    translateRPCActuatorControl(const rpc::offboard::ActuatorControl& rpc_actuator_control)
     {
         mavsdk::Offboard::ActuatorControl actuator_control{std::numeric_limits<float>::quiet_NaN()};
 
@@ -94,7 +94,7 @@ public:
 
         return actuator_control;
     }
-    
+
     grpc::Status SetAttitude(
         grpc::ServerContext* /* context */,
         const rpc::offboard::SetAttitudeRequest* request,

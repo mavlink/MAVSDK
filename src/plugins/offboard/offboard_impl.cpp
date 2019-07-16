@@ -512,7 +512,7 @@ void OffboardImpl::send_attitude_rate()
     _parent->send_message(message);
 }
 
-void OffboardImpl::send_actuator_control_message(const float *controls, uint8_t group_number)
+void OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group_number)
 {
     mavlink_message_t message;
     mavlink_msg_set_actuator_control_target_pack(

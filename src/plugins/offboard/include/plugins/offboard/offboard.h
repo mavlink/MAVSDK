@@ -267,7 +267,7 @@ private:
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Offboard::ActuatorControl &lhs, const Offboard::ActuatorControl &rhs);
+bool operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorControl& rhs);
 
 /**
  * @brief Equal operator to compare two `Offboard::Attitude` objects.
@@ -288,7 +288,7 @@ bool operator==(const Offboard::AttitudeRate& lhs, const Offboard::AttitudeRate&
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Offboard::ActuatorControl const &actuator_control);
+std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control);
 
 /**
  * @brief Stream operator to print information about a `Offboard::Attitude`.

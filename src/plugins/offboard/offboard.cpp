@@ -86,7 +86,7 @@ const char* Offboard::result_str(Result result)
     }
 }
 
-bool operator==(const Offboard::ActuatorControl &lhs, const Offboard::ActuatorControl &rhs)
+bool operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorControl& rhs)
 {
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 8; j++) {
@@ -101,7 +101,7 @@ bool operator==(const Offboard::ActuatorControl &lhs, const Offboard::ActuatorCo
     return true;
 }
 
-std::ostream &operator<<(std::ostream &str, Offboard::ActuatorControl const &actuator_control)
+std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control)
 {
     return str << "[group: " << 0
                << ", Command port 0: " << actuator_control.groups[0].controls[0]
