@@ -386,7 +386,7 @@ void CameraImpl::take_photo_async(const Camera::result_callback_t& callback)
     auto cmd_take_photo = make_command_take_photo(0.f, 1.0f);
 
     _parent->send_command_async(
-        cmd_take_photo, std::bind(&CameraImpl::receive_command_result, _1, callback));
+        cmd_take_photo, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
 void CameraImpl::start_photo_interval_async(
@@ -394,7 +394,9 @@ void CameraImpl::start_photo_interval_async(
 {
     if (!interval_valid(interval_s)) {
         if (callback) {
-            callback(Camera::Result::WRONG_ARGUMENT);
+            const auto temp_callback = callback;
+            _parent->call_user_callback(
+                [temp_callback]() { temp_callback(Camera::Result::WRONG_ARGUMENT); });
         }
         return;
     }
@@ -406,7 +408,8 @@ void CameraImpl::start_photo_interval_async(
     auto cmd_take_photo_time_lapse = make_command_take_photo(interval_s, 0.f);
 
     _parent->send_command_async(
-        cmd_take_photo_time_lapse, std::bind(&CameraImpl::receive_command_result, _1, callback));
+        cmd_take_photo_time_lapse,
+        std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
 void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t& callback)
@@ -414,7 +417,8 @@ void CameraImpl::stop_photo_interval_async(const Camera::result_callback_t& call
     auto cmd_stop_photo_interval = make_command_stop_photo();
 
     _parent->send_command_async(
-        cmd_stop_photo_interval, std::bind(&CameraImpl::receive_command_result, _1, callback));
+        cmd_stop_photo_interval,
+        std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
 void CameraImpl::start_video_async(const Camera::result_callback_t& callback)
@@ -426,7 +430,7 @@ void CameraImpl::start_video_async(const Camera::result_callback_t& callback)
     auto cmd_start_video = make_command_start_video(0.f);
 
     _parent->send_command_async(
-        cmd_start_video, std::bind(&CameraImpl::receive_command_result, _1, callback));
+        cmd_start_video, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
 void CameraImpl::stop_video_async(const Camera::result_callback_t& callback)
@@ -434,7 +438,7 @@ void CameraImpl::stop_video_async(const Camera::result_callback_t& callback)
     auto cmd_stop_video = make_command_stop_video();
 
     _parent->send_command_async(
-        cmd_stop_video, std::bind(&CameraImpl::receive_command_result, _1, callback));
+        cmd_stop_video, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
 Camera::Information CameraImpl::get_information()
@@ -507,7 +511,11 @@ void CameraImpl::get_video_stream_info_async(
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
     if (_video_stream_info.callback) {
         if (callback) {
-            callback(Camera::Result::IN_PROGRESS, _video_stream_info.info);
+            const auto temp_callback = callback;
+            const auto temp_info = _video_stream_info.info;
+            _parent->call_user_callback([temp_callback, temp_info]() {
+                temp_callback(Camera::Result::IN_PROGRESS, temp_info);
+            });
         }
         return;
     }
@@ -520,7 +528,11 @@ void CameraImpl::get_video_stream_info_async(
         Camera::Result camera_result = camera_result_from_command_result(result);
         if (camera_result != Camera::Result::SUCCESS) {
             if (_video_stream_info.callback) {
-                _video_stream_info.callback(camera_result, _video_stream_info.info);
+                const auto temp_callback = _video_stream_info.callback;
+                const auto temp_info = _video_stream_info.info;
+                _parent->call_user_callback([temp_callback, temp_info, camera_result]() {
+                    temp_callback(camera_result, temp_info);
+                });
             }
             return;
         }
@@ -539,7 +551,10 @@ void CameraImpl::get_video_stream_info_timeout()
 
     _video_stream_info.available = false;
     if (_video_stream_info.callback) {
-        _video_stream_info.callback(Camera::Result::TIMEOUT, _video_stream_info.info);
+        const auto temp_callback = _video_stream_info.callback;
+        const auto temp_info = _video_stream_info.info;
+        _parent->call_user_callback(
+            [temp_callback, temp_info]() { temp_callback(Camera::Result::TIMEOUT, temp_info); });
         _video_stream_info.callback = nullptr;
     }
 }
@@ -640,7 +655,9 @@ void CameraImpl::get_mode_async(Camera::mode_callback_t callback)
 
     if (_mode.callback != nullptr) {
         if (callback) {
-            callback(Camera::Result::BUSY, Camera::Mode::UNKNOWN);
+            const auto temp_callback = callback;
+            _parent->call_user_callback(
+                [temp_callback]() { temp_callback(Camera::Result::BUSY, Camera::Mode::UNKNOWN); });
             return;
         }
     }
@@ -854,7 +871,9 @@ void CameraImpl::process_camera_settings(const mavlink_message_t& message)
         save_camera_mode(camera_settings.mode_id);
     }
 
-    _mode.callback(Camera::Result::SUCCESS, mode);
+    const auto temp_callback = _mode.callback;
+    _parent->call_user_callback(
+        [temp_callback, mode]() { temp_callback(Camera::Result::SUCCESS, mode); });
     _mode.callback = nullptr;
 
     _parent->unregister_timeout_handler(_mode.timeout_cookie);
@@ -945,7 +964,11 @@ void CameraImpl::process_video_information(const mavlink_message_t& message)
 
         if (_video_stream_info.callback) {
             _parent->unregister_timeout_handler(_video_stream_info.timeout_cookie);
-            _video_stream_info.callback(Camera::Result::SUCCESS, _video_stream_info.info);
+            const auto temp_callback = _video_stream_info.callback;
+            const auto temp_info = _video_stream_info.info;
+            _parent->call_user_callback([temp_callback, temp_info]() {
+                temp_callback(Camera::Result::SUCCESS, temp_info);
+            });
             _video_stream_info.callback = nullptr;
         }
         notify_video_stream_info();
@@ -1042,7 +1065,7 @@ void CameraImpl::receive_command_result(
     Camera::Result camera_result = camera_result_from_command_result(command_result);
 
     if (callback) {
-        callback(camera_result);
+        _parent->call_user_callback([callback, camera_result]() { callback(camera_result); });
     }
 }
 
@@ -1526,7 +1549,7 @@ void CameraImpl::format_storage_async(Camera::result_callback_t callback)
     cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     _parent->send_command_async(
-        cmd_format, std::bind(&CameraImpl::receive_command_result, _1, callback));
+        cmd_format, std::bind(&CameraImpl::receive_command_result, this, _1, callback));
 }
 
 } // namespace mavsdk
