@@ -148,6 +148,10 @@ public:
      * (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
      */
     struct ActuatorControl {
+        /**
+         * @brief Eight controls that will be given to the group. Each control is a normalized
+         * (-1..+1) command value, which will be mapped and scaled through the mixer.
+         */
         struct Group {
             float controls[8]; /**< @brief Controls in the group. */
         };
