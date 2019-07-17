@@ -57,6 +57,7 @@ std::vector<std::shared_ptr<dc::MissionItem>> generateListOfOneItem()
     mission_item->set_fly_through(false);
     mission_item->set_gimbal_pitch_and_yaw(45.2f, 90.3f);
     mission_item->set_camera_action(CameraAction::NONE);
+    mission_item->set_camera_photo_interval(5);
     mission_item->set_loiter_time(3.2f);
 
     mission_items.push_back(mission_item);
