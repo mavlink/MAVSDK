@@ -1,7 +1,7 @@
 import unittest
 
 from collections import namedtuple
-from dcsdkgen.type_info import (TypeInfo, TypeInfoFactory)
+from protoc_gen_dcsdk.type_info import (TypeInfo, TypeInfoFactory)
 from unittest.mock import patch, mock_open
 
 class TestTypeInfo(unittest.TestCase):
