@@ -268,6 +268,7 @@ public:
         mission_item->set_gimbal_pitch_and_yaw(
             rpc_mission_item.gimbal_pitch_deg(), rpc_mission_item.gimbal_yaw_deg());
         mission_item->set_camera_action(translateRPCCameraAction(rpc_mission_item.camera_action()));
+        mission_item->set_camera_photo_interval(rpc_mission_item.camera_photo_interval_s());
         mission_item->set_loiter_time(rpc_mission_item.loiter_time_s());
 
         return mission_item;
