@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mavsdk.rpc.mission;
 
-option java_package = "io.mavlink.mavsdk.mission";
+option java_package = "io.mavsdk.mission";
 option java_outer_classname = "MissionProto";
 
 service MissionService {

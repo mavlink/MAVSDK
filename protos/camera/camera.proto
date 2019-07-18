@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mavsdk.rpc.camera;
 
-option java_package = "io.mavlink.mavsdk.camera";
+option java_package = "io.mavsdk.camera";
 option java_outer_classname = "CameraProto";
 
 service CameraService {

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mavsdk.rpc.telemetry;
 
-option java_package = "io.mavlink.mavsdk.telemetry";
+option java_package = "io.mavsdk.telemetry";
 option java_outer_classname = "TelemetryProto";
 
 service TelemetryService {

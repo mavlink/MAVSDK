@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mavsdk.rpc.calibration;
 
-option java_package = "io.mavlink.mavsdk.calibration";
+option java_package = "io.mavsdk.calibration";
 option java_outer_classname = "CalibrationProto";
 
 service CalibrationService {

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mavsdk.rpc.action;
 
-option java_package = "io.mavlink.mavsdk.action";
+option java_package = "io.mavsdk.action";
 option java_outer_classname = "ActionProto";
 
 service ActionService {

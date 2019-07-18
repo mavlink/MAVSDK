@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mavsdk.rpc.param;
 
-option java_package = "io.mavlink.mavsdk.param";
+option java_package = "io.mavsdk.param";
 option java_outer_classname = "ParamProto";
 
 service ParamService {

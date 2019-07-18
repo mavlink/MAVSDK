@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mavsdk.rpc.offboard;
 
-option java_package = "io.mavlink.mavsdk.offboard";
+option java_package = "io.mavsdk.offboard";
 option java_outer_classname = "OffboardProto";
 
 service OffboardService {

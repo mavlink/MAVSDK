@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mavsdk.rpc.info;
 
-option java_package = "io.mavlink.mavsdk.info";
+option java_package = "io.mavsdk.info";
 option java_outer_classname = "InfoProto";
 
 service InfoService {

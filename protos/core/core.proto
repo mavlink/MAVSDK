@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mavsdk.rpc.core;
 
-option java_package = "io.mavlink.mavsdk.core";
+option java_package = "io.mavsdk.core";
 option java_outer_classname = "CoreProto";
 
 service CoreService {
