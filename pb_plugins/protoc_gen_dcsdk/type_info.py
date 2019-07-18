@@ -72,24 +72,6 @@ class TypeInfo:
             return self._default_types[type_id]
 
     @property
-    def parent_type(self):
-        """ Extracts parent type. This assumes that nesting is not deeper
-        than 1 level.
-
-        Note that it also assumes that the package name has 3 words. It
-        will start with a '.', giving something like:
-        '.io.mavlink.mavsdk.ActionResult.Result'."""
-        if self.is_primitive:
-            return None
-
-        type_tree = self._field.type_name.split(".")
-
-        if len(type_tree) <= 5:
-            return None
-
-        return str(type_tree[-2])
-
-    @property
     def is_result(self):
         """ Check if the field is a *Result """
         return self.name.endswith("Result")
