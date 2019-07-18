@@ -63,6 +63,38 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetActuatorControl(
+        grpc::ServerContext* /* context */,
+        const rpc::offboard::SetActuatorControlRequest* request,
+        rpc::offboard::SetActuatorControlResponse* /* response */) override
+    {
+        if (request != nullptr) {
+            auto requested_actuator_control =
+                translateRPCActuatorControl(request->actuator_control());
+            _offboard.set_actuator_control(requested_actuator_control);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    static mavsdk::Offboard::ActuatorControl
+    translateRPCActuatorControl(const rpc::offboard::ActuatorControl& rpc_actuator_control)
+    {
+        mavsdk::Offboard::ActuatorControl actuator_control{std::numeric_limits<float>::quiet_NaN()};
+
+        int num_groups = std::min(2, rpc_actuator_control.groups_size());
+
+        for (int i = 0; i < num_groups; i++) {
+            int num_controls = std::min(8, rpc_actuator_control.groups(i).controls_size());
+            for (int j = 0; j < num_controls; j++) {
+                // https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.repeated_field#
+                actuator_control.groups[i].controls[j] = rpc_actuator_control.groups(i).controls(j);
+            }
+        }
+
+        return actuator_control;
+    }
+
     grpc::Status SetAttitude(
         grpc::ServerContext* /* context */,
         const rpc::offboard::SetAttitudeRequest* request,

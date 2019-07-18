@@ -1,3 +1,4 @@
+#include <cmath>
 #include "global_include.h"
 #include "offboard_impl.h"
 #include "mavsdk_impl.h"
@@ -241,6 +242,33 @@ void OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
     send_attitude_rate();
 }
 
+void OffboardImpl::set_actuator_control(Offboard::ActuatorControl actuator_control)
+{
+    _mutex.lock();
+    _actuator_control = actuator_control;
+
+    if (_mode != Mode::ACTUATOR_CONTROL) {
+        if (_call_every_cookie) {
+            // If we're already sending other setpoints, stop that now.
+            _parent->remove_call_every(_call_every_cookie);
+            _call_every_cookie = nullptr;
+        }
+        // We automatically send motor rate values from now on.
+        _parent->add_call_every(
+            [this]() { send_actuator_control(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+        _mode = Mode::ACTUATOR_CONTROL;
+    } else {
+        // We're already sending these kind of values. Since the value changes, let's
+        // reschedule the next call, so we don't send values too often.
+        _parent->reset_call_every(_call_every_cookie);
+    }
+    _mutex.unlock();
+
+    // also send it right now to reduce latency
+    send_actuator_control();
+}
+
 void OffboardImpl::send_position_ned()
 {
     // const static uint16_t IGNORE_X = (1 << 0);
@@ -482,6 +510,41 @@ void OffboardImpl::send_attitude_rate()
         body_yaw_rate,
         thrust);
     _parent->send_message(message);
+}
+
+void OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group_number)
+{
+    mavlink_message_t message;
+    mavlink_msg_set_actuator_control_target_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        group_number,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        controls);
+    _parent->send_message(message);
+}
+
+void OffboardImpl::send_actuator_control()
+{
+    _mutex.lock();
+    Offboard::ActuatorControl actuator_control = _actuator_control;
+    _mutex.unlock();
+
+    for (int i = 0; i < 2; i++) {
+        int nan_count = 0;
+        for (int j = 0; j < 8; j++) {
+            if (std::isnan(actuator_control.groups[i].controls[j])) {
+                nan_count++;
+                actuator_control.groups[i].controls[j] = 0.0f;
+            }
+        }
+        if (nan_count < 8) {
+            send_actuator_control_message(&actuator_control.groups[i].controls[0], i);
+        }
+    }
 }
 
 void OffboardImpl::process_heartbeat(const mavlink_message_t& message)

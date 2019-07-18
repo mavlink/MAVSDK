@@ -1,5 +1,6 @@
 #include "plugins/offboard/offboard.h"
 #include "offboard_impl.h"
+#include <cmath>
 
 namespace mavsdk {
 
@@ -57,6 +58,11 @@ void Offboard::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
     return _impl->set_attitude_rate(attitude_rate);
 }
 
+void Offboard::set_actuator_control(Offboard::ActuatorControl actuator_control)
+{
+    return _impl->set_actuator_control(actuator_control);
+}
+
 const char* Offboard::result_str(Result result)
 {
     switch (result) {
@@ -78,6 +84,41 @@ const char* Offboard::result_str(Result result)
         default:
             return "Unknown";
     }
+}
+
+bool operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorControl& rhs)
+{
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 8; j++) {
+            if ((std::isnan(lhs.groups[i].controls[j]) && std::isnan(rhs.groups[i].controls[j])) ||
+                lhs.groups[i].controls[j] == rhs.groups[i].controls[j]) {
+                continue;
+            }
+            return false;
+        }
+    }
+
+    return true;
+}
+
+std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control)
+{
+    return str << "[group: " << 0 << ", Command port 0: " << actuator_control.groups[0].controls[0]
+               << ", Command port 1: " << actuator_control.groups[0].controls[1]
+               << ", Command port 2: " << actuator_control.groups[0].controls[2]
+               << ", Command port 3: " << actuator_control.groups[0].controls[3]
+               << ", Command port 4: " << actuator_control.groups[0].controls[4]
+               << ", Command port 5: " << actuator_control.groups[0].controls[5]
+               << ", Command port 6: " << actuator_control.groups[0].controls[6]
+               << ", Command port 7: " << actuator_control.groups[0].controls[7] << "], "
+               << "[group: " << 1 << ", Command port 0: " << actuator_control.groups[1].controls[0]
+               << ", Command port 1: " << actuator_control.groups[1].controls[1]
+               << ", Command port 2: " << actuator_control.groups[1].controls[2]
+               << ", Command port 3: " << actuator_control.groups[1].controls[3]
+               << ", Command port 4: " << actuator_control.groups[1].controls[4]
+               << ", Command port 5: " << actuator_control.groups[1].controls[5]
+               << ", Command port 6: " << actuator_control.groups[1].controls[6]
+               << ", Command port 7: " << actuator_control.groups[1].controls[7] << "]";
 }
 
 bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs)
