@@ -6,11 +6,19 @@ os: Visual Studio 2017
 
 # build platform, i.e. Win32 (instead of x86), x64, Any CPU. This setting is optional.
 platform:
+  - Win32
   - x64
 
-# specify custom environment variables
 environment:
+  CFLAGS: "-D_WIN32_WINNT=0x0600"
+  CXXFLAGS: "-D_WIN32_WINNT=0x0600"
   MSVC_DEFAULT_OPTIONS: ON
+  matrix:
+      - COMPILER: mingw-64
+        GENERATOR: MinGW Makefiles
+#      - COMPILER: msvc2017
+#        GENERATOR: Visual Studio 15 2017
+#        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
 # only build PR but not branch as well
 skip_branch_with_pr: true
@@ -26,125 +34,31 @@ init:
   - msbuild /version
 
 # clone directory
-clone_folder: C:\dronecode_sdk
-
+clone_folder: C:\mavsdk
 
 # scripts to run before build
 before_build:
-
-  - cd C:\dronecode_sdk
-  - git submodule update --init --recursive --depth 100
+  - if "%COMPILER%"=="mingw-64" set PATH=%PATH:C:\Program Files\Git\usr\bin;=%
+  - if "%COMPILER%"=="mingw-64" set PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin;%PATH%
+  - cd C:\mavsdk
+  - git submodule update --init --recursive --depth 200
   - cd C:\
-  - appveyor DownloadFile https://curl.haxx.se/download/curl-7.56.1.zip
-  - 7z x -y curl-7.56.1.zip
 
 build: on
 
 build_script:
   - set CL=/MP
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cd curl-7.56.1\winbuild
-  - if "%configuration%"=="Debug" (
-      nmake /f Makefile.vc mode=static VC=15 MACHINE=x64 DEBUG=yes
-    ) else (
-      nmake /f Makefile.vc mode=static VC=15 MACHINE=x64 DEBUG=no
-    )
-  - set dronecode_sdk_dir=C:\dronecode_sdk
-  - cd %dronecode_sdk_dir%
-  - md build
-  - cd build
-  - if "%configuration%"=="Debug" (
-      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.56.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.56.1\builds\libcurl-vc15-x64-debug-static-ipv6-sspi-winssl\lib\libcurl_a_debug.lib" -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=..\install ..
-    ) else (
-      cmake -DWIN_CURL_INCLUDE_DIR:STRING="C:\curl-7.56.1\include" -DWIN_CURL_LIB:STRING="C:\curl-7.56.1\builds\libcurl-vc15-x64-release-static-ipv6-sspi-winssl\lib\libcurl_a.lib" -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=..\install ..
-    )
-  - if "%configuration%"=="Debug" (
-      cmake --build . --target install --config Debug
-    ) else (
-      cmake --build . --target install --config Release
-    )
-  - cd %dronecode_sdk_dir%
-  - cd example\takeoff_land
-  - md build
-  - cd build
-  - cmake ..  -G "Visual Studio 15 2017 Win64"
-  - if "%configuration%"=="Debug" (
-      cmake --build . --config Debug
-    ) else (
-      cmake --build . --config Release
-    )
-  - cd %dronecode_sdk_dir%
-  - cd example\fly_mission
-  - md build
-  - cd build
-  - cmake ..  -G "Visual Studio 15 2017 Win64"
-  - if "%configuration%"=="Debug" (
-      cmake --build . --config Debug
-    ) else (
-      cmake --build . --config Release
-    )
-  - cd %dronecode_sdk_dir%
-  - cd example\offboard_velocity
-  - md build
-  - cd build
-  - cmake ..  -G "Visual Studio 15 2017 Win64"
-  - if "%configuration%"=="Debug" (
-      cmake --build . --config Debug
-    ) else (
-      cmake --build . --config Release
-    )
-  - cd %dronecode_sdk_dir%
-  - cd example\transition_vtol_fixed_wing
-  - md build
-  - cd build
-  - cmake ..  -G "Visual Studio 15 2017 Win64"
-  - if "%configuration%"=="Debug" (
-      cmake --build . --config Debug
-    ) else (
-      cmake --build . --config Release
-    )
-  - cd %dronecode_sdk_dir%
-  - cd example\follow_me
-  - md build
-  - cd build
-  - cmake ..  -G "Visual Studio 15 2017 Win64"
-  - if "%configuration%"=="Debug" (
-      cmake --build . --config Debug
-    ) else (
-      cmake --build . --config Release
-    )
-  - cd %dronecode_sdk_dir%
-  - cd example\fly_qgc_mission
-  - md build
-  - cd build
-  - cmake ..  -G "Visual Studio 15 2017 Win64"
-  - if "%configuration%"=="Debug" (
-      cmake --build . --config Debug
-    ) else (
-      cmake --build . --config Release
-    )
-  - cd %dronecode_sdk_dir%
-
+  - if "%COMPILER%"=="msvc2017" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - set mavsdk_dir=C:\mavsdk
+  - cd %mavsdk_dir%
+  - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "%GENERATOR%" -DCMAKE_INSTALL_PREFIX=%mavsdk_dir%\install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DENABLE_MAVLINK_PASSTHROUGH=ON -Bbuild -H.
+  - cmake --build build --target install --config %configuration%
+  - cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_PREFIX_PATH="%mavsdk_dir%\install;%mavsdk_dir%\build\third_party\install" -Bexample\build -Hexample
+  - cmake --build example\build --config %configuration%
 
 test: on
 
-# We need to manually copy the dlls for now, otherwise they are not found.
 test_script:
-  - cd %dronecode_sdk_dir%
-  - if "%configuration%"=="Debug" (
-      copy build\third_party\gtest\googlemock\gtest\Debug\gtestd.lib build\Debug\ &&
-      copy build\third_party\gtest\googlemock\gtest\Debug\gtest_maind.lib build\Debug\ &&
-      copy build\third_party\gtest\googlemock\Debug\gmockd.lib build\Debug\ &&
-      copy build\plugins\mission\Debug\dronecode_sdk_mission.dll build\Debug\ &&
-      copy build\plugins\camera\Debug\dronecode_sdk_camera.dll build\Debug\ &&
-      copy build\plugins\calibration\Debug\dronecode_sdk_calibration.dll build\Debug\ &&
-      build\Debug\unit_tests_runner.exe
-    ) else (
-      copy build\third_party\gtest\googlemock\gtest\Release\gtest.lib build\Release\ &&
-      copy build\third_party\gtest\googlemock\gtest\Release\gtest_main.lib build\Release\ &&
-      copy build\third_party\gtest\googlemock\Release\gmock.lib build\Release\ &&
-      copy build\plugins\mission\Release\dronecode_sdk_mission.dll build\Release\ &&
-      copy build\plugins\camera\Release\dronecode_sdk_camera.dll build\Release\ &&
-      copy build\plugins\calibration\Release\dronecode_sdk_calibration.dll build\Release\ &&
-      build\Release\unit_tests_runner.exe
-    )
+  - cd %mavsdk_dir%
+  - build\src\unit_tests_runner.exe
+  - build\src\backend\test\unit_tests_backend.exe

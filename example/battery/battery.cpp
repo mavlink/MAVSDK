@@ -3,24 +3,24 @@
 //
 // Author: Julian Oes <julian@oes.ch>
 
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <chrono>
 #include <cstdint>
 #include <iostream>
 #include <future>
 #include <memory>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static void subscribe_armed(std::shared_ptr<Telemetry> telemetry);
 static void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough);
-static void usage(const std::string &bin_name);
+static void usage(const std::string& bin_name);
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
     std::string connection_url;
     ConnectionResult connection_result;
 
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    System &system = dc.system();
+    System& system = dc.system();
 
     auto telemetry = std::make_shared<Telemetry>(system);
     auto mavlink_passthrough = std::make_shared<MavlinkPassthrough>(system);
@@ -82,25 +82,26 @@ void send_battery_status(std::shared_ptr<MavlinkPassthrough> mavlink_passthrough
                                 UINT16_MAX}; // mV
 
     mavlink_message_t message;
-    mavlink_msg_battery_status_pack(mavlink_passthrough->get_our_sysid(),
-                                    mavlink_passthrough->get_our_compid(),
-                                    &message,
-                                    0, // id
-                                    MAV_BATTERY_FUNCTION_ALL, // battery_function
-                                    MAV_BATTERY_TYPE_LION, // type
-                                    2500, // 100*temperature C
-                                    &voltages[0],
-                                    4000, // 100*current_battery A
-                                    1000, // current_consumed, mAh
-                                    -1, // energy consumed hJ
-                                    80, // battery_remaining %
-                                    3600, // time_remaining
-                                    MAV_BATTERY_CHARGE_STATE_OK);
+    mavlink_msg_battery_status_pack(
+        mavlink_passthrough->get_our_sysid(),
+        mavlink_passthrough->get_our_compid(),
+        &message,
+        0, // id
+        MAV_BATTERY_FUNCTION_ALL, // battery_function
+        MAV_BATTERY_TYPE_LION, // type
+        2500, // 100*temperature C
+        &voltages[0],
+        4000, // 100*current_battery A
+        1000, // current_consumed, mAh
+        -1, // energy consumed hJ
+        80, // battery_remaining %
+        3600, // time_remaining
+        MAV_BATTERY_CHARGE_STATE_OK);
 
     mavlink_passthrough->send_message(message);
 }
 
-void usage(const std::string &bin_name)
+void usage(const std::string& bin_name)
 {
     std::cout << "Usage : " << bin_name << " <connection_url>" << std::endl
               << "Connection URL format should be :" << std::endl

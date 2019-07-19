@@ -1,6 +1,0 @@
-framework module backend {
-  umbrella header "backend_api.h"
-
-  export *
-  module * { export * }
-}

@@ -12,12 +12,12 @@
 #include <iostream>
 #include <thread>
 
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/offboard/offboard.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/offboard/offboard.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
 using std::chrono::seconds;
@@ -27,7 +27,7 @@ using std::chrono::seconds;
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
 // Handles Action's result
-inline void action_error_exit(Action::Result result, const std::string &message)
+inline void action_error_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
@@ -37,7 +37,7 @@ inline void action_error_exit(Action::Result result, const std::string &message)
 }
 
 // Handles Offboard's result
-inline void offboard_error_exit(Offboard::Result result, const std::string &message)
+inline void offboard_error_exit(Offboard::Result result, const std::string& message)
 {
     if (result != Offboard::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Offboard::result_str(result)
@@ -47,7 +47,7 @@ inline void offboard_error_exit(Offboard::Result result, const std::string &mess
 }
 
 // Handles connection result
-inline void connection_error_exit(ConnectionResult result, const std::string &message)
+inline void connection_error_exit(ConnectionResult result, const std::string& message)
 {
     if (result != ConnectionResult::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
@@ -57,7 +57,7 @@ inline void connection_error_exit(ConnectionResult result, const std::string &me
 }
 
 // Logs during Offboard control
-inline void offboard_log(const std::string &offb_mode, const std::string msg)
+inline void offboard_log(const std::string& offb_mode, const std::string msg)
 {
     std::cout << "[" << offb_mode << "] " << msg << std::endl;
 }
@@ -67,7 +67,7 @@ inline void offboard_log(const std::string &offb_mode, const std::string msg)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_ned(std::shared_ptr<dronecode_sdk::Offboard> offboard)
+bool offb_ctrl_ned(std::shared_ptr<mavsdk::Offboard> offboard)
 {
     const std::string offb_mode = "NED";
     // Send it once before starting offboard, otherwise it will be rejected.
@@ -119,7 +119,7 @@ bool offb_ctrl_ned(std::shared_ptr<dronecode_sdk::Offboard> offboard)
  *
  * returns true if everything went well in Offboard control, exits with a log otherwise.
  */
-bool offb_ctrl_body(std::shared_ptr<dronecode_sdk::Offboard> offboard)
+bool offb_ctrl_body(std::shared_ptr<mavsdk::Offboard> offboard)
 {
     const std::string offb_mode = "BODY";
 
@@ -165,6 +165,42 @@ bool offb_ctrl_body(std::shared_ptr<dronecode_sdk::Offboard> offboard)
     return true;
 }
 
+/**
+ * Does Offboard control using attitude commands.
+ *
+ * returns true if everything went well in Offboard control, exits with a log otherwise.
+ */
+bool offb_ctrl_attitude(std::shared_ptr<mavsdk::Offboard> offboard)
+{
+    const std::string offb_mode = "ATTITUDE";
+
+    // Send it once before starting offboard, otherwise it will be rejected.
+    offboard->set_attitude({30.0f, 0.0f, 0.0f, 0.6f});
+
+    Offboard::Result offboard_result = offboard->start();
+    offboard_error_exit(offboard_result, "Offboard start failed");
+    offboard_log(offb_mode, "Offboard started");
+
+    offboard_log(offb_mode, "ROLL 30");
+    offboard->set_attitude({30.0f, 0.0f, 0.0f, 0.6f});
+    sleep_for(seconds(2)); // rolling
+
+    offboard_log(offb_mode, "ROLL -30");
+    offboard->set_attitude({-30.0f, 0.0f, 0.0f, 0.6f});
+    sleep_for(seconds(2)); // Let yaw settle.
+
+    offboard_log(offb_mode, "ROLL 0");
+    offboard->set_attitude({0.0f, 0.0f, 0.0f, 0.6f});
+    sleep_for(seconds(2)); // Let yaw settle.
+
+    // Now, stop offboard mode.
+    offboard_result = offboard->stop();
+    offboard_error_exit(offboard_result, "Offboard stop failed: ");
+    offboard_log(offb_mode, "Offboard stopped");
+
+    return true;
+}
+
 void usage(std::string bin_name)
 {
     std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
@@ -175,9 +211,9 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
     std::string connection_url;
     ConnectionResult connection_result;
 
@@ -203,7 +239,7 @@ int main(int argc, char **argv)
     }
 
     // System got discovered.
-    System &system = dc.system();
+    System& system = dc.system();
     auto action = std::make_shared<Action>(system);
     auto offboard = std::make_shared<Offboard>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
@@ -223,8 +259,14 @@ int main(int argc, char **argv)
     std::cout << "In Air..." << std::endl;
     sleep_for(seconds(5));
 
+    //  using attitude control
+    bool ret = offb_ctrl_attitude(offboard);
+    if (ret == false) {
+        return EXIT_FAILURE;
+    }
+
     //  using local NED co-ordinates
-    bool ret = offb_ctrl_ned(offboard);
+    ret = offb_ctrl_ned(offboard);
     if (ret == false) {
         return EXIT_FAILURE;
     }

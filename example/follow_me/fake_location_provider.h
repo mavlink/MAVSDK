@@ -24,7 +24,7 @@ private:
     void stop();
     void compute_locations();
 
-    std::thread *thread_{nullptr};
+    std::thread* thread_{nullptr};
     std::atomic<bool> should_exit_{false};
 
     location_callback_t location_callback_ = nullptr;

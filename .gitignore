@@ -11,3 +11,6 @@ logs/
 CMakeLists.txt.user*
 
 .DS_Store
+
+# windows swap files
+*~

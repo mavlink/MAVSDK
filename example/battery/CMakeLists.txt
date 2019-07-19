@@ -6,23 +6,18 @@ if(NOT MSVC)
     add_definitions("-std=c++11 -Wall -Wextra -Werror ")
     # This warning is triggered by the MAVLink includes.
     add_definitions("-Wno-address-of-packed-member")
-    # Line below required if /usr/local/include is not in your default includes
-    #include_directories(/usr/local/include)
-    # Line below required if /usr/local/lib is not in your default linker path
-    #link_directories(/usr/local/lib)
 else()
     add_definitions("-std=c++11 -WX -W2")
-    include_directories(${CMAKE_SOURCE_DIR}/../../install/include)
-    link_directories(${CMAKE_SOURCE_DIR}/../../install/lib)
 endif()
+
+find_package(MAVSDK REQUIRED)
 
 add_executable(battery
     battery.cpp
 )
 
 target_link_libraries(battery
-    dronecode_sdk
-    dronecode_sdk_telemetry
-    dronecode_sdk_mavlink_passthrough
+    MAVSDK::mavsdk_telemetry
+    MAVSDK::mavsdk_mavlink_passthrough
+    MAVSDK::mavsdk
 )
-

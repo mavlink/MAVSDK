@@ -1,5 +1,5 @@
 #
-# Development environment for the Dronecode SDK based on Ubuntu 18.04.
+# Development environment for MAVSDK based on Ubuntu 18.04.
 #
 # Author: Julian Oes <julian@oes.ch>
 #
@@ -42,7 +42,7 @@ RUN apt-get update \
 
 RUN update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-6.0 1000
 
-RUN gem install --no-ri --no-rdoc fpm;
+RUN gem install --no-document fpm;
 
 RUN wget -qO- https://github.com/ncopa/su-exec/archive/dddd1567b7c76365e1e0aac561287975020a8fad.tar.gz | tar xvz && \
     cd su-exec-* && make && mv su-exec /usr/local/bin && cd .. && rm -rf su-exec-*
@@ -57,4 +57,4 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-WORKDIR "/home/user/DronecodeSDK"
+WORKDIR "/home/user/MAVSDK"

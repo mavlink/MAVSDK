@@ -5,26 +5,26 @@
 // Author: Julian Oes <julian@oes.ch>
 // Author: Shayaan Haider (via Slack)
 
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <cstdint>
+#include <atomic>
 #include <iostream>
 #include <thread>
 #include <chrono>
 
-using namespace dronecode_sdk;
-
+using namespace mavsdk;
 using namespace std::this_thread;
 using namespace std::chrono;
 
-static void takeoff_and_land(System &system);
+static void takeoff_and_land(System& system);
 
 #define ERROR_CONSOLE_TEXT "\033[31m" // Turn text on console red
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     if (argc == 1) {
         std::cerr << ERROR_CONSOLE_TEXT << "Please specify connection" << NORMAL_CONSOLE_TEXT
@@ -32,7 +32,9 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    DronecodeSDK dc;
+    Mavsdk dc;
+
+    int total_udp_ports = argc - 1;
 
     // the loop below adds the number of ports the sdk monitors.
     for (int i = 1; i < argc; ++i) {
@@ -45,20 +47,20 @@ int main(int argc, char *argv[])
         }
     }
 
-    bool discovered_system = false;
+    std::atomic<signed> num_systems_discovered{0};
 
     std::cout << "Waiting to discover system..." << std::endl;
-    dc.register_on_discover([&discovered_system](uint64_t uuid) {
+    dc.register_on_discover([&num_systems_discovered](uint64_t uuid) {
         std::cout << "Discovered system with UUID: " << uuid << std::endl;
-        discovered_system = true;
+        ++num_systems_discovered;
     });
 
     // We usually receive heartbeats at 1Hz, therefore we should find a system after around 2
     // seconds.
     sleep_for(seconds(2));
 
-    if (!discovered_system) {
-        std::cerr << ERROR_CONSOLE_TEXT << "No system found, exiting." << NORMAL_CONSOLE_TEXT
+    if (num_systems_discovered != total_udp_ports) {
+        std::cerr << ERROR_CONSOLE_TEXT << "Not all systems found, exiting." << NORMAL_CONSOLE_TEXT
                   << std::endl;
         return 1;
     }
@@ -66,18 +68,18 @@ int main(int argc, char *argv[])
     std::vector<std::thread> threads;
 
     for (auto uuid : dc.system_uuids()) {
-        System &system = dc.system(uuid);
+        System& system = dc.system(uuid);
         std::thread t(&takeoff_and_land, std::ref(system));
         threads.push_back(std::move(t));
     }
 
-    for (auto &t : threads) {
+    for (auto& t : threads) {
         t.join();
     }
     return 0;
 }
 
-void takeoff_and_land(System &system)
+void takeoff_and_land(System& system)
 {
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);

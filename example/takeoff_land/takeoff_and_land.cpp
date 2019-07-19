@@ -1,17 +1,17 @@
 //
-// Simple example to demonstrate how to use the Dronecode SDK.
+// Simple example to demonstrate how to use the MAVSDK.
 //
 // Author: Julian Oes <julian@oes.ch>
 
 #include <chrono>
 #include <cstdint>
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <iostream>
 #include <thread>
 
-using namespace dronecode_sdk;
+using namespace mavsdk;
 using namespace std::this_thread;
 using namespace std::chrono;
 
@@ -35,9 +35,9 @@ void component_discovered(ComponentType component_type)
               << unsigned(component_type) << std::endl;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    DronecodeSDK dc;
+    Mavsdk dc;
     std::string connection_url;
     ConnectionResult connection_result;
 
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     // We don't need to specify the UUID if it's only one system anyway.
     // If there were multiple, we could specify it with:
     // dc.system(uint64_t uuid);
-    System &system = dc.system();
+    System& system = dc.system();
 
     std::cout << "Waiting to discover system..." << std::endl;
     dc.register_on_discover([&discovered_system](uint64_t uuid) {

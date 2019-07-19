@@ -3,22 +3,22 @@
 #include <iostream>
 #include <thread>
 #include <cmath>
-#include <dronecode_sdk/dronecode_sdk.h>
-#include <dronecode_sdk/plugins/action/action.h>
-#include <dronecode_sdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.h>
+#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/telemetry/telemetry.h>
 
 using std::this_thread::sleep_for;
 using std::chrono::seconds;
 using std::chrono::milliseconds;
-using namespace dronecode_sdk;
+using namespace mavsdk;
 
 static constexpr auto ERROR_CONSOLE_TEXT = "\033[31m";
 static constexpr auto TELEMETRY_CONSOLE_TEXT = "\033[34m";
 static constexpr auto NORMAL_CONSOLE_TEXT = "\033[0m";
 
-void usage(const std::string &bin_name);
+void usage(const std::string& bin_name);
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     if (argc != 2) {
         usage(argv[0]);
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
     const std::string connection_url = argv[1];
 
-    DronecodeSDK dc;
+    Mavsdk dc;
 
     // Add connection specified by CLI argument.
     const ConnectionResult connection_result = dc.add_any_connection(connection_url);
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     }
 
     // Get system and plugins.
-    System &system = dc.system();
+    System& system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 
@@ -152,7 +152,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void usage(const std::string &bin_name)
+void usage(const std::string& bin_name)
 {
     std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
               << "Connection URL format should be :" << std::endl
