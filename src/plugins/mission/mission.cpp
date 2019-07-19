@@ -52,6 +52,11 @@ void Mission::pause_mission_async(result_callback_t callback)
     _impl->pause_mission_async(callback);
 }
 
+void Mission::clear_mission_async(result_callback_t callback)
+{
+    _imp->clear_mission_async(callback);
+}
+
 void Mission::set_current_mission_item_async(int current, result_callback_t callback)
 {
     _impl->set_current_mission_item_async(current, callback);

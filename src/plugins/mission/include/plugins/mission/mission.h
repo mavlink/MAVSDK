@@ -183,6 +183,11 @@ public:
     void pause_mission_async(result_callback_t callback);
 
     /**
+     * Anotacao
+     */
+    void clear_mission_async(result_callback_t callback);
+
+    /**
      * @brief Sets the mission item index to go to (asynchronous).
      *
      * By setting the current index to 0, the mission is restarted from the beginning. If it is set

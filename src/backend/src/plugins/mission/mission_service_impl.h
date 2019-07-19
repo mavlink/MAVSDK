@@ -134,6 +134,28 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status ClearMission(
+        grpc::ServerContext* /* context */,
+        const rpc::mission::ClearMissionRequest* /* request */,
+        rpc::mission::ClearMissionResponse* response) override
+    {
+        std::promise<void> result_promise;
+        const auto result_future = result_promise.get_future();
+
+        _mission.clear_mission_async(
+            [this, response, &result_promise](const mavsdk::Mission::Result result) {
+                if (result != nullptr) {
+                    auto rpc_mission_result = generateRPCMissionResult(result);
+                    response->set_allocated_mission_result(rpc_mission_result);
+                }
+
+                result_promise.set_value();
+            });
+
+        result_future.wait();
+        return grpc::Status::OK;
+    }
+
     grpc::Status SetCurrentMissionItemIndex(
         grpc::ServerContext* /* context */,
         const rpc::mission::SetCurrentMissionItemIndexRequest* request,
