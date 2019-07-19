@@ -6,7 +6,7 @@ option java_package = "io.mavlink.mavsdk.geofence";
 option java_outer_classname = "GeofenceProto";
 
 service GeofenceService {
-    rpc SendGeofence(SendGeofenceRequest) returns(SendGeofenceRespose) {}
+    rpc UploadGeofence(UploadGeofenceRequest) returns(UploadGeofenceResponse) {}
 }
 
 
@@ -25,11 +25,11 @@ message Polygon {
     Type type = 2;
 }
     
-message SendGeofenceRequest {
+message UploadGeofenceRequest {
     repeated Polygon polygons = 1;
 }
 
-message SendGeofenceRespose {
+message UploadGeofenceResponse {
     GeofenceResult geofence_result = 1;
 }
 
