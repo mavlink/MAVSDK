@@ -10,12 +10,12 @@ service GeofenceService {
 }
 
 
-message Polygon {
-    message Point {
-        double latitude_deg = 1;
-        double longitude_deg = 2;
-    }
+message Point {
+    double latitude_deg = 1;
+    double longitude_deg = 2;
+}
 
+message Polygon {
     enum Type {
         INCLUSION = 0;
         EXCLUSION = 1;
