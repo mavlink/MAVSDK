@@ -10,10 +10,6 @@
 #include <cmath>
 #include <sstream>
 
-#ifdef ERROR
-#undef ERROR
-#endif
-
 namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`

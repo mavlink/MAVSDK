@@ -8,6 +8,16 @@
 
 #include "plugin_base.h"
 
+// On Windows the build fails if a define for ERROR is leaked after
+// above includes.
+//
+// The compile error is:
+// "illegal token on right side of '::'"
+// in Camera::Result::ERROR.
+#ifdef ERROR
+#undef ERROR
+#endif
+
 namespace mavsdk {
 
 class CameraImpl;
