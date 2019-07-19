@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package mavsdk.rpc.geofence;
+
+option java_package = "io.mavlink.mavsdk.geofence";
+option java_outer_classname = "GeofenceProto";
+
+service GeofenceService {
+<<<<<<< HEAD
+    rpc UploadGeofence(UploadGeofenceRequest) returns(UploadGeofenceResponse) {}
+=======
+    rpc SendGeofence(SendGeofenceRequest) returns(SendGeofenceResponse) {}
+>>>>>>> f9b7916a52fae9f83a9ac5f40c785cef08fe337d
+}
+
+
+message Polygon {
+    message Point {
+        double latitude_deg = 1;
+        double longitude_deg = 2;
+    }
+
+    enum Type {
+        INCLUSION = 0;
+        EXCLUSION = 1;
+    }
+
+    repeated Point points = 1;
+    Type type = 2;
+}
+    
+message UploadGeofenceRequest {
+    repeated Polygon polygons = 1;
+}
+
+<<<<<<< HEAD
+message UploadGeofenceResponse {
+=======
+message SendGeofenceResponse {
+>>>>>>> f9b7916a52fae9f83a9ac5f40c785cef08fe337d
+    GeofenceResult geofence_result = 1;
+}
+
+message GeofenceResult {
+    Result result = 1;
+    string result_str = 2;
+
+    enum Result {
+        UNKNOWN = 0;
+        SUCCESS = 1;
+        ERROR = 2;
+        TOO_MANY_GEOFENCE_ITEMS = 3;
+        BUSY = 4;
+        TIMEOUT = 5;
+        INVALID_ARGUMENT = 6;
+    }
+}
