@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(COMPONENTS_LIST core action calibration gimbal camera mission offboard telemetry info param)
+set(COMPONENTS_LIST core action calibration geofence gimbal camera mission offboard telemetry info param)
 
 include(cmake/compile_proto.cmake)
 
@@ -42,6 +42,7 @@ target_link_libraries(mavsdk_server
     PRIVATE
     mavsdk_action
     mavsdk_calibration
+    mavsdk_geofence
     mavsdk_gimbal
     mavsdk_camera
     mavsdk_mission
