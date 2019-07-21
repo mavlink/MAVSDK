@@ -1,0 +1,12 @@
+language: minimal
+
+services:
+    - docker
+
+install:
+- set -e;
+- docker pull uber/prototool:1.8.1;
+
+script:
+- set -e;
+- docker run -v "$(pwd):/work" uber/prototool:1.8.1 prototool lint protos
