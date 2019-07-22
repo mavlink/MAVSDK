@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mavlink/MAVSDK-Proto.svg?branch=master)](https://travis-ci.org/mavlink/MAVSDK-Proto)
+
 # MAVSDK-Proto
 
 MAVSDK is made of a backend in C++, exposing a protobuf API that can be used by different frontends, such as [MAVSDK-Python](https://github.com/dronecode/MAVSDK-Python), [MAVSDK-Swift](https://github.com/dronecode/MAVSDK-Swift) or [MAVSDK-Java](https://github.com/dronecode/MAVSDK-Java).
