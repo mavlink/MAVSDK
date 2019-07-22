@@ -312,6 +312,10 @@ public:
 
         uint8_t get_uint8() const { return uint8_t(_value); }
 
+        int16_t get_int16() const { return int16_t(_value); }
+
+        uint16_t get_uint16() const { return uint16_t(_value); }
+
         int32_t get_int32() const { return int32_t(_value); }
 
         uint32_t get_uint32() const { return uint32_t(_value); }
@@ -403,6 +407,76 @@ public:
                 return _value.as<float>() == rhs._value.as<float>();
             } else if (_value.is<double>()) {
                 return _value.as<double>() == rhs._value.as<double>();
+            } else if (_value.is<custom_type_t>()) {
+                LogErr() << "Comparing custom_type not supported.";
+                return false;
+            } else {
+                LogErr() << "Comparing unknown types";
+                return false;
+            }
+        }
+
+        bool operator<(const ParamValue& rhs) const
+        {
+            if (!is_same_type(rhs)) {
+                LogWarn() << "Trying to compare different types.";
+                return false;
+            }
+            if (_value.is<uint8_t>()) {
+                return _value.as<uint8_t>() < rhs._value.as<uint8_t>();
+            } else if (_value.is<int8_t>()) {
+                return _value.as<int8_t>() < rhs._value.as<int8_t>();
+            } else if (_value.is<uint16_t>()) {
+                return _value.as<uint16_t>() < rhs._value.as<uint16_t>();
+            } else if (_value.is<int16_t>()) {
+                return _value.as<int16_t>() < rhs._value.as<int16_t>();
+            } else if (_value.is<uint32_t>()) {
+                return _value.as<uint32_t>() < rhs._value.as<uint32_t>();
+            } else if (_value.is<int32_t>()) {
+                return _value.as<int32_t>() < rhs._value.as<int32_t>();
+            } else if (_value.is<uint64_t>()) {
+                return _value.as<uint64_t>() < rhs._value.as<uint64_t>();
+            } else if (_value.is<int64_t>()) {
+                return _value.as<int64_t>() < rhs._value.as<int64_t>();
+            } else if (_value.is<float>()) {
+                return _value.as<float>() < rhs._value.as<float>();
+            } else if (_value.is<double>()) {
+                return _value.as<double>() < rhs._value.as<double>();
+            } else if (_value.is<custom_type_t>()) {
+                LogErr() << "Comparing custom_type not supported.";
+                return false;
+            } else {
+                LogErr() << "Comparing unknown types";
+                return false;
+            }
+        }
+
+        bool operator>(const ParamValue& rhs) const
+        {
+            if (!is_same_type(rhs)) {
+                LogWarn() << "Trying to compare different types.";
+                return false;
+            }
+            if (_value.is<uint8_t>()) {
+                return _value.as<uint8_t>() > rhs._value.as<uint8_t>();
+            } else if (_value.is<int8_t>()) {
+                return _value.as<int8_t>() > rhs._value.as<int8_t>();
+            } else if (_value.is<uint16_t>()) {
+                return _value.as<uint16_t>() > rhs._value.as<uint16_t>();
+            } else if (_value.is<int16_t>()) {
+                return _value.as<int16_t>() > rhs._value.as<int16_t>();
+            } else if (_value.is<uint32_t>()) {
+                return _value.as<uint32_t>() > rhs._value.as<uint32_t>();
+            } else if (_value.is<int32_t>()) {
+                return _value.as<int32_t>() > rhs._value.as<int32_t>();
+            } else if (_value.is<uint64_t>()) {
+                return _value.as<uint64_t>() > rhs._value.as<uint64_t>();
+            } else if (_value.is<int64_t>()) {
+                return _value.as<int64_t>() > rhs._value.as<int64_t>();
+            } else if (_value.is<float>()) {
+                return _value.as<float>() > rhs._value.as<float>();
+            } else if (_value.is<double>()) {
+                return _value.as<double>() > rhs._value.as<double>();
             } else if (_value.is<custom_type_t>()) {
                 LogErr() << "Comparing custom_type not supported.";
                 return false;
