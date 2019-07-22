@@ -49,6 +49,8 @@ public:
     /**
      * @brief Returns the version of MAVSDK.
      *
+     * Note, you're not supposed to request the version too many times.
+     *
      * @return A string containing the version.
      */
     std::string version() const;
