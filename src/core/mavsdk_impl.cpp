@@ -46,24 +46,25 @@ std::string MavsdkImpl::version() const
 
     ++version_counter;
 
-    if (version_counter == 10) {
-        return "You were wondering about the name of this library?";
-    } else if (version_counter == 11) {
-        return "Let's look at the history:";
-    } else if (version_counter == 12) {
-        return "DroneLink";
-    } else if (version_counter == 13) {
-        return "DroneCore";
-    } else if (version_counter == 14) {
-        return "DronecodeSDK";
-    } else if (version_counter == 15) {
-        return "MAVSDK";
-    } else if (version_counter == 16) {
-        return "And that's it...";
-    } else if (version_counter == 17) {
-        return "At least for now ¯\\_(ツ)_/¯.";
-    } else {
-        return mavsdk_version;
+    switch (version_counter) {
+        case 10:
+            return "You were wondering about the name of this library?";
+        case 11:
+            return "Let's look at the history:";
+        case 12:
+            return "DroneLink";
+        case 13:
+            return "DroneCore";
+        case 14:
+            return "DronecodeSDK";
+        case 15:
+            return "MAVSDK";
+        case 16:
+            return "And that's it...";
+        case 17:
+            return "At least for now ¯\\_(ツ)_/¯.";
+        default:
+            return mavsdk_version;
     }
 }
 
