@@ -17,6 +17,8 @@ public:
     MavsdkImpl();
     ~MavsdkImpl();
 
+    std::string version() const;
+
     void receive_message(mavlink_message_t& message);
     bool send_message(mavlink_message_t& message);
 

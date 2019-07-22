@@ -9,6 +9,11 @@ Mavsdk::Mavsdk() : _impl{new MavsdkImpl()} {}
 
 Mavsdk::~Mavsdk() {}
 
+std::string Mavsdk::version() const
+{
+    return _impl->version();
+}
+
 ConnectionResult Mavsdk::add_any_connection(const std::string& connection_url)
 {
     return _impl->add_any_connection(connection_url);
