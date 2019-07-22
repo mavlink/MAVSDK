@@ -470,9 +470,9 @@ public:
     Position position() const;
 
     /**
-     * @brief Get the home position (synchronous).
+     * @brief Get the  position in ned frame(synchronous).
      *
-     * @return Home position.
+     * @return PositionNED.
      */
     PositionNED position_ned() const;
 

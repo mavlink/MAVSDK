@@ -39,7 +39,7 @@ public:
         _stop_future.wait();
         return grpc::Status::OK;
     }
-
+    grpc::Status
     SubscribePositionNED(grpc::ServerContext * /* context */,
                       const mavsdk::rpc::telemetry::SubscribePositionNEDRequest * /* request */,
                       grpc::ServerWriter<rpc::telemetry::PositionNEDResponse> *writer) override
@@ -47,13 +47,13 @@ public:
         std::mutex position_ned_mutex{};
 
         _telemetry.position_ned_async([&writer, &position_ned_mutex](mavsdk::Telemetry::PositionNED position_ned) {
-            auto rpc_position = new mavsdk::rpc::telemetry::PositionNED();
-            rpc_position->set_north_m(position_ned.north_m);
-            rpc_position->set_east_m(position_ned.east_m);
-            rpc_position->set_east_m(position.down_m);
+            auto rpc_position_ned = new mavsdk::rpc::telemetry::PositionNED();
+            rpc_position_ned->set_north_m(position_ned.north_m);
+            rpc_position_ned->set_east_m(position_ned.east_m);
+            rpc_position_ned->set_down_m(position_ned.down_m);
 
-            mavsdk::rpc::telemetry::PositionNedResponse rpc_position_ned_response;
-            rpc_position_response.set_allocated_position_ned(rpc_position_ned);
+            mavsdk::rpc::telemetry::PositionNEDResponse rpc_position_ned_response;
+            rpc_position_ned_response.set_allocated_position_ned(rpc_position_ned);
 
             std::lock_guard<std::mutex> lock(position_ned_mutex);
             writer->Write(rpc_position_ned_response);

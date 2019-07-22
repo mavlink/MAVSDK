@@ -22,6 +22,9 @@ using TelemetryService = mavsdk::rpc::telemetry::TelemetryService;
 using PositionResponse = mavsdk::rpc::telemetry::PositionResponse;
 using Position = mavsdk::Telemetry::Position;
 
+using PositionNEDResponse = mavsdk::rpc::telemetry::PositionNEDResponse;
+using PositionNED = mavsdk::Telemetry::PositionNED;
+
 using HealthResponse = mavsdk::rpc::telemetry::HealthResponse;
 using Health = mavsdk::Telemetry::Health;
 
@@ -68,6 +71,12 @@ protected:
                             const float abs_alt,
                             const float rel_alt) const;
     void checkSendsPositions(const std::vector<Position> &positions);
+
+    std::future<void> subscribePositionNEDAsync(std::vector<PositionNED> &positions_ned);
+    PositionNED createPositionNED(const float north,
+                            const float east,
+                            const float down) const;
+    void checkSendsPositionsNED(const std::vector<PositionNED> &positions_ned);
 
     std::future<void> subscribeHealthAsync(std::vector<Health> &healths);
     void checkSendsHealths(const std::vector<Health> &healths);
@@ -251,6 +260,105 @@ TEST_F(TelemetryServiceImplTest, sendsMultiplePositions)
     positions.push_back(createPosition(-50.995944711358824, -72.99892046835936, 1217.12f, 2.52f));
 
     checkSendsPositions(positions);
+}
+
+TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionNEDAsync)
+{
+    EXPECT_CALL(*_telemetry, position_ned_async(_)).Times(1);
+
+    std::vector<PositionNED> positions_ned;
+    auto position_ned_stream_future = subscribePositionNEDAsync(positions_ned);
+
+    _telemetry_service->stop();
+    position_ned_stream_future.wait();
+}
+
+std::future<void> TelemetryServiceImplTest::subscribePositionNEDAsync(std::vector<PositionNED> &positions_ned)
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        mavsdk::rpc::telemetry::SubscribePositionNEDRequest request;
+        auto response_reader = _stub->SubscribePositionNED(&context, request);
+
+        mavsdk::rpc::telemetry::PositionNEDResponse response;
+        while (response_reader->Read(&response)) {
+            auto position_ned_rpc = response.position_ned();
+
+            PositionNED position_ned;
+            position_ned.north_m = position_ned_rpc.north_m();            
+            position_ned.east_m = position_ned_rpc.east_m();
+            position_ned.down_m = position_ned_rpc.down_m();
+
+            positions_ned.push_back(position_ned);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendPositionNEDIfCallbackNotCalled)
+{
+    std::vector<PositionNED> positions_ned;
+    auto position_ned_stream_future = subscribePositionNEDAsync(positions_ned);
+
+    _telemetry_service->stop();
+    position_ned_stream_future.wait();
+
+    EXPECT_EQ(0, positions_ned.size());
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOnePositionNED)
+{
+    std::vector<PositionNED> positions_ned;
+    positions_ned.push_back(createPositionNED(0.5f,0.5f,3.5f));
+
+    checkSendsPositionsNED(positions_ned);
+}
+
+void TelemetryServiceImplTest::checkSendsPositionsNED(const std::vector<PositionNED> &positions_ned)
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    mavsdk::Telemetry::position_ned_callback_t position_ned_callback;
+    EXPECT_CALL(*_telemetry, position_ned_async(_))
+        .WillOnce(SaveCallback(&position_ned_callback, &subscription_promise));
+
+    std::vector<PositionNED> received_positions_ned;
+    auto position_ned_stream_future = subscribePositionNEDAsync(received_positions_ned);
+    subscription_future.wait();
+    for (const auto position_ned : positions_ned) {
+        position_ned_callback(position_ned);
+    }
+    _telemetry_service->stop();
+    position_ned_stream_future.wait();
+
+    ASSERT_EQ(positions_ned.size(), received_positions_ned.size());
+    for (size_t i = 0; i < positions_ned.size(); i++) {
+        EXPECT_EQ(positions_ned.at(i), received_positions_ned.at(i));
+    }
+}
+
+PositionNED TelemetryServiceImplTest::createPositionNED(const float north,
+                                                  const float east,
+                                                  const float down) const
+{
+    mavsdk::Telemetry::PositionNED expected_position_ned;
+
+    expected_position_ned.north_m = north;
+    expected_position_ned.east_m = east;
+    expected_position_ned.down_m = down;
+
+    return expected_position_ned;
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultiplePositionsNED)
+{
+    std::vector<PositionNED> positions_ned;
+    positions_ned.push_back(createPositionNED(0.5f, 0.5f, 3.5f));
+    positions_ned.push_back(createPositionNED(0.0f, 0.0f, 10.0f));
+    positions_ned.push_back(createPositionNED(-0.5f, -0.5f, 3.5f));
+
+    checkSendsPositionsNED(positions_ned);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryHealthAsync)
