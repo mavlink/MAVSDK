@@ -47,6 +47,13 @@ public:
     ~Mavsdk();
 
     /**
+     * @brief Returns the version of MAVSDK.
+     *
+     * @return A string containing the version.
+     */
+    std::string version() const;
+
+    /**
      * @brief Adds Connection via URL
      *
      * Supports connection: Serial, TCP or UDP.

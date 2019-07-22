@@ -40,6 +40,11 @@ MavsdkImpl::~MavsdkImpl()
     }
 }
 
+std::string MavsdkImpl::version() const
+{
+    return mavsdk_version;
+}
+
 void MavsdkImpl::receive_message(mavlink_message_t& message)
 {
     // Don't ever create a system with sysid 0.
