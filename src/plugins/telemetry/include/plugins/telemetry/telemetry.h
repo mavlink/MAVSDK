@@ -622,14 +622,14 @@ public:
     typedef std::function<void(PositionNED)> position_ned_callback_t;
 
     /**
-     * @brief Subscribe to position updates (asynchronous).
+     * @brief Subscribe to position in NED frame updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
     void position_ned_async(position_ned_callback_t callback);
 
     /**
-     * @brief Subscribe to home position updates (asynchronous).
+     * @brief Subscribe to position updates in NED frame (asynchronous).
      *
      * @param callback Function to call with updates.
      */
