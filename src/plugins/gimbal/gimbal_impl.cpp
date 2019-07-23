@@ -63,7 +63,7 @@ Gimbal::Result GimbalImpl::set_gimbal_mode(int gimbal_mode)
     command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING); ///gimbal_mode;
     command.params.param2 = 0.0f;
     command.params.param3 = 0.0f;
-    command.params.param4 = 0.0f;
+    command.params.param4 = float(gimbal_mode);
     command.params.x = 0;
     command.params.y = 0;
     command.params.z = 2.0f;
@@ -76,12 +76,12 @@ void GimbalImpl::set_gimbal_mode_async(
     int gimbal_mode, Gimbal::result_callback_t callback)
 {
     MAVLinkCommands::CommandInt command{};
-    
+
     command.command = MAV_CMD_DO_MOUNT_CONFIGURE;
     command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING); ///gimbal_mode;
     command.params.param2 = 0.0f;
     command.params.param3 = 0.0f;
-    command.params.param4 = 0.0f;
+    command.params.param4 = float(gimbal_mode);
     command.params.x = 0;
     command.params.y = 0;
     command.params.z = 2.0f;

@@ -84,28 +84,28 @@ public:
      */
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, result_callback_t callback);
 
-    /** // Anotacao: Change comments
+    /** 
      * @brief Set gimbal mode (synchronous).
      *
-     * This sets the desired pitch and yaw angles of a gimbal.
+     * This sets the desired mode of a gimbal.
      * The function will return when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
      *
-     * @param pitch_deg The pitch angle in degrees. Negative to point down.
-     * @param yaw_deg The yaw angle in degrees. Positive for clock-wise, range -180..180 or 0..360.
+     * @param gimbal_mode The mode to be set. Either lock or follow.
+     * Lock will fix the gimbal poiting to a direction. Follow will follow the vehicle heading.
      * @return Result of request.
      */
     Result set_gimbal_mode(int gimbal_mode);
 
-    /** Anotacao: Change comments
+    /** 
      * @brief Set gimbal mode (asynchronous).
      *
-     * This sets the desired pitch and yaw angles of a gimbal.
-     * The callback will be called when the command is accepted, however, it might
+     * This sets the desired mode of a gimbal.
+     * The function will return when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
      *
-     * @param pitch_deg The pitch angle in degrees. Negative to point down.
-     * @param yaw_deg The yaw angle in degrees. Positive for clock-wise, range -180..180 or 0..360.
+     * @param gimbal_mode The mode to be set. Either lock or follow.
+     * Lock will fix the gimbal poiting to a direction. Follow will follow the vehicle heading.
      * @param callback Function to call with result of request.
      */
     void set_gimbal_mode_async(int gimbal_mode, result_callback_t callback);
