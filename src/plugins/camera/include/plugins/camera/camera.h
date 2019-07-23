@@ -8,6 +8,12 @@
 
 #include "plugin_base.h"
 
+// On Windows the build fails if a define for ERROR is leaked after
+// above includes.
+//
+// The compile error is:
+// "illegal token on right side of '::'"
+// in Camera::Result::ERROR.
 #ifdef ERROR
 #undef ERROR
 #endif
@@ -474,7 +480,9 @@ public:
     struct SettingOptions {
         std::string setting_id{}; /**< Name of the setting (machine readable). */
         std::string setting_description{}; /**< Description of the setting (human readable). */
-        std::vector<Option> options{}; /**< List of options. */
+        std::vector<Option>
+            options{}; /**< List of options, or if range [min, max] or [min, max, interval]. */
+        bool is_range{false}; /**< If Option is given as a range. */
     };
 
     /**

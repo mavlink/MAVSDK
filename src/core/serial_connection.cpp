@@ -127,8 +127,8 @@ ConnectionResult SerialConnection::setup_port()
     tc.c_cflag &= ~(CSIZE | PARENB | CRTSCTS);
     tc.c_cflag |= CS8;
 
-    tc.c_cc[VMIN] = 1; // We want at least 1 byte to be available.
-    tc.c_cc[VTIME] = 0; // We don't timeout but wait indefinitely.
+    tc.c_cc[VMIN] = 0; // We are ok with 0 bytes.
+    tc.c_cc[VTIME] = 10; // Timeout after 1 second.
 #endif
 
 #if defined(LINUX) || defined(APPLE)

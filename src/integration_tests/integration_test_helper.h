@@ -23,6 +23,7 @@ protected:
         // We need to wait a bit until it's up and running.
         std::this_thread::sleep_for(std::chrono::seconds(10));
 #else
+        UNUSED(model);
         mavsdk::LogErr() << "Auto-starting SITL not supported on Windows.";
 #endif
     }

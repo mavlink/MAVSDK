@@ -40,6 +40,34 @@ MavsdkImpl::~MavsdkImpl()
     }
 }
 
+std::string MavsdkImpl::version() const
+{
+    static unsigned version_counter = 0;
+
+    ++version_counter;
+
+    switch (version_counter) {
+        case 10:
+            return "You were wondering about the name of this library?";
+        case 11:
+            return "Let's look at the history:";
+        case 12:
+            return "DroneLink";
+        case 13:
+            return "DroneCore";
+        case 14:
+            return "DronecodeSDK";
+        case 15:
+            return "MAVSDK";
+        case 16:
+            return "And that's it...";
+        case 17:
+            return "At least for now ¯\\_(ツ)_/¯.";
+        default:
+            return mavsdk_version;
+    }
+}
+
 void MavsdkImpl::receive_message(mavlink_message_t& message)
 {
     // Don't ever create a system with sysid 0.
