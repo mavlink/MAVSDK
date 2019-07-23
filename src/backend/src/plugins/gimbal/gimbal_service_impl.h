@@ -60,18 +60,12 @@ public:
     static int translateRPCGimbalMode(const rpc::gimbal::GimbalMode mode)
     {
         switch(mode) {
-            case rpc::gimbal::GimbalMode::RETRACT:
+            case rpc::gimbal::GimbalMode::FOLLOW:
                 return 0;
-            case rpc::gimbal::GimbalMode::NEUTRAL:
+            case rpc::gimbal::GimbalMode::LOCK:
                 return 1;
-            case rpc::gimbal::GimbalMode::MAVLINK_TARGETING:
-                return 2;
-            case rpc::gimbal::GimbalMode::RC_TARGETING:
-                return 3;
-            case rpc::gimbal::GimbalMode::GPS_POINT:
-                return 4;
             default:
-                return 2;
+                return 0;
         }
     }
 
