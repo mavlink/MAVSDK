@@ -34,6 +34,47 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetMode(
+        grpc::ServerContext* /* context */,
+        const rpc::gimbal::SetModeRequest* request,
+        rpc::gimbal::SetModeResponse* response) override
+    {
+        if (request != nullptr) {
+            const auto requested_gimbal_mode = request->gimbal_mode();
+
+            const auto gimbal_result = _gimbal.set_gimbal_mode(translateRPCGimbalMode(requested_gimbal_mode));
+
+            if (response != nullptr) {
+                auto* rpc_gimbal_result = new rpc::gimbal::GimbalResult();
+                rpc_gimbal_result->set_result(
+                    static_cast<rpc::gimbal::GimbalResult::Result>(gimbal_result));
+                rpc_gimbal_result->set_result_str(mavsdk::Gimbal::result_str(gimbal_result));
+
+                response->set_allocated_gimbal_result(rpc_gimbal_result);
+            }
+        }
+
+        return grpc::Status::OK;
+    }
+
+    static int translateRPCGimbalMode(const rpc::gimbal::GimbalMode mode)
+    {
+        switch(mode) {
+            case rpc::gimbal::GimbalMode::RETRACT:
+                return 0;
+            case rpc::gimbal::GimbalMode::NEUTRAL:
+                return 1;
+            case rpc::gimbal::GimbalMode::MAVLINK_TARGETING:
+                return 2;
+            case rpc::gimbal::GimbalMode::RC_TARGETING:
+                return 3;
+            case rpc::gimbal::GimbalMode::GPS_POINT:
+                return 4;
+            default:
+                return 2;
+        }
+    }
+
 private:
     Gimbal& _gimbal;
 };
