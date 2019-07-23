@@ -191,116 +191,39 @@ bool CameraDefinition::parse_xml()
             }
         }
 
-        auto e_options = e_parameter->FirstChildElement("options");
-        if (!e_options) {
-            continue;
-        }
-
-        // We only need a default if we have options.
         const char* default_str = e_parameter->Attribute("default");
         if (!default_str) {
-            LogErr() << "Default missing for " << param_name;
-            return false;
-        }
-
-        bool found_default = false;
-
-        for (auto e_option = e_options->FirstChildElement("option"); e_option != nullptr;
-             e_option = e_option->NextSiblingElement("option")) {
-            const char* option_name = e_option->Attribute("name");
-            if (!option_name) {
-                LogErr() << "no option name given";
-                return false;
-            }
-
-            const char* option_value = e_option->Attribute("value");
-            if (!option_value) {
-                LogErr() << "no option value given";
-                return false;
-            }
-
-            auto new_option = std::make_shared<Option>();
-
-            new_option->name = option_name;
-
-            new_option->value.set_from_xml(type_map[param_name], option_value);
-
-            if (std::strcmp(option_value, default_str) == 0) {
-                new_option->is_default = true;
-                found_default = true;
-            }
-
-            // LogDebug() << "Type: " << type_map[param_name] << ", name: " << option_name;
-
-            auto e_exclusions = e_option->FirstChildElement("exclusions");
-            if (e_exclusions) {
-                for (auto e_exclude = e_exclusions->FirstChildElement("exclude");
-                     e_exclude != nullptr;
-                     e_exclude = e_exclude->NextSiblingElement("exclude")) {
-                    // LogDebug() << "Exclude: " << e_exclude->GetText();
-                    new_option->exclusions.push_back(e_exclude->GetText());
-                }
-            }
-
-            auto e_parameterranges = e_option->FirstChildElement("parameterranges");
-            if (e_parameterranges) {
-                for (auto e_parameterrange = e_parameterranges->FirstChildElement("parameterrange");
-                     e_parameterrange != nullptr;
-                     e_parameterrange = e_parameterrange->NextSiblingElement("parameterrange")) {
-                    const char* roption_parameter_str = e_parameterrange->Attribute("parameter");
-                    if (!roption_parameter_str) {
-                        LogErr() << "missing roption parameter name";
-                        return false;
-                    }
-
-                    parameter_range_t new_parameter_range;
-
-                    for (auto e_roption = e_parameterrange->FirstChildElement("roption");
-                         e_roption != nullptr;
-                         e_roption = e_roption->NextSiblingElement("roption")) {
-                        const char* roption_name_str = e_roption->Attribute("name");
-                        if (!roption_name_str) {
-                            LogErr() << "missing roption name attribute";
-                            return false;
-                        }
-
-                        const char* roption_value_str = e_roption->Attribute("value");
-                        if (!roption_value_str) {
-                            LogErr() << "missing roption value attribute";
-                            return false;
-                        }
-
-                        if (type_map.find(roption_parameter_str) == type_map.end()) {
-                            LogErr() << "unknown roption type";
-                            return false;
-                        }
-
-                        MAVLinkParameters::ParamValue new_param_value;
-                        new_param_value.set_from_xml(
-                            type_map[roption_parameter_str], roption_value_str);
-                        new_parameter_range[roption_name_str] = new_param_value;
-
-                        // LogDebug() << "range option: "
-                        //            << roption_name_str
-                        //            << " -> "
-                        //            << new_param_value
-                        //            << " (" << new_param_value.typestr() << ")";
-                    }
-
-                    new_option->parameter_ranges[roption_parameter_str] = new_parameter_range;
-
-                    // LogDebug() << "adding to: " << roption_parameter_str;
-                }
-            }
-
-            new_parameter->options.push_back(new_option);
-        }
-
-        if (!found_default) {
-            LogWarn() << "Default not found for " << param_name;
-            // TODO: in the future we should fail completely here
-            // return false;
+            LogWarn() << "Default missing for " << param_name;
             continue;
+        }
+
+        auto e_options = e_parameter->FirstChildElement("options");
+        if (e_options) {
+            auto maybe_options = parse_options(e_options, param_name, type_map);
+            if (!maybe_options.first) {
+                continue;
+            }
+            new_parameter->options = maybe_options.second;
+
+            auto maybe_default = find_default(new_parameter->options, default_str);
+
+            if (!maybe_default.first) {
+                LogWarn() << "Default not found for " << param_name;
+                return false;
+            }
+
+            new_parameter->default_option = maybe_default.second;
+
+        } else {
+            auto maybe_range_options = parse_range_options(e_parameter, param_name, type_map);
+            if (!std::get<0>(maybe_range_options)) {
+                LogWarn() << "Not found: " << param_name;
+                continue;
+            }
+
+            new_parameter->options = std::get<1>(maybe_range_options);
+            new_parameter->is_range = true;
+            new_parameter->default_option = std::get<2>(maybe_range_options);
         }
 
         _parameter_map[param_name] = new_parameter;
@@ -313,6 +236,196 @@ bool CameraDefinition::parse_xml()
     return true;
 }
 
+std::pair<bool, std::vector<std::shared_ptr<CameraDefinition::Option>>>
+CameraDefinition::parse_options(
+    const tinyxml2::XMLElement* options_handle,
+    const std::string& param_name,
+    std::map<std::string, std::string>& type_map)
+{
+    std::vector<std::shared_ptr<Option>> options{};
+
+    for (auto e_option = options_handle->FirstChildElement("option"); e_option != nullptr;
+         e_option = e_option->NextSiblingElement("option")) {
+        const char* option_name = e_option->Attribute("name");
+        if (!option_name) {
+            LogErr() << "no option name given";
+            return std::make_pair<>(false, options);
+        }
+
+        const char* option_value = e_option->Attribute("value");
+        if (!option_value) {
+            LogErr() << "no option value given";
+            return std::make_pair<>(false, options);
+        }
+
+        auto new_option = std::make_shared<Option>();
+
+        new_option->name = option_name;
+
+        new_option->value.set_from_xml(type_map[param_name], option_value);
+
+        // LogDebug() << "Type: " << type_map[param_name] << ", name: " << option_name;
+
+        auto e_exclusions = e_option->FirstChildElement("exclusions");
+        if (e_exclusions) {
+            for (auto e_exclude = e_exclusions->FirstChildElement("exclude"); e_exclude != nullptr;
+                 e_exclude = e_exclude->NextSiblingElement("exclude")) {
+                // LogDebug() << "Exclude: " << e_exclude->GetText();
+                new_option->exclusions.push_back(e_exclude->GetText());
+            }
+        }
+
+        auto e_parameterranges = e_option->FirstChildElement("parameterranges");
+        if (e_parameterranges) {
+            for (auto e_parameterrange = e_parameterranges->FirstChildElement("parameterrange");
+                 e_parameterrange != nullptr;
+                 e_parameterrange = e_parameterrange->NextSiblingElement("parameterrange")) {
+                const char* roption_parameter_str = e_parameterrange->Attribute("parameter");
+                if (!roption_parameter_str) {
+                    LogErr() << "missing roption parameter name";
+                    return std::make_pair<>(false, options);
+                }
+
+                parameter_range_t new_parameter_range;
+
+                for (auto e_roption = e_parameterrange->FirstChildElement("roption");
+                     e_roption != nullptr;
+                     e_roption = e_roption->NextSiblingElement("roption")) {
+                    const char* roption_name_str = e_roption->Attribute("name");
+                    if (!roption_name_str) {
+                        LogErr() << "missing roption name attribute";
+                        return std::make_pair<>(false, options);
+                    }
+
+                    const char* roption_value_str = e_roption->Attribute("value");
+                    if (!roption_value_str) {
+                        LogErr() << "missing roption value attribute";
+                        return std::make_pair<>(false, options);
+                    }
+
+                    if (type_map.find(roption_parameter_str) == type_map.end()) {
+                        LogErr() << "unknown roption type";
+                        return std::make_pair<>(false, options);
+                    }
+
+                    MAVLinkParameters::ParamValue new_param_value;
+                    new_param_value.set_from_xml(
+                        type_map[roption_parameter_str], roption_value_str);
+                    new_parameter_range[roption_name_str] = new_param_value;
+
+                    // LogDebug() << "range option: "
+                    //            << roption_name_str
+                    //            << " -> "
+                    //            << new_param_value
+                    //            << " (" << new_param_value.typestr() << ")";
+                }
+
+                new_option->parameter_ranges[roption_parameter_str] = new_parameter_range;
+
+                // LogDebug() << "adding to: " << roption_parameter_str;
+            }
+        }
+
+        options.push_back(new_option);
+    }
+    return std::make_pair<>(true, options);
+}
+
+std::tuple<bool, std::vector<std::shared_ptr<CameraDefinition::Option>>, CameraDefinition::Option>
+CameraDefinition::parse_range_options(
+    const tinyxml2::XMLElement* param_handle,
+    const std::string& param_name,
+    std::map<std::string, std::string>& type_map)
+{
+    std::vector<std::shared_ptr<Option>> options{};
+    Option default_option{};
+
+    const char* min_str = param_handle->Attribute("min");
+    if (!min_str) {
+        LogErr() << "min range missing for " << param_name;
+        return std::make_tuple<>(false, options, default_option);
+    }
+
+    MAVLinkParameters::ParamValue min_value;
+    min_value.set_from_xml(type_map[param_name], min_str);
+
+    const char* max_str = param_handle->Attribute("max");
+    if (!max_str) {
+        LogErr() << "max range missing for " << param_name;
+        return std::make_tuple<>(false, options, default_option);
+    }
+
+    auto min_option = std::make_shared<Option>();
+    min_option->name = "min";
+    min_option->value = min_value;
+
+    MAVLinkParameters::ParamValue max_value;
+    max_value.set_from_xml(type_map[param_name], max_str);
+
+    auto max_option = std::make_shared<Option>();
+    max_option->name = "max";
+    max_option->value = max_value;
+
+    const char* step_str = param_handle->Attribute("step");
+    if (!step_str) {
+        LogDebug() << "step range missing for " << param_name;
+    }
+
+    if (step_str) {
+        MAVLinkParameters::ParamValue step_value;
+        step_value.set_from_xml(type_map[param_name], step_str);
+
+        auto step_option = std::make_shared<Option>();
+        step_option->name = "step";
+        step_option->value = step_value;
+
+        options.push_back(min_option);
+        options.push_back(max_option);
+        options.push_back(step_option);
+    } else {
+        options.push_back(min_option);
+        options.push_back(max_option);
+    }
+
+    const char* default_str = param_handle->Attribute("default");
+    if (!default_str) {
+        LogDebug() << "default range missing for " << param_name;
+        return std::make_tuple<>(false, options, default_option);
+    }
+
+    MAVLinkParameters::ParamValue default_value;
+    default_value.set_from_xml(type_map[param_name], default_str);
+
+    default_option.name = default_str;
+    default_option.value = default_value;
+
+    return std::make_tuple<>(true, options, default_option);
+}
+
+std::pair<bool, CameraDefinition::Option> CameraDefinition::find_default(
+    const std::vector<std::shared_ptr<Option>>& options, const std::string& default_str)
+{
+    Option default_option{};
+
+    bool found_default = false;
+    for (auto& option : options) {
+        if (option->value == default_str) {
+            if (!found_default) {
+                default_option = *option;
+                found_default = true;
+            } else {
+                LogErr() << "Found more than one default";
+                return std::make_pair<>(false, default_option);
+            }
+        }
+    }
+    if (!found_default) {
+        LogErr() << "No default found";
+        return std::make_pair<>(false, default_option);
+    }
+    return std::make_pair<>(true, default_option);
+}
+
 void CameraDefinition::assume_default_settings()
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
@@ -320,19 +433,30 @@ void CameraDefinition::assume_default_settings()
     _current_settings.clear();
 
     for (const auto& parameter : _parameter_map) {
-        for (const auto& option : parameter.second->options) {
-            if (!option->is_default) {
-                // LogDebug() << option->name << " not default";
-                continue;
-            }
-            // LogDebug() << option->name << " default value: " << option->value << " (type: " <<
-            // option->value.typestr() << ")";
+        // if (parameter.second->is_range) {
 
-            InternalCurrentSetting new_setting;
-            new_setting.value = option->value;
-            new_setting.needs_updating = false;
-            _current_settings[parameter.first] = new_setting;
-        }
+        InternalCurrentSetting new_setting;
+        new_setting.value = parameter.second->default_option.value;
+        new_setting.needs_updating = false;
+        _current_settings[parameter.first] = new_setting;
+
+        //} else {
+
+        //    for (const auto &option : parameter.second->options) {
+        //        if (!option->is_default) {
+        //            //LogDebug() << option->name << " not default";
+        //            continue;
+        //        }
+        //        //LogDebug() << option->name << " default value: " << option->value << " (type: "
+        //        <<
+        //        // option->value.typestr() << ")";
+
+        //        InternalCurrentSetting new_setting;
+        //        new_setting.value = option->value;
+        //        new_setting.needs_updating = false;
+        //        _current_settings[parameter.first] = new_setting;
+        //    }
+        //}
     }
 }
 
@@ -386,9 +510,10 @@ bool CameraDefinition::get_possible_settings(
             continue;
         }
 
-        if (!excluded) {
-            settings[setting.first] = setting.second.value;
+        if (excluded) {
+            continue;
         }
+        settings[setting.first] = setting.second.value;
     }
 
     return (settings.size() > 0);
@@ -416,6 +541,22 @@ bool CameraDefinition::set_setting(
             uint8_t temp = changed_value.get_uint8();
             changed_value.set_uint32(uint32_t(temp));
         }
+    }
+
+    // For range params, we need to verify the range.
+    if (_parameter_map[name]->is_range) {
+        // Check against the minimum
+        if (value < _parameter_map[name]->options[0]->value) {
+            LogErr() << "Chosen value smaller than minimum";
+            return false;
+        }
+
+        if (value > _parameter_map[name]->options[1]->value) {
+            LogErr() << "Chosen value bigger than maximum";
+            return false;
+        }
+
+        // TODO: Check step as well, until now we have only seen steps of 1 in the wild though.
     }
 
     // LogDebug() << "Setting " << name << " of type: " << changed_value.typestr();
