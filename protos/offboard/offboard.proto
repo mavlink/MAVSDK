@@ -48,7 +48,7 @@ message SetAttitudeRateRequest {
 message SetAttitudeRateResponse {}
 
 message SetPositionNedRequest {
-    PositionNEDYaw position_ned_yaw = 1;
+    PositionNedYaw position_ned_yaw = 1;
 }
 message SetPositionNedResponse {}
 
@@ -58,7 +58,7 @@ message SetVelocityBodyRequest {
 message SetVelocityBodyResponse {}
 
 message SetVelocityNedRequest {
-    VelocityNEDYaw velocity_ned_yaw = 1;
+    VelocityNedYaw velocity_ned_yaw = 1;
 }
 message SetVelocityNedResponse {}
 
@@ -84,7 +84,7 @@ message AttitudeRate {
     float thrust_value = 4;
 }
 
-message PositionNEDYaw {
+message PositionNedYaw {
     float north_m = 1;
     float east_m = 2;
     float down_m = 3;
@@ -98,7 +98,7 @@ message VelocityBodyYawspeed {
     float yawspeed_deg_s = 4;
 }
 
-message VelocityNEDYaw {
+message VelocityNedYaw {
     float north_m_s = 1;
     float east_m_s = 2;
     float down_m_s = 3;
