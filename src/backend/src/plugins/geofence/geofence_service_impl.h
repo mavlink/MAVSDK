@@ -14,9 +14,6 @@ public:
         const rpc::geofence::UploadGeofenceRequest* request,
         rpc::geofence::UploadGeofenceResponse* response) override
     {
-        const auto requested_geofence_lat = request->latitude_deg();
-        const auto requested_geofence_lon = request->longitude_deg();
-
         std::promise<void> result_promise;
         const auto result_future = result_promise.get_future();
 
@@ -27,11 +24,11 @@ public:
         return grpc::Status::OK;
     }
 
-    static std::shared_ptr<Polygon>
+    static std::shared_ptr<typename Geofence::Polygon>
     translateRPCPolygon(const rpc::geofence::Polygon& rpc_polygon)
     {
-        auto polygon = std::make_shared<Polygon>();
-        struct Polygon::Point tmp;
+        auto polygon = std::make_shared<typename Geofence::Polygon>();
+        struct Geofence::Polygon::Point tmp;
         for (auto rpc_point : rpc_polygon.points()) {
             tmp.latitude_deg = rpc_point.latitude_deg();
             tmp.longitude_deg = rpc_point.longitude_deg();
@@ -40,10 +37,10 @@ public:
 
         switch (rpc_polygon.type()) {
             case rpc::geofence::Polygon::Type::Polygon_Type_INCLUSION:
-                polygon->type = Polygon::Type::INCLUSION;
+                polygon->type = Geofence::Polygon::Type::INCLUSION;
                 break;
             case rpc::geofence::Polygon::Type::Polygon_Type_EXCLUSION:
-                polygon->type = Polygon::Type::EXCLUSION;
+                polygon->type = Geofence::Polygon::Type::EXCLUSION;
                 break;
         }
 
@@ -51,10 +48,10 @@ public:
     }
 
 private:
-    std::vector<std::shared_ptr<Polygon>>
+    std::vector<std::shared_ptr<typename Geofence::Polygon>>
     extractPolygons(const rpc::geofence::UploadGeofenceRequest* request) const
     {
-        std::vector<std::shared_ptr<MissionItem>> polygons;
+        std::vector<std::shared_ptr<typename Geofence::Polygon>> polygons;
 
         if (request != nullptr) {
             for (auto rpc_polygon : request->polygons()) {
@@ -67,7 +64,7 @@ private:
 
 
     void uploadGeofence(
-        const std::vector<std::shared_ptr<Polygon>>& polygons,
+        const std::vector<std::shared_ptr<typename Geofence::Polygon>>& polygons,
         rpc::geofence::UploadGeofenceResponse* response,
         std::promise<void>& result_promise) const
     {
@@ -81,4 +78,21 @@ private:
                     result_promise.set_value();
             });
     }
-}
+
+    rpc::geofence::GeofenceResult*
+    generateRPCGeofenceResult(const mavsdk::Geofence::Result result) const
+    {
+        auto rpc_result = static_cast<rpc::geofence::GeofenceResult::Result>(result);
+
+        auto rpc_geofence_result = new rpc::geofence::GeofenceResult();
+        rpc_geofence_result->set_result(rpc_result);
+        rpc_geofence_result->set_result_str(mavsdk::Geofence::result_str(result));
+
+        return rpc_geofence_result;
+    }
+
+    Geofence& _geofence;
+};
+
+} // namespace backend
+} // namespace mavsdk
