@@ -41,6 +41,7 @@ Offboard::Result OffboardImpl::start()
         if (_mode == Mode::NOT_ACTIVE) {
             return Offboard::Result::NO_SETPOINT_SET;
         }
+        _last_started = _time.steady_time();
     }
 
     return offboard_result_from_command_result(
@@ -71,6 +72,7 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
             }
             return;
         }
+        _last_started = _time.steady_time();
     }
 
     _parent->set_flight_mode_async(
@@ -563,8 +565,13 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
     }
 
     {
+        // Right after we started offboard we might still be getting heartbeats
+        // from earlier which don't indicate offboard mode yet.
+        // Therefore, we make sure we don't stop too eagerly and ignore
+        // possibly stale heartbeats for some time.
         std::lock_guard<std::mutex> lock(_mutex);
-        if (!offboard_mode_active && _mode != Mode::NOT_ACTIVE) {
+        if (!offboard_mode_active && _mode != Mode::NOT_ACTIVE &&
+            _time.elapsed_since_s(_last_started) > 1.5) {
             // It seems that we are no longer in offboard mode but still trying to send
             // setpoints. Let's stop for now.
             stop_sending_setpoints();
