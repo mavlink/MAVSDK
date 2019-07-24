@@ -140,6 +140,7 @@ private:
     void receive_param_hitl(MAVLinkParameters::Result result, int value);
 
     void receive_rc_channels_timeout();
+    void receive_gps_raw_timeout();
 
     static Telemetry::Result
     telemetry_result_from_command_result(MAVLinkCommands::Result command_result);
@@ -222,6 +223,7 @@ private:
     double _ground_speed_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
 
-    void* _timeout_cookie{nullptr};
+    void* _rc_channels_timeout_cookie{nullptr};
+    void* _gps_raw_timeout_cookie{nullptr};
 };
 } // namespace mavsdk

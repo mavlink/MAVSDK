@@ -79,7 +79,8 @@ void TelemetryImpl::init()
 
 void TelemetryImpl::deinit()
 {
-    _parent->unregister_timeout_handler(_timeout_cookie);
+    _parent->unregister_timeout_handler(_rc_channels_timeout_cookie);
+    _parent->unregister_timeout_handler(_gps_raw_timeout_cookie);
     _parent->unregister_param_changed_handler(this);
     _parent->unregister_all_mavlink_message_handlers(this);
 }
@@ -87,7 +88,12 @@ void TelemetryImpl::deinit()
 void TelemetryImpl::enable()
 {
     _parent->register_timeout_handler(
-        std::bind(&TelemetryImpl::receive_rc_channels_timeout, this), 1.0, &_timeout_cookie);
+        std::bind(&TelemetryImpl::receive_rc_channels_timeout, this),
+        1.0,
+        &_rc_channels_timeout_cookie);
+
+    _parent->register_timeout_handler(
+        std::bind(&TelemetryImpl::receive_gps_raw_timeout, this), 2.0, &_gps_raw_timeout_cookie);
 
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
@@ -494,6 +500,8 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
         auto arg = get_gps_info();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
+
+    _parent->refresh_timeout_handler(_gps_raw_timeout_cookie);
 }
 
 void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
@@ -624,7 +632,7 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
-    _parent->refresh_timeout_handler(_timeout_cookie);
+    _parent->refresh_timeout_handler(_rc_channels_timeout_cookie);
 }
 
 Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
@@ -729,6 +737,13 @@ void TelemetryImpl::receive_rc_channels_timeout()
 {
     const bool rc_ok = false;
     set_rc_status(rc_ok, 0.0f);
+}
+
+void TelemetryImpl::receive_gps_raw_timeout()
+{
+    const bool position_ok = false;
+    set_health_local_position(position_ok);
+    set_health_global_position(position_ok);
 }
 
 Telemetry::PositionVelocityNED TelemetryImpl::get_position_velocity_ned() const
