@@ -1063,40 +1063,21 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t& callback
         std::bind(&MissionImpl::receive_command_result, this, std::placeholders::_1, callback));
 }
 
+// Anotacao
 void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback)
 {
-    bool should_report_mission_result = false;
-    {
-        std::lock_guard<std::mutex> lock(_activity.mutex);
-        if (_activity.state == Activity::State::ABORTED) {
-            _activity.state = Activity::State::NONE;
-        }
-
-        if (_activit.state != Activity::State:NONE) {
-            should_report_mission_result = true;
-        } else {
-            _activity.state = Activity::State::SEND_COMMAND;
-        }
-    }
-
-    if (should_report_mission_result) {
-        // Anotacao
-    }
-
     // Clear old mission items
-    mission_items.clear();
-
-    // mavlink_message_t message; Anotacao
-
-    // mavlink_msg_mission_ack_pack(
-    //     _parent->get_own_system_id(),
-    //     _parent->get_own_component_id(),
-    //     &message,
-    //     _parent->get_system_id(),
-    //     _parent->get_autopilot_id(),
-    //     MAV_MISSION_DENIED,
-    //     MAV_MISSION_TYPE_ALL);
-    // _parent->send_message(message);
+    mavlink_message_t message;
+    mavlink_msg_mission_clear_all_pack(
+         _parent->get_own_system_id(),
+         _parent->get_own_component_id(),
+          &message,
+          _parent->get_system_id(),
+          _parent->get_autopilot_id(),
+          MAV_MISSION_TYPE_MISSION);
+    
+    _parent->send_message(message);
+    report_mission_result(callback, Mission::Result::SUCCESS); // Anotacao: Fix this
 }
 
 void MissionImpl::set_current_mission_item_async(int current, Mission::result_callback_t& callback)

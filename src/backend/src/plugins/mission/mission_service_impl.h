@@ -144,7 +144,7 @@ public:
 
         _mission.clear_mission_async(
             [this, response, &result_promise](const mavsdk::Mission::Result result) {
-                if (result != nullptr) {
+                if (response != nullptr) {
                     auto rpc_mission_result = generateRPCMissionResult(result);
                     response->set_allocated_mission_result(rpc_mission_result);
                 }
