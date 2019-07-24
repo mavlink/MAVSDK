@@ -26,8 +26,8 @@ message SetModeResponse {
 }
 
 enum GimbalMode {
-    FOLLOW = 0;
-    LOCK = 1;
+    YAW_FOLLOW = 0;
+    YAW_LOCK = 1;
 }
 
 message GimbalResult {
