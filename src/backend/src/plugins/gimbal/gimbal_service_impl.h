@@ -60,9 +60,9 @@ public:
     static int translateRPCGimbalMode(const rpc::gimbal::GimbalMode mode)
     {
         switch(mode) {
-            case rpc::gimbal::GimbalMode::FOLLOW:
+            case rpc::gimbal::GimbalMode::YAW_FOLLOW:
                 return 0;
-            case rpc::gimbal::GimbalMode::LOCK:
+            case rpc::gimbal::GimbalMode::YAW_LOCK:
                 return 1;
             default:
                 return 0;
