@@ -40,9 +40,6 @@ using StartMissionResponse = dc::rpc::mission::StartMissionResponse;
 using PauseMissionRequest = dc::rpc::mission::PauseMissionRequest;
 using PauseMissionResponse = dc::rpc::mission::PauseMissionResponse;
 
-// using ClearMissionRequest = dc::rpc::mission::ClearMissionRequest;
-// using ClearMissionResponse = dc::rpc::mission::ClearMissionResponse; // Anotacao
-
 static constexpr auto ARBITRARY_RESULT = dc::Mission::Result::UNKNOWN;
 static constexpr auto ARBITRARY_INDEX = 42;
 static constexpr auto ARBITRARY_SMALL_INT = 12;

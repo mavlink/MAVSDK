@@ -183,7 +183,9 @@ public:
     void pause_mission_async(result_callback_t callback);
 
     /**
-     * Anotacao
+     * @brief Clears the mission from vehicle (asynchronous).
+     *
+     * @param callback Callback to receive result of this request.
      */
     void clear_mission_async(result_callback_t callback);
 
