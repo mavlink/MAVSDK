@@ -40,6 +40,8 @@ public:
     void pause_mission_async(const Mission::result_callback_t& callback);
     void clear_mission_async(const Mission::result_callback_t& callback);
 
+    void clear_mission();
+
     void set_current_mission_item_async(int current, Mission::result_callback_t& callback);
 
     bool is_mission_finished() const;
@@ -106,7 +108,8 @@ private:
             GET_MISSION_LIST,
             GET_MISSION_REQUEST,
             ABORTED,
-            SEND_COMMAND
+            SEND_COMMAND,
+            MISSION_CLEAR
         } state{Activity::State::NONE};
     } _activity{};
 
