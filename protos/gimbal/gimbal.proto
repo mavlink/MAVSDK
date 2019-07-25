@@ -7,6 +7,7 @@ option java_outer_classname = "GimbalProto";
 
 service GimbalService {
     rpc SetPitchAndYaw(SetPitchAndYawRequest) returns(SetPitchAndYawResponse) {}
+    rpc SetMode(SetModeRequest) returns(SetModeResponse) {}
 }
 
 message SetPitchAndYawRequest {
@@ -15,6 +16,18 @@ message SetPitchAndYawRequest {
 }
 message SetPitchAndYawResponse {
     GimbalResult gimbal_result = 1;
+}
+
+message SetModeRequest {
+    GimbalMode gimbal_mode = 1;
+}
+message SetModeResponse {
+    GimbalResult gimbal_result = 1;
+}
+
+enum GimbalMode {
+    YAW_FOLLOW = 0;
+    YAW_LOCK = 1;
 }
 
 message GimbalResult {
