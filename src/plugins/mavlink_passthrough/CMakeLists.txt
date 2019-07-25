@@ -24,6 +24,7 @@ install(TARGETS mavsdk_mavlink_passthrough
 
 install(FILES
     include/plugins/mavlink_passthrough/mavlink_passthrough.h
+    ../../core/mavlink_include.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mavlink_passthrough
 )
 
