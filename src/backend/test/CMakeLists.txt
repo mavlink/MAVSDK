@@ -10,6 +10,7 @@ add_executable(unit_tests_backend
     offboard_service_impl_test.cpp
     telemetry_service_impl_test.cpp
     info_service_impl_test.cpp
+    geofence_service_impl_test.cpp
 )
 
 set_target_properties(unit_tests_backend PROPERTIES COMPILE_FLAGS ${warnings})
@@ -36,6 +37,7 @@ target_link_libraries(unit_tests_backend
     mavsdk_mission
     mavsdk_offboard
     mavsdk_telemetry
+    mavsdk_geofence
     gRPC::grpc++
     gtest
     gmock
