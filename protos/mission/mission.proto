@@ -12,6 +12,7 @@ service MissionService {
     rpc CancelMissionDownload(CancelMissionDownloadRequest) returns(CancelMissionDownloadResponse) {}
     rpc StartMission(StartMissionRequest) returns(StartMissionResponse) {}
     rpc PauseMission(PauseMissionRequest) returns(PauseMissionResponse) {}
+    rpc ClearMission(ClearMissionRequest) returns(ClearMissionResponse) {}
     rpc SetCurrentMissionItemIndex(SetCurrentMissionItemIndexRequest) returns(SetCurrentMissionItemIndexResponse) {}
     rpc IsMissionFinished(IsMissionFinishedRequest) returns(IsMissionFinishedResponse) {}
     rpc SubscribeMissionProgress(SubscribeMissionProgressRequest) returns(stream MissionProgressResponse) {}
@@ -45,6 +46,11 @@ message StartMissionResponse {
 
 message PauseMissionRequest {}
 message PauseMissionResponse {
+    MissionResult mission_result = 1;
+}
+
+message ClearMissionRequest {}
+message ClearMissionResponse {
     MissionResult mission_result = 1;
 }
 
