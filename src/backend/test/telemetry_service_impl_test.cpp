@@ -22,7 +22,7 @@ using TelemetryService = mavsdk::rpc::telemetry::TelemetryService;
 using PositionResponse = mavsdk::rpc::telemetry::PositionResponse;
 using Position = mavsdk::Telemetry::Position;
 
-using PositionNEDResponse = mavsdk::rpc::telemetry::PositionNEDResponse;
+using PositionNedResponse = mavsdk::rpc::telemetry::PositionNedResponse;
 using PositionNED = mavsdk::Telemetry::PositionNED;
 
 using HealthResponse = mavsdk::rpc::telemetry::HealthResponse;
@@ -72,8 +72,8 @@ protected:
                             const float rel_alt) const;
     void checkSendsPositions(const std::vector<Position> &positions);
 
-    std::future<void> subscribePositionNEDAsync(std::vector<PositionNED> &positions_ned);
-    PositionNED createPositionNED(const float north,
+    std::future<void> subscribePositionNedAsync(std::vector<PositionNED> &positions_ned);
+    PositionNED createPositionNed(const float north,
                             const float east,
                             const float down) const;
     void checkSendsPositionsNED(const std::vector<PositionNED> &positions_ned);
@@ -262,25 +262,25 @@ TEST_F(TelemetryServiceImplTest, sendsMultiplePositions)
     checkSendsPositions(positions);
 }
 
-TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionNEDAsync)
+TEST_F(TelemetryServiceImplTest, registersToTelemetryPositionNedAsync)
 {
     EXPECT_CALL(*_telemetry, position_ned_async(_)).Times(1);
 
     std::vector<PositionNED> positions_ned;
-    auto position_ned_stream_future = subscribePositionNEDAsync(positions_ned);
+    auto position_ned_stream_future = subscribePositionNedAsync(positions_ned);
 
     _telemetry_service->stop();
     position_ned_stream_future.wait();
 }
 
-std::future<void> TelemetryServiceImplTest::subscribePositionNEDAsync(std::vector<PositionNED> &positions_ned)
+std::future<void> TelemetryServiceImplTest::subscribePositionNedAsync(std::vector<PositionNED> &positions_ned)
 {
     return std::async(std::launch::async, [&]() {
         grpc::ClientContext context;
-        mavsdk::rpc::telemetry::SubscribePositionNEDRequest request;
-        auto response_reader = _stub->SubscribePositionNED(&context, request);
+        mavsdk::rpc::telemetry::SubscribePositionNedRequest request;
+        auto response_reader = _stub->SubscribePositionNed(&context, request);
 
-        mavsdk::rpc::telemetry::PositionNEDResponse response;
+        mavsdk::rpc::telemetry::PositionNedResponse response;
         while (response_reader->Read(&response)) {
             auto position_ned_rpc = response.position_ned();
 
@@ -296,10 +296,10 @@ std::future<void> TelemetryServiceImplTest::subscribePositionNEDAsync(std::vecto
     });
 }
 
-TEST_F(TelemetryServiceImplTest, doesNotSendPositionNEDIfCallbackNotCalled)
+TEST_F(TelemetryServiceImplTest, doesNotSendPositionNedIfCallbackNotCalled)
 {
     std::vector<PositionNED> positions_ned;
-    auto position_ned_stream_future = subscribePositionNEDAsync(positions_ned);
+    auto position_ned_stream_future = subscribePositionNedAsync(positions_ned);
 
     _telemetry_service->stop();
     position_ned_stream_future.wait();
@@ -307,10 +307,10 @@ TEST_F(TelemetryServiceImplTest, doesNotSendPositionNEDIfCallbackNotCalled)
     EXPECT_EQ(0, positions_ned.size());
 }
 
-TEST_F(TelemetryServiceImplTest, sendsOnePositionNED)
+TEST_F(TelemetryServiceImplTest, sendsOnePositionNed)
 {
     std::vector<PositionNED> positions_ned;
-    positions_ned.push_back(createPositionNED(0.5f,0.5f,3.5f));
+    positions_ned.push_back(createPositionNed(0.5f,0.5f,3.5f));
 
     checkSendsPositionsNED(positions_ned);
 }
@@ -324,7 +324,7 @@ void TelemetryServiceImplTest::checkSendsPositionsNED(const std::vector<Position
         .WillOnce(SaveCallback(&position_ned_callback, &subscription_promise));
 
     std::vector<PositionNED> received_positions_ned;
-    auto position_ned_stream_future = subscribePositionNEDAsync(received_positions_ned);
+    auto position_ned_stream_future = subscribePositionNedAsync(received_positions_ned);
     subscription_future.wait();
     for (const auto position_ned : positions_ned) {
         position_ned_callback(position_ned);
@@ -338,7 +338,7 @@ void TelemetryServiceImplTest::checkSendsPositionsNED(const std::vector<Position
     }
 }
 
-PositionNED TelemetryServiceImplTest::createPositionNED(const float north,
+PositionNED TelemetryServiceImplTest::createPositionNed(const float north,
                                                   const float east,
                                                   const float down) const
 {
@@ -354,9 +354,9 @@ PositionNED TelemetryServiceImplTest::createPositionNED(const float north,
 TEST_F(TelemetryServiceImplTest, sendsMultiplePositionsNED)
 {
     std::vector<PositionNED> positions_ned;
-    positions_ned.push_back(createPositionNED(0.5f, 0.5f, 3.5f));
-    positions_ned.push_back(createPositionNED(0.0f, 0.0f, 10.0f));
-    positions_ned.push_back(createPositionNED(-0.5f, -0.5f, 3.5f));
+    positions_ned.push_back(createPositionNed(0.5f, 0.5f, 3.5f));
+    positions_ned.push_back(createPositionNed(0.0f, 0.0f, 10.0f));
+    positions_ned.push_back(createPositionNed(-0.5f, -0.5f, 3.5f));
 
     checkSendsPositionsNED(positions_ned);
 }

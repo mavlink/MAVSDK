@@ -622,14 +622,14 @@ public:
     typedef std::function<void(PositionNED)> position_ned_callback_t;
 
     /**
-     * @brief Subscribe to position in NED frame updates (asynchronous).
+     * @brief Subscribe to position updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
     void position_ned_async(position_ned_callback_t callback);
 
     /**
-     * @brief Subscribe to position updates in NED frame (asynchronous).
+     * @brief Subscribe to home position updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
@@ -861,21 +861,15 @@ private:
  */
 bool operator==(const Telemetry::PositionVelocityNED &lhs,
                 const Telemetry::PositionVelocityNED &rhs);
+
+bool operator==(const Telemetry::PositionNED &lhs,
+                const Telemetry::PositionNED &rhs);
+
 /**
  * @brief Equal operator to compare two `Telemetry::Position` objects.
  *
  * @return `true` if items are equal.
  */
-
-bool operator==(const Telemetry::PositionNED &lhs,
-                const Telemetry::PositionNED &rhs);
-/**
- * @brief Equal operator to compare two `Telemetry::PositionNED` objects.
- *
- * @return `true` if items are equal.
- */
-
-
 bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs);
 
 /**
@@ -886,7 +880,7 @@ bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs);
 std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position);
 
 /**
- * @brief Stream operator to print information about a `Telemetry::Position`.
+ * @brief Stream operator to print information about a `Telemetry::PositionNED`.
  *
  * @return A reference to the stream.
  */
