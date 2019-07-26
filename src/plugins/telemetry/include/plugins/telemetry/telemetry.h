@@ -281,6 +281,8 @@ public:
     /**
      * @brief Set rate of kinematic (position and velocity) updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @see PositionVelocityNED
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -290,6 +292,8 @@ public:
     /**
      * @brief Set rate of position updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -297,6 +301,8 @@ public:
 
     /**
      * @brief Set rate of home position updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -306,6 +312,8 @@ public:
     /**
      * @brief Set rate of in-air status updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -313,6 +321,8 @@ public:
 
     /**
      * @brief Set rate of attitude updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -322,6 +332,8 @@ public:
     /**
      * @brief Set rate of camera attitude updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -329,6 +341,8 @@ public:
 
     /**
      * @brief Set rate of ground speed (NED) updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -338,6 +352,8 @@ public:
     /**
      * @brief Set rate of IMU reading (NED) updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -345,6 +361,8 @@ public:
 
     /**
      * @brief Set rate of GPS information updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -354,6 +372,8 @@ public:
     /**
      * @brief Set rate of battery status updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -362,6 +382,8 @@ public:
     /**
      * @brief Set rate of RC status updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -369,6 +391,8 @@ public:
 
     /**
      * @brief Set rate of kinematic (position and velocity) updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @see PositionVelocityNED
      * @param rate_hz Rate in Hz.
@@ -379,6 +403,8 @@ public:
     /**
      * @brief Set rate of position updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -386,6 +412,8 @@ public:
 
     /**
      * @brief Set rate of home position updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -395,6 +423,8 @@ public:
     /**
      * @brief Set rate of in-air status updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -402,6 +432,8 @@ public:
 
     /**
      * @brief Set rate of attitude updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -411,6 +443,8 @@ public:
     /**
      * @brief Set rate of camera attitude updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -418,6 +452,8 @@ public:
 
     /**
      * @brief Set rate of ground speed (NED) updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -427,12 +463,16 @@ public:
     /**
      * @brief Set rate of IMU reading (NED) updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Cabllback to receive request result.
      */
     void set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback);
     /**
      * @brief Set rate of GPS information updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -442,6 +482,8 @@ public:
     /**
      * @brief Set rate of battery status updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -449,6 +491,8 @@ public:
 
     /**
      * @brief Set rate of RC status updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
