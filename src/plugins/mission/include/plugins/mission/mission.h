@@ -183,7 +183,7 @@ public:
     void pause_mission_async(result_callback_t callback);
 
     /**
-     * @brief Clears the mission from vehicle (asynchronous).
+     * @brief Clears the mission saved on the vehicle (asynchronous).
      *
      * @param callback Callback to receive result of this request.
      */
