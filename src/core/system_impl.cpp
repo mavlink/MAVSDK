@@ -1090,13 +1090,14 @@ SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t c
 {
     MAVLinkCommands::CommandLong command{};
 
-    // If left at -1 it will stop the message stream.
-    float interval_us = -1.0f;
+    // 0 to request default rate, -1 to stop stream
+
+    float interval_us = 0.0f;
+
     if (rate_hz > 0) {
         interval_us = 1e6f / static_cast<float>(rate_hz);
-    } else {
-        LogErr() << "Rate(Hz) is invalid: %f" << rate_hz;
-        return std::make_pair<>(MAVLinkCommands::Result::UNKNOWN_ERROR, command);
+    } else if (rate_hz < 0) {
+        interval_us = -1.0f;
     }
 
     command.command = MAV_CMD_SET_MESSAGE_INTERVAL;
