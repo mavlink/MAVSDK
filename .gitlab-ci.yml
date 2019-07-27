@@ -7,9 +7,14 @@ build:
     stage: build
     script:
         - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=install -DENABLE_MAVLINK_PASSTHROUGH=ON -Bbuild/debug -H.
+    artifacts:
+        paths:
+            - build/debug
 
 test:
     stage: test
     script:
         - build/debug/src/unit_tests_runner
+    dependencies:
+        - build
 
