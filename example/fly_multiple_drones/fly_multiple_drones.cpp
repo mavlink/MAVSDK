@@ -72,11 +72,11 @@ are running two drones in udp://:14540 and udp://:14541 then you run the example
 #define TELEMETRY_CONSOLE_TEXT "\033[34m" // Turn text on console blue
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
-static void complete_mission(std::string qgc_plan, System &system);
+static void complete_mission(std::string qgc_plan, System& system);
 
-static void handle_action_err_exit(Action::Result result, const std::string &message);
+static void handle_action_err_exit(Action::Result result, const std::string& message);
 
-static void handle_mission_err_exit(Mission::Result result, const std::string &message);
+static void handle_mission_err_exit(Mission::Result result, const std::string& message);
 
 std::string getCurrentTimeString()
 {
@@ -86,7 +86,7 @@ std::string getCurrentTimeString()
     return s;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     // There needs to be odd number of arguments (including ./fly_multiple_drones) otherwise
     // it would suggest either plan files or udp ports hasn't been specified
@@ -139,20 +139,20 @@ int main(int argc, char *argv[])
     int planFile_provided =
         total_ports_used + 1; // +1 because first plan is specified at argv[total_ports_used+1]
     for (auto uuid : dc.system_uuids()) {
-        System &system = dc.system(uuid);
+        System& system = dc.system(uuid);
         std::thread t(&complete_mission, argv[planFile_provided], std::ref(system));
         threads.push_back(
             std::move(t)); // Instead of copying, move t into the vector (less expensive)
         planFile_provided += 1;
     }
 
-    for (auto &t : threads) {
+    for (auto& t : threads) {
         t.join();
     }
     return 0;
 }
 
-void complete_mission(std::string qgc_plan, System &system)
+void complete_mission(std::string qgc_plan, System& system)
 {
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
@@ -206,8 +206,8 @@ void complete_mission(std::string qgc_plan, System &system)
         // Wrap the asynchronous upload_mission function using std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(mission_items,
-                                      [prom](Mission::Result result) { prom->set_value(result); });
+        mission->upload_mission_async(
+            mission_items, [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         handle_mission_err_exit(result, "Mission upload failed: ");
@@ -258,7 +258,7 @@ void complete_mission(std::string qgc_plan, System &system)
     }
 }
 
-static void handle_action_err_exit(Action::Result result, const std::string &message)
+static void handle_action_err_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
@@ -267,7 +267,7 @@ static void handle_action_err_exit(Action::Result result, const std::string &mes
     }
 }
 
-static void handle_mission_err_exit(Mission::Result result, const std::string &message)
+static void handle_mission_err_exit(Mission::Result result, const std::string& message)
 {
     if (result != Mission::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)

@@ -33,20 +33,21 @@ using namespace std::chrono; // for seconds(), milliseconds()
 using namespace std::this_thread; // for sleep_for()
 
 // Handles Action's result
-inline void handle_action_err_exit(Action::Result result, const std::string &message);
+inline void handle_action_err_exit(Action::Result result, const std::string& message);
 // Handles Mission's result
-inline void handle_mission_err_exit(Mission::Result result, const std::string &message);
+inline void handle_mission_err_exit(Mission::Result result, const std::string& message);
 // Handles Connection result
-inline void handle_connection_err_exit(ConnectionResult result, const std::string &message);
+inline void handle_connection_err_exit(ConnectionResult result, const std::string& message);
 
-static std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
-                                                      double longitude_deg,
-                                                      float relative_altitude_m,
-                                                      float speed_m_s,
-                                                      bool is_fly_through,
-                                                      float gimbal_pitch_deg,
-                                                      float gimbal_yaw_deg,
-                                                      MissionItem::CameraAction camera_action);
+static std::shared_ptr<MissionItem> make_mission_item(
+    double latitude_deg,
+    double longitude_deg,
+    float relative_altitude_m,
+    float speed_m_s,
+    bool is_fly_through,
+    float gimbal_pitch_deg,
+    float gimbal_yaw_deg,
+    MissionItem::CameraAction camera_action);
 
 void usage(std::string bin_name)
 {
@@ -58,7 +59,7 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     Mavsdk dc;
 
@@ -102,7 +103,7 @@ int main(int argc, char **argv)
     // We don't need to specifiy the UUID if it's only one system anyway.
     // If there were multiple, we could specify it with:
     // dc.system(uint64_t uuid);
-    System &system = dc.system();
+    System& system = dc.system();
     auto action = std::make_shared<Action>(system);
     auto mission = std::make_shared<Mission>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
@@ -117,59 +118,65 @@ int main(int argc, char **argv)
 
     std::vector<std::shared_ptr<MissionItem>> mission_items;
 
-    mission_items.push_back(make_mission_item(47.398170327054473,
-                                              8.5456490218639658,
-                                              10.0f,
-                                              5.0f,
-                                              false,
-                                              20.0f,
-                                              60.0f,
-                                              MissionItem::CameraAction::NONE));
+    mission_items.push_back(make_mission_item(
+        47.398170327054473,
+        8.5456490218639658,
+        10.0f,
+        5.0f,
+        false,
+        20.0f,
+        60.0f,
+        MissionItem::CameraAction::NONE));
 
-    mission_items.push_back(make_mission_item(47.398241338125118,
-                                              8.5455360114574432,
-                                              10.0f,
-                                              2.0f,
-                                              true,
-                                              0.0f,
-                                              -60.0f,
-                                              MissionItem::CameraAction::TAKE_PHOTO));
+    mission_items.push_back(make_mission_item(
+        47.398241338125118,
+        8.5455360114574432,
+        10.0f,
+        2.0f,
+        true,
+        0.0f,
+        -60.0f,
+        MissionItem::CameraAction::TAKE_PHOTO));
 
-    mission_items.push_back(make_mission_item(47.398139363821485,
-                                              8.5453846156597137,
-                                              10.0f,
-                                              5.0f,
-                                              true,
-                                              -45.0f,
-                                              0.0f,
-                                              MissionItem::CameraAction::START_VIDEO));
+    mission_items.push_back(make_mission_item(
+        47.398139363821485,
+        8.5453846156597137,
+        10.0f,
+        5.0f,
+        true,
+        -45.0f,
+        0.0f,
+        MissionItem::CameraAction::START_VIDEO));
 
-    mission_items.push_back(make_mission_item(47.398058617228855,
-                                              8.5454618036746979,
-                                              10.0f,
-                                              2.0f,
-                                              false,
-                                              -90.0f,
-                                              30.0f,
-                                              MissionItem::CameraAction::STOP_VIDEO));
+    mission_items.push_back(make_mission_item(
+        47.398058617228855,
+        8.5454618036746979,
+        10.0f,
+        2.0f,
+        false,
+        -90.0f,
+        30.0f,
+        MissionItem::CameraAction::STOP_VIDEO));
 
-    mission_items.push_back(make_mission_item(47.398100366082858,
-                                              8.5456969141960144,
-                                              10.0f,
-                                              5.0f,
-                                              false,
-                                              -45.0f,
-                                              -30.0f,
-                                              MissionItem::CameraAction::START_PHOTO_INTERVAL));
+    mission_items.push_back(make_mission_item(
+        47.398100366082858,
+        8.5456969141960144,
+        10.0f,
+        5.0f,
+        false,
+        -45.0f,
+        -30.0f,
+        MissionItem::CameraAction::START_PHOTO_INTERVAL));
 
-    mission_items.push_back(make_mission_item(47.398001890458097,
-                                              8.5455576181411743,
-                                              10.0f,
-                                              5.0f,
-                                              false,
-                                              0.0f,
-                                              0.0f,
-                                              MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
+    mission_items.push_back(make_mission_item(
+        47.398001890458097,
+        8.5455576181411743,
+        10.0f,
+        5.0f,
+        false,
+        0.0f,
+        0.0f,
+        MissionItem::CameraAction::STOP_PHOTO_INTERVAL));
 
     {
         std::cout << "Uploading mission..." << std::endl;
@@ -177,8 +184,8 @@ int main(int argc, char **argv)
         // std::future.
         auto prom = std::make_shared<std::promise<Mission::Result>>();
         auto future_result = prom->get_future();
-        mission->upload_mission_async(mission_items,
-                                      [prom](Mission::Result result) { prom->set_value(result); });
+        mission->upload_mission_async(
+            mission_items, [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::SUCCESS) {
@@ -285,14 +292,15 @@ int main(int argc, char **argv)
     std::cout << "Disarmed, exiting." << std::endl;
 }
 
-std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
-                                               double longitude_deg,
-                                               float relative_altitude_m,
-                                               float speed_m_s,
-                                               bool is_fly_through,
-                                               float gimbal_pitch_deg,
-                                               float gimbal_yaw_deg,
-                                               MissionItem::CameraAction camera_action)
+std::shared_ptr<MissionItem> make_mission_item(
+    double latitude_deg,
+    double longitude_deg,
+    float relative_altitude_m,
+    float speed_m_s,
+    bool is_fly_through,
+    float gimbal_pitch_deg,
+    float gimbal_yaw_deg,
+    MissionItem::CameraAction camera_action)
 {
     std::shared_ptr<MissionItem> new_item(new MissionItem());
     new_item->set_position(latitude_deg, longitude_deg);
@@ -304,7 +312,7 @@ std::shared_ptr<MissionItem> make_mission_item(double latitude_deg,
     return new_item;
 }
 
-inline void handle_action_err_exit(Action::Result result, const std::string &message)
+inline void handle_action_err_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
@@ -313,7 +321,7 @@ inline void handle_action_err_exit(Action::Result result, const std::string &mes
     }
 }
 
-inline void handle_mission_err_exit(Mission::Result result, const std::string &message)
+inline void handle_mission_err_exit(Mission::Result result, const std::string& message)
 {
     if (result != Mission::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Mission::result_str(result)
@@ -323,7 +331,7 @@ inline void handle_mission_err_exit(Mission::Result result, const std::string &m
 }
 
 // Handles connection result
-inline void handle_connection_err_exit(ConnectionResult result, const std::string &message)
+inline void handle_connection_err_exit(ConnectionResult result, const std::string& message)
 {
     if (result != ConnectionResult::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)

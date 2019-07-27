@@ -16,9 +16,9 @@ static constexpr auto ERROR_CONSOLE_TEXT = "\033[31m";
 static constexpr auto TELEMETRY_CONSOLE_TEXT = "\033[34m";
 static constexpr auto NORMAL_CONSOLE_TEXT = "\033[0m";
 
-void usage(const std::string &bin_name);
+void usage(const std::string& bin_name);
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     if (argc != 2) {
         usage(argv[0]);
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     }
 
     // Get system and plugins.
-    System &system = dc.system();
+    System& system = dc.system();
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
 
@@ -152,7 +152,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void usage(const std::string &bin_name)
+void usage(const std::string& bin_name)
 {
     std::cout << NORMAL_CONSOLE_TEXT << "Usage : " << bin_name << " <connection_url>" << std::endl
               << "Connection URL format should be :" << std::endl

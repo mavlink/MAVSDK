@@ -5,16 +5,16 @@
 
 using namespace mavsdk;
 
-bool are_arguments_valid(int argc, char **argv);
-void print_usage(const std::string &);
-void wait_until_discover(Mavsdk &);
-void calibrate_accelerometer(Calibration &);
-Calibration::calibration_callback_t create_calibration_callback(std::promise<void> &);
-void calibrate_gyro(Calibration &);
-void calibrate_magnetometer(Calibration &);
-void calibrate_gimbal_accelerometer(Calibration &);
+bool are_arguments_valid(int argc, char** argv);
+void print_usage(const std::string&);
+void wait_until_discover(Mavsdk&);
+void calibrate_accelerometer(Calibration&);
+Calibration::calibration_callback_t create_calibration_callback(std::promise<void>&);
+void calibrate_gyro(Calibration&);
+void calibrate_magnetometer(Calibration&);
+void calibrate_gimbal_accelerometer(Calibration&);
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     if (!are_arguments_valid(argc, argv)) {
         const auto binary_name = argv[0];
@@ -43,12 +43,12 @@ int main(int argc, char **argv)
     return 0;
 }
 
-bool are_arguments_valid(int argc, char ** /* argv */)
+bool are_arguments_valid(int argc, char** /* argv */)
 {
     return argc == 2;
 }
 
-void print_usage(const std::string &bin_name)
+void print_usage(const std::string& bin_name)
 {
     std::cout << "Usage : " << bin_name << " <connection_url>" << std::endl
               << "Connection URL format should be :" << std::endl
@@ -58,7 +58,7 @@ void print_usage(const std::string &bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-void wait_until_discover(Mavsdk &dc)
+void wait_until_discover(Mavsdk& dc)
 {
     std::cout << "Waiting to discover system..." << std::endl;
     std::promise<void> discover_promise;
@@ -72,7 +72,7 @@ void wait_until_discover(Mavsdk &dc)
     discover_future.wait();
 }
 
-void calibrate_accelerometer(Calibration &calibration)
+void calibrate_accelerometer(Calibration& calibration)
 {
     std::cout << "Calibrating accelerometer..." << std::endl;
 
@@ -85,10 +85,10 @@ void calibrate_accelerometer(Calibration &calibration)
 }
 
 Calibration::calibration_callback_t
-create_calibration_callback(std::promise<void> &calibration_promise)
+create_calibration_callback(std::promise<void>& calibration_promise)
 {
-    return [&calibration_promise](const Calibration::Result result,
-                                  const Calibration::ProgressData progress_data) {
+    return [&calibration_promise](
+               const Calibration::Result result, const Calibration::ProgressData progress_data) {
         switch (result) {
             case Calibration::Result::SUCCESS:
                 std::cout << "--- Calibration succeeded!" << std::endl;
@@ -109,7 +109,7 @@ create_calibration_callback(std::promise<void> &calibration_promise)
     };
 }
 
-void calibrate_gyro(Calibration &calibration)
+void calibrate_gyro(Calibration& calibration)
 {
     std::cout << "Calibrating gyro..." << std::endl;
 
@@ -121,7 +121,7 @@ void calibrate_gyro(Calibration &calibration)
     calibration_future.wait();
 }
 
-void calibrate_magnetometer(Calibration &calibration)
+void calibrate_magnetometer(Calibration& calibration)
 {
     std::cout << "Calibrating magnetometer..." << std::endl;
 
@@ -133,7 +133,7 @@ void calibrate_magnetometer(Calibration &calibration)
     calibration_future.wait();
 }
 
-void calibrate_gimbal_accelerometer(Calibration &calibration)
+void calibrate_gimbal_accelerometer(Calibration& calibration)
 {
     std::cout << "Calibrating gimbal accelerometer..." << std::endl;
 

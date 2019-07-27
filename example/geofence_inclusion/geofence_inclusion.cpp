@@ -42,7 +42,7 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     Mavsdk dc;
 
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     // We don't need to specifiy the UUID if it's only one system anyway.
     // If there were multiple, we could specify it with:
     // dc.system(uint64_t uuid);
-    System &system = dc.system();
+    System& system = dc.system();
     auto action = std::make_shared<Action>(system);
     auto mission = std::make_shared<Mission>(system);
     auto telemetry = std::make_shared<Telemetry>(system);
@@ -118,8 +118,8 @@ int main(int argc, char **argv)
 
         auto prom = std::make_shared<std::promise<Geofence::Result>>();
         auto future_result = prom->get_future();
-        geofence->send_geofence_async(polygons,
-                                      [prom](Geofence::Result result) { prom->set_value(result); });
+        geofence->send_geofence_async(
+            polygons, [prom](Geofence::Result result) { prom->set_value(result); });
 
         const Geofence::Result result = future_result.get();
         if (result != Geofence::Result::SUCCESS) {
