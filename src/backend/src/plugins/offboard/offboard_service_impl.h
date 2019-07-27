@@ -154,7 +154,7 @@ public:
     {
         if (request != nullptr) {
             auto requested_position_ned_yaw =
-                translateRPCPositionNEDYaw(request->position_ned_yaw());
+                translateRPCPositionNedYaw(request->position_ned_yaw());
             _offboard.set_position_ned(requested_position_ned_yaw);
         }
 
@@ -162,7 +162,7 @@ public:
     }
 
     static mavsdk::Offboard::PositionNEDYaw
-    translateRPCPositionNEDYaw(const rpc::offboard::PositionNEDYaw& rpc_position_ned_yaw)
+    translateRPCPositionNedYaw(const rpc::offboard::PositionNedYaw& rpc_position_ned_yaw)
     {
         mavsdk::Offboard::PositionNEDYaw position_ned_yaw;
 
@@ -208,7 +208,7 @@ public:
     {
         if (request != nullptr) {
             auto requested_velocity_ned_yaw =
-                translateRPCVelocityNEDYaw(request->velocity_ned_yaw());
+                translateRPCVelocityNedYaw(request->velocity_ned_yaw());
             _offboard.set_velocity_ned(requested_velocity_ned_yaw);
         }
 
@@ -216,7 +216,7 @@ public:
     }
 
     static mavsdk::Offboard::VelocityNEDYaw
-    translateRPCVelocityNEDYaw(const rpc::offboard::VelocityNEDYaw& rpc_velocity_ned_yaw)
+    translateRPCVelocityNedYaw(const rpc::offboard::VelocityNedYaw& rpc_velocity_ned_yaw)
     {
         mavsdk::Offboard::VelocityNEDYaw velocity_ned_yaw;
 
