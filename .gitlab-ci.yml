@@ -8,7 +8,9 @@ build:
         - docker
     stage: build
     script:
+        - ccache -s
         - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=install -DENABLE_MAVLINK_PASSTHROUGH=ON -Bbuild/debug -H.
         - cmake --build build/debug
         - build/debug/src/unit_tests_runner
         - build/debug/src/backend/test/unit_tests_backend
+        - ccache -s
