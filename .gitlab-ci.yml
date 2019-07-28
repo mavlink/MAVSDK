@@ -1,4 +1,4 @@
-image: "mavsdk/mavsdk-fedora-30"
+image: "mavsdk/mavsdk-fedora-30:2019-07-14"
 
 variables:
     GIT_SUBMODULE_STRATEGY: recursive
