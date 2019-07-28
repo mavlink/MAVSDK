@@ -50,10 +50,10 @@ protected:
 
     std::unique_ptr<mavsdk::rpc::offboard::Attitude> createArbitraryRPCAttitude() const;
     std::unique_ptr<mavsdk::rpc::offboard::AttitudeRate> createArbitraryRPCAttitudeRate() const;
-    std::unique_ptr<mavsdk::rpc::offboard::PositionNEDYaw> createArbitraryRPCPositionNEDYaw() const;
+    std::unique_ptr<mavsdk::rpc::offboard::PositionNedYaw> createArbitraryRPCPositionNedYaw() const;
     std::unique_ptr<mavsdk::rpc::offboard::VelocityBodyYawspeed>
     createArbitraryRPCVelocityBodyYawspeed() const;
-    std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw> createArbitraryRPCVelocityNedYaw() const;
+    std::unique_ptr<mavsdk::rpc::offboard::VelocityNedYaw> createArbitraryRPCVelocityNedYaw() const;
     std::unique_ptr<mavsdk::rpc::offboard::ActuatorControl>
     createArbitraryRPCActuatorControl() const;
 };
@@ -312,7 +312,7 @@ TEST_F(OffboardServiceImplTest, setsAttitudeRateCorrectly)
     offboardService.SetAttitudeRate(nullptr, &request, nullptr);
 }
 
-TEST_F(OffboardServiceImplTest, setPositionNEDYawDoesNotFailWithAllNullParams)
+TEST_F(OffboardServiceImplTest, setPositionNedYawDoesNotFailWithAllNullParams)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
@@ -320,23 +320,23 @@ TEST_F(OffboardServiceImplTest, setPositionNEDYawDoesNotFailWithAllNullParams)
     offboardService.SetPositionNed(nullptr, nullptr, nullptr);
 }
 
-TEST_F(OffboardServiceImplTest, setPositionNEDYawDoesNotFailWithNullResponse)
+TEST_F(OffboardServiceImplTest, setPositionNedYawDoesNotFailWithNullResponse)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
     mavsdk::rpc::offboard::SetPositionNedRequest request;
 
-    auto rpc_position_ned_yaw = createArbitraryRPCPositionNEDYaw();
+    auto rpc_position_ned_yaw = createArbitraryRPCPositionNedYaw();
     request.set_allocated_position_ned_yaw(rpc_position_ned_yaw.release());
 
     offboardService.SetPositionNed(nullptr, &request, nullptr);
 }
 
-std::unique_ptr<mavsdk::rpc::offboard::PositionNEDYaw>
-OffboardServiceImplTest::createArbitraryRPCPositionNEDYaw() const
+std::unique_ptr<mavsdk::rpc::offboard::PositionNedYaw>
+OffboardServiceImplTest::createArbitraryRPCPositionNedYaw() const
 {
-    auto rpc_position_ned_yaw = std::unique_ptr<mavsdk::rpc::offboard::PositionNEDYaw>(
-        new mavsdk::rpc::offboard::PositionNEDYaw());
+    auto rpc_position_ned_yaw = std::unique_ptr<mavsdk::rpc::offboard::PositionNedYaw>(
+        new mavsdk::rpc::offboard::PositionNedYaw());
     rpc_position_ned_yaw->set_north_m(ARBITRARY_NORTH_M);
     rpc_position_ned_yaw->set_east_m(ARBITRARY_EAST_M);
     rpc_position_ned_yaw->set_down_m(ARBITRARY_DOWN_M);
@@ -345,15 +345,15 @@ OffboardServiceImplTest::createArbitraryRPCPositionNEDYaw() const
     return rpc_position_ned_yaw;
 }
 
-TEST_F(OffboardServiceImplTest, setsPositionNEDYawCorrectly)
+TEST_F(OffboardServiceImplTest, setsPositionNedYawCorrectly)
 {
     MockOffboard offboard;
     OffboardServiceImpl offboardService(offboard);
     mavsdk::rpc::offboard::SetPositionNedRequest request;
 
-    auto rpc_position_ned_yaw = createArbitraryRPCPositionNEDYaw();
+    auto rpc_position_ned_yaw = createArbitraryRPCPositionNedYaw();
     const auto expected_position_ned_yaw =
-        OffboardServiceImpl::translateRPCPositionNEDYaw(*rpc_position_ned_yaw);
+        OffboardServiceImpl::translateRPCPositionNedYaw(*rpc_position_ned_yaw);
     EXPECT_CALL(offboard, set_position_ned(expected_position_ned_yaw)).Times(1);
 
     request.set_allocated_position_ned_yaw(rpc_position_ned_yaw.release());
@@ -430,11 +430,11 @@ TEST_F(OffboardServiceImplTest, setVelocityNedDoesNotFailWithNullResponse)
     offboardService.SetVelocityNed(nullptr, &request, nullptr);
 }
 
-std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw>
+std::unique_ptr<mavsdk::rpc::offboard::VelocityNedYaw>
 OffboardServiceImplTest::createArbitraryRPCVelocityNedYaw() const
 {
-    auto rpc_velocity_ned = std::unique_ptr<mavsdk::rpc::offboard::VelocityNEDYaw>(
-        new mavsdk::rpc::offboard::VelocityNEDYaw());
+    auto rpc_velocity_ned = std::unique_ptr<mavsdk::rpc::offboard::VelocityNedYaw>(
+        new mavsdk::rpc::offboard::VelocityNedYaw());
     rpc_velocity_ned->set_north_m_s(ARBITRARY_VELOCITY_MID);
     rpc_velocity_ned->set_east_m_s(ARBITRARY_VELOCITY_LOW);
     rpc_velocity_ned->set_down_m_s(ARBITRARY_VELOCITY_NEG);
@@ -451,7 +451,7 @@ TEST_F(OffboardServiceImplTest, setsVelocityNedCorrectly)
 
     auto rpc_velocity_ned = createArbitraryRPCVelocityNedYaw();
     const auto expected_velocity_ned =
-        OffboardServiceImpl::translateRPCVelocityNEDYaw(*rpc_velocity_ned);
+        OffboardServiceImpl::translateRPCVelocityNedYaw(*rpc_velocity_ned);
     EXPECT_CALL(offboard, set_velocity_ned(expected_velocity_ned)).Times(1);
 
     request.set_allocated_velocity_ned_yaw(rpc_velocity_ned.release());
