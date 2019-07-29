@@ -96,6 +96,7 @@ Action::Result ActionImpl::kill() const
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 0.0f; // kill
+    command.params.param2 = 21196.f; // magic number to enforce in-air
     command.target_component_id = _parent->get_autopilot_id();
 
     return action_result_from_command_result(_parent->send_command(command));
@@ -315,6 +316,7 @@ void ActionImpl::kill_async(const Action::result_callback_t& callback)
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
     command.params.param1 = 0.0f; // kill
+    command.params.param2 = 21196.f; // magic number to enforce in-air
     command.target_component_id = _parent->get_autopilot_id();
 
     _parent->send_command_async(
