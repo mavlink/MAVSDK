@@ -1387,6 +1387,7 @@ void CameraImpl::notify_current_settings()
         if (_camera_definition->get_setting(possible_setting, value)) {
             Camera::Setting setting{};
             setting.setting_id = possible_setting;
+            setting.is_range = _camera_definition->is_setting_range(possible_setting);
             get_setting_str(setting.setting_id, setting.setting_description);
             setting.option.option_id = value.get_string();
             get_option_str(
@@ -1428,6 +1429,7 @@ void CameraImpl::notify_possible_setting_options()
     for (auto& possible_setting : possible_settings) {
         Camera::SettingOptions setting_options{};
         setting_options.setting_id = possible_setting;
+        setting_options.is_range = _camera_definition->is_setting_range(possible_setting);
         get_setting_str(setting_options.setting_id, setting_options.setting_description);
         get_possible_options(possible_setting, setting_options.options);
         possible_setting_options.push_back(setting_options);

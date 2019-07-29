@@ -472,6 +472,7 @@ public:
         std::string setting_id{}; /**< Name of the setting (machine readable). */
         std::string setting_description{}; /**< Description of the setting (human readable). */
         Option option{}; /**< Selected option. */
+        bool is_range{false}; /**< If Option is given as a range. */
     };
 
     /**
