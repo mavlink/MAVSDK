@@ -92,7 +92,7 @@ public:
      */
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, result_callback_t callback);
 
-    /** 
+    /**
      * @brief Set gimbal mode (synchronous).
      *
      * This sets the desired yaw mode of a gimbal.
@@ -100,13 +100,13 @@ public:
      * take the gimbal longer to actually be set to the new angles.
      *
      * @param gimbal_mode The mode to be set. Either yaw lock or yaw follow.
-     * Yaw lock will fix the gimbal poiting to an absolute direction. 
+     * Yaw lock will fix the gimbal poiting to an absolute direction.
      * Yaw follow will point the gimbal to the vehicle heading.
      * @return Result of request.
      */
     Result set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode);
 
-    /** 
+    /**
      * @brief Set gimbal mode (asynchronous).
      *
      * This sets the desired yaw mode of a gimbal.
@@ -114,7 +114,7 @@ public:
      * take the gimbal longer to actually be set to the new angles.
      *
      * @param gimbal_mode The mode to be set. Either yaw lock or yaw follow.
-     * Yaw lock will fix the gimbal poiting to an absolute direction. 
+     * Yaw lock will fix the gimbal poiting to an absolute direction.
      * Yaw follow will point the gimbal to the vehicle heading.
      * @param callback Function to call with result of request.
      */

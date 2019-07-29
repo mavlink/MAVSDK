@@ -42,7 +42,8 @@ public:
         if (request != nullptr) {
             const auto requested_gimbal_mode = request->gimbal_mode();
 
-            const auto gimbal_result = _gimbal.set_gimbal_mode(translateRPCGimbalMode(requested_gimbal_mode));
+            const auto gimbal_result =
+                _gimbal.set_gimbal_mode(translateRPCGimbalMode(requested_gimbal_mode));
 
             if (response != nullptr) {
                 auto* rpc_gimbal_result = new rpc::gimbal::GimbalResult();
@@ -59,7 +60,7 @@ public:
 
     static mavsdk::Gimbal::GimbalMode translateRPCGimbalMode(const rpc::gimbal::GimbalMode mode)
     {
-        switch(mode) {
+        switch (mode) {
             case rpc::gimbal::GimbalMode::YAW_FOLLOW:
                 return mavsdk::Gimbal::GimbalMode::YAW_FOLLOW;
             case rpc::gimbal::GimbalMode::YAW_LOCK:
