@@ -9,10 +9,10 @@ namespace backend {
 template<typename Calibration = Calibration>
 class CalibrationServiceImpl final : public rpc::calibration::CalibrationService::Service {
 public:
-    CalibrationServiceImpl(Calibration &calibration) : _calibration(calibration) {}
+    CalibrationServiceImpl(Calibration& calibration) : _calibration(calibration) {}
 
     static std::unique_ptr<rpc::calibration::CalibrationResult>
-    translateCalibrationResult(const mavsdk::Calibration::Result &calibration_result)
+    translateCalibrationResult(const mavsdk::Calibration::Result& calibration_result)
     {
         auto rpc_calibration_result = std::unique_ptr<rpc::calibration::CalibrationResult>(
             new rpc::calibration::CalibrationResult());
@@ -26,7 +26,7 @@ public:
     }
 
     static std::unique_ptr<rpc::calibration::ProgressData>
-    translateProgressData(const mavsdk::Calibration::ProgressData &progress_data)
+    translateProgressData(const mavsdk::Calibration::ProgressData& progress_data)
     {
         auto rpc_progress_data =
             std::unique_ptr<rpc::calibration::ProgressData>(new rpc::calibration::ProgressData());
@@ -40,9 +40,9 @@ public:
     }
 
     grpc::Status SubscribeCalibrateGyro(
-        grpc::ServerContext * /* context */,
-        const rpc::calibration::SubscribeCalibrateGyroRequest *request,
-        grpc::ServerWriter<rpc::calibration::CalibrateGyroResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const rpc::calibration::SubscribeCalibrateGyroRequest* request,
+        grpc::ServerWriter<rpc::calibration::CalibrateGyroResponse>* writer) override
     {
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
@@ -72,9 +72,9 @@ public:
     }
 
     grpc::Status SubscribeCalibrateAccelerometer(
-        grpc::ServerContext * /* context */,
-        const rpc::calibration::SubscribeCalibrateAccelerometerRequest *request,
-        grpc::ServerWriter<rpc::calibration::CalibrateAccelerometerResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const rpc::calibration::SubscribeCalibrateAccelerometerRequest* request,
+        grpc::ServerWriter<rpc::calibration::CalibrateAccelerometerResponse>* writer) override
     {
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
@@ -105,9 +105,9 @@ public:
     }
 
     grpc::Status SubscribeCalibrateMagnetometer(
-        grpc::ServerContext * /* context */,
-        const rpc::calibration::SubscribeCalibrateMagnetometerRequest *request,
-        grpc::ServerWriter<rpc::calibration::CalibrateMagnetometerResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const rpc::calibration::SubscribeCalibrateMagnetometerRequest* request,
+        grpc::ServerWriter<rpc::calibration::CalibrateMagnetometerResponse>* writer) override
     {
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
@@ -137,9 +137,9 @@ public:
     }
 
     grpc::Status SubscribeCalibrateGimbalAccelerometer(
-        grpc::ServerContext * /* context */,
-        const rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest *request,
-        grpc::ServerWriter<rpc::calibration::CalibrateGimbalAccelerometerResponse> *writer) override
+        grpc::ServerContext* /* context */,
+        const rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request,
+        grpc::ServerWriter<rpc::calibration::CalibrateGimbalAccelerometerResponse>* writer) override
     {
         std::promise<void> stream_closed_promise;
         auto stream_closed_future = stream_closed_promise.get_future();
@@ -168,16 +168,17 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status Cancel(grpc::ServerContext * /* context */,
-                        const rpc::calibration::CancelRequest * /* request */,
-                        rpc::calibration::CancelResponse * /* response */) override
+    grpc::Status Cancel(
+        grpc::ServerContext* /* context */,
+        const rpc::calibration::CancelRequest* /* request */,
+        rpc::calibration::CancelResponse* /* response */) override
     {
         _calibration.cancel_calibration();
         return grpc::Status::OK;
     }
 
 private:
-    Calibration &_calibration;
+    Calibration& _calibration;
     std::mutex _subscribe_mutex{};
 };
 

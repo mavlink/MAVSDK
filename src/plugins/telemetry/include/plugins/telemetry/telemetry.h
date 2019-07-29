@@ -28,7 +28,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Telemetry(System &system);
+    explicit Telemetry(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -271,7 +271,7 @@ public:
      * @param result The enum value for which string is needed.
      * @return Human readable string for the Telemetry::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Callback type for telemetry requests.
@@ -280,6 +280,8 @@ public:
 
     /**
      * @brief Set rate of kinematic (position and velocity) updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @see PositionVelocityNED
      * @param rate_hz Rate in Hz.
@@ -290,6 +292,8 @@ public:
     /**
      * @brief Set rate of position updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -297,6 +301,8 @@ public:
 
     /**
      * @brief Set rate of home position updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -306,6 +312,8 @@ public:
     /**
      * @brief Set rate of in-air status updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -313,6 +321,8 @@ public:
 
     /**
      * @brief Set rate of attitude updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -322,6 +332,8 @@ public:
     /**
      * @brief Set rate of camera attitude updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -329,6 +341,8 @@ public:
 
     /**
      * @brief Set rate of ground speed (NED) updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -338,6 +352,8 @@ public:
     /**
      * @brief Set rate of IMU reading (NED) updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -345,6 +361,8 @@ public:
 
     /**
      * @brief Set rate of GPS information updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
@@ -354,6 +372,8 @@ public:
     /**
      * @brief Set rate of battery status updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -362,6 +382,8 @@ public:
     /**
      * @brief Set rate of RC status updates (synchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
@@ -369,6 +391,8 @@ public:
 
     /**
      * @brief Set rate of kinematic (position and velocity) updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @see PositionVelocityNED
      * @param rate_hz Rate in Hz.
@@ -379,6 +403,8 @@ public:
     /**
      * @brief Set rate of position updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -386,6 +412,8 @@ public:
 
     /**
      * @brief Set rate of home position updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -395,6 +423,8 @@ public:
     /**
      * @brief Set rate of in-air status updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -402,6 +432,8 @@ public:
 
     /**
      * @brief Set rate of attitude updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -411,6 +443,8 @@ public:
     /**
      * @brief Set rate of camera attitude updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -418,6 +452,8 @@ public:
 
     /**
      * @brief Set rate of ground speed (NED) updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -427,12 +463,16 @@ public:
     /**
      * @brief Set rate of IMU reading (NED) updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Cabllback to receive request result.
      */
     void set_rate_imu_reading_ned_async(double rate_hz, result_callback_t callback);
     /**
      * @brief Set rate of GPS information updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -442,6 +482,8 @@ public:
     /**
      * @brief Set rate of battery status updates (asynchronous).
      *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
@@ -449,6 +491,8 @@ public:
 
     /**
      * @brief Set rate of RC status updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
@@ -843,12 +887,12 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Telemetry(const Telemetry &) = delete;
+    Telemetry(const Telemetry&) = delete;
 
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Telemetry &operator=(const Telemetry &) = delete;
+    const Telemetry& operator=(const Telemetry&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */
@@ -860,184 +904,184 @@ private:
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::PositionVelocityNED &lhs,
-                const Telemetry::PositionVelocityNED &rhs);
+bool operator==(
+    const Telemetry::PositionVelocityNED& lhs, const Telemetry::PositionVelocityNED& rhs);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Position` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::Position &lhs, const Telemetry::Position &rhs);
+bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::Position`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::Position const &position);
+std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::PositionNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::PositionNED const &position_ned);
+std::ostream& operator<<(std::ostream& str, Telemetry::PositionNED const& position_ned);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::VelocityNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::VelocityNED const &velocity_ned);
+std::ostream& operator<<(std::ostream& str, Telemetry::VelocityNED const& velocity_ned);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::PositionVelocityNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::PositionVelocityNED const &position_velocity_ned);
+std::ostream&
+operator<<(std::ostream& str, Telemetry::PositionVelocityNED const& position_velocity_ned);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Health` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::Health &lhs, const Telemetry::Health &rhs);
+bool operator==(const Telemetry::Health& lhs, const Telemetry::Health& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::Health`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::Health const &health);
+std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health);
 
 /**
  * @brief Equal operator to compare two `Telemetry::IMUReadingNED` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::IMUReadingNED &lhs, const Telemetry::IMUReadingNED &rhs);
+bool operator==(const Telemetry::IMUReadingNED& lhs, const Telemetry::IMUReadingNED& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::AccelerationNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::AccelerationNED const &acceleration_ned);
+std::ostream& operator<<(std::ostream& str, Telemetry::AccelerationNED const& acceleration_ned);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::AngularVelocityNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str,
-                         Telemetry::AngularVelocityNED const &angular_velocity_ned);
+std::ostream&
+operator<<(std::ostream& str, Telemetry::AngularVelocityNED const& angular_velocity_ned);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::MagneticFieldNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::MagneticFieldNED const &magnetic_field);
+std::ostream& operator<<(std::ostream& str, Telemetry::MagneticFieldNED const& magnetic_field);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::IMUReadingNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::IMUReadingNED const &imu_reading_ned);
+std::ostream& operator<<(std::ostream& str, Telemetry::IMUReadingNED const& imu_reading_ned);
 
 /**
  * @brief Equal operator to compare two `Telemetry::GPSInfo` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::GPSInfo &lhs, const Telemetry::GPSInfo &rhs);
+bool operator==(const Telemetry::GPSInfo& lhs, const Telemetry::GPSInfo& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::GPSInfo`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::GPSInfo const &gps_info);
+std::ostream& operator<<(std::ostream& str, Telemetry::GPSInfo const& gps_info);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Battery` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::Battery &lhs, const Telemetry::Battery &rhs);
+bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::Battery`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::Battery const &battery);
+std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Quaternion` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::Quaternion &lhs, const Telemetry::Quaternion &rhs);
+bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::Quaternion`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::Quaternion const &quaternion);
+std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion);
 
 /**
  * @brief Equal operator to compare two `Telemetry::EulerAngle` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::EulerAngle &lhs, const Telemetry::EulerAngle &rhs);
+bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::EulerAngle`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::EulerAngle const &euler_angle);
+std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle);
 
 /**
  * @brief Equal operator to compare two `Telemetry::GroundSpeedNED` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::GroundSpeedNED &lhs, const Telemetry::GroundSpeedNED &rhs);
+bool operator==(const Telemetry::GroundSpeedNED& lhs, const Telemetry::GroundSpeedNED& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::GroundSpeedNED`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::GroundSpeedNED const &ground_speed);
+std::ostream& operator<<(std::ostream& str, Telemetry::GroundSpeedNED const& ground_speed);
 
 /**
  * @brief Equal operator to compare two `Telemetry::RCStatus` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::RCStatus &lhs, const Telemetry::RCStatus &rhs);
+bool operator==(const Telemetry::RCStatus& lhs, const Telemetry::RCStatus& rhs);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::RCStatus`.
  *
  * @return A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::RCStatus const &rc_status);
+std::ostream& operator<<(std::ostream& str, Telemetry::RCStatus const& rc_status);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::StatusText`.
  *
  * @returns A reference to the stream.
  */
-std::ostream &operator<<(std::ostream &str, Telemetry::StatusText const &status_text);
+std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_text);
 
 } // namespace mavsdk

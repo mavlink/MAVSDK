@@ -52,8 +52,8 @@ TEST(ConnectionInitiator, startHangsUntilSystemDiscovered)
         initiator.wait();
     });
 
-    EXPECT_TRUE(async_future.wait_for(std::chrono::milliseconds(100)) ==
-                std::future_status::timeout)
+    EXPECT_TRUE(
+        async_future.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout)
         << "Call to 'start(...)' should hang until 'discover_callback(...)' is actually called!";
     discover_callback(ARBITRARY_UUID);
 }

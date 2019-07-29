@@ -47,14 +47,13 @@ before_build:
 build: on
 
 build_script:
-  - set CL=/MP
   - if "%COMPILER%"=="msvc2017" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - set mavsdk_dir=C:\mavsdk
   - cd %mavsdk_dir%
   - cmake -DCMAKE_BUILD_TYPE="%configuration%" -G "%GENERATOR%" -DCMAKE_INSTALL_PREFIX=%mavsdk_dir%\install -DBUILD_BACKEND=ON -DBUILD_SHARED_LIBS=OFF -DENABLE_MAVLINK_PASSTHROUGH=ON -Bbuild -H.
-  - cmake --build build --target install --config %configuration%
+  - cmake --build build --target install --config %configuration% -j 2
   - cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_PREFIX_PATH="%mavsdk_dir%\install;%mavsdk_dir%\build\third_party\install" -Bexample\build -Hexample
-  - cmake --build example\build --config %configuration%
+  - cmake --build example\build --config %configuration% -j 2
 
 test: on
 

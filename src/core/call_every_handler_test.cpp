@@ -17,7 +17,7 @@ TEST(CallEveryHandler, Single)
 
     int num_called = 0;
 
-    void *cookie = nullptr;
+    void* cookie = nullptr;
     ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 11; ++i) {
@@ -36,7 +36,7 @@ TEST(CallEveryHandler, Multiple)
 
     int num_called = 0;
 
-    void *cookie = nullptr;
+    void* cookie = nullptr;
     ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 10; ++i) {
@@ -70,8 +70,8 @@ TEST(CallEveryHandler, InParallel)
     int num_called1 = 0;
     int num_called2 = 0;
 
-    void *cookie1 = nullptr;
-    void *cookie2 = nullptr;
+    void* cookie1 = nullptr;
+    void* cookie2 = nullptr;
     ceh.add([&num_called1]() { ++num_called1; }, 0.1f, &cookie1);
     ceh.add([&num_called2]() { ++num_called2; }, 0.2f, &cookie2);
 
@@ -105,7 +105,7 @@ TEST(CallEveryHandler, Reset)
 
     int num_called = 0;
 
-    void *cookie = nullptr;
+    void* cookie = nullptr;
     ceh.add([&num_called]() { ++num_called; }, 0.1f, &cookie);
 
     for (int i = 0; i < 8; ++i) {

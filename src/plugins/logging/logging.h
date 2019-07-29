@@ -28,7 +28,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit Logging(System &system);
+    explicit Logging(System& system);
 
     /**
      * @brief Destructor (internal use only).
@@ -54,7 +54,7 @@ public:
      * @param result Enum for which string is required.
      * @return result Human-readable string for Logging::Result.
      */
-    static const char *result_str(Result result);
+    static const char* result_str(Result result);
 
     /**
      * @brief Callback type for logging requests.
@@ -101,11 +101,11 @@ public:
     /**
      * @brief Copy constructor (object is not copyable).
      */
-    Logging(const Logging &) = delete;
+    Logging(const Logging&) = delete;
     /**
      * @brief Equality operator (object is not copyable).
      */
-    const Logging &operator=(const Logging &) = delete;
+    const Logging& operator=(const Logging&) = delete;
 
 private:
     /** @private Underlying implementation, set at instantiation */

@@ -67,7 +67,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
 
-    System &system = dc.system(uuid);
+    System& system = dc.system(uuid);
 
     auto telemetry = std::make_shared<Telemetry>(system);
 

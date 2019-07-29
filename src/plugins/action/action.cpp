@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-Action::Action(System &system) : PluginBase(), _impl{new ActionImpl(system)} {}
+Action::Action(System& system) : PluginBase(), _impl{new ActionImpl(system)} {}
 
 Action::~Action() {}
 
@@ -37,10 +37,8 @@ Action::Result Action::land() const
     return _impl->land();
 }
 
-Action::Result Action::goto_location(double latitude_deg,
-                                     double longitude_deg,
-                                     float altitude_amsl_m,
-                                     float yaw_deg)
+Action::Result Action::goto_location(
+    double latitude_deg, double longitude_deg, float altitude_amsl_m, float yaw_deg)
 {
     return _impl->goto_location(latitude_deg, longitude_deg, altitude_amsl_m, yaw_deg);
 }
@@ -130,7 +128,7 @@ std::pair<Action::Result, float> Action::get_return_to_launch_return_altitude() 
     return _impl->get_return_to_launch_return_altitude();
 }
 
-const char *Action::result_str(Action::Result result)
+const char* Action::result_str(Action::Result result)
 {
     switch (result) {
         case Action::Result::SUCCESS:

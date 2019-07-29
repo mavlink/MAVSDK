@@ -2,22 +2,22 @@
 
 namespace mavsdk {
 
-TimeoutHandler::TimeoutHandler(Time &time) : _time(time) {}
+TimeoutHandler::TimeoutHandler(Time& time) : _time(time) {}
 
 TimeoutHandler::~TimeoutHandler() {}
 
-void TimeoutHandler::add(std::function<void()> callback, double duration_s, void **cookie)
+void TimeoutHandler::add(std::function<void()> callback, double duration_s, void** cookie)
 {
     auto new_timeout = std::make_shared<Timeout>();
     new_timeout->callback = callback;
     new_timeout->time = _time.steady_time_in_future(duration_s);
     new_timeout->duration_s = duration_s;
 
-    void *new_cookie = static_cast<void *>(new_timeout.get());
+    void* new_cookie = static_cast<void*>(new_timeout.get());
 
     {
         std::lock_guard<std::mutex> lock(_timeouts_mutex);
-        _timeouts.insert(std::pair<void *, std::shared_ptr<Timeout>>(new_cookie, new_timeout));
+        _timeouts.insert(std::pair<void*, std::shared_ptr<Timeout>>(new_cookie, new_timeout));
     }
 
     if (cookie != nullptr) {
@@ -25,24 +25,24 @@ void TimeoutHandler::add(std::function<void()> callback, double duration_s, void
     }
 }
 
-void TimeoutHandler::refresh(const void *cookie)
+void TimeoutHandler::refresh(const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
-    auto it = _timeouts.find(const_cast<void *>(cookie));
+    auto it = _timeouts.find(const_cast<void*>(cookie));
     if (it != _timeouts.end()) {
         dl_time_t future_time = _time.steady_time_in_future(it->second->duration_s);
         it->second->time = future_time;
     }
 }
 
-void TimeoutHandler::remove(const void *cookie)
+void TimeoutHandler::remove(const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
-    auto it = _timeouts.find(const_cast<void *>(cookie));
+    auto it = _timeouts.find(const_cast<void*>(cookie));
     if (it != _timeouts.end()) {
-        _timeouts.erase(const_cast<void *>(cookie));
+        _timeouts.erase(const_cast<void*>(cookie));
         _iterator_invalidated = true;
     }
 }

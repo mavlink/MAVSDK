@@ -1,3 +1,4 @@
+#include <cmath>
 #include "global_include.h"
 #include "offboard_impl.h"
 #include "mavsdk_impl.h"
@@ -5,7 +6,7 @@
 
 namespace mavsdk {
 
-OffboardImpl::OffboardImpl(System &system) : PluginImplBase(system)
+OffboardImpl::OffboardImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -40,6 +41,7 @@ Offboard::Result OffboardImpl::start()
         if (_mode == Mode::NOT_ACTIVE) {
             return Offboard::Result::NO_SETPOINT_SET;
         }
+        _last_started = _time.steady_time();
     }
 
     return offboard_result_from_command_result(
@@ -70,6 +72,7 @@ void OffboardImpl::start_async(Offboard::result_callback_t callback)
             }
             return;
         }
+        _last_started = _time.steady_time();
     }
 
     _parent->set_flight_mode_async(
@@ -97,8 +100,8 @@ bool OffboardImpl::is_active() const
     return (_mode != Mode::NOT_ACTIVE);
 }
 
-void OffboardImpl::receive_command_result(MAVLinkCommands::Result result,
-                                          const Offboard::result_callback_t &callback)
+void OffboardImpl::receive_command_result(
+    MAVLinkCommands::Result result, const Offboard::result_callback_t& callback)
 {
     Offboard::Result offboard_result = offboard_result_from_command_result(result);
     if (callback) {
@@ -239,6 +242,33 @@ void OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude_rate)
 
     // also send it right now to reduce latency
     send_attitude_rate();
+}
+
+void OffboardImpl::set_actuator_control(Offboard::ActuatorControl actuator_control)
+{
+    _mutex.lock();
+    _actuator_control = actuator_control;
+
+    if (_mode != Mode::ACTUATOR_CONTROL) {
+        if (_call_every_cookie) {
+            // If we're already sending other setpoints, stop that now.
+            _parent->remove_call_every(_call_every_cookie);
+            _call_every_cookie = nullptr;
+        }
+        // We automatically send motor rate values from now on.
+        _parent->add_call_every(
+            [this]() { send_actuator_control(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+        _mode = Mode::ACTUATOR_CONTROL;
+    } else {
+        // We're already sending these kind of values. Since the value changes, let's
+        // reschedule the next call, so we don't send values too often.
+        _parent->reset_call_every(_call_every_cookie);
+    }
+    _mutex.unlock();
+
+    // also send it right now to reduce latency
+    send_actuator_control();
 }
 
 void OffboardImpl::send_position_ned()
@@ -484,7 +514,42 @@ void OffboardImpl::send_attitude_rate()
     _parent->send_message(message);
 }
 
-void OffboardImpl::process_heartbeat(const mavlink_message_t &message)
+void OffboardImpl::send_actuator_control_message(const float* controls, uint8_t group_number)
+{
+    mavlink_message_t message;
+    mavlink_msg_set_actuator_control_target_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        group_number,
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        controls);
+    _parent->send_message(message);
+}
+
+void OffboardImpl::send_actuator_control()
+{
+    _mutex.lock();
+    Offboard::ActuatorControl actuator_control = _actuator_control;
+    _mutex.unlock();
+
+    for (int i = 0; i < 2; i++) {
+        int nan_count = 0;
+        for (int j = 0; j < 8; j++) {
+            if (std::isnan(actuator_control.groups[i].controls[j])) {
+                nan_count++;
+                actuator_control.groups[i].controls[j] = 0.0f;
+            }
+        }
+        if (nan_count < 8) {
+            send_actuator_control_message(&actuator_control.groups[i].controls[0], i);
+        }
+    }
+}
+
+void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
 {
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
@@ -500,8 +565,13 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t &message)
     }
 
     {
+        // Right after we started offboard we might still be getting heartbeats
+        // from earlier which don't indicate offboard mode yet.
+        // Therefore, we make sure we don't stop too eagerly and ignore
+        // possibly stale heartbeats for some time.
         std::lock_guard<std::mutex> lock(_mutex);
-        if (!offboard_mode_active && _mode != Mode::NOT_ACTIVE) {
+        if (!offboard_mode_active && _mode != Mode::NOT_ACTIVE &&
+            _time.elapsed_since_s(_last_started) > 1.5) {
             // It seems that we are no longer in offboard mode but still trying to send
             // setpoints. Let's stop for now.
             stop_sending_setpoints();

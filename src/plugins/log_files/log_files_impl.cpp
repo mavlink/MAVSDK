@@ -7,7 +7,7 @@
 
 namespace mavsdk {
 
-LogFilesImpl::LogFilesImpl(System &system) : PluginImplBase(system)
+LogFilesImpl::LogFilesImpl(System& system) : PluginImplBase(system)
 {
     _parent->register_plugin(this);
 }
@@ -43,11 +43,12 @@ void LogFilesImpl::disable() {}
 void LogFilesImpl::request_end()
 {
     mavlink_message_t msg;
-    mavlink_msg_log_request_end_pack(_parent->get_own_system_id(),
-                                     _parent->get_own_component_id(),
-                                     &msg,
-                                     _parent->get_system_id(),
-                                     MAV_COMP_ID_AUTOPILOT1);
+    mavlink_msg_log_request_end_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        _parent->get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1);
     _parent->send_message(msg);
 }
 
@@ -91,18 +92,19 @@ void LogFilesImpl::request_list_entry(int entry_id)
     }
 
     mavlink_message_t msg;
-    mavlink_msg_log_request_list_pack(_parent->get_own_system_id(),
-                                      _parent->get_own_component_id(),
-                                      &msg,
-                                      _parent->get_system_id(),
-                                      MAV_COMP_ID_AUTOPILOT1,
-                                      index_min,
-                                      index_max);
+    mavlink_msg_log_request_list_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        _parent->get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
+        index_min,
+        index_max);
 
     _parent->send_message(msg);
 }
 
-void LogFilesImpl::process_log_entry(const mavlink_message_t &message)
+void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
 {
     mavlink_log_entry_t log_entry;
     mavlink_msg_log_entry_decode(&message, &log_entry);
@@ -168,7 +170,7 @@ void LogFilesImpl::list_timeout()
     }
 }
 
-LogFiles::Result LogFilesImpl::download_log_file(unsigned id, const std::string &file_path)
+LogFiles::Result LogFilesImpl::download_log_file(unsigned id, const std::string& file_path)
 {
     auto prom = std::make_shared<std::promise<LogFiles::Result>>();
     auto future_result = prom->get_future();
@@ -183,9 +185,8 @@ LogFiles::Result LogFilesImpl::download_log_file(unsigned id, const std::string 
     return future_result.get();
 }
 
-void LogFilesImpl::download_log_file_async(unsigned id,
-                                           const std::string &file_path,
-                                           LogFiles::download_log_file_callback_t callback)
+void LogFilesImpl::download_log_file_async(
+    unsigned id, const std::string& file_path, LogFiles::download_log_file_callback_t callback)
 {
     unsigned bytes_to_get;
     {
@@ -232,7 +233,7 @@ void LogFilesImpl::download_log_file_async(unsigned id,
     request_log_data(id, 0, bytes_to_get);
 }
 
-void LogFilesImpl::process_log_data(const mavlink_message_t &message)
+void LogFilesImpl::process_log_data(const mavlink_message_t& message)
 {
     mavlink_log_data_t log_data;
     mavlink_msg_log_data_decode(&message, &log_data);
@@ -348,9 +349,9 @@ void LogFilesImpl::check_missing_log_data()
         }
 
         if (_data.callback && num_missing > 0) {
-            unsigned new_progress =
-                unsigned(90.0f + 10.0f * float(_data.chunks_to_rerequest_initially - num_missing) /
-                                     float(_data.chunks_to_rerequest_initially));
+            unsigned new_progress = unsigned(
+                90.0f + 10.0f * float(_data.chunks_to_rerequest_initially - num_missing) /
+                            float(_data.chunks_to_rerequest_initially));
 
             if (new_progress != _data.last_progress_percentage) {
                 tmp_callback = _data.callback;
@@ -381,14 +382,15 @@ void LogFilesImpl::check_missing_log_data()
 void LogFilesImpl::request_log_data(unsigned id, unsigned chunk_id, unsigned bytes_to_get)
 {
     mavlink_message_t msg;
-    mavlink_msg_log_request_data_pack(_parent->get_own_system_id(),
-                                      _parent->get_own_component_id(),
-                                      &msg,
-                                      _parent->get_system_id(),
-                                      MAV_COMP_ID_AUTOPILOT1,
-                                      id,
-                                      chunk_id,
-                                      bytes_to_get);
+    mavlink_msg_log_request_data_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &msg,
+        _parent->get_system_id(),
+        MAV_COMP_ID_AUTOPILOT1,
+        id,
+        chunk_id,
+        bytes_to_get);
     _parent->send_message(msg);
 }
 
@@ -408,7 +410,7 @@ void LogFilesImpl::write_log_data_to_disk()
 
     std::ofstream out_file;
     out_file.open(_data.file_path, std::ios::out | std::ios::binary);
-    out_file.write(reinterpret_cast<char *>(_data.bytes.data()), _data.bytes.size());
+    out_file.write(reinterpret_cast<char*>(_data.bytes.data()), _data.bytes.size());
     out_file.close();
 }
 

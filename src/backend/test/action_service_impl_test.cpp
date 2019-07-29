@@ -495,9 +495,8 @@ TEST_P(ActionServiceImplTest, setReturnToLaunchAltitudeSetsRightValue)
     actionService.SetReturnToLaunchAltitude(nullptr, &request, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(ActionResultCorrespondences,
-                        ActionServiceImplTest,
-                        ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_CASE_P(
+    ActionResultCorrespondences, ActionServiceImplTest, ::testing::ValuesIn(generateInputPairs()));
 
 std::vector<InputPair> generateInputPairs()
 {
@@ -508,16 +507,17 @@ std::vector<InputPair> generateInputPairs()
         std::make_pair("CONNECTION_ERROR", mavsdk::Action::Result::CONNECTION_ERROR));
     input_pairs.push_back(std::make_pair("BUSY", mavsdk::Action::Result::BUSY));
     input_pairs.push_back(std::make_pair("COMMAND_DENIED", mavsdk::Action::Result::COMMAND_DENIED));
-    input_pairs.push_back(
-        std::make_pair("COMMAND_DENIED_LANDED_STATE_UNKNOWN",
-                       mavsdk::Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN));
-    input_pairs.push_back(std::make_pair("COMMAND_DENIED_NOT_LANDED",
-                                         mavsdk::Action::Result::COMMAND_DENIED_NOT_LANDED));
+    input_pairs.push_back(std::make_pair(
+        "COMMAND_DENIED_LANDED_STATE_UNKNOWN",
+        mavsdk::Action::Result::COMMAND_DENIED_LANDED_STATE_UNKNOWN));
+    input_pairs.push_back(std::make_pair(
+        "COMMAND_DENIED_NOT_LANDED", mavsdk::Action::Result::COMMAND_DENIED_NOT_LANDED));
     input_pairs.push_back(std::make_pair("TIMEOUT", mavsdk::Action::Result::TIMEOUT));
-    input_pairs.push_back(std::make_pair("VTOL_TRANSITION_SUPPORT_UNKNOWN",
-                                         mavsdk::Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN));
-    input_pairs.push_back(std::make_pair("NO_VTOL_TRANSITION_SUPPORT",
-                                         mavsdk::Action::Result::NO_VTOL_TRANSITION_SUPPORT));
+    input_pairs.push_back(std::make_pair(
+        "VTOL_TRANSITION_SUPPORT_UNKNOWN",
+        mavsdk::Action::Result::VTOL_TRANSITION_SUPPORT_UNKNOWN));
+    input_pairs.push_back(std::make_pair(
+        "NO_VTOL_TRANSITION_SUPPORT", mavsdk::Action::Result::NO_VTOL_TRANSITION_SUPPORT));
     input_pairs.push_back(std::make_pair("UNKNOWN", mavsdk::Action::Result::UNKNOWN));
     input_pairs.push_back(
         std::make_pair("PARAMETER_ERROR", mavsdk::Action::Result::PARAMETER_ERROR));

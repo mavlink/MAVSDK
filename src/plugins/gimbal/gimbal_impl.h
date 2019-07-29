@@ -8,7 +8,7 @@ namespace mavsdk {
 
 class GimbalImpl : public PluginImplBase {
 public:
-    GimbalImpl(System &system);
+    GimbalImpl(System& system);
     ~GimbalImpl();
 
     void init() override;
@@ -24,20 +24,21 @@ public:
 
     Gimbal::Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m);
 
-    void set_roi_location_async(double latitude_deg,
-                                double longitude_deg,
-                                float altitude_m,
-                                Gimbal::result_callback_t callback);
+    void set_roi_location_async(
+        double latitude_deg,
+        double longitude_deg,
+        float altitude_m,
+        Gimbal::result_callback_t callback);
 
     // Non-copyable
-    GimbalImpl(const GimbalImpl &) = delete;
-    const GimbalImpl &operator=(const GimbalImpl &) = delete;
+    GimbalImpl(const GimbalImpl&) = delete;
+    const GimbalImpl& operator=(const GimbalImpl&) = delete;
 
 private:
     static Gimbal::Result gimbal_result_from_command_result(MAVLinkCommands::Result command_result);
 
-    static void receive_command_result(MAVLinkCommands::Result command_result,
-                                       const Gimbal::result_callback_t &callback);
+    static void receive_command_result(
+        MAVLinkCommands::Result command_result, const Gimbal::result_callback_t& callback);
 };
 
 } // namespace mavsdk

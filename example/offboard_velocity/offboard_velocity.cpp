@@ -27,7 +27,7 @@ using std::chrono::seconds;
 #define NORMAL_CONSOLE_TEXT "\033[0m" // Restore normal console colour
 
 // Handles Action's result
-inline void action_error_exit(Action::Result result, const std::string &message)
+inline void action_error_exit(Action::Result result, const std::string& message)
 {
     if (result != Action::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Action::result_str(result)
@@ -37,7 +37,7 @@ inline void action_error_exit(Action::Result result, const std::string &message)
 }
 
 // Handles Offboard's result
-inline void offboard_error_exit(Offboard::Result result, const std::string &message)
+inline void offboard_error_exit(Offboard::Result result, const std::string& message)
 {
     if (result != Offboard::Result::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << Offboard::result_str(result)
@@ -47,7 +47,7 @@ inline void offboard_error_exit(Offboard::Result result, const std::string &mess
 }
 
 // Handles connection result
-inline void connection_error_exit(ConnectionResult result, const std::string &message)
+inline void connection_error_exit(ConnectionResult result, const std::string& message)
 {
     if (result != ConnectionResult::SUCCESS) {
         std::cerr << ERROR_CONSOLE_TEXT << message << connection_result_str(result)
@@ -57,7 +57,7 @@ inline void connection_error_exit(ConnectionResult result, const std::string &me
 }
 
 // Logs during Offboard control
-inline void offboard_log(const std::string &offb_mode, const std::string msg)
+inline void offboard_log(const std::string& offb_mode, const std::string msg)
 {
     std::cout << "[" << offb_mode << "] " << msg << std::endl;
 }
@@ -211,7 +211,7 @@ void usage(std::string bin_name)
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     Mavsdk dc;
     std::string connection_url;
@@ -239,7 +239,7 @@ int main(int argc, char **argv)
     }
 
     // System got discovered.
-    System &system = dc.system();
+    System& system = dc.system();
     auto action = std::make_shared<Action>(system);
     auto offboard = std::make_shared<Offboard>(system);
     auto telemetry = std::make_shared<Telemetry>(system);

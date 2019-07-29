@@ -10,7 +10,7 @@ namespace mavsdk {
 
 class CalibrationImpl : public PluginImplBase {
 public:
-    CalibrationImpl(System &system);
+    CalibrationImpl(System& system);
     ~CalibrationImpl();
 
     void init() override;
@@ -19,18 +19,19 @@ public:
     void enable() override;
     void disable() override;
 
-    void calibrate_gyro_async(const Calibration::calibration_callback_t &callback);
-    void calibrate_accelerometer_async(const Calibration::calibration_callback_t &callback);
-    void calibrate_magnetometer_async(const Calibration::calibration_callback_t &callback);
-    void calibrate_gimbal_accelerometer_async(const Calibration::calibration_callback_t &callback);
+    void calibrate_gyro_async(const Calibration::calibration_callback_t& callback);
+    void calibrate_accelerometer_async(const Calibration::calibration_callback_t& callback);
+    void calibrate_magnetometer_async(const Calibration::calibration_callback_t& callback);
+    void calibrate_gimbal_accelerometer_async(const Calibration::calibration_callback_t& callback);
 
     void cancel_calibration();
 
 private:
-    void call_user_callback(const Calibration::calibration_callback_t &callback,
-                            const Calibration::Result &result,
-                            const Calibration::ProgressData &progress_data);
-    void process_statustext(const mavlink_message_t &message);
+    void call_user_callback(
+        const Calibration::calibration_callback_t& callback,
+        const Calibration::Result& result,
+        const Calibration::ProgressData& progress_data);
+    void process_statustext(const mavlink_message_t& message);
 
     void command_result_callback(MAVLinkCommands::Result command_result, float progress);
 
@@ -39,11 +40,11 @@ private:
 
     void report_started();
     void report_done();
-    void report_warning(const std::string &warning);
-    void report_failed(const std::string &failed);
+    void report_warning(const std::string& warning);
+    void report_failed(const std::string& failed);
     void report_cancelled();
     void report_progress(float progress);
-    void report_instruction(const std::string &instruction);
+    void report_instruction(const std::string& instruction);
 
     CalibrationStatustextParser _parser{};
 

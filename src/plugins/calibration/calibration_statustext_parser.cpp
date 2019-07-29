@@ -9,7 +9,7 @@ CalibrationStatustextParser::CalibrationStatustextParser() {}
 
 CalibrationStatustextParser::~CalibrationStatustextParser() {}
 
-bool CalibrationStatustextParser::parse(const std::string &statustext)
+bool CalibrationStatustextParser::parse(const std::string& statustext)
 {
     // We do a quick check before doing more in-depth parsing.
     if (!is_relevant(statustext)) {
@@ -37,14 +37,14 @@ void CalibrationStatustextParser::reset()
     _instruction_message.clear();
 }
 
-bool CalibrationStatustextParser::is_relevant(const std::string &statustext)
+bool CalibrationStatustextParser::is_relevant(const std::string& statustext)
 {
     // This should be a quick check, so pre-processing without looking at the whole string.
     static constexpr char CALIBRATION_PREFIX[] = "[cal] ";
     return (statustext.compare(0, 6, CALIBRATION_PREFIX) == 0);
 }
 
-bool CalibrationStatustextParser::check_started(const std::string &statustext)
+bool CalibrationStatustextParser::check_started(const std::string& statustext)
 {
     static constexpr char CUSTOM_CAL_QGC_STARTED_MSG[] = "[cal] calibration started: %i %s";
 
@@ -69,7 +69,7 @@ bool CalibrationStatustextParser::check_started(const std::string &statustext)
     return false;
 }
 
-bool CalibrationStatustextParser::check_done(const std::string &statustext)
+bool CalibrationStatustextParser::check_done(const std::string& statustext)
 {
     const int ret = sscanf(statustext.c_str(), CAL_QGC_DONE_MSG, _tmp_str);
 
@@ -80,7 +80,7 @@ bool CalibrationStatustextParser::check_done(const std::string &statustext)
     return false;
 }
 
-bool CalibrationStatustextParser::check_failed(const std::string &statustext)
+bool CalibrationStatustextParser::check_failed(const std::string& statustext)
 {
     static constexpr char CUSTOM_CAL_QGC_FAILED_MSG[] = "[cal] calibration failed: %63[^\n]";
 
@@ -94,7 +94,7 @@ bool CalibrationStatustextParser::check_failed(const std::string &statustext)
     return false;
 }
 
-bool CalibrationStatustextParser::check_cancelled(const std::string &statustext)
+bool CalibrationStatustextParser::check_cancelled(const std::string& statustext)
 {
     if (statustext.compare(CAL_QGC_CANCELLED_MSG) == 0) {
         _status = Status::CANCELLED;
@@ -103,7 +103,7 @@ bool CalibrationStatustextParser::check_cancelled(const std::string &statustext)
     return false;
 }
 
-bool CalibrationStatustextParser::check_progress(const std::string &statustext)
+bool CalibrationStatustextParser::check_progress(const std::string& statustext)
 {
     int progress_int;
     int ret = sscanf(statustext.c_str(), CAL_QGC_PROGRESS_MSG, &progress_int);
@@ -128,7 +128,7 @@ bool CalibrationStatustextParser::check_progress(const std::string &statustext)
     return false;
 }
 
-bool CalibrationStatustextParser::check_instruction(const std::string &statustext)
+bool CalibrationStatustextParser::check_instruction(const std::string& statustext)
 {
     static constexpr char CATCHALL[] = "[cal] %63[^\n]";
 

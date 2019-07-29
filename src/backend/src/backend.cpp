@@ -14,7 +14,7 @@ public:
     Impl() {}
     ~Impl() {}
 
-    void connect(const std::string &connection_url)
+    void connect(const std::string& connection_url)
     {
         _connection_initiator.start(_dc, connection_url);
         _connection_initiator.wait();
@@ -41,7 +41,7 @@ void MavsdkBackend::startGRPCServer()
 {
     _impl->startGRPCServer();
 }
-void MavsdkBackend::connect(const std::string &connection_url)
+void MavsdkBackend::connect(const std::string& connection_url)
 {
     return _impl->connect(connection_url);
 }

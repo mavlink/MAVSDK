@@ -28,9 +28,10 @@
 
 namespace mavsdk {
 
-UdpConnection::UdpConnection(Connection::receiver_callback_t receiver_callback,
-                             const std::string &local_ip,
-                             int local_port_number) :
+UdpConnection::UdpConnection(
+    Connection::receiver_callback_t receiver_callback,
+    const std::string& local_ip,
+    int local_port_number) :
     Connection(receiver_callback),
     _local_ip(local_ip),
     _local_port_number(local_port_number)
@@ -80,7 +81,7 @@ ConnectionResult UdpConnection::setup_port()
     inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr));
     addr.sin_port = htons(_local_port_number);
 
-    if (bind(_socket_fd, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0) {
+    if (bind(_socket_fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
         return ConnectionResult::BIND_ERROR;
     }
@@ -124,7 +125,7 @@ ConnectionResult UdpConnection::stop()
     return ConnectionResult::SUCCESS;
 }
 
-bool UdpConnection::send_message(const mavlink_message_t &message)
+bool UdpConnection::send_message(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_remote_mutex);
 
@@ -135,13 +136,12 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
 
     // Some messages have a target system set which allows to send it only
     // on the matching link.
-    const mavlink_msg_entry_t *entry = mavlink_get_msg_entry(message.msgid);
+    const mavlink_msg_entry_t* entry = mavlink_get_msg_entry(message.msgid);
     const uint8_t target_system_id =
-        (entry ? reinterpret_cast<const uint8_t *>(message.payload64)[entry->target_system_ofs] :
-                 0);
+        (entry ? reinterpret_cast<const uint8_t*>(message.payload64)[entry->target_system_ofs] : 0);
 
     bool send_successful = true;
-    for (auto &remote : _remotes) {
+    for (auto& remote : _remotes) {
         if (target_system_id != 0 && remote.system_id != target_system_id) {
             continue;
         }
@@ -155,12 +155,13 @@ bool UdpConnection::send_message(const mavlink_message_t &message)
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
-        const auto send_len = sendto(_socket_fd,
-                                     reinterpret_cast<char *>(buffer),
-                                     buffer_len,
-                                     0,
-                                     reinterpret_cast<const sockaddr *>(&dest_addr),
-                                     sizeof(dest_addr));
+        const auto send_len = sendto(
+            _socket_fd,
+            reinterpret_cast<char*>(buffer),
+            buffer_len,
+            0,
+            reinterpret_cast<const sockaddr*>(&dest_addr),
+            sizeof(dest_addr));
 
         if (send_len != buffer_len) {
             LogErr() << "sendto failure: " << GET_ERROR(errno);
@@ -180,12 +181,13 @@ void UdpConnection::receive()
     while (!_should_exit) {
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
-        const auto recv_len = recvfrom(_socket_fd,
-                                       buffer,
-                                       sizeof(buffer),
-                                       0,
-                                       reinterpret_cast<struct sockaddr *>(&src_addr),
-                                       &src_addr_len);
+        const auto recv_len = recvfrom(
+            _socket_fd,
+            buffer,
+            sizeof(buffer),
+            0,
+            reinterpret_cast<struct sockaddr*>(&src_addr),
+            &src_addr_len);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
@@ -219,9 +221,10 @@ void UdpConnection::receive()
                 new_remote.system_id = sysid;
 
                 auto existing_remote =
-                    std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote &remote) {
-                        return (remote.ip == new_remote.ip &&
-                                remote.port_number == new_remote.port_number);
+                    std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
+                        return (
+                            remote.ip == new_remote.ip &&
+                            remote.port_number == new_remote.port_number);
                     });
 
                 if (existing_remote == _remotes.end()) {

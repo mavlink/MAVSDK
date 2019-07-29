@@ -57,6 +57,7 @@ std::vector<std::shared_ptr<dc::MissionItem>> generateListOfOneItem()
     mission_item->set_fly_through(false);
     mission_item->set_gimbal_pitch_and_yaw(45.2f, 90.3f);
     mission_item->set_camera_action(CameraAction::NONE);
+    mission_item->set_camera_photo_interval(5);
     mission_item->set_loiter_time(3.2f);
 
     mission_items.push_back(mission_item);
@@ -159,27 +160,29 @@ protected:
      * that are sent to mavsdk. The result callback is saved in _result_callback, and the
      * mission items are saved in _uploaded_mission.
      */
-    std::future<void> uploadMissionAndSaveParams(std::shared_ptr<UploadMissionRequest> request,
-                                                 std::shared_ptr<UploadMissionResponse> response);
+    std::future<void> uploadMissionAndSaveParams(
+        std::shared_ptr<UploadMissionRequest> request,
+        std::shared_ptr<UploadMissionResponse> response);
 
     /* Generate an UploadMissionRequest from a list of mission items. */
     std::shared_ptr<UploadMissionRequest>
-    generateUploadRequest(const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const;
+    generateUploadRequest(const std::vector<std::shared_ptr<dc::MissionItem>>& mission_items) const;
 
     /**
      * Upload a list of items through gRPC, catch the list that is actually sent by
      * the backend, and verify that it has been sent correctly over gRPC.
      */
     void
-    checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
+    checkItemsAreUploadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>>& mission_items);
 
     /* Captures the actual mission sent to mavsdk by the backend. */
     std::vector<std::shared_ptr<dc::MissionItem>> _uploaded_mission{};
 };
 
-INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
-                        MissionServiceImplUploadTest,
-                        ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_CASE_P(
+    MissionResultCorrespondences,
+    MissionServiceImplUploadTest,
+    ::testing::ValuesIn(generateInputPairs()));
 
 ACTION_P3(SaveUploadParams, mission, callback, callback_saved_promise)
 {
@@ -219,16 +222,16 @@ TEST_P(MissionServiceImplUploadTest, uploadResultIsTranslatedCorrectly)
     _result_callback(GetParam().second);
     upload_handle.wait();
 
-    EXPECT_EQ(GetParam().first,
-              rpc::MissionResult::Result_Name(response->mission_result().result()));
+    EXPECT_EQ(
+        GetParam().first, rpc::MissionResult::Result_Name(response->mission_result().result()));
 }
 
 std::shared_ptr<UploadMissionRequest> MissionServiceImplUploadTest::generateUploadRequest(
-    const std::vector<std::shared_ptr<dc::MissionItem>> &mission_items) const
+    const std::vector<std::shared_ptr<dc::MissionItem>>& mission_items) const
 {
     auto request = std::make_shared<UploadMissionRequest>();
 
-    for (const auto &mission_item : mission_items) {
+    for (const auto& mission_item : mission_items) {
         auto rpc_mission_item = request->add_mission_items();
         MissionServiceImpl::translateMissionItem(mission_item, rpc_mission_item);
     }
@@ -253,7 +256,7 @@ TEST_F(MissionServiceImplUploadTest, uploadsOneItemMission)
 }
 
 void MissionServiceImplUploadTest::checkItemsAreUploadedCorrectly(
-    std::vector<std::shared_ptr<dc::MissionItem>> &mission_items)
+    std::vector<std::shared_ptr<dc::MissionItem>>& mission_items)
 {
     auto request = generateUploadRequest(mission_items);
 
@@ -279,14 +282,15 @@ protected:
     std::future<void>
     downloadMissionAndSaveParams(std::shared_ptr<DownloadMissionResponse> response);
     void
-    checkItemsAreDownloadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>> &mission_items);
+    checkItemsAreDownloadedCorrectly(std::vector<std::shared_ptr<dc::MissionItem>>& mission_items);
 
     dc::Mission::mission_items_and_result_callback_t _download_callback{};
 };
 
-INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
-                        MissionServiceImplDownloadTest,
-                        ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_CASE_P(
+    MissionResultCorrespondences,
+    MissionServiceImplDownloadTest,
+    ::testing::ValuesIn(generateInputPairs()));
 
 ACTION_P2(SaveResult, callback, callback_saved_promise)
 {
@@ -326,8 +330,8 @@ TEST_P(MissionServiceImplDownloadTest, downloadResultIsTranslatedCorrectly)
     _download_callback(GetParam().second, arbitrary_mission);
     download_handle.wait();
 
-    EXPECT_EQ(GetParam().first,
-              rpc::MissionResult::Result_Name(response->mission_result().result()));
+    EXPECT_EQ(
+        GetParam().first, rpc::MissionResult::Result_Name(response->mission_result().result()));
 }
 
 TEST_F(MissionServiceImplDownloadTest, downloadsOneItemMission)
@@ -337,7 +341,7 @@ TEST_F(MissionServiceImplDownloadTest, downloadsOneItemMission)
 }
 
 void MissionServiceImplDownloadTest::checkItemsAreDownloadedCorrectly(
-    std::vector<std::shared_ptr<dc::MissionItem>> &mission_items)
+    std::vector<std::shared_ptr<dc::MissionItem>>& mission_items)
 {
     auto response = std::make_shared<DownloadMissionResponse>();
     auto download_handle = downloadMissionAndSaveParams(response);
@@ -347,8 +351,9 @@ void MissionServiceImplDownloadTest::checkItemsAreDownloadedCorrectly(
     ASSERT_EQ(mission_items.size(), response->mission_items().size());
 
     for (size_t i = 0; i < mission_items.size(); i++) {
-        EXPECT_EQ(*mission_items.at(i),
-                  *MissionServiceImpl::translateRPCMissionItem(response->mission_items().Get(i)));
+        EXPECT_EQ(
+            *mission_items.at(i),
+            *MissionServiceImpl::translateRPCMissionItem(response->mission_items().Get(i)));
     }
 }
 
@@ -363,9 +368,10 @@ protected:
     std::future<void> startMissionAndSaveParams(std::shared_ptr<StartMissionResponse> response);
 };
 
-INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
-                        MissionServiceImplStartTest,
-                        ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_CASE_P(
+    MissionResultCorrespondences,
+    MissionServiceImplStartTest,
+    ::testing::ValuesIn(generateInputPairs()));
 
 TEST_F(MissionServiceImplStartTest, doesNotFailWhenArgsAreNull)
 {
@@ -396,8 +402,8 @@ TEST_P(MissionServiceImplStartTest, startResultIsTranslatedCorrectly)
     _result_callback(GetParam().second);
     start_handle.wait();
 
-    EXPECT_EQ(GetParam().first,
-              rpc::MissionResult::Result_Name(response->mission_result().result()));
+    EXPECT_EQ(
+        GetParam().first, rpc::MissionResult::Result_Name(response->mission_result().result()));
 }
 
 class MissionServiceImplIsFinishedTest : public MissionServiceImplTestBase {
@@ -440,9 +446,10 @@ protected:
     std::future<void> pauseMissionAndSaveParams(std::shared_ptr<PauseMissionResponse> response);
 };
 
-INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
-                        MissionServiceImplPauseTest,
-                        ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_CASE_P(
+    MissionResultCorrespondences,
+    MissionServiceImplPauseTest,
+    ::testing::ValuesIn(generateInputPairs()));
 
 TEST_F(MissionServiceImplPauseTest, doesNotFailWhenArgsAreNull)
 {
@@ -472,15 +479,16 @@ TEST_P(MissionServiceImplPauseTest, pauseResultIsTranslatedCorrectly)
     _result_callback(GetParam().second);
     pause_handle.wait();
 
-    EXPECT_EQ(GetParam().first,
-              rpc::MissionResult::Result_Name(response->mission_result().result()));
+    EXPECT_EQ(
+        GetParam().first, rpc::MissionResult::Result_Name(response->mission_result().result()));
 }
 
 class MissionServiceImplSetCurrentTest : public MissionServiceImplTestBase {};
 
-INSTANTIATE_TEST_CASE_P(MissionResultCorrespondences,
-                        MissionServiceImplSetCurrentTest,
-                        ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_CASE_P(
+    MissionResultCorrespondences,
+    MissionServiceImplSetCurrentTest,
+    ::testing::ValuesIn(generateInputPairs()));
 
 ACTION_P2(SaveSetItemCallback, callback, callback_saved_promise)
 {
@@ -527,8 +535,8 @@ TEST_P(MissionServiceImplSetCurrentTest, setCurrentItemResultIsTranslatedCorrect
     _result_callback(GetParam().second);
     set_current_item_handle.wait();
 
-    EXPECT_EQ(GetParam().first,
-              rpc::MissionResult::Result_Name(response.mission_result().result()));
+    EXPECT_EQ(
+        GetParam().first, rpc::MissionResult::Result_Name(response.mission_result().result()));
 }
 
 class MissionServiceImplProgressTest : public MissionServiceImplTestBase {
@@ -544,9 +552,9 @@ protected:
         _stub = MissionService::NewStub(channel);
     }
 
-    std::future<void>
-    subscribeMissionProgressAsync(std::vector<std::pair<int, int>> &progress_events,
-                                  std::shared_ptr<grpc::ClientContext> context) const;
+    std::future<void> subscribeMissionProgressAsync(
+        std::vector<std::pair<int, int>>& progress_events,
+        std::shared_ptr<grpc::ClientContext> context) const;
 
     std::unique_ptr<grpc::Server> _server{};
     std::unique_ptr<MissionService::Stub> _stub{};
@@ -571,7 +579,7 @@ TEST_F(MissionServiceImplProgressTest, registersToMissionProgress)
 }
 
 std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
-    std::vector<std::pair<int, int>> &progress_events,
+    std::vector<std::pair<int, int>>& progress_events,
     std::shared_ptr<grpc::ClientContext> context) const
 {
     return std::async(std::launch::async, [&]() {
@@ -580,8 +588,9 @@ std::future<void> MissionServiceImplProgressTest::subscribeMissionProgressAsync(
 
         mavsdk::rpc::mission::MissionProgressResponse response;
         while (response_reader->Read(&response)) {
-            auto progress_event = std::make_pair(response.mission_progress().current_item_index(),
-                                                 response.mission_progress().mission_count());
+            auto progress_event = std::make_pair(
+                response.mission_progress().current_item_index(),
+                response.mission_progress().mission_count());
 
             progress_events.push_back(progress_event);
         }

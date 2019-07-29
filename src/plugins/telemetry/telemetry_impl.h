@@ -18,7 +18,7 @@ class System;
 
 class TelemetryImpl : public PluginImplBase {
 public:
-    TelemetryImpl(System &system);
+    TelemetryImpl(System& system);
     ~TelemetryImpl();
 
     void init() override;
@@ -39,8 +39,8 @@ public:
     Telemetry::Result set_rate_battery(double rate_hz);
     Telemetry::Result set_rate_rc_status(double rate_hz);
 
-    void set_rate_position_velocity_ned_async(double rate_hz,
-                                              Telemetry::result_callback_t callback);
+    void
+    set_rate_position_velocity_ned_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_home_position_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_in_air_async(double rate_hz, Telemetry::result_callback_t callback);
@@ -73,28 +73,27 @@ public:
     Telemetry::RCStatus get_rc_status() const;
     uint64_t get_utm_epoch() const;
 
-    void position_velocity_ned_async(Telemetry::position_velocity_ned_callback_t &callback);
-    void position_async(Telemetry::position_callback_t &callback);
-    void home_position_async(Telemetry::position_callback_t &callback);
-    void in_air_async(Telemetry::in_air_callback_t &callback);
-    void status_text_async(Telemetry::status_text_callback_t &callback);
-    void armed_async(Telemetry::armed_callback_t &callback);
-    void attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t &callback);
-    void attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t &callback);
-    void camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t &callback);
-    void camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t &callback);
-    void ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t &callback);
-    void imu_reading_ned_async(Telemetry::imu_reading_ned_callback_t &callback);
-    void gps_info_async(Telemetry::gps_info_callback_t &callback);
-    void battery_async(Telemetry::battery_callback_t &callback);
-    void flight_mode_async(Telemetry::flight_mode_callback_t &callback);
-    void health_async(Telemetry::health_callback_t &callback);
-    void health_all_ok_async(Telemetry::health_all_ok_callback_t &callback);
-    void rc_status_async(Telemetry::rc_status_callback_t &callback);
-    void utm_global_position_async(Telemetry::utm_global_position_callback_t &callback);
+    void position_velocity_ned_async(Telemetry::position_velocity_ned_callback_t& callback);
+    void position_async(Telemetry::position_callback_t& callback);
+    void home_position_async(Telemetry::position_callback_t& callback);
+    void in_air_async(Telemetry::in_air_callback_t& callback);
+    void status_text_async(Telemetry::status_text_callback_t& callback);
+    void armed_async(Telemetry::armed_callback_t& callback);
+    void attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback);
+    void attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback);
+    void camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback);
+    void camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback);
+    void ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t& callback);
+    void imu_reading_ned_async(Telemetry::imu_reading_ned_callback_t& callback);
+    void gps_info_async(Telemetry::gps_info_callback_t& callback);
+    void battery_async(Telemetry::battery_callback_t& callback);
+    void flight_mode_async(Telemetry::flight_mode_callback_t& callback);
+    void health_async(Telemetry::health_callback_t& callback);
+    void health_all_ok_async(Telemetry::health_all_ok_callback_t& callback);
+    void rc_status_async(Telemetry::rc_status_callback_t& callback);
 
-    TelemetryImpl(const TelemetryImpl &) = delete;
-    TelemetryImpl &operator=(const TelemetryImpl &) = delete;
+    TelemetryImpl(const TelemetryImpl&) = delete;
+    TelemetryImpl& operator=(const TelemetryImpl&) = delete;
 
 private:
     void set_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned);
@@ -133,24 +132,24 @@ private:
     void process_statustext(const mavlink_message_t &message);
     void process_rc_channels(const mavlink_message_t &message);
     void process_utm_global_position(const mavlink_message_t &message);
-
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
 
-    void process_parameter_update(const std::string &name);
+    void process_parameter_update(const std::string& name);
 #ifdef LEVEL_CALIBRATION
     void receive_param_cal_level(MAVLinkParameters::Result result, float value);
 #endif
     void receive_param_hitl(MAVLinkParameters::Result result, int value);
 
     void receive_rc_channels_timeout();
+    void receive_gps_raw_timeout();
 
     static Telemetry::Result
     telemetry_result_from_command_result(MAVLinkCommands::Result command_result);
 
-    static void command_result_callback(MAVLinkCommands::Result command_result,
-                                        const Telemetry::result_callback_t &callback);
+    static void command_result_callback(
+        MAVLinkCommands::Result command_result, const Telemetry::result_callback_t& callback);
 
     static Telemetry::FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
@@ -231,6 +230,7 @@ private:
     double _ground_speed_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
 
-    void *_timeout_cookie{nullptr};
+    void* _rc_channels_timeout_cookie{nullptr};
+    void* _gps_raw_timeout_cookie{nullptr};
 };
 } // namespace mavsdk

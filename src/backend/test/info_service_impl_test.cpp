@@ -71,12 +71,12 @@ TEST_P(InfoServiceImplTest, getsCorrectVersion)
     EXPECT_EQ(expected_pair.second.flight_sw_major, response.version().flight_sw_major());
     EXPECT_EQ(expected_pair.second.flight_sw_minor, response.version().flight_sw_minor());
     EXPECT_EQ(expected_pair.second.flight_sw_patch, response.version().flight_sw_patch());
-    EXPECT_EQ(expected_pair.second.flight_sw_vendor_major,
-              response.version().flight_sw_vendor_major());
-    EXPECT_EQ(expected_pair.second.flight_sw_vendor_minor,
-              response.version().flight_sw_vendor_minor());
-    EXPECT_EQ(expected_pair.second.flight_sw_vendor_patch,
-              response.version().flight_sw_vendor_patch());
+    EXPECT_EQ(
+        expected_pair.second.flight_sw_vendor_major, response.version().flight_sw_vendor_major());
+    EXPECT_EQ(
+        expected_pair.second.flight_sw_vendor_minor, response.version().flight_sw_vendor_minor());
+    EXPECT_EQ(
+        expected_pair.second.flight_sw_vendor_patch, response.version().flight_sw_vendor_patch());
     EXPECT_EQ(expected_pair.second.os_sw_major, response.version().os_sw_major());
     EXPECT_EQ(expected_pair.second.os_sw_minor, response.version().os_sw_minor());
     EXPECT_EQ(expected_pair.second.os_sw_patch, response.version().os_sw_patch());
@@ -90,16 +90,15 @@ TEST_F(InfoServiceImplTest, getVersionDoesNotCrashWithNullResponse)
     infoService.GetVersion(nullptr, nullptr, nullptr);
 }
 
-INSTANTIATE_TEST_CASE_P(InfoResultCorrespondences,
-                        InfoServiceImplTest,
-                        ::testing::ValuesIn(generateInputPairs()));
+INSTANTIATE_TEST_CASE_P(
+    InfoResultCorrespondences, InfoServiceImplTest, ::testing::ValuesIn(generateInputPairs()));
 
 std::vector<InputPair> generateInputPairs()
 {
     std::vector<InputPair> input_pairs;
     input_pairs.push_back(std::make_pair("SUCCESS", mavsdk::Info::Result::SUCCESS));
-    input_pairs.push_back(std::make_pair("INFORMATION_NOT_RECEIVED_YET",
-                                         mavsdk::Info::Result::INFORMATION_NOT_RECEIVED_YET));
+    input_pairs.push_back(std::make_pair(
+        "INFORMATION_NOT_RECEIVED_YET", mavsdk::Info::Result::INFORMATION_NOT_RECEIVED_YET));
     input_pairs.push_back(std::make_pair("UNKNOWN", mavsdk::Info::Result::UNKNOWN));
 
     return input_pairs;

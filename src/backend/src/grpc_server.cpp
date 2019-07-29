@@ -37,7 +37,7 @@ void GRPCServer::wait()
     }
 }
 
-void GRPCServer::setup_port(grpc::ServerBuilder &builder)
+void GRPCServer::setup_port(grpc::ServerBuilder& builder)
 {
     std::string server_address("0.0.0.0:50051");
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());

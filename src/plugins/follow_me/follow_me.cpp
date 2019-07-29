@@ -3,16 +3,16 @@
 
 namespace mavsdk {
 
-FollowMe::FollowMe(System &system) : PluginBase(), _impl{new FollowMeImpl(system)} {}
+FollowMe::FollowMe(System& system) : PluginBase(), _impl{new FollowMeImpl(system)} {}
 
 FollowMe::~FollowMe() {}
 
-const FollowMe::Config &FollowMe::get_config() const
+const FollowMe::Config& FollowMe::get_config() const
 {
     return _impl->get_config();
 }
 
-FollowMe::Result FollowMe::set_config(const FollowMe::Config &config)
+FollowMe::Result FollowMe::set_config(const FollowMe::Config& config)
 {
     return _impl->set_config(config);
 }
@@ -22,12 +22,12 @@ bool FollowMe::is_active() const
     return _impl->is_active();
 }
 
-void FollowMe::set_target_location(const TargetLocation &target_location)
+void FollowMe::set_target_location(const TargetLocation& target_location)
 {
     return _impl->set_target_location(target_location);
 }
 
-const FollowMe::TargetLocation &FollowMe::get_last_location() const
+const FollowMe::TargetLocation& FollowMe::get_last_location() const
 {
     return _impl->get_last_location();
 }

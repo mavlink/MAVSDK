@@ -2,7 +2,7 @@
 #include "backend.h"
 #include <string>
 
-void runBackend(const char *connection_url, void (*onServerStarted)(void *), void *context)
+void runBackend(const char* connection_url, void (*onServerStarted)(void*), void* context)
 {
     mavsdk::backend::MavsdkBackend backend;
     backend.startGRPCServer();

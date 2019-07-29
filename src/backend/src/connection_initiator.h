@@ -14,7 +14,7 @@ public:
     ConnectionInitiator() {}
     ~ConnectionInitiator() {}
 
-    bool start(Mavsdk &dc, const std::string &connection_url)
+    bool start(Mavsdk& dc, const std::string& connection_url)
     {
         init_mutex();
         init_timeout_logging(dc);
@@ -33,13 +33,13 @@ public:
 private:
     void init_mutex() { _discovery_promise = std::make_shared<std::promise<uint64_t>>(); }
 
-    void init_timeout_logging(Mavsdk &dc) const
+    void init_timeout_logging(Mavsdk& dc) const
     {
         dc.register_on_timeout(
             [](uint64_t uuid) { LogInfo() << "System timed out [UUID: " << uuid << "]"; });
     }
 
-    bool add_any_connection(Mavsdk &dc, const std::string &connection_url)
+    bool add_any_connection(Mavsdk& dc, const std::string& connection_url)
     {
         mavsdk::ConnectionResult connection_result = dc.add_any_connection(connection_url);
 
@@ -51,7 +51,7 @@ private:
         return true;
     }
 
-    std::future<uint64_t> wrapped_register_on_discover(Mavsdk &dc)
+    std::future<uint64_t> wrapped_register_on_discover(Mavsdk& dc)
     {
         auto future = _discovery_promise->get_future();
 

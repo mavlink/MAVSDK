@@ -25,7 +25,7 @@ double Time::elapsed_s()
            static_cast<double>(steady_clock::period::den);
 }
 
-double Time::elapsed_since_s(const dl_time_t &since)
+double Time::elapsed_since_s(const dl_time_t& since)
 {
     auto now = steady_time();
 
@@ -39,7 +39,7 @@ dl_time_t Time::steady_time_in_future(double duration_s)
     return now + std::chrono::milliseconds(int64_t(duration_s * 1e3));
 }
 
-void Time::shift_steady_time_by(dl_time_t &time, double offset_s)
+void Time::shift_steady_time_by(dl_time_t& time, double offset_s)
 {
     time += std::chrono::milliseconds(int64_t(offset_s * 1e3));
 }

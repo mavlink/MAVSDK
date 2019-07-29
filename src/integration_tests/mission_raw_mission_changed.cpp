@@ -14,7 +14,7 @@ static constexpr float SOME_SPEEDS[] = {4.0f, 5.0f};
 static constexpr unsigned NUM_SOME_ITEMS = sizeof(SOME_LATITUDES) / sizeof(SOME_LATITUDES[0]);
 
 static void
-validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> &items);
+validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& items);
 
 TEST_F(SitlTest, MissionRawMissionChanged)
 {
@@ -27,7 +27,7 @@ TEST_F(SitlTest, MissionRawMissionChanged)
     std::this_thread::sleep_for(std::chrono::seconds(2));
     ASSERT_TRUE(dc.is_connected());
 
-    System &system = dc.system();
+    System& system = dc.system();
     ASSERT_TRUE(system.has_autopilot());
 
     auto mission = std::make_shared<Mission>(system);
@@ -77,8 +77,9 @@ TEST_F(SitlTest, MissionRawMissionChanged)
         std::future<void> fut = prom.get_future();
         LogInfo() << "Download raw mission items.";
         mission_raw->download_mission_async(
-            [&prom](MissionRaw::Result result,
-                    std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> items) {
+            [&prom](
+                MissionRaw::Result result,
+                std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> items) {
                 EXPECT_EQ(result, MissionRaw::Result::SUCCESS);
                 // TODO: validate items
                 validate_items(items);
@@ -89,7 +90,7 @@ TEST_F(SitlTest, MissionRawMissionChanged)
     }
 }
 
-void validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>> &items)
+void validate_items(const std::vector<std::shared_ptr<MissionRaw::MavlinkMissionItemInt>>& items)
 {
     for (unsigned i = 0; i < items.size(); ++i) {
         // Even items are waypoints, odd ones are the speed commands.

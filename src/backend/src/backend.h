@@ -10,11 +10,11 @@ class MavsdkBackend {
 public:
     MavsdkBackend();
     ~MavsdkBackend();
-    MavsdkBackend(MavsdkBackend &&) = delete;
-    MavsdkBackend &operator=(MavsdkBackend &&) = delete;
+    MavsdkBackend(MavsdkBackend&&) = delete;
+    MavsdkBackend& operator=(MavsdkBackend&&) = delete;
 
     void startGRPCServer();
-    void connect(const std::string &connection_url = "udp://");
+    void connect(const std::string& connection_url = "udp://");
     void wait();
 
 private:

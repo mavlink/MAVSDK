@@ -17,7 +17,7 @@ class SystemImpl;
 
 class MAVLinkParameters {
 public:
-    explicit MAVLinkParameters(SystemImpl &parent);
+    explicit MAVLinkParameters(SystemImpl& parent);
     ~MAVLinkParameters();
 
     class ParamValue {
@@ -26,11 +26,11 @@ public:
 
         ParamValue() {}
 
-        ParamValue(ParamValue &rhs) { _value = rhs._value; }
+        ParamValue(ParamValue& rhs) { _value = rhs._value; }
 
-        ParamValue(const ParamValue &rhs) { _value = rhs._value; }
+        ParamValue(const ParamValue& rhs) { _value = rhs._value; }
 
-        ParamValue &operator=(ParamValue rhs)
+        ParamValue& operator=(ParamValue rhs)
         {
             _value = rhs._value;
             return *this;
@@ -124,7 +124,7 @@ public:
             }
         }
 
-        bool set_from_xml(const std::string &type_str, const std::string &value_str)
+        bool set_from_xml(const std::string& type_str, const std::string& value_str)
         {
             if (strcmp(type_str.c_str(), "uint8") == 0) {
                 uint8_t temp = std::stoi(value_str.c_str());
@@ -163,7 +163,7 @@ public:
             return true;
         }
 
-        bool set_empty_type_from_xml(const std::string &type_str)
+        bool set_empty_type_from_xml(const std::string& type_str)
         {
             if (strcmp(type_str.c_str(), "uint8") == 0) {
                 _value = uint8_t(0);
@@ -240,11 +240,11 @@ public:
             if (_value.is<float>()) {
                 return _value.as<float>();
             } else {
-                return *(reinterpret_cast<const float *>(&_value.as<int32_t>()));
+                return *(reinterpret_cast<const float*>(&_value.as<int32_t>()));
             }
         }
 
-        void get_128_bytes(char *bytes) const
+        void get_128_bytes(char* bytes) const
         {
             if (_value.is<uint8_t>()) {
                 memcpy(bytes, &_value.as<uint8_t>(), sizeof(uint8_t));
@@ -312,6 +312,10 @@ public:
 
         uint8_t get_uint8() const { return uint8_t(_value); }
 
+        int16_t get_int16() const { return int16_t(_value); }
+
+        uint16_t get_uint16() const { return uint16_t(_value); }
+
         int32_t get_int32() const { return int32_t(_value); }
 
         uint32_t get_uint32() const { return uint32_t(_value); }
@@ -356,7 +360,7 @@ public:
 
         bool is_double() const { return (_value.is<double>()); }
 
-        bool is_same_type(const ParamValue &rhs) const
+        bool is_same_type(const ParamValue& rhs) const
         {
             if ((_value.is<uint8_t>() && rhs._value.is<uint8_t>()) ||
                 (_value.is<int8_t>() && rhs._value.is<int8_t>()) ||
@@ -377,7 +381,7 @@ public:
             }
         }
 
-        bool operator==(const ParamValue &rhs) const
+        bool operator==(const ParamValue& rhs) const
         {
             if (!is_same_type(rhs)) {
                 LogWarn() << "Trying to compare different types.";
@@ -412,7 +416,77 @@ public:
             }
         }
 
-        bool operator==(const std::string &value_str) const
+        bool operator<(const ParamValue& rhs) const
+        {
+            if (!is_same_type(rhs)) {
+                LogWarn() << "Trying to compare different types.";
+                return false;
+            }
+            if (_value.is<uint8_t>()) {
+                return _value.as<uint8_t>() < rhs._value.as<uint8_t>();
+            } else if (_value.is<int8_t>()) {
+                return _value.as<int8_t>() < rhs._value.as<int8_t>();
+            } else if (_value.is<uint16_t>()) {
+                return _value.as<uint16_t>() < rhs._value.as<uint16_t>();
+            } else if (_value.is<int16_t>()) {
+                return _value.as<int16_t>() < rhs._value.as<int16_t>();
+            } else if (_value.is<uint32_t>()) {
+                return _value.as<uint32_t>() < rhs._value.as<uint32_t>();
+            } else if (_value.is<int32_t>()) {
+                return _value.as<int32_t>() < rhs._value.as<int32_t>();
+            } else if (_value.is<uint64_t>()) {
+                return _value.as<uint64_t>() < rhs._value.as<uint64_t>();
+            } else if (_value.is<int64_t>()) {
+                return _value.as<int64_t>() < rhs._value.as<int64_t>();
+            } else if (_value.is<float>()) {
+                return _value.as<float>() < rhs._value.as<float>();
+            } else if (_value.is<double>()) {
+                return _value.as<double>() < rhs._value.as<double>();
+            } else if (_value.is<custom_type_t>()) {
+                LogErr() << "Comparing custom_type not supported.";
+                return false;
+            } else {
+                LogErr() << "Comparing unknown types";
+                return false;
+            }
+        }
+
+        bool operator>(const ParamValue& rhs) const
+        {
+            if (!is_same_type(rhs)) {
+                LogWarn() << "Trying to compare different types.";
+                return false;
+            }
+            if (_value.is<uint8_t>()) {
+                return _value.as<uint8_t>() > rhs._value.as<uint8_t>();
+            } else if (_value.is<int8_t>()) {
+                return _value.as<int8_t>() > rhs._value.as<int8_t>();
+            } else if (_value.is<uint16_t>()) {
+                return _value.as<uint16_t>() > rhs._value.as<uint16_t>();
+            } else if (_value.is<int16_t>()) {
+                return _value.as<int16_t>() > rhs._value.as<int16_t>();
+            } else if (_value.is<uint32_t>()) {
+                return _value.as<uint32_t>() > rhs._value.as<uint32_t>();
+            } else if (_value.is<int32_t>()) {
+                return _value.as<int32_t>() > rhs._value.as<int32_t>();
+            } else if (_value.is<uint64_t>()) {
+                return _value.as<uint64_t>() > rhs._value.as<uint64_t>();
+            } else if (_value.is<int64_t>()) {
+                return _value.as<int64_t>() > rhs._value.as<int64_t>();
+            } else if (_value.is<float>()) {
+                return _value.as<float>() > rhs._value.as<float>();
+            } else if (_value.is<double>()) {
+                return _value.as<double>() > rhs._value.as<double>();
+            } else if (_value.is<custom_type_t>()) {
+                LogErr() << "Comparing custom_type not supported.";
+                return false;
+            } else {
+                LogErr() << "Comparing unknown types";
+                return false;
+            }
+        }
+
+        bool operator==(const std::string& value_str) const
         {
             // LogDebug() << "Compare " << typestr() << " and " << rhs.typestr();
             if (_value.is<uint8_t>()) {
@@ -479,45 +553,47 @@ public:
 
     typedef std::function<void(Result result)> set_param_callback_t;
 
-    Result set_param(const std::string &name, const ParamValue &value, bool extended = false);
+    Result set_param(const std::string& name, const ParamValue& value, bool extended = false);
 
-    void set_param_async(const std::string &name,
-                         const ParamValue &value,
-                         set_param_callback_t callback,
-                         const void *cookie = nullptr,
-                         bool extended = false);
+    void set_param_async(
+        const std::string& name,
+        const ParamValue& value,
+        set_param_callback_t callback,
+        const void* cookie = nullptr,
+        bool extended = false);
 
     std::pair<Result, ParamValue>
-    get_param(const std::string &name, ParamValue value_type, bool extended);
+    get_param(const std::string& name, ParamValue value_type, bool extended);
     typedef std::function<void(Result, ParamValue value)> get_param_callback_t;
-    void get_param_async(const std::string &name,
-                         ParamValue value_type,
-                         get_param_callback_t callback,
-                         const void *cookie,
-                         bool extended = false);
+    void get_param_async(
+        const std::string& name,
+        ParamValue value_type,
+        get_param_callback_t callback,
+        const void* cookie,
+        bool extended = false);
 
-    void cancel_all_param(const void *cookie);
+    void cancel_all_param(const void* cookie);
 
     void do_work();
 
     void reset_cache();
-    void remove_from_cache(const std::string &name);
+    void remove_from_cache(const std::string& name);
 
-    friend std::ostream &operator<<(std::ostream &, const ParamValue &);
+    friend std::ostream& operator<<(std::ostream&, const ParamValue&);
 
     // Non-copyable
-    MAVLinkParameters(const MAVLinkParameters &) = delete;
-    const MAVLinkParameters &operator=(const MAVLinkParameters &) = delete;
+    MAVLinkParameters(const MAVLinkParameters&) = delete;
+    const MAVLinkParameters& operator=(const MAVLinkParameters&) = delete;
 
 private:
-    void process_param_value(const mavlink_message_t &message);
-    void process_param_ext_value(const mavlink_message_t &message);
-    void process_param_ext_ack(const mavlink_message_t &message);
+    void process_param_value(const mavlink_message_t& message);
+    void process_param_ext_value(const mavlink_message_t& message);
+    void process_param_ext_ack(const mavlink_message_t& message);
     void receive_timeout();
 
     static std::string extract_safe_param_id(const char param_id[]);
 
-    SystemImpl &_parent;
+    SystemImpl& _parent;
 
     // Params can be up to 16 chars without 0-termination.
     static constexpr size_t PARAM_ID_LEN = 16;
@@ -532,13 +608,13 @@ private:
         bool extended{false};
         int retries_done{0};
         bool already_requested{false};
-        const void *cookie{nullptr};
+        const void* cookie{nullptr};
     };
     LockedQueue<WorkItem> _work_queue{};
 
     std::map<std::string, ParamValue> _cache{};
 
-    void *_timeout_cookie = nullptr;
+    void* _timeout_cookie = nullptr;
 
     // dl_time_t _last_request_time = {};
 };

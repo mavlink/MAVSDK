@@ -7,7 +7,7 @@ using namespace mavsdk;
 
 TEST(SitlTestMultiple, SystemConnectionMultiple)
 {
-    mavsdk::Mavsdk *dc;
+    mavsdk::Mavsdk* dc;
     dc = new mavsdk::Mavsdk();
     std::cout << "started" << std::endl;
 

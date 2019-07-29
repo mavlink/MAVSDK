@@ -10,7 +10,7 @@ namespace mavsdk {
 
 class CameraImpl : public PluginImplBase {
 public:
-    CameraImpl(System &system);
+    CameraImpl(System& system);
     ~CameraImpl();
 
     void init() override;
@@ -29,15 +29,15 @@ public:
     Camera::Result start_video();
     Camera::Result stop_video();
 
-    void take_photo_async(const Camera::result_callback_t &callback);
-    void start_photo_interval_async(float interval_s, const Camera::result_callback_t &callback);
-    void stop_photo_interval_async(const Camera::result_callback_t &callback);
-    void start_video_async(const Camera::result_callback_t &callback);
-    void stop_video_async(const Camera::result_callback_t &callback);
+    void take_photo_async(const Camera::result_callback_t& callback);
+    void start_photo_interval_async(float interval_s, const Camera::result_callback_t& callback);
+    void stop_photo_interval_async(const Camera::result_callback_t& callback);
+    void start_video_async(const Camera::result_callback_t& callback);
+    void stop_video_async(const Camera::result_callback_t& callback);
 
     Camera::Information get_information();
 
-    Camera::Result get_video_stream_info(Camera::VideoStreamInfo &info);
+    Camera::Result get_video_stream_info(Camera::VideoStreamInfo& info);
     void get_video_stream_info_async(const Camera::get_video_stream_info_callback_t callback);
     void subscribe_video_stream_info(const Camera::subscribe_video_stream_info_callback_t callback);
 
@@ -45,7 +45,7 @@ public:
     Camera::Result stop_video_streaming();
 
     Camera::Result set_mode(const Camera::Mode mode);
-    void set_mode_async(const Camera::Mode mode, const Camera::mode_callback_t &callback);
+    void set_mode_async(const Camera::Mode mode, const Camera::mode_callback_t& callback);
     void get_mode_async(Camera::mode_callback_t callback);
     void subscribe_mode(const Camera::subscribe_mode_callback_t callback);
 
@@ -54,40 +54,41 @@ public:
     void get_status_async(Camera::get_status_callback_t callback);
     void subscribe_status(const Camera::subscribe_status_callback_t callback);
 
-    void set_option_async(const std::string &setting_id,
-                          const Camera::Option &option,
-                          const Camera::result_callback_t &callback);
+    void set_option_async(
+        const std::string& setting_id,
+        const Camera::Option& option,
+        const Camera::result_callback_t& callback);
 
-    Camera::Result get_option(const std::string &setting_id, Camera::Option &option);
-    void get_option_async(const std::string &setting_id,
-                          const Camera::get_option_callback_t &callback);
+    Camera::Result get_option(const std::string& setting_id, Camera::Option& option);
+    void
+    get_option_async(const std::string& setting_id, const Camera::get_option_callback_t& callback);
 
-    bool get_possible_setting_options(std::vector<std::string> &settings);
-    bool get_possible_options(const std::string &setting_id, std::vector<Camera::Option> &options);
+    bool get_possible_setting_options(std::vector<std::string>& settings);
+    bool get_possible_options(const std::string& setting_id, std::vector<Camera::Option>& options);
 
-    bool get_setting_str(const std::string &setting_id, std::string &description);
-    bool get_option_str(const std::string &setting_id,
-                        const std::string &option_id,
-                        std::string &description);
+    bool get_setting_str(const std::string& setting_id, std::string& description);
+    bool get_option_str(
+        const std::string& setting_id, const std::string& option_id, std::string& description);
 
-    void subscribe_current_settings(const Camera::subscribe_current_settings_callback_t &callback);
+    void subscribe_current_settings(const Camera::subscribe_current_settings_callback_t& callback);
     void subscribe_possible_setting_options(
-        const Camera::subscribe_possible_setting_options_callback_t &callback);
+        const Camera::subscribe_possible_setting_options_callback_t& callback);
 
     Camera::Result format_storage();
     void format_storage_async(Camera::result_callback_t callback);
 
-    CameraImpl(const CameraImpl &) = delete;
-    CameraImpl &operator=(const CameraImpl &) = delete;
+    CameraImpl(const CameraImpl&) = delete;
+    CameraImpl& operator=(const CameraImpl&) = delete;
 
 private:
     void check_connection_status();
     void manual_enable();
     void manual_disable();
 
-    void receive_set_mode_command_result(const MAVLinkCommands::Result command_result,
-                                         const Camera::mode_callback_t &callback,
-                                         const Camera::Mode mode);
+    void receive_set_mode_command_result(
+        const MAVLinkCommands::Result command_result,
+        const Camera::mode_callback_t& callback,
+        const Camera::Mode mode);
 
     void get_mode_timeout_happened();
 
@@ -96,18 +97,18 @@ private:
     static Camera::Result
     camera_result_from_command_result(const MAVLinkCommands::Result command_result);
 
-    static void receive_command_result(MAVLinkCommands::Result command_result,
-                                       const Camera::result_callback_t &callback);
+    void receive_command_result(
+        MAVLinkCommands::Result command_result, const Camera::result_callback_t& callback);
 
     static bool interval_valid(float interval_s);
 
-    void process_camera_image_captured(const mavlink_message_t &message);
-    void process_storage_information(const mavlink_message_t &message);
-    void process_camera_capture_status(const mavlink_message_t &message);
-    void process_camera_settings(const mavlink_message_t &message);
-    void process_camera_information(const mavlink_message_t &message);
-    void process_video_information(const mavlink_message_t &message);
-    void process_flight_information(const mavlink_message_t &message);
+    void process_camera_image_captured(const mavlink_message_t& message);
+    void process_storage_information(const mavlink_message_t& message);
+    void process_camera_capture_status(const mavlink_message_t& message);
+    void process_camera_settings(const mavlink_message_t& message);
+    void process_camera_information(const mavlink_message_t& message);
+    void process_video_information(const mavlink_message_t& message);
+    void process_flight_information(const mavlink_message_t& message);
 
     void receive_storage_information_result(MAVLinkCommands::Result result);
     void receive_camera_capture_status_result(MAVLinkCommands::Result result);
@@ -125,7 +126,7 @@ private:
     void status_timeout_happened();
     void get_video_stream_info_timeout();
 
-    bool load_definition_file(const std::string &uri, std::string &content);
+    bool load_definition_file(const std::string& uri, std::string& content);
 
     void refresh_params();
     void invalidate_params();
@@ -136,8 +137,8 @@ private:
     float to_mavlink_camera_mode(const Camera::Mode mode) const;
     Camera::Mode to_camera_mode(const uint8_t mavlink_camera_mode) const;
 
-    void *_flight_information_call_every_cookie{nullptr};
-    void *_check_connection_status_call_every_cookie{nullptr};
+    void* _flight_information_call_every_cookie{nullptr};
+    void* _check_connection_status_call_every_cookie{nullptr};
 
     // Utility methods for convenience
     MAVLinkCommands::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
@@ -169,10 +170,10 @@ private:
         Camera::Status data{};
         bool received_camera_capture_status{false};
         bool received_storage_information{false};
-        void *timeout_cookie{nullptr};
+        void* timeout_cookie{nullptr};
 
         Camera::subscribe_status_callback_t subscription_callback{nullptr};
-        void *call_every_cookie{nullptr};
+        void* call_every_cookie{nullptr};
     } _status{};
 
     static constexpr double DEFAULT_TIMEOUT_S = 3.0;
@@ -180,7 +181,7 @@ private:
     struct {
         std::mutex mutex{};
         Camera::mode_callback_t callback{nullptr};
-        void *timeout_cookie{nullptr};
+        void* timeout_cookie{nullptr};
 
         Camera::subscribe_mode_callback_t subscription_callback{nullptr};
     } _mode{};
@@ -200,10 +201,10 @@ private:
         Camera::VideoStreamInfo info{};
         bool available{false};
         Camera::get_video_stream_info_callback_t callback{nullptr};
-        void *timeout_cookie{nullptr};
+        void* timeout_cookie{nullptr};
 
         Camera::subscribe_video_stream_info_callback_t subscription_callback{nullptr};
-        void *call_every_cookie{nullptr};
+        void* call_every_cookie{nullptr};
     } _video_stream_info{};
 
     struct {

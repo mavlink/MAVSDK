@@ -8,7 +8,7 @@ namespace mavsdk {
 
 Telemetry::EulerAngle to_euler_angle_from_quaternion(Telemetry::Quaternion quaternion)
 {
-    auto &q = quaternion;
+    auto& q = quaternion;
 
     Telemetry::EulerAngle euler_angle{
         to_deg_from_rad(

@@ -34,7 +34,7 @@ enum class ConnectionResult {
  * @param result The enum value for which a human readable string is required.
  * @return Human readable string for the ConnectionResult.
  */
-inline const char *connection_result_str(const ConnectionResult result)
+inline const char* connection_result_str(const ConnectionResult result)
 {
     switch (result) {
         case ConnectionResult::SUCCESS:
