@@ -57,15 +57,15 @@ public:
         return grpc::Status::OK;
     }
 
-    static int translateRPCGimbalMode(const rpc::gimbal::GimbalMode mode)
+    static mavsdk::Gimbal::GimbalMode translateRPCGimbalMode(const rpc::gimbal::GimbalMode mode)
     {
         switch(mode) {
             case rpc::gimbal::GimbalMode::YAW_FOLLOW:
-                return 0;
+                return mavsdk::Gimbal::GimbalMode::YAW_FOLLOW;
             case rpc::gimbal::GimbalMode::YAW_LOCK:
-                return 1;
+                return mavsdk::Gimbal::GimbalMode::YAW_LOCK;
             default:
-                return 0;
+                return mavsdk::Gimbal::GimbalMode::YAW_FOLLOW;
         }
     }
 

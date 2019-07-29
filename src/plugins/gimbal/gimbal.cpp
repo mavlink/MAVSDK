@@ -17,12 +17,12 @@ void Gimbal::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, result_call
     _impl->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback);
 }
 
-Gimbal::Result Gimbal::set_gimbal_mode(int gimbal_mode)
+Gimbal::Result Gimbal::set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     return _impl->set_gimbal_mode(gimbal_mode);
 }
 
-void Gimbal::set_gimbal_mode_async(int gimbal_mode, result_callback_t callback)
+void Gimbal::set_gimbal_mode_async(const Gimbal::GimbalMode gimbal_mode, result_callback_t callback)
 {
     _impl->set_gimbal_mode_async(gimbal_mode, callback);
 }

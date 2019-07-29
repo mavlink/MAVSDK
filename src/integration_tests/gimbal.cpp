@@ -176,7 +176,7 @@ void send_new_gimbal_command(std::shared_ptr<Gimbal> gimbal, int i)
     gimbal->set_pitch_and_yaw_async(pitch_deg, yaw_deg, &receive_gimbal_result);
 }
 
-void send_gimbal_mode_command(std::shared_ptr<Gimbal> gimbal, int gimbal_mode)
+void send_gimbal_mode_command(std::shared_ptr<Gimbal> gimbal, const Gimbal::GimbalMode gimbal_mode)
 {
     gimbal->set_gimbal_mode_async(gimbal_mode, &receive_gimbal_result);
 }
