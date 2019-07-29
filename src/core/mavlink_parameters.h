@@ -235,6 +235,35 @@ public:
             }
         }
 
+        bool set_as_same_type(const std::string& value_str)
+        {
+            if (_value.is<uint8_t>()) {
+                _value = uint8_t(std::stoi(value_str.c_str()));
+            } else if (_value.is<int8_t>()) {
+                _value = int8_t(std::stoi(value_str.c_str()));
+            } else if (_value.is<uint16_t>()) {
+                _value = uint16_t(std::stoi(value_str.c_str()));
+            } else if (_value.is<int16_t>()) {
+                _value = int16_t(std::stoi(value_str.c_str()));
+            } else if (_value.is<uint32_t>()) {
+                _value = uint32_t(std::stoi(value_str.c_str()));
+            } else if (_value.is<int32_t>()) {
+                _value = int32_t(std::stoi(value_str.c_str()));
+            } else if (_value.is<uint64_t>()) {
+                _value = uint64_t(std::stoll(value_str.c_str()));
+            } else if (_value.is<int64_t>()) {
+                _value = int64_t(std::stoll(value_str.c_str()));
+            } else if (_value.is<float>()) {
+                _value = float(std::stof(value_str.c_str()));
+            } else if (_value.is<double>()) {
+                _value = double(std::stod(value_str.c_str()));
+            } else {
+                LogErr() << "Unknown type";
+                return false;
+            }
+            return true;
+        }
+
         float get_4_float_bytes() const
         {
             if (_value.is<float>()) {
