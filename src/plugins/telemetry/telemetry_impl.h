@@ -91,6 +91,7 @@ public:
     void health_async(Telemetry::health_callback_t& callback);
     void health_all_ok_async(Telemetry::health_all_ok_callback_t& callback);
     void rc_status_async(Telemetry::rc_status_callback_t& callback);
+    void utm_global_position_async(Telemetry::utm_global_position_callback_t &callback);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
