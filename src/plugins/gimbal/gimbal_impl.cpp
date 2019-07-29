@@ -55,15 +55,15 @@ void GimbalImpl::set_pitch_and_yaw_async(
         command, std::bind(&GimbalImpl::receive_command_result, std::placeholders::_1, callback));
 }
 
-Gimbal::Result GimbalImpl::set_gimbal_mode(int gimbal_mode)
+Gimbal::Result GimbalImpl::set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode)
 {
     MAVLinkCommands::CommandInt command{};
 
     command.command = MAV_CMD_DO_MOUNT_CONFIGURE;
-    command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING); ///gimbal_mode;
+    command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING); 
     command.params.param2 = 0.0f;
     command.params.param3 = 0.0f;
-    command.params.param4 = float(gimbal_mode);
+    command.params.param4 = to_float_gimbal_mode(gimbal_mode);
     command.params.x = 0;
     command.params.y = 0;
     command.params.z = 2.0f;
@@ -73,15 +73,15 @@ Gimbal::Result GimbalImpl::set_gimbal_mode(int gimbal_mode)
 }
 
 void GimbalImpl::set_gimbal_mode_async(
-    int gimbal_mode, Gimbal::result_callback_t callback)
+    const Gimbal::GimbalMode gimbal_mode, Gimbal::result_callback_t callback)
 {
     MAVLinkCommands::CommandInt command{};
 
     command.command = MAV_CMD_DO_MOUNT_CONFIGURE;
-    command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING); ///gimbal_mode;
+    command.params.param1 = float(MAV_MOUNT_MODE_MAVLINK_TARGETING);
     command.params.param2 = 0.0f;
     command.params.param3 = 0.0f;
-    command.params.param4 = float(gimbal_mode);
+    command.params.param4 = to_float_gimbal_mode(gimbal_mode);
     command.params.x = 0;
     command.params.y = 0;
     command.params.z = 2.0f;
@@ -89,6 +89,18 @@ void GimbalImpl::set_gimbal_mode_async(
 
     _parent->send_command_async(
         command, std::bind(&GimbalImpl::receive_command_result, std::placeholders::_1, callback));
+}
+
+float GimbalImpl::to_float_gimbal_mode(const Gimbal::GimbalMode gimbal_mode) const
+{
+    switch (gimbal_mode) {
+        case Gimbal::GimbalMode::YAW_FOLLOW:
+            return 0.0f;
+        case Gimbal::GimbalMode::YAW_LOCK:
+            return 1.0f;
+        default:
+            return 0.0f;
+    }
 }
 
 

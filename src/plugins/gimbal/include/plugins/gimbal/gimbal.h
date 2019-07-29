@@ -46,6 +46,14 @@ public:
     };
 
     /**
+     * @brief Gimbal mode type.
+     */
+    enum class GimbalMode {
+        YAW_FOLLOW, /**< @brief Yaw follow mode. */
+        YAW_LOCK /**< @brief Yaw lock mode. */
+    };
+
+    /**
      * @brief Returns a human-readable English string for Gimbal::Result.
      *
      * @param result The enum value for which a human readable string is required.
@@ -87,28 +95,30 @@ public:
     /** 
      * @brief Set gimbal mode (synchronous).
      *
-     * This sets the desired mode of a gimbal.
+     * This sets the desired yaw mode of a gimbal.
      * The function will return when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
      *
-     * @param gimbal_mode The mode to be set. Either lock or follow.
-     * Lock will fix the gimbal poiting to a direction. Follow will follow the vehicle heading.
+     * @param gimbal_mode The mode to be set. Either yaw lock or yaw follow.
+     * Yaw lock will fix the gimbal poiting to an absolute direction. 
+     * Yaw follow will point the gimbal to the vehicle heading.
      * @return Result of request.
      */
-    Result set_gimbal_mode(int gimbal_mode);
+    Result set_gimbal_mode(const Gimbal::GimbalMode gimbal_mode);
 
     /** 
      * @brief Set gimbal mode (asynchronous).
      *
-     * This sets the desired mode of a gimbal.
+     * This sets the desired yaw mode of a gimbal.
      * The function will return when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
      *
-     * @param gimbal_mode The mode to be set. Either lock or follow.
-     * Lock will fix the gimbal poiting to a direction. Follow will follow the vehicle heading.
+     * @param gimbal_mode The mode to be set. Either yaw lock or yaw follow.
+     * Yaw lock will fix the gimbal poiting to an absolute direction. 
+     * Yaw follow will point the gimbal to the vehicle heading.
      * @param callback Function to call with result of request.
      */
-    void set_gimbal_mode_async(int gimbal_mode, result_callback_t callback);
+    void set_gimbal_mode_async(const Gimbal::GimbalMode gimbal_mode, result_callback_t callback);
 
     /**
      * @brief Set gimbal region of interest (ROI).
