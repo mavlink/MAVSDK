@@ -1228,6 +1228,11 @@ bool CameraImpl::get_possible_options(
     return options.size() > 0;
 }
 
+bool CameraImpl::is_setting_range(const std::string& setting_id)
+{
+    return _camera_definition->is_setting_range(setting_id);
+}
+
 void CameraImpl::set_option_async(
     const std::string& setting_id,
     const Camera::Option& option,

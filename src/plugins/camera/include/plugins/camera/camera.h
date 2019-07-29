@@ -504,6 +504,17 @@ public:
     bool get_possible_options(const std::string& setting_id, std::vector<Camera::Option>& options);
 
     /**
+     * @brief Query if setting is a range setting.
+     *
+     * A range setting is not given by possible options but rather by [min, max] or [min, max,
+     * interval].
+     *
+     * @param setting_id Name of setting (machine readable).
+     * @return true if it is a range setting.
+     */
+    bool is_setting_range(const std::string& setting_id);
+
+    /**
      * @brief Get an option of a setting (synchronous).
      *
      * @param setting_id The machine readable name of the setting.
