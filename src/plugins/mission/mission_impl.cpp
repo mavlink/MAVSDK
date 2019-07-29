@@ -1065,7 +1065,7 @@ void MissionImpl::pause_mission_async(const Mission::result_callback_t& callback
 
 void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback)
 {
-  bool should_report_mission_result = false;
+    bool should_report_mission_result = false;
     {
         std::lock_guard<std::mutex> lock(_activity.mutex);
         if (_activity.state == Activity::State::ABORTED) {
@@ -1082,7 +1082,7 @@ void MissionImpl::clear_mission_async(const Mission::result_callback_t& callback
         return;
     }
 
-     _parent->register_timeout_handler(
+    _parent->register_timeout_handler(
         std::bind(&MissionImpl::process_timeout, this), RETRY_TIMEOUT_S, &_timeout_cookie);
 
     {
@@ -1108,13 +1108,13 @@ void MissionImpl::clear_mission()
         _parent->get_system_id(),
         _parent->get_autopilot_id(),
         MAV_MISSION_TYPE_MISSION);
-    
+
     _parent->send_message(message);
 
     if (!_parent->send_message(message)) {
-      std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
-      report_mission_result(_mission_data.result_callback, Mission::Result::ERROR);
-      return;
+        std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+        report_mission_result(_mission_data.result_callback, Mission::Result::ERROR);
+        return;
     }
 }
 

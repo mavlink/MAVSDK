@@ -251,21 +251,20 @@ void test_mission(
     }
     LogInfo() << "Disarmed.";
 
-   {
-       LogInfo() << "Clearing mission.";
-       auto prom = std::make_shared<std::promise<void>>();
-       auto future_result = prom->get_future();
-       mission->clear_mission_async([prom](Mission::Result result) {
-           ASSERT_EQ(result, Mission::Result::SUCCESS);
-           prom->set_value();
-           LogInfo() << "Cleared mission, exiting.";
-       });
+    {
+        LogInfo() << "Clearing mission.";
+        auto prom = std::make_shared<std::promise<void>>();
+        auto future_result = prom->get_future();
+        mission->clear_mission_async([prom](Mission::Result result) {
+            ASSERT_EQ(result, Mission::Result::SUCCESS);
+            prom->set_value();
+            LogInfo() << "Cleared mission, exiting.";
+        });
 
-       auto status = future_result.wait_for(std::chrono::seconds(2));
-       ASSERT_EQ(status, std::future_status::ready);
-       future_result.get();
-   }
-
+        auto status = future_result.wait_for(std::chrono::seconds(2));
+        ASSERT_EQ(status, std::future_status::ready);
+        future_result.get();
+    }
 }
 
 std::shared_ptr<MissionItem> add_mission_item(
