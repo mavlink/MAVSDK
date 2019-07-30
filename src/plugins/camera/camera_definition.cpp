@@ -753,6 +753,16 @@ void CameraDefinition::set_all_params_unknown()
     }
 }
 
+bool CameraDefinition::is_setting_range(const std::string& name)
+{
+    if (_parameter_map.find(name) == _parameter_map.end()) {
+        LogWarn() << "Setting " << name << " not found.";
+        return false;
+    }
+
+    return _parameter_map[name]->is_range;
+}
+
 bool CameraDefinition::get_setting_str(const std::string& name, std::string& description)
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
