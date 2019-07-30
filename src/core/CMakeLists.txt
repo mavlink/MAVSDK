@@ -64,9 +64,12 @@ set_target_properties(mavsdk
     PROPERTIES COMPILE_FLAGS ${warnings}
     )
 
-target_include_directories(mavsdk PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+target_include_directories(mavsdk
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:include>
+    PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     )
 
 install(TARGETS mavsdk
