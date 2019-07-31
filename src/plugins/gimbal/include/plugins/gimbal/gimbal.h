@@ -75,6 +75,8 @@ public:
      *
      * @param pitch_deg The pitch angle in degrees. Negative to point down.
      * @param yaw_deg The yaw angle in degrees. Positive for clock-wise, range -180..180 or 0..360.
+     * The yaw angle is relative to vehicle heading if the `GimbalMode` is `YAW_FOLLOW` and relative
+     * to absolute North if the `GimbalMode` is `YAW_LOCK`.
      * @return Result of request.
      */
     Result set_pitch_and_yaw(float pitch_deg, float yaw_deg);
@@ -88,6 +90,8 @@ public:
      *
      * @param pitch_deg The pitch angle in degrees. Negative to point down.
      * @param yaw_deg The yaw angle in degrees. Positive for clock-wise, range -180..180 or 0..360.
+     * The yaw angle is relative to vehicle heading if the `GimbalMode` is `YAW_FOLLOW` and relative
+     * to absolute North if the `GimbalMode` is `YAW_LOCK`.
      * @param callback Function to call with result of request.
      */
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, result_callback_t callback);
