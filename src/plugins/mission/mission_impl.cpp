@@ -158,6 +158,11 @@ void MissionImpl::process_mission_ack(const mavlink_message_t& message)
             return;
         }
 
+        if (_activity.state == Activity::State::NONE) {
+            LogWarn() << "Mission ack ignored";
+            return;
+        }
+
         // We got some response, so it wasn't a timeout and we can remove it.
         _parent->unregister_timeout_handler(_timeout_cookie);
 
