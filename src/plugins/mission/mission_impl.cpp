@@ -1109,8 +1109,6 @@ void MissionImpl::clear_mission()
         _parent->get_autopilot_id(),
         MAV_MISSION_TYPE_MISSION);
 
-    _parent->send_message(message);
-
     if (!_parent->send_message(message)) {
         std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
         report_mission_result(_mission_data.result_callback, Mission::Result::ERROR);
