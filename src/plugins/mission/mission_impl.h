@@ -87,6 +87,8 @@ private:
 
     void assemble_mission_items();
 
+    void reset_mission_progress();
+
     static Mission::Result
     import_mission_items(Mission::mission_items_t& mission_items, const Json& mission_json);
     static Mission::Result build_mission_items(
