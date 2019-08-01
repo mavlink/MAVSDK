@@ -28,6 +28,7 @@ public:
     ConnectionResult add_udp_connection(const std::string& local_ip, int local_port_number);
     ConnectionResult add_tcp_connection(const std::string& remote_ip, int remote_port);
     ConnectionResult add_serial_connection(const std::string& dev_path, int baudrate);
+    ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port);
 
     void set_configuration(Mavsdk::Configuration configuration);
 
@@ -65,6 +66,7 @@ private:
     Mavsdk::event_callback_t _on_timeout_callback;
 
     std::atomic<Mavsdk::Configuration> _configuration{Mavsdk::Configuration::GroundStation};
+    bool _is_single_system{false};
 
     std::atomic<bool> _should_exit = {false};
 };
