@@ -91,6 +91,13 @@ void MavsdkImpl::receive_message(mavlink_message_t& message)
         _systems.erase(0);
         null_system->system_impl()->set_system_id(message.sysid);
         _systems.insert(system_entry_t(message.sysid, null_system));
+    } else if (_is_single_system) {
+        auto sys = _systems.begin();
+        if (sys->first != message.sysid) {
+            sys->second->system_impl()->set_system_id(message.sysid);
+            _systems.insert(system_entry_t(message.sysid, sys->second));
+            _systems.erase(sys->first);
+        }
     }
 
     if (!does_system_exist(message.sysid)) {
@@ -173,10 +180,29 @@ ConnectionResult MavsdkImpl::add_udp_connection(const std::string& local_ip, con
 {
     auto new_conn = std::make_shared<UdpConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), local_ip, local_port);
-
+    if (!new_conn) {
+        return ConnectionResult::CONNECTION_ERROR;
+    }
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
         add_connection(new_conn);
+    }
+    return ret;
+}
+
+ConnectionResult MavsdkImpl::setup_udp_remote(const std::string& remote_ip, int remote_port)
+{
+    auto new_conn = std::make_shared<UdpConnection>(
+        std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), "0.0.0.0", 0);
+    if (!new_conn) {
+        return ConnectionResult::CONNECTION_ERROR;
+    }
+    ConnectionResult ret = new_conn->start();
+    _is_single_system = true;
+    if (ret == ConnectionResult::SUCCESS) {
+        new_conn->add_remote(remote_ip, remote_port);
+        add_connection(new_conn);
+        make_system_with_component(get_own_system_id(), get_own_component_id());
     }
     return ret;
 }
@@ -187,7 +213,9 @@ ConnectionResult MavsdkImpl::add_tcp_connection(const std::string& remote_ip, in
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1),
         remote_ip,
         remote_port);
-
+    if (!new_conn) {
+        return ConnectionResult::CONNECTION_ERROR;
+    }
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
         add_connection(new_conn);
@@ -199,7 +227,9 @@ ConnectionResult MavsdkImpl::add_serial_connection(const std::string& dev_path, 
 {
     auto new_conn = std::make_shared<SerialConnection>(
         std::bind(&MavsdkImpl::receive_message, this, std::placeholders::_1), dev_path, baudrate);
-
+    if (!new_conn) {
+        return ConnectionResult::CONNECTION_ERROR;
+    }
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::SUCCESS) {
         add_connection(new_conn);
@@ -236,8 +266,8 @@ System& MavsdkImpl::get_system()
 {
     {
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        // In get_system withoiut uuid, we expect to have only
-        // one system conneted.
+        // In get_system without uuid, we expect to have only
+        // one system connected.
         if (_systems.size() == 1) {
             return *(_systems.at(_systems.begin()->first));
         }
@@ -282,8 +312,7 @@ uint8_t MavsdkImpl::get_own_system_id() const
 {
     switch (_configuration.load()) {
         case Mavsdk::Configuration::GroundStation:
-            // FIXME: This doesn't make much sense actually but it seems to work.
-            return 0;
+            return 254;
 
         case Mavsdk::Configuration::CompanionComputer:
             // FIXME: This should be the same as the drone but we need to
@@ -305,7 +334,8 @@ uint8_t MavsdkImpl::get_own_component_id() const
 
         case Mavsdk::Configuration::CompanionComputer:
             // It's at least a possibility that we are bridging MAVLink traffic.
-            return MAV_COMP_ID_UDP_BRIDGE;
+            //return MAV_COMP_ID_UDP_BRIDGE;
+            return 99;
 
         default:
             LogErr() << "Unknown configuration";
@@ -360,7 +390,7 @@ void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 
     LogDebug() << "New: System ID: " << int(system_id) << " Comp ID: " << int(comp_id);
     // Make a system with its first component
-    auto new_system = std::make_shared<System>(*this, system_id, comp_id);
+    auto new_system = std::make_shared<System>(*this, system_id, comp_id, _is_single_system);
 
     _systems.insert(system_entry_t(system_id, new_system));
 }

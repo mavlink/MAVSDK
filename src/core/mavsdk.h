@@ -93,6 +93,15 @@ public:
     add_udp_connection(const std::string& local_ip, int local_port = DEFAULT_UDP_PORT);
 
     /**
+     * @brief Sets up instance to send heartbeats to the specified remote interface and port number.
+     *
+     * @param remote_ip The remote UDP IP address to report to.
+     * @param remote_port The local UDP port to report to.
+     * @return The result of operation.
+     */
+    ConnectionResult setup_udp_remote(const std::string& remote_ip, int remote_port);
+
+    /**
      * @brief Adds a TCP connection with a specific port number on localhost.
      *
      * @param remote_port The TCP port to connect to (defaults to 5760).

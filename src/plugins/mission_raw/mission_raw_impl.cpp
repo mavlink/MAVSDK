@@ -252,6 +252,9 @@ void MissionRawImpl::process_mission_item_int(const mavlink_message_t& message)
     }
 
     auto new_item = std::make_shared<MissionRaw::MavlinkMissionItemInt>();
+    if (!new_item) {
+        return;
+    }
 
     new_item->target_system = mission_item_int.target_system;
     new_item->target_component = mission_item_int.target_component;

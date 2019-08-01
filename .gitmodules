@@ -10,3 +10,6 @@
 [submodule "third_party/cpp_rsc"]
 	path = src/third_party/cpp_rsc
 	url = https://github.com/orex/cpp_rsc.git
+[submodule "third_party/filesystem"]
+	path = third_party/filesystem
+	url = https://github.com/gulrak/filesystem.git
