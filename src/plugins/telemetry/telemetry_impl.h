@@ -202,7 +202,7 @@ private:
     Telemetry::RCStatus _rc_status{false, false, 0.0f};
 
     mutable std::mutex _utm_epoch_mutex{};
-    uint64_t _utm_epoch{};
+    uint64_t _utm_epoch_us {};
 
     std::atomic<bool> _hitl_enabled{false};
 
