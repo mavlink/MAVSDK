@@ -120,9 +120,9 @@ void Telemetry::set_rate_rc_status_async(double rate_hz, result_callback_t callb
     _impl->set_rate_rc_status_async(rate_hz, callback);
 }
 
-void Telemetry::set_utm_global_position_async(double rate_hz, result_callback_t callback)
+void Telemetry::set_unix_epoch_time_async(double rate_hz, result_callback_t callback)
 {
-    _impl->set_rate_utm_global_position_async(rate_hz, callback);
+    _impl->set_rate_unix_epoch_time_async(rate_hz, callback);
 }
 
 Telemetry::PositionVelocityNED Telemetry::position_velocity_ned() const
@@ -330,9 +330,9 @@ void Telemetry::rc_status_async(rc_status_callback_t callback)
     return _impl->rc_status_async(callback);
 }
 
-void Telemetry::utm_global_position_async(unix_epoch_time_callback_t callback)
+void Telemetry::unix_epoch_time_async(unix_epoch_time_callback_t callback)
 {
-    return _impl->utm_global_position_async(callback);
+    return _impl->unix_epoch_time_async(callback);
 }
 
 const char* Telemetry::result_str(Result result)
