@@ -284,6 +284,5 @@ void print_position_velocity_ned(Telemetry::PositionVelocityNED position_velocit
 void print_utm_epoch(uint64_t time_us)
 {
     std::time_t t = time_us / 10E5;
-    std::cout << "UTC (" << time_us / 10E5 << "): " << std::put_time(std::gmtime(&t), "%c %Z")
-              << std::endl;
+    LogInfo() << "UTC (" << time_us / 10E5 << "): " << std::put_time(std::gmtime(&t), "%c %Z");
 }
