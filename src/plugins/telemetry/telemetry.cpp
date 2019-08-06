@@ -330,7 +330,7 @@ void Telemetry::rc_status_async(rc_status_callback_t callback)
     return _impl->rc_status_async(callback);
 }
 
-void Telemetry::utm_global_position_async(utm_global_position_callback_t callback)
+void Telemetry::utm_global_position_async(unix_epoch_time_callback_t callback)
 {
     return _impl->utm_global_position_async(callback);
 }
