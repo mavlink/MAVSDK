@@ -70,7 +70,7 @@ void TelemetryImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
-        std::bind(&TelemetryImpl::process_utm_global_position, this, _1),
+        std::bind(&TelemetryImpl::process_unix_epoch_time, this, _1),
         this);
 
     _parent->register_mavlink_message_handler(
@@ -324,7 +324,7 @@ void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::result_c
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_utm_global_position_async(double rate_hz,
+void TelemetryImpl::set_rate_unix_epoch_time_async(double rate_hz,
                                                        Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
