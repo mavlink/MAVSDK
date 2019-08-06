@@ -158,12 +158,19 @@ void MissionImpl::process_mission_ack(const mavlink_message_t& message)
             return;
         }
 
+        if (_activity.state == Activity::State::NONE) {
+            LogWarn() << "Mission ack ignored";
+            return;
+        }
+
         // We got some response, so it wasn't a timeout and we can remove it.
         _parent->unregister_timeout_handler(_timeout_cookie);
 
         if (mission_ack.type == MAV_MISSION_ACCEPTED) {
             report_mission_result(temp_callback, Mission::Result::SUCCESS);
             LogInfo() << "Mission accepted";
+
+            reset_mission_progress();
 
         } else if (mission_ack.type == MAV_MISSION_NO_SPACE) {
             LogErr() << "Error: too many waypoints: " << int(mission_ack.type);
@@ -182,6 +189,15 @@ void MissionImpl::process_mission_ack(const mavlink_message_t& message)
         // We need to stop after this, no matter what.
         _activity.state = Activity::State::NONE;
     }
+}
+
+void MissionImpl::reset_mission_progress()
+{
+    std::lock_guard<std::recursive_mutex> lock(_mission_data.mutex);
+    _mission_data.last_current_mavlink_mission_item = -1;
+    _mission_data.last_reached_mavlink_mission_item = -1;
+    _mission_data.last_current_reported_mission_item = -1;
+    _mission_data.last_total_reported_mission_item = -1;
 }
 
 void MissionImpl::process_mission_current(const mavlink_message_t& message)
