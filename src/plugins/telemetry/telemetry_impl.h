@@ -233,5 +233,6 @@ private:
 
     void* _rc_channels_timeout_cookie{nullptr};
     void* _gps_raw_timeout_cookie{nullptr};
+    void* _unix_epoch_timeout_cookie{nullptr};
 };
 } // namespace mavsdk

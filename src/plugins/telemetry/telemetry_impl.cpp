@@ -649,20 +649,20 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
     _parent->refresh_timeout_handler(_rc_channels_timeout_cookie);
 }
 
-void TelemetryImpl::process_utm_global_position(const mavlink_message_t &message)
+void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t &message)
 {
     mavlink_utm_global_position_t utm_global_position;
     mavlink_msg_utm_global_position_decode(&message, &utm_global_position);
 
-    set_utm_epoch(utm_global_position.time);
+    set_unix_epoch_time_us(utm_global_position.time);
 
-    if (_utm_global_position_subscription) {
-        auto callback = _utm_global_position_subscription;
-        auto arg = get_utm_epoch();
+    if (_unix_epoch_time_subscription) {
+        auto callback = _unix_epoch_time_subscription;
+        auto arg = get_unix_epoch_time_us();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 
-    _parent->refresh_timeout_handler(_timeout_cookie);
+    _parent->refresh_timeout_handler(_unix_epoch_timeout_cookie);
 }
 
 Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
@@ -969,10 +969,10 @@ Telemetry::RCStatus TelemetryImpl::get_rc_status() const
     return _rc_status;
 }
 
-uint64_t TelemetryImpl::get_utm_epoch() const
+uint64_t TelemetryImpl::get_unix_epoch_time_us() const
 {
-    std::lock_guard<std::mutex> lock(_utm_epoch_mutex);
-    return _utm_epoch;
+    std::lock_guard<std::mutex> lock(_unix_epoch_time_mutex);
+    return _unix_epoch_time_us;
 }
 
 void TelemetryImpl::set_health_local_position(bool ok)
@@ -1031,10 +1031,10 @@ void TelemetryImpl::set_rc_status(bool available, float signal_strength_percent)
     _rc_status.available = available;
 }
 
-void TelemetryImpl::set_utm_epoch(uint64_t time_us)
+void TelemetryImpl::set_unix_epoch_time_us(uint64_t time_us)
 {
-    std::lock_guard<std::mutex> lock(_utm_epoch_mutex);
-    _utm_epoch = time_us;
+    std::lock_guard<std::mutex> lock(_unix_epoch_time_mutex);
+    _unix_epoch_time_us = time_us;
 }
 
 void TelemetryImpl::position_velocity_ned_async(
@@ -1130,9 +1130,9 @@ void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t& callback)
     _rc_status_subscription = callback;
 }
 
-void TelemetryImpl::utm_global_position_async(Telemetry::utm_global_position_callback_t &callback)
+void TelemetryImpl::unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t &callback)
 {
-    _utm_global_position_subscription = callback;
+    _unix_epoch_time_subscription = callback;
 }
 
 void TelemetryImpl::process_parameter_update(const std::string& name)

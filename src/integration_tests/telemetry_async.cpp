@@ -125,7 +125,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     telemetry->position_velocity_ned_async(std::bind(&print_position_velocity_ned, _1));
 
-    telemetry->unix_epoch_time_async(std::bind(&print_unix_epoch_time, _1));
+    telemetry->unix_epoch_time_async(std::bind(&print_unix_epoch_time_us, _1));
 
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
