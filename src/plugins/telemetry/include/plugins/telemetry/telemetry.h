@@ -500,12 +500,12 @@ public:
     void set_rate_rc_status_async(double rate_hz, result_callback_t callback);
 
     /**
-     * @brief Set rate of UTM global position update (asynchronous).
+     * @brief Set rate of Unix Epoch Time update (asynchronous).
      *
      * @param rate_hz Rate in Hz.
      * @param callback Callback to receive request result.
      */
-    void set_utm_global_position_async(double rate_hz, result_callback_t callback);
+    void set_unix_epoch_time_async(double rate_hz, result_callback_t callback);
 
     /**
      * @brief Get the current kinematic (position and velocity) in NED frame (synchronous).
