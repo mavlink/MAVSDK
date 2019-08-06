@@ -864,11 +864,11 @@ public:
     typedef std::function<void(RCStatus rc_status)> rc_status_callback_t;
 
     /**
-     * @brief Callback type for UTM global position updates.
+     * @brief Callback type for UNIX Epoch Time updates.
      *
      * @param uint64_t Epoch time [us].
      */
-    typedef std::function<void(uint64_t time_us)> utm_global_position_callback_t;
+    typedef std::function<void(uint64_t time_us)> unix_epoch_time_callback_t;
 
     /**
      * @brief Subscribe to RC status updates (asynchronous).
@@ -878,11 +878,11 @@ public:
     void rc_status_async(rc_status_callback_t callback);
 
     /**
-     * @brief Subscribe to UTM global position updates (asynchronous).
+     * @brief Subscribe to UNIX Epoch Time updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
-    void utm_global_position_async(utm_global_position_callback_t callback);
+    void unix_epoch_time_async(unix_epoch_time_callback_t callback);
 
     /**
      * @brief Copy constructor (object is not copyable).
