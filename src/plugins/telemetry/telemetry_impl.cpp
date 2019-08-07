@@ -102,7 +102,9 @@ void TelemetryImpl::enable()
         std::bind(&TelemetryImpl::receive_gps_raw_timeout, this), 2.0, &_gps_raw_timeout_cookie);
 
     _parent->register_timeout_handler(
-        std::bind(&TelemetryImpl::receive_unix_epoch_timeout, this), 2.0, &_unix_epoch_timeout_cookie);
+        std::bind(&TelemetryImpl::receive_unix_epoch_timeout, this),
+        2.0,
+        &_unix_epoch_timeout_cookie);
 
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
@@ -328,8 +330,8 @@ void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::result_c
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
-void TelemetryImpl::set_rate_unix_epoch_time_async(double rate_hz,
-                                                       Telemetry::result_callback_t callback)
+void TelemetryImpl::set_rate_unix_epoch_time_async(
+    double rate_hz, Telemetry::result_callback_t callback)
 {
     _parent->set_msg_rate_async(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
@@ -653,7 +655,7 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
     _parent->refresh_timeout_handler(_rc_channels_timeout_cookie);
 }
 
-void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t &message)
+void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
 {
     mavlink_utm_global_position_t utm_global_position;
     mavlink_msg_utm_global_position_decode(&message, &utm_global_position);
@@ -782,8 +784,8 @@ void TelemetryImpl::receive_gps_raw_timeout()
 
 void TelemetryImpl::receive_unix_epoch_timeout()
 {
-  const uint64_t unix_epoch = 0;
-  set_unix_epoch_time_us(unix_epoch);
+    const uint64_t unix_epoch = 0;
+    set_unix_epoch_time_us(unix_epoch);
 }
 
 Telemetry::PositionVelocityNED TelemetryImpl::get_position_velocity_ned() const
@@ -1140,7 +1142,7 @@ void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t& callback)
     _rc_status_subscription = callback;
 }
 
-void TelemetryImpl::unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t &callback)
+void TelemetryImpl::unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t& callback)
 {
     _unix_epoch_time_subscription = callback;
 }

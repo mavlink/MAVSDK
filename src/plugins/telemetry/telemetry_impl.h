@@ -91,7 +91,7 @@ public:
     void health_async(Telemetry::health_callback_t& callback);
     void health_all_ok_async(Telemetry::health_all_ok_callback_t& callback);
     void rc_status_async(Telemetry::rc_status_callback_t& callback);
-    void unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t &callback);
+    void unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t& callback);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
@@ -120,19 +120,19 @@ private:
     void set_rc_status(bool available, float signal_strength_percent);
     void set_unix_epoch_time_us(uint64_t time_us);
 
-    void process_position_velocity_ned(const mavlink_message_t &message);
-    void process_global_position_int(const mavlink_message_t &message);
-    void process_home_position(const mavlink_message_t &message);
-    void process_attitude_quaternion(const mavlink_message_t &message);
-    void process_mount_orientation(const mavlink_message_t &message);
-    void process_imu_reading_ned(const mavlink_message_t &message);
-    void process_gps_raw_int(const mavlink_message_t &message);
-    void process_extended_sys_state(const mavlink_message_t &message);
-    void process_sys_status(const mavlink_message_t &message);
-    void process_heartbeat(const mavlink_message_t &message);
-    void process_statustext(const mavlink_message_t &message);
-    void process_rc_channels(const mavlink_message_t &message);
-    void process_unix_epoch_time(const mavlink_message_t &message);
+    void process_position_velocity_ned(const mavlink_message_t& message);
+    void process_global_position_int(const mavlink_message_t& message);
+    void process_home_position(const mavlink_message_t& message);
+    void process_attitude_quaternion(const mavlink_message_t& message);
+    void process_mount_orientation(const mavlink_message_t& message);
+    void process_imu_reading_ned(const mavlink_message_t& message);
+    void process_gps_raw_int(const mavlink_message_t& message);
+    void process_extended_sys_state(const mavlink_message_t& message);
+    void process_sys_status(const mavlink_message_t& message);
+    void process_heartbeat(const mavlink_message_t& message);
+    void process_statustext(const mavlink_message_t& message);
+    void process_rc_channels(const mavlink_message_t& message);
+    void process_unix_epoch_time(const mavlink_message_t& message);
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
@@ -203,7 +203,7 @@ private:
     Telemetry::RCStatus _rc_status{false, false, 0.0f};
 
     mutable std::mutex _unix_epoch_time_mutex{};
-    uint64_t _unix_epoch_time_us {};
+    uint64_t _unix_epoch_time_us{};
 
     std::atomic<bool> _hitl_enabled{false};
 

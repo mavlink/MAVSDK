@@ -284,11 +284,11 @@ void print_position_velocity_ned(Telemetry::PositionVelocityNED position_velocit
 void print_unix_epoch_time_us(uint64_t time_us)
 {
     std::time_t time = time_us / 10E5;
-	#if __GNUC__ > 4
-        LogInfo() << "UTC (" << time << "): " << std::put_time(std::gmtime(&time), "%c %Z");
-	#else
-        char time_string[24];
-        if(0 < strftime(time_string, sizeof(time_string), "%c %Z", std::gmtime(&time)))
-        	LogInfo() << time_string;
-    #endif
+#if __GNUC__ > 4
+    LogInfo() << "UTC (" << time << "): " << std::put_time(std::gmtime(&time), "%c %Z");
+#else
+    char time_string[24];
+    if (0 < strftime(time_string, sizeof(time_string), "%c %Z", std::gmtime(&time)))
+        LogInfo() << time_string;
+#endif
 }
