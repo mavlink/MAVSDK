@@ -521,6 +521,9 @@ TEST(CameraDefinition, UVCCheckDefaultSettings)
     EXPECT_TRUE(cd.get_all_settings(settings));
     EXPECT_EQ(settings.size(), 13);
 
+    EXPECT_TRUE(cd.is_setting_range("brightness"));
+    EXPECT_FALSE(cd.is_setting_range("exp-mode"));
+
     EXPECT_EQ(settings["camera-mode"].get_uint32(), 1);
     EXPECT_EQ(settings["brightness"].get_int32(), 128);
     EXPECT_EQ(settings["contrast"].get_int32(), 32);
