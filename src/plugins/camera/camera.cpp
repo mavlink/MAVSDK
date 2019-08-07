@@ -154,6 +154,11 @@ bool Camera::get_possible_options(
     return _impl->get_possible_options(setting_id, options);
 }
 
+bool Camera::is_setting_range(const std::string& setting_id)
+{
+    return _impl->is_setting_range(setting_id);
+}
+
 void Camera::subscribe_current_settings(const subscribe_current_settings_callback_t& callback)
 {
     _impl->subscribe_current_settings(callback);

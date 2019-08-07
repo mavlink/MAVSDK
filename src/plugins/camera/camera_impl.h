@@ -66,6 +66,8 @@ public:
     bool get_possible_setting_options(std::vector<std::string>& settings);
     bool get_possible_options(const std::string& setting_id, std::vector<Camera::Option>& options);
 
+    bool is_setting_range(const std::string& setting_id);
+
     bool get_setting_str(const std::string& setting_id, std::string& description);
     bool get_option_str(
         const std::string& setting_id, const std::string& option_id, std::string& description);

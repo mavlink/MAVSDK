@@ -19,6 +19,7 @@ public:
     MOCK_CONST_METHOD0(download_mission_cancel, void()){};
     MOCK_CONST_METHOD1(start_mission_async, void(Mission::result_callback_t)){};
     MOCK_CONST_METHOD1(pause_mission_async, void(Mission::result_callback_t)){};
+    MOCK_CONST_METHOD1(clear_mission_async, void(Mission::result_callback_t)){};
     MOCK_CONST_METHOD2(
         set_current_mission_item_async, void(int current, Mission::result_callback_t)){};
     MOCK_CONST_METHOD0(current_mission_item, int()){};
