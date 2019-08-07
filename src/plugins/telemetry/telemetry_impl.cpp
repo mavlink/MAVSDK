@@ -86,6 +86,7 @@ void TelemetryImpl::deinit()
 {
     _parent->unregister_timeout_handler(_rc_channels_timeout_cookie);
     _parent->unregister_timeout_handler(_gps_raw_timeout_cookie);
+    _parent->unregister_timeout_handler(_unix_epoch_timeout_cookie);
     _parent->unregister_param_changed_handler(this);
     _parent->unregister_all_mavlink_message_handlers(this);
 }
@@ -99,6 +100,9 @@ void TelemetryImpl::enable()
 
     _parent->register_timeout_handler(
         std::bind(&TelemetryImpl::receive_gps_raw_timeout, this), 2.0, &_gps_raw_timeout_cookie);
+
+    _parent->register_timeout_handler(
+        std::bind(&TelemetryImpl::receive_unix_epoch_timeout, this), 2.0, &_unix_epoch_timeout_cookie);
 
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
@@ -774,6 +778,12 @@ void TelemetryImpl::receive_gps_raw_timeout()
     const bool position_ok = false;
     set_health_local_position(position_ok);
     set_health_global_position(position_ok);
+}
+
+void TelemetryImpl::receive_unix_epoch_timeout()
+{
+  const uint64_t unix_epoch = 0;
+  set_unix_epoch_time_us(unix_epoch);
 }
 
 Telemetry::PositionVelocityNED TelemetryImpl::get_position_velocity_ned() const

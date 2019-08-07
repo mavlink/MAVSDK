@@ -145,6 +145,7 @@ private:
 
     void receive_rc_channels_timeout();
     void receive_gps_raw_timeout();
+    void receive_unix_epoch_timeout();
 
     static Telemetry::Result
     telemetry_result_from_command_result(MAVLinkCommands::Result command_result);
