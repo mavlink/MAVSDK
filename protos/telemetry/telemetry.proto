@@ -12,6 +12,7 @@ service TelemetryService {
     rpc SubscribeArmed(SubscribeArmedRequest) returns(stream ArmedResponse) {}
     rpc SubscribeAttitudeQuaternion(SubscribeAttitudeQuaternionRequest) returns(stream AttitudeQuaternionResponse) {}
     rpc SubscribeAttitudeEuler(SubscribeAttitudeEulerRequest) returns(stream AttitudeEulerResponse) {}
+    rpc SubscribeAttitudeAngularSpeed(SubscribeAttitudeAngularSpeedRequest) returns(stream AttitudeAngularSpeedResponse) {}
     rpc SubscribeCameraAttitudeQuaternion(SubscribeCameraAttitudeQuaternionRequest) returns(stream CameraAttitudeQuaternionResponse) {}
     rpc SubscribeCameraAttitudeEuler(SubscribeCameraAttitudeEulerRequest) returns(stream CameraAttitudeEulerResponse) {}
     rpc SubscribeGroundSpeedNed(SubscribeGroundSpeedNedRequest) returns(stream GroundSpeedNedResponse) {}
@@ -21,6 +22,8 @@ service TelemetryService {
     rpc SubscribeHealth(SubscribeHealthRequest) returns(stream HealthResponse) {}
     rpc SubscribeRcStatus(SubscribeRcStatusRequest) returns(stream RcStatusResponse) {}
     rpc SubscribeStatusText(SubscribeStatusTextRequest) returns(stream StatusTextResponse) {}
+    rpc SubscribeActuatorControlTarget(SubscribeActuatorControlTargetRequest) returns(stream ActuatorControlTargetResponse) {}
+    rpc SubscribeActuatorOutputStatus(SubscribeActuatorOutputStatusRequest) returns(stream ActuatorOutputStatusResponse) {}
 }
 
 message SubscribePositionRequest {}
@@ -51,6 +54,11 @@ message AttitudeQuaternionResponse {
 message SubscribeAttitudeEulerRequest {}
 message AttitudeEulerResponse {
     EulerAngle attitude_euler = 1;
+}
+
+message SubscribeAttitudeAngularSpeedRequest {}
+message AttitudeAngularSpeedResponse {
+    AngularSpeed attitude_angular_speed = 1;
 }
 
 message SubscribeCameraAttitudeQuaternionRequest {}
@@ -98,6 +106,16 @@ message StatusTextResponse {
     StatusText status_text = 1;
 }
 
+message SubscribeActuatorControlTargetRequest {}
+message ActuatorControlTargetResponse {
+    ActuatorControlTarget actuator_control_target = 1;
+}
+
+message SubscribeActuatorOutputStatusRequest {}
+message ActuatorOutputStatusResponse {
+    ActuatorOutputStatus actuator_output_status = 1;
+}
+
 message Position {
     double latitude_deg = 1;
     double longitude_deg = 2;
@@ -116,6 +134,12 @@ message EulerAngle {
     float roll_deg = 1;
     float pitch_deg = 2;
     float yaw_deg = 3;
+}
+
+message AngularSpeed {
+    float rollspeed = 1;
+    float pitchspeed = 2;
+    float yawspeed = 3;
 }
 
 message SpeedNed {
@@ -181,4 +205,14 @@ message StatusText {
     
     StatusType type = 1;
     string text = 2;
+}
+
+message ActuatorControlTarget {
+    int32 group = 1;
+    repeated float controls = 2;
+}
+
+message ActuatorOutputStatus {
+    uint32 active = 1;
+    repeated float actuator = 2;
 }
