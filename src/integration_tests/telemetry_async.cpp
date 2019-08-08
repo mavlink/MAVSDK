@@ -287,6 +287,7 @@ void print_unix_epoch_time_us(uint64_t time_us)
 #if __GNUC__ > 4
     LogInfo() << "UTC (" << time << "): " << std::put_time(std::gmtime(&time), "%c %Z");
 #else
+    // TODO: remove this once we don't have to build with gcc 4 any longer.
     char time_string[24];
     if (0 < strftime(time_string, sizeof(time_string), "%c %Z", std::gmtime(&time)))
         LogInfo() << time_string;
