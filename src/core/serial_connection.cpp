@@ -74,20 +74,8 @@ ConnectionResult SerialConnection::start()
 
 ConnectionResult SerialConnection::setup_port()
 {
-#if defined(LINUX)
-    _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
-    if (_fd == -1) {
-        LogErr() << "open failed: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
-    }
-    // We need to clear the O_NONBLOCK again because we can block while reading
-    // as we do it in a separate thread.
-    if (fcntl(_fd, F_SETFL, 0) == -1) {
-        LogErr() << "fcntl failed: " << GET_ERROR();
-        return ConnectionResult::CONNECTION_ERROR;
-    }
-#elif defined(APPLE)
-    // open() hangs on macOS unless you give it O_NONBLOCK
+#if defined(LINUX) || defined(APPLE)
+    // open() hangs on macOS or Linux devices(e.g. pocket beagle) unless you give it O_NONBLOCK
     _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
     if (_fd == -1) {
         LogErr() << "open failed: " << GET_ERROR();
