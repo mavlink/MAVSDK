@@ -864,7 +864,7 @@ public:
     typedef std::function<void(RCStatus rc_status)> rc_status_callback_t;
 
     /**
-     * @brief Callback type for UNIX Epoch Time updates.
+     * @brief Callback type for Unix Epoch Time updates.
      *
      * @param uint64_t Epoch time [us].
      */
