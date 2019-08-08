@@ -878,7 +878,7 @@ public:
     void rc_status_async(rc_status_callback_t callback);
 
     /**
-     * @brief Subscribe to UNIX Epoch Time updates (asynchronous).
+     * @brief Subscribe to Unix Epoch Time updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
