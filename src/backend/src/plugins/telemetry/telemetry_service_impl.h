@@ -314,6 +314,31 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeAttitudeAngularSpeed(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeAttitudeAngularSpeedRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::AttitudeAngularSpeedResponse>* writer) override
+    {
+        std::mutex attitude_angular_speed_mutex{};
+
+        _telemetry.attitude_angular_speed_async([&writer, &attitude_angular_speed_mutex](
+                                                    mavsdk::Telemetry::AngularSpeed angular_speed) {
+            auto rpc_angular_speed = new mavsdk::rpc::telemetry::AngularSpeed();
+            rpc_angular_speed->set_rollspeed(angular_speed.rollspeed);
+            rpc_angular_speed->set_pitchspeed(angular_speed.pitchspeed);
+            rpc_angular_speed->set_yawspeed(angular_speed.yawspeed);
+
+            mavsdk::rpc::telemetry::AttitudeAngularSpeedResponse rpc_angular_speed_response;
+            rpc_angular_speed_response.set_allocated_attitude_angular_speed(rpc_angular_speed);
+
+            std::lock_guard<std::mutex> lock(attitude_angular_speed_mutex);
+            writer->Write(rpc_angular_speed_response);
+        });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
     grpc::Status SubscribeAttitudeEuler(
         grpc::ServerContext* /* context */,
         const mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* /* request */,
@@ -434,6 +459,66 @@ public:
 
                 std::lock_guard<std::mutex> lock(rc_status_mutex);
                 writer->Write(rpc_rc_status_response);
+            });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeActuatorControlTarget(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::ActuatorControlTargetResponse>* writer) override
+    {
+        std::mutex actuator_control_target_mutex{};
+
+        _telemetry.actuator_control_target_async(
+            [&writer, &actuator_control_target_mutex](
+                mavsdk::Telemetry::ActuatorControlTarget actuator_control_target) {
+                auto rpc_actuator_control_target =
+                    new mavsdk::rpc::telemetry::ActuatorControlTarget();
+                rpc_actuator_control_target->set_group(actuator_control_target.group);
+                for (int i = 0; i < 8; i++) {
+                    rpc_actuator_control_target->add_controls(actuator_control_target.controls[i]);
+                }
+
+                mavsdk::rpc::telemetry::ActuatorControlTargetResponse
+                    rpc_actuator_control_target_response;
+                rpc_actuator_control_target_response.set_allocated_actuator_control_target(
+                    rpc_actuator_control_target);
+
+                std::lock_guard<std::mutex> lock(actuator_control_target_mutex);
+                writer->Write(rpc_actuator_control_target_response);
+            });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeActuatorOutputStatus(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::ActuatorOutputStatusResponse>* writer) override
+    {
+        std::mutex actuator_output_status_mutex{};
+
+        _telemetry.actuator_output_status_async(
+            [&writer, &actuator_output_status_mutex](
+                mavsdk::Telemetry::ActuatorOutputStatus actuator_output_status) {
+                auto rpc_actuator_output_status =
+                    new mavsdk::rpc::telemetry::ActuatorOutputStatus();
+                rpc_actuator_output_status->set_active(actuator_output_status.active);
+                for (unsigned i = 0; i < actuator_output_status.active; i++) {
+                    rpc_actuator_output_status->add_actuator(actuator_output_status.actuator[i]);
+                }
+
+                mavsdk::rpc::telemetry::ActuatorOutputStatusResponse
+                    rpc_actuator_output_status_response;
+                rpc_actuator_output_status_response.set_allocated_actuator_output_status(
+                    rpc_actuator_output_status);
+
+                std::lock_guard<std::mutex> lock(actuator_output_status_mutex);
+                writer->Write(rpc_actuator_output_status_response);
             });
 
         _stop_future.wait();

@@ -36,6 +36,8 @@ TEST_F(SitlTest, TelemetrySync)
     ASSERT_EQ(result, Telemetry::Result::SUCCESS);
     result = telemetry->set_rate_battery(10.0);
     ASSERT_EQ(result, Telemetry::Result::SUCCESS);
+    result = telemetry->set_rate_actuator_control_target(10.0);
+    ASSERT_EQ(result, Telemetry::Result::SUCCESS);
 
     // Print 3s of telemetry.
     for (unsigned i = 0; i < 50; ++i) {
@@ -63,6 +65,10 @@ TEST_F(SitlTest, TelemetrySync)
         std::cout << "Euler: (" << euler_angle.roll_deg << " deg, " << euler_angle.pitch_deg
                   << " deg," << euler_angle.yaw_deg << " deg)" << std::endl;
 
+        const Telemetry::AngularSpeed& angular_speed = telemetry->attitude_angular_speed();
+        std::cout << "Angular speed: (" << angular_speed.rollspeed << ", "
+                  << angular_speed.pitchspeed << "," << angular_speed.yawspeed << ")" << std::endl;
+
         const Telemetry::GroundSpeedNED& ground_speed_ned = telemetry->ground_speed_ned();
         std::cout << "Speed: (" << ground_speed_ned.velocity_north_m_s << " m/s, "
                   << ground_speed_ned.velocity_east_m_s << " m/s,"
@@ -75,6 +81,19 @@ TEST_F(SitlTest, TelemetrySync)
         const Telemetry::Battery& battery = telemetry->battery();
         std::cout << "Battery voltage: " << battery.voltage_v << " v, "
                   << "remaining: " << battery.remaining_percent * 100.0f << " %" << std::endl;
+
+        const Telemetry::ActuatorControlTarget& actuator_control_target =
+            telemetry->actuator_control_target();
+        std::cout << "Actuator control target: group: " << actuator_control_target.group
+                  << ", controls: [";
+        for (int k = 0; k < 8; k++) {
+            std::cout << actuator_control_target.controls[i];
+            if (k < 7) {
+                std::cout << ", ";
+            } else {
+                std::cout << "]" << std::endl;
+            }
+        }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(30));
     }

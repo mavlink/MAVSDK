@@ -37,9 +37,15 @@ using Quaternion = mavsdk::Telemetry::Quaternion;
 
 using EulerAngle = mavsdk::Telemetry::EulerAngle;
 
+using AngularSpeed = mavsdk::Telemetry::AngularSpeed;
+
 using GroundSpeedNed = mavsdk::Telemetry::GroundSpeedNED;
 
 using RcStatus = mavsdk::Telemetry::RCStatus;
+
+using ActuatorControlTarget = mavsdk::Telemetry::ActuatorControlTarget;
+
+using ActuatorOutputStatus = mavsdk::Telemetry::ActuatorOutputStatus;
 
 class TelemetryServiceImplTest : public ::testing::Test {
 protected:
@@ -99,6 +105,12 @@ protected:
     Quaternion createQuaternion(const float w, const float x, const float y, const float z) const;
     std::future<void> subscribeAttitudeQuaternionAsync(std::vector<Quaternion>& quaternions) const;
 
+    void checkSendsAttitudeAngularSpeeds(const std::vector<AngularSpeed>& angular_speeds) const;
+    AngularSpeed
+    createAngularSpeed(const float rollspeed, const float pitchspeed, const float yawspeed) const;
+    std::future<void>
+    subscribeAttitudeAngularSpeedAsync(std::vector<AngularSpeed>& angular_speeds) const;
+
     void checkSendsAttitudeEulerAngles(const std::vector<EulerAngle>& euler_angles) const;
     EulerAngle
     createEulerAngle(const float roll_deg, const float pitch_deg, const float yaw_deg) const;
@@ -124,6 +136,20 @@ protected:
         const bool is_available,
         const float signal_strength_percent) const;
     std::future<void> subscribeRcStatusAsync(std::vector<RcStatus>& rc_status_events) const;
+
+    void checkSendsActuatorControlTargetEvents(
+        const std::vector<ActuatorControlTarget>& actuator_control_target_events) const;
+    ActuatorControlTarget
+    createActuatorControlTarget(const uint8_t group, const float* controls) const;
+    std::future<void> subscribeActuatorControlTargetAsync(
+        std::vector<ActuatorControlTarget>& actuator_control_target_events) const;
+
+    void checkSendsActuatorOutputStatusEvents(
+        const std::vector<ActuatorOutputStatus>& actuator_output_status_events) const;
+    ActuatorOutputStatus
+    createActuatorOutputStatus(const uint8_t group, const float* controls) const;
+    std::future<void> subscribeActuatorOutputStatusAsync(
+        std::vector<ActuatorOutputStatus>& actuator_output_status_events) const;
 
     std::unique_ptr<grpc::Server> _server{};
     std::unique_ptr<TelemetryService::Stub> _stub{};
@@ -964,6 +990,17 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeQuaternionAsync)
     quaternion_stream_future.wait();
 }
 
+TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeAngularSpeedAsync)
+{
+    EXPECT_CALL(*_telemetry, attitude_angular_speed_async(_)).Times(1);
+
+    std::vector<AngularSpeed> angular_speeds;
+    auto angular_speed_stream_future = subscribeAttitudeAngularSpeedAsync(angular_speeds);
+
+    _telemetry_service->stop();
+    angular_speed_stream_future.wait();
+}
+
 std::future<void> TelemetryServiceImplTest::subscribeAttitudeQuaternionAsync(
     std::vector<Quaternion>& quaternions) const
 {
@@ -1000,12 +1037,55 @@ TEST_F(TelemetryServiceImplTest, doesNotSendAttitudeQuaternionIfCallbackNotCalle
     EXPECT_EQ(0, quaternions.size());
 }
 
+std::future<void> TelemetryServiceImplTest::subscribeAttitudeAngularSpeedAsync(
+    std::vector<AngularSpeed>& angular_speeds) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        mavsdk::rpc::telemetry::SubscribeAttitudeAngularSpeedRequest request;
+        auto response_reader = _stub->SubscribeAttitudeAngularSpeed(&context, request);
+
+        mavsdk::rpc::telemetry::AttitudeAngularSpeedResponse response;
+        while (response_reader->Read(&response)) {
+            auto angular_speed_rpc = response.attitude_angular_speed();
+
+            AngularSpeed angular_speed;
+            angular_speed.rollspeed = angular_speed_rpc.rollspeed();
+            angular_speed.pitchspeed = angular_speed_rpc.pitchspeed();
+            angular_speed.yawspeed = angular_speed_rpc.yawspeed();
+
+            angular_speeds.push_back(angular_speed);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+TEST_F(TelemetryServiceImplTest, doesNotSendAttitudeAngularSpeedIfCallbackNotCalled)
+{
+    std::vector<AngularSpeed> angular_speeds;
+    auto angular_speed_stream_future = subscribeAttitudeAngularSpeedAsync(angular_speeds);
+
+    _telemetry_service->stop();
+    angular_speed_stream_future.wait();
+
+    EXPECT_EQ(0, angular_speeds.size());
+}
+
 TEST_F(TelemetryServiceImplTest, sendsOneAttitudeQuaternion)
 {
     std::vector<Quaternion> quaternions;
     quaternions.push_back(createQuaternion(0.1f, 0.2f, 0.3f, 0.4f));
 
     checkSendsAttitudeQuaternions(quaternions);
+}
+
+TEST_F(TelemetryServiceImplTest, sendsOneAttitudeAngularSpeed)
+{
+    std::vector<AngularSpeed> angular_speed;
+    angular_speed.push_back(createAngularSpeed(0.1f, 0.2f, 0.3f));
+
+    checkSendsAttitudeAngularSpeeds(angular_speed);
 }
 
 Quaternion TelemetryServiceImplTest::createQuaternion(
@@ -1019,6 +1099,18 @@ Quaternion TelemetryServiceImplTest::createQuaternion(
     quaternion.z = z;
 
     return quaternion;
+}
+
+AngularSpeed TelemetryServiceImplTest::createAngularSpeed(
+    const float rollspeed, const float pitchspeed, const float yawspeed) const
+{
+    mavsdk::Telemetry::AngularSpeed angular_speed;
+
+    angular_speed.rollspeed = rollspeed;
+    angular_speed.pitchspeed = pitchspeed;
+    angular_speed.yawspeed = yawspeed;
+
+    return angular_speed;
 }
 
 void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(
@@ -1045,6 +1137,30 @@ void TelemetryServiceImplTest::checkSendsAttitudeQuaternions(
     }
 }
 
+void TelemetryServiceImplTest::checkSendsAttitudeAngularSpeeds(
+    const std::vector<AngularSpeed>& angular_speeds) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    mavsdk::Telemetry::attitude_angular_speed_callback_t attitude_angular_speed_callback;
+    EXPECT_CALL(*_telemetry, attitude_angular_speed_async(_))
+        .WillOnce(SaveCallback(&attitude_angular_speed_callback, &subscription_promise));
+
+    std::vector<AngularSpeed> received_angular_speeds;
+    auto angular_speed_stream_future = subscribeAttitudeAngularSpeedAsync(received_angular_speeds);
+    subscription_future.wait();
+    for (const auto angular_speed : angular_speeds) {
+        attitude_angular_speed_callback(angular_speed);
+    }
+    _telemetry_service->stop();
+    angular_speed_stream_future.wait();
+
+    ASSERT_EQ(angular_speeds.size(), received_angular_speeds.size());
+    for (size_t i = 0; i < angular_speeds.size(); i++) {
+        EXPECT_EQ(angular_speeds.at(i), received_angular_speeds.at(i));
+    }
+}
+
 TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeQuaternions)
 {
     std::vector<Quaternion> quaternions;
@@ -1053,6 +1169,16 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeQuaternions)
     quaternions.push_back(createQuaternion(5.2f, 5.9f, 1.1f, 0.8f));
 
     checkSendsAttitudeQuaternions(quaternions);
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleAttitudeAngularSpeeds)
+{
+    std::vector<AngularSpeed> angular_speed;
+    angular_speed.push_back(createAngularSpeed(0.1f, 0.2f, 0.3f));
+    angular_speed.push_back(createAngularSpeed(2.1f, 0.4f, -2.2f));
+    angular_speed.push_back(createAngularSpeed(5.2f, 5.9f, 1.1f));
+
+    checkSendsAttitudeAngularSpeeds(angular_speed);
 }
 
 TEST_F(TelemetryServiceImplTest, registersToTelemetryAttitudeEulerAsync)
@@ -1523,6 +1649,58 @@ void TelemetryServiceImplTest::checkSendsRcStatusEvents(
     }
 }
 
+std::future<void> TelemetryServiceImplTest::subscribeActuatorControlTargetAsync(
+    std::vector<ActuatorControlTarget>& actuator_control_target_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest request;
+        auto response_reader = _stub->SubscribeActuatorControlTarget(&context, request);
+
+        mavsdk::rpc::telemetry::ActuatorControlTargetResponse response;
+        while (response_reader->Read(&response)) {
+            auto actuator_control_target_rpc = response.actuator_control_target();
+
+            ActuatorControlTarget actuator_control_target{};
+            actuator_control_target.group = actuator_control_target_rpc.group();
+            int num_controls = std::min(8, actuator_control_target_rpc.controls_size());
+            for (int i = 0; i < num_controls; i++) {
+                actuator_control_target.controls[i] = actuator_control_target_rpc.controls(i);
+            }
+
+            actuator_control_target_events.push_back(actuator_control_target);
+        }
+
+        response_reader->Finish();
+    });
+}
+
+std::future<void> TelemetryServiceImplTest::subscribeActuatorOutputStatusAsync(
+    std::vector<ActuatorOutputStatus>& actuator_output_status_events) const
+{
+    return std::async(std::launch::async, [&]() {
+        grpc::ClientContext context;
+        mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest request;
+        auto response_reader = _stub->SubscribeActuatorOutputStatus(&context, request);
+
+        mavsdk::rpc::telemetry::ActuatorOutputStatusResponse response;
+        while (response_reader->Read(&response)) {
+            auto actuator_output_status_rpc = response.actuator_output_status();
+
+            ActuatorOutputStatus actuator_output_status{};
+            actuator_output_status.active = actuator_output_status_rpc.active();
+            int num_actuators = std::min(32, actuator_output_status_rpc.actuator_size());
+            for (int i = 0; i < num_actuators; i++) {
+                actuator_output_status.actuator[i] = actuator_output_status_rpc.actuator(i);
+            }
+
+            actuator_output_status_events.push_back(actuator_output_status);
+        }
+
+        response_reader->Finish();
+    });
+}
+
 TEST_F(TelemetryServiceImplTest, sendsMultipleRcStatusEvents)
 {
     std::vector<RcStatus> rc_status_events;
@@ -1531,6 +1709,110 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleRcStatusEvents)
     rc_status_events.push_back(createRcStatus(true, true, 89.12f));
 
     checkSendsRcStatusEvents(rc_status_events);
+}
+
+ActuatorControlTarget TelemetryServiceImplTest::createActuatorControlTarget(
+    const uint8_t group, const float* controls) const
+{
+    ActuatorControlTarget actuator_control_target;
+
+    actuator_control_target.group = group;
+    std::copy(controls, controls + 8, actuator_control_target.controls);
+
+    return actuator_control_target;
+}
+
+ActuatorOutputStatus TelemetryServiceImplTest::createActuatorOutputStatus(
+    const uint8_t active, const float* actuators) const
+{
+    ActuatorOutputStatus actuator_output_status;
+
+    actuator_output_status.active = active;
+    std::copy(actuators, actuators + active, actuator_output_status.actuator);
+
+    return actuator_output_status;
+}
+
+void TelemetryServiceImplTest::checkSendsActuatorControlTargetEvents(
+    const std::vector<ActuatorControlTarget>& actuator_control_target_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    mavsdk::Telemetry::actuator_control_target_callback_t actuator_control_target_callback;
+    EXPECT_CALL(*_telemetry, actuator_control_target_async(_))
+        .WillOnce(SaveCallback(&actuator_control_target_callback, &subscription_promise));
+
+    std::vector<ActuatorControlTarget> received_actuator_control_target_events;
+    auto actuator_control_target_stream_future =
+        subscribeActuatorControlTargetAsync(received_actuator_control_target_events);
+    subscription_future.wait();
+    for (const auto actuator_control_target : actuator_control_target_events) {
+        actuator_control_target_callback(actuator_control_target);
+    }
+    _telemetry_service->stop();
+    actuator_control_target_stream_future.wait();
+
+    ASSERT_EQ(
+        actuator_control_target_events.size(), received_actuator_control_target_events.size());
+    for (size_t i = 0; i < actuator_control_target_events.size(); i++) {
+        EXPECT_EQ(
+            actuator_control_target_events.at(i), received_actuator_control_target_events.at(i));
+    }
+}
+
+void TelemetryServiceImplTest::checkSendsActuatorOutputStatusEvents(
+    const std::vector<ActuatorOutputStatus>& actuator_output_status_events) const
+{
+    std::promise<void> subscription_promise;
+    auto subscription_future = subscription_promise.get_future();
+    mavsdk::Telemetry::actuator_output_status_callback_t actuator_output_status_callback;
+    EXPECT_CALL(*_telemetry, actuator_output_status_async(_))
+        .WillOnce(SaveCallback(&actuator_output_status_callback, &subscription_promise));
+
+    std::vector<ActuatorOutputStatus> received_actuator_output_status_events;
+    auto actuator_output_status_stream_future =
+        subscribeActuatorOutputStatusAsync(received_actuator_output_status_events);
+    subscription_future.wait();
+    for (const auto actuator_output_status : actuator_output_status_events) {
+        actuator_output_status_callback(actuator_output_status);
+    }
+    _telemetry_service->stop();
+    actuator_output_status_stream_future.wait();
+
+    ASSERT_EQ(actuator_output_status_events.size(), received_actuator_output_status_events.size());
+    for (size_t i = 0; i < actuator_output_status_events.size(); i++) {
+        EXPECT_EQ(
+            actuator_output_status_events.at(i), received_actuator_output_status_events.at(i));
+    }
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleActuatorControlTargetEvents)
+{
+    std::vector<ActuatorControlTarget> actuator_control_target_events;
+    const float controls[8] = {0.0f, 0.1, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f};
+    actuator_control_target_events.push_back(createActuatorControlTarget(0, controls));
+    actuator_control_target_events.push_back(createActuatorControlTarget(1, controls));
+    actuator_control_target_events.push_back(createActuatorControlTarget(2, controls));
+    actuator_control_target_events.push_back(createActuatorControlTarget(3, controls));
+
+    checkSendsActuatorControlTargetEvents(actuator_control_target_events);
+}
+
+TEST_F(TelemetryServiceImplTest, sendsMultipleActuatorOutputStatusEvents)
+{
+    std::vector<ActuatorOutputStatus> actuator_output_status_events;
+
+    float actuators[32]{};
+    for (int i = 0; i < 32; i++) {
+        actuators[i] = i * 2;
+    };
+
+    actuator_output_status_events.push_back(createActuatorOutputStatus(8, actuators));
+    actuator_output_status_events.push_back(createActuatorOutputStatus(10, actuators));
+    actuator_output_status_events.push_back(createActuatorOutputStatus(17, actuators));
+    actuator_output_status_events.push_back(createActuatorOutputStatus(32, actuators));
+
+    checkSendsActuatorOutputStatusEvents(actuator_output_status_events);
 }
 
 } // namespace
