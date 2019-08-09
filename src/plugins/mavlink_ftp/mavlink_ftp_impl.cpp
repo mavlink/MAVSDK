@@ -130,6 +130,7 @@ void MavlinkFTPImpl::_process_nak(PayloadHeader* payload)
 {
     if (payload != nullptr) {
         ServerResult sr = static_cast<ServerResult>(payload->data[0]);
+        // PX4 Mavlink FTP returns "File doesn't exist" this way
         if (sr == ServerResult::ERR_FAIL_ERRNO && payload->data[1] == ENOENT) {
             sr = ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
         }
@@ -346,6 +347,11 @@ void MavlinkFTPImpl::upload_async(
     std::lock_guard<std::mutex> lock(_curr_op_mutex);
     if (_curr_op != CMD_NONE) {
         result_callback(MavlinkFTP::Result::IN_PROGRESS);
+        return;
+    }
+
+    if (!fs::exists(local_file_path)) {
+        result_callback(MavlinkFTP::Result::FILE_DOES_NOT_EXIST);
         return;
     }
 
@@ -855,8 +861,7 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_list(PayloadHeader* payload, 
     if (!fs::exists(path)) {
         LogWarn() << "FTP: can't open path " << path;
         // this is not an FTP error, abort directory by simulating eof
-        errno = ENOENT;
-        return ServerResult::ERR_FAIL_ERRNO;
+        return ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
     }
 
     for (auto entry : fs::directory_iterator(path)) {
@@ -902,9 +907,9 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_open(PayloadHeader* payload, 
     }
 
     // fail only if requested open for read
-    if (oflag & O_RDONLY && !fs::exists(path)) {
+    if ((oflag & O_RDONLY) && !fs::exists(path)) {
         LogWarn() << "FTP: Open failed - file not found";
-        return ServerResult::ERR_FAIL;
+        return ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
     }
 
     std::error_code ec;
@@ -920,7 +925,7 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_open(PayloadHeader* payload, 
 
     if (fd < 0) {
         LogWarn() << "FTP: Open failed";
-        return ServerResult::ERR_FAIL;
+        return (errno == ENOENT) ? ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST : ServerResult::ERR_FAIL;
     }
 
     _session_info.fd = fd;
@@ -1101,6 +1106,11 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_rename(PayloadHeader* payload
     if (old_name.rfind(_root_dir, 0) != 0 || new_name.rfind(_root_dir, 0) != 0) {
         return ServerResult::ERR_FAIL;
     }
+
+    if (!fs::exists(old_name)) {
+        return ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
+    }
+
     std::error_code ec;
     fs::rename(old_name, new_name, ec);
     if (!ec) {
@@ -1112,16 +1122,19 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_rename(PayloadHeader* payload
 
 MavlinkFTP::Result MavlinkFTPImpl::calc_local_file_crc32(const std::string& path, uint32_t& csum)
 {
-    Crc32 checksum;
-    ssize_t bytes_read;
-    int fd = ::open(path.c_str(), O_RDONLY);
+    if (!fs::exists(path)) {
+        return MavlinkFTP::Result::FILE_DOES_NOT_EXIST;
+    }
 
+    int fd = ::open(path.c_str(), O_RDONLY);
     if (fd < 0) {
         return MavlinkFTP::Result::FILE_IO_ERROR;
     }
 
     // Read whole file in buffer size chunks
+    Crc32 checksum;
     char buffer[18392];
+    ssize_t bytes_read;
     do {
         bytes_read = ::read(fd, buffer, sizeof(buffer));
 
@@ -1148,6 +1161,10 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_calc_file_CRC32(PayloadHeader
     if (path.rfind(_root_dir, 0) != 0) {
         LogWarn() << "FTP: invalid path " << path;
         return ServerResult::ERR_FAIL;
+    }
+
+    if (!fs::exists(path)) {
+        return ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
     }
 
     payload->size = sizeof(uint32_t);

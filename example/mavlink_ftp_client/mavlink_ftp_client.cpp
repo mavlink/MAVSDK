@@ -151,7 +151,7 @@ MavlinkFTP::Result download_file(
         remote_file_path,
         local_path,
         [](uint32_t bytes_transferred, uint32_t file_size) {
-            int percentage = bytes_transferred * 100 / file_size;
+            int percentage = (file_size > 0) ? bytes_transferred * 100 / file_size : 0;
             std::cout << NORMAL_CONSOLE_TEXT << "\rDownloading [" << std::setw(3) << percentage
                       << "%] " << bytes_transferred << " of " << file_size;
             if (bytes_transferred == file_size) {
@@ -175,7 +175,7 @@ MavlinkFTP::Result upload_file(
         local_file_path,
         remote_path,
         [](uint32_t bytes_transferred, uint32_t file_size) {
-            int percentage = bytes_transferred * 100 / file_size;
+            int percentage = (file_size > 0) ? bytes_transferred * 100 / file_size : 0;
             std::cout << NORMAL_CONSOLE_TEXT << "\rUploading [" << std::setw(3) << percentage
                       << "%] " << bytes_transferred << " of " << file_size;
             if (bytes_transferred == file_size) {
@@ -293,21 +293,21 @@ int main(int argc, char** argv)
         } else {
             std::cout << ERROR_CONSOLE_TEXT << "File upload error: " << mavlink_ftp->result_str(res)
                       << NORMAL_CONSOLE_TEXT << std::endl;
-            return 1;
+            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
         }
     } else if (command == "get") {
         if (argc < 5) {
             usage(argv[0]);
             return 1;
         }
-        res = download_file(mavlink_ftp, argv[4], (argc == 5) ? argv[5] : ".");
+        res = download_file(mavlink_ftp, argv[4], (argc == 6) ? argv[5] : ".");
         if (res == MavlinkFTP::Result::SUCCESS) {
             std::cout << "File downloaded." << std::endl;
         } else {
             std::cout << ERROR_CONSOLE_TEXT
                       << "File download error: " << mavlink_ftp->result_str(res)
                       << NORMAL_CONSOLE_TEXT << std::endl;
-            return 1;
+            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
         }
     } else if (command == "rename") {
         if (argc < 6) {
@@ -320,7 +320,7 @@ int main(int argc, char** argv)
         } else {
             std::cout << ERROR_CONSOLE_TEXT << "File rename error: " << mavlink_ftp->result_str(res)
                       << NORMAL_CONSOLE_TEXT << std::endl;
-            return 1;
+            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
         }
     } else if (command == "mkdir") {
         if (argc < 5) {
@@ -405,16 +405,13 @@ int main(int argc, char** argv)
         }
         uint32_t crc32;
         res = get_file_checksum(mavlink_ftp, argv[4], crc32);
-        if (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) {
-            std::cout << "File does not exist." << std::endl;
-            return 2;
-        } else if (res == MavlinkFTP::Result::SUCCESS) {
+        if (res == MavlinkFTP::Result::SUCCESS) {
             std::cout << "CRC32=" << crc32 << std::endl;
         } else {
             std::cout << ERROR_CONSOLE_TEXT
                       << "Get file crc32 error: " << mavlink_ftp->result_str(res)
                       << NORMAL_CONSOLE_TEXT << std::endl;
-            return 1;
+            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
         }
     } else if (command == "localcrc32") {
         if (argc < 5) {
@@ -429,7 +426,7 @@ int main(int argc, char** argv)
             std::cout << ERROR_CONSOLE_TEXT
                       << "Get local file crc32 error: " << mavlink_ftp->result_str(res)
                       << NORMAL_CONSOLE_TEXT << std::endl;
-            return 1;
+            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
         }
     } else if (command == "cmp") {
         if (argc < 6) {
@@ -442,18 +439,15 @@ int main(int argc, char** argv)
             std::cout << ERROR_CONSOLE_TEXT
                       << "Get local file crc32 error: " << mavlink_ftp->result_str(res)
                       << NORMAL_CONSOLE_TEXT << std::endl;
-            return 1;
+            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
         }
         uint32_t crc32_rem;
         res = get_file_checksum(mavlink_ftp, argv[5], crc32_rem);
-        if (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) {
-            std::cout << "File does not exist." << std::endl;
-            return 2;
-        } else if (res != MavlinkFTP::Result::SUCCESS) {
+        if (res != MavlinkFTP::Result::SUCCESS) {
             std::cout << ERROR_CONSOLE_TEXT
                       << "Get file crc32 error: " << mavlink_ftp->result_str(res)
                       << NORMAL_CONSOLE_TEXT << std::endl;
-            return 1;
+            return (res == MavlinkFTP::Result::FILE_DOES_NOT_EXIST) ? 2 : 1;
         }
         if (crc32_loc == crc32_rem) {
             std::cout << "Files are equal" << std::endl;
@@ -464,7 +458,6 @@ int main(int argc, char** argv)
     } else {
         std::cout << ERROR_CONSOLE_TEXT << "Unknown command: " << command << NORMAL_CONSOLE_TEXT
                   << std::endl;
-        ;
         return 1;
     }
 
