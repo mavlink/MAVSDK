@@ -203,12 +203,6 @@ void SystemImpl::remove_call_every(const void* cookie)
 
 void SystemImpl::process_heartbeat(const mavlink_message_t& message)
 {
-    // FIXME: for now we ignore heartbeats from UDP_BRIDGE because that's just
-    // confusing since it doesn't mean a vehicle is connected.
-    if (message.compid == MAV_COMP_ID_UDP_BRIDGE) {
-        return;
-    }
-
     mavlink_heartbeat_t heartbeat;
     mavlink_msg_heartbeat_decode(&message, &heartbeat);
 

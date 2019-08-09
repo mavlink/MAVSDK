@@ -1,4 +1,6 @@
 #include <iostream>
+#include <iomanip>
+#include <ctime>
 #include "integration_test_helper.h"
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
@@ -25,6 +27,7 @@ static void print_gps_info(Telemetry::GPSInfo gps_info);
 static void print_battery(Telemetry::Battery battery);
 static void print_rc_status(Telemetry::RCStatus rc_status);
 static void print_position_velocity_ned(Telemetry::PositionVelocityNED position_velocity_ned);
+static void print_unix_epoch_time_us(uint64_t time_us);
 
 static bool _set_rate_error = false;
 static bool _received_position = false;
@@ -121,6 +124,8 @@ TEST_F(SitlTest, TelemetryAsync)
     telemetry->rc_status_async(std::bind(&print_rc_status, _1));
 
     telemetry->position_velocity_ned_async(std::bind(&print_position_velocity_ned, _1));
+
+    telemetry->unix_epoch_time_async(std::bind(&print_unix_epoch_time_us, _1));
 
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
@@ -274,4 +279,17 @@ void print_position_velocity_ned(Telemetry::PositionVelocityNED position_velocit
               << std::endl;
 
     _received_position_velocity_ned = true;
+}
+
+void print_unix_epoch_time_us(uint64_t time_us)
+{
+    std::time_t time = time_us / 10E5;
+#if __GNUC__ > 4
+    LogInfo() << "UTC (" << time << "): " << std::put_time(std::gmtime(&time), "%c %Z");
+#else
+    // TODO: remove this once we don't have to build with gcc 4 any longer.
+    char time_string[24];
+    if (0 < strftime(time_string, sizeof(time_string), "%c %Z", std::gmtime(&time)))
+        LogInfo() << time_string;
+#endif
 }
