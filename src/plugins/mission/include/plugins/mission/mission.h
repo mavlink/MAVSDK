@@ -183,6 +183,13 @@ public:
     void pause_mission_async(result_callback_t callback);
 
     /**
+     * @brief Clears the mission saved on the vehicle (asynchronous).
+     *
+     * @param callback Callback to receive result of this request.
+     */
+    void clear_mission_async(result_callback_t callback);
+
+    /**
      * @brief Sets the mission item index to go to (asynchronous).
      *
      * By setting the current index to 0, the mission is restarted from the beginning. If it is set
