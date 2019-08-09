@@ -140,14 +140,13 @@ protected:
     void checkSendsActuatorControlTargetEvents(
         const std::vector<ActuatorControlTarget>& actuator_control_target_events) const;
     ActuatorControlTarget
-    createActuatorControlTarget(const uint8_t group, const float* controls) const;
+    createActuatorControlTarget(const uint8_t group, const std::vector<float>& controls) const;
     std::future<void> subscribeActuatorControlTargetAsync(
         std::vector<ActuatorControlTarget>& actuator_control_target_events) const;
 
     void checkSendsActuatorOutputStatusEvents(
         const std::vector<ActuatorOutputStatus>& actuator_output_status_events) const;
-    ActuatorOutputStatus
-    createActuatorOutputStatus(const uint8_t group, const float* controls) const;
+    ActuatorOutputStatus createActuatorOutputStatus(const std::vector<float>& actuators) const;
     std::future<void> subscribeActuatorOutputStatusAsync(
         std::vector<ActuatorOutputStatus>& actuator_output_status_events) const;
 
@@ -1712,23 +1711,24 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleRcStatusEvents)
 }
 
 ActuatorControlTarget TelemetryServiceImplTest::createActuatorControlTarget(
-    const uint8_t group, const float* controls) const
+    const uint8_t group, const std::vector<float>& controls) const
 {
-    ActuatorControlTarget actuator_control_target;
+    ActuatorControlTarget actuator_control_target{};
 
     actuator_control_target.group = group;
-    std::copy(controls, controls + 8, actuator_control_target.controls);
+    int controls_len = std::min<size_t>(8, controls.size());
+    std::copy_n(controls.begin(), controls_len, actuator_control_target.controls);
 
     return actuator_control_target;
 }
 
-ActuatorOutputStatus TelemetryServiceImplTest::createActuatorOutputStatus(
-    const uint8_t active, const float* actuators) const
+ActuatorOutputStatus
+TelemetryServiceImplTest::createActuatorOutputStatus(const std::vector<float>& actuators) const
 {
     ActuatorOutputStatus actuator_output_status;
 
-    actuator_output_status.active = active;
-    std::copy(actuators, actuators + active, actuator_output_status.actuator);
+    actuator_output_status.active = std::min<size_t>(32, actuators.size());
+    std::copy_n(actuators.begin(), actuator_output_status.active, actuator_output_status.actuator);
 
     return actuator_output_status;
 }
@@ -1789,7 +1789,7 @@ void TelemetryServiceImplTest::checkSendsActuatorOutputStatusEvents(
 TEST_F(TelemetryServiceImplTest, sendsMultipleActuatorControlTargetEvents)
 {
     std::vector<ActuatorControlTarget> actuator_control_target_events;
-    const float controls[8] = {0.0f, 0.1, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f};
+    std::vector<float> controls{0.0f, 0.1, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f};
     actuator_control_target_events.push_back(createActuatorControlTarget(0, controls));
     actuator_control_target_events.push_back(createActuatorControlTarget(1, controls));
     actuator_control_target_events.push_back(createActuatorControlTarget(2, controls));
@@ -1802,15 +1802,18 @@ TEST_F(TelemetryServiceImplTest, sendsMultipleActuatorOutputStatusEvents)
 {
     std::vector<ActuatorOutputStatus> actuator_output_status_events;
 
-    float actuators[32]{};
+    std::vector<float> actuators;
     for (int i = 0; i < 32; i++) {
-        actuators[i] = i * 2;
+        actuators.push_back(i * 2);
     };
 
-    actuator_output_status_events.push_back(createActuatorOutputStatus(8, actuators));
-    actuator_output_status_events.push_back(createActuatorOutputStatus(10, actuators));
-    actuator_output_status_events.push_back(createActuatorOutputStatus(17, actuators));
-    actuator_output_status_events.push_back(createActuatorOutputStatus(32, actuators));
+    actuator_output_status_events.push_back(createActuatorOutputStatus(actuators));
+    actuators.resize(27);
+    actuator_output_status_events.push_back(createActuatorOutputStatus(actuators));
+    actuators.resize(16);
+    actuator_output_status_events.push_back(createActuatorOutputStatus(actuators));
+    actuators.resize(5);
+    actuator_output_status_events.push_back(createActuatorOutputStatus(actuators));
 
     checkSendsActuatorOutputStatusEvents(actuator_output_status_events);
 }
