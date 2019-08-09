@@ -250,6 +250,12 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    auto status = future_result.wait_for(std::chrono::seconds(5));
+    if (status == std::future_status::timeout) {
+        std::cout << "Timeout waiting for connection." << std::endl;
+        return 1;
+    }
+
     future_result.get();
 
     System& system = mavsdk.system();
