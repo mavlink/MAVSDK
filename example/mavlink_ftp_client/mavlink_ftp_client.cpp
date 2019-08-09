@@ -32,7 +32,7 @@ void usage(const std::string& bin_name)
               << " For Serial : serial:///path/to/serial/dev[:baudrate]" << std::endl
               << "For example, to connect to the simulator use URL: udp://:14540" << std::endl
               << std::endl
-              << "Server component id is for example 1 for autopilot or 99 for companion computer."
+              << "Server component id is for example 1 for autopilot or 240 for companion computer."
               << std::endl
               << std::endl
               << "Supported commands :" << std::endl

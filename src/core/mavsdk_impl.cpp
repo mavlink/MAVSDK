@@ -312,7 +312,7 @@ uint8_t MavsdkImpl::get_own_system_id() const
 {
     switch (_configuration.load()) {
         case Mavsdk::Configuration::GroundStation:
-            return 254;
+            return MAV_COMP_ID_MISSIONPLANNER;
 
         case Mavsdk::Configuration::CompanionComputer:
             // FIXME: This should be the same as the drone but we need to
@@ -334,8 +334,7 @@ uint8_t MavsdkImpl::get_own_component_id() const
 
         case Mavsdk::Configuration::CompanionComputer:
             // It's at least a possibility that we are bridging MAVLink traffic.
-            //return MAV_COMP_ID_UDP_BRIDGE;
-            return 99;
+            return MAV_COMP_ID_UDP_BRIDGE;
 
         default:
             LogErr() << "Unknown configuration";
