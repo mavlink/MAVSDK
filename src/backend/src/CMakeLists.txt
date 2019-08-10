@@ -83,9 +83,14 @@ else()
         mavsdk
     )
 
-    set_target_properties(mavsdk_server_bin PROPERTIES
-        OUTPUT_NAME mavsdk_server
-    )
+    # MSVC fails to generate the `mavsdk_server` binary while having
+    # a library called `mavsdk_server` as well. This means that with
+    # MSVC, we build `mavsdk_server_bin.exe`.
+    if(NOT MSVC)
+        set_target_properties(mavsdk_server_bin PROPERTIES
+            OUTPUT_NAME mavsdk_server
+        )
+    endif()
 
     install(TARGETS mavsdk_server_bin
         EXPORT mavsdk-targets
