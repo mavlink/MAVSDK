@@ -12,7 +12,7 @@ service TelemetryService {
     rpc SubscribeArmed(SubscribeArmedRequest) returns(stream ArmedResponse) {}
     rpc SubscribeAttitudeQuaternion(SubscribeAttitudeQuaternionRequest) returns(stream AttitudeQuaternionResponse) {}
     rpc SubscribeAttitudeEuler(SubscribeAttitudeEulerRequest) returns(stream AttitudeEulerResponse) {}
-    rpc SubscribeAttitudeAngularSpeed(SubscribeAttitudeAngularSpeedRequest) returns(stream AttitudeAngularSpeedResponse) {}
+    rpc SubscribeAttitudeAngularVelocityBody(SubscribeAttitudeAngularVelocityBodyRequest) returns(stream AttitudeAngularVelocityBodyResponse) {}
     rpc SubscribeCameraAttitudeQuaternion(SubscribeCameraAttitudeQuaternionRequest) returns(stream CameraAttitudeQuaternionResponse) {}
     rpc SubscribeCameraAttitudeEuler(SubscribeCameraAttitudeEulerRequest) returns(stream CameraAttitudeEulerResponse) {}
     rpc SubscribeGroundSpeedNed(SubscribeGroundSpeedNedRequest) returns(stream GroundSpeedNedResponse) {}
@@ -56,9 +56,9 @@ message AttitudeEulerResponse {
     EulerAngle attitude_euler = 1;
 }
 
-message SubscribeAttitudeAngularSpeedRequest {}
-message AttitudeAngularSpeedResponse {
-    AngularSpeed attitude_angular_speed = 1;
+message SubscribeAttitudeAngularVelocityBodyRequest {}
+message AttitudeAngularVelocityBodyResponse {
+    AngularVelocityBody attitude_angular_velocity_body = 1;
 }
 
 message SubscribeCameraAttitudeQuaternionRequest {}
@@ -136,10 +136,10 @@ message EulerAngle {
     float yaw_deg = 3;
 }
 
-message AngularSpeed {
-    float rollspeed = 1;
-    float pitchspeed = 2;
-    float yawspeed = 3;
+message AngularVelocityBody {
+    float roll_rad_s = 1;
+    float pitch_rad_s = 2;
+    float yaw_rad_s = 3;
 }
 
 message SpeedNed {
