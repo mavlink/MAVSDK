@@ -37,6 +37,13 @@ target_link_libraries(mavsdk
     ${CMAKE_THREAD_LIBS_INIT}
 )
 
+if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
+    # It seems like on platforms like Raspberry Pi we need to link to libatomic.
+    target_link_libraries(mavsdk
+        atomic
+    )
+endif()
+
 if (IOS)
     target_link_libraries(mavsdk
         PUBLIC
