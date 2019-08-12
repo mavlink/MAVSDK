@@ -185,9 +185,9 @@ Telemetry::EulerAngle Telemetry::attitude_euler_angle() const
     return _impl->get_attitude_euler_angle();
 }
 
-Telemetry::AngularSpeed Telemetry::attitude_angular_speed() const
+Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
 {
-    return _impl->get_attitude_angular_speed();
+    return _impl->get_attitude_angular_velocity_body();
 }
 
 Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
@@ -290,9 +290,10 @@ void Telemetry::attitude_euler_angle_async(attitude_euler_angle_callback_t callb
     return _impl->attitude_euler_angle_async(callback);
 }
 
-void Telemetry::attitude_angular_speed_async(attitude_angular_speed_callback_t callback)
+void Telemetry::attitude_angular_velocity_body_async(
+    attitude_angular_velocity_body_callback_t callback)
 {
-    return _impl->attitude_angular_speed_async(callback);
+    return _impl->attitude_angular_velocity_body_async(callback);
 }
 
 void Telemetry::camera_attitude_quaternion_async(attitude_quaternion_callback_t callback)
@@ -596,17 +597,19 @@ std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_a
                << ", yaw_deg: " << euler_angle.yaw_deg << "]";
 }
 
-bool operator==(const Telemetry::AngularSpeed& lhs, const Telemetry::AngularSpeed& rhs)
+bool operator==(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs)
 {
-    return lhs.rollspeed == rhs.rollspeed && lhs.pitchspeed == rhs.pitchspeed &&
-           lhs.yawspeed == rhs.yawspeed;
+    return lhs.roll_rad_s == rhs.roll_rad_s && lhs.pitch_rad_s == rhs.pitch_rad_s &&
+           lhs.yaw_rad_s == rhs.yaw_rad_s;
 }
 
-std::ostream& operator<<(std::ostream& str, Telemetry::AngularSpeed const& angular_speed)
+std::ostream&
+operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body)
 {
-    return str << "[rollspeed: " << angular_speed.rollspeed
-               << ", pitchspeed: " << angular_speed.pitchspeed
-               << ", yawspeed: " << angular_speed.yawspeed << "]";
+    return str << "[angular_velocity_body_roll_rad_s: " << angular_velocity_body.roll_rad_s
+               << ", angular_velocity_body_pitch_rad_s: " << angular_velocity_body.pitch_rad_s
+               << ", angular_velocity_body_yaw_rad_s: " << angular_velocity_body.yaw_rad_s << "]";
 }
 
 bool operator==(const Telemetry::GroundSpeedNED& lhs, const Telemetry::GroundSpeedNED& rhs)

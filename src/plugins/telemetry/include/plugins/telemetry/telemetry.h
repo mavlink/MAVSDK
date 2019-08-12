@@ -110,14 +110,14 @@ public:
     };
 
     /**
-     * @brief Angular speed type.
+     * @brief Angular velocity type.
      *
-     * The angular speed of vehicle body in radians/second.
+     * The angular velocity of vehicle body in radians/second.
      */
-    struct AngularSpeed {
-        float rollspeed; /**< @brief Roll angular speed */
-        float pitchspeed; /**< @brief Pitch angular speed */
-        float yawspeed; /**< @brief Yaw angular speed */
+    struct AngularVelocityBody {
+        float roll_rad_s; /**< @brief Roll angular velocity */
+        float pitch_rad_s; /**< @brief Pitch angular velocity */
+        float yaw_rad_s; /**< @brief Yaw angular velocity */
     };
 
     /**
@@ -646,7 +646,7 @@ public:
      *
      * @return Angular speed.
      */
-    AngularSpeed attitude_angular_speed() const;
+    AngularVelocityBody attitude_angular_velocity_body() const;
 
     /**
      * @brief Get the camera's attitude in quaternions (synchronous).
@@ -838,18 +838,19 @@ public:
     void attitude_euler_angle_async(attitude_euler_angle_callback_t callback);
 
     /**
-     * @brief Callback type for angular speed updates in quaternion.
+     * @brief Callback type for angular velocity updates in quaternion.
      *
-     * @param angular_speed Angular speed.
+     * @param angular_velocity_body Angular velocity.
      */
-    typedef std::function<void(AngularSpeed angular_speed)> attitude_angular_speed_callback_t;
+    typedef std::function<void(AngularVelocityBody angular_velocity_body)>
+        attitude_angular_velocity_body_callback_t;
 
     /**
-     * @brief Subscribe to attitude updates in angular speed (asynchronous).
+     * @brief Subscribe to attitude updates in angular velocity (asynchronous).
      *
      * @param callback Function to call with updates.
      */
-    void attitude_angular_speed_async(attitude_angular_speed_callback_t callback);
+    void attitude_angular_velocity_body_async(attitude_angular_velocity_body_callback_t callback);
 
     /**
      * @brief Subscribe to camera attitude updates in quaternion (asynchronous).
@@ -1193,18 +1194,20 @@ bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& r
 std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle);
 
 /**
- * @brief Equal operator to compare two `Telemetry::AngularSpeed` objects.
+ * @brief Equal operator to compare two `Telemetry::AngularVelocityBody` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::AngularSpeed& lhs, const Telemetry::AngularSpeed& rhs);
+bool operator==(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
 
 /**
- * @brief Stream operator to print information about a `Telemetry::AngularSpeed`.
+ * @brief Stream operator to print information about a `Telemetry::AngularVelocityBody`.
  *
  * @return A reference to the stream.
  */
-std::ostream& operator<<(std::ostream& str, Telemetry::AngularSpeed const& angular_speed);
+std::ostream&
+operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body);
 
 /**
  * @brief Equal operator to compare two `Telemetry::GroundSpeedNED` objects.

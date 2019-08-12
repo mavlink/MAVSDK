@@ -17,7 +17,7 @@ static void print_in_air(bool in_air);
 static void print_armed(bool armed);
 static void print_quaternion(Telemetry::Quaternion quaternion);
 static void print_euler_angle(Telemetry::EulerAngle euler_angle);
-static void print_angular_speed(Telemetry::AngularSpeed angular_speed);
+static void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
 #if CAMERA_AVAILABLE == 1
 static void print_camera_quaternion(Telemetry::Quaternion quaternion);
 static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
@@ -39,7 +39,7 @@ static bool _received_in_air = false;
 static bool _received_armed = false;
 static bool _received_quaternion = false;
 static bool _received_euler_angle = false;
-static bool _received_angular_speed = false;
+static bool _received_angular_velocity_body = false;
 #if CAMERA_AVAILABLE == 1
 static bool _received_camera_quaternion = false;
 static bool _received_camera_euler_angle = false;
@@ -116,7 +116,7 @@ TEST_F(SitlTest, TelemetryAsync)
 
     telemetry->attitude_euler_angle_async(std::bind(&print_euler_angle, _1));
 
-    telemetry->attitude_angular_speed_async(std::bind(&print_angular_speed, _1));
+    telemetry->attitude_angular_velocity_body_async(std::bind(&print_angular_velocity_body, _1));
 
 #if CAMERA_AVAILABLE == 1
     telemetry->camera_attitude_quaternion_async(std::bind(&print_camera_quaternion, _1));
@@ -150,7 +150,7 @@ TEST_F(SitlTest, TelemetryAsync)
     EXPECT_TRUE(_received_in_air);
     EXPECT_TRUE(_received_armed);
     EXPECT_TRUE(_received_quaternion);
-    EXPECT_TRUE(_received_angular_speed);
+    EXPECT_TRUE(_received_angular_velocity_body);
     EXPECT_TRUE(_received_euler_angle);
 #if CAMERA_AVAILABLE == 1
     EXPECT_TRUE(_received_camera_quaternion);
@@ -219,12 +219,13 @@ void print_euler_angle(Telemetry::EulerAngle euler_angle)
     _received_euler_angle = true;
 }
 
-void print_angular_speed(Telemetry::AngularSpeed angular_speed)
+void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body)
 {
-    std::cout << "Angular speed: [ " << angular_speed.rollspeed << ", " << angular_speed.pitchspeed
-              << ", " << angular_speed.yawspeed << " ] rad/s" << std::endl;
+    std::cout << "Angular velocity: [ " << angular_velocity_body.roll_rad_s << ", "
+              << angular_velocity_body.pitch_rad_s << ", " << angular_velocity_body.yaw_rad_s
+              << " ] rad/s" << std::endl;
 
-    _received_angular_speed = true;
+    _received_angular_velocity_body = true;
 }
 
 #if CAMERA_AVAILABLE == 1

@@ -67,7 +67,7 @@ public:
     Telemetry::StatusText get_status_text() const;
     Telemetry::EulerAngle get_attitude_euler_angle() const;
     Telemetry::Quaternion get_attitude_quaternion() const;
-    Telemetry::AngularSpeed get_attitude_angular_speed() const;
+    Telemetry::AngularVelocityBody get_attitude_angular_velocity_body() const;
     Telemetry::EulerAngle get_camera_attitude_euler_angle() const;
     Telemetry::Quaternion get_camera_attitude_quaternion() const;
     Telemetry::GroundSpeedNED get_ground_speed_ned() const;
@@ -90,7 +90,8 @@ public:
     void armed_async(Telemetry::armed_callback_t& callback);
     void attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback);
     void attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback);
-    void attitude_angular_speed_async(Telemetry::attitude_angular_speed_callback_t& callback);
+    void attitude_angular_velocity_body_async(
+        Telemetry::attitude_angular_velocity_body_callback_t& callback);
     void camera_attitude_quaternion_async(Telemetry::attitude_quaternion_callback_t& callback);
     void camera_attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback);
     void ground_speed_ned_async(Telemetry::ground_speed_ned_callback_t& callback);
@@ -116,7 +117,7 @@ private:
     void set_status_text(Telemetry::StatusText status_text);
     void set_armed(bool armed);
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
-    void set_attitude_angular_speed(Telemetry::AngularSpeed angular_speed);
+    void set_attitude_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
     void set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle);
     void set_ground_speed_ned(Telemetry::GroundSpeedNED ground_speed_ned);
     void set_imu_reading_ned(Telemetry::IMUReadingNED imu_reading_ned);
@@ -197,8 +198,8 @@ private:
     mutable std::mutex _camera_attitude_euler_angle_mutex{};
     Telemetry::EulerAngle _camera_attitude_euler_angle{NAN, NAN, NAN};
 
-    mutable std::mutex _attitude_angular_speed_mutex{};
-    Telemetry::AngularSpeed _attitude_angular_speed{NAN, NAN, NAN};
+    mutable std::mutex _attitude_angular_velocity_body_mutex{};
+    Telemetry::AngularVelocityBody _attitude_angular_velocity_body{NAN, NAN, NAN};
 
     mutable std::mutex _ground_speed_ned_mutex{};
     Telemetry::GroundSpeedNED _ground_speed_ned{NAN, NAN, NAN};
@@ -240,7 +241,8 @@ private:
     Telemetry::status_text_callback_t _status_text_subscription{nullptr};
     Telemetry::armed_callback_t _armed_subscription{nullptr};
     Telemetry::attitude_quaternion_callback_t _attitude_quaternion_subscription{nullptr};
-    Telemetry::attitude_angular_speed_callback_t _attitude_angular_speed_subscription{nullptr};
+    Telemetry::attitude_angular_velocity_body_callback_t
+        _attitude_angular_velocity_body_subscription{nullptr};
     Telemetry::attitude_euler_angle_callback_t _attitude_euler_angle_subscription{nullptr};
     Telemetry::attitude_quaternion_callback_t _camera_attitude_quaternion_subscription{nullptr};
     Telemetry::attitude_euler_angle_callback_t _camera_attitude_euler_angle_subscription{nullptr};
