@@ -1167,6 +1167,7 @@ void CameraImpl::get_mode_timeout_happened()
 
 bool CameraImpl::load_definition_file(const std::string& uri, std::string& content)
 {
+#if BUILD_CURL == 1
     HttpLoader http_loader;
     LogInfo() << "Downloading camera definition from: " << uri;
     if (!http_loader.download_text_sync(uri, content)) {
@@ -1175,6 +1176,11 @@ bool CameraImpl::load_definition_file(const std::string& uri, std::string& conte
     }
 
     return true;
+#else
+    UNUSED(content);
+    LogErr() << "Curl not built, can't download camera definition from: " << uri;
+    return false;
+#endif
 }
 
 bool CameraImpl::get_possible_setting_options(std::vector<std::string>& settings)

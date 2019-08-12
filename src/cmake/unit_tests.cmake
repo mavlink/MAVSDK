@@ -16,11 +16,16 @@ target_link_libraries(unit_tests_runner
     mavsdk_mission
     mavsdk_camera
     mavsdk_calibration
-    CURL::libcurl
     tinyxml2::tinyxml2
     gtest
     gtest_main
     gmock
 )
+
+if(${BUILD_CURL})
+    target_link_libraries(unit_tests_runner
+        CURL::libcurl
+    )
+endif()
 
 add_test(unit_tests unit_tests_runner)

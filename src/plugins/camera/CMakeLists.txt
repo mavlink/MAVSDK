@@ -23,8 +23,14 @@ target_link_libraries(mavsdk_camera
     mavsdk
     PRIVATE
     tinyxml2::tinyxml2
-    CURL::libcurl
 )
+
+if(${BUILD_CURL})
+    target_link_libraries(mavsdk_camera
+        PRIVATE
+        CURL::libcurl
+    )
+endif()
 
 set_target_properties(mavsdk_camera
     PROPERTIES COMPILE_FLAGS ${warnings}

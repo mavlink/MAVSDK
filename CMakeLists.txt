@@ -4,6 +4,7 @@ project(mavsdk_superbuild)
 
 option(SUPERBUILD "Build dependencies" ON)
 option(BUILD_BACKEND "Build gRPC backend server" OFF)
+option(BUILD_CURL "Build cURL" ON)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
 option(MANYLINUX "Build for manylinux. Required because gRPC doesn't detect it automatically." FALSE)
 
