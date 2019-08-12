@@ -25,7 +25,7 @@ target_include_directories(unit_tests_backend
 target_include_directories(unit_tests_backend
     SYSTEM
     PRIVATE
-    ${CMAKE_BINARY_DIR}/src/backend/src
+    ${PROJECT_SOURCE_DIR}/backend/src/generated
 )
 
 target_link_libraries(unit_tests_backend

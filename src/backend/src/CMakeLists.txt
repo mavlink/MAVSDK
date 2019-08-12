@@ -1,20 +1,21 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(COMPONENTS_LIST core action calibration gimbal camera mission offboard telemetry info param)
-
-include(cmake/compile_proto.cmake)
+set(COMPONENTS_LIST action calibration camera core gimbal info mission offboard param telemetry)
 
 foreach(COMPONENT_NAME ${COMPONENTS_LIST})
-    compile_proto_pb(${COMPONENT_NAME} PB_COMPILED_SOURCE)
-    compile_proto_grpc(${COMPONENT_NAME} GRPC_COMPILED_SOURCE)
-    add_library(${COMPONENT_NAME}_proto_gens STATIC ${GRPC_COMPILED_SOURCE} ${PB_COMPILED_SOURCE})
+    add_library(${COMPONENT_NAME}_proto_gens STATIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.grpc.pb.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/generated/${COMPONENT_NAME}/${COMPONENT_NAME}.pb.cc)
+
     target_link_libraries(${COMPONENT_NAME}_proto_gens
         gRPC::grpc++
     )
+
     target_include_directories(${COMPONENT_NAME}_proto_gens
       PRIVATE
-      ${CMAKE_BINARY_DIR}/src/backend/src
+      ${PROJECT_SOURCE_DIR}/backend/src/generated
     )
+
     list(APPEND COMPONENTS_PROTOGENS ${COMPONENT_NAME}_proto_gens)
 endforeach()
 
@@ -60,7 +61,7 @@ target_include_directories(mavsdk_server
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/plugins>
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/backend/src/plugins>
     PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src/backend/src>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/backend/src/generated>
     $<INSTALL_INTERFACE:include>
 )
 
