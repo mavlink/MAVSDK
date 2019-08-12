@@ -31,18 +31,6 @@ include(cmake/compiler_flags.cmake)
 find_package(CURL REQUIRED CONFIG)
 find_package(tinyxml2 REQUIRED)
 
-if(NOT MSVC AND NOT MINGW)
-    cmake_policy(SET CMP0058 NEW)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp_rsc/cmake/modules/cpp_resource.cmake)
-    if(NOT ANDROID AND NOT IOS)
-        # If not cross-compiling, we can build cpp_rsc.
-        add_subdirectory(third_party/cpp_rsc/src EXCLUDE_FROM_ALL)
-    else()
-        # For cross-compilation, re-use the binary from default.
-        set_property(GLOBAL PROPERTY CPPRSC_CMD ${CMAKE_CURRENT_BINARY_DIR}/../../default/src/third_party/cpp_rsc/src/cpp_rsc)
-    endif()
-endif()
-
 if(BUILD_TESTS AND (IOS OR ANDROID))
     message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
     set(BUILD_TESTS OFF)
