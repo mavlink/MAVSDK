@@ -2,7 +2,7 @@ add_library(mavsdk_camera
     camera.cpp
     camera_impl.cpp
     camera_definition.cpp
-    ${RSC_CPP_FILE}
+    camera_definition_files/generated/camera_definition_files.cpp
 )
 
 target_link_libraries(mavsdk_camera
@@ -17,7 +17,10 @@ set_target_properties(mavsdk_camera
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-target_include_directories(mavsdk_camera PUBLIC
+target_include_directories(mavsdk_camera
+    PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/camera_definition_files/generated>
+    PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/mavsdk>
     )

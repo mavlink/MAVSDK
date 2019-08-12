@@ -11,7 +11,7 @@ echo "Temporary directory for this script: ${tmp_dir}"
 ###########
 echo "* Building cpp_rsc binary..."
 
-curl -L https://github.com/orex/cpp_rsc/archive/master.tar.gz | tar -xvz -C ${tmp_dir}
+curl -L https://github.com/JonasVautherin/cpp_rsc/archive/master.tar.gz | tar -xvz -C ${tmp_dir}
 clone_dir=${tmp_dir}/cpp_rsc-master
 
 cmake -B${clone_dir}/build -S${clone_dir}
@@ -24,10 +24,7 @@ cpp_rsc=${clone_dir}/build/src/cpp_rsc
 echo "* Writing the config file for cpp_rsc..."
 
 config_file="${tmp_dir}/camera_definition_config.rsc"
-generated_dir="${script_dir}/../src/plugins/camera/camera_definition_files/generated"
-output_file="${generated_dir}/camera_definition_files"
-
-mkdir -p ${generated_dir}
+output_file="camera_definition_files"
 
 echo "[general]" >> ${config_file}
 echo "output-file-name=${output_file}" >> ${config_file}
@@ -47,4 +44,8 @@ done
 ###########
 echo "* Generating camera_definition_files..."
 
+generated_dir="${script_dir}/../src/plugins/camera/camera_definition_files/generated"
+mkdir -p ${generated_dir}
+
+cd ${generated_dir}
 ${cpp_rsc} ${config_file}
