@@ -23,6 +23,20 @@ matrix:
             - gcc-5
             - g++-5
     - os: linux
+      name: "ubuntu 14.04 - gcc 6 without curl"
+      dist: trusty
+      sudo: false
+      compiler: gcc
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=no_curl_build && CC=gcc-6 && CXX=g++-6"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-6
+            - g++-6
+    - os: linux
       name: "ubuntu 14.04 - gcc 6"
       dist: trusty
       sudo: false
@@ -129,6 +143,11 @@ script:
   fi
 - if [[ "${BUILD_TARGET}" = "coverage_build" ]]; then
     cmake -DCMAKE_BUILD_TYPE=Coverage -Bbuild -H.;
+    cmake --build build;
+    ./build/src/unit_tests_runner;
+  fi
+- if [[ "${BUILD_TARGET}" = "no_curl_build" ]]; then
+    cmake -DBUILD_CURL=Off -Bbuild -H.;
     cmake --build build;
     ./build/src/unit_tests_runner;
   fi
