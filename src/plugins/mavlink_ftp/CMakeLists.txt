@@ -1,6 +1,4 @@
-include_directories(
-    SYSTEM ${PROJECT_SOURCE_DIR}/../third_party/filesystem/include
-)
+find_package(ghcFilesystem REQUIRED)
 
 add_library(mavsdk_mavlink_ftp
     mavlink_ftp.cpp
@@ -14,6 +12,7 @@ target_compile_options(mavsdk_mavlink_ftp
 
 target_link_libraries(mavsdk_mavlink_ftp
     mavsdk
+    ghcFilesystem::ghc_filesystem
 )
 
 set_target_properties(mavsdk_mavlink_ftp
