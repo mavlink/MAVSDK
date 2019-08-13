@@ -1,1 +1,2 @@
 src/backend/src/generated
+src/plugins/camera/camera_definition_files/generated
