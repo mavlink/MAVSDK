@@ -4,9 +4,9 @@
 [submodule "gtest"]
 	path = src/third_party/gtest
 	url = https://github.com/google/googletest
-[submodule "dronecore-proto"]
-	path = src/backend/proto
-	url = https://github.com/dronecore/DroneCore-Proto.git
+[submodule "mavsdk-proto"]
+	path = proto
+	url = https://github.com/mavlink/MAVSDK-Proto.git
 [submodule "third_party/cpp_rsc"]
 	path = src/third_party/cpp_rsc
 	url = https://github.com/orex/cpp_rsc.git
