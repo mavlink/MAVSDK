@@ -42,7 +42,7 @@ struct TableStruct_telemetry_2ftelemetry_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::google::protobuf::internal::ParseTable schema[39]
+  static const ::google::protobuf::internal::ParseTable schema[48]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
@@ -52,9 +52,27 @@ void AddDescriptors_telemetry_2ftelemetry_2eproto();
 namespace mavsdk {
 namespace rpc {
 namespace telemetry {
+class ActuatorControlTarget;
+class ActuatorControlTargetDefaultTypeInternal;
+extern ActuatorControlTargetDefaultTypeInternal _ActuatorControlTarget_default_instance_;
+class ActuatorControlTargetResponse;
+class ActuatorControlTargetResponseDefaultTypeInternal;
+extern ActuatorControlTargetResponseDefaultTypeInternal _ActuatorControlTargetResponse_default_instance_;
+class ActuatorOutputStatus;
+class ActuatorOutputStatusDefaultTypeInternal;
+extern ActuatorOutputStatusDefaultTypeInternal _ActuatorOutputStatus_default_instance_;
+class ActuatorOutputStatusResponse;
+class ActuatorOutputStatusResponseDefaultTypeInternal;
+extern ActuatorOutputStatusResponseDefaultTypeInternal _ActuatorOutputStatusResponse_default_instance_;
+class AngularVelocityBody;
+class AngularVelocityBodyDefaultTypeInternal;
+extern AngularVelocityBodyDefaultTypeInternal _AngularVelocityBody_default_instance_;
 class ArmedResponse;
 class ArmedResponseDefaultTypeInternal;
 extern ArmedResponseDefaultTypeInternal _ArmedResponse_default_instance_;
+class AttitudeAngularVelocityBodyResponse;
+class AttitudeAngularVelocityBodyResponseDefaultTypeInternal;
+extern AttitudeAngularVelocityBodyResponseDefaultTypeInternal _AttitudeAngularVelocityBodyResponse_default_instance_;
 class AttitudeEulerResponse;
 class AttitudeEulerResponseDefaultTypeInternal;
 extern AttitudeEulerResponseDefaultTypeInternal _AttitudeEulerResponse_default_instance_;
@@ -124,9 +142,18 @@ extern StatusTextDefaultTypeInternal _StatusText_default_instance_;
 class StatusTextResponse;
 class StatusTextResponseDefaultTypeInternal;
 extern StatusTextResponseDefaultTypeInternal _StatusTextResponse_default_instance_;
+class SubscribeActuatorControlTargetRequest;
+class SubscribeActuatorControlTargetRequestDefaultTypeInternal;
+extern SubscribeActuatorControlTargetRequestDefaultTypeInternal _SubscribeActuatorControlTargetRequest_default_instance_;
+class SubscribeActuatorOutputStatusRequest;
+class SubscribeActuatorOutputStatusRequestDefaultTypeInternal;
+extern SubscribeActuatorOutputStatusRequestDefaultTypeInternal _SubscribeActuatorOutputStatusRequest_default_instance_;
 class SubscribeArmedRequest;
 class SubscribeArmedRequestDefaultTypeInternal;
 extern SubscribeArmedRequestDefaultTypeInternal _SubscribeArmedRequest_default_instance_;
+class SubscribeAttitudeAngularVelocityBodyRequest;
+class SubscribeAttitudeAngularVelocityBodyRequestDefaultTypeInternal;
+extern SubscribeAttitudeAngularVelocityBodyRequestDefaultTypeInternal _SubscribeAttitudeAngularVelocityBodyRequest_default_instance_;
 class SubscribeAttitudeEulerRequest;
 class SubscribeAttitudeEulerRequestDefaultTypeInternal;
 extern SubscribeAttitudeEulerRequestDefaultTypeInternal _SubscribeAttitudeEulerRequest_default_instance_;
@@ -174,7 +201,13 @@ extern SubscribeStatusTextRequestDefaultTypeInternal _SubscribeStatusTextRequest
 }  // namespace mavsdk
 namespace google {
 namespace protobuf {
+template<> ::mavsdk::rpc::telemetry::ActuatorControlTarget* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ActuatorControlTarget>(Arena*);
+template<> ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::ActuatorOutputStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ActuatorOutputStatus>(Arena*);
+template<> ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::AngularVelocityBody* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::AngularVelocityBody>(Arena*);
 template<> ::mavsdk::rpc::telemetry::ArmedResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::ArmedResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::AttitudeEulerResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::AttitudeEulerResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::Battery* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Battery>(Arena*);
@@ -198,7 +231,10 @@ template<> ::mavsdk::rpc::telemetry::RcStatusResponse* Arena::CreateMaybeMessage
 template<> ::mavsdk::rpc::telemetry::SpeedNed* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SpeedNed>(Arena*);
 template<> ::mavsdk::rpc::telemetry::StatusText* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::StatusText>(Arena*);
 template<> ::mavsdk::rpc::telemetry::StatusTextResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::StatusTextResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeArmedRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeArmedRequest>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SubscribeBatteryRequest>(Arena*);
@@ -1611,6 +1647,226 @@ class AttitudeEulerResponse :
 };
 // -------------------------------------------------------------------
 
+class SubscribeAttitudeAngularVelocityBodyRequest :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest) */ {
+ public:
+  SubscribeAttitudeAngularVelocityBodyRequest();
+  virtual ~SubscribeAttitudeAngularVelocityBodyRequest();
+
+  SubscribeAttitudeAngularVelocityBodyRequest(const SubscribeAttitudeAngularVelocityBodyRequest& from);
+
+  inline SubscribeAttitudeAngularVelocityBodyRequest& operator=(const SubscribeAttitudeAngularVelocityBodyRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  SubscribeAttitudeAngularVelocityBodyRequest(SubscribeAttitudeAngularVelocityBodyRequest&& from) noexcept
+    : SubscribeAttitudeAngularVelocityBodyRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeAttitudeAngularVelocityBodyRequest& operator=(SubscribeAttitudeAngularVelocityBodyRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const SubscribeAttitudeAngularVelocityBodyRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SubscribeAttitudeAngularVelocityBodyRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeAttitudeAngularVelocityBodyRequest*>(
+               &_SubscribeAttitudeAngularVelocityBodyRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    12;
+
+  void Swap(SubscribeAttitudeAngularVelocityBodyRequest* other);
+  friend void swap(SubscribeAttitudeAngularVelocityBodyRequest& a, SubscribeAttitudeAngularVelocityBodyRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeAttitudeAngularVelocityBodyRequest* New() const final {
+    return CreateMaybeMessage<SubscribeAttitudeAngularVelocityBodyRequest>(nullptr);
+  }
+
+  SubscribeAttitudeAngularVelocityBodyRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeAttitudeAngularVelocityBodyRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const SubscribeAttitudeAngularVelocityBodyRequest& from);
+  void MergeFrom(const SubscribeAttitudeAngularVelocityBodyRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeAttitudeAngularVelocityBodyRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AttitudeAngularVelocityBodyResponse :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse) */ {
+ public:
+  AttitudeAngularVelocityBodyResponse();
+  virtual ~AttitudeAngularVelocityBodyResponse();
+
+  AttitudeAngularVelocityBodyResponse(const AttitudeAngularVelocityBodyResponse& from);
+
+  inline AttitudeAngularVelocityBodyResponse& operator=(const AttitudeAngularVelocityBodyResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  AttitudeAngularVelocityBodyResponse(AttitudeAngularVelocityBodyResponse&& from) noexcept
+    : AttitudeAngularVelocityBodyResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline AttitudeAngularVelocityBodyResponse& operator=(AttitudeAngularVelocityBodyResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const AttitudeAngularVelocityBodyResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const AttitudeAngularVelocityBodyResponse* internal_default_instance() {
+    return reinterpret_cast<const AttitudeAngularVelocityBodyResponse*>(
+               &_AttitudeAngularVelocityBodyResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    13;
+
+  void Swap(AttitudeAngularVelocityBodyResponse* other);
+  friend void swap(AttitudeAngularVelocityBodyResponse& a, AttitudeAngularVelocityBodyResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AttitudeAngularVelocityBodyResponse* New() const final {
+    return CreateMaybeMessage<AttitudeAngularVelocityBodyResponse>(nullptr);
+  }
+
+  AttitudeAngularVelocityBodyResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<AttitudeAngularVelocityBodyResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const AttitudeAngularVelocityBodyResponse& from);
+  void MergeFrom(const AttitudeAngularVelocityBodyResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AttitudeAngularVelocityBodyResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .mavsdk.rpc.telemetry.AngularVelocityBody attitude_angular_velocity_body = 1;
+  bool has_attitude_angular_velocity_body() const;
+  void clear_attitude_angular_velocity_body();
+  static const int kAttitudeAngularVelocityBodyFieldNumber = 1;
+  const ::mavsdk::rpc::telemetry::AngularVelocityBody& attitude_angular_velocity_body() const;
+  ::mavsdk::rpc::telemetry::AngularVelocityBody* release_attitude_angular_velocity_body();
+  ::mavsdk::rpc::telemetry::AngularVelocityBody* mutable_attitude_angular_velocity_body();
+  void set_allocated_attitude_angular_velocity_body(::mavsdk::rpc::telemetry::AngularVelocityBody* attitude_angular_velocity_body);
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::telemetry::AngularVelocityBody* attitude_angular_velocity_body_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class SubscribeCameraAttitudeQuaternionRequest :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest) */ {
  public:
@@ -1649,7 +1905,7 @@ class SubscribeCameraAttitudeQuaternionRequest :
                &_SubscribeCameraAttitudeQuaternionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    14;
 
   void Swap(SubscribeCameraAttitudeQuaternionRequest* other);
   friend void swap(SubscribeCameraAttitudeQuaternionRequest& a, SubscribeCameraAttitudeQuaternionRequest& b) {
@@ -1754,7 +2010,7 @@ class CameraAttitudeQuaternionResponse :
                &_CameraAttitudeQuaternionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    15;
 
   void Swap(CameraAttitudeQuaternionResponse* other);
   friend void swap(CameraAttitudeQuaternionResponse& a, CameraAttitudeQuaternionResponse& b) {
@@ -1869,7 +2125,7 @@ class SubscribeCameraAttitudeEulerRequest :
                &_SubscribeCameraAttitudeEulerRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    16;
 
   void Swap(SubscribeCameraAttitudeEulerRequest* other);
   friend void swap(SubscribeCameraAttitudeEulerRequest& a, SubscribeCameraAttitudeEulerRequest& b) {
@@ -1974,7 +2230,7 @@ class CameraAttitudeEulerResponse :
                &_CameraAttitudeEulerResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    17;
 
   void Swap(CameraAttitudeEulerResponse* other);
   friend void swap(CameraAttitudeEulerResponse& a, CameraAttitudeEulerResponse& b) {
@@ -2089,7 +2345,7 @@ class SubscribeGroundSpeedNedRequest :
                &_SubscribeGroundSpeedNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    18;
 
   void Swap(SubscribeGroundSpeedNedRequest* other);
   friend void swap(SubscribeGroundSpeedNedRequest& a, SubscribeGroundSpeedNedRequest& b) {
@@ -2194,7 +2450,7 @@ class GroundSpeedNedResponse :
                &_GroundSpeedNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    19;
 
   void Swap(GroundSpeedNedResponse* other);
   friend void swap(GroundSpeedNedResponse& a, GroundSpeedNedResponse& b) {
@@ -2309,7 +2565,7 @@ class SubscribeGpsInfoRequest :
                &_SubscribeGpsInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    20;
 
   void Swap(SubscribeGpsInfoRequest* other);
   friend void swap(SubscribeGpsInfoRequest& a, SubscribeGpsInfoRequest& b) {
@@ -2414,7 +2670,7 @@ class GpsInfoResponse :
                &_GpsInfoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    21;
 
   void Swap(GpsInfoResponse* other);
   friend void swap(GpsInfoResponse& a, GpsInfoResponse& b) {
@@ -2529,7 +2785,7 @@ class SubscribeBatteryRequest :
                &_SubscribeBatteryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    22;
 
   void Swap(SubscribeBatteryRequest* other);
   friend void swap(SubscribeBatteryRequest& a, SubscribeBatteryRequest& b) {
@@ -2634,7 +2890,7 @@ class BatteryResponse :
                &_BatteryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    23;
 
   void Swap(BatteryResponse* other);
   friend void swap(BatteryResponse& a, BatteryResponse& b) {
@@ -2749,7 +3005,7 @@ class SubscribeFlightModeRequest :
                &_SubscribeFlightModeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    24;
 
   void Swap(SubscribeFlightModeRequest* other);
   friend void swap(SubscribeFlightModeRequest& a, SubscribeFlightModeRequest& b) {
@@ -2854,7 +3110,7 @@ class FlightModeResponse :
                &_FlightModeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    25;
 
   void Swap(FlightModeResponse* other);
   friend void swap(FlightModeResponse& a, FlightModeResponse& b) {
@@ -2966,7 +3222,7 @@ class SubscribeHealthRequest :
                &_SubscribeHealthRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    26;
 
   void Swap(SubscribeHealthRequest* other);
   friend void swap(SubscribeHealthRequest& a, SubscribeHealthRequest& b) {
@@ -3071,7 +3327,7 @@ class HealthResponse :
                &_HealthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    27;
 
   void Swap(HealthResponse* other);
   friend void swap(HealthResponse& a, HealthResponse& b) {
@@ -3186,7 +3442,7 @@ class SubscribeRcStatusRequest :
                &_SubscribeRcStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    28;
 
   void Swap(SubscribeRcStatusRequest* other);
   friend void swap(SubscribeRcStatusRequest& a, SubscribeRcStatusRequest& b) {
@@ -3291,7 +3547,7 @@ class RcStatusResponse :
                &_RcStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    29;
 
   void Swap(RcStatusResponse* other);
   friend void swap(RcStatusResponse& a, RcStatusResponse& b) {
@@ -3406,7 +3662,7 @@ class SubscribeStatusTextRequest :
                &_SubscribeStatusTextRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    30;
 
   void Swap(SubscribeStatusTextRequest* other);
   friend void swap(SubscribeStatusTextRequest& a, SubscribeStatusTextRequest& b) {
@@ -3511,7 +3767,7 @@ class StatusTextResponse :
                &_StatusTextResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    31;
 
   void Swap(StatusTextResponse* other);
   friend void swap(StatusTextResponse& a, StatusTextResponse& b) {
@@ -3588,6 +3844,446 @@ class StatusTextResponse :
 };
 // -------------------------------------------------------------------
 
+class SubscribeActuatorControlTargetRequest :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest) */ {
+ public:
+  SubscribeActuatorControlTargetRequest();
+  virtual ~SubscribeActuatorControlTargetRequest();
+
+  SubscribeActuatorControlTargetRequest(const SubscribeActuatorControlTargetRequest& from);
+
+  inline SubscribeActuatorControlTargetRequest& operator=(const SubscribeActuatorControlTargetRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  SubscribeActuatorControlTargetRequest(SubscribeActuatorControlTargetRequest&& from) noexcept
+    : SubscribeActuatorControlTargetRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeActuatorControlTargetRequest& operator=(SubscribeActuatorControlTargetRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const SubscribeActuatorControlTargetRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SubscribeActuatorControlTargetRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeActuatorControlTargetRequest*>(
+               &_SubscribeActuatorControlTargetRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    32;
+
+  void Swap(SubscribeActuatorControlTargetRequest* other);
+  friend void swap(SubscribeActuatorControlTargetRequest& a, SubscribeActuatorControlTargetRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeActuatorControlTargetRequest* New() const final {
+    return CreateMaybeMessage<SubscribeActuatorControlTargetRequest>(nullptr);
+  }
+
+  SubscribeActuatorControlTargetRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeActuatorControlTargetRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const SubscribeActuatorControlTargetRequest& from);
+  void MergeFrom(const SubscribeActuatorControlTargetRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeActuatorControlTargetRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ActuatorControlTargetResponse :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.ActuatorControlTargetResponse) */ {
+ public:
+  ActuatorControlTargetResponse();
+  virtual ~ActuatorControlTargetResponse();
+
+  ActuatorControlTargetResponse(const ActuatorControlTargetResponse& from);
+
+  inline ActuatorControlTargetResponse& operator=(const ActuatorControlTargetResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ActuatorControlTargetResponse(ActuatorControlTargetResponse&& from) noexcept
+    : ActuatorControlTargetResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline ActuatorControlTargetResponse& operator=(ActuatorControlTargetResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const ActuatorControlTargetResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ActuatorControlTargetResponse* internal_default_instance() {
+    return reinterpret_cast<const ActuatorControlTargetResponse*>(
+               &_ActuatorControlTargetResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    33;
+
+  void Swap(ActuatorControlTargetResponse* other);
+  friend void swap(ActuatorControlTargetResponse& a, ActuatorControlTargetResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ActuatorControlTargetResponse* New() const final {
+    return CreateMaybeMessage<ActuatorControlTargetResponse>(nullptr);
+  }
+
+  ActuatorControlTargetResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ActuatorControlTargetResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ActuatorControlTargetResponse& from);
+  void MergeFrom(const ActuatorControlTargetResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ActuatorControlTargetResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .mavsdk.rpc.telemetry.ActuatorControlTarget actuator_control_target = 1;
+  bool has_actuator_control_target() const;
+  void clear_actuator_control_target();
+  static const int kActuatorControlTargetFieldNumber = 1;
+  const ::mavsdk::rpc::telemetry::ActuatorControlTarget& actuator_control_target() const;
+  ::mavsdk::rpc::telemetry::ActuatorControlTarget* release_actuator_control_target();
+  ::mavsdk::rpc::telemetry::ActuatorControlTarget* mutable_actuator_control_target();
+  void set_allocated_actuator_control_target(::mavsdk::rpc::telemetry::ActuatorControlTarget* actuator_control_target);
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::telemetry::ActuatorControlTarget* actuator_control_target_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeActuatorOutputStatusRequest :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest) */ {
+ public:
+  SubscribeActuatorOutputStatusRequest();
+  virtual ~SubscribeActuatorOutputStatusRequest();
+
+  SubscribeActuatorOutputStatusRequest(const SubscribeActuatorOutputStatusRequest& from);
+
+  inline SubscribeActuatorOutputStatusRequest& operator=(const SubscribeActuatorOutputStatusRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  SubscribeActuatorOutputStatusRequest(SubscribeActuatorOutputStatusRequest&& from) noexcept
+    : SubscribeActuatorOutputStatusRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeActuatorOutputStatusRequest& operator=(SubscribeActuatorOutputStatusRequest&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const SubscribeActuatorOutputStatusRequest& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SubscribeActuatorOutputStatusRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeActuatorOutputStatusRequest*>(
+               &_SubscribeActuatorOutputStatusRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    34;
+
+  void Swap(SubscribeActuatorOutputStatusRequest* other);
+  friend void swap(SubscribeActuatorOutputStatusRequest& a, SubscribeActuatorOutputStatusRequest& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SubscribeActuatorOutputStatusRequest* New() const final {
+    return CreateMaybeMessage<SubscribeActuatorOutputStatusRequest>(nullptr);
+  }
+
+  SubscribeActuatorOutputStatusRequest* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<SubscribeActuatorOutputStatusRequest>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const SubscribeActuatorOutputStatusRequest& from);
+  void MergeFrom(const SubscribeActuatorOutputStatusRequest& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SubscribeActuatorOutputStatusRequest* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ActuatorOutputStatusResponse :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse) */ {
+ public:
+  ActuatorOutputStatusResponse();
+  virtual ~ActuatorOutputStatusResponse();
+
+  ActuatorOutputStatusResponse(const ActuatorOutputStatusResponse& from);
+
+  inline ActuatorOutputStatusResponse& operator=(const ActuatorOutputStatusResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ActuatorOutputStatusResponse(ActuatorOutputStatusResponse&& from) noexcept
+    : ActuatorOutputStatusResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline ActuatorOutputStatusResponse& operator=(ActuatorOutputStatusResponse&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const ActuatorOutputStatusResponse& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ActuatorOutputStatusResponse* internal_default_instance() {
+    return reinterpret_cast<const ActuatorOutputStatusResponse*>(
+               &_ActuatorOutputStatusResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    35;
+
+  void Swap(ActuatorOutputStatusResponse* other);
+  friend void swap(ActuatorOutputStatusResponse& a, ActuatorOutputStatusResponse& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ActuatorOutputStatusResponse* New() const final {
+    return CreateMaybeMessage<ActuatorOutputStatusResponse>(nullptr);
+  }
+
+  ActuatorOutputStatusResponse* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ActuatorOutputStatusResponse>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ActuatorOutputStatusResponse& from);
+  void MergeFrom(const ActuatorOutputStatusResponse& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ActuatorOutputStatusResponse* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .mavsdk.rpc.telemetry.ActuatorOutputStatus actuator_output_status = 1;
+  bool has_actuator_output_status() const;
+  void clear_actuator_output_status();
+  static const int kActuatorOutputStatusFieldNumber = 1;
+  const ::mavsdk::rpc::telemetry::ActuatorOutputStatus& actuator_output_status() const;
+  ::mavsdk::rpc::telemetry::ActuatorOutputStatus* release_actuator_output_status();
+  ::mavsdk::rpc::telemetry::ActuatorOutputStatus* mutable_actuator_output_status();
+  void set_allocated_actuator_output_status(::mavsdk::rpc::telemetry::ActuatorOutputStatus* actuator_output_status);
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::telemetry::ActuatorOutputStatus* actuator_output_status_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Position :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.Position) */ {
  public:
@@ -3626,7 +4322,7 @@ class Position :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    36;
 
   void Swap(Position* other);
   friend void swap(Position& a, Position& b) {
@@ -3759,7 +4455,7 @@ class Quaternion :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    37;
 
   void Swap(Quaternion* other);
   friend void swap(Quaternion& a, Quaternion& b) {
@@ -3892,7 +4588,7 @@ class EulerAngle :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    38;
 
   void Swap(EulerAngle* other);
   friend void swap(EulerAngle& a, EulerAngle& b) {
@@ -3980,6 +4676,132 @@ class EulerAngle :
 };
 // -------------------------------------------------------------------
 
+class AngularVelocityBody :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.AngularVelocityBody) */ {
+ public:
+  AngularVelocityBody();
+  virtual ~AngularVelocityBody();
+
+  AngularVelocityBody(const AngularVelocityBody& from);
+
+  inline AngularVelocityBody& operator=(const AngularVelocityBody& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  AngularVelocityBody(AngularVelocityBody&& from) noexcept
+    : AngularVelocityBody() {
+    *this = ::std::move(from);
+  }
+
+  inline AngularVelocityBody& operator=(AngularVelocityBody&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const AngularVelocityBody& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const AngularVelocityBody* internal_default_instance() {
+    return reinterpret_cast<const AngularVelocityBody*>(
+               &_AngularVelocityBody_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    39;
+
+  void Swap(AngularVelocityBody* other);
+  friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AngularVelocityBody* New() const final {
+    return CreateMaybeMessage<AngularVelocityBody>(nullptr);
+  }
+
+  AngularVelocityBody* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<AngularVelocityBody>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const AngularVelocityBody& from);
+  void MergeFrom(const AngularVelocityBody& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AngularVelocityBody* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float roll_rad_s = 1;
+  void clear_roll_rad_s();
+  static const int kRollRadSFieldNumber = 1;
+  float roll_rad_s() const;
+  void set_roll_rad_s(float value);
+
+  // float pitch_rad_s = 2;
+  void clear_pitch_rad_s();
+  static const int kPitchRadSFieldNumber = 2;
+  float pitch_rad_s() const;
+  void set_pitch_rad_s(float value);
+
+  // float yaw_rad_s = 3;
+  void clear_yaw_rad_s();
+  static const int kYawRadSFieldNumber = 3;
+  float yaw_rad_s() const;
+  void set_yaw_rad_s(float value);
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.AngularVelocityBody)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float roll_rad_s_;
+  float pitch_rad_s_;
+  float yaw_rad_s_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class SpeedNed :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SpeedNed) */ {
  public:
@@ -4018,7 +4840,7 @@ class SpeedNed :
                &_SpeedNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    40;
 
   void Swap(SpeedNed* other);
   friend void swap(SpeedNed& a, SpeedNed& b) {
@@ -4144,7 +4966,7 @@ class GpsInfo :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    41;
 
   void Swap(GpsInfo* other);
   friend void swap(GpsInfo& a, GpsInfo& b) {
@@ -4263,7 +5085,7 @@ class Battery :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    42;
 
   void Swap(Battery* other);
   friend void swap(Battery& a, Battery& b) {
@@ -4382,7 +5204,7 @@ class Health :
                &_Health_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    43;
 
   void Swap(Health* other);
   friend void swap(Health& a, Health& b) {
@@ -4536,7 +5358,7 @@ class RcStatus :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    44;
 
   void Swap(RcStatus* other);
   friend void swap(RcStatus& a, RcStatus& b) {
@@ -4662,7 +5484,7 @@ class StatusText :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    45;
 
   void Swap(StatusText* other);
   friend void swap(StatusText& a, StatusText& b) {
@@ -4774,6 +5596,258 @@ class StatusText :
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr text_;
   int type_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ActuatorControlTarget :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.ActuatorControlTarget) */ {
+ public:
+  ActuatorControlTarget();
+  virtual ~ActuatorControlTarget();
+
+  ActuatorControlTarget(const ActuatorControlTarget& from);
+
+  inline ActuatorControlTarget& operator=(const ActuatorControlTarget& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ActuatorControlTarget(ActuatorControlTarget&& from) noexcept
+    : ActuatorControlTarget() {
+    *this = ::std::move(from);
+  }
+
+  inline ActuatorControlTarget& operator=(ActuatorControlTarget&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const ActuatorControlTarget& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ActuatorControlTarget* internal_default_instance() {
+    return reinterpret_cast<const ActuatorControlTarget*>(
+               &_ActuatorControlTarget_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    46;
+
+  void Swap(ActuatorControlTarget* other);
+  friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ActuatorControlTarget* New() const final {
+    return CreateMaybeMessage<ActuatorControlTarget>(nullptr);
+  }
+
+  ActuatorControlTarget* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ActuatorControlTarget>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ActuatorControlTarget& from);
+  void MergeFrom(const ActuatorControlTarget& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ActuatorControlTarget* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated float controls = 2;
+  int controls_size() const;
+  void clear_controls();
+  static const int kControlsFieldNumber = 2;
+  float controls(int index) const;
+  void set_controls(int index, float value);
+  void add_controls(float value);
+  const ::google::protobuf::RepeatedField< float >&
+      controls() const;
+  ::google::protobuf::RepeatedField< float >*
+      mutable_controls();
+
+  // int32 group = 1;
+  void clear_group();
+  static const int kGroupFieldNumber = 1;
+  ::google::protobuf::int32 group() const;
+  void set_group(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.ActuatorControlTarget)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< float > controls_;
+  mutable std::atomic<int> _controls_cached_byte_size_;
+  ::google::protobuf::int32 group_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ActuatorOutputStatus :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.ActuatorOutputStatus) */ {
+ public:
+  ActuatorOutputStatus();
+  virtual ~ActuatorOutputStatus();
+
+  ActuatorOutputStatus(const ActuatorOutputStatus& from);
+
+  inline ActuatorOutputStatus& operator=(const ActuatorOutputStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ActuatorOutputStatus(ActuatorOutputStatus&& from) noexcept
+    : ActuatorOutputStatus() {
+    *this = ::std::move(from);
+  }
+
+  inline ActuatorOutputStatus& operator=(ActuatorOutputStatus&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const ActuatorOutputStatus& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ActuatorOutputStatus* internal_default_instance() {
+    return reinterpret_cast<const ActuatorOutputStatus*>(
+               &_ActuatorOutputStatus_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    47;
+
+  void Swap(ActuatorOutputStatus* other);
+  friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ActuatorOutputStatus* New() const final {
+    return CreateMaybeMessage<ActuatorOutputStatus>(nullptr);
+  }
+
+  ActuatorOutputStatus* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ActuatorOutputStatus>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ActuatorOutputStatus& from);
+  void MergeFrom(const ActuatorOutputStatus& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ActuatorOutputStatus* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated float actuator = 2;
+  int actuator_size() const;
+  void clear_actuator();
+  static const int kActuatorFieldNumber = 2;
+  float actuator(int index) const;
+  void set_actuator(int index, float value);
+  void add_actuator(float value);
+  const ::google::protobuf::RepeatedField< float >&
+      actuator() const;
+  ::google::protobuf::RepeatedField< float >*
+      mutable_actuator();
+
+  // uint32 active = 1;
+  void clear_active();
+  static const int kActiveFieldNumber = 1;
+  ::google::protobuf::uint32 active() const;
+  void set_active(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.ActuatorOutputStatus)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< float > actuator_;
+  mutable std::atomic<int> _actuator_cached_byte_size_;
+  ::google::protobuf::uint32 active_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -5062,6 +6136,65 @@ inline void AttitudeEulerResponse::set_allocated_attitude_euler(::mavsdk::rpc::t
   }
   attitude_euler_ = attitude_euler;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.AttitudeEulerResponse.attitude_euler)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeAttitudeAngularVelocityBodyRequest
+
+// -------------------------------------------------------------------
+
+// AttitudeAngularVelocityBodyResponse
+
+// .mavsdk.rpc.telemetry.AngularVelocityBody attitude_angular_velocity_body = 1;
+inline bool AttitudeAngularVelocityBodyResponse::has_attitude_angular_velocity_body() const {
+  return this != internal_default_instance() && attitude_angular_velocity_body_ != nullptr;
+}
+inline void AttitudeAngularVelocityBodyResponse::clear_attitude_angular_velocity_body() {
+  if (GetArenaNoVirtual() == nullptr && attitude_angular_velocity_body_ != nullptr) {
+    delete attitude_angular_velocity_body_;
+  }
+  attitude_angular_velocity_body_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::AngularVelocityBody& AttitudeAngularVelocityBodyResponse::attitude_angular_velocity_body() const {
+  const ::mavsdk::rpc::telemetry::AngularVelocityBody* p = attitude_angular_velocity_body_;
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse.attitude_angular_velocity_body)
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::AngularVelocityBody*>(
+      &::mavsdk::rpc::telemetry::_AngularVelocityBody_default_instance_);
+}
+inline ::mavsdk::rpc::telemetry::AngularVelocityBody* AttitudeAngularVelocityBodyResponse::release_attitude_angular_velocity_body() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse.attitude_angular_velocity_body)
+  
+  ::mavsdk::rpc::telemetry::AngularVelocityBody* temp = attitude_angular_velocity_body_;
+  attitude_angular_velocity_body_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::AngularVelocityBody* AttitudeAngularVelocityBodyResponse::mutable_attitude_angular_velocity_body() {
+  
+  if (attitude_angular_velocity_body_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::AngularVelocityBody>(GetArenaNoVirtual());
+    attitude_angular_velocity_body_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse.attitude_angular_velocity_body)
+  return attitude_angular_velocity_body_;
+}
+inline void AttitudeAngularVelocityBodyResponse::set_allocated_attitude_angular_velocity_body(::mavsdk::rpc::telemetry::AngularVelocityBody* attitude_angular_velocity_body) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete attitude_angular_velocity_body_;
+  }
+  if (attitude_angular_velocity_body) {
+    ::google::protobuf::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      attitude_angular_velocity_body = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, attitude_angular_velocity_body, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  attitude_angular_velocity_body_ = attitude_angular_velocity_body;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse.attitude_angular_velocity_body)
 }
 
 // -------------------------------------------------------------------
@@ -5560,6 +6693,124 @@ inline void StatusTextResponse::set_allocated_status_text(::mavsdk::rpc::telemet
 
 // -------------------------------------------------------------------
 
+// SubscribeActuatorControlTargetRequest
+
+// -------------------------------------------------------------------
+
+// ActuatorControlTargetResponse
+
+// .mavsdk.rpc.telemetry.ActuatorControlTarget actuator_control_target = 1;
+inline bool ActuatorControlTargetResponse::has_actuator_control_target() const {
+  return this != internal_default_instance() && actuator_control_target_ != nullptr;
+}
+inline void ActuatorControlTargetResponse::clear_actuator_control_target() {
+  if (GetArenaNoVirtual() == nullptr && actuator_control_target_ != nullptr) {
+    delete actuator_control_target_;
+  }
+  actuator_control_target_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::ActuatorControlTarget& ActuatorControlTargetResponse::actuator_control_target() const {
+  const ::mavsdk::rpc::telemetry::ActuatorControlTarget* p = actuator_control_target_;
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.ActuatorControlTargetResponse.actuator_control_target)
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::ActuatorControlTarget*>(
+      &::mavsdk::rpc::telemetry::_ActuatorControlTarget_default_instance_);
+}
+inline ::mavsdk::rpc::telemetry::ActuatorControlTarget* ActuatorControlTargetResponse::release_actuator_control_target() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.ActuatorControlTargetResponse.actuator_control_target)
+  
+  ::mavsdk::rpc::telemetry::ActuatorControlTarget* temp = actuator_control_target_;
+  actuator_control_target_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::ActuatorControlTarget* ActuatorControlTargetResponse::mutable_actuator_control_target() {
+  
+  if (actuator_control_target_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::ActuatorControlTarget>(GetArenaNoVirtual());
+    actuator_control_target_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.ActuatorControlTargetResponse.actuator_control_target)
+  return actuator_control_target_;
+}
+inline void ActuatorControlTargetResponse::set_allocated_actuator_control_target(::mavsdk::rpc::telemetry::ActuatorControlTarget* actuator_control_target) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete actuator_control_target_;
+  }
+  if (actuator_control_target) {
+    ::google::protobuf::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      actuator_control_target = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, actuator_control_target, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  actuator_control_target_ = actuator_control_target;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.ActuatorControlTargetResponse.actuator_control_target)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeActuatorOutputStatusRequest
+
+// -------------------------------------------------------------------
+
+// ActuatorOutputStatusResponse
+
+// .mavsdk.rpc.telemetry.ActuatorOutputStatus actuator_output_status = 1;
+inline bool ActuatorOutputStatusResponse::has_actuator_output_status() const {
+  return this != internal_default_instance() && actuator_output_status_ != nullptr;
+}
+inline void ActuatorOutputStatusResponse::clear_actuator_output_status() {
+  if (GetArenaNoVirtual() == nullptr && actuator_output_status_ != nullptr) {
+    delete actuator_output_status_;
+  }
+  actuator_output_status_ = nullptr;
+}
+inline const ::mavsdk::rpc::telemetry::ActuatorOutputStatus& ActuatorOutputStatusResponse::actuator_output_status() const {
+  const ::mavsdk::rpc::telemetry::ActuatorOutputStatus* p = actuator_output_status_;
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse.actuator_output_status)
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::ActuatorOutputStatus*>(
+      &::mavsdk::rpc::telemetry::_ActuatorOutputStatus_default_instance_);
+}
+inline ::mavsdk::rpc::telemetry::ActuatorOutputStatus* ActuatorOutputStatusResponse::release_actuator_output_status() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse.actuator_output_status)
+  
+  ::mavsdk::rpc::telemetry::ActuatorOutputStatus* temp = actuator_output_status_;
+  actuator_output_status_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::ActuatorOutputStatus* ActuatorOutputStatusResponse::mutable_actuator_output_status() {
+  
+  if (actuator_output_status_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::ActuatorOutputStatus>(GetArenaNoVirtual());
+    actuator_output_status_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse.actuator_output_status)
+  return actuator_output_status_;
+}
+inline void ActuatorOutputStatusResponse::set_allocated_actuator_output_status(::mavsdk::rpc::telemetry::ActuatorOutputStatus* actuator_output_status) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete actuator_output_status_;
+  }
+  if (actuator_output_status) {
+    ::google::protobuf::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      actuator_output_status = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, actuator_output_status, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  actuator_output_status_ = actuator_output_status;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse.actuator_output_status)
+}
+
+// -------------------------------------------------------------------
+
 // Position
 
 // double latitude_deg = 1;
@@ -5722,6 +6973,52 @@ inline void EulerAngle::set_yaw_deg(float value) {
   
   yaw_deg_ = value;
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.EulerAngle.yaw_deg)
+}
+
+// -------------------------------------------------------------------
+
+// AngularVelocityBody
+
+// float roll_rad_s = 1;
+inline void AngularVelocityBody::clear_roll_rad_s() {
+  roll_rad_s_ = 0;
+}
+inline float AngularVelocityBody::roll_rad_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.AngularVelocityBody.roll_rad_s)
+  return roll_rad_s_;
+}
+inline void AngularVelocityBody::set_roll_rad_s(float value) {
+  
+  roll_rad_s_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AngularVelocityBody.roll_rad_s)
+}
+
+// float pitch_rad_s = 2;
+inline void AngularVelocityBody::clear_pitch_rad_s() {
+  pitch_rad_s_ = 0;
+}
+inline float AngularVelocityBody::pitch_rad_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.AngularVelocityBody.pitch_rad_s)
+  return pitch_rad_s_;
+}
+inline void AngularVelocityBody::set_pitch_rad_s(float value) {
+  
+  pitch_rad_s_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AngularVelocityBody.pitch_rad_s)
+}
+
+// float yaw_rad_s = 3;
+inline void AngularVelocityBody::clear_yaw_rad_s() {
+  yaw_rad_s_ = 0;
+}
+inline float AngularVelocityBody::yaw_rad_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.AngularVelocityBody.yaw_rad_s)
+  return yaw_rad_s_;
+}
+inline void AngularVelocityBody::set_yaw_rad_s(float value) {
+  
+  yaw_rad_s_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.AngularVelocityBody.yaw_rad_s)
 }
 
 // -------------------------------------------------------------------
@@ -6053,9 +7350,123 @@ inline void StatusText::set_allocated_text(::std::string* text) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.StatusText.text)
 }
 
+// -------------------------------------------------------------------
+
+// ActuatorControlTarget
+
+// int32 group = 1;
+inline void ActuatorControlTarget::clear_group() {
+  group_ = 0;
+}
+inline ::google::protobuf::int32 ActuatorControlTarget::group() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.ActuatorControlTarget.group)
+  return group_;
+}
+inline void ActuatorControlTarget::set_group(::google::protobuf::int32 value) {
+  
+  group_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ActuatorControlTarget.group)
+}
+
+// repeated float controls = 2;
+inline int ActuatorControlTarget::controls_size() const {
+  return controls_.size();
+}
+inline void ActuatorControlTarget::clear_controls() {
+  controls_.Clear();
+}
+inline float ActuatorControlTarget::controls(int index) const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.ActuatorControlTarget.controls)
+  return controls_.Get(index);
+}
+inline void ActuatorControlTarget::set_controls(int index, float value) {
+  controls_.Set(index, value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ActuatorControlTarget.controls)
+}
+inline void ActuatorControlTarget::add_controls(float value) {
+  controls_.Add(value);
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.telemetry.ActuatorControlTarget.controls)
+}
+inline const ::google::protobuf::RepeatedField< float >&
+ActuatorControlTarget::controls() const {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.telemetry.ActuatorControlTarget.controls)
+  return controls_;
+}
+inline ::google::protobuf::RepeatedField< float >*
+ActuatorControlTarget::mutable_controls() {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.telemetry.ActuatorControlTarget.controls)
+  return &controls_;
+}
+
+// -------------------------------------------------------------------
+
+// ActuatorOutputStatus
+
+// uint32 active = 1;
+inline void ActuatorOutputStatus::clear_active() {
+  active_ = 0u;
+}
+inline ::google::protobuf::uint32 ActuatorOutputStatus::active() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.ActuatorOutputStatus.active)
+  return active_;
+}
+inline void ActuatorOutputStatus::set_active(::google::protobuf::uint32 value) {
+  
+  active_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ActuatorOutputStatus.active)
+}
+
+// repeated float actuator = 2;
+inline int ActuatorOutputStatus::actuator_size() const {
+  return actuator_.size();
+}
+inline void ActuatorOutputStatus::clear_actuator() {
+  actuator_.Clear();
+}
+inline float ActuatorOutputStatus::actuator(int index) const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.ActuatorOutputStatus.actuator)
+  return actuator_.Get(index);
+}
+inline void ActuatorOutputStatus::set_actuator(int index, float value) {
+  actuator_.Set(index, value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.ActuatorOutputStatus.actuator)
+}
+inline void ActuatorOutputStatus::add_actuator(float value) {
+  actuator_.Add(value);
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.telemetry.ActuatorOutputStatus.actuator)
+}
+inline const ::google::protobuf::RepeatedField< float >&
+ActuatorOutputStatus::actuator() const {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.telemetry.ActuatorOutputStatus.actuator)
+  return actuator_;
+}
+inline ::google::protobuf::RepeatedField< float >*
+ActuatorOutputStatus::mutable_actuator() {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.telemetry.ActuatorOutputStatus.actuator)
+  return &actuator_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
