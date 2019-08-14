@@ -563,7 +563,7 @@ public:
      * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
-     * @return callback Callback to receive request result.
+     * @param callback Callback to receive request result.
      */
     void set_rate_actuator_control_target_async(double rate_hz, result_callback_t callback);
 
@@ -573,7 +573,7 @@ public:
      * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
-     * @return callback Callback to receive request result.
+     * @param callback Callback to receive request result.
      */
     void set_rate_actuator_output_status_async(double rate_hz, result_callback_t callback);
 

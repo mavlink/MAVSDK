@@ -133,8 +133,8 @@ private:
     void set_health_level_calibration(bool ok);
     void set_rc_status(bool available, float signal_strength_percent);
     void set_unix_epoch_time_us(uint64_t time_us);
-    void set_actuator_control_target(uint8_t group, const float* controls);
-    void set_actuator_output_status(uint32_t active, const float* actuators);
+    void set_actuator_control_target(uint8_t group, const std::array<float, 8>& controls);
+    void set_actuator_output_status(uint32_t active, const std::array<float, 32>& actuators);
 
     void process_position_velocity_ned(const mavlink_message_t& message);
     void process_global_position_int(const mavlink_message_t& message);

@@ -6,6 +6,7 @@
 #include <cmath>
 #include <functional>
 #include <string>
+#include <array>
 
 namespace mavsdk {
 
@@ -725,11 +726,13 @@ void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
 
 void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& message)
 {
-    mavlink_actuator_control_target_t actuator_control_target;
-    mavlink_msg_actuator_control_target_decode(&message, &actuator_control_target);
+    uint32_t group;
+    std::array<float, 8> controls;
 
-    set_actuator_control_target(
-        actuator_control_target.group_mlx, actuator_control_target.controls);
+    group = mavlink_msg_actuator_control_target_get_group_mlx(&message);
+    mavlink_msg_actuator_control_target_get_controls(&message, controls.data());
+
+    set_actuator_control_target(group, controls);
 
     if (_actuator_control_target_subscription) {
         auto callback = _actuator_control_target_subscription;
@@ -740,10 +743,13 @@ void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& mes
 
 void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& message)
 {
-    mavlink_actuator_output_status_t actuator_output_status;
-    mavlink_msg_actuator_output_status_decode(&message, &actuator_output_status);
+    uint32_t active;
+    std::array<float, 32> actuators;
 
-    set_actuator_output_status(actuator_output_status.active, actuator_output_status.actuator);
+    active = mavlink_msg_actuator_output_status_get_active(&message);
+    mavlink_msg_actuator_output_status_get_actuator(&message, actuators.data());
+
+    set_actuator_output_status(active, actuators);
 
     if (_actuator_output_status_subscription) {
         auto callback = _actuator_output_status_subscription;
@@ -1155,18 +1161,19 @@ void TelemetryImpl::set_unix_epoch_time_us(uint64_t time_us)
     _unix_epoch_time_us = time_us;
 }
 
-void TelemetryImpl::set_actuator_control_target(uint8_t group, const float* controls)
+void TelemetryImpl::set_actuator_control_target(uint8_t group, const std::array<float, 8>& controls)
 {
     std::lock_guard<std::mutex> lock(_actuator_control_target_mutex);
     _actuator_control_target.group = group;
-    std::copy(controls, controls + 8, _actuator_control_target.controls);
+    std::copy(controls.begin(), controls.end(), _actuator_control_target.controls);
 }
 
-void TelemetryImpl::set_actuator_output_status(uint32_t active, const float* actuators)
+void TelemetryImpl::set_actuator_output_status(
+    uint32_t active, const std::array<float, 32>& actuators)
 {
     std::lock_guard<std::mutex> lock(_actuator_output_status_mutex);
     _actuator_output_status.active = active;
-    std::copy(actuators, actuators + active, _actuator_output_status.actuator);
+    std::copy(actuators.begin(), actuators.end(), _actuator_output_status.actuator);
 }
 
 void TelemetryImpl::position_velocity_ned_async(
