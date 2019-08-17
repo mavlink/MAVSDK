@@ -538,9 +538,30 @@ public:
     /**
      * @brief Get the in-air status (synchronous).
      *
-     * @return true if in-air (flying) and not on-ground (landed).
+     * @return true if in-air (flying) and false if otherwise.
      */
     bool in_air() const;
+
+    /**
+     * @brief Get the takingoff status (synchronous).
+     *
+     * @return true if takingoff and false if otherwise.
+     */
+    bool takingoff() const;
+
+    /**
+     * @brief Get the landing status (synchronous).
+     *
+     * @return true if landing and false if otherwise.
+     */
+    bool landing() const;
+
+    /**
+     * @brief Get the on_ground status (synchronous).
+     *
+     * @return true if the uav is on the ground and false if otherwise.
+     */
+    bool on_ground() const;
 
     /**
      * @brief Get the arming status (synchronous).
