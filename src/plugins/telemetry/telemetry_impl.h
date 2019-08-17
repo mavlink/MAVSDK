@@ -57,6 +57,9 @@ public:
     Telemetry::Position get_position() const;
     Telemetry::Position get_home_position() const;
     bool in_air() const;
+    bool takingoff() const;
+    bool landing() const;
+    bool on_ground() const;
     bool armed() const;
     Telemetry::StatusText get_status_text() const;
     Telemetry::EulerAngle get_attitude_euler_angle() const;
@@ -101,6 +104,9 @@ private:
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
+    void set_takingoff(bool takingoff);
+    void set_landing(bool landing);
+    void set_on_ground(bool on_ground);
     void set_status_text(Telemetry::StatusText status_text);
     void set_armed(bool armed);
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
@@ -169,6 +175,9 @@ private:
 
     // If possible, just use atomic instead of a mutex.
     std::atomic_bool _in_air{false};
+    std::atomic_bool _takingoff{false};
+    std::atomic_bool _landing{false};
+    std::atomic_bool _on_ground{false};
     std::atomic_bool _armed{false};
 
     mutable std::mutex _status_text_mutex{};

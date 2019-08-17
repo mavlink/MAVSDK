@@ -529,11 +529,17 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
     mavlink_extended_sys_state_t extended_sys_state;
     mavlink_msg_extended_sys_state_decode(&message, &extended_sys_state);
 
-    if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR ||
-        extended_sys_state.landed_state == MAV_LANDED_STATE_TAKEOFF ||
-        extended_sys_state.landed_state == MAV_LANDED_STATE_LANDING) {
+    if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR) {
         set_in_air(true);
+
+    } else if (extended_sys_state.landed_state == MAV_LANDED_STATE_TAKEOFF) {
+        set_takingoff(true);
+
+    } else if (extended_sys_state.landed_state == MAV_LANDED_STATE_LANDING) {
+        set_landing(true);
+
     } else if (extended_sys_state.landed_state == MAV_LANDED_STATE_ON_GROUND) {
+        set_on_ground(true);
         set_in_air(false);
     }
     // If landed_state is undefined, we use what we have received last.
@@ -829,6 +835,21 @@ bool TelemetryImpl::in_air() const
     return _in_air;
 }
 
+bool TelemetryImpl::takingoff() const
+{
+  return _takingoff;  
+}
+
+bool TelemetryImpl::landing() const
+{
+  return _landing;
+}
+
+bool TelemetryImpl::on_ground() const
+{
+  return _on_ground;
+}
+
 bool TelemetryImpl::armed() const
 {
     return _armed;
@@ -837,6 +858,21 @@ bool TelemetryImpl::armed() const
 void TelemetryImpl::set_in_air(bool in_air_new)
 {
     _in_air = in_air_new;
+}
+
+void TelemetryImpl::set_takingoff(bool takingoff_new)
+{
+    _takingoff = takingoff_new;
+}
+
+void TelemetryImpl::set_landing(bool landing_new)
+{
+    _landing = landing_new;
+}
+
+void TelemetryImpl::set_on_ground(bool on_ground_new)
+{
+    _on_ground = on_ground_new;
 }
 
 void TelemetryImpl::set_status_text(Telemetry::StatusText status_text)
