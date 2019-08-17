@@ -9,15 +9,16 @@ type_info_factory = TypeInfoFactory()
 
 
 class Param:
-    def __init__(self, name, type_info):
+    def __init__(self, name, type_info, description):
         self.name = name
         self.type_info = type_info
+        self.description = description
 
 
 def no_return(method, responses):
     """ Checks if a method is completable """
     method_output = method.output_type.split(".")[-1]
-    method_response = responses[method_output]
+    method_response = responses[method_output]['struct']
 
     if (1 == len(method_response.field) and
             type_info_factory.create(method_response.field[0]).is_result):
@@ -51,15 +52,19 @@ def is_struct(struct):
             not struct.name.endswith("Response"))
 
 
-def filter_out_result(fields):
-    """ Filters out the result fields (".*Result$") """
+def filter_out_result(fields, fields_docs):
+    """ Filters out the result fields (".*Result$")  and
+    append the corresponding docs description """
+    field_id = 0
     for field in fields:
         if not field.type_name.endswith("Result"):
-            yield field
+            yield {'field': field, 'docs': fields_docs[field_id]}
+
+        field_id += 1
 
 
 def has_result(structs):
-    """ Checks if at least one struct is a *Result$. 
+    """ Checks if at least one struct is a *Result$.
         The expected input is a list of struct names. """
     for struct in structs:
         if struct.endswith("Result"):

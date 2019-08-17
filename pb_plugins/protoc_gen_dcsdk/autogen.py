@@ -2,9 +2,10 @@
 from os import environ
 from google.protobuf.compiler import plugin_pb2
 from .autogen_file import File
+from .docs import Docs
+from .enum import Enum
 from .methods import Method
 from .struct import Struct
-from .enum import Enum
 from .utils import (get_template_env,
                     has_result,
                     name_parser_factory,
@@ -27,26 +28,34 @@ class AutoGen(object):
 
         for proto_file in request.proto_file:
             package = AutoGen.extract_package(proto_file, is_java)
-            plugin_name, plugin_dir = AutoGen.extract_plugin_name_and_dir(proto_file.name, package, is_java)
+            plugin_name, plugin_dir = AutoGen.extract_plugin_name_and_dir(
+                proto_file.name, package, is_java)
+
+            docs = Docs.collect_docs(proto_file.source_code_info)
 
             enums = Enum.collect_enums(plugin_name,
                                        package,
                                        proto_file.enum_type,
-                                       template_env)
+                                       template_env,
+                                       docs)
 
             structs = Struct.collect_structs(plugin_name,
                                              package,
                                              proto_file.message_type,
-                                             template_env)
+                                             template_env,
+                                             docs)
 
             requests = Struct.collect_requests(package,
-                                               proto_file.message_type)
+                                               proto_file.message_type,
+                                               docs)
 
             responses = Struct.collect_responses(package,
-                                                 proto_file.message_type)
+                                                 proto_file.message_type,
+                                                 docs)
 
             methods = Method.collect_methods(plugin_name,
                                              package,
+                                             docs,
                                              proto_file.service[0].method,
                                              structs,
                                              requests,
@@ -56,6 +65,7 @@ class AutoGen(object):
             out_file = File(plugin_name,
                             package,
                             template_env,
+                            docs,
                             enums,
                             structs,
                             methods,
@@ -80,9 +90,9 @@ class AutoGen(object):
 
         if 'file_ext' not in params_dict:
             raise Exception("'file_ext' option was not specified! See " +
-                    "--[name]_out=file_ext=<value>,<other_options>:/path/to/output " +
-                    "or --[name]_opt=file_ext=<value>,<other_options> in the protoc" +
-                    "command line.")
+                            "--[name]_out=file_ext=<value>,<other_options>:/path/to/output " +
+                            "or --[name]_opt=file_ext=<value>,<other_options> in the protoc" +
+                            "command line.")
 
         if 'template_path' not in params_dict:
             template_path = environ.get("TEMPLATE_PATH", "./")
@@ -91,10 +101,10 @@ class AutoGen(object):
                 params_dict["template_path"] = template_path
             else:
                 raise Exception("'template_path' option was not specified! See " +
-                        "--[name]_out=template_path=<value>,<other_options>:/path/to/output " +
-                        "or --[name]_opt=template_path=<value>,<other_options> in the protoc" +
-                        "command line. Alternatively, you can set the TEMPLATE_PATH " +
-                        "environment variable.")
+                                "--[name]_out=template_path=<value>,<other_options>:/path/to/output " +
+                                "or --[name]_opt=template_path=<value>,<other_options> in the protoc" +
+                                "command line. Alternatively, you can set the TEMPLATE_PATH " +
+                                "environment variable.")
 
         return params_dict
 

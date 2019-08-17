@@ -15,6 +15,7 @@ class Method(object):
             self,
             plugin_name,
             package,
+            method_description,
             pb_method,
             requests,
             responses):
@@ -24,28 +25,38 @@ class Method(object):
         self._returns = False
         self._plugin_name = name_parser_factory.create(plugin_name)
         self._package = name_parser_factory.create(package)
+        self._method_description = method_description
         self._name = name_parser_factory.create(pb_method.name)
         self.extract_params(pb_method, requests)
         self.extract_return_type_and_name(pb_method, responses)
 
     def extract_params(self, pb_method, requests):
         method_input = pb_method.input_type.split(".")[-1]
-        request = requests[method_input]
+        request = requests[method_input]['struct']
+        params_description = requests[method_input]['docs']['params']
 
         self._params = []
 
+        field_id = 0
         for field in request.field:
             self._params.append(
                 Param(
                     name=name_parser_factory.create(field.name),
-                    type_info=type_info_factory.create(field))
+                    type_info=type_info_factory.create(field),
+                    description=params_description[field_id])
             )
+
+            field_id += 1
 
     def extract_return_type_and_name(self, pb_method, responses):
         method_output = pb_method.output_type.split(".")[-1]
-        response = responses[method_output]
+        response = responses[method_output]['struct']
+        response_docs = responses[method_output]['docs']
 
-        return_params = list(filter_out_result(response.field))
+        return_params = list(
+            filter_out_result(
+                response.field,
+                response_docs['params']))
 
         if len(return_params) < len(response.field):
             self._has_result = True
@@ -56,11 +67,11 @@ class Method(object):
                 f"(and an optional '*Result')!\nError in {method_output}")
 
         if len(return_params) == 1:
-            self._return_type = type_info_factory.create(return_params[0])
-            self._return_name = name_parser_factory.create(return_params[0].json_name)
-        else:
-            self._return_type = None
-            self._return_name = None
+            self._return_type = type_info_factory.create(
+                return_params[0]['field'])
+            self._return_name = name_parser_factory.create(
+                return_params[0]['field'].json_name)
+            self._return_description = return_params[0]['docs']
 
     @property
     def is_stream(self):
@@ -90,6 +101,7 @@ class Method(object):
     def collect_methods(
             plugin_name,
             package,
+            docs,
             methods,
             structs,
             requests,
@@ -97,11 +109,17 @@ class Method(object):
             template_env):
         """ Collects all methods for the plugin """
         _methods = {}
+
+        method_id = 0
         for method in methods:
+            # Extract method description
+            method_description = docs['methods'][method_id].strip()
+
             # Check if stream
             if (is_stream(method)):
                 _methods[method.name] = Stream(plugin_name,
                                                package,
+                                               method_description,
                                                template_env,
                                                method,
                                                requests,
@@ -111,6 +129,7 @@ class Method(object):
             elif (no_return(method, responses)):
                 _methods[method.name] = Call(plugin_name,
                                              package,
+                                             method_description,
                                              template_env,
                                              method,
                                              requests,
@@ -119,10 +138,13 @@ class Method(object):
             else:
                 _methods[method.name] = Request(plugin_name,
                                                 package,
+                                                method_description,
                                                 template_env,
                                                 method,
                                                 requests,
                                                 responses)
+
+            method_id += 1
 
         return _methods
 
@@ -138,11 +160,18 @@ class Call(Method):
             self,
             plugin_name,
             package,
+            method_description,
             template_env,
             pb_method,
             requests,
             responses):
-        super().__init__(plugin_name, package, pb_method, requests, responses)
+        super().__init__(
+            plugin_name,
+            package,
+            method_description,
+            pb_method,
+            requests,
+            responses)
         self._template = template_env.get_template("call.j2")
         self._no_return = True
 
@@ -151,6 +180,7 @@ class Call(Method):
                                      params=self._params,
                                      plugin_name=self._plugin_name,
                                      package=self._package,
+                                     method_description=self._method_description,
                                      has_result=self._has_result)
 
 
@@ -161,12 +191,20 @@ class Request(Method):
             self,
             plugin_name,
             package,
+            method_description,
             template_env,
             pb_method,
             requests,
             responses):
-        super().__init__(plugin_name, package, pb_method, requests, responses)
+        super().__init__(
+            plugin_name,
+            package,
+            method_description,
+            pb_method,
+            requests,
+            responses)
         self._template = template_env.get_template("request.j2")
+        self._method_description = method_description
         self._returns = True
 
     def __repr__(self):
@@ -175,8 +213,10 @@ class Request(Method):
             params=self._params,
             return_type=self._return_type,
             return_name=self._return_name,
+            return_description=self._return_description,
             plugin_name=self._plugin_name,
             package=self._package,
+            method_description=self._method_description,
             has_result=self._has_result)
 
 
@@ -187,13 +227,21 @@ class Stream(Method):
             self,
             plugin_name,
             package,
+            method_description,
             template_env,
             pb_method,
             requests,
             responses):
-        super().__init__(plugin_name, package, pb_method, requests, responses)
+        super().__init__(
+            plugin_name,
+            package,
+            method_description,
+            pb_method,
+            requests,
+            responses)
         self._is_stream = True
-        self._name = name_parser_factory.create(remove_subscribe(pb_method.name))
+        self._name = name_parser_factory.create(
+            remove_subscribe(pb_method.name))
         self._template = template_env.get_template("stream.j2")
 
     def __repr__(self):
@@ -202,6 +250,8 @@ class Stream(Method):
             params=self._params,
             return_type=self._return_type,
             return_name=self._return_name,
+            return_description=self._return_description,
             plugin_name=self._plugin_name,
             package=self._package,
+            method_description=self._method_description,
             has_result=self._has_result)
