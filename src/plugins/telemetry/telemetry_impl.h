@@ -57,10 +57,8 @@ public:
     Telemetry::Position get_position() const;
     Telemetry::Position get_home_position() const;
     bool in_air() const;
-    bool takingoff() const;
-    bool landing() const;
-    bool on_ground() const;
     bool armed() const;
+    Telemetry::LandedState get_landed_state() const;
     Telemetry::StatusText get_status_text() const;
     Telemetry::EulerAngle get_attitude_euler_angle() const;
     Telemetry::Quaternion get_attitude_quaternion() const;
@@ -93,6 +91,7 @@ public:
     void flight_mode_async(Telemetry::flight_mode_callback_t& callback);
     void health_async(Telemetry::health_callback_t& callback);
     void health_all_ok_async(Telemetry::health_all_ok_callback_t& callback);
+    void landed_state_async(Telemetry::landed_state_callback_t& callback);
     void rc_status_async(Telemetry::rc_status_callback_t& callback);
     void unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t& callback);
 
@@ -104,9 +103,7 @@ private:
     void set_position(Telemetry::Position position);
     void set_home_position(Telemetry::Position home_position);
     void set_in_air(bool in_air);
-    void set_takingoff(bool takingoff);
-    void set_landing(bool landing);
-    void set_on_ground(bool on_ground);
+    void set_landed_state(Telemetry::LandedState landed_state);
     void set_status_text(Telemetry::StatusText status_text);
     void set_armed(bool armed);
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
@@ -161,6 +158,8 @@ private:
 
     static Telemetry::FlightMode to_flight_mode_from_custom_mode(uint32_t custom_mode);
 
+    static Telemetry::LandedState to_landed_state(mavlink_extended_sys_state_t extended_sys_state);
+
     // Make all fields thread-safe using mutexs
     // The mutexs are mutable so that the lock can get aqcuired in
     // methods marked const.
@@ -175,9 +174,6 @@ private:
 
     // If possible, just use atomic instead of a mutex.
     std::atomic_bool _in_air{false};
-    std::atomic_bool _takingoff{false};
-    std::atomic_bool _landing{false};
-    std::atomic_bool _on_ground{false};
     std::atomic_bool _armed{false};
 
     mutable std::mutex _status_text_mutex{};
@@ -208,6 +204,9 @@ private:
     mutable std::mutex _health_mutex{};
     Telemetry::Health _health{false, false, false, false, false, false, false};
 
+    mutable std::mutex _landed_state_mutex{};
+    Telemetry::LandedState _landed_state{Telemetry::LandedState::UNDEFINED};
+
     mutable std::mutex _rc_status_mutex{};
     Telemetry::RCStatus _rc_status{false, false, 0.0f};
 
@@ -233,6 +232,7 @@ private:
     Telemetry::flight_mode_callback_t _flight_mode_subscription{nullptr};
     Telemetry::health_callback_t _health_subscription{nullptr};
     Telemetry::health_all_ok_callback_t _health_all_ok_subscription{nullptr};
+    Telemetry::landed_state_callback_t _landed_state_subscription{nullptr};
     Telemetry::rc_status_callback_t _rc_status_subscription{nullptr};
     Telemetry::unix_epoch_time_callback_t _unix_epoch_time_subscription{nullptr};
 

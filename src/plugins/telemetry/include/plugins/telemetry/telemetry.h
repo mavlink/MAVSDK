@@ -222,9 +222,24 @@ public:
     };
 
     /**
+     *@brief LandedState.
+     * Enumeration of landed detector states
+     * For more information, check out MavLink messages in
+     * https://mavlink.io/en/messages/common.html
+     */
+    enum class LandeState {
+        UNDEFINED,
+        ON_GROUND,
+        IN_AIR,
+        TAKEOFF,
+        LANDING
+    }
+
+    /**
      * @brief Get a human readable English string for a flight mode.
      */
-    static std::string flight_mode_str(FlightMode flight_mode);
+    static std::string
+    flight_mode_str(FlightMode flight_mode);
 
     /**
      * @brief Various health flags.
@@ -538,30 +553,16 @@ public:
     /**
      * @brief Get the in-air status (synchronous).
      *
-     * @return true if in-air (flying) and false if otherwise.
+     * @return true if in-air (flying) and not on-ground (landed).
      */
     bool in_air() const;
 
     /**
-     * @brief Get the takingoff status (synchronous).
+     * @brief Get the landed state status (synchronous).
      *
-     * @return true if takingoff and false if otherwise.
+     * @return Landed state.
      */
-    bool takingoff() const;
-
-    /**
-     * @brief Get the landing status (synchronous).
-     *
-     * @return true if landing and false if otherwise.
-     */
-    bool landing() const;
-
-    /**
-     * @brief Get the on_ground status (synchronous).
-     *
-     * @return true if the uav is on the ground and false if otherwise.
-     */
-    bool on_ground() const;
+    LandeState landed_state() const;
 
     /**
      * @brief Get the arming status (synchronous).
@@ -876,6 +877,21 @@ public:
      * @param callback Function to call with updates.
      */
     void health_all_ok_async(health_all_ok_callback_t callback);
+
+    /**
+     * @brief Callback type for landed state updates.
+     *
+     * @param LandedState enumeration.
+     */
+
+    typedef std::function<void(LandedState landed_state)> landed_state_callback_t;
+
+    /**
+     * @brief Callback type for Landed state updates.
+     *
+     * @param callback Function to call with updates.
+     */
+    void landed_state(landed_state_callback_t callback);
 
     /**
      * @brief Callback type for RC status updates.
