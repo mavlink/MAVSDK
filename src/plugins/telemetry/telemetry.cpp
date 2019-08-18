@@ -145,19 +145,9 @@ bool Telemetry::in_air() const
     return _impl->in_air();
 }
 
-bool Telemetry::takingoff() const
+Telemetry::LandedState Telemetry::landed_state() const
 {
-    return _impl->takingoff();
-}
-
-bool Telemetry::landing() const
-{
-    return _impl->landing();
-}
-
-bool Telemetry::on_ground() const
-{
-    return _impl->on_ground();
+    return _impl->get_landed_state();
 }
 
 Telemetry::StatusText Telemetry::status_text() const
