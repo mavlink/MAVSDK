@@ -222,24 +222,19 @@ public:
     };
 
     /**
+     * @brief Get a human readable English string for a flight mode.
+     */
+    static std::string flight_mode_str(FlightMode flight_mode);
+
+    /**
      *@brief LandedState.
      * Enumeration of landed detector states
      * For more information, check out MavLink messages in
      * https://mavlink.io/en/messages/common.html
      */
-    enum class LandeState {
-        UNDEFINED,
-        ON_GROUND,
-        IN_AIR,
-        TAKEOFF,
-        LANDING
-    }
+    enum class LandedState { UNDEFINED, ON_GROUND, IN_AIR, TAKEOFF, LANDING };
 
-    /**
-     * @brief Get a human readable English string for a flight mode.
-     */
-    static std::string
-    flight_mode_str(FlightMode flight_mode);
+    static std::string landed_state_str(LandedState landed_state);
 
     /**
      * @brief Various health flags.
@@ -562,7 +557,7 @@ public:
      *
      * @return Landed state.
      */
-    LandeState landed_state() const;
+    LandedState landed_state() const;
 
     /**
      * @brief Get the arming status (synchronous).
@@ -714,6 +709,7 @@ public:
      *
      * @param callback Function to call with updates.
      */
+
     void status_text_async(status_text_callback_t callback);
 
     /**
@@ -891,7 +887,7 @@ public:
      *
      * @param callback Function to call with updates.
      */
-    void landed_state(landed_state_callback_t callback);
+    void landed_state_async(landed_state_callback_t callback);
 
     /**
      * @brief Callback type for RC status updates.

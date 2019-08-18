@@ -1056,7 +1056,7 @@ void TelemetryImpl::set_health_level_calibration(bool ok)
     _health.level_calibration_ok = (ok || _hitl_enabled);
 }
 
-void TelemetryImpl::get_landed_state()
+Telemetry::LandedState TelemetryImpl::get_landed_state() const
 {
     std::lock_guard<std::mutex> lock(_landed_state_mutex);
     return _landed_state;
