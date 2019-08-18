@@ -5,21 +5,97 @@ package mavsdk.rpc.action;
 option java_package = "io.mavsdk.action";
 option java_outer_classname = "ActionProto";
 
+// Enable simple actions such as arming, taking off, and landing.
 service ActionService {
+    /*
+     * Send command to arm the drone.
+     *
+     * Arming a drone normally causes motors to spin at idle.
+     * Before arming take all safety precautions and stand clear of the drone!
+     */
     rpc Arm(ArmRequest) returns(ArmResponse) {}
+    /*
+     * Send command to disarm the drone.
+     *
+     * This will disarm a drone that considers itself landed. If flying, the drone should
+     * reject the disarm command. Disarming means that all motors will stop.
+     */
     rpc Disarm(DisarmRequest) returns(DisarmResponse) {}
+    /*
+     * Send command to take off and hover.
+     *
+     * This switches the drone into position control mode and commands 
+     * it to take off and hover at the takeoff altitude.
+     *
+     * Note that the vehicle must be armed before it can take off.
+     */
     rpc Takeoff(TakeoffRequest) returns(TakeoffResponse) {}
+    /*
+     * Send command to land at the current position.
+     *
+     * This switches the drone to 'Land' flight mode.
+     */
     rpc Land(LandRequest) returns(LandResponse) {}
+    /*
+     * Send command to reboot the drone components.
+     *
+     * This will reboot the autopilot, companion computer, camera and gimbal.
+     */
     rpc Reboot(RebootRequest) returns(RebootResponse) {}
+    /*
+     * Send command to kill the drone. 
+     *
+     * This will disarm a drone irrespective of whether it is landed or flying.
+     * Note that the drone will fall out of the sky if this command is used while flying.
+     */
     rpc Kill(KillRequest) returns(KillResponse) {}
+    /*
+     * Send command to return to the launch (takeoff) position and land.
+     *
+     * This switches the drone into [RTL mode](https://docs.px4.io/en/flight_modes/rtl.html) which
+     * generally means it will rise up to a certain altitude to clear any obstacles before heading
+     * back to the launch (takeoff) position and land there.
+     */
     rpc ReturnToLaunch(ReturnToLaunchRequest) returns(ReturnToLaunchResponse) {}
+    /*
+     * Send command to transition the drone to fixedwing.
+     *
+     * The associated action will only be executed for VTOL vehicles (on other vehicle types the
+     * command will fail). The command will succeed if called when the vehicle
+     * is already in fixedwing mode.
+     */
     rpc TransitionToFixedWing(TransitionToFixedWingRequest) returns(TransitionToFixedWingResponse) {}
+    /*
+     * Send command to transition the drone to multicopter.
+     *
+     * The associated action will only be executed for VTOL vehicles (on other vehicle types the
+     * command will fail). The command will succeed if called when the vehicle
+     * is already in multicopter mode.
+     */
     rpc TransitionToMulticopter(TransitionToMulticopterRequest) returns(TransitionToMulticopterResponse) {}
+    /*
+     * Get the takeoff altitude (in meters above ground).
+     */
     rpc GetTakeoffAltitude(GetTakeoffAltitudeRequest) returns(GetTakeoffAltitudeResponse) {}
+    /*
+     * Set takeoff altitude (in meters above ground).
+     */
     rpc SetTakeoffAltitude(SetTakeoffAltitudeRequest) returns(SetTakeoffAltitudeResponse) {}
+    /*
+     * Get the vehicle maximum speed (in metres/second).
+     */
     rpc GetMaximumSpeed(GetMaximumSpeedRequest) returns(GetMaximumSpeedResponse) {}
+    /*
+     * Set vehicle maximum speed (in metres/second).
+     */
     rpc SetMaximumSpeed(SetMaximumSpeedRequest) returns(SetMaximumSpeedResponse) {}
+    /*
+     * Get the return to launch minimum return altitude (in meters).
+     */
     rpc GetReturnToLaunchAltitude(GetReturnToLaunchAltitudeRequest) returns(GetReturnToLaunchAltitudeResponse) {}
+    /*
+     * Set the return to launch minimum return altitude (in meters).
+     */
     rpc SetReturnToLaunchAltitude(SetReturnToLaunchAltitudeRequest) returns(SetReturnToLaunchAltitudeResponse) {}
 }
 
@@ -71,11 +147,11 @@ message TransitionToMulticopterResponse {
 message GetTakeoffAltitudeRequest {}
 message GetTakeoffAltitudeResponse {
     ActionResult action_result = 1;
-    float altitude = 2;
+    float altitude = 2; // Takeoff altitude relative to ground/takeoff location (in meters)
 }
 
 message SetTakeoffAltitudeRequest {
-    float altitude = 1;
+    float altitude = 1; // Takeoff altitude relative to ground/takeoff location (in meters)
 }
 message SetTakeoffAltitudeResponse {
     ActionResult action_result = 1;
@@ -84,11 +160,11 @@ message SetTakeoffAltitudeResponse {
 message GetMaximumSpeedRequest {}
 message GetMaximumSpeedResponse {
     ActionResult action_result = 1;
-    float speed = 2;
+    float speed = 2; // Maximum speed (in metres/second)
 }
 
 message SetMaximumSpeedRequest {
-    float speed = 1;
+    float speed = 1; // Maximum speed (in metres/second)
 }
 message SetMaximumSpeedResponse {
     ActionResult action_result = 1;
@@ -97,32 +173,34 @@ message SetMaximumSpeedResponse {
 message GetReturnToLaunchAltitudeRequest {}
 message GetReturnToLaunchAltitudeResponse {
     ActionResult action_result = 1;
-    float relative_altitude_m = 2;
+    float relative_altitude_m = 2; // Return altitude relative to takeoff location (in meters)
 }
 
 message SetReturnToLaunchAltitudeRequest {
-    float relative_altitude_m = 1;
+    float relative_altitude_m = 1; // Return altitude relative to takeoff location (in meters)
 }
 message SetReturnToLaunchAltitudeResponse {
     ActionResult action_result = 1;
 }
 
+// Result type.
 message ActionResult {
+    // Possible results returned for action requests
     enum Result {
-        UNKNOWN = 0;
-        SUCCESS = 1;
-        NO_SYSTEM = 2;
-        CONNECTION_ERROR = 3;
-        BUSY = 4;
-        COMMAND_DENIED = 5;
-        COMMAND_DENIED_LANDED_STATE_UNKNOWN = 6;
-        COMMAND_DENIED_NOT_LANDED = 7;
-        TIMEOUT = 8;
-        VTOL_TRANSITION_SUPPORT_UNKNOWN = 9;
-        NO_VTOL_TRANSITION_SUPPORT = 10;
-        PARAMETER_ERROR = 11;
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Success. The action command was accepted by the vehicle
+        NO_SYSTEM = 2; // No system is connected
+        CONNECTION_ERROR = 3; // Connection error
+        BUSY = 4; // Vehicle is busy
+        COMMAND_DENIED = 5; // Command refused by vehicle
+        COMMAND_DENIED_LANDED_STATE_UNKNOWN = 6; // Command refused because landed state is unknown
+        COMMAND_DENIED_NOT_LANDED = 7; // Command refused because vehicle not landed
+        TIMEOUT = 8; // Request timed out
+        VTOL_TRANSITION_SUPPORT_UNKNOWN = 9; // Hybrid/VTOL transition refused because VTOL support is unknown
+        NO_VTOL_TRANSITION_SUPPORT = 10; // Vehicle does not support hybrid/VTOL transitions
+        PARAMETER_ERROR = 11; // Error getting or setting parameter
     }
 
-    Result result = 1;
-    string result_str = 2;
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
 }

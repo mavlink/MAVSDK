@@ -5,22 +5,42 @@ package mavsdk.rpc.telemetry;
 option java_package = "io.mavsdk.telemetry";
 option java_outer_classname = "TelemetryProto";
 
+/*
+ * Allow users to get vehicle telemetry and state information
+ * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
+ */
 service TelemetryService {
+    // Subscribe to 'position' updates.
     rpc SubscribePosition(SubscribePositionRequest) returns(stream PositionResponse) {}
+    // Subscribe to 'home position' updates.
     rpc SubscribeHome(SubscribeHomeRequest) returns(stream HomeResponse) {}
+    // Subscribe to in-air updates.
     rpc SubscribeInAir(SubscribeInAirRequest) returns(stream InAirResponse) {}
+    // Subscribe to armed updates.
     rpc SubscribeArmed(SubscribeArmedRequest) returns(stream ArmedResponse) {}
+    // Subscribe to 'attitude' updates (quaternion).
     rpc SubscribeAttitudeQuaternion(SubscribeAttitudeQuaternionRequest) returns(stream AttitudeQuaternionResponse) {}
+    // Subscribe to 'attitude' updates (euler).
     rpc SubscribeAttitudeEuler(SubscribeAttitudeEulerRequest) returns(stream AttitudeEulerResponse) {}
+    // Subscribe to 'attitude' updates (angular velocity)
     rpc SubscribeAttitudeAngularVelocityBody(SubscribeAttitudeAngularVelocityBodyRequest) returns(stream AttitudeAngularVelocityBodyResponse) {}
+    // Subscribe to 'camera attitude' updates (quaternion).
     rpc SubscribeCameraAttitudeQuaternion(SubscribeCameraAttitudeQuaternionRequest) returns(stream CameraAttitudeQuaternionResponse) {}
+    // Subscribe to 'camera attitude' updates (euler).
     rpc SubscribeCameraAttitudeEuler(SubscribeCameraAttitudeEulerRequest) returns(stream CameraAttitudeEulerResponse) {}
+    // Subscribe to 'ground speed' updates (NED).
     rpc SubscribeGroundSpeedNed(SubscribeGroundSpeedNedRequest) returns(stream GroundSpeedNedResponse) {}
+    // Subscribe to 'GPS info' updates.
     rpc SubscribeGpsInfo(SubscribeGpsInfoRequest) returns(stream GpsInfoResponse) {}
+    // Subscribe to 'battery' updates.
     rpc SubscribeBattery(SubscribeBatteryRequest) returns(stream BatteryResponse) {}
+    // Subscribe to 'flight mode' updates.
     rpc SubscribeFlightMode(SubscribeFlightModeRequest) returns(stream FlightModeResponse) {}
+    // Subscribe to 'health' updates.
     rpc SubscribeHealth(SubscribeHealthRequest) returns(stream HealthResponse) {}
+    // Subscribe to 'RC status' updates.
     rpc SubscribeRcStatus(SubscribeRcStatusRequest) returns(stream RcStatusResponse) {}
+    // Subscribe to 'status text' updates.
     rpc SubscribeStatusText(SubscribeStatusTextRequest) returns(stream StatusTextResponse) {}
     rpc SubscribeActuatorControlTarget(SubscribeActuatorControlTargetRequest) returns(stream ActuatorControlTargetResponse) {}
     rpc SubscribeActuatorOutputStatus(SubscribeActuatorOutputStatusRequest) returns(stream ActuatorOutputStatusResponse) {}
@@ -28,32 +48,32 @@ service TelemetryService {
 
 message SubscribePositionRequest {}
 message PositionResponse {
-    Position position = 1;
+    Position position = 1; // The next position
 }
 
 message SubscribeHomeRequest {}
 message HomeResponse {
-    Position home = 1;
+    Position home = 1; // The next home position
 }
 
 message SubscribeInAirRequest {}
 message InAirResponse {
-    bool is_in_air = 1;
+    bool is_in_air = 1; // The next 'in-air' state
 }
 
 message SubscribeArmedRequest {}
 message ArmedResponse {
-   bool is_armed = 1;
+   bool is_armed = 1; // The next 'armed' state
 }
 
 message SubscribeAttitudeQuaternionRequest {}
 message AttitudeQuaternionResponse {
-    Quaternion attitude_quaternion = 1;
+    Quaternion attitude_quaternion = 1; // The next attitude (quaternion)
 }
 
 message SubscribeAttitudeEulerRequest {}
 message AttitudeEulerResponse {
-    EulerAngle attitude_euler = 1;
+    EulerAngle attitude_euler = 1; // The next attitude (euler)
 }
 
 message SubscribeAttitudeAngularVelocityBodyRequest {}
@@ -63,148 +83,182 @@ message AttitudeAngularVelocityBodyResponse {
 
 message SubscribeCameraAttitudeQuaternionRequest {}
 message CameraAttitudeQuaternionResponse {
-    Quaternion attitude_quaternion = 1;
+    Quaternion attitude_quaternion = 1; // The next camera attitude (quaternion)
 }
 
 message SubscribeCameraAttitudeEulerRequest {}
 message CameraAttitudeEulerResponse {
-    EulerAngle attitude_euler = 1;
+    EulerAngle attitude_euler = 1; // The next camera attitude (euler)
 }
 
 message SubscribeGroundSpeedNedRequest {}
 message GroundSpeedNedResponse {
-    SpeedNed ground_speed_ned = 1;
+    SpeedNed ground_speed_ned = 1; // The next ground speed (NED)
 }
 
 message SubscribeGpsInfoRequest {}
 message GpsInfoResponse {
-    GpsInfo gps_info = 1;
+    GpsInfo gps_info = 1; // The next 'GPS info' state
 }
 
 message SubscribeBatteryRequest {}
 message BatteryResponse {
-    Battery battery = 1;
+    Battery battery = 1; // The next 'battery' state
 }
 
 message SubscribeFlightModeRequest {}
 message FlightModeResponse {
-    FlightMode flight_mode = 1;
+    FlightMode flight_mode = 1; // The next flight mode
 }
 
 message SubscribeHealthRequest {}
 message HealthResponse {
-    Health health = 1;
+    Health health = 1; // The next 'health' state
 }
 
 message SubscribeRcStatusRequest {}
 message RcStatusResponse {
-    RcStatus rc_status = 1;
+    RcStatus rc_status = 1; // The next RC status
 }
 
 message SubscribeStatusTextRequest {}
 message StatusTextResponse {
-    StatusText status_text = 1;
+    StatusText status_text = 1; // The next 'status text'
 }
 
 message SubscribeActuatorControlTargetRequest {}
 message ActuatorControlTargetResponse {
-    ActuatorControlTarget actuator_control_target = 1;
+    ActuatorControlTarget actuator_control_target = 1; // Actuator control target
 }
 
 message SubscribeActuatorOutputStatusRequest {}
 message ActuatorOutputStatusResponse {
-    ActuatorOutputStatus actuator_output_status = 1;
+    ActuatorOutputStatus actuator_output_status = 1; // Actuator output status
 }
 
+// Position type in global coordinates.
 message Position {
-    double latitude_deg = 1;
-    double longitude_deg = 2;
-    float absolute_altitude_m = 3;
-    float relative_altitude_m = 4;
+    double latitude_deg = 1; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2; // Longitude in degrees (range: -180 to +180)
+    float absolute_altitude_m = 3; // Altitude AMSL (above mean sea level) in metres
+    float relative_altitude_m = 4; // Altitude relative to takeoff altitude in metres
 }
 
+/*
+ * Quaternion type.
+ *
+ * All rotations and axis systems follow the right-hand rule.
+ * The Hamilton quaternion product definition is used.
+ * A zero-rotation quaternion is represented by (1,0,0,0).
+ * The quaternion could also be written as w + xi + yj + zk.
+ *
+ * For more info see: https://en.wikipedia.org/wiki/Quaternion
+ */
 message Quaternion {
-    float w = 1;
-    float x = 2;
-    float y = 3;
-    float z = 4;
+    float w = 1; // Quaternion entry 0, also denoted as a
+    float x = 2; // Quaternion entry 1, also denoted as b
+    float y = 3; // Quaternion entry 2, also denoted as c
+    float z = 4; // Quaternion entry 3, also denoted as d
 }
 
+/*
+ * Euler angle type.
+ *
+ * All rotations and axis systems follow the right-hand rule.
+ * The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+ *
+ * For more info see https://en.wikipedia.org/wiki/Euler_angles
+ */
 message EulerAngle {
-    float roll_deg = 1;
-    float pitch_deg = 2;
-    float yaw_deg = 3;
+    float roll_deg = 1; // Roll angle in degrees, positive is banking to the right
+    float pitch_deg = 2; // Pitch angle in degrees, positive is pitching nose up
+    float yaw_deg = 3; // Yaw angle in degrees, positive is clock-wise seen from above
 }
 
+// Angular velocity type
 message AngularVelocityBody {
-    float roll_rad_s = 1;
-    float pitch_rad_s = 2;
-    float yaw_rad_s = 3;
+    float roll_rad_s = 1; // Roll angular velocity
+    float pitch_rad_s = 2; // Pitch angular velocity
+    float yaw_rad_s = 3; // Yaw angular velocity
 }
 
+// Speed type, represented in the NED (North East Down) frame and in metres/second.
 message SpeedNed {
-    float velocity_north_m_s = 1;
-    float velocity_east_m_s = 2;
-    float velocity_down_m_s = 3;
+    float velocity_north_m_s = 1; // Velocity in North direction in metres/second
+    float velocity_east_m_s = 2; // Velocity in East direction in metres/second
+    float velocity_down_m_s = 3; // Velocity in Down direction in metres/second
 }
 
+// GPS information type.
 message GpsInfo {
-    int32 num_satellites = 1;
-    FixType fix_type = 2;
+    int32 num_satellites = 1; // Number of visible satellites in use
+    FixType fix_type = 2; // Fix type
 }
 
+// Fix type.
 enum FixType {
-    NO_GPS = 0;
-    NO_FIX = 1;
-    FIX_2D = 2;
-    FIX_3D = 3;
-    FIX_DGPS = 4;
-    RTK_FLOAT = 5;
-    RTK_FIXED = 6;
+    NO_GPS = 0; // No GPS connected
+    NO_FIX = 1; // No position information, GPS is connected
+    FIX_2D = 2; // 2D position
+    FIX_3D = 3; // 3D position
+    FIX_DGPS = 4; // DGPS/SBAS aided 3D position
+    RTK_FLOAT = 5; // RTK float, 3D position
+    RTK_FIXED = 6; // RTK Fixed, 3D position
 }
 
+// Battery type.
 message Battery {
-    float voltage_v = 1;
-    float remaining_percent = 2;
+    float voltage_v = 1; // Voltage in volts
+    float remaining_percent = 2; // Estimated battery remaining (range: 0.0 to 1.0)
 }
 
+/*
+ * Flight modes.
+ *
+ * For more information about flight modes, check out
+ * https://docs.px4.io/en/config/flight_mode.html.
+ */
 enum FlightMode {
-    UNKNOWN = 0;
-    READY = 1;
-    TAKEOFF = 2;
-    HOLD = 3;
-    MISSION = 4;
-    RETURN_TO_LAUNCH = 5;
-    LAND = 6;
-    OFFBOARD = 7;
-    FOLLOW_ME = 8;
+    UNKNOWN = 0; // Mode not known
+    READY = 1; // Armed and ready to take off
+    TAKEOFF = 2; // Taking off
+    HOLD = 3; // Holding (hovering in place (or circling for fixed-wing vehicles)
+    MISSION = 4; // In mission
+    RETURN_TO_LAUNCH = 5; // Returning to launch position (then landing)
+    LAND = 6; // Landing
+    OFFBOARD = 7; // In 'offboard' mode
+    FOLLOW_ME = 8; // In 'follow-me' mode
 }
 
+// Health type.
 message Health {
-    bool is_gyrometer_calibration_ok = 1;
-    bool is_accelerometer_calibration_ok = 2;
-    bool is_magnetometer_calibration_ok = 3;
-    bool is_level_calibration_ok = 4;
-    bool is_local_position_ok = 5;
-    bool is_global_position_ok = 6;
-    bool is_home_position_ok = 7;
+    bool is_gyrometer_calibration_ok = 1; // True if the gyrometer is calibrated
+    bool is_accelerometer_calibration_ok = 2; // True if the accelerometer is calibrated
+    bool is_magnetometer_calibration_ok = 3; // True if the magnetometer is calibrated
+    bool is_level_calibration_ok = 4; // True if the vehicle has a valid level calibration
+    bool is_local_position_ok = 5; // True if the local position estimate is good enough to fly in 'position control' mode
+    bool is_global_position_ok = 6; // True if the global position estimate is good enough to fly in 'position control' mode
+    bool is_home_position_ok = 7; // True if the home position has been initialized properly
 }
 
+// Remote control status type.
 message RcStatus {
-    bool was_available_once = 1;
-    bool is_available = 2;
-    float signal_strength_percent = 3;
+    bool was_available_once = 1; // True if an RC signal has been available once
+    bool is_available = 2; // True if the RC signal is available now
+    float signal_strength_percent = 3; // Signal strength (range: 0 to 100)
 }
 
+// StatusText information type.
 message StatusText {
+    // Status types.
     enum StatusType {
-        INFO = 0;
-        WARNING = 1;
-        CRITICAL = 2;
+        INFO = 0; // Information or other
+        WARNING = 1; // Warning
+        CRITICAL = 2; // Critical
     }
-    
-    StatusType type = 1;
-    string text = 2;
+
+    StatusType type = 1; // Message type
+    string text = 2; // MAVLink status message
 }
 
 message ActuatorControlTarget {

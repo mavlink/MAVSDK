@@ -5,64 +5,77 @@ package mavsdk.rpc.calibration;
 option java_package = "io.mavsdk.calibration";
 option java_outer_classname = "CalibrationProto";
 
+// Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer.
 service CalibrationService {
+    // Perform gyro calibration.
     rpc SubscribeCalibrateGyro(SubscribeCalibrateGyroRequest) returns(stream CalibrateGyroResponse) {}
+    // Perform accelerometer calibration.
     rpc SubscribeCalibrateAccelerometer(SubscribeCalibrateAccelerometerRequest) returns(stream CalibrateAccelerometerResponse) {}
+    // Perform magnetometer caliration.
     rpc SubscribeCalibrateMagnetometer(SubscribeCalibrateMagnetometerRequest) returns(stream CalibrateMagnetometerResponse) {}
+    // Perform gimbal accelerometer calibration.
     rpc SubscribeCalibrateGimbalAccelerometer(SubscribeCalibrateGimbalAccelerometerRequest) returns(stream CalibrateGimbalAccelerometerResponse) {}
+    // Cancel ongoing calibration process.
     rpc Cancel(CancelRequest) returns(CancelResponse) {}
 }
 
 message SubscribeCalibrateGyroRequest {}
 message CalibrateGyroResponse {
     CalibrationResult calibration_result = 1;
-    ProgressData progress_data = 2;
+    ProgressData progress_data = 2; // Progress data
 }
 
 message SubscribeCalibrateAccelerometerRequest {}
 message CalibrateAccelerometerResponse {
     CalibrationResult calibration_result = 1;
-    ProgressData progress_data = 2;
+    ProgressData progress_data = 2; // Progress data
 }
 
 message SubscribeCalibrateMagnetometerRequest {}
 message CalibrateMagnetometerResponse {
     CalibrationResult calibration_result = 1;
-    ProgressData progress_data = 2;
+    ProgressData progress_data = 2; // Progress data
 }
 
 message SubscribeCalibrateGimbalAccelerometerRequest {}
 message CalibrateGimbalAccelerometerResponse {
     CalibrationResult calibration_result = 1;
-    ProgressData progress_data = 2;
+    ProgressData progress_data = 2; // Progress data
 }
 
 message CancelRequest {}
 message CancelResponse {}
 
+// Result type.
 message CalibrationResult {
+    // Possible results returned for calibration commands
     enum Result {
-        UNKNOWN = 0;
-        SUCCESS = 1;
-        IN_PROGRESS = 2;
-        INSTRUCTION = 3;
-        FAILED = 4;
-        NO_SYSTEM = 5;
-        CONNECTION_ERROR = 6;
-        BUSY = 7;
-        COMMAND_DENIED = 8;
-        TIMEOUT = 9;
-        CANCELLED = 10;
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // The calibration process succeeded
+        IN_PROGRESS = 2; // Intermediate message showing progress of the calibration process
+        INSTRUCTION = 3; // Intermediate message giving instructions on the next steps required by the process
+        FAILED = 4; // Calibration failed
+        NO_SYSTEM = 5; // No system is connected
+        CONNECTION_ERROR = 6; // Connection error
+        BUSY = 7; // Vehicle is busy
+        COMMAND_DENIED = 8; // Command refused by vehicle
+        TIMEOUT = 9; // Command timed out
+        CANCELLED = 10; // Calibration process got cancelled
     }
 
-    Result result = 1;
-    string result_str = 2;
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
 }
 
+/*
+ * Progress data coming from calibration.
+ *
+ * Can be a progress percentage, or an instruction text.
+ */
 message ProgressData {
     bool has_progress = 1;
-    float progress = 2;
+    float progress = 2; // Progress (percentage)
 
     bool has_status_text = 3;
-    string status_text = 4;
+    string status_text = 4; // Instruction text
 }

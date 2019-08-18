@@ -5,21 +5,75 @@ package mavsdk.rpc.camera;
 option java_package = "io.mavsdk.camera";
 option java_outer_classname = "CameraProto";
 
+/*
+ * Can be used to manage cameras that implement the MAVLink
+ * Camera Protocol: https://mavlink.io/en/protocol/camera.html.
+ *
+ * Currently only a single camera is supported.
+ * When multiple cameras are supported the plugin will need to be
+ * instantiated separately for every camera and the camera selected using
+ * `select_camera`.
+ */
 service CameraService {
+    /*
+     * Take one photo.
+     */
     rpc TakePhoto(TakePhotoRequest) returns(TakePhotoResponse) {}
+    /*
+     * Start photo timelapse with a given interval.
+     */
     rpc StartPhotoInterval(StartPhotoIntervalRequest) returns(StartPhotoIntervalResponse) {}
+    /*
+     * Stop a running photo timelapse.
+     */
     rpc StopPhotoInterval(StopPhotoIntervalRequest) returns(StopPhotoIntervalResponse) {}
+    /*
+     * Start a video recording.
+     */
     rpc StartVideo(StartVideoRequest) returns(StartVideoResponse) {}
+    /*
+     * Stop a running video recording.
+     */
     rpc StopVideo(StopVideoRequest) returns(StopVideoResponse) {}
+    /*
+     * Start video streaming.
+     */
     rpc StartVideoStreaming(StartVideoStreamingRequest) returns(StartVideoStreamingResponse) {}
+    /*
+     * Stop current video streaming.
+     */
     rpc StopVideoStreaming(StopVideoStreamingRequest) returns(StopVideoStreamingResponse) {}
+    /*
+     * Set camera mode.
+     */
     rpc SetMode(SetModeRequest) returns(SetModeResponse) {}
+    /*
+     * Subscribe to camera mode updates.
+     */
     rpc SubscribeMode(SubscribeModeRequest) returns(stream ModeResponse) {}
+    /*
+     * Subscribe to video stream info updates.
+     */
     rpc SubscribeVideoStreamInfo(SubscribeVideoStreamInfoRequest) returns(stream VideoStreamInfoResponse) {}
+    /*
+     * Subscribe to capture info updates.
+     */
     rpc SubscribeCaptureInfo(SubscribeCaptureInfoRequest) returns(stream CaptureInfoResponse) {}
+    /*
+     * Subscribe to camera status updates.
+     */
     rpc SubscribeCameraStatus(SubscribeCameraStatusRequest) returns(stream CameraStatusResponse) {}
+    /*
+     * Get the list of current camera settings.
+     */
     rpc SubscribeCurrentSettings(SubscribeCurrentSettingsRequest) returns(stream CurrentSettingsResponse) {}
+    /*
+     * Get the list of settings that can be changed.
+     */
     rpc SubscribePossibleSettingOptions(SubscribePossibleSettingOptionsRequest) returns(stream PossibleSettingOptionsResponse) {}
+    /*
+     * Set a setting to some value.
+     */
     rpc SetSetting(SetSettingRequest) returns(SetSettingResponse) {}
 }
 
@@ -29,7 +83,7 @@ message TakePhotoResponse {
 }
 
 message StartPhotoIntervalRequest {
-    float interval_s = 1;
+    float interval_s = 1; // Interval between photos (in seconds)
 }
 message StartPhotoIntervalResponse {
     CameraResult camera_result = 1;
@@ -61,7 +115,7 @@ message StopVideoStreamingResponse {
 }
 
 message SetModeRequest {
-    CameraMode camera_mode = 1;
+    CameraMode camera_mode = 1; // Camera mode to set
 }
 message SetModeResponse {
     CameraResult camera_result = 1;
@@ -69,144 +123,174 @@ message SetModeResponse {
 
 message SubscribeModeRequest {}
 message ModeResponse {
-    CameraMode camera_mode = 1;
+    CameraMode camera_mode = 1; // Camera mode
 }
 
 message SubscribeVideoStreamInfoRequest {}
 message VideoStreamInfoResponse {
-    VideoStreamInfo video_stream_info = 1;
+    VideoStreamInfo video_stream_info = 1; // Video stream info
 }
 
 message SubscribeCaptureInfoRequest {}
 message CaptureInfoResponse {
-    CaptureInfo capture_info = 1;
+    CaptureInfo capture_info = 1; // Capture info
 }
 
 message SubscribeCameraStatusRequest {}
 message CameraStatusResponse {
-    CameraStatus camera_status = 1;
+    CameraStatus camera_status = 1; // Camera status
 }
 
 message SubscribeCurrentSettingsRequest {}
 message CurrentSettingsResponse {
-    repeated Setting current_settings = 1;
+    repeated Setting current_settings = 1; // List of current settings
 }
 
 message SubscribePossibleSettingOptionsRequest {}
 message PossibleSettingOptionsResponse {
-    repeated SettingOptions setting_options = 1;
+    repeated SettingOptions setting_options = 1; // List of settings that can be changed
 }
 
 message SetSettingRequest {
-    Setting setting = 1;
+    Setting setting = 1; // Desired setting
 }
 message SetSettingResponse {
     CameraResult camera_result = 1;
 }
 
+// Result type.
 message CameraResult {
+    // Possible results returned for camera commands
     enum Result {
-        UNKNOWN = 0;
-        SUCCESS = 1;
-        IN_PROGRESS = 2;
-        BUSY = 3;
-        DENIED = 4;
-        ERROR = 5;
-        TIMEOUT = 6;
-        WRONG_ARGUMENT = 7;
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Command executed successfully
+        IN_PROGRESS = 2; // Command in progress
+        BUSY = 3; // Camera is busy and rejected command
+        DENIED = 4; // Camera denied the command
+        ERROR = 5; // An error has occured while executing the command
+        TIMEOUT = 6; // Command timed out
+        WRONG_ARGUMENT = 7; // Command has wrong argument(s)
     }
 
-    Result result = 1;
-    string result_str = 2;
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
 }
 
+// Camera mode type.
 enum CameraMode {
-    UNKNOWN = 0;
-    PHOTO = 1;
-    VIDEO = 2;
+    UNKNOWN = 0; // Unknown
+    PHOTO = 1; // Photo mode
+    VIDEO = 2; // Video mode
 }
 
+// Information about a picture just captured.
 message CaptureInfo {
-    Position position = 1;
-    Quaternion attitude_quaternion = 2;
-    EulerAngle attitude_euler_angle = 3;
-    uint64 time_utc_us = 4;
-    bool is_success = 5;
-    int32 index = 6;
-    string file_url = 7;
+    Position position = 1; // Location where the picture was taken
+    Quaternion attitude_quaternion = 2; // Attitude of the camera when the picture was taken (quaternion)
+    EulerAngle attitude_euler_angle = 3; // Attitude of the camera when the picture was taken (euler angle)
+    uint64 time_utc_us = 4; // Timestamp in UTC (since UNIX epoch) in microseconds
+    bool is_success = 5; // True if the capture was successful
+    int32 index = 6; // Zero-based index of this image since vehicle was armed
+    string file_url = 7; // Download URL of this image
 }
 
+// Position type in global coordinates.
 message Position {
-    double latitude_deg = 1;
-    double longitude_deg = 2;
-    float absolute_altitude_m = 3;
-    float relative_altitude_m = 4;
+    double latitude_deg = 1; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2; // Longitude in degrees (range: -180 to +180)
+    float absolute_altitude_m = 3; // Altitude AMSL (above mean sea level) in metres
+    float relative_altitude_m = 4; // Altitude relative to takeoff altitude in metres
 }
 
+/*
+ * Quaternion type.
+ *
+ * All rotations and axis systems follow the right-hand rule.
+ * The Hamilton quaternion product definition is used.
+ * A zero-rotation quaternion is represented by (1,0,0,0).
+ * The quaternion could also be written as w + xi + yj + zk.
+ *
+ * For more info see: https://en.wikipedia.org/wiki/Quaternion
+ */
 message Quaternion {
-    float w = 1;
-    float x = 2;
-    float y = 3;
-    float z = 4;
+    float w = 1; // Quaternion entry 0, also denoted as a
+    float x = 2; // Quaternion entry 1, also denoted as b
+    float y = 3; // Quaternion entry 2, also denoted as c
+    float z = 4; // Quaternion entry 3, also denoted as d
 }
 
+/*
+ * Euler angle type.
+ *
+ * All rotations and axis systems follow the right-hand rule.
+ * The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+ *
+ * For more info see https://en.wikipedia.org/wiki/Euler_angles
+ */
 message EulerAngle {
-    float roll_deg = 1;
-    float pitch_deg = 2;
-    float yaw_deg = 3;
+    float roll_deg = 1; // Roll angle in degrees, positive is banking to the right
+    float pitch_deg = 2; // Pitch angle in degrees, positive is pitching nose up
+    float yaw_deg = 3; // Yaw angle in degrees, positive is clock-wise seen from above
 }
 
+// Type for video stream settings.
 message VideoStreamSettings {
-    float frame_rate_hz = 1;
-    uint32 horizontal_resolution_pix = 2;
-    uint32 vertical_resolution_pix = 3;
-    uint32 bit_rate_b_s = 4;
-    uint32 rotation_deg = 5;
-    string uri = 6;
+    float frame_rate_hz = 1; // Frames per second
+    uint32 horizontal_resolution_pix = 2; // Horizontal resolution (in pixels)
+    uint32 vertical_resolution_pix = 3; // Vertical resolution (in pixels)
+    uint32 bit_rate_b_s = 4; // Bit rate (in bits per second)
+    uint32 rotation_deg = 5; // Video image rotation (clockwise, 0-359 degrees)
+    string uri = 6; // Video stream URI
 }
 
+// Information about the video stream.
 message VideoStreamInfo {
     enum VideoStreamStatus {
-        NOT_RUNNING = 0;
-        IN_PROGRESS = 1;
+        NOT_RUNNING = 0; // Video stream is not running.
+        IN_PROGRESS = 1; // Video stream is running.
     }
 
-    VideoStreamSettings video_stream_settings = 1;
-    VideoStreamStatus video_stream_status = 2;
+    VideoStreamSettings video_stream_settings = 1; // Video stream settings
+    VideoStreamStatus video_stream_status = 2; // Current status of video streaming
 }
 
+// Information about the camera status.
 message CameraStatus {
+    // Storage status type.
     enum StorageStatus {
-        NOT_AVAILABLE = 0;
-        UNFORMATTED = 1;
-        FORMATTED = 2;
+        NOT_AVAILABLE = 0; // Status not available
+        UNFORMATTED = 1; // Storage is not formatted (i.e. has no recognized file system)
+        FORMATTED = 2; // Storage is formatted (i.e. has recognized a file system)
     }
 
     bool video_on = 1;
     bool photo_interval_on = 2;
 
-    float used_storage_mib = 3;
-    float available_storage_mib = 4;
-    float total_storage_mib = 5;
-    float recording_time_s = 6;
-    string media_folder_name = 7;
+    float used_storage_mib = 3; // Used storage (in MiB)
+    float available_storage_mib = 4; // Available storage (in MiB)
+    float total_storage_mib = 5; // Total storage (in MiB)
+    float recording_time_s = 6; // Elapsed time since starting the video recording (in seconds)
+    string media_folder_name = 7; // Current folder name where media are saved
 
-    StorageStatus storage_status = 8;
+    StorageStatus storage_status = 8; // Storage status
 }
 
+// Type to represent a setting with a selected option.
 message Setting {
-    string setting_id = 1;
-    string setting_description = 2;
-    Option option = 3;
+    string setting_id = 1; // Name of a setting (machine readable)
+    string setting_description = 2; // Description of the setting (human readable)
+    Option option = 3; // Selected option
 }
 
+// Type to represent a setting option.
 message Option {
-    string option_id = 1;
-    string option_description = 2;
+    string option_id = 1; // Name of the option (machine readable)
+    string option_description = 2; // Description of the option (human readable)
 }
 
+// Type to represent a setting with a list of options to choose from.
 message SettingOptions {
-    string setting_id = 1;
-    string setting_description = 2;
-    repeated Option options = 3;
+    string setting_id = 1; // Name of the setting (machine readable)
+    string setting_description = 2; // Description of the setting (human readable)
+    repeated Option options = 3; // List of options
 }

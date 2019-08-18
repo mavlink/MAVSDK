@@ -5,56 +5,80 @@ package mavsdk.rpc.param;
 option java_package = "io.mavsdk.param";
 option java_outer_classname = "ParamProto";
 
+// Provide raw access to get and set parameters.
 service ParamService {
- rpc GetIntParam(GetIntParamRequest) returns(GetIntParamResponse) {}
- rpc SetIntParam(SetIntParamRequest) returns(SetIntParamResponse) {}
- rpc GetFloatParam(GetFloatParamRequest) returns(GetFloatParamResponse) {}
- rpc SetFloatParam(SetFloatParamRequest) returns(SetFloatParamResponse) {}
+    /*
+     * Get an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc GetIntParam(GetIntParamRequest) returns(GetIntParamResponse) {}
+    /*
+     * Set an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc SetIntParam(SetIntParamRequest) returns(SetIntParamResponse) {}
+    /*
+     * Get a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc GetFloatParam(GetFloatParamRequest) returns(GetFloatParamResponse) {}
+    /*
+     * Set a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     */
+    rpc SetFloatParam(SetFloatParamRequest) returns(SetFloatParamResponse) {}
 }
 
 message GetIntParamRequest {
-    string name = 1;
+    string name = 1; // Name of the parameter
 }
+
 message GetIntParamResponse {
     ParamResult param_result = 1;
-    int32 value = 2;
+    int32 value = 2; // Value of the requested parameter
 }
 
 message SetIntParamRequest {
-    string name = 1;
-    int32 value = 2;
+    string name = 1; // Name of the parameter to set
+    int32 value = 2; // Value the parameter should be set to
 }
 message SetIntParamResponse {
     ParamResult param_result = 1;
 }
 
 message GetFloatParamRequest {
-    string name = 1;
+    string name = 1; // Name of the parameter
 }
 message GetFloatParamResponse {
     ParamResult param_result = 1;
-    float value = 2;
+    float value = 2; // Value of the requested parameter
 }
 
 message SetFloatParamRequest {
-    string name = 1;
-    float value = 2;
+    string name = 1; // Name of the parameter to set
+    float value = 2; // Value the parameter should be set to
 }
 message SetFloatParamResponse {
     ParamResult param_result = 1;
 }
 
+// Result type.
 message ParamResult {
+    // Possible results returned for param requests.
     enum Result {
-        UNKNOWN = 0;
-        SUCCESS = 1;
-        TIMEOUT = 2;
-        CONNECTION_ERROR = 3;
-        WRONG_TYPE = 4;
-        PARAM_NAME_TOO_LONG = 5;
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Request succeeded
+        TIMEOUT = 2; // Request timed out
+        CONNECTION_ERROR = 3; // Connection error
+        WRONG_TYPE = 4; // Wrong type
+        PARAM_NAME_TOO_LONG = 5; // Parameter name too long (> 16)
     }
 
-    Result result = 1;
-    string result_str = 2;
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
 }
 
