@@ -5,970 +5,917 @@
 
 #include <algorithm>
 
-#include <google/protobuf/stubs/common.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite_inl.h>
+#include <google/protobuf/wire_format_lite.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/reflection_ops.h>
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Battery_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_EulerAngle_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_GpsInfo_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Health_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Position_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Quaternion_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_RcStatus_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_SpeedNed_telemetry_2ftelemetry_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_StatusText_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Battery_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_EulerAngle_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GpsInfo_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Health_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Position_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Quaternion_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RcStatus_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SpeedNed_telemetry_2ftelemetry_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_telemetry_2ftelemetry_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StatusText_telemetry_2ftelemetry_2eproto;
 namespace mavsdk {
 namespace rpc {
 namespace telemetry {
 class SubscribePositionRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribePositionRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribePositionRequest> _instance;
 } _SubscribePositionRequest_default_instance_;
 class PositionResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<PositionResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PositionResponse> _instance;
 } _PositionResponse_default_instance_;
 class SubscribeHomeRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeHomeRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeHomeRequest> _instance;
 } _SubscribeHomeRequest_default_instance_;
 class HomeResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<HomeResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<HomeResponse> _instance;
 } _HomeResponse_default_instance_;
 class SubscribeInAirRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeInAirRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeInAirRequest> _instance;
 } _SubscribeInAirRequest_default_instance_;
 class InAirResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<InAirResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<InAirResponse> _instance;
 } _InAirResponse_default_instance_;
 class SubscribeArmedRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeArmedRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeArmedRequest> _instance;
 } _SubscribeArmedRequest_default_instance_;
 class ArmedResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ArmedResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ArmedResponse> _instance;
 } _ArmedResponse_default_instance_;
 class SubscribeAttitudeQuaternionRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeAttitudeQuaternionRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeAttitudeQuaternionRequest> _instance;
 } _SubscribeAttitudeQuaternionRequest_default_instance_;
 class AttitudeQuaternionResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<AttitudeQuaternionResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AttitudeQuaternionResponse> _instance;
 } _AttitudeQuaternionResponse_default_instance_;
 class SubscribeAttitudeEulerRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeAttitudeEulerRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeAttitudeEulerRequest> _instance;
 } _SubscribeAttitudeEulerRequest_default_instance_;
 class AttitudeEulerResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<AttitudeEulerResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AttitudeEulerResponse> _instance;
 } _AttitudeEulerResponse_default_instance_;
 class SubscribeAttitudeAngularVelocityBodyRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeAttitudeAngularVelocityBodyRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeAttitudeAngularVelocityBodyRequest> _instance;
 } _SubscribeAttitudeAngularVelocityBodyRequest_default_instance_;
 class AttitudeAngularVelocityBodyResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<AttitudeAngularVelocityBodyResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AttitudeAngularVelocityBodyResponse> _instance;
 } _AttitudeAngularVelocityBodyResponse_default_instance_;
 class SubscribeCameraAttitudeQuaternionRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeCameraAttitudeQuaternionRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeCameraAttitudeQuaternionRequest> _instance;
 } _SubscribeCameraAttitudeQuaternionRequest_default_instance_;
 class CameraAttitudeQuaternionResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CameraAttitudeQuaternionResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CameraAttitudeQuaternionResponse> _instance;
 } _CameraAttitudeQuaternionResponse_default_instance_;
 class SubscribeCameraAttitudeEulerRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeCameraAttitudeEulerRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeCameraAttitudeEulerRequest> _instance;
 } _SubscribeCameraAttitudeEulerRequest_default_instance_;
 class CameraAttitudeEulerResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CameraAttitudeEulerResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CameraAttitudeEulerResponse> _instance;
 } _CameraAttitudeEulerResponse_default_instance_;
 class SubscribeGroundSpeedNedRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeGroundSpeedNedRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeGroundSpeedNedRequest> _instance;
 } _SubscribeGroundSpeedNedRequest_default_instance_;
 class GroundSpeedNedResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<GroundSpeedNedResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GroundSpeedNedResponse> _instance;
 } _GroundSpeedNedResponse_default_instance_;
 class SubscribeGpsInfoRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeGpsInfoRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeGpsInfoRequest> _instance;
 } _SubscribeGpsInfoRequest_default_instance_;
 class GpsInfoResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<GpsInfoResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GpsInfoResponse> _instance;
 } _GpsInfoResponse_default_instance_;
 class SubscribeBatteryRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeBatteryRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeBatteryRequest> _instance;
 } _SubscribeBatteryRequest_default_instance_;
 class BatteryResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<BatteryResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<BatteryResponse> _instance;
 } _BatteryResponse_default_instance_;
 class SubscribeFlightModeRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeFlightModeRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeFlightModeRequest> _instance;
 } _SubscribeFlightModeRequest_default_instance_;
 class FlightModeResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<FlightModeResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<FlightModeResponse> _instance;
 } _FlightModeResponse_default_instance_;
 class SubscribeHealthRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeHealthRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeHealthRequest> _instance;
 } _SubscribeHealthRequest_default_instance_;
 class HealthResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<HealthResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<HealthResponse> _instance;
 } _HealthResponse_default_instance_;
 class SubscribeRcStatusRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeRcStatusRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeRcStatusRequest> _instance;
 } _SubscribeRcStatusRequest_default_instance_;
 class RcStatusResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RcStatusResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RcStatusResponse> _instance;
 } _RcStatusResponse_default_instance_;
 class SubscribeStatusTextRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeStatusTextRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeStatusTextRequest> _instance;
 } _SubscribeStatusTextRequest_default_instance_;
 class StatusTextResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StatusTextResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StatusTextResponse> _instance;
 } _StatusTextResponse_default_instance_;
 class SubscribeActuatorControlTargetRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeActuatorControlTargetRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeActuatorControlTargetRequest> _instance;
 } _SubscribeActuatorControlTargetRequest_default_instance_;
 class ActuatorControlTargetResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ActuatorControlTargetResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ActuatorControlTargetResponse> _instance;
 } _ActuatorControlTargetResponse_default_instance_;
 class SubscribeActuatorOutputStatusRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeActuatorOutputStatusRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeActuatorOutputStatusRequest> _instance;
 } _SubscribeActuatorOutputStatusRequest_default_instance_;
 class ActuatorOutputStatusResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ActuatorOutputStatusResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ActuatorOutputStatusResponse> _instance;
 } _ActuatorOutputStatusResponse_default_instance_;
 class PositionDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Position> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Position> _instance;
 } _Position_default_instance_;
 class QuaternionDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Quaternion> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Quaternion> _instance;
 } _Quaternion_default_instance_;
 class EulerAngleDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<EulerAngle> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<EulerAngle> _instance;
 } _EulerAngle_default_instance_;
 class AngularVelocityBodyDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<AngularVelocityBody> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AngularVelocityBody> _instance;
 } _AngularVelocityBody_default_instance_;
 class SpeedNedDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SpeedNed> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SpeedNed> _instance;
 } _SpeedNed_default_instance_;
 class GpsInfoDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<GpsInfo> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<GpsInfo> _instance;
 } _GpsInfo_default_instance_;
 class BatteryDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Battery> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Battery> _instance;
 } _Battery_default_instance_;
 class HealthDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Health> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Health> _instance;
 } _Health_default_instance_;
 class RcStatusDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<RcStatus> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<RcStatus> _instance;
 } _RcStatus_default_instance_;
 class StatusTextDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StatusText> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StatusText> _instance;
 } _StatusText_default_instance_;
 class ActuatorControlTargetDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ActuatorControlTarget> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ActuatorControlTarget> _instance;
 } _ActuatorControlTarget_default_instance_;
 class ActuatorOutputStatusDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ActuatorOutputStatus> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ActuatorOutputStatus> _instance;
 } _ActuatorOutputStatus_default_instance_;
 }  // namespace telemetry
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsSubscribePositionRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribePositionRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribePositionRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribePositionRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribePositionRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribePositionRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsPositionResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_PositionResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::PositionResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::PositionResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_PositionResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsPositionResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_Position_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeHomeRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeHomeRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeHomeRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeHomeRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeHomeRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeHomeRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsHomeResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_HomeResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::HomeResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::HomeResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_HomeResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsHomeResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_Position_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeInAirRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeInAirRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeInAirRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeInAirRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeInAirRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeInAirRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsInAirResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_InAirResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::InAirResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::InAirResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_InAirResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsInAirResponse_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsSubscribeArmedRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeArmedRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeArmedRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeArmedRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeArmedRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeArmedRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsArmedResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_ArmedResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::ArmedResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::ArmedResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_ArmedResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsArmedResponse_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsSubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeAttitudeQuaternionRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_AttitudeQuaternionResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_Quaternion_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeAttitudeEulerRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsAttitudeEulerResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_AttitudeEulerResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::AttitudeEulerResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::AttitudeEulerResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsAttitudeEulerResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_EulerAngle_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeAttitudeAngularVelocityBodyRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsAttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_AttitudeAngularVelocityBodyResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsAttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeQuaternionRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsCameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_CameraAttitudeQuaternionResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsCameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_Quaternion_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeEulerRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsCameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_CameraAttitudeEulerResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsCameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_EulerAngle_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeGroundSpeedNedRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsGroundSpeedNedResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_GroundSpeedNedResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::GroundSpeedNedResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::GroundSpeedNedResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGroundSpeedNedResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_SpeedNed_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeGpsInfoRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsGpsInfoResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_GpsInfoResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::GpsInfoResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::GpsInfoResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsGpsInfoResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_GpsInfo_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeBatteryRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeBatteryRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeBatteryRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeBatteryRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeBatteryRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeBatteryRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsBatteryResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_BatteryResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::BatteryResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::BatteryResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_BatteryResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsBatteryResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_Battery_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeFlightModeRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsFlightModeResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_FlightModeResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::FlightModeResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::FlightModeResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_FlightModeResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsFlightModeResponse_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsSubscribeHealthRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeHealthRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeHealthRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeHealthRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeHealthRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeHealthRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsHealthResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_HealthResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::HealthResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::HealthResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_HealthResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsHealthResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_Health_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeRcStatusRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsRcStatusResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_RcStatusResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::RcStatusResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::RcStatusResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsRcStatusResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_RcStatus_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeStatusTextRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsStatusTextResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_StatusTextResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::StatusTextResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::StatusTextResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsStatusTextResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_StatusText_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeActuatorControlTargetRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_ActuatorControlTargetResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsSubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeActuatorOutputStatusRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_ActuatorOutputStatusResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto}, {
-      &scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto.base,}};
-
-static void InitDefaultsPosition_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_Position_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::Position();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::Position::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_Position_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsPosition_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsQuaternion_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_Quaternion_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::Quaternion();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::Quaternion::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_Quaternion_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsQuaternion_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsEulerAngle_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_EulerAngle_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::EulerAngle();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::EulerAngle::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_EulerAngle_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsEulerAngle_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsAngularVelocityBody_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_AngularVelocityBody_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::AngularVelocityBody();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::AngularVelocityBody::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsAngularVelocityBody_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsSpeedNed_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_SpeedNed_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::SpeedNed();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::SpeedNed::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SpeedNed_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSpeedNed_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsGpsInfo_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_GpsInfo_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::GpsInfo();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::GpsInfo::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_GpsInfo_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsGpsInfo_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsBattery_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_Battery_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::Battery();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::Battery::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_Battery_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsBattery_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsHealth_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_Health_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::Health();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::Health::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_Health_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsHealth_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsRcStatus_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_RcStatus_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::RcStatus();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::RcStatus::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_RcStatus_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsRcStatus_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsStatusText_telemetry_2ftelemetry_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::telemetry::_StatusText_default_instance_;
-    new (ptr) ::mavsdk::rpc::telemetry::StatusText();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::telemetry::StatusText::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_StatusText_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsStatusText_telemetry_2ftelemetry_2eproto}, {}};
-
-static void InitDefaultsActuatorControlTarget_telemetry_2ftelemetry_2eproto() {
+static void InitDefaultsscc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::mavsdk::rpc::telemetry::_ActuatorControlTarget_default_instance_;
     new (ptr) ::mavsdk::rpc::telemetry::ActuatorControlTarget();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
   ::mavsdk::rpc::telemetry::ActuatorControlTarget::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsActuatorControlTarget_telemetry_2ftelemetry_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto}, {}};
 
-static void InitDefaultsActuatorOutputStatus_telemetry_2ftelemetry_2eproto() {
+static void InitDefaultsscc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_ActuatorControlTargetResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::mavsdk::rpc::telemetry::_ActuatorOutputStatus_default_instance_;
     new (ptr) ::mavsdk::rpc::telemetry::ActuatorOutputStatus();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
   ::mavsdk::rpc::telemetry::ActuatorOutputStatus::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsActuatorOutputStatus_telemetry_2ftelemetry_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto}, {}};
 
-void InitDefaults_telemetry_2ftelemetry_2eproto() {
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribePositionRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_PositionResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeHomeRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_HomeResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeInAirRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_InAirResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeArmedRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ArmedResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeBatteryRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_BatteryResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_FlightModeResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeHealthRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_HealthResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Position_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Quaternion_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_EulerAngle_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SpeedNed_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_GpsInfo_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Battery_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Health_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_RcStatus_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StatusText_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto.base);
+static void InitDefaultsscc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_ActuatorOutputStatusResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse::InitAsDefaultInstance();
 }
 
-::google::protobuf::Metadata file_level_metadata_telemetry_2ftelemetry_2eproto[48];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors_telemetry_2ftelemetry_2eproto[3];
-constexpr ::google::protobuf::ServiceDescriptor const** file_level_service_descriptors_telemetry_2ftelemetry_2eproto = nullptr;
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto.base,}};
 
-const ::google::protobuf::uint32 TableStruct_telemetry_2ftelemetry_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+static void InitDefaultsscc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_AngularVelocityBody_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::AngularVelocityBody();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::AngularVelocityBody::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_ArmedResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_ArmedResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::ArmedResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::ArmedResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ArmedResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ArmedResponse_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_AttitudeAngularVelocityBodyResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_AttitudeEulerResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::AttitudeEulerResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::AttitudeEulerResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_EulerAngle_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_AttitudeQuaternionResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_Quaternion_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_Battery_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_Battery_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::Battery();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::Battery::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Battery_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Battery_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_BatteryResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_BatteryResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::BatteryResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::BatteryResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_BatteryResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_BatteryResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_Battery_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_CameraAttitudeEulerResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_EulerAngle_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_CameraAttitudeQuaternionResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_Quaternion_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_EulerAngle_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_EulerAngle_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::EulerAngle();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::EulerAngle::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_EulerAngle_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_EulerAngle_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_FlightModeResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_FlightModeResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::FlightModeResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::FlightModeResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FlightModeResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_FlightModeResponse_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_GpsInfo_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_GpsInfo_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::GpsInfo();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::GpsInfo::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_GpsInfo_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_GpsInfo_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_GpsInfoResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::GpsInfoResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::GpsInfoResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_GpsInfo_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_GroundSpeedNedResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::GroundSpeedNedResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::GroundSpeedNedResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_SpeedNed_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_Health_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_Health_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::Health();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::Health::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Health_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Health_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_HealthResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_HealthResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::HealthResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::HealthResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_HealthResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_HealthResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_Health_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_HomeResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_HomeResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::HomeResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::HomeResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_HomeResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_HomeResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_Position_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_InAirResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_InAirResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::InAirResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::InAirResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_InAirResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_InAirResponse_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_Position_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_Position_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::Position();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::Position::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Position_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Position_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_PositionResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_PositionResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::PositionResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::PositionResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_PositionResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_PositionResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_Position_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_Quaternion_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_Quaternion_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::Quaternion();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::Quaternion::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Quaternion_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Quaternion_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_RcStatus_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_RcStatus_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::RcStatus();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::RcStatus::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RcStatus_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_RcStatus_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_RcStatusResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::RcStatusResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::RcStatusResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_RcStatus_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_SpeedNed_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SpeedNed_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SpeedNed();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SpeedNed::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SpeedNed_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SpeedNed_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_StatusText_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_StatusText_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::StatusText();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::StatusText::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StatusText_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StatusText_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_StatusTextResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::StatusTextResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::StatusTextResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto}, {
+      &scc_info_StatusText_telemetry_2ftelemetry_2eproto.base,}};
+
+static void InitDefaultsscc_info_SubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeActuatorControlTargetRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeActuatorOutputStatusRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeArmedRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeArmedRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeArmedRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeArmedRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeArmedRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeArmedRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeAttitudeAngularVelocityBodyRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeAttitudeEulerRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeAttitudeQuaternionRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeBatteryRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeBatteryRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeBatteryRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeBatteryRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeBatteryRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeBatteryRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeEulerRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeQuaternionRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeFlightModeRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeGpsInfoRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeGroundSpeedNedRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeHealthRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeHealthRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeHealthRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeHealthRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeHealthRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeHealthRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeHomeRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeHomeRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeHomeRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeHomeRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeHomeRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeHomeRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeInAirRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeInAirRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeInAirRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeInAirRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeInAirRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeInAirRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribePositionRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribePositionRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribePositionRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribePositionRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribePositionRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribePositionRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeRcStatusRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::telemetry::_SubscribeStatusTextRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto}, {}};
+
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_telemetry_2ftelemetry_2eproto[48];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_telemetry_2ftelemetry_2eproto[3];
+static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_telemetry_2ftelemetry_2eproto = nullptr;
+
+const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_telemetry_2ftelemetry_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SubscribePositionRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1265,7 +1212,7 @@ const ::google::protobuf::uint32 TableStruct_telemetry_2ftelemetry_2eproto::offs
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ActuatorOutputStatus, active_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::ActuatorOutputStatus, actuator_),
 };
-static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::mavsdk::rpc::telemetry::SubscribePositionRequest)},
   { 5, -1, sizeof(::mavsdk::rpc::telemetry::PositionResponse)},
   { 11, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHomeRequest)},
@@ -1316,64 +1263,58 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SE
   { 288, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatus)},
 };
 
-static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribePositionRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_PositionResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeHomeRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_HomeResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeInAirRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_InAirResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeArmedRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_ArmedResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeAttitudeQuaternionRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_AttitudeQuaternionResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeAttitudeEulerRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_AttitudeEulerResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeAttitudeAngularVelocityBodyRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_AttitudeAngularVelocityBodyResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeQuaternionRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_CameraAttitudeQuaternionResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeEulerRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_CameraAttitudeEulerResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeGroundSpeedNedRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_GroundSpeedNedResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeGpsInfoRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_GpsInfoResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeBatteryRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_BatteryResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeFlightModeRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_FlightModeResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeHealthRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_HealthResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeRcStatusRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_RcStatusResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeStatusTextRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_StatusTextResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeActuatorControlTargetRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_ActuatorControlTargetResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SubscribeActuatorOutputStatusRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_ActuatorOutputStatusResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_Position_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_Quaternion_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_EulerAngle_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_AngularVelocityBody_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_SpeedNed_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_GpsInfo_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_Battery_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_Health_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_RcStatus_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_StatusText_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_ActuatorControlTarget_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::telemetry::_ActuatorOutputStatus_default_instance_),
+static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribePositionRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_PositionResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeHomeRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_HomeResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeInAirRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_InAirResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeArmedRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_ArmedResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeAttitudeQuaternionRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_AttitudeQuaternionResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeAttitudeEulerRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_AttitudeEulerResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeAttitudeAngularVelocityBodyRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_AttitudeAngularVelocityBodyResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeQuaternionRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_CameraAttitudeQuaternionResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeEulerRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_CameraAttitudeEulerResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeGroundSpeedNedRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_GroundSpeedNedResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeGpsInfoRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_GpsInfoResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeBatteryRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_BatteryResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeFlightModeRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_FlightModeResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeHealthRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_HealthResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeRcStatusRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_RcStatusResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeStatusTextRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_StatusTextResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeActuatorControlTargetRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_ActuatorControlTargetResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SubscribeActuatorOutputStatusRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_ActuatorOutputStatusResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_Position_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_Quaternion_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_EulerAngle_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_AngularVelocityBody_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_SpeedNed_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_GpsInfo_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_Battery_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_Health_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_RcStatus_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_StatusText_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_ActuatorControlTarget_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::telemetry::_ActuatorOutputStatus_default_instance_),
 };
 
-::google::protobuf::internal::AssignDescriptorsTable assign_descriptors_table_telemetry_2ftelemetry_2eproto = {
-  {}, AddDescriptors_telemetry_2ftelemetry_2eproto, "telemetry/telemetry.proto", schemas,
-  file_default_instances, TableStruct_telemetry_2ftelemetry_2eproto::offsets,
-  file_level_metadata_telemetry_2ftelemetry_2eproto, 48, file_level_enum_descriptors_telemetry_2ftelemetry_2eproto, file_level_service_descriptors_telemetry_2ftelemetry_2eproto,
-};
-
-const char descriptor_table_protodef_telemetry_2ftelemetry_2eproto[] =
+const char descriptor_table_protodef_telemetry_2ftelemetry_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\031telemetry/telemetry.proto\022\024mavsdk.rpc."
   "telemetry\"\032\n\030SubscribePositionRequest\"D\n"
   "\020PositionResponse\0220\n\010position\030\001 \001(\0132\036.ma"
@@ -1521,26 +1462,74 @@ const char descriptor_table_protodef_telemetry_2ftelemetry_2eproto[] =
   "%\n\023io.mavsdk.telemetryB\016TelemetryProtob\006"
   "proto3"
   ;
-::google::protobuf::internal::DescriptorTable descriptor_table_telemetry_2ftelemetry_2eproto = {
-  false, InitDefaults_telemetry_2ftelemetry_2eproto, 
-  descriptor_table_protodef_telemetry_2ftelemetry_2eproto,
-  "telemetry/telemetry.proto", &assign_descriptors_table_telemetry_2ftelemetry_2eproto, 5806,
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_telemetry_2ftelemetry_2eproto_deps[1] = {
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_telemetry_2ftelemetry_2eproto_sccs[48] = {
+  &scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_ArmedResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_Battery_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_BatteryResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_EulerAngle_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_FlightModeResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_GpsInfo_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_Health_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_HealthResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_HomeResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_InAirResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_Position_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_PositionResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_Quaternion_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_RcStatus_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SpeedNed_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_StatusText_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeArmedRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeBatteryRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeHealthRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeHomeRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeInAirRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribePositionRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto.base,
+  &scc_info_SubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto.base,
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_telemetry_2ftelemetry_2eproto_once;
+static bool descriptor_table_telemetry_2ftelemetry_2eproto_initialized = false;
+const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_telemetry_2ftelemetry_2eproto = {
+  &descriptor_table_telemetry_2ftelemetry_2eproto_initialized, descriptor_table_protodef_telemetry_2ftelemetry_2eproto, "telemetry/telemetry.proto", 5806,
+  &descriptor_table_telemetry_2ftelemetry_2eproto_once, descriptor_table_telemetry_2ftelemetry_2eproto_sccs, descriptor_table_telemetry_2ftelemetry_2eproto_deps, 48, 0,
+  schemas, file_default_instances, TableStruct_telemetry_2ftelemetry_2eproto::offsets,
+  file_level_metadata_telemetry_2ftelemetry_2eproto, 48, file_level_enum_descriptors_telemetry_2ftelemetry_2eproto, file_level_service_descriptors_telemetry_2ftelemetry_2eproto,
 };
 
-void AddDescriptors_telemetry_2ftelemetry_2eproto() {
-  static constexpr ::google::protobuf::internal::InitFunc deps[1] =
-  {
-  };
- ::google::protobuf::internal::AddDescriptors(&descriptor_table_telemetry_2ftelemetry_2eproto, deps, 0);
-}
-
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_telemetry_2ftelemetry_2eproto = []() { AddDescriptors_telemetry_2ftelemetry_2eproto(); return true; }();
+static bool dynamic_init_dummy_telemetry_2ftelemetry_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_telemetry_2ftelemetry_2eproto), true);
 namespace mavsdk {
 namespace rpc {
 namespace telemetry {
-const ::google::protobuf::EnumDescriptor* StatusText_StatusType_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&assign_descriptors_table_telemetry_2ftelemetry_2eproto);
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusText_StatusType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_telemetry_2ftelemetry_2eproto);
   return file_level_enum_descriptors_telemetry_2ftelemetry_2eproto[0];
 }
 bool StatusText_StatusType_IsValid(int value) {
@@ -1554,16 +1543,16 @@ bool StatusText_StatusType_IsValid(int value) {
   }
 }
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const StatusText_StatusType StatusText::INFO;
-const StatusText_StatusType StatusText::WARNING;
-const StatusText_StatusType StatusText::CRITICAL;
-const StatusText_StatusType StatusText::StatusType_MIN;
-const StatusText_StatusType StatusText::StatusType_MAX;
-const int StatusText::StatusType_ARRAYSIZE;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-const ::google::protobuf::EnumDescriptor* FixType_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&assign_descriptors_table_telemetry_2ftelemetry_2eproto);
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+constexpr StatusText_StatusType StatusText::INFO;
+constexpr StatusText_StatusType StatusText::WARNING;
+constexpr StatusText_StatusType StatusText::CRITICAL;
+constexpr StatusText_StatusType StatusText::StatusType_MIN;
+constexpr StatusText_StatusType StatusText::StatusType_MAX;
+constexpr int StatusText::StatusType_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FixType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_telemetry_2ftelemetry_2eproto);
   return file_level_enum_descriptors_telemetry_2ftelemetry_2eproto[1];
 }
 bool FixType_IsValid(int value) {
@@ -1581,8 +1570,8 @@ bool FixType_IsValid(int value) {
   }
 }
 
-const ::google::protobuf::EnumDescriptor* FlightMode_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&assign_descriptors_table_telemetry_2ftelemetry_2eproto);
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FlightMode_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_telemetry_2ftelemetry_2eproto);
   return file_level_enum_descriptors_telemetry_2ftelemetry_2eproto[2];
 }
 bool FlightMode_IsValid(int value) {
@@ -1607,20 +1596,17 @@ bool FlightMode_IsValid(int value) {
 
 void SubscribePositionRequest::InitAsDefaultInstance() {
 }
-class SubscribePositionRequest::HasBitSetters {
+class SubscribePositionRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribePositionRequest::SubscribePositionRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribePositionRequest)
 }
 SubscribePositionRequest::SubscribePositionRequest(const SubscribePositionRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribePositionRequest)
@@ -1641,14 +1627,14 @@ void SubscribePositionRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribePositionRequest& SubscribePositionRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribePositionRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribePositionRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribePositionRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribePositionRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1656,48 +1642,46 @@ void SubscribePositionRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribePositionRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribePositionRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribePositionRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribePositionRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribePositionRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -1710,28 +1694,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribePositionRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribePositionRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribePositionRequest)
-}
-
-::google::protobuf::uint8* SubscribePositionRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribePositionRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribePositionRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribePositionRequest)
   return target;
@@ -1741,29 +1712,28 @@ size_t SubscribePositionRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribePositionRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribePositionRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribePositionRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribePositionRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribePositionRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribePositionRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribePositionRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribePositionRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribePositionRequest)
     MergeFrom(*source);
@@ -1774,12 +1744,12 @@ void SubscribePositionRequest::MergeFrom(const SubscribePositionRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribePositionRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribePositionRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribePositionRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribePositionRequest)
   if (&from == this) return;
   Clear();
@@ -1797,18 +1767,13 @@ bool SubscribePositionRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribePositionRequest::Swap(SubscribePositionRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribePositionRequest::InternalSwap(SubscribePositionRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribePositionRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribePositionRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -1818,26 +1783,22 @@ void PositionResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_PositionResponse_default_instance_._instance.get_mutable()->position_ = const_cast< ::mavsdk::rpc::telemetry::Position*>(
       ::mavsdk::rpc::telemetry::Position::internal_default_instance());
 }
-class PositionResponse::HasBitSetters {
+class PositionResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::Position& position(const PositionResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::Position&
-PositionResponse::HasBitSetters::position(const PositionResponse* msg) {
+PositionResponse::_Internal::position(const PositionResponse* msg) {
   return *msg->position_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int PositionResponse::kPositionFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 PositionResponse::PositionResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.PositionResponse)
 }
 PositionResponse::PositionResponse(const PositionResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_position()) {
@@ -1849,8 +1810,7 @@ PositionResponse::PositionResponse(const PositionResponse& from)
 }
 
 void PositionResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_PositionResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PositionResponse_telemetry_2ftelemetry_2eproto.base);
   position_ = nullptr;
 }
 
@@ -1867,14 +1827,14 @@ void PositionResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const PositionResponse& PositionResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_PositionResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PositionResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void PositionResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.PositionResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1886,65 +1846,54 @@ void PositionResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* PositionResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<PositionResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* PositionResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.Position position = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::Position::_InternalParse;
-        object = msg->mutable_position();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_position(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool PositionResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.PositionResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.Position position = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_position()));
         } else {
           goto handle_unusual;
@@ -1957,7 +1906,7 @@ bool PositionResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -1973,41 +1922,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void PositionResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.PositionResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.Position position = 1;
-  if (this->has_position()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::position(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.PositionResponse)
-}
-
-::google::protobuf::uint8* PositionResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* PositionResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.PositionResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Position position = 1;
   if (this->has_position()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::position(this), target);
+        1, _Internal::position(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.PositionResponse)
   return target;
@@ -2017,36 +1948,35 @@ size_t PositionResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.PositionResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Position position = 1;
   if (this->has_position()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *position_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void PositionResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void PositionResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.PositionResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const PositionResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<PositionResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PositionResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.PositionResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.PositionResponse)
     MergeFrom(*source);
@@ -2057,7 +1987,7 @@ void PositionResponse::MergeFrom(const PositionResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.PositionResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_position()) {
@@ -2065,7 +1995,7 @@ void PositionResponse::MergeFrom(const PositionResponse& from) {
   }
 }
 
-void PositionResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void PositionResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.PositionResponse)
   if (&from == this) return;
   Clear();
@@ -2083,19 +2013,14 @@ bool PositionResponse::IsInitialized() const {
   return true;
 }
 
-void PositionResponse::Swap(PositionResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void PositionResponse::InternalSwap(PositionResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(position_, other->position_);
 }
 
-::google::protobuf::Metadata PositionResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata PositionResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -2103,20 +2028,17 @@ void PositionResponse::InternalSwap(PositionResponse* other) {
 
 void SubscribeHomeRequest::InitAsDefaultInstance() {
 }
-class SubscribeHomeRequest::HasBitSetters {
+class SubscribeHomeRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeHomeRequest::SubscribeHomeRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeHomeRequest)
 }
 SubscribeHomeRequest::SubscribeHomeRequest(const SubscribeHomeRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeHomeRequest)
@@ -2137,14 +2059,14 @@ void SubscribeHomeRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeHomeRequest& SubscribeHomeRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeHomeRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeHomeRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeHomeRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeHomeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2152,48 +2074,46 @@ void SubscribeHomeRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeHomeRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeHomeRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeHomeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeHomeRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeHomeRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -2206,28 +2126,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeHomeRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeHomeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeHomeRequest)
-}
-
-::google::protobuf::uint8* SubscribeHomeRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeHomeRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeHomeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeHomeRequest)
   return target;
@@ -2237,29 +2144,28 @@ size_t SubscribeHomeRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeHomeRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeHomeRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeHomeRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeHomeRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeHomeRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeHomeRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeHomeRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeHomeRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeHomeRequest)
     MergeFrom(*source);
@@ -2270,12 +2176,12 @@ void SubscribeHomeRequest::MergeFrom(const SubscribeHomeRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeHomeRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeHomeRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeHomeRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeHomeRequest)
   if (&from == this) return;
   Clear();
@@ -2293,18 +2199,13 @@ bool SubscribeHomeRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeHomeRequest::Swap(SubscribeHomeRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeHomeRequest::InternalSwap(SubscribeHomeRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeHomeRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeHomeRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -2314,26 +2215,22 @@ void HomeResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_HomeResponse_default_instance_._instance.get_mutable()->home_ = const_cast< ::mavsdk::rpc::telemetry::Position*>(
       ::mavsdk::rpc::telemetry::Position::internal_default_instance());
 }
-class HomeResponse::HasBitSetters {
+class HomeResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::Position& home(const HomeResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::Position&
-HomeResponse::HasBitSetters::home(const HomeResponse* msg) {
+HomeResponse::_Internal::home(const HomeResponse* msg) {
   return *msg->home_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int HomeResponse::kHomeFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 HomeResponse::HomeResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.HomeResponse)
 }
 HomeResponse::HomeResponse(const HomeResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_home()) {
@@ -2345,8 +2242,7 @@ HomeResponse::HomeResponse(const HomeResponse& from)
 }
 
 void HomeResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_HomeResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_HomeResponse_telemetry_2ftelemetry_2eproto.base);
   home_ = nullptr;
 }
 
@@ -2363,14 +2259,14 @@ void HomeResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const HomeResponse& HomeResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_HomeResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_HomeResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void HomeResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.HomeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2382,65 +2278,54 @@ void HomeResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* HomeResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<HomeResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* HomeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.Position home = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::Position::_InternalParse;
-        object = msg->mutable_home();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_home(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool HomeResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.HomeResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.Position home = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_home()));
         } else {
           goto handle_unusual;
@@ -2453,7 +2338,7 @@ bool HomeResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -2469,41 +2354,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void HomeResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.HomeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.Position home = 1;
-  if (this->has_home()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::home(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.HomeResponse)
-}
-
-::google::protobuf::uint8* HomeResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* HomeResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.HomeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Position home = 1;
   if (this->has_home()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::home(this), target);
+        1, _Internal::home(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.HomeResponse)
   return target;
@@ -2513,36 +2380,35 @@ size_t HomeResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.HomeResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Position home = 1;
   if (this->has_home()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *home_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void HomeResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void HomeResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.HomeResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const HomeResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<HomeResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<HomeResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.HomeResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.HomeResponse)
     MergeFrom(*source);
@@ -2553,7 +2419,7 @@ void HomeResponse::MergeFrom(const HomeResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.HomeResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_home()) {
@@ -2561,7 +2427,7 @@ void HomeResponse::MergeFrom(const HomeResponse& from) {
   }
 }
 
-void HomeResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void HomeResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.HomeResponse)
   if (&from == this) return;
   Clear();
@@ -2579,19 +2445,14 @@ bool HomeResponse::IsInitialized() const {
   return true;
 }
 
-void HomeResponse::Swap(HomeResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void HomeResponse::InternalSwap(HomeResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(home_, other->home_);
 }
 
-::google::protobuf::Metadata HomeResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata HomeResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -2599,20 +2460,17 @@ void HomeResponse::InternalSwap(HomeResponse* other) {
 
 void SubscribeInAirRequest::InitAsDefaultInstance() {
 }
-class SubscribeInAirRequest::HasBitSetters {
+class SubscribeInAirRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeInAirRequest::SubscribeInAirRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeInAirRequest)
 }
 SubscribeInAirRequest::SubscribeInAirRequest(const SubscribeInAirRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeInAirRequest)
@@ -2633,14 +2491,14 @@ void SubscribeInAirRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeInAirRequest& SubscribeInAirRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeInAirRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeInAirRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeInAirRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeInAirRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2648,48 +2506,46 @@ void SubscribeInAirRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeInAirRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeInAirRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeInAirRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeInAirRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeInAirRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -2702,28 +2558,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeInAirRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeInAirRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeInAirRequest)
-}
-
-::google::protobuf::uint8* SubscribeInAirRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeInAirRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeInAirRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeInAirRequest)
   return target;
@@ -2733,29 +2576,28 @@ size_t SubscribeInAirRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeInAirRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeInAirRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeInAirRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeInAirRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeInAirRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeInAirRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeInAirRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeInAirRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeInAirRequest)
     MergeFrom(*source);
@@ -2766,12 +2608,12 @@ void SubscribeInAirRequest::MergeFrom(const SubscribeInAirRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeInAirRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeInAirRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeInAirRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeInAirRequest)
   if (&from == this) return;
   Clear();
@@ -2789,18 +2631,13 @@ bool SubscribeInAirRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeInAirRequest::Swap(SubscribeInAirRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeInAirRequest::InternalSwap(SubscribeInAirRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeInAirRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeInAirRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -2808,21 +2645,17 @@ void SubscribeInAirRequest::InternalSwap(SubscribeInAirRequest* other) {
 
 void InAirResponse::InitAsDefaultInstance() {
 }
-class InAirResponse::HasBitSetters {
+class InAirResponse::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int InAirResponse::kIsInAirFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 InAirResponse::InAirResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.InAirResponse)
 }
 InAirResponse::InAirResponse(const InAirResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   is_in_air_ = from.is_in_air_;
@@ -2845,14 +2678,14 @@ void InAirResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const InAirResponse& InAirResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_InAirResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_InAirResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void InAirResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.InAirResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2861,58 +2694,56 @@ void InAirResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* InAirResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<InAirResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* InAirResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // bool is_in_air = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        msg->set_is_in_air(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          is_in_air_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool InAirResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.InAirResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // bool is_in_air = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_in_air_)));
         } else {
           goto handle_unusual;
@@ -2925,7 +2756,7 @@ bool InAirResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -2941,38 +2772,21 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void InAirResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.InAirResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // bool is_in_air = 1;
-  if (this->is_in_air() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->is_in_air(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.InAirResponse)
-}
-
-::google::protobuf::uint8* InAirResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* InAirResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.InAirResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // bool is_in_air = 1;
   if (this->is_in_air() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->is_in_air(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->is_in_air(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.InAirResponse)
   return target;
@@ -2982,12 +2796,7 @@ size_t InAirResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.InAirResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2996,20 +2805,24 @@ size_t InAirResponse::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void InAirResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void InAirResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.InAirResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const InAirResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<InAirResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<InAirResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.InAirResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.InAirResponse)
     MergeFrom(*source);
@@ -3020,7 +2833,7 @@ void InAirResponse::MergeFrom(const InAirResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.InAirResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.is_in_air() != 0) {
@@ -3028,7 +2841,7 @@ void InAirResponse::MergeFrom(const InAirResponse& from) {
   }
 }
 
-void InAirResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void InAirResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.InAirResponse)
   if (&from == this) return;
   Clear();
@@ -3046,19 +2859,14 @@ bool InAirResponse::IsInitialized() const {
   return true;
 }
 
-void InAirResponse::Swap(InAirResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void InAirResponse::InternalSwap(InAirResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(is_in_air_, other->is_in_air_);
 }
 
-::google::protobuf::Metadata InAirResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata InAirResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -3066,20 +2874,17 @@ void InAirResponse::InternalSwap(InAirResponse* other) {
 
 void SubscribeArmedRequest::InitAsDefaultInstance() {
 }
-class SubscribeArmedRequest::HasBitSetters {
+class SubscribeArmedRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeArmedRequest::SubscribeArmedRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeArmedRequest)
 }
 SubscribeArmedRequest::SubscribeArmedRequest(const SubscribeArmedRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeArmedRequest)
@@ -3100,14 +2905,14 @@ void SubscribeArmedRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeArmedRequest& SubscribeArmedRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeArmedRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeArmedRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeArmedRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeArmedRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3115,48 +2920,46 @@ void SubscribeArmedRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeArmedRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeArmedRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeArmedRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeArmedRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeArmedRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -3169,28 +2972,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeArmedRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeArmedRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeArmedRequest)
-}
-
-::google::protobuf::uint8* SubscribeArmedRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeArmedRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeArmedRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeArmedRequest)
   return target;
@@ -3200,29 +2990,28 @@ size_t SubscribeArmedRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeArmedRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeArmedRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeArmedRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeArmedRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeArmedRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeArmedRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeArmedRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeArmedRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeArmedRequest)
     MergeFrom(*source);
@@ -3233,12 +3022,12 @@ void SubscribeArmedRequest::MergeFrom(const SubscribeArmedRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeArmedRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeArmedRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeArmedRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeArmedRequest)
   if (&from == this) return;
   Clear();
@@ -3256,18 +3045,13 @@ bool SubscribeArmedRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeArmedRequest::Swap(SubscribeArmedRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeArmedRequest::InternalSwap(SubscribeArmedRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeArmedRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeArmedRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -3275,21 +3059,17 @@ void SubscribeArmedRequest::InternalSwap(SubscribeArmedRequest* other) {
 
 void ArmedResponse::InitAsDefaultInstance() {
 }
-class ArmedResponse::HasBitSetters {
+class ArmedResponse::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ArmedResponse::kIsArmedFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ArmedResponse::ArmedResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.ArmedResponse)
 }
 ArmedResponse::ArmedResponse(const ArmedResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   is_armed_ = from.is_armed_;
@@ -3312,14 +3092,14 @@ void ArmedResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ArmedResponse& ArmedResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ArmedResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ArmedResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ArmedResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.ArmedResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3328,58 +3108,56 @@ void ArmedResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ArmedResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ArmedResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ArmedResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // bool is_armed = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        msg->set_is_armed(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          is_armed_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ArmedResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.ArmedResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // bool is_armed = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_armed_)));
         } else {
           goto handle_unusual;
@@ -3392,7 +3170,7 @@ bool ArmedResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -3408,38 +3186,21 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ArmedResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.ArmedResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // bool is_armed = 1;
-  if (this->is_armed() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->is_armed(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.ArmedResponse)
-}
-
-::google::protobuf::uint8* ArmedResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ArmedResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.ArmedResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // bool is_armed = 1;
   if (this->is_armed() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->is_armed(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->is_armed(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.ArmedResponse)
   return target;
@@ -3449,12 +3210,7 @@ size_t ArmedResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.ArmedResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3463,20 +3219,24 @@ size_t ArmedResponse::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ArmedResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void ArmedResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.ArmedResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const ArmedResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<ArmedResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ArmedResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.ArmedResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.ArmedResponse)
     MergeFrom(*source);
@@ -3487,7 +3247,7 @@ void ArmedResponse::MergeFrom(const ArmedResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.ArmedResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.is_armed() != 0) {
@@ -3495,7 +3255,7 @@ void ArmedResponse::MergeFrom(const ArmedResponse& from) {
   }
 }
 
-void ArmedResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void ArmedResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.ArmedResponse)
   if (&from == this) return;
   Clear();
@@ -3513,19 +3273,14 @@ bool ArmedResponse::IsInitialized() const {
   return true;
 }
 
-void ArmedResponse::Swap(ArmedResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ArmedResponse::InternalSwap(ArmedResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(is_armed_, other->is_armed_);
 }
 
-::google::protobuf::Metadata ArmedResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ArmedResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -3533,20 +3288,17 @@ void ArmedResponse::InternalSwap(ArmedResponse* other) {
 
 void SubscribeAttitudeQuaternionRequest::InitAsDefaultInstance() {
 }
-class SubscribeAttitudeQuaternionRequest::HasBitSetters {
+class SubscribeAttitudeQuaternionRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeAttitudeQuaternionRequest::SubscribeAttitudeQuaternionRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
 }
 SubscribeAttitudeQuaternionRequest::SubscribeAttitudeQuaternionRequest(const SubscribeAttitudeQuaternionRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
@@ -3567,14 +3319,14 @@ void SubscribeAttitudeQuaternionRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeAttitudeQuaternionRequest& SubscribeAttitudeQuaternionRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeAttitudeQuaternionRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3582,48 +3334,46 @@ void SubscribeAttitudeQuaternionRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeAttitudeQuaternionRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeAttitudeQuaternionRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeAttitudeQuaternionRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeAttitudeQuaternionRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -3636,28 +3386,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeAttitudeQuaternionRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
-}
-
-::google::protobuf::uint8* SubscribeAttitudeQuaternionRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeAttitudeQuaternionRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
   return target;
@@ -3667,29 +3404,28 @@ size_t SubscribeAttitudeQuaternionRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeAttitudeQuaternionRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeAttitudeQuaternionRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeAttitudeQuaternionRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeAttitudeQuaternionRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeAttitudeQuaternionRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
     MergeFrom(*source);
@@ -3700,12 +3436,12 @@ void SubscribeAttitudeQuaternionRequest::MergeFrom(const SubscribeAttitudeQuater
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeAttitudeQuaternionRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeAttitudeQuaternionRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeAttitudeQuaternionRequest)
   if (&from == this) return;
   Clear();
@@ -3723,18 +3459,13 @@ bool SubscribeAttitudeQuaternionRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeAttitudeQuaternionRequest::Swap(SubscribeAttitudeQuaternionRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeAttitudeQuaternionRequest::InternalSwap(SubscribeAttitudeQuaternionRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeAttitudeQuaternionRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeAttitudeQuaternionRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -3744,26 +3475,22 @@ void AttitudeQuaternionResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_AttitudeQuaternionResponse_default_instance_._instance.get_mutable()->attitude_quaternion_ = const_cast< ::mavsdk::rpc::telemetry::Quaternion*>(
       ::mavsdk::rpc::telemetry::Quaternion::internal_default_instance());
 }
-class AttitudeQuaternionResponse::HasBitSetters {
+class AttitudeQuaternionResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::Quaternion& attitude_quaternion(const AttitudeQuaternionResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::Quaternion&
-AttitudeQuaternionResponse::HasBitSetters::attitude_quaternion(const AttitudeQuaternionResponse* msg) {
+AttitudeQuaternionResponse::_Internal::attitude_quaternion(const AttitudeQuaternionResponse* msg) {
   return *msg->attitude_quaternion_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int AttitudeQuaternionResponse::kAttitudeQuaternionFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 AttitudeQuaternionResponse::AttitudeQuaternionResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
 }
 AttitudeQuaternionResponse::AttitudeQuaternionResponse(const AttitudeQuaternionResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_attitude_quaternion()) {
@@ -3775,8 +3502,7 @@ AttitudeQuaternionResponse::AttitudeQuaternionResponse(const AttitudeQuaternionR
 }
 
 void AttitudeQuaternionResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
   attitude_quaternion_ = nullptr;
 }
 
@@ -3793,14 +3519,14 @@ void AttitudeQuaternionResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const AttitudeQuaternionResponse& AttitudeQuaternionResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void AttitudeQuaternionResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3812,65 +3538,54 @@ void AttitudeQuaternionResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* AttitudeQuaternionResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<AttitudeQuaternionResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* AttitudeQuaternionResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::Quaternion::_InternalParse;
-        object = msg->mutable_attitude_quaternion();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_attitude_quaternion(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool AttitudeQuaternionResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_attitude_quaternion()));
         } else {
           goto handle_unusual;
@@ -3883,7 +3598,7 @@ bool AttitudeQuaternionResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -3899,41 +3614,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void AttitudeQuaternionResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-  if (this->has_attitude_quaternion()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::attitude_quaternion(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
-}
-
-::google::protobuf::uint8* AttitudeQuaternionResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* AttitudeQuaternionResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
   if (this->has_attitude_quaternion()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::attitude_quaternion(this), target);
+        1, _Internal::attitude_quaternion(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
   return target;
@@ -3943,36 +3640,35 @@ size_t AttitudeQuaternionResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
   if (this->has_attitude_quaternion()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *attitude_quaternion_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void AttitudeQuaternionResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void AttitudeQuaternionResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const AttitudeQuaternionResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<AttitudeQuaternionResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<AttitudeQuaternionResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
     MergeFrom(*source);
@@ -3983,7 +3679,7 @@ void AttitudeQuaternionResponse::MergeFrom(const AttitudeQuaternionResponse& fro
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_attitude_quaternion()) {
@@ -3991,7 +3687,7 @@ void AttitudeQuaternionResponse::MergeFrom(const AttitudeQuaternionResponse& fro
   }
 }
 
-void AttitudeQuaternionResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void AttitudeQuaternionResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.AttitudeQuaternionResponse)
   if (&from == this) return;
   Clear();
@@ -4009,19 +3705,14 @@ bool AttitudeQuaternionResponse::IsInitialized() const {
   return true;
 }
 
-void AttitudeQuaternionResponse::Swap(AttitudeQuaternionResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void AttitudeQuaternionResponse::InternalSwap(AttitudeQuaternionResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(attitude_quaternion_, other->attitude_quaternion_);
 }
 
-::google::protobuf::Metadata AttitudeQuaternionResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata AttitudeQuaternionResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -4029,20 +3720,17 @@ void AttitudeQuaternionResponse::InternalSwap(AttitudeQuaternionResponse* other)
 
 void SubscribeAttitudeEulerRequest::InitAsDefaultInstance() {
 }
-class SubscribeAttitudeEulerRequest::HasBitSetters {
+class SubscribeAttitudeEulerRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeAttitudeEulerRequest::SubscribeAttitudeEulerRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
 }
 SubscribeAttitudeEulerRequest::SubscribeAttitudeEulerRequest(const SubscribeAttitudeEulerRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
@@ -4063,14 +3751,14 @@ void SubscribeAttitudeEulerRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeAttitudeEulerRequest& SubscribeAttitudeEulerRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeAttitudeEulerRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeAttitudeEulerRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4078,48 +3766,46 @@ void SubscribeAttitudeEulerRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeAttitudeEulerRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeAttitudeEulerRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeAttitudeEulerRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeAttitudeEulerRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -4132,28 +3818,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeAttitudeEulerRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
-}
-
-::google::protobuf::uint8* SubscribeAttitudeEulerRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeAttitudeEulerRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
   return target;
@@ -4163,29 +3836,28 @@ size_t SubscribeAttitudeEulerRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeAttitudeEulerRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeAttitudeEulerRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeAttitudeEulerRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeAttitudeEulerRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeAttitudeEulerRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
     MergeFrom(*source);
@@ -4196,12 +3868,12 @@ void SubscribeAttitudeEulerRequest::MergeFrom(const SubscribeAttitudeEulerReques
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeAttitudeEulerRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeAttitudeEulerRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeAttitudeEulerRequest)
   if (&from == this) return;
   Clear();
@@ -4219,18 +3891,13 @@ bool SubscribeAttitudeEulerRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeAttitudeEulerRequest::Swap(SubscribeAttitudeEulerRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeAttitudeEulerRequest::InternalSwap(SubscribeAttitudeEulerRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeAttitudeEulerRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeAttitudeEulerRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -4240,26 +3907,22 @@ void AttitudeEulerResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_AttitudeEulerResponse_default_instance_._instance.get_mutable()->attitude_euler_ = const_cast< ::mavsdk::rpc::telemetry::EulerAngle*>(
       ::mavsdk::rpc::telemetry::EulerAngle::internal_default_instance());
 }
-class AttitudeEulerResponse::HasBitSetters {
+class AttitudeEulerResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::EulerAngle& attitude_euler(const AttitudeEulerResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::EulerAngle&
-AttitudeEulerResponse::HasBitSetters::attitude_euler(const AttitudeEulerResponse* msg) {
+AttitudeEulerResponse::_Internal::attitude_euler(const AttitudeEulerResponse* msg) {
   return *msg->attitude_euler_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int AttitudeEulerResponse::kAttitudeEulerFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 AttitudeEulerResponse::AttitudeEulerResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.AttitudeEulerResponse)
 }
 AttitudeEulerResponse::AttitudeEulerResponse(const AttitudeEulerResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_attitude_euler()) {
@@ -4271,8 +3934,7 @@ AttitudeEulerResponse::AttitudeEulerResponse(const AttitudeEulerResponse& from)
 }
 
 void AttitudeEulerResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
   attitude_euler_ = nullptr;
 }
 
@@ -4289,14 +3951,14 @@ void AttitudeEulerResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const AttitudeEulerResponse& AttitudeEulerResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void AttitudeEulerResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.AttitudeEulerResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4308,65 +3970,54 @@ void AttitudeEulerResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* AttitudeEulerResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<AttitudeEulerResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* AttitudeEulerResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::EulerAngle::_InternalParse;
-        object = msg->mutable_attitude_euler();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_attitude_euler(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool AttitudeEulerResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.AttitudeEulerResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_attitude_euler()));
         } else {
           goto handle_unusual;
@@ -4379,7 +4030,7 @@ bool AttitudeEulerResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -4395,41 +4046,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void AttitudeEulerResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.AttitudeEulerResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-  if (this->has_attitude_euler()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::attitude_euler(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.AttitudeEulerResponse)
-}
-
-::google::protobuf::uint8* AttitudeEulerResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* AttitudeEulerResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.AttitudeEulerResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
   if (this->has_attitude_euler()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::attitude_euler(this), target);
+        1, _Internal::attitude_euler(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.AttitudeEulerResponse)
   return target;
@@ -4439,36 +4072,35 @@ size_t AttitudeEulerResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.AttitudeEulerResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
   if (this->has_attitude_euler()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *attitude_euler_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void AttitudeEulerResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void AttitudeEulerResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.AttitudeEulerResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const AttitudeEulerResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<AttitudeEulerResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<AttitudeEulerResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.AttitudeEulerResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.AttitudeEulerResponse)
     MergeFrom(*source);
@@ -4479,7 +4111,7 @@ void AttitudeEulerResponse::MergeFrom(const AttitudeEulerResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.AttitudeEulerResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_attitude_euler()) {
@@ -4487,7 +4119,7 @@ void AttitudeEulerResponse::MergeFrom(const AttitudeEulerResponse& from) {
   }
 }
 
-void AttitudeEulerResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void AttitudeEulerResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.AttitudeEulerResponse)
   if (&from == this) return;
   Clear();
@@ -4505,19 +4137,14 @@ bool AttitudeEulerResponse::IsInitialized() const {
   return true;
 }
 
-void AttitudeEulerResponse::Swap(AttitudeEulerResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void AttitudeEulerResponse::InternalSwap(AttitudeEulerResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(attitude_euler_, other->attitude_euler_);
 }
 
-::google::protobuf::Metadata AttitudeEulerResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata AttitudeEulerResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -4525,20 +4152,17 @@ void AttitudeEulerResponse::InternalSwap(AttitudeEulerResponse* other) {
 
 void SubscribeAttitudeAngularVelocityBodyRequest::InitAsDefaultInstance() {
 }
-class SubscribeAttitudeAngularVelocityBodyRequest::HasBitSetters {
+class SubscribeAttitudeAngularVelocityBodyRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeAttitudeAngularVelocityBodyRequest::SubscribeAttitudeAngularVelocityBodyRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
 }
 SubscribeAttitudeAngularVelocityBodyRequest::SubscribeAttitudeAngularVelocityBodyRequest(const SubscribeAttitudeAngularVelocityBodyRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
@@ -4559,14 +4183,14 @@ void SubscribeAttitudeAngularVelocityBodyRequest::SetCachedSize(int size) const 
   _cached_size_.Set(size);
 }
 const SubscribeAttitudeAngularVelocityBodyRequest& SubscribeAttitudeAngularVelocityBodyRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeAttitudeAngularVelocityBodyRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeAttitudeAngularVelocityBodyRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4574,48 +4198,46 @@ void SubscribeAttitudeAngularVelocityBodyRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeAttitudeAngularVelocityBodyRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeAttitudeAngularVelocityBodyRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeAttitudeAngularVelocityBodyRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeAttitudeAngularVelocityBodyRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -4628,28 +4250,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeAttitudeAngularVelocityBodyRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
-}
-
-::google::protobuf::uint8* SubscribeAttitudeAngularVelocityBodyRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeAttitudeAngularVelocityBodyRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
   return target;
@@ -4659,29 +4268,28 @@ size_t SubscribeAttitudeAngularVelocityBodyRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeAttitudeAngularVelocityBodyRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeAttitudeAngularVelocityBodyRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeAttitudeAngularVelocityBodyRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeAttitudeAngularVelocityBodyRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeAttitudeAngularVelocityBodyRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
     MergeFrom(*source);
@@ -4692,12 +4300,12 @@ void SubscribeAttitudeAngularVelocityBodyRequest::MergeFrom(const SubscribeAttit
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeAttitudeAngularVelocityBodyRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeAttitudeAngularVelocityBodyRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeAttitudeAngularVelocityBodyRequest)
   if (&from == this) return;
   Clear();
@@ -4715,18 +4323,13 @@ bool SubscribeAttitudeAngularVelocityBodyRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeAttitudeAngularVelocityBodyRequest::Swap(SubscribeAttitudeAngularVelocityBodyRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeAttitudeAngularVelocityBodyRequest::InternalSwap(SubscribeAttitudeAngularVelocityBodyRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeAttitudeAngularVelocityBodyRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeAttitudeAngularVelocityBodyRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -4736,26 +4339,22 @@ void AttitudeAngularVelocityBodyResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_AttitudeAngularVelocityBodyResponse_default_instance_._instance.get_mutable()->attitude_angular_velocity_body_ = const_cast< ::mavsdk::rpc::telemetry::AngularVelocityBody*>(
       ::mavsdk::rpc::telemetry::AngularVelocityBody::internal_default_instance());
 }
-class AttitudeAngularVelocityBodyResponse::HasBitSetters {
+class AttitudeAngularVelocityBodyResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::AngularVelocityBody& attitude_angular_velocity_body(const AttitudeAngularVelocityBodyResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::AngularVelocityBody&
-AttitudeAngularVelocityBodyResponse::HasBitSetters::attitude_angular_velocity_body(const AttitudeAngularVelocityBodyResponse* msg) {
+AttitudeAngularVelocityBodyResponse::_Internal::attitude_angular_velocity_body(const AttitudeAngularVelocityBodyResponse* msg) {
   return *msg->attitude_angular_velocity_body_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int AttitudeAngularVelocityBodyResponse::kAttitudeAngularVelocityBodyFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 AttitudeAngularVelocityBodyResponse::AttitudeAngularVelocityBodyResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
 }
 AttitudeAngularVelocityBodyResponse::AttitudeAngularVelocityBodyResponse(const AttitudeAngularVelocityBodyResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_attitude_angular_velocity_body()) {
@@ -4767,8 +4366,7 @@ AttitudeAngularVelocityBodyResponse::AttitudeAngularVelocityBodyResponse(const A
 }
 
 void AttitudeAngularVelocityBodyResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto.base);
   attitude_angular_velocity_body_ = nullptr;
 }
 
@@ -4785,14 +4383,14 @@ void AttitudeAngularVelocityBodyResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const AttitudeAngularVelocityBodyResponse& AttitudeAngularVelocityBodyResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AttitudeAngularVelocityBodyResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void AttitudeAngularVelocityBodyResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4804,65 +4402,54 @@ void AttitudeAngularVelocityBodyResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* AttitudeAngularVelocityBodyResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<AttitudeAngularVelocityBodyResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* AttitudeAngularVelocityBodyResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.AngularVelocityBody attitude_angular_velocity_body = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::AngularVelocityBody::_InternalParse;
-        object = msg->mutable_attitude_angular_velocity_body();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_attitude_angular_velocity_body(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool AttitudeAngularVelocityBodyResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.AngularVelocityBody attitude_angular_velocity_body = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_attitude_angular_velocity_body()));
         } else {
           goto handle_unusual;
@@ -4875,7 +4462,7 @@ bool AttitudeAngularVelocityBodyResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -4891,41 +4478,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void AttitudeAngularVelocityBodyResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.AngularVelocityBody attitude_angular_velocity_body = 1;
-  if (this->has_attitude_angular_velocity_body()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::attitude_angular_velocity_body(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
-}
-
-::google::protobuf::uint8* AttitudeAngularVelocityBodyResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* AttitudeAngularVelocityBodyResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.AngularVelocityBody attitude_angular_velocity_body = 1;
   if (this->has_attitude_angular_velocity_body()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::attitude_angular_velocity_body(this), target);
+        1, _Internal::attitude_angular_velocity_body(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
   return target;
@@ -4935,36 +4504,35 @@ size_t AttitudeAngularVelocityBodyResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.AngularVelocityBody attitude_angular_velocity_body = 1;
   if (this->has_attitude_angular_velocity_body()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *attitude_angular_velocity_body_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void AttitudeAngularVelocityBodyResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void AttitudeAngularVelocityBodyResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const AttitudeAngularVelocityBodyResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<AttitudeAngularVelocityBodyResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<AttitudeAngularVelocityBodyResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
     MergeFrom(*source);
@@ -4975,7 +4543,7 @@ void AttitudeAngularVelocityBodyResponse::MergeFrom(const AttitudeAngularVelocit
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_attitude_angular_velocity_body()) {
@@ -4983,7 +4551,7 @@ void AttitudeAngularVelocityBodyResponse::MergeFrom(const AttitudeAngularVelocit
   }
 }
 
-void AttitudeAngularVelocityBodyResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void AttitudeAngularVelocityBodyResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse)
   if (&from == this) return;
   Clear();
@@ -5001,19 +4569,14 @@ bool AttitudeAngularVelocityBodyResponse::IsInitialized() const {
   return true;
 }
 
-void AttitudeAngularVelocityBodyResponse::Swap(AttitudeAngularVelocityBodyResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void AttitudeAngularVelocityBodyResponse::InternalSwap(AttitudeAngularVelocityBodyResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(attitude_angular_velocity_body_, other->attitude_angular_velocity_body_);
 }
 
-::google::protobuf::Metadata AttitudeAngularVelocityBodyResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata AttitudeAngularVelocityBodyResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -5021,20 +4584,17 @@ void AttitudeAngularVelocityBodyResponse::InternalSwap(AttitudeAngularVelocityBo
 
 void SubscribeCameraAttitudeQuaternionRequest::InitAsDefaultInstance() {
 }
-class SubscribeCameraAttitudeQuaternionRequest::HasBitSetters {
+class SubscribeCameraAttitudeQuaternionRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeCameraAttitudeQuaternionRequest::SubscribeCameraAttitudeQuaternionRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
 }
 SubscribeCameraAttitudeQuaternionRequest::SubscribeCameraAttitudeQuaternionRequest(const SubscribeCameraAttitudeQuaternionRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
@@ -5055,14 +4615,14 @@ void SubscribeCameraAttitudeQuaternionRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeCameraAttitudeQuaternionRequest& SubscribeCameraAttitudeQuaternionRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeCameraAttitudeQuaternionRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeCameraAttitudeQuaternionRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5070,48 +4630,46 @@ void SubscribeCameraAttitudeQuaternionRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeCameraAttitudeQuaternionRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeCameraAttitudeQuaternionRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeCameraAttitudeQuaternionRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeCameraAttitudeQuaternionRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -5124,28 +4682,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeCameraAttitudeQuaternionRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
-}
-
-::google::protobuf::uint8* SubscribeCameraAttitudeQuaternionRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCameraAttitudeQuaternionRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
   return target;
@@ -5155,29 +4700,28 @@ size_t SubscribeCameraAttitudeQuaternionRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeCameraAttitudeQuaternionRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeCameraAttitudeQuaternionRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeCameraAttitudeQuaternionRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeCameraAttitudeQuaternionRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeCameraAttitudeQuaternionRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
     MergeFrom(*source);
@@ -5188,12 +4732,12 @@ void SubscribeCameraAttitudeQuaternionRequest::MergeFrom(const SubscribeCameraAt
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeCameraAttitudeQuaternionRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeCameraAttitudeQuaternionRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
   if (&from == this) return;
   Clear();
@@ -5211,18 +4755,13 @@ bool SubscribeCameraAttitudeQuaternionRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeCameraAttitudeQuaternionRequest::Swap(SubscribeCameraAttitudeQuaternionRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeCameraAttitudeQuaternionRequest::InternalSwap(SubscribeCameraAttitudeQuaternionRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeCameraAttitudeQuaternionRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCameraAttitudeQuaternionRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -5232,26 +4771,22 @@ void CameraAttitudeQuaternionResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_CameraAttitudeQuaternionResponse_default_instance_._instance.get_mutable()->attitude_quaternion_ = const_cast< ::mavsdk::rpc::telemetry::Quaternion*>(
       ::mavsdk::rpc::telemetry::Quaternion::internal_default_instance());
 }
-class CameraAttitudeQuaternionResponse::HasBitSetters {
+class CameraAttitudeQuaternionResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::Quaternion& attitude_quaternion(const CameraAttitudeQuaternionResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::Quaternion&
-CameraAttitudeQuaternionResponse::HasBitSetters::attitude_quaternion(const CameraAttitudeQuaternionResponse* msg) {
+CameraAttitudeQuaternionResponse::_Internal::attitude_quaternion(const CameraAttitudeQuaternionResponse* msg) {
   return *msg->attitude_quaternion_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CameraAttitudeQuaternionResponse::kAttitudeQuaternionFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 CameraAttitudeQuaternionResponse::CameraAttitudeQuaternionResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
 }
 CameraAttitudeQuaternionResponse::CameraAttitudeQuaternionResponse(const CameraAttitudeQuaternionResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_attitude_quaternion()) {
@@ -5263,8 +4798,7 @@ CameraAttitudeQuaternionResponse::CameraAttitudeQuaternionResponse(const CameraA
 }
 
 void CameraAttitudeQuaternionResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
   attitude_quaternion_ = nullptr;
 }
 
@@ -5281,14 +4815,14 @@ void CameraAttitudeQuaternionResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const CameraAttitudeQuaternionResponse& CameraAttitudeQuaternionResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_CameraAttitudeQuaternionResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void CameraAttitudeQuaternionResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5300,65 +4834,54 @@ void CameraAttitudeQuaternionResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* CameraAttitudeQuaternionResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<CameraAttitudeQuaternionResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* CameraAttitudeQuaternionResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::Quaternion::_InternalParse;
-        object = msg->mutable_attitude_quaternion();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_attitude_quaternion(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool CameraAttitudeQuaternionResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_attitude_quaternion()));
         } else {
           goto handle_unusual;
@@ -5371,7 +4894,7 @@ bool CameraAttitudeQuaternionResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -5387,41 +4910,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void CameraAttitudeQuaternionResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-  if (this->has_attitude_quaternion()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::attitude_quaternion(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-}
-
-::google::protobuf::uint8* CameraAttitudeQuaternionResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* CameraAttitudeQuaternionResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
   if (this->has_attitude_quaternion()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::attitude_quaternion(this), target);
+        1, _Internal::attitude_quaternion(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
   return target;
@@ -5431,36 +4936,35 @@ size_t CameraAttitudeQuaternionResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
   if (this->has_attitude_quaternion()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *attitude_quaternion_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void CameraAttitudeQuaternionResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void CameraAttitudeQuaternionResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const CameraAttitudeQuaternionResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<CameraAttitudeQuaternionResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<CameraAttitudeQuaternionResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
     MergeFrom(*source);
@@ -5471,7 +4975,7 @@ void CameraAttitudeQuaternionResponse::MergeFrom(const CameraAttitudeQuaternionR
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_attitude_quaternion()) {
@@ -5479,7 +4983,7 @@ void CameraAttitudeQuaternionResponse::MergeFrom(const CameraAttitudeQuaternionR
   }
 }
 
-void CameraAttitudeQuaternionResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void CameraAttitudeQuaternionResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
   if (&from == this) return;
   Clear();
@@ -5497,19 +5001,14 @@ bool CameraAttitudeQuaternionResponse::IsInitialized() const {
   return true;
 }
 
-void CameraAttitudeQuaternionResponse::Swap(CameraAttitudeQuaternionResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void CameraAttitudeQuaternionResponse::InternalSwap(CameraAttitudeQuaternionResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(attitude_quaternion_, other->attitude_quaternion_);
 }
 
-::google::protobuf::Metadata CameraAttitudeQuaternionResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata CameraAttitudeQuaternionResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -5517,20 +5016,17 @@ void CameraAttitudeQuaternionResponse::InternalSwap(CameraAttitudeQuaternionResp
 
 void SubscribeCameraAttitudeEulerRequest::InitAsDefaultInstance() {
 }
-class SubscribeCameraAttitudeEulerRequest::HasBitSetters {
+class SubscribeCameraAttitudeEulerRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeCameraAttitudeEulerRequest::SubscribeCameraAttitudeEulerRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
 }
 SubscribeCameraAttitudeEulerRequest::SubscribeCameraAttitudeEulerRequest(const SubscribeCameraAttitudeEulerRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
@@ -5551,14 +5047,14 @@ void SubscribeCameraAttitudeEulerRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeCameraAttitudeEulerRequest& SubscribeCameraAttitudeEulerRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeCameraAttitudeEulerRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeCameraAttitudeEulerRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5566,48 +5062,46 @@ void SubscribeCameraAttitudeEulerRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeCameraAttitudeEulerRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeCameraAttitudeEulerRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeCameraAttitudeEulerRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeCameraAttitudeEulerRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -5620,28 +5114,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeCameraAttitudeEulerRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
-}
-
-::google::protobuf::uint8* SubscribeCameraAttitudeEulerRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCameraAttitudeEulerRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
   return target;
@@ -5651,29 +5132,28 @@ size_t SubscribeCameraAttitudeEulerRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeCameraAttitudeEulerRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeCameraAttitudeEulerRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeCameraAttitudeEulerRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeCameraAttitudeEulerRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeCameraAttitudeEulerRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
     MergeFrom(*source);
@@ -5684,12 +5164,12 @@ void SubscribeCameraAttitudeEulerRequest::MergeFrom(const SubscribeCameraAttitud
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeCameraAttitudeEulerRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeCameraAttitudeEulerRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
   if (&from == this) return;
   Clear();
@@ -5707,18 +5187,13 @@ bool SubscribeCameraAttitudeEulerRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeCameraAttitudeEulerRequest::Swap(SubscribeCameraAttitudeEulerRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeCameraAttitudeEulerRequest::InternalSwap(SubscribeCameraAttitudeEulerRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeCameraAttitudeEulerRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCameraAttitudeEulerRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -5728,26 +5203,22 @@ void CameraAttitudeEulerResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_CameraAttitudeEulerResponse_default_instance_._instance.get_mutable()->attitude_euler_ = const_cast< ::mavsdk::rpc::telemetry::EulerAngle*>(
       ::mavsdk::rpc::telemetry::EulerAngle::internal_default_instance());
 }
-class CameraAttitudeEulerResponse::HasBitSetters {
+class CameraAttitudeEulerResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::EulerAngle& attitude_euler(const CameraAttitudeEulerResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::EulerAngle&
-CameraAttitudeEulerResponse::HasBitSetters::attitude_euler(const CameraAttitudeEulerResponse* msg) {
+CameraAttitudeEulerResponse::_Internal::attitude_euler(const CameraAttitudeEulerResponse* msg) {
   return *msg->attitude_euler_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CameraAttitudeEulerResponse::kAttitudeEulerFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 CameraAttitudeEulerResponse::CameraAttitudeEulerResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
 }
 CameraAttitudeEulerResponse::CameraAttitudeEulerResponse(const CameraAttitudeEulerResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_attitude_euler()) {
@@ -5759,8 +5230,7 @@ CameraAttitudeEulerResponse::CameraAttitudeEulerResponse(const CameraAttitudeEul
 }
 
 void CameraAttitudeEulerResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
   attitude_euler_ = nullptr;
 }
 
@@ -5777,14 +5247,14 @@ void CameraAttitudeEulerResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const CameraAttitudeEulerResponse& CameraAttitudeEulerResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_CameraAttitudeEulerResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void CameraAttitudeEulerResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5796,65 +5266,54 @@ void CameraAttitudeEulerResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* CameraAttitudeEulerResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<CameraAttitudeEulerResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* CameraAttitudeEulerResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::EulerAngle::_InternalParse;
-        object = msg->mutable_attitude_euler();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_attitude_euler(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool CameraAttitudeEulerResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_attitude_euler()));
         } else {
           goto handle_unusual;
@@ -5867,7 +5326,7 @@ bool CameraAttitudeEulerResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -5883,41 +5342,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void CameraAttitudeEulerResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-  if (this->has_attitude_euler()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::attitude_euler(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-}
-
-::google::protobuf::uint8* CameraAttitudeEulerResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* CameraAttitudeEulerResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
   if (this->has_attitude_euler()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::attitude_euler(this), target);
+        1, _Internal::attitude_euler(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
   return target;
@@ -5927,36 +5368,35 @@ size_t CameraAttitudeEulerResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
   if (this->has_attitude_euler()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *attitude_euler_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void CameraAttitudeEulerResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void CameraAttitudeEulerResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const CameraAttitudeEulerResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<CameraAttitudeEulerResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<CameraAttitudeEulerResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
     MergeFrom(*source);
@@ -5967,7 +5407,7 @@ void CameraAttitudeEulerResponse::MergeFrom(const CameraAttitudeEulerResponse& f
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_attitude_euler()) {
@@ -5975,7 +5415,7 @@ void CameraAttitudeEulerResponse::MergeFrom(const CameraAttitudeEulerResponse& f
   }
 }
 
-void CameraAttitudeEulerResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void CameraAttitudeEulerResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
   if (&from == this) return;
   Clear();
@@ -5993,19 +5433,14 @@ bool CameraAttitudeEulerResponse::IsInitialized() const {
   return true;
 }
 
-void CameraAttitudeEulerResponse::Swap(CameraAttitudeEulerResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void CameraAttitudeEulerResponse::InternalSwap(CameraAttitudeEulerResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(attitude_euler_, other->attitude_euler_);
 }
 
-::google::protobuf::Metadata CameraAttitudeEulerResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata CameraAttitudeEulerResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -6013,20 +5448,17 @@ void CameraAttitudeEulerResponse::InternalSwap(CameraAttitudeEulerResponse* othe
 
 void SubscribeGroundSpeedNedRequest::InitAsDefaultInstance() {
 }
-class SubscribeGroundSpeedNedRequest::HasBitSetters {
+class SubscribeGroundSpeedNedRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeGroundSpeedNedRequest::SubscribeGroundSpeedNedRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
 }
 SubscribeGroundSpeedNedRequest::SubscribeGroundSpeedNedRequest(const SubscribeGroundSpeedNedRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
@@ -6047,14 +5479,14 @@ void SubscribeGroundSpeedNedRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeGroundSpeedNedRequest& SubscribeGroundSpeedNedRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeGroundSpeedNedRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeGroundSpeedNedRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6062,48 +5494,46 @@ void SubscribeGroundSpeedNedRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeGroundSpeedNedRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeGroundSpeedNedRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeGroundSpeedNedRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeGroundSpeedNedRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -6116,28 +5546,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeGroundSpeedNedRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
-}
-
-::google::protobuf::uint8* SubscribeGroundSpeedNedRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeGroundSpeedNedRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
   return target;
@@ -6147,29 +5564,28 @@ size_t SubscribeGroundSpeedNedRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeGroundSpeedNedRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeGroundSpeedNedRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeGroundSpeedNedRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeGroundSpeedNedRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeGroundSpeedNedRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
     MergeFrom(*source);
@@ -6180,12 +5596,12 @@ void SubscribeGroundSpeedNedRequest::MergeFrom(const SubscribeGroundSpeedNedRequ
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeGroundSpeedNedRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeGroundSpeedNedRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeGroundSpeedNedRequest)
   if (&from == this) return;
   Clear();
@@ -6203,18 +5619,13 @@ bool SubscribeGroundSpeedNedRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeGroundSpeedNedRequest::Swap(SubscribeGroundSpeedNedRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeGroundSpeedNedRequest::InternalSwap(SubscribeGroundSpeedNedRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeGroundSpeedNedRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeGroundSpeedNedRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -6224,26 +5635,22 @@ void GroundSpeedNedResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_GroundSpeedNedResponse_default_instance_._instance.get_mutable()->ground_speed_ned_ = const_cast< ::mavsdk::rpc::telemetry::SpeedNed*>(
       ::mavsdk::rpc::telemetry::SpeedNed::internal_default_instance());
 }
-class GroundSpeedNedResponse::HasBitSetters {
+class GroundSpeedNedResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::SpeedNed& ground_speed_ned(const GroundSpeedNedResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::SpeedNed&
-GroundSpeedNedResponse::HasBitSetters::ground_speed_ned(const GroundSpeedNedResponse* msg) {
+GroundSpeedNedResponse::_Internal::ground_speed_ned(const GroundSpeedNedResponse* msg) {
   return *msg->ground_speed_ned_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int GroundSpeedNedResponse::kGroundSpeedNedFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 GroundSpeedNedResponse::GroundSpeedNedResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
 }
 GroundSpeedNedResponse::GroundSpeedNedResponse(const GroundSpeedNedResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_ground_speed_ned()) {
@@ -6255,8 +5662,7 @@ GroundSpeedNedResponse::GroundSpeedNedResponse(const GroundSpeedNedResponse& fro
 }
 
 void GroundSpeedNedResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto.base);
   ground_speed_ned_ = nullptr;
 }
 
@@ -6273,14 +5679,14 @@ void GroundSpeedNedResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const GroundSpeedNedResponse& GroundSpeedNedResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GroundSpeedNedResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void GroundSpeedNedResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6292,65 +5698,54 @@ void GroundSpeedNedResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* GroundSpeedNedResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<GroundSpeedNedResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* GroundSpeedNedResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.SpeedNed ground_speed_ned = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::SpeedNed::_InternalParse;
-        object = msg->mutable_ground_speed_ned();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_ground_speed_ned(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool GroundSpeedNedResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.SpeedNed ground_speed_ned = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_ground_speed_ned()));
         } else {
           goto handle_unusual;
@@ -6363,7 +5758,7 @@ bool GroundSpeedNedResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -6379,41 +5774,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void GroundSpeedNedResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.SpeedNed ground_speed_ned = 1;
-  if (this->has_ground_speed_ned()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::ground_speed_ned(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
-}
-
-::google::protobuf::uint8* GroundSpeedNedResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* GroundSpeedNedResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.SpeedNed ground_speed_ned = 1;
   if (this->has_ground_speed_ned()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::ground_speed_ned(this), target);
+        1, _Internal::ground_speed_ned(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
   return target;
@@ -6423,36 +5800,35 @@ size_t GroundSpeedNedResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.SpeedNed ground_speed_ned = 1;
   if (this->has_ground_speed_ned()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *ground_speed_ned_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void GroundSpeedNedResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void GroundSpeedNedResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const GroundSpeedNedResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<GroundSpeedNedResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<GroundSpeedNedResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
     MergeFrom(*source);
@@ -6463,7 +5839,7 @@ void GroundSpeedNedResponse::MergeFrom(const GroundSpeedNedResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_ground_speed_ned()) {
@@ -6471,7 +5847,7 @@ void GroundSpeedNedResponse::MergeFrom(const GroundSpeedNedResponse& from) {
   }
 }
 
-void GroundSpeedNedResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void GroundSpeedNedResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.GroundSpeedNedResponse)
   if (&from == this) return;
   Clear();
@@ -6489,19 +5865,14 @@ bool GroundSpeedNedResponse::IsInitialized() const {
   return true;
 }
 
-void GroundSpeedNedResponse::Swap(GroundSpeedNedResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void GroundSpeedNedResponse::InternalSwap(GroundSpeedNedResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(ground_speed_ned_, other->ground_speed_ned_);
 }
 
-::google::protobuf::Metadata GroundSpeedNedResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata GroundSpeedNedResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -6509,20 +5880,17 @@ void GroundSpeedNedResponse::InternalSwap(GroundSpeedNedResponse* other) {
 
 void SubscribeGpsInfoRequest::InitAsDefaultInstance() {
 }
-class SubscribeGpsInfoRequest::HasBitSetters {
+class SubscribeGpsInfoRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeGpsInfoRequest::SubscribeGpsInfoRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
 }
 SubscribeGpsInfoRequest::SubscribeGpsInfoRequest(const SubscribeGpsInfoRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
@@ -6543,14 +5911,14 @@ void SubscribeGpsInfoRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeGpsInfoRequest& SubscribeGpsInfoRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeGpsInfoRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeGpsInfoRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6558,48 +5926,46 @@ void SubscribeGpsInfoRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeGpsInfoRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeGpsInfoRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeGpsInfoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeGpsInfoRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -6612,28 +5978,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeGpsInfoRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
-}
-
-::google::protobuf::uint8* SubscribeGpsInfoRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeGpsInfoRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
   return target;
@@ -6643,29 +5996,28 @@ size_t SubscribeGpsInfoRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeGpsInfoRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeGpsInfoRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeGpsInfoRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeGpsInfoRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeGpsInfoRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
     MergeFrom(*source);
@@ -6676,12 +6028,12 @@ void SubscribeGpsInfoRequest::MergeFrom(const SubscribeGpsInfoRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeGpsInfoRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeGpsInfoRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeGpsInfoRequest)
   if (&from == this) return;
   Clear();
@@ -6699,18 +6051,13 @@ bool SubscribeGpsInfoRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeGpsInfoRequest::Swap(SubscribeGpsInfoRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeGpsInfoRequest::InternalSwap(SubscribeGpsInfoRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeGpsInfoRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeGpsInfoRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -6720,26 +6067,22 @@ void GpsInfoResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_GpsInfoResponse_default_instance_._instance.get_mutable()->gps_info_ = const_cast< ::mavsdk::rpc::telemetry::GpsInfo*>(
       ::mavsdk::rpc::telemetry::GpsInfo::internal_default_instance());
 }
-class GpsInfoResponse::HasBitSetters {
+class GpsInfoResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::GpsInfo& gps_info(const GpsInfoResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::GpsInfo&
-GpsInfoResponse::HasBitSetters::gps_info(const GpsInfoResponse* msg) {
+GpsInfoResponse::_Internal::gps_info(const GpsInfoResponse* msg) {
   return *msg->gps_info_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int GpsInfoResponse::kGpsInfoFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 GpsInfoResponse::GpsInfoResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.GpsInfoResponse)
 }
 GpsInfoResponse::GpsInfoResponse(const GpsInfoResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_gps_info()) {
@@ -6751,8 +6094,7 @@ GpsInfoResponse::GpsInfoResponse(const GpsInfoResponse& from)
 }
 
 void GpsInfoResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto.base);
   gps_info_ = nullptr;
 }
 
@@ -6769,14 +6111,14 @@ void GpsInfoResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const GpsInfoResponse& GpsInfoResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GpsInfoResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void GpsInfoResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.GpsInfoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6788,65 +6130,54 @@ void GpsInfoResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* GpsInfoResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<GpsInfoResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* GpsInfoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.GpsInfo gps_info = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::GpsInfo::_InternalParse;
-        object = msg->mutable_gps_info();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_gps_info(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool GpsInfoResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.GpsInfoResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.GpsInfo gps_info = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_gps_info()));
         } else {
           goto handle_unusual;
@@ -6859,7 +6190,7 @@ bool GpsInfoResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -6875,41 +6206,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void GpsInfoResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.GpsInfoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.GpsInfo gps_info = 1;
-  if (this->has_gps_info()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::gps_info(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.GpsInfoResponse)
-}
-
-::google::protobuf::uint8* GpsInfoResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* GpsInfoResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.GpsInfoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.GpsInfo gps_info = 1;
   if (this->has_gps_info()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::gps_info(this), target);
+        1, _Internal::gps_info(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.GpsInfoResponse)
   return target;
@@ -6919,36 +6232,35 @@ size_t GpsInfoResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.GpsInfoResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.GpsInfo gps_info = 1;
   if (this->has_gps_info()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *gps_info_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void GpsInfoResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void GpsInfoResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.GpsInfoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const GpsInfoResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<GpsInfoResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<GpsInfoResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.GpsInfoResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.GpsInfoResponse)
     MergeFrom(*source);
@@ -6959,7 +6271,7 @@ void GpsInfoResponse::MergeFrom(const GpsInfoResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.GpsInfoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_gps_info()) {
@@ -6967,7 +6279,7 @@ void GpsInfoResponse::MergeFrom(const GpsInfoResponse& from) {
   }
 }
 
-void GpsInfoResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void GpsInfoResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.GpsInfoResponse)
   if (&from == this) return;
   Clear();
@@ -6985,19 +6297,14 @@ bool GpsInfoResponse::IsInitialized() const {
   return true;
 }
 
-void GpsInfoResponse::Swap(GpsInfoResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void GpsInfoResponse::InternalSwap(GpsInfoResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(gps_info_, other->gps_info_);
 }
 
-::google::protobuf::Metadata GpsInfoResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata GpsInfoResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -7005,20 +6312,17 @@ void GpsInfoResponse::InternalSwap(GpsInfoResponse* other) {
 
 void SubscribeBatteryRequest::InitAsDefaultInstance() {
 }
-class SubscribeBatteryRequest::HasBitSetters {
+class SubscribeBatteryRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeBatteryRequest::SubscribeBatteryRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
 }
 SubscribeBatteryRequest::SubscribeBatteryRequest(const SubscribeBatteryRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
@@ -7039,14 +6343,14 @@ void SubscribeBatteryRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeBatteryRequest& SubscribeBatteryRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeBatteryRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeBatteryRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeBatteryRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -7054,48 +6358,46 @@ void SubscribeBatteryRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeBatteryRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeBatteryRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeBatteryRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeBatteryRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -7108,28 +6410,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeBatteryRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
-}
-
-::google::protobuf::uint8* SubscribeBatteryRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeBatteryRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
   return target;
@@ -7139,29 +6428,28 @@ size_t SubscribeBatteryRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeBatteryRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeBatteryRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeBatteryRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeBatteryRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeBatteryRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
     MergeFrom(*source);
@@ -7172,12 +6460,12 @@ void SubscribeBatteryRequest::MergeFrom(const SubscribeBatteryRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeBatteryRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeBatteryRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeBatteryRequest)
   if (&from == this) return;
   Clear();
@@ -7195,18 +6483,13 @@ bool SubscribeBatteryRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeBatteryRequest::Swap(SubscribeBatteryRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeBatteryRequest::InternalSwap(SubscribeBatteryRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeBatteryRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeBatteryRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -7216,26 +6499,22 @@ void BatteryResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_BatteryResponse_default_instance_._instance.get_mutable()->battery_ = const_cast< ::mavsdk::rpc::telemetry::Battery*>(
       ::mavsdk::rpc::telemetry::Battery::internal_default_instance());
 }
-class BatteryResponse::HasBitSetters {
+class BatteryResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::Battery& battery(const BatteryResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::Battery&
-BatteryResponse::HasBitSetters::battery(const BatteryResponse* msg) {
+BatteryResponse::_Internal::battery(const BatteryResponse* msg) {
   return *msg->battery_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int BatteryResponse::kBatteryFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 BatteryResponse::BatteryResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.BatteryResponse)
 }
 BatteryResponse::BatteryResponse(const BatteryResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_battery()) {
@@ -7247,8 +6526,7 @@ BatteryResponse::BatteryResponse(const BatteryResponse& from)
 }
 
 void BatteryResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_BatteryResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_BatteryResponse_telemetry_2ftelemetry_2eproto.base);
   battery_ = nullptr;
 }
 
@@ -7265,14 +6543,14 @@ void BatteryResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const BatteryResponse& BatteryResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_BatteryResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_BatteryResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void BatteryResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.BatteryResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -7284,65 +6562,54 @@ void BatteryResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* BatteryResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<BatteryResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* BatteryResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.Battery battery = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::Battery::_InternalParse;
-        object = msg->mutable_battery();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_battery(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool BatteryResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.BatteryResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.Battery battery = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_battery()));
         } else {
           goto handle_unusual;
@@ -7355,7 +6622,7 @@ bool BatteryResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -7371,41 +6638,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void BatteryResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.BatteryResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.Battery battery = 1;
-  if (this->has_battery()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::battery(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.BatteryResponse)
-}
-
-::google::protobuf::uint8* BatteryResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* BatteryResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.BatteryResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Battery battery = 1;
   if (this->has_battery()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::battery(this), target);
+        1, _Internal::battery(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.BatteryResponse)
   return target;
@@ -7415,36 +6664,35 @@ size_t BatteryResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.BatteryResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Battery battery = 1;
   if (this->has_battery()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *battery_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void BatteryResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void BatteryResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.BatteryResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const BatteryResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<BatteryResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<BatteryResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.BatteryResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.BatteryResponse)
     MergeFrom(*source);
@@ -7455,7 +6703,7 @@ void BatteryResponse::MergeFrom(const BatteryResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.BatteryResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_battery()) {
@@ -7463,7 +6711,7 @@ void BatteryResponse::MergeFrom(const BatteryResponse& from) {
   }
 }
 
-void BatteryResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void BatteryResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.BatteryResponse)
   if (&from == this) return;
   Clear();
@@ -7481,19 +6729,14 @@ bool BatteryResponse::IsInitialized() const {
   return true;
 }
 
-void BatteryResponse::Swap(BatteryResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void BatteryResponse::InternalSwap(BatteryResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(battery_, other->battery_);
 }
 
-::google::protobuf::Metadata BatteryResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata BatteryResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -7501,20 +6744,17 @@ void BatteryResponse::InternalSwap(BatteryResponse* other) {
 
 void SubscribeFlightModeRequest::InitAsDefaultInstance() {
 }
-class SubscribeFlightModeRequest::HasBitSetters {
+class SubscribeFlightModeRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeFlightModeRequest::SubscribeFlightModeRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
 }
 SubscribeFlightModeRequest::SubscribeFlightModeRequest(const SubscribeFlightModeRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
@@ -7535,14 +6775,14 @@ void SubscribeFlightModeRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeFlightModeRequest& SubscribeFlightModeRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeFlightModeRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeFlightModeRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -7550,48 +6790,46 @@ void SubscribeFlightModeRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeFlightModeRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeFlightModeRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeFlightModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeFlightModeRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -7604,28 +6842,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeFlightModeRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
-}
-
-::google::protobuf::uint8* SubscribeFlightModeRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeFlightModeRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
   return target;
@@ -7635,29 +6860,28 @@ size_t SubscribeFlightModeRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeFlightModeRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeFlightModeRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeFlightModeRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeFlightModeRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeFlightModeRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
     MergeFrom(*source);
@@ -7668,12 +6892,12 @@ void SubscribeFlightModeRequest::MergeFrom(const SubscribeFlightModeRequest& fro
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeFlightModeRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeFlightModeRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeFlightModeRequest)
   if (&from == this) return;
   Clear();
@@ -7691,18 +6915,13 @@ bool SubscribeFlightModeRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeFlightModeRequest::Swap(SubscribeFlightModeRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeFlightModeRequest::InternalSwap(SubscribeFlightModeRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeFlightModeRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeFlightModeRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -7710,21 +6929,17 @@ void SubscribeFlightModeRequest::InternalSwap(SubscribeFlightModeRequest* other)
 
 void FlightModeResponse::InitAsDefaultInstance() {
 }
-class FlightModeResponse::HasBitSetters {
+class FlightModeResponse::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int FlightModeResponse::kFlightModeFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 FlightModeResponse::FlightModeResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.FlightModeResponse)
 }
 FlightModeResponse::FlightModeResponse(const FlightModeResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   flight_mode_ = from.flight_mode_;
@@ -7747,14 +6962,14 @@ void FlightModeResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const FlightModeResponse& FlightModeResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_FlightModeResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_FlightModeResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void FlightModeResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.FlightModeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -7763,59 +6978,57 @@ void FlightModeResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* FlightModeResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<FlightModeResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* FlightModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.FlightMode flight_mode = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        ::google::protobuf::uint64 val = ::google::protobuf::internal::ReadVarint(&ptr);
-        msg->set_flight_mode(static_cast<::mavsdk::rpc::telemetry::FlightMode>(val));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          set_flight_mode(static_cast<::mavsdk::rpc::telemetry::FlightMode>(val));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool FlightModeResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.FlightModeResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.FlightMode flight_mode = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
           int value = 0;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
           set_flight_mode(static_cast< ::mavsdk::rpc::telemetry::FlightMode >(value));
         } else {
@@ -7829,7 +7042,7 @@ bool FlightModeResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -7845,40 +7058,22 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void FlightModeResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.FlightModeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.FlightMode flight_mode = 1;
-  if (this->flight_mode() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      1, this->flight_mode(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.FlightModeResponse)
-}
-
-::google::protobuf::uint8* FlightModeResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* FlightModeResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.FlightModeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.FlightMode flight_mode = 1;
   if (this->flight_mode() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->flight_mode(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.FlightModeResponse)
   return target;
@@ -7888,35 +7083,34 @@ size_t FlightModeResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.FlightModeResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.FlightMode flight_mode = 1;
   if (this->flight_mode() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->flight_mode());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->flight_mode());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void FlightModeResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void FlightModeResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.FlightModeResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const FlightModeResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<FlightModeResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<FlightModeResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.FlightModeResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.FlightModeResponse)
     MergeFrom(*source);
@@ -7927,7 +7121,7 @@ void FlightModeResponse::MergeFrom(const FlightModeResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.FlightModeResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.flight_mode() != 0) {
@@ -7935,7 +7129,7 @@ void FlightModeResponse::MergeFrom(const FlightModeResponse& from) {
   }
 }
 
-void FlightModeResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void FlightModeResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.FlightModeResponse)
   if (&from == this) return;
   Clear();
@@ -7953,19 +7147,14 @@ bool FlightModeResponse::IsInitialized() const {
   return true;
 }
 
-void FlightModeResponse::Swap(FlightModeResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void FlightModeResponse::InternalSwap(FlightModeResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(flight_mode_, other->flight_mode_);
 }
 
-::google::protobuf::Metadata FlightModeResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata FlightModeResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -7973,20 +7162,17 @@ void FlightModeResponse::InternalSwap(FlightModeResponse* other) {
 
 void SubscribeHealthRequest::InitAsDefaultInstance() {
 }
-class SubscribeHealthRequest::HasBitSetters {
+class SubscribeHealthRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeHealthRequest::SubscribeHealthRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeHealthRequest)
 }
 SubscribeHealthRequest::SubscribeHealthRequest(const SubscribeHealthRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeHealthRequest)
@@ -8007,14 +7193,14 @@ void SubscribeHealthRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeHealthRequest& SubscribeHealthRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeHealthRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeHealthRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeHealthRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeHealthRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -8022,48 +7208,46 @@ void SubscribeHealthRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeHealthRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeHealthRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeHealthRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeHealthRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeHealthRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -8076,28 +7260,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeHealthRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeHealthRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeHealthRequest)
-}
-
-::google::protobuf::uint8* SubscribeHealthRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeHealthRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeHealthRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeHealthRequest)
   return target;
@@ -8107,29 +7278,28 @@ size_t SubscribeHealthRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeHealthRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeHealthRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeHealthRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeHealthRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeHealthRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeHealthRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeHealthRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeHealthRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeHealthRequest)
     MergeFrom(*source);
@@ -8140,12 +7310,12 @@ void SubscribeHealthRequest::MergeFrom(const SubscribeHealthRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeHealthRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeHealthRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeHealthRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeHealthRequest)
   if (&from == this) return;
   Clear();
@@ -8163,18 +7333,13 @@ bool SubscribeHealthRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeHealthRequest::Swap(SubscribeHealthRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeHealthRequest::InternalSwap(SubscribeHealthRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeHealthRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeHealthRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -8184,26 +7349,22 @@ void HealthResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_HealthResponse_default_instance_._instance.get_mutable()->health_ = const_cast< ::mavsdk::rpc::telemetry::Health*>(
       ::mavsdk::rpc::telemetry::Health::internal_default_instance());
 }
-class HealthResponse::HasBitSetters {
+class HealthResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::Health& health(const HealthResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::Health&
-HealthResponse::HasBitSetters::health(const HealthResponse* msg) {
+HealthResponse::_Internal::health(const HealthResponse* msg) {
   return *msg->health_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int HealthResponse::kHealthFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 HealthResponse::HealthResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.HealthResponse)
 }
 HealthResponse::HealthResponse(const HealthResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_health()) {
@@ -8215,8 +7376,7 @@ HealthResponse::HealthResponse(const HealthResponse& from)
 }
 
 void HealthResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_HealthResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_HealthResponse_telemetry_2ftelemetry_2eproto.base);
   health_ = nullptr;
 }
 
@@ -8233,14 +7393,14 @@ void HealthResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const HealthResponse& HealthResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_HealthResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_HealthResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void HealthResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.HealthResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -8252,65 +7412,54 @@ void HealthResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* HealthResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<HealthResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* HealthResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.Health health = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::Health::_InternalParse;
-        object = msg->mutable_health();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_health(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool HealthResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.HealthResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.Health health = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_health()));
         } else {
           goto handle_unusual;
@@ -8323,7 +7472,7 @@ bool HealthResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -8339,41 +7488,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void HealthResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.HealthResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.Health health = 1;
-  if (this->has_health()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::health(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.HealthResponse)
-}
-
-::google::protobuf::uint8* HealthResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* HealthResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.HealthResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Health health = 1;
   if (this->has_health()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::health(this), target);
+        1, _Internal::health(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.HealthResponse)
   return target;
@@ -8383,36 +7514,35 @@ size_t HealthResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.HealthResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.Health health = 1;
   if (this->has_health()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *health_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void HealthResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void HealthResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.HealthResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const HealthResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<HealthResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<HealthResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.HealthResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.HealthResponse)
     MergeFrom(*source);
@@ -8423,7 +7553,7 @@ void HealthResponse::MergeFrom(const HealthResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.HealthResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_health()) {
@@ -8431,7 +7561,7 @@ void HealthResponse::MergeFrom(const HealthResponse& from) {
   }
 }
 
-void HealthResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void HealthResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.HealthResponse)
   if (&from == this) return;
   Clear();
@@ -8449,19 +7579,14 @@ bool HealthResponse::IsInitialized() const {
   return true;
 }
 
-void HealthResponse::Swap(HealthResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void HealthResponse::InternalSwap(HealthResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(health_, other->health_);
 }
 
-::google::protobuf::Metadata HealthResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata HealthResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -8469,20 +7594,17 @@ void HealthResponse::InternalSwap(HealthResponse* other) {
 
 void SubscribeRcStatusRequest::InitAsDefaultInstance() {
 }
-class SubscribeRcStatusRequest::HasBitSetters {
+class SubscribeRcStatusRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeRcStatusRequest::SubscribeRcStatusRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
 }
 SubscribeRcStatusRequest::SubscribeRcStatusRequest(const SubscribeRcStatusRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
@@ -8503,14 +7625,14 @@ void SubscribeRcStatusRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeRcStatusRequest& SubscribeRcStatusRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeRcStatusRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeRcStatusRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -8518,48 +7640,46 @@ void SubscribeRcStatusRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeRcStatusRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeRcStatusRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeRcStatusRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeRcStatusRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -8572,28 +7692,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeRcStatusRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
-}
-
-::google::protobuf::uint8* SubscribeRcStatusRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeRcStatusRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
   return target;
@@ -8603,29 +7710,28 @@ size_t SubscribeRcStatusRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeRcStatusRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeRcStatusRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeRcStatusRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeRcStatusRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeRcStatusRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
     MergeFrom(*source);
@@ -8636,12 +7742,12 @@ void SubscribeRcStatusRequest::MergeFrom(const SubscribeRcStatusRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeRcStatusRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeRcStatusRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeRcStatusRequest)
   if (&from == this) return;
   Clear();
@@ -8659,18 +7765,13 @@ bool SubscribeRcStatusRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeRcStatusRequest::Swap(SubscribeRcStatusRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeRcStatusRequest::InternalSwap(SubscribeRcStatusRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeRcStatusRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeRcStatusRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -8680,26 +7781,22 @@ void RcStatusResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_RcStatusResponse_default_instance_._instance.get_mutable()->rc_status_ = const_cast< ::mavsdk::rpc::telemetry::RcStatus*>(
       ::mavsdk::rpc::telemetry::RcStatus::internal_default_instance());
 }
-class RcStatusResponse::HasBitSetters {
+class RcStatusResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::RcStatus& rc_status(const RcStatusResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::RcStatus&
-RcStatusResponse::HasBitSetters::rc_status(const RcStatusResponse* msg) {
+RcStatusResponse::_Internal::rc_status(const RcStatusResponse* msg) {
   return *msg->rc_status_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RcStatusResponse::kRcStatusFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 RcStatusResponse::RcStatusResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.RcStatusResponse)
 }
 RcStatusResponse::RcStatusResponse(const RcStatusResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_rc_status()) {
@@ -8711,8 +7808,7 @@ RcStatusResponse::RcStatusResponse(const RcStatusResponse& from)
 }
 
 void RcStatusResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto.base);
   rc_status_ = nullptr;
 }
 
@@ -8729,14 +7825,14 @@ void RcStatusResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const RcStatusResponse& RcStatusResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RcStatusResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void RcStatusResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.RcStatusResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -8748,65 +7844,54 @@ void RcStatusResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* RcStatusResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<RcStatusResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* RcStatusResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.RcStatus rc_status = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::RcStatus::_InternalParse;
-        object = msg->mutable_rc_status();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_rc_status(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool RcStatusResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.RcStatusResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.RcStatus rc_status = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_rc_status()));
         } else {
           goto handle_unusual;
@@ -8819,7 +7904,7 @@ bool RcStatusResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -8835,41 +7920,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void RcStatusResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.RcStatusResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.RcStatus rc_status = 1;
-  if (this->has_rc_status()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::rc_status(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.RcStatusResponse)
-}
-
-::google::protobuf::uint8* RcStatusResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* RcStatusResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.RcStatusResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.RcStatus rc_status = 1;
   if (this->has_rc_status()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::rc_status(this), target);
+        1, _Internal::rc_status(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.RcStatusResponse)
   return target;
@@ -8879,36 +7946,35 @@ size_t RcStatusResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.RcStatusResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.RcStatus rc_status = 1;
   if (this->has_rc_status()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *rc_status_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void RcStatusResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void RcStatusResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.RcStatusResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const RcStatusResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<RcStatusResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<RcStatusResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.RcStatusResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.RcStatusResponse)
     MergeFrom(*source);
@@ -8919,7 +7985,7 @@ void RcStatusResponse::MergeFrom(const RcStatusResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.RcStatusResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_rc_status()) {
@@ -8927,7 +7993,7 @@ void RcStatusResponse::MergeFrom(const RcStatusResponse& from) {
   }
 }
 
-void RcStatusResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void RcStatusResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.RcStatusResponse)
   if (&from == this) return;
   Clear();
@@ -8945,19 +8011,14 @@ bool RcStatusResponse::IsInitialized() const {
   return true;
 }
 
-void RcStatusResponse::Swap(RcStatusResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void RcStatusResponse::InternalSwap(RcStatusResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(rc_status_, other->rc_status_);
 }
 
-::google::protobuf::Metadata RcStatusResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata RcStatusResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -8965,20 +8026,17 @@ void RcStatusResponse::InternalSwap(RcStatusResponse* other) {
 
 void SubscribeStatusTextRequest::InitAsDefaultInstance() {
 }
-class SubscribeStatusTextRequest::HasBitSetters {
+class SubscribeStatusTextRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeStatusTextRequest::SubscribeStatusTextRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
 }
 SubscribeStatusTextRequest::SubscribeStatusTextRequest(const SubscribeStatusTextRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
@@ -8999,14 +8057,14 @@ void SubscribeStatusTextRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeStatusTextRequest& SubscribeStatusTextRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeStatusTextRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeStatusTextRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -9014,48 +8072,46 @@ void SubscribeStatusTextRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeStatusTextRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeStatusTextRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeStatusTextRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeStatusTextRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -9068,28 +8124,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeStatusTextRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
-}
-
-::google::protobuf::uint8* SubscribeStatusTextRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeStatusTextRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
   return target;
@@ -9099,29 +8142,28 @@ size_t SubscribeStatusTextRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeStatusTextRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeStatusTextRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeStatusTextRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeStatusTextRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeStatusTextRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
     MergeFrom(*source);
@@ -9132,12 +8174,12 @@ void SubscribeStatusTextRequest::MergeFrom(const SubscribeStatusTextRequest& fro
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeStatusTextRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeStatusTextRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeStatusTextRequest)
   if (&from == this) return;
   Clear();
@@ -9155,18 +8197,13 @@ bool SubscribeStatusTextRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeStatusTextRequest::Swap(SubscribeStatusTextRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeStatusTextRequest::InternalSwap(SubscribeStatusTextRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeStatusTextRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeStatusTextRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -9176,26 +8213,22 @@ void StatusTextResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_StatusTextResponse_default_instance_._instance.get_mutable()->status_text_ = const_cast< ::mavsdk::rpc::telemetry::StatusText*>(
       ::mavsdk::rpc::telemetry::StatusText::internal_default_instance());
 }
-class StatusTextResponse::HasBitSetters {
+class StatusTextResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::StatusText& status_text(const StatusTextResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::StatusText&
-StatusTextResponse::HasBitSetters::status_text(const StatusTextResponse* msg) {
+StatusTextResponse::_Internal::status_text(const StatusTextResponse* msg) {
   return *msg->status_text_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int StatusTextResponse::kStatusTextFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StatusTextResponse::StatusTextResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.StatusTextResponse)
 }
 StatusTextResponse::StatusTextResponse(const StatusTextResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_status_text()) {
@@ -9207,8 +8240,7 @@ StatusTextResponse::StatusTextResponse(const StatusTextResponse& from)
 }
 
 void StatusTextResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto.base);
   status_text_ = nullptr;
 }
 
@@ -9225,14 +8257,14 @@ void StatusTextResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StatusTextResponse& StatusTextResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StatusTextResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StatusTextResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.StatusTextResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -9244,65 +8276,54 @@ void StatusTextResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StatusTextResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StatusTextResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StatusTextResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.StatusText status_text = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::StatusText::_InternalParse;
-        object = msg->mutable_status_text();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_status_text(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StatusTextResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.StatusTextResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.StatusText status_text = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_status_text()));
         } else {
           goto handle_unusual;
@@ -9315,7 +8336,7 @@ bool StatusTextResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -9331,41 +8352,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StatusTextResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.StatusTextResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.StatusText status_text = 1;
-  if (this->has_status_text()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::status_text(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.StatusTextResponse)
-}
-
-::google::protobuf::uint8* StatusTextResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StatusTextResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.StatusTextResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.StatusText status_text = 1;
   if (this->has_status_text()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::status_text(this), target);
+        1, _Internal::status_text(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.StatusTextResponse)
   return target;
@@ -9375,36 +8378,35 @@ size_t StatusTextResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.StatusTextResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.StatusText status_text = 1;
   if (this->has_status_text()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *status_text_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StatusTextResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void StatusTextResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.StatusTextResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const StatusTextResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<StatusTextResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StatusTextResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.StatusTextResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.StatusTextResponse)
     MergeFrom(*source);
@@ -9415,7 +8417,7 @@ void StatusTextResponse::MergeFrom(const StatusTextResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.StatusTextResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_status_text()) {
@@ -9423,7 +8425,7 @@ void StatusTextResponse::MergeFrom(const StatusTextResponse& from) {
   }
 }
 
-void StatusTextResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void StatusTextResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.StatusTextResponse)
   if (&from == this) return;
   Clear();
@@ -9441,19 +8443,14 @@ bool StatusTextResponse::IsInitialized() const {
   return true;
 }
 
-void StatusTextResponse::Swap(StatusTextResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StatusTextResponse::InternalSwap(StatusTextResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(status_text_, other->status_text_);
 }
 
-::google::protobuf::Metadata StatusTextResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StatusTextResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -9461,20 +8458,17 @@ void StatusTextResponse::InternalSwap(StatusTextResponse* other) {
 
 void SubscribeActuatorControlTargetRequest::InitAsDefaultInstance() {
 }
-class SubscribeActuatorControlTargetRequest::HasBitSetters {
+class SubscribeActuatorControlTargetRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeActuatorControlTargetRequest::SubscribeActuatorControlTargetRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
 }
 SubscribeActuatorControlTargetRequest::SubscribeActuatorControlTargetRequest(const SubscribeActuatorControlTargetRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
@@ -9495,14 +8489,14 @@ void SubscribeActuatorControlTargetRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeActuatorControlTargetRequest& SubscribeActuatorControlTargetRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeActuatorControlTargetRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeActuatorControlTargetRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -9510,48 +8504,46 @@ void SubscribeActuatorControlTargetRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeActuatorControlTargetRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeActuatorControlTargetRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeActuatorControlTargetRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeActuatorControlTargetRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -9564,28 +8556,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeActuatorControlTargetRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
-}
-
-::google::protobuf::uint8* SubscribeActuatorControlTargetRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeActuatorControlTargetRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
   return target;
@@ -9595,29 +8574,28 @@ size_t SubscribeActuatorControlTargetRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeActuatorControlTargetRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeActuatorControlTargetRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeActuatorControlTargetRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeActuatorControlTargetRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeActuatorControlTargetRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
     MergeFrom(*source);
@@ -9628,12 +8606,12 @@ void SubscribeActuatorControlTargetRequest::MergeFrom(const SubscribeActuatorCon
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeActuatorControlTargetRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeActuatorControlTargetRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeActuatorControlTargetRequest)
   if (&from == this) return;
   Clear();
@@ -9651,18 +8629,13 @@ bool SubscribeActuatorControlTargetRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeActuatorControlTargetRequest::Swap(SubscribeActuatorControlTargetRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeActuatorControlTargetRequest::InternalSwap(SubscribeActuatorControlTargetRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeActuatorControlTargetRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeActuatorControlTargetRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -9672,26 +8645,22 @@ void ActuatorControlTargetResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_ActuatorControlTargetResponse_default_instance_._instance.get_mutable()->actuator_control_target_ = const_cast< ::mavsdk::rpc::telemetry::ActuatorControlTarget*>(
       ::mavsdk::rpc::telemetry::ActuatorControlTarget::internal_default_instance());
 }
-class ActuatorControlTargetResponse::HasBitSetters {
+class ActuatorControlTargetResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::ActuatorControlTarget& actuator_control_target(const ActuatorControlTargetResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::ActuatorControlTarget&
-ActuatorControlTargetResponse::HasBitSetters::actuator_control_target(const ActuatorControlTargetResponse* msg) {
+ActuatorControlTargetResponse::_Internal::actuator_control_target(const ActuatorControlTargetResponse* msg) {
   return *msg->actuator_control_target_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ActuatorControlTargetResponse::kActuatorControlTargetFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ActuatorControlTargetResponse::ActuatorControlTargetResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
 }
 ActuatorControlTargetResponse::ActuatorControlTargetResponse(const ActuatorControlTargetResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_actuator_control_target()) {
@@ -9703,8 +8672,7 @@ ActuatorControlTargetResponse::ActuatorControlTargetResponse(const ActuatorContr
 }
 
 void ActuatorControlTargetResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto.base);
   actuator_control_target_ = nullptr;
 }
 
@@ -9721,14 +8689,14 @@ void ActuatorControlTargetResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ActuatorControlTargetResponse& ActuatorControlTargetResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ActuatorControlTargetResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ActuatorControlTargetResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -9740,65 +8708,54 @@ void ActuatorControlTargetResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ActuatorControlTargetResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ActuatorControlTargetResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ActuatorControlTargetResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.ActuatorControlTarget actuator_control_target = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::ActuatorControlTarget::_InternalParse;
-        object = msg->mutable_actuator_control_target();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_actuator_control_target(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ActuatorControlTargetResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.ActuatorControlTarget actuator_control_target = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_actuator_control_target()));
         } else {
           goto handle_unusual;
@@ -9811,7 +8768,7 @@ bool ActuatorControlTargetResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -9827,41 +8784,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ActuatorControlTargetResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.ActuatorControlTarget actuator_control_target = 1;
-  if (this->has_actuator_control_target()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::actuator_control_target(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
-}
-
-::google::protobuf::uint8* ActuatorControlTargetResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ActuatorControlTargetResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.ActuatorControlTarget actuator_control_target = 1;
   if (this->has_actuator_control_target()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::actuator_control_target(this), target);
+        1, _Internal::actuator_control_target(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
   return target;
@@ -9871,36 +8810,35 @@ size_t ActuatorControlTargetResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.ActuatorControlTarget actuator_control_target = 1;
   if (this->has_actuator_control_target()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *actuator_control_target_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ActuatorControlTargetResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void ActuatorControlTargetResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const ActuatorControlTargetResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<ActuatorControlTargetResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ActuatorControlTargetResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
     MergeFrom(*source);
@@ -9911,7 +8849,7 @@ void ActuatorControlTargetResponse::MergeFrom(const ActuatorControlTargetRespons
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_actuator_control_target()) {
@@ -9919,7 +8857,7 @@ void ActuatorControlTargetResponse::MergeFrom(const ActuatorControlTargetRespons
   }
 }
 
-void ActuatorControlTargetResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void ActuatorControlTargetResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.ActuatorControlTargetResponse)
   if (&from == this) return;
   Clear();
@@ -9937,19 +8875,14 @@ bool ActuatorControlTargetResponse::IsInitialized() const {
   return true;
 }
 
-void ActuatorControlTargetResponse::Swap(ActuatorControlTargetResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ActuatorControlTargetResponse::InternalSwap(ActuatorControlTargetResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(actuator_control_target_, other->actuator_control_target_);
 }
 
-::google::protobuf::Metadata ActuatorControlTargetResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ActuatorControlTargetResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -9957,20 +8890,17 @@ void ActuatorControlTargetResponse::InternalSwap(ActuatorControlTargetResponse* 
 
 void SubscribeActuatorOutputStatusRequest::InitAsDefaultInstance() {
 }
-class SubscribeActuatorOutputStatusRequest::HasBitSetters {
+class SubscribeActuatorOutputStatusRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeActuatorOutputStatusRequest::SubscribeActuatorOutputStatusRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
 }
 SubscribeActuatorOutputStatusRequest::SubscribeActuatorOutputStatusRequest(const SubscribeActuatorOutputStatusRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
@@ -9991,14 +8921,14 @@ void SubscribeActuatorOutputStatusRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeActuatorOutputStatusRequest& SubscribeActuatorOutputStatusRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeActuatorOutputStatusRequest_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeActuatorOutputStatusRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -10006,48 +8936,46 @@ void SubscribeActuatorOutputStatusRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeActuatorOutputStatusRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeActuatorOutputStatusRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeActuatorOutputStatusRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeActuatorOutputStatusRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -10060,28 +8988,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeActuatorOutputStatusRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
-}
-
-::google::protobuf::uint8* SubscribeActuatorOutputStatusRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeActuatorOutputStatusRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
   return target;
@@ -10091,29 +9006,28 @@ size_t SubscribeActuatorOutputStatusRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeActuatorOutputStatusRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeActuatorOutputStatusRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeActuatorOutputStatusRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeActuatorOutputStatusRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeActuatorOutputStatusRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
     MergeFrom(*source);
@@ -10124,12 +9038,12 @@ void SubscribeActuatorOutputStatusRequest::MergeFrom(const SubscribeActuatorOutp
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeActuatorOutputStatusRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeActuatorOutputStatusRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SubscribeActuatorOutputStatusRequest)
   if (&from == this) return;
   Clear();
@@ -10147,18 +9061,13 @@ bool SubscribeActuatorOutputStatusRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeActuatorOutputStatusRequest::Swap(SubscribeActuatorOutputStatusRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeActuatorOutputStatusRequest::InternalSwap(SubscribeActuatorOutputStatusRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeActuatorOutputStatusRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeActuatorOutputStatusRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -10168,26 +9077,22 @@ void ActuatorOutputStatusResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::telemetry::_ActuatorOutputStatusResponse_default_instance_._instance.get_mutable()->actuator_output_status_ = const_cast< ::mavsdk::rpc::telemetry::ActuatorOutputStatus*>(
       ::mavsdk::rpc::telemetry::ActuatorOutputStatus::internal_default_instance());
 }
-class ActuatorOutputStatusResponse::HasBitSetters {
+class ActuatorOutputStatusResponse::_Internal {
  public:
   static const ::mavsdk::rpc::telemetry::ActuatorOutputStatus& actuator_output_status(const ActuatorOutputStatusResponse* msg);
 };
 
 const ::mavsdk::rpc::telemetry::ActuatorOutputStatus&
-ActuatorOutputStatusResponse::HasBitSetters::actuator_output_status(const ActuatorOutputStatusResponse* msg) {
+ActuatorOutputStatusResponse::_Internal::actuator_output_status(const ActuatorOutputStatusResponse* msg) {
   return *msg->actuator_output_status_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ActuatorOutputStatusResponse::kActuatorOutputStatusFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ActuatorOutputStatusResponse::ActuatorOutputStatusResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
 }
 ActuatorOutputStatusResponse::ActuatorOutputStatusResponse(const ActuatorOutputStatusResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_actuator_output_status()) {
@@ -10199,8 +9104,7 @@ ActuatorOutputStatusResponse::ActuatorOutputStatusResponse(const ActuatorOutputS
 }
 
 void ActuatorOutputStatusResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto.base);
   actuator_output_status_ = nullptr;
 }
 
@@ -10217,14 +9121,14 @@ void ActuatorOutputStatusResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ActuatorOutputStatusResponse& ActuatorOutputStatusResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ActuatorOutputStatusResponse_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ActuatorOutputStatusResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -10236,65 +9140,54 @@ void ActuatorOutputStatusResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ActuatorOutputStatusResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ActuatorOutputStatusResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ActuatorOutputStatusResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.ActuatorOutputStatus actuator_output_status = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::telemetry::ActuatorOutputStatus::_InternalParse;
-        object = msg->mutable_actuator_output_status();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_actuator_output_status(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ActuatorOutputStatusResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.ActuatorOutputStatus actuator_output_status = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_actuator_output_status()));
         } else {
           goto handle_unusual;
@@ -10307,7 +9200,7 @@ bool ActuatorOutputStatusResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -10323,41 +9216,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ActuatorOutputStatusResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.ActuatorOutputStatus actuator_output_status = 1;
-  if (this->has_actuator_output_status()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::actuator_output_status(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
-}
-
-::google::protobuf::uint8* ActuatorOutputStatusResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ActuatorOutputStatusResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.ActuatorOutputStatus actuator_output_status = 1;
   if (this->has_actuator_output_status()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::actuator_output_status(this), target);
+        1, _Internal::actuator_output_status(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
   return target;
@@ -10367,36 +9242,35 @@ size_t ActuatorOutputStatusResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.ActuatorOutputStatus actuator_output_status = 1;
   if (this->has_actuator_output_status()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *actuator_output_status_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ActuatorOutputStatusResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void ActuatorOutputStatusResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const ActuatorOutputStatusResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<ActuatorOutputStatusResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ActuatorOutputStatusResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
     MergeFrom(*source);
@@ -10407,7 +9281,7 @@ void ActuatorOutputStatusResponse::MergeFrom(const ActuatorOutputStatusResponse&
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_actuator_output_status()) {
@@ -10415,7 +9289,7 @@ void ActuatorOutputStatusResponse::MergeFrom(const ActuatorOutputStatusResponse&
   }
 }
 
-void ActuatorOutputStatusResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void ActuatorOutputStatusResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.ActuatorOutputStatusResponse)
   if (&from == this) return;
   Clear();
@@ -10433,19 +9307,14 @@ bool ActuatorOutputStatusResponse::IsInitialized() const {
   return true;
 }
 
-void ActuatorOutputStatusResponse::Swap(ActuatorOutputStatusResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ActuatorOutputStatusResponse::InternalSwap(ActuatorOutputStatusResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(actuator_output_status_, other->actuator_output_status_);
 }
 
-::google::protobuf::Metadata ActuatorOutputStatusResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ActuatorOutputStatusResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -10453,24 +9322,17 @@ void ActuatorOutputStatusResponse::InternalSwap(ActuatorOutputStatusResponse* ot
 
 void Position::InitAsDefaultInstance() {
 }
-class Position::HasBitSetters {
+class Position::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Position::kLatitudeDegFieldNumber;
-const int Position::kLongitudeDegFieldNumber;
-const int Position::kAbsoluteAltitudeMFieldNumber;
-const int Position::kRelativeAltitudeMFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 Position::Position()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.Position)
 }
 Position::Position(const Position& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&latitude_deg_, &from.latitude_deg_,
@@ -10497,14 +9359,14 @@ void Position::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const Position& Position::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_Position_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Position_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void Position::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.Position)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -10515,79 +9377,77 @@ void Position::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* Position::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<Position*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* Position::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // double latitude_deg = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 9) goto handle_unusual;
-        msg->set_latitude_deg(::google::protobuf::io::UnalignedLoad<double>(ptr));
-        ptr += sizeof(double);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
+          latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
       // double longitude_deg = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 17) goto handle_unusual;
-        msg->set_longitude_deg(::google::protobuf::io::UnalignedLoad<double>(ptr));
-        ptr += sizeof(double);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
+          longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
       // float absolute_altitude_m = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_absolute_altitude_m(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          absolute_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float relative_altitude_m = 4;
-      case 4: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 37) goto handle_unusual;
-        msg->set_relative_altitude_m(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+          relative_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool Position::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.Position)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // double latitude_deg = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (9 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (9 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   double, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &latitude_deg_)));
         } else {
           goto handle_unusual;
@@ -10597,10 +9457,10 @@ bool Position::MergePartialFromCodedStream(
 
       // double longitude_deg = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (17 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (17 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   double, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &longitude_deg_)));
         } else {
           goto handle_unusual;
@@ -10610,10 +9470,10 @@ bool Position::MergePartialFromCodedStream(
 
       // float absolute_altitude_m = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &absolute_altitude_m_)));
         } else {
           goto handle_unusual;
@@ -10623,10 +9483,10 @@ bool Position::MergePartialFromCodedStream(
 
       // float relative_altitude_m = 4;
       case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (37 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (37 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &relative_altitude_m_)));
         } else {
           goto handle_unusual;
@@ -10639,7 +9499,7 @@ bool Position::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -10655,68 +9515,39 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void Position::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.Position)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // double latitude_deg = 1;
-  if (this->latitude_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(1, this->latitude_deg(), output);
-  }
-
-  // double longitude_deg = 2;
-  if (this->longitude_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->longitude_deg(), output);
-  }
-
-  // float absolute_altitude_m = 3;
-  if (this->absolute_altitude_m() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->absolute_altitude_m(), output);
-  }
-
-  // float relative_altitude_m = 4;
-  if (this->relative_altitude_m() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->relative_altitude_m(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.Position)
-}
-
-::google::protobuf::uint8* Position::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* Position::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.Position)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // double latitude_deg = 1;
-  if (this->latitude_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(1, this->latitude_deg(), target);
+  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->latitude_deg(), target);
   }
 
   // double longitude_deg = 2;
-  if (this->longitude_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->longitude_deg(), target);
+  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->longitude_deg(), target);
   }
 
   // float absolute_altitude_m = 3;
-  if (this->absolute_altitude_m() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->absolute_altitude_m(), target);
+  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->absolute_altitude_m(), target);
   }
 
   // float relative_altitude_m = 4;
-  if (this->relative_altitude_m() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->relative_altitude_m(), target);
+  if (!(this->relative_altitude_m() <= 0 && this->relative_altitude_m() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->relative_altitude_m(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.Position)
   return target;
@@ -10726,49 +9557,48 @@ size_t Position::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.Position)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // double latitude_deg = 1;
-  if (this->latitude_deg() != 0) {
+  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
     total_size += 1 + 8;
   }
 
   // double longitude_deg = 2;
-  if (this->longitude_deg() != 0) {
+  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
     total_size += 1 + 8;
   }
 
   // float absolute_altitude_m = 3;
-  if (this->absolute_altitude_m() != 0) {
+  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float relative_altitude_m = 4;
-  if (this->relative_altitude_m() != 0) {
+  if (!(this->relative_altitude_m() <= 0 && this->relative_altitude_m() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Position::MergeFrom(const ::google::protobuf::Message& from) {
+void Position::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.Position)
   GOOGLE_DCHECK_NE(&from, this);
   const Position* source =
-      ::google::protobuf::DynamicCastToGenerated<Position>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Position>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.Position)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.Position)
     MergeFrom(*source);
@@ -10779,24 +9609,24 @@ void Position::MergeFrom(const Position& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.Position)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.latitude_deg() != 0) {
+  if (!(from.latitude_deg() <= 0 && from.latitude_deg() >= 0)) {
     set_latitude_deg(from.latitude_deg());
   }
-  if (from.longitude_deg() != 0) {
+  if (!(from.longitude_deg() <= 0 && from.longitude_deg() >= 0)) {
     set_longitude_deg(from.longitude_deg());
   }
-  if (from.absolute_altitude_m() != 0) {
+  if (!(from.absolute_altitude_m() <= 0 && from.absolute_altitude_m() >= 0)) {
     set_absolute_altitude_m(from.absolute_altitude_m());
   }
-  if (from.relative_altitude_m() != 0) {
+  if (!(from.relative_altitude_m() <= 0 && from.relative_altitude_m() >= 0)) {
     set_relative_altitude_m(from.relative_altitude_m());
   }
 }
 
-void Position::CopyFrom(const ::google::protobuf::Message& from) {
+void Position::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.Position)
   if (&from == this) return;
   Clear();
@@ -10814,10 +9644,6 @@ bool Position::IsInitialized() const {
   return true;
 }
 
-void Position::Swap(Position* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void Position::InternalSwap(Position* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -10827,9 +9653,8 @@ void Position::InternalSwap(Position* other) {
   swap(relative_altitude_m_, other->relative_altitude_m_);
 }
 
-::google::protobuf::Metadata Position::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata Position::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -10837,24 +9662,17 @@ void Position::InternalSwap(Position* other) {
 
 void Quaternion::InitAsDefaultInstance() {
 }
-class Quaternion::HasBitSetters {
+class Quaternion::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Quaternion::kWFieldNumber;
-const int Quaternion::kXFieldNumber;
-const int Quaternion::kYFieldNumber;
-const int Quaternion::kZFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 Quaternion::Quaternion()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.Quaternion)
 }
 Quaternion::Quaternion(const Quaternion& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&w_, &from.w_,
@@ -10881,14 +9699,14 @@ void Quaternion::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const Quaternion& Quaternion::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_Quaternion_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Quaternion_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void Quaternion::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.Quaternion)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -10899,79 +9717,77 @@ void Quaternion::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* Quaternion::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<Quaternion*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* Quaternion::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // float w = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 13) goto handle_unusual;
-        msg->set_w(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          w_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float x = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 21) goto handle_unusual;
-        msg->set_x(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
+          x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float y = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_y(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float z = 4;
-      case 4: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 37) goto handle_unusual;
-        msg->set_z(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+          z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool Quaternion::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.Quaternion)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // float w = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (13 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &w_)));
         } else {
           goto handle_unusual;
@@ -10981,10 +9797,10 @@ bool Quaternion::MergePartialFromCodedStream(
 
       // float x = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (21 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &x_)));
         } else {
           goto handle_unusual;
@@ -10994,10 +9810,10 @@ bool Quaternion::MergePartialFromCodedStream(
 
       // float y = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &y_)));
         } else {
           goto handle_unusual;
@@ -11007,10 +9823,10 @@ bool Quaternion::MergePartialFromCodedStream(
 
       // float z = 4;
       case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (37 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (37 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &z_)));
         } else {
           goto handle_unusual;
@@ -11023,7 +9839,7 @@ bool Quaternion::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -11039,68 +9855,39 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void Quaternion::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.Quaternion)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // float w = 1;
-  if (this->w() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->w(), output);
-  }
-
-  // float x = 2;
-  if (this->x() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->x(), output);
-  }
-
-  // float y = 3;
-  if (this->y() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->y(), output);
-  }
-
-  // float z = 4;
-  if (this->z() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->z(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.Quaternion)
-}
-
-::google::protobuf::uint8* Quaternion::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* Quaternion::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.Quaternion)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float w = 1;
-  if (this->w() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->w(), target);
+  if (!(this->w() <= 0 && this->w() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->w(), target);
   }
 
   // float x = 2;
-  if (this->x() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->x(), target);
+  if (!(this->x() <= 0 && this->x() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->x(), target);
   }
 
   // float y = 3;
-  if (this->y() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->y(), target);
+  if (!(this->y() <= 0 && this->y() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->y(), target);
   }
 
   // float z = 4;
-  if (this->z() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->z(), target);
+  if (!(this->z() <= 0 && this->z() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->z(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.Quaternion)
   return target;
@@ -11110,49 +9897,48 @@ size_t Quaternion::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.Quaternion)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float w = 1;
-  if (this->w() != 0) {
+  if (!(this->w() <= 0 && this->w() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float x = 2;
-  if (this->x() != 0) {
+  if (!(this->x() <= 0 && this->x() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float y = 3;
-  if (this->y() != 0) {
+  if (!(this->y() <= 0 && this->y() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float z = 4;
-  if (this->z() != 0) {
+  if (!(this->z() <= 0 && this->z() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Quaternion::MergeFrom(const ::google::protobuf::Message& from) {
+void Quaternion::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.Quaternion)
   GOOGLE_DCHECK_NE(&from, this);
   const Quaternion* source =
-      ::google::protobuf::DynamicCastToGenerated<Quaternion>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Quaternion>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.Quaternion)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.Quaternion)
     MergeFrom(*source);
@@ -11163,24 +9949,24 @@ void Quaternion::MergeFrom(const Quaternion& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.Quaternion)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.w() != 0) {
+  if (!(from.w() <= 0 && from.w() >= 0)) {
     set_w(from.w());
   }
-  if (from.x() != 0) {
+  if (!(from.x() <= 0 && from.x() >= 0)) {
     set_x(from.x());
   }
-  if (from.y() != 0) {
+  if (!(from.y() <= 0 && from.y() >= 0)) {
     set_y(from.y());
   }
-  if (from.z() != 0) {
+  if (!(from.z() <= 0 && from.z() >= 0)) {
     set_z(from.z());
   }
 }
 
-void Quaternion::CopyFrom(const ::google::protobuf::Message& from) {
+void Quaternion::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.Quaternion)
   if (&from == this) return;
   Clear();
@@ -11198,10 +9984,6 @@ bool Quaternion::IsInitialized() const {
   return true;
 }
 
-void Quaternion::Swap(Quaternion* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void Quaternion::InternalSwap(Quaternion* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -11211,9 +9993,8 @@ void Quaternion::InternalSwap(Quaternion* other) {
   swap(z_, other->z_);
 }
 
-::google::protobuf::Metadata Quaternion::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata Quaternion::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -11221,23 +10002,17 @@ void Quaternion::InternalSwap(Quaternion* other) {
 
 void EulerAngle::InitAsDefaultInstance() {
 }
-class EulerAngle::HasBitSetters {
+class EulerAngle::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int EulerAngle::kRollDegFieldNumber;
-const int EulerAngle::kPitchDegFieldNumber;
-const int EulerAngle::kYawDegFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 EulerAngle::EulerAngle()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.EulerAngle)
 }
 EulerAngle::EulerAngle(const EulerAngle& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&roll_deg_, &from.roll_deg_,
@@ -11264,14 +10039,14 @@ void EulerAngle::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const EulerAngle& EulerAngle::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_EulerAngle_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_EulerAngle_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void EulerAngle::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.EulerAngle)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -11282,72 +10057,70 @@ void EulerAngle::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* EulerAngle::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<EulerAngle*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* EulerAngle::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // float roll_deg = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 13) goto handle_unusual;
-        msg->set_roll_deg(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          roll_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float pitch_deg = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 21) goto handle_unusual;
-        msg->set_pitch_deg(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
+          pitch_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float yaw_deg = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_yaw_deg(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          yaw_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool EulerAngle::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.EulerAngle)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // float roll_deg = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (13 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &roll_deg_)));
         } else {
           goto handle_unusual;
@@ -11357,10 +10130,10 @@ bool EulerAngle::MergePartialFromCodedStream(
 
       // float pitch_deg = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (21 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &pitch_deg_)));
         } else {
           goto handle_unusual;
@@ -11370,10 +10143,10 @@ bool EulerAngle::MergePartialFromCodedStream(
 
       // float yaw_deg = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &yaw_deg_)));
         } else {
           goto handle_unusual;
@@ -11386,7 +10159,7 @@ bool EulerAngle::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -11402,58 +10175,33 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void EulerAngle::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.EulerAngle)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // float roll_deg = 1;
-  if (this->roll_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->roll_deg(), output);
-  }
-
-  // float pitch_deg = 2;
-  if (this->pitch_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->pitch_deg(), output);
-  }
-
-  // float yaw_deg = 3;
-  if (this->yaw_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->yaw_deg(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.EulerAngle)
-}
-
-::google::protobuf::uint8* EulerAngle::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* EulerAngle::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.EulerAngle)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float roll_deg = 1;
-  if (this->roll_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->roll_deg(), target);
+  if (!(this->roll_deg() <= 0 && this->roll_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->roll_deg(), target);
   }
 
   // float pitch_deg = 2;
-  if (this->pitch_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->pitch_deg(), target);
+  if (!(this->pitch_deg() <= 0 && this->pitch_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->pitch_deg(), target);
   }
 
   // float yaw_deg = 3;
-  if (this->yaw_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->yaw_deg(), target);
+  if (!(this->yaw_deg() <= 0 && this->yaw_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->yaw_deg(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.EulerAngle)
   return target;
@@ -11463,44 +10211,43 @@ size_t EulerAngle::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.EulerAngle)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float roll_deg = 1;
-  if (this->roll_deg() != 0) {
+  if (!(this->roll_deg() <= 0 && this->roll_deg() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float pitch_deg = 2;
-  if (this->pitch_deg() != 0) {
+  if (!(this->pitch_deg() <= 0 && this->pitch_deg() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float yaw_deg = 3;
-  if (this->yaw_deg() != 0) {
+  if (!(this->yaw_deg() <= 0 && this->yaw_deg() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void EulerAngle::MergeFrom(const ::google::protobuf::Message& from) {
+void EulerAngle::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.EulerAngle)
   GOOGLE_DCHECK_NE(&from, this);
   const EulerAngle* source =
-      ::google::protobuf::DynamicCastToGenerated<EulerAngle>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<EulerAngle>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.EulerAngle)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.EulerAngle)
     MergeFrom(*source);
@@ -11511,21 +10258,21 @@ void EulerAngle::MergeFrom(const EulerAngle& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.EulerAngle)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.roll_deg() != 0) {
+  if (!(from.roll_deg() <= 0 && from.roll_deg() >= 0)) {
     set_roll_deg(from.roll_deg());
   }
-  if (from.pitch_deg() != 0) {
+  if (!(from.pitch_deg() <= 0 && from.pitch_deg() >= 0)) {
     set_pitch_deg(from.pitch_deg());
   }
-  if (from.yaw_deg() != 0) {
+  if (!(from.yaw_deg() <= 0 && from.yaw_deg() >= 0)) {
     set_yaw_deg(from.yaw_deg());
   }
 }
 
-void EulerAngle::CopyFrom(const ::google::protobuf::Message& from) {
+void EulerAngle::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.EulerAngle)
   if (&from == this) return;
   Clear();
@@ -11543,10 +10290,6 @@ bool EulerAngle::IsInitialized() const {
   return true;
 }
 
-void EulerAngle::Swap(EulerAngle* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void EulerAngle::InternalSwap(EulerAngle* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -11555,9 +10298,8 @@ void EulerAngle::InternalSwap(EulerAngle* other) {
   swap(yaw_deg_, other->yaw_deg_);
 }
 
-::google::protobuf::Metadata EulerAngle::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata EulerAngle::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -11565,23 +10307,17 @@ void EulerAngle::InternalSwap(EulerAngle* other) {
 
 void AngularVelocityBody::InitAsDefaultInstance() {
 }
-class AngularVelocityBody::HasBitSetters {
+class AngularVelocityBody::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int AngularVelocityBody::kRollRadSFieldNumber;
-const int AngularVelocityBody::kPitchRadSFieldNumber;
-const int AngularVelocityBody::kYawRadSFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 AngularVelocityBody::AngularVelocityBody()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.AngularVelocityBody)
 }
 AngularVelocityBody::AngularVelocityBody(const AngularVelocityBody& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&roll_rad_s_, &from.roll_rad_s_,
@@ -11608,14 +10344,14 @@ void AngularVelocityBody::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const AngularVelocityBody& AngularVelocityBody::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_AngularVelocityBody_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void AngularVelocityBody::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.AngularVelocityBody)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -11626,72 +10362,70 @@ void AngularVelocityBody::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* AngularVelocityBody::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<AngularVelocityBody*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* AngularVelocityBody::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // float roll_rad_s = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 13) goto handle_unusual;
-        msg->set_roll_rad_s(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          roll_rad_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float pitch_rad_s = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 21) goto handle_unusual;
-        msg->set_pitch_rad_s(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
+          pitch_rad_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float yaw_rad_s = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_yaw_rad_s(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          yaw_rad_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool AngularVelocityBody::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.AngularVelocityBody)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // float roll_rad_s = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (13 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &roll_rad_s_)));
         } else {
           goto handle_unusual;
@@ -11701,10 +10435,10 @@ bool AngularVelocityBody::MergePartialFromCodedStream(
 
       // float pitch_rad_s = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (21 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &pitch_rad_s_)));
         } else {
           goto handle_unusual;
@@ -11714,10 +10448,10 @@ bool AngularVelocityBody::MergePartialFromCodedStream(
 
       // float yaw_rad_s = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &yaw_rad_s_)));
         } else {
           goto handle_unusual;
@@ -11730,7 +10464,7 @@ bool AngularVelocityBody::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -11746,58 +10480,33 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void AngularVelocityBody::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.AngularVelocityBody)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // float roll_rad_s = 1;
-  if (this->roll_rad_s() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->roll_rad_s(), output);
-  }
-
-  // float pitch_rad_s = 2;
-  if (this->pitch_rad_s() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->pitch_rad_s(), output);
-  }
-
-  // float yaw_rad_s = 3;
-  if (this->yaw_rad_s() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->yaw_rad_s(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.AngularVelocityBody)
-}
-
-::google::protobuf::uint8* AngularVelocityBody::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* AngularVelocityBody::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.AngularVelocityBody)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float roll_rad_s = 1;
-  if (this->roll_rad_s() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->roll_rad_s(), target);
+  if (!(this->roll_rad_s() <= 0 && this->roll_rad_s() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->roll_rad_s(), target);
   }
 
   // float pitch_rad_s = 2;
-  if (this->pitch_rad_s() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->pitch_rad_s(), target);
+  if (!(this->pitch_rad_s() <= 0 && this->pitch_rad_s() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->pitch_rad_s(), target);
   }
 
   // float yaw_rad_s = 3;
-  if (this->yaw_rad_s() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->yaw_rad_s(), target);
+  if (!(this->yaw_rad_s() <= 0 && this->yaw_rad_s() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->yaw_rad_s(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.AngularVelocityBody)
   return target;
@@ -11807,44 +10516,43 @@ size_t AngularVelocityBody::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.AngularVelocityBody)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float roll_rad_s = 1;
-  if (this->roll_rad_s() != 0) {
+  if (!(this->roll_rad_s() <= 0 && this->roll_rad_s() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float pitch_rad_s = 2;
-  if (this->pitch_rad_s() != 0) {
+  if (!(this->pitch_rad_s() <= 0 && this->pitch_rad_s() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float yaw_rad_s = 3;
-  if (this->yaw_rad_s() != 0) {
+  if (!(this->yaw_rad_s() <= 0 && this->yaw_rad_s() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void AngularVelocityBody::MergeFrom(const ::google::protobuf::Message& from) {
+void AngularVelocityBody::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.AngularVelocityBody)
   GOOGLE_DCHECK_NE(&from, this);
   const AngularVelocityBody* source =
-      ::google::protobuf::DynamicCastToGenerated<AngularVelocityBody>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<AngularVelocityBody>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.AngularVelocityBody)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.AngularVelocityBody)
     MergeFrom(*source);
@@ -11855,21 +10563,21 @@ void AngularVelocityBody::MergeFrom(const AngularVelocityBody& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.AngularVelocityBody)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.roll_rad_s() != 0) {
+  if (!(from.roll_rad_s() <= 0 && from.roll_rad_s() >= 0)) {
     set_roll_rad_s(from.roll_rad_s());
   }
-  if (from.pitch_rad_s() != 0) {
+  if (!(from.pitch_rad_s() <= 0 && from.pitch_rad_s() >= 0)) {
     set_pitch_rad_s(from.pitch_rad_s());
   }
-  if (from.yaw_rad_s() != 0) {
+  if (!(from.yaw_rad_s() <= 0 && from.yaw_rad_s() >= 0)) {
     set_yaw_rad_s(from.yaw_rad_s());
   }
 }
 
-void AngularVelocityBody::CopyFrom(const ::google::protobuf::Message& from) {
+void AngularVelocityBody::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.AngularVelocityBody)
   if (&from == this) return;
   Clear();
@@ -11887,10 +10595,6 @@ bool AngularVelocityBody::IsInitialized() const {
   return true;
 }
 
-void AngularVelocityBody::Swap(AngularVelocityBody* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void AngularVelocityBody::InternalSwap(AngularVelocityBody* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -11899,9 +10603,8 @@ void AngularVelocityBody::InternalSwap(AngularVelocityBody* other) {
   swap(yaw_rad_s_, other->yaw_rad_s_);
 }
 
-::google::protobuf::Metadata AngularVelocityBody::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata AngularVelocityBody::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -11909,23 +10612,17 @@ void AngularVelocityBody::InternalSwap(AngularVelocityBody* other) {
 
 void SpeedNed::InitAsDefaultInstance() {
 }
-class SpeedNed::HasBitSetters {
+class SpeedNed::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SpeedNed::kVelocityNorthMSFieldNumber;
-const int SpeedNed::kVelocityEastMSFieldNumber;
-const int SpeedNed::kVelocityDownMSFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SpeedNed::SpeedNed()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.SpeedNed)
 }
 SpeedNed::SpeedNed(const SpeedNed& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&velocity_north_m_s_, &from.velocity_north_m_s_,
@@ -11952,14 +10649,14 @@ void SpeedNed::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SpeedNed& SpeedNed::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SpeedNed_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SpeedNed_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SpeedNed::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SpeedNed)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -11970,72 +10667,70 @@ void SpeedNed::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SpeedNed::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SpeedNed*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SpeedNed::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // float velocity_north_m_s = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 13) goto handle_unusual;
-        msg->set_velocity_north_m_s(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          velocity_north_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float velocity_east_m_s = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 21) goto handle_unusual;
-        msg->set_velocity_east_m_s(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
+          velocity_east_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float velocity_down_m_s = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_velocity_down_m_s(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          velocity_down_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SpeedNed::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.SpeedNed)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // float velocity_north_m_s = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (13 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &velocity_north_m_s_)));
         } else {
           goto handle_unusual;
@@ -12045,10 +10740,10 @@ bool SpeedNed::MergePartialFromCodedStream(
 
       // float velocity_east_m_s = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (21 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &velocity_east_m_s_)));
         } else {
           goto handle_unusual;
@@ -12058,10 +10753,10 @@ bool SpeedNed::MergePartialFromCodedStream(
 
       // float velocity_down_m_s = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &velocity_down_m_s_)));
         } else {
           goto handle_unusual;
@@ -12074,7 +10769,7 @@ bool SpeedNed::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -12090,58 +10785,33 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SpeedNed::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.SpeedNed)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // float velocity_north_m_s = 1;
-  if (this->velocity_north_m_s() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->velocity_north_m_s(), output);
-  }
-
-  // float velocity_east_m_s = 2;
-  if (this->velocity_east_m_s() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->velocity_east_m_s(), output);
-  }
-
-  // float velocity_down_m_s = 3;
-  if (this->velocity_down_m_s() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->velocity_down_m_s(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.SpeedNed)
-}
-
-::google::protobuf::uint8* SpeedNed::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SpeedNed::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SpeedNed)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float velocity_north_m_s = 1;
-  if (this->velocity_north_m_s() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->velocity_north_m_s(), target);
+  if (!(this->velocity_north_m_s() <= 0 && this->velocity_north_m_s() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->velocity_north_m_s(), target);
   }
 
   // float velocity_east_m_s = 2;
-  if (this->velocity_east_m_s() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->velocity_east_m_s(), target);
+  if (!(this->velocity_east_m_s() <= 0 && this->velocity_east_m_s() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->velocity_east_m_s(), target);
   }
 
   // float velocity_down_m_s = 3;
-  if (this->velocity_down_m_s() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->velocity_down_m_s(), target);
+  if (!(this->velocity_down_m_s() <= 0 && this->velocity_down_m_s() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->velocity_down_m_s(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SpeedNed)
   return target;
@@ -12151,44 +10821,43 @@ size_t SpeedNed::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SpeedNed)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float velocity_north_m_s = 1;
-  if (this->velocity_north_m_s() != 0) {
+  if (!(this->velocity_north_m_s() <= 0 && this->velocity_north_m_s() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float velocity_east_m_s = 2;
-  if (this->velocity_east_m_s() != 0) {
+  if (!(this->velocity_east_m_s() <= 0 && this->velocity_east_m_s() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float velocity_down_m_s = 3;
-  if (this->velocity_down_m_s() != 0) {
+  if (!(this->velocity_down_m_s() <= 0 && this->velocity_down_m_s() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SpeedNed::MergeFrom(const ::google::protobuf::Message& from) {
+void SpeedNed::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.SpeedNed)
   GOOGLE_DCHECK_NE(&from, this);
   const SpeedNed* source =
-      ::google::protobuf::DynamicCastToGenerated<SpeedNed>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SpeedNed>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.SpeedNed)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.SpeedNed)
     MergeFrom(*source);
@@ -12199,21 +10868,21 @@ void SpeedNed::MergeFrom(const SpeedNed& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SpeedNed)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.velocity_north_m_s() != 0) {
+  if (!(from.velocity_north_m_s() <= 0 && from.velocity_north_m_s() >= 0)) {
     set_velocity_north_m_s(from.velocity_north_m_s());
   }
-  if (from.velocity_east_m_s() != 0) {
+  if (!(from.velocity_east_m_s() <= 0 && from.velocity_east_m_s() >= 0)) {
     set_velocity_east_m_s(from.velocity_east_m_s());
   }
-  if (from.velocity_down_m_s() != 0) {
+  if (!(from.velocity_down_m_s() <= 0 && from.velocity_down_m_s() >= 0)) {
     set_velocity_down_m_s(from.velocity_down_m_s());
   }
 }
 
-void SpeedNed::CopyFrom(const ::google::protobuf::Message& from) {
+void SpeedNed::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.SpeedNed)
   if (&from == this) return;
   Clear();
@@ -12231,10 +10900,6 @@ bool SpeedNed::IsInitialized() const {
   return true;
 }
 
-void SpeedNed::Swap(SpeedNed* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SpeedNed::InternalSwap(SpeedNed* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -12243,9 +10908,8 @@ void SpeedNed::InternalSwap(SpeedNed* other) {
   swap(velocity_down_m_s_, other->velocity_down_m_s_);
 }
 
-::google::protobuf::Metadata SpeedNed::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SpeedNed::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -12253,22 +10917,17 @@ void SpeedNed::InternalSwap(SpeedNed* other) {
 
 void GpsInfo::InitAsDefaultInstance() {
 }
-class GpsInfo::HasBitSetters {
+class GpsInfo::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int GpsInfo::kNumSatellitesFieldNumber;
-const int GpsInfo::kFixTypeFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 GpsInfo::GpsInfo()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.GpsInfo)
 }
 GpsInfo::GpsInfo(const GpsInfo& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&num_satellites_, &from.num_satellites_,
@@ -12295,14 +10954,14 @@ void GpsInfo::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const GpsInfo& GpsInfo::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_GpsInfo_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_GpsInfo_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void GpsInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.GpsInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -12313,66 +10972,64 @@ void GpsInfo::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* GpsInfo::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<GpsInfo*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* GpsInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // int32 num_satellites = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        msg->set_num_satellites(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          num_satellites_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // .mavsdk.rpc.telemetry.FixType fix_type = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 16) goto handle_unusual;
-        ::google::protobuf::uint64 val = ::google::protobuf::internal::ReadVarint(&ptr);
-        msg->set_fix_type(static_cast<::mavsdk::rpc::telemetry::FixType>(val));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          set_fix_type(static_cast<::mavsdk::rpc::telemetry::FixType>(val));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool GpsInfo::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.GpsInfo)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // int32 num_satellites = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32>(
                  input, &num_satellites_)));
         } else {
           goto handle_unusual;
@@ -12382,10 +11039,10 @@ bool GpsInfo::MergePartialFromCodedStream(
 
       // .mavsdk.rpc.telemetry.FixType fix_type = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
           int value = 0;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
           set_fix_type(static_cast< ::mavsdk::rpc::telemetry::FixType >(value));
         } else {
@@ -12399,7 +11056,7 @@ bool GpsInfo::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -12415,50 +11072,28 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void GpsInfo::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.GpsInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // int32 num_satellites = 1;
-  if (this->num_satellites() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->num_satellites(), output);
-  }
-
-  // .mavsdk.rpc.telemetry.FixType fix_type = 2;
-  if (this->fix_type() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      2, this->fix_type(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.GpsInfo)
-}
-
-::google::protobuf::uint8* GpsInfo::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* GpsInfo::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.GpsInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // int32 num_satellites = 1;
   if (this->num_satellites() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->num_satellites(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->num_satellites(), target);
   }
 
   // .mavsdk.rpc.telemetry.FixType fix_type = 2;
   if (this->fix_type() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       2, this->fix_type(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.GpsInfo)
   return target;
@@ -12468,42 +11103,41 @@ size_t GpsInfo::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.GpsInfo)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // int32 num_satellites = 1;
   if (this->num_satellites() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
         this->num_satellites());
   }
 
   // .mavsdk.rpc.telemetry.FixType fix_type = 2;
   if (this->fix_type() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->fix_type());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->fix_type());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void GpsInfo::MergeFrom(const ::google::protobuf::Message& from) {
+void GpsInfo::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.GpsInfo)
   GOOGLE_DCHECK_NE(&from, this);
   const GpsInfo* source =
-      ::google::protobuf::DynamicCastToGenerated<GpsInfo>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<GpsInfo>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.GpsInfo)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.GpsInfo)
     MergeFrom(*source);
@@ -12514,7 +11148,7 @@ void GpsInfo::MergeFrom(const GpsInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.GpsInfo)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.num_satellites() != 0) {
@@ -12525,7 +11159,7 @@ void GpsInfo::MergeFrom(const GpsInfo& from) {
   }
 }
 
-void GpsInfo::CopyFrom(const ::google::protobuf::Message& from) {
+void GpsInfo::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.GpsInfo)
   if (&from == this) return;
   Clear();
@@ -12543,10 +11177,6 @@ bool GpsInfo::IsInitialized() const {
   return true;
 }
 
-void GpsInfo::Swap(GpsInfo* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void GpsInfo::InternalSwap(GpsInfo* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -12554,9 +11184,8 @@ void GpsInfo::InternalSwap(GpsInfo* other) {
   swap(fix_type_, other->fix_type_);
 }
 
-::google::protobuf::Metadata GpsInfo::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata GpsInfo::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -12564,22 +11193,17 @@ void GpsInfo::InternalSwap(GpsInfo* other) {
 
 void Battery::InitAsDefaultInstance() {
 }
-class Battery::HasBitSetters {
+class Battery::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Battery::kVoltageVFieldNumber;
-const int Battery::kRemainingPercentFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 Battery::Battery()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.Battery)
 }
 Battery::Battery(const Battery& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&voltage_v_, &from.voltage_v_,
@@ -12606,14 +11230,14 @@ void Battery::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const Battery& Battery::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_Battery_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Battery_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void Battery::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.Battery)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -12624,65 +11248,63 @@ void Battery::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* Battery::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<Battery*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* Battery::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // float voltage_v = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 13) goto handle_unusual;
-        msg->set_voltage_v(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          voltage_v_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float remaining_percent = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 21) goto handle_unusual;
-        msg->set_remaining_percent(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
+          remaining_percent_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool Battery::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.Battery)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // float voltage_v = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (13 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &voltage_v_)));
         } else {
           goto handle_unusual;
@@ -12692,10 +11314,10 @@ bool Battery::MergePartialFromCodedStream(
 
       // float remaining_percent = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (21 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &remaining_percent_)));
         } else {
           goto handle_unusual;
@@ -12708,7 +11330,7 @@ bool Battery::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -12724,48 +11346,27 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void Battery::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.Battery)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // float voltage_v = 1;
-  if (this->voltage_v() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->voltage_v(), output);
-  }
-
-  // float remaining_percent = 2;
-  if (this->remaining_percent() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->remaining_percent(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.Battery)
-}
-
-::google::protobuf::uint8* Battery::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* Battery::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.Battery)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float voltage_v = 1;
-  if (this->voltage_v() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->voltage_v(), target);
+  if (!(this->voltage_v() <= 0 && this->voltage_v() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->voltage_v(), target);
   }
 
   // float remaining_percent = 2;
-  if (this->remaining_percent() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->remaining_percent(), target);
+  if (!(this->remaining_percent() <= 0 && this->remaining_percent() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->remaining_percent(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.Battery)
   return target;
@@ -12775,39 +11376,38 @@ size_t Battery::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.Battery)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float voltage_v = 1;
-  if (this->voltage_v() != 0) {
+  if (!(this->voltage_v() <= 0 && this->voltage_v() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float remaining_percent = 2;
-  if (this->remaining_percent() != 0) {
+  if (!(this->remaining_percent() <= 0 && this->remaining_percent() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Battery::MergeFrom(const ::google::protobuf::Message& from) {
+void Battery::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.Battery)
   GOOGLE_DCHECK_NE(&from, this);
   const Battery* source =
-      ::google::protobuf::DynamicCastToGenerated<Battery>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Battery>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.Battery)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.Battery)
     MergeFrom(*source);
@@ -12818,18 +11418,18 @@ void Battery::MergeFrom(const Battery& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.Battery)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.voltage_v() != 0) {
+  if (!(from.voltage_v() <= 0 && from.voltage_v() >= 0)) {
     set_voltage_v(from.voltage_v());
   }
-  if (from.remaining_percent() != 0) {
+  if (!(from.remaining_percent() <= 0 && from.remaining_percent() >= 0)) {
     set_remaining_percent(from.remaining_percent());
   }
 }
 
-void Battery::CopyFrom(const ::google::protobuf::Message& from) {
+void Battery::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.Battery)
   if (&from == this) return;
   Clear();
@@ -12847,10 +11447,6 @@ bool Battery::IsInitialized() const {
   return true;
 }
 
-void Battery::Swap(Battery* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void Battery::InternalSwap(Battery* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -12858,9 +11454,8 @@ void Battery::InternalSwap(Battery* other) {
   swap(remaining_percent_, other->remaining_percent_);
 }
 
-::google::protobuf::Metadata Battery::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata Battery::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -12868,27 +11463,17 @@ void Battery::InternalSwap(Battery* other) {
 
 void Health::InitAsDefaultInstance() {
 }
-class Health::HasBitSetters {
+class Health::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Health::kIsGyrometerCalibrationOkFieldNumber;
-const int Health::kIsAccelerometerCalibrationOkFieldNumber;
-const int Health::kIsMagnetometerCalibrationOkFieldNumber;
-const int Health::kIsLevelCalibrationOkFieldNumber;
-const int Health::kIsLocalPositionOkFieldNumber;
-const int Health::kIsGlobalPositionOkFieldNumber;
-const int Health::kIsHomePositionOkFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 Health::Health()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.Health)
 }
 Health::Health(const Health& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&is_gyrometer_calibration_ok_, &from.is_gyrometer_calibration_ok_,
@@ -12915,14 +11500,14 @@ void Health::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const Health& Health::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_Health_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Health_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void Health::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.Health)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -12933,100 +11518,98 @@ void Health::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* Health::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<Health*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* Health::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // bool is_gyrometer_calibration_ok = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        msg->set_is_gyrometer_calibration_ok(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          is_gyrometer_calibration_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool is_accelerometer_calibration_ok = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 16) goto handle_unusual;
-        msg->set_is_accelerometer_calibration_ok(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          is_accelerometer_calibration_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool is_magnetometer_calibration_ok = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 24) goto handle_unusual;
-        msg->set_is_magnetometer_calibration_ok(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          is_magnetometer_calibration_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool is_level_calibration_ok = 4;
-      case 4: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 32) goto handle_unusual;
-        msg->set_is_level_calibration_ok(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          is_level_calibration_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool is_local_position_ok = 5;
-      case 5: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 40) goto handle_unusual;
-        msg->set_is_local_position_ok(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          is_local_position_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool is_global_position_ok = 6;
-      case 6: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 48) goto handle_unusual;
-        msg->set_is_global_position_ok(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+          is_global_position_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool is_home_position_ok = 7;
-      case 7: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 56) goto handle_unusual;
-        msg->set_is_home_position_ok(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+          is_home_position_ok_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool Health::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.Health)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // bool is_gyrometer_calibration_ok = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_gyrometer_calibration_ok_)));
         } else {
           goto handle_unusual;
@@ -13036,10 +11619,10 @@ bool Health::MergePartialFromCodedStream(
 
       // bool is_accelerometer_calibration_ok = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_accelerometer_calibration_ok_)));
         } else {
           goto handle_unusual;
@@ -13049,10 +11632,10 @@ bool Health::MergePartialFromCodedStream(
 
       // bool is_magnetometer_calibration_ok = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (24 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (24 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_magnetometer_calibration_ok_)));
         } else {
           goto handle_unusual;
@@ -13062,10 +11645,10 @@ bool Health::MergePartialFromCodedStream(
 
       // bool is_level_calibration_ok = 4;
       case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (32 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (32 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_level_calibration_ok_)));
         } else {
           goto handle_unusual;
@@ -13075,10 +11658,10 @@ bool Health::MergePartialFromCodedStream(
 
       // bool is_local_position_ok = 5;
       case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (40 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (40 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_local_position_ok_)));
         } else {
           goto handle_unusual;
@@ -13088,10 +11671,10 @@ bool Health::MergePartialFromCodedStream(
 
       // bool is_global_position_ok = 6;
       case 6: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (48 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (48 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_global_position_ok_)));
         } else {
           goto handle_unusual;
@@ -13101,10 +11684,10 @@ bool Health::MergePartialFromCodedStream(
 
       // bool is_home_position_ok = 7;
       case 7: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (56 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (56 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_home_position_ok_)));
         } else {
           goto handle_unusual;
@@ -13117,7 +11700,7 @@ bool Health::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -13133,98 +11716,57 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void Health::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.Health)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // bool is_gyrometer_calibration_ok = 1;
-  if (this->is_gyrometer_calibration_ok() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->is_gyrometer_calibration_ok(), output);
-  }
-
-  // bool is_accelerometer_calibration_ok = 2;
-  if (this->is_accelerometer_calibration_ok() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->is_accelerometer_calibration_ok(), output);
-  }
-
-  // bool is_magnetometer_calibration_ok = 3;
-  if (this->is_magnetometer_calibration_ok() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->is_magnetometer_calibration_ok(), output);
-  }
-
-  // bool is_level_calibration_ok = 4;
-  if (this->is_level_calibration_ok() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->is_level_calibration_ok(), output);
-  }
-
-  // bool is_local_position_ok = 5;
-  if (this->is_local_position_ok() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->is_local_position_ok(), output);
-  }
-
-  // bool is_global_position_ok = 6;
-  if (this->is_global_position_ok() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(6, this->is_global_position_ok(), output);
-  }
-
-  // bool is_home_position_ok = 7;
-  if (this->is_home_position_ok() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(7, this->is_home_position_ok(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.Health)
-}
-
-::google::protobuf::uint8* Health::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* Health::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.Health)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // bool is_gyrometer_calibration_ok = 1;
   if (this->is_gyrometer_calibration_ok() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->is_gyrometer_calibration_ok(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->is_gyrometer_calibration_ok(), target);
   }
 
   // bool is_accelerometer_calibration_ok = 2;
   if (this->is_accelerometer_calibration_ok() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->is_accelerometer_calibration_ok(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->is_accelerometer_calibration_ok(), target);
   }
 
   // bool is_magnetometer_calibration_ok = 3;
   if (this->is_magnetometer_calibration_ok() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->is_magnetometer_calibration_ok(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(3, this->is_magnetometer_calibration_ok(), target);
   }
 
   // bool is_level_calibration_ok = 4;
   if (this->is_level_calibration_ok() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->is_level_calibration_ok(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(4, this->is_level_calibration_ok(), target);
   }
 
   // bool is_local_position_ok = 5;
   if (this->is_local_position_ok() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->is_local_position_ok(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(5, this->is_local_position_ok(), target);
   }
 
   // bool is_global_position_ok = 6;
   if (this->is_global_position_ok() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(6, this->is_global_position_ok(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(6, this->is_global_position_ok(), target);
   }
 
   // bool is_home_position_ok = 7;
   if (this->is_home_position_ok() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(7, this->is_home_position_ok(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(7, this->is_home_position_ok(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.Health)
   return target;
@@ -13234,12 +11776,7 @@ size_t Health::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.Health)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -13278,20 +11815,24 @@ size_t Health::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Health::MergeFrom(const ::google::protobuf::Message& from) {
+void Health::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.Health)
   GOOGLE_DCHECK_NE(&from, this);
   const Health* source =
-      ::google::protobuf::DynamicCastToGenerated<Health>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Health>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.Health)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.Health)
     MergeFrom(*source);
@@ -13302,7 +11843,7 @@ void Health::MergeFrom(const Health& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.Health)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.is_gyrometer_calibration_ok() != 0) {
@@ -13328,7 +11869,7 @@ void Health::MergeFrom(const Health& from) {
   }
 }
 
-void Health::CopyFrom(const ::google::protobuf::Message& from) {
+void Health::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.Health)
   if (&from == this) return;
   Clear();
@@ -13346,10 +11887,6 @@ bool Health::IsInitialized() const {
   return true;
 }
 
-void Health::Swap(Health* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void Health::InternalSwap(Health* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -13362,9 +11899,8 @@ void Health::InternalSwap(Health* other) {
   swap(is_home_position_ok_, other->is_home_position_ok_);
 }
 
-::google::protobuf::Metadata Health::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata Health::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -13372,23 +11908,17 @@ void Health::InternalSwap(Health* other) {
 
 void RcStatus::InitAsDefaultInstance() {
 }
-class RcStatus::HasBitSetters {
+class RcStatus::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int RcStatus::kWasAvailableOnceFieldNumber;
-const int RcStatus::kIsAvailableFieldNumber;
-const int RcStatus::kSignalStrengthPercentFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 RcStatus::RcStatus()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.RcStatus)
 }
 RcStatus::RcStatus(const RcStatus& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&was_available_once_, &from.was_available_once_,
@@ -13415,14 +11945,14 @@ void RcStatus::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const RcStatus& RcStatus::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_RcStatus_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_RcStatus_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void RcStatus::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.RcStatus)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -13433,72 +11963,70 @@ void RcStatus::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* RcStatus::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<RcStatus*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* RcStatus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // bool was_available_once = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        msg->set_was_available_once(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          was_available_once_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool is_available = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 16) goto handle_unusual;
-        msg->set_is_available(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          is_available_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // float signal_strength_percent = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_signal_strength_percent(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          signal_strength_percent_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool RcStatus::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.RcStatus)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // bool was_available_once = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &was_available_once_)));
         } else {
           goto handle_unusual;
@@ -13508,10 +12036,10 @@ bool RcStatus::MergePartialFromCodedStream(
 
       // bool is_available = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_available_)));
         } else {
           goto handle_unusual;
@@ -13521,10 +12049,10 @@ bool RcStatus::MergePartialFromCodedStream(
 
       // float signal_strength_percent = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &signal_strength_percent_)));
         } else {
           goto handle_unusual;
@@ -13537,7 +12065,7 @@ bool RcStatus::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -13553,58 +12081,33 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void RcStatus::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.RcStatus)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // bool was_available_once = 1;
-  if (this->was_available_once() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->was_available_once(), output);
-  }
-
-  // bool is_available = 2;
-  if (this->is_available() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->is_available(), output);
-  }
-
-  // float signal_strength_percent = 3;
-  if (this->signal_strength_percent() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->signal_strength_percent(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.RcStatus)
-}
-
-::google::protobuf::uint8* RcStatus::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* RcStatus::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.RcStatus)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // bool was_available_once = 1;
   if (this->was_available_once() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->was_available_once(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->was_available_once(), target);
   }
 
   // bool is_available = 2;
   if (this->is_available() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->is_available(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->is_available(), target);
   }
 
   // float signal_strength_percent = 3;
-  if (this->signal_strength_percent() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->signal_strength_percent(), target);
+  if (!(this->signal_strength_percent() <= 0 && this->signal_strength_percent() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->signal_strength_percent(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.RcStatus)
   return target;
@@ -13614,12 +12117,7 @@ size_t RcStatus::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.RcStatus)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -13634,24 +12132,28 @@ size_t RcStatus::ByteSizeLong() const {
   }
 
   // float signal_strength_percent = 3;
-  if (this->signal_strength_percent() != 0) {
+  if (!(this->signal_strength_percent() <= 0 && this->signal_strength_percent() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void RcStatus::MergeFrom(const ::google::protobuf::Message& from) {
+void RcStatus::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.RcStatus)
   GOOGLE_DCHECK_NE(&from, this);
   const RcStatus* source =
-      ::google::protobuf::DynamicCastToGenerated<RcStatus>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<RcStatus>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.RcStatus)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.RcStatus)
     MergeFrom(*source);
@@ -13662,7 +12164,7 @@ void RcStatus::MergeFrom(const RcStatus& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.RcStatus)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.was_available_once() != 0) {
@@ -13671,12 +12173,12 @@ void RcStatus::MergeFrom(const RcStatus& from) {
   if (from.is_available() != 0) {
     set_is_available(from.is_available());
   }
-  if (from.signal_strength_percent() != 0) {
+  if (!(from.signal_strength_percent() <= 0 && from.signal_strength_percent() >= 0)) {
     set_signal_strength_percent(from.signal_strength_percent());
   }
 }
 
-void RcStatus::CopyFrom(const ::google::protobuf::Message& from) {
+void RcStatus::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.RcStatus)
   if (&from == this) return;
   Clear();
@@ -13694,10 +12196,6 @@ bool RcStatus::IsInitialized() const {
   return true;
 }
 
-void RcStatus::Swap(RcStatus* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void RcStatus::InternalSwap(RcStatus* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -13706,9 +12204,8 @@ void RcStatus::InternalSwap(RcStatus* other) {
   swap(signal_strength_percent_, other->signal_strength_percent_);
 }
 
-::google::protobuf::Metadata RcStatus::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata RcStatus::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -13716,36 +12213,30 @@ void RcStatus::InternalSwap(RcStatus* other) {
 
 void StatusText::InitAsDefaultInstance() {
 }
-class StatusText::HasBitSetters {
+class StatusText::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int StatusText::kTypeFieldNumber;
-const int StatusText::kTextFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StatusText::StatusText()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.StatusText)
 }
 StatusText::StatusText(const StatusText& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  text_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.text().size() > 0) {
-    text_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.text_);
+  text_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_text().empty()) {
+    text_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.text_);
   }
   type_ = from.type_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.StatusText)
 }
 
 void StatusText::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_StatusText_telemetry_2ftelemetry_2eproto.base);
-  text_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StatusText_telemetry_2ftelemetry_2eproto.base);
+  text_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   type_ = 0;
 }
 
@@ -13755,106 +12246,88 @@ StatusText::~StatusText() {
 }
 
 void StatusText::SharedDtor() {
-  text_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  text_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void StatusText::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StatusText& StatusText::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StatusText_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StatusText_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StatusText::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.StatusText)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  text_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  text_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   type_ = 0;
   _internal_metadata_.Clear();
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StatusText::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StatusText*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StatusText::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.telemetry.StatusText.StatusType type = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        ::google::protobuf::uint64 val = ::google::protobuf::internal::ReadVarint(&ptr);
-        msg->set_type(static_cast<::mavsdk::rpc::telemetry::StatusText_StatusType>(val));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          set_type(static_cast<::mavsdk::rpc::telemetry::StatusText_StatusType>(val));
+        } else goto handle_unusual;
+        continue;
       // string text = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.telemetry.StatusText.text");
-        object = msg->mutable_text();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_text(), ptr, ctx, "mavsdk.rpc.telemetry.StatusText.text");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StatusText::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.StatusText)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.telemetry.StatusText.StatusType type = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
           int value = 0;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
           set_type(static_cast< ::mavsdk::rpc::telemetry::StatusText_StatusType >(value));
         } else {
@@ -13865,12 +12338,12 @@ bool StatusText::MergePartialFromCodedStream(
 
       // string text = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_text()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->text().data(), static_cast<int>(this->text().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_text()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_text().data(), static_cast<int>(this->_internal_text().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.telemetry.StatusText.text"));
         } else {
           goto handle_unusual;
@@ -13883,7 +12356,7 @@ bool StatusText::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -13899,61 +12372,32 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StatusText::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.StatusText)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.StatusText.StatusType type = 1;
-  if (this->type() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      1, this->type(), output);
-  }
-
-  // string text = 2;
-  if (this->text().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->text().data(), static_cast<int>(this->text().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.telemetry.StatusText.text");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->text(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.StatusText)
-}
-
-::google::protobuf::uint8* StatusText::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StatusText::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.StatusText)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.telemetry.StatusText.StatusType type = 1;
   if (this->type() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
   }
 
   // string text = 2;
   if (this->text().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->text().data(), static_cast<int>(this->text().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_text().data(), static_cast<int>(this->_internal_text().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.telemetry.StatusText.text");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->text(), target);
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_text(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.StatusText)
   return target;
@@ -13963,42 +12407,41 @@ size_t StatusText::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.StatusText)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string text = 2;
   if (this->text().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->text());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_text());
   }
 
   // .mavsdk.rpc.telemetry.StatusText.StatusType type = 1;
   if (this->type() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->type());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StatusText::MergeFrom(const ::google::protobuf::Message& from) {
+void StatusText::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.StatusText)
   GOOGLE_DCHECK_NE(&from, this);
   const StatusText* source =
-      ::google::protobuf::DynamicCastToGenerated<StatusText>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StatusText>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.StatusText)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.StatusText)
     MergeFrom(*source);
@@ -14009,19 +12452,19 @@ void StatusText::MergeFrom(const StatusText& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.StatusText)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.text().size() > 0) {
 
-    text_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.text_);
+    text_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.text_);
   }
   if (from.type() != 0) {
     set_type(from.type());
   }
 }
 
-void StatusText::CopyFrom(const ::google::protobuf::Message& from) {
+void StatusText::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.StatusText)
   if (&from == this) return;
   Clear();
@@ -14039,21 +12482,16 @@ bool StatusText::IsInitialized() const {
   return true;
 }
 
-void StatusText::Swap(StatusText* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StatusText::InternalSwap(StatusText* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  text_.Swap(&other->text_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  text_.Swap(&other->text_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(type_, other->type_);
 }
 
-::google::protobuf::Metadata StatusText::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StatusText::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -14061,22 +12499,17 @@ void StatusText::InternalSwap(StatusText* other) {
 
 void ActuatorControlTarget::InitAsDefaultInstance() {
 }
-class ActuatorControlTarget::HasBitSetters {
+class ActuatorControlTarget::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ActuatorControlTarget::kGroupFieldNumber;
-const int ActuatorControlTarget::kControlsFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ActuatorControlTarget::ActuatorControlTarget()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.ActuatorControlTarget)
 }
 ActuatorControlTarget::ActuatorControlTarget(const ActuatorControlTarget& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       controls_(from.controls_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -14100,14 +12533,14 @@ void ActuatorControlTarget::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ActuatorControlTarget& ActuatorControlTarget::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ActuatorControlTarget_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ActuatorControlTarget::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.ActuatorControlTarget)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -14117,81 +12550,66 @@ void ActuatorControlTarget::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ActuatorControlTarget::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ActuatorControlTarget*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ActuatorControlTarget::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // int32 group = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        msg->set_group(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          group_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // repeated float controls = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) == 18) {
-          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedFloatParser;
-          object = msg->mutable_controls();
-          if (size > end - ptr) goto len_delim_till_end;
-          auto newend = ptr + size;
-          if (size) ptr = parser_till_end(ptr, newend, object, ctx);
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr == newend);
-          break;
-        } else if (static_cast<::google::protobuf::uint8>(tag) != 21) goto handle_unusual;
-        do {
-          msg->add_controls(::google::protobuf::io::UnalignedLoad<float>(ptr));
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedFloatParser(mutable_controls(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21) {
+          add_controls(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr));
           ptr += sizeof(float);
-          if (ptr >= end) break;
-        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 21 && (ptr += 1));
-        break;
-      }
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ActuatorControlTarget::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.ActuatorControlTarget)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // int32 group = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32>(
                  input, &group_)));
         } else {
           goto handle_unusual;
@@ -14201,13 +12619,13 @@ bool ActuatorControlTarget::MergePartialFromCodedStream(
 
       // repeated float controls = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPackedPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, this->mutable_controls())));
-        } else if (static_cast< ::google::protobuf::uint8>(tag) == (21 & 0xFF)) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+        } else if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  1, 18u, input, this->mutable_controls())));
         } else {
           goto handle_unusual;
@@ -14220,7 +12638,7 @@ bool ActuatorControlTarget::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -14236,60 +12654,26 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ActuatorControlTarget::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.ActuatorControlTarget)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // int32 group = 1;
-  if (this->group() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->group(), output);
-  }
-
-  // repeated float controls = 2;
-  if (this->controls_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
-    output->WriteVarint32(_controls_cached_byte_size_.load(
-        std::memory_order_relaxed));
-    ::google::protobuf::internal::WireFormatLite::WriteFloatArray(
-      this->controls().data(), this->controls_size(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.ActuatorControlTarget)
-}
-
-::google::protobuf::uint8* ActuatorControlTarget::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ActuatorControlTarget::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.ActuatorControlTarget)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // int32 group = 1;
   if (this->group() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->group(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->group(), target);
   }
 
   // repeated float controls = 2;
   if (this->controls_size() > 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      2,
-      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
-      target);
-    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
-        _controls_cached_byte_size_.load(std::memory_order_relaxed),
-         target);
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteFloatNoTagToArray(this->controls_, target);
+    target = stream->WriteFixedPacked(2, controls_, target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.ActuatorControlTarget)
   return target;
@@ -14299,12 +12683,7 @@ size_t ActuatorControlTarget::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.ActuatorControlTarget)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -14314,10 +12693,10 @@ size_t ActuatorControlTarget::ByteSizeLong() const {
     size_t data_size = 4UL * count;
     if (data_size > 0) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-            static_cast<::google::protobuf::int32>(data_size));
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+            static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
     }
-    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
     _controls_cached_byte_size_.store(cached_size,
                                     std::memory_order_relaxed);
     total_size += data_size;
@@ -14326,24 +12705,28 @@ size_t ActuatorControlTarget::ByteSizeLong() const {
   // int32 group = 1;
   if (this->group() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
         this->group());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ActuatorControlTarget::MergeFrom(const ::google::protobuf::Message& from) {
+void ActuatorControlTarget::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.ActuatorControlTarget)
   GOOGLE_DCHECK_NE(&from, this);
   const ActuatorControlTarget* source =
-      ::google::protobuf::DynamicCastToGenerated<ActuatorControlTarget>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ActuatorControlTarget>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.ActuatorControlTarget)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.ActuatorControlTarget)
     MergeFrom(*source);
@@ -14354,7 +12737,7 @@ void ActuatorControlTarget::MergeFrom(const ActuatorControlTarget& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.ActuatorControlTarget)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   controls_.MergeFrom(from.controls_);
@@ -14363,7 +12746,7 @@ void ActuatorControlTarget::MergeFrom(const ActuatorControlTarget& from) {
   }
 }
 
-void ActuatorControlTarget::CopyFrom(const ::google::protobuf::Message& from) {
+void ActuatorControlTarget::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.ActuatorControlTarget)
   if (&from == this) return;
   Clear();
@@ -14381,10 +12764,6 @@ bool ActuatorControlTarget::IsInitialized() const {
   return true;
 }
 
-void ActuatorControlTarget::Swap(ActuatorControlTarget* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ActuatorControlTarget::InternalSwap(ActuatorControlTarget* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -14392,9 +12771,8 @@ void ActuatorControlTarget::InternalSwap(ActuatorControlTarget* other) {
   swap(group_, other->group_);
 }
 
-::google::protobuf::Metadata ActuatorControlTarget::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ActuatorControlTarget::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -14402,22 +12780,17 @@ void ActuatorControlTarget::InternalSwap(ActuatorControlTarget* other) {
 
 void ActuatorOutputStatus::InitAsDefaultInstance() {
 }
-class ActuatorOutputStatus::HasBitSetters {
+class ActuatorOutputStatus::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ActuatorOutputStatus::kActiveFieldNumber;
-const int ActuatorOutputStatus::kActuatorFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ActuatorOutputStatus::ActuatorOutputStatus()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.telemetry.ActuatorOutputStatus)
 }
 ActuatorOutputStatus::ActuatorOutputStatus(const ActuatorOutputStatus& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       actuator_(from.actuator_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -14441,14 +12814,14 @@ void ActuatorOutputStatus::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ActuatorOutputStatus& ActuatorOutputStatus::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ActuatorOutputStatus_telemetry_2ftelemetry_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ActuatorOutputStatus::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.ActuatorOutputStatus)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -14458,81 +12831,66 @@ void ActuatorOutputStatus::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ActuatorOutputStatus::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ActuatorOutputStatus*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ActuatorOutputStatus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // uint32 active = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        msg->set_active(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          active_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // repeated float actuator = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) == 18) {
-          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedFloatParser;
-          object = msg->mutable_actuator();
-          if (size > end - ptr) goto len_delim_till_end;
-          auto newend = ptr + size;
-          if (size) ptr = parser_till_end(ptr, newend, object, ctx);
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr == newend);
-          break;
-        } else if (static_cast<::google::protobuf::uint8>(tag) != 21) goto handle_unusual;
-        do {
-          msg->add_actuator(::google::protobuf::io::UnalignedLoad<float>(ptr));
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedFloatParser(mutable_actuator(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21) {
+          add_actuator(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr));
           ptr += sizeof(float);
-          if (ptr >= end) break;
-        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 21 && (ptr += 1));
-        break;
-      }
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ActuatorOutputStatus::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.telemetry.ActuatorOutputStatus)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // uint32 active = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
                  input, &active_)));
         } else {
           goto handle_unusual;
@@ -14542,13 +12900,13 @@ bool ActuatorOutputStatus::MergePartialFromCodedStream(
 
       // repeated float actuator = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPackedPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, this->mutable_actuator())));
-        } else if (static_cast< ::google::protobuf::uint8>(tag) == (21 & 0xFF)) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+        } else if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  1, 18u, input, this->mutable_actuator())));
         } else {
           goto handle_unusual;
@@ -14561,7 +12919,7 @@ bool ActuatorOutputStatus::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -14577,60 +12935,26 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ActuatorOutputStatus::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.telemetry.ActuatorOutputStatus)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // uint32 active = 1;
-  if (this->active() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->active(), output);
-  }
-
-  // repeated float actuator = 2;
-  if (this->actuator_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
-    output->WriteVarint32(_actuator_cached_byte_size_.load(
-        std::memory_order_relaxed));
-    ::google::protobuf::internal::WireFormatLite::WriteFloatArray(
-      this->actuator().data(), this->actuator_size(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.telemetry.ActuatorOutputStatus)
-}
-
-::google::protobuf::uint8* ActuatorOutputStatus::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ActuatorOutputStatus::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.ActuatorOutputStatus)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint32 active = 1;
   if (this->active() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->active(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(1, this->active(), target);
   }
 
   // repeated float actuator = 2;
   if (this->actuator_size() > 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      2,
-      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
-      target);
-    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
-        _actuator_cached_byte_size_.load(std::memory_order_relaxed),
-         target);
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteFloatNoTagToArray(this->actuator_, target);
+    target = stream->WriteFixedPacked(2, actuator_, target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.ActuatorOutputStatus)
   return target;
@@ -14640,12 +12964,7 @@ size_t ActuatorOutputStatus::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.ActuatorOutputStatus)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -14655,10 +12974,10 @@ size_t ActuatorOutputStatus::ByteSizeLong() const {
     size_t data_size = 4UL * count;
     if (data_size > 0) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-            static_cast<::google::protobuf::int32>(data_size));
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+            static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
     }
-    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
     _actuator_cached_byte_size_.store(cached_size,
                                     std::memory_order_relaxed);
     total_size += data_size;
@@ -14667,24 +12986,28 @@ size_t ActuatorOutputStatus::ByteSizeLong() const {
   // uint32 active = 1;
   if (this->active() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->active());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ActuatorOutputStatus::MergeFrom(const ::google::protobuf::Message& from) {
+void ActuatorOutputStatus::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.telemetry.ActuatorOutputStatus)
   GOOGLE_DCHECK_NE(&from, this);
   const ActuatorOutputStatus* source =
-      ::google::protobuf::DynamicCastToGenerated<ActuatorOutputStatus>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ActuatorOutputStatus>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.telemetry.ActuatorOutputStatus)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.telemetry.ActuatorOutputStatus)
     MergeFrom(*source);
@@ -14695,7 +13018,7 @@ void ActuatorOutputStatus::MergeFrom(const ActuatorOutputStatus& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.ActuatorOutputStatus)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   actuator_.MergeFrom(from.actuator_);
@@ -14704,7 +13027,7 @@ void ActuatorOutputStatus::MergeFrom(const ActuatorOutputStatus& from) {
   }
 }
 
-void ActuatorOutputStatus::CopyFrom(const ::google::protobuf::Message& from) {
+void ActuatorOutputStatus::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.telemetry.ActuatorOutputStatus)
   if (&from == this) return;
   Clear();
@@ -14722,10 +13045,6 @@ bool ActuatorOutputStatus::IsInitialized() const {
   return true;
 }
 
-void ActuatorOutputStatus::Swap(ActuatorOutputStatus* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ActuatorOutputStatus::InternalSwap(ActuatorOutputStatus* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -14733,9 +13052,8 @@ void ActuatorOutputStatus::InternalSwap(ActuatorOutputStatus* other) {
   swap(active_, other->active_);
 }
 
-::google::protobuf::Metadata ActuatorOutputStatus::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_telemetry_2ftelemetry_2eproto);
-  return ::file_level_metadata_telemetry_2ftelemetry_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ActuatorOutputStatus::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -14743,8 +13061,7 @@ void ActuatorOutputStatus::InternalSwap(ActuatorOutputStatus* other) {
 }  // namespace telemetry
 }  // namespace rpc
 }  // namespace mavsdk
-namespace google {
-namespace protobuf {
+PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::SubscribePositionRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::SubscribePositionRequest >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::telemetry::SubscribePositionRequest >(arena);
 }
@@ -14889,8 +13206,7 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::ActuatorControlTarget* Ar
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry::ActuatorOutputStatus* Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry::ActuatorOutputStatus >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::telemetry::ActuatorOutputStatus >(arena);
 }
-}  // namespace protobuf
-}  // namespace google
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 #include <google/protobuf/port_undef.inc>

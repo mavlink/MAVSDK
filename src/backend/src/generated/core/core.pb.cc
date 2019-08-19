@@ -5,149 +5,138 @@
 
 #include <algorithm>
 
-#include <google/protobuf/stubs/common.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite_inl.h>
+#include <google/protobuf/wire_format_lite.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/reflection_ops.h>
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-
-extern PROTOBUF_INTERNAL_EXPORT_core_2fcore_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_ConnectionState_core_2fcore_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_core_2fcore_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_PluginInfo_core_2fcore_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_core_2fcore_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ConnectionState_core_2fcore_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_core_2fcore_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PluginInfo_core_2fcore_2eproto;
 namespace mavsdk {
 namespace rpc {
 namespace core {
 class SubscribeConnectionStateRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeConnectionStateRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeConnectionStateRequest> _instance;
 } _SubscribeConnectionStateRequest_default_instance_;
 class ConnectionStateResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ConnectionStateResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ConnectionStateResponse> _instance;
 } _ConnectionStateResponse_default_instance_;
 class ListRunningPluginsRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ListRunningPluginsRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ListRunningPluginsRequest> _instance;
 } _ListRunningPluginsRequest_default_instance_;
 class ListRunningPluginsResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ListRunningPluginsResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ListRunningPluginsResponse> _instance;
 } _ListRunningPluginsResponse_default_instance_;
 class ConnectionStateDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ConnectionState> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ConnectionState> _instance;
 } _ConnectionState_default_instance_;
 class PluginInfoDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<PluginInfo> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PluginInfo> _instance;
 } _PluginInfo_default_instance_;
 }  // namespace core
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsSubscribeConnectionStateRequest_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_SubscribeConnectionStateRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::SubscribeConnectionStateRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::SubscribeConnectionStateRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeConnectionStateRequest_core_2fcore_2eproto}, {}};
-
-static void InitDefaultsConnectionStateResponse_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::ConnectionStateResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::ConnectionStateResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_ConnectionStateResponse_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsConnectionStateResponse_core_2fcore_2eproto}, {
-      &scc_info_ConnectionState_core_2fcore_2eproto.base,}};
-
-static void InitDefaultsListRunningPluginsRequest_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_ListRunningPluginsRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::ListRunningPluginsRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::ListRunningPluginsRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_ListRunningPluginsRequest_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsListRunningPluginsRequest_core_2fcore_2eproto}, {}};
-
-static void InitDefaultsListRunningPluginsResponse_core_2fcore_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::core::_ListRunningPluginsResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::core::ListRunningPluginsResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::core::ListRunningPluginsResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_ListRunningPluginsResponse_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsListRunningPluginsResponse_core_2fcore_2eproto}, {
-      &scc_info_PluginInfo_core_2fcore_2eproto.base,}};
-
-static void InitDefaultsConnectionState_core_2fcore_2eproto() {
+static void InitDefaultsscc_info_ConnectionState_core_2fcore_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::mavsdk::rpc::core::_ConnectionState_default_instance_;
     new (ptr) ::mavsdk::rpc::core::ConnectionState();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
   ::mavsdk::rpc::core::ConnectionState::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_ConnectionState_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsConnectionState_core_2fcore_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ConnectionState_core_2fcore_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ConnectionState_core_2fcore_2eproto}, {}};
 
-static void InitDefaultsPluginInfo_core_2fcore_2eproto() {
+static void InitDefaultsscc_info_ConnectionStateResponse_core_2fcore_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::core::ConnectionStateResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::core::ConnectionStateResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ConnectionStateResponse_core_2fcore_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ConnectionStateResponse_core_2fcore_2eproto}, {
+      &scc_info_ConnectionState_core_2fcore_2eproto.base,}};
+
+static void InitDefaultsscc_info_ListRunningPluginsRequest_core_2fcore_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::core::_ListRunningPluginsRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::core::ListRunningPluginsRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::core::ListRunningPluginsRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ListRunningPluginsRequest_core_2fcore_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ListRunningPluginsRequest_core_2fcore_2eproto}, {}};
+
+static void InitDefaultsscc_info_ListRunningPluginsResponse_core_2fcore_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::core::_ListRunningPluginsResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::core::ListRunningPluginsResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::core::ListRunningPluginsResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ListRunningPluginsResponse_core_2fcore_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_ListRunningPluginsResponse_core_2fcore_2eproto}, {
+      &scc_info_PluginInfo_core_2fcore_2eproto.base,}};
+
+static void InitDefaultsscc_info_PluginInfo_core_2fcore_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::mavsdk::rpc::core::_PluginInfo_default_instance_;
     new (ptr) ::mavsdk::rpc::core::PluginInfo();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
   ::mavsdk::rpc::core::PluginInfo::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_PluginInfo_core_2fcore_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsPluginInfo_core_2fcore_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PluginInfo_core_2fcore_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PluginInfo_core_2fcore_2eproto}, {}};
 
-void InitDefaults_core_2fcore_2eproto() {
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ConnectionStateResponse_core_2fcore_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ListRunningPluginsRequest_core_2fcore_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ListRunningPluginsResponse_core_2fcore_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ConnectionState_core_2fcore_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_PluginInfo_core_2fcore_2eproto.base);
+static void InitDefaultsscc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::core::_SubscribeConnectionStateRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::core::SubscribeConnectionStateRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::core::SubscribeConnectionStateRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::Metadata file_level_metadata_core_2fcore_2eproto[6];
-constexpr ::google::protobuf::EnumDescriptor const** file_level_enum_descriptors_core_2fcore_2eproto = nullptr;
-constexpr ::google::protobuf::ServiceDescriptor const** file_level_service_descriptors_core_2fcore_2eproto = nullptr;
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto}, {}};
 
-const ::google::protobuf::uint32 TableStruct_core_2fcore_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_core_2fcore_2eproto[6];
+static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_core_2fcore_2eproto = nullptr;
+static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_core_2fcore_2eproto = nullptr;
+
+const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_core_2fcore_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SubscribeConnectionStateRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -186,7 +175,7 @@ const ::google::protobuf::uint32 TableStruct_core_2fcore_2eproto::offsets[] PROT
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::PluginInfo, address_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::PluginInfo, port_),
 };
-static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::mavsdk::rpc::core::SubscribeConnectionStateRequest)},
   { 5, -1, sizeof(::mavsdk::rpc::core::ConnectionStateResponse)},
   { 11, -1, sizeof(::mavsdk::rpc::core::ListRunningPluginsRequest)},
@@ -195,22 +184,16 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SE
   { 29, -1, sizeof(::mavsdk::rpc::core::PluginInfo)},
 };
 
-static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::core::_SubscribeConnectionStateRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::core::_ListRunningPluginsRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::core::_ListRunningPluginsResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::core::_ConnectionState_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::core::_PluginInfo_default_instance_),
+static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_SubscribeConnectionStateRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_ListRunningPluginsRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_ListRunningPluginsResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_ConnectionState_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::core::_PluginInfo_default_instance_),
 };
 
-::google::protobuf::internal::AssignDescriptorsTable assign_descriptors_table_core_2fcore_2eproto = {
-  {}, AddDescriptors_core_2fcore_2eproto, "core/core.proto", schemas,
-  file_default_instances, TableStruct_core_2fcore_2eproto::offsets,
-  file_level_metadata_core_2fcore_2eproto, 6, file_level_enum_descriptors_core_2fcore_2eproto, file_level_service_descriptors_core_2fcore_2eproto,
-};
-
-const char descriptor_table_protodef_core_2fcore_2eproto[] =
+const char descriptor_table_protodef_core_2fcore_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\017core/core.proto\022\017mavsdk.rpc.core\"!\n\037Su"
   "bscribeConnectionStateRequest\"U\n\027Connect"
   "ionStateResponse\022:\n\020connection_state\030\001 \001"
@@ -229,21 +212,27 @@ const char descriptor_table_protodef_core_2fcore_2eproto[] =
   "ore.ListRunningPluginsResponse\"\000B\033\n\016io.m"
   "avsdk.coreB\tCoreProtob\006proto3"
   ;
-::google::protobuf::internal::DescriptorTable descriptor_table_core_2fcore_2eproto = {
-  false, InitDefaults_core_2fcore_2eproto, 
-  descriptor_table_protodef_core_2fcore_2eproto,
-  "core/core.proto", &assign_descriptors_table_core_2fcore_2eproto, 669,
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_core_2fcore_2eproto_deps[1] = {
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_core_2fcore_2eproto_sccs[6] = {
+  &scc_info_ConnectionState_core_2fcore_2eproto.base,
+  &scc_info_ConnectionStateResponse_core_2fcore_2eproto.base,
+  &scc_info_ListRunningPluginsRequest_core_2fcore_2eproto.base,
+  &scc_info_ListRunningPluginsResponse_core_2fcore_2eproto.base,
+  &scc_info_PluginInfo_core_2fcore_2eproto.base,
+  &scc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto.base,
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_core_2fcore_2eproto_once;
+static bool descriptor_table_core_2fcore_2eproto_initialized = false;
+const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_core_2fcore_2eproto = {
+  &descriptor_table_core_2fcore_2eproto_initialized, descriptor_table_protodef_core_2fcore_2eproto, "core/core.proto", 669,
+  &descriptor_table_core_2fcore_2eproto_once, descriptor_table_core_2fcore_2eproto_sccs, descriptor_table_core_2fcore_2eproto_deps, 6, 0,
+  schemas, file_default_instances, TableStruct_core_2fcore_2eproto::offsets,
+  file_level_metadata_core_2fcore_2eproto, 6, file_level_enum_descriptors_core_2fcore_2eproto, file_level_service_descriptors_core_2fcore_2eproto,
 };
 
-void AddDescriptors_core_2fcore_2eproto() {
-  static constexpr ::google::protobuf::internal::InitFunc deps[1] =
-  {
-  };
- ::google::protobuf::internal::AddDescriptors(&descriptor_table_core_2fcore_2eproto, deps, 0);
-}
-
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_core_2fcore_2eproto = []() { AddDescriptors_core_2fcore_2eproto(); return true; }();
+static bool dynamic_init_dummy_core_2fcore_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_core_2fcore_2eproto), true);
 namespace mavsdk {
 namespace rpc {
 namespace core {
@@ -252,20 +241,17 @@ namespace core {
 
 void SubscribeConnectionStateRequest::InitAsDefaultInstance() {
 }
-class SubscribeConnectionStateRequest::HasBitSetters {
+class SubscribeConnectionStateRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeConnectionStateRequest::SubscribeConnectionStateRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.core.SubscribeConnectionStateRequest)
 }
 SubscribeConnectionStateRequest::SubscribeConnectionStateRequest(const SubscribeConnectionStateRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.SubscribeConnectionStateRequest)
@@ -286,14 +272,14 @@ void SubscribeConnectionStateRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeConnectionStateRequest& SubscribeConnectionStateRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeConnectionStateRequest_core_2fcore_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeConnectionStateRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.SubscribeConnectionStateRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -301,48 +287,46 @@ void SubscribeConnectionStateRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeConnectionStateRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeConnectionStateRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeConnectionStateRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeConnectionStateRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.core.SubscribeConnectionStateRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -355,28 +339,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeConnectionStateRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.core.SubscribeConnectionStateRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.core.SubscribeConnectionStateRequest)
-}
-
-::google::protobuf::uint8* SubscribeConnectionStateRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeConnectionStateRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.SubscribeConnectionStateRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.SubscribeConnectionStateRequest)
   return target;
@@ -386,29 +357,28 @@ size_t SubscribeConnectionStateRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.SubscribeConnectionStateRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeConnectionStateRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeConnectionStateRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.SubscribeConnectionStateRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeConnectionStateRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeConnectionStateRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeConnectionStateRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.SubscribeConnectionStateRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.SubscribeConnectionStateRequest)
     MergeFrom(*source);
@@ -419,12 +389,12 @@ void SubscribeConnectionStateRequest::MergeFrom(const SubscribeConnectionStateRe
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.SubscribeConnectionStateRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeConnectionStateRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeConnectionStateRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.SubscribeConnectionStateRequest)
   if (&from == this) return;
   Clear();
@@ -442,18 +412,13 @@ bool SubscribeConnectionStateRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeConnectionStateRequest::Swap(SubscribeConnectionStateRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeConnectionStateRequest::InternalSwap(SubscribeConnectionStateRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeConnectionStateRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_core_2fcore_2eproto);
-  return ::file_level_metadata_core_2fcore_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeConnectionStateRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -463,26 +428,22 @@ void ConnectionStateResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_._instance.get_mutable()->connection_state_ = const_cast< ::mavsdk::rpc::core::ConnectionState*>(
       ::mavsdk::rpc::core::ConnectionState::internal_default_instance());
 }
-class ConnectionStateResponse::HasBitSetters {
+class ConnectionStateResponse::_Internal {
  public:
   static const ::mavsdk::rpc::core::ConnectionState& connection_state(const ConnectionStateResponse* msg);
 };
 
 const ::mavsdk::rpc::core::ConnectionState&
-ConnectionStateResponse::HasBitSetters::connection_state(const ConnectionStateResponse* msg) {
+ConnectionStateResponse::_Internal::connection_state(const ConnectionStateResponse* msg) {
   return *msg->connection_state_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ConnectionStateResponse::kConnectionStateFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ConnectionStateResponse::ConnectionStateResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.core.ConnectionStateResponse)
 }
 ConnectionStateResponse::ConnectionStateResponse(const ConnectionStateResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_connection_state()) {
@@ -494,8 +455,7 @@ ConnectionStateResponse::ConnectionStateResponse(const ConnectionStateResponse& 
 }
 
 void ConnectionStateResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_ConnectionStateResponse_core_2fcore_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ConnectionStateResponse_core_2fcore_2eproto.base);
   connection_state_ = nullptr;
 }
 
@@ -512,14 +472,14 @@ void ConnectionStateResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ConnectionStateResponse& ConnectionStateResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ConnectionStateResponse_core_2fcore_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ConnectionStateResponse_core_2fcore_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ConnectionStateResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ConnectionStateResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -531,65 +491,54 @@ void ConnectionStateResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ConnectionStateResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ConnectionStateResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ConnectionStateResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.core.ConnectionState connection_state = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::core::ConnectionState::_InternalParse;
-        object = msg->mutable_connection_state();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_connection_state(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ConnectionStateResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.core.ConnectionStateResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.core.ConnectionState connection_state = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_connection_state()));
         } else {
           goto handle_unusual;
@@ -602,7 +551,7 @@ bool ConnectionStateResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -618,41 +567,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ConnectionStateResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.core.ConnectionStateResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.core.ConnectionState connection_state = 1;
-  if (this->has_connection_state()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::connection_state(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.core.ConnectionStateResponse)
-}
-
-::google::protobuf::uint8* ConnectionStateResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ConnectionStateResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.ConnectionStateResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.core.ConnectionState connection_state = 1;
   if (this->has_connection_state()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::connection_state(this), target);
+        1, _Internal::connection_state(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.ConnectionStateResponse)
   return target;
@@ -662,36 +593,35 @@ size_t ConnectionStateResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.ConnectionStateResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.core.ConnectionState connection_state = 1;
   if (this->has_connection_state()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *connection_state_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ConnectionStateResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void ConnectionStateResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.ConnectionStateResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const ConnectionStateResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<ConnectionStateResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ConnectionStateResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.ConnectionStateResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.ConnectionStateResponse)
     MergeFrom(*source);
@@ -702,7 +632,7 @@ void ConnectionStateResponse::MergeFrom(const ConnectionStateResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ConnectionStateResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_connection_state()) {
@@ -710,7 +640,7 @@ void ConnectionStateResponse::MergeFrom(const ConnectionStateResponse& from) {
   }
 }
 
-void ConnectionStateResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void ConnectionStateResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.ConnectionStateResponse)
   if (&from == this) return;
   Clear();
@@ -728,19 +658,14 @@ bool ConnectionStateResponse::IsInitialized() const {
   return true;
 }
 
-void ConnectionStateResponse::Swap(ConnectionStateResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ConnectionStateResponse::InternalSwap(ConnectionStateResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(connection_state_, other->connection_state_);
 }
 
-::google::protobuf::Metadata ConnectionStateResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_core_2fcore_2eproto);
-  return ::file_level_metadata_core_2fcore_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ConnectionStateResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -748,20 +673,17 @@ void ConnectionStateResponse::InternalSwap(ConnectionStateResponse* other) {
 
 void ListRunningPluginsRequest::InitAsDefaultInstance() {
 }
-class ListRunningPluginsRequest::HasBitSetters {
+class ListRunningPluginsRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ListRunningPluginsRequest::ListRunningPluginsRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.core.ListRunningPluginsRequest)
 }
 ListRunningPluginsRequest::ListRunningPluginsRequest(const ListRunningPluginsRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.ListRunningPluginsRequest)
@@ -782,14 +704,14 @@ void ListRunningPluginsRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ListRunningPluginsRequest& ListRunningPluginsRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ListRunningPluginsRequest_core_2fcore_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ListRunningPluginsRequest_core_2fcore_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ListRunningPluginsRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ListRunningPluginsRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -797,48 +719,46 @@ void ListRunningPluginsRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ListRunningPluginsRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ListRunningPluginsRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ListRunningPluginsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ListRunningPluginsRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.core.ListRunningPluginsRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -851,28 +771,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ListRunningPluginsRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.core.ListRunningPluginsRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.core.ListRunningPluginsRequest)
-}
-
-::google::protobuf::uint8* ListRunningPluginsRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ListRunningPluginsRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.ListRunningPluginsRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.ListRunningPluginsRequest)
   return target;
@@ -882,29 +789,28 @@ size_t ListRunningPluginsRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.ListRunningPluginsRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ListRunningPluginsRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void ListRunningPluginsRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.ListRunningPluginsRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const ListRunningPluginsRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<ListRunningPluginsRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ListRunningPluginsRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.ListRunningPluginsRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.ListRunningPluginsRequest)
     MergeFrom(*source);
@@ -915,12 +821,12 @@ void ListRunningPluginsRequest::MergeFrom(const ListRunningPluginsRequest& from)
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ListRunningPluginsRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void ListRunningPluginsRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void ListRunningPluginsRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.ListRunningPluginsRequest)
   if (&from == this) return;
   Clear();
@@ -938,18 +844,13 @@ bool ListRunningPluginsRequest::IsInitialized() const {
   return true;
 }
 
-void ListRunningPluginsRequest::Swap(ListRunningPluginsRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ListRunningPluginsRequest::InternalSwap(ListRunningPluginsRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata ListRunningPluginsRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_core_2fcore_2eproto);
-  return ::file_level_metadata_core_2fcore_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ListRunningPluginsRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -957,21 +858,17 @@ void ListRunningPluginsRequest::InternalSwap(ListRunningPluginsRequest* other) {
 
 void ListRunningPluginsResponse::InitAsDefaultInstance() {
 }
-class ListRunningPluginsResponse::HasBitSetters {
+class ListRunningPluginsResponse::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ListRunningPluginsResponse::kPluginInfoFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ListRunningPluginsResponse::ListRunningPluginsResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.core.ListRunningPluginsResponse)
 }
 ListRunningPluginsResponse::ListRunningPluginsResponse(const ListRunningPluginsResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       plugin_info_(from.plugin_info_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -979,8 +876,7 @@ ListRunningPluginsResponse::ListRunningPluginsResponse(const ListRunningPluginsR
 }
 
 void ListRunningPluginsResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_ListRunningPluginsResponse_core_2fcore_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_ListRunningPluginsResponse_core_2fcore_2eproto.base);
 }
 
 ListRunningPluginsResponse::~ListRunningPluginsResponse() {
@@ -995,14 +891,14 @@ void ListRunningPluginsResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ListRunningPluginsResponse& ListRunningPluginsResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ListRunningPluginsResponse_core_2fcore_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ListRunningPluginsResponse_core_2fcore_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ListRunningPluginsResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ListRunningPluginsResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1011,68 +907,59 @@ void ListRunningPluginsResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ListRunningPluginsResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ListRunningPluginsResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ListRunningPluginsResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        do {
-          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::mavsdk::rpc::core::PluginInfo::_InternalParse;
-          object = msg->add_plugin_info();
-          if (size > end - ptr) goto len_delim_till_end;
-          ptr += size;
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-              {parser_till_end, object}, ptr - size, ptr));
-          if (ptr >= end) break;
-        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 10 && (ptr += 1));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(add_plugin_info(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ListRunningPluginsResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.core.ListRunningPluginsResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                 input, add_plugin_info()));
         } else {
           goto handle_unusual;
@@ -1085,7 +972,7 @@ bool ListRunningPluginsResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -1101,45 +988,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ListRunningPluginsResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.core.ListRunningPluginsResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->plugin_info_size()); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1,
-      this->plugin_info(static_cast<int>(i)),
-      output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.core.ListRunningPluginsResponse)
-}
-
-::google::protobuf::uint8* ListRunningPluginsResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ListRunningPluginsResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.ListRunningPluginsResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->plugin_info_size()); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->plugin_info(static_cast<int>(i)), target);
+  for (auto it = this->plugin_info_.pointer_begin(),
+            end = this->plugin_info_.pointer_end(); it < end; ++it) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessageToArray(1, **it, target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.ListRunningPluginsResponse)
   return target;
@@ -1149,40 +1014,35 @@ size_t ListRunningPluginsResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.ListRunningPluginsResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.core.PluginInfo plugin_info = 1;
-  {
-    unsigned int count = static_cast<unsigned int>(this->plugin_info_size());
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          this->plugin_info(static_cast<int>(i)));
-    }
+  total_size += 1UL * this->plugin_info_size();
+  for (const auto& msg : this->plugin_info_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ListRunningPluginsResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void ListRunningPluginsResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.ListRunningPluginsResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const ListRunningPluginsResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<ListRunningPluginsResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ListRunningPluginsResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.ListRunningPluginsResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.ListRunningPluginsResponse)
     MergeFrom(*source);
@@ -1193,13 +1053,13 @@ void ListRunningPluginsResponse::MergeFrom(const ListRunningPluginsResponse& fro
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ListRunningPluginsResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   plugin_info_.MergeFrom(from.plugin_info_);
 }
 
-void ListRunningPluginsResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void ListRunningPluginsResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.ListRunningPluginsResponse)
   if (&from == this) return;
   Clear();
@@ -1217,19 +1077,14 @@ bool ListRunningPluginsResponse::IsInitialized() const {
   return true;
 }
 
-void ListRunningPluginsResponse::Swap(ListRunningPluginsResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ListRunningPluginsResponse::InternalSwap(ListRunningPluginsResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  CastToBase(&plugin_info_)->InternalSwap(CastToBase(&other->plugin_info_));
+  plugin_info_.InternalSwap(&other->plugin_info_);
 }
 
-::google::protobuf::Metadata ListRunningPluginsResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_core_2fcore_2eproto);
-  return ::file_level_metadata_core_2fcore_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ListRunningPluginsResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -1237,22 +1092,17 @@ void ListRunningPluginsResponse::InternalSwap(ListRunningPluginsResponse* other)
 
 void ConnectionState::InitAsDefaultInstance() {
 }
-class ConnectionState::HasBitSetters {
+class ConnectionState::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ConnectionState::kUuidFieldNumber;
-const int ConnectionState::kIsConnectedFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ConnectionState::ConnectionState()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.core.ConnectionState)
 }
 ConnectionState::ConnectionState(const ConnectionState& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&uuid_, &from.uuid_,
@@ -1279,14 +1129,14 @@ void ConnectionState::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ConnectionState& ConnectionState::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ConnectionState_core_2fcore_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ConnectionState_core_2fcore_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ConnectionState::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ConnectionState)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1297,65 +1147,63 @@ void ConnectionState::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ConnectionState::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ConnectionState*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ConnectionState::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // uint64 uuid = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        msg->set_uuid(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          uuid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool is_connected = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 16) goto handle_unusual;
-        msg->set_is_connected(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          is_connected_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ConnectionState::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.core.ConnectionState)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // uint64 uuid = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::uint64, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT64>(
                  input, &uuid_)));
         } else {
           goto handle_unusual;
@@ -1365,10 +1213,10 @@ bool ConnectionState::MergePartialFromCodedStream(
 
       // bool is_connected = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_connected_)));
         } else {
           goto handle_unusual;
@@ -1381,7 +1229,7 @@ bool ConnectionState::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -1397,48 +1245,27 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ConnectionState::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.core.ConnectionState)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // uint64 uuid = 1;
-  if (this->uuid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->uuid(), output);
-  }
-
-  // bool is_connected = 2;
-  if (this->is_connected() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->is_connected(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.core.ConnectionState)
-}
-
-::google::protobuf::uint8* ConnectionState::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ConnectionState::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.ConnectionState)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // uint64 uuid = 1;
   if (this->uuid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->uuid(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->uuid(), target);
   }
 
   // bool is_connected = 2;
   if (this->is_connected() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->is_connected(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->is_connected(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.ConnectionState)
   return target;
@@ -1448,19 +1275,14 @@ size_t ConnectionState::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.ConnectionState)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // uint64 uuid = 1;
   if (this->uuid() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->uuid());
   }
 
@@ -1469,20 +1291,24 @@ size_t ConnectionState::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ConnectionState::MergeFrom(const ::google::protobuf::Message& from) {
+void ConnectionState::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.ConnectionState)
   GOOGLE_DCHECK_NE(&from, this);
   const ConnectionState* source =
-      ::google::protobuf::DynamicCastToGenerated<ConnectionState>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ConnectionState>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.ConnectionState)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.ConnectionState)
     MergeFrom(*source);
@@ -1493,7 +1319,7 @@ void ConnectionState::MergeFrom(const ConnectionState& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ConnectionState)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.uuid() != 0) {
@@ -1504,7 +1330,7 @@ void ConnectionState::MergeFrom(const ConnectionState& from) {
   }
 }
 
-void ConnectionState::CopyFrom(const ::google::protobuf::Message& from) {
+void ConnectionState::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.ConnectionState)
   if (&from == this) return;
   Clear();
@@ -1522,10 +1348,6 @@ bool ConnectionState::IsInitialized() const {
   return true;
 }
 
-void ConnectionState::Swap(ConnectionState* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ConnectionState::InternalSwap(ConnectionState* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -1533,9 +1355,8 @@ void ConnectionState::InternalSwap(ConnectionState* other) {
   swap(is_connected_, other->is_connected_);
 }
 
-::google::protobuf::Metadata ConnectionState::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_core_2fcore_2eproto);
-  return ::file_level_metadata_core_2fcore_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ConnectionState::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -1543,42 +1364,35 @@ void ConnectionState::InternalSwap(ConnectionState* other) {
 
 void PluginInfo::InitAsDefaultInstance() {
 }
-class PluginInfo::HasBitSetters {
+class PluginInfo::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int PluginInfo::kNameFieldNumber;
-const int PluginInfo::kAddressFieldNumber;
-const int PluginInfo::kPortFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 PluginInfo::PluginInfo()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.core.PluginInfo)
 }
 PluginInfo::PluginInfo(const PluginInfo& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.name().size() > 0) {
-    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_name().empty()) {
+    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
-  address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.address().size() > 0) {
-    address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.address_);
+  address_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_address().empty()) {
+    address_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.address_);
   }
   port_ = from.port_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.PluginInfo)
 }
 
 void PluginInfo::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_PluginInfo_core_2fcore_2eproto.base);
-  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PluginInfo_core_2fcore_2eproto.base);
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  address_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   port_ = 0;
 }
 
@@ -1588,125 +1402,98 @@ PluginInfo::~PluginInfo() {
 }
 
 void PluginInfo::SharedDtor() {
-  name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  address_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  address_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void PluginInfo::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const PluginInfo& PluginInfo::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_PluginInfo_core_2fcore_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PluginInfo_core_2fcore_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void PluginInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.PluginInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  address_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   port_ = 0;
   _internal_metadata_.Clear();
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* PluginInfo::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<PluginInfo*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* PluginInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // string name = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.core.PluginInfo.name");
-        object = msg->mutable_name();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_name(), ptr, ctx, "mavsdk.rpc.core.PluginInfo.name");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // string address = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.core.PluginInfo.address");
-        object = msg->mutable_address();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_address(), ptr, ctx, "mavsdk.rpc.core.PluginInfo.address");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // int32 port = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 24) goto handle_unusual;
-        msg->set_port(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool PluginInfo::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.core.PluginInfo)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // string name = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_name()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->name().data(), static_cast<int>(this->name().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_name()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.core.PluginInfo.name"));
         } else {
           goto handle_unusual;
@@ -1716,12 +1503,12 @@ bool PluginInfo::MergePartialFromCodedStream(
 
       // string address = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_address()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->address().data(), static_cast<int>(this->address().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_address()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_address().data(), static_cast<int>(this->_internal_address().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.core.PluginInfo.address"));
         } else {
           goto handle_unusual;
@@ -1731,10 +1518,10 @@ bool PluginInfo::MergePartialFromCodedStream(
 
       // int32 port = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (24 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (24 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32>(
                  input, &port_)));
         } else {
           goto handle_unusual;
@@ -1747,7 +1534,7 @@ bool PluginInfo::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -1763,80 +1550,41 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void PluginInfo::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.core.PluginInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string name = 1;
-  if (this->name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->name().data(), static_cast<int>(this->name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.core.PluginInfo.name");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->name(), output);
-  }
-
-  // string address = 2;
-  if (this->address().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->address().data(), static_cast<int>(this->address().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.core.PluginInfo.address");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->address(), output);
-  }
-
-  // int32 port = 3;
-  if (this->port() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->port(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.core.PluginInfo)
-}
-
-::google::protobuf::uint8* PluginInfo::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* PluginInfo::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.PluginInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string name = 1;
   if (this->name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->name().data(), static_cast<int>(this->name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.core.PluginInfo.name");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->name(), target);
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_name(), target);
   }
 
   // string address = 2;
   if (this->address().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->address().data(), static_cast<int>(this->address().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_address().data(), static_cast<int>(this->_internal_address().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.core.PluginInfo.address");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->address(), target);
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_address(), target);
   }
 
   // int32 port = 3;
   if (this->port() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->port(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->port(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.PluginInfo)
   return target;
@@ -1846,50 +1594,49 @@ size_t PluginInfo::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.PluginInfo)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (this->name().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->name());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_name());
   }
 
   // string address = 2;
   if (this->address().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->address());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_address());
   }
 
   // int32 port = 3;
   if (this->port() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
         this->port());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void PluginInfo::MergeFrom(const ::google::protobuf::Message& from) {
+void PluginInfo::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.core.PluginInfo)
   GOOGLE_DCHECK_NE(&from, this);
   const PluginInfo* source =
-      ::google::protobuf::DynamicCastToGenerated<PluginInfo>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PluginInfo>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.core.PluginInfo)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.core.PluginInfo)
     MergeFrom(*source);
@@ -1900,23 +1647,23 @@ void PluginInfo::MergeFrom(const PluginInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.PluginInfo)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.name().size() > 0) {
 
-    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
   }
   if (from.address().size() > 0) {
 
-    address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.address_);
+    address_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.address_);
   }
   if (from.port() != 0) {
     set_port(from.port());
   }
 }
 
-void PluginInfo::CopyFrom(const ::google::protobuf::Message& from) {
+void PluginInfo::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.core.PluginInfo)
   if (&from == this) return;
   Clear();
@@ -1934,23 +1681,18 @@ bool PluginInfo::IsInitialized() const {
   return true;
 }
 
-void PluginInfo::Swap(PluginInfo* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void PluginInfo::InternalSwap(PluginInfo* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  name_.Swap(&other->name_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  address_.Swap(&other->address_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  address_.Swap(&other->address_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(port_, other->port_);
 }
 
-::google::protobuf::Metadata PluginInfo::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_core_2fcore_2eproto);
-  return ::file_level_metadata_core_2fcore_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata PluginInfo::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -1958,8 +1700,7 @@ void PluginInfo::InternalSwap(PluginInfo* other) {
 }  // namespace core
 }  // namespace rpc
 }  // namespace mavsdk
-namespace google {
-namespace protobuf {
+PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::SubscribeConnectionStateRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::core::SubscribeConnectionStateRequest >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::core::SubscribeConnectionStateRequest >(arena);
 }
@@ -1978,8 +1719,7 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::ConnectionState* Arena::Create
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::core::PluginInfo* Arena::CreateMaybeMessage< ::mavsdk::rpc::core::PluginInfo >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::core::PluginInfo >(arena);
 }
-}  // namespace protobuf
-}  // namespace google
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 #include <google/protobuf/port_undef.inc>

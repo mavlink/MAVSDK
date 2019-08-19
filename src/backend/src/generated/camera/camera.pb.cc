@@ -5,842 +5,796 @@
 
 #include <algorithm>
 
-#include <google/protobuf/stubs/common.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite_inl.h>
+#include <google/protobuf/wire_format_lite.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/reflection_ops.h>
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_CameraResult_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_CameraStatus_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_EulerAngle_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Option_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Position_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Quaternion_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_VideoStreamSettings_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_SettingOptions_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_Setting_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<1> scc_info_VideoStreamInfo_camera_2fcamera_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::google::protobuf::internal::SCCInfo<3> scc_info_CaptureInfo_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CameraResult_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CameraStatus_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_CaptureInfo_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_EulerAngle_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Option_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Position_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Quaternion_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Setting_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SettingOptions_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_VideoStreamInfo_camera_2fcamera_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_camera_2fcamera_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_VideoStreamSettings_camera_2fcamera_2eproto;
 namespace mavsdk {
 namespace rpc {
 namespace camera {
 class TakePhotoRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<TakePhotoRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TakePhotoRequest> _instance;
 } _TakePhotoRequest_default_instance_;
 class TakePhotoResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<TakePhotoResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<TakePhotoResponse> _instance;
 } _TakePhotoResponse_default_instance_;
 class StartPhotoIntervalRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StartPhotoIntervalRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartPhotoIntervalRequest> _instance;
 } _StartPhotoIntervalRequest_default_instance_;
 class StartPhotoIntervalResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StartPhotoIntervalResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartPhotoIntervalResponse> _instance;
 } _StartPhotoIntervalResponse_default_instance_;
 class StopPhotoIntervalRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StopPhotoIntervalRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopPhotoIntervalRequest> _instance;
 } _StopPhotoIntervalRequest_default_instance_;
 class StopPhotoIntervalResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StopPhotoIntervalResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopPhotoIntervalResponse> _instance;
 } _StopPhotoIntervalResponse_default_instance_;
 class StartVideoRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StartVideoRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartVideoRequest> _instance;
 } _StartVideoRequest_default_instance_;
 class StartVideoResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StartVideoResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartVideoResponse> _instance;
 } _StartVideoResponse_default_instance_;
 class StopVideoRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StopVideoRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopVideoRequest> _instance;
 } _StopVideoRequest_default_instance_;
 class StopVideoResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StopVideoResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopVideoResponse> _instance;
 } _StopVideoResponse_default_instance_;
 class StartVideoStreamingRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StartVideoStreamingRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartVideoStreamingRequest> _instance;
 } _StartVideoStreamingRequest_default_instance_;
 class StartVideoStreamingResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StartVideoStreamingResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StartVideoStreamingResponse> _instance;
 } _StartVideoStreamingResponse_default_instance_;
 class StopVideoStreamingRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StopVideoStreamingRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopVideoStreamingRequest> _instance;
 } _StopVideoStreamingRequest_default_instance_;
 class StopVideoStreamingResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<StopVideoStreamingResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<StopVideoStreamingResponse> _instance;
 } _StopVideoStreamingResponse_default_instance_;
 class SetModeRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SetModeRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetModeRequest> _instance;
 } _SetModeRequest_default_instance_;
 class SetModeResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SetModeResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetModeResponse> _instance;
 } _SetModeResponse_default_instance_;
 class SubscribeModeRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeModeRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeModeRequest> _instance;
 } _SubscribeModeRequest_default_instance_;
 class ModeResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<ModeResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<ModeResponse> _instance;
 } _ModeResponse_default_instance_;
 class SubscribeVideoStreamInfoRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeVideoStreamInfoRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeVideoStreamInfoRequest> _instance;
 } _SubscribeVideoStreamInfoRequest_default_instance_;
 class VideoStreamInfoResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<VideoStreamInfoResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<VideoStreamInfoResponse> _instance;
 } _VideoStreamInfoResponse_default_instance_;
 class SubscribeCaptureInfoRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeCaptureInfoRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeCaptureInfoRequest> _instance;
 } _SubscribeCaptureInfoRequest_default_instance_;
 class CaptureInfoResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CaptureInfoResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CaptureInfoResponse> _instance;
 } _CaptureInfoResponse_default_instance_;
 class SubscribeCameraStatusRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeCameraStatusRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeCameraStatusRequest> _instance;
 } _SubscribeCameraStatusRequest_default_instance_;
 class CameraStatusResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CameraStatusResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CameraStatusResponse> _instance;
 } _CameraStatusResponse_default_instance_;
 class SubscribeCurrentSettingsRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribeCurrentSettingsRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribeCurrentSettingsRequest> _instance;
 } _SubscribeCurrentSettingsRequest_default_instance_;
 class CurrentSettingsResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CurrentSettingsResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CurrentSettingsResponse> _instance;
 } _CurrentSettingsResponse_default_instance_;
 class SubscribePossibleSettingOptionsRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SubscribePossibleSettingOptionsRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SubscribePossibleSettingOptionsRequest> _instance;
 } _SubscribePossibleSettingOptionsRequest_default_instance_;
 class PossibleSettingOptionsResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<PossibleSettingOptionsResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PossibleSettingOptionsResponse> _instance;
 } _PossibleSettingOptionsResponse_default_instance_;
 class SetSettingRequestDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SetSettingRequest> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetSettingRequest> _instance;
 } _SetSettingRequest_default_instance_;
 class SetSettingResponseDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SetSettingResponse> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SetSettingResponse> _instance;
 } _SetSettingResponse_default_instance_;
 class CameraResultDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CameraResult> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CameraResult> _instance;
 } _CameraResult_default_instance_;
 class CaptureInfoDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CaptureInfo> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CaptureInfo> _instance;
 } _CaptureInfo_default_instance_;
 class PositionDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Position> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Position> _instance;
 } _Position_default_instance_;
 class QuaternionDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Quaternion> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Quaternion> _instance;
 } _Quaternion_default_instance_;
 class EulerAngleDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<EulerAngle> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<EulerAngle> _instance;
 } _EulerAngle_default_instance_;
 class VideoStreamSettingsDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<VideoStreamSettings> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<VideoStreamSettings> _instance;
 } _VideoStreamSettings_default_instance_;
 class VideoStreamInfoDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<VideoStreamInfo> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<VideoStreamInfo> _instance;
 } _VideoStreamInfo_default_instance_;
 class CameraStatusDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<CameraStatus> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<CameraStatus> _instance;
 } _CameraStatus_default_instance_;
 class SettingDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Setting> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Setting> _instance;
 } _Setting_default_instance_;
 class OptionDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Option> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Option> _instance;
 } _Option_default_instance_;
 class SettingOptionsDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SettingOptions> _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SettingOptions> _instance;
 } _SettingOptions_default_instance_;
 }  // namespace camera
 }  // namespace rpc
 }  // namespace mavsdk
-static void InitDefaultsTakePhotoRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_TakePhotoRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::TakePhotoRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::TakePhotoRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_TakePhotoRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsTakePhotoRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsTakePhotoResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_TakePhotoResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::TakePhotoResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::TakePhotoResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_TakePhotoResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsTakePhotoResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsStartPhotoIntervalRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StartPhotoIntervalRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StartPhotoIntervalRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StartPhotoIntervalRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_StartPhotoIntervalRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsStartPhotoIntervalRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsStartPhotoIntervalResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StartPhotoIntervalResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StartPhotoIntervalResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StartPhotoIntervalResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsStartPhotoIntervalResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsStopPhotoIntervalRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StopPhotoIntervalRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StopPhotoIntervalRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StopPhotoIntervalRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_StopPhotoIntervalRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsStopPhotoIntervalRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsStopPhotoIntervalResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StopPhotoIntervalResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StopPhotoIntervalResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StopPhotoIntervalResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsStopPhotoIntervalResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsStartVideoRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StartVideoRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StartVideoRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StartVideoRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_StartVideoRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsStartVideoRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsStartVideoResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StartVideoResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StartVideoResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StartVideoResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_StartVideoResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsStartVideoResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsStopVideoRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StopVideoRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StopVideoRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StopVideoRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_StopVideoRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsStopVideoRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsStopVideoResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StopVideoResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StopVideoResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StopVideoResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_StopVideoResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsStopVideoResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsStartVideoStreamingRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StartVideoStreamingRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StartVideoStreamingRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StartVideoStreamingRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_StartVideoStreamingRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsStartVideoStreamingRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsStartVideoStreamingResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StartVideoStreamingResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StartVideoStreamingResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StartVideoStreamingResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsStartVideoStreamingResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsStopVideoStreamingRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StopVideoStreamingRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StopVideoStreamingRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StopVideoStreamingRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_StopVideoStreamingRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsStopVideoStreamingRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsStopVideoStreamingResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_StopVideoStreamingResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::StopVideoStreamingResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::StopVideoStreamingResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsStopVideoStreamingResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsSetModeRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SetModeRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SetModeRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SetModeRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SetModeRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSetModeRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsSetModeResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SetModeResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SetModeResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SetModeResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_SetModeResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSetModeResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsSubscribeModeRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SubscribeModeRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SubscribeModeRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SubscribeModeRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeModeRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeModeRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsModeResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_ModeResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::ModeResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::ModeResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_ModeResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsModeResponse_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsSubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SubscribeVideoStreamInfoRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsVideoStreamInfoResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_VideoStreamInfoResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::VideoStreamInfoResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::VideoStreamInfoResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsVideoStreamInfoResponse_camera_2fcamera_2eproto}, {
-      &scc_info_VideoStreamInfo_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsSubscribeCaptureInfoRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SubscribeCaptureInfoRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeCaptureInfoRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeCaptureInfoRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsCaptureInfoResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_CaptureInfoResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::CaptureInfoResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::CaptureInfoResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_CaptureInfoResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsCaptureInfoResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CaptureInfo_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsSubscribeCameraStatusRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SubscribeCameraStatusRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SubscribeCameraStatusRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SubscribeCameraStatusRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeCameraStatusRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeCameraStatusRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsCameraStatusResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_CameraStatusResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::CameraStatusResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::CameraStatusResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_CameraStatusResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsCameraStatusResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraStatus_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsSubscribeCurrentSettingsRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SubscribeCurrentSettingsRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribeCurrentSettingsRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribeCurrentSettingsRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsCurrentSettingsResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_CurrentSettingsResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::CurrentSettingsResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::CurrentSettingsResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_CurrentSettingsResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsCurrentSettingsResponse_camera_2fcamera_2eproto}, {
-      &scc_info_Setting_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsSubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SubscribePossibleSettingOptionsRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_SubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsSubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsPossibleSettingOptionsResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_PossibleSettingOptionsResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::PossibleSettingOptionsResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::PossibleSettingOptionsResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsPossibleSettingOptionsResponse_camera_2fcamera_2eproto}, {
-      &scc_info_SettingOptions_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsSetSettingRequest_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SetSettingRequest_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SetSettingRequest();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SetSettingRequest::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_SetSettingRequest_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSetSettingRequest_camera_2fcamera_2eproto}, {
-      &scc_info_Setting_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsSetSettingResponse_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_SetSettingResponse_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::SetSettingResponse();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::SetSettingResponse::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_SetSettingResponse_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSetSettingResponse_camera_2fcamera_2eproto}, {
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsCameraResult_camera_2fcamera_2eproto() {
+static void InitDefaultsscc_info_CameraResult_camera_2fcamera_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::mavsdk::rpc::camera::_CameraResult_default_instance_;
     new (ptr) ::mavsdk::rpc::camera::CameraResult();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
   ::mavsdk::rpc::camera::CameraResult::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_CameraResult_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsCameraResult_camera_2fcamera_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CameraResult_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_CameraResult_camera_2fcamera_2eproto}, {}};
 
-static void InitDefaultsCaptureInfo_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_CaptureInfo_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::CaptureInfo();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::CaptureInfo::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<3> scc_info_CaptureInfo_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 3, InitDefaultsCaptureInfo_camera_2fcamera_2eproto}, {
-      &scc_info_Position_camera_2fcamera_2eproto.base,
-      &scc_info_Quaternion_camera_2fcamera_2eproto.base,
-      &scc_info_EulerAngle_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsPosition_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_Position_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::Position();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::Position::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_Position_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsPosition_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsQuaternion_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_Quaternion_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::Quaternion();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::Quaternion::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_Quaternion_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsQuaternion_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsEulerAngle_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_EulerAngle_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::EulerAngle();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::EulerAngle::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_EulerAngle_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsEulerAngle_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsVideoStreamSettings_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_VideoStreamSettings_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::VideoStreamSettings();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::VideoStreamSettings::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_VideoStreamSettings_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsVideoStreamSettings_camera_2fcamera_2eproto}, {}};
-
-static void InitDefaultsVideoStreamInfo_camera_2fcamera_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::mavsdk::rpc::camera::_VideoStreamInfo_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::VideoStreamInfo();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::mavsdk::rpc::camera::VideoStreamInfo::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<1> scc_info_VideoStreamInfo_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsVideoStreamInfo_camera_2fcamera_2eproto}, {
-      &scc_info_VideoStreamSettings_camera_2fcamera_2eproto.base,}};
-
-static void InitDefaultsCameraStatus_camera_2fcamera_2eproto() {
+static void InitDefaultsscc_info_CameraStatus_camera_2fcamera_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::mavsdk::rpc::camera::_CameraStatus_default_instance_;
     new (ptr) ::mavsdk::rpc::camera::CameraStatus();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
   ::mavsdk::rpc::camera::CameraStatus::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_CameraStatus_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsCameraStatus_camera_2fcamera_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CameraStatus_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_CameraStatus_camera_2fcamera_2eproto}, {}};
 
-static void InitDefaultsSetting_camera_2fcamera_2eproto() {
+static void InitDefaultsscc_info_CameraStatusResponse_camera_2fcamera_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::mavsdk::rpc::camera::_Setting_default_instance_;
-    new (ptr) ::mavsdk::rpc::camera::Setting();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    void* ptr = &::mavsdk::rpc::camera::_CameraStatusResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::CameraStatusResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::mavsdk::rpc::camera::Setting::InitAsDefaultInstance();
+  ::mavsdk::rpc::camera::CameraStatusResponse::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_Setting_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSetting_camera_2fcamera_2eproto}, {
-      &scc_info_Option_camera_2fcamera_2eproto.base,}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_CameraStatusResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_CameraStatusResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraStatus_camera_2fcamera_2eproto.base,}};
 
-static void InitDefaultsOption_camera_2fcamera_2eproto() {
+static void InitDefaultsscc_info_CaptureInfo_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_CaptureInfo_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::CaptureInfo();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::CaptureInfo::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<3> scc_info_CaptureInfo_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 3, 0, InitDefaultsscc_info_CaptureInfo_camera_2fcamera_2eproto}, {
+      &scc_info_Position_camera_2fcamera_2eproto.base,
+      &scc_info_Quaternion_camera_2fcamera_2eproto.base,
+      &scc_info_EulerAngle_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_CaptureInfoResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_CaptureInfoResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::CaptureInfoResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::CaptureInfoResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_CaptureInfoResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_CaptureInfoResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CaptureInfo_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_CurrentSettingsResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_CurrentSettingsResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::CurrentSettingsResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::CurrentSettingsResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_CurrentSettingsResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_CurrentSettingsResponse_camera_2fcamera_2eproto}, {
+      &scc_info_Setting_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_EulerAngle_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_EulerAngle_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::EulerAngle();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::EulerAngle::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_EulerAngle_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_EulerAngle_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_ModeResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_ModeResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::ModeResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::ModeResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_ModeResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_ModeResponse_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_Option_camera_2fcamera_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::mavsdk::rpc::camera::_Option_default_instance_;
     new (ptr) ::mavsdk::rpc::camera::Option();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
   ::mavsdk::rpc::camera::Option::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<0> scc_info_Option_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsOption_camera_2fcamera_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Option_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Option_camera_2fcamera_2eproto}, {}};
 
-static void InitDefaultsSettingOptions_camera_2fcamera_2eproto() {
+static void InitDefaultsscc_info_Position_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_Position_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::Position();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::Position::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Position_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Position_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_PossibleSettingOptionsResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::PossibleSettingOptionsResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::PossibleSettingOptionsResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto}, {
+      &scc_info_SettingOptions_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_Quaternion_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_Quaternion_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::Quaternion();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::Quaternion::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Quaternion_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Quaternion_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_SetModeRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SetModeRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SetModeRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SetModeRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SetModeRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SetModeRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_SetModeResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SetModeResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SetModeResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SetModeResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetModeResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetModeResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_SetSettingRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SetSettingRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SetSettingRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SetSettingRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetSettingRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetSettingRequest_camera_2fcamera_2eproto}, {
+      &scc_info_Setting_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_SetSettingResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SetSettingResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SetSettingResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SetSettingResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SetSettingResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SetSettingResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_Setting_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_Setting_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::Setting();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::Setting::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Setting_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Setting_camera_2fcamera_2eproto}, {
+      &scc_info_Option_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_SettingOptions_camera_2fcamera_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::mavsdk::rpc::camera::_SettingOptions_default_instance_;
     new (ptr) ::mavsdk::rpc::camera::SettingOptions();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
   ::mavsdk::rpc::camera::SettingOptions::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_SettingOptions_camera_2fcamera_2eproto =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSettingOptions_camera_2fcamera_2eproto}, {
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SettingOptions_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SettingOptions_camera_2fcamera_2eproto}, {
       &scc_info_Option_camera_2fcamera_2eproto.base,}};
 
-void InitDefaults_camera_2fcamera_2eproto() {
-  ::google::protobuf::internal::InitSCC(&scc_info_TakePhotoRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_TakePhotoResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StartPhotoIntervalRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StopPhotoIntervalRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StartVideoRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StartVideoResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StopVideoRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StopVideoResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StartVideoStreamingRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StopVideoStreamingRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SetModeRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SetModeResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeModeRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_ModeResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeCaptureInfoRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CaptureInfoResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeCameraStatusRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CameraStatusResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribeCurrentSettingsRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CurrentSettingsResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SetSettingRequest_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SetSettingResponse_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CameraResult_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CaptureInfo_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Position_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Quaternion_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_EulerAngle_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_VideoStreamSettings_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_VideoStreamInfo_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_CameraStatus_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Setting_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Option_camera_2fcamera_2eproto.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_SettingOptions_camera_2fcamera_2eproto.base);
+static void InitDefaultsscc_info_StartPhotoIntervalRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StartPhotoIntervalRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StartPhotoIntervalRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StartPhotoIntervalRequest::InitAsDefaultInstance();
 }
 
-::google::protobuf::Metadata file_level_metadata_camera_2fcamera_2eproto[41];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors_camera_2fcamera_2eproto[4];
-constexpr ::google::protobuf::ServiceDescriptor const** file_level_service_descriptors_camera_2fcamera_2eproto = nullptr;
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StartPhotoIntervalRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StartPhotoIntervalRequest_camera_2fcamera_2eproto}, {}};
 
-const ::google::protobuf::uint32 TableStruct_camera_2fcamera_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+static void InitDefaultsscc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StartPhotoIntervalResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StartPhotoIntervalResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StartPhotoIntervalResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_StartVideoRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StartVideoRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StartVideoRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StartVideoRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StartVideoRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StartVideoRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_StartVideoResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StartVideoResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StartVideoResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StartVideoResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StartVideoResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StartVideoResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_StartVideoStreamingRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StartVideoStreamingRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StartVideoStreamingRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StartVideoStreamingRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StartVideoStreamingRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StartVideoStreamingRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StartVideoStreamingResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StartVideoStreamingResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StartVideoStreamingResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_StopPhotoIntervalRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StopPhotoIntervalRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StopPhotoIntervalRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StopPhotoIntervalRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StopPhotoIntervalRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StopPhotoIntervalRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StopPhotoIntervalResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StopPhotoIntervalResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StopPhotoIntervalResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_StopVideoRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StopVideoRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StopVideoRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StopVideoRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StopVideoRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StopVideoRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_StopVideoResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StopVideoResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StopVideoResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StopVideoResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StopVideoResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StopVideoResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_StopVideoStreamingRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StopVideoStreamingRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StopVideoStreamingRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StopVideoStreamingRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StopVideoStreamingRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_StopVideoStreamingRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_StopVideoStreamingResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::StopVideoStreamingResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::StopVideoStreamingResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_SubscribeCameraStatusRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SubscribeCameraStatusRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SubscribeCameraStatusRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SubscribeCameraStatusRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeCameraStatusRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeCameraStatusRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeCaptureInfoRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SubscribeCaptureInfoRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SubscribeCaptureInfoRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeCaptureInfoRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeCaptureInfoRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeCurrentSettingsRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SubscribeCurrentSettingsRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SubscribeCurrentSettingsRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeCurrentSettingsRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeCurrentSettingsRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeModeRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SubscribeModeRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SubscribeModeRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SubscribeModeRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeModeRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeModeRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SubscribePossibleSettingOptionsRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_SubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_SubscribeVideoStreamInfoRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_TakePhotoRequest_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_TakePhotoRequest_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::TakePhotoRequest();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::TakePhotoRequest::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_TakePhotoRequest_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_TakePhotoRequest_camera_2fcamera_2eproto}, {}};
+
+static void InitDefaultsscc_info_TakePhotoResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_TakePhotoResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::TakePhotoResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::TakePhotoResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_TakePhotoResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_TakePhotoResponse_camera_2fcamera_2eproto}, {
+      &scc_info_CameraResult_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_VideoStreamInfo_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_VideoStreamInfo_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::VideoStreamInfo();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::VideoStreamInfo::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_VideoStreamInfo_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_VideoStreamInfo_camera_2fcamera_2eproto}, {
+      &scc_info_VideoStreamSettings_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_VideoStreamInfoResponse_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::VideoStreamInfoResponse();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::VideoStreamInfoResponse::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto}, {
+      &scc_info_VideoStreamInfo_camera_2fcamera_2eproto.base,}};
+
+static void InitDefaultsscc_info_VideoStreamSettings_camera_2fcamera_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::mavsdk::rpc::camera::_VideoStreamSettings_default_instance_;
+    new (ptr) ::mavsdk::rpc::camera::VideoStreamSettings();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::mavsdk::rpc::camera::VideoStreamSettings::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_VideoStreamSettings_camera_2fcamera_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_VideoStreamSettings_camera_2fcamera_2eproto}, {}};
+
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_camera_2fcamera_2eproto[41];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_camera_2fcamera_2eproto[4];
+static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_camera_2fcamera_2eproto = nullptr;
+
+const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_camera_2fcamera_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::TakePhotoRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1109,7 +1063,7 @@ const ::google::protobuf::uint32 TableStruct_camera_2fcamera_2eproto::offsets[] 
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::SettingOptions, setting_description_),
   PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::SettingOptions, options_),
 };
-static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::mavsdk::rpc::camera::TakePhotoRequest)},
   { 5, -1, sizeof(::mavsdk::rpc::camera::TakePhotoResponse)},
   { 11, -1, sizeof(::mavsdk::rpc::camera::StartPhotoIntervalRequest)},
@@ -1153,57 +1107,51 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SE
   { 259, -1, sizeof(::mavsdk::rpc::camera::SettingOptions)},
 };
 
-static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_TakePhotoRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_TakePhotoResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StartPhotoIntervalRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StartPhotoIntervalResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StopPhotoIntervalRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StopPhotoIntervalResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StartVideoRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StartVideoResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StopVideoRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StopVideoResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StartVideoStreamingRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StartVideoStreamingResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StopVideoStreamingRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_StopVideoStreamingResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SetModeRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SetModeResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SubscribeModeRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_ModeResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SubscribeVideoStreamInfoRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_VideoStreamInfoResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SubscribeCaptureInfoRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_CaptureInfoResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SubscribeCameraStatusRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_CameraStatusResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SubscribeCurrentSettingsRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_CurrentSettingsResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SubscribePossibleSettingOptionsRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_PossibleSettingOptionsResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SetSettingRequest_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SetSettingResponse_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_CameraResult_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_CaptureInfo_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_Position_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_Quaternion_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_EulerAngle_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_VideoStreamSettings_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_VideoStreamInfo_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_CameraStatus_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_Setting_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_Option_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::mavsdk::rpc::camera::_SettingOptions_default_instance_),
+static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_TakePhotoRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_TakePhotoResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StartPhotoIntervalRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StartPhotoIntervalResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StopPhotoIntervalRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StopPhotoIntervalResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StartVideoRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StartVideoResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StopVideoRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StopVideoResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StartVideoStreamingRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StartVideoStreamingResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StopVideoStreamingRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_StopVideoStreamingResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SetModeRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SetModeResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SubscribeModeRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_ModeResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SubscribeVideoStreamInfoRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_VideoStreamInfoResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SubscribeCaptureInfoRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_CaptureInfoResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SubscribeCameraStatusRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_CameraStatusResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SubscribeCurrentSettingsRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_CurrentSettingsResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SubscribePossibleSettingOptionsRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_PossibleSettingOptionsResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SetSettingRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SetSettingResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_CameraResult_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_CaptureInfo_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_Position_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_Quaternion_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_EulerAngle_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_VideoStreamSettings_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_VideoStreamInfo_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_CameraStatus_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_Setting_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_Option_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::mavsdk::rpc::camera::_SettingOptions_default_instance_),
 };
 
-::google::protobuf::internal::AssignDescriptorsTable assign_descriptors_table_camera_2fcamera_2eproto = {
-  {}, AddDescriptors_camera_2fcamera_2eproto, "camera/camera.proto", schemas,
-  file_default_instances, TableStruct_camera_2fcamera_2eproto::offsets,
-  file_level_metadata_camera_2fcamera_2eproto, 41, file_level_enum_descriptors_camera_2fcamera_2eproto, file_level_service_descriptors_camera_2fcamera_2eproto,
-};
-
-const char descriptor_table_protodef_camera_2fcamera_2eproto[] =
+const char descriptor_table_protodef_camera_2fcamera_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\023camera/camera.proto\022\021mavsdk.rpc.camera"
   "\"\022\n\020TakePhotoRequest\"K\n\021TakePhotoRespons"
   "e\0226\n\rcamera_result\030\001 \001(\0132\037.mavsdk.rpc.ca"
@@ -1337,26 +1285,67 @@ const char descriptor_table_protodef_camera_2fcamera_2eproto[] =
   "k.rpc.camera.SetSettingResponse\"\000B\037\n\020io."
   "mavsdk.cameraB\013CameraProtob\006proto3"
   ;
-::google::protobuf::internal::DescriptorTable descriptor_table_camera_2fcamera_2eproto = {
-  false, InitDefaults_camera_2fcamera_2eproto, 
-  descriptor_table_protodef_camera_2fcamera_2eproto,
-  "camera/camera.proto", &assign_descriptors_table_camera_2fcamera_2eproto, 5274,
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_camera_2fcamera_2eproto_deps[1] = {
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_camera_2fcamera_2eproto_sccs[41] = {
+  &scc_info_CameraResult_camera_2fcamera_2eproto.base,
+  &scc_info_CameraStatus_camera_2fcamera_2eproto.base,
+  &scc_info_CameraStatusResponse_camera_2fcamera_2eproto.base,
+  &scc_info_CaptureInfo_camera_2fcamera_2eproto.base,
+  &scc_info_CaptureInfoResponse_camera_2fcamera_2eproto.base,
+  &scc_info_CurrentSettingsResponse_camera_2fcamera_2eproto.base,
+  &scc_info_EulerAngle_camera_2fcamera_2eproto.base,
+  &scc_info_ModeResponse_camera_2fcamera_2eproto.base,
+  &scc_info_Option_camera_2fcamera_2eproto.base,
+  &scc_info_Position_camera_2fcamera_2eproto.base,
+  &scc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto.base,
+  &scc_info_Quaternion_camera_2fcamera_2eproto.base,
+  &scc_info_SetModeRequest_camera_2fcamera_2eproto.base,
+  &scc_info_SetModeResponse_camera_2fcamera_2eproto.base,
+  &scc_info_SetSettingRequest_camera_2fcamera_2eproto.base,
+  &scc_info_SetSettingResponse_camera_2fcamera_2eproto.base,
+  &scc_info_Setting_camera_2fcamera_2eproto.base,
+  &scc_info_SettingOptions_camera_2fcamera_2eproto.base,
+  &scc_info_StartPhotoIntervalRequest_camera_2fcamera_2eproto.base,
+  &scc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto.base,
+  &scc_info_StartVideoRequest_camera_2fcamera_2eproto.base,
+  &scc_info_StartVideoResponse_camera_2fcamera_2eproto.base,
+  &scc_info_StartVideoStreamingRequest_camera_2fcamera_2eproto.base,
+  &scc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto.base,
+  &scc_info_StopPhotoIntervalRequest_camera_2fcamera_2eproto.base,
+  &scc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto.base,
+  &scc_info_StopVideoRequest_camera_2fcamera_2eproto.base,
+  &scc_info_StopVideoResponse_camera_2fcamera_2eproto.base,
+  &scc_info_StopVideoStreamingRequest_camera_2fcamera_2eproto.base,
+  &scc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto.base,
+  &scc_info_SubscribeCameraStatusRequest_camera_2fcamera_2eproto.base,
+  &scc_info_SubscribeCaptureInfoRequest_camera_2fcamera_2eproto.base,
+  &scc_info_SubscribeCurrentSettingsRequest_camera_2fcamera_2eproto.base,
+  &scc_info_SubscribeModeRequest_camera_2fcamera_2eproto.base,
+  &scc_info_SubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto.base,
+  &scc_info_SubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto.base,
+  &scc_info_TakePhotoRequest_camera_2fcamera_2eproto.base,
+  &scc_info_TakePhotoResponse_camera_2fcamera_2eproto.base,
+  &scc_info_VideoStreamInfo_camera_2fcamera_2eproto.base,
+  &scc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto.base,
+  &scc_info_VideoStreamSettings_camera_2fcamera_2eproto.base,
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_camera_2fcamera_2eproto_once;
+static bool descriptor_table_camera_2fcamera_2eproto_initialized = false;
+const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_camera_2fcamera_2eproto = {
+  &descriptor_table_camera_2fcamera_2eproto_initialized, descriptor_table_protodef_camera_2fcamera_2eproto, "camera/camera.proto", 5274,
+  &descriptor_table_camera_2fcamera_2eproto_once, descriptor_table_camera_2fcamera_2eproto_sccs, descriptor_table_camera_2fcamera_2eproto_deps, 41, 0,
+  schemas, file_default_instances, TableStruct_camera_2fcamera_2eproto::offsets,
+  file_level_metadata_camera_2fcamera_2eproto, 41, file_level_enum_descriptors_camera_2fcamera_2eproto, file_level_service_descriptors_camera_2fcamera_2eproto,
 };
 
-void AddDescriptors_camera_2fcamera_2eproto() {
-  static constexpr ::google::protobuf::internal::InitFunc deps[1] =
-  {
-  };
- ::google::protobuf::internal::AddDescriptors(&descriptor_table_camera_2fcamera_2eproto, deps, 0);
-}
-
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_camera_2fcamera_2eproto = []() { AddDescriptors_camera_2fcamera_2eproto(); return true; }();
+static bool dynamic_init_dummy_camera_2fcamera_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_camera_2fcamera_2eproto), true);
 namespace mavsdk {
 namespace rpc {
 namespace camera {
-const ::google::protobuf::EnumDescriptor* CameraResult_Result_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&assign_descriptors_table_camera_2fcamera_2eproto);
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CameraResult_Result_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
   return file_level_enum_descriptors_camera_2fcamera_2eproto[0];
 }
 bool CameraResult_Result_IsValid(int value) {
@@ -1375,21 +1364,21 @@ bool CameraResult_Result_IsValid(int value) {
   }
 }
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const CameraResult_Result CameraResult::UNKNOWN;
-const CameraResult_Result CameraResult::SUCCESS;
-const CameraResult_Result CameraResult::IN_PROGRESS;
-const CameraResult_Result CameraResult::BUSY;
-const CameraResult_Result CameraResult::DENIED;
-const CameraResult_Result CameraResult::ERROR;
-const CameraResult_Result CameraResult::TIMEOUT;
-const CameraResult_Result CameraResult::WRONG_ARGUMENT;
-const CameraResult_Result CameraResult::Result_MIN;
-const CameraResult_Result CameraResult::Result_MAX;
-const int CameraResult::Result_ARRAYSIZE;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-const ::google::protobuf::EnumDescriptor* VideoStreamInfo_VideoStreamStatus_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&assign_descriptors_table_camera_2fcamera_2eproto);
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+constexpr CameraResult_Result CameraResult::UNKNOWN;
+constexpr CameraResult_Result CameraResult::SUCCESS;
+constexpr CameraResult_Result CameraResult::IN_PROGRESS;
+constexpr CameraResult_Result CameraResult::BUSY;
+constexpr CameraResult_Result CameraResult::DENIED;
+constexpr CameraResult_Result CameraResult::ERROR;
+constexpr CameraResult_Result CameraResult::TIMEOUT;
+constexpr CameraResult_Result CameraResult::WRONG_ARGUMENT;
+constexpr CameraResult_Result CameraResult::Result_MIN;
+constexpr CameraResult_Result CameraResult::Result_MAX;
+constexpr int CameraResult::Result_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* VideoStreamInfo_VideoStreamStatus_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
   return file_level_enum_descriptors_camera_2fcamera_2eproto[1];
 }
 bool VideoStreamInfo_VideoStreamStatus_IsValid(int value) {
@@ -1402,15 +1391,15 @@ bool VideoStreamInfo_VideoStreamStatus_IsValid(int value) {
   }
 }
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const VideoStreamInfo_VideoStreamStatus VideoStreamInfo::NOT_RUNNING;
-const VideoStreamInfo_VideoStreamStatus VideoStreamInfo::IN_PROGRESS;
-const VideoStreamInfo_VideoStreamStatus VideoStreamInfo::VideoStreamStatus_MIN;
-const VideoStreamInfo_VideoStreamStatus VideoStreamInfo::VideoStreamStatus_MAX;
-const int VideoStreamInfo::VideoStreamStatus_ARRAYSIZE;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-const ::google::protobuf::EnumDescriptor* CameraStatus_StorageStatus_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&assign_descriptors_table_camera_2fcamera_2eproto);
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo::NOT_RUNNING;
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo::IN_PROGRESS;
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo::VideoStreamStatus_MIN;
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo::VideoStreamStatus_MAX;
+constexpr int VideoStreamInfo::VideoStreamStatus_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CameraStatus_StorageStatus_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
   return file_level_enum_descriptors_camera_2fcamera_2eproto[2];
 }
 bool CameraStatus_StorageStatus_IsValid(int value) {
@@ -1424,16 +1413,16 @@ bool CameraStatus_StorageStatus_IsValid(int value) {
   }
 }
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const CameraStatus_StorageStatus CameraStatus::NOT_AVAILABLE;
-const CameraStatus_StorageStatus CameraStatus::UNFORMATTED;
-const CameraStatus_StorageStatus CameraStatus::FORMATTED;
-const CameraStatus_StorageStatus CameraStatus::StorageStatus_MIN;
-const CameraStatus_StorageStatus CameraStatus::StorageStatus_MAX;
-const int CameraStatus::StorageStatus_ARRAYSIZE;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-const ::google::protobuf::EnumDescriptor* CameraMode_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&assign_descriptors_table_camera_2fcamera_2eproto);
+#if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+constexpr CameraStatus_StorageStatus CameraStatus::NOT_AVAILABLE;
+constexpr CameraStatus_StorageStatus CameraStatus::UNFORMATTED;
+constexpr CameraStatus_StorageStatus CameraStatus::FORMATTED;
+constexpr CameraStatus_StorageStatus CameraStatus::StorageStatus_MIN;
+constexpr CameraStatus_StorageStatus CameraStatus::StorageStatus_MAX;
+constexpr int CameraStatus::StorageStatus_ARRAYSIZE;
+#endif  // (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CameraMode_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
   return file_level_enum_descriptors_camera_2fcamera_2eproto[3];
 }
 bool CameraMode_IsValid(int value) {
@@ -1452,20 +1441,17 @@ bool CameraMode_IsValid(int value) {
 
 void TakePhotoRequest::InitAsDefaultInstance() {
 }
-class TakePhotoRequest::HasBitSetters {
+class TakePhotoRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 TakePhotoRequest::TakePhotoRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.TakePhotoRequest)
 }
 TakePhotoRequest::TakePhotoRequest(const TakePhotoRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.TakePhotoRequest)
@@ -1486,14 +1472,14 @@ void TakePhotoRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const TakePhotoRequest& TakePhotoRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_TakePhotoRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TakePhotoRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void TakePhotoRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.TakePhotoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1501,48 +1487,46 @@ void TakePhotoRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* TakePhotoRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<TakePhotoRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* TakePhotoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool TakePhotoRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.TakePhotoRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -1555,28 +1539,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void TakePhotoRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.TakePhotoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.TakePhotoRequest)
-}
-
-::google::protobuf::uint8* TakePhotoRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* TakePhotoRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.TakePhotoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.TakePhotoRequest)
   return target;
@@ -1586,29 +1557,28 @@ size_t TakePhotoRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.TakePhotoRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void TakePhotoRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void TakePhotoRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.TakePhotoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const TakePhotoRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<TakePhotoRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TakePhotoRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.TakePhotoRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.TakePhotoRequest)
     MergeFrom(*source);
@@ -1619,12 +1589,12 @@ void TakePhotoRequest::MergeFrom(const TakePhotoRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.TakePhotoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void TakePhotoRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void TakePhotoRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.TakePhotoRequest)
   if (&from == this) return;
   Clear();
@@ -1642,18 +1612,13 @@ bool TakePhotoRequest::IsInitialized() const {
   return true;
 }
 
-void TakePhotoRequest::Swap(TakePhotoRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void TakePhotoRequest::InternalSwap(TakePhotoRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata TakePhotoRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata TakePhotoRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -1663,26 +1628,22 @@ void TakePhotoResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_TakePhotoResponse_default_instance_._instance.get_mutable()->camera_result_ = const_cast< ::mavsdk::rpc::camera::CameraResult*>(
       ::mavsdk::rpc::camera::CameraResult::internal_default_instance());
 }
-class TakePhotoResponse::HasBitSetters {
+class TakePhotoResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraResult& camera_result(const TakePhotoResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraResult&
-TakePhotoResponse::HasBitSetters::camera_result(const TakePhotoResponse* msg) {
+TakePhotoResponse::_Internal::camera_result(const TakePhotoResponse* msg) {
   return *msg->camera_result_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int TakePhotoResponse::kCameraResultFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 TakePhotoResponse::TakePhotoResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.TakePhotoResponse)
 }
 TakePhotoResponse::TakePhotoResponse(const TakePhotoResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_result()) {
@@ -1694,8 +1655,7 @@ TakePhotoResponse::TakePhotoResponse(const TakePhotoResponse& from)
 }
 
 void TakePhotoResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_TakePhotoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_TakePhotoResponse_camera_2fcamera_2eproto.base);
   camera_result_ = nullptr;
 }
 
@@ -1712,14 +1672,14 @@ void TakePhotoResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const TakePhotoResponse& TakePhotoResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_TakePhotoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_TakePhotoResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void TakePhotoResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.TakePhotoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1731,65 +1691,54 @@ void TakePhotoResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* TakePhotoResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<TakePhotoResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* TakePhotoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraResult::_InternalParse;
-        object = msg->mutable_camera_result();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool TakePhotoResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.TakePhotoResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_result()));
         } else {
           goto handle_unusual;
@@ -1802,7 +1751,7 @@ bool TakePhotoResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -1818,41 +1767,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void TakePhotoResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.TakePhotoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  if (this->has_camera_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_result(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.TakePhotoResponse)
-}
-
-::google::protobuf::uint8* TakePhotoResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* TakePhotoResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.TakePhotoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_result(this), target);
+        1, _Internal::camera_result(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.TakePhotoResponse)
   return target;
@@ -1862,36 +1793,35 @@ size_t TakePhotoResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.TakePhotoResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_result_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void TakePhotoResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void TakePhotoResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.TakePhotoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const TakePhotoResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<TakePhotoResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<TakePhotoResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.TakePhotoResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.TakePhotoResponse)
     MergeFrom(*source);
@@ -1902,7 +1832,7 @@ void TakePhotoResponse::MergeFrom(const TakePhotoResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.TakePhotoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
@@ -1910,7 +1840,7 @@ void TakePhotoResponse::MergeFrom(const TakePhotoResponse& from) {
   }
 }
 
-void TakePhotoResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void TakePhotoResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.TakePhotoResponse)
   if (&from == this) return;
   Clear();
@@ -1928,19 +1858,14 @@ bool TakePhotoResponse::IsInitialized() const {
   return true;
 }
 
-void TakePhotoResponse::Swap(TakePhotoResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void TakePhotoResponse::InternalSwap(TakePhotoResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_result_, other->camera_result_);
 }
 
-::google::protobuf::Metadata TakePhotoResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata TakePhotoResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -1948,21 +1873,17 @@ void TakePhotoResponse::InternalSwap(TakePhotoResponse* other) {
 
 void StartPhotoIntervalRequest::InitAsDefaultInstance() {
 }
-class StartPhotoIntervalRequest::HasBitSetters {
+class StartPhotoIntervalRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int StartPhotoIntervalRequest::kIntervalSFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StartPhotoIntervalRequest::StartPhotoIntervalRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StartPhotoIntervalRequest)
 }
 StartPhotoIntervalRequest::StartPhotoIntervalRequest(const StartPhotoIntervalRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   interval_s_ = from.interval_s_;
@@ -1985,14 +1906,14 @@ void StartPhotoIntervalRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StartPhotoIntervalRequest& StartPhotoIntervalRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StartPhotoIntervalRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartPhotoIntervalRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StartPhotoIntervalRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2001,58 +1922,56 @@ void StartPhotoIntervalRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StartPhotoIntervalRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StartPhotoIntervalRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StartPhotoIntervalRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // float interval_s = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 13) goto handle_unusual;
-        msg->set_interval_s(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          interval_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StartPhotoIntervalRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // float interval_s = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (13 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &interval_s_)));
         } else {
           goto handle_unusual;
@@ -2065,7 +1984,7 @@ bool StartPhotoIntervalRequest::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -2081,38 +2000,21 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StartPhotoIntervalRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // float interval_s = 1;
-  if (this->interval_s() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->interval_s(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StartPhotoIntervalRequest)
-}
-
-::google::protobuf::uint8* StartPhotoIntervalRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StartPhotoIntervalRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float interval_s = 1;
-  if (this->interval_s() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->interval_s(), target);
+  if (!(this->interval_s() <= 0 && this->interval_s() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->interval_s(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StartPhotoIntervalRequest)
   return target;
@@ -2122,34 +2024,33 @@ size_t StartPhotoIntervalRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float interval_s = 1;
-  if (this->interval_s() != 0) {
+  if (!(this->interval_s() <= 0 && this->interval_s() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StartPhotoIntervalRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void StartPhotoIntervalRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const StartPhotoIntervalRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<StartPhotoIntervalRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StartPhotoIntervalRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StartPhotoIntervalRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StartPhotoIntervalRequest)
     MergeFrom(*source);
@@ -2160,15 +2061,15 @@ void StartPhotoIntervalRequest::MergeFrom(const StartPhotoIntervalRequest& from)
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.interval_s() != 0) {
+  if (!(from.interval_s() <= 0 && from.interval_s() >= 0)) {
     set_interval_s(from.interval_s());
   }
 }
 
-void StartPhotoIntervalRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void StartPhotoIntervalRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StartPhotoIntervalRequest)
   if (&from == this) return;
   Clear();
@@ -2186,19 +2087,14 @@ bool StartPhotoIntervalRequest::IsInitialized() const {
   return true;
 }
 
-void StartPhotoIntervalRequest::Swap(StartPhotoIntervalRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StartPhotoIntervalRequest::InternalSwap(StartPhotoIntervalRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(interval_s_, other->interval_s_);
 }
 
-::google::protobuf::Metadata StartPhotoIntervalRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StartPhotoIntervalRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -2208,26 +2104,22 @@ void StartPhotoIntervalResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_StartPhotoIntervalResponse_default_instance_._instance.get_mutable()->camera_result_ = const_cast< ::mavsdk::rpc::camera::CameraResult*>(
       ::mavsdk::rpc::camera::CameraResult::internal_default_instance());
 }
-class StartPhotoIntervalResponse::HasBitSetters {
+class StartPhotoIntervalResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraResult& camera_result(const StartPhotoIntervalResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraResult&
-StartPhotoIntervalResponse::HasBitSetters::camera_result(const StartPhotoIntervalResponse* msg) {
+StartPhotoIntervalResponse::_Internal::camera_result(const StartPhotoIntervalResponse* msg) {
   return *msg->camera_result_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int StartPhotoIntervalResponse::kCameraResultFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StartPhotoIntervalResponse::StartPhotoIntervalResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StartPhotoIntervalResponse)
 }
 StartPhotoIntervalResponse::StartPhotoIntervalResponse(const StartPhotoIntervalResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_result()) {
@@ -2239,8 +2131,7 @@ StartPhotoIntervalResponse::StartPhotoIntervalResponse(const StartPhotoIntervalR
 }
 
 void StartPhotoIntervalResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto.base);
   camera_result_ = nullptr;
 }
 
@@ -2257,14 +2148,14 @@ void StartPhotoIntervalResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StartPhotoIntervalResponse& StartPhotoIntervalResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartPhotoIntervalResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StartPhotoIntervalResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2276,65 +2167,54 @@ void StartPhotoIntervalResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StartPhotoIntervalResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StartPhotoIntervalResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StartPhotoIntervalResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraResult::_InternalParse;
-        object = msg->mutable_camera_result();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StartPhotoIntervalResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_result()));
         } else {
           goto handle_unusual;
@@ -2347,7 +2227,7 @@ bool StartPhotoIntervalResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -2363,41 +2243,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StartPhotoIntervalResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  if (this->has_camera_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_result(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StartPhotoIntervalResponse)
-}
-
-::google::protobuf::uint8* StartPhotoIntervalResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StartPhotoIntervalResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_result(this), target);
+        1, _Internal::camera_result(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StartPhotoIntervalResponse)
   return target;
@@ -2407,36 +2269,35 @@ size_t StartPhotoIntervalResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_result_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StartPhotoIntervalResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void StartPhotoIntervalResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const StartPhotoIntervalResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<StartPhotoIntervalResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StartPhotoIntervalResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StartPhotoIntervalResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StartPhotoIntervalResponse)
     MergeFrom(*source);
@@ -2447,7 +2308,7 @@ void StartPhotoIntervalResponse::MergeFrom(const StartPhotoIntervalResponse& fro
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
@@ -2455,7 +2316,7 @@ void StartPhotoIntervalResponse::MergeFrom(const StartPhotoIntervalResponse& fro
   }
 }
 
-void StartPhotoIntervalResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void StartPhotoIntervalResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StartPhotoIntervalResponse)
   if (&from == this) return;
   Clear();
@@ -2473,19 +2334,14 @@ bool StartPhotoIntervalResponse::IsInitialized() const {
   return true;
 }
 
-void StartPhotoIntervalResponse::Swap(StartPhotoIntervalResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StartPhotoIntervalResponse::InternalSwap(StartPhotoIntervalResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_result_, other->camera_result_);
 }
 
-::google::protobuf::Metadata StartPhotoIntervalResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StartPhotoIntervalResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -2493,20 +2349,17 @@ void StartPhotoIntervalResponse::InternalSwap(StartPhotoIntervalResponse* other)
 
 void StopPhotoIntervalRequest::InitAsDefaultInstance() {
 }
-class StopPhotoIntervalRequest::HasBitSetters {
+class StopPhotoIntervalRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StopPhotoIntervalRequest::StopPhotoIntervalRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StopPhotoIntervalRequest)
 }
 StopPhotoIntervalRequest::StopPhotoIntervalRequest(const StopPhotoIntervalRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.StopPhotoIntervalRequest)
@@ -2527,14 +2380,14 @@ void StopPhotoIntervalRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StopPhotoIntervalRequest& StopPhotoIntervalRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StopPhotoIntervalRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopPhotoIntervalRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StopPhotoIntervalRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2542,48 +2395,46 @@ void StopPhotoIntervalRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StopPhotoIntervalRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StopPhotoIntervalRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StopPhotoIntervalRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StopPhotoIntervalRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -2596,28 +2447,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StopPhotoIntervalRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StopPhotoIntervalRequest)
-}
-
-::google::protobuf::uint8* StopPhotoIntervalRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StopPhotoIntervalRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StopPhotoIntervalRequest)
   return target;
@@ -2627,29 +2465,28 @@ size_t StopPhotoIntervalRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StopPhotoIntervalRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void StopPhotoIntervalRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const StopPhotoIntervalRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<StopPhotoIntervalRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StopPhotoIntervalRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StopPhotoIntervalRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StopPhotoIntervalRequest)
     MergeFrom(*source);
@@ -2660,12 +2497,12 @@ void StopPhotoIntervalRequest::MergeFrom(const StopPhotoIntervalRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void StopPhotoIntervalRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void StopPhotoIntervalRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StopPhotoIntervalRequest)
   if (&from == this) return;
   Clear();
@@ -2683,18 +2520,13 @@ bool StopPhotoIntervalRequest::IsInitialized() const {
   return true;
 }
 
-void StopPhotoIntervalRequest::Swap(StopPhotoIntervalRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StopPhotoIntervalRequest::InternalSwap(StopPhotoIntervalRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata StopPhotoIntervalRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StopPhotoIntervalRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -2704,26 +2536,22 @@ void StopPhotoIntervalResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_StopPhotoIntervalResponse_default_instance_._instance.get_mutable()->camera_result_ = const_cast< ::mavsdk::rpc::camera::CameraResult*>(
       ::mavsdk::rpc::camera::CameraResult::internal_default_instance());
 }
-class StopPhotoIntervalResponse::HasBitSetters {
+class StopPhotoIntervalResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraResult& camera_result(const StopPhotoIntervalResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraResult&
-StopPhotoIntervalResponse::HasBitSetters::camera_result(const StopPhotoIntervalResponse* msg) {
+StopPhotoIntervalResponse::_Internal::camera_result(const StopPhotoIntervalResponse* msg) {
   return *msg->camera_result_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int StopPhotoIntervalResponse::kCameraResultFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StopPhotoIntervalResponse::StopPhotoIntervalResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StopPhotoIntervalResponse)
 }
 StopPhotoIntervalResponse::StopPhotoIntervalResponse(const StopPhotoIntervalResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_result()) {
@@ -2735,8 +2563,7 @@ StopPhotoIntervalResponse::StopPhotoIntervalResponse(const StopPhotoIntervalResp
 }
 
 void StopPhotoIntervalResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto.base);
   camera_result_ = nullptr;
 }
 
@@ -2753,14 +2580,14 @@ void StopPhotoIntervalResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StopPhotoIntervalResponse& StopPhotoIntervalResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopPhotoIntervalResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StopPhotoIntervalResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -2772,65 +2599,54 @@ void StopPhotoIntervalResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StopPhotoIntervalResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StopPhotoIntervalResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StopPhotoIntervalResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraResult::_InternalParse;
-        object = msg->mutable_camera_result();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StopPhotoIntervalResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_result()));
         } else {
           goto handle_unusual;
@@ -2843,7 +2659,7 @@ bool StopPhotoIntervalResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -2859,41 +2675,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StopPhotoIntervalResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  if (this->has_camera_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_result(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StopPhotoIntervalResponse)
-}
-
-::google::protobuf::uint8* StopPhotoIntervalResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StopPhotoIntervalResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_result(this), target);
+        1, _Internal::camera_result(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StopPhotoIntervalResponse)
   return target;
@@ -2903,36 +2701,35 @@ size_t StopPhotoIntervalResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_result_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StopPhotoIntervalResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void StopPhotoIntervalResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const StopPhotoIntervalResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<StopPhotoIntervalResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StopPhotoIntervalResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StopPhotoIntervalResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StopPhotoIntervalResponse)
     MergeFrom(*source);
@@ -2943,7 +2740,7 @@ void StopPhotoIntervalResponse::MergeFrom(const StopPhotoIntervalResponse& from)
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
@@ -2951,7 +2748,7 @@ void StopPhotoIntervalResponse::MergeFrom(const StopPhotoIntervalResponse& from)
   }
 }
 
-void StopPhotoIntervalResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void StopPhotoIntervalResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StopPhotoIntervalResponse)
   if (&from == this) return;
   Clear();
@@ -2969,19 +2766,14 @@ bool StopPhotoIntervalResponse::IsInitialized() const {
   return true;
 }
 
-void StopPhotoIntervalResponse::Swap(StopPhotoIntervalResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StopPhotoIntervalResponse::InternalSwap(StopPhotoIntervalResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_result_, other->camera_result_);
 }
 
-::google::protobuf::Metadata StopPhotoIntervalResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StopPhotoIntervalResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -2989,20 +2781,17 @@ void StopPhotoIntervalResponse::InternalSwap(StopPhotoIntervalResponse* other) {
 
 void StartVideoRequest::InitAsDefaultInstance() {
 }
-class StartVideoRequest::HasBitSetters {
+class StartVideoRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StartVideoRequest::StartVideoRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StartVideoRequest)
 }
 StartVideoRequest::StartVideoRequest(const StartVideoRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.StartVideoRequest)
@@ -3023,14 +2812,14 @@ void StartVideoRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StartVideoRequest& StartVideoRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StartVideoRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartVideoRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StartVideoRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StartVideoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3038,48 +2827,46 @@ void StartVideoRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StartVideoRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StartVideoRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StartVideoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StartVideoRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartVideoRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -3092,28 +2879,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StartVideoRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StartVideoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StartVideoRequest)
-}
-
-::google::protobuf::uint8* StartVideoRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StartVideoRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartVideoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StartVideoRequest)
   return target;
@@ -3123,29 +2897,28 @@ size_t StartVideoRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StartVideoRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StartVideoRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void StartVideoRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StartVideoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const StartVideoRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<StartVideoRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StartVideoRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StartVideoRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StartVideoRequest)
     MergeFrom(*source);
@@ -3156,12 +2929,12 @@ void StartVideoRequest::MergeFrom(const StartVideoRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StartVideoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void StartVideoRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void StartVideoRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StartVideoRequest)
   if (&from == this) return;
   Clear();
@@ -3179,18 +2952,13 @@ bool StartVideoRequest::IsInitialized() const {
   return true;
 }
 
-void StartVideoRequest::Swap(StartVideoRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StartVideoRequest::InternalSwap(StartVideoRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata StartVideoRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StartVideoRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -3200,26 +2968,22 @@ void StartVideoResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_StartVideoResponse_default_instance_._instance.get_mutable()->camera_result_ = const_cast< ::mavsdk::rpc::camera::CameraResult*>(
       ::mavsdk::rpc::camera::CameraResult::internal_default_instance());
 }
-class StartVideoResponse::HasBitSetters {
+class StartVideoResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraResult& camera_result(const StartVideoResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraResult&
-StartVideoResponse::HasBitSetters::camera_result(const StartVideoResponse* msg) {
+StartVideoResponse::_Internal::camera_result(const StartVideoResponse* msg) {
   return *msg->camera_result_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int StartVideoResponse::kCameraResultFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StartVideoResponse::StartVideoResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StartVideoResponse)
 }
 StartVideoResponse::StartVideoResponse(const StartVideoResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_result()) {
@@ -3231,8 +2995,7 @@ StartVideoResponse::StartVideoResponse(const StartVideoResponse& from)
 }
 
 void StartVideoResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_StartVideoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StartVideoResponse_camera_2fcamera_2eproto.base);
   camera_result_ = nullptr;
 }
 
@@ -3249,14 +3012,14 @@ void StartVideoResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StartVideoResponse& StartVideoResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StartVideoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartVideoResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StartVideoResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StartVideoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3268,65 +3031,54 @@ void StartVideoResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StartVideoResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StartVideoResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StartVideoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraResult::_InternalParse;
-        object = msg->mutable_camera_result();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StartVideoResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartVideoResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_result()));
         } else {
           goto handle_unusual;
@@ -3339,7 +3091,7 @@ bool StartVideoResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -3355,41 +3107,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StartVideoResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StartVideoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  if (this->has_camera_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_result(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StartVideoResponse)
-}
-
-::google::protobuf::uint8* StartVideoResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StartVideoResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartVideoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_result(this), target);
+        1, _Internal::camera_result(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StartVideoResponse)
   return target;
@@ -3399,36 +3133,35 @@ size_t StartVideoResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StartVideoResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_result_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StartVideoResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void StartVideoResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StartVideoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const StartVideoResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<StartVideoResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StartVideoResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StartVideoResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StartVideoResponse)
     MergeFrom(*source);
@@ -3439,7 +3172,7 @@ void StartVideoResponse::MergeFrom(const StartVideoResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StartVideoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
@@ -3447,7 +3180,7 @@ void StartVideoResponse::MergeFrom(const StartVideoResponse& from) {
   }
 }
 
-void StartVideoResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void StartVideoResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StartVideoResponse)
   if (&from == this) return;
   Clear();
@@ -3465,19 +3198,14 @@ bool StartVideoResponse::IsInitialized() const {
   return true;
 }
 
-void StartVideoResponse::Swap(StartVideoResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StartVideoResponse::InternalSwap(StartVideoResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_result_, other->camera_result_);
 }
 
-::google::protobuf::Metadata StartVideoResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StartVideoResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -3485,20 +3213,17 @@ void StartVideoResponse::InternalSwap(StartVideoResponse* other) {
 
 void StopVideoRequest::InitAsDefaultInstance() {
 }
-class StopVideoRequest::HasBitSetters {
+class StopVideoRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StopVideoRequest::StopVideoRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StopVideoRequest)
 }
 StopVideoRequest::StopVideoRequest(const StopVideoRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.StopVideoRequest)
@@ -3519,14 +3244,14 @@ void StopVideoRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StopVideoRequest& StopVideoRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StopVideoRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopVideoRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StopVideoRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StopVideoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3534,48 +3259,46 @@ void StopVideoRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StopVideoRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StopVideoRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StopVideoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StopVideoRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopVideoRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -3588,28 +3311,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StopVideoRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StopVideoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StopVideoRequest)
-}
-
-::google::protobuf::uint8* StopVideoRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StopVideoRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopVideoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StopVideoRequest)
   return target;
@@ -3619,29 +3329,28 @@ size_t StopVideoRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StopVideoRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StopVideoRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void StopVideoRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StopVideoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const StopVideoRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<StopVideoRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StopVideoRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StopVideoRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StopVideoRequest)
     MergeFrom(*source);
@@ -3652,12 +3361,12 @@ void StopVideoRequest::MergeFrom(const StopVideoRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StopVideoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void StopVideoRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void StopVideoRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StopVideoRequest)
   if (&from == this) return;
   Clear();
@@ -3675,18 +3384,13 @@ bool StopVideoRequest::IsInitialized() const {
   return true;
 }
 
-void StopVideoRequest::Swap(StopVideoRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StopVideoRequest::InternalSwap(StopVideoRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata StopVideoRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StopVideoRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -3696,26 +3400,22 @@ void StopVideoResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_StopVideoResponse_default_instance_._instance.get_mutable()->camera_result_ = const_cast< ::mavsdk::rpc::camera::CameraResult*>(
       ::mavsdk::rpc::camera::CameraResult::internal_default_instance());
 }
-class StopVideoResponse::HasBitSetters {
+class StopVideoResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraResult& camera_result(const StopVideoResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraResult&
-StopVideoResponse::HasBitSetters::camera_result(const StopVideoResponse* msg) {
+StopVideoResponse::_Internal::camera_result(const StopVideoResponse* msg) {
   return *msg->camera_result_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int StopVideoResponse::kCameraResultFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StopVideoResponse::StopVideoResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StopVideoResponse)
 }
 StopVideoResponse::StopVideoResponse(const StopVideoResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_result()) {
@@ -3727,8 +3427,7 @@ StopVideoResponse::StopVideoResponse(const StopVideoResponse& from)
 }
 
 void StopVideoResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_StopVideoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StopVideoResponse_camera_2fcamera_2eproto.base);
   camera_result_ = nullptr;
 }
 
@@ -3745,14 +3444,14 @@ void StopVideoResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StopVideoResponse& StopVideoResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StopVideoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopVideoResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StopVideoResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StopVideoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -3764,65 +3463,54 @@ void StopVideoResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StopVideoResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StopVideoResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StopVideoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraResult::_InternalParse;
-        object = msg->mutable_camera_result();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StopVideoResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopVideoResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_result()));
         } else {
           goto handle_unusual;
@@ -3835,7 +3523,7 @@ bool StopVideoResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -3851,41 +3539,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StopVideoResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StopVideoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  if (this->has_camera_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_result(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StopVideoResponse)
-}
-
-::google::protobuf::uint8* StopVideoResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StopVideoResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopVideoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_result(this), target);
+        1, _Internal::camera_result(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StopVideoResponse)
   return target;
@@ -3895,36 +3565,35 @@ size_t StopVideoResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StopVideoResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_result_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StopVideoResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void StopVideoResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StopVideoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const StopVideoResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<StopVideoResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StopVideoResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StopVideoResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StopVideoResponse)
     MergeFrom(*source);
@@ -3935,7 +3604,7 @@ void StopVideoResponse::MergeFrom(const StopVideoResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StopVideoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
@@ -3943,7 +3612,7 @@ void StopVideoResponse::MergeFrom(const StopVideoResponse& from) {
   }
 }
 
-void StopVideoResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void StopVideoResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StopVideoResponse)
   if (&from == this) return;
   Clear();
@@ -3961,19 +3630,14 @@ bool StopVideoResponse::IsInitialized() const {
   return true;
 }
 
-void StopVideoResponse::Swap(StopVideoResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StopVideoResponse::InternalSwap(StopVideoResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_result_, other->camera_result_);
 }
 
-::google::protobuf::Metadata StopVideoResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StopVideoResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -3981,20 +3645,17 @@ void StopVideoResponse::InternalSwap(StopVideoResponse* other) {
 
 void StartVideoStreamingRequest::InitAsDefaultInstance() {
 }
-class StartVideoStreamingRequest::HasBitSetters {
+class StartVideoStreamingRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StartVideoStreamingRequest::StartVideoStreamingRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StartVideoStreamingRequest)
 }
 StartVideoStreamingRequest::StartVideoStreamingRequest(const StartVideoStreamingRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.StartVideoStreamingRequest)
@@ -4015,14 +3676,14 @@ void StartVideoStreamingRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StartVideoStreamingRequest& StartVideoStreamingRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StartVideoStreamingRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartVideoStreamingRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StartVideoStreamingRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4030,48 +3691,46 @@ void StartVideoStreamingRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StartVideoStreamingRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StartVideoStreamingRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StartVideoStreamingRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StartVideoStreamingRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -4084,28 +3743,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StartVideoStreamingRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StartVideoStreamingRequest)
-}
-
-::google::protobuf::uint8* StartVideoStreamingRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StartVideoStreamingRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StartVideoStreamingRequest)
   return target;
@@ -4115,29 +3761,28 @@ size_t StartVideoStreamingRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StartVideoStreamingRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void StartVideoStreamingRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const StartVideoStreamingRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<StartVideoStreamingRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StartVideoStreamingRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StartVideoStreamingRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StartVideoStreamingRequest)
     MergeFrom(*source);
@@ -4148,12 +3793,12 @@ void StartVideoStreamingRequest::MergeFrom(const StartVideoStreamingRequest& fro
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void StartVideoStreamingRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void StartVideoStreamingRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StartVideoStreamingRequest)
   if (&from == this) return;
   Clear();
@@ -4171,18 +3816,13 @@ bool StartVideoStreamingRequest::IsInitialized() const {
   return true;
 }
 
-void StartVideoStreamingRequest::Swap(StartVideoStreamingRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StartVideoStreamingRequest::InternalSwap(StartVideoStreamingRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata StartVideoStreamingRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StartVideoStreamingRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -4192,26 +3832,22 @@ void StartVideoStreamingResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_StartVideoStreamingResponse_default_instance_._instance.get_mutable()->camera_result_ = const_cast< ::mavsdk::rpc::camera::CameraResult*>(
       ::mavsdk::rpc::camera::CameraResult::internal_default_instance());
 }
-class StartVideoStreamingResponse::HasBitSetters {
+class StartVideoStreamingResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraResult& camera_result(const StartVideoStreamingResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraResult&
-StartVideoStreamingResponse::HasBitSetters::camera_result(const StartVideoStreamingResponse* msg) {
+StartVideoStreamingResponse::_Internal::camera_result(const StartVideoStreamingResponse* msg) {
   return *msg->camera_result_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int StartVideoStreamingResponse::kCameraResultFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StartVideoStreamingResponse::StartVideoStreamingResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StartVideoStreamingResponse)
 }
 StartVideoStreamingResponse::StartVideoStreamingResponse(const StartVideoStreamingResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_result()) {
@@ -4223,8 +3859,7 @@ StartVideoStreamingResponse::StartVideoStreamingResponse(const StartVideoStreami
 }
 
 void StartVideoStreamingResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto.base);
   camera_result_ = nullptr;
 }
 
@@ -4241,14 +3876,14 @@ void StartVideoStreamingResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StartVideoStreamingResponse& StartVideoStreamingResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StartVideoStreamingResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StartVideoStreamingResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4260,65 +3895,54 @@ void StartVideoStreamingResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StartVideoStreamingResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StartVideoStreamingResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StartVideoStreamingResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraResult::_InternalParse;
-        object = msg->mutable_camera_result();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StartVideoStreamingResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_result()));
         } else {
           goto handle_unusual;
@@ -4331,7 +3955,7 @@ bool StartVideoStreamingResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -4347,41 +3971,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StartVideoStreamingResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  if (this->has_camera_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_result(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StartVideoStreamingResponse)
-}
-
-::google::protobuf::uint8* StartVideoStreamingResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StartVideoStreamingResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_result(this), target);
+        1, _Internal::camera_result(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StartVideoStreamingResponse)
   return target;
@@ -4391,36 +3997,35 @@ size_t StartVideoStreamingResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_result_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StartVideoStreamingResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void StartVideoStreamingResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const StartVideoStreamingResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<StartVideoStreamingResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StartVideoStreamingResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StartVideoStreamingResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StartVideoStreamingResponse)
     MergeFrom(*source);
@@ -4431,7 +4036,7 @@ void StartVideoStreamingResponse::MergeFrom(const StartVideoStreamingResponse& f
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
@@ -4439,7 +4044,7 @@ void StartVideoStreamingResponse::MergeFrom(const StartVideoStreamingResponse& f
   }
 }
 
-void StartVideoStreamingResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void StartVideoStreamingResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StartVideoStreamingResponse)
   if (&from == this) return;
   Clear();
@@ -4457,19 +4062,14 @@ bool StartVideoStreamingResponse::IsInitialized() const {
   return true;
 }
 
-void StartVideoStreamingResponse::Swap(StartVideoStreamingResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StartVideoStreamingResponse::InternalSwap(StartVideoStreamingResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_result_, other->camera_result_);
 }
 
-::google::protobuf::Metadata StartVideoStreamingResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StartVideoStreamingResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -4477,20 +4077,17 @@ void StartVideoStreamingResponse::InternalSwap(StartVideoStreamingResponse* othe
 
 void StopVideoStreamingRequest::InitAsDefaultInstance() {
 }
-class StopVideoStreamingRequest::HasBitSetters {
+class StopVideoStreamingRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StopVideoStreamingRequest::StopVideoStreamingRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StopVideoStreamingRequest)
 }
 StopVideoStreamingRequest::StopVideoStreamingRequest(const StopVideoStreamingRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.StopVideoStreamingRequest)
@@ -4511,14 +4108,14 @@ void StopVideoStreamingRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StopVideoStreamingRequest& StopVideoStreamingRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StopVideoStreamingRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopVideoStreamingRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StopVideoStreamingRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4526,48 +4123,46 @@ void StopVideoStreamingRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StopVideoStreamingRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StopVideoStreamingRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StopVideoStreamingRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StopVideoStreamingRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -4580,28 +4175,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StopVideoStreamingRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StopVideoStreamingRequest)
-}
-
-::google::protobuf::uint8* StopVideoStreamingRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StopVideoStreamingRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StopVideoStreamingRequest)
   return target;
@@ -4611,29 +4193,28 @@ size_t StopVideoStreamingRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StopVideoStreamingRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void StopVideoStreamingRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const StopVideoStreamingRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<StopVideoStreamingRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StopVideoStreamingRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StopVideoStreamingRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StopVideoStreamingRequest)
     MergeFrom(*source);
@@ -4644,12 +4225,12 @@ void StopVideoStreamingRequest::MergeFrom(const StopVideoStreamingRequest& from)
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void StopVideoStreamingRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void StopVideoStreamingRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StopVideoStreamingRequest)
   if (&from == this) return;
   Clear();
@@ -4667,18 +4248,13 @@ bool StopVideoStreamingRequest::IsInitialized() const {
   return true;
 }
 
-void StopVideoStreamingRequest::Swap(StopVideoStreamingRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StopVideoStreamingRequest::InternalSwap(StopVideoStreamingRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata StopVideoStreamingRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StopVideoStreamingRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -4688,26 +4264,22 @@ void StopVideoStreamingResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_StopVideoStreamingResponse_default_instance_._instance.get_mutable()->camera_result_ = const_cast< ::mavsdk::rpc::camera::CameraResult*>(
       ::mavsdk::rpc::camera::CameraResult::internal_default_instance());
 }
-class StopVideoStreamingResponse::HasBitSetters {
+class StopVideoStreamingResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraResult& camera_result(const StopVideoStreamingResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraResult&
-StopVideoStreamingResponse::HasBitSetters::camera_result(const StopVideoStreamingResponse* msg) {
+StopVideoStreamingResponse::_Internal::camera_result(const StopVideoStreamingResponse* msg) {
   return *msg->camera_result_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int StopVideoStreamingResponse::kCameraResultFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 StopVideoStreamingResponse::StopVideoStreamingResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.StopVideoStreamingResponse)
 }
 StopVideoStreamingResponse::StopVideoStreamingResponse(const StopVideoStreamingResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_result()) {
@@ -4719,8 +4291,7 @@ StopVideoStreamingResponse::StopVideoStreamingResponse(const StopVideoStreamingR
 }
 
 void StopVideoStreamingResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto.base);
   camera_result_ = nullptr;
 }
 
@@ -4737,14 +4308,14 @@ void StopVideoStreamingResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const StopVideoStreamingResponse& StopVideoStreamingResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_StopVideoStreamingResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void StopVideoStreamingResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -4756,65 +4327,54 @@ void StopVideoStreamingResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* StopVideoStreamingResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<StopVideoStreamingResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* StopVideoStreamingResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraResult::_InternalParse;
-        object = msg->mutable_camera_result();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool StopVideoStreamingResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_result()));
         } else {
           goto handle_unusual;
@@ -4827,7 +4387,7 @@ bool StopVideoStreamingResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -4843,41 +4403,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void StopVideoStreamingResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  if (this->has_camera_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_result(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.StopVideoStreamingResponse)
-}
-
-::google::protobuf::uint8* StopVideoStreamingResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* StopVideoStreamingResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_result(this), target);
+        1, _Internal::camera_result(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.StopVideoStreamingResponse)
   return target;
@@ -4887,36 +4429,35 @@ size_t StopVideoStreamingResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_result_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void StopVideoStreamingResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void StopVideoStreamingResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const StopVideoStreamingResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<StopVideoStreamingResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<StopVideoStreamingResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.StopVideoStreamingResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.StopVideoStreamingResponse)
     MergeFrom(*source);
@@ -4927,7 +4468,7 @@ void StopVideoStreamingResponse::MergeFrom(const StopVideoStreamingResponse& fro
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
@@ -4935,7 +4476,7 @@ void StopVideoStreamingResponse::MergeFrom(const StopVideoStreamingResponse& fro
   }
 }
 
-void StopVideoStreamingResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void StopVideoStreamingResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.StopVideoStreamingResponse)
   if (&from == this) return;
   Clear();
@@ -4953,19 +4494,14 @@ bool StopVideoStreamingResponse::IsInitialized() const {
   return true;
 }
 
-void StopVideoStreamingResponse::Swap(StopVideoStreamingResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void StopVideoStreamingResponse::InternalSwap(StopVideoStreamingResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_result_, other->camera_result_);
 }
 
-::google::protobuf::Metadata StopVideoStreamingResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata StopVideoStreamingResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -4973,21 +4509,17 @@ void StopVideoStreamingResponse::InternalSwap(StopVideoStreamingResponse* other)
 
 void SetModeRequest::InitAsDefaultInstance() {
 }
-class SetModeRequest::HasBitSetters {
+class SetModeRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SetModeRequest::kCameraModeFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SetModeRequest::SetModeRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SetModeRequest)
 }
 SetModeRequest::SetModeRequest(const SetModeRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   camera_mode_ = from.camera_mode_;
@@ -5010,14 +4542,14 @@ void SetModeRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SetModeRequest& SetModeRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SetModeRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetModeRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SetModeRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SetModeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5026,59 +4558,57 @@ void SetModeRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SetModeRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SetModeRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SetModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        ::google::protobuf::uint64 val = ::google::protobuf::internal::ReadVarint(&ptr);
-        msg->set_camera_mode(static_cast<::mavsdk::rpc::camera::CameraMode>(val));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          set_camera_mode(static_cast<::mavsdk::rpc::camera::CameraMode>(val));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SetModeRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SetModeRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
           int value = 0;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
           set_camera_mode(static_cast< ::mavsdk::rpc::camera::CameraMode >(value));
         } else {
@@ -5092,7 +4622,7 @@ bool SetModeRequest::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -5108,40 +4638,22 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SetModeRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SetModeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
-  if (this->camera_mode() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      1, this->camera_mode(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SetModeRequest)
-}
-
-::google::protobuf::uint8* SetModeRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SetModeRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SetModeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
   if (this->camera_mode() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->camera_mode(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SetModeRequest)
   return target;
@@ -5151,35 +4663,34 @@ size_t SetModeRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SetModeRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
   if (this->camera_mode() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->camera_mode());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->camera_mode());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SetModeRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SetModeRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SetModeRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SetModeRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SetModeRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetModeRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SetModeRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SetModeRequest)
     MergeFrom(*source);
@@ -5190,7 +4701,7 @@ void SetModeRequest::MergeFrom(const SetModeRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SetModeRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.camera_mode() != 0) {
@@ -5198,7 +4709,7 @@ void SetModeRequest::MergeFrom(const SetModeRequest& from) {
   }
 }
 
-void SetModeRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SetModeRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SetModeRequest)
   if (&from == this) return;
   Clear();
@@ -5216,19 +4727,14 @@ bool SetModeRequest::IsInitialized() const {
   return true;
 }
 
-void SetModeRequest::Swap(SetModeRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SetModeRequest::InternalSwap(SetModeRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_mode_, other->camera_mode_);
 }
 
-::google::protobuf::Metadata SetModeRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SetModeRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -5238,26 +4744,22 @@ void SetModeResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_SetModeResponse_default_instance_._instance.get_mutable()->camera_result_ = const_cast< ::mavsdk::rpc::camera::CameraResult*>(
       ::mavsdk::rpc::camera::CameraResult::internal_default_instance());
 }
-class SetModeResponse::HasBitSetters {
+class SetModeResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraResult& camera_result(const SetModeResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraResult&
-SetModeResponse::HasBitSetters::camera_result(const SetModeResponse* msg) {
+SetModeResponse::_Internal::camera_result(const SetModeResponse* msg) {
   return *msg->camera_result_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SetModeResponse::kCameraResultFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SetModeResponse::SetModeResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SetModeResponse)
 }
 SetModeResponse::SetModeResponse(const SetModeResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_result()) {
@@ -5269,8 +4771,7 @@ SetModeResponse::SetModeResponse(const SetModeResponse& from)
 }
 
 void SetModeResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_SetModeResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetModeResponse_camera_2fcamera_2eproto.base);
   camera_result_ = nullptr;
 }
 
@@ -5287,14 +4788,14 @@ void SetModeResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SetModeResponse& SetModeResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SetModeResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetModeResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SetModeResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SetModeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5306,65 +4807,54 @@ void SetModeResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SetModeResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SetModeResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SetModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraResult::_InternalParse;
-        object = msg->mutable_camera_result();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SetModeResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SetModeResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_result()));
         } else {
           goto handle_unusual;
@@ -5377,7 +4867,7 @@ bool SetModeResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -5393,41 +4883,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SetModeResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SetModeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  if (this->has_camera_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_result(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SetModeResponse)
-}
-
-::google::protobuf::uint8* SetModeResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SetModeResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SetModeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_result(this), target);
+        1, _Internal::camera_result(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SetModeResponse)
   return target;
@@ -5437,36 +4909,35 @@ size_t SetModeResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SetModeResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_result_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SetModeResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void SetModeResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SetModeResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const SetModeResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<SetModeResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetModeResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SetModeResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SetModeResponse)
     MergeFrom(*source);
@@ -5477,7 +4948,7 @@ void SetModeResponse::MergeFrom(const SetModeResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SetModeResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
@@ -5485,7 +4956,7 @@ void SetModeResponse::MergeFrom(const SetModeResponse& from) {
   }
 }
 
-void SetModeResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void SetModeResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SetModeResponse)
   if (&from == this) return;
   Clear();
@@ -5503,19 +4974,14 @@ bool SetModeResponse::IsInitialized() const {
   return true;
 }
 
-void SetModeResponse::Swap(SetModeResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SetModeResponse::InternalSwap(SetModeResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_result_, other->camera_result_);
 }
 
-::google::protobuf::Metadata SetModeResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SetModeResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -5523,20 +4989,17 @@ void SetModeResponse::InternalSwap(SetModeResponse* other) {
 
 void SubscribeModeRequest::InitAsDefaultInstance() {
 }
-class SubscribeModeRequest::HasBitSetters {
+class SubscribeModeRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeModeRequest::SubscribeModeRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SubscribeModeRequest)
 }
 SubscribeModeRequest::SubscribeModeRequest(const SubscribeModeRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.SubscribeModeRequest)
@@ -5557,14 +5020,14 @@ void SubscribeModeRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeModeRequest& SubscribeModeRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeModeRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeModeRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeModeRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SubscribeModeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5572,48 +5035,46 @@ void SubscribeModeRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeModeRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeModeRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeModeRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeModeRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeModeRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -5626,28 +5087,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeModeRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SubscribeModeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SubscribeModeRequest)
-}
-
-::google::protobuf::uint8* SubscribeModeRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeModeRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeModeRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SubscribeModeRequest)
   return target;
@@ -5657,29 +5105,28 @@ size_t SubscribeModeRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SubscribeModeRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeModeRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeModeRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SubscribeModeRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeModeRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeModeRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeModeRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SubscribeModeRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SubscribeModeRequest)
     MergeFrom(*source);
@@ -5690,12 +5137,12 @@ void SubscribeModeRequest::MergeFrom(const SubscribeModeRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SubscribeModeRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeModeRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeModeRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SubscribeModeRequest)
   if (&from == this) return;
   Clear();
@@ -5713,18 +5160,13 @@ bool SubscribeModeRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeModeRequest::Swap(SubscribeModeRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeModeRequest::InternalSwap(SubscribeModeRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeModeRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeModeRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -5732,21 +5174,17 @@ void SubscribeModeRequest::InternalSwap(SubscribeModeRequest* other) {
 
 void ModeResponse::InitAsDefaultInstance() {
 }
-class ModeResponse::HasBitSetters {
+class ModeResponse::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ModeResponse::kCameraModeFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 ModeResponse::ModeResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.ModeResponse)
 }
 ModeResponse::ModeResponse(const ModeResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   camera_mode_ = from.camera_mode_;
@@ -5769,14 +5207,14 @@ void ModeResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const ModeResponse& ModeResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_ModeResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_ModeResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void ModeResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.ModeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -5785,59 +5223,57 @@ void ModeResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* ModeResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<ModeResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* ModeResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        ::google::protobuf::uint64 val = ::google::protobuf::internal::ReadVarint(&ptr);
-        msg->set_camera_mode(static_cast<::mavsdk::rpc::camera::CameraMode>(val));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          set_camera_mode(static_cast<::mavsdk::rpc::camera::CameraMode>(val));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool ModeResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.ModeResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
           int value = 0;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
           set_camera_mode(static_cast< ::mavsdk::rpc::camera::CameraMode >(value));
         } else {
@@ -5851,7 +5287,7 @@ bool ModeResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -5867,40 +5303,22 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void ModeResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.ModeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
-  if (this->camera_mode() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      1, this->camera_mode(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.ModeResponse)
-}
-
-::google::protobuf::uint8* ModeResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* ModeResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.ModeResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
   if (this->camera_mode() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->camera_mode(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.ModeResponse)
   return target;
@@ -5910,35 +5328,34 @@ size_t ModeResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.ModeResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraMode camera_mode = 1;
   if (this->camera_mode() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->camera_mode());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->camera_mode());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void ModeResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void ModeResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.ModeResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const ModeResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<ModeResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<ModeResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.ModeResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.ModeResponse)
     MergeFrom(*source);
@@ -5949,7 +5366,7 @@ void ModeResponse::MergeFrom(const ModeResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.ModeResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.camera_mode() != 0) {
@@ -5957,7 +5374,7 @@ void ModeResponse::MergeFrom(const ModeResponse& from) {
   }
 }
 
-void ModeResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void ModeResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.ModeResponse)
   if (&from == this) return;
   Clear();
@@ -5975,19 +5392,14 @@ bool ModeResponse::IsInitialized() const {
   return true;
 }
 
-void ModeResponse::Swap(ModeResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void ModeResponse::InternalSwap(ModeResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_mode_, other->camera_mode_);
 }
 
-::google::protobuf::Metadata ModeResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata ModeResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -5995,20 +5407,17 @@ void ModeResponse::InternalSwap(ModeResponse* other) {
 
 void SubscribeVideoStreamInfoRequest::InitAsDefaultInstance() {
 }
-class SubscribeVideoStreamInfoRequest::HasBitSetters {
+class SubscribeVideoStreamInfoRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeVideoStreamInfoRequest::SubscribeVideoStreamInfoRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
 }
 SubscribeVideoStreamInfoRequest::SubscribeVideoStreamInfoRequest(const SubscribeVideoStreamInfoRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
@@ -6029,14 +5438,14 @@ void SubscribeVideoStreamInfoRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeVideoStreamInfoRequest& SubscribeVideoStreamInfoRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeVideoStreamInfoRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeVideoStreamInfoRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6044,48 +5453,46 @@ void SubscribeVideoStreamInfoRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeVideoStreamInfoRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeVideoStreamInfoRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeVideoStreamInfoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeVideoStreamInfoRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -6098,28 +5505,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeVideoStreamInfoRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
-}
-
-::google::protobuf::uint8* SubscribeVideoStreamInfoRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeVideoStreamInfoRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
   return target;
@@ -6129,29 +5523,28 @@ size_t SubscribeVideoStreamInfoRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeVideoStreamInfoRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeVideoStreamInfoRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeVideoStreamInfoRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeVideoStreamInfoRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeVideoStreamInfoRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
     MergeFrom(*source);
@@ -6162,12 +5555,12 @@ void SubscribeVideoStreamInfoRequest::MergeFrom(const SubscribeVideoStreamInfoRe
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeVideoStreamInfoRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeVideoStreamInfoRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SubscribeVideoStreamInfoRequest)
   if (&from == this) return;
   Clear();
@@ -6185,18 +5578,13 @@ bool SubscribeVideoStreamInfoRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeVideoStreamInfoRequest::Swap(SubscribeVideoStreamInfoRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeVideoStreamInfoRequest::InternalSwap(SubscribeVideoStreamInfoRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeVideoStreamInfoRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeVideoStreamInfoRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -6206,26 +5594,22 @@ void VideoStreamInfoResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_VideoStreamInfoResponse_default_instance_._instance.get_mutable()->video_stream_info_ = const_cast< ::mavsdk::rpc::camera::VideoStreamInfo*>(
       ::mavsdk::rpc::camera::VideoStreamInfo::internal_default_instance());
 }
-class VideoStreamInfoResponse::HasBitSetters {
+class VideoStreamInfoResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::VideoStreamInfo& video_stream_info(const VideoStreamInfoResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::VideoStreamInfo&
-VideoStreamInfoResponse::HasBitSetters::video_stream_info(const VideoStreamInfoResponse* msg) {
+VideoStreamInfoResponse::_Internal::video_stream_info(const VideoStreamInfoResponse* msg) {
   return *msg->video_stream_info_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int VideoStreamInfoResponse::kVideoStreamInfoFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 VideoStreamInfoResponse::VideoStreamInfoResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.VideoStreamInfoResponse)
 }
 VideoStreamInfoResponse::VideoStreamInfoResponse(const VideoStreamInfoResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_video_stream_info()) {
@@ -6237,8 +5621,7 @@ VideoStreamInfoResponse::VideoStreamInfoResponse(const VideoStreamInfoResponse& 
 }
 
 void VideoStreamInfoResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto.base);
   video_stream_info_ = nullptr;
 }
 
@@ -6255,14 +5638,14 @@ void VideoStreamInfoResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const VideoStreamInfoResponse& VideoStreamInfoResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_VideoStreamInfoResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void VideoStreamInfoResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6274,65 +5657,54 @@ void VideoStreamInfoResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* VideoStreamInfoResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<VideoStreamInfoResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* VideoStreamInfoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::VideoStreamInfo::_InternalParse;
-        object = msg->mutable_video_stream_info();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_video_stream_info(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool VideoStreamInfoResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_video_stream_info()));
         } else {
           goto handle_unusual;
@@ -6345,7 +5717,7 @@ bool VideoStreamInfoResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -6361,41 +5733,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void VideoStreamInfoResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
-  if (this->has_video_stream_info()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::video_stream_info(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.VideoStreamInfoResponse)
-}
-
-::google::protobuf::uint8* VideoStreamInfoResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* VideoStreamInfoResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
   if (this->has_video_stream_info()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::video_stream_info(this), target);
+        1, _Internal::video_stream_info(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.VideoStreamInfoResponse)
   return target;
@@ -6405,36 +5759,35 @@ size_t VideoStreamInfoResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
   if (this->has_video_stream_info()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *video_stream_info_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void VideoStreamInfoResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void VideoStreamInfoResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const VideoStreamInfoResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<VideoStreamInfoResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<VideoStreamInfoResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.VideoStreamInfoResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.VideoStreamInfoResponse)
     MergeFrom(*source);
@@ -6445,7 +5798,7 @@ void VideoStreamInfoResponse::MergeFrom(const VideoStreamInfoResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_video_stream_info()) {
@@ -6453,7 +5806,7 @@ void VideoStreamInfoResponse::MergeFrom(const VideoStreamInfoResponse& from) {
   }
 }
 
-void VideoStreamInfoResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void VideoStreamInfoResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.VideoStreamInfoResponse)
   if (&from == this) return;
   Clear();
@@ -6471,19 +5824,14 @@ bool VideoStreamInfoResponse::IsInitialized() const {
   return true;
 }
 
-void VideoStreamInfoResponse::Swap(VideoStreamInfoResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void VideoStreamInfoResponse::InternalSwap(VideoStreamInfoResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(video_stream_info_, other->video_stream_info_);
 }
 
-::google::protobuf::Metadata VideoStreamInfoResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata VideoStreamInfoResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -6491,20 +5839,17 @@ void VideoStreamInfoResponse::InternalSwap(VideoStreamInfoResponse* other) {
 
 void SubscribeCaptureInfoRequest::InitAsDefaultInstance() {
 }
-class SubscribeCaptureInfoRequest::HasBitSetters {
+class SubscribeCaptureInfoRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeCaptureInfoRequest::SubscribeCaptureInfoRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
 }
 SubscribeCaptureInfoRequest::SubscribeCaptureInfoRequest(const SubscribeCaptureInfoRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
@@ -6525,14 +5870,14 @@ void SubscribeCaptureInfoRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeCaptureInfoRequest& SubscribeCaptureInfoRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeCaptureInfoRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeCaptureInfoRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeCaptureInfoRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6540,48 +5885,46 @@ void SubscribeCaptureInfoRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeCaptureInfoRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeCaptureInfoRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeCaptureInfoRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeCaptureInfoRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -6594,28 +5937,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeCaptureInfoRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
-}
-
-::google::protobuf::uint8* SubscribeCaptureInfoRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCaptureInfoRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
   return target;
@@ -6625,29 +5955,28 @@ size_t SubscribeCaptureInfoRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeCaptureInfoRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeCaptureInfoRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeCaptureInfoRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeCaptureInfoRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeCaptureInfoRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
     MergeFrom(*source);
@@ -6658,12 +5987,12 @@ void SubscribeCaptureInfoRequest::MergeFrom(const SubscribeCaptureInfoRequest& f
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeCaptureInfoRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeCaptureInfoRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SubscribeCaptureInfoRequest)
   if (&from == this) return;
   Clear();
@@ -6681,18 +6010,13 @@ bool SubscribeCaptureInfoRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeCaptureInfoRequest::Swap(SubscribeCaptureInfoRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeCaptureInfoRequest::InternalSwap(SubscribeCaptureInfoRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeCaptureInfoRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCaptureInfoRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -6702,26 +6026,22 @@ void CaptureInfoResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_CaptureInfoResponse_default_instance_._instance.get_mutable()->capture_info_ = const_cast< ::mavsdk::rpc::camera::CaptureInfo*>(
       ::mavsdk::rpc::camera::CaptureInfo::internal_default_instance());
 }
-class CaptureInfoResponse::HasBitSetters {
+class CaptureInfoResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CaptureInfo& capture_info(const CaptureInfoResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CaptureInfo&
-CaptureInfoResponse::HasBitSetters::capture_info(const CaptureInfoResponse* msg) {
+CaptureInfoResponse::_Internal::capture_info(const CaptureInfoResponse* msg) {
   return *msg->capture_info_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CaptureInfoResponse::kCaptureInfoFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 CaptureInfoResponse::CaptureInfoResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.CaptureInfoResponse)
 }
 CaptureInfoResponse::CaptureInfoResponse(const CaptureInfoResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_capture_info()) {
@@ -6733,8 +6053,7 @@ CaptureInfoResponse::CaptureInfoResponse(const CaptureInfoResponse& from)
 }
 
 void CaptureInfoResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_CaptureInfoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CaptureInfoResponse_camera_2fcamera_2eproto.base);
   capture_info_ = nullptr;
 }
 
@@ -6751,14 +6070,14 @@ void CaptureInfoResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const CaptureInfoResponse& CaptureInfoResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_CaptureInfoResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_CaptureInfoResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void CaptureInfoResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.CaptureInfoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -6770,65 +6089,54 @@ void CaptureInfoResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* CaptureInfoResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<CaptureInfoResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* CaptureInfoResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CaptureInfo capture_info = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CaptureInfo::_InternalParse;
-        object = msg->mutable_capture_info();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_capture_info(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool CaptureInfoResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CaptureInfoResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CaptureInfo capture_info = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_capture_info()));
         } else {
           goto handle_unusual;
@@ -6841,7 +6149,7 @@ bool CaptureInfoResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -6857,41 +6165,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void CaptureInfoResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.CaptureInfoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CaptureInfo capture_info = 1;
-  if (this->has_capture_info()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::capture_info(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.CaptureInfoResponse)
-}
-
-::google::protobuf::uint8* CaptureInfoResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* CaptureInfoResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CaptureInfoResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CaptureInfo capture_info = 1;
   if (this->has_capture_info()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::capture_info(this), target);
+        1, _Internal::capture_info(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.CaptureInfoResponse)
   return target;
@@ -6901,36 +6191,35 @@ size_t CaptureInfoResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.CaptureInfoResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CaptureInfo capture_info = 1;
   if (this->has_capture_info()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *capture_info_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void CaptureInfoResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void CaptureInfoResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.CaptureInfoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const CaptureInfoResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<CaptureInfoResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<CaptureInfoResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.CaptureInfoResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.CaptureInfoResponse)
     MergeFrom(*source);
@@ -6941,7 +6230,7 @@ void CaptureInfoResponse::MergeFrom(const CaptureInfoResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.CaptureInfoResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_capture_info()) {
@@ -6949,7 +6238,7 @@ void CaptureInfoResponse::MergeFrom(const CaptureInfoResponse& from) {
   }
 }
 
-void CaptureInfoResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void CaptureInfoResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.CaptureInfoResponse)
   if (&from == this) return;
   Clear();
@@ -6967,19 +6256,14 @@ bool CaptureInfoResponse::IsInitialized() const {
   return true;
 }
 
-void CaptureInfoResponse::Swap(CaptureInfoResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void CaptureInfoResponse::InternalSwap(CaptureInfoResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(capture_info_, other->capture_info_);
 }
 
-::google::protobuf::Metadata CaptureInfoResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata CaptureInfoResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -6987,20 +6271,17 @@ void CaptureInfoResponse::InternalSwap(CaptureInfoResponse* other) {
 
 void SubscribeCameraStatusRequest::InitAsDefaultInstance() {
 }
-class SubscribeCameraStatusRequest::HasBitSetters {
+class SubscribeCameraStatusRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeCameraStatusRequest::SubscribeCameraStatusRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
 }
 SubscribeCameraStatusRequest::SubscribeCameraStatusRequest(const SubscribeCameraStatusRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
@@ -7021,14 +6302,14 @@ void SubscribeCameraStatusRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeCameraStatusRequest& SubscribeCameraStatusRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeCameraStatusRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeCameraStatusRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeCameraStatusRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -7036,48 +6317,46 @@ void SubscribeCameraStatusRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeCameraStatusRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeCameraStatusRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeCameraStatusRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeCameraStatusRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -7090,28 +6369,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeCameraStatusRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
-}
-
-::google::protobuf::uint8* SubscribeCameraStatusRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCameraStatusRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
   return target;
@@ -7121,29 +6387,28 @@ size_t SubscribeCameraStatusRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeCameraStatusRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeCameraStatusRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeCameraStatusRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeCameraStatusRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeCameraStatusRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
     MergeFrom(*source);
@@ -7154,12 +6419,12 @@ void SubscribeCameraStatusRequest::MergeFrom(const SubscribeCameraStatusRequest&
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeCameraStatusRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeCameraStatusRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SubscribeCameraStatusRequest)
   if (&from == this) return;
   Clear();
@@ -7177,18 +6442,13 @@ bool SubscribeCameraStatusRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeCameraStatusRequest::Swap(SubscribeCameraStatusRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeCameraStatusRequest::InternalSwap(SubscribeCameraStatusRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeCameraStatusRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCameraStatusRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -7198,26 +6458,22 @@ void CameraStatusResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_CameraStatusResponse_default_instance_._instance.get_mutable()->camera_status_ = const_cast< ::mavsdk::rpc::camera::CameraStatus*>(
       ::mavsdk::rpc::camera::CameraStatus::internal_default_instance());
 }
-class CameraStatusResponse::HasBitSetters {
+class CameraStatusResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraStatus& camera_status(const CameraStatusResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraStatus&
-CameraStatusResponse::HasBitSetters::camera_status(const CameraStatusResponse* msg) {
+CameraStatusResponse::_Internal::camera_status(const CameraStatusResponse* msg) {
   return *msg->camera_status_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CameraStatusResponse::kCameraStatusFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 CameraStatusResponse::CameraStatusResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.CameraStatusResponse)
 }
 CameraStatusResponse::CameraStatusResponse(const CameraStatusResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_status()) {
@@ -7229,8 +6485,7 @@ CameraStatusResponse::CameraStatusResponse(const CameraStatusResponse& from)
 }
 
 void CameraStatusResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_CameraStatusResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CameraStatusResponse_camera_2fcamera_2eproto.base);
   camera_status_ = nullptr;
 }
 
@@ -7247,14 +6502,14 @@ void CameraStatusResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const CameraStatusResponse& CameraStatusResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_CameraStatusResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_CameraStatusResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void CameraStatusResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.CameraStatusResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -7266,65 +6521,54 @@ void CameraStatusResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* CameraStatusResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<CameraStatusResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* CameraStatusResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraStatus camera_status = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraStatus::_InternalParse;
-        object = msg->mutable_camera_status();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_status(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool CameraStatusResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CameraStatusResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraStatus camera_status = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_status()));
         } else {
           goto handle_unusual;
@@ -7337,7 +6581,7 @@ bool CameraStatusResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -7353,41 +6597,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void CameraStatusResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.CameraStatusResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraStatus camera_status = 1;
-  if (this->has_camera_status()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_status(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.CameraStatusResponse)
-}
-
-::google::protobuf::uint8* CameraStatusResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* CameraStatusResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CameraStatusResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraStatus camera_status = 1;
   if (this->has_camera_status()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_status(this), target);
+        1, _Internal::camera_status(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.CameraStatusResponse)
   return target;
@@ -7397,36 +6623,35 @@ size_t CameraStatusResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.CameraStatusResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraStatus camera_status = 1;
   if (this->has_camera_status()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_status_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void CameraStatusResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void CameraStatusResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.CameraStatusResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const CameraStatusResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<CameraStatusResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<CameraStatusResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.CameraStatusResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.CameraStatusResponse)
     MergeFrom(*source);
@@ -7437,7 +6662,7 @@ void CameraStatusResponse::MergeFrom(const CameraStatusResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.CameraStatusResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_status()) {
@@ -7445,7 +6670,7 @@ void CameraStatusResponse::MergeFrom(const CameraStatusResponse& from) {
   }
 }
 
-void CameraStatusResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void CameraStatusResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.CameraStatusResponse)
   if (&from == this) return;
   Clear();
@@ -7463,19 +6688,14 @@ bool CameraStatusResponse::IsInitialized() const {
   return true;
 }
 
-void CameraStatusResponse::Swap(CameraStatusResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void CameraStatusResponse::InternalSwap(CameraStatusResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_status_, other->camera_status_);
 }
 
-::google::protobuf::Metadata CameraStatusResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata CameraStatusResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -7483,20 +6703,17 @@ void CameraStatusResponse::InternalSwap(CameraStatusResponse* other) {
 
 void SubscribeCurrentSettingsRequest::InitAsDefaultInstance() {
 }
-class SubscribeCurrentSettingsRequest::HasBitSetters {
+class SubscribeCurrentSettingsRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribeCurrentSettingsRequest::SubscribeCurrentSettingsRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
 }
 SubscribeCurrentSettingsRequest::SubscribeCurrentSettingsRequest(const SubscribeCurrentSettingsRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
@@ -7517,14 +6734,14 @@ void SubscribeCurrentSettingsRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribeCurrentSettingsRequest& SubscribeCurrentSettingsRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribeCurrentSettingsRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribeCurrentSettingsRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribeCurrentSettingsRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -7532,48 +6749,46 @@ void SubscribeCurrentSettingsRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribeCurrentSettingsRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribeCurrentSettingsRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribeCurrentSettingsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribeCurrentSettingsRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -7586,28 +6801,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribeCurrentSettingsRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
-}
-
-::google::protobuf::uint8* SubscribeCurrentSettingsRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribeCurrentSettingsRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
   return target;
@@ -7617,29 +6819,28 @@ size_t SubscribeCurrentSettingsRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribeCurrentSettingsRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeCurrentSettingsRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribeCurrentSettingsRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribeCurrentSettingsRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribeCurrentSettingsRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
     MergeFrom(*source);
@@ -7650,12 +6851,12 @@ void SubscribeCurrentSettingsRequest::MergeFrom(const SubscribeCurrentSettingsRe
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribeCurrentSettingsRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeCurrentSettingsRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SubscribeCurrentSettingsRequest)
   if (&from == this) return;
   Clear();
@@ -7673,18 +6874,13 @@ bool SubscribeCurrentSettingsRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribeCurrentSettingsRequest::Swap(SubscribeCurrentSettingsRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribeCurrentSettingsRequest::InternalSwap(SubscribeCurrentSettingsRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribeCurrentSettingsRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribeCurrentSettingsRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -7692,21 +6888,17 @@ void SubscribeCurrentSettingsRequest::InternalSwap(SubscribeCurrentSettingsReque
 
 void CurrentSettingsResponse::InitAsDefaultInstance() {
 }
-class CurrentSettingsResponse::HasBitSetters {
+class CurrentSettingsResponse::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CurrentSettingsResponse::kCurrentSettingsFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 CurrentSettingsResponse::CurrentSettingsResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.CurrentSettingsResponse)
 }
 CurrentSettingsResponse::CurrentSettingsResponse(const CurrentSettingsResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       current_settings_(from.current_settings_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -7714,8 +6906,7 @@ CurrentSettingsResponse::CurrentSettingsResponse(const CurrentSettingsResponse& 
 }
 
 void CurrentSettingsResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_CurrentSettingsResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CurrentSettingsResponse_camera_2fcamera_2eproto.base);
 }
 
 CurrentSettingsResponse::~CurrentSettingsResponse() {
@@ -7730,14 +6921,14 @@ void CurrentSettingsResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const CurrentSettingsResponse& CurrentSettingsResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_CurrentSettingsResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_CurrentSettingsResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void CurrentSettingsResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.CurrentSettingsResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -7746,68 +6937,59 @@ void CurrentSettingsResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* CurrentSettingsResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<CurrentSettingsResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* CurrentSettingsResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // repeated .mavsdk.rpc.camera.Setting current_settings = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        do {
-          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::mavsdk::rpc::camera::Setting::_InternalParse;
-          object = msg->add_current_settings();
-          if (size > end - ptr) goto len_delim_till_end;
-          ptr += size;
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-              {parser_till_end, object}, ptr - size, ptr));
-          if (ptr >= end) break;
-        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 10 && (ptr += 1));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(add_current_settings(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool CurrentSettingsResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CurrentSettingsResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // repeated .mavsdk.rpc.camera.Setting current_settings = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                 input, add_current_settings()));
         } else {
           goto handle_unusual;
@@ -7820,7 +7002,7 @@ bool CurrentSettingsResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -7836,45 +7018,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void CurrentSettingsResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.CurrentSettingsResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // repeated .mavsdk.rpc.camera.Setting current_settings = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->current_settings_size()); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1,
-      this->current_settings(static_cast<int>(i)),
-      output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.CurrentSettingsResponse)
-}
-
-::google::protobuf::uint8* CurrentSettingsResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* CurrentSettingsResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CurrentSettingsResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.Setting current_settings = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->current_settings_size()); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->current_settings(static_cast<int>(i)), target);
+  for (auto it = this->current_settings_.pointer_begin(),
+            end = this->current_settings_.pointer_end(); it < end; ++it) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessageToArray(1, **it, target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.CurrentSettingsResponse)
   return target;
@@ -7884,40 +7044,35 @@ size_t CurrentSettingsResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.CurrentSettingsResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.Setting current_settings = 1;
-  {
-    unsigned int count = static_cast<unsigned int>(this->current_settings_size());
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          this->current_settings(static_cast<int>(i)));
-    }
+  total_size += 1UL * this->current_settings_size();
+  for (const auto& msg : this->current_settings_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void CurrentSettingsResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void CurrentSettingsResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.CurrentSettingsResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const CurrentSettingsResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<CurrentSettingsResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<CurrentSettingsResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.CurrentSettingsResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.CurrentSettingsResponse)
     MergeFrom(*source);
@@ -7928,13 +7083,13 @@ void CurrentSettingsResponse::MergeFrom(const CurrentSettingsResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.CurrentSettingsResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   current_settings_.MergeFrom(from.current_settings_);
 }
 
-void CurrentSettingsResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void CurrentSettingsResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.CurrentSettingsResponse)
   if (&from == this) return;
   Clear();
@@ -7952,19 +7107,14 @@ bool CurrentSettingsResponse::IsInitialized() const {
   return true;
 }
 
-void CurrentSettingsResponse::Swap(CurrentSettingsResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void CurrentSettingsResponse::InternalSwap(CurrentSettingsResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  CastToBase(&current_settings_)->InternalSwap(CastToBase(&other->current_settings_));
+  current_settings_.InternalSwap(&other->current_settings_);
 }
 
-::google::protobuf::Metadata CurrentSettingsResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata CurrentSettingsResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -7972,20 +7122,17 @@ void CurrentSettingsResponse::InternalSwap(CurrentSettingsResponse* other) {
 
 void SubscribePossibleSettingOptionsRequest::InitAsDefaultInstance() {
 }
-class SubscribePossibleSettingOptionsRequest::HasBitSetters {
+class SubscribePossibleSettingOptionsRequest::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SubscribePossibleSettingOptionsRequest::SubscribePossibleSettingOptionsRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
 }
 SubscribePossibleSettingOptionsRequest::SubscribePossibleSettingOptionsRequest(const SubscribePossibleSettingOptionsRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
@@ -8006,14 +7153,14 @@ void SubscribePossibleSettingOptionsRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SubscribePossibleSettingOptionsRequest& SubscribePossibleSettingOptionsRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SubscribePossibleSettingOptionsRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SubscribePossibleSettingOptionsRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -8021,48 +7168,46 @@ void SubscribePossibleSettingOptionsRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SubscribePossibleSettingOptionsRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SubscribePossibleSettingOptionsRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SubscribePossibleSettingOptionsRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       default: {
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SubscribePossibleSettingOptionsRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
   handle_unusual:
     if (tag == 0) {
       goto success;
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
+    DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
           input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
@@ -8075,28 +7220,15 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SubscribePossibleSettingOptionsRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
-}
-
-::google::protobuf::uint8* SubscribePossibleSettingOptionsRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SubscribePossibleSettingOptionsRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
   return target;
@@ -8106,29 +7238,28 @@ size_t SubscribePossibleSettingOptionsRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SubscribePossibleSettingOptionsRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribePossibleSettingOptionsRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SubscribePossibleSettingOptionsRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SubscribePossibleSettingOptionsRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SubscribePossibleSettingOptionsRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
     MergeFrom(*source);
@@ -8139,12 +7270,12 @@ void SubscribePossibleSettingOptionsRequest::MergeFrom(const SubscribePossibleSe
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
 }
 
-void SubscribePossibleSettingOptionsRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribePossibleSettingOptionsRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SubscribePossibleSettingOptionsRequest)
   if (&from == this) return;
   Clear();
@@ -8162,18 +7293,13 @@ bool SubscribePossibleSettingOptionsRequest::IsInitialized() const {
   return true;
 }
 
-void SubscribePossibleSettingOptionsRequest::Swap(SubscribePossibleSettingOptionsRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SubscribePossibleSettingOptionsRequest::InternalSwap(SubscribePossibleSettingOptionsRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SubscribePossibleSettingOptionsRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SubscribePossibleSettingOptionsRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -8181,21 +7307,17 @@ void SubscribePossibleSettingOptionsRequest::InternalSwap(SubscribePossibleSetti
 
 void PossibleSettingOptionsResponse::InitAsDefaultInstance() {
 }
-class PossibleSettingOptionsResponse::HasBitSetters {
+class PossibleSettingOptionsResponse::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int PossibleSettingOptionsResponse::kSettingOptionsFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 PossibleSettingOptionsResponse::PossibleSettingOptionsResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
 }
 PossibleSettingOptionsResponse::PossibleSettingOptionsResponse(const PossibleSettingOptionsResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       setting_options_(from.setting_options_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
@@ -8203,8 +7325,7 @@ PossibleSettingOptionsResponse::PossibleSettingOptionsResponse(const PossibleSet
 }
 
 void PossibleSettingOptionsResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto.base);
 }
 
 PossibleSettingOptionsResponse::~PossibleSettingOptionsResponse() {
@@ -8219,14 +7340,14 @@ void PossibleSettingOptionsResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const PossibleSettingOptionsResponse& PossibleSettingOptionsResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PossibleSettingOptionsResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void PossibleSettingOptionsResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -8235,68 +7356,59 @@ void PossibleSettingOptionsResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* PossibleSettingOptionsResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<PossibleSettingOptionsResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* PossibleSettingOptionsResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        do {
-          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::mavsdk::rpc::camera::SettingOptions::_InternalParse;
-          object = msg->add_setting_options();
-          if (size > end - ptr) goto len_delim_till_end;
-          ptr += size;
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-              {parser_till_end, object}, ptr - size, ptr));
-          if (ptr >= end) break;
-        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 10 && (ptr += 1));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(add_setting_options(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool PossibleSettingOptionsResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                 input, add_setting_options()));
         } else {
           goto handle_unusual;
@@ -8309,7 +7421,7 @@ bool PossibleSettingOptionsResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -8325,45 +7437,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void PossibleSettingOptionsResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->setting_options_size()); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1,
-      this->setting_options(static_cast<int>(i)),
-      output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
-}
-
-::google::protobuf::uint8* PossibleSettingOptionsResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* PossibleSettingOptionsResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->setting_options_size()); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        1, this->setting_options(static_cast<int>(i)), target);
+  for (auto it = this->setting_options_.pointer_begin(),
+            end = this->setting_options_.pointer_end(); it < end; ++it) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessageToArray(1, **it, target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
   return target;
@@ -8373,40 +7463,35 @@ size_t PossibleSettingOptionsResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
-  {
-    unsigned int count = static_cast<unsigned int>(this->setting_options_size());
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          this->setting_options(static_cast<int>(i)));
-    }
+  total_size += 1UL * this->setting_options_size();
+  for (const auto& msg : this->setting_options_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void PossibleSettingOptionsResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void PossibleSettingOptionsResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const PossibleSettingOptionsResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<PossibleSettingOptionsResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PossibleSettingOptionsResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
     MergeFrom(*source);
@@ -8417,13 +7502,13 @@ void PossibleSettingOptionsResponse::MergeFrom(const PossibleSettingOptionsRespo
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   setting_options_.MergeFrom(from.setting_options_);
 }
 
-void PossibleSettingOptionsResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void PossibleSettingOptionsResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
   if (&from == this) return;
   Clear();
@@ -8441,19 +7526,14 @@ bool PossibleSettingOptionsResponse::IsInitialized() const {
   return true;
 }
 
-void PossibleSettingOptionsResponse::Swap(PossibleSettingOptionsResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void PossibleSettingOptionsResponse::InternalSwap(PossibleSettingOptionsResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  CastToBase(&setting_options_)->InternalSwap(CastToBase(&other->setting_options_));
+  setting_options_.InternalSwap(&other->setting_options_);
 }
 
-::google::protobuf::Metadata PossibleSettingOptionsResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata PossibleSettingOptionsResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -8463,26 +7543,22 @@ void SetSettingRequest::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_SetSettingRequest_default_instance_._instance.get_mutable()->setting_ = const_cast< ::mavsdk::rpc::camera::Setting*>(
       ::mavsdk::rpc::camera::Setting::internal_default_instance());
 }
-class SetSettingRequest::HasBitSetters {
+class SetSettingRequest::_Internal {
  public:
   static const ::mavsdk::rpc::camera::Setting& setting(const SetSettingRequest* msg);
 };
 
 const ::mavsdk::rpc::camera::Setting&
-SetSettingRequest::HasBitSetters::setting(const SetSettingRequest* msg) {
+SetSettingRequest::_Internal::setting(const SetSettingRequest* msg) {
   return *msg->setting_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SetSettingRequest::kSettingFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SetSettingRequest::SetSettingRequest()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SetSettingRequest)
 }
 SetSettingRequest::SetSettingRequest(const SetSettingRequest& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_setting()) {
@@ -8494,8 +7570,7 @@ SetSettingRequest::SetSettingRequest(const SetSettingRequest& from)
 }
 
 void SetSettingRequest::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_SetSettingRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetSettingRequest_camera_2fcamera_2eproto.base);
   setting_ = nullptr;
 }
 
@@ -8512,14 +7587,14 @@ void SetSettingRequest::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SetSettingRequest& SetSettingRequest::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SetSettingRequest_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetSettingRequest_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SetSettingRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SetSettingRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -8531,65 +7606,54 @@ void SetSettingRequest::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SetSettingRequest::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SetSettingRequest*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SetSettingRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.Setting setting = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::Setting::_InternalParse;
-        object = msg->mutable_setting();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_setting(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SetSettingRequest::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SetSettingRequest)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.Setting setting = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_setting()));
         } else {
           goto handle_unusual;
@@ -8602,7 +7666,7 @@ bool SetSettingRequest::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -8618,41 +7682,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SetSettingRequest::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SetSettingRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.Setting setting = 1;
-  if (this->has_setting()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::setting(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SetSettingRequest)
-}
-
-::google::protobuf::uint8* SetSettingRequest::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SetSettingRequest::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SetSettingRequest)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.Setting setting = 1;
   if (this->has_setting()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::setting(this), target);
+        1, _Internal::setting(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SetSettingRequest)
   return target;
@@ -8662,36 +7708,35 @@ size_t SetSettingRequest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SetSettingRequest)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.Setting setting = 1;
   if (this->has_setting()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *setting_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SetSettingRequest::MergeFrom(const ::google::protobuf::Message& from) {
+void SetSettingRequest::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SetSettingRequest)
   GOOGLE_DCHECK_NE(&from, this);
   const SetSettingRequest* source =
-      ::google::protobuf::DynamicCastToGenerated<SetSettingRequest>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetSettingRequest>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SetSettingRequest)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SetSettingRequest)
     MergeFrom(*source);
@@ -8702,7 +7747,7 @@ void SetSettingRequest::MergeFrom(const SetSettingRequest& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SetSettingRequest)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_setting()) {
@@ -8710,7 +7755,7 @@ void SetSettingRequest::MergeFrom(const SetSettingRequest& from) {
   }
 }
 
-void SetSettingRequest::CopyFrom(const ::google::protobuf::Message& from) {
+void SetSettingRequest::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SetSettingRequest)
   if (&from == this) return;
   Clear();
@@ -8728,19 +7773,14 @@ bool SetSettingRequest::IsInitialized() const {
   return true;
 }
 
-void SetSettingRequest::Swap(SetSettingRequest* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SetSettingRequest::InternalSwap(SetSettingRequest* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(setting_, other->setting_);
 }
 
-::google::protobuf::Metadata SetSettingRequest::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SetSettingRequest::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -8750,26 +7790,22 @@ void SetSettingResponse::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_SetSettingResponse_default_instance_._instance.get_mutable()->camera_result_ = const_cast< ::mavsdk::rpc::camera::CameraResult*>(
       ::mavsdk::rpc::camera::CameraResult::internal_default_instance());
 }
-class SetSettingResponse::HasBitSetters {
+class SetSettingResponse::_Internal {
  public:
   static const ::mavsdk::rpc::camera::CameraResult& camera_result(const SetSettingResponse* msg);
 };
 
 const ::mavsdk::rpc::camera::CameraResult&
-SetSettingResponse::HasBitSetters::camera_result(const SetSettingResponse* msg) {
+SetSettingResponse::_Internal::camera_result(const SetSettingResponse* msg) {
   return *msg->camera_result_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SetSettingResponse::kCameraResultFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SetSettingResponse::SetSettingResponse()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SetSettingResponse)
 }
 SetSettingResponse::SetSettingResponse(const SetSettingResponse& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_camera_result()) {
@@ -8781,8 +7817,7 @@ SetSettingResponse::SetSettingResponse(const SetSettingResponse& from)
 }
 
 void SetSettingResponse::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_SetSettingResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SetSettingResponse_camera_2fcamera_2eproto.base);
   camera_result_ = nullptr;
 }
 
@@ -8799,14 +7834,14 @@ void SetSettingResponse::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SetSettingResponse& SetSettingResponse::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SetSettingResponse_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SetSettingResponse_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SetSettingResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SetSettingResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -8818,65 +7853,54 @@ void SetSettingResponse::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SetSettingResponse::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SetSettingResponse*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SetSettingResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::CameraResult::_InternalParse;
-        object = msg->mutable_camera_result();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_camera_result(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SetSettingResponse::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SetSettingResponse)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult camera_result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_camera_result()));
         } else {
           goto handle_unusual;
@@ -8889,7 +7913,7 @@ bool SetSettingResponse::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -8905,41 +7929,23 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SetSettingResponse::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SetSettingResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  if (this->has_camera_result()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::camera_result(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SetSettingResponse)
-}
-
-::google::protobuf::uint8* SetSettingResponse::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SetSettingResponse::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SetSettingResponse)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::camera_result(this), target);
+        1, _Internal::camera_result(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SetSettingResponse)
   return target;
@@ -8949,36 +7955,35 @@ size_t SetSettingResponse::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SetSettingResponse)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   if (this->has_camera_result()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *camera_result_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SetSettingResponse::MergeFrom(const ::google::protobuf::Message& from) {
+void SetSettingResponse::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SetSettingResponse)
   GOOGLE_DCHECK_NE(&from, this);
   const SetSettingResponse* source =
-      ::google::protobuf::DynamicCastToGenerated<SetSettingResponse>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SetSettingResponse>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SetSettingResponse)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SetSettingResponse)
     MergeFrom(*source);
@@ -8989,7 +7994,7 @@ void SetSettingResponse::MergeFrom(const SetSettingResponse& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SetSettingResponse)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_camera_result()) {
@@ -8997,7 +8002,7 @@ void SetSettingResponse::MergeFrom(const SetSettingResponse& from) {
   }
 }
 
-void SetSettingResponse::CopyFrom(const ::google::protobuf::Message& from) {
+void SetSettingResponse::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SetSettingResponse)
   if (&from == this) return;
   Clear();
@@ -9015,19 +8020,14 @@ bool SetSettingResponse::IsInitialized() const {
   return true;
 }
 
-void SetSettingResponse::Swap(SetSettingResponse* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SetSettingResponse::InternalSwap(SetSettingResponse* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(camera_result_, other->camera_result_);
 }
 
-::google::protobuf::Metadata SetSettingResponse::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SetSettingResponse::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -9035,36 +8035,30 @@ void SetSettingResponse::InternalSwap(SetSettingResponse* other) {
 
 void CameraResult::InitAsDefaultInstance() {
 }
-class CameraResult::HasBitSetters {
+class CameraResult::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CameraResult::kResultFieldNumber;
-const int CameraResult::kResultStrFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 CameraResult::CameraResult()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.CameraResult)
 }
 CameraResult::CameraResult(const CameraResult& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  result_str_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.result_str().size() > 0) {
-    result_str_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.result_str_);
+  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_result_str().empty()) {
+    result_str_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.result_str_);
   }
   result_ = from.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.CameraResult)
 }
 
 void CameraResult::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_CameraResult_camera_2fcamera_2eproto.base);
-  result_str_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CameraResult_camera_2fcamera_2eproto.base);
+  result_str_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   result_ = 0;
 }
 
@@ -9074,106 +8068,88 @@ CameraResult::~CameraResult() {
 }
 
 void CameraResult::SharedDtor() {
-  result_str_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  result_str_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void CameraResult::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const CameraResult& CameraResult::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_CameraResult_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_CameraResult_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void CameraResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.CameraResult)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  result_str_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  result_str_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   result_ = 0;
   _internal_metadata_.Clear();
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* CameraResult::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<CameraResult*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* CameraResult::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.CameraResult.Result result = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        ::google::protobuf::uint64 val = ::google::protobuf::internal::ReadVarint(&ptr);
-        msg->set_result(static_cast<::mavsdk::rpc::camera::CameraResult_Result>(val));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          set_result(static_cast<::mavsdk::rpc::camera::CameraResult_Result>(val));
+        } else goto handle_unusual;
+        continue;
       // string result_str = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.CameraResult.result_str");
-        object = msg->mutable_result_str();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_result_str(), ptr, ctx, "mavsdk.rpc.camera.CameraResult.result_str");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool CameraResult::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CameraResult)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.CameraResult.Result result = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
           int value = 0;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
           set_result(static_cast< ::mavsdk::rpc::camera::CameraResult_Result >(value));
         } else {
@@ -9184,12 +8160,12 @@ bool CameraResult::MergePartialFromCodedStream(
 
       // string result_str = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_result_str()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->result_str().data(), static_cast<int>(this->result_str().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_result_str()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_result_str().data(), static_cast<int>(this->_internal_result_str().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.CameraResult.result_str"));
         } else {
           goto handle_unusual;
@@ -9202,7 +8178,7 @@ bool CameraResult::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -9218,61 +8194,32 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void CameraResult::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.CameraResult)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.CameraResult.Result result = 1;
-  if (this->result() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      1, this->result(), output);
-  }
-
-  // string result_str = 2;
-  if (this->result_str().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->result_str().data(), static_cast<int>(this->result_str().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.CameraResult.result_str");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->result_str(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.CameraResult)
-}
-
-::google::protobuf::uint8* CameraResult::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* CameraResult::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CameraResult)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.CameraResult.Result result = 1;
   if (this->result() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->result(), target);
   }
 
   // string result_str = 2;
   if (this->result_str().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->result_str().data(), static_cast<int>(this->result_str().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_result_str().data(), static_cast<int>(this->_internal_result_str().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.CameraResult.result_str");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->result_str(), target);
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_result_str(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.CameraResult)
   return target;
@@ -9282,42 +8229,41 @@ size_t CameraResult::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.CameraResult)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string result_str = 2;
   if (this->result_str().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->result_str());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_result_str());
   }
 
   // .mavsdk.rpc.camera.CameraResult.Result result = 1;
   if (this->result() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->result());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->result());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void CameraResult::MergeFrom(const ::google::protobuf::Message& from) {
+void CameraResult::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.CameraResult)
   GOOGLE_DCHECK_NE(&from, this);
   const CameraResult* source =
-      ::google::protobuf::DynamicCastToGenerated<CameraResult>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<CameraResult>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.CameraResult)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.CameraResult)
     MergeFrom(*source);
@@ -9328,19 +8274,19 @@ void CameraResult::MergeFrom(const CameraResult& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.CameraResult)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.result_str().size() > 0) {
 
-    result_str_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.result_str_);
+    result_str_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.result_str_);
   }
   if (from.result() != 0) {
     set_result(from.result());
   }
 }
 
-void CameraResult::CopyFrom(const ::google::protobuf::Message& from) {
+void CameraResult::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.CameraResult)
   if (&from == this) return;
   Clear();
@@ -9358,21 +8304,16 @@ bool CameraResult::IsInitialized() const {
   return true;
 }
 
-void CameraResult::Swap(CameraResult* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void CameraResult::InternalSwap(CameraResult* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  result_str_.Swap(&other->result_str_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  result_str_.Swap(&other->result_str_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(result_, other->result_);
 }
 
-::google::protobuf::Metadata CameraResult::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata CameraResult::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -9386,7 +8327,7 @@ void CaptureInfo::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_CaptureInfo_default_instance_._instance.get_mutable()->attitude_euler_angle_ = const_cast< ::mavsdk::rpc::camera::EulerAngle*>(
       ::mavsdk::rpc::camera::EulerAngle::internal_default_instance());
 }
-class CaptureInfo::HasBitSetters {
+class CaptureInfo::_Internal {
  public:
   static const ::mavsdk::rpc::camera::Position& position(const CaptureInfo* msg);
   static const ::mavsdk::rpc::camera::Quaternion& attitude_quaternion(const CaptureInfo* msg);
@@ -9394,39 +8335,29 @@ class CaptureInfo::HasBitSetters {
 };
 
 const ::mavsdk::rpc::camera::Position&
-CaptureInfo::HasBitSetters::position(const CaptureInfo* msg) {
+CaptureInfo::_Internal::position(const CaptureInfo* msg) {
   return *msg->position_;
 }
 const ::mavsdk::rpc::camera::Quaternion&
-CaptureInfo::HasBitSetters::attitude_quaternion(const CaptureInfo* msg) {
+CaptureInfo::_Internal::attitude_quaternion(const CaptureInfo* msg) {
   return *msg->attitude_quaternion_;
 }
 const ::mavsdk::rpc::camera::EulerAngle&
-CaptureInfo::HasBitSetters::attitude_euler_angle(const CaptureInfo* msg) {
+CaptureInfo::_Internal::attitude_euler_angle(const CaptureInfo* msg) {
   return *msg->attitude_euler_angle_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CaptureInfo::kPositionFieldNumber;
-const int CaptureInfo::kAttitudeQuaternionFieldNumber;
-const int CaptureInfo::kAttitudeEulerAngleFieldNumber;
-const int CaptureInfo::kTimeUtcUsFieldNumber;
-const int CaptureInfo::kIsSuccessFieldNumber;
-const int CaptureInfo::kIndexFieldNumber;
-const int CaptureInfo::kFileUrlFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 CaptureInfo::CaptureInfo()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.CaptureInfo)
 }
 CaptureInfo::CaptureInfo(const CaptureInfo& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  file_url_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.file_url().size() > 0) {
-    file_url_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_url_);
+  file_url_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_file_url().empty()) {
+    file_url_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.file_url_);
   }
   if (from.has_position()) {
     position_ = new ::mavsdk::rpc::camera::Position(*from.position_);
@@ -9450,9 +8381,8 @@ CaptureInfo::CaptureInfo(const CaptureInfo& from)
 }
 
 void CaptureInfo::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_CaptureInfo_camera_2fcamera_2eproto.base);
-  file_url_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CaptureInfo_camera_2fcamera_2eproto.base);
+  file_url_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&position_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&index_) -
       reinterpret_cast<char*>(&position_)) + sizeof(index_));
@@ -9464,7 +8394,7 @@ CaptureInfo::~CaptureInfo() {
 }
 
 void CaptureInfo::SharedDtor() {
-  file_url_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  file_url_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete position_;
   if (this != internal_default_instance()) delete attitude_quaternion_;
   if (this != internal_default_instance()) delete attitude_euler_angle_;
@@ -9474,18 +8404,18 @@ void CaptureInfo::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const CaptureInfo& CaptureInfo::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_CaptureInfo_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_CaptureInfo_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void CaptureInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.CaptureInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  file_url_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  file_url_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == nullptr && position_ != nullptr) {
     delete position_;
   }
@@ -9505,132 +8435,96 @@ void CaptureInfo::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* CaptureInfo::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<CaptureInfo*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* CaptureInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.Position position = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::Position::_InternalParse;
-        object = msg->mutable_position();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_position(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::Quaternion::_InternalParse;
-        object = msg->mutable_attitude_quaternion();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ctx->ParseMessage(mutable_attitude_quaternion(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 26) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::EulerAngle::_InternalParse;
-        object = msg->mutable_attitude_euler_angle();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr = ctx->ParseMessage(mutable_attitude_euler_angle(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // uint64 time_utc_us = 4;
-      case 4: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 32) goto handle_unusual;
-        msg->set_time_utc_us(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          time_utc_us_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool is_success = 5;
-      case 5: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 40) goto handle_unusual;
-        msg->set_is_success(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          is_success_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // int32 index = 6;
-      case 6: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 48) goto handle_unusual;
-        msg->set_index(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
+          index_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // string file_url = 7;
-      case 7: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 58) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.CaptureInfo.file_url");
-        object = msg->mutable_file_url();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_file_url(), ptr, ctx, "mavsdk.rpc.camera.CaptureInfo.file_url");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool CaptureInfo::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CaptureInfo)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.Position position = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_position()));
         } else {
           goto handle_unusual;
@@ -9640,8 +8534,8 @@ bool CaptureInfo::MergePartialFromCodedStream(
 
       // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_attitude_quaternion()));
         } else {
           goto handle_unusual;
@@ -9651,8 +8545,8 @@ bool CaptureInfo::MergePartialFromCodedStream(
 
       // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (26 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (26 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_attitude_euler_angle()));
         } else {
           goto handle_unusual;
@@ -9662,10 +8556,10 @@ bool CaptureInfo::MergePartialFromCodedStream(
 
       // uint64 time_utc_us = 4;
       case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (32 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (32 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::uint64, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT64>(
                  input, &time_utc_us_)));
         } else {
           goto handle_unusual;
@@ -9675,10 +8569,10 @@ bool CaptureInfo::MergePartialFromCodedStream(
 
       // bool is_success = 5;
       case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (40 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (40 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &is_success_)));
         } else {
           goto handle_unusual;
@@ -9688,10 +8582,10 @@ bool CaptureInfo::MergePartialFromCodedStream(
 
       // int32 index = 6;
       case 6: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (48 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (48 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::int32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT32>(
                  input, &index_)));
         } else {
           goto handle_unusual;
@@ -9701,12 +8595,12 @@ bool CaptureInfo::MergePartialFromCodedStream(
 
       // string file_url = 7;
       case 7: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (58 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_file_url()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->file_url().data(), static_cast<int>(this->file_url().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (58 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_file_url()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_file_url().data(), static_cast<int>(this->_internal_file_url().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.CaptureInfo.file_url"));
         } else {
           goto handle_unusual;
@@ -9719,7 +8613,7 @@ bool CaptureInfo::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -9735,118 +8629,67 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void CaptureInfo::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.CaptureInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.Position position = 1;
-  if (this->has_position()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::position(this), output);
-  }
-
-  // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
-  if (this->has_attitude_quaternion()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, HasBitSetters::attitude_quaternion(this), output);
-  }
-
-  // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
-  if (this->has_attitude_euler_angle()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, HasBitSetters::attitude_euler_angle(this), output);
-  }
-
-  // uint64 time_utc_us = 4;
-  if (this->time_utc_us() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(4, this->time_utc_us(), output);
-  }
-
-  // bool is_success = 5;
-  if (this->is_success() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->is_success(), output);
-  }
-
-  // int32 index = 6;
-  if (this->index() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->index(), output);
-  }
-
-  // string file_url = 7;
-  if (this->file_url().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->file_url().data(), static_cast<int>(this->file_url().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.CaptureInfo.file_url");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      7, this->file_url(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.CaptureInfo)
-}
-
-::google::protobuf::uint8* CaptureInfo::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* CaptureInfo::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CaptureInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.Position position = 1;
   if (this->has_position()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::position(this), target);
+        1, _Internal::position(this), target, stream);
   }
 
   // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
   if (this->has_attitude_quaternion()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        2, HasBitSetters::attitude_quaternion(this), target);
+        2, _Internal::attitude_quaternion(this), target, stream);
   }
 
   // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
   if (this->has_attitude_euler_angle()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        3, HasBitSetters::attitude_euler_angle(this), target);
+        3, _Internal::attitude_euler_angle(this), target, stream);
   }
 
   // uint64 time_utc_us = 4;
   if (this->time_utc_us() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->time_utc_us(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(4, this->time_utc_us(), target);
   }
 
   // bool is_success = 5;
   if (this->is_success() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->is_success(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(5, this->is_success(), target);
   }
 
   // int32 index = 6;
   if (this->index() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->index(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(6, this->index(), target);
   }
 
   // string file_url = 7;
   if (this->file_url().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->file_url().data(), static_cast<int>(this->file_url().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_file_url().data(), static_cast<int>(this->_internal_file_url().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.CaptureInfo.file_url");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        7, this->file_url(), target);
+    target = stream->WriteStringMaybeAliased(
+        7, this->_internal_file_url(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.CaptureInfo)
   return target;
@@ -9856,47 +8699,42 @@ size_t CaptureInfo::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.CaptureInfo)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string file_url = 7;
   if (this->file_url().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->file_url());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_file_url());
   }
 
   // .mavsdk.rpc.camera.Position position = 1;
   if (this->has_position()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *position_);
   }
 
   // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
   if (this->has_attitude_quaternion()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *attitude_quaternion_);
   }
 
   // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
   if (this->has_attitude_euler_angle()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *attitude_euler_angle_);
   }
 
   // uint64 time_utc_us = 4;
   if (this->time_utc_us() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->time_utc_us());
   }
 
@@ -9908,24 +8746,28 @@ size_t CaptureInfo::ByteSizeLong() const {
   // int32 index = 6;
   if (this->index() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
         this->index());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void CaptureInfo::MergeFrom(const ::google::protobuf::Message& from) {
+void CaptureInfo::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.CaptureInfo)
   GOOGLE_DCHECK_NE(&from, this);
   const CaptureInfo* source =
-      ::google::protobuf::DynamicCastToGenerated<CaptureInfo>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<CaptureInfo>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.CaptureInfo)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.CaptureInfo)
     MergeFrom(*source);
@@ -9936,12 +8778,12 @@ void CaptureInfo::MergeFrom(const CaptureInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.CaptureInfo)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.file_url().size() > 0) {
 
-    file_url_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.file_url_);
+    file_url_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.file_url_);
   }
   if (from.has_position()) {
     mutable_position()->::mavsdk::rpc::camera::Position::MergeFrom(from.position());
@@ -9963,7 +8805,7 @@ void CaptureInfo::MergeFrom(const CaptureInfo& from) {
   }
 }
 
-void CaptureInfo::CopyFrom(const ::google::protobuf::Message& from) {
+void CaptureInfo::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.CaptureInfo)
   if (&from == this) return;
   Clear();
@@ -9981,14 +8823,10 @@ bool CaptureInfo::IsInitialized() const {
   return true;
 }
 
-void CaptureInfo::Swap(CaptureInfo* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void CaptureInfo::InternalSwap(CaptureInfo* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  file_url_.Swap(&other->file_url_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  file_url_.Swap(&other->file_url_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(position_, other->position_);
   swap(attitude_quaternion_, other->attitude_quaternion_);
@@ -9998,9 +8836,8 @@ void CaptureInfo::InternalSwap(CaptureInfo* other) {
   swap(index_, other->index_);
 }
 
-::google::protobuf::Metadata CaptureInfo::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata CaptureInfo::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -10008,24 +8845,17 @@ void CaptureInfo::InternalSwap(CaptureInfo* other) {
 
 void Position::InitAsDefaultInstance() {
 }
-class Position::HasBitSetters {
+class Position::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Position::kLatitudeDegFieldNumber;
-const int Position::kLongitudeDegFieldNumber;
-const int Position::kAbsoluteAltitudeMFieldNumber;
-const int Position::kRelativeAltitudeMFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 Position::Position()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.Position)
 }
 Position::Position(const Position& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&latitude_deg_, &from.latitude_deg_,
@@ -10052,14 +8882,14 @@ void Position::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const Position& Position::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_Position_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Position_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void Position::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.Position)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -10070,79 +8900,77 @@ void Position::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* Position::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<Position*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* Position::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // double latitude_deg = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 9) goto handle_unusual;
-        msg->set_latitude_deg(::google::protobuf::io::UnalignedLoad<double>(ptr));
-        ptr += sizeof(double);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
+          latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
       // double longitude_deg = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 17) goto handle_unusual;
-        msg->set_longitude_deg(::google::protobuf::io::UnalignedLoad<double>(ptr));
-        ptr += sizeof(double);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
+          longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else goto handle_unusual;
+        continue;
       // float absolute_altitude_m = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_absolute_altitude_m(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          absolute_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float relative_altitude_m = 4;
-      case 4: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 37) goto handle_unusual;
-        msg->set_relative_altitude_m(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+          relative_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool Position::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.Position)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // double latitude_deg = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (9 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (9 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   double, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &latitude_deg_)));
         } else {
           goto handle_unusual;
@@ -10152,10 +8980,10 @@ bool Position::MergePartialFromCodedStream(
 
       // double longitude_deg = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (17 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (17 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   double, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &longitude_deg_)));
         } else {
           goto handle_unusual;
@@ -10165,10 +8993,10 @@ bool Position::MergePartialFromCodedStream(
 
       // float absolute_altitude_m = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &absolute_altitude_m_)));
         } else {
           goto handle_unusual;
@@ -10178,10 +9006,10 @@ bool Position::MergePartialFromCodedStream(
 
       // float relative_altitude_m = 4;
       case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (37 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (37 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &relative_altitude_m_)));
         } else {
           goto handle_unusual;
@@ -10194,7 +9022,7 @@ bool Position::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -10210,68 +9038,39 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void Position::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.Position)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // double latitude_deg = 1;
-  if (this->latitude_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(1, this->latitude_deg(), output);
-  }
-
-  // double longitude_deg = 2;
-  if (this->longitude_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->longitude_deg(), output);
-  }
-
-  // float absolute_altitude_m = 3;
-  if (this->absolute_altitude_m() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->absolute_altitude_m(), output);
-  }
-
-  // float relative_altitude_m = 4;
-  if (this->relative_altitude_m() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->relative_altitude_m(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.Position)
-}
-
-::google::protobuf::uint8* Position::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* Position::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.Position)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // double latitude_deg = 1;
-  if (this->latitude_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(1, this->latitude_deg(), target);
+  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->latitude_deg(), target);
   }
 
   // double longitude_deg = 2;
-  if (this->longitude_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->longitude_deg(), target);
+  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->longitude_deg(), target);
   }
 
   // float absolute_altitude_m = 3;
-  if (this->absolute_altitude_m() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->absolute_altitude_m(), target);
+  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->absolute_altitude_m(), target);
   }
 
   // float relative_altitude_m = 4;
-  if (this->relative_altitude_m() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->relative_altitude_m(), target);
+  if (!(this->relative_altitude_m() <= 0 && this->relative_altitude_m() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->relative_altitude_m(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.Position)
   return target;
@@ -10281,49 +9080,48 @@ size_t Position::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.Position)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // double latitude_deg = 1;
-  if (this->latitude_deg() != 0) {
+  if (!(this->latitude_deg() <= 0 && this->latitude_deg() >= 0)) {
     total_size += 1 + 8;
   }
 
   // double longitude_deg = 2;
-  if (this->longitude_deg() != 0) {
+  if (!(this->longitude_deg() <= 0 && this->longitude_deg() >= 0)) {
     total_size += 1 + 8;
   }
 
   // float absolute_altitude_m = 3;
-  if (this->absolute_altitude_m() != 0) {
+  if (!(this->absolute_altitude_m() <= 0 && this->absolute_altitude_m() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float relative_altitude_m = 4;
-  if (this->relative_altitude_m() != 0) {
+  if (!(this->relative_altitude_m() <= 0 && this->relative_altitude_m() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Position::MergeFrom(const ::google::protobuf::Message& from) {
+void Position::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.Position)
   GOOGLE_DCHECK_NE(&from, this);
   const Position* source =
-      ::google::protobuf::DynamicCastToGenerated<Position>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Position>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.Position)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.Position)
     MergeFrom(*source);
@@ -10334,24 +9132,24 @@ void Position::MergeFrom(const Position& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.Position)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.latitude_deg() != 0) {
+  if (!(from.latitude_deg() <= 0 && from.latitude_deg() >= 0)) {
     set_latitude_deg(from.latitude_deg());
   }
-  if (from.longitude_deg() != 0) {
+  if (!(from.longitude_deg() <= 0 && from.longitude_deg() >= 0)) {
     set_longitude_deg(from.longitude_deg());
   }
-  if (from.absolute_altitude_m() != 0) {
+  if (!(from.absolute_altitude_m() <= 0 && from.absolute_altitude_m() >= 0)) {
     set_absolute_altitude_m(from.absolute_altitude_m());
   }
-  if (from.relative_altitude_m() != 0) {
+  if (!(from.relative_altitude_m() <= 0 && from.relative_altitude_m() >= 0)) {
     set_relative_altitude_m(from.relative_altitude_m());
   }
 }
 
-void Position::CopyFrom(const ::google::protobuf::Message& from) {
+void Position::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.Position)
   if (&from == this) return;
   Clear();
@@ -10369,10 +9167,6 @@ bool Position::IsInitialized() const {
   return true;
 }
 
-void Position::Swap(Position* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void Position::InternalSwap(Position* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -10382,9 +9176,8 @@ void Position::InternalSwap(Position* other) {
   swap(relative_altitude_m_, other->relative_altitude_m_);
 }
 
-::google::protobuf::Metadata Position::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata Position::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -10392,24 +9185,17 @@ void Position::InternalSwap(Position* other) {
 
 void Quaternion::InitAsDefaultInstance() {
 }
-class Quaternion::HasBitSetters {
+class Quaternion::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Quaternion::kWFieldNumber;
-const int Quaternion::kXFieldNumber;
-const int Quaternion::kYFieldNumber;
-const int Quaternion::kZFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 Quaternion::Quaternion()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.Quaternion)
 }
 Quaternion::Quaternion(const Quaternion& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&w_, &from.w_,
@@ -10436,14 +9222,14 @@ void Quaternion::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const Quaternion& Quaternion::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_Quaternion_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Quaternion_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void Quaternion::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.Quaternion)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -10454,79 +9240,77 @@ void Quaternion::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* Quaternion::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<Quaternion*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* Quaternion::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // float w = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 13) goto handle_unusual;
-        msg->set_w(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          w_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float x = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 21) goto handle_unusual;
-        msg->set_x(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
+          x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float y = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_y(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float z = 4;
-      case 4: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 37) goto handle_unusual;
-        msg->set_z(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+          z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool Quaternion::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.Quaternion)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // float w = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (13 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &w_)));
         } else {
           goto handle_unusual;
@@ -10536,10 +9320,10 @@ bool Quaternion::MergePartialFromCodedStream(
 
       // float x = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (21 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &x_)));
         } else {
           goto handle_unusual;
@@ -10549,10 +9333,10 @@ bool Quaternion::MergePartialFromCodedStream(
 
       // float y = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &y_)));
         } else {
           goto handle_unusual;
@@ -10562,10 +9346,10 @@ bool Quaternion::MergePartialFromCodedStream(
 
       // float z = 4;
       case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (37 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (37 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &z_)));
         } else {
           goto handle_unusual;
@@ -10578,7 +9362,7 @@ bool Quaternion::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -10594,68 +9378,39 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void Quaternion::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.Quaternion)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // float w = 1;
-  if (this->w() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->w(), output);
-  }
-
-  // float x = 2;
-  if (this->x() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->x(), output);
-  }
-
-  // float y = 3;
-  if (this->y() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->y(), output);
-  }
-
-  // float z = 4;
-  if (this->z() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->z(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.Quaternion)
-}
-
-::google::protobuf::uint8* Quaternion::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* Quaternion::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.Quaternion)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float w = 1;
-  if (this->w() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->w(), target);
+  if (!(this->w() <= 0 && this->w() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->w(), target);
   }
 
   // float x = 2;
-  if (this->x() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->x(), target);
+  if (!(this->x() <= 0 && this->x() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->x(), target);
   }
 
   // float y = 3;
-  if (this->y() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->y(), target);
+  if (!(this->y() <= 0 && this->y() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->y(), target);
   }
 
   // float z = 4;
-  if (this->z() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->z(), target);
+  if (!(this->z() <= 0 && this->z() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->z(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.Quaternion)
   return target;
@@ -10665,49 +9420,48 @@ size_t Quaternion::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.Quaternion)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float w = 1;
-  if (this->w() != 0) {
+  if (!(this->w() <= 0 && this->w() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float x = 2;
-  if (this->x() != 0) {
+  if (!(this->x() <= 0 && this->x() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float y = 3;
-  if (this->y() != 0) {
+  if (!(this->y() <= 0 && this->y() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float z = 4;
-  if (this->z() != 0) {
+  if (!(this->z() <= 0 && this->z() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Quaternion::MergeFrom(const ::google::protobuf::Message& from) {
+void Quaternion::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.Quaternion)
   GOOGLE_DCHECK_NE(&from, this);
   const Quaternion* source =
-      ::google::protobuf::DynamicCastToGenerated<Quaternion>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Quaternion>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.Quaternion)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.Quaternion)
     MergeFrom(*source);
@@ -10718,24 +9472,24 @@ void Quaternion::MergeFrom(const Quaternion& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.Quaternion)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.w() != 0) {
+  if (!(from.w() <= 0 && from.w() >= 0)) {
     set_w(from.w());
   }
-  if (from.x() != 0) {
+  if (!(from.x() <= 0 && from.x() >= 0)) {
     set_x(from.x());
   }
-  if (from.y() != 0) {
+  if (!(from.y() <= 0 && from.y() >= 0)) {
     set_y(from.y());
   }
-  if (from.z() != 0) {
+  if (!(from.z() <= 0 && from.z() >= 0)) {
     set_z(from.z());
   }
 }
 
-void Quaternion::CopyFrom(const ::google::protobuf::Message& from) {
+void Quaternion::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.Quaternion)
   if (&from == this) return;
   Clear();
@@ -10753,10 +9507,6 @@ bool Quaternion::IsInitialized() const {
   return true;
 }
 
-void Quaternion::Swap(Quaternion* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void Quaternion::InternalSwap(Quaternion* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -10766,9 +9516,8 @@ void Quaternion::InternalSwap(Quaternion* other) {
   swap(z_, other->z_);
 }
 
-::google::protobuf::Metadata Quaternion::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata Quaternion::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -10776,23 +9525,17 @@ void Quaternion::InternalSwap(Quaternion* other) {
 
 void EulerAngle::InitAsDefaultInstance() {
 }
-class EulerAngle::HasBitSetters {
+class EulerAngle::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int EulerAngle::kRollDegFieldNumber;
-const int EulerAngle::kPitchDegFieldNumber;
-const int EulerAngle::kYawDegFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 EulerAngle::EulerAngle()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.EulerAngle)
 }
 EulerAngle::EulerAngle(const EulerAngle& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&roll_deg_, &from.roll_deg_,
@@ -10819,14 +9562,14 @@ void EulerAngle::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const EulerAngle& EulerAngle::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_EulerAngle_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_EulerAngle_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void EulerAngle::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.EulerAngle)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -10837,72 +9580,70 @@ void EulerAngle::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* EulerAngle::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<EulerAngle*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* EulerAngle::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // float roll_deg = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 13) goto handle_unusual;
-        msg->set_roll_deg(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          roll_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float pitch_deg = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 21) goto handle_unusual;
-        msg->set_pitch_deg(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
+          pitch_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float yaw_deg = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_yaw_deg(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          yaw_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool EulerAngle::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.EulerAngle)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // float roll_deg = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (13 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &roll_deg_)));
         } else {
           goto handle_unusual;
@@ -10912,10 +9653,10 @@ bool EulerAngle::MergePartialFromCodedStream(
 
       // float pitch_deg = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (21 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (21 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &pitch_deg_)));
         } else {
           goto handle_unusual;
@@ -10925,10 +9666,10 @@ bool EulerAngle::MergePartialFromCodedStream(
 
       // float yaw_deg = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &yaw_deg_)));
         } else {
           goto handle_unusual;
@@ -10941,7 +9682,7 @@ bool EulerAngle::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -10957,58 +9698,33 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void EulerAngle::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.EulerAngle)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // float roll_deg = 1;
-  if (this->roll_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->roll_deg(), output);
-  }
-
-  // float pitch_deg = 2;
-  if (this->pitch_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->pitch_deg(), output);
-  }
-
-  // float yaw_deg = 3;
-  if (this->yaw_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->yaw_deg(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.EulerAngle)
-}
-
-::google::protobuf::uint8* EulerAngle::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* EulerAngle::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.EulerAngle)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float roll_deg = 1;
-  if (this->roll_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->roll_deg(), target);
+  if (!(this->roll_deg() <= 0 && this->roll_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->roll_deg(), target);
   }
 
   // float pitch_deg = 2;
-  if (this->pitch_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->pitch_deg(), target);
+  if (!(this->pitch_deg() <= 0 && this->pitch_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->pitch_deg(), target);
   }
 
   // float yaw_deg = 3;
-  if (this->yaw_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->yaw_deg(), target);
+  if (!(this->yaw_deg() <= 0 && this->yaw_deg() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->yaw_deg(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.EulerAngle)
   return target;
@@ -11018,44 +9734,43 @@ size_t EulerAngle::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.EulerAngle)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // float roll_deg = 1;
-  if (this->roll_deg() != 0) {
+  if (!(this->roll_deg() <= 0 && this->roll_deg() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float pitch_deg = 2;
-  if (this->pitch_deg() != 0) {
+  if (!(this->pitch_deg() <= 0 && this->pitch_deg() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float yaw_deg = 3;
-  if (this->yaw_deg() != 0) {
+  if (!(this->yaw_deg() <= 0 && this->yaw_deg() >= 0)) {
     total_size += 1 + 4;
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void EulerAngle::MergeFrom(const ::google::protobuf::Message& from) {
+void EulerAngle::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.EulerAngle)
   GOOGLE_DCHECK_NE(&from, this);
   const EulerAngle* source =
-      ::google::protobuf::DynamicCastToGenerated<EulerAngle>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<EulerAngle>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.EulerAngle)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.EulerAngle)
     MergeFrom(*source);
@@ -11066,21 +9781,21 @@ void EulerAngle::MergeFrom(const EulerAngle& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.EulerAngle)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.roll_deg() != 0) {
+  if (!(from.roll_deg() <= 0 && from.roll_deg() >= 0)) {
     set_roll_deg(from.roll_deg());
   }
-  if (from.pitch_deg() != 0) {
+  if (!(from.pitch_deg() <= 0 && from.pitch_deg() >= 0)) {
     set_pitch_deg(from.pitch_deg());
   }
-  if (from.yaw_deg() != 0) {
+  if (!(from.yaw_deg() <= 0 && from.yaw_deg() >= 0)) {
     set_yaw_deg(from.yaw_deg());
   }
 }
 
-void EulerAngle::CopyFrom(const ::google::protobuf::Message& from) {
+void EulerAngle::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.EulerAngle)
   if (&from == this) return;
   Clear();
@@ -11098,10 +9813,6 @@ bool EulerAngle::IsInitialized() const {
   return true;
 }
 
-void EulerAngle::Swap(EulerAngle* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void EulerAngle::InternalSwap(EulerAngle* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -11110,9 +9821,8 @@ void EulerAngle::InternalSwap(EulerAngle* other) {
   swap(yaw_deg_, other->yaw_deg_);
 }
 
-::google::protobuf::Metadata EulerAngle::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata EulerAngle::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -11120,31 +9830,22 @@ void EulerAngle::InternalSwap(EulerAngle* other) {
 
 void VideoStreamSettings::InitAsDefaultInstance() {
 }
-class VideoStreamSettings::HasBitSetters {
+class VideoStreamSettings::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int VideoStreamSettings::kFrameRateHzFieldNumber;
-const int VideoStreamSettings::kHorizontalResolutionPixFieldNumber;
-const int VideoStreamSettings::kVerticalResolutionPixFieldNumber;
-const int VideoStreamSettings::kBitRateBSFieldNumber;
-const int VideoStreamSettings::kRotationDegFieldNumber;
-const int VideoStreamSettings::kUriFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 VideoStreamSettings::VideoStreamSettings()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.VideoStreamSettings)
 }
 VideoStreamSettings::VideoStreamSettings(const VideoStreamSettings& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  uri_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.uri().size() > 0) {
-    uri_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.uri_);
+  uri_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_uri().empty()) {
+    uri_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.uri_);
   }
   ::memcpy(&frame_rate_hz_, &from.frame_rate_hz_,
     static_cast<size_t>(reinterpret_cast<char*>(&rotation_deg_) -
@@ -11153,9 +9854,8 @@ VideoStreamSettings::VideoStreamSettings(const VideoStreamSettings& from)
 }
 
 void VideoStreamSettings::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_VideoStreamSettings_camera_2fcamera_2eproto.base);
-  uri_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_VideoStreamSettings_camera_2fcamera_2eproto.base);
+  uri_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&frame_rate_hz_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&rotation_deg_) -
       reinterpret_cast<char*>(&frame_rate_hz_)) + sizeof(rotation_deg_));
@@ -11167,25 +9867,25 @@ VideoStreamSettings::~VideoStreamSettings() {
 }
 
 void VideoStreamSettings::SharedDtor() {
-  uri_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uri_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void VideoStreamSettings::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const VideoStreamSettings& VideoStreamSettings::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_VideoStreamSettings_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_VideoStreamSettings_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void VideoStreamSettings::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.VideoStreamSettings)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  uri_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  uri_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&frame_rate_hz_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&rotation_deg_) -
       reinterpret_cast<char*>(&frame_rate_hz_)) + sizeof(rotation_deg_));
@@ -11193,109 +9893,91 @@ void VideoStreamSettings::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* VideoStreamSettings::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<VideoStreamSettings*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* VideoStreamSettings::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // float frame_rate_hz = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 13) goto handle_unusual;
-        msg->set_frame_rate_hz(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 13)) {
+          frame_rate_hz_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // uint32 horizontal_resolution_pix = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 16) goto handle_unusual;
-        msg->set_horizontal_resolution_pix(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          horizontal_resolution_pix_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // uint32 vertical_resolution_pix = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 24) goto handle_unusual;
-        msg->set_vertical_resolution_pix(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          vertical_resolution_pix_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // uint32 bit_rate_b_s = 4;
-      case 4: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 32) goto handle_unusual;
-        msg->set_bit_rate_b_s(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+          bit_rate_b_s_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // uint32 rotation_deg = 5;
-      case 5: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 40) goto handle_unusual;
-        msg->set_rotation_deg(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          rotation_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // string uri = 6;
-      case 6: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 50) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.VideoStreamSettings.uri");
-        object = msg->mutable_uri();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_uri(), ptr, ctx, "mavsdk.rpc.camera.VideoStreamSettings.uri");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool VideoStreamSettings::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.VideoStreamSettings)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // float frame_rate_hz = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (13 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (13 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &frame_rate_hz_)));
         } else {
           goto handle_unusual;
@@ -11305,10 +9987,10 @@ bool VideoStreamSettings::MergePartialFromCodedStream(
 
       // uint32 horizontal_resolution_pix = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
                  input, &horizontal_resolution_pix_)));
         } else {
           goto handle_unusual;
@@ -11318,10 +10000,10 @@ bool VideoStreamSettings::MergePartialFromCodedStream(
 
       // uint32 vertical_resolution_pix = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (24 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (24 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
                  input, &vertical_resolution_pix_)));
         } else {
           goto handle_unusual;
@@ -11331,10 +10013,10 @@ bool VideoStreamSettings::MergePartialFromCodedStream(
 
       // uint32 bit_rate_b_s = 4;
       case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (32 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (32 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
                  input, &bit_rate_b_s_)));
         } else {
           goto handle_unusual;
@@ -11344,10 +10026,10 @@ bool VideoStreamSettings::MergePartialFromCodedStream(
 
       // uint32 rotation_deg = 5;
       case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (40 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (40 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::uint32, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_UINT32>(
                  input, &rotation_deg_)));
         } else {
           goto handle_unusual;
@@ -11357,12 +10039,12 @@ bool VideoStreamSettings::MergePartialFromCodedStream(
 
       // string uri = 6;
       case 6: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (50 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_uri()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->uri().data(), static_cast<int>(this->uri().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (50 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_uri()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_uri().data(), static_cast<int>(this->_internal_uri().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.VideoStreamSettings.uri"));
         } else {
           goto handle_unusual;
@@ -11375,7 +10057,7 @@ bool VideoStreamSettings::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -11391,99 +10073,55 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void VideoStreamSettings::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.VideoStreamSettings)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // float frame_rate_hz = 1;
-  if (this->frame_rate_hz() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->frame_rate_hz(), output);
-  }
-
-  // uint32 horizontal_resolution_pix = 2;
-  if (this->horizontal_resolution_pix() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->horizontal_resolution_pix(), output);
-  }
-
-  // uint32 vertical_resolution_pix = 3;
-  if (this->vertical_resolution_pix() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->vertical_resolution_pix(), output);
-  }
-
-  // uint32 bit_rate_b_s = 4;
-  if (this->bit_rate_b_s() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->bit_rate_b_s(), output);
-  }
-
-  // uint32 rotation_deg = 5;
-  if (this->rotation_deg() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->rotation_deg(), output);
-  }
-
-  // string uri = 6;
-  if (this->uri().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->uri().data(), static_cast<int>(this->uri().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.VideoStreamSettings.uri");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      6, this->uri(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.VideoStreamSettings)
-}
-
-::google::protobuf::uint8* VideoStreamSettings::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* VideoStreamSettings::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.VideoStreamSettings)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // float frame_rate_hz = 1;
-  if (this->frame_rate_hz() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->frame_rate_hz(), target);
+  if (!(this->frame_rate_hz() <= 0 && this->frame_rate_hz() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->frame_rate_hz(), target);
   }
 
   // uint32 horizontal_resolution_pix = 2;
   if (this->horizontal_resolution_pix() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->horizontal_resolution_pix(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(2, this->horizontal_resolution_pix(), target);
   }
 
   // uint32 vertical_resolution_pix = 3;
   if (this->vertical_resolution_pix() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->vertical_resolution_pix(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(3, this->vertical_resolution_pix(), target);
   }
 
   // uint32 bit_rate_b_s = 4;
   if (this->bit_rate_b_s() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->bit_rate_b_s(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(4, this->bit_rate_b_s(), target);
   }
 
   // uint32 rotation_deg = 5;
   if (this->rotation_deg() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->rotation_deg(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt32ToArray(5, this->rotation_deg(), target);
   }
 
   // string uri = 6;
   if (this->uri().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->uri().data(), static_cast<int>(this->uri().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_uri().data(), static_cast<int>(this->_internal_uri().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.VideoStreamSettings.uri");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->uri(), target);
+    target = stream->WriteStringMaybeAliased(
+        6, this->_internal_uri(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.VideoStreamSettings)
   return target;
@@ -11493,69 +10131,68 @@ size_t VideoStreamSettings::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.VideoStreamSettings)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string uri = 6;
   if (this->uri().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->uri());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_uri());
   }
 
   // float frame_rate_hz = 1;
-  if (this->frame_rate_hz() != 0) {
+  if (!(this->frame_rate_hz() <= 0 && this->frame_rate_hz() >= 0)) {
     total_size += 1 + 4;
   }
 
   // uint32 horizontal_resolution_pix = 2;
   if (this->horizontal_resolution_pix() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->horizontal_resolution_pix());
   }
 
   // uint32 vertical_resolution_pix = 3;
   if (this->vertical_resolution_pix() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->vertical_resolution_pix());
   }
 
   // uint32 bit_rate_b_s = 4;
   if (this->bit_rate_b_s() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->bit_rate_b_s());
   }
 
   // uint32 rotation_deg = 5;
   if (this->rotation_deg() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt32Size(
         this->rotation_deg());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void VideoStreamSettings::MergeFrom(const ::google::protobuf::Message& from) {
+void VideoStreamSettings::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.VideoStreamSettings)
   GOOGLE_DCHECK_NE(&from, this);
   const VideoStreamSettings* source =
-      ::google::protobuf::DynamicCastToGenerated<VideoStreamSettings>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<VideoStreamSettings>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.VideoStreamSettings)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.VideoStreamSettings)
     MergeFrom(*source);
@@ -11566,14 +10203,14 @@ void VideoStreamSettings::MergeFrom(const VideoStreamSettings& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.VideoStreamSettings)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.uri().size() > 0) {
 
-    uri_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.uri_);
+    uri_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.uri_);
   }
-  if (from.frame_rate_hz() != 0) {
+  if (!(from.frame_rate_hz() <= 0 && from.frame_rate_hz() >= 0)) {
     set_frame_rate_hz(from.frame_rate_hz());
   }
   if (from.horizontal_resolution_pix() != 0) {
@@ -11590,7 +10227,7 @@ void VideoStreamSettings::MergeFrom(const VideoStreamSettings& from) {
   }
 }
 
-void VideoStreamSettings::CopyFrom(const ::google::protobuf::Message& from) {
+void VideoStreamSettings::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.VideoStreamSettings)
   if (&from == this) return;
   Clear();
@@ -11608,14 +10245,10 @@ bool VideoStreamSettings::IsInitialized() const {
   return true;
 }
 
-void VideoStreamSettings::Swap(VideoStreamSettings* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void VideoStreamSettings::InternalSwap(VideoStreamSettings* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  uri_.Swap(&other->uri_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  uri_.Swap(&other->uri_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(frame_rate_hz_, other->frame_rate_hz_);
   swap(horizontal_resolution_pix_, other->horizontal_resolution_pix_);
@@ -11624,9 +10257,8 @@ void VideoStreamSettings::InternalSwap(VideoStreamSettings* other) {
   swap(rotation_deg_, other->rotation_deg_);
 }
 
-::google::protobuf::Metadata VideoStreamSettings::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata VideoStreamSettings::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -11636,27 +10268,22 @@ void VideoStreamInfo::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_VideoStreamInfo_default_instance_._instance.get_mutable()->video_stream_settings_ = const_cast< ::mavsdk::rpc::camera::VideoStreamSettings*>(
       ::mavsdk::rpc::camera::VideoStreamSettings::internal_default_instance());
 }
-class VideoStreamInfo::HasBitSetters {
+class VideoStreamInfo::_Internal {
  public:
   static const ::mavsdk::rpc::camera::VideoStreamSettings& video_stream_settings(const VideoStreamInfo* msg);
 };
 
 const ::mavsdk::rpc::camera::VideoStreamSettings&
-VideoStreamInfo::HasBitSetters::video_stream_settings(const VideoStreamInfo* msg) {
+VideoStreamInfo::_Internal::video_stream_settings(const VideoStreamInfo* msg) {
   return *msg->video_stream_settings_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int VideoStreamInfo::kVideoStreamSettingsFieldNumber;
-const int VideoStreamInfo::kVideoStreamStatusFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 VideoStreamInfo::VideoStreamInfo()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.VideoStreamInfo)
 }
 VideoStreamInfo::VideoStreamInfo(const VideoStreamInfo& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_video_stream_settings()) {
@@ -11669,8 +10296,7 @@ VideoStreamInfo::VideoStreamInfo(const VideoStreamInfo& from)
 }
 
 void VideoStreamInfo::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_VideoStreamInfo_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_VideoStreamInfo_camera_2fcamera_2eproto.base);
   ::memset(&video_stream_settings_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&video_stream_status_) -
       reinterpret_cast<char*>(&video_stream_settings_)) + sizeof(video_stream_status_));
@@ -11689,14 +10315,14 @@ void VideoStreamInfo::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const VideoStreamInfo& VideoStreamInfo::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_VideoStreamInfo_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_VideoStreamInfo_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void VideoStreamInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.VideoStreamInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -11709,73 +10335,62 @@ void VideoStreamInfo::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* VideoStreamInfo::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<VideoStreamInfo*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* VideoStreamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // .mavsdk.rpc.camera.VideoStreamSettings video_stream_settings = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::VideoStreamSettings::_InternalParse;
-        object = msg->mutable_video_stream_settings();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(mutable_video_stream_settings(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus video_stream_status = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 16) goto handle_unusual;
-        ::google::protobuf::uint64 val = ::google::protobuf::internal::ReadVarint(&ptr);
-        msg->set_video_stream_status(static_cast<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus>(val));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          set_video_stream_status(static_cast<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus>(val));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool VideoStreamInfo::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.VideoStreamInfo)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // .mavsdk.rpc.camera.VideoStreamSettings video_stream_settings = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_video_stream_settings()));
         } else {
           goto handle_unusual;
@@ -11785,10 +10400,10 @@ bool VideoStreamInfo::MergePartialFromCodedStream(
 
       // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus video_stream_status = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
           int value = 0;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
           set_video_stream_status(static_cast< ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus >(value));
         } else {
@@ -11802,7 +10417,7 @@ bool VideoStreamInfo::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -11818,53 +10433,30 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void VideoStreamInfo::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.VideoStreamInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.camera.VideoStreamSettings video_stream_settings = 1;
-  if (this->has_video_stream_settings()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, HasBitSetters::video_stream_settings(this), output);
-  }
-
-  // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus video_stream_status = 2;
-  if (this->video_stream_status() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      2, this->video_stream_status(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.VideoStreamInfo)
-}
-
-::google::protobuf::uint8* VideoStreamInfo::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* VideoStreamInfo::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.VideoStreamInfo)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.VideoStreamSettings video_stream_settings = 1;
   if (this->has_video_stream_settings()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, HasBitSetters::video_stream_settings(this), target);
+        1, _Internal::video_stream_settings(this), target, stream);
   }
 
   // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus video_stream_status = 2;
   if (this->video_stream_status() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       2, this->video_stream_status(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.VideoStreamInfo)
   return target;
@@ -11874,42 +10466,41 @@ size_t VideoStreamInfo::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.VideoStreamInfo)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // .mavsdk.rpc.camera.VideoStreamSettings video_stream_settings = 1;
   if (this->has_video_stream_settings()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *video_stream_settings_);
   }
 
   // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus video_stream_status = 2;
   if (this->video_stream_status() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->video_stream_status());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->video_stream_status());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void VideoStreamInfo::MergeFrom(const ::google::protobuf::Message& from) {
+void VideoStreamInfo::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.VideoStreamInfo)
   GOOGLE_DCHECK_NE(&from, this);
   const VideoStreamInfo* source =
-      ::google::protobuf::DynamicCastToGenerated<VideoStreamInfo>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<VideoStreamInfo>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.VideoStreamInfo)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.VideoStreamInfo)
     MergeFrom(*source);
@@ -11920,7 +10511,7 @@ void VideoStreamInfo::MergeFrom(const VideoStreamInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.VideoStreamInfo)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.has_video_stream_settings()) {
@@ -11931,7 +10522,7 @@ void VideoStreamInfo::MergeFrom(const VideoStreamInfo& from) {
   }
 }
 
-void VideoStreamInfo::CopyFrom(const ::google::protobuf::Message& from) {
+void VideoStreamInfo::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.VideoStreamInfo)
   if (&from == this) return;
   Clear();
@@ -11949,10 +10540,6 @@ bool VideoStreamInfo::IsInitialized() const {
   return true;
 }
 
-void VideoStreamInfo::Swap(VideoStreamInfo* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void VideoStreamInfo::InternalSwap(VideoStreamInfo* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -11960,9 +10547,8 @@ void VideoStreamInfo::InternalSwap(VideoStreamInfo* other) {
   swap(video_stream_status_, other->video_stream_status_);
 }
 
-::google::protobuf::Metadata VideoStreamInfo::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata VideoStreamInfo::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -11970,33 +10556,22 @@ void VideoStreamInfo::InternalSwap(VideoStreamInfo* other) {
 
 void CameraStatus::InitAsDefaultInstance() {
 }
-class CameraStatus::HasBitSetters {
+class CameraStatus::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int CameraStatus::kVideoOnFieldNumber;
-const int CameraStatus::kPhotoIntervalOnFieldNumber;
-const int CameraStatus::kUsedStorageMibFieldNumber;
-const int CameraStatus::kAvailableStorageMibFieldNumber;
-const int CameraStatus::kTotalStorageMibFieldNumber;
-const int CameraStatus::kRecordingTimeSFieldNumber;
-const int CameraStatus::kMediaFolderNameFieldNumber;
-const int CameraStatus::kStorageStatusFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 CameraStatus::CameraStatus()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.CameraStatus)
 }
 CameraStatus::CameraStatus(const CameraStatus& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  media_folder_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.media_folder_name().size() > 0) {
-    media_folder_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.media_folder_name_);
+  media_folder_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_media_folder_name().empty()) {
+    media_folder_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.media_folder_name_);
   }
   ::memcpy(&video_on_, &from.video_on_,
     static_cast<size_t>(reinterpret_cast<char*>(&storage_status_) -
@@ -12005,9 +10580,8 @@ CameraStatus::CameraStatus(const CameraStatus& from)
 }
 
 void CameraStatus::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_CameraStatus_camera_2fcamera_2eproto.base);
-  media_folder_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CameraStatus_camera_2fcamera_2eproto.base);
+  media_folder_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&video_on_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&storage_status_) -
       reinterpret_cast<char*>(&video_on_)) + sizeof(storage_status_));
@@ -12019,25 +10593,25 @@ CameraStatus::~CameraStatus() {
 }
 
 void CameraStatus::SharedDtor() {
-  media_folder_name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  media_folder_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void CameraStatus::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const CameraStatus& CameraStatus::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_CameraStatus_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_CameraStatus_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void CameraStatus::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.CameraStatus)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  media_folder_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  media_folder_name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&video_on_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&storage_status_) -
       reinterpret_cast<char*>(&video_on_)) + sizeof(storage_status_));
@@ -12045,124 +10619,106 @@ void CameraStatus::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* CameraStatus::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<CameraStatus*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* CameraStatus::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // bool video_on = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 8) goto handle_unusual;
-        msg->set_video_on(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          video_on_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // bool photo_interval_on = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 16) goto handle_unusual;
-        msg->set_photo_interval_on(::google::protobuf::internal::ReadVarint(&ptr));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          photo_interval_on_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // float used_storage_mib = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 29) goto handle_unusual;
-        msg->set_used_storage_mib(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+          used_storage_mib_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float available_storage_mib = 4;
-      case 4: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 37) goto handle_unusual;
-        msg->set_available_storage_mib(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+          available_storage_mib_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float total_storage_mib = 5;
-      case 5: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 45) goto handle_unusual;
-        msg->set_total_storage_mib(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
+          total_storage_mib_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // float recording_time_s = 6;
-      case 6: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 53) goto handle_unusual;
-        msg->set_recording_time_s(::google::protobuf::io::UnalignedLoad<float>(ptr));
-        ptr += sizeof(float);
-        break;
-      }
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 53)) {
+          recording_time_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else goto handle_unusual;
+        continue;
       // string media_folder_name = 7;
-      case 7: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 58) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.CameraStatus.media_folder_name");
-        object = msg->mutable_media_folder_name();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_media_folder_name(), ptr, ctx, "mavsdk.rpc.camera.CameraStatus.media_folder_name");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // .mavsdk.rpc.camera.CameraStatus.StorageStatus storage_status = 8;
-      case 8: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 64) goto handle_unusual;
-        ::google::protobuf::uint64 val = ::google::protobuf::internal::ReadVarint(&ptr);
-        msg->set_storage_status(static_cast<::mavsdk::rpc::camera::CameraStatus_StorageStatus>(val));
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        break;
-      }
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+          set_storage_status(static_cast<::mavsdk::rpc::camera::CameraStatus_StorageStatus>(val));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool CameraStatus::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.CameraStatus)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // bool video_on = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &video_on_)));
         } else {
           goto handle_unusual;
@@ -12172,10 +10728,10 @@ bool CameraStatus::MergePartialFromCodedStream(
 
       // bool photo_interval_on = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (16 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_BOOL>(
                  input, &photo_interval_on_)));
         } else {
           goto handle_unusual;
@@ -12185,10 +10741,10 @@ bool CameraStatus::MergePartialFromCodedStream(
 
       // float used_storage_mib = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (29 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (29 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &used_storage_mib_)));
         } else {
           goto handle_unusual;
@@ -12198,10 +10754,10 @@ bool CameraStatus::MergePartialFromCodedStream(
 
       // float available_storage_mib = 4;
       case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (37 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (37 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &available_storage_mib_)));
         } else {
           goto handle_unusual;
@@ -12211,10 +10767,10 @@ bool CameraStatus::MergePartialFromCodedStream(
 
       // float total_storage_mib = 5;
       case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (45 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (45 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &total_storage_mib_)));
         } else {
           goto handle_unusual;
@@ -12224,10 +10780,10 @@ bool CameraStatus::MergePartialFromCodedStream(
 
       // float recording_time_s = 6;
       case 6: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (53 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (53 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   float, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &recording_time_s_)));
         } else {
           goto handle_unusual;
@@ -12237,12 +10793,12 @@ bool CameraStatus::MergePartialFromCodedStream(
 
       // string media_folder_name = 7;
       case 7: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (58 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_media_folder_name()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->media_folder_name().data(), static_cast<int>(this->media_folder_name().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (58 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_media_folder_name()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_media_folder_name().data(), static_cast<int>(this->_internal_media_folder_name().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.CameraStatus.media_folder_name"));
         } else {
           goto handle_unusual;
@@ -12252,10 +10808,10 @@ bool CameraStatus::MergePartialFromCodedStream(
 
       // .mavsdk.rpc.camera.CameraStatus.StorageStatus storage_status = 8;
       case 8: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (64 & 0xFF)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (64 & 0xFF)) {
           int value = 0;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   int, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
           set_storage_status(static_cast< ::mavsdk::rpc::camera::CameraStatus_StorageStatus >(value));
         } else {
@@ -12269,7 +10825,7 @@ bool CameraStatus::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -12285,121 +10841,68 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void CameraStatus::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.CameraStatus)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // bool video_on = 1;
-  if (this->video_on() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->video_on(), output);
-  }
-
-  // bool photo_interval_on = 2;
-  if (this->photo_interval_on() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->photo_interval_on(), output);
-  }
-
-  // float used_storage_mib = 3;
-  if (this->used_storage_mib() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->used_storage_mib(), output);
-  }
-
-  // float available_storage_mib = 4;
-  if (this->available_storage_mib() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->available_storage_mib(), output);
-  }
-
-  // float total_storage_mib = 5;
-  if (this->total_storage_mib() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(5, this->total_storage_mib(), output);
-  }
-
-  // float recording_time_s = 6;
-  if (this->recording_time_s() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(6, this->recording_time_s(), output);
-  }
-
-  // string media_folder_name = 7;
-  if (this->media_folder_name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->media_folder_name().data(), static_cast<int>(this->media_folder_name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.CameraStatus.media_folder_name");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      7, this->media_folder_name(), output);
-  }
-
-  // .mavsdk.rpc.camera.CameraStatus.StorageStatus storage_status = 8;
-  if (this->storage_status() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      8, this->storage_status(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.CameraStatus)
-}
-
-::google::protobuf::uint8* CameraStatus::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* CameraStatus::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.CameraStatus)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // bool video_on = 1;
   if (this->video_on() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->video_on(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->video_on(), target);
   }
 
   // bool photo_interval_on = 2;
   if (this->photo_interval_on() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->photo_interval_on(), target);
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->photo_interval_on(), target);
   }
 
   // float used_storage_mib = 3;
-  if (this->used_storage_mib() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->used_storage_mib(), target);
+  if (!(this->used_storage_mib() <= 0 && this->used_storage_mib() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->used_storage_mib(), target);
   }
 
   // float available_storage_mib = 4;
-  if (this->available_storage_mib() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->available_storage_mib(), target);
+  if (!(this->available_storage_mib() <= 0 && this->available_storage_mib() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->available_storage_mib(), target);
   }
 
   // float total_storage_mib = 5;
-  if (this->total_storage_mib() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(5, this->total_storage_mib(), target);
+  if (!(this->total_storage_mib() <= 0 && this->total_storage_mib() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->total_storage_mib(), target);
   }
 
   // float recording_time_s = 6;
-  if (this->recording_time_s() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(6, this->recording_time_s(), target);
+  if (!(this->recording_time_s() <= 0 && this->recording_time_s() >= 0)) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->recording_time_s(), target);
   }
 
   // string media_folder_name = 7;
   if (this->media_folder_name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->media_folder_name().data(), static_cast<int>(this->media_folder_name().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_media_folder_name().data(), static_cast<int>(this->_internal_media_folder_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.CameraStatus.media_folder_name");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        7, this->media_folder_name(), target);
+    target = stream->WriteStringMaybeAliased(
+        7, this->_internal_media_folder_name(), target);
   }
 
   // .mavsdk.rpc.camera.CameraStatus.StorageStatus storage_status = 8;
   if (this->storage_status() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       8, this->storage_status(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.CameraStatus)
   return target;
@@ -12409,20 +10912,15 @@ size_t CameraStatus::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.CameraStatus)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string media_folder_name = 7;
   if (this->media_folder_name().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->media_folder_name());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_media_folder_name());
   }
 
   // bool video_on = 1;
@@ -12436,45 +10934,49 @@ size_t CameraStatus::ByteSizeLong() const {
   }
 
   // float used_storage_mib = 3;
-  if (this->used_storage_mib() != 0) {
+  if (!(this->used_storage_mib() <= 0 && this->used_storage_mib() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float available_storage_mib = 4;
-  if (this->available_storage_mib() != 0) {
+  if (!(this->available_storage_mib() <= 0 && this->available_storage_mib() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float total_storage_mib = 5;
-  if (this->total_storage_mib() != 0) {
+  if (!(this->total_storage_mib() <= 0 && this->total_storage_mib() >= 0)) {
     total_size += 1 + 4;
   }
 
   // float recording_time_s = 6;
-  if (this->recording_time_s() != 0) {
+  if (!(this->recording_time_s() <= 0 && this->recording_time_s() >= 0)) {
     total_size += 1 + 4;
   }
 
   // .mavsdk.rpc.camera.CameraStatus.StorageStatus storage_status = 8;
   if (this->storage_status() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->storage_status());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->storage_status());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void CameraStatus::MergeFrom(const ::google::protobuf::Message& from) {
+void CameraStatus::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.CameraStatus)
   GOOGLE_DCHECK_NE(&from, this);
   const CameraStatus* source =
-      ::google::protobuf::DynamicCastToGenerated<CameraStatus>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<CameraStatus>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.CameraStatus)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.CameraStatus)
     MergeFrom(*source);
@@ -12485,12 +10987,12 @@ void CameraStatus::MergeFrom(const CameraStatus& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.CameraStatus)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.media_folder_name().size() > 0) {
 
-    media_folder_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.media_folder_name_);
+    media_folder_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.media_folder_name_);
   }
   if (from.video_on() != 0) {
     set_video_on(from.video_on());
@@ -12498,16 +11000,16 @@ void CameraStatus::MergeFrom(const CameraStatus& from) {
   if (from.photo_interval_on() != 0) {
     set_photo_interval_on(from.photo_interval_on());
   }
-  if (from.used_storage_mib() != 0) {
+  if (!(from.used_storage_mib() <= 0 && from.used_storage_mib() >= 0)) {
     set_used_storage_mib(from.used_storage_mib());
   }
-  if (from.available_storage_mib() != 0) {
+  if (!(from.available_storage_mib() <= 0 && from.available_storage_mib() >= 0)) {
     set_available_storage_mib(from.available_storage_mib());
   }
-  if (from.total_storage_mib() != 0) {
+  if (!(from.total_storage_mib() <= 0 && from.total_storage_mib() >= 0)) {
     set_total_storage_mib(from.total_storage_mib());
   }
-  if (from.recording_time_s() != 0) {
+  if (!(from.recording_time_s() <= 0 && from.recording_time_s() >= 0)) {
     set_recording_time_s(from.recording_time_s());
   }
   if (from.storage_status() != 0) {
@@ -12515,7 +11017,7 @@ void CameraStatus::MergeFrom(const CameraStatus& from) {
   }
 }
 
-void CameraStatus::CopyFrom(const ::google::protobuf::Message& from) {
+void CameraStatus::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.CameraStatus)
   if (&from == this) return;
   Clear();
@@ -12533,14 +11035,10 @@ bool CameraStatus::IsInitialized() const {
   return true;
 }
 
-void CameraStatus::Swap(CameraStatus* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void CameraStatus::InternalSwap(CameraStatus* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  media_folder_name_.Swap(&other->media_folder_name_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  media_folder_name_.Swap(&other->media_folder_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(video_on_, other->video_on_);
   swap(photo_interval_on_, other->photo_interval_on_);
@@ -12551,9 +11049,8 @@ void CameraStatus::InternalSwap(CameraStatus* other) {
   swap(storage_status_, other->storage_status_);
 }
 
-::google::protobuf::Metadata CameraStatus::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata CameraStatus::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -12563,37 +11060,31 @@ void Setting::InitAsDefaultInstance() {
   ::mavsdk::rpc::camera::_Setting_default_instance_._instance.get_mutable()->option_ = const_cast< ::mavsdk::rpc::camera::Option*>(
       ::mavsdk::rpc::camera::Option::internal_default_instance());
 }
-class Setting::HasBitSetters {
+class Setting::_Internal {
  public:
   static const ::mavsdk::rpc::camera::Option& option(const Setting* msg);
 };
 
 const ::mavsdk::rpc::camera::Option&
-Setting::HasBitSetters::option(const Setting* msg) {
+Setting::_Internal::option(const Setting* msg) {
   return *msg->option_;
 }
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Setting::kSettingIdFieldNumber;
-const int Setting::kSettingDescriptionFieldNumber;
-const int Setting::kOptionFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 Setting::Setting()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.Setting)
 }
 Setting::Setting(const Setting& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  setting_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.setting_id().size() > 0) {
-    setting_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.setting_id_);
+  setting_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_setting_id().empty()) {
+    setting_id_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_id_);
   }
-  setting_description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.setting_description().size() > 0) {
-    setting_description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
+  setting_description_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_setting_description().empty()) {
+    setting_description_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
   }
   if (from.has_option()) {
     option_ = new ::mavsdk::rpc::camera::Option(*from.option_);
@@ -12604,10 +11095,9 @@ Setting::Setting(const Setting& from)
 }
 
 void Setting::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_Setting_camera_2fcamera_2eproto.base);
-  setting_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  setting_description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Setting_camera_2fcamera_2eproto.base);
+  setting_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  setting_description_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   option_ = nullptr;
 }
 
@@ -12617,8 +11107,8 @@ Setting::~Setting() {
 }
 
 void Setting::SharedDtor() {
-  setting_id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  setting_description_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  setting_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  setting_description_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete option_;
 }
 
@@ -12626,19 +11116,19 @@ void Setting::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const Setting& Setting::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_Setting_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Setting_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void Setting::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.Setting)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  setting_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  setting_description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  setting_id_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  setting_description_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == nullptr && option_ != nullptr) {
     delete option_;
   }
@@ -12647,105 +11137,72 @@ void Setting::Clear() {
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* Setting::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<Setting*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* Setting::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // string setting_id = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.Setting.setting_id");
-        object = msg->mutable_setting_id();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_setting_id(), ptr, ctx, "mavsdk.rpc.camera.Setting.setting_id");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // string setting_description = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.Setting.setting_description");
-        object = msg->mutable_setting_description();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_setting_description(), ptr, ctx, "mavsdk.rpc.camera.Setting.setting_description");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // .mavsdk.rpc.camera.Option option = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 26) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        parser_till_end = ::mavsdk::rpc::camera::Option::_InternalParse;
-        object = msg->mutable_option();
-        if (size > end - ptr) goto len_delim_till_end;
-        ptr += size;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-            {parser_till_end, object}, ptr - size, ptr));
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr = ctx->ParseMessage(mutable_option(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool Setting::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.Setting)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // string setting_id = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_setting_id()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->setting_id().data(), static_cast<int>(this->setting_id().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_setting_id()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_setting_id().data(), static_cast<int>(this->_internal_setting_id().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.Setting.setting_id"));
         } else {
           goto handle_unusual;
@@ -12755,12 +11212,12 @@ bool Setting::MergePartialFromCodedStream(
 
       // string setting_description = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_setting_description()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->setting_description().data(), static_cast<int>(this->setting_description().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_setting_description()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_setting_description().data(), static_cast<int>(this->_internal_setting_description().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.Setting.setting_description"));
         } else {
           goto handle_unusual;
@@ -12770,8 +11227,8 @@ bool Setting::MergePartialFromCodedStream(
 
       // .mavsdk.rpc.camera.Option option = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (26 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (26 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                input, mutable_option()));
         } else {
           goto handle_unusual;
@@ -12784,7 +11241,7 @@ bool Setting::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -12800,83 +11257,43 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void Setting::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.Setting)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string setting_id = 1;
-  if (this->setting_id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->setting_id().data(), static_cast<int>(this->setting_id().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.Setting.setting_id");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->setting_id(), output);
-  }
-
-  // string setting_description = 2;
-  if (this->setting_description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->setting_description().data(), static_cast<int>(this->setting_description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.Setting.setting_description");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->setting_description(), output);
-  }
-
-  // .mavsdk.rpc.camera.Option option = 3;
-  if (this->has_option()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3, HasBitSetters::option(this), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.Setting)
-}
-
-::google::protobuf::uint8* Setting::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* Setting::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.Setting)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string setting_id = 1;
   if (this->setting_id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->setting_id().data(), static_cast<int>(this->setting_id().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_setting_id().data(), static_cast<int>(this->_internal_setting_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.Setting.setting_id");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->setting_id(), target);
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_setting_id(), target);
   }
 
   // string setting_description = 2;
   if (this->setting_description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->setting_description().data(), static_cast<int>(this->setting_description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_setting_description().data(), static_cast<int>(this->_internal_setting_description().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.Setting.setting_description");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->setting_description(), target);
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_setting_description(), target);
   }
 
   // .mavsdk.rpc.camera.Option option = 3;
   if (this->has_option()) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        3, HasBitSetters::option(this), target);
+        3, _Internal::option(this), target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.Setting)
   return target;
@@ -12886,50 +11303,49 @@ size_t Setting::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.Setting)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string setting_id = 1;
   if (this->setting_id().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->setting_id());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_setting_id());
   }
 
   // string setting_description = 2;
   if (this->setting_description().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->setting_description());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_setting_description());
   }
 
   // .mavsdk.rpc.camera.Option option = 3;
   if (this->has_option()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *option_);
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Setting::MergeFrom(const ::google::protobuf::Message& from) {
+void Setting::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.Setting)
   GOOGLE_DCHECK_NE(&from, this);
   const Setting* source =
-      ::google::protobuf::DynamicCastToGenerated<Setting>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Setting>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.Setting)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.Setting)
     MergeFrom(*source);
@@ -12940,23 +11356,23 @@ void Setting::MergeFrom(const Setting& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.Setting)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.setting_id().size() > 0) {
 
-    setting_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.setting_id_);
+    setting_id_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_id_);
   }
   if (from.setting_description().size() > 0) {
 
-    setting_description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
+    setting_description_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
   }
   if (from.has_option()) {
     mutable_option()->::mavsdk::rpc::camera::Option::MergeFrom(from.option());
   }
 }
 
-void Setting::CopyFrom(const ::google::protobuf::Message& from) {
+void Setting::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.Setting)
   if (&from == this) return;
   Clear();
@@ -12974,23 +11390,18 @@ bool Setting::IsInitialized() const {
   return true;
 }
 
-void Setting::Swap(Setting* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void Setting::InternalSwap(Setting* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  setting_id_.Swap(&other->setting_id_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  setting_id_.Swap(&other->setting_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  setting_description_.Swap(&other->setting_description_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  setting_description_.Swap(&other->setting_description_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(option_, other->option_);
 }
 
-::google::protobuf::Metadata Setting::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata Setting::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -12998,40 +11409,34 @@ void Setting::InternalSwap(Setting* other) {
 
 void Option::InitAsDefaultInstance() {
 }
-class Option::HasBitSetters {
+class Option::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Option::kOptionIdFieldNumber;
-const int Option::kOptionDescriptionFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 Option::Option()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.Option)
 }
 Option::Option(const Option& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  option_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.option_id().size() > 0) {
-    option_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.option_id_);
+  option_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_option_id().empty()) {
+    option_id_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.option_id_);
   }
-  option_description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.option_description().size() > 0) {
-    option_description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.option_description_);
+  option_description_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_option_description().empty()) {
+    option_description_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.option_description_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.Option)
 }
 
 void Option::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_Option_camera_2fcamera_2eproto.base);
-  option_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  option_description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Option_camera_2fcamera_2eproto.base);
+  option_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  option_description_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 Option::~Option() {
@@ -13040,117 +11445,90 @@ Option::~Option() {
 }
 
 void Option::SharedDtor() {
-  option_id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  option_description_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  option_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  option_description_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Option::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const Option& Option::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_Option_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Option_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void Option::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.Option)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  option_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  option_description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  option_id_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  option_description_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* Option::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<Option*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* Option::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // string option_id = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.Option.option_id");
-        object = msg->mutable_option_id();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_option_id(), ptr, ctx, "mavsdk.rpc.camera.Option.option_id");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // string option_description = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.Option.option_description");
-        object = msg->mutable_option_description();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_option_description(), ptr, ctx, "mavsdk.rpc.camera.Option.option_description");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool Option::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.Option)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // string option_id = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_option_id()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->option_id().data(), static_cast<int>(this->option_id().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_option_id()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_option_id().data(), static_cast<int>(this->_internal_option_id().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.Option.option_id"));
         } else {
           goto handle_unusual;
@@ -13160,12 +11538,12 @@ bool Option::MergePartialFromCodedStream(
 
       // string option_description = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_option_description()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->option_description().data(), static_cast<int>(this->option_description().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_option_description()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_option_description().data(), static_cast<int>(this->_internal_option_description().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.Option.option_description"));
         } else {
           goto handle_unusual;
@@ -13178,7 +11556,7 @@ bool Option::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -13194,70 +11572,35 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void Option::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.Option)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string option_id = 1;
-  if (this->option_id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->option_id().data(), static_cast<int>(this->option_id().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.Option.option_id");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->option_id(), output);
-  }
-
-  // string option_description = 2;
-  if (this->option_description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->option_description().data(), static_cast<int>(this->option_description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.Option.option_description");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->option_description(), output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.Option)
-}
-
-::google::protobuf::uint8* Option::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* Option::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.Option)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string option_id = 1;
   if (this->option_id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->option_id().data(), static_cast<int>(this->option_id().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_option_id().data(), static_cast<int>(this->_internal_option_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.Option.option_id");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->option_id(), target);
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_option_id(), target);
   }
 
   // string option_description = 2;
   if (this->option_description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->option_description().data(), static_cast<int>(this->option_description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_option_description().data(), static_cast<int>(this->_internal_option_description().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.Option.option_description");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->option_description(), target);
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_option_description(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.Option)
   return target;
@@ -13267,43 +11610,42 @@ size_t Option::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.Option)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string option_id = 1;
   if (this->option_id().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->option_id());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_option_id());
   }
 
   // string option_description = 2;
   if (this->option_description().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->option_description());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_option_description());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Option::MergeFrom(const ::google::protobuf::Message& from) {
+void Option::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.Option)
   GOOGLE_DCHECK_NE(&from, this);
   const Option* source =
-      ::google::protobuf::DynamicCastToGenerated<Option>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Option>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.Option)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.Option)
     MergeFrom(*source);
@@ -13314,20 +11656,20 @@ void Option::MergeFrom(const Option& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.Option)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from.option_id().size() > 0) {
 
-    option_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.option_id_);
+    option_id_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.option_id_);
   }
   if (from.option_description().size() > 0) {
 
-    option_description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.option_description_);
+    option_description_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.option_description_);
   }
 }
 
-void Option::CopyFrom(const ::google::protobuf::Message& from) {
+void Option::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.Option)
   if (&from == this) return;
   Clear();
@@ -13345,22 +11687,17 @@ bool Option::IsInitialized() const {
   return true;
 }
 
-void Option::Swap(Option* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void Option::InternalSwap(Option* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  option_id_.Swap(&other->option_id_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  option_id_.Swap(&other->option_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  option_description_.Swap(&other->option_description_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  option_description_.Swap(&other->option_description_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
 }
 
-::google::protobuf::Metadata Option::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata Option::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -13368,42 +11705,35 @@ void Option::InternalSwap(Option* other) {
 
 void SettingOptions::InitAsDefaultInstance() {
 }
-class SettingOptions::HasBitSetters {
+class SettingOptions::_Internal {
  public:
 };
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SettingOptions::kSettingIdFieldNumber;
-const int SettingOptions::kSettingDescriptionFieldNumber;
-const int SettingOptions::kOptionsFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
 SettingOptions::SettingOptions()
-  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:mavsdk.rpc.camera.SettingOptions)
 }
 SettingOptions::SettingOptions(const SettingOptions& from)
-  : ::google::protobuf::Message(),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr),
       options_(from.options_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  setting_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.setting_id().size() > 0) {
-    setting_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.setting_id_);
+  setting_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_setting_id().empty()) {
+    setting_id_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_id_);
   }
-  setting_description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.setting_description().size() > 0) {
-    setting_description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
+  setting_description_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_setting_description().empty()) {
+    setting_description_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
   }
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.SettingOptions)
 }
 
 void SettingOptions::SharedCtor() {
-  ::google::protobuf::internal::InitSCC(
-      &scc_info_SettingOptions_camera_2fcamera_2eproto.base);
-  setting_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  setting_description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SettingOptions_camera_2fcamera_2eproto.base);
+  setting_id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  setting_description_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 SettingOptions::~SettingOptions() {
@@ -13412,134 +11742,103 @@ SettingOptions::~SettingOptions() {
 }
 
 void SettingOptions::SharedDtor() {
-  setting_id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  setting_description_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  setting_id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  setting_description_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void SettingOptions::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 const SettingOptions& SettingOptions::default_instance() {
-  ::google::protobuf::internal::InitSCC(&::scc_info_SettingOptions_camera_2fcamera_2eproto.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SettingOptions_camera_2fcamera_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SettingOptions::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera.SettingOptions)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   options_.Clear();
-  setting_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  setting_description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  setting_id_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  setting_description_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
 #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-const char* SettingOptions::_InternalParse(const char* begin, const char* end, void* object,
-                  ::google::protobuf::internal::ParseContext* ctx) {
-  auto msg = static_cast<SettingOptions*>(object);
-  ::google::protobuf::int32 size; (void)size;
-  int depth; (void)depth;
-  ::google::protobuf::uint32 tag;
-  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
-  auto ptr = begin;
-  while (ptr < end) {
-    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
-    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+const char* SettingOptions::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
     switch (tag >> 3) {
       // string setting_id = 1;
-      case 1: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.SettingOptions.setting_id");
-        object = msg->mutable_setting_id();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_setting_id(), ptr, ctx, "mavsdk.rpc.camera.SettingOptions.setting_id");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // string setting_description = 2;
-      case 2: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 18) goto handle_unusual;
-        ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-        ctx->extra_parse_data().SetFieldName("mavsdk.rpc.camera.SettingOptions.setting_description");
-        object = msg->mutable_setting_description();
-        if (size > end - ptr + ::google::protobuf::internal::ParseContext::kSlopBytes) {
-          parser_till_end = ::google::protobuf::internal::GreedyStringParserUTF8;
-          goto string_till_end;
-        }
-        GOOGLE_PROTOBUF_PARSER_ASSERT(::google::protobuf::internal::StringCheckUTF8(ptr, size, ctx));
-        ::google::protobuf::internal::InlineGreedyStringParser(object, ptr, size, ctx);
-        ptr += size;
-        break;
-      }
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_setting_description(), ptr, ctx, "mavsdk.rpc.camera.SettingOptions.setting_description");
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       // repeated .mavsdk.rpc.camera.Option options = 3;
-      case 3: {
-        if (static_cast<::google::protobuf::uint8>(tag) != 26) goto handle_unusual;
-        do {
-          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::mavsdk::rpc::camera::Option::_InternalParse;
-          object = msg->add_options();
-          if (size > end - ptr) goto len_delim_till_end;
-          ptr += size;
-          GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
-              {parser_till_end, object}, ptr - size, ptr));
-          if (ptr >= end) break;
-        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 26 && (ptr += 1));
-        break;
-      }
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(add_options(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
-          ctx->EndGroup(tag);
-          return ptr;
+          ctx->SetLastTag(tag);
+          goto success;
         }
-        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
-          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
-        ptr = res.first;
-        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
-        if (res.second) return ptr;
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
       }
     }  // switch
   }  // while
+success:
   return ptr;
-string_till_end:
-  static_cast<::std::string*>(object)->clear();
-  static_cast<::std::string*>(object)->reserve(size);
-  goto len_delim_till_end;
-len_delim_till_end:
-  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
-                               {parser_till_end, object}, size);
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
 }
 #else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SettingOptions::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:mavsdk.rpc.camera.SettingOptions)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // string setting_id = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_setting_id()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->setting_id().data(), static_cast<int>(this->setting_id().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_setting_id()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_setting_id().data(), static_cast<int>(this->_internal_setting_id().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.SettingOptions.setting_id"));
         } else {
           goto handle_unusual;
@@ -13549,12 +11848,12 @@ bool SettingOptions::MergePartialFromCodedStream(
 
       // string setting_description = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_setting_description()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->setting_description().data(), static_cast<int>(this->setting_description().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadString(
+                input, this->_internal_mutable_setting_description()));
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+            this->_internal_setting_description().data(), static_cast<int>(this->_internal_setting_description().length()),
+            ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::PARSE,
             "mavsdk.rpc.camera.SettingOptions.setting_description"));
         } else {
           goto handle_unusual;
@@ -13564,8 +11863,8 @@ bool SettingOptions::MergePartialFromCodedStream(
 
       // repeated .mavsdk.rpc.camera.Option options = 3;
       case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) == (26 & 0xFF)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (26 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                 input, add_options()));
         } else {
           goto handle_unusual;
@@ -13578,7 +11877,7 @@ bool SettingOptions::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -13594,87 +11893,43 @@ failure:
 }
 #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
-void SettingOptions::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:mavsdk.rpc.camera.SettingOptions)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string setting_id = 1;
-  if (this->setting_id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->setting_id().data(), static_cast<int>(this->setting_id().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.SettingOptions.setting_id");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->setting_id(), output);
-  }
-
-  // string setting_description = 2;
-  if (this->setting_description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->setting_description().data(), static_cast<int>(this->setting_description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "mavsdk.rpc.camera.SettingOptions.setting_description");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->setting_description(), output);
-  }
-
-  // repeated .mavsdk.rpc.camera.Option options = 3;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->options_size()); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      3,
-      this->options(static_cast<int>(i)),
-      output);
-  }
-
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        _internal_metadata_.unknown_fields(), output);
-  }
-  // @@protoc_insertion_point(serialize_end:mavsdk.rpc.camera.SettingOptions)
-}
-
-::google::protobuf::uint8* SettingOptions::InternalSerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::PROTOBUF_NAMESPACE_ID::uint8* SettingOptions::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera.SettingOptions)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // string setting_id = 1;
   if (this->setting_id().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->setting_id().data(), static_cast<int>(this->setting_id().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_setting_id().data(), static_cast<int>(this->_internal_setting_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.SettingOptions.setting_id");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->setting_id(), target);
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_setting_id(), target);
   }
 
   // string setting_description = 2;
   if (this->setting_description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->setting_description().data(), static_cast<int>(this->setting_description().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_setting_description().data(), static_cast<int>(this->_internal_setting_description().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "mavsdk.rpc.camera.SettingOptions.setting_description");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->setting_description(), target);
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_setting_description(), target);
   }
 
   // repeated .mavsdk.rpc.camera.Option options = 3;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->options_size()); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageToArray(
-        3, this->options(static_cast<int>(i)), target);
+  for (auto it = this->options_.pointer_begin(),
+            end = this->options_.pointer_end(); it < end; ++it) {
+    stream->EnsureSpace(&target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessageToArray(3, **it, target, stream);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera.SettingOptions)
   return target;
@@ -13684,54 +11939,49 @@ size_t SettingOptions::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera.SettingOptions)
   size_t total_size = 0;
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        _internal_metadata_.unknown_fields());
-  }
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // repeated .mavsdk.rpc.camera.Option options = 3;
-  {
-    unsigned int count = static_cast<unsigned int>(this->options_size());
-    total_size += 1UL * count;
-    for (unsigned int i = 0; i < count; i++) {
-      total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
-          this->options(static_cast<int>(i)));
-    }
+  total_size += 1UL * this->options_size();
+  for (const auto& msg : this->options_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   // string setting_id = 1;
   if (this->setting_id().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->setting_id());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_setting_id());
   }
 
   // string setting_description = 2;
   if (this->setting_description().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->setting_description());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_setting_description());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SettingOptions::MergeFrom(const ::google::protobuf::Message& from) {
+void SettingOptions::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:mavsdk.rpc.camera.SettingOptions)
   GOOGLE_DCHECK_NE(&from, this);
   const SettingOptions* source =
-      ::google::protobuf::DynamicCastToGenerated<SettingOptions>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SettingOptions>(
           &from);
   if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:mavsdk.rpc.camera.SettingOptions)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:mavsdk.rpc.camera.SettingOptions)
     MergeFrom(*source);
@@ -13742,21 +11992,21 @@ void SettingOptions::MergeFrom(const SettingOptions& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera.SettingOptions)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   options_.MergeFrom(from.options_);
   if (from.setting_id().size() > 0) {
 
-    setting_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.setting_id_);
+    setting_id_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_id_);
   }
   if (from.setting_description().size() > 0) {
 
-    setting_description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
+    setting_description_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.setting_description_);
   }
 }
 
-void SettingOptions::CopyFrom(const ::google::protobuf::Message& from) {
+void SettingOptions::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:mavsdk.rpc.camera.SettingOptions)
   if (&from == this) return;
   Clear();
@@ -13774,23 +12024,18 @@ bool SettingOptions::IsInitialized() const {
   return true;
 }
 
-void SettingOptions::Swap(SettingOptions* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
 void SettingOptions::InternalSwap(SettingOptions* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  CastToBase(&options_)->InternalSwap(CastToBase(&other->options_));
-  setting_id_.Swap(&other->setting_id_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  options_.InternalSwap(&other->options_);
+  setting_id_.Swap(&other->setting_id_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  setting_description_.Swap(&other->setting_description_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  setting_description_.Swap(&other->setting_description_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
 }
 
-::google::protobuf::Metadata SettingOptions::GetMetadata() const {
-  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_camera_2fcamera_2eproto);
-  return ::file_level_metadata_camera_2fcamera_2eproto[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SettingOptions::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
@@ -13798,8 +12043,7 @@ void SettingOptions::InternalSwap(SettingOptions* other) {
 }  // namespace camera
 }  // namespace rpc
 }  // namespace mavsdk
-namespace google {
-namespace protobuf {
+PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera::TakePhotoRequest* Arena::CreateMaybeMessage< ::mavsdk::rpc::camera::TakePhotoRequest >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::camera::TakePhotoRequest >(arena);
 }
@@ -13923,8 +12167,7 @@ template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera::Option* Arena::CreateMaybeMe
 template<> PROTOBUF_NOINLINE ::mavsdk::rpc::camera::SettingOptions* Arena::CreateMaybeMessage< ::mavsdk::rpc::camera::SettingOptions >(Arena* arena) {
   return Arena::CreateInternal< ::mavsdk::rpc::camera::SettingOptions >(arena);
 }
-}  // namespace protobuf
-}  // namespace google
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 #include <google/protobuf/port_undef.inc>
