@@ -232,7 +232,7 @@ public:
      * For more information, check out MavLink messages in
      * https://mavlink.io/en/messages/common.html
      */
-    enum class LandedState { UNDEFINED, ON_GROUND, IN_AIR, TAKEOFF, LANDING };
+    enum class LandedState { UNKNOWN, ON_GROUND, IN_AIR, TAKING_OFF, LANDING };
 
     static std::string landed_state_str(LandedState landed_state);
 
@@ -709,7 +709,6 @@ public:
      *
      * @param callback Function to call with updates.
      */
-
     void status_text_async(status_text_callback_t callback);
 
     /**
@@ -879,11 +878,10 @@ public:
      *
      * @param LandedState enumeration.
      */
-
     typedef std::function<void(LandedState landed_state)> landed_state_callback_t;
 
     /**
-     * @brief Callback type for Landed state updates.
+     * @brief Subscribe to Landed state updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */

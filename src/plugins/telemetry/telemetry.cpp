@@ -162,13 +162,13 @@ std::string Telemetry::landed_state_str(LandedState landed_state)
             return "On_ground";
         case LandedState::IN_AIR:
             return "In air";
-        case LandedState::TAKEOFF:
+        case LandedState::TAKING_OFF:
             return "Takingoff";
         case LandedState::LANDING:
             return "Landing";
-        case LandedState::UNDEFINED:
+        case LandedState::UNKNOWN:
         default:
-            return "Undefined";
+            return "Unknown";
     }
 }
 

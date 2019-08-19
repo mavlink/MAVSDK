@@ -542,7 +542,6 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
         extended_sys_state.landed_state == MAV_LANDED_STATE_TAKEOFF ||
         extended_sys_state.landed_state == MAV_LANDED_STATE_LANDING) {
         set_in_air(true);
-
     } else if (extended_sys_state.landed_state == MAV_LANDED_STATE_ON_GROUND) {
         set_in_air(false);
     }
@@ -720,13 +719,13 @@ TelemetryImpl::to_landed_state(mavlink_extended_sys_state_t extended_sys_state)
         case MAV_LANDED_STATE_IN_AIR:
             return Telemetry::LandedState::IN_AIR;
         case MAV_LANDED_STATE_TAKEOFF:
-            return Telemetry::LandedState::TAKEOFF;
+            return Telemetry::LandedState::TAKING_OFF;
         case MAV_LANDED_STATE_LANDING:
             return Telemetry::LandedState::LANDING;
         case MAV_LANDED_STATE_ON_GROUND:
             return Telemetry::LandedState::ON_GROUND;
         default:
-            return Telemetry::LandedState::UNDEFINED;
+            return Telemetry::LandedState::UNKNOWN;
     }
 }
 
