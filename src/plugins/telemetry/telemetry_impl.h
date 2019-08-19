@@ -205,7 +205,7 @@ private:
     Telemetry::Health _health{false, false, false, false, false, false, false};
 
     mutable std::mutex _landed_state_mutex{};
-    Telemetry::LandedState _landed_state{Telemetry::LandedState::UNDEFINED};
+    Telemetry::LandedState _landed_state{Telemetry::LandedState::UNKNOWN};
 
     mutable std::mutex _rc_status_mutex{};
     Telemetry::RCStatus _rc_status{false, false, 0.0f};

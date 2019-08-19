@@ -163,7 +163,7 @@ std::string Telemetry::landed_state_str(LandedState landed_state)
         case LandedState::IN_AIR:
             return "In air";
         case LandedState::TAKING_OFF:
-            return "Takingoff";
+            return "Taking_off";
         case LandedState::LANDING:
             return "Landing";
         case LandedState::UNKNOWN:
