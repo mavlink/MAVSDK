@@ -229,8 +229,6 @@ public:
     /**
      *@brief LandedState.
      * Enumeration of landed detector states
-     * For more information, check out MavLink messages in
-     * https://mavlink.io/en/messages/common.html
      */
     enum class LandedState { UNKNOWN, ON_GROUND, IN_AIR, TAKING_OFF, LANDING };
 
