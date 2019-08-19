@@ -709,7 +709,6 @@ public:
      *
      * @param callback Function to call with updates.
      */
-
     void status_text_async(status_text_callback_t callback);
 
     /**

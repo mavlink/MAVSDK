@@ -542,7 +542,6 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
         extended_sys_state.landed_state == MAV_LANDED_STATE_TAKEOFF ||
         extended_sys_state.landed_state == MAV_LANDED_STATE_LANDING) {
         set_in_air(true);
-
     } else if (extended_sys_state.landed_state == MAV_LANDED_STATE_ON_GROUND) {
         set_in_air(false);
     }
