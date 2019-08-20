@@ -159,7 +159,7 @@ std::string Telemetry::landed_state_str(LandedState landed_state)
 {
     switch (landed_state) {
         case LandedState::ON_GROUND:
-            return "On_ground";
+            return "On ground";
         case LandedState::IN_AIR:
             return "In air";
         case LandedState::TAKING_OFF:
