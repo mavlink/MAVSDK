@@ -4,7 +4,7 @@ set -e
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-proto_dir="${script_dir}/../proto/protos"
+proto_dir="${script_dir}/../src/backend/proto/protos"
 backend_generated_dir="${script_dir}/../src/backend/src/generated"
 third_party_dir="${script_dir}/../build/default/third_party"
 protoc_binary="${third_party_dir}/install/bin/protoc"

@@ -19,6 +19,9 @@ public:
     MOCK_CONST_METHOD1(
         attitude_quaternion_async, void(Telemetry::attitude_quaternion_callback_t)){};
     MOCK_CONST_METHOD1(
+        attitude_angular_velocity_body_async,
+        void(Telemetry::attitude_angular_velocity_body_callback_t)){};
+    MOCK_CONST_METHOD1(
         attitude_euler_angle_async, void(Telemetry::attitude_euler_angle_callback_t)){};
     MOCK_CONST_METHOD1(
         camera_attitude_quaternion_async, void(Telemetry::attitude_quaternion_callback_t)){};
@@ -26,6 +29,10 @@ public:
         camera_attitude_euler_angle_async, void(Telemetry::attitude_euler_angle_callback_t)){};
     MOCK_CONST_METHOD1(ground_speed_ned_async, void(Telemetry::ground_speed_ned_callback_t)){};
     MOCK_CONST_METHOD1(rc_status_async, void(Telemetry::rc_status_callback_t)){};
+    MOCK_CONST_METHOD1(
+        actuator_control_target_async, void(Telemetry::actuator_control_target_callback_t)){};
+    MOCK_CONST_METHOD1(
+        actuator_output_status_async, void(Telemetry::actuator_output_status_callback_t)){};
 };
 
 } // namespace testing
