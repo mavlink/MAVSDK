@@ -232,6 +232,9 @@ public:
      */
     enum class LandedState { UNKNOWN, ON_GROUND, IN_AIR, TAKING_OFF, LANDING };
 
+    /**
+     * @brief Get a human readable English string for a landed state.
+     */
     static std::string landed_state_str(LandedState landed_state);
 
     /**
