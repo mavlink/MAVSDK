@@ -110,6 +110,17 @@ public:
     };
 
     /**
+     * @brief Angular velocity type.
+     *
+     * The angular velocity of vehicle body in radians/second.
+     */
+    struct AngularVelocityBody {
+        float roll_rad_s; /**< @brief Roll angular velocity */
+        float pitch_rad_s; /**< @brief Pitch angular velocity */
+        float yaw_rad_s; /**< @brief Yaw angular velocity */
+    };
+
+    /**
      * @brief Ground speed type.
      *
      * The ground speed is represented in the NED (North East Down) frame and in metres/second.
@@ -260,7 +271,34 @@ public:
         bool available_once; /**< @brief true if an RC signal has been available once. */
         bool available; /**< @brief true if the RC signal is available now. */
         float signal_strength_percent; /**< @brief Signal strength as a percentage (range: 0 to
-                                          100). */
+                                  100). */
+    };
+
+    /**
+     * @brief The vehicle actuator's rate control type.
+     *
+     * An actuator's control group is e.g. attitude, for the core flight controls, or gimbal for
+     * payload. For more information about PX4 groups, check out
+     * https://dev.px4.io/v1.9.0/en/concept/mixing.html#control-pipeline
+     *
+     * Actuator controls normed to -1..+1 where 0 is neutral position. Throttle for single rotation
+     * direction motors is 0..1, negative range for reverse direction.
+     *
+     * For more information about controls, check out
+     * https://mavlink.io/en/messages/common.html#SET_ACTUATOR_CONTROL_TARGET
+     *
+     */
+    struct ActuatorControlTarget {
+        uint8_t group; /**< @brief Actuator group. */
+        float controls[8]; /**< @brief Actuator controls. */
+    };
+
+    /**
+     * @brief The raw values of the actuator outputs type.
+     */
+    struct ActuatorOutputStatus {
+        uint32_t active; /**< @brief Active outputs */
+        float actuator[32]; /**< @brief Servo / motor output array values. */
     };
 
     /**
@@ -401,6 +439,26 @@ public:
     Result set_rate_rc_status(double rate_hz);
 
     /**
+     * @brief Set rate of actuator controls updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_actuator_control_target(double rate_hz);
+
+    /**
+     * @brief Set rate of actuator output status updates (synchronous).
+     *
+     * @note o stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_actuator_output_status(double rate_hz);
+
+    /**
      * @brief Set rate of kinematic (position and velocity) updates (asynchronous).
      *
      * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
@@ -511,6 +569,26 @@ public:
     void set_rate_rc_status_async(double rate_hz, result_callback_t callback);
 
     /**
+     * @brief Set rate of actuator control target updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_actuator_control_target_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief et rate of actuator control target updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_actuator_output_status_async(double rate_hz, result_callback_t callback);
+
+    /**
      * @brief Set rate of Unix Epoch Time update (asynchronous).
      *
      * @param rate_hz Rate in Hz.
@@ -580,6 +658,13 @@ public:
      * @return Attitude as Euler angle.
      */
     EulerAngle attitude_euler_angle() const;
+
+    /**
+     * @brief Get the current angular speed in rad/s (synchronous).
+     *
+     * @return Angular speed.
+     */
+    AngularVelocityBody attitude_angular_velocity_body() const;
 
     /**
      * @brief Get the camera's attitude in quaternions (synchronous).
@@ -652,6 +737,20 @@ public:
      * @return RC status.
      */
     RCStatus rc_status() const;
+
+    /**
+     * @brief Get the actuator control target (synchronous).
+     *
+     * @return Actuator control target
+     */
+    ActuatorControlTarget actuator_control_target() const;
+
+    /**
+     * @brief Get the actuator output status (synchronous).
+     *
+     * @return Actuator output status
+     */
+    ActuatorOutputStatus actuator_output_status() const;
 
     /**
      * @brief Callback type for kinematic (position and velocity) updates.
@@ -755,6 +854,21 @@ public:
      * @param callback Function to call with updates.
      */
     void attitude_euler_angle_async(attitude_euler_angle_callback_t callback);
+
+    /**
+     * @brief Callback type for angular velocity updates in quaternion.
+     *
+     * @param angular_velocity_body Angular velocity.
+     */
+    typedef std::function<void(AngularVelocityBody angular_velocity_body)>
+        attitude_angular_velocity_body_callback_t;
+
+    /**
+     * @brief Subscribe to attitude updates in angular velocity (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void attitude_angular_velocity_body_async(attitude_angular_velocity_body_callback_t callback);
 
     /**
      * @brief Subscribe to camera attitude updates in quaternion (asynchronous).
@@ -901,6 +1015,36 @@ public:
      * @param uint64_t Epoch time [us].
      */
     typedef std::function<void(uint64_t time_us)> unix_epoch_time_callback_t;
+
+    /**
+     * @brief Callback type for actuator control target updates (asynchronous).
+     *
+     * @param actuator_control_target Actuator control target.
+     */
+    typedef std::function<void(ActuatorControlTarget actuator_control_target)>
+        actuator_control_target_callback_t;
+
+    /**
+     * @brief Subscribe to actuator control target updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void actuator_control_target_async(actuator_control_target_callback_t callback);
+
+    /**
+     * @brief Callback type for actuator output status target updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    typedef std::function<void(ActuatorOutputStatus actuator_output_status)>
+        actuator_output_status_callback_t;
+
+    /**
+     * @brief Subscribe to actuator output status target updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void actuator_output_status_async(actuator_output_status_callback_t callback);
 
     /**
      * @brief Subscribe to RC status updates (asynchronous).
@@ -1082,6 +1226,22 @@ bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& r
 std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle);
 
 /**
+ * @brief Equal operator to compare two `Telemetry::AngularVelocityBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::AngularVelocityBody`.
+ *
+ * @return A reference to the stream.
+ */
+std::ostream&
+operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body);
+
+/**
  * @brief Equal operator to compare two `Telemetry::GroundSpeedNED` objects.
  *
  * @return `true` if items are equal.
@@ -1115,5 +1275,37 @@ std::ostream& operator<<(std::ostream& str, Telemetry::RCStatus const& rc_status
  * @returns A reference to the stream.
  */
 std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_text);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::ActuatorControlTarget` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(
+    const Telemetry::ActuatorControlTarget& lhs, const Telemetry::ActuatorControlTarget& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::ActuatorControlTarget`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream&
+operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_control_target);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::ActuatorOutputStatus` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(
+    const Telemetry::ActuatorOutputStatus& lhs, const Telemetry::ActuatorOutputStatus& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::ActuatorControlTarget`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream&
+operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status);
 
 } // namespace mavsdk

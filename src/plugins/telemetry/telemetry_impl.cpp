@@ -6,6 +6,7 @@
 #include <cmath>
 #include <functional>
 #include <string>
+#include <array>
 
 namespace mavsdk {
 
@@ -67,6 +68,16 @@ void TelemetryImpl::init()
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_RC_CHANNELS, std::bind(&TelemetryImpl::process_rc_channels, this, _1), this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET,
+        std::bind(&TelemetryImpl::process_actuator_control_target, this, _1),
+        this);
+
+    _parent->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS,
+        std::bind(&TelemetryImpl::process_actuator_output_status, this, _1),
+        this);
 
     _parent->register_mavlink_message_handler(
         MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
@@ -231,6 +242,18 @@ Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
         _parent->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_actuator_control_target(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET, rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_actuator_output_status(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _parent->set_msg_rate(MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS, rate_hz));
+}
+
 void TelemetryImpl::set_rate_position_velocity_ned_async(
     double rate_hz, Telemetry::result_callback_t callback)
 {
@@ -339,6 +362,24 @@ void TelemetryImpl::set_rate_unix_epoch_time_async(
         std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
 }
 
+void TelemetryImpl::set_rate_actuator_control_target_async(
+    double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_ACTUATOR_CONTROL_TARGET,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
+void TelemetryImpl::set_rate_actuator_output_status_async(
+    double rate_hz, Telemetry::result_callback_t callback)
+{
+    _parent->set_msg_rate_async(
+        MAVLINK_MSG_ID_ACTUATOR_OUTPUT_STATUS,
+        rate_hz,
+        std::bind(&TelemetryImpl::command_result_callback, std::placeholders::_1, callback));
+}
+
 Telemetry::Result
 TelemetryImpl::telemetry_result_from_command_result(MAVLinkCommands::Result command_result)
 {
@@ -440,7 +481,13 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
                                      attitude_quaternion.q3,
                                      attitude_quaternion.q4};
 
+    Telemetry::AngularVelocityBody angular_velocity_body{attitude_quaternion.rollspeed,
+                                                         attitude_quaternion.pitchspeed,
+                                                         attitude_quaternion.yawspeed};
+
     set_attitude_quaternion(quaternion);
+
+    set_attitude_angular_velocity_body(angular_velocity_body);
 
     if (_attitude_quaternion_subscription) {
         auto callback = _attitude_quaternion_subscription;
@@ -451,6 +498,12 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
     if (_attitude_euler_angle_subscription) {
         auto callback = _attitude_euler_angle_subscription;
         auto arg = get_attitude_euler_angle();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+
+    if (_attitude_angular_velocity_body_subscription) {
+        auto callback = _attitude_angular_velocity_body_subscription;
+        auto arg = get_attitude_angular_velocity_body();
         _parent->call_user_callback([callback, arg]() { callback(arg); });
     }
 }
@@ -680,6 +733,40 @@ void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
     _parent->refresh_timeout_handler(_unix_epoch_timeout_cookie);
 }
 
+void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& message)
+{
+    uint32_t group;
+    std::array<float, 8> controls;
+
+    group = mavlink_msg_actuator_control_target_get_group_mlx(&message);
+    mavlink_msg_actuator_control_target_get_controls(&message, controls.data());
+
+    set_actuator_control_target(group, controls);
+
+    if (_actuator_control_target_subscription) {
+        auto callback = _actuator_control_target_subscription;
+        auto arg = get_actuator_control_target();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
+void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& message)
+{
+    uint32_t active;
+    std::array<float, 32> actuators;
+
+    active = mavlink_msg_actuator_output_status_get_active(&message);
+    mavlink_msg_actuator_output_status_get_actuator(&message, actuators.data());
+
+    set_actuator_output_status(active, actuators);
+
+    if (_actuator_output_status_subscription) {
+        auto callback = _actuator_output_status_subscription;
+        auto arg = get_actuator_output_status();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+}
+
 Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t custom_mode)
 {
     px4::px4_custom_mode px4_custom_mode;
@@ -888,6 +975,12 @@ Telemetry::Quaternion TelemetryImpl::get_attitude_quaternion() const
     return _attitude_quaternion;
 }
 
+Telemetry::AngularVelocityBody TelemetryImpl::get_attitude_angular_velocity_body() const
+{
+    std::lock_guard<std::mutex> lock(_attitude_angular_velocity_body_mutex);
+    return _attitude_angular_velocity_body;
+}
+
 Telemetry::EulerAngle TelemetryImpl::get_attitude_euler_angle() const
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
@@ -900,6 +993,13 @@ void TelemetryImpl::set_attitude_quaternion(Telemetry::Quaternion quaternion)
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
     _attitude_quaternion = quaternion;
+}
+
+void TelemetryImpl::set_attitude_angular_velocity_body(
+    Telemetry::AngularVelocityBody angular_velocity_body)
+{
+    std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
+    _attitude_angular_velocity_body = angular_velocity_body;
 }
 
 Telemetry::Quaternion TelemetryImpl::get_camera_attitude_quaternion() const
@@ -1013,6 +1113,18 @@ uint64_t TelemetryImpl::get_unix_epoch_time_us() const
     return _unix_epoch_time_us;
 }
 
+Telemetry::ActuatorControlTarget TelemetryImpl::get_actuator_control_target() const
+{
+    std::lock_guard<std::mutex> lock(_actuator_control_target_mutex);
+    return _actuator_control_target;
+}
+
+Telemetry::ActuatorOutputStatus TelemetryImpl::get_actuator_output_status() const
+{
+    std::lock_guard<std::mutex> lock(_actuator_output_status_mutex);
+    return _actuator_output_status;
+}
+
 void TelemetryImpl::set_health_local_position(bool ok)
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
@@ -1087,6 +1199,21 @@ void TelemetryImpl::set_unix_epoch_time_us(uint64_t time_us)
     _unix_epoch_time_us = time_us;
 }
 
+void TelemetryImpl::set_actuator_control_target(uint8_t group, const std::array<float, 8>& controls)
+{
+    std::lock_guard<std::mutex> lock(_actuator_control_target_mutex);
+    _actuator_control_target.group = group;
+    std::copy(controls.begin(), controls.end(), _actuator_control_target.controls);
+}
+
+void TelemetryImpl::set_actuator_output_status(
+    uint32_t active, const std::array<float, 32>& actuators)
+{
+    std::lock_guard<std::mutex> lock(_actuator_output_status_mutex);
+    _actuator_output_status.active = active;
+    std::copy(actuators.begin(), actuators.end(), _actuator_output_status.actuator);
+}
+
 void TelemetryImpl::position_velocity_ned_async(
     Telemetry::position_velocity_ned_callback_t& callback)
 {
@@ -1126,6 +1253,12 @@ void TelemetryImpl::attitude_quaternion_async(Telemetry::attitude_quaternion_cal
 void TelemetryImpl::attitude_euler_angle_async(Telemetry::attitude_euler_angle_callback_t& callback)
 {
     _attitude_euler_angle_subscription = callback;
+}
+
+void TelemetryImpl::attitude_angular_velocity_body_async(
+    Telemetry::attitude_angular_velocity_body_callback_t& callback)
+{
+    _attitude_angular_velocity_body_subscription = callback;
 }
 
 void TelemetryImpl::camera_attitude_quaternion_async(
@@ -1188,6 +1321,18 @@ void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t& callback)
 void TelemetryImpl::unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t& callback)
 {
     _unix_epoch_time_subscription = callback;
+}
+
+void TelemetryImpl::actuator_control_target_async(
+    Telemetry::actuator_control_target_callback_t& callback)
+{
+    _actuator_control_target_subscription = callback;
+}
+
+void TelemetryImpl::actuator_output_status_async(
+    Telemetry::actuator_output_status_callback_t& callback)
+{
+    _actuator_output_status_subscription = callback;
 }
 
 void TelemetryImpl::process_parameter_update(const std::string& name)
