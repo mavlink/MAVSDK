@@ -238,6 +238,17 @@ public:
     static std::string flight_mode_str(FlightMode flight_mode);
 
     /**
+     *@brief LandedState.
+     * Enumeration of landed detector states
+     */
+    enum class LandedState { UNKNOWN, ON_GROUND, IN_AIR, TAKING_OFF, LANDING };
+
+    /**
+     * @brief Get a human readable English string for a landed state.
+     */
+    static std::string landed_state_str(LandedState landed_state);
+
+    /**
      * @brief Various health flags.
      */
     struct Health {
@@ -621,6 +632,13 @@ public:
     bool in_air() const;
 
     /**
+     * @brief Get the landed state status (synchronous).
+     *
+     * @return Landed state.
+     */
+    LandedState landed_state() const;
+
+    /**
      * @brief Get the arming status (synchronous).
      *
      * @return true if armed (propellers spinning).
@@ -969,6 +987,20 @@ public:
      * @param callback Function to call with updates.
      */
     void health_all_ok_async(health_all_ok_callback_t callback);
+
+    /**
+     * @brief Callback type for landed state updates.
+     *
+     * @param LandedState enumeration.
+     */
+    typedef std::function<void(LandedState landed_state)> landed_state_callback_t;
+
+    /**
+     * @brief Subscribe to Landed state updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void landed_state_async(landed_state_callback_t callback);
 
     /**
      * @brief Callback type for RC status updates.

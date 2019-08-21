@@ -582,6 +582,15 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
     mavlink_extended_sys_state_t extended_sys_state;
     mavlink_msg_extended_sys_state_decode(&message, &extended_sys_state);
 
+    Telemetry::LandedState landed_state = to_landed_state(extended_sys_state);
+    set_landed_state(landed_state);
+
+    if (_landed_state_subscription) {
+        auto callback = _landed_state_subscription;
+        auto arg = get_landed_state();
+        _parent->call_user_callback([callback, arg]() { callback(arg); });
+    }
+
     if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR ||
         extended_sys_state.landed_state == MAV_LANDED_STATE_TAKEOFF ||
         extended_sys_state.landed_state == MAV_LANDED_STATE_LANDING) {
@@ -790,6 +799,23 @@ Telemetry::FlightMode TelemetryImpl::to_flight_mode_from_custom_mode(uint32_t cu
     }
 }
 
+Telemetry::LandedState
+TelemetryImpl::to_landed_state(mavlink_extended_sys_state_t extended_sys_state)
+{
+    switch (extended_sys_state.landed_state) {
+        case MAV_LANDED_STATE_IN_AIR:
+            return Telemetry::LandedState::IN_AIR;
+        case MAV_LANDED_STATE_TAKEOFF:
+            return Telemetry::LandedState::TAKING_OFF;
+        case MAV_LANDED_STATE_LANDING:
+            return Telemetry::LandedState::LANDING;
+        case MAV_LANDED_STATE_ON_GROUND:
+            return Telemetry::LandedState::ON_GROUND;
+        default:
+            return Telemetry::LandedState::UNKNOWN;
+    }
+}
+
 void TelemetryImpl::receive_param_cal_gyro(MAVLinkParameters::Result result, int value)
 {
     if (result != MAVLinkParameters::Result::SUCCESS) {
@@ -911,14 +937,14 @@ void TelemetryImpl::set_home_position(Telemetry::Position home_position)
     _home_position = home_position;
 }
 
-bool TelemetryImpl::in_air() const
-{
-    return _in_air;
-}
-
 bool TelemetryImpl::armed() const
 {
     return _armed;
+}
+
+bool TelemetryImpl::in_air() const
+{
+    return _in_air;
 }
 
 void TelemetryImpl::set_in_air(bool in_air_new)
@@ -1141,6 +1167,18 @@ void TelemetryImpl::set_health_level_calibration(bool ok)
     _health.level_calibration_ok = (ok || _hitl_enabled);
 }
 
+Telemetry::LandedState TelemetryImpl::get_landed_state() const
+{
+    std::lock_guard<std::mutex> lock(_landed_state_mutex);
+    return _landed_state;
+}
+
+void TelemetryImpl::set_landed_state(Telemetry::LandedState landed_state)
+{
+    std::lock_guard<std::mutex> lock(_landed_state_mutex);
+    _landed_state = landed_state;
+}
+
 void TelemetryImpl::set_rc_status(bool available, float signal_strength_percent)
 {
     std::lock_guard<std::mutex> lock(_rc_status_mutex);
@@ -1268,6 +1306,11 @@ void TelemetryImpl::health_async(Telemetry::health_callback_t& callback)
 void TelemetryImpl::health_all_ok_async(Telemetry::health_all_ok_callback_t& callback)
 {
     _health_all_ok_subscription = callback;
+}
+
+void TelemetryImpl::landed_state_async(Telemetry::landed_state_callback_t& callback)
+{
+    _landed_state_subscription = callback;
 }
 
 void TelemetryImpl::rc_status_async(Telemetry::rc_status_callback_t& callback)

@@ -165,6 +165,33 @@ bool Telemetry::in_air() const
     return _impl->in_air();
 }
 
+Telemetry::LandedState Telemetry::landed_state() const
+{
+    return _impl->get_landed_state();
+}
+
+void Telemetry::landed_state_async(landed_state_callback_t callback)
+{
+    _impl->landed_state_async(callback);
+}
+
+std::string Telemetry::landed_state_str(LandedState landed_state)
+{
+    switch (landed_state) {
+        case LandedState::ON_GROUND:
+            return "On ground";
+        case LandedState::IN_AIR:
+            return "In air";
+        case LandedState::TAKING_OFF:
+            return "Taking off";
+        case LandedState::LANDING:
+            return "Landing";
+        case LandedState::UNKNOWN:
+        default:
+            return "Unknown";
+    }
+}
+
 Telemetry::StatusText Telemetry::status_text() const
 {
     return _impl->get_status_text();
