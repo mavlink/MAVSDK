@@ -5,15 +5,60 @@ package mavsdk.rpc.offboard;
 option java_package = "io.mavsdk.offboard";
 option java_outer_classname = "OffboardProto";
 
+/**
+ * Control a drone with position, velocity, attitude or motor commands.
+ *
+ * The module is called offboard because the commands can be sent from external sources
+ * as opposed to onboard control right inside the autopilot "board".
+ *
+ * Client code must specify a setpoint before starting offboard mode.
+ * Mavsdk automatically sends setpoints at 20Hz (PX4 Offboard mode requires that setpoints
+ * are minimally sent at 2Hz).
+ */
 service OffboardService {
+    /*
+     * Start offboard control.
+     */
     rpc Start(StartRequest) returns(StartResponse) {}
+    /*
+     * Stop offboard control.
+     *
+     * The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
+     */
     rpc Stop(StopRequest) returns(StopResponse) {}
+    /*
+     * Check if offboard control is active.
+     *
+     * True means that the vehicle is in offboard mode and we are actively sending
+     * setpoints.
+     */
     rpc IsActive(IsActiveRequest) returns(IsActiveResponse) {}
+    /*
+     * Set the attitude in terms of roll, pitch and yaw in degrees with thrust.
+     */
     rpc SetAttitude(SetAttitudeRequest) returns(SetAttitudeResponse) {}
+    /*
+     * Set direct actuator control values to groups #0 and #1.
+     *
+     * First 8 controls will go to control group 0, the following 8 controls to control group 1 (if
+     * actuator_control.num_controls more than 8).
+     */
     rpc SetActuatorControl(SetActuatorControlRequest) returns(SetActuatorControlResponse) {}
+    /*
+     * Set the attitude rate in terms of pitch, roll and yaw angular rate along with thrust.
+     */
     rpc SetAttitudeRate(SetAttitudeRateRequest) returns(SetAttitudeRateResponse) {}
+    /*
+     * Set the position in NED coordinates and yaw.
+     */
     rpc SetPositionNed(SetPositionNedRequest) returns(SetPositionNedResponse) {}
+    /*
+     * Set the velocity in body coordinates and yaw angular rate.
+     */
     rpc SetVelocityBody(SetVelocityBodyRequest) returns(SetVelocityBodyResponse) {}
+    /*
+     * Set the velocity in NED coordinates and yaw.
+     */
     rpc SetVelocityNed(SetVelocityNedRequest) returns(SetVelocityNedResponse) {}
 }
 
@@ -29,94 +74,122 @@ message StopResponse {
 
 message IsActiveRequest {}
 message IsActiveResponse {
-    bool is_active = 1;
+    bool is_active = 1; // True if offboard is active
 }
 
 message SetAttitudeRequest {
-  Attitude attitude = 1;
+    Attitude attitude = 1; // Attitude roll, pitch and yaw along with thrust
 }
 message SetAttitudeResponse {};
 
 message SetActuatorControlRequest {
-  ActuatorControl actuator_control = 1;
+    ActuatorControl actuator_control = 1; // Actuator control values
 }
 message SetActuatorControlResponse {};
 
 message SetAttitudeRateRequest {
-    AttitudeRate attitude_rate = 1;
+    AttitudeRate attitude_rate = 1; // Attitude rate roll, pitch and yaw angular rate along with thrust
 }
 message SetAttitudeRateResponse {}
 
 message SetPositionNedRequest {
-    PositionNedYaw position_ned_yaw = 1;
+    PositionNedYaw position_ned_yaw = 1; // Position and yaw
 }
 message SetPositionNedResponse {}
 
 message SetVelocityBodyRequest {
-    VelocityBodyYawspeed velocity_body_yawspeed = 1;
+    VelocityBodyYawspeed velocity_body_yawspeed = 1; // Velocity and yaw angular rate
 }
 message SetVelocityBodyResponse {}
 
 message SetVelocityNedRequest {
-    VelocityNedYaw velocity_ned_yaw = 1;
+    VelocityNedYaw velocity_ned_yaw = 1; // Velocity and yaw
 }
 message SetVelocityNedResponse {}
 
+// Type for attitude body angles in NED reference frame (roll, pitch, yaw and thrust)
 message Attitude {
-  float roll_deg = 1;
-  float pitch_deg = 2;
-  float yaw_deg = 3;
-  float thrust_value = 4;
+    float roll_deg = 1; // Roll angle (in degrees, positive is right side down)
+    float pitch_deg = 2; // Pitch angle (in degrees, positive is nose up)
+    float yaw_deg = 3; // Yaw angle (in degrees, positive is move nose to the right)
+    float thrust_value = 4; // Thrust (range: 0 to 1)
 }
 
+/*
+ * Eight controls that will be given to the group. Each control is a normalized
+ * (-1..+1) command value, which will be mapped and scaled through the mixer.
+ */
 message ActuatorControlGroup {
- repeated float controls = 1;
+    repeated float controls = 1; // Controls in the group
 }
 
+/*
+ * Type for actuator control.
+ *
+ * Control members should be normed to -1..+1 where 0 is neutral position.
+ * Throttle for single rotation direction motors is 0..1, negative range for reverse direction.
+ *
+ * One group support eight controls.
+ *
+ * Up to 16 actuator controls can be set. To ignore an output group, set all it conrols to NaN.
+ * If one or more controls in group is not NaN, then all NaN controls will sent as zero.
+ * The first 8 actuator controls internally map to control group 0, the latter 8 actuator
+ * controls map to control group 1. Depending on what controls are set (instead of NaN) 1 or 2
+ * MAVLink messages are actually sent.
+ *
+ * In PX4 v1.9.0 Only first four Control Groups are supported
+ * (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
+ */
 message ActuatorControl {
- repeated ActuatorControlGroup groups = 1;
+    repeated ActuatorControlGroup groups = 1; // Control groups.
 }
 
+// Type for attitude rate commands in body coordinates (roll, pitch, yaw angular rate and thrust)
 message AttitudeRate {
-    float roll_deg_s = 1;
-    float pitch_deg_s = 2;
-    float yaw_deg_s = 3;
-    float thrust_value = 4;
+    float roll_deg_s = 1; // Roll angular rate (in degrees/second, positive for clock-wise looking from front)
+    float pitch_deg_s = 2; // Pitch angular rate (in degrees/second, positive for head/front moving up)
+    float yaw_deg_s = 3; // Yaw angular rate (in degrees/second, positive for clock-wise looking from above)
+    float thrust_value = 4; // Thrust (range: 0 to 1)
 }
 
+// Type for position commands in NED (North East Down) coordinates and yaw.
 message PositionNedYaw {
-    float north_m = 1;
-    float east_m = 2;
-    float down_m = 3;
-    float yaw_deg = 4;
+    float north_m = 1; // Position North (in metres)
+    float east_m = 2; // Position East (in metres)
+    float down_m = 3; // Position Down (in metres)
+    float yaw_deg = 4; // Yaw in degrees (0 North, positive is clock-wise looking from above)
 }
 
+// Type for velocity commands in body coordinates.
 message VelocityBodyYawspeed {
-    float forward_m_s = 1;
-    float right_m_s = 2;
-    float down_m_s = 3;
-    float yawspeed_deg_s = 4;
+    float forward_m_s = 1; // Velocity forward (in metres/second)
+    float right_m_s = 2; // Velocity right (in metres/second)
+    float down_m_s = 3; // Velocity down (in metres/second)
+    float yawspeed_deg_s = 4; // Yaw angular rate (in degrees/second, positive for clock-wise looking from above)
 }
 
+// Type for velocity commands in NED (North East Down) coordinates and yaw.
 message VelocityNedYaw {
-    float north_m_s = 1;
-    float east_m_s = 2;
-    float down_m_s = 3;
-    float yaw_deg = 4;
+    float north_m_s = 1; // Velocity North (in metres/second)
+    float east_m_s = 2; // Velocity East (in metres/second)
+    float down_m_s = 3; // Velocity Down (in metres/second)
+    float yaw_deg = 4; // Yaw in degrees (0 North, positive is clock-wise looking from above)
 }
 
+// Result type.
 message OffboardResult {
+    // Possible results returned for offboard requests
     enum Result {
-        UNKNOWN = 0;
-        SUCCESS = 1;
-        NO_SYSTEM = 2;
-        CONNECTION_ERROR = 3;
-        BUSY = 4;
-        COMMAND_DENIED = 5;
-        TIMEOUT = 6;
-        NO_SETPOINT_SET = 7;
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Request succeeded
+        NO_SYSTEM = 2; // No system is connected
+        CONNECTION_ERROR = 3; // Connection error
+        BUSY = 4; // Vehicle is busy
+        COMMAND_DENIED = 5; // Command denied
+        TIMEOUT = 6; // Request timed out
+        NO_SETPOINT_SET = 7; // Cannot start without setpoint set
     }
 
-    Result result = 1;
-    string result_str = 2;
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
 }

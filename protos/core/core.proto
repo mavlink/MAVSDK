@@ -5,28 +5,33 @@ package mavsdk.rpc.core;
 option java_package = "io.mavsdk.core";
 option java_outer_classname = "CoreProto";
 
+// Access to the connection state and running plugins.
 service CoreService {
+    // Subscribe to 'connection state' updates.
     rpc SubscribeConnectionState(SubscribeConnectionStateRequest) returns(stream ConnectionStateResponse) {}
+    // Get a list of currently running plugins.
     rpc ListRunningPlugins(ListRunningPluginsRequest) returns(ListRunningPluginsResponse) {}
 }
 
 message SubscribeConnectionStateRequest {}
 message ConnectionStateResponse {
-    ConnectionState connection_state = 1;
+    ConnectionState connection_state = 1; // Connection state
 }
 
 message ListRunningPluginsRequest {}
 message ListRunningPluginsResponse {
-    repeated PluginInfo plugin_info = 1;
+    repeated PluginInfo plugin_info = 1; // Plugin info
 }
 
+// Connection state type.
 message ConnectionState {
-    uint64 uuid = 1;
-    bool is_connected = 2;
+    uint64 uuid = 1; // UUID of the vehicle
+    bool is_connected = 2; // Whether the vehicle got connected or disconnected
 }
 
+// Plugin info type.
 message PluginInfo {
-    string name = 1;
-    string address = 2;
-    int32 port = 3;
+    string name = 1; // Name of the plugin
+    string address = 2; // Address where the plugin is running
+    int32 port = 3; // Port where the plugin is running
 }

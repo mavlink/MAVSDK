@@ -5,35 +5,40 @@ package mavsdk.rpc.info;
 option java_package = "io.mavsdk.info";
 option java_outer_classname = "InfoProto";
 
+// Provide infomation about the hardware and/or software of a system.
 service InfoService {
+    // Get the system version information.
     rpc GetVersion(GetVersionRequest) returns(GetVersionResponse) {}
 }
 
+// System version information.
 message Version {
-    int32 flight_sw_major = 1;
-    int32 flight_sw_minor = 2;
-    int32 flight_sw_patch = 3;
-    int32 flight_sw_vendor_major = 4;
-    int32 flight_sw_vendor_minor = 5;
-    int32 flight_sw_vendor_patch = 6;
-    int32 os_sw_major = 7;
-    int32 os_sw_minor = 8;
-    int32 os_sw_patch = 9;
+    int32 flight_sw_major = 1; // Flight software major version
+    int32 flight_sw_minor = 2; // Flight software minor version
+    int32 flight_sw_patch = 3; // Flight software patch version
+    int32 flight_sw_vendor_major = 4; // Flight software vendor major version
+    int32 flight_sw_vendor_minor = 5; // Flight software vendor minor version
+    int32 flight_sw_vendor_patch = 6; // Flight software vendor patch version
+    int32 os_sw_major = 7; // Operating system software major version
+    int32 os_sw_minor = 8; // Operating system software minor version
+    int32 os_sw_patch = 9; // Operating system software patch version
 }
 
 message GetVersionRequest {}
 message GetVersionResponse {
     InfoResult info_result = 1;
-    Version version = 2;
+    Version version = 2; // Version information about the system
 }
 
+// Result type.
 message InfoResult {
+    // Possible results returned for info requests.
     enum Result {
-        UNKNOWN = 0;
-        SUCCESS = 1;
-        INFORMATION_NOT_RECEIVED_YET = 2;
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Request succeeded
+        INFORMATION_NOT_RECEIVED_YET = 2; // Information has not been received yet
     }
 
-    Result result = 1;
-    string result_str = 2;
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
 }

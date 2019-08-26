@@ -185,10 +185,10 @@ message SetReturnToLaunchAltitudeResponse {
 
 // Result type.
 message ActionResult {
-    // Possible results returned for action requests
+    // Possible results returned for action requests.
     enum Result {
         UNKNOWN = 0; // Unknown error
-        SUCCESS = 1; // Success. The action command was accepted by the vehicle
+        SUCCESS = 1; // Success: the action command was accepted by the vehicle
         NO_SYSTEM = 2; // No system is connected
         CONNECTION_ERROR = 3; // Connection error
         BUSY = 4; // Vehicle is busy

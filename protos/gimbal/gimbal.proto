@@ -5,39 +5,58 @@ package mavsdk.rpc.gimbal;
 option java_package = "io.mavsdk.gimbal";
 option java_outer_classname = "GimbalProto";
 
+// Provide control over a gimbal.
 service GimbalService {
+    /*
+     *
+     * Set gimbal pitch and yaw angles.
+     *
+     * This sets the desired pitch and yaw angles of a gimbal.
+     * Will return when the command is accepted, however, it might
+     * take the gimbal longer to actually be set to the new angles.
+     */
     rpc SetPitchAndYaw(SetPitchAndYawRequest) returns(SetPitchAndYawResponse) {}
+    /*
+     * Set gimbal mode.
+     *
+     * This sets the desired yaw mode of a gimbal.
+     * Will return when the command is accepted. However, it might
+     * take the gimbal longer to actually be set to the new angles.
+     */
     rpc SetMode(SetModeRequest) returns(SetModeResponse) {}
 }
 
 message SetPitchAndYawRequest {
-    float pitch_deg = 1;
-    float yaw_deg = 2;
+    float pitch_deg = 1; // Pitch angle in degrees (negative points down)
+    float yaw_deg = 2; // Yaw angle in degrees (positive is clock-wise, range: -180 to 180 or 0 to 360)
 }
 message SetPitchAndYawResponse {
     GimbalResult gimbal_result = 1;
 }
 
 message SetModeRequest {
-    GimbalMode gimbal_mode = 1;
+    GimbalMode gimbal_mode = 1; // The mode to be set.
 }
 message SetModeResponse {
     GimbalResult gimbal_result = 1;
 }
 
+// Gimbal mode type.
 enum GimbalMode {
-    YAW_FOLLOW = 0;
-    YAW_LOCK = 1;
+    YAW_FOLLOW = 0; // Yaw follow will point the gimbal to the vehicle heading
+    YAW_LOCK = 1; // Yaw lock will fix the gimbal poiting to an absolute direction
 }
 
+// Result type.
 message GimbalResult {
+    // Possible results returned for gimbal commands.
     enum Result {
-        SUCCESS = 0;
-        ERROR = 1;
-        TIMEOUT = 2;
-        UNKNOWN = 1000;
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Command was accepted
+        ERROR = 2; // Error occurred sending the command
+        TIMEOUT = 3; // Command timed out
     }
 
-    Result result = 1;
-    string result_str = 2;
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
 }

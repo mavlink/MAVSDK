@@ -5,23 +5,85 @@ package mavsdk.rpc.mission;
 option java_package = "io.mavsdk.mission";
 option java_outer_classname = "MissionProto";
 
+// Enable waypoint missions.
 service MissionService {
+    /*
+     * Upload a list of mission items to the system.
+     *
+     * The mission items are uploaded to a drone. Once uploaded the mission can be started and
+     * executed even if the connection is lost.
+     */
     rpc UploadMission(UploadMissionRequest) returns(UploadMissionResponse) {}
+    /*
+     * Cancel an ongoing mission upload.
+     */
     rpc CancelMissionUpload(CancelMissionUploadRequest) returns(CancelMissionUploadResponse) {}
+    /*
+     * Download a list of mission items from the system (asynchronous).
+     *
+     * Will fail if any of the downloaded mission items are not supported
+     * by the MAVSDK API.
+     */
     rpc DownloadMission(DownloadMissionRequest) returns(DownloadMissionResponse) {}
+    /*
+     * Cancel an ongoing mission download.
+     */
     rpc CancelMissionDownload(CancelMissionDownloadRequest) returns(CancelMissionDownloadResponse) {}
+    /*
+     * Start the mission.
+     *
+     * A mission must be uploaded to the vehicle before this can be called.
+     */
     rpc StartMission(StartMissionRequest) returns(StartMissionResponse) {}
+    /*
+     * Pause the mission.
+     *
+     * Pausing the mission puts the vehicle into
+     * [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+     * A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+     * around the location where it paused.
+     */
     rpc PauseMission(PauseMissionRequest) returns(PauseMissionResponse) {}
+    /*
+     * Clear the mission saved on the vehicle.
+     */
     rpc ClearMission(ClearMissionRequest) returns(ClearMissionResponse) {}
+    /*
+     * Sets the mission item index to go to.
+     *
+     * By setting the current index to 0, the mission is restarted from the beginning. If it is set
+     * to a specific index of a mission item, the mission will be set to this item.
+     *
+     * Note that this is not necessarily true for general missions using MAVLink if loop counters
+     * are used.
+     */
     rpc SetCurrentMissionItemIndex(SetCurrentMissionItemIndexRequest) returns(SetCurrentMissionItemIndexResponse) {}
+    /*
+     * Check if the mission has been finished.
+     */
     rpc IsMissionFinished(IsMissionFinishedRequest) returns(IsMissionFinishedResponse) {}
+    /*
+     * Subscribe to mission progress updates.
+     */
     rpc SubscribeMissionProgress(SubscribeMissionProgressRequest) returns(stream MissionProgressResponse) {}
+    /*
+     * Get whether to trigger Return-to-Launch (RTL) after mission is complete.
+     *
+     * Before getting this option, it needs to be set, or a mission
+     * needs to be downloaded.
+     */
     rpc GetReturnToLaunchAfterMission(GetReturnToLaunchAfterMissionRequest) returns(GetReturnToLaunchAfterMissionResponse) {}
+    /*
+     * Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
+     *
+     * This will only take effect for the next mission upload, meaning that
+     * the mission may have to be uploaded again.
+     */
     rpc SetReturnToLaunchAfterMission(SetReturnToLaunchAfterMissionRequest) returns(SetReturnToLaunchAfterMissionResponse) {}
 }
 
 message UploadMissionRequest {
-    repeated MissionItem mission_items = 1;
+    repeated MissionItem mission_items = 1; // List of mission items
 }
 message UploadMissionResponse {
     MissionResult mission_result = 1;
@@ -33,7 +95,7 @@ message CancelMissionUploadResponse {}
 message DownloadMissionRequest {}
 message DownloadMissionResponse {
     MissionResult mission_result = 1;
-    repeated MissionItem mission_items = 2;
+    repeated MissionItem mission_items = 2; // List of downloaded mission items
 }
 
 message CancelMissionDownloadRequest {}
@@ -55,7 +117,7 @@ message ClearMissionResponse {
 }
 
 message SetCurrentMissionItemIndexRequest {
-    int32 index = 1;
+    int32 index = 1; // Index of the mission item to be set as the next one (0-based)
 }
 message SetCurrentMissionItemIndexResponse {
     MissionResult mission_result = 1;
@@ -63,68 +125,80 @@ message SetCurrentMissionItemIndexResponse {
 
 message IsMissionFinishedRequest {}
 message IsMissionFinishedResponse {
-    bool is_finished = 1;
+    bool is_finished = 1; // True if the mission is finished and the last mission item has been reached
 }
 
 message SubscribeMissionProgressRequest {}
 message MissionProgressResponse {
-    MissionProgress mission_progress = 1;
+    MissionProgress mission_progress = 1; // Mission progress
 }
 
 message GetReturnToLaunchAfterMissionRequest {}
 message GetReturnToLaunchAfterMissionResponse {
-    bool enable = 1;
+    bool enable = 1; // If true, trigger an RTL at the end of the mission
 }
 
 message SetReturnToLaunchAfterMissionRequest {
-    bool enable = 1;
+    bool enable = 1; // If true, trigger an RTL at the end of the mission
 }
 message SetReturnToLaunchAfterMissionResponse {}
 
+/*
+ * Type representing a mission item.
+ *
+ * A MissionItem can contain a position and/or actions.
+ * Mission items are building blocks to assemble a mission,
+ * which can be sent to (or received from) a system.
+ * They cannot be used independently.
+ */
 message MissionItem {
-    double latitude_deg = 1;
-    double longitude_deg = 2;
-    float relative_altitude_m = 3;
-    float speed_m_s = 4;
-    bool is_fly_through = 5;
-    float gimbal_pitch_deg = 6;
-    float gimbal_yaw_deg = 7;
-    CameraAction camera_action = 8;
-    float loiter_time_s = 9;
-    double camera_photo_interval_s = 10;
+    double latitude_deg = 1; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2; // Longitude in degrees (range: -180 to +180)
+    float relative_altitude_m = 3; // Altitude relative to takeoff altitude in metres
+    float speed_m_s = 4; // Speed to use after this mission item (in metres/second)
+    bool is_fly_through = 5; // True will make the drone fly through without stopping, while false will make the drone stop on the waypoint
+    float gimbal_pitch_deg = 6; // Gimbal pitch (in degrees)
+    float gimbal_yaw_deg = 7; // Gimbal yaw (in degrees)
+    CameraAction camera_action = 8; // Camera action to trigger at this mission item
+    float loiter_time_s = 9; // Loiter time (in seconds)
+    double camera_photo_interval_s = 10; // Camera photo interval to use after this mission item (in seconds)
 
+    // Possible camera actions at a mission item.
     enum CameraAction {
-        NONE = 0;
-        TAKE_PHOTO = 1;
-        START_PHOTO_INTERVAL = 2;
-        STOP_PHOTO_INTERVAL = 3;
-        START_VIDEO = 4;
-        STOP_VIDEO = 5;
+        NONE = 0; // No action
+        TAKE_PHOTO = 1; // Take a single photo
+        START_PHOTO_INTERVAL = 2; // Start capturing photos at regular intervals
+        STOP_PHOTO_INTERVAL = 3; // Stop capturing photos at regular intervals
+        START_VIDEO = 4; // Start capturing video
+        STOP_VIDEO = 5; // Stop capturing video
     }
 }
 
+// Mission progress type.
 message MissionProgress {
-    int32 current_item_index = 1;
-    int32 mission_count = 2;
+    int32 current_item_index = 1; // Current mission item index (0-based)
+    int32 mission_count = 2; // Total number of mission items
 }
 
+// Result type.
 message MissionResult {
-    Result result = 1;
-    string result_str = 2;
-
+    // Possible results returned for action requests.
     enum Result {
-        UNKNOWN = 0;
-        SUCCESS = 1;
-        ERROR = 2;
-        TOO_MANY_MISSION_ITEMS = 3;
-        BUSY = 4;
-        TIMEOUT = 5;
-        INVALID_ARGUMENT = 6;
-        UNSUPPORTED = 7;
-        NO_MISSION_AVAILABLE = 8;
-        FAILED_TO_OPEN_QGC_PLAN = 9;
-        FAILED_TO_PARSE_QGC_PLAN = 10;
-        UNSUPPORTED_MISSION_CMD = 11;
-        TRANSFER_CANCELLED = 12;
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Request succeeded
+        ERROR = 2; // Error
+        TOO_MANY_MISSION_ITEMS = 3; // Too many mission items in the mission
+        BUSY = 4; // Vehicle is busy
+        TIMEOUT = 5; // Request timed out
+        INVALID_ARGUMENT = 6; // Invalid argument
+        UNSUPPORTED = 7; // Mission downloaded from the system is not supported
+        NO_MISSION_AVAILABLE = 8; // No mission available on the system
+        FAILED_TO_OPEN_QGC_PLAN = 9; // Failed to open the QGroundControl plan
+        FAILED_TO_PARSE_QGC_PLAN = 10; // Failed to parse the QGroundControl plan
+        UNSUPPORTED_MISSION_CMD = 11; // Unsupported mission command
+        TRANSFER_CANCELLED = 12; // Mission transfer (upload or download) has been cancelled
     }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
 }
