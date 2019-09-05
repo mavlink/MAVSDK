@@ -12,7 +12,14 @@ service MocapService {
     /*
      * TODO
      */
-    rpc CreateVisionPositionEstimateStream(stream VisionPositionEstimate) returns(stream VisionPositionEstimateResponse) {}
+    rpc CreateVisionPositionEstimateStream(stream VisionPositionEstimateRequest) returns(stream VisionPositionEstimateResponse) {}
+}
+
+message VisionPositionEstimateRequest {
+    VisionPositionEstimate vision_position_estimate = 1;
+}
+message VisionPositionEstimateResponse {
+  MocapResult mocap_result = 1;
 }
 
 // Global position/attitude estimate from a vision source.
@@ -25,10 +32,6 @@ message VisionPositionEstimate {
     float yaw = 6; // Yaw angle (rad)
     repeated float covariance = 7; // Row-major representation of pose 6x6 cross-covariance matrix upper right triangle
     uint32 reset_counter = 8; // Estimate reset counter.
-}
-
-message VisionPositionEstimateResponse {
-  MocapResult mocap_result = 1;
 }
 
 // Result type.
