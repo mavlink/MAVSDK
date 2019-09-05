@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package mavsdk.rpc.mocap;
+
+option java_package = "io.mavsdk.mocap";
+option java_outer_classname = "MocapProto";
+
+/**
+ * TODO
+ */
+service MocapService {
+    /*
+     * TODO
+     */
+    rpc CreateVisionPositionEstimateStream(stream VisionPositionEstimate) returns(stream VisionPositionEstimateResponse) {}
+}
+
+// Global position/attitude estimate from a vision source.
+message VisionPositionEstimate {
+    float x = 1; // Global X position (m)
+    float y = 2; // Global Y position (m)
+    float z = 3; // Global Z position (m)
+    float roll = 4; // Roll angle (rad)
+    float pitch = 5; // Pitch angle (rad)
+    float yaw = 6; // Yaw angle (rad)
+    repeated float covariance = 7; // Row-major representation of pose 6x6 cross-covariance matrix upper right triangle
+    uint32 reset_counter = 8; // Estimate reset counter.
+}
+
+message VisionPositionEstimateResponse {
+  MocapResult mocap_result = 1;
+}
+
+// Result type.
+message MocapResult {
+    // Possible results returned for mocap requests
+    enum Result {
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Request succeeded
+        NO_SYSTEM = 2; // No system is connected
+        CONNECTION_ERROR = 3; // Connection error
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
