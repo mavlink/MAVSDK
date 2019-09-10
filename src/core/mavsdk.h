@@ -136,7 +136,14 @@ public:
         bool flow_control = false);
 
     /**
-     * @brief Stores the configured system id and component id of the MAVSDK instance
+     * @brief Get a vector of systems which have been discovered or set-up.
+     *
+     * @return The vector of systems which are available.
+     */
+    std::vector<std::weak_ptr<System>> systems() const;
+
+    /**
+     * @brief Possible configurations.
      */
     class Configuration {
     public:
