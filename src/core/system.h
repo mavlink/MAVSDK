@@ -8,7 +8,7 @@ namespace mavsdk {
 /**
  * @brief Component Types
  */
-enum ComponentType { UNKNOWN = 0, AUTOPILOT, CAMERA, GIMBAL };
+enum class ComponentType { UNKNOWN, AUTOPILOT, CAMERA, GIMBAL };
 
 /**
  * @brief type for component discovery callback

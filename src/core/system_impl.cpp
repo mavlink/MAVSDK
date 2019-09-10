@@ -277,18 +277,18 @@ ComponentType SystemImpl::component_type(uint8_t component_id)
 {
     switch (component_id) {
         case MAV_COMP_ID_AUTOPILOT1:
-            return AUTOPILOT;
+            return ComponentType::AUTOPILOT;
         case MAV_COMP_ID_CAMERA:
         case MAV_COMP_ID_CAMERA2:
         case MAV_COMP_ID_CAMERA3:
         case MAV_COMP_ID_CAMERA4:
         case MAV_COMP_ID_CAMERA5:
         case MAV_COMP_ID_CAMERA6:
-            return CAMERA;
+            return ComponentType::CAMERA;
         case MAV_COMP_ID_GIMBAL:
-            return GIMBAL;
+            return ComponentType::GIMBAL;
         default:
-            return UNKNOWN;
+            return ComponentType::UNKNOWN;
     }
 }
 
