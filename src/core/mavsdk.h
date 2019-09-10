@@ -235,9 +235,12 @@ public:
      *
      * This returns the first discovered system or a null system if no system has yet been found.
      *
+     * @note This method will be deprecated because it will be replaced by a
+     * vector of system pointers.
+     *
      * @return A reference to a system.
      */
-    System& system() const;
+    DEPRECATED System& system() const;
 
     /**
      * @brief Get the system with the specified UUID (deprecated).
@@ -271,9 +274,12 @@ public:
      *
      * If multiple systems have connected, this will return `false`.
      *
+     * @note This method will be deprecated because is_connected will be a
+     *       method of the system, not of mavsdk.
+     *
      * @return `true` if exactly one system is connected.
      */
-    bool is_connected() const;
+    DEPRECATED bool is_connected() const;
 
     /**
      * @brief Returns `true` if a system is currently connected (deprecated).
@@ -300,10 +306,13 @@ public:
      * @note Only one callback can be registered at a time. If this function is called several
      * times, previous callbacks will be overwritten.
      *
+     * @note This method will be deprecated because event_callback_t is
+     *       deprecated and it will be replaced by `register_on_change()`.
+     *
      * @param callback Callback to register.
      *
      */
-    void register_on_discover(event_callback_t callback);
+    DEPRECATED void register_on_discover(event_callback_t callback);
 
     /**
      * @brief Register callback for system timeout.
@@ -314,9 +323,12 @@ public:
      * @note Only one callback can be registered at a time. If this function is called several
      * times, previous callbacks will be overwritten.
      *
+     * @note This method will be deprecated because event_callback_t is
+     *       deprecated and it will be replaced by `register_on_change()`.
+     *
      * @param callback Callback to register.
      */
-    void register_on_timeout(event_callback_t callback);
+    DEPRECATED void register_on_timeout(event_callback_t callback);
 
 private:
     /* @private. */
