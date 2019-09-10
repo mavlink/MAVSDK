@@ -379,7 +379,7 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
                 _cache[work->param_name] = correct_type_value;
                 if (work->get_param_callback) {
                     work->get_param_callback(
-                                             MAVLinkParameters::Result::SUCCESS, correct_type_value);
+                        MAVLinkParameters::Result::SUCCESS, correct_type_value);
                 }
             } else {
                 LogErr() << "Param types don't match";
