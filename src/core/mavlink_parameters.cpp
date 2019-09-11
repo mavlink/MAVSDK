@@ -338,6 +338,24 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
                 if (work->get_param_callback) {
                     work->get_param_callback(MAVLinkParameters::Result::SUCCESS, value);
                 }
+            } else if (value.is_uint8() && work->param_value.is_uint16()) {
+                // FIXME: workaround for mismatching type uint8_t which should be uint16_t.
+                ParamValue correct_type_value;
+                correct_type_value.set_uint16(static_cast<uint16_t>(value.get_uint8()));
+                _cache[work->param_name] = correct_type_value;
+                if (work->get_param_callback) {
+                    work->get_param_callback(
+                        MAVLinkParameters::Result::SUCCESS, correct_type_value);
+                }
+            } else if (value.is_uint8() && work->param_value.is_uint32()) {
+                // FIXME: workaround for mismatching type uint8_t which should be uint32_t.
+                ParamValue correct_type_value;
+                correct_type_value.set_uint32(static_cast<uint32_t>(value.get_uint8()));
+                _cache[work->param_name] = correct_type_value;
+                if (work->get_param_callback) {
+                    work->get_param_callback(
+                        MAVLinkParameters::Result::SUCCESS, correct_type_value);
+                }
             } else {
                 LogErr() << "Param types don't match";
                 ParamValue no_value;
