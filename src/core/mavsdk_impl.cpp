@@ -100,7 +100,7 @@ std::string MavsdkImpl::version() const
 
 std::vector<std::weak_ptr<System>> MavsdkImpl::systems() const
 {
-    std::vector<std::weak_ptr<System>> systems{};
+    std::vector<std::weak_ptr<System>> systems_result{};
 
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
     for (auto& system : _systems) {
@@ -110,10 +110,10 @@ std::vector<std::weak_ptr<System>> MavsdkImpl::systems() const
         if (system.first == 0) {
             continue;
         }
-        systems.push_back(std::weak_ptr<System>(system.second));
+        systems_result.push_back(std::weak_ptr<System>(system.second));
     }
 
-    return systems;
+    return systems_result;
 }
 
 void MavsdkImpl::receive_message(mavlink_message_t& message)
