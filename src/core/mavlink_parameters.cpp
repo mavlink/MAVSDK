@@ -90,14 +90,6 @@ void MAVLinkParameters::get_param_async(
         return;
     }
 
-    // Use cached value if available.
-    if (_cache.find(name) != _cache.end()) {
-        if (callback) {
-            callback(MAVLinkParameters::Result::SUCCESS, _cache[name]);
-        }
-        return;
-    }
-
     // Otherwise push work onto queue.
     WorkItem new_work{};
     new_work.type = WorkItem::Type::Get;
@@ -259,20 +251,6 @@ void MAVLinkParameters::do_work()
     }
 }
 
-void MAVLinkParameters::remove_from_cache(const std::string& name)
-{
-    const auto& it = _cache.find(name);
-    if (it == _cache.end()) {
-        return;
-    }
-    _cache.erase(it);
-}
-
-void MAVLinkParameters::reset_cache()
-{
-    _cache.clear();
-}
-
 void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
 {
     mavlink_param_value_t param_value;
@@ -301,7 +279,6 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
             ParamValue value;
             value.set_from_mavlink_param_value(param_value);
             if (value.is_same_type(work->param_value)) {
-                _cache[work->param_name] = value;
                 if (work->get_param_callback) {
                     work->get_param_callback(MAVLinkParameters::Result::SUCCESS, value);
                 }
@@ -319,7 +296,6 @@ void MAVLinkParameters::process_param_value(const mavlink_message_t& message)
         } break;
         case WorkItem::Type::Set: {
             // We are done, inform caller and go back to idle
-            _cache[work->param_name] = work->param_value;
             if (work->set_param_callback) {
                 work->set_param_callback(MAVLinkParameters::Result::SUCCESS);
             }
@@ -359,9 +335,24 @@ void MAVLinkParameters::process_param_ext_value(const mavlink_message_t& message
             ParamValue value;
             value.set_from_mavlink_param_ext_value(param_ext_value);
             if (value.is_same_type(work->param_value)) {
-                _cache[work->param_name] = value;
                 if (work->get_param_callback) {
                     work->get_param_callback(MAVLinkParameters::Result::SUCCESS, value);
+                }
+            } else if (value.is_uint8() && work->param_value.is_uint16()) {
+                // FIXME: workaround for mismatching type uint8_t which should be uint16_t.
+                ParamValue correct_type_value;
+                correct_type_value.set_uint16(static_cast<uint16_t>(value.get_uint8()));
+                if (work->get_param_callback) {
+                    work->get_param_callback(
+                        MAVLinkParameters::Result::SUCCESS, correct_type_value);
+                }
+            } else if (value.is_uint8() && work->param_value.is_uint32()) {
+                // FIXME: workaround for mismatching type uint8_t which should be uint32_t.
+                ParamValue correct_type_value;
+                correct_type_value.set_uint32(static_cast<uint32_t>(value.get_uint8()));
+                if (work->get_param_callback) {
+                    work->get_param_callback(
+                        MAVLinkParameters::Result::SUCCESS, correct_type_value);
                 }
             } else {
                 LogErr() << "Param types don't match";
@@ -413,7 +404,6 @@ void MAVLinkParameters::process_param_ext_ack(const mavlink_message_t& message)
         case WorkItem::Type::Set: {
             if (param_ext_ack.param_result == PARAM_ACK_ACCEPTED) {
                 // We are done, inform caller and go back to idle
-                _cache[work->param_name] = work->param_value;
                 if (work->set_param_callback) {
                     work->set_param_callback(MAVLinkParameters::Result::SUCCESS);
                 }

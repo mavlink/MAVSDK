@@ -1145,8 +1145,6 @@ void SystemImpl::call_user_callback(const std::function<void()>& func)
 
 void SystemImpl::param_changed(const std::string& name)
 {
-    _params.remove_from_cache(name);
-
     std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
 
     for (auto& callback : _param_changed_callbacks) {

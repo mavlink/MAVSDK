@@ -605,9 +605,6 @@ public:
 
     void do_work();
 
-    void reset_cache();
-    void remove_from_cache(const std::string& name);
-
     friend std::ostream& operator<<(std::ostream&, const ParamValue&);
 
     // Non-copyable
@@ -640,8 +637,6 @@ private:
         const void* cookie{nullptr};
     };
     LockedQueue<WorkItem> _work_queue{};
-
-    std::map<std::string, ParamValue> _cache{};
 
     void* _timeout_cookie = nullptr;
 
