@@ -13,6 +13,7 @@ service MocapService {
      * TODO
      */
     rpc CreateVisionPositionEstimateStream(stream VisionPositionEstimateRequest) returns(stream VisionPositionEstimateResponse) {}
+    rpc CreateAttPosMocapStream(stream AttPosMocapRequest) returns(stream AttPosMocapResponse) {}
 }
 
 message VisionPositionEstimateRequest {
@@ -24,14 +25,33 @@ message VisionPositionEstimateResponse {
 
 // Global position/attitude estimate from a vision source.
 message VisionPositionEstimate {
-    float x = 1; // Global X position (m)
-    float y = 2; // Global Y position (m)
-    float z = 3; // Global Z position (m)
-    float roll = 4; // Roll angle (rad)
-    float pitch = 5; // Pitch angle (rad)
-    float yaw = 6; // Yaw angle (rad)
-    repeated float covariance = 7; // Row-major representation of pose 6x6 cross-covariance matrix upper right triangle
-    uint32 reset_counter = 8; // Estimate reset counter.
+    uint64 time_usec = 1; // Position frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+    float x = 2; // Global X position (m)
+    float y = 3; // Global Y position (m)
+    float z = 4; // Global Z position (m)
+    float roll = 5; // Roll angle (rad)
+    float pitch = 6; // Pitch angle (rad)
+    float yaw = 7; // Yaw angle (rad)
+    repeated float covariance = 8; // Row-major representation of pose 6x6 cross-covariance matrix upper right triangle
+    uint32 reset_counter = 9; // Estimate reset counter.
+}
+
+
+message AttPosMocapRequest {
+    AttPosMocap att_pos_mocap = 1;
+}
+message AttPosMocapResponse {
+  MocapResult mocap_result = 1;
+}
+
+// Motion capture attitude and position
+message AttPosMocap {
+    uint64 time_usec = 1; // Position frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+    repeated float q = 2; // Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
+    float x = 3; // X position (NED)
+    float y = 4; // Y position (NED)
+    float z = 5; // Z position (NED)
+    repeated float covariance = 6; // Row-major representation of pose 6x6 cross-covariance matrix upper right triangle
 }
 
 // Result type.
