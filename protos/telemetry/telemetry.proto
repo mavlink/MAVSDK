@@ -16,6 +16,8 @@ service TelemetryService {
     rpc SubscribeHome(SubscribeHomeRequest) returns(stream HomeResponse) {}
     // Subscribe to in-air updates.
     rpc SubscribeInAir(SubscribeInAirRequest) returns(stream InAirResponse) {}
+    // Subscribe to landed state updates
+    rpc SubscribeLandedState(SubscribeLandedStateRequest) returns(stream LandedStateResponse) {}
     // Subscribe to armed updates.
     rpc SubscribeArmed(SubscribeArmedRequest) returns(stream ArmedResponse) {}
     // Subscribe to 'attitude' updates (quaternion).
@@ -59,6 +61,11 @@ message HomeResponse {
 message SubscribeInAirRequest {}
 message InAirResponse {
     bool is_in_air = 1; // The next 'in-air' state
+}
+
+message SubscribeLandedStateRequest {}
+message LandedStateResponse {
+    LandedState landed_state = 1;
 }
 
 message SubscribeArmedRequest {}
@@ -269,4 +276,13 @@ message ActuatorControlTarget {
 message ActuatorOutputStatus {
     uint32 active = 1;
     repeated float actuator = 2;
+}
+
+// Landed State enumeration
+enum LandedState{
+    LANDED_UNKNOWN = 0;
+    LANDED_ON_GROUND = 1;
+    LANDED_IN_AIR = 2;
+    LANDED_TAKING_OFF = 3;
+    LANDED_LANDING = 4;
 }
