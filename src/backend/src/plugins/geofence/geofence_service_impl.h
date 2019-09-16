@@ -10,9 +10,9 @@ public:
     GeofenceServiceImpl(Geofence& geofence) : _geofence(geofence) {}
 
     grpc::Status UploadGeofence(
-            grpc::ServerContext*,
-            const rpc::geofence::UploadGeofenceRequest* request,
-            rpc::geofence::UploadGeofenceResponse* response) override
+        grpc::ServerContext*,
+        const rpc::geofence::UploadGeofenceRequest* request,
+        rpc::geofence::UploadGeofenceResponse* response) override
     {
         std::promise<void> result_promise;
         const auto result_future = result_promise.get_future();
@@ -72,9 +72,9 @@ private:
                 if (response != nullptr) {
                     auto rpc_geofence_result = generateRPCGeofenceResult(result);
                     response->set_allocated_geofence_result(rpc_geofence_result);
-                    }
+                }
 
-                    result_promise.set_value();
+                result_promise.set_value();
             });
     }
 
@@ -82,7 +82,7 @@ private:
     generateRPCGeofenceResult(const mavsdk::Geofence::Result result) const
     {
         auto rpc_result = static_cast<rpc::geofence::GeofenceResult::Result>(result);
-                auto rpc_geofence_result = new rpc::geofence::GeofenceResult();
+        auto rpc_geofence_result = new rpc::geofence::GeofenceResult();
         rpc_geofence_result->set_result(rpc_result);
         rpc_geofence_result->set_result_str(mavsdk::Geofence::result_str(result));
 
