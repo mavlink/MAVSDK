@@ -140,7 +140,7 @@ public:
      *
      * @return The vector of systems which are available.
      */
-    std::vector<std::weak_ptr<System>> systems() const;
+    std::vector<std::shared_ptr<System>> systems() const;
 
     /**
      * @brief Possible configurations.

@@ -44,13 +44,13 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
     auto system = systems.at(0);
 
-    auto telemetry = std::make_shared<Telemetry>(*system.lock());
+    auto telemetry = std::make_shared<Telemetry>(*system);
 
     LogInfo() << "Waiting for system to be ready";
     ASSERT_TRUE(poll_condition_with_timeout(
         [telemetry]() { return telemetry->health_all_ok(); }, std::chrono::seconds(10)));
 
-    auto action = std::make_shared<Action>(*system.lock());
+    auto action = std::make_shared<Action>(*system);
     Action::Result action_ret = action->arm();
     EXPECT_EQ(action_ret, Action::Result::SUCCESS);
 

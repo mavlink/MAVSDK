@@ -6,4 +6,6 @@ namespace mavsdk {
 
 PluginImplBase::PluginImplBase(System& system) : _parent(system.system_impl()) {}
 
+PluginImplBase::PluginImplBase(std::shared_ptr<SystemImpl> ptr) : _parent(ptr) {}
+
 } // namespace mavsdk
