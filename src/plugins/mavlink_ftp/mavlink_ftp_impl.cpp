@@ -206,10 +206,8 @@ void MavlinkFTPImpl::_call_op_result_callback(ServerResult result)
 {
     if (_curr_op_result_callback) {
         const auto temp_callback = _curr_op_result_callback;
-        _parent->call_user_callback([temp_callback, result]() 
-        { 
-            temp_callback(_translate(result));
-        });
+        _parent->call_user_callback(
+            [temp_callback, result]() { temp_callback(_translate(result)); });
     }
 }
 
@@ -217,21 +215,18 @@ void MavlinkFTPImpl::_call_op_progress_callback(uint32_t bytes_read, uint32_t to
 {
     if (_curr_op_progress_callback) {
         const auto temp_callback = _curr_op_progress_callback;
-        _parent->call_user_callback([temp_callback, bytes_read, total_bytes]() 
-        { 
-            temp_callback(bytes_read, total_bytes);
-        });
+        _parent->call_user_callback(
+            [temp_callback, bytes_read, total_bytes]() { temp_callback(bytes_read, total_bytes); });
     }
 }
 
-void MavlinkFTPImpl::_call_dir_items_result_callback(ServerResult result, std::vector<std::string> list)
+void MavlinkFTPImpl::_call_dir_items_result_callback(
+    ServerResult result, std::vector<std::string> list)
 {
     if (_curr_dir_items_result_callback) {
         const auto temp_callback = _curr_dir_items_result_callback;
-        _parent->call_user_callback([temp_callback, result, list]() 
-        { 
-            temp_callback(_translate(result), list);
-        });
+        _parent->call_user_callback(
+            [temp_callback, result, list]() { temp_callback(_translate(result), list); });
     }
 }
 
@@ -239,10 +234,8 @@ void MavlinkFTPImpl::_call_crc32_result_callback(ServerResult result, uint32_t c
 {
     if (_current_crc32_result_callback) {
         const auto temp_callback = _current_crc32_result_callback;
-        _parent->call_user_callback([temp_callback, result, crc32]() 
-        { 
-            temp_callback(_translate(result), crc32);
-        });
+        _parent->call_user_callback(
+            [temp_callback, result, crc32]() { temp_callback(_translate(result), crc32); });
     }
 }
 
@@ -301,7 +294,8 @@ void MavlinkFTPImpl::download_async(
 
     std::string local_path = local_folder + path_separator + fs_filename(remote_path);
 
-    _ofstream = std::make_shared<std::ofstream>(local_path, std::fstream::trunc | std::fstream::binary);
+    _ofstream =
+        std::make_shared<std::ofstream>(local_path, std::fstream::trunc | std::fstream::binary);
     if (!*_ofstream) {
         _end_read_session();
         result_callback(MavlinkFTP::Result::FILE_IO_ERROR);
@@ -527,7 +521,10 @@ void MavlinkFTPImpl::rename_async(
     payload->offset = 0;
     strncpy(reinterpret_cast<char*>(&payload->data[0]), from_path.c_str(), max_data_length);
     payload->size = from_path.length() + 1;
-    strncpy(reinterpret_cast<char*>(&payload->data[payload->size]), to_path.c_str(), max_data_length - payload->size);
+    strncpy(
+        reinterpret_cast<char*>(&payload->data[payload->size]),
+        to_path.c_str(),
+        max_data_length - payload->size);
     payload->size += to_path.length() + 1;
     _curr_op_result_callback = callback;
     _send_mavlink_ftp_message(raw_payload);
@@ -766,6 +763,8 @@ void MavlinkFTPImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
         if (r_errno == EEXIST) {
             errorCode = ServerResult::ERR_FAIL_FILE_EXISTS;
+        } else if (r_errno == ENOENT) {
+            errorCode = ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
         }
 
         *reinterpret_cast<ServerResult*>(payload->data) = errorCode;
@@ -851,7 +850,7 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_list(PayloadHeader* payload, 
         return ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
     }
 
-    struct dirent *dp;
+    struct dirent* dp;
     DIR* dfd = opendir(path.c_str());
     if (dfd != nullptr) {
         while ((dp = readdir(dfd)) != nullptr) {
@@ -866,7 +865,8 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_list(PayloadHeader* payload, 
             std::string entry_s = DIRENT_SKIP;
             if (list_hidden || filename.rfind(".", 0) != 0) {
                 if (dp->d_type == DT_REG) {
-                    entry_s = DIRENT_FILE + _get_rel_path(full_path) + "\t" + std::to_string(fs_file_size(full_path));
+                    entry_s = DIRENT_FILE + _get_rel_path(full_path) + "\t" +
+                              std::to_string(fs_file_size(full_path));
                 } else if (dp->d_type == DT_DIR) {
                     entry_s = DIRENT_DIR + _get_rel_path(full_path);
                 }
@@ -914,7 +914,8 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_open(PayloadHeader* payload, 
 
     if (fd < 0) {
         LogWarn() << "FTP: Open failed";
-        return (errno == ENOENT) ? ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST : ServerResult::ERR_FAIL;
+        return (errno == ENOENT) ? ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST :
+                                   ServerResult::ERR_FAIL;
     }
 
     _session_info.fd = fd;
@@ -1086,7 +1087,8 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_rename(PayloadHeader* payload
     payload->data[term_i] = '\0';
 
     std::string old_name = std::string(reinterpret_cast<char*>(&(payload->data[0])));
-    std::string new_name = _get_path(std::string(reinterpret_cast<char*>(&(payload->data[old_name.length() + 1]))));
+    std::string new_name =
+        _get_path(std::string(reinterpret_cast<char*>(&(payload->data[old_name.length() + 1]))));
     old_name = _get_path(old_name);
     if (old_name.rfind(_root_dir, 0) != 0 || new_name.rfind(_root_dir, 0) != 0) {
         return ServerResult::ERR_FAIL;

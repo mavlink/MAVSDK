@@ -42,10 +42,12 @@ void usage(const std::string& bin_name)
               << " rename <old> <new>   : Rename file" << std::endl
               << " dir <path>           : List contents of remote directory" << std::endl
               << " mkdir <path>         : Make directory on remote machine" << std::endl
-              << " rmdir [-r] <path>    : Remove directory on remote machine. [-r] recursively" << std::endl
+              << " rmdir [-r] <path>    : Remove directory on remote machine. [-r] recursively"
+              << std::endl
               << " cmp <local> <remote> : Compare local and remote file" << std::endl
               << " crc32 <path>         : Get remote file crc32" << std::endl
-              << " localcrc32 <path>    : Get local file crc32" << std::endl << std::endl
+              << " localcrc32 <path>    : Get local file crc32" << std::endl
+              << std::endl
               << "Return codes:" << std::endl
               << " 0 : Success" << std::endl
               << " 1 : Failure" << std::endl
@@ -84,16 +86,17 @@ MavlinkFTP::Result remove_file(std::shared_ptr<MavlinkFTP>& mavlink_ftp, const s
     return future_result.get();
 }
 
-MavlinkFTP::Result
-remove_directory(std::shared_ptr<MavlinkFTP>& mavlink_ftp, const std::string& path, bool recursive = true)
+MavlinkFTP::Result remove_directory(
+    std::shared_ptr<MavlinkFTP>& mavlink_ftp, const std::string& path, bool recursive = true)
 {
     if (recursive) {
-        auto prom =
-            std::make_shared<std::promise<std::pair<MavlinkFTP::Result, std::vector<std::string>>>>();
+        auto prom = std::make_shared<
+            std::promise<std::pair<MavlinkFTP::Result, std::vector<std::string>>>>();
         auto future_result = prom->get_future();
         mavlink_ftp->list_directory_async(
             path, [prom](MavlinkFTP::Result result, std::vector<std::string> list) {
-                prom->set_value(std::pair<MavlinkFTP::Result, std::vector<std::string>>(result, list));
+                prom->set_value(
+                    std::pair<MavlinkFTP::Result, std::vector<std::string>>(result, list));
             });
 
         std::pair<MavlinkFTP::Result, std::vector<std::string>> result = future_result.get();
@@ -264,13 +267,11 @@ int main(int argc, char** argv)
     mavlink_ftp->set_retries(10);
     try {
         mavlink_ftp->set_target_component_id(std::stoi(argv[2]));
-    }
-    catch (...) {
-        std::cout << ERROR_CONSOLE_TEXT
-                  << "Invalid argument: " << argv[2]
-                  << NORMAL_CONSOLE_TEXT << std::endl;
+    } catch (...) {
+        std::cout << ERROR_CONSOLE_TEXT << "Invalid argument: " << argv[2] << NORMAL_CONSOLE_TEXT
+                  << std::endl;
         return 1;
-    }    
+    }
 
     MavlinkFTP::Result res;
     res = reset_server(mavlink_ftp);
@@ -331,7 +332,7 @@ int main(int argc, char** argv)
         if (res == MavlinkFTP::Result::SUCCESS) {
             std::cout << "Directory created." << std::endl;
         } else if (res == MavlinkFTP::Result::FILE_EXISTS) {
-            std::cout << "Directory already exists." << std::endl;            
+            std::cout << "Directory already exists." << std::endl;
         } else {
             std::cout << ERROR_CONSOLE_TEXT
                       << "Create directory error: " << mavlink_ftp->result_str(res)

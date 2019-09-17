@@ -373,7 +373,7 @@ TEST(MavlinkFTPTest, TestServer)
     remove(file_name2.c_str());
 
     MavlinkFTP::Result result = test_remove_file(mavlink_ftp_client, "test/" + file_name1);
-    EXPECT_NE(result, MavlinkFTP::Result::SUCCESS);
+    EXPECT_EQ(result, MavlinkFTP::Result::FILE_DOES_NOT_EXIST);
 
     result = test_remove_file(mavlink_ftp_client, "test/" + file_name2);
     EXPECT_EQ(result, MavlinkFTP::Result::SUCCESS);

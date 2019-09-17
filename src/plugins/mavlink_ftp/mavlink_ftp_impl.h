@@ -74,11 +74,11 @@ private:
         ERR_UNKOWN_COMMAND, ///< Unknown command opcode
         ERR_FAIL_FILE_EXISTS, ///< File exists already
         ERR_FAIL_FILE_PROTECTED, ///< File is write protected
+        ERR_FAIL_FILE_DOES_NOT_EXIST, ///< File does not exist
 
         // These error codes are returned to client without contacting the server
         ERR_TIMEOUT = 200, ///< Timeout
         ERR_FILE_IO_ERROR, ///< File IO operation error
-        ERR_FAIL_FILE_DOES_NOT_EXIST, ///< File does not exist
     };
 
     /// @brief Command opcodes
@@ -138,7 +138,7 @@ private:
         uint8_t stream_target_system_id{0};
         unsigned stream_chunk_transmitted{0};
     };
-    struct SessionInfo _session_info{}; ///< Session info, fd=-1 for no active session
+    struct SessionInfo _session_info {}; ///< Session info, fd=-1 for no active session
 
     uint8_t _network_id = 0;
     uint8_t _target_component_id = 0;

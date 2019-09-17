@@ -10,8 +10,8 @@
 
 bool fs_exists(const std::string& filename)
 {
-  struct stat buffer;   
-  return (stat(filename.c_str(), &buffer) == 0);
+    struct stat buffer;
+    return (stat(filename.c_str(), &buffer) == 0);
 }
 
 uint32_t fs_file_size(const std::string& filename)
@@ -29,7 +29,7 @@ static void relative_dir_base_split(const std::string& path, std::string& dir, s
         dir = path.substr(0, slash_pos);
         base = path.substr(slash_pos);
     } else {
-        dir.clear(); 
+        dir.clear();
         base = path;
     }
 }
@@ -44,8 +44,8 @@ std::string fs_filename(const std::string& path)
 
 std::string fs_canonical(const std::string& path)
 {
-    std::stack<std::string> st; 
-    std::string dir; 
+    std::stack<std::string> st;
+    std::string dir;
     std::string res{};
 
     if (path.rfind(path_separator, 0) != 0) {
@@ -57,43 +57,43 @@ std::string fs_canonical(const std::string& path)
         res = path_separator;
     }
 
-    int len = path.length(); 
-  
-    for (int i = 0; i < len; i++) { 
-        dir.clear(); 
+    int len = path.length();
+
+    for (int i = 0; i < len; i++) {
+        dir.clear();
         while (path[i] == '/') {
-            i++; 
+            i++;
         }
-        while (i < len && path[i] != '/') { 
-            dir.push_back(path[i]); 
-            i++; 
-        } 
+        while (i < len && path[i] != '/') {
+            dir.push_back(path[i]);
+            i++;
+        }
         if (dir.compare("..") == 0 && !st.empty()) {
-            st.pop();             
+            st.pop();
         } else if (dir.compare(".") == 0) {
             continue;
         } else if (dir.length() != 0) {
             st.push(dir);
         }
-    } 
-  
-    std::stack<std::string> st1; 
-    while (!st.empty()) { 
-        st1.push(st.top()); 
-        st.pop(); 
-    } 
-  
-    while (!st1.empty()) { 
-        std::string temp = st1.top(); 
+    }
+
+    std::stack<std::string> st1;
+    while (!st.empty()) {
+        st1.push(st.top());
+        st.pop();
+    }
+
+    while (!st1.empty()) {
+        std::string temp = st1.top();
         if (st1.size() != 1) {
-            res.append(temp + "/"); 
+            res.append(temp + "/");
         } else {
             res.append(temp);
         }
-        st1.pop(); 
-    } 
-  
-    return res; 
+        st1.pop();
+    }
+
+    return res;
 }
 
 bool fs_create_directory(const std::string& path)

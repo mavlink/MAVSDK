@@ -34,7 +34,8 @@ private:
 
     void receive();
 
-    void add_remote_with_remote_sysid(const std::string& remote_ip, const int remote_port, const uint8_t remote_sysid);
+    void add_remote_with_remote_sysid(
+        const std::string& remote_ip, const int remote_port, const uint8_t remote_sysid);
 
     std::string _local_ip;
     int _local_port_number;

@@ -173,8 +173,7 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
     return send_successful;
 }
 
-void UdpConnection::add_remote(
-    const std::string& remote_ip, const int remote_port)
+void UdpConnection::add_remote(const std::string& remote_ip, const int remote_port)
 {
     add_remote_with_remote_sysid(remote_ip, remote_port, 0);
 }
@@ -251,8 +250,8 @@ void UdpConnection::receive()
                     new_remote.port_number = ntohs(src_addr.sin_port);
                     new_remote.system_id = sysid;
 
-                    auto existing_remote =
-                        std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
+                    auto existing_remote = std::find_if(
+                        _remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
                             return (
                                 remote.ip == new_remote.ip &&
                                 remote.port_number == new_remote.port_number);
@@ -260,16 +259,17 @@ void UdpConnection::receive()
 
                     if (existing_remote == _remotes.end()) {
                         LogInfo() << "New system on: " << new_remote.ip << ":"
-                                << new_remote.port_number;
+                                  << new_remote.port_number;
                         _remotes.push_back(new_remote);
                     } else if (existing_remote->system_id != new_remote.system_id) {
                         LogWarn() << "System on: " << new_remote.ip << ":" << new_remote.port_number
-                                << " changed system ID (" << int(existing_remote->system_id) << " to "
-                                << int(new_remote.system_id) << ")";
+                                  << " changed system ID (" << int(existing_remote->system_id)
+                                  << " to " << int(new_remote.system_id) << ")";
                         existing_remote->system_id = new_remote.system_id;
                     }
                 }
-                add_remote_with_remote_sysid(inet_ntoa(src_addr.sin_addr), ntohs(src_addr.sin_port), sysid);
+                add_remote_with_remote_sysid(
+                    inet_ntoa(src_addr.sin_addr), ntohs(src_addr.sin_port), sysid);
             }
 
             receive_message(_mavlink_receiver->get_last_message());
