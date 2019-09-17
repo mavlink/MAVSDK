@@ -14,6 +14,7 @@ service MocapService {
      */
     rpc CreateVisionPositionEstimateStream(stream VisionPositionEstimateRequest) returns(stream VisionPositionEstimateResponse) {}
     rpc CreateAttPosMocapStream(stream AttPosMocapRequest) returns(stream AttPosMocapResponse) {}
+    rpc CreateOdometryStream(stream OdometryRequest) returns(stream OdometryResponse) {}
 }
 
 message VisionPositionEstimateRequest {
@@ -32,7 +33,7 @@ message VisionPositionEstimate {
     float roll = 5; // Roll angle (rad)
     float pitch = 6; // Pitch angle (rad)
     float yaw = 7; // Yaw angle (rad)
-    repeated float covariance = 8; // Row-major representation of pose 6x6 cross-covariance matrix upper right triangle
+    repeated float covariance = 8; // Row-major representation of pose 6x6 cross-covariance matrix upper right triangle. Leave empty if unknown.
     uint32 reset_counter = 9; // Estimate reset counter.
 }
 
@@ -51,7 +52,75 @@ message AttPosMocap {
     float x = 3; // X position (NED)
     float y = 4; // Y position (NED)
     float z = 5; // Z position (NED)
-    repeated float covariance = 6; // Row-major representation of pose 6x6 cross-covariance matrix upper right triangle
+    repeated float covariance = 6; // Row-major representation of pose 6x6 cross-covariance matrix upper right triangle.  Leave empty if unknown.
+}
+
+
+message OdometryRequest {
+    Odometry odometry = 1;
+}
+message OdometryResponse {
+  MocapResult mocap_result = 1;
+}
+
+// Odometry message to communicate odometry information with an external interface.
+message Odometry {
+    // Mavlink frame id
+    enum MavFrame {
+      MAV_FRAME_GLOBAL = 0; // Global (WGS84) coordinate frame + MSL altitude.
+      MAV_FRAME_LOCAL_NED = 1; // Local coordinate frame, Z-down (x: north, y: east, z: down).
+      MAV_FRAME_MISSION = 2; // NOT a coordinate frame, indicates a mission command.
+      MAV_FRAME_GLOBAL_RELATIVE_ALT = 3; // Global (WGS84) coordinate frame + altitude relative to the home position.
+      MAV_FRAME_LOCAL_ENU = 4; // Local coordinate frame, Z-up (x: east, y: north, z: up).
+      MAV_FRAME_GLOBAL_INT = 5; // Global (WGS84) coordinate frame (scaled) + MSL altitude.
+      MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 6; // Global (WGS84) coordinate frame (scaled) + altitude relative to the home position.
+      MAV_FRAME_LOCAL_OFFSET_NED = 7; // Offset to the current local frame. Anything expressed in this frame should be added to the current local frame position.
+      MAV_FRAME_BODY_NED = 8; // Setpoint in body NED frame. WARNING: DEPRECATED: Replaced by MAV_FRAME_BODY_FRD (2019-08).
+      MAV_FRAME_BODY_OFFSET_NED = 9; // Offset in body NED frame. WARNING: DEPRECATED: Replaced by MAV_FRAME_BODY_FRD (2019-08).
+      MAV_FRAME_GLOBAL_TERRAIN_ALT = 10; // Global (WGS84) coordinate frame with AGL altitude (at the waypoint coordinate).
+      MAV_FRAME_GLOBAL_TERRAIN_ALT_INT = 11; // Global (WGS84) coordinate frame (scaled) with AGL altitude (at the waypoint coordinate).
+      MAV_FRAME_BODY_FRD = 12; // Body fixed frame of reference, Z-down (x: forward, y: right, z: down).
+      MAV_FRAME_BODY_FLU = 13; // Body fixed frame of reference, Z-up (x: forward, y: left, z: up).
+      MAV_FRAME_MOCAP_NED = 14; // Odometry local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down). WARNING: DEPRECATED: Replaced by MAV_FRAME_LOCAL_FRD (2019-08).
+      MAV_FRAME_MOCAP_ENU = 15; // Odometry local coordinate frame of data given by a motion capture system, Z-up (x: east, y: north, z: up). WARNING: DEPRECATED: Replaced by MAV_FRAME_LOCAL_FLU (2019-08).
+      MAV_FRAME_VISION_NED = 16; // Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down). WARNING: DEPRECATED: Replaced by MAV_FRAME_LOCAL_FRD (2019-08).
+      MAV_FRAME_VISION_ENU = 17; // Odometry local coordinate frame of data given by a vision estimation system, Z-up (x: east, y: north, z: up). WARNING: DEPRECATED: Replaced by MAV_FRAME_LOCAL_FLU (2019-08).
+      MAV_FRAME_ESTIM_NED = 18; // Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down). WARNING: DEPRECATED: Replaced by MAV_FRAME_LOCAL_FRD (2019-08).
+      MAV_FRAME_ESTIM_ENU = 19; // Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-up (x: east, y: noth, z: up). WARNING: DEPRECATED: Replaced by MAV_FRAME_LOCAL_FLU (2019-08).
+      MAV_FRAME_LOCAL_FRD = 20; // Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame).
+      MAV_FRAME_LOCAL_FLU = 21; // Forward, Left, Up coordinate frame. This is a local frame with Z-up and arbitrary F/L alignment (i.e. not aligned with ENU/earth frame).
+    }
+
+    // Enumeration of estimator types
+    enum MavEstimatorType {
+        MAV_ESTIMATOR_TYPE_UNKNOWN = 0; // Unknown type of the estimator.
+        MAV_ESTIMATOR_TYPE_NAIVE = 1; // This is a naive estimator without any real covariance feedback.
+        MAV_ESTIMATOR_TYPE_VISION = 2; // Computer vision based estimate. Might be up to scale.
+        MAV_ESTIMATOR_TYPE_VIO = 3; // Visual-inertial estimate.
+        MAV_ESTIMATOR_TYPE_GPS = 4; // Plain GPS estimate.
+        MAV_ESTIMATOR_TYPE_GPS_INS = 5; // Estimator integrating GPS and inertial sensing.
+        MAV_ESTIMATOR_TYPE_MOCAP = 6; // Estimate from external motion capturing system.
+        MAV_ESTIMATOR_TYPE_LIDAR = 7; // Estimator based on lidar sensor input.
+        MAV_ESTIMATOR_TYPE_AUTOPILOT = 8; // Estimator on autopilot.
+    }
+
+    uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
+    MavFrame frame_id = 2; // Coordinate frame of reference for the pose data.
+    MavFrame child_frame_id = 3;  // Coordinate frame of reference for the velocity in free space (twist) data.
+    float x = 4; // X position.
+    float y = 5; // Y position.
+    float z = 6; // Z position.
+    repeated float q = 7; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+    float vx = 8; // X linear speed (m/s).
+    float vy = 9; // Y linear speed (m/s).
+    float vz = 10; // Z linear speed (m/s).
+    float rollspeed = 11; // Roll angular speed (rad/s).
+    float pitchspeed = 12; // Pitch angular speed (rad/s).
+    float yawspeed = 13; // Yaw angular speed (rad/s).
+    repeated float pose_covariance = 14; // Row-major representation of a 6x6 pose cross-covariance matrix upper right triangle. Leave empty if unknown.
+    repeated float velocity_covariance = 15; // Row-major representation of a 6x6 velocity cross-covariance matrix upper right triangle. Leave empty if unknown.
+    uint32 reset_counter = 16; // Estimate reset counter.
+    MavEstimatorType estimator_type = 17; // Type of estimator that is providing the odometry (not used at 2019-09).
 }
 
 // Result type.
