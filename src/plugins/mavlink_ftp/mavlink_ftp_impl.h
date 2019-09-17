@@ -3,17 +3,10 @@
 #include <fstream>
 #include <mutex>
 #include <string>
-#include <dirent.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 #include "mavlink_include.h"
 #include "plugins/mavlink_ftp/mavlink_ftp.h"
 #include "plugin_impl_base.h"
-
-#include <ghc/filesystem.hpp>
-namespace fs = ghc::filesystem;
 
 namespace mavsdk {
 
@@ -214,7 +207,7 @@ private:
     std::string _data_as_string(PayloadHeader* payload);
     std::string _get_path(PayloadHeader* payload);
     std::string _get_path(const std::string& payload_path);
-    std::string _get_rel_path(const fs::path& path);
+    std::string _get_rel_path(const std::string& path);
 
     ServerResult _work_list(PayloadHeader* payload, bool list_hidden = false);
     ServerResult _work_open(PayloadHeader* payload, int oflag);

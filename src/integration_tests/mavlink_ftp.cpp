@@ -189,6 +189,8 @@ TEST(MavlinkFTPTest, ListDirectory)
     ASSERT_EQ(ret, ConnectionResult::SUCCESS);
     System& system = mavsdk.system();
     auto mavlink_ftp = std::make_shared<MavlinkFTP>(system);
+    mavlink_ftp->set_timeout(50);
+    mavlink_ftp->set_retries(10);
 
     // Wait for system to connect via heartbeat.
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -338,6 +340,8 @@ TEST(MavlinkFTPTest, TestServer)
 
     auto mavlink_ftp_client = std::make_shared<MavlinkFTP>(system_gcs);
     mavlink_ftp_client->set_target_component_id(server_comp_id);
+    mavlink_ftp_client->set_timeout(50);
+    mavlink_ftp_client->set_retries(10);
 
     test_list_directory(mavlink_ftp_client, "/");
 

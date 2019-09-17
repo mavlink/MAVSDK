@@ -7,7 +7,6 @@ include(cmake/build_target.cmake)
 list(APPEND CMAKE_PREFIX_PATH "${DEPS_INSTALL_PATH}")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
 
-build_target(ghc-filesystem)
 build_target(json11)
 build_target(tinyxml2)
 

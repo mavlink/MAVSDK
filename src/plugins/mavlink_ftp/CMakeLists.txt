@@ -1,18 +1,12 @@
-find_package(ghcFilesystem REQUIRED)
-
 add_library(mavsdk_mavlink_ftp
     mavlink_ftp.cpp
     mavlink_ftp_impl.cpp
+    fs.cpp
     crc32.cpp
-)
-
-target_compile_options(mavsdk_mavlink_ftp
-  PRIVATE -fexceptions
 )
 
 target_link_libraries(mavsdk_mavlink_ftp
     mavsdk
-    ghcFilesystem::ghc_filesystem
 )
 
 set_target_properties(mavsdk_mavlink_ftp
