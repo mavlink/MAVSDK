@@ -378,10 +378,9 @@ public:
     Result set_velocity_ned(VelocityNedYaw velocity_ned_yaw) const;
 
     /**
-     * @brief Copy constructor (object is not copyable).
+     * @brief Copy constructor.
      */
-    Offboard(const Offboard&) = delete;
-
+    Offboard(const Offboard& other);
     /**
      * @brief Equality operator (object is not copyable).
      */

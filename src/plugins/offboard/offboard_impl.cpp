@@ -11,6 +11,8 @@ OffboardImpl::OffboardImpl(System& system) : PluginImplBase(system)
     _parent->register_plugin(this);
 }
 
+OffboardImpl::OffboardImpl(const OffboardImpl& other) : PluginImplBase(other._parent) {}
+
 OffboardImpl::~OffboardImpl()
 {
     _parent->unregister_plugin(this);

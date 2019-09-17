@@ -10,11 +10,11 @@ using namespace mavsdk;
 
 static void arm_and_takeoff(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);
 static void disarm_and_land(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> telemetry);
-static void start_offboard(std::shared_ptr<Offboard> offboard);
-static void stop_offboard(std::shared_ptr<Offboard> offboard);
-static void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> telemetry);
-static void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> telemetry);
-static void turn_yaw(std::shared_ptr<Offboard> offboard);
+static void start_offboard(Offboard& offboard);
+static void stop_offboard(Offboard& offboard);
+static void flip_roll(Offboard& offboard, std::shared_ptr<Telemetry> telemetry);
+static void flip_pitch(Offboard& offboard, std::shared_ptr<Telemetry> telemetry);
+static void turn_yaw(Offboard& offboard);
 
 TEST(SitlTestDisabled, OffboardAttitudeRate)
 {
@@ -31,7 +31,9 @@ TEST(SitlTestDisabled, OffboardAttitudeRate)
     System& system = mavsdk.system();
     auto telemetry = std::make_shared<Telemetry>(system);
     auto action = std::make_shared<Action>(system);
-    auto offboard = std::make_shared<Offboard>(system);
+
+    // FIXME: trying new plugin instantiation.
+    auto offboard = Offboard{system};
 
     while (!telemetry->health_all_ok()) {
         std::cout << "waiting for system to be ready" << std::endl;
@@ -78,7 +80,7 @@ void disarm_and_land(std::shared_ptr<Action> action, std::shared_ptr<Telemetry> 
     }
 }
 
-void start_offboard(std::shared_ptr<Offboard> offboard)
+void start_offboard(Offboard& offboard)
 {
     // Send it once before starting offboard, otherwise it will be rejected.
     // Also, turn yaw towards North.
@@ -89,12 +91,12 @@ void start_offboard(std::shared_ptr<Offboard> offboard)
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
-void stop_offboard(std::shared_ptr<Offboard> offboard)
+void stop_offboard(Offboard& offboard)
 {
     EXPECT_EQ(offboard->stop(), Offboard::Result::Success);
 }
 
-void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> telemetry)
+void flip_roll(Offboard& offboard, std::shared_ptr<Telemetry> telemetry)
 {
     while (telemetry->position().relative_altitude_m < 10.0f) {
         // Full speed up to avoid loosing too much altitude during the flip.
@@ -119,7 +121,7 @@ void flip_roll(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> te
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> telemetry)
+void flip_pitch(Offboard& offboard, std::shared_ptr<Telemetry> telemetry)
 {
     while (telemetry->position().relative_altitude_m < 10.0f) {
         // Full speed up to avoid loosing too much altitude during the flip.
@@ -146,7 +148,7 @@ void flip_pitch(std::shared_ptr<Offboard> offboard, std::shared_ptr<Telemetry> t
     std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-void turn_yaw(std::shared_ptr<Offboard> offboard)
+void turn_yaw(Offboard& offboard)
 {
     Offboard::AttitudeRate yaw{};
     yaw.yaw_deg_s = 360.0f;
