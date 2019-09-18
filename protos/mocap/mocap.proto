@@ -131,6 +131,7 @@ message MocapResult {
         SUCCESS = 1; // Request succeeded
         NO_SYSTEM = 2; // No system is connected
         CONNECTION_ERROR = 3; // Connection error
+        INVALID_REQUEST_DATA = 4; // Invalid request data
     }
 
     Result result = 1; // Result enum value
