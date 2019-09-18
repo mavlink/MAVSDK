@@ -95,7 +95,8 @@ public:
      *
      * @param remote_file_path Remote file to download
      * @param local_folder Local folder where downloaded file will be stored
-     * @param callback Callback to receive result of this request.
+     * @param progress_callback Callback to receive progress of this request.
+     * @param result_callback Callback to receive result of this request.
      */
     void download_async(
         const std::string& remote_file_path,
@@ -108,7 +109,8 @@ public:
      *
      * @param local_file_path Local file to upload
      * @param remote_folder Remote folder where uploaded file will be stored
-     * @param callback Callback to receive result of this request.
+     * @param progress_callback Callback to receive progress of this request.
+     * @param result_callback Callback to receive result of this request.
      */
     void upload_async(
         const std::string& local_file_path,
@@ -152,8 +154,8 @@ public:
     /**
      * @brief Renames fromPath to toPath (asynchronous).
      *
-     * @param fromPath Path to rename
-     * @param toPath Destination path
+     * @param from_path Path to rename
+     * @param to_path Destination path
      * @param callback Callback to receive result of this request.
      */
     void rename_async(

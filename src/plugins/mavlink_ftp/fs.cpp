@@ -8,6 +8,15 @@
 
 #include "fs.h"
 
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+
+#ifdef _WIN32
+#include <direct.h>
+#define mkdir(D, M) _mkdir(D)
+#endif
+
 bool fs_exists(const std::string& filename)
 {
     struct stat buffer;

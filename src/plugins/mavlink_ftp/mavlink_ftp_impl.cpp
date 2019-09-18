@@ -443,7 +443,7 @@ void MavlinkFTPImpl::_list_directory(uint32_t offset)
     payload->session = 0;
     payload->opcode = _curr_op = CMD_LIST_DIRECTORY;
     payload->offset = offset;
-    strncpy(reinterpret_cast<char*>(payload->data), _last_path.c_str(), max_data_length);
+    strncpy(reinterpret_cast<char*>(payload->data), _last_path.c_str(), max_data_length - 1);
     payload->size = _last_path.length() + 1;
 
     if (offset == 0) {
@@ -470,7 +470,7 @@ void MavlinkFTPImpl::_generic_command_async(
     payload->session = 0;
     payload->opcode = _curr_op = opcode;
     payload->offset = offset;
-    strncpy(reinterpret_cast<char*>(payload->data), path.c_str(), max_data_length);
+    strncpy(reinterpret_cast<char*>(payload->data), path.c_str(), max_data_length - 1);
     payload->size = path.length() + 1;
 
     _curr_op_result_callback = callback;
@@ -519,7 +519,7 @@ void MavlinkFTPImpl::rename_async(
     payload->session = 0;
     payload->opcode = _curr_op = CMD_RENAME;
     payload->offset = 0;
-    strncpy(reinterpret_cast<char*>(&payload->data[0]), from_path.c_str(), max_data_length);
+    strncpy(reinterpret_cast<char*>(&payload->data[0]), from_path.c_str(), max_data_length - 1);
     payload->size = from_path.length() + 1;
     strncpy(
         reinterpret_cast<char*>(&payload->data[payload->size]),
@@ -549,7 +549,7 @@ void MavlinkFTPImpl::calc_file_crc32_async(
     payload->session = 0;
     payload->opcode = _curr_op = CMD_CALC_FILE_CRC32;
     payload->offset = 0;
-    strncpy(reinterpret_cast<char*>(payload->data), path.c_str(), max_data_length);
+    strncpy(reinterpret_cast<char*>(payload->data), path.c_str(), max_data_length - 1);
     payload->size = path.length() + 1;
     _current_crc32_result_callback = callback;
     _send_mavlink_ftp_message(raw_payload);
@@ -633,11 +633,11 @@ void MavlinkFTPImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
     PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(&ftp_req.payload[0]);
 
-    ServerResult errorCode = ServerResult::SUCCESS;
+    ServerResult error_code = ServerResult::SUCCESS;
 
     // basic sanity checks; must validate length before use
     if (payload->size > max_data_length) {
-        errorCode = ServerResult::ERR_INVALID_DATA_SIZE;
+        error_code = ServerResult::ERR_INVALID_DATA_SIZE;
     } else {
         /*
             LogDebug() << "ftp - opc: " << (int)payload->opcode << " size: "
@@ -662,88 +662,86 @@ void MavlinkFTPImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
             case CMD_TERMINATE_SESSION:
                 LogInfo() << "OPC:CMD_TERMINATE_SESSION";
-                errorCode = _work_terminate(payload);
+                error_code = _work_terminate(payload);
                 break;
 
             case CMD_RESET_SESSIONS:
                 LogInfo() << "OPC:CMD_RESET_SESSIONS";
-                errorCode = _work_reset(payload);
+                error_code = _work_reset(payload);
                 break;
 
             case CMD_LIST_DIRECTORY:
                 LogInfo() << "OPC:CMD_LIST_DIRECTORY";
-                errorCode = _work_list(payload);
+                error_code = _work_list(payload);
                 break;
 
             case CMD_OPEN_FILE_RO:
                 LogInfo() << "OPC:CMD_OPEN_FILE_RO";
-                errorCode = _work_open(payload, O_RDONLY);
+                error_code = _work_open(payload, O_RDONLY);
                 break;
 
             case CMD_CREATE_FILE:
                 LogInfo() << "OPC:CMD_CREATE_FILE";
-                errorCode = _work_open(payload, O_CREAT | O_WRONLY);
+                error_code = _work_open(payload, O_CREAT | O_WRONLY);
                 break;
 
             case CMD_OPEN_FILE_WO:
                 LogInfo() << "OPC:CMD_OPEN_FILE_WO";
-                errorCode = _work_open(payload, O_CREAT | O_WRONLY);
+                error_code = _work_open(payload, O_CREAT | O_WRONLY);
                 break;
 
             case CMD_READ_FILE:
                 LogInfo() << "OPC:CMD_READ_FILE";
-                errorCode = _work_read(payload);
+                error_code = _work_read(payload);
                 break;
 
             case CMD_BURST_READ_FILE:
                 LogInfo() << "OPC:CMD_BURST_READ_FILE";
-                errorCode = _work_burst(payload);
+                error_code = _work_burst(payload);
                 stream_send = true;
                 break;
 
             case CMD_WRITE_FILE:
                 LogInfo() << "OPC:CMD_WRITE_FILE";
-                errorCode = _work_write(payload);
+                error_code = _work_write(payload);
                 break;
 
             case CMD_REMOVE_FILE:
                 LogInfo() << "OPC:CMD_REMOVE_FILE";
-                errorCode = _work_remove_file(payload);
+                error_code = _work_remove_file(payload);
                 break;
 
             case CMD_RENAME:
                 LogInfo() << "OPC:CMD_RENAME";
-                errorCode = _work_rename(payload);
+                error_code = _work_rename(payload);
                 break;
 
             case CMD_CREATE_DIRECTORY:
                 LogInfo() << "OPC:CMD_CREATE_DIRECTORY";
-                errorCode = _work_create_directory(payload);
+                error_code = _work_create_directory(payload);
                 break;
 
             case CMD_REMOVE_DIRECTORY:
                 LogInfo() << "OPC:CMD_REMOVE_DIRECTORY";
-                errorCode = _work_remove_directory(payload);
+                error_code = _work_remove_directory(payload);
                 break;
 
             case CMD_CALC_FILE_CRC32:
                 LogInfo() << "OPC:CMD_CALC_FILE_CRC32";
-                errorCode = _work_calc_file_CRC32(payload);
+                error_code = _work_calc_file_CRC32(payload);
                 break;
 
             case RSP_ACK:
-                //        LogInfo() << "OPC:RSP_ACK";
                 _process_ack(payload);
                 return;
 
             case RSP_NAK:
-                //        LogInfo() << "OPC:RSP_NAK";
                 _process_nak(payload);
                 return;
 
             default:
                 LogWarn() << "OPC:Unknown command: " << static_cast<int>(payload->opcode);
-                errorCode = ServerResult::ERR_UNKOWN_COMMAND;
+                error_code = ServerResult::ERR_UNKOWN_COMMAND;
                 break;
         }
     }
@@ -751,7 +749,7 @@ void MavlinkFTPImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
     payload->seq_number++;
 
     // handle success vs. error
-    if (errorCode == ServerResult::SUCCESS) {
+    if (error_code == ServerResult::SUCCESS) {
         payload->req_opcode = payload->opcode;
         payload->opcode = RSP_ACK;
 
@@ -762,14 +760,14 @@ void MavlinkFTPImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
         payload->size = 1;
 
         if (r_errno == EEXIST) {
-            errorCode = ServerResult::ERR_FAIL_FILE_EXISTS;
-        } else if (r_errno == ENOENT) {
-            errorCode = ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
+            error_code = ServerResult::ERR_FAIL_FILE_EXISTS;
+        } else if (r_errno == ENOENT && error_code == ServerResult::ERR_FAIL_ERRNO) {
+            error_code = ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
         }
 
-        *reinterpret_cast<ServerResult*>(payload->data) = errorCode;
+        *reinterpret_cast<ServerResult*>(payload->data) = error_code;
 
-        if (errorCode == ServerResult::ERR_FAIL_ERRNO) {
+        if (error_code == ServerResult::ERR_FAIL_ERRNO) {
             payload->size = 2;
             *reinterpret_cast<uint8_t*>(payload->data + 1) = r_errno;
         }
@@ -778,7 +776,7 @@ void MavlinkFTPImpl::process_mavlink_ftp_message(const mavlink_message_t& msg)
     _last_reply_valid = false;
 
     // Stream download replies are sent through mavlink stream mechanism. Unless we need to Nack.
-    if (!stream_send || errorCode != ServerResult::SUCCESS) {
+    if (!stream_send || error_code != ServerResult::SUCCESS) {
         // keep a copy of the last sent response ((n)ack), so that if it gets lost and the GCS
         // resends the request, we can simply resend the response.
         _last_reply_valid = true;
@@ -833,7 +831,7 @@ std::string MavlinkFTPImpl::_get_rel_path(const std::string& path)
 
 MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_list(PayloadHeader* payload, bool list_hidden)
 {
-    ServerResult errorCode = ServerResult::SUCCESS;
+    ServerResult error_code = ServerResult::SUCCESS;
 
     uint8_t offset = 0;
     // move to the requested offset
@@ -864,10 +862,19 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_list(PayloadHeader* payload, 
 
             std::string entry_s = DIRENT_SKIP;
             if (list_hidden || filename.rfind(".", 0) != 0) {
-                if (dp->d_type == DT_REG) {
+#ifdef _DIRENT_HAVE_D_TYPE
+                bool type_reg = (dp->d_type == DT_REG);
+                bool type_dir = (dp->d_type == DT_DIR);
+#else
+                struct stat statbuf;
+                stat(full_path.c_str(), &statbuf);
+                bool type_reg = S_ISREG(statbuf.st_mode);
+                bool type_dir = S_ISDIR(statbuf.st_mode);
+#endif
+                if (type_reg) {
                     entry_s = DIRENT_FILE + _get_rel_path(full_path) + "\t" +
                               std::to_string(fs_file_size(full_path));
-                } else if (dp->d_type == DT_DIR) {
+                } else if (type_dir) {
                     entry_s = DIRENT_DIR + _get_rel_path(full_path);
                 }
             }
@@ -884,7 +891,7 @@ MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_list(PayloadHeader* payload, 
 
     payload->size = offset;
 
-    return errorCode;
+    return error_code;
 }
 
 MavlinkFTPImpl::ServerResult MavlinkFTPImpl::_work_open(PayloadHeader* payload, int oflag)
