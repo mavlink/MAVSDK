@@ -87,14 +87,14 @@ private:
 
     using system_entry_t = std::pair<uint8_t, std::shared_ptr<System>>;
 
-    std::mutex _connections_mutex;
-    std::vector<std::shared_ptr<Connection>> _connections;
+    std::mutex _connections_mutex{};
+    std::vector<std::shared_ptr<Connection>> _connections{};
 
     mutable std::recursive_mutex _systems_mutex;
     std::unordered_map<uint8_t, std::shared_ptr<System>> _systems;
 
-    Mavsdk::event_callback_t _on_discover_callback;
-    Mavsdk::event_callback_t _on_timeout_callback;
+    Mavsdk::event_callback_t _on_discover_callback{nullptr};
+    Mavsdk::event_callback_t _on_timeout_callback{nullptr};
 
     Time _time{};
 

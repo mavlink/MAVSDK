@@ -15,15 +15,7 @@
 
 namespace mavsdk {
 
-MavsdkImpl::MavsdkImpl() :
-    timeout_handler(_time),
-    _connections_mutex(),
-    _connections(),
-    _systems_mutex(),
-    _systems(),
-    _on_discover_callback(nullptr),
-    _on_timeout_callback(nullptr),
-    _configuration(Mavsdk::Configuration::UsageType::GroundStation)
+MavsdkImpl::MavsdkImpl()
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
     set_configuration(_configuration);
