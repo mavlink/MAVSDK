@@ -433,7 +433,7 @@ bool MavsdkImpl::does_system_exist(uint8_t system_id)
 
 void MavsdkImpl::notify_on_discover(const uint64_t uuid)
 {
-    if (_on_discover_callback != nullptr) {
+    if (_on_discover_callback) {
         _on_discover_callback(uuid);
     }
 }
@@ -441,7 +441,7 @@ void MavsdkImpl::notify_on_discover(const uint64_t uuid)
 void MavsdkImpl::notify_on_timeout(const uint64_t uuid)
 {
     LogDebug() << "Lost " << uuid;
-    if (_on_timeout_callback != nullptr) {
+    if (_on_timeout_callback) {
         _on_timeout_callback(uuid);
     }
 }
