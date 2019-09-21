@@ -15,6 +15,7 @@ if (ENABLE_MAVLINK_PASSTHROUGH)
         mavlink_passthrough.cpp
         mission_transfer_lossy.cpp)
     set(additional_libs "mavsdk_mavlink_passthrough")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_MAVLINK_PASSTHROUGH")
 endif()
 
 # This includes all GTests that run integration tests
@@ -42,6 +43,7 @@ add_executable(integration_tests_runner
     offboard_attitude.cpp
     #logging.cpp # Not fully implemented
     log_files.cpp
+    mavlink_ftp.cpp
     mission_cancellation.cpp
     mission_change_speed.cpp
     mission.cpp
@@ -86,6 +88,7 @@ target_link_libraries(integration_tests_runner
     mavsdk_calibration
     mavsdk_geofence
     mavsdk_param
+    mavsdk_mavlink_ftp
     ${additional_libs}
     gtest
     gtest_main

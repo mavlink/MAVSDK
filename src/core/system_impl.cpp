@@ -16,7 +16,7 @@ namespace mavsdk {
 
 using namespace std::placeholders; // for `_1`
 
-SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id) :
+SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, bool connected) :
     _system_id(system_id),
     _parent(parent),
     _params(*this),
@@ -24,6 +24,12 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id) :
     _timeout_handler(_time),
     _call_every_handler(_time)
 {
+    if (connected) {
+        _always_connected = true;
+        _uuid = _system_id;
+        _uuid_initialized = true;
+        set_connected();
+    }
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 
     register_mavlink_message_handler(
@@ -53,7 +59,9 @@ SystemImpl::~SystemImpl()
     unregister_all_mavlink_message_handlers(this);
 
     unregister_timeout_handler(_autopilot_version_timed_out_cookie);
-    unregister_timeout_handler(_heartbeat_timeout_cookie);
+    if (!_always_connected) {
+        unregister_timeout_handler(_heartbeat_timeout_cookie);
+    }
 
     _thread_pool.stop();
 
@@ -205,18 +213,14 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
 
     // We do not call on_discovery here but wait with the notification until we know the UUID.
 
-    /* If the component is an autopilot and
-     * we don't know its UUID, then try to find out. */
+    // If the component is an autopilot and we don't know its UUID, then try to find out.
     if (is_autopilot(message.compid) && !have_uuid()) {
         request_autopilot_version();
 
-#if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
-    } else if (!is_autopilot(message.compid) && !have_uuid() && ++_non_autopilot_heartbeats >= 10) {
-        // We've received consecutive heartbeats (atleast twice) from a
-        // non-autopilot system! Lets not delay for filling UUID anymore.
+    } else if (!is_autopilot(message.compid) && !have_uuid()) {
+        // We've received heartbeat from a non-autopilot system!
         _uuid = message.sysid;
         _uuid_initialized = true;
-#endif
     }
 
     set_connected();
@@ -505,7 +509,6 @@ void SystemImpl::request_autopilot_version()
         return;
     }
 
-#if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
     if (!_autopilot_version_pending && _uuid_retries >= 3) {
         // We give up getting a UUID and use the system ID.
 
@@ -515,15 +518,12 @@ void SystemImpl::request_autopilot_version()
         set_connected();
         return;
     }
-#endif
 
     _autopilot_version_pending = true;
 
     send_autopilot_version_request();
 
-#if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
     ++_uuid_retries;
-#endif
 
     // We set a timeout to stay "pending" for half a second. This way, we don't give up too
     // early e.g. because multiple components send heartbeats and we receive them all at once
@@ -560,13 +560,15 @@ void SystemImpl::set_connected()
             _parent.notify_on_discover(_uuid);
             _connected = true;
 
-            register_timeout_handler(
-                std::bind(&SystemImpl::heartbeats_timed_out, this),
-                _HEARTBEAT_TIMEOUT_S,
-                &_heartbeat_timeout_cookie);
+            if (!_always_connected) {
+                register_timeout_handler(
+                    std::bind(&SystemImpl::heartbeats_timed_out, this),
+                    _HEARTBEAT_TIMEOUT_S,
+                    &_heartbeat_timeout_cookie);
+            }
             enable_needed = true;
 
-        } else if (_connected) {
+        } else if (_connected && !_always_connected) {
             refresh_timeout_handler(_heartbeat_timeout_cookie);
         }
         // If not yet connected there is nothing to do/

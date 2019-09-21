@@ -36,8 +36,10 @@ public:
      * @param parent `MavsdkImpl` dependency.
      * @param system_id System id.
      * @param comp_id Component id.
+     * @param connected If true then the system doesn't wait for heartbeat to go into connected
+     * state
      */
-    explicit System(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id);
+    explicit System(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, bool connected);
     /**
      * @brief Destructor.
      */
