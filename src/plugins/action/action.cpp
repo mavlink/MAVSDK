@@ -11,6 +11,9 @@ namespace mavsdk {
 
 Action::Action(System& system) : PluginBase(), _impl{new ActionImpl(system)} {}
 
+Action::Action(std::shared_ptr<System> system_ptr) : PluginBase(), _impl{new ActionImpl(system_ptr)}
+{}
+
 Action::~Action() {}
 
 void Action::arm_async(const ResultCallback callback)

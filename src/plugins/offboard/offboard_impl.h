@@ -11,7 +11,8 @@ namespace mavsdk {
 
 class OffboardImpl : public PluginImplBase {
 public:
-    OffboardImpl(System& system);
+    explicit OffboardImpl(System& system);
+    explicit OffboardImpl(std::shared_ptr<System> system_ptr);
     ~OffboardImpl();
 
     void init() override;
