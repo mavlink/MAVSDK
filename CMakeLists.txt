@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.1)
 
 project(mavsdk_superbuild)
 
+include(FindPkgConfig)
+pkg_check_modules(CURL libcurl)
+pkg_check_modules(TINYXML2 tinyxml2)
+pkg_check_modules(ZLIB zlib)
+
 option(SUPERBUILD "Build dependencies" ON)
 option(BUILD_BACKEND "Build gRPC backend server" OFF)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
