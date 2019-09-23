@@ -66,4 +66,6 @@ $px4_firmware_dir/Tools/sitl_run.sh \
 # Go back to dir where we started
 popd
 
+echo "waiting for SITL to be running"
+sleep 10
 echo "done"
