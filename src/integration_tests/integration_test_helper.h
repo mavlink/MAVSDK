@@ -65,7 +65,7 @@ template<typename Rep, typename Period>
 bool poll_condition_with_timeout(
     std::function<bool()> fun, std::chrono::duration<Rep, Period> duration)
 {
-    // We need at millisecond resolution for sleeping.
+    // We need millisecond resolution for sleeping.
     const std::chrono::milliseconds duration_ms(duration);
 
     unsigned iteration = 0;
