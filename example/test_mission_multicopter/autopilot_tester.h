@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mavsdk/mavsdk.h>
+#include <mavsdk/path_checker/path_checker.h>
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include "gtest/gtest.h"

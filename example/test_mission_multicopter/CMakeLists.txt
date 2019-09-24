@@ -14,6 +14,7 @@ add_executable(test_mission_multicopter
 target_link_libraries(test_mission_multicopter
     MAVSDK::mavsdk_telemetry
     MAVSDK::mavsdk_action
+    MAVSDK::mavsdk_path_checker
     MAVSDK::mavsdk
     gtest
     gtest_main

@@ -9,13 +9,19 @@ using namespace mavsdk;
         return false; \
     }
 
+#define EXPECT_TRUE_OR_FAIL(cond_) \
+    EXPECT_TRUE((cond_)); \
+    if (!(cond_)) { \
+        return false; \
+    }
+
 bool AutopilotTester::connect(const std::string uri)
 {
     ConnectionResult ret = _mavsdk.add_any_connection(uri);
     EXPECT_EQ_OR_FAIL(ret, ConnectionResult::SUCCESS);
 
     std::cout << "Waiting for system connect" << std::endl;
-    EXPECT_TRUE(poll_condition_with_timeout(
+    EXPECT_TRUE_OR_FAIL(poll_condition_with_timeout(
         [this]() { return _mavsdk.is_connected(); }, std::chrono::seconds(10)));
 
     auto& system = _mavsdk.system();

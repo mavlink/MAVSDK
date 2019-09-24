@@ -52,8 +52,6 @@ add_executable(integration_tests_runner
     offboard_velocity.cpp
     offboard_position.cpp
     param.cpp
-    path_checker.cpp
-    path_checker.h
     system_connection_async.cpp
     system_connection_sync.cpp
     system_multi_components.cpp
@@ -89,6 +87,7 @@ target_link_libraries(integration_tests_runner
     mavsdk_geofence
     mavsdk_param
     mavsdk_mavlink_ftp
+    mavsdk_path_checker
     ${additional_libs}
     gtest
     gtest_main
