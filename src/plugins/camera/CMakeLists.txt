@@ -9,7 +9,7 @@ target_link_libraries(mavsdk_camera
     PUBLIC
     mavsdk
     PRIVATE
-    tinyxml2::tinyxml2
+    ${TINYXML2_LIBRARY}
     CURL::libcurl
 )
 
