@@ -1433,26 +1433,29 @@ Mission::Result MissionImpl::import_qgroundcontrol_mission(
     Mission::mission_items_t& mission_items, const std::string& qgc_plan_file)
 {
     std::ifstream file(qgc_plan_file);
-    if (!file) { // File open error
+    if (!file) {
         return Mission::Result::FAILED_TO_OPEN_QGC_PLAN;
     }
 
-    // Read QGC plan into a string stream
     std::stringstream ss;
     ss << file.rdbuf();
     file.close();
+    const auto raw_json = ss.str();
 
-    std::string err;
-    const auto parsed_plan = Json::parse(ss.str(), err); // parse QGC plan
-    if (!err.empty()) { // Parse error
+    Json::CharReaderBuilder builder;
+    const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+    Json::Value root;
+    JSONCPP_STRING err;
+    const bool ok =
+        reader->parse(raw_json.c_str(), raw_json.c_str() + raw_json.length(), &root, &err);
+    if (!ok) {
+        LogErr() << "Parse error: " << err;
         return Mission::Result::FAILED_TO_PARSE_QGC_PLAN;
     }
 
-    // Clear old mission items
     mission_items.clear();
 
-    // Import mission items
-    return import_mission_items(mission_items, parsed_plan);
+    return import_mission_items(mission_items, root);
 }
 
 // Build a mission item out of command, params and add them to the mission vector.
@@ -1543,36 +1546,36 @@ Mission::Result MissionImpl::build_mission_items(
 }
 
 Mission::Result MissionImpl::import_mission_items(
-    Mission::mission_items_t& all_mission_items, const Json& qgc_plan_json)
+    Mission::mission_items_t& all_mission_items, const Json::Value& qgc_plan_json)
 {
     const auto json_mission_items = qgc_plan_json["mission"];
-    Mission::Result result = Mission::Result::SUCCESS;
     auto new_mission_item = std::make_shared<MissionItem>();
 
-    // Iterate JSON mission items and build Mavsdk mission items
-    for (auto& json_mission_item : json_mission_items["items"].array_items()) {
+    // Iterate mission items and build Mavsdk mission items.
+    for (auto& json_mission_item : json_mission_items["items"]) {
         // Parameters of Mission item & MAV command of it.
-        MAV_CMD command = static_cast<MAV_CMD>(json_mission_item["command"].int_value());
+        MAV_CMD command = static_cast<MAV_CMD>(json_mission_item["command"].asInt());
 
         // Extract parameters of each mission item
         std::vector<double> params;
-        for (auto& p : json_mission_item["params"].array_items()) {
-            if (p.is_null()) {
+        for (auto& p : json_mission_item["params"]) {
+            if (p.type() == Json::nullValue) {
                 // QGC sets params as `null` if they should be unchanged.
                 params.push_back(double(NAN));
             } else {
-                params.push_back(p.number_value());
+                params.push_back(p.asDouble());
             }
         }
 
-        result = build_mission_items(command, params, new_mission_item, all_mission_items);
+        Mission::Result result =
+            build_mission_items(command, params, new_mission_item, all_mission_items);
         if (result != Mission::Result::SUCCESS) {
             break;
         }
     }
     // Don't forget to add the last mission which possibly didn't have position set.
     all_mission_items.push_back(new_mission_item);
-    return result;
+    return Mission::Result::SUCCESS;
 }
 
 } // namespace mavsdk
