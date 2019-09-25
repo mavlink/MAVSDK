@@ -32,7 +32,6 @@ add_library(mavsdk
 
 target_link_libraries(mavsdk
     PRIVATE
-    tinyxml2::tinyxml2
     CURL::libcurl
     ${CMAKE_THREAD_LIBS_INIT}
 )

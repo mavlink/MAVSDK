@@ -28,7 +28,9 @@ option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
 
 include(cmake/compiler_flags.cmake)
 
-find_package(CURL REQUIRED CONFIG)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+find_package(CURL REQUIRED)
 find_package(tinyxml2 REQUIRED)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
