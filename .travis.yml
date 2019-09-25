@@ -4,14 +4,14 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      name: "ubuntu 14.04"
-      dist: trusty
+      name: "ubuntu 16.04"
+      dist: xenial
       compiler: gcc
       env:
       - MATRIX_EVAL="BUILD_TARGET=gcc_build"
     - os: linux
-      name: "ubuntu 14.04 - gcc 5"
-      dist: trusty
+      name: "ubuntu 16.04 - gcc 5"
+      dist: xenial
       compiler: gcc
       env:
       - MATRIX_EVAL="BUILD_TARGET=gcc_build && CC=gcc-5 && CXX=g++-5"
@@ -23,8 +23,8 @@ matrix:
             - gcc-5
             - g++-5
     - os: linux
-      name: "ubuntu 14.04 - gcc 6"
-      dist: trusty
+      name: "ubuntu 16.04 - gcc 6"
+      dist: xenial
       sudo: false
       compiler: gcc
       env:
