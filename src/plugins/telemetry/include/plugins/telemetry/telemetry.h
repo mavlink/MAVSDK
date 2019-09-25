@@ -1308,4 +1308,18 @@ bool operator==(
 std::ostream&
 operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status);
 
+/**
+ * @brief Stream operator to print information about a `Telemetry::FlightMode`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::FlightMode const& flight_mode);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::LandedState`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::LandedState const& landed_state);
+
 } // namespace mavsdk
