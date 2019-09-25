@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(external-json11)
+project(external-jsoncpp)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
@@ -22,16 +22,15 @@ elseif(IOS)
         )
 endif()
 
-message(STATUS "Preparing external project \"json11\" with args:")
+message(STATUS "Preparing external project \"jsoncpp\" with args:")
 foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
 ExternalProject_Add(
-    json11
-    GIT_REPOSITORY https://github.com/dropbox/json11
-    GIT_TAG v1.0.0
-    PREFIX json11
-    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/export_config.patch
+    jsoncpp
+    GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp 
+    GIT_TAG 1.9.1
+    PREFIX jsonpp
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

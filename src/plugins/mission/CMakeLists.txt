@@ -1,4 +1,4 @@
-find_package(json11 REQUIRED)
+find_package(jsoncpp REQUIRED)
 
 add_library(mavsdk_mission
     mission.cpp
@@ -19,7 +19,7 @@ target_link_libraries(mavsdk_mission
     PUBLIC
     mavsdk
     PRIVATE
-    json11::json11
+    jsoncpp_lib
 )
 
 target_include_directories(mavsdk_mission PUBLIC
