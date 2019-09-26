@@ -46,6 +46,7 @@ service TelemetryService {
     rpc SubscribeStatusText(SubscribeStatusTextRequest) returns(stream StatusTextResponse) {}
     rpc SubscribeActuatorControlTarget(SubscribeActuatorControlTargetRequest) returns(stream ActuatorControlTargetResponse) {}
     rpc SubscribeActuatorOutputStatus(SubscribeActuatorOutputStatusRequest) returns(stream ActuatorOutputStatusResponse) {}
+    rpc SubscribeOdometry(SubscribeOdometryRequest) returns(stream OdometryResponse) {}
 }
 
 message SubscribePositionRequest {}
@@ -141,6 +142,11 @@ message ActuatorControlTargetResponse {
 message SubscribeActuatorOutputStatusRequest {}
 message ActuatorOutputStatusResponse {
     ActuatorOutputStatus actuator_output_status = 1; // Actuator output status
+}
+
+message SubscribeOdometryRequest {}
+message OdometryResponse {
+    Odometry odometry = 1; // Odometry
 }
 
 // Position type in global coordinates.
@@ -285,4 +291,40 @@ enum LandedState{
     LANDED_STATE_IN_AIR = 2;
     LANDED_STATE_TAKING_OFF = 3;
     LANDED_STATE_LANDING = 4;
+}
+
+// Odometry message type.
+message Odometry {
+    // Mavlink frame id
+    enum MavFrame {
+        UNDEF = 0;
+        MAV_FRAME_BODY_NED = 8; // Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.
+        MAV_FRAME_VISION_NED = 16; // Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).
+        MAV_FRAME_ESTIM_NED = 18; // Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).
+    }
+
+    uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
+    MavFrame frame_id = 2; // Coordinate frame of reference for the pose data.
+    MavFrame child_frame_id = 3;  // Coordinate frame of reference for the velocity in free space (twist) data.
+    float x = 4; // X Position.
+    float y = 5; // Y Position.
+    float z = 6; // Z Position.
+    Quaternion q = 7; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+    float vx = 8; // X linear speed (m/s).
+    float vy = 9; // Y linear speed (m/s).
+    float vz = 10; // Z linear speed (m/s).
+    float rollspeed = 11; // Roll angular speed (rad/s).
+    float pitchspeed = 12; // Pitch angular speed (rad/s).
+    float yawspeed = 13; // Yaw angular speed (rad/s).
+    Covariance pose_covariance = 14; // Pose cross-covariance matrix.
+    Covariance velocity_covariance = 15; // Velocity cross-covariance matrix.
+}
+
+/* Covariance type.
+ * Row-major representation of a 6x6 cross-covariance matrix
+ * upper right triangle.
+ * Set first to NaN if unknown.
+ */
+message Covariance {
+    repeated float c = 1;
 }
