@@ -40,6 +40,7 @@ public:
     Telemetry::Result set_rate_rc_status(double rate_hz);
     Telemetry::Result set_rate_actuator_control_target(double rate_hz);
     Telemetry::Result set_rate_actuator_output_status(double rate_hz);
+    Telemetry::Result set_rate_odometry(double rate_hz);
 
     void
     set_rate_position_velocity_ned_async(double rate_hz, Telemetry::result_callback_t callback);
@@ -57,6 +58,7 @@ public:
     set_rate_actuator_control_target_async(double rate_hz, Telemetry::result_callback_t callback);
     void
     set_rate_actuator_output_status_async(double rate_hz, Telemetry::result_callback_t callback);
+    void set_rate_odometry_async(double rate_hz, Telemetry::result_callback_t callback);
     void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::result_callback_t callback);
 
     Telemetry::PositionVelocityNED get_position_velocity_ned() const;
@@ -81,6 +83,7 @@ public:
     Telemetry::RCStatus get_rc_status() const;
     Telemetry::ActuatorControlTarget get_actuator_control_target() const;
     Telemetry::ActuatorOutputStatus get_actuator_output_status() const;
+    Telemetry::Odometry get_odometry() const;
     uint64_t get_unix_epoch_time_us() const;
 
     void position_velocity_ned_async(Telemetry::position_velocity_ned_callback_t& callback);
@@ -107,6 +110,7 @@ public:
     void unix_epoch_time_async(Telemetry::unix_epoch_time_callback_t& callback);
     void actuator_control_target_async(Telemetry::actuator_control_target_callback_t& callback);
     void actuator_output_status_async(Telemetry::actuator_output_status_callback_t& callback);
+    void odometry_async(Telemetry::odometry_callback_t& callback);
 
     TelemetryImpl(const TelemetryImpl&) = delete;
     TelemetryImpl& operator=(const TelemetryImpl&) = delete;
@@ -138,6 +142,7 @@ private:
     void set_unix_epoch_time_us(uint64_t time_us);
     void set_actuator_control_target(uint8_t group, const std::array<float, 8>& controls);
     void set_actuator_output_status(uint32_t active, const std::array<float, 32>& actuators);
+    void set_odometry(Telemetry::Odometry& odometry);
 
     void process_position_velocity_ned(const mavlink_message_t& message);
     void process_global_position_int(const mavlink_message_t& message);
@@ -154,6 +159,7 @@ private:
     void process_unix_epoch_time(const mavlink_message_t& message);
     void process_actuator_control_target(const mavlink_message_t& message);
     void process_actuator_output_status(const mavlink_message_t& message);
+    void process_odometry(const mavlink_message_t& message);
     void receive_param_cal_gyro(MAVLinkParameters::Result result, int value);
     void receive_param_cal_accel(MAVLinkParameters::Result result, int value);
     void receive_param_cal_mag(MAVLinkParameters::Result result, int value);
@@ -240,6 +246,9 @@ private:
     mutable std::mutex _actuator_output_status_mutex{};
     Telemetry::ActuatorOutputStatus _actuator_output_status{0, {0.0f}};
 
+    mutable std::mutex _odometry_mutex{};
+    Telemetry::Odometry _odometry{};
+
     std::atomic<bool> _hitl_enabled{false};
 
     Telemetry::position_velocity_ned_callback_t _position_velocity_ned_subscription{nullptr};
@@ -266,6 +275,7 @@ private:
     Telemetry::unix_epoch_time_callback_t _unix_epoch_time_subscription{nullptr};
     Telemetry::actuator_control_target_callback_t _actuator_control_target_subscription{nullptr};
     Telemetry::actuator_output_status_callback_t _actuator_output_status_subscription{nullptr};
+    Telemetry::odometry_callback_t _odometry_subscription{nullptr};
 
     // The ground speed and position are coupled to the same message, therefore, we just use
     // the faster between the two.

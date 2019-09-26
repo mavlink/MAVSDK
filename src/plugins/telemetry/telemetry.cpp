@@ -75,6 +75,11 @@ Telemetry::Result Telemetry::set_rate_actuator_output_status(double rate_hz)
     return _impl->set_rate_actuator_output_status(rate_hz);
 }
 
+Telemetry::Result Telemetry::set_rate_odometry(double rate_hz)
+{
+    return _impl->set_rate_odometry(rate_hz);
+}
+
 void Telemetry::set_rate_position_velocity_ned_async(double rate_hz, result_callback_t callback)
 {
     _impl->set_rate_position_velocity_ned_async(rate_hz, callback);
@@ -143,6 +148,11 @@ void Telemetry::set_rate_actuator_control_target_async(double rate_hz, result_ca
 void Telemetry::set_rate_actuator_output_status_async(double rate_hz, result_callback_t callback)
 {
     _impl->set_rate_actuator_output_status_async(rate_hz, callback);
+}
+
+void Telemetry::set_rate_odometry_async(double rate_hz, result_callback_t callback)
+{
+    _impl->set_rate_odometry_async(rate_hz, callback);
 }
 
 Telemetry::PositionVelocityNED Telemetry::position_velocity_ned() const
@@ -366,6 +376,11 @@ void Telemetry::actuator_control_target_async(actuator_control_target_callback_t
 void Telemetry::actuator_output_status_async(actuator_output_status_callback_t callback)
 {
     return _impl->actuator_output_status_async(callback);
+}
+
+void Telemetry::odometry_async(odometry_callback_t callback)
+{
+    return _impl->odometry_async(callback);
 }
 
 std::string Telemetry::flight_mode_str(FlightMode flight_mode)
@@ -727,6 +742,88 @@ operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_ou
             str << "]" << std::endl;
         }
     }
+    return str;
+}
+
+bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs)
+{
+    // FixMe: Should we check time_usec, reset_counter and estimator_type equality?
+    if (lhs.time_usec != rhs.time_usec || lhs.frame_id != rhs.frame_id ||
+        lhs.child_frame_id != rhs.child_frame_id || lhs.reset_counter != rhs.reset_counter ||
+        std::abs(lhs.x - rhs.x) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.y - rhs.y) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.z - rhs.z) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.vx - rhs.vx) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.vy - rhs.vy) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.vz - rhs.vz) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.rollspeed - rhs.rollspeed) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.pitchspeed - rhs.pitchspeed) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.yawspeed - rhs.yawspeed) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.q.w - rhs.q.w) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.q.x - rhs.q.x) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.q.y - rhs.q.y) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.q.z - rhs.q.z) > std::numeric_limits<float>::epsilon())
+        return false;
+
+    const bool lhs_pose_cov_nan = std::isnan(lhs.pose_covariance[0]);
+    const bool rhs_pose_cov_nan = std::isnan(rhs.pose_covariance[0]);
+
+    if (lhs_pose_cov_nan != rhs_pose_cov_nan)
+        return false;
+
+    if (!lhs_pose_cov_nan) {
+        for (int i = 0; i < 21; i++) {
+            if (std::abs(lhs.pose_covariance[i] - rhs.pose_covariance[i]) >
+                std::numeric_limits<float>::epsilon())
+                return false;
+        }
+    }
+
+    const bool lhs_velocity_cov_nan = std::isnan(lhs.velocity_covariance[0]);
+    const bool rhs_velocity_cov_nan = std::isnan(rhs.velocity_covariance[0]);
+
+    if (lhs_velocity_cov_nan != rhs_velocity_cov_nan)
+        return false;
+
+    if (!lhs_velocity_cov_nan) {
+        for (int i = 0; i < 21; i++) {
+            if (std::abs(lhs.velocity_covariance[i] - rhs.velocity_covariance[i]) >
+                std::numeric_limits<float>::epsilon())
+                return false;
+        }
+    }
+
+    return true;
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
+{
+    str << "[time_usec: " << odometry.time_usec
+        << ", frame_id: " << static_cast<int>(odometry.frame_id)
+        << ", child_frame_id: " << static_cast<int>(odometry.child_frame_id);
+    str << ", x: " << odometry.x << ", y: " << odometry.y << ", z: " << odometry.z
+        << ", q: " << odometry.q;
+    str << ", rollspeed: " << odometry.rollspeed << ", pitchspeed: " << odometry.pitchspeed
+        << ", yawspeed: " << odometry.yawspeed;
+    str << ", pose_covariance: [";
+    for (unsigned i = 0; i < 21; i++) {
+        str << odometry.pose_covariance[i];
+        if (i != 20) {
+            str << ", ";
+        } else {
+            str << "]";
+        }
+    }
+    str << ", velocity_covariance: [";
+    for (unsigned i = 0; i < 21; i++) {
+        str << odometry.velocity_covariance[i];
+        if (i != 20) {
+            str << ", ";
+        } else {
+            str << "]";
+        }
+    }
+    str << ", reset_counter: " << static_cast<int>(odometry.reset_counter);
     return str;
 }
 

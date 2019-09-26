@@ -528,6 +528,82 @@ public:
         return grpc::Status::OK;
     }
 
+    mavsdk::rpc::telemetry::Odometry::MavFrame
+    translateFrameId(const mavsdk::Telemetry::Odometry::MavFrame id) const
+    {
+        switch (id) {
+            default:
+            case mavsdk::Telemetry::Odometry::MavFrame::UNDEF:
+                return mavsdk::rpc::telemetry::Odometry::MavFrame::Odometry_MavFrame_UNDEF;
+            case mavsdk::Telemetry::Odometry::MavFrame::MAV_FRAME_BODY_NED:
+                return mavsdk::rpc::telemetry::Odometry::MavFrame::
+                    Odometry_MavFrame_MAV_FRAME_BODY_NED;
+            case mavsdk::Telemetry::Odometry::MavFrame::MAV_FRAME_VISION_NED:
+                return mavsdk::rpc::telemetry::Odometry::MavFrame::
+                    Odometry_MavFrame_MAV_FRAME_VISION_NED;
+            case mavsdk::Telemetry::Odometry::MavFrame::MAV_FRAME_ESTIM_NED:
+                return mavsdk::rpc::telemetry::Odometry::MavFrame::
+                    Odometry_MavFrame_MAV_FRAME_ESTIM_NED;
+        }
+    }
+
+    grpc::Status SubscribeOdometry(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::telemetry::SubscribeOdometryRequest* /* request */,
+        grpc::ServerWriter<rpc::telemetry::OdometryResponse>* writer) override
+    {
+        std::mutex odometry_mutex{};
+
+        _telemetry.odometry_async(
+            [this, &writer, &odometry_mutex](mavsdk::Telemetry::Odometry odometry) {
+                auto rpc_odometry = new mavsdk::rpc::telemetry::Odometry();
+                rpc_odometry->set_time_usec(odometry.time_usec);
+
+                rpc_odometry->set_frame_id(translateFrameId(odometry.frame_id));
+                rpc_odometry->set_child_frame_id(translateFrameId(odometry.child_frame_id));
+
+                rpc_odometry->set_x(odometry.x);
+                rpc_odometry->set_y(odometry.y);
+                rpc_odometry->set_z(odometry.z);
+
+                auto rpc_q = new mavsdk::rpc::telemetry::Quaternion();
+                rpc_q->set_w(odometry.q.w);
+                rpc_q->set_x(odometry.q.x);
+                rpc_q->set_y(odometry.q.y);
+                rpc_q->set_z(odometry.q.z);
+                rpc_odometry->set_allocated_q(rpc_q);
+
+                rpc_odometry->set_vx(odometry.vx);
+                rpc_odometry->set_vy(odometry.vy);
+                rpc_odometry->set_vz(odometry.vz);
+
+                rpc_odometry->set_rollspeed(odometry.rollspeed);
+                rpc_odometry->set_pitchspeed(odometry.pitchspeed);
+                rpc_odometry->set_yawspeed(odometry.yawspeed);
+
+                auto pose_covariance = new mavsdk::rpc::telemetry::Covariance();
+                for (int i = 0; i < 21; i++) {
+                    pose_covariance->add_c(odometry.pose_covariance[i]);
+                }
+                rpc_odometry->set_allocated_pose_covariance(pose_covariance);
+
+                auto velocity_covariance = new mavsdk::rpc::telemetry::Covariance();
+                for (int i = 0; i < 21; i++) {
+                    velocity_covariance->add_c(odometry.velocity_covariance[i]);
+                }
+                rpc_odometry->set_allocated_velocity_covariance(velocity_covariance);
+
+                mavsdk::rpc::telemetry::OdometryResponse rpc_odometry_response;
+                rpc_odometry_response.set_allocated_odometry(rpc_odometry);
+
+                std::lock_guard<std::mutex> lock(odometry_mutex);
+                writer->Write(rpc_odometry_response);
+            });
+
+        _stop_future.wait();
+        return grpc::Status::OK;
+    }
+
     void stop() { _stop_promise.set_value(); }
 
 private:
