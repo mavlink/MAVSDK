@@ -31,6 +31,6 @@ endforeach()
 ExternalProject_Add(
     jsoncpp
     URL https://github.com/open-source-parsers/jsoncpp/archive/1.8.4.zip
-    PREFIX jsonpp
+    PREFIX jsoncpp
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
