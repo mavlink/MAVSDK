@@ -1,4 +1,4 @@
-find_package(jsoncpp REQUIRED)
+find_package(JsonCpp REQUIRED)
 
 add_library(mavsdk_mission
     mission.cpp
