@@ -138,7 +138,9 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
     // on the matching link.
     const mavlink_msg_entry_t* entry = mavlink_get_msg_entry(message.msgid);
     const uint8_t target_system_id =
-        (entry ? reinterpret_cast<const uint8_t*>(message.payload64)[entry->target_system_ofs] : 0);
+        (entry && (entry->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM) ?
+             reinterpret_cast<const uint8_t*>(message.payload64)[entry->target_system_ofs] :
+             0);
 
     bool send_successful = true;
     for (auto& remote : _remotes) {

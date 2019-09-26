@@ -827,4 +827,14 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
     return str;
 }
 
+std::ostream& operator<<(std::ostream& str, Telemetry::FlightMode const& flight_mode)
+{
+    return str << Telemetry::flight_mode_str(flight_mode);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::LandedState const& landed_state)
+{
+    return str << Telemetry::landed_state_str(landed_state);
+}
+
 } // namespace mavsdk
