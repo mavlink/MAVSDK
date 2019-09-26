@@ -17,7 +17,9 @@ else()
 endif()
 
 if (TINYXML2_FOUND)
-    add_library(tinyxml2::tinyxml2 INTERFACE IMPORTED)
+    if(NOT TARGET tinyxml2::tinyxml2)
+        add_library(tinyxml2::tinyxml2 INTERFACE IMPORTED)
+    endif()
     set_target_properties(tinyxml2::tinyxml2 PROPERTIES
         INTERFACE_INCLUDE_DIRECTORIES "${TINYXML2_INCLUDE_DIR}"
         INTERFACE_LINK_LIBRARIES "${TINYXML2_LIBRARY}")
