@@ -30,7 +30,7 @@ include(cmake/compiler_flags.cmake)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-find_package(CURL REQUIRED)
+find_package(CURL REQUIRED CONFIG)
 find_package(tinyxml2 REQUIRED)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
