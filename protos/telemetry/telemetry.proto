@@ -44,8 +44,11 @@ service TelemetryService {
     rpc SubscribeRcStatus(SubscribeRcStatusRequest) returns(stream RcStatusResponse) {}
     // Subscribe to 'status text' updates.
     rpc SubscribeStatusText(SubscribeStatusTextRequest) returns(stream StatusTextResponse) {}
+    // Subscribe to 'actuator control target' updates.
     rpc SubscribeActuatorControlTarget(SubscribeActuatorControlTargetRequest) returns(stream ActuatorControlTargetResponse) {}
+    // Subscribe to 'actuator output status' updates.
     rpc SubscribeActuatorOutputStatus(SubscribeActuatorOutputStatusRequest) returns(stream ActuatorOutputStatusResponse) {}
+    // Subscribe to 'odometry' updates.
     rpc SubscribeOdometry(SubscribeOdometryRequest) returns(stream OdometryResponse) {}
 }
 
@@ -86,7 +89,7 @@ message AttitudeEulerResponse {
 
 message SubscribeAttitudeAngularVelocityBodyRequest {}
 message AttitudeAngularVelocityBodyResponse {
-    AngularVelocityBody attitude_angular_velocity_body = 1;
+    AngularVelocityBody attitude_angular_velocity_body = 1; // The next angular velocity (rad/s)
 }
 
 message SubscribeCameraAttitudeQuaternionRequest {}
@@ -306,18 +309,12 @@ message Odometry {
     uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
     MavFrame frame_id = 2; // Coordinate frame of reference for the pose data.
     MavFrame child_frame_id = 3;  // Coordinate frame of reference for the velocity in free space (twist) data.
-    float x = 4; // X Position.
-    float y = 5; // Y Position.
-    float z = 6; // Z Position.
-    Quaternion q = 7; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
-    float vx = 8; // X linear speed (m/s).
-    float vy = 9; // Y linear speed (m/s).
-    float vz = 10; // Z linear speed (m/s).
-    float rollspeed = 11; // Roll angular speed (rad/s).
-    float pitchspeed = 12; // Pitch angular speed (rad/s).
-    float yawspeed = 13; // Yaw angular speed (rad/s).
-    Covariance pose_covariance = 14; // Pose cross-covariance matrix.
-    Covariance velocity_covariance = 15; // Velocity cross-covariance matrix.
+    PositionXyz position = 4; // Position.
+    Quaternion q = 5; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+    SpeedBody speed_body = 6; // Linear speed (m/s).
+    AngularVelocityBody angular_velocity_body = 7; // Angular speed (rad/s).
+    Covariance pose_covariance = 8; // Pose cross-covariance matrix.
+    Covariance velocity_covariance = 9; // Velocity cross-covariance matrix.
 }
 
 /* Covariance type.
@@ -326,5 +323,19 @@ message Odometry {
  * Set first to NaN if unknown.
  */
 message Covariance {
-    repeated float c = 1;
+    repeated float covariance_matrix = 1;
+}
+
+// Speed type, represented in the Body (X Y Z) frame and in metres/second.
+message SpeedBody {
+    float velocity_x_m_s = 1; // Velocity in X in metres/second
+    float velocity_y_m_s = 2; // Velocity in Y in metres/second
+    float velocity_z_m_s = 3; // Velocity in Z in metres/second
+}
+
+// Position type, represented in the Body (X Y Z) frame
+message PositionXyz {
+    float x = 4; // X Position.
+    float y = 5; // Y Position.
+    float z = 6; // Z Position.
 }
