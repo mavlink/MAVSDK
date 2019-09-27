@@ -4,67 +4,73 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      name: "ubuntu 16.04"
+      name: "ubuntu 16.04 (superbuild, coverage)"
       dist: xenial
       compiler: gcc
       env:
-      - MATRIX_EVAL="BUILD_TARGET=gcc_build"
+      - MATRIX_EVAL="BUILD_TARGET=coverage_build && SUPERBUILD=ON"
     - os: linux
-      name: "ubuntu 16.04 - gcc 5"
-      dist: xenial
-      compiler: gcc
-      env:
-      - MATRIX_EVAL="BUILD_TARGET=gcc_build && CC=gcc-5 && CXX=g++-5"
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-5
-            - g++-5
-    - os: linux
-      name: "ubuntu 16.04 - gcc 6"
+      name: "ubuntu 16.04 (non-superbuild)"
       dist: xenial
       sudo: false
       compiler: gcc
       env:
-      - MATRIX_EVAL="BUILD_TARGET=coverage_build && CC=gcc-6 && CXX=g++-6"
+      - MATRIX_EVAL="BUILD_TARGET=gcc_build && SUPERBUILD=OFF"
       addons:
         apt:
-          sources:
-            - ubuntu-toolchain-r-test
           packages:
-            - gcc-6
-            - g++-6
+          - libjsoncpp-dev
+          - libcurl4-openssl-dev
+          - libtinyxml2-dev
     - os: linux
-      name: "ubuntu 16.04"
+      name: "ubuntu 18.04 (superbuild)"
+      dist: bionic
+      sudo: false
+      compiler: gcc
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=gcc_build && SUPERBUILD=ON"
+    - os: linux
+      name: "ubuntu 18.04 (non-superbuild)"
+      dist: bionic
+      sudo: false
+      compiler: gcc
+      env:
+      - MATRIX_EVAL="BUILD_TARGET=gcc_build && SUPERBUILD=OFF"
+      addons:
+        apt:
+          packages:
+          - libjsoncpp-dev
+          - libcurl4-openssl-dev
+          - libtinyxml2-dev
+    - os: linux
+      name: "docker ubuntu 16.04"
       services:
         - docker
       env:
       - MATRIX_EVAL="BUILD_TARGET=docker_build_ubuntu_16.04"
     - os: linux
-      name: "ubuntu 18.04"
+      name: "docker ubuntu 18.04"
       sudo: true
       services:
         - docker
       env:
       - MATRIX_EVAL="BUILD_TARGET=docker_build_ubuntu_18.04"
     - os: linux
-      name: "fedora 28"
+      name: "docker fedora 28"
       sudo: true
       services:
         - docker
       env:
       - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora_28"
     - os: linux
-      name: "fedora 29"
+      name: "docker fedora 29"
       sudo: true
       services:
         - docker
       env:
       - MATRIX_EVAL="BUILD_TARGET=docker_build_fedora_29"
     - os: linux
-      name: "manylinux1-x64"
+      name: "docker manylinux1-x64"
       services:
         - docker
       env:
@@ -120,7 +126,7 @@ install:
 script:
 - set -e
 - if [[ "${BUILD_TARGET}" = "gcc_build" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild/debug -H.;
+    cmake -DCMAKE_BUILD_TYPE=Debug -DSUPERBUILD=${SUPERBUILD} -Bbuild/debug -H.;
     cmake --build build/debug;
     ./build/debug/src/unit_tests_runner;
     cmake -DCMAKE_BUILD_TYPE=Release -Bbuild/release -H.;
