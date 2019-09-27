@@ -19,7 +19,7 @@ target_link_libraries(mavsdk_mission
     PUBLIC
     mavsdk
     PRIVATE
-    JsonCpp::JsonCpp
+    JsonCpp::jsoncpp
 )
 
 target_include_directories(mavsdk_mission PUBLIC

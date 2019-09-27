@@ -9,6 +9,7 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DBUILD_SHARED_LIBS=OFF"
     "-DJSONCPP_WITH_CMAKE_PACKAGE=ON"
+    "-DJSONCPP_WITH_TESTS=OFF"
     )
 
 if(ANDROID)
@@ -30,7 +31,9 @@ endforeach()
 
 ExternalProject_Add(
     jsoncpp
-    URL https://github.com/open-source-parsers/jsoncpp/archive/1.8.4.zip
+    GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp
+    GIT_TAG 1.8.4
     PREFIX jsoncpp
+    PATCH_COMMAND git apply ${PROJECT_SOURCE_DIR}/fixlibname.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
