@@ -55,9 +55,7 @@ execute_process(
 )
 
 STRING(REGEX REPLACE v\([0-9]+.[0-9]+.[0-9]+.*$\) \\1 VERSION_STR "${VERSION_STR}")
-
 message(STATUS "Version: ${VERSION_STR}")
-add_definitions(-DDRONECODE_SDK_VERSION="${VERSION_STR}")
 
 add_subdirectory(core)
 add_subdirectory(plugins)
