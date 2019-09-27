@@ -48,7 +48,7 @@ struct TableStruct_telemetry_2ftelemetry_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[54]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[56]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -142,6 +142,9 @@ extern PositionDefaultTypeInternal _Position_default_instance_;
 class PositionResponse;
 class PositionResponseDefaultTypeInternal;
 extern PositionResponseDefaultTypeInternal _PositionResponse_default_instance_;
+class PositionXyz;
+class PositionXyzDefaultTypeInternal;
+extern PositionXyzDefaultTypeInternal _PositionXyz_default_instance_;
 class Quaternion;
 class QuaternionDefaultTypeInternal;
 extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
@@ -151,6 +154,9 @@ extern RcStatusDefaultTypeInternal _RcStatus_default_instance_;
 class RcStatusResponse;
 class RcStatusResponseDefaultTypeInternal;
 extern RcStatusResponseDefaultTypeInternal _RcStatusResponse_default_instance_;
+class SpeedBody;
+class SpeedBodyDefaultTypeInternal;
+extern SpeedBodyDefaultTypeInternal _SpeedBody_default_instance_;
 class SpeedNed;
 class SpeedNedDefaultTypeInternal;
 extern SpeedNedDefaultTypeInternal _SpeedNed_default_instance_;
@@ -252,9 +258,11 @@ template<> ::mavsdk::rpc::telemetry::Odometry* Arena::CreateMaybeMessage<::mavsd
 template<> ::mavsdk::rpc::telemetry::OdometryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::OdometryResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::Position* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Position>(Arena*);
 template<> ::mavsdk::rpc::telemetry::PositionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::PositionXyz* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionXyz>(Arena*);
 template<> ::mavsdk::rpc::telemetry::Quaternion* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Quaternion>(Arena*);
 template<> ::mavsdk::rpc::telemetry::RcStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::RcStatus>(Arena*);
 template<> ::mavsdk::rpc::telemetry::RcStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::RcStatusResponse>(Arena*);
+template<> ::mavsdk::rpc::telemetry::SpeedBody* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SpeedBody>(Arena*);
 template<> ::mavsdk::rpc::telemetry::SpeedNed* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::SpeedNed>(Arena*);
 template<> ::mavsdk::rpc::telemetry::StatusText* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::StatusText>(Arena*);
 template<> ::mavsdk::rpc::telemetry::StatusTextResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::StatusTextResponse>(Arena*);
@@ -7429,23 +7437,28 @@ class Odometry :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kQFieldNumber = 7,
-    kPoseCovarianceFieldNumber = 14,
-    kVelocityCovarianceFieldNumber = 15,
+    kPositionFieldNumber = 4,
+    kQFieldNumber = 5,
+    kSpeedBodyFieldNumber = 6,
+    kAngularVelocityBodyFieldNumber = 7,
+    kPoseCovarianceFieldNumber = 8,
+    kVelocityCovarianceFieldNumber = 9,
     kTimeUsecFieldNumber = 1,
     kFrameIdFieldNumber = 2,
     kChildFrameIdFieldNumber = 3,
-    kXFieldNumber = 4,
-    kYFieldNumber = 5,
-    kZFieldNumber = 6,
-    kVxFieldNumber = 8,
-    kVyFieldNumber = 9,
-    kVzFieldNumber = 10,
-    kRollspeedFieldNumber = 11,
-    kPitchspeedFieldNumber = 12,
-    kYawspeedFieldNumber = 13,
   };
-  // .mavsdk.rpc.telemetry.Quaternion q = 7;
+  // .mavsdk.rpc.telemetry.PositionXyz position = 4;
+  bool has_position() const;
+  private:
+  bool _internal_has_position() const;
+  public:
+  void clear_position();
+  const ::mavsdk::rpc::telemetry::PositionXyz& position() const;
+  ::mavsdk::rpc::telemetry::PositionXyz* release_position();
+  ::mavsdk::rpc::telemetry::PositionXyz* mutable_position();
+  void set_allocated_position(::mavsdk::rpc::telemetry::PositionXyz* position);
+
+  // .mavsdk.rpc.telemetry.Quaternion q = 5;
   bool has_q() const;
   private:
   bool _internal_has_q() const;
@@ -7456,7 +7469,29 @@ class Odometry :
   ::mavsdk::rpc::telemetry::Quaternion* mutable_q();
   void set_allocated_q(::mavsdk::rpc::telemetry::Quaternion* q);
 
-  // .mavsdk.rpc.telemetry.Covariance pose_covariance = 14;
+  // .mavsdk.rpc.telemetry.SpeedBody speed_body = 6;
+  bool has_speed_body() const;
+  private:
+  bool _internal_has_speed_body() const;
+  public:
+  void clear_speed_body();
+  const ::mavsdk::rpc::telemetry::SpeedBody& speed_body() const;
+  ::mavsdk::rpc::telemetry::SpeedBody* release_speed_body();
+  ::mavsdk::rpc::telemetry::SpeedBody* mutable_speed_body();
+  void set_allocated_speed_body(::mavsdk::rpc::telemetry::SpeedBody* speed_body);
+
+  // .mavsdk.rpc.telemetry.AngularVelocityBody angular_velocity_body = 7;
+  bool has_angular_velocity_body() const;
+  private:
+  bool _internal_has_angular_velocity_body() const;
+  public:
+  void clear_angular_velocity_body();
+  const ::mavsdk::rpc::telemetry::AngularVelocityBody& angular_velocity_body() const;
+  ::mavsdk::rpc::telemetry::AngularVelocityBody* release_angular_velocity_body();
+  ::mavsdk::rpc::telemetry::AngularVelocityBody* mutable_angular_velocity_body();
+  void set_allocated_angular_velocity_body(::mavsdk::rpc::telemetry::AngularVelocityBody* angular_velocity_body);
+
+  // .mavsdk.rpc.telemetry.Covariance pose_covariance = 8;
   bool has_pose_covariance() const;
   private:
   bool _internal_has_pose_covariance() const;
@@ -7467,7 +7502,7 @@ class Odometry :
   ::mavsdk::rpc::telemetry::Covariance* mutable_pose_covariance();
   void set_allocated_pose_covariance(::mavsdk::rpc::telemetry::Covariance* pose_covariance);
 
-  // .mavsdk.rpc.telemetry.Covariance velocity_covariance = 15;
+  // .mavsdk.rpc.telemetry.Covariance velocity_covariance = 9;
   bool has_velocity_covariance() const;
   private:
   bool _internal_has_velocity_covariance() const;
@@ -7493,71 +7528,20 @@ class Odometry :
   ::mavsdk::rpc::telemetry::Odometry_MavFrame child_frame_id() const;
   void set_child_frame_id(::mavsdk::rpc::telemetry::Odometry_MavFrame value);
 
-  // float x = 4;
-  void clear_x();
-  float x() const;
-  void set_x(float value);
-
-  // float y = 5;
-  void clear_y();
-  float y() const;
-  void set_y(float value);
-
-  // float z = 6;
-  void clear_z();
-  float z() const;
-  void set_z(float value);
-
-  // float vx = 8;
-  void clear_vx();
-  float vx() const;
-  void set_vx(float value);
-
-  // float vy = 9;
-  void clear_vy();
-  float vy() const;
-  void set_vy(float value);
-
-  // float vz = 10;
-  void clear_vz();
-  float vz() const;
-  void set_vz(float value);
-
-  // float rollspeed = 11;
-  void clear_rollspeed();
-  float rollspeed() const;
-  void set_rollspeed(float value);
-
-  // float pitchspeed = 12;
-  void clear_pitchspeed();
-  float pitchspeed() const;
-  void set_pitchspeed(float value);
-
-  // float yawspeed = 13;
-  void clear_yawspeed();
-  float yawspeed() const;
-  void set_yawspeed(float value);
-
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Odometry)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::mavsdk::rpc::telemetry::PositionXyz* position_;
   ::mavsdk::rpc::telemetry::Quaternion* q_;
+  ::mavsdk::rpc::telemetry::SpeedBody* speed_body_;
+  ::mavsdk::rpc::telemetry::AngularVelocityBody* angular_velocity_body_;
   ::mavsdk::rpc::telemetry::Covariance* pose_covariance_;
   ::mavsdk::rpc::telemetry::Covariance* velocity_covariance_;
   ::PROTOBUF_NAMESPACE_ID::uint64 time_usec_;
   int frame_id_;
   int child_frame_id_;
-  float x_;
-  float y_;
-  float z_;
-  float vx_;
-  float vy_;
-  float vz_;
-  float rollspeed_;
-  float pitchspeed_;
-  float yawspeed_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -7674,26 +7658,312 @@ class Covariance :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kCFieldNumber = 1,
+    kCovarianceMatrixFieldNumber = 1,
   };
-  // repeated float c = 1;
-  int c_size() const;
-  void clear_c();
-  float c(int index) const;
-  void set_c(int index, float value);
-  void add_c(float value);
+  // repeated float covariance_matrix = 1;
+  int covariance_matrix_size() const;
+  void clear_covariance_matrix();
+  float covariance_matrix(int index) const;
+  void set_covariance_matrix(int index, float value);
+  void add_covariance_matrix(float value);
   const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-      c() const;
+      covariance_matrix() const;
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-      mutable_c();
+      mutable_covariance_matrix();
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Covariance)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > c_;
-  mutable std::atomic<int> _c_cached_byte_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > covariance_matrix_;
+  mutable std::atomic<int> _covariance_matrix_cached_byte_size_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SpeedBody :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SpeedBody) */ {
+ public:
+  SpeedBody();
+  virtual ~SpeedBody();
+
+  SpeedBody(const SpeedBody& from);
+  SpeedBody(SpeedBody&& from) noexcept
+    : SpeedBody() {
+    *this = ::std::move(from);
+  }
+
+  inline SpeedBody& operator=(const SpeedBody& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SpeedBody& operator=(SpeedBody&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SpeedBody& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SpeedBody* internal_default_instance() {
+    return reinterpret_cast<const SpeedBody*>(
+               &_SpeedBody_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    54;
+
+  friend void swap(SpeedBody& a, SpeedBody& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SpeedBody* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SpeedBody* New() const final {
+    return CreateMaybeMessage<SpeedBody>(nullptr);
+  }
+
+  SpeedBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SpeedBody>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SpeedBody& from);
+  void MergeFrom(const SpeedBody& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  #else
+  bool MergePartialFromCodedStream(
+      ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  ::PROTOBUF_NAMESPACE_ID::uint8* InternalSerializeWithCachedSizesToArray(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SpeedBody* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.SpeedBody";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kVelocityXMSFieldNumber = 1,
+    kVelocityYMSFieldNumber = 2,
+    kVelocityZMSFieldNumber = 3,
+  };
+  // float velocity_x_m_s = 1;
+  void clear_velocity_x_m_s();
+  float velocity_x_m_s() const;
+  void set_velocity_x_m_s(float value);
+
+  // float velocity_y_m_s = 2;
+  void clear_velocity_y_m_s();
+  float velocity_y_m_s() const;
+  void set_velocity_y_m_s(float value);
+
+  // float velocity_z_m_s = 3;
+  void clear_velocity_z_m_s();
+  float velocity_z_m_s() const;
+  void set_velocity_z_m_s(float value);
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SpeedBody)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  float velocity_x_m_s_;
+  float velocity_y_m_s_;
+  float velocity_z_m_s_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PositionXyz :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.PositionXyz) */ {
+ public:
+  PositionXyz();
+  virtual ~PositionXyz();
+
+  PositionXyz(const PositionXyz& from);
+  PositionXyz(PositionXyz&& from) noexcept
+    : PositionXyz() {
+    *this = ::std::move(from);
+  }
+
+  inline PositionXyz& operator=(const PositionXyz& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PositionXyz& operator=(PositionXyz&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const PositionXyz& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PositionXyz* internal_default_instance() {
+    return reinterpret_cast<const PositionXyz*>(
+               &_PositionXyz_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    55;
+
+  friend void swap(PositionXyz& a, PositionXyz& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PositionXyz* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PositionXyz* New() const final {
+    return CreateMaybeMessage<PositionXyz>(nullptr);
+  }
+
+  PositionXyz* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PositionXyz>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const PositionXyz& from);
+  void MergeFrom(const PositionXyz& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  #else
+  bool MergePartialFromCodedStream(
+      ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  ::PROTOBUF_NAMESPACE_ID::uint8* InternalSerializeWithCachedSizesToArray(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PositionXyz* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "mavsdk.rpc.telemetry.PositionXyz";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_telemetry_2ftelemetry_2eproto);
+    return ::descriptor_table_telemetry_2ftelemetry_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kZFieldNumber = 6,
+    kXFieldNumber = 4,
+    kYFieldNumber = 5,
+  };
+  // float z = 6;
+  void clear_z();
+  float z() const;
+  void set_z(float value);
+
+  // float x = 4;
+  void clear_x();
+  float x() const;
+  void set_x(float value);
+
+  // float y = 5;
+  void clear_y();
+  float y() const;
+  void set_y(float value);
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.PositionXyz)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  float z_;
+  float x_;
+  float y_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -9426,49 +9696,58 @@ inline void Odometry::set_child_frame_id(::mavsdk::rpc::telemetry::Odometry_MavF
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.child_frame_id)
 }
 
-// float x = 4;
-inline void Odometry::clear_x() {
-  x_ = 0;
+// .mavsdk.rpc.telemetry.PositionXyz position = 4;
+inline bool Odometry::has_position() const {
+  return this != internal_default_instance() && position_ != nullptr;
 }
-inline float Odometry::x() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.x)
-  return x_;
+inline void Odometry::clear_position() {
+  if (GetArenaNoVirtual() == nullptr && position_ != nullptr) {
+    delete position_;
+  }
+  position_ = nullptr;
 }
-inline void Odometry::set_x(float value) {
+inline const ::mavsdk::rpc::telemetry::PositionXyz& Odometry::position() const {
+  const ::mavsdk::rpc::telemetry::PositionXyz* p = position_;
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.position)
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::PositionXyz*>(
+      &::mavsdk::rpc::telemetry::_PositionXyz_default_instance_);
+}
+inline ::mavsdk::rpc::telemetry::PositionXyz* Odometry::release_position() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.Odometry.position)
   
-  x_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.x)
+  ::mavsdk::rpc::telemetry::PositionXyz* temp = position_;
+  position_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::PositionXyz* Odometry::mutable_position() {
+  
+  if (position_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionXyz>(GetArenaNoVirtual());
+    position_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.Odometry.position)
+  return position_;
+}
+inline void Odometry::set_allocated_position(::mavsdk::rpc::telemetry::PositionXyz* position) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete position_;
+  }
+  if (position) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, position, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  position_ = position;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.Odometry.position)
 }
 
-// float y = 5;
-inline void Odometry::clear_y() {
-  y_ = 0;
-}
-inline float Odometry::y() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.y)
-  return y_;
-}
-inline void Odometry::set_y(float value) {
-  
-  y_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.y)
-}
-
-// float z = 6;
-inline void Odometry::clear_z() {
-  z_ = 0;
-}
-inline float Odometry::z() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.z)
-  return z_;
-}
-inline void Odometry::set_z(float value) {
-  
-  z_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.z)
-}
-
-// .mavsdk.rpc.telemetry.Quaternion q = 7;
+// .mavsdk.rpc.telemetry.Quaternion q = 5;
 inline bool Odometry::has_q() const {
   return this != internal_default_instance() && q_ != nullptr;
 }
@@ -9519,91 +9798,109 @@ inline void Odometry::set_allocated_q(::mavsdk::rpc::telemetry::Quaternion* q) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.Odometry.q)
 }
 
-// float vx = 8;
-inline void Odometry::clear_vx() {
-  vx_ = 0;
+// .mavsdk.rpc.telemetry.SpeedBody speed_body = 6;
+inline bool Odometry::has_speed_body() const {
+  return this != internal_default_instance() && speed_body_ != nullptr;
 }
-inline float Odometry::vx() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.vx)
-  return vx_;
+inline void Odometry::clear_speed_body() {
+  if (GetArenaNoVirtual() == nullptr && speed_body_ != nullptr) {
+    delete speed_body_;
+  }
+  speed_body_ = nullptr;
 }
-inline void Odometry::set_vx(float value) {
+inline const ::mavsdk::rpc::telemetry::SpeedBody& Odometry::speed_body() const {
+  const ::mavsdk::rpc::telemetry::SpeedBody* p = speed_body_;
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.speed_body)
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::SpeedBody*>(
+      &::mavsdk::rpc::telemetry::_SpeedBody_default_instance_);
+}
+inline ::mavsdk::rpc::telemetry::SpeedBody* Odometry::release_speed_body() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.Odometry.speed_body)
   
-  vx_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.vx)
+  ::mavsdk::rpc::telemetry::SpeedBody* temp = speed_body_;
+  speed_body_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::SpeedBody* Odometry::mutable_speed_body() {
+  
+  if (speed_body_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::SpeedBody>(GetArenaNoVirtual());
+    speed_body_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.Odometry.speed_body)
+  return speed_body_;
+}
+inline void Odometry::set_allocated_speed_body(::mavsdk::rpc::telemetry::SpeedBody* speed_body) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete speed_body_;
+  }
+  if (speed_body) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      speed_body = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, speed_body, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  speed_body_ = speed_body;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.Odometry.speed_body)
 }
 
-// float vy = 9;
-inline void Odometry::clear_vy() {
-  vy_ = 0;
+// .mavsdk.rpc.telemetry.AngularVelocityBody angular_velocity_body = 7;
+inline bool Odometry::has_angular_velocity_body() const {
+  return this != internal_default_instance() && angular_velocity_body_ != nullptr;
 }
-inline float Odometry::vy() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.vy)
-  return vy_;
+inline void Odometry::clear_angular_velocity_body() {
+  if (GetArenaNoVirtual() == nullptr && angular_velocity_body_ != nullptr) {
+    delete angular_velocity_body_;
+  }
+  angular_velocity_body_ = nullptr;
 }
-inline void Odometry::set_vy(float value) {
+inline const ::mavsdk::rpc::telemetry::AngularVelocityBody& Odometry::angular_velocity_body() const {
+  const ::mavsdk::rpc::telemetry::AngularVelocityBody* p = angular_velocity_body_;
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.angular_velocity_body)
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::AngularVelocityBody*>(
+      &::mavsdk::rpc::telemetry::_AngularVelocityBody_default_instance_);
+}
+inline ::mavsdk::rpc::telemetry::AngularVelocityBody* Odometry::release_angular_velocity_body() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.Odometry.angular_velocity_body)
   
-  vy_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.vy)
+  ::mavsdk::rpc::telemetry::AngularVelocityBody* temp = angular_velocity_body_;
+  angular_velocity_body_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::AngularVelocityBody* Odometry::mutable_angular_velocity_body() {
+  
+  if (angular_velocity_body_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::AngularVelocityBody>(GetArenaNoVirtual());
+    angular_velocity_body_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.Odometry.angular_velocity_body)
+  return angular_velocity_body_;
+}
+inline void Odometry::set_allocated_angular_velocity_body(::mavsdk::rpc::telemetry::AngularVelocityBody* angular_velocity_body) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete angular_velocity_body_;
+  }
+  if (angular_velocity_body) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      angular_velocity_body = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, angular_velocity_body, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  angular_velocity_body_ = angular_velocity_body;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.Odometry.angular_velocity_body)
 }
 
-// float vz = 10;
-inline void Odometry::clear_vz() {
-  vz_ = 0;
-}
-inline float Odometry::vz() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.vz)
-  return vz_;
-}
-inline void Odometry::set_vz(float value) {
-  
-  vz_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.vz)
-}
-
-// float rollspeed = 11;
-inline void Odometry::clear_rollspeed() {
-  rollspeed_ = 0;
-}
-inline float Odometry::rollspeed() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.rollspeed)
-  return rollspeed_;
-}
-inline void Odometry::set_rollspeed(float value) {
-  
-  rollspeed_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.rollspeed)
-}
-
-// float pitchspeed = 12;
-inline void Odometry::clear_pitchspeed() {
-  pitchspeed_ = 0;
-}
-inline float Odometry::pitchspeed() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.pitchspeed)
-  return pitchspeed_;
-}
-inline void Odometry::set_pitchspeed(float value) {
-  
-  pitchspeed_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.pitchspeed)
-}
-
-// float yawspeed = 13;
-inline void Odometry::clear_yawspeed() {
-  yawspeed_ = 0;
-}
-inline float Odometry::yawspeed() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.yawspeed)
-  return yawspeed_;
-}
-inline void Odometry::set_yawspeed(float value) {
-  
-  yawspeed_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.yawspeed)
-}
-
-// .mavsdk.rpc.telemetry.Covariance pose_covariance = 14;
+// .mavsdk.rpc.telemetry.Covariance pose_covariance = 8;
 inline bool Odometry::has_pose_covariance() const {
   return this != internal_default_instance() && pose_covariance_ != nullptr;
 }
@@ -9654,7 +9951,7 @@ inline void Odometry::set_allocated_pose_covariance(::mavsdk::rpc::telemetry::Co
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.Odometry.pose_covariance)
 }
 
-// .mavsdk.rpc.telemetry.Covariance velocity_covariance = 15;
+// .mavsdk.rpc.telemetry.Covariance velocity_covariance = 9;
 inline bool Odometry::has_velocity_covariance() const {
   return this != internal_default_instance() && velocity_covariance_ != nullptr;
 }
@@ -9709,39 +10006,135 @@ inline void Odometry::set_allocated_velocity_covariance(::mavsdk::rpc::telemetry
 
 // Covariance
 
-// repeated float c = 1;
-inline int Covariance::c_size() const {
-  return c_.size();
+// repeated float covariance_matrix = 1;
+inline int Covariance::covariance_matrix_size() const {
+  return covariance_matrix_.size();
 }
-inline void Covariance::clear_c() {
-  c_.Clear();
+inline void Covariance::clear_covariance_matrix() {
+  covariance_matrix_.Clear();
 }
-inline float Covariance::c(int index) const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Covariance.c)
-  return c_.Get(index);
+inline float Covariance::covariance_matrix(int index) const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Covariance.covariance_matrix)
+  return covariance_matrix_.Get(index);
 }
-inline void Covariance::set_c(int index, float value) {
-  c_.Set(index, value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Covariance.c)
+inline void Covariance::set_covariance_matrix(int index, float value) {
+  covariance_matrix_.Set(index, value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Covariance.covariance_matrix)
 }
-inline void Covariance::add_c(float value) {
-  c_.Add(value);
-  // @@protoc_insertion_point(field_add:mavsdk.rpc.telemetry.Covariance.c)
+inline void Covariance::add_covariance_matrix(float value) {
+  covariance_matrix_.Add(value);
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.telemetry.Covariance.covariance_matrix)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-Covariance::c() const {
-  // @@protoc_insertion_point(field_list:mavsdk.rpc.telemetry.Covariance.c)
-  return c_;
+Covariance::covariance_matrix() const {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.telemetry.Covariance.covariance_matrix)
+  return covariance_matrix_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-Covariance::mutable_c() {
-  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.telemetry.Covariance.c)
-  return &c_;
+Covariance::mutable_covariance_matrix() {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.telemetry.Covariance.covariance_matrix)
+  return &covariance_matrix_;
+}
+
+// -------------------------------------------------------------------
+
+// SpeedBody
+
+// float velocity_x_m_s = 1;
+inline void SpeedBody::clear_velocity_x_m_s() {
+  velocity_x_m_s_ = 0;
+}
+inline float SpeedBody::velocity_x_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SpeedBody.velocity_x_m_s)
+  return velocity_x_m_s_;
+}
+inline void SpeedBody::set_velocity_x_m_s(float value) {
+  
+  velocity_x_m_s_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SpeedBody.velocity_x_m_s)
+}
+
+// float velocity_y_m_s = 2;
+inline void SpeedBody::clear_velocity_y_m_s() {
+  velocity_y_m_s_ = 0;
+}
+inline float SpeedBody::velocity_y_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SpeedBody.velocity_y_m_s)
+  return velocity_y_m_s_;
+}
+inline void SpeedBody::set_velocity_y_m_s(float value) {
+  
+  velocity_y_m_s_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SpeedBody.velocity_y_m_s)
+}
+
+// float velocity_z_m_s = 3;
+inline void SpeedBody::clear_velocity_z_m_s() {
+  velocity_z_m_s_ = 0;
+}
+inline float SpeedBody::velocity_z_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SpeedBody.velocity_z_m_s)
+  return velocity_z_m_s_;
+}
+inline void SpeedBody::set_velocity_z_m_s(float value) {
+  
+  velocity_z_m_s_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SpeedBody.velocity_z_m_s)
+}
+
+// -------------------------------------------------------------------
+
+// PositionXyz
+
+// float x = 4;
+inline void PositionXyz::clear_x() {
+  x_ = 0;
+}
+inline float PositionXyz::x() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.PositionXyz.x)
+  return x_;
+}
+inline void PositionXyz::set_x(float value) {
+  
+  x_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionXyz.x)
+}
+
+// float y = 5;
+inline void PositionXyz::clear_y() {
+  y_ = 0;
+}
+inline float PositionXyz::y() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.PositionXyz.y)
+  return y_;
+}
+inline void PositionXyz::set_y(float value) {
+  
+  y_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionXyz.y)
+}
+
+// float z = 6;
+inline void PositionXyz::clear_z() {
+  z_ = 0;
+}
+inline float PositionXyz::z() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.PositionXyz.z)
+  return z_;
+}
+inline void PositionXyz::set_z(float value) {
+  
+  z_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionXyz.z)
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

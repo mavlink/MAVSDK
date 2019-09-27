@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <array>
+#include <limits>
 
 #include "plugin_base.h"
 
@@ -332,6 +333,28 @@ public:
     };
 
     /**
+     * @brief Velocity type.
+     *
+     * The velocity of vehicle body in metres/second.
+     */
+    struct SpeedBody {
+        float x_m_s; /**< @brief Velocity in X in metres/second. */
+        float y_m_s; /**< @brief Velocity in Y in metres/second. */
+        float z_m_s; /**< @brief Velocity in Z in metres/second. */
+    };
+
+    /**
+     * @brief Position type.
+     *
+     * The position of vehicle body.
+     */
+    struct PositionXyz {
+        float x; /**< @brief  X Position. */
+        float y; /**< @brief  Y Position. */
+        float z; /**< @brief  Z Position. */
+    };
+
+    /**
      * @brief Odometry information with an external interface type.
      */
     struct Odometry {
@@ -355,17 +378,11 @@ public:
         MavFrame frame_id; /**< @brief Coordinate frame of reference for the pose data. */
         MavFrame child_frame_id; /**< @brief Coordinate frame of reference for the velocity in free
                                     space (twist) data. */
-        float x; /**< @brief X position. */
-        float y; /**< @brief Y position. */
-        float z; /**< @brief Z position. */
+        PositionXyz position; /**< @brief Position. */
         Quaternion q; /**< @brief Quaternion components, w, x, y, z
                          (1 0 0 0 is the null-rotation). */
-        float vx; /**< @brief X linear speed (m/s). */
-        float vy; /**< @brief Y linear speed (m/s). */
-        float vz; /**< @brief Z linear speed (m/s). */
-        float rollspeed; /**< @brief Roll angular speed (rad/s). */
-        float pitchspeed; /**< @brief Pitch angular speed (rad/s). */
-        float yawspeed; /**< @brief Yaw angular speed (rad/s). */
+        SpeedBody velocity_body; /**< @brief Linear speed (m/s). */
+        AngularVelocityBody angular_velocity_body; /**< @brief Angular body speed (rad/s). */
         std::array<float, 21> pose_covariance; /**< @brief Row-major representation of a 6x6 pose
                                                   cross-covariance matrix upper right triangle.
                                                   Leave empty if unknown. */
@@ -378,18 +395,12 @@ public:
             time_usec(0),
             frame_id(MavFrame::UNDEF),
             child_frame_id(MavFrame::UNDEF),
-            x(0.0f),
-            y(0.0f),
-            z(0.0f),
+            position{0.0f, 0.0f, 0.0f},
             q{0.0f},
-            vx(0.0f),
-            vy(0.0f),
-            vz(0.0f),
-            rollspeed(0.0f),
-            pitchspeed(0.0f),
-            yawspeed(0.0f),
-            pose_covariance{0.0f},
-            velocity_covariance{0.0f},
+            velocity_body{0.0f, 0.0f, 0.0f},
+            angular_velocity_body{0.0f, 0.0f, 0.0f},
+            pose_covariance{std::numeric_limits<float>::quiet_NaN()},
+            velocity_covariance{std::numeric_limits<float>::quiet_NaN()},
             reset_counter(0){};
     };
 
@@ -1331,6 +1342,13 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery);
 bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
 
 /**
+ * @brief NOT Equal operator to compare two `Telemetry::Quaternion` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
+
+/**
  * @brief Stream operator to print information about a `Telemetry::Quaternion`.
  *
  * @return A reference to the stream.
@@ -1357,6 +1375,14 @@ std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_a
  * @return `true` if items are equal.
  */
 bool operator==(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
+
+/**
+ * @brief NOT Equal operator to compare two `Telemetry::AngularVelocityBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(
     const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
 
 /**
@@ -1433,6 +1459,48 @@ bool operator==(
  */
 std::ostream&
 operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::PositionXyz` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::PositionXyz& lhs, const Telemetry::PositionXyz& rhs);
+
+/**
+ * @brief NOT Equal operator to compare two `Telemetry::PositionXyz` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(const Telemetry::PositionXyz& lhs, const Telemetry::PositionXyz& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::PositionXyz`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::PositionXyz const& position_xyz);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::SpeedBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs);
+
+/**
+ * @brief NOT Equal operator to compare two `Telemetry::SpeedBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::SpeedBody`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::SpeedBody const& speed_body);
 
 /**
  * @brief Equal operator to compare two `Telemetry::Odometry` objects.

@@ -218,6 +218,7 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::StatusTextResponse>> PrepareAsyncSubscribeStatusText(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::StatusTextResponse>>(PrepareAsyncSubscribeStatusTextRaw(context, request, cq));
     }
+    // Subscribe to 'actuator control target' updates.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>> SubscribeActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>>(SubscribeActuatorControlTargetRaw(context, request));
     }
@@ -227,6 +228,7 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>> PrepareAsyncSubscribeActuatorControlTarget(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>>(PrepareAsyncSubscribeActuatorControlTargetRaw(context, request, cq));
     }
+    // Subscribe to 'actuator output status' updates.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>> SubscribeActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>>(SubscribeActuatorOutputStatusRaw(context, request));
     }
@@ -236,6 +238,7 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>> PrepareAsyncSubscribeActuatorOutputStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>>(PrepareAsyncSubscribeActuatorOutputStatusRaw(context, request, cq));
     }
+    // Subscribe to 'odometry' updates.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::OdometryResponse>> SubscribeOdometry(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::OdometryResponse>>(SubscribeOdometryRaw(context, request));
     }
@@ -282,8 +285,11 @@ class TelemetryService final {
       virtual void SubscribeRcStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* reactor) = 0;
       // Subscribe to 'status text' updates.
       virtual void SubscribeStatusText(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* reactor) = 0;
+      // Subscribe to 'actuator control target' updates.
       virtual void SubscribeActuatorControlTarget(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* reactor) = 0;
+      // Subscribe to 'actuator output status' updates.
       virtual void SubscribeActuatorOutputStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* reactor) = 0;
+      // Subscribe to 'odometry' updates.
       virtual void SubscribeOdometry(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* reactor) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
@@ -687,8 +693,11 @@ class TelemetryService final {
     virtual ::grpc::Status SubscribeRcStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RcStatusResponse>* writer);
     // Subscribe to 'status text' updates.
     virtual ::grpc::Status SubscribeStatusText(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::StatusTextResponse>* writer);
+    // Subscribe to 'actuator control target' updates.
     virtual ::grpc::Status SubscribeActuatorControlTarget(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* writer);
+    // Subscribe to 'actuator output status' updates.
     virtual ::grpc::Status SubscribeActuatorOutputStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* writer);
+    // Subscribe to 'odometry' updates.
     virtual ::grpc::Status SubscribeOdometry(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::OdometryResponse>* writer);
   };
   template <class BaseClass>

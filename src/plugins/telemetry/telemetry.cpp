@@ -621,6 +621,11 @@ bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& r
     return lhs.w == rhs.w && lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
 }
 
+bool operator!=(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs)
+{
+    return !(lhs == rhs);
+}
+
 std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion)
 {
     return str << "[w: " << quaternion.w << ", x: " << quaternion.x << ", y: " << quaternion.y
@@ -644,6 +649,12 @@ bool operator==(
 {
     return lhs.roll_rad_s == rhs.roll_rad_s && lhs.pitch_rad_s == rhs.pitch_rad_s &&
            lhs.yaw_rad_s == rhs.yaw_rad_s;
+}
+
+bool operator!=(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs)
+{
+    return !(lhs == rhs);
 }
 
 std::ostream&
@@ -745,24 +756,51 @@ operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_ou
     return str;
 }
 
-bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs)
+bool operator==(const Telemetry::PositionXyz& lhs, const Telemetry::PositionXyz& rhs)
 {
-    // FixMe: Should we check time_usec, reset_counter and estimator_type equality?
-    if (lhs.time_usec != rhs.time_usec || lhs.frame_id != rhs.frame_id ||
-        lhs.child_frame_id != rhs.child_frame_id || lhs.reset_counter != rhs.reset_counter ||
+    return (
         std::abs(lhs.x - rhs.x) > std::numeric_limits<float>::epsilon() ||
         std::abs(lhs.y - rhs.y) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.z - rhs.z) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.vx - rhs.vx) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.vy - rhs.vy) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.vz - rhs.vz) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.rollspeed - rhs.rollspeed) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.pitchspeed - rhs.pitchspeed) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.yawspeed - rhs.yawspeed) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.q.w - rhs.q.w) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.q.x - rhs.q.x) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.q.y - rhs.q.y) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.q.z - rhs.q.z) > std::numeric_limits<float>::epsilon())
+        std::abs(lhs.z - rhs.z) > std::numeric_limits<float>::epsilon());
+}
+
+bool operator!=(const Telemetry::PositionXyz& lhs, const Telemetry::PositionXyz& rhs)
+{
+    return !(lhs == rhs);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::PositionXyz const& position_xyz)
+{
+    return str << "[x: " << position_xyz.x << ", y: " << position_xyz.y << ", z: " << position_xyz.z
+               << "]";
+}
+
+bool operator==(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs)
+{
+    return (
+        std::abs(lhs.x_m_s - rhs.x_m_s) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.y_m_s - rhs.y_m_s) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.z_m_s - rhs.z_m_s) > std::numeric_limits<float>::epsilon());
+}
+
+bool operator!=(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs)
+{
+    return !(lhs == rhs);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::SpeedBody const& speed_body)
+{
+    return str << "[x_m_s: " << speed_body.x_m_s << ", y_m_s: " << speed_body.y_m_s
+               << ", z_m_s: " << speed_body.z_m_s << "]";
+}
+
+bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs)
+{
+    // FixMe: Should we check time_usec, reset_counter equality?
+    if (lhs.time_usec != rhs.time_usec || lhs.frame_id != rhs.frame_id ||
+        lhs.child_frame_id != rhs.child_frame_id || lhs.reset_counter != rhs.reset_counter ||
+        lhs.position != rhs.position || lhs.q != rhs.q || lhs.velocity_body != rhs.velocity_body ||
+        lhs.angular_velocity_body != rhs.angular_velocity_body)
         return false;
 
     const bool lhs_pose_cov_nan = std::isnan(lhs.pose_covariance[0]);
@@ -801,10 +839,9 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
     str << "[time_usec: " << odometry.time_usec
         << ", frame_id: " << static_cast<int>(odometry.frame_id)
         << ", child_frame_id: " << static_cast<int>(odometry.child_frame_id);
-    str << ", x: " << odometry.x << ", y: " << odometry.y << ", z: " << odometry.z
-        << ", q: " << odometry.q;
-    str << ", rollspeed: " << odometry.rollspeed << ", pitchspeed: " << odometry.pitchspeed
-        << ", yawspeed: " << odometry.yawspeed;
+    str << ", position: " << odometry.position << ", q: " << odometry.q
+        << ", velocity_body: " << odometry.velocity_body
+        << ", angular_velocity_body: " << odometry.angular_velocity_body;
     str << ", pose_covariance: [";
     for (unsigned i = 0; i < 21; i++) {
         str << odometry.pose_covariance[i];

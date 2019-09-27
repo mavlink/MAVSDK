@@ -794,19 +794,19 @@ void TelemetryImpl::process_odometry(const mavlink_message_t& message)
     odometry.child_frame_id = static_cast<Telemetry::Odometry::MavFrame>(
         mavlink_msg_odometry_get_child_frame_id(&message));
 
-    odometry.x = mavlink_msg_odometry_get_x(&message);
-    odometry.y = mavlink_msg_odometry_get_y(&message);
-    odometry.z = mavlink_msg_odometry_get_z(&message);
+    odometry.position.x = mavlink_msg_odometry_get_x(&message);
+    odometry.position.y = mavlink_msg_odometry_get_y(&message);
+    odometry.position.z = mavlink_msg_odometry_get_z(&message);
 
     mavlink_msg_odometry_get_q(&message, odometry.q);
 
-    odometry.vx = mavlink_msg_odometry_get_vx(&message);
-    odometry.vy = mavlink_msg_odometry_get_vy(&message);
-    odometry.vz = mavlink_msg_odometry_get_vz(&message);
+    odometry.velocity_body.x_m_s = mavlink_msg_odometry_get_vx(&message);
+    odometry.velocity_body.y_m_s = mavlink_msg_odometry_get_vy(&message);
+    odometry.velocity_body.z_m_s = mavlink_msg_odometry_get_vz(&message);
 
-    odometry.rollspeed = mavlink_msg_odometry_get_rollspeed(&message);
-    odometry.pitchspeed = mavlink_msg_odometry_get_pitchspeed(&message);
-    odometry.yawspeed = mavlink_msg_odometry_get_yawspeed(&message);
+    odometry.angular_velocity_body.roll_rad_s = mavlink_msg_odometry_get_rollspeed(&message);
+    odometry.angular_velocity_body.pitch_rad_s = mavlink_msg_odometry_get_pitchspeed(&message);
+    odometry.angular_velocity_body.yaw_rad_s = mavlink_msg_odometry_get_yawspeed(&message);
 
     mavlink_msg_odometry_get_pose_covariance(&message, odometry.pose_covariance.data());
     mavlink_msg_odometry_get_velocity_covariance(&message, odometry.velocity_covariance.data());
