@@ -1,4 +1,4 @@
-find_package(JsonCpp CONFIG QUIET)
+find_package(jsoncpp CONFIG)
 if(JsonCpp_FOUND)
     message(STATUS "Found jsoncpp via config file: ${JsonCpp_DIR}")
     if(NOT JsonCpp_LIBRARY)
