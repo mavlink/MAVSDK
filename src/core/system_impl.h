@@ -18,15 +18,12 @@
 #include <mutex>
 #include <future>
 
-// TODO: Figure out what to do with systems without UUID.
-//#define ENABLE_FALLBACK_TO_SYSTEM_ID
-
 namespace mavsdk {
 
 class MavsdkImpl;
 class PluginImplBase;
 
-// This class is the pimpl of System. This is to hide the private methods
+// This class is the impl of System. This is to hide the private methods
 // and functionality from the public library API.
 class SystemImpl {
 public:
@@ -40,7 +37,8 @@ public:
         OFFBOARD,
     };
 
-    explicit SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t component_id);
+    explicit SystemImpl(
+        MavsdkImpl& parent, uint8_t system_id, uint8_t component_id, bool connected);
     ~SystemImpl();
 
     void process_mavlink_message(mavlink_message_t& message);
@@ -258,15 +256,13 @@ private:
 
     uint64_t _uuid{0};
 
-#if defined(ENABLE_FALLBACK_TO_SYSTEM_ID)
     int _uuid_retries = 0;
-    uint8_t _non_autopilot_heartbeats = 0;
-#endif
     std::atomic<bool> _uuid_initialized{false};
 
     bool _supports_mission_int{false};
     std::atomic<bool> _armed{false};
     std::atomic<bool> _hitl_enabled{false};
+    bool _always_connected{false};
 
     MavsdkImpl& _parent;
 

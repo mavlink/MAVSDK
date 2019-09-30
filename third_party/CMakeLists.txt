@@ -13,6 +13,7 @@ build_target(tinyxml2)
 if(NOT IOS)
 build_target(zlib)
 endif()
+
 build_target(curl)
 
 if(${BUILD_BACKEND})
