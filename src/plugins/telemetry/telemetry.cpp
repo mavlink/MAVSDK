@@ -756,23 +756,23 @@ operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_ou
     return str;
 }
 
-bool operator==(const Telemetry::PositionXyz& lhs, const Telemetry::PositionXyz& rhs)
+bool operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs)
 {
     return (
-        std::abs(lhs.x - rhs.x) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.y - rhs.y) > std::numeric_limits<float>::epsilon() ||
-        std::abs(lhs.z - rhs.z) > std::numeric_limits<float>::epsilon());
+        std::abs(lhs.x_m - rhs.x_m) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.y_m - rhs.y_m) > std::numeric_limits<float>::epsilon() ||
+        std::abs(lhs.z_m - rhs.z_m) > std::numeric_limits<float>::epsilon());
 }
 
-bool operator!=(const Telemetry::PositionXyz& lhs, const Telemetry::PositionXyz& rhs)
+bool operator!=(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs)
 {
     return !(lhs == rhs);
 }
 
-std::ostream& operator<<(std::ostream& str, Telemetry::PositionXyz const& position_xyz)
+std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body)
 {
-    return str << "[x: " << position_xyz.x << ", y: " << position_xyz.y << ", z: " << position_xyz.z
-               << "]";
+    return str << "[x_m: " << position_body.x_m << ", y_m: " << position_body.y_m
+               << ", z_m: " << position_body.z_m << "]";
 }
 
 bool operator==(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs)
@@ -799,7 +799,8 @@ bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs)
     // FixMe: Should we check time_usec, reset_counter equality?
     if (lhs.time_usec != rhs.time_usec || lhs.frame_id != rhs.frame_id ||
         lhs.child_frame_id != rhs.child_frame_id || lhs.reset_counter != rhs.reset_counter ||
-        lhs.position != rhs.position || lhs.q != rhs.q || lhs.velocity_body != rhs.velocity_body ||
+        lhs.position_body != rhs.position_body || lhs.q != rhs.q ||
+        lhs.velocity_body != rhs.velocity_body ||
         lhs.angular_velocity_body != rhs.angular_velocity_body)
         return false;
 
@@ -839,7 +840,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
     str << "[time_usec: " << odometry.time_usec
         << ", frame_id: " << static_cast<int>(odometry.frame_id)
         << ", child_frame_id: " << static_cast<int>(odometry.child_frame_id);
-    str << ", position: " << odometry.position << ", q: " << odometry.q
+    str << ", position_body: " << odometry.position_body << ", q: " << odometry.q
         << ", velocity_body: " << odometry.velocity_body
         << ", angular_velocity_body: " << odometry.angular_velocity_body;
     str << ", pose_covariance: [";

@@ -535,15 +535,12 @@ public:
             default:
             case mavsdk::Telemetry::Odometry::MavFrame::UNDEF:
                 return mavsdk::rpc::telemetry::Odometry::MavFrame::Odometry_MavFrame_UNDEF;
-            case mavsdk::Telemetry::Odometry::MavFrame::MAV_FRAME_BODY_NED:
-                return mavsdk::rpc::telemetry::Odometry::MavFrame::
-                    Odometry_MavFrame_MAV_FRAME_BODY_NED;
-            case mavsdk::Telemetry::Odometry::MavFrame::MAV_FRAME_VISION_NED:
-                return mavsdk::rpc::telemetry::Odometry::MavFrame::
-                    Odometry_MavFrame_MAV_FRAME_VISION_NED;
-            case mavsdk::Telemetry::Odometry::MavFrame::MAV_FRAME_ESTIM_NED:
-                return mavsdk::rpc::telemetry::Odometry::MavFrame::
-                    Odometry_MavFrame_MAV_FRAME_ESTIM_NED;
+            case mavsdk::Telemetry::Odometry::MavFrame::BODY_NED:
+                return mavsdk::rpc::telemetry::Odometry::MavFrame::Odometry_MavFrame_BODY_NED;
+            case mavsdk::Telemetry::Odometry::MavFrame::VISION_NED:
+                return mavsdk::rpc::telemetry::Odometry::MavFrame::Odometry_MavFrame_VISION_NED;
+            case mavsdk::Telemetry::Odometry::MavFrame::ESTIM_NED:
+                return mavsdk::rpc::telemetry::Odometry::MavFrame::Odometry_MavFrame_ESTIM_NED;
         }
     }
 
@@ -562,11 +559,11 @@ public:
             rpc_odometry->set_frame_id(translateFrameId(odometry.frame_id));
             rpc_odometry->set_child_frame_id(translateFrameId(odometry.child_frame_id));
 
-            auto rpc_position = new mavsdk::rpc::telemetry::PositionXyz();
-            rpc_position->set_x(odometry.position.x);
-            rpc_position->set_y(odometry.position.y);
-            rpc_position->set_z(odometry.position.z);
-            rpc_odometry->set_allocated_position(rpc_position);
+            auto rpc_position_body = new mavsdk::rpc::telemetry::PositionBody();
+            rpc_position_body->set_x_m(odometry.position_body.x_m);
+            rpc_position_body->set_y_m(odometry.position_body.y_m);
+            rpc_position_body->set_z_m(odometry.position_body.z_m);
+            rpc_odometry->set_allocated_position_body(rpc_position_body);
 
             auto rpc_q = new mavsdk::rpc::telemetry::Quaternion();
             rpc_q->set_w(odometry.q.w);

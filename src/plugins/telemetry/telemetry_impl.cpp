@@ -794,9 +794,9 @@ void TelemetryImpl::process_odometry(const mavlink_message_t& message)
     odometry.child_frame_id = static_cast<Telemetry::Odometry::MavFrame>(
         mavlink_msg_odometry_get_child_frame_id(&message));
 
-    odometry.position.x = mavlink_msg_odometry_get_x(&message);
-    odometry.position.y = mavlink_msg_odometry_get_y(&message);
-    odometry.position.z = mavlink_msg_odometry_get_z(&message);
+    odometry.position_body.x_m = mavlink_msg_odometry_get_x(&message);
+    odometry.position_body.y_m = mavlink_msg_odometry_get_y(&message);
+    odometry.position_body.z_m = mavlink_msg_odometry_get_z(&message);
 
     mavlink_msg_odometry_get_q(&message, odometry.q);
 

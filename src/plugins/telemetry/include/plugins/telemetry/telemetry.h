@@ -348,10 +348,10 @@ public:
      *
      * The position of vehicle body.
      */
-    struct PositionXyz {
-        float x; /**< @brief  X Position. */
-        float y; /**< @brief  Y Position. */
-        float z; /**< @brief  Z Position. */
+    struct PositionBody {
+        float x_m; /**< @brief  X Position in metres. */
+        float y_m; /**< @brief  Y Position in metres. */
+        float z_m; /**< @brief  Z Position in metres. */
     };
 
     /**
@@ -363,22 +363,22 @@ public:
          */
         enum class MavFrame {
             UNDEF = 0, /**< @brief Stub */
-            MAV_FRAME_BODY_NED = 8, /**< @brief Setpoint in body NED frame.
-                                       This makes sense if all position control is externalized -
-                                       e.g. useful to command 2 m/s^2 acceleration to the right. */
-            MAV_FRAME_VISION_NED = 16, /**< @brief Odometry local coordinate frame of data
-                                          given by a vision estimation system, Z-down (x: north,
-                                          y: east, z: down). */
-            MAV_FRAME_ESTIM_NED = 18, /**< @brief Odometry local coordinate frame of data given
-                                         by an estimator running onboard the vehicle, Z-down
-                                         (x: north, y: east, z: down). */
+            BODY_NED = 8, /**< @brief Setpoint in body NED frame.
+                             This makes sense if all position control is externalized -
+                             e.g. useful to command 2 m/s^2 acceleration to the right. */
+            VISION_NED = 16, /**< @brief Odometry local coordinate frame of data
+                                given by a vision estimation system, Z-down (x: north,
+                                y: east, z: down). */
+            ESTIM_NED = 18, /**< @brief Odometry local coordinate frame of data given
+                               by an estimator running onboard the vehicle, Z-down
+                               (x: north, y: east, z: down). */
         };
 
         uint64_t time_usec; /**< @brief Timestamp (0 to use Backend timestamp). */
         MavFrame frame_id; /**< @brief Coordinate frame of reference for the pose data. */
         MavFrame child_frame_id; /**< @brief Coordinate frame of reference for the velocity in free
                                     space (twist) data. */
-        PositionXyz position; /**< @brief Position. */
+        PositionBody position_body; /**< @brief Position. */
         Quaternion q; /**< @brief Quaternion components, w, x, y, z
                          (1 0 0 0 is the null-rotation). */
         SpeedBody velocity_body; /**< @brief Linear speed (m/s). */
@@ -395,7 +395,7 @@ public:
             time_usec(0),
             frame_id(MavFrame::UNDEF),
             child_frame_id(MavFrame::UNDEF),
-            position{0.0f, 0.0f, 0.0f},
+            position_body{0.0f, 0.0f, 0.0f},
             q{0.0f},
             velocity_body{0.0f, 0.0f, 0.0f},
             angular_velocity_body{0.0f, 0.0f, 0.0f},
@@ -1461,25 +1461,25 @@ std::ostream&
 operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status);
 
 /**
- * @brief Equal operator to compare two `Telemetry::PositionXyz` objects.
+ * @brief Equal operator to compare two `Telemetry::PositionBody` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator==(const Telemetry::PositionXyz& lhs, const Telemetry::PositionXyz& rhs);
+bool operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs);
 
 /**
- * @brief NOT Equal operator to compare two `Telemetry::PositionXyz` objects.
+ * @brief NOT Equal operator to compare two `Telemetry::PositionBody` objects.
  *
  * @return `true` if items are equal.
  */
-bool operator!=(const Telemetry::PositionXyz& lhs, const Telemetry::PositionXyz& rhs);
+bool operator!=(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs);
 
 /**
- * @brief Stream operator to print information about a `Telemetry::PositionXyz`.
+ * @brief Stream operator to print information about a `Telemetry::PositionBody`.
  *
  * @returns A reference to the stream.
  */
-std::ostream& operator<<(std::ostream& str, Telemetry::PositionXyz const& position_xyz);
+std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body);
 
 /**
  * @brief Equal operator to compare two `Telemetry::SpeedBody` objects.

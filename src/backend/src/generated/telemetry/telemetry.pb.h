@@ -139,12 +139,12 @@ extern OdometryResponseDefaultTypeInternal _OdometryResponse_default_instance_;
 class Position;
 class PositionDefaultTypeInternal;
 extern PositionDefaultTypeInternal _Position_default_instance_;
+class PositionBody;
+class PositionBodyDefaultTypeInternal;
+extern PositionBodyDefaultTypeInternal _PositionBody_default_instance_;
 class PositionResponse;
 class PositionResponseDefaultTypeInternal;
 extern PositionResponseDefaultTypeInternal _PositionResponse_default_instance_;
-class PositionXyz;
-class PositionXyzDefaultTypeInternal;
-extern PositionXyzDefaultTypeInternal _PositionXyz_default_instance_;
 class Quaternion;
 class QuaternionDefaultTypeInternal;
 extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
@@ -257,8 +257,8 @@ template<> ::mavsdk::rpc::telemetry::LandedStateResponse* Arena::CreateMaybeMess
 template<> ::mavsdk::rpc::telemetry::Odometry* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Odometry>(Arena*);
 template<> ::mavsdk::rpc::telemetry::OdometryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::OdometryResponse>(Arena*);
 template<> ::mavsdk::rpc::telemetry::Position* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Position>(Arena*);
+template<> ::mavsdk::rpc::telemetry::PositionBody* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionBody>(Arena*);
 template<> ::mavsdk::rpc::telemetry::PositionResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionResponse>(Arena*);
-template<> ::mavsdk::rpc::telemetry::PositionXyz* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionXyz>(Arena*);
 template<> ::mavsdk::rpc::telemetry::Quaternion* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::Quaternion>(Arena*);
 template<> ::mavsdk::rpc::telemetry::RcStatus* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::RcStatus>(Arena*);
 template<> ::mavsdk::rpc::telemetry::RcStatusResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::telemetry::RcStatusResponse>(Arena*);
@@ -319,15 +319,15 @@ inline bool StatusText_StatusType_Parse(
 }
 enum Odometry_MavFrame : int {
   Odometry_MavFrame_UNDEF = 0,
-  Odometry_MavFrame_MAV_FRAME_BODY_NED = 8,
-  Odometry_MavFrame_MAV_FRAME_VISION_NED = 16,
-  Odometry_MavFrame_MAV_FRAME_ESTIM_NED = 18,
+  Odometry_MavFrame_BODY_NED = 8,
+  Odometry_MavFrame_VISION_NED = 16,
+  Odometry_MavFrame_ESTIM_NED = 18,
   Odometry_MavFrame_Odometry_MavFrame_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   Odometry_MavFrame_Odometry_MavFrame_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool Odometry_MavFrame_IsValid(int value);
 constexpr Odometry_MavFrame Odometry_MavFrame_MavFrame_MIN = Odometry_MavFrame_UNDEF;
-constexpr Odometry_MavFrame Odometry_MavFrame_MavFrame_MAX = Odometry_MavFrame_MAV_FRAME_ESTIM_NED;
+constexpr Odometry_MavFrame Odometry_MavFrame_MavFrame_MAX = Odometry_MavFrame_ESTIM_NED;
 constexpr int Odometry_MavFrame_MavFrame_ARRAYSIZE = Odometry_MavFrame_MavFrame_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Odometry_MavFrame_descriptor();
@@ -7403,12 +7403,12 @@ class Odometry :
   typedef Odometry_MavFrame MavFrame;
   static constexpr MavFrame UNDEF =
     Odometry_MavFrame_UNDEF;
-  static constexpr MavFrame MAV_FRAME_BODY_NED =
-    Odometry_MavFrame_MAV_FRAME_BODY_NED;
-  static constexpr MavFrame MAV_FRAME_VISION_NED =
-    Odometry_MavFrame_MAV_FRAME_VISION_NED;
-  static constexpr MavFrame MAV_FRAME_ESTIM_NED =
-    Odometry_MavFrame_MAV_FRAME_ESTIM_NED;
+  static constexpr MavFrame BODY_NED =
+    Odometry_MavFrame_BODY_NED;
+  static constexpr MavFrame VISION_NED =
+    Odometry_MavFrame_VISION_NED;
+  static constexpr MavFrame ESTIM_NED =
+    Odometry_MavFrame_ESTIM_NED;
   static inline bool MavFrame_IsValid(int value) {
     return Odometry_MavFrame_IsValid(value);
   }
@@ -7437,7 +7437,7 @@ class Odometry :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPositionFieldNumber = 4,
+    kPositionBodyFieldNumber = 4,
     kQFieldNumber = 5,
     kSpeedBodyFieldNumber = 6,
     kAngularVelocityBodyFieldNumber = 7,
@@ -7447,16 +7447,16 @@ class Odometry :
     kFrameIdFieldNumber = 2,
     kChildFrameIdFieldNumber = 3,
   };
-  // .mavsdk.rpc.telemetry.PositionXyz position = 4;
-  bool has_position() const;
+  // .mavsdk.rpc.telemetry.PositionBody position_body = 4;
+  bool has_position_body() const;
   private:
-  bool _internal_has_position() const;
+  bool _internal_has_position_body() const;
   public:
-  void clear_position();
-  const ::mavsdk::rpc::telemetry::PositionXyz& position() const;
-  ::mavsdk::rpc::telemetry::PositionXyz* release_position();
-  ::mavsdk::rpc::telemetry::PositionXyz* mutable_position();
-  void set_allocated_position(::mavsdk::rpc::telemetry::PositionXyz* position);
+  void clear_position_body();
+  const ::mavsdk::rpc::telemetry::PositionBody& position_body() const;
+  ::mavsdk::rpc::telemetry::PositionBody* release_position_body();
+  ::mavsdk::rpc::telemetry::PositionBody* mutable_position_body();
+  void set_allocated_position_body(::mavsdk::rpc::telemetry::PositionBody* position_body);
 
   // .mavsdk.rpc.telemetry.Quaternion q = 5;
   bool has_q() const;
@@ -7533,7 +7533,7 @@ class Odometry :
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  ::mavsdk::rpc::telemetry::PositionXyz* position_;
+  ::mavsdk::rpc::telemetry::PositionBody* position_body_;
   ::mavsdk::rpc::telemetry::Quaternion* q_;
   ::mavsdk::rpc::telemetry::SpeedBody* speed_body_;
   ::mavsdk::rpc::telemetry::AngularVelocityBody* angular_velocity_body_;
@@ -7826,23 +7826,23 @@ class SpeedBody :
 };
 // -------------------------------------------------------------------
 
-class PositionXyz :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.PositionXyz) */ {
+class PositionBody :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.PositionBody) */ {
  public:
-  PositionXyz();
-  virtual ~PositionXyz();
+  PositionBody();
+  virtual ~PositionBody();
 
-  PositionXyz(const PositionXyz& from);
-  PositionXyz(PositionXyz&& from) noexcept
-    : PositionXyz() {
+  PositionBody(const PositionBody& from);
+  PositionBody(PositionBody&& from) noexcept
+    : PositionBody() {
     *this = ::std::move(from);
   }
 
-  inline PositionXyz& operator=(const PositionXyz& from) {
+  inline PositionBody& operator=(const PositionBody& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PositionXyz& operator=(PositionXyz&& from) noexcept {
+  inline PositionBody& operator=(PositionBody&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -7860,37 +7860,37 @@ class PositionXyz :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const PositionXyz& default_instance();
+  static const PositionBody& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const PositionXyz* internal_default_instance() {
-    return reinterpret_cast<const PositionXyz*>(
-               &_PositionXyz_default_instance_);
+  static inline const PositionBody* internal_default_instance() {
+    return reinterpret_cast<const PositionBody*>(
+               &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     55;
 
-  friend void swap(PositionXyz& a, PositionXyz& b) {
+  friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
   }
-  inline void Swap(PositionXyz* other) {
+  inline void Swap(PositionBody* other) {
     if (other == this) return;
     InternalSwap(other);
   }
 
   // implements Message ----------------------------------------------
 
-  inline PositionXyz* New() const final {
-    return CreateMaybeMessage<PositionXyz>(nullptr);
+  inline PositionBody* New() const final {
+    return CreateMaybeMessage<PositionBody>(nullptr);
   }
 
-  PositionXyz* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<PositionXyz>(arena);
+  PositionBody* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PositionBody>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const PositionXyz& from);
-  void MergeFrom(const PositionXyz& from);
+  void CopyFrom(const PositionBody& from);
+  void MergeFrom(const PositionBody& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -7909,10 +7909,10 @@ class PositionXyz :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(PositionXyz* other);
+  void InternalSwap(PositionBody* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "mavsdk.rpc.telemetry.PositionXyz";
+    return "mavsdk.rpc.telemetry.PositionBody";
   }
   private:
   inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
@@ -7937,33 +7937,33 @@ class PositionXyz :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kZFieldNumber = 6,
-    kXFieldNumber = 4,
-    kYFieldNumber = 5,
+    kXMFieldNumber = 1,
+    kYMFieldNumber = 2,
+    kZMFieldNumber = 3,
   };
-  // float z = 6;
-  void clear_z();
-  float z() const;
-  void set_z(float value);
+  // float x_m = 1;
+  void clear_x_m();
+  float x_m() const;
+  void set_x_m(float value);
 
-  // float x = 4;
-  void clear_x();
-  float x() const;
-  void set_x(float value);
+  // float y_m = 2;
+  void clear_y_m();
+  float y_m() const;
+  void set_y_m(float value);
 
-  // float y = 5;
-  void clear_y();
-  float y() const;
-  void set_y(float value);
+  // float z_m = 3;
+  void clear_z_m();
+  float z_m() const;
+  void set_z_m(float value);
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.PositionXyz)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.PositionBody)
  private:
   class _Internal;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
-  float z_;
-  float x_;
-  float y_;
+  float x_m_;
+  float y_m_;
+  float z_m_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
@@ -9696,55 +9696,55 @@ inline void Odometry::set_child_frame_id(::mavsdk::rpc::telemetry::Odometry_MavF
   // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Odometry.child_frame_id)
 }
 
-// .mavsdk.rpc.telemetry.PositionXyz position = 4;
-inline bool Odometry::has_position() const {
-  return this != internal_default_instance() && position_ != nullptr;
+// .mavsdk.rpc.telemetry.PositionBody position_body = 4;
+inline bool Odometry::has_position_body() const {
+  return this != internal_default_instance() && position_body_ != nullptr;
 }
-inline void Odometry::clear_position() {
-  if (GetArenaNoVirtual() == nullptr && position_ != nullptr) {
-    delete position_;
+inline void Odometry::clear_position_body() {
+  if (GetArenaNoVirtual() == nullptr && position_body_ != nullptr) {
+    delete position_body_;
   }
-  position_ = nullptr;
+  position_body_ = nullptr;
 }
-inline const ::mavsdk::rpc::telemetry::PositionXyz& Odometry::position() const {
-  const ::mavsdk::rpc::telemetry::PositionXyz* p = position_;
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.position)
-  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::PositionXyz*>(
-      &::mavsdk::rpc::telemetry::_PositionXyz_default_instance_);
+inline const ::mavsdk::rpc::telemetry::PositionBody& Odometry::position_body() const {
+  const ::mavsdk::rpc::telemetry::PositionBody* p = position_body_;
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Odometry.position_body)
+  return p != nullptr ? *p : *reinterpret_cast<const ::mavsdk::rpc::telemetry::PositionBody*>(
+      &::mavsdk::rpc::telemetry::_PositionBody_default_instance_);
 }
-inline ::mavsdk::rpc::telemetry::PositionXyz* Odometry::release_position() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.Odometry.position)
+inline ::mavsdk::rpc::telemetry::PositionBody* Odometry::release_position_body() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.Odometry.position_body)
   
-  ::mavsdk::rpc::telemetry::PositionXyz* temp = position_;
-  position_ = nullptr;
+  ::mavsdk::rpc::telemetry::PositionBody* temp = position_body_;
+  position_body_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::telemetry::PositionXyz* Odometry::mutable_position() {
+inline ::mavsdk::rpc::telemetry::PositionBody* Odometry::mutable_position_body() {
   
-  if (position_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionXyz>(GetArenaNoVirtual());
-    position_ = p;
+  if (position_body_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::PositionBody>(GetArenaNoVirtual());
+    position_body_ = p;
   }
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.Odometry.position)
-  return position_;
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.Odometry.position_body)
+  return position_body_;
 }
-inline void Odometry::set_allocated_position(::mavsdk::rpc::telemetry::PositionXyz* position) {
+inline void Odometry::set_allocated_position_body(::mavsdk::rpc::telemetry::PositionBody* position_body) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == nullptr) {
-    delete position_;
+    delete position_body_;
   }
-  if (position) {
+  if (position_body) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
     if (message_arena != submessage_arena) {
-      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, position, submessage_arena);
+      position_body = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, position_body, submessage_arena);
     }
     
   } else {
     
   }
-  position_ = position;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.Odometry.position)
+  position_body_ = position_body;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.Odometry.position_body)
 }
 
 // .mavsdk.rpc.telemetry.Quaternion q = 5;
@@ -10084,48 +10084,48 @@ inline void SpeedBody::set_velocity_z_m_s(float value) {
 
 // -------------------------------------------------------------------
 
-// PositionXyz
+// PositionBody
 
-// float x = 4;
-inline void PositionXyz::clear_x() {
-  x_ = 0;
+// float x_m = 1;
+inline void PositionBody::clear_x_m() {
+  x_m_ = 0;
 }
-inline float PositionXyz::x() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.PositionXyz.x)
-  return x_;
+inline float PositionBody::x_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.PositionBody.x_m)
+  return x_m_;
 }
-inline void PositionXyz::set_x(float value) {
+inline void PositionBody::set_x_m(float value) {
   
-  x_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionXyz.x)
-}
-
-// float y = 5;
-inline void PositionXyz::clear_y() {
-  y_ = 0;
-}
-inline float PositionXyz::y() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.PositionXyz.y)
-  return y_;
-}
-inline void PositionXyz::set_y(float value) {
-  
-  y_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionXyz.y)
+  x_m_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionBody.x_m)
 }
 
-// float z = 6;
-inline void PositionXyz::clear_z() {
-  z_ = 0;
+// float y_m = 2;
+inline void PositionBody::clear_y_m() {
+  y_m_ = 0;
 }
-inline float PositionXyz::z() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.PositionXyz.z)
-  return z_;
+inline float PositionBody::y_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.PositionBody.y_m)
+  return y_m_;
 }
-inline void PositionXyz::set_z(float value) {
+inline void PositionBody::set_y_m(float value) {
   
-  z_ = value;
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionXyz.z)
+  y_m_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionBody.y_m)
+}
+
+// float z_m = 3;
+inline void PositionBody::clear_z_m() {
+  z_m_ = 0;
+}
+inline float PositionBody::z_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.PositionBody.z_m)
+  return z_m_;
+}
+inline void PositionBody::set_z_m(float value) {
+  
+  z_m_ = value;
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.PositionBody.z_m)
 }
 
 #ifdef __GNUC__
