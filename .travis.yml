@@ -10,19 +10,6 @@ matrix:
       env:
       - MATRIX_EVAL="BUILD_TARGET=coverage_build && SUPERBUILD=ON"
     - os: linux
-      name: "ubuntu 16.04 (non-superbuild)"
-      dist: xenial
-      sudo: false
-      compiler: gcc
-      env:
-      - MATRIX_EVAL="BUILD_TARGET=gcc_build && SUPERBUILD=OFF"
-      addons:
-        apt:
-          packages:
-          - libjsoncpp-dev
-          - libcurl4-openssl-dev
-          - libtinyxml2-dev
-    - os: linux
       name: "ubuntu 18.04 (superbuild)"
       dist: bionic
       sudo: false
