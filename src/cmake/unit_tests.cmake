@@ -16,6 +16,7 @@ target_link_libraries(unit_tests_runner
     mavsdk_mission
     mavsdk_camera
     mavsdk_calibration
+    mavsdk_telemetry
     CURL::libcurl
     tinyxml2::tinyxml2
     gtest
