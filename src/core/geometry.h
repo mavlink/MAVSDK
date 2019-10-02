@@ -14,14 +14,20 @@ namespace geometry {
  */
 class CoordinateTransformation {
 public:
+    /**
+     * @brief Type for global coordinate in latitude/longitude in degrees.
+     */
     struct GlobalCoordinate {
-        double latitude_deg;
-        double longitude_deg;
+        double latitude_deg; /**< @brief Latitude in degrees. */
+        double longitude_deg; /**< @brief Longitude in degrees. */
     };
 
+    /**
+     * @brief Type for local coordinate relative to reference in meters.
+     */
     struct LocalCoordinate {
-        double north_m;
-        double east_m;
+        double north_m; /**< @brief Position in North direction in meters. */
+        double east_m; /**< @brief Position in East direction in meters. */
     };
 
     /**
