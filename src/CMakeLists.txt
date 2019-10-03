@@ -28,7 +28,9 @@ option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
 
 include(cmake/compiler_flags.cmake)
 
-find_package(CURL REQUIRED CONFIG)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+
+find_package(CURL REQUIRED)
 find_package(tinyxml2 REQUIRED)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
@@ -55,9 +57,7 @@ execute_process(
 )
 
 STRING(REGEX REPLACE v\([0-9]+.[0-9]+.[0-9]+.*$\) \\1 VERSION_STR "${VERSION_STR}")
-
 message(STATUS "Version: ${VERSION_STR}")
-add_definitions(-DDRONECODE_SDK_VERSION="${VERSION_STR}")
 
 add_subdirectory(core)
 add_subdirectory(plugins)

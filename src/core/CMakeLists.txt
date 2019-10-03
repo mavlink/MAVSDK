@@ -28,11 +28,11 @@ add_library(mavsdk
     log.cpp
     cli_arg.cpp
     thread_pool.cpp
+    geometry.cpp
 )
 
 target_link_libraries(mavsdk
     PRIVATE
-    tinyxml2::tinyxml2
     CURL::libcurl
     ${CMAKE_THREAD_LIBS_INIT}
 )
@@ -83,6 +83,7 @@ install(FILES
     system.h
     mavsdk.h
     plugin_base.h
+    geometry.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 
@@ -100,5 +101,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/core/locked_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/core/thread_pool_test.cpp
     ${PROJECT_SOURCE_DIR}/core/mavsdk_test.cpp
+    ${PROJECT_SOURCE_DIR}/core/geometry_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

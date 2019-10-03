@@ -1,0 +1,74 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ddcc165..65bd6e2 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -148,6 +148,7 @@ ENDIF()
+ 
+ IF(JSONCPP_WITH_CMAKE_PACKAGE)
+         INSTALL(EXPORT jsoncpp
++                NAMESPACE JsonCpp::
+                 DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/jsoncpp
+                 FILE        jsoncppConfig.cmake)
+ ENDIF()
+diff --git a/src/lib_json/CMakeLists.txt b/src/lib_json/CMakeLists.txt
+index 9730e9a..09f7d22 100644
+--- a/src/lib_json/CMakeLists.txt
++++ b/src/lib_json/CMakeLists.txt
+@@ -69,23 +69,23 @@ ENDIF()
+ 
+ IF(BUILD_SHARED_LIBS)
+     ADD_DEFINITIONS( -DJSON_DLL_BUILD )
+-    ADD_LIBRARY(jsoncpp_lib SHARED ${PUBLIC_HEADERS} ${jsoncpp_sources})
+-    SET_TARGET_PROPERTIES( jsoncpp_lib PROPERTIES VERSION ${JSONCPP_VERSION} SOVERSION ${JSONCPP_SOVERSION})
+-    SET_TARGET_PROPERTIES( jsoncpp_lib PROPERTIES OUTPUT_NAME jsoncpp
++    ADD_LIBRARY(jsoncpp SHARED ${PUBLIC_HEADERS} ${jsoncpp_sources})
++    SET_TARGET_PROPERTIES( jsoncpp PROPERTIES VERSION ${JSONCPP_VERSION} SOVERSION ${JSONCPP_SOVERSION})
++    SET_TARGET_PROPERTIES( jsoncpp PROPERTIES OUTPUT_NAME jsoncpp
+                            DEBUG_OUTPUT_NAME jsoncpp${DEBUG_LIBNAME_SUFFIX} )
+ 
+     # Set library's runtime search path on OSX
+     IF(APPLE)
+-        SET_TARGET_PROPERTIES( jsoncpp_lib PROPERTIES INSTALL_RPATH "@loader_path/." )
++        SET_TARGET_PROPERTIES( jsoncpp PROPERTIES INSTALL_RPATH "@loader_path/." )
+     ENDIF()
+ 
+-    INSTALL( TARGETS jsoncpp_lib ${INSTALL_EXPORT}
++    INSTALL( TARGETS jsoncpp ${INSTALL_EXPORT}
+              RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+              LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+              ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+ 
+     IF(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
+-        TARGET_INCLUDE_DIRECTORIES( jsoncpp_lib PUBLIC
++        TARGET_INCLUDE_DIRECTORIES( jsoncpp PUBLIC
+                                    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+                                    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/${JSONCPP_INCLUDE_DIR}>)
+     ENDIF()
+@@ -93,22 +93,22 @@ IF(BUILD_SHARED_LIBS)
+ ENDIF()
+ 
+ IF(BUILD_STATIC_LIBS)
+-    ADD_LIBRARY(jsoncpp_lib_static STATIC ${PUBLIC_HEADERS} ${jsoncpp_sources})
+-    SET_TARGET_PROPERTIES( jsoncpp_lib_static PROPERTIES VERSION ${JSONCPP_VERSION} SOVERSION ${JSONCPP_SOVERSION})
++    ADD_LIBRARY(jsoncpp STATIC ${PUBLIC_HEADERS} ${jsoncpp_sources})
++    SET_TARGET_PROPERTIES( jsoncpp PROPERTIES VERSION ${JSONCPP_VERSION} SOVERSION ${JSONCPP_SOVERSION})
+     # avoid name clashes on windows as the shared import lib is also named jsoncpp.lib
+     if (NOT DEFINED STATIC_SUFFIX AND BUILD_SHARED_LIBS)
+       set (STATIC_SUFFIX "_static")
+     endif ()
+-    set_target_properties (jsoncpp_lib_static PROPERTIES OUTPUT_NAME jsoncpp${STATIC_SUFFIX}
++    set_target_properties (jsoncpp PROPERTIES OUTPUT_NAME jsoncpp${STATIC_SUFFIX}
+                                                          DEBUG_OUTPUT_NAME jsoncpp${STATIC_SUFFIX}${DEBUG_LIBNAME_SUFFIX})
+ 
+-    INSTALL( TARGETS jsoncpp_lib_static ${INSTALL_EXPORT}
++    INSTALL( TARGETS jsoncpp ${INSTALL_EXPORT}
+              RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+              LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+              ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+ 
+     IF(NOT CMAKE_VERSION VERSION_LESS 2.8.11)
+-        TARGET_INCLUDE_DIRECTORIES( jsoncpp_lib_static PUBLIC
++        TARGET_INCLUDE_DIRECTORIES( jsoncpp PUBLIC
+                                 $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+                                 $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/${JSONCPP_INCLUDE_DIR}>
+                                 )

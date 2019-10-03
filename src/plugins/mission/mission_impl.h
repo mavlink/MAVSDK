@@ -1,6 +1,6 @@
 #pragma once
 
-#include <json11.hpp>
+#include <json/json.h>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -9,8 +9,6 @@
 #include "plugins/mission/mission.h"
 #include "plugin_impl_base.h"
 #include "system.h"
-
-using namespace json11;
 
 namespace mavsdk {
 
@@ -92,8 +90,9 @@ private:
 
     void reset_mission_progress();
 
-    static Mission::Result
-    import_mission_items(Mission::mission_items_t& mission_items, const Json& mission_json);
+    static Mission::Result import_mission_items(
+        Mission::mission_items_t& all_mission_items, const Json::Value& qgc_plan_json);
+
     static Mission::Result build_mission_items(
         MAV_CMD command,
         std::vector<double> params,
