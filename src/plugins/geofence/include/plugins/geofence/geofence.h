@@ -38,13 +38,13 @@ public:
      * @brief Possible results returned for geofence requests.
      */
     enum class Result {
-        SUCCESS = 0, /**< @brief %Request succeeded. */
+        UNKNOWN = 0, /**< @brief %Unknown result. */
+        SUCCESS, /**< @brief %Request succeeded. */
         ERROR, /**< @brief Error. */
         TOO_MANY_GEOFENCE_ITEMS, /**< @brief Too many Polygon objects in the geofence. */
         BUSY, /**< @brief %Vehicle busy. */
         TIMEOUT, /**< @brief Request timed out. */
         INVALID_ARGUMENT, /**< @brief Invalid argument. */
-        UNKNOWN /**< @brief %Request succeeded. */
     };
 
     /**
