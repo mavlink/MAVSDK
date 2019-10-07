@@ -24,6 +24,8 @@
 #include "param/param_service_impl.h"
 #include "plugins/offboard/offboard.h"
 #include "offboard/offboard_service_impl.h"
+#include "plugins/mocap/mocap.h"
+#include "mocap/mocap_service_impl.h"
 
 namespace mavsdk {
 namespace backend {
@@ -52,7 +54,9 @@ public:
         _info(_dc.system()),
         _info_service(_info),
         _param(_dc.system()),
-        _param_service(_param)
+        _param_service(_param),
+        _mocap(_dc.system()),
+        _mocap_service(_mocap)
     {}
 
     void run();
@@ -84,6 +88,8 @@ private:
     InfoServiceImpl<> _info_service;
     Param _param;
     ParamServiceImpl<> _param_service;
+    Mocap _mocap;
+    MocapServiceImpl<> _mocap_service;
 
     std::unique_ptr<grpc::Server> _server;
 };
