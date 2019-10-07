@@ -61,37 +61,18 @@ message Odometry {
     // Mavlink frame id
     enum MavFrame {
         STUB = 0; // Stub for Protobuf
-        BODY_FRD = 12; // Body fixed frame of reference, Z-down (x: forward, y: right, z: down). Replacement for MAV_FRAME_BODY_NED, MAV_FRAME_BODY_OFFSET_NED.
-        BODY_FLU = 13; // Body fixed frame of reference, Z-up (x: forward, y: left, z: up).
         MOCAP_NED = 14; // Odometry local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down).
-        VISION_NED = 16; // Odometry local coordinate frame of data given by a motion capture system, Z-up (x: east, y: north, z: up).
         LOCAL_FRD = 20; // Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.
-        LOCAL_FLU = 21; // Forward, Left, Up coordinate frame. This is a local frame with Z-up and arbitrary F/L alignment (i.e. not aligned with ENU/earth frame). Replacement for MAV_FRAME_MOCAP_ENU, MAV_FRAME_VISION_ENU, MAV_FRAME_ESTIM_ENU.
-    }
-
-    // Enumeration of estimator types
-    enum MavEstimatorType {
-        UNKNOWN = 0; // Unknown type of the estimator.
-        NAIVE = 1; // This is a naive estimator without any real covariance feedback.
-        TYPE_VISION = 2; // Computer vision based estimate. Might be up to scale.
-        VIO = 3; // Visual-inertial estimate.
-        GPS = 4; // Plain GPS estimate.
-        INS = 5; // Estimator integrating GPS and inertial sensing.
-        MOCAP = 6; // Estimate from external motion capturing system.
-        LIDAR = 7; // Estimator based on lidar sensor input.
-        AUTOPILOT = 8; // Estimator on autopilot.
     }
 
     uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
     MavFrame frame_id = 2; // Coordinate frame of reference for the pose data.
-    MavFrame child_frame_id = 3;  // Coordinate frame of reference for the velocity in free space (twist) data.
-    PositionBody position_body = 4; // Body Position.
-    Quaternion q = 5; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
-    SpeedBody speed_body = 6; // Linear speed (m/s).
-    AngularVelocityBody angular_velocity_body = 7; // Angular speed (rad/s).
-    Covariance pose_covariance = 8; // Pose cross-covariance matrix.
-    Covariance velocity_covariance = 9; // Velocity cross-covariance matrix.
-    MavEstimatorType estimator_type = 10; // Type of estimator that is providing the odometry (not used at 2019-09).
+    PositionBody position_body = 3; // Body Position.
+    Quaternion q = 4; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+    SpeedBody speed_body = 5; // Linear speed (m/s).
+    AngularVelocityBody angular_velocity_body = 6; // Angular speed (rad/s).
+    Covariance pose_covariance = 7; // Pose cross-covariance matrix.
+    Covariance velocity_covariance = 8; // Velocity cross-covariance matrix.
 }
 
 // Body position type
