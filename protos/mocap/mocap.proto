@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package mavsdk.rpc.mocap;
+
+option java_package = "io.mavsdk.mocap";
+option java_outer_classname = "MocapProto";
+
+/**
+ * Motion Capture allow vehicles to navigate when a global
+ * position source is unavailable or unreliable
+ * (e.g. indoors, or when flying under a bridge. etc.).
+ */
+service MocapService {
+    // Send Global position/attitude estimate from a vision source.
+    rpc SetVisionPositionEstimate(SetVisionPositionEstimateRequest) returns(SetVisionPositionEstimateResponse) {}
+    // Send motion capture attitude and position.
+    rpc SetAttitudePositionMocap(SetAttitudePositionMocapRequest) returns(SetAttitudePositionMocapResponse) {}
+    // Send odometry information with an external interface.
+    rpc SetOdometry(SetOdometryRequest) returns(SetOdometryResponse) {}
+}
+
+message SetVisionPositionEstimateRequest {
+    VisionPositionEstimate vision_position_estimate = 1;
+}
+message SetVisionPositionEstimateResponse {
+    MocapResult mocap_result = 1;
+}
+
+message SetAttitudePositionMocapRequest {
+    AttitudePositionMocap attitude_position_mocap = 1;
+}
+message SetAttitudePositionMocapResponse {
+    MocapResult mocap_result = 1;
+}
+
+message SetOdometryRequest {
+    Odometry odometry = 1;
+}
+message SetOdometryResponse {
+    MocapResult mocap_result = 1;
+}
+
+// Global position/attitude estimate from a vision source.
+message VisionPositionEstimate {
+    uint64 time_usec = 1; // PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+    PositionBody position_body = 2; // Global position (m)
+    AngleBody angle_body = 3; // Body angle (rad).
+    Covariance pose_covariance = 4; // Pose cross-covariance matrix.
+}
+
+// Motion capture attitude and position
+message AttitudePositionMocap {
+    uint64 time_usec = 1; // PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+    Quaternion q = 2; // Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
+    PositionBody position_body = 3; // Body Position (NED)
+    Covariance pose_covariance = 4; // Pose cross-covariance matrix.
+}
+
+// Odometry message to communicate odometry information with an external interface.
+message Odometry {
+    // Mavlink frame id
+    enum MavFrame {
+        STUB = 0; // Stub for Protobuf
+        MOCAP_NED = 14; // Odometry local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down).
+        LOCAL_FRD = 20; // Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.
+    }
+
+    uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
+    MavFrame frame_id = 2; // Coordinate frame of reference for the pose data.
+    PositionBody position_body = 3; // Body Position.
+    Quaternion q = 4; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+    SpeedBody speed_body = 5; // Linear speed (m/s).
+    AngularVelocityBody angular_velocity_body = 6; // Angular speed (rad/s).
+    Covariance pose_covariance = 7; // Pose cross-covariance matrix.
+    Covariance velocity_covariance = 8; // Velocity cross-covariance matrix.
+}
+
+// Body position type
+message PositionBody {
+    float x_m = 1; // X position in metres.
+    float y_m = 2; // Y position in metres.
+    float z_m = 3; // Z position in metres.
+}
+
+// Body angle type
+message AngleBody {
+    float roll_rad = 1; // Roll angle in radians.
+    float pitch_rad = 2; // Pitch angle in radians.
+    float yaw_rad = 3; // Yaw angle in radians.
+}
+
+// Speed type, represented in the Body (X Y Z) frame and in metres/second.
+message SpeedBody {
+    float x_m_s = 1; // Velocity in X in metres/second.
+    float y_m_s = 2; // Velocity in Y in metres/second.
+    float z_m_s = 3; // Velocity in Z in metres/second.
+}
+
+// Angular velocity type
+message AngularVelocityBody {
+    float roll_rad_s = 1; // Roll angular velocity in radians/second.
+    float pitch_rad_s = 2; // Pitch angular velocity in radians/second.
+    float yaw_rad_s = 3; // Yaw angular velocity in radians/second.
+}
+
+/* Covariance type.
+ * Row-major representation of a 6x6 cross-covariance matrix
+ * upper right triangle.
+ * Set first to NaN if unknown.
+ */
+message Covariance {
+    repeated float covariance_matrix = 1;
+}
+
+/*
+ * Quaternion type.
+ *
+ * All rotations and axis systems follow the right-hand rule.
+ * The Hamilton quaternion product definition is used.
+ * A zero-rotation quaternion is represented by (1,0,0,0).
+ * The quaternion could also be written as w + xi + yj + zk.
+ *
+ * For more info see: https://en.wikipedia.org/wiki/Quaternion
+ */
+message Quaternion {
+    float w = 1; // Quaternion entry 0, also denoted as a
+    float x = 2; // Quaternion entry 1, also denoted as b
+    float y = 3; // Quaternion entry 2, also denoted as c
+    float z = 4; // Quaternion entry 3, also denoted as d
+}
+
+// Result type.
+message MocapResult {
+    // Possible results returned for mocap requests
+    enum Result {
+        UNKNOWN = 0; // Unknown error
+        SUCCESS = 1; // Request succeeded
+        NO_SYSTEM = 2; // No system is connected
+        CONNECTION_ERROR = 3; // Connection error
+        INVALID_REQUEST_DATA = 4; // Invalid request data
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}
