@@ -33,6 +33,7 @@ public:
         actuator_control_target_async, void(Telemetry::actuator_control_target_callback_t)){};
     MOCK_CONST_METHOD1(
         actuator_output_status_async, void(Telemetry::actuator_output_status_callback_t)){};
+    MOCK_CONST_METHOD1(odometry_async, void(Telemetry::odometry_callback_t)){};
 };
 
 } // namespace testing

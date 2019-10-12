@@ -3,6 +3,8 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <array>
+#include <limits>
 
 #include "plugin_base.h"
 
@@ -88,11 +90,40 @@ public:
      *
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
-    struct Quaternion {
-        float w; /**< @brief Quaternion entry 0 also denoted as a. */
-        float x; /**< @brief Quaternion entry 1 also denoted as b. */
-        float y; /**< @brief Quaternion entry 2 also denoted as c. */
-        float z; /**< @brief Quaternion entry 3 also denoted as d. */
+    union Quaternion {
+        struct {
+            float w; /**< @brief Quaternion entry 0 also denoted as a. */
+            float x; /**< @brief Quaternion entry 1 also denoted as b. */
+            float y; /**< @brief Quaternion entry 2 also denoted as c. */
+            float z; /**< @brief Quaternion entry 3 also denoted as d. */
+        };
+
+        Quaternion() : a{0.0f} {}; /**< @brief Constructor */
+        Quaternion(float val) : a{val} {}; /**< @brief Constructor */
+        Quaternion(float w_, float x_, float y_, float z_) :
+            w(w_),
+            x(x_),
+            y(y_),
+            z(z_){}; /**< @brief Constructor */
+
+        float operator[](int i) const { return a.at(i); }; /**< @brief Operator [] */
+        float& operator[](int i) { return a.at(i); } /**< @brief Operator &[] */
+
+        /**
+         * @brief Cast to float C-style float array
+         */
+        operator float*() { return a.data(); };
+        /**
+         * @brief Cast to float array
+         */
+        operator std::array<float, 4>&() { return a; };
+        /**
+         * @brief Cast to float array
+         */
+        operator std::array<float, 4>() { return a; };
+
+    private:
+        std::array<float, 4> a;
     };
 
     /**
@@ -302,6 +333,78 @@ public:
     };
 
     /**
+     * @brief Velocity type.
+     *
+     * The velocity of vehicle body in metres/second.
+     */
+    struct SpeedBody {
+        float x_m_s; /**< @brief Velocity in X in metres/second. */
+        float y_m_s; /**< @brief Velocity in Y in metres/second. */
+        float z_m_s; /**< @brief Velocity in Z in metres/second. */
+    };
+
+    /**
+     * @brief Position type.
+     *
+     * The position of vehicle body.
+     */
+    struct PositionBody {
+        float x_m; /**< @brief  X Position in metres. */
+        float y_m; /**< @brief  Y Position in metres. */
+        float z_m; /**< @brief  Z Position in metres. */
+    };
+
+    /**
+     * @brief Odometry information with an external interface type.
+     */
+    struct Odometry {
+        /**
+         * @brief Mavlink frame id Odometry subset
+         */
+        enum class MavFrame {
+            UNDEF = 0, /**< @brief Stub */
+            BODY_NED = 8, /**< @brief Setpoint in body NED frame.
+                             This makes sense if all position control is externalized -
+                             e.g. useful to command 2 m/s^2 acceleration to the right. */
+            VISION_NED = 16, /**< @brief Odometry local coordinate frame of data
+                                given by a vision estimation system, Z-down (x: north,
+                                y: east, z: down). */
+            ESTIM_NED = 18, /**< @brief Odometry local coordinate frame of data given
+                               by an estimator running onboard the vehicle, Z-down
+                               (x: north, y: east, z: down). */
+        };
+
+        uint64_t time_usec; /**< @brief Timestamp (0 to use Backend timestamp). */
+        MavFrame frame_id; /**< @brief Coordinate frame of reference for the pose data. */
+        MavFrame child_frame_id; /**< @brief Coordinate frame of reference for the velocity in free
+                                    space (twist) data. */
+        PositionBody position_body; /**< @brief Position. */
+        Quaternion q; /**< @brief Quaternion components, w, x, y, z
+                         (1 0 0 0 is the null-rotation). */
+        SpeedBody velocity_body; /**< @brief Linear speed (m/s). */
+        AngularVelocityBody angular_velocity_body; /**< @brief Angular body speed (rad/s). */
+        std::array<float, 21> pose_covariance; /**< @brief Row-major representation of a 6x6 pose
+                                                  cross-covariance matrix upper right triangle.
+                                                  Leave empty if unknown. */
+        std::array<float, 21> velocity_covariance; /**< @brief Row-major representation of a 6x6
+                                                      velocity cross-covariance matrix upper right
+                                                      triangle. Leave empty if unknown. */
+        uint8_t reset_counter; /**< @brief Estimate reset counter. */
+
+        Odometry() :
+            time_usec(0),
+            frame_id(MavFrame::UNDEF),
+            child_frame_id(MavFrame::UNDEF),
+            position_body{0.0f, 0.0f, 0.0f},
+            q{0.0f},
+            velocity_body{0.0f, 0.0f, 0.0f},
+            angular_velocity_body{0.0f, 0.0f, 0.0f},
+            pose_covariance{std::numeric_limits<float>::quiet_NaN()},
+            velocity_covariance{std::numeric_limits<float>::quiet_NaN()},
+            reset_counter(0){};
+    };
+
+    /**
      * @brief Results enum for telemetry requests.
      */
     enum class Result {
@@ -451,12 +554,22 @@ public:
     /**
      * @brief Set rate of actuator output status updates (synchronous).
      *
-     * @note o stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
      * @param rate_hz Rate in Hz.
      * @return Result of request.
      */
     Result set_rate_actuator_output_status(double rate_hz);
+
+    /**
+     * @brief Set rate of odometry updates (synchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @return Result of request.
+     */
+    Result set_rate_odometry(double rate_hz);
 
     /**
      * @brief Set rate of kinematic (position and velocity) updates (asynchronous).
@@ -579,7 +692,7 @@ public:
     void set_rate_actuator_control_target_async(double rate_hz, result_callback_t callback);
 
     /**
-     * @brief et rate of actuator control target updates (asynchronous).
+     * @brief Set rate of actuator control target updates (asynchronous).
      *
      * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
      *
@@ -587,6 +700,16 @@ public:
      * @param callback Callback to receive request result.
      */
     void set_rate_actuator_output_status_async(double rate_hz, result_callback_t callback);
+
+    /**
+     * @brief Set rate of odometry updates (asynchronous).
+     *
+     * @note To stop sending it completely, use a rate_hz of -1, for default rate use 0.
+     *
+     * @param rate_hz Rate in Hz.
+     * @param callback Callback to receive request result.
+     */
+    void set_rate_odometry_async(double rate_hz, result_callback_t callback);
 
     /**
      * @brief Set rate of Unix Epoch Time update (asynchronous).
@@ -1040,11 +1163,25 @@ public:
         actuator_output_status_callback_t;
 
     /**
+     * @brief Callback type for odometry updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    typedef std::function<void(Odometry odometry)> odometry_callback_t;
+
+    /**
      * @brief Subscribe to actuator output status target updates (asynchronous).
      *
      * @param callback Function to call with updates.
      */
     void actuator_output_status_async(actuator_output_status_callback_t callback);
+
+    /**
+     * @brief Subscribe to odometry updates (asynchronous).
+     *
+     * @param callback Function to call with updates.
+     */
+    void odometry_async(odometry_callback_t callback);
 
     /**
      * @brief Subscribe to RC status updates (asynchronous).
@@ -1205,6 +1342,13 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery);
 bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
 
 /**
+ * @brief NOT Equal operator to compare two `Telemetry::Quaternion` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
+
+/**
  * @brief Stream operator to print information about a `Telemetry::Quaternion`.
  *
  * @return A reference to the stream.
@@ -1231,6 +1375,14 @@ std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_a
  * @return `true` if items are equal.
  */
 bool operator==(
+    const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
+
+/**
+ * @brief NOT Equal operator to compare two `Telemetry::AngularVelocityBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(
     const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
 
 /**
@@ -1307,6 +1459,62 @@ bool operator==(
  */
 std::ostream&
 operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::PositionBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs);
+
+/**
+ * @brief NOT Equal operator to compare two `Telemetry::PositionBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::PositionBody`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::SpeedBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs);
+
+/**
+ * @brief NOT Equal operator to compare two `Telemetry::SpeedBody` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator!=(const Telemetry::SpeedBody& lhs, const Telemetry::SpeedBody& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::SpeedBody`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::SpeedBody const& speed_body);
+
+/**
+ * @brief Equal operator to compare two `Telemetry::Odometry` objects.
+ *
+ * @return `true` if items are equal.
+ */
+bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs);
+
+/**
+ * @brief Stream operator to print information about a `Telemetry::Odometry`.
+ *
+ * @returns A reference to the stream.
+ */
+std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry);
 
 /**
  * @brief Stream operator to print information about a `Telemetry::FlightMode`.
