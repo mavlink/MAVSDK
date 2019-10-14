@@ -60,9 +60,8 @@ message AttitudePositionMocap {
 message Odometry {
     // Mavlink frame id
     enum MavFrame {
-        STUB = 0; // Stub for Protobuf
-        MOCAP_NED = 14; // Odometry local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down).
-        LOCAL_FRD = 20; // Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.
+        MOCAP_NED = 0; // MAVLink number: 14. Odometry local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down).
+        LOCAL_FRD = 1; // MAVLink number: 20. Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.
     }
 
     uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
