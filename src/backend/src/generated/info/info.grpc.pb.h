@@ -11,10 +11,13 @@
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
 #include <grpcpp/impl/codegen/client_callback.h>
+#include <grpcpp/impl/codegen/client_context.h>
+#include <grpcpp/impl/codegen/completion_queue.h>
 #include <grpcpp/impl/codegen/method_handler_impl.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
 #include <grpcpp/impl/codegen/stub_options.h>
@@ -37,6 +40,7 @@ namespace mavsdk {
 namespace rpc {
 namespace info {
 
+// Provide infomation about the hardware and/or software of a system.
 class InfoService final {
  public:
   static constexpr char const* service_full_name() {
@@ -45,6 +49,7 @@ class InfoService final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
+    // Get the system version information.
     virtual ::grpc::Status GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::mavsdk::rpc::info::GetVersionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>> AsyncGetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>>(AsyncGetVersionRaw(context, request, cq));
@@ -55,6 +60,7 @@ class InfoService final {
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
+      // Get the system version information.
       virtual void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetVersion(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::info::GetVersionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
@@ -103,12 +109,13 @@ class InfoService final {
    public:
     Service();
     virtual ~Service();
+    // Get the system version information.
     virtual ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetVersion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetVersion() {
       ::grpc::Service::MarkMethodAsync(0);
@@ -117,7 +124,7 @@ class InfoService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) override {
+    ::grpc::Status GetVersion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -129,11 +136,11 @@ class InfoService final {
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetVersion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_GetVersion() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::info::GetVersionRequest* request,
                  ::mavsdk::rpc::info::GetVersionResponse* response,
@@ -143,7 +150,7 @@ class InfoService final {
     }
     void SetMessageAllocatorFor_GetVersion(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::info::GetVersionRequest, ::mavsdk::rpc::info::GetVersionResponse>*>(
           ::grpc::Service::experimental().GetHandler(0))
               ->SetMessageAllocator(allocator);
     }
@@ -151,17 +158,17 @@ class InfoService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) override {
+    ::grpc::Status GetVersion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void GetVersion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   typedef ExperimentalWithCallbackMethod_GetVersion<Service > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetVersion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetVersion() {
       ::grpc::Service::MarkMethodGeneric(0);
@@ -170,7 +177,7 @@ class InfoService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) override {
+    ::grpc::Status GetVersion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -178,7 +185,7 @@ class InfoService final {
   template <class BaseClass>
   class WithRawMethod_GetVersion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetVersion() {
       ::grpc::Service::MarkMethodRaw(0);
@@ -187,7 +194,7 @@ class InfoService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) override {
+    ::grpc::Status GetVersion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -198,11 +205,11 @@ class InfoService final {
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_GetVersion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_GetVersion() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -214,16 +221,16 @@ class InfoService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) override {
+    ::grpc::Status GetVersion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetVersion(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void GetVersion(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_GetVersion : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetVersion() {
       ::grpc::Service::MarkMethodStreamed(0,
@@ -233,7 +240,7 @@ class InfoService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response) override {
+    ::grpc::Status GetVersion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetVersionRequest* /*request*/, ::mavsdk::rpc::info::GetVersionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }

@@ -73,323 +73,323 @@ TelemetryService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& c
   {}
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::PositionResponse>* TelemetryService::Stub::SubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::PositionResponse>::Create(channel_.get(), rpcmethod_SubscribePosition_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::PositionResponse>::Create(channel_.get(), rpcmethod_SubscribePosition_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribePosition(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribePositionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::PositionResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::PositionResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribePosition_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::PositionResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribePosition_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::PositionResponse>* TelemetryService::Stub::AsyncSubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::PositionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribePosition_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::PositionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribePosition_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::PositionResponse>* TelemetryService::Stub::PrepareAsyncSubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::PositionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribePosition_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::PositionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribePosition_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::HomeResponse>* TelemetryService::Stub::SubscribeHomeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::HomeResponse>::Create(channel_.get(), rpcmethod_SubscribeHome_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::HomeResponse>::Create(channel_.get(), rpcmethod_SubscribeHome_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeHome(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHomeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HomeResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::HomeResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeHome_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::HomeResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeHome_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::HomeResponse>* TelemetryService::Stub::AsyncSubscribeHomeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::HomeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeHome_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::HomeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeHome_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::HomeResponse>* TelemetryService::Stub::PrepareAsyncSubscribeHomeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHomeRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::HomeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeHome_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::HomeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeHome_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::InAirResponse>* TelemetryService::Stub::SubscribeInAirRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::InAirResponse>::Create(channel_.get(), rpcmethod_SubscribeInAir_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::InAirResponse>::Create(channel_.get(), rpcmethod_SubscribeInAir_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeInAir(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeInAirRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::InAirResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::InAirResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeInAir_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::InAirResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeInAir_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::InAirResponse>* TelemetryService::Stub::AsyncSubscribeInAirRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::InAirResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeInAir_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::InAirResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeInAir_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::InAirResponse>* TelemetryService::Stub::PrepareAsyncSubscribeInAirRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeInAirRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::InAirResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeInAir_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::InAirResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeInAir_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::LandedStateResponse>* TelemetryService::Stub::SubscribeLandedStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::LandedStateResponse>::Create(channel_.get(), rpcmethod_SubscribeLandedState_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::LandedStateResponse>::Create(channel_.get(), rpcmethod_SubscribeLandedState_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeLandedState(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::LandedStateResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::LandedStateResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeLandedState_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::LandedStateResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeLandedState_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::LandedStateResponse>* TelemetryService::Stub::AsyncSubscribeLandedStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::LandedStateResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeLandedState_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::LandedStateResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeLandedState_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::LandedStateResponse>* TelemetryService::Stub::PrepareAsyncSubscribeLandedStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeLandedStateRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::LandedStateResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeLandedState_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::LandedStateResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeLandedState_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::ArmedResponse>* TelemetryService::Stub::SubscribeArmedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::ArmedResponse>::Create(channel_.get(), rpcmethod_SubscribeArmed_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::ArmedResponse>::Create(channel_.get(), rpcmethod_SubscribeArmed_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeArmed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeArmedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ArmedResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::ArmedResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeArmed_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::ArmedResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeArmed_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::ArmedResponse>* TelemetryService::Stub::AsyncSubscribeArmedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ArmedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeArmed_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ArmedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeArmed_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::ArmedResponse>* TelemetryService::Stub::PrepareAsyncSubscribeArmedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeArmedRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ArmedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeArmed_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ArmedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeArmed_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* TelemetryService::Stub::SubscribeAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>::Create(channel_.get(), rpcmethod_SubscribeAttitudeQuaternion_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>::Create(channel_.get(), rpcmethod_SubscribeAttitudeQuaternion_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeAttitudeQuaternion_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeAttitudeQuaternion_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* TelemetryService::Stub::AsyncSubscribeAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeQuaternion_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeQuaternion_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>* TelemetryService::Stub::PrepareAsyncSubscribeAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeQuaternion_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeQuaternionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeQuaternion_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* TelemetryService::Stub::SubscribeAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>::Create(channel_.get(), rpcmethod_SubscribeAttitudeEuler_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>::Create(channel_.get(), rpcmethod_SubscribeAttitudeEuler_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeAttitudeEuler_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeAttitudeEuler_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* TelemetryService::Stub::AsyncSubscribeAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeEuler_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeEuler_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>* TelemetryService::Stub::PrepareAsyncSubscribeAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeEulerRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeEuler_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeEulerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeEuler_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* TelemetryService::Stub::SubscribeAttitudeAngularVelocityBodyRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>::Create(channel_.get(), rpcmethod_SubscribeAttitudeAngularVelocityBody_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>::Create(channel_.get(), rpcmethod_SubscribeAttitudeAngularVelocityBody_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeAttitudeAngularVelocityBody(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeAttitudeAngularVelocityBody_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeAttitudeAngularVelocityBody_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* TelemetryService::Stub::AsyncSubscribeAttitudeAngularVelocityBodyRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeAngularVelocityBody_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeAngularVelocityBody_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>* TelemetryService::Stub::PrepareAsyncSubscribeAttitudeAngularVelocityBodyRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeAngularVelocityBody_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitudeAngularVelocityBody_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* TelemetryService::Stub::SubscribeCameraAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>::Create(channel_.get(), rpcmethod_SubscribeCameraAttitudeQuaternion_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>::Create(channel_.get(), rpcmethod_SubscribeCameraAttitudeQuaternion_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeCameraAttitudeQuaternion(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCameraAttitudeQuaternion_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCameraAttitudeQuaternion_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* TelemetryService::Stub::AsyncSubscribeCameraAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraAttitudeQuaternion_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraAttitudeQuaternion_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>* TelemetryService::Stub::PrepareAsyncSubscribeCameraAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraAttitudeQuaternion_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraAttitudeQuaternion_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* TelemetryService::Stub::SubscribeCameraAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>::Create(channel_.get(), rpcmethod_SubscribeCameraAttitudeEuler_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>::Create(channel_.get(), rpcmethod_SubscribeCameraAttitudeEuler_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeCameraAttitudeEuler(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCameraAttitudeEuler_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCameraAttitudeEuler_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* TelemetryService::Stub::AsyncSubscribeCameraAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraAttitudeEuler_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraAttitudeEuler_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>* TelemetryService::Stub::PrepareAsyncSubscribeCameraAttitudeEulerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraAttitudeEuler_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCameraAttitudeEuler_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* TelemetryService::Stub::SubscribeGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>::Create(channel_.get(), rpcmethod_SubscribeGroundSpeedNed_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>::Create(channel_.get(), rpcmethod_SubscribeGroundSpeedNed_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeGroundSpeedNed(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeGroundSpeedNed_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeGroundSpeedNed_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* TelemetryService::Stub::AsyncSubscribeGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeGroundSpeedNed_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeGroundSpeedNed_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>* TelemetryService::Stub::PrepareAsyncSubscribeGroundSpeedNedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGroundSpeedNedRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeGroundSpeedNed_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::GroundSpeedNedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeGroundSpeedNed_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::GpsInfoResponse>* TelemetryService::Stub::SubscribeGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::GpsInfoResponse>::Create(channel_.get(), rpcmethod_SubscribeGpsInfo_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::GpsInfoResponse>::Create(channel_.get(), rpcmethod_SubscribeGpsInfo_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeGpsInfo(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::GpsInfoResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::GpsInfoResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeGpsInfo_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::GpsInfoResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeGpsInfo_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GpsInfoResponse>* TelemetryService::Stub::AsyncSubscribeGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::GpsInfoResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeGpsInfo_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::GpsInfoResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeGpsInfo_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::GpsInfoResponse>* TelemetryService::Stub::PrepareAsyncSubscribeGpsInfoRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::GpsInfoResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeGpsInfo_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::GpsInfoResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeGpsInfo_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::BatteryResponse>* TelemetryService::Stub::SubscribeBatteryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::BatteryResponse>::Create(channel_.get(), rpcmethod_SubscribeBattery_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::BatteryResponse>::Create(channel_.get(), rpcmethod_SubscribeBattery_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeBattery(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeBatteryRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::BatteryResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::BatteryResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeBattery_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::BatteryResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeBattery_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::BatteryResponse>* TelemetryService::Stub::AsyncSubscribeBatteryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::BatteryResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeBattery_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::BatteryResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeBattery_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::BatteryResponse>* TelemetryService::Stub::PrepareAsyncSubscribeBatteryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeBatteryRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::BatteryResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeBattery_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::BatteryResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeBattery_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::FlightModeResponse>* TelemetryService::Stub::SubscribeFlightModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::FlightModeResponse>::Create(channel_.get(), rpcmethod_SubscribeFlightMode_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::FlightModeResponse>::Create(channel_.get(), rpcmethod_SubscribeFlightMode_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeFlightMode(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::FlightModeResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::FlightModeResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFlightMode_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::FlightModeResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFlightMode_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::FlightModeResponse>* TelemetryService::Stub::AsyncSubscribeFlightModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::FlightModeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFlightMode_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::FlightModeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFlightMode_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::FlightModeResponse>* TelemetryService::Stub::PrepareAsyncSubscribeFlightModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::FlightModeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFlightMode_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::FlightModeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFlightMode_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::HealthResponse>* TelemetryService::Stub::SubscribeHealthRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::HealthResponse>::Create(channel_.get(), rpcmethod_SubscribeHealth_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::HealthResponse>::Create(channel_.get(), rpcmethod_SubscribeHealth_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeHealth(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeHealthRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::HealthResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeHealth_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::HealthResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeHealth_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::HealthResponse>* TelemetryService::Stub::AsyncSubscribeHealthRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::HealthResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeHealth_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::HealthResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeHealth_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::HealthResponse>* TelemetryService::Stub::PrepareAsyncSubscribeHealthRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::HealthResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeHealth_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::HealthResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeHealth_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::RcStatusResponse>* TelemetryService::Stub::SubscribeRcStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::RcStatusResponse>::Create(channel_.get(), rpcmethod_SubscribeRcStatus_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::RcStatusResponse>::Create(channel_.get(), rpcmethod_SubscribeRcStatus_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeRcStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::RcStatusResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::RcStatusResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeRcStatus_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::RcStatusResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeRcStatus_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::RcStatusResponse>* TelemetryService::Stub::AsyncSubscribeRcStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::RcStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeRcStatus_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::RcStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeRcStatus_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::RcStatusResponse>* TelemetryService::Stub::PrepareAsyncSubscribeRcStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRcStatusRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::RcStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeRcStatus_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::RcStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeRcStatus_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::StatusTextResponse>* TelemetryService::Stub::SubscribeStatusTextRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::StatusTextResponse>::Create(channel_.get(), rpcmethod_SubscribeStatusText_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::StatusTextResponse>::Create(channel_.get(), rpcmethod_SubscribeStatusText_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeStatusText(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::StatusTextResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::StatusTextResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeStatusText_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::StatusTextResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeStatusText_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::StatusTextResponse>* TelemetryService::Stub::AsyncSubscribeStatusTextRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::StatusTextResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeStatusText_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::StatusTextResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeStatusText_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::StatusTextResponse>* TelemetryService::Stub::PrepareAsyncSubscribeStatusTextRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeStatusTextRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::StatusTextResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeStatusText_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::StatusTextResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeStatusText_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* TelemetryService::Stub::SubscribeActuatorControlTargetRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>::Create(channel_.get(), rpcmethod_SubscribeActuatorControlTarget_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>::Create(channel_.get(), rpcmethod_SubscribeActuatorControlTarget_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeActuatorControlTarget(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeActuatorControlTarget_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeActuatorControlTarget_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* TelemetryService::Stub::AsyncSubscribeActuatorControlTargetRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeActuatorControlTarget_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeActuatorControlTarget_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>* TelemetryService::Stub::PrepareAsyncSubscribeActuatorControlTargetRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeActuatorControlTarget_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ActuatorControlTargetResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeActuatorControlTarget_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* TelemetryService::Stub::SubscribeActuatorOutputStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>::Create(channel_.get(), rpcmethod_SubscribeActuatorOutputStatus_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>::Create(channel_.get(), rpcmethod_SubscribeActuatorOutputStatus_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeActuatorOutputStatus(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeActuatorOutputStatus_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeActuatorOutputStatus_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* TelemetryService::Stub::AsyncSubscribeActuatorOutputStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeActuatorOutputStatus_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeActuatorOutputStatus_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>* TelemetryService::Stub::PrepareAsyncSubscribeActuatorOutputStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeActuatorOutputStatus_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeActuatorOutputStatus_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::OdometryResponse>* TelemetryService::Stub::SubscribeOdometryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::OdometryResponse>::Create(channel_.get(), rpcmethod_SubscribeOdometry_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::telemetry::OdometryResponse>::Create(channel_.get(), rpcmethod_SubscribeOdometry_, context, request);
 }
 
 void TelemetryService::Stub::experimental_async::SubscribeOdometry(::grpc::ClientContext* context, ::mavsdk::rpc::telemetry::SubscribeOdometryRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::telemetry::OdometryResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::OdometryResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeOdometry_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::telemetry::OdometryResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeOdometry_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::OdometryResponse>* TelemetryService::Stub::AsyncSubscribeOdometryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::OdometryResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeOdometry_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::OdometryResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeOdometry_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::telemetry::OdometryResponse>* TelemetryService::Stub::PrepareAsyncSubscribeOdometryRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeOdometryRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::OdometryResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeOdometry_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::telemetry::OdometryResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeOdometry_, context, request, false, nullptr);
 }
 
 TelemetryService::Service::Service() {

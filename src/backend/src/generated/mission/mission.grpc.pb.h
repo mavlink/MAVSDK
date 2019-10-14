@@ -11,10 +11,13 @@
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
 #include <grpcpp/impl/codegen/client_callback.h>
+#include <grpcpp/impl/codegen/client_context.h>
+#include <grpcpp/impl/codegen/completion_queue.h>
 #include <grpcpp/impl/codegen/method_handler_impl.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
 #include <grpcpp/impl/codegen/stub_options.h>
@@ -37,6 +40,7 @@ namespace mavsdk {
 namespace rpc {
 namespace mission {
 
+// Enable waypoint missions.
 class MissionService final {
  public:
   static constexpr char const* service_full_name() {
@@ -45,6 +49,11 @@ class MissionService final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
+    //
+    // Upload a list of mission items to the system.
+    //
+    // The mission items are uploaded to a drone. Once uploaded the mission can be started and
+    // executed even if the connection is lost.
     virtual ::grpc::Status UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::mavsdk::rpc::mission::UploadMissionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionResponse>> AsyncUploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionResponse>>(AsyncUploadMissionRaw(context, request, cq));
@@ -52,6 +61,8 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionResponse>> PrepareAsyncUploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::UploadMissionResponse>>(PrepareAsyncUploadMissionRaw(context, request, cq));
     }
+    //
+    // Cancel an ongoing mission upload.
     virtual ::grpc::Status CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionUploadResponse>> AsyncCancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionUploadResponse>>(AsyncCancelMissionUploadRaw(context, request, cq));
@@ -59,6 +70,11 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionUploadResponse>> PrepareAsyncCancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionUploadResponse>>(PrepareAsyncCancelMissionUploadRaw(context, request, cq));
     }
+    //
+    // Download a list of mission items from the system (asynchronous).
+    //
+    // Will fail if any of the downloaded mission items are not supported
+    // by the MAVSDK API.
     virtual ::grpc::Status DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest& request, ::mavsdk::rpc::mission::DownloadMissionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionResponse>> AsyncDownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionResponse>>(AsyncDownloadMissionRaw(context, request, cq));
@@ -66,6 +82,8 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionResponse>> PrepareAsyncDownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::DownloadMissionResponse>>(PrepareAsyncDownloadMissionRaw(context, request, cq));
     }
+    //
+    // Cancel an ongoing mission download.
     virtual ::grpc::Status CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionDownloadResponse>> AsyncCancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionDownloadResponse>>(AsyncCancelMissionDownloadRaw(context, request, cq));
@@ -73,6 +91,10 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionDownloadResponse>> PrepareAsyncCancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::CancelMissionDownloadResponse>>(PrepareAsyncCancelMissionDownloadRaw(context, request, cq));
     }
+    //
+    // Start the mission.
+    //
+    // A mission must be uploaded to the vehicle before this can be called.
     virtual ::grpc::Status StartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::StartMissionRequest& request, ::mavsdk::rpc::mission::StartMissionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::StartMissionResponse>> AsyncStartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::StartMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::StartMissionResponse>>(AsyncStartMissionRaw(context, request, cq));
@@ -80,6 +102,13 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::StartMissionResponse>> PrepareAsyncStartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::StartMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::StartMissionResponse>>(PrepareAsyncStartMissionRaw(context, request, cq));
     }
+    //
+    // Pause the mission.
+    //
+    // Pausing the mission puts the vehicle into
+    // [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+    // A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+    // around the location where it paused.
     virtual ::grpc::Status PauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest& request, ::mavsdk::rpc::mission::PauseMissionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::PauseMissionResponse>> AsyncPauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::PauseMissionResponse>>(AsyncPauseMissionRaw(context, request, cq));
@@ -87,6 +116,8 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::PauseMissionResponse>> PrepareAsyncPauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::PauseMissionResponse>>(PrepareAsyncPauseMissionRaw(context, request, cq));
     }
+    //
+    // Clear the mission saved on the vehicle.
     virtual ::grpc::Status ClearMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest& request, ::mavsdk::rpc::mission::ClearMissionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::ClearMissionResponse>> AsyncClearMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::ClearMissionResponse>>(AsyncClearMissionRaw(context, request, cq));
@@ -94,6 +125,14 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::ClearMissionResponse>> PrepareAsyncClearMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::ClearMissionResponse>>(PrepareAsyncClearMissionRaw(context, request, cq));
     }
+    //
+    // Sets the mission item index to go to.
+    //
+    // By setting the current index to 0, the mission is restarted from the beginning. If it is set
+    // to a specific index of a mission item, the mission will be set to this item.
+    //
+    // Note that this is not necessarily true for general missions using MAVLink if loop counters
+    // are used.
     virtual ::grpc::Status SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest& request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>> AsyncSetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>>(AsyncSetCurrentMissionItemIndexRaw(context, request, cq));
@@ -101,6 +140,8 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>> PrepareAsyncSetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>>(PrepareAsyncSetCurrentMissionItemIndexRaw(context, request, cq));
     }
+    //
+    // Check if the mission has been finished.
     virtual ::grpc::Status IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest& request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::IsMissionFinishedResponse>> AsyncIsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::IsMissionFinishedResponse>>(AsyncIsMissionFinishedRaw(context, request, cq));
@@ -108,6 +149,8 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::IsMissionFinishedResponse>> PrepareAsyncIsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::IsMissionFinishedResponse>>(PrepareAsyncIsMissionFinishedRaw(context, request, cq));
     }
+    //
+    // Subscribe to mission progress updates.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission::MissionProgressResponse>> SubscribeMissionProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mission::MissionProgressResponse>>(SubscribeMissionProgressRaw(context, request));
     }
@@ -117,6 +160,11 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::MissionProgressResponse>> PrepareAsyncSubscribeMissionProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission::MissionProgressResponse>>(PrepareAsyncSubscribeMissionProgressRaw(context, request, cq));
     }
+    //
+    // Get whether to trigger Return-to-Launch (RTL) after mission is complete.
+    //
+    // Before getting this option, it needs to be set, or a mission
+    // needs to be downloaded.
     virtual ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest& request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>> AsyncGetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>>(AsyncGetReturnToLaunchAfterMissionRaw(context, request, cq));
@@ -124,6 +172,11 @@ class MissionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>> PrepareAsyncGetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>>(PrepareAsyncGetReturnToLaunchAfterMissionRaw(context, request, cq));
     }
+    //
+    // Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
+    //
+    // This will only take effect for the next mission upload, meaning that
+    // the mission may have to be uploaded again.
     virtual ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest& request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>> AsyncSetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>>(AsyncSetReturnToLaunchAfterMissionRaw(context, request, cq));
@@ -134,47 +187,96 @@ class MissionService final {
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
+      //
+      // Upload a list of mission items to the system.
+      //
+      // The mission items are uploaded to a drone. Once uploaded the mission can be started and
+      // executed even if the connection is lost.
       virtual void UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void UploadMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::UploadMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void UploadMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::UploadMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Cancel an ongoing mission upload.
       virtual void CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CancelMissionUpload(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void CancelMissionUpload(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Download a list of mission items from the system (asynchronous).
+      //
+      // Will fail if any of the downloaded mission items are not supported
+      // by the MAVSDK API.
       virtual void DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void DownloadMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void DownloadMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Cancel an ongoing mission download.
       virtual void CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CancelMissionDownload(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void CancelMissionDownload(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Start the mission.
+      //
+      // A mission must be uploaded to the vehicle before this can be called.
       virtual void StartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void StartMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::StartMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void StartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void StartMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::StartMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Pause the mission.
+      //
+      // Pausing the mission puts the vehicle into
+      // [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+      // A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+      // around the location where it paused.
       virtual void PauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void PauseMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::PauseMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void PauseMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void PauseMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::PauseMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Clear the mission saved on the vehicle.
       virtual void ClearMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ClearMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::ClearMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ClearMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void ClearMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::ClearMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Sets the mission item index to go to.
+      //
+      // By setting the current index to 0, the mission is restarted from the beginning. If it is set
+      // to a specific index of a mission item, the mission will be set to this item.
+      //
+      // Note that this is not necessarily true for general missions using MAVLink if loop counters
+      // are used.
       virtual void SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void SetCurrentMissionItemIndex(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Check if the mission has been finished.
       virtual void IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void IsMissionFinished(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void IsMissionFinished(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Subscribe to mission progress updates.
       virtual void SubscribeMissionProgress(::grpc::ClientContext* context, ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::mission::MissionProgressResponse>* reactor) = 0;
+      //
+      // Get whether to trigger Return-to-Launch (RTL) after mission is complete.
+      //
+      // Before getting this option, it needs to be set, or a mission
+      // needs to be downloaded.
       virtual void GetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void GetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      //
+      // Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
+      //
+      // This will only take effect for the next mission upload, meaning that
+      // the mission may have to be uploaded again.
       virtual void SetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetReturnToLaunchAfterMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
@@ -400,23 +502,72 @@ class MissionService final {
    public:
     Service();
     virtual ~Service();
+    //
+    // Upload a list of mission items to the system.
+    //
+    // The mission items are uploaded to a drone. Once uploaded the mission can be started and
+    // executed even if the connection is lost.
     virtual ::grpc::Status UploadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response);
+    //
+    // Cancel an ongoing mission upload.
     virtual ::grpc::Status CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response);
+    //
+    // Download a list of mission items from the system (asynchronous).
+    //
+    // Will fail if any of the downloaded mission items are not supported
+    // by the MAVSDK API.
     virtual ::grpc::Status DownloadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response);
+    //
+    // Cancel an ongoing mission download.
     virtual ::grpc::Status CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response);
+    //
+    // Start the mission.
+    //
+    // A mission must be uploaded to the vehicle before this can be called.
     virtual ::grpc::Status StartMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response);
+    //
+    // Pause the mission.
+    //
+    // Pausing the mission puts the vehicle into
+    // [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+    // A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+    // around the location where it paused.
     virtual ::grpc::Status PauseMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response);
+    //
+    // Clear the mission saved on the vehicle.
     virtual ::grpc::Status ClearMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response);
+    //
+    // Sets the mission item index to go to.
+    //
+    // By setting the current index to 0, the mission is restarted from the beginning. If it is set
+    // to a specific index of a mission item, the mission will be set to this item.
+    //
+    // Note that this is not necessarily true for general missions using MAVLink if loop counters
+    // are used.
     virtual ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response);
+    //
+    // Check if the mission has been finished.
     virtual ::grpc::Status IsMissionFinished(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response);
+    //
+    // Subscribe to mission progress updates.
     virtual ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* writer);
+    //
+    // Get whether to trigger Return-to-Launch (RTL) after mission is complete.
+    //
+    // Before getting this option, it needs to be set, or a mission
+    // needs to be downloaded.
     virtual ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response);
+    //
+    // Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
+    //
+    // This will only take effect for the next mission upload, meaning that
+    // the mission may have to be uploaded again.
     virtual ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_UploadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_UploadMission() {
       ::grpc::Service::MarkMethodAsync(0);
@@ -425,7 +576,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UploadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response) override {
+    ::grpc::Status UploadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::UploadMissionRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -436,7 +587,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_CancelMissionUpload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_CancelMissionUpload() {
       ::grpc::Service::MarkMethodAsync(1);
@@ -445,7 +596,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) override {
+    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionUploadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -456,7 +607,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_DownloadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_DownloadMission() {
       ::grpc::Service::MarkMethodAsync(2);
@@ -465,7 +616,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DownloadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response) override {
+    ::grpc::Status DownloadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::DownloadMissionRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -476,7 +627,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_CancelMissionDownload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_CancelMissionDownload() {
       ::grpc::Service::MarkMethodAsync(3);
@@ -485,7 +636,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response) override {
+    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -496,7 +647,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_StartMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_StartMission() {
       ::grpc::Service::MarkMethodAsync(4);
@@ -505,7 +656,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status StartMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response) override {
+    ::grpc::Status StartMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::StartMissionRequest* /*request*/, ::mavsdk::rpc::mission::StartMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -516,7 +667,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_PauseMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_PauseMission() {
       ::grpc::Service::MarkMethodAsync(5);
@@ -525,7 +676,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PauseMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response) override {
+    ::grpc::Status PauseMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::PauseMissionRequest* /*request*/, ::mavsdk::rpc::mission::PauseMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -536,7 +687,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_ClearMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_ClearMission() {
       ::grpc::Service::MarkMethodAsync(6);
@@ -545,7 +696,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ClearMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response) override {
+    ::grpc::Status ClearMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::ClearMissionRequest* /*request*/, ::mavsdk::rpc::mission::ClearMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -556,7 +707,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_SetCurrentMissionItemIndex : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetCurrentMissionItemIndex() {
       ::grpc::Service::MarkMethodAsync(7);
@@ -565,7 +716,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response) override {
+    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* /*request*/, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -576,7 +727,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_IsMissionFinished : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_IsMissionFinished() {
       ::grpc::Service::MarkMethodAsync(8);
@@ -585,7 +736,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status IsMissionFinished(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response) override {
+    ::grpc::Status IsMissionFinished(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* /*request*/, ::mavsdk::rpc::mission::IsMissionFinishedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -596,7 +747,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_SubscribeMissionProgress : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeMissionProgress() {
       ::grpc::Service::MarkMethodAsync(9);
@@ -605,7 +756,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* writer) override {
+    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -616,7 +767,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_GetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetReturnToLaunchAfterMission() {
       ::grpc::Service::MarkMethodAsync(10);
@@ -625,7 +776,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -636,7 +787,7 @@ class MissionService final {
   template <class BaseClass>
   class WithAsyncMethod_SetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetReturnToLaunchAfterMission() {
       ::grpc::Service::MarkMethodAsync(11);
@@ -645,7 +796,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -657,11 +808,11 @@ class MissionService final {
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_UploadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_UploadMission() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::UploadMissionRequest, ::mavsdk::rpc::mission::UploadMissionResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::UploadMissionRequest, ::mavsdk::rpc::mission::UploadMissionResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::UploadMissionRequest* request,
                  ::mavsdk::rpc::mission::UploadMissionResponse* response,
@@ -671,7 +822,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_UploadMission(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::UploadMissionRequest, ::mavsdk::rpc::mission::UploadMissionResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::UploadMissionRequest, ::mavsdk::rpc::mission::UploadMissionResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::UploadMissionRequest, ::mavsdk::rpc::mission::UploadMissionResponse>*>(
           ::grpc::Service::experimental().GetHandler(0))
               ->SetMessageAllocator(allocator);
     }
@@ -679,20 +830,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UploadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response) override {
+    ::grpc::Status UploadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::UploadMissionRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void UploadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void UploadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::UploadMissionRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_CancelMissionUpload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_CancelMissionUpload() {
       ::grpc::Service::experimental().MarkMethodCallback(1,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::CancelMissionUploadRequest, ::mavsdk::rpc::mission::CancelMissionUploadResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::CancelMissionUploadRequest, ::mavsdk::rpc::mission::CancelMissionUploadResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request,
                  ::mavsdk::rpc::mission::CancelMissionUploadResponse* response,
@@ -702,7 +853,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_CancelMissionUpload(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::CancelMissionUploadRequest, ::mavsdk::rpc::mission::CancelMissionUploadResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::CancelMissionUploadRequest, ::mavsdk::rpc::mission::CancelMissionUploadResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::CancelMissionUploadRequest, ::mavsdk::rpc::mission::CancelMissionUploadResponse>*>(
           ::grpc::Service::experimental().GetHandler(1))
               ->SetMessageAllocator(allocator);
     }
@@ -710,20 +861,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) override {
+    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionUploadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void CancelMissionUpload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionUploadResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_DownloadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_DownloadMission() {
       ::grpc::Service::experimental().MarkMethodCallback(2,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::DownloadMissionRequest, ::mavsdk::rpc::mission::DownloadMissionResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::DownloadMissionRequest, ::mavsdk::rpc::mission::DownloadMissionResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::DownloadMissionRequest* request,
                  ::mavsdk::rpc::mission::DownloadMissionResponse* response,
@@ -733,7 +884,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_DownloadMission(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::DownloadMissionRequest, ::mavsdk::rpc::mission::DownloadMissionResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::DownloadMissionRequest, ::mavsdk::rpc::mission::DownloadMissionResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::DownloadMissionRequest, ::mavsdk::rpc::mission::DownloadMissionResponse>*>(
           ::grpc::Service::experimental().GetHandler(2))
               ->SetMessageAllocator(allocator);
     }
@@ -741,20 +892,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DownloadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response) override {
+    ::grpc::Status DownloadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::DownloadMissionRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void DownloadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void DownloadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::DownloadMissionRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_CancelMissionDownload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_CancelMissionDownload() {
       ::grpc::Service::experimental().MarkMethodCallback(3,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::CancelMissionDownloadRequest, ::mavsdk::rpc::mission::CancelMissionDownloadResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::CancelMissionDownloadRequest, ::mavsdk::rpc::mission::CancelMissionDownloadResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request,
                  ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response,
@@ -764,7 +915,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_CancelMissionDownload(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::CancelMissionDownloadRequest, ::mavsdk::rpc::mission::CancelMissionDownloadResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::CancelMissionDownloadRequest, ::mavsdk::rpc::mission::CancelMissionDownloadResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::CancelMissionDownloadRequest, ::mavsdk::rpc::mission::CancelMissionDownloadResponse>*>(
           ::grpc::Service::experimental().GetHandler(3))
               ->SetMessageAllocator(allocator);
     }
@@ -772,20 +923,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response) override {
+    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void CancelMissionDownload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_StartMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_StartMission() {
       ::grpc::Service::experimental().MarkMethodCallback(4,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::StartMissionRequest, ::mavsdk::rpc::mission::StartMissionResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::StartMissionRequest, ::mavsdk::rpc::mission::StartMissionResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::StartMissionRequest* request,
                  ::mavsdk::rpc::mission::StartMissionResponse* response,
@@ -795,7 +946,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_StartMission(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::StartMissionRequest, ::mavsdk::rpc::mission::StartMissionResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::StartMissionRequest, ::mavsdk::rpc::mission::StartMissionResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::StartMissionRequest, ::mavsdk::rpc::mission::StartMissionResponse>*>(
           ::grpc::Service::experimental().GetHandler(4))
               ->SetMessageAllocator(allocator);
     }
@@ -803,20 +954,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status StartMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response) override {
+    ::grpc::Status StartMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::StartMissionRequest* /*request*/, ::mavsdk::rpc::mission::StartMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void StartMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void StartMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::StartMissionRequest* /*request*/, ::mavsdk::rpc::mission::StartMissionResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_PauseMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_PauseMission() {
       ::grpc::Service::experimental().MarkMethodCallback(5,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::PauseMissionRequest, ::mavsdk::rpc::mission::PauseMissionResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::PauseMissionRequest, ::mavsdk::rpc::mission::PauseMissionResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::PauseMissionRequest* request,
                  ::mavsdk::rpc::mission::PauseMissionResponse* response,
@@ -826,7 +977,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_PauseMission(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::PauseMissionRequest, ::mavsdk::rpc::mission::PauseMissionResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::PauseMissionRequest, ::mavsdk::rpc::mission::PauseMissionResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::PauseMissionRequest, ::mavsdk::rpc::mission::PauseMissionResponse>*>(
           ::grpc::Service::experimental().GetHandler(5))
               ->SetMessageAllocator(allocator);
     }
@@ -834,20 +985,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PauseMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response) override {
+    ::grpc::Status PauseMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::PauseMissionRequest* /*request*/, ::mavsdk::rpc::mission::PauseMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void PauseMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void PauseMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::PauseMissionRequest* /*request*/, ::mavsdk::rpc::mission::PauseMissionResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_ClearMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_ClearMission() {
       ::grpc::Service::experimental().MarkMethodCallback(6,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::ClearMissionRequest, ::mavsdk::rpc::mission::ClearMissionResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::ClearMissionRequest, ::mavsdk::rpc::mission::ClearMissionResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::ClearMissionRequest* request,
                  ::mavsdk::rpc::mission::ClearMissionResponse* response,
@@ -857,7 +1008,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_ClearMission(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::ClearMissionRequest, ::mavsdk::rpc::mission::ClearMissionResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::ClearMissionRequest, ::mavsdk::rpc::mission::ClearMissionResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::ClearMissionRequest, ::mavsdk::rpc::mission::ClearMissionResponse>*>(
           ::grpc::Service::experimental().GetHandler(6))
               ->SetMessageAllocator(allocator);
     }
@@ -865,20 +1016,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ClearMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response) override {
+    ::grpc::Status ClearMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::ClearMissionRequest* /*request*/, ::mavsdk::rpc::mission::ClearMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void ClearMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void ClearMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::ClearMissionRequest* /*request*/, ::mavsdk::rpc::mission::ClearMissionResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetCurrentMissionItemIndex : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetCurrentMissionItemIndex() {
       ::grpc::Service::experimental().MarkMethodCallback(7,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request,
                  ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response,
@@ -888,7 +1039,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_SetCurrentMissionItemIndex(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse>*>(
           ::grpc::Service::experimental().GetHandler(7))
               ->SetMessageAllocator(allocator);
     }
@@ -896,20 +1047,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response) override {
+    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* /*request*/, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetCurrentMissionItemIndex(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* /*request*/, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_IsMissionFinished : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_IsMissionFinished() {
       ::grpc::Service::experimental().MarkMethodCallback(8,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::IsMissionFinishedRequest, ::mavsdk::rpc::mission::IsMissionFinishedResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::IsMissionFinishedRequest, ::mavsdk::rpc::mission::IsMissionFinishedResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request,
                  ::mavsdk::rpc::mission::IsMissionFinishedResponse* response,
@@ -919,7 +1070,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_IsMissionFinished(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::IsMissionFinishedRequest, ::mavsdk::rpc::mission::IsMissionFinishedResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::IsMissionFinishedRequest, ::mavsdk::rpc::mission::IsMissionFinishedResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::IsMissionFinishedRequest, ::mavsdk::rpc::mission::IsMissionFinishedResponse>*>(
           ::grpc::Service::experimental().GetHandler(8))
               ->SetMessageAllocator(allocator);
     }
@@ -927,42 +1078,42 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status IsMissionFinished(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response) override {
+    ::grpc::Status IsMissionFinished(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* /*request*/, ::mavsdk::rpc::mission::IsMissionFinishedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void IsMissionFinished(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void IsMissionFinished(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* /*request*/, ::mavsdk::rpc::mission::IsMissionFinishedResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SubscribeMissionProgress : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SubscribeMissionProgress() {
       ::grpc::Service::experimental().MarkMethodCallback(9,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mission::SubscribeMissionProgressRequest, ::mavsdk::rpc::mission::MissionProgressResponse>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mission::SubscribeMissionProgressRequest, ::mavsdk::rpc::mission::MissionProgressResponse>(
           [this] { return this->SubscribeMissionProgress(); }));
     }
     ~ExperimentalWithCallbackMethod_SubscribeMissionProgress() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* writer) override {
+    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::mavsdk::rpc::mission::SubscribeMissionProgressRequest, ::mavsdk::rpc::mission::MissionProgressResponse>* SubscribeMissionProgress() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::mavsdk::rpc::mission::SubscribeMissionProgressRequest, ::mavsdk::rpc::mission::MissionProgressResponse>;}
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_GetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_GetReturnToLaunchAfterMission() {
       ::grpc::Service::experimental().MarkMethodCallback(10,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request,
                  ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response,
@@ -972,7 +1123,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_GetReturnToLaunchAfterMission(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse>*>(
           ::grpc::Service::experimental().GetHandler(10))
               ->SetMessageAllocator(allocator);
     }
@@ -980,20 +1131,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void GetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_SetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_SetReturnToLaunchAfterMission() {
       ::grpc::Service::experimental().MarkMethodCallback(11,
-        new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>(
           [this](::grpc::ServerContext* context,
                  const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request,
                  ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response,
@@ -1003,7 +1154,7 @@ class MissionService final {
     }
     void SetMessageAllocatorFor_SetReturnToLaunchAfterMission(
         ::grpc::experimental::MessageAllocator< ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>* allocator) {
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>*>(
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse>*>(
           ::grpc::Service::experimental().GetHandler(11))
               ->SetMessageAllocator(allocator);
     }
@@ -1011,17 +1162,17 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   typedef ExperimentalWithCallbackMethod_UploadMission<ExperimentalWithCallbackMethod_CancelMissionUpload<ExperimentalWithCallbackMethod_DownloadMission<ExperimentalWithCallbackMethod_CancelMissionDownload<ExperimentalWithCallbackMethod_StartMission<ExperimentalWithCallbackMethod_PauseMission<ExperimentalWithCallbackMethod_ClearMission<ExperimentalWithCallbackMethod_SetCurrentMissionItemIndex<ExperimentalWithCallbackMethod_IsMissionFinished<ExperimentalWithCallbackMethod_SubscribeMissionProgress<ExperimentalWithCallbackMethod_GetReturnToLaunchAfterMission<ExperimentalWithCallbackMethod_SetReturnToLaunchAfterMission<Service > > > > > > > > > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_UploadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_UploadMission() {
       ::grpc::Service::MarkMethodGeneric(0);
@@ -1030,7 +1181,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UploadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response) override {
+    ::grpc::Status UploadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::UploadMissionRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1038,7 +1189,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_CancelMissionUpload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_CancelMissionUpload() {
       ::grpc::Service::MarkMethodGeneric(1);
@@ -1047,7 +1198,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) override {
+    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionUploadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1055,7 +1206,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_DownloadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_DownloadMission() {
       ::grpc::Service::MarkMethodGeneric(2);
@@ -1064,7 +1215,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DownloadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response) override {
+    ::grpc::Status DownloadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::DownloadMissionRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1072,7 +1223,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_CancelMissionDownload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_CancelMissionDownload() {
       ::grpc::Service::MarkMethodGeneric(3);
@@ -1081,7 +1232,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response) override {
+    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1089,7 +1240,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_StartMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_StartMission() {
       ::grpc::Service::MarkMethodGeneric(4);
@@ -1098,7 +1249,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status StartMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response) override {
+    ::grpc::Status StartMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::StartMissionRequest* /*request*/, ::mavsdk::rpc::mission::StartMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1106,7 +1257,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_PauseMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_PauseMission() {
       ::grpc::Service::MarkMethodGeneric(5);
@@ -1115,7 +1266,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PauseMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response) override {
+    ::grpc::Status PauseMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::PauseMissionRequest* /*request*/, ::mavsdk::rpc::mission::PauseMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1123,7 +1274,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_ClearMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_ClearMission() {
       ::grpc::Service::MarkMethodGeneric(6);
@@ -1132,7 +1283,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ClearMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response) override {
+    ::grpc::Status ClearMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::ClearMissionRequest* /*request*/, ::mavsdk::rpc::mission::ClearMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1140,7 +1291,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_SetCurrentMissionItemIndex : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetCurrentMissionItemIndex() {
       ::grpc::Service::MarkMethodGeneric(7);
@@ -1149,7 +1300,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response) override {
+    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* /*request*/, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1157,7 +1308,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_IsMissionFinished : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_IsMissionFinished() {
       ::grpc::Service::MarkMethodGeneric(8);
@@ -1166,7 +1317,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status IsMissionFinished(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response) override {
+    ::grpc::Status IsMissionFinished(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* /*request*/, ::mavsdk::rpc::mission::IsMissionFinishedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1174,7 +1325,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_SubscribeMissionProgress : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeMissionProgress() {
       ::grpc::Service::MarkMethodGeneric(9);
@@ -1183,7 +1334,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* writer) override {
+    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1191,7 +1342,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_GetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetReturnToLaunchAfterMission() {
       ::grpc::Service::MarkMethodGeneric(10);
@@ -1200,7 +1351,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1208,7 +1359,7 @@ class MissionService final {
   template <class BaseClass>
   class WithGenericMethod_SetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetReturnToLaunchAfterMission() {
       ::grpc::Service::MarkMethodGeneric(11);
@@ -1217,7 +1368,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1225,7 +1376,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_UploadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_UploadMission() {
       ::grpc::Service::MarkMethodRaw(0);
@@ -1234,7 +1385,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UploadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response) override {
+    ::grpc::Status UploadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::UploadMissionRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1245,7 +1396,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_CancelMissionUpload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_CancelMissionUpload() {
       ::grpc::Service::MarkMethodRaw(1);
@@ -1254,7 +1405,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) override {
+    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionUploadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1265,7 +1416,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_DownloadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_DownloadMission() {
       ::grpc::Service::MarkMethodRaw(2);
@@ -1274,7 +1425,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DownloadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response) override {
+    ::grpc::Status DownloadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::DownloadMissionRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1285,7 +1436,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_CancelMissionDownload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_CancelMissionDownload() {
       ::grpc::Service::MarkMethodRaw(3);
@@ -1294,7 +1445,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response) override {
+    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1305,7 +1456,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_StartMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_StartMission() {
       ::grpc::Service::MarkMethodRaw(4);
@@ -1314,7 +1465,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status StartMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response) override {
+    ::grpc::Status StartMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::StartMissionRequest* /*request*/, ::mavsdk::rpc::mission::StartMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1325,7 +1476,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_PauseMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_PauseMission() {
       ::grpc::Service::MarkMethodRaw(5);
@@ -1334,7 +1485,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PauseMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response) override {
+    ::grpc::Status PauseMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::PauseMissionRequest* /*request*/, ::mavsdk::rpc::mission::PauseMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1345,7 +1496,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_ClearMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_ClearMission() {
       ::grpc::Service::MarkMethodRaw(6);
@@ -1354,7 +1505,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ClearMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response) override {
+    ::grpc::Status ClearMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::ClearMissionRequest* /*request*/, ::mavsdk::rpc::mission::ClearMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1365,7 +1516,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_SetCurrentMissionItemIndex : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetCurrentMissionItemIndex() {
       ::grpc::Service::MarkMethodRaw(7);
@@ -1374,7 +1525,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response) override {
+    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* /*request*/, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1385,7 +1536,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_IsMissionFinished : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_IsMissionFinished() {
       ::grpc::Service::MarkMethodRaw(8);
@@ -1394,7 +1545,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status IsMissionFinished(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response) override {
+    ::grpc::Status IsMissionFinished(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* /*request*/, ::mavsdk::rpc::mission::IsMissionFinishedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1405,7 +1556,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_SubscribeMissionProgress : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeMissionProgress() {
       ::grpc::Service::MarkMethodRaw(9);
@@ -1414,7 +1565,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* writer) override {
+    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1425,7 +1576,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_GetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetReturnToLaunchAfterMission() {
       ::grpc::Service::MarkMethodRaw(10);
@@ -1434,7 +1585,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1445,7 +1596,7 @@ class MissionService final {
   template <class BaseClass>
   class WithRawMethod_SetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetReturnToLaunchAfterMission() {
       ::grpc::Service::MarkMethodRaw(11);
@@ -1454,7 +1605,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1465,11 +1616,11 @@ class MissionService final {
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_UploadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_UploadMission() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1481,20 +1632,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status UploadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response) override {
+    ::grpc::Status UploadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::UploadMissionRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void UploadMission(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void UploadMission(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_CancelMissionUpload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_CancelMissionUpload() {
       ::grpc::Service::experimental().MarkMethodRawCallback(1,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1506,20 +1657,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) override {
+    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionUploadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void CancelMissionUpload(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void CancelMissionUpload(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_DownloadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_DownloadMission() {
       ::grpc::Service::experimental().MarkMethodRawCallback(2,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1531,20 +1682,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DownloadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response) override {
+    ::grpc::Status DownloadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::DownloadMissionRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void DownloadMission(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void DownloadMission(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_CancelMissionDownload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_CancelMissionDownload() {
       ::grpc::Service::experimental().MarkMethodRawCallback(3,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1556,20 +1707,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response) override {
+    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void CancelMissionDownload(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void CancelMissionDownload(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_StartMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_StartMission() {
       ::grpc::Service::experimental().MarkMethodRawCallback(4,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1581,20 +1732,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status StartMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response) override {
+    ::grpc::Status StartMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::StartMissionRequest* /*request*/, ::mavsdk::rpc::mission::StartMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void StartMission(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void StartMission(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_PauseMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_PauseMission() {
       ::grpc::Service::experimental().MarkMethodRawCallback(5,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1606,20 +1757,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PauseMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response) override {
+    ::grpc::Status PauseMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::PauseMissionRequest* /*request*/, ::mavsdk::rpc::mission::PauseMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void PauseMission(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void PauseMission(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_ClearMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_ClearMission() {
       ::grpc::Service::experimental().MarkMethodRawCallback(6,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1631,20 +1782,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status ClearMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response) override {
+    ::grpc::Status ClearMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::ClearMissionRequest* /*request*/, ::mavsdk::rpc::mission::ClearMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void ClearMission(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void ClearMission(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetCurrentMissionItemIndex : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetCurrentMissionItemIndex() {
       ::grpc::Service::experimental().MarkMethodRawCallback(7,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1656,20 +1807,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response) override {
+    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* /*request*/, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetCurrentMissionItemIndex(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_IsMissionFinished : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_IsMissionFinished() {
       ::grpc::Service::experimental().MarkMethodRawCallback(8,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1681,42 +1832,42 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status IsMissionFinished(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response) override {
+    ::grpc::Status IsMissionFinished(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* /*request*/, ::mavsdk::rpc::mission::IsMissionFinishedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void IsMissionFinished(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void IsMissionFinished(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SubscribeMissionProgress : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SubscribeMissionProgress() {
       ::grpc::Service::experimental().MarkMethodRawCallback(9,
-        new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this] { return this->SubscribeMissionProgress(); }));
     }
     ~ExperimentalWithRawCallbackMethod_SubscribeMissionProgress() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* writer) override {
+    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* SubscribeMissionProgress() {
-      return new ::grpc::internal::UnimplementedWriteReactor<
+      return new ::grpc_impl::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_GetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_GetReturnToLaunchAfterMission() {
       ::grpc::Service::experimental().MarkMethodRawCallback(10,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1728,20 +1879,20 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void GetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void GetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_SetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_SetReturnToLaunchAfterMission() {
       ::grpc::Service::experimental().MarkMethodRawCallback(11,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -1753,16 +1904,16 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void SetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_UploadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_UploadMission() {
       ::grpc::Service::MarkMethodStreamed(0,
@@ -1772,7 +1923,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status UploadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::UploadMissionRequest* request, ::mavsdk::rpc::mission::UploadMissionResponse* response) override {
+    ::grpc::Status UploadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::UploadMissionRequest* /*request*/, ::mavsdk::rpc::mission::UploadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1782,7 +1933,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_CancelMissionUpload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_CancelMissionUpload() {
       ::grpc::Service::MarkMethodStreamed(1,
@@ -1792,7 +1943,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission::CancelMissionUploadResponse* response) override {
+    ::grpc::Status CancelMissionUpload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionUploadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionUploadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1802,7 +1953,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_DownloadMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_DownloadMission() {
       ::grpc::Service::MarkMethodStreamed(2,
@@ -1812,7 +1963,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status DownloadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::DownloadMissionRequest* request, ::mavsdk::rpc::mission::DownloadMissionResponse* response) override {
+    ::grpc::Status DownloadMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::DownloadMissionRequest* /*request*/, ::mavsdk::rpc::mission::DownloadMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1822,7 +1973,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_CancelMissionDownload : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_CancelMissionDownload() {
       ::grpc::Service::MarkMethodStreamed(3,
@@ -1832,7 +1983,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* response) override {
+    ::grpc::Status CancelMissionDownload(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::CancelMissionDownloadRequest* /*request*/, ::mavsdk::rpc::mission::CancelMissionDownloadResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1842,7 +1993,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_StartMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_StartMission() {
       ::grpc::Service::MarkMethodStreamed(4,
@@ -1852,7 +2003,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status StartMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::StartMissionRequest* request, ::mavsdk::rpc::mission::StartMissionResponse* response) override {
+    ::grpc::Status StartMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::StartMissionRequest* /*request*/, ::mavsdk::rpc::mission::StartMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1862,7 +2013,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_PauseMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_PauseMission() {
       ::grpc::Service::MarkMethodStreamed(5,
@@ -1872,7 +2023,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status PauseMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::PauseMissionRequest* request, ::mavsdk::rpc::mission::PauseMissionResponse* response) override {
+    ::grpc::Status PauseMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::PauseMissionRequest* /*request*/, ::mavsdk::rpc::mission::PauseMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1882,7 +2033,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_ClearMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_ClearMission() {
       ::grpc::Service::MarkMethodStreamed(6,
@@ -1892,7 +2043,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status ClearMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::ClearMissionRequest* request, ::mavsdk::rpc::mission::ClearMissionResponse* response) override {
+    ::grpc::Status ClearMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::ClearMissionRequest* /*request*/, ::mavsdk::rpc::mission::ClearMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1902,7 +2053,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetCurrentMissionItemIndex : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetCurrentMissionItemIndex() {
       ::grpc::Service::MarkMethodStreamed(7,
@@ -1912,7 +2063,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* request, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* response) override {
+    ::grpc::Status SetCurrentMissionItemIndex(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetCurrentMissionItemIndexRequest* /*request*/, ::mavsdk::rpc::mission::SetCurrentMissionItemIndexResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1922,7 +2073,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_IsMissionFinished : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_IsMissionFinished() {
       ::grpc::Service::MarkMethodStreamed(8,
@@ -1932,7 +2083,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status IsMissionFinished(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission::IsMissionFinishedResponse* response) override {
+    ::grpc::Status IsMissionFinished(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::IsMissionFinishedRequest* /*request*/, ::mavsdk::rpc::mission::IsMissionFinishedResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1942,7 +2093,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_GetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetReturnToLaunchAfterMission() {
       ::grpc::Service::MarkMethodStreamed(10,
@@ -1952,7 +2103,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status GetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::GetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1962,7 +2113,7 @@ class MissionService final {
   template <class BaseClass>
   class WithStreamedUnaryMethod_SetReturnToLaunchAfterMission : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetReturnToLaunchAfterMission() {
       ::grpc::Service::MarkMethodStreamed(11,
@@ -1972,7 +2123,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* request, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* response) override {
+    ::grpc::Status SetReturnToLaunchAfterMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionRequest* /*request*/, ::mavsdk::rpc::mission::SetReturnToLaunchAfterMissionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1983,7 +2134,7 @@ class MissionService final {
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeMissionProgress : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeMissionProgress() {
       ::grpc::Service::MarkMethodStreamed(9,
@@ -1993,7 +2144,7 @@ class MissionService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* writer) override {
+    ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission::SubscribeMissionProgressRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mission::MissionProgressResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }

@@ -43,67 +43,67 @@ CalibrationService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>&
   {}
 
 ::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* CalibrationService::Stub::SubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::calibration::CalibrateGyroResponse>::Create(channel_.get(), rpcmethod_SubscribeCalibrateGyro_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::calibration::CalibrateGyroResponse>::Create(channel_.get(), rpcmethod_SubscribeCalibrateGyro_, context, request);
 }
 
 void CalibrationService::Stub::experimental_async::SubscribeCalibrateGyro(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::calibration::CalibrateGyroResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCalibrateGyro_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::calibration::CalibrateGyroResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCalibrateGyro_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* CalibrationService::Stub::AsyncSubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateGyroResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateGyro_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateGyroResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateGyro_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateGyroResponse>* CalibrationService::Stub::PrepareAsyncSubscribeCalibrateGyroRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGyroRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateGyroResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateGyro_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateGyroResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateGyro_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* CalibrationService::Stub::SubscribeCalibrateAccelerometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>::Create(channel_.get(), rpcmethod_SubscribeCalibrateAccelerometer_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>::Create(channel_.get(), rpcmethod_SubscribeCalibrateAccelerometer_, context, request);
 }
 
 void CalibrationService::Stub::experimental_async::SubscribeCalibrateAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCalibrateAccelerometer_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCalibrateAccelerometer_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* CalibrationService::Stub::AsyncSubscribeCalibrateAccelerometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateAccelerometer_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateAccelerometer_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>* CalibrationService::Stub::PrepareAsyncSubscribeCalibrateAccelerometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateAccelerometerRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateAccelerometer_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateAccelerometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateAccelerometer_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* CalibrationService::Stub::SubscribeCalibrateMagnetometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>::Create(channel_.get(), rpcmethod_SubscribeCalibrateMagnetometer_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>::Create(channel_.get(), rpcmethod_SubscribeCalibrateMagnetometer_, context, request);
 }
 
 void CalibrationService::Stub::experimental_async::SubscribeCalibrateMagnetometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCalibrateMagnetometer_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCalibrateMagnetometer_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* CalibrationService::Stub::AsyncSubscribeCalibrateMagnetometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateMagnetometer_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateMagnetometer_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>* CalibrationService::Stub::PrepareAsyncSubscribeCalibrateMagnetometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateMagnetometerRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateMagnetometer_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateMagnetometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateMagnetometer_, context, request, false, nullptr);
 }
 
 ::grpc::ClientReader< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* CalibrationService::Stub::SubscribeCalibrateGimbalAccelerometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>::Create(channel_.get(), rpcmethod_SubscribeCalibrateGimbalAccelerometer_, context, request);
+  return ::grpc_impl::internal::ClientReaderFactory< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>::Create(channel_.get(), rpcmethod_SubscribeCalibrateGimbalAccelerometer_, context, request);
 }
 
 void CalibrationService::Stub::experimental_async::SubscribeCalibrateGimbalAccelerometer(::grpc::ClientContext* context, ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest* request, ::grpc::experimental::ClientReadReactor< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCalibrateGimbalAccelerometer_, context, request, reactor);
+  ::grpc_impl::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeCalibrateGimbalAccelerometer_, context, request, reactor);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* CalibrationService::Stub::AsyncSubscribeCalibrateGimbalAccelerometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateGimbalAccelerometer_, context, request, true, tag);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateGimbalAccelerometer_, context, request, true, tag);
 }
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>* CalibrationService::Stub::PrepareAsyncSubscribeCalibrateGimbalAccelerometerRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::SubscribeCalibrateGimbalAccelerometerRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateGimbalAccelerometer_, context, request, false, nullptr);
+  return ::grpc_impl::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::calibration::CalibrateGimbalAccelerometerResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeCalibrateGimbalAccelerometer_, context, request, false, nullptr);
 }
 
 ::grpc::Status CalibrationService::Stub::Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest& request, ::mavsdk::rpc::calibration::CancelResponse* response) {
@@ -111,27 +111,27 @@ void CalibrationService::Stub::experimental_async::SubscribeCalibrateGimbalAccel
 }
 
 void CalibrationService::Stub::experimental_async::Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, std::move(f));
 }
 
 void CalibrationService::Stub::experimental_async::Cancel(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::calibration::CancelResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, std::move(f));
 }
 
 void CalibrationService::Stub::experimental_async::Cancel(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest* request, ::mavsdk::rpc::calibration::CancelResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, reactor);
 }
 
 void CalibrationService::Stub::experimental_async::Cancel(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::mavsdk::rpc::calibration::CancelResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_Cancel_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::calibration::CancelResponse>* CalibrationService::Stub::AsyncCancelRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::calibration::CancelResponse>::Create(channel_.get(), cq, rpcmethod_Cancel_, context, request, true);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::calibration::CancelResponse>::Create(channel_.get(), cq, rpcmethod_Cancel_, context, request, true);
 }
 
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::calibration::CancelResponse>* CalibrationService::Stub::PrepareAsyncCancelRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::calibration::CancelRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::calibration::CancelResponse>::Create(channel_.get(), cq, rpcmethod_Cancel_, context, request, false);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::mavsdk::rpc::calibration::CancelResponse>::Create(channel_.get(), cq, rpcmethod_Cancel_, context, request, false);
 }
 
 CalibrationService::Service::Service() {
